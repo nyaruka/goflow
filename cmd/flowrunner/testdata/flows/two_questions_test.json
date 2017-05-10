@@ -22,13 +22,13 @@
   "output": {
     "runs": [
       {
-        "uuid": "597156c5-90ab-4e74-a457-7f09a6841398",
+        "uuid": "",
         "flow": "flow1",
         "channel": "",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "path": [
           {
-            "uuid": "64c70f07-0aba-40ff-a329-56cba763427e",
+            "uuid": "",
             "node": "node1",
             "exit": "node1-exit1",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -68,7 +68,7 @@
             ]
           },
           {
-            "uuid": "5d72a972-496a-4d4d-87cf-744f81dcd7ae",
+            "uuid": "",
             "node": "node2",
             "exit": "node2-exit2",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -113,7 +113,7 @@
             ]
           },
           {
-            "uuid": "be778067-7683-44ba-80ab-79214890ec6b",
+            "uuid": "",
             "node": "node3",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
             "left_on": "2000-01-01T00:00:00.000000000-00:00",

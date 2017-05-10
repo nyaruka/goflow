@@ -13,13 +13,13 @@
   "output": {
     "runs": [
       {
-        "uuid": "eae87c07-e3c2-4251-a4c9-39d530b36c0c",
+        "uuid": "",
         "flow": "flow1",
         "channel": "",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "path": [
           {
-            "uuid": "70469c87-f528-4c65-8aba-805e96e88822",
+            "uuid": "",
             "node": "flow1-node1",
             "exit": "node1-exit1",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -56,7 +56,7 @@
             ]
           },
           {
-            "uuid": "a2c0f29e-cb36-4f69-bd7f-091b599647f0",
+            "uuid": "",
             "node": "flow1-node2",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
             "left_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -81,13 +81,13 @@
         "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
         "exited_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
-        "uuid": "d01dfefb-55df-4f5c-93f6-741d35fee240",
+        "uuid": "",
         "flow": "flow2",
         "channel": "",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "path": [
           {
-            "uuid": "e6a35afb-d796-497d-a767-a07dcd509cf6",
+            "uuid": "",
             "node": "flow2-node1",
             "exit": "flow2-node1-exit1",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -127,7 +127,7 @@
             ]
           },
           {
-            "uuid": "40160e1e-d0e9-4058-95a9-9c238fd98a2f",
+            "uuid": "",
             "node": "flow2-node2",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
             "left_on": "2000-01-01T00:00:00.000000000-00:00",
