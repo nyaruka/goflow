@@ -60,7 +60,7 @@ func replaceFields(input []byte) []byte {
 		"modified_on": "2000-01-01T00:00:00.000000000-00:00",
 		"expires_on":  "2000-01-01T00:00:00.000000000-00:00",
 		"timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-		"run":         "",
+		"step":        "",
 	}
 
 	output := bytes.Buffer{}
@@ -84,19 +84,18 @@ func replaceFields(input []byte) []byte {
 				}
 			}
 
-			// we are skipping this field, read until we see two quotes in a row
+			// we are skipping this field, read until we see a comma or }
 			if replaceField != "" {
 				i++
-				quoteCount := 0
-				for ; i < len(input) && quoteCount < 2; i++ {
-					if input[i] == '"' {
-						quoteCount++
+				var addRune = ' '
+				for ; i < len(input) && addRune == ' '; i++ {
+					if input[i] == ',' || input[i] == '}' {
+						addRune = rune(input[i])
 					}
 				}
 				i--
-
 				// write our empty value
-				output.WriteString(fmt.Sprintf(": \"%s\"", fields[replaceField]))
+				output.WriteString(fmt.Sprintf(": \"%s\"%c", fields[replaceField], addRune))
 			}
 		}
 	}

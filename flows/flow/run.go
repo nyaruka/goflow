@@ -118,7 +118,7 @@ func (r *run) AddEvent(s flows.Step, e flows.Event) {
 	now := time.Now()
 
 	e.SetCreatedOn(now)
-	e.SetRun(r.UUID())
+	e.SetStep(s.UUID())
 
 	fs := s.(*step)
 	fs.addEvent(e)
@@ -134,7 +134,7 @@ func (r *run) AddError(step flows.Step, err error) {
 func (r *run) Path() []flows.Step { return r.path }
 func (r *run) CreateStep(node flows.Node) flows.Step {
 	now := time.Now()
-	step := &step{node: node.UUID(), arrivedOn: now}
+	step := &step{uuid: flows.StepUUID(uuid.NewV4().String()), node: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	r.setModifiedOn(now)
 	return step

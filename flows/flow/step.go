@@ -11,6 +11,7 @@ import (
 )
 
 type step struct {
+	uuid      flows.StepUUID
 	node      flows.NodeUUID
 	exit      flows.ExitUUID
 	arrivedOn time.Time
@@ -18,6 +19,7 @@ type step struct {
 	events    []flows.Event
 }
 
+func (s *step) UUID() flows.StepUUID  { return s.uuid }
 func (s *step) Node() flows.NodeUUID  { return s.node }
 func (s *step) Exit() flows.ExitUUID  { return s.exit }
 func (s *step) ArrivedOn() time.Time  { return s.arrivedOn }
@@ -26,6 +28,9 @@ func (s *step) Events() []flows.Event { return s.events }
 
 func (s *step) Resolve(key string) interface{} {
 	switch key {
+
+	case "uuid":
+		return s.UUID
 
 	case "node":
 		return s.Node
@@ -67,6 +72,7 @@ func (s *step) addError(err error) {
 //------------------------------------------------------------------------------------------
 
 type stepEnvelope struct {
+	UUID      flows.StepUUID         `json:"uuid"`
 	Node      flows.NodeUUID         `json:"node"`
 	Exit      flows.ExitUUID         `json:"exit,omitempty"`
 	ArrivedOn time.Time              `json:"arrived_on"`
@@ -83,6 +89,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	s.uuid = se.UUID
 	s.node = se.Node
 	s.exit = se.Exit
 	s.arrivedOn = se.ArrivedOn
@@ -102,6 +109,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 func (s *step) MarshalJSON() ([]byte, error) {
 	var se stepEnvelope
 
+	se.UUID = s.uuid
 	se.Node = s.node
 	se.Exit = s.exit
 	se.ArrivedOn = s.arrivedOn

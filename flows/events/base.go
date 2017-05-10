@@ -7,12 +7,12 @@ import (
 )
 
 type BaseEvent struct {
-	Run_       flows.RunUUID `json:"run"`
-	CreatedOn_ *time.Time    `json:"created_on"`
+	Step_      flows.StepUUID `json:"step"`
+	CreatedOn_ *time.Time     `json:"created_on"`
 }
 
 func (e *BaseEvent) CreatedOn() *time.Time       { return e.CreatedOn_ }
 func (e *BaseEvent) SetCreatedOn(time time.Time) { e.CreatedOn_ = &time }
 
-func (e *BaseEvent) Run() flows.RunUUID       { return e.Run_ }
-func (e *BaseEvent) SetRun(run flows.RunUUID) { e.Run_ = run }
+func (e *BaseEvent) Step() flows.StepUUID        { return e.Step_ }
+func (e *BaseEvent) SetStep(step flows.StepUUID) { e.Step_ = step }

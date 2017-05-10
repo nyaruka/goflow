@@ -7,19 +7,19 @@
       "contact": "contact1-test-4b7f-a34b-e37e31e86451",
       "urn": "",
       "text": "Eric",
-      "run": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"
-    }
+      "step": "",
+      "created_on": "2000-01-01T00:00:00.000000000-00:00"}
   ],
   "output": {
     "runs": [
       {
-        "uuid": "2d1f51a4-6150-4132-a1d7-545d22a730f3",
+        "uuid": "eae87c07-e3c2-4251-a4c9-39d530b36c0c",
         "flow": "flow1",
         "channel": "",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "path": [
           {
+            "uuid": "70469c87-f528-4c65-8aba-805e96e88822",
             "node": "flow1-node1",
             "exit": "node1-exit1",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -32,34 +32,31 @@
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                 "urn": "",
                 "text": "This is the parent flow",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
               {
                 "type": "flow_enter",
                 "flow": "flow2",
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
               {
                 "type": "flow_wait",
                 "flow": "flow2",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
               {
                 "type": "flow_exit",
                 "flow": "flow2",
                 "status": "C",
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                 "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
             ]
           },
           {
+            "uuid": "a2c0f29e-cb36-4f69-bd7f-091b599647f0",
             "node": "flow1-node2",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
             "left_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -71,9 +68,8 @@
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                 "urn": "",
                 "text": "Flow succeeded, they said Eric",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
             ]
           }
         ],
@@ -81,17 +77,17 @@
         "results": {},
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-        "expires_on": null,
-        "timesout_on": null,
-        "exited_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+        "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+        "exited_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
-        "uuid": "05fdfcbd-d551-4e65-8c2c-eca2b50a3427",
+        "uuid": "d01dfefb-55df-4f5c-93f6-741d35fee240",
         "flow": "flow2",
         "channel": "",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "path": [
           {
+            "uuid": "e6a35afb-d796-497d-a767-a07dcd509cf6",
             "node": "flow2-node1",
             "exit": "flow2-node1-exit1",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -104,15 +100,13 @@
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                 "urn": "",
                 "text": "What is your name?",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
               {
                 "type": "msg_wait",
                 "timeout": 0,
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
               {
                 "type": "msg_in",
                 "id": 0,
@@ -120,21 +114,20 @@
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                 "urn": "",
                 "text": "Eric",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
               {
                 "type": "save_result",
                 "node": "flow2-node1",
                 "name": "name",
                 "value": "Eric",
                 "category": "Name",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
             ]
           },
           {
+            "uuid": "40160e1e-d0e9-4058-95a9-9c238fd98a2f",
             "node": "flow2-node2",
             "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
             "left_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -146,9 +139,8 @@
                 "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                 "urn": "",
                 "text": "Got it!",
-                "run": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
+                "step": "",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
             ]
           }
         ],
@@ -160,24 +152,21 @@
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "urn": "",
           "text": "Eric",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
-        },
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"},
         "results": {
           "name": {
             "node": "flow2-node1",
             "name": "name",
             "value": "Eric",
             "category": "Name",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"
-          }
+            "created_on": "2000-01-01T00:00:00.000000000-00:00"}
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-        "expires_on": null,
-        "timesout_on": null,
-        "exited_on": "2000-01-01T00:00:00.000000000-00:00"
-      }
+        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+        "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+        "exited_on": "2000-01-01T00:00:00.000000000-00:00"}
     ],
     "events": [
       {
@@ -187,16 +176,14 @@
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "urn": "",
         "text": "This is the parent flow",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "flow_enter",
         "flow": "flow2",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "msg_out",
         "id": 0,
@@ -204,21 +191,18 @@
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "urn": "",
         "text": "What is your name?",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "msg_wait",
         "timeout": 0,
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "flow_wait",
         "flow": "flow2",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "msg_in",
         "id": 0,
@@ -226,18 +210,16 @@
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "urn": "",
         "text": "Eric",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "save_result",
         "node": "flow2-node1",
         "name": "name",
         "value": "Eric",
         "category": "Name",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "msg_out",
         "id": 0,
@@ -245,18 +227,16 @@
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "urn": "",
         "text": "Got it!",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "flow_exit",
         "flow": "flow2",
         "status": "C",
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
       {
         "type": "msg_out",
         "id": 0,
@@ -264,9 +244,8 @@
         "contact": "contact1-test-4b7f-a34b-e37e31e86451",
         "urn": "",
         "text": "Flow succeeded, they said Eric",
-        "run": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      }
+        "step": "",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"}
     ]
   }
 }

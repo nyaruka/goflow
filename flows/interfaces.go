@@ -16,6 +16,7 @@ type GroupUUID UUID
 type FieldUUID UUID
 type ChannelUUID UUID
 type RunUUID UUID
+type StepUUID UUID
 
 type Language string
 
@@ -132,8 +133,8 @@ type Event interface {
 	CreatedOn() *time.Time
 	SetCreatedOn(time.Time)
 
-	Run() RunUUID
-	SetRun(RunUUID)
+	Step() StepUUID
+	SetStep(StepUUID)
 
 	utils.Typed
 }
@@ -141,6 +142,7 @@ type Event interface {
 type Step interface {
 	utils.VariableResolver
 
+	UUID() StepUUID
 	Node() NodeUUID
 	Exit() ExitUUID
 
