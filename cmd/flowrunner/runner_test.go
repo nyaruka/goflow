@@ -198,7 +198,7 @@ func TestFlows(t *testing.T) {
 				}
 
 				if eventJSON != expectedJSON {
-					t.Errorf("Got event:\n'%#v'\n\nwhen expecting:\n'%#v'\n\n for flow '%s' and output '%s", event, expected, test.flow, test.output)
+					t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s", eventJSON, expectedJSON, test.flow, test.output)
 					break
 				}
 			}

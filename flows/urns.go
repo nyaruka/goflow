@@ -29,7 +29,7 @@ var schemes = map[string]bool{
 	TelegramScheme: true,
 }
 
-func (u URN) String() string       { return string(u) }
+func (u URN) String() string       { return string(u.Path()) }
 func (u URNScheme) String() string { return string(u) }
 func (u URNPath) String() string   { return string(u) }
 
@@ -74,7 +74,7 @@ func (u URN) Resolve(key string) interface{} {
 }
 
 func (u URN) Default() interface{} {
-	return u.Path()
+	return u
 }
 
 func (l URNList) Default() interface{} {

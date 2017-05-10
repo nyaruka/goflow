@@ -184,7 +184,13 @@ func ToString(env Environment, val interface{}) (string, error) {
 		return val.String(), nil
 
 	case VariableResolver:
-		return ToString(env, val.Default())
+		// this checks that we aren't getting into an infinite loop
+		valDefault := val.Default()
+		valResolver, isResolver := valDefault.(VariableResolver)
+		if isResolver && reflect.DeepEqual(valResolver, val) {
+			return "", fmt.Errorf("Loop found in ToString of '%s' with value '%+v'", reflect.TypeOf(val), val)
+		}
+		return ToString(env, valDefault)
 
 	case []string:
 		return strings.Join(val, ", "), nil
