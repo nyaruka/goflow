@@ -1,0 +1,15 @@
+language: go
+go:
+ - 1.8
+services:
+ - redis-server
+addons:
+  postgresql: '9.3'
+before_script:
+ - psql -U postgres -c "CREATE USER goflow WITH PASSWORD 'goflow';"
+ - psql -U postgres -c "ALTER ROLE goflow WITH SUPERUSER;"
+ - psql -U postgres -c "CREATE DATABASE goflow_test;"
+ - psql -U postgres -d goflow_test -f schema.sql
+script:
+ - go test $(go list ./... | grep -v /vendor/) -cover
+ - go test $(go list ./... | grep -v /vendor/) -cover -bench=. -benchmem

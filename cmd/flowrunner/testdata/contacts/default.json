@@ -1,0 +1,9 @@
+{ 
+    "uuid": "contact1-test-4b7f-a34b-e37e31e86451",
+    "name": "Ben Haggerty",
+    "language": "eng",
+    "urns": [
+        "tel:+12065551212",
+        "facebook:macklemore"
+    ]
+}

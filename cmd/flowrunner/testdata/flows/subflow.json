@@ -1,0 +1,104 @@
+[{
+   "uuid":"flow1",
+   "name":"Parent Flow",
+   "language":"eng",
+   "nodes":[
+      {
+         "uuid":"flow1-node1",
+         "actions":[{
+                "type": "msg",
+                "text": "This is the parent flow"
+             },{
+             "type": "flow",
+             "flow": "flow2"
+         }],
+         "wait": {
+             "type": "flow",
+             "flow": "flow2"
+         },
+         "router":{
+            "type":"switch",
+            "operand": "@child",
+            "cases": [
+              {
+                "uuid": "node1-case1",
+                "type": "has_run_status",
+                "arguments": ["C"],
+                "exit": "node1-exit1"
+              },{
+                "uuid": "node1-case2",
+                "type": "true",
+                "exit": "node1-exit2"
+              }
+            ]
+         },
+         "exits":[
+            {
+               "uuid":"node1-exit1",
+               "name":"Completed",
+               "destination":"flow1-node2"
+            },
+            {
+               "uuid":"node1-exit2",
+               "name":"Other",
+               "destination":"flow1-node3"
+            }
+         ]
+      },{
+         "uuid":"flow1-node2",
+         "actions":[{
+             "type": "msg",
+             "text": "Flow succeeded, they said @child.results.name"
+         }]
+      },{
+         "uuid":"flow1-node3",
+         "actions":[{
+             "type": "msg",
+             "text": "Flow failed"
+         }]
+      }
+   ]
+},{
+   "uuid":"flow2",
+   "name":"Child flow",
+   "language":"eng",
+   "nodes":[
+      {
+        "uuid":"flow2-node1",
+        "actions":[{
+            "type": "msg",
+            "text": "What is your name?"
+        }],
+        "wait": {
+            "type": "msg"
+        },
+        "router": {
+            "name": "name",
+            "type": "switch",
+            "default": "flow2-node1-exit2",
+            "operand": "@input.text",
+            "cases": [{
+                "uuid": "flow2-node1-case1",
+                "type": "has_text",
+                "exit": "flow2-node1-exit1"
+            }]
+        },
+        "exits": [{
+            "uuid": "flow2-node1-exit1",
+            "name": "Name",
+            "destination": "flow2-node2"
+        },{
+            "uuid": "flow2-node1-exit2",
+            "name": "Other",
+            "destination": "flow2-node1"
+        }]
+      },
+      {
+        "uuid":"flow2-node2",
+        "actions":[{
+            "type": "msg",
+            "text": "Got it!"
+        }]
+      }
+   ]
+}]
