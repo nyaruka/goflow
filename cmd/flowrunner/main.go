@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -103,9 +104,11 @@ func replaceFields(input []byte) []byte {
 }
 
 func main() {
+	testdata := filepath.Join(os.Getenv("GOPATH"), "src/github.com/nyaruka/goflow/cmd/flowrunner/testdata")
+
 	writePtr := flag.Bool("write", false, "Whether to write a _test.json file for this flow")
-	contactFile := flag.String("contact", "test/contacts/default.json", "The location of the JSON file defining the contact to use, defaulting to test/contacts/default.json")
-	channelFile := flag.String("channel", "test/channels/default.json", "The location of the JSON file defining the channel to use, defaulting to test/channels/default.json")
+	contactFile := flag.String("contact", filepath.Join(testdata, "contacts/default.json"), "The location of the JSON file defining the contact to use, defaulting to test/contacts/default.json")
+	channelFile := flag.String("channel", filepath.Join(testdata, "channels/default.json"), "The location of the JSON file defining the channel to use, defaulting to test/channels/default.json")
 
 	flag.Parse()
 

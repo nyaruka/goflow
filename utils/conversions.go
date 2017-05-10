@@ -180,11 +180,11 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case time.Time:
 		return DateToString(env, val), nil
 
-	case VariableResolver:
-		return ToString(env, val.Default())
-
 	case fmt.Stringer:
 		return val.String(), nil
+
+	case VariableResolver:
+		return ToString(env, val.Default())
 
 	case []string:
 		return strings.Join(val, ", "), nil
