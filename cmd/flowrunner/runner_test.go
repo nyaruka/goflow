@@ -159,7 +159,7 @@ func TestFlows(t *testing.T) {
 			}
 
 			// write our output
-			outputFilename := deriveFilename("test/flows/", test.output)
+			outputFilename := deriveFilename("flows/", test.output)
 			err = ioutil.WriteFile(outputFilename, replaceFields(testJSON), 0644)
 			if err != nil {
 				log.Fatalf("Error writing test file to %s: %s\n", outputFilename, err)

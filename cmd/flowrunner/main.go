@@ -85,12 +85,12 @@ func replaceFields(input []byte) []byte {
 				}
 			}
 
-			// we are skipping this field, read until we see a comma or }
+			// we are skipping this field, read until we see a newline
 			if replaceField != "" {
 				i++
 				var addRune = ' '
 				for ; i < len(input) && addRune == ' '; i++ {
-					if input[i] == ',' || input[i] == '}' {
+					if input[i] == ',' || input[i] == '\n' {
 						addRune = rune(input[i])
 					}
 				}

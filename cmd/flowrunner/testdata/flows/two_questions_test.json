@@ -8,7 +8,8 @@
       "urn": "",
       "text": "red",
       "step": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+      "created_on": "2000-01-01T00:00:00.000000000-00:00"
+    },
     {
       "type": "msg_in",
       "id": 0,
@@ -17,7 +18,8 @@
       "urn": "",
       "text": "coke",
       "step": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"}
+      "created_on": "2000-01-01T00:00:00.000000000-00:00"
+    }
   ],
   "output": {
     "runs": [
@@ -42,12 +44,14 @@
                 "urn": "",
                 "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "msg_wait",
                 "timeout": 600,
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "msg_in",
                 "id": 0,
@@ -56,7 +60,8 @@
                 "urn": "",
                 "text": "red",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "save_result",
                 "node": "node1",
@@ -64,7 +69,8 @@
                 "value": "red",
                 "category": "Red",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              }
             ]
           },
           {
@@ -78,7 +84,8 @@
                 "type": "set_language",
                 "language": "fra",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "msg_out",
                 "id": 0,
@@ -87,12 +94,14 @@
                 "urn": "",
                 "text": "Red! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "msg_wait",
                 "timeout": 600,
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "msg_in",
                 "id": 0,
@@ -101,7 +110,8 @@
                 "urn": "",
                 "text": "coke",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              },
               {
                 "type": "save_result",
                 "node": "node2",
@@ -109,7 +119,8 @@
                 "value": "coke",
                 "category": "Coke",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              }
             ]
           },
           {
@@ -126,7 +137,8 @@
                 "urn": "",
                 "text": "Parfait, vous avez finis et tu aimes Coke",
                 "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"}
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
+              }
             ]
           }
         ],
@@ -139,26 +151,30 @@
           "urn": "",
           "text": "coke",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
         "results": {
           "favorite_color": {
             "node": "node1",
             "name": "favorite_color",
             "value": "red",
             "category": "Red",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          },
           "soda": {
             "node": "node2",
             "name": "soda",
             "value": "coke",
             "category": "Coke",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"}
+            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          }
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "modified_on": "2000-01-01T00:00:00.000000000-00:00",
         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
         "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-        "exited_on": "2000-01-01T00:00:00.000000000-00:00"}
+        "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+      }
     ],
     "events": [
       {
@@ -169,12 +185,14 @@
         "urn": "",
         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "msg_wait",
         "timeout": 600,
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "msg_in",
         "id": 0,
@@ -183,7 +201,8 @@
         "urn": "",
         "text": "red",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "save_result",
         "node": "node1",
@@ -191,12 +210,14 @@
         "value": "red",
         "category": "Red",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "set_language",
         "language": "fra",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "msg_out",
         "id": 0,
@@ -205,12 +226,14 @@
         "urn": "",
         "text": "Red! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "msg_wait",
         "timeout": 600,
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "msg_in",
         "id": 0,
@@ -219,7 +242,8 @@
         "urn": "",
         "text": "coke",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "save_result",
         "node": "node2",
@@ -227,7 +251,8 @@
         "value": "coke",
         "category": "Coke",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"},
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      },
       {
         "type": "msg_out",
         "id": 0,
@@ -236,7 +261,8 @@
         "urn": "",
         "text": "Parfait, vous avez finis et tu aimes Coke",
         "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"}
+        "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      }
     ]
   }
 }
