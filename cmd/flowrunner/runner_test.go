@@ -87,6 +87,10 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		return nil, err
 	}
 
+	outJSON, err := json.MarshalIndent(output, "", "  ")
+	fmt.Printf("==========================================\n")
+	fmt.Printf("%s\n", outJSON)
+
 	// for each of our resume events
 	for i := range resumeEvents {
 		activeRun := output.ActiveRun()
@@ -98,6 +102,11 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 		// resume the flow
 		output, err = engine.ResumeFlow(flowEnv, activeRun, resumeEvents[i])
+
+		outJSON, err := json.MarshalIndent(output, "", "  ")
+		fmt.Printf("==========================================\n")
+		fmt.Printf("%s\n", outJSON)
+
 		if err != nil {
 			return nil, err
 		}

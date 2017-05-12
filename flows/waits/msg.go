@@ -10,7 +10,7 @@ import (
 const MSG string = "msg"
 
 type MsgWait struct {
-	Timeout int `json:"timeout"`
+	Timeout int `json:"timeout,omitempty"`
 }
 
 func (w *MsgWait) Resolve(key string) interface{} {

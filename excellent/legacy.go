@@ -127,10 +127,10 @@ func newVars() vars {
 			vars:    contactVars,
 		},
 		"flow": arbitraryVars{
-			base: "results",
+			base: "run.results",
 		},
 		"step": vars{
-			"value": "input.value",
+			"value": "input.text",
 			"contact": arbitraryVars{
 				base:    "step.contact",
 				nesting: "fields",

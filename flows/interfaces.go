@@ -16,6 +16,8 @@ type GroupUUID UUID
 type FieldUUID UUID
 type ChannelUUID UUID
 type RunUUID UUID
+type StepUUID UUID
+type LabelUUID UUID
 
 type Language string
 

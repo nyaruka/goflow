@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -25,7 +27,9 @@ func (a *SaveToContactAction) Validate() error {
 func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// get our localized value if any
 	template := run.GetText(flows.UUID(a.Uuid), "value", a.Value)
+
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
+	fmt.Printf("%v %v", template, err)
 
 	// if we received an error, log it
 	if err != nil {

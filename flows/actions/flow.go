@@ -11,6 +11,7 @@ const FLOW string = "flow"
 
 type FlowAction struct {
 	BaseAction
+	Name string         `json: "name"`
 	Flow flows.FlowUUID `json:"flow"         validate:"nonzero"`
 }
 
