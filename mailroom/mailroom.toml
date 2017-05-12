@@ -1,0 +1,3 @@
+
+# the max number of workers we still start to process our msgs
+workers = 24
