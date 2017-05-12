@@ -81,7 +81,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	}
 
 	// start our contact down this flow
-	flowEnv := engine.NewFlowEnvironment(env, runnerFlows)
+	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{})
 	output, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil)
 	if err != nil {
 		return nil, err
