@@ -54,6 +54,7 @@ func (r RunStatus) String() string { return string(r) }
 
 type FlowEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
+	GetRun(RunUUID) (FlowRun, error)
 	utils.Environment
 }
 
@@ -255,8 +256,25 @@ type FlowRun interface {
 	Webhook() utils.RequestResponse
 	SetWebhook(utils.RequestResponse)
 
-	Child() FlowRun
-	Parent() FlowRun
+	Child() FlowRunReference
+	Parent() FlowRunReference
+
+	CreatedOn() time.Time
+	ModifiedOn() time.Time
+	ExpiresOn() *time.Time
+	TimesOutOn() *time.Time
+	ExitedOn() *time.Time
+}
+
+// FlowRunReference represents a flow run reference within a flow
+type FlowRunReference interface {
+	UUID() RunUUID
+	FlowUUID() FlowUUID
+	ContactUUID() ContactUUID
+	ChannelUUID() ChannelUUID
+
+	Results() Results
+	Status() RunStatus
 
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
