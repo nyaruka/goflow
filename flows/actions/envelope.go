@@ -16,6 +16,21 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
+	case ADD_LABEL:
+		action := AddLabelAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
+	case EMAIL:
+		action := EmailAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
+	case SET_PREFERRED_CHANNEL:
+		action := PreferredChannelAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
 	case ADD_TO_GROUP:
 		action := AddToGroupAction{}
 		err := json.Unmarshal(envelope.Data, &action)

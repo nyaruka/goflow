@@ -17,11 +17,19 @@ func readJSON(file string) ([]byte, error) {
 		fmt.Printf("Missing")
 	}
 
-	flowJSON, err := ioutil.ReadFile(dir + "/test_flows/migrate/" + file)
+	flowJSON, err := ioutil.ReadFile("testdata/legacy/" + file)
 	raw := json.RawMessage(flowJSON)
 
 	flows, err := readLegacyFlows(raw)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	asJSON, err := json.MarshalIndent(flows, "", "  ")
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	fmt.Printf("\njson:\n%s\n", asJSON)
 
@@ -29,5 +37,5 @@ func readJSON(file string) ([]byte, error) {
 }
 
 func TestSimpleMigration(t *testing.T) {
-	readJSON("meningitis.json")
+	readJSON("lots_of_action.json")
 }
