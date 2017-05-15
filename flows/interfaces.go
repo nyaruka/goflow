@@ -57,6 +57,7 @@ func (r RunStatus) String() string { return string(r) }
 type FlowEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetRun(RunUUID) (FlowRun, error)
+	GetContact(ContactUUID) (Contact, error)
 	utils.Environment
 }
 

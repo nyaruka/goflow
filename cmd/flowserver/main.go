@@ -75,7 +75,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{})
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []flows.Contact{contact})
 
 	// start our flow
 	output, err := engine.StartFlow(env, startFlows[0], contact, nil)
@@ -88,6 +88,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) {
 }
 
 type resumeRequest struct {
+	Contact   json.RawMessage      `json:"contact"`
 	Flows     json.RawMessage      `json:"flows"`
 	RunOutput json.RawMessage      `json:"run_output"`
 	Event     *utils.TypedEnvelope `json:"event"`
@@ -112,13 +113,13 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if resume.Flows == nil || resume.RunOutput == nil || resume.Event == nil {
-		writeError(w, fmt.Errorf("Missing flows, run_output or event element"))
+	if resume.Flows == nil || resume.RunOutput == nil || resume.Event == nil || resume.Contact == nil {
+		writeError(w, fmt.Errorf("Missing flows, run_output, contact or event element"))
 		return
 	}
 
 	// read our flows
-	flows, err := flow.ReadFlows(resume.Flows)
+	flowList, err := flow.ReadFlows(resume.Flows)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
 	}
@@ -129,6 +130,12 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 		writeError(w, fmt.Errorf("Error parsing run output: %s", err))
 	}
 
+	// our contact
+	contact, err := flow.ReadContact(resume.Contact)
+	if err != nil {
+		writeError(w, fmt.Errorf("Error parsing run contact: %s", err))
+	}
+
 	// and our event
 	event, err := events.EventFromEnvelope(resume.Event)
 	if err != nil {
@@ -136,10 +143,14 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flows, runOutput.Runs())
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, runOutput.Runs(), []flows.Contact{contact})
+
+	// set our contact on our run
+	activeRun := runOutput.ActiveRun()
+	activeRun.SetContact(contact)
 
 	// resume our flow
-	output, err := engine.ResumeFlow(env, runOutput.ActiveRun(), event)
+	output, err := engine.ResumeFlow(env, activeRun, event)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error resuming flow: %s", err))
 	}
