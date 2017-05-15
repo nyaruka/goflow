@@ -19,12 +19,14 @@ import (
 func main() {
 	http.HandleFunc("/flow/start", handleStart)
 	http.HandleFunc("/flow/resume", handleResume)
+	http.HandleFunc("/migrate", handleMigrate)
 	http.HandleFunc("/expression", handleExpression)
 	fmt.Println()
 	fmt.Println("Server running on port 8080")
 	fmt.Println("Endpoints:")
 	fmt.Println("  /execute    - run a flow. requires flow and context")
 	fmt.Println("  /expression - evaluate an expression. requires flow and expression")
+	fmt.Println("  /migrate    - migrates a list of flows")
 	fmt.Println()
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -32,6 +34,46 @@ func main() {
 //-----------------------------------------------------------------------------
 // Execute handler
 //-----------------------------------------------------------------------------
+
+type migrateRequest struct {
+	Flows json.RawMessage `json:"flows"`
+}
+
+func handleMigrate(w http.ResponseWriter, r *http.Request) {
+	migrate := migrateRequest{}
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+
+	if err := r.Body.Close(); err != nil {
+		writeError(w, err)
+		return
+	}
+
+	if err := json.Unmarshal(body, &migrate); err != nil {
+		writeError(w, err)
+		return
+	}
+
+	if migrate.Flows == nil {
+		writeError(w, fmt.Errorf("Missing flows element"))
+		return
+	}
+
+	flows, err := flow.ReadLegacyFlows(migrate.Flows)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(flows)
+
+}
 
 type startRequest struct {
 	Flows   json.RawMessage `json:"flows"`
@@ -147,7 +189,6 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 
 	// set our contact on our run
 	activeRun := runOutput.ActiveRun()
-	activeRun.SetContact(contact)
 
 	// resume our flow
 	output, err := engine.ResumeFlow(env, activeRun, event)

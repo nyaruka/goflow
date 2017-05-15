@@ -51,28 +51,38 @@ type run struct {
 	exitedOn   *time.Time
 }
 
-func (r *run) UUID() flows.RunUUID { return r.uuid }
-
+func (r *run) UUID() flows.RunUUID            { return r.uuid }
 func (r *run) ContactUUID() flows.ContactUUID { return r.contactUUID }
 func (r *run) Contact() flows.Contact         { return r.contact }
-func (r *run) SetContact(contact flows.Contact) error {
-	if contact.UUID() != r.contactUUID {
-		return fmt.Errorf("Cannot change contact on an existing run")
+
+// Hydrate prepares a deserialized run for executions
+func (r *run) Hydrate(env flows.FlowEnvironment) error {
+
+	// start with a fresh output
+	r.ResetOutput()
+
+	// set our flow
+	runFlow, err := env.GetFlow(r.FlowUUID())
+	if err != nil {
+		return err
 	}
-	r.contact = contact
+	r.flow = runFlow
+
+	// make sure we have a contact
+	runContact, err := env.GetContact(r.ContactUUID())
+	if err != nil {
+		return err
+	}
+	r.contact = runContact
+
+	// build our context
+	r.context = NewContextForContact(runContact, r)
+
 	return nil
 }
 
-func (r *run) FlowUUID() flows.FlowUUID { return r.flowUUID }
-func (r *run) Flow() flows.Flow         { return r.flow }
-func (r *run) SetFlow(flow flows.Flow) error {
-	if flow.UUID() != r.flowUUID {
-		return fmt.Errorf("Cannot change flow on an existing run")
-	}
-	r.flow = flow
-	return nil
-}
-
+func (r *run) FlowUUID() flows.FlowUUID       { return r.flowUUID }
+func (r *run) Flow() flows.Flow               { return r.flow }
 func (r *run) ChannelUUID() flows.ChannelUUID { return r.channelUUID }
 func (r *run) Channel() flows.Channel         { return r.channel }
 func (r *run) SetChannel(channel flows.Channel) {
@@ -204,7 +214,6 @@ func newRun(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, p
 		r.output = parent.Output()
 	} else {
 		r.output = newRunOutput()
-
 	}
 	r.output.AddRun(r)
 

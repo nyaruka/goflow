@@ -122,8 +122,8 @@ type stringTest struct {
 
 type localizations map[flows.Language]flows.Action
 
-// readLegacyFlows reads in legacy formatted flows
-func readLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
+// ReadLegacyFlows reads in legacy formatted flows
+func ReadLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
 	var flows []legacyFlow
 	err := json.Unmarshal(data, &flows)
 	return flows, err
@@ -318,7 +318,7 @@ func createCase(baseLanguage flows.Language, exitMap map[string]flows.Exit, r le
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			testType = "has_webhook_success"
+			testType = "has_webhook_status"
 			arguments = []string{"S"}
 		} else {
 			return routers.Case{}, fmt.Errorf("No failure test")

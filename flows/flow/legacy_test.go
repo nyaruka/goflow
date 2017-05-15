@@ -20,7 +20,7 @@ func readJSON(file string) ([]byte, error) {
 	flowJSON, err := ioutil.ReadFile("testdata/legacy/" + file)
 	raw := json.RawMessage(flowJSON)
 
-	flows, err := readLegacyFlows(raw)
+	flows, err := ReadLegacyFlows(raw)
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -30,19 +30,8 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact
 
 // ResumeFlow resumes our flow from the last step
 func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.RunOutput, error) {
-	// set our flow
-	runFlow, err := env.GetFlow(run.FlowUUID())
-	if err != nil {
-		return run.Output(), err
-	}
-	run.SetFlow(runFlow)
-
-	// make sure we have a contact
-	runContact, err := env.GetContact(run.ContactUUID())
-	if err != nil {
-		return run.Output(), err
-	}
-	run.SetContact(runContact)
+	// to resume a flow, hydrate our run with the environment
+	run.Hydrate(env)
 
 	// no steps to resume from, nothing to do, return
 	if len(run.Path()) == 0 {

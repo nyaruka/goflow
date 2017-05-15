@@ -219,11 +219,10 @@ type FlowRun interface {
 	UUID() RunUUID
 	FlowUUID() FlowUUID
 	Flow() Flow
-	SetFlow(Flow) error
+	Hydrate(FlowEnvironment) error
 
 	ContactUUID() ContactUUID
 	Contact() Contact
-	SetContact(Contact) error
 
 	ChannelUUID() ChannelUUID
 	Channel() Channel
