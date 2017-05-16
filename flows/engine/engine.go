@@ -65,6 +65,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	if run.Parent() != nil && run.IsComplete() {
 		event := events.NewFlowExitEvent(run)
 		parentRun, err := env.GetRun(run.Parent().UUID())
+		parentRun.SetOutput(run.Output())
 		if err != nil {
 			return run.Output(), err
 		}

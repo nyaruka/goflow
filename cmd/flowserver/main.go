@@ -164,28 +164,37 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 	flowList, err := flow.ReadFlows(resume.Flows)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
+		return
 	}
 
 	// read our run
 	runOutput, err := flow.ReadRunOutput(resume.RunOutput)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing run output: %s", err))
+		return
 	}
 
 	// our contact
 	contact, err := flow.ReadContact(resume.Contact)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing run contact: %s", err))
+		return
 	}
 
 	// and our event
 	event, err := events.EventFromEnvelope(resume.Event)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error reading event: %s", err))
+		return
 	}
 
 	// build our environment
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, runOutput.Runs(), []flows.Contact{contact})
+
+	// hydrate all our runs
+	for _, run := range runOutput.Runs() {
+		run.Hydrate(env)
+	}
 
 	// set our contact on our run
 	activeRun := runOutput.ActiveRun()
@@ -194,10 +203,12 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 	output, err := engine.ResumeFlow(env, activeRun, event)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error resuming flow: %s", err))
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(output)
+
 }
 
 //-----------------------------------------------------------------------------

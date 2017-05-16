@@ -233,6 +233,7 @@ type FlowRun interface {
 	Environment() FlowEnvironment
 
 	Output() RunOutput
+	SetOutput(RunOutput)
 	ResetOutput()
 
 	Status() RunStatus

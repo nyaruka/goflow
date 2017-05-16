@@ -24,6 +24,7 @@ type legacyFlowEnvelope struct {
 	Metadata     legacyMetadataEnvelope `json:"metadata"`
 	RuleSets     []legacyRuleSet        `json:"rule_sets"`
 	ActionSets   []legacyActionSet      `json:"action_sets"`
+	Entry        flows.NodeUUID         `json:"entry"`
 }
 
 type legacyMetadataEnvelope struct {
@@ -94,7 +95,7 @@ type legacyAction struct {
 	Labels []legacyLabel `json:"labels"`
 
 	// Trigger flow
-	Flow flows.FlowUUID `json:"flow"`
+	Flow legacyFlowReference `json:"flow"`
 
 	// channel
 	Channel flows.ChannelUUID `json:"channel"`
@@ -102,6 +103,10 @@ type legacyAction struct {
 	//email
 	Emails  []string `json:"emails"`
 	Subject string   `json:"subject"`
+}
+
+type legacyFlowReference struct {
+	UUID flows.FlowUUID `json:"uuid"`
 }
 
 type subflowTest struct {
@@ -154,10 +159,15 @@ func addTranslation(baseLanguage flows.Language, translations *flowTranslations,
 
 var testTranslations = map[string]string{
 	"contains_any": "has_any_word",
+	"not_empty":    "has_text",
 }
 
 func translateTest(test string) string {
-	return testTranslations[test]
+	translated, ok := testTranslations[test]
+	if ok {
+		return translated
+	}
+	return test
 }
 
 func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
@@ -217,7 +227,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 		}, nil
 	case "flow":
 		return &actions.FlowAction{
-			Flow: a.Flow,
+			Flow: a.Flow.UUID,
 			Name: a.Name,
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
@@ -340,6 +350,8 @@ func createCase(baseLanguage flows.Language, exitMap map[string]flows.Exit, r le
 		// TODO: arguments should be an array
 		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
 		arguments = []string{test.Test[baseLanguage]}
+	default:
+		testType = translateTest(testType)
 	}
 
 	return routers.Case{
@@ -472,18 +484,19 @@ func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTran
 		fallthrough
 	case "form_field":
 		fallthrough
-	case "group":
-		fallthrough
-	case "contact_field":
-		fallthrough
 	case "wait_message":
 
 		// TODO: add in timeout
 		node.wait = &waits.MsgWait{}
 
 		fallthrough
+	case "group":
+		fallthrough
+	case "contact_field":
+		fallthrough
 	case "expression":
 		operand, _ := excellent.TranslateTemplate(r.Operand)
+		fmt.Println(operand)
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
 			Operand: operand,
@@ -551,6 +564,15 @@ func (f *legacyFlow) UnmarshalJSON(data []byte) error {
 
 	for i := range envelope.RuleSets {
 		f.nodes[len(envelope.ActionSets)+i], err = createRuleNode(f.language, envelope.RuleSets[i], translations)
+	}
+
+	// make sure our entry node is first
+	for i := range f.nodes {
+		if f.nodes[i].UUID() == envelope.Entry {
+			firstNode := f.nodes[0]
+			f.nodes[0] = f.nodes[i]
+			f.nodes[i] = firstNode
+		}
 	}
 
 	f.translations = translations
