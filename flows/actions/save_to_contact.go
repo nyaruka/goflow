@@ -37,8 +37,13 @@ func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 	event := events.SaveToContactEvent{Field: a.Field, Name: a.Name, Value: value}
 	run.AddEvent(step, &event)
 
-	// save to our field dictionary
-	run.Contact().Fields().Save(a.Field, a.Name, value, *event.CreatedOn())
+	// if this is either name or language, we save directly to the contact
+	if a.Name == "name" {
+		run.Contact().SetName(value)
+	} else {
+		// save to our field dictionary
+		run.Contact().Fields().Save(a.Field, a.Name, value, *event.CreatedOn())
+	}
 
 	return nil
 }

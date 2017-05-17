@@ -21,7 +21,7 @@ import (
 
 type FlowTest struct {
 	ResumeEvents []*utils.TypedEnvelope `json:"resume_events"`
-	Output       json.RawMessage        `json:"output"`
+	Outputs      []json.RawMessage      `json:"outputs"`
 }
 
 func envelopesForEvents(events []flows.Event) ([]*utils.TypedEnvelope, error) {
@@ -158,6 +158,7 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 	inputs := make([]flows.Event, 0)
+	outputs := make([]json.RawMessage, 0)
 
 	run := output.ActiveRun()
 	for run != nil && run.Wait() != nil {
@@ -166,6 +167,7 @@ func main() {
 			log.Fatal("Error marshalling output: ", err)
 		}
 		fmt.Printf("%s\n", outJSON)
+		outputs = append(outputs, outJSON)
 
 		// print any events
 		for _, e := range output.Events() {
@@ -181,6 +183,22 @@ func main() {
 		// create our event to resume with
 		event := events.NewIncomingMsgEvent("", contact.UUID(), scanner.Text())
 		inputs = append(inputs, event)
+
+		// rebuild our output
+		output, err = flow.ReadRunOutput(outJSON)
+		if err != nil {
+			log.Fatalf("Error unmarshalling output: %s", err)
+		}
+		env = engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, output.Runs(), []flows.Contact{contact})
+
+		for _, run := range output.Runs() {
+			err = run.Hydrate(env)
+			if err != nil {
+				log.Fatalf("Error hydrating run: %s", err)
+			}
+		}
+		run = output.ActiveRun()
+
 		output, err = engine.ResumeFlow(env, run, event)
 		if err != nil {
 			log.Print("Error resuming flow: ", err)
@@ -196,6 +214,7 @@ func main() {
 		log.Fatal("Error marshalling output: ", err)
 	}
 	fmt.Printf("%s\n", outJSON)
+	outputs = append(outputs, outJSON)
 
 	// write out our test file
 	if *writePtr {
@@ -207,7 +226,7 @@ func main() {
 			log.Fatal("Error marshalling inputs: ", err)
 		}
 
-		flowTest := FlowTest{envelopes, outJSON}
+		flowTest := FlowTest{envelopes, outputs}
 		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)

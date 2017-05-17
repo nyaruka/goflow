@@ -2,7 +2,6 @@ package flow
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -43,8 +42,6 @@ func (o *runOutput) ActiveRun() flows.FlowRun {
 			mostRecent = run.ModifiedOn()
 		}
 	}
-
-	fmt.Printf("active: %s\n", active.UUID())
 	return active
 }
 

@@ -19,6 +19,9 @@ type contact struct {
 func (c *contact) SetLanguage(lang flows.Language) { c.language = lang }
 func (c *contact) Language() flows.Language        { return c.language }
 
+func (c *contact) SetName(name string) { c.name = name }
+func (c *contact) Name() string        { return c.name }
+
 func (c *contact) URNs() flows.URNList     { return c.urns }
 func (c *contact) UUID() flows.ContactUUID { return c.uuid }
 

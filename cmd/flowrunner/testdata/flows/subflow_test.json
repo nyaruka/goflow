@@ -6,271 +6,373 @@
       "channel": "",
       "contact": "contact1-test-4b7f-a34b-e37e31e86451",
       "urn": "",
-      "text": "Eric",
+      "text": "Ryan Lewis",
       "step": "",
       "created_on": "2000-01-01T00:00:00.000000000-00:00"
     }
   ],
-  "output": {
-    "runs": [
-      {
-        "uuid": "",
-        "flow": "flow1",
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "path": [
-          {
-            "uuid": "",
-            "node": "flow1-node1",
-            "exit": "node1-exit1",
-            "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-            "left_on": "2000-01-01T00:00:00.000000000-00:00",
-            "events": [
-              {
-                "type": "msg_out",
-                "id": 0,
-                "channel": "",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "urn": "",
-                "text": "This is the parent flow",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
-              {
-                "type": "flow_enter",
-                "flow": "flow2",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
-              {
-                "type": "flow_wait",
-                "flow": "flow2",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
-              {
-                "type": "flow_exit",
-                "flow": "flow2",
-                "status": "C",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
-            ]
+  "outputs": [
+    {
+      "runs": [
+        {
+          "uuid": "",
+          "flow": "flow1",
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "path": [
+            {
+              "uuid": "",
+              "node": "flow1-node1",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "msg_out",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "This is the parent flow",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "flow_enter",
+                  "flow": "flow2",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "flow_wait",
+                  "flow": "flow2",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                }
+              ]
+            }
+          ],
+          "status": "A",
+          "wait": {
+            "type": "flow",
+            "flow": "flow2"
           },
-          {
-            "uuid": "",
-            "node": "flow1-node2",
-            "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-            "left_on": "2000-01-01T00:00:00.000000000-00:00",
-            "events": [
-              {
-                "type": "msg_out",
-                "id": 0,
-                "channel": "",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "urn": "",
-                "text": "Flow succeeded, they said Eric",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
-            ]
-          }
-        ],
-        "status": "C",
-        "results": {},
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-        "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-        "exited_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "uuid": "",
-        "flow": "flow2",
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "path": [
-          {
-            "uuid": "",
-            "node": "flow2-node1",
-            "exit": "flow2-node1-exit1",
-            "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-            "left_on": "2000-01-01T00:00:00.000000000-00:00",
-            "events": [
-              {
-                "type": "msg_out",
-                "id": 0,
-                "channel": "",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "urn": "",
-                "text": "What is your name?",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
-              {
-                "type": "msg_wait",
-                "timeout": 0,
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
-              {
-                "type": "msg_in",
-                "id": 0,
-                "channel": "",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "urn": "",
-                "text": "Eric",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              },
-              {
-                "type": "save_result",
-                "node": "flow2-node1",
-                "name": "name",
-                "value": "Eric",
-                "category": "Name",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
-            ]
+          "child": "70c87c0e-271d-4e20-90f1-283af2f0f5bc",
+          "results": {},
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "uuid": "",
+          "flow": "flow2",
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "path": [
+            {
+              "uuid": "",
+              "node": "flow2-node1",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "msg_out",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "What is your name?",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "msg_wait",
+                  "timeout": 0,
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                }
+              ]
+            }
+          ],
+          "status": "A",
+          "wait": {
+            "type": "msg"
           },
-          {
-            "uuid": "",
-            "node": "flow2-node2",
-            "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-            "left_on": "2000-01-01T00:00:00.000000000-00:00",
-            "events": [
-              {
-                "type": "msg_out",
-                "id": 0,
-                "channel": "",
-                "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                "urn": "",
-                "text": "Got it!",
-                "step": "",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00"
-              }
-            ]
-          }
-        ],
-        "status": "C",
-        "input": {
+          "parent": "3d445cdd-8676-4114-b957-f88d272b9158",
+          "results": {},
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        }
+      ],
+      "events": [
+        {
+          "type": "msg_out",
+          "id": 0,
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "urn": "",
+          "text": "This is the parent flow",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "flow_enter",
+          "flow": "flow2",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "msg_out",
+          "id": 0,
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "urn": "",
+          "text": "What is your name?",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "msg_wait",
+          "timeout": 0,
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "flow_wait",
+          "flow": "flow2",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        }
+      ]
+    },
+    {
+      "runs": [
+        {
+          "uuid": "",
+          "flow": "flow2",
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "path": [
+            {
+              "uuid": "",
+              "node": "flow2-node1",
+              "exit": "flow2-node1-exit1",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "left_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "msg_out",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "What is your name?",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "msg_wait",
+                  "timeout": 0,
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "msg_in",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "Ryan Lewis",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "save_result",
+                  "node": "flow2-node1",
+                  "name": "name",
+                  "value": "Ryan Lewis",
+                  "category": "Name",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                }
+              ]
+            },
+            {
+              "uuid": "",
+              "node": "flow2-node2",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "left_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "msg_out",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "Got it!",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                }
+              ]
+            }
+          ],
+          "status": "C",
+          "input": {
+            "type": "msg_in",
+            "id": 0,
+            "channel": "",
+            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+            "urn": "",
+            "text": "Ryan Lewis",
+            "step": "",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          },
+          "parent": "3d445cdd-8676-4114-b957-f88d272b9158",
+          "results": {
+            "name": {
+              "node": "flow2-node1",
+              "name": "name",
+              "value": "Ryan Lewis",
+              "category": "Name",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00"
+            }
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "uuid": "",
+          "flow": "flow1",
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "path": [
+            {
+              "uuid": "",
+              "node": "flow1-node1",
+              "exit": "node1-exit1",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "left_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "msg_out",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "This is the parent flow",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "flow_enter",
+                  "flow": "flow2",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "flow_wait",
+                  "flow": "flow2",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "flow_exit",
+                  "flow": "flow2",
+                  "status": "C",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                }
+              ]
+            },
+            {
+              "uuid": "",
+              "node": "flow1-node2",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "left_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "msg_out",
+                  "id": 0,
+                  "channel": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "urn": "",
+                  "text": "Flow succeeded, they said Ryan Lewis",
+                  "step": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                }
+              ]
+            }
+          ],
+          "status": "C",
+          "child": "70c87c0e-271d-4e20-90f1-283af2f0f5bc",
+          "results": {},
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        }
+      ],
+      "events": [
+        {
           "type": "msg_in",
           "id": 0,
           "channel": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "urn": "",
-          "text": "Eric",
+          "text": "Ryan Lewis",
           "step": "",
           "created_on": "2000-01-01T00:00:00.000000000-00:00"
         },
-        "results": {
-          "name": {
-            "node": "flow2-node1",
-            "name": "name",
-            "value": "Eric",
-            "category": "Name",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"
-          }
+        {
+          "type": "save_result",
+          "node": "flow2-node1",
+          "name": "name",
+          "value": "Ryan Lewis",
+          "category": "Name",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
         },
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-        "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-        "exited_on": "2000-01-01T00:00:00.000000000-00:00"
-      }
-    ],
-    "events": [
-      {
-        "type": "msg_out",
-        "id": 0,
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "urn": "",
-        "text": "This is the parent flow",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "flow_enter",
-        "flow": "flow2",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "msg_out",
-        "id": 0,
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "urn": "",
-        "text": "What is your name?",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "msg_wait",
-        "timeout": 0,
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "flow_wait",
-        "flow": "flow2",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "msg_in",
-        "id": 0,
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "urn": "",
-        "text": "Eric",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "save_result",
-        "node": "flow2-node1",
-        "name": "name",
-        "value": "Eric",
-        "category": "Name",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "msg_out",
-        "id": 0,
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "urn": "",
-        "text": "Got it!",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "flow_exit",
-        "flow": "flow2",
-        "status": "C",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      },
-      {
-        "type": "msg_out",
-        "id": 0,
-        "channel": "",
-        "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-        "urn": "",
-        "text": "Flow succeeded, they said Eric",
-        "step": "",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00"
-      }
-    ]
-  }
+        {
+          "type": "msg_out",
+          "id": 0,
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "urn": "",
+          "text": "Got it!",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "flow_exit",
+          "flow": "flow2",
+          "status": "C",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "msg_out",
+          "id": 0,
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "urn": "",
+          "text": "Flow succeeded, they said Ryan Lewis",
+          "step": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+        }
+      ]
+    }
+  ]
 }

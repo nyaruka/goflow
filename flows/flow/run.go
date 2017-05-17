@@ -115,11 +115,13 @@ func (r *run) Context() flows.Context             { return r.context }
 func (r *run) Environment() flows.FlowEnvironment { return r.environment }
 func (r *run) Results() flows.Results             { return r.results }
 
-func (r *run) Output() flows.RunOutput          { return r.output }
-func (r *run) SetOutput(output flows.RunOutput) { r.output = output }
-func (r *run) ResetOutput() {
-	r.output = newRunOutput()
+func (r *run) Output() flows.RunOutput { return r.output }
+func (r *run) SetOutput(output flows.RunOutput) {
+	r.output = output
 	r.output.AddRun(r)
+}
+func (r *run) ResetOutput() {
+	r.SetOutput(newRunOutput())
 }
 
 func (r *run) IsComplete() bool {

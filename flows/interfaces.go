@@ -162,6 +162,9 @@ type Contact interface {
 
 	UUID() ContactUUID
 
+	Name() string
+	SetName(string)
+
 	Language() Language
 	SetLanguage(Language)
 
@@ -220,6 +223,7 @@ type FlowRun interface {
 	UUID() RunUUID
 	FlowUUID() FlowUUID
 	Flow() Flow
+
 	Hydrate(FlowEnvironment) error
 
 	ContactUUID() ContactUUID
