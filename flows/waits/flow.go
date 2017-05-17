@@ -41,7 +41,7 @@ func (w *FlowWait) ShouldEnd(run flows.FlowRun, step flows.Step) (flows.Event, e
 	}
 
 	// child isn't complete yet, shouldn't end
-	if !child.IsComplete() {
+	if child.Status() == flows.RunActive {
 		return nil, nil
 	}
 

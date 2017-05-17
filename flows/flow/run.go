@@ -33,8 +33,8 @@ type run struct {
 	input   flows.Input
 	event   flows.Event
 
-	parent flows.FlowRun
-	child  flows.FlowRun
+	parent flows.FlowRunReference
+	child  flows.FlowRunReference
 
 	output flows.RunOutput
 
@@ -51,28 +51,59 @@ type run struct {
 	exitedOn   *time.Time
 }
 
-func (r *run) UUID() flows.RunUUID { return r.uuid }
-
+func (r *run) UUID() flows.RunUUID            { return r.uuid }
 func (r *run) ContactUUID() flows.ContactUUID { return r.contactUUID }
 func (r *run) Contact() flows.Contact         { return r.contact }
-func (r *run) SetContact(contact flows.Contact) error {
-	if contact.UUID() != r.contactUUID {
-		return fmt.Errorf("Cannot change contact on an existing run")
+
+// Hydrate prepares a deserialized run for executions
+func (r *run) Hydrate(env flows.FlowEnvironment) error {
+	// start with a fresh output if we don't have one
+	if r.output == nil {
+		r.ResetOutput()
 	}
-	r.contact = contact
+
+	// save off our environment
+	r.environment = env
+
+	// set our flow
+	runFlow, err := env.GetFlow(r.FlowUUID())
+	if err != nil {
+		return err
+	}
+	r.flow = runFlow
+
+	// make sure we have a contact
+	runContact, err := env.GetContact(r.ContactUUID())
+	if err != nil {
+		return err
+	}
+	r.contact = runContact
+
+	// build our context
+	r.context = NewContextForContact(runContact, r)
+
+	// populate our run references
+	if r.parent != nil {
+		parent, err := env.GetRun(r.parent.UUID())
+		if err != nil {
+			return err
+		}
+		r.parent = newReferenceFromRun(parent.(*run))
+	}
+
+	if r.child != nil {
+		child, err := env.GetRun(r.child.UUID())
+		if err != nil {
+			return err
+		}
+		r.child = newReferenceFromRun(child.(*run))
+	}
+
 	return nil
 }
 
-func (r *run) FlowUUID() flows.FlowUUID { return r.flowUUID }
-func (r *run) Flow() flows.Flow         { return r.flow }
-func (r *run) SetFlow(flow flows.Flow) error {
-	if flow.UUID() != r.flowUUID {
-		return fmt.Errorf("Cannot change flow on an existing run")
-	}
-	r.flow = flow
-	return nil
-}
-
+func (r *run) FlowUUID() flows.FlowUUID       { return r.flowUUID }
+func (r *run) Flow() flows.Flow               { return r.flow }
 func (r *run) ChannelUUID() flows.ChannelUUID { return r.channelUUID }
 func (r *run) Channel() flows.Channel         { return r.channel }
 func (r *run) SetChannel(channel flows.Channel) {
@@ -84,7 +115,8 @@ func (r *run) Context() flows.Context             { return r.context }
 func (r *run) Environment() flows.FlowEnvironment { return r.environment }
 func (r *run) Results() flows.Results             { return r.results }
 
-func (r *run) Output() flows.RunOutput { return r.output }
+func (r *run) Output() flows.RunOutput          { return r.output }
+func (r *run) SetOutput(output flows.RunOutput) { r.output = output }
 func (r *run) ResetOutput() {
 	r.output = newRunOutput()
 	r.output.AddRun(r)
@@ -102,8 +134,8 @@ func (r *run) setStatus(status flows.RunStatus) {
 func (r *run) Exit(status flows.RunStatus) { r.setStatus(status) }
 func (r *run) Status() flows.RunStatus     { return r.status }
 
-func (r *run) Parent() flows.FlowRun { return r.parent }
-func (r *run) Child() flows.FlowRun  { return r.child }
+func (r *run) Parent() flows.FlowRunReference { return r.parent }
+func (r *run) Child() flows.FlowRunReference  { return r.child }
 
 func (r *run) Wait() flows.Wait        { return r.wait }
 func (r *run) SetWait(wait flows.Wait) { r.wait = wait }
@@ -193,7 +225,6 @@ func newRun(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, p
 		status:      flows.RunActive,
 		createdOn:   now,
 		modifiedOn:  now,
-		parent:      parent,
 	}
 
 	// create our new context
@@ -201,17 +232,15 @@ func newRun(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, p
 
 	// set our output
 	if parent != nil {
+		parentRun := parent.(*run)
+		r.parent = newReferenceFromRun(parentRun)
+		parentRun.child = newReferenceFromRun(r)
+
 		r.output = parent.Output()
 	} else {
 		r.output = newRunOutput()
-
 	}
 	r.output.AddRun(r)
-
-	// set ourselves as the child to our parent
-	if parent != nil {
-		parent.(*run).child = r
-	}
 
 	return r
 }
@@ -249,45 +278,67 @@ func (r *run) Default() interface{} {
 	return r
 }
 
-type runOutput struct {
-	runs   []flows.FlowRun
-	events []flows.Event
+// runReference provides a standalone and serializable version of a run reference. When a run is written
+// this is what is written and what will be read (and needed) when resuming that run
+type runReference struct {
+	uuid flows.RunUUID
+	run  *run
 }
 
-func newRunOutput() *runOutput {
-	output := runOutput{}
-	return &output
-}
+// Resolve provides a more limited set of results for parent and child references
+func (r *runReference) Resolve(key string) interface{} {
+	switch key {
 
-func (o *runOutput) AddRun(run flows.FlowRun) { o.runs = append(o.runs, run) }
-func (o *runOutput) Runs() []flows.FlowRun    { return o.runs }
+	case "channel_uuid":
+		return r.ChannelUUID()
 
-func (o *runOutput) ActiveRun() flows.FlowRun {
-	var active flows.FlowRun
-	mostRecent := utils.ZeroTime
+	case "contact_uuid":
+		return r.ContactUUID()
 
-	for _, run := range o.runs {
-		// We are complete, therefore can't be active
-		if run.IsComplete() {
-			continue
-		}
+	case "flow_uuid":
+		return r.FlowUUID()
 
-		// We have a child, and it isn't complete, we can't be active
-		if run.Child() != nil && !run.Child().IsComplete() {
-			continue
-		}
+	case "status":
+		return r.Status()
 
-		// this is more recent than our most recent flow
-		if run.ModifiedOn().After(mostRecent) {
-			active = run
-			mostRecent = run.ModifiedOn()
-		}
+	case "results":
+		return r.Results()
+
+	case "created_on":
+		return r.CreatedOn()
+
+	case "exited_on":
+		return r.ExitedOn()
+
 	}
-	return active
+
+	return fmt.Errorf("No field '%s' on run reference", key)
 }
 
-func (o *runOutput) AddEvent(event flows.Event) { o.events = append(o.events, event) }
-func (o *runOutput) Events() []flows.Event      { return o.events }
+func (r *runReference) Default() interface{} {
+	return r
+}
+
+func (r *runReference) UUID() flows.RunUUID            { return r.uuid }
+func (r *runReference) FlowUUID() flows.FlowUUID       { return r.run.flowUUID }
+func (r *runReference) ContactUUID() flows.ContactUUID { return r.run.contactUUID }
+func (r *runReference) ChannelUUID() flows.ChannelUUID { return r.run.channelUUID }
+
+func (r *runReference) Results() flows.Results  { return r.run.results }
+func (r *runReference) Status() flows.RunStatus { return r.run.status }
+
+func (r *runReference) CreatedOn() time.Time   { return r.run.createdOn }
+func (r *runReference) ModifiedOn() time.Time  { return r.run.modifiedOn }
+func (r *runReference) ExitedOn() *time.Time   { return r.run.exitedOn }
+func (r *runReference) ExpiresOn() *time.Time  { return r.run.expiresOn }
+func (r *runReference) TimesOutOn() *time.Time { return r.run.timesOutOn }
+
+func newReferenceFromRun(r *run) *runReference {
+	return &runReference{
+		uuid: r.UUID(),
+		run:  r,
+	}
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -303,16 +354,6 @@ func ReadRun(data json.RawMessage) (flows.FlowRun, error) {
 	return run, err
 }
 
-// ReadRunOutput decodes a run output from the passed in JSON
-func ReadRunOutput(data json.RawMessage) (flows.RunOutput, error) {
-	runOutput := &runOutput{}
-	err := json.Unmarshal(data, runOutput)
-	if err == nil {
-		// err = run.Validate()
-	}
-	return runOutput, err
-}
-
 type runEnvelope struct {
 	UUID    flows.RunUUID     `json:"uuid"`
 	Flow    flows.FlowUUID    `json:"flow"`
@@ -325,6 +366,9 @@ type runEnvelope struct {
 	Input *utils.TypedEnvelope `json:"input,omitempty"`
 	Wait  *utils.TypedEnvelope `json:"wait,omitempty"`
 	Event *utils.TypedEnvelope `json:"event,omitempty"`
+
+	Parent flows.RunUUID `json:"parent,omitempty"`
+	Child  flows.RunUUID `json:"child,omitempty"`
 
 	Results results               `json:"results"`
 	Webhook utils.RequestResponse `json:"webhook,omitempty"`
@@ -355,6 +399,13 @@ func (r *run) UnmarshalJSON(data []byte) error {
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
+
+	if envelope.Parent != "" {
+		r.parent = &runReference{uuid: envelope.Parent}
+	}
+	if envelope.Child != "" {
+		r.child = &runReference{uuid: envelope.Child}
+	}
 
 	if envelope.Input != nil {
 		r.input, err = inputs.InputFromEnvelope(envelope.Input)
@@ -411,6 +462,13 @@ func (r *run) MarshalJSON() ([]byte, error) {
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
 
+	if r.parent != nil {
+		re.Parent = r.parent.UUID()
+	}
+	if r.child != nil {
+		re.Child = r.child.UUID()
+	}
+
 	re.Input, err = utils.EnvelopeFromTyped(r.input)
 	if err != nil {
 		return nil, err
@@ -432,53 +490,4 @@ func (r *run) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(re)
-}
-
-type outputEnvelope struct {
-	Runs   []*run                 `json:"runs"`
-	Events []*utils.TypedEnvelope `json:"events"`
-}
-
-func (o *runOutput) UnmarshalJSON(data []byte) error {
-	var oe outputEnvelope
-	var err error
-
-	err = json.Unmarshal(data, &oe)
-	if err != nil {
-		return err
-	}
-
-	o.runs = make([]flows.FlowRun, len(oe.Runs))
-	for i := range o.runs {
-		o.runs[i] = oe.Runs[i]
-	}
-
-	o.events = make([]flows.Event, len(oe.Events))
-	for i := range o.events {
-		o.events[i], err = events.EventFromEnvelope(oe.Events[i])
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (o *runOutput) MarshalJSON() ([]byte, error) {
-	var oe outputEnvelope
-
-	oe.Events = make([]*utils.TypedEnvelope, len(o.events))
-	for i, event := range o.events {
-		eventData, err := json.Marshal(event)
-		if err != nil {
-			return nil, err
-		}
-		oe.Events[i] = &utils.TypedEnvelope{Type: event.Type(), Data: eventData}
-	}
-
-	oe.Runs = make([]*run, len(o.runs))
-	for i := range o.runs {
-		oe.Runs[i] = o.runs[i].(*run)
-	}
-
-	return json.Marshal(oe)
 }

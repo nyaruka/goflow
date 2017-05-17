@@ -148,7 +148,7 @@ func main() {
 	}
 
 	// create our flow environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows)
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, []flows.FlowRun{}, []flows.Contact{contact})
 
 	// and start our flow
 	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil)

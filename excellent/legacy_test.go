@@ -25,8 +25,8 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact.mailto", new: "@contact.urns.mailto"},
 		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.blerg", new: "@contact.fields.blerg"},
-		{old: "@flow.blerg", new: "@results.blerg"},
-		{old: "@step.value", new: "@input.value"},
+		{old: "@flow.blerg", new: "@run.results.blerg"},
+		{old: "@step.value", new: "@input.text"},
 		{old: "@step.contact", new: "@step.contact"},
 		{old: "@date.now", new: "@(now())"},
 		{old: "@date.today", new: "@(today())"},
@@ -37,7 +37,7 @@ func TestTranslate(t *testing.T) {
 		// variables in parens
 		{old: "@(contact.tel)", new: "@(contact.urns.tel)"},
 		{old: "@(contact.blerg)", new: "@(contact.fields.blerg)"},
-		{old: "@(flow.blerg)", new: "@(results.blerg)"},
+		{old: "@(flow.blerg)", new: "@(run.results.blerg)"},
 
 		{old: "@contact", new: "@contact"},
 		{old: "@contact.first_name", new: "@contact.first_name"},
@@ -50,8 +50,8 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact.mailto", new: "@contact.urns.mailto"},
 		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.blerg", new: "@contact.fields.blerg"},
-		{old: "@flow.blerg", new: "@results.blerg"},
-		{old: "@step.value", new: "@input.value"},
+		{old: "@flow.blerg", new: "@run.results.blerg"},
+		{old: "@step.value", new: "@input.text"},
 		{old: "@step.contact", new: "@step.contact"},
 		{old: "@date.now", new: "@(now())"},
 		{old: "@date.today", new: "@(today())"},
@@ -62,7 +62,7 @@ func TestTranslate(t *testing.T) {
 		// variables in parens
 		{old: "@(contact.tel)", new: "@(contact.urns.tel)"},
 		{old: "@(contact.blerg)", new: "@(contact.fields.blerg)"},
-		{old: "@(flow.blerg)", new: "@(results.blerg)"},
+		{old: "@(flow.blerg)", new: "@(run.results.blerg)"},
 
 		// arithmetic
 		{old: "@(1 + 2)", new: "@(1 + 2)"},
@@ -79,19 +79,19 @@ func TestTranslate(t *testing.T) {
 		{old: "@(1 >= 4)", new: "@(1 >= 4)"},
 
 		// functions
-		{old: "@(REMOVE_FIRST_WORD(flow.blerg))", new: "@(remove_first_word(results.blerg))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(results.blerg, 2))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2, 4))", new: "@(word_slice(results.blerg, 2, 4))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2, 4, true))", new: "@(word_slice(results.blerg, 2, 4, true))"},
-		{old: "@(FIELD(flow.blerg, 2, \",\"))", new: "@(field(results.blerg, 2, \",\"))"},
+		{old: "@(REMOVE_FIRST_WORD(flow.blerg))", new: "@(remove_first_word(run.results.blerg))"},
+		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2))"},
+		{old: "@(WORD_SLICE(flow.blerg, 2, 4))", new: "@(word_slice(run.results.blerg, 2, 4))"},
+		{old: "@(WORD_SLICE(flow.blerg, 2, 4, true))", new: "@(word_slice(run.results.blerg, 2, 4, true))"},
+		{old: "@(FIELD(flow.blerg, 2, \",\"))", new: "@(field(run.results.blerg, 2, \",\"))"},
 		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
 		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
 		{old: "@(\"this\" & contact.that)", new: "@(\"this\" & contact.fields.that)"},
-		{old: "@(FIRST_WORD(flow.blerg))", new: "@(split(results.blerg, \" \")[0])"},
-		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(results.blerg, 2))"},
+		{old: "@(FIRST_WORD(flow.blerg))", new: "@(split(run.results.blerg, \" \")[0])"},
+		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2))"},
 		{old: "@(ABS(-5))", new: "@(abs(-5))"},
 		{old: "@(AVERAGE(1, 2, 3, 4, 5))", new: "@(mean(1, 2, 3, 4, 5))"},
-		{old: "@(AND(contact.age > 30, flow.amount < 5))", new: "@(and(contact.fields.age > 30, results.amount < 5))"},
+		{old: "@(AND(contact.age > 30, flow.amount < 5))", new: "@(and(contact.fields.age > 30, run.results.amount < 5))"},
 		{old: "@(DATEVALUE(\"2012-02-03\"))", new: "@(date(\"2012-02-03\"))"},
 		{old: "@(EDATE(\"2012-02-03\", 1))", new: "@(date_add(\"2012-02-03\", \"m\", 1))"},
 		{old: "@(DATEDIF(contact.join_date, date.now, \"M\"))", new: "@(date_diff(contact.fields.join_date, now(), \"M\"))"},
@@ -139,8 +139,8 @@ func TestTranslate(t *testing.T) {
 
 		// math functions
 		{old: "@(ABS(-1))", new: "@(abs(-1))"},
-		{old: "@(MAX(flow.questions, 10))", new: "@(max(results.questions, 10))"},
-		{old: "@(MIN(flow.questions, 10))", new: "@(min(results.questions, 10))"},
+		{old: "@(MAX(flow.questions, 10))", new: "@(max(run.results.questions, 10))"},
+		{old: "@(MIN(flow.questions, 10))", new: "@(min(run.results.questions, 10))"},
 		{old: "@(POWER(2, 3))", new: "@(2 ^ 3)"},
 		{old: "@(RAND())", new: "@(rand())"},
 		{old: "@(RANDBETWEEN(1, 10))", new: "@(rand(1, 10))"},

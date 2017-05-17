@@ -126,6 +126,13 @@ func newRRFromResponse(r *http.Response) (RequestResponse, error) {
 	rr.url = r.Request.URL.String()
 	rr.statusCode = r.StatusCode
 
+	// set our status based on our status code
+	if rr.statusCode/100 == 2 {
+		rr.status = RRSuccess
+	} else {
+		rr.status = RRStatusFailure
+	}
+
 	request, err := httputil.DumpRequestOut(r.Request, true)
 	if err != nil {
 		return &rr, err

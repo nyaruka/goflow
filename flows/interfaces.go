@@ -17,6 +17,7 @@ type FieldUUID UUID
 type ChannelUUID UUID
 type RunUUID UUID
 type StepUUID UUID
+type LabelUUID UUID
 
 type Language string
 
@@ -55,6 +56,8 @@ func (r RunStatus) String() string { return string(r) }
 
 type FlowEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
+	GetRun(RunUUID) (FlowRun, error)
+	GetContact(ContactUUID) (Contact, error)
 	utils.Environment
 }
 
@@ -217,11 +220,10 @@ type FlowRun interface {
 	UUID() RunUUID
 	FlowUUID() FlowUUID
 	Flow() Flow
-	SetFlow(Flow) error
+	Hydrate(FlowEnvironment) error
 
 	ContactUUID() ContactUUID
 	Contact() Contact
-	SetContact(Contact) error
 
 	ChannelUUID() ChannelUUID
 	Channel() Channel
@@ -232,6 +234,7 @@ type FlowRun interface {
 	Environment() FlowEnvironment
 
 	Output() RunOutput
+	SetOutput(RunOutput)
 	ResetOutput()
 
 	Status() RunStatus
@@ -257,8 +260,25 @@ type FlowRun interface {
 	Webhook() utils.RequestResponse
 	SetWebhook(utils.RequestResponse)
 
-	Child() FlowRun
-	Parent() FlowRun
+	Child() FlowRunReference
+	Parent() FlowRunReference
+
+	CreatedOn() time.Time
+	ModifiedOn() time.Time
+	ExpiresOn() *time.Time
+	TimesOutOn() *time.Time
+	ExitedOn() *time.Time
+}
+
+// FlowRunReference represents a flow run reference within a flow
+type FlowRunReference interface {
+	UUID() RunUUID
+	FlowUUID() FlowUUID
+	ContactUUID() ContactUUID
+	ChannelUUID() ChannelUUID
+
+	Results() Results
+	Status() RunStatus
 
 	CreatedOn() time.Time
 	ModifiedOn() time.Time

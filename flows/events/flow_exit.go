@@ -17,8 +17,8 @@ type FlowExitEvent struct {
 	BaseEvent
 }
 
-func NewFlowExitEvent(run flows.FlowRun) *FlowExitEvent {
-	event := FlowExitEvent{Flow: run.Flow().UUID(), Status: run.Status(), Contact: run.Contact().UUID(), ExitedOn: run.ExitedOn()}
+func NewFlowExitEvent(run flows.FlowRunReference) *FlowExitEvent {
+	event := FlowExitEvent{Flow: run.FlowUUID(), Status: run.Status(), Contact: run.ContactUUID(), ExitedOn: run.ExitedOn()}
 	return &event
 }
 

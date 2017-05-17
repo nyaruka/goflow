@@ -1,6 +1,7 @@
 package flow
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -60,4 +61,45 @@ func (c *context) Resolve(key string) interface{} {
 
 func (c *context) Default() interface{} {
 	return c
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+// ReadContext decodes a context from the passed in JSON
+func ReadContext(data json.RawMessage) (flows.Context, error) {
+	context := &context{}
+	err := json.Unmarshal(data, context)
+	if err == nil {
+		err = context.Validate()
+	}
+	return context, err
+}
+
+type contextEnvelope struct {
+	Contact *contact
+	Run     *run
+}
+
+func (c *context) UnmarshalJSON(data []byte) error {
+	var ce contextEnvelope
+	var err error
+
+	err = json.Unmarshal(data, &ce)
+	if err != nil {
+		return err
+	}
+
+	c.contact = ce.Contact
+	c.run = ce.Run
+	return err
+}
+
+func (c *context) MarshalJSON() ([]byte, error) {
+	var ce contextEnvelope
+
+	ce.Contact = c.contact.(*contact)
+	ce.Run = c.run.(*run)
+	return json.Marshal(ce)
 }

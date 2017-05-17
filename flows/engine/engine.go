@@ -30,6 +30,9 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact
 
 // ResumeFlow resumes our flow from the last step
 func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.RunOutput, error) {
+	// to resume a flow, hydrate our run with the environment
+	run.Hydrate(env)
+
 	// no steps to resume from, nothing to do, return
 	if len(run.Path()) == 0 {
 		return run.Output(), nil
@@ -43,7 +46,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	// and the last node
 	node := run.Flow().GetNode(step.Node())
 	if node == nil {
-		err := fmt.Errorf("Cannot resume at node '%s' that no longer exists", step.Node())
+		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.Node())
 		run.AddError(step, err)
 		return run.Output(), err
 	}
@@ -61,7 +64,12 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	// if we ran to completion and have a parent, resume that flow
 	if run.Parent() != nil && run.IsComplete() {
 		event := events.NewFlowExitEvent(run)
-		return ResumeFlow(env, run.Parent(), event)
+		parentRun, err := env.GetRun(run.Parent().UUID())
+		parentRun.SetOutput(run.Output())
+		if err != nil {
+			return run.Output(), err
+		}
+		return ResumeFlow(env, parentRun, event)
 	}
 
 	return run.Output(), nil

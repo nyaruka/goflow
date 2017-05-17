@@ -81,7 +81,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	}
 
 	// start our contact down this flow
-	flowEnv := engine.NewFlowEnvironment(env, runnerFlows)
+	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{}, []flows.Contact{contact})
 	output, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil)
 	if err != nil {
 		return nil, err
@@ -97,6 +97,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		}
 
 		// resume the flow
+		flowEnv = engine.NewFlowEnvironment(env, runnerFlows, output.Runs(), []flows.Contact{contact})
 		output, err = engine.ResumeFlow(flowEnv, activeRun, resumeEvents[i])
 		if err != nil {
 			return nil, err
@@ -174,7 +175,10 @@ func TestFlows(t *testing.T) {
 
 			// check the expected and actual events
 			if len(output.Events()) != len(expectedOutput.Events()) {
-				t.Errorf("Actual events: '%#v' do not match expected '%#v' for flow '%s' and output '%s'", output.Events(), expectedOutput.Events(), test.flow, test.output)
+				eventJSON, _ := json.MarshalIndent(output.Events(), "  ", "  ")
+				expectedJSON, _ := json.MarshalIndent(expectedOutput.Events(), "  ", "  ")
+
+				t.Errorf("Actual events:\n%s\n do not match expected:\n%s\n for flow '%s' and output '%s'", eventJSON, expectedJSON, test.flow, test.output)
 				continue
 			}
 

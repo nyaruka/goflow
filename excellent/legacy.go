@@ -109,6 +109,7 @@ func newVars() vars {
 	contactVars := map[string]interface{}{
 		"first_name":  "first_name",
 		"last_name":   "last_name",
+		"language":    "language",
 		"name":        "name",
 		"tel":         "urns.tel",
 		"tel_e164":    "urns.tel_e164",
@@ -127,10 +128,10 @@ func newVars() vars {
 			vars:    contactVars,
 		},
 		"flow": arbitraryVars{
-			base: "results",
+			base: "run.results",
 		},
 		"step": vars{
-			"value": "input.value",
+			"value": "input.text",
 			"contact": arbitraryVars{
 				base:    "step.contact",
 				nesting: "fields",

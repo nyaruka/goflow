@@ -9,6 +9,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/routers"
+	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/satori/go.uuid"
 )
@@ -23,6 +24,7 @@ type legacyFlowEnvelope struct {
 	Metadata     legacyMetadataEnvelope `json:"metadata"`
 	RuleSets     []legacyRuleSet        `json:"rule_sets"`
 	ActionSets   []legacyActionSet      `json:"action_sets"`
+	Entry        flows.NodeUUID         `json:"entry"`
 }
 
 type legacyMetadataEnvelope struct {
@@ -38,13 +40,14 @@ type legacyRule struct {
 }
 
 type legacyRuleSet struct {
-	Y       int            `json:"y"`
-	X       int            `json:"x"`
-	UUID    flows.NodeUUID `json:"uuid"`
-	Type    string         `json:"ruleset_type"`
-	Label   string         `json:"label"`
-	Operand string         `json:"operand"`
-	Rules   []legacyRule   `json:"rules"`
+	Y       int             `json:"y"`
+	X       int             `json:"x"`
+	UUID    flows.NodeUUID  `json:"uuid"`
+	Type    string          `json:"ruleset_type"`
+	Label   string          `json:"label"`
+	Operand string          `json:"operand"`
+	Rules   []legacyRule    `json:"rules"`
+	Config  json.RawMessage `json:"config"`
 }
 
 type legacyActionSet struct {
@@ -53,6 +56,11 @@ type legacyActionSet struct {
 	Destination flows.NodeUUID `json:"destination"`
 	UUID        flows.NodeUUID `json:"uuid"`
 	Actions     []legacyAction `json:"actions"`
+}
+
+type legacyLabel struct {
+	Name string          `json:"name"`
+	UUID flows.LabelUUID `json:"uuid"`
 }
 
 type legacyGroup struct {
@@ -65,10 +73,10 @@ type legacyAction struct {
 	UUID flows.ActionUUID `json:"uuid"`
 	Name string           `json:"name"`
 
-	// message actions
-	Msg map[flows.Language]string `json:"msg"`
+	// message  and email
+	Msg json.RawMessage `json:"msg"`
 
-	// group actions
+	// groups
 	Groups []legacyGroup `json:"groups"`
 
 	// save actions
@@ -82,6 +90,23 @@ type legacyAction struct {
 	// webhook
 	Action  string `json:"action"`
 	Webhook string `json:"webhook"`
+
+	// add lable action
+	Labels []legacyLabel `json:"labels"`
+
+	// Trigger flow
+	Flow legacyFlowReference `json:"flow"`
+
+	// channel
+	Channel flows.ChannelUUID `json:"channel"`
+
+	//email
+	Emails  []string `json:"emails"`
+	Subject string   `json:"subject"`
+}
+
+type legacyFlowReference struct {
+	UUID flows.FlowUUID `json:"uuid"`
 }
 
 type subflowTest struct {
@@ -102,26 +127,27 @@ type stringTest struct {
 
 type localizations map[flows.Language]flows.Action
 
-// readLegacyFlows reads in legacy formatted flows
-func readLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
+// ReadLegacyFlows reads in legacy formatted flows
+func ReadLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
 	var flows []legacyFlow
 	err := json.Unmarshal(data, &flows)
-	fmt.Println(err)
 	return flows, err
 }
 
 type translationMap map[flows.Language]string
 
-func addTranslationMap(translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
+func addTranslationMap(baseLanguage flows.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
 	for language, translation := range mapped {
 		items := itemTranslations{}
 		expression, _ := excellent.TranslateTemplate(translation)
 		items[key] = expression
-		addTranslation(translations, language, uuid, items)
+		if language != baseLanguage {
+			addTranslation(baseLanguage, translations, language, uuid, items)
+		}
 	}
 }
 
-func addTranslation(translations *flowTranslations, lang flows.Language, uuid flows.UUID, items itemTranslations) {
+func addTranslation(baseLanguage flows.Language, translations *flowTranslations, lang flows.Language, uuid flows.UUID, items itemTranslations) {
 	langTranslations, ok := (*translations)[lang]
 	if !ok {
 		langTranslations = &languageTranslations{}
@@ -131,24 +157,97 @@ func addTranslation(translations *flowTranslations, lang flows.Language, uuid fl
 	(*translations)[lang] = langTranslations
 }
 
-func createAction(lang flows.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) flows.Action {
+var testTranslations = map[string]string{
+	"contains_any": "has_any_word",
+	"not_empty":    "has_text",
+}
+
+func translateTest(test string) string {
+	translated, ok := testTranslations[test]
+	if ok {
+		return translated
+	}
+	return test
+}
+
+func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
 
 	if a.UUID == "" {
 		a.UUID = flows.ActionUUID(uuid.NewV4().String())
 	}
 
 	switch a.Type {
+	case "add_label":
+
+		labels := make([]flows.Label, len(a.Labels))
+		for i := range labels {
+			labels[i] = flows.Label{
+				Name: a.Labels[i].Name,
+				UUID: a.Labels[i].UUID,
+			}
+		}
+
+		return &actions.AddLabelAction{
+			Labels: labels,
+			BaseAction: actions.BaseAction{
+				Uuid: a.UUID,
+			},
+		}, nil
+
+	case "email":
+		var msg string
+		err := json.Unmarshal(a.Msg, &msg)
+		if err != nil {
+			return nil, err
+		}
+
+		return &actions.EmailAction{
+			Subject: a.Subject,
+			Body:    msg,
+			Emails:  a.Emails,
+			BaseAction: actions.BaseAction{
+				Uuid: a.UUID,
+			},
+		}, nil
+
+	case "lang":
+		return &actions.SetLanguageAction{
+			Language: a.Language,
+			BaseAction: actions.BaseAction{
+				Uuid: a.UUID,
+			},
+		}, nil
+	case "channel":
+		return &actions.PreferredChannelAction{
+			Channel: a.Channel,
+			Name:    a.Name,
+			BaseAction: actions.BaseAction{
+				Uuid: a.UUID,
+			},
+		}, nil
 	case "flow":
-		return &actions.FlowAction{}
+		return &actions.FlowAction{
+			Flow: a.Flow.UUID,
+			Name: a.Name,
+			BaseAction: actions.BaseAction{
+				Uuid: a.UUID,
+			},
+		}, nil
 	case "reply":
-		addTranslationMap(translations, a.Msg, flows.UUID(a.UUID), "text")
-		expression, _ := excellent.TranslateTemplate(a.Msg[lang])
+		msg := make(map[flows.Language]string)
+		err := json.Unmarshal(a.Msg, &msg)
+		if err != nil {
+			return nil, err
+		}
+
+		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
+		expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
 		return &actions.MsgAction{
 			Text: expression,
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
-		}
+		}, nil
 	case "add_group":
 		// TODO: list of groups per action?
 		group := a.Groups[0]
@@ -158,7 +257,7 @@ func createAction(lang flows.Language, a legacyAction, fieldMap map[string]flows
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
-		}
+		}, nil
 	case "del_group":
 		// TODO: remove from group action
 		group := a.Groups[0]
@@ -168,7 +267,7 @@ func createAction(lang flows.Language, a legacyAction, fieldMap map[string]flows
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
-		}
+		}, nil
 	case "save":
 		fieldUUID, ok := fieldMap[a.Value]
 		if !ok {
@@ -185,14 +284,14 @@ func createAction(lang flows.Language, a legacyAction, fieldMap map[string]flows
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
-		}
+		}, nil
 	case "set_language":
 		return &actions.SetLanguageAction{
 			Language: a.Language,
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
-		}
+		}, nil
 	case "api":
 		translated, _ := excellent.TranslateTemplate(a.Webhook)
 		return &actions.WebhookAction{
@@ -201,15 +300,14 @@ func createAction(lang flows.Language, a legacyAction, fieldMap map[string]flows
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
-		}
+		}, nil
 	default:
-		fmt.Printf("Couldn't create action for %s\n", a.Type)
-		return nil
+		return nil, fmt.Errorf("couldn't create action for %s", a.Type)
 	}
 }
 
-func createCase(lang flows.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
-	category := r.Category[lang]
+func createCase(baseLanguage flows.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
+	category := r.Category[baseLanguage]
 	testType := r.Test.Type
 	var arguments []string
 	var err error
@@ -230,7 +328,8 @@ func createCase(lang flows.Language, exitMap map[string]flows.Exit, r legacyRule
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			testType = "is_webhook_success"
+			testType = "has_webhook_status"
+			arguments = []string{"S"}
 		} else {
 			return routers.Case{}, fmt.Errorf("No failure test")
 		}
@@ -241,13 +340,18 @@ func createCase(lang flows.Language, exitMap map[string]flows.Exit, r legacyRule
 
 	case "regex":
 		fallthrough
+
 	case "contains_any":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 
+		testType = translateTest(testType)
+
 		// TODO: arguments should be an array
-		addTranslationMap(translations, test.Test, caseUUID, "arguments")
-		arguments = []string{test.Test[lang]}
+		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
+		arguments = []string{test.Test[baseLanguage]}
+	default:
+		testType = translateTest(testType)
 	}
 
 	return routers.Case{
@@ -264,13 +368,13 @@ type categoryName struct {
 	order        int
 }
 
-func parseRules(lang flows.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID) {
+func parseRules(baseLanguage flows.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID) {
 
 	// find our discrete categories
 	categoryMap := make(map[string]categoryName)
 	order := 0
 	for i := range r.Rules {
-		category := r.Rules[i].Category[lang]
+		category := r.Rules[i].Category[baseLanguage]
 		_, ok := categoryMap[category]
 		if !ok {
 			categoryMap[category] = categoryName{
@@ -288,7 +392,7 @@ func parseRules(lang flows.Language, r legacyRuleSet, translations *flowTranslat
 	for k, category := range categoryMap {
 		uuid := flows.ExitUUID(uuid.NewV4().String())
 
-		addTranslationMap(translations, category.translations, flows.UUID(uuid), "label")
+		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(uuid), "label")
 
 		exits[category.order] = &exit{
 			name:        k,
@@ -305,22 +409,22 @@ func parseRules(lang flows.Language, r legacyRuleSet, translations *flowTranslat
 	for i := range r.Rules {
 		if r.Rules[i].Test.Type != "true" {
 
-			c, err := createCase(lang, exitMap, r.Rules[i], translations)
+			c, err := createCase(baseLanguage, exitMap, r.Rules[i], translations)
 			if err == nil {
 				cases = append(cases, c)
 			} else if r.Rules[i].Test.Type == "webhook_status" {
 				// webhook failures don't have a case, instead they are the default
-				defaultExit = exitMap[r.Rules[i].Category[lang]].UUID()
+				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
 			}
 		} else {
-			defaultExit = exitMap[r.Rules[i].Category[lang]].UUID()
+			defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
 		}
 	}
 
 	return exits, cases, defaultExit
 }
 
-func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTranslations) *node {
+func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
 	node := &node{}
 	node.uuid = r.UUID
 
@@ -335,25 +439,64 @@ func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTran
 			Cases:   cases,
 		}
 
+		config := make(map[string]map[string]string)
+		err := json.Unmarshal(r.Config, &config)
+		if err != nil {
+			return nil, err
+		}
+
+		flowUUID := flows.FlowUUID(config["flow"]["uuid"])
+		flowName := config["flow"]["name"]
+
+		node.actions = []flows.Action{
+			&actions.FlowAction{
+				Flow: flowUUID,
+				Name: flowName,
+			},
+		}
+
+		node.wait = &waits.FlowWait{
+			Flow: flowUUID,
+		}
+
 	case "webhook":
+		config := make(map[string]string)
+		err := json.Unmarshal(r.Config, &config)
+		if err != nil {
+			return nil, err
+		}
+
+		node.actions = []flows.Action{
+			&actions.WebhookAction{
+				URL:    config["webhook"],
+				Method: config["webhook_action"],
+			},
+		}
+
 		// subflow rulesets operate on the child flow status
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
 			Operand: "@webhook",
 			Cases:   cases,
 		}
+
 	case "flow_field":
 		fallthrough
 	case "form_field":
+		fallthrough
+	case "wait_message":
+
+		// TODO: add in timeout
+		node.wait = &waits.MsgWait{}
+
 		fallthrough
 	case "group":
 		fallthrough
 	case "contact_field":
 		fallthrough
-	case "wait_message":
-		fallthrough
 	case "expression":
 		operand, _ := excellent.TranslateTemplate(r.Operand)
+		fmt.Println(operand)
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
 			Operand: operand,
@@ -370,7 +513,7 @@ func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTran
 
 	node.exits = exits
 
-	return node
+	return node, nil
 }
 
 func createActionNode(lang flows.Language, a legacyActionSet, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) *node {
@@ -379,8 +522,12 @@ func createActionNode(lang flows.Language, a legacyActionSet, fieldMap map[strin
 	node.uuid = a.UUID
 	node.actions = make([]flows.Action, len(a.Actions))
 	for i := range a.Actions {
-		action := createAction(lang, a.Actions[i], fieldMap, translations)
-		node.actions[i] = action
+		action, err := createAction(lang, a.Actions[i], fieldMap, translations)
+		if err == nil {
+			node.actions[i] = action
+		} else {
+			fmt.Println(err)
+		}
 	}
 
 	node.exits = make([]flows.Exit, 1)
@@ -416,7 +563,16 @@ func (f *legacyFlow) UnmarshalJSON(data []byte) error {
 	}
 
 	for i := range envelope.RuleSets {
-		f.nodes[len(envelope.ActionSets)+i] = createRuleNode(f.language, envelope.RuleSets[i], translations)
+		f.nodes[len(envelope.ActionSets)+i], err = createRuleNode(f.language, envelope.RuleSets[i], translations)
+	}
+
+	// make sure our entry node is first
+	for i := range f.nodes {
+		if f.nodes[i].UUID() == envelope.Entry {
+			firstNode := f.nodes[0]
+			f.nodes[0] = f.nodes[i]
+			f.nodes[i] = firstNode
+		}
 	}
 
 	f.translations = translations

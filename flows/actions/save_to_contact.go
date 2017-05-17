@@ -25,6 +25,7 @@ func (a *SaveToContactAction) Validate() error {
 func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// get our localized value if any
 	template := run.GetText(flows.UUID(a.Uuid), "value", a.Value)
+
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 
 	// if we received an error, log it
