@@ -136,8 +136,8 @@ type Event interface {
 	CreatedOn() *time.Time
 	SetCreatedOn(time.Time)
 
-	Run() RunUUID
-	SetRun(RunUUID)
+	Step() StepUUID
+	SetStep(StepUUID)
 
 	utils.Typed
 }
@@ -145,6 +145,7 @@ type Event interface {
 type Step interface {
 	utils.VariableResolver
 
+	UUID() StepUUID
 	Node() NodeUUID
 	Exit() ExitUUID
 
