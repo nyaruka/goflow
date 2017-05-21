@@ -10,9 +10,10 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/flow"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -65,7 +66,7 @@ func handleMigrate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	flows, err := flow.ReadLegacyFlows(migrate.Flows)
+	flows, err := definition.ReadLegacyFlows(migrate.Flows)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -105,19 +106,19 @@ func handleStart(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// read our flows
-	startFlows, err := flow.ReadFlows(start.Flows)
+	startFlows, err := definition.ReadFlows(start.Flows)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
 	}
 
 	// read our contact
-	contact, err := flow.ReadContact(start.Contact)
+	contact, err := flows.ReadContact(start.Contact)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing contact: %s", err))
 	}
 
 	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []flows.Contact{contact})
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
 	output, err := engine.StartFlow(env, startFlows[0], contact, nil)
@@ -161,21 +162,21 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// read our flows
-	flowList, err := flow.ReadFlows(resume.Flows)
+	flowList, err := definition.ReadFlows(resume.Flows)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
 		return
 	}
 
 	// read our run
-	runOutput, err := flow.ReadRunOutput(resume.RunOutput)
+	runOutput, err := runs.ReadRunOutput(resume.RunOutput)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing run output: %s", err))
 		return
 	}
 
 	// our contact
-	contact, err := flow.ReadContact(resume.Contact)
+	contact, err := flows.ReadContact(resume.Contact)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing run contact: %s", err))
 		return
@@ -189,7 +190,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, runOutput.Runs(), []flows.Contact{contact})
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, runOutput.Runs(), []*flows.Contact{contact})
 
 	// hydrate all our runs
 	for _, run := range runOutput.Runs() {
@@ -250,7 +251,7 @@ func handleExpression(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// build up our context
-	context, err := flow.ReadContext(expression.Context)
+	context, err := runs.ReadContext(expression.Context)
 	if err != nil {
 		writeError(w, err)
 		return

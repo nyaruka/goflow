@@ -1,10 +1,11 @@
-package flow
+package definition
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/runs"
 )
 
 type flow struct {
@@ -26,8 +27,8 @@ func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Translations() flows.FlowTranslations   { return f.translations }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
-func (f *flow) CreateRun(env flows.FlowEnvironment, contact flows.Contact, parent flows.FlowRun) flows.FlowRun {
-	return newRun(env, f, contact, parent)
+func (f *flow) CreateRun(env flows.FlowEnvironment, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
+	return runs.NewRun(env, f, contact, parent)
 }
 
 // Validates that structurally we are sane. IE, all required fields are present and

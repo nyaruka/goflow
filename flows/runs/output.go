@@ -1,4 +1,4 @@
-package flow
+package runs
 
 import (
 	"encoding/json"
@@ -63,7 +63,7 @@ func ReadRunOutput(data json.RawMessage) (flows.RunOutput, error) {
 }
 
 type outputEnvelope struct {
-	Runs   []*run                 `json:"runs"`
+	Runs   []*flowRun             `json:"runs"`
 	Events []*utils.TypedEnvelope `json:"events"`
 }
 
@@ -103,9 +103,9 @@ func (o *runOutput) MarshalJSON() ([]byte, error) {
 		oe.Events[i] = &utils.TypedEnvelope{Type: event.Type(), Data: eventData}
 	}
 
-	oe.Runs = make([]*run, len(o.runs))
+	oe.Runs = make([]*flowRun, len(o.runs))
 	for i := range o.runs {
-		oe.Runs[i] = o.runs[i].(*run)
+		oe.Runs[i] = o.runs[i].(*flowRun)
 	}
 
 	return json.Marshal(oe)

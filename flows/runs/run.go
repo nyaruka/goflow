@@ -1,4 +1,4 @@
-package flow
+package runs
 
 import (
 	"encoding/json"
@@ -13,16 +13,16 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type run struct {
+type flowRun struct {
 	uuid flows.RunUUID
 
-	contact     flows.Contact
+	contact     *flows.Contact
 	contactUUID flows.ContactUUID
 
 	flow     flows.Flow
 	flowUUID flows.FlowUUID
 
-	channel     flows.Channel
+	channel     *flows.Channel
 	channelUUID flows.ChannelUUID
 
 	results results
@@ -51,12 +51,12 @@ type run struct {
 	exitedOn   *time.Time
 }
 
-func (r *run) UUID() flows.RunUUID            { return r.uuid }
-func (r *run) ContactUUID() flows.ContactUUID { return r.contactUUID }
-func (r *run) Contact() flows.Contact         { return r.contact }
+func (r *flowRun) UUID() flows.RunUUID            { return r.uuid }
+func (r *flowRun) ContactUUID() flows.ContactUUID { return r.contactUUID }
+func (r *flowRun) Contact() *flows.Contact        { return r.contact }
 
 // Hydrate prepares a deserialized run for executions
-func (r *run) Hydrate(env flows.FlowEnvironment) error {
+func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	// start with a fresh output if we don't have one
 	if r.output == nil {
 		r.ResetOutput()
@@ -88,7 +88,7 @@ func (r *run) Hydrate(env flows.FlowEnvironment) error {
 		if err != nil {
 			return err
 		}
-		r.parent = newReferenceFromRun(parent.(*run))
+		r.parent = newReferenceFromRun(parent.(*flowRun))
 	}
 
 	if r.child != nil {
@@ -96,59 +96,59 @@ func (r *run) Hydrate(env flows.FlowEnvironment) error {
 		if err != nil {
 			return err
 		}
-		r.child = newReferenceFromRun(child.(*run))
+		r.child = newReferenceFromRun(child.(*flowRun))
 	}
 
 	return nil
 }
 
-func (r *run) FlowUUID() flows.FlowUUID       { return r.flowUUID }
-func (r *run) Flow() flows.Flow               { return r.flow }
-func (r *run) ChannelUUID() flows.ChannelUUID { return r.channelUUID }
-func (r *run) Channel() flows.Channel         { return r.channel }
-func (r *run) SetChannel(channel flows.Channel) {
+func (r *flowRun) FlowUUID() flows.FlowUUID       { return r.flowUUID }
+func (r *flowRun) Flow() flows.Flow               { return r.flow }
+func (r *flowRun) ChannelUUID() flows.ChannelUUID { return r.channelUUID }
+func (r *flowRun) Channel() *flows.Channel        { return r.channel }
+func (r *flowRun) SetChannel(channel *flows.Channel) {
 	r.channelUUID = channel.UUID()
 	r.channel = channel
 }
 
-func (r *run) Context() flows.Context             { return r.context }
-func (r *run) Environment() flows.FlowEnvironment { return r.environment }
-func (r *run) Results() flows.Results             { return r.results }
+func (r *flowRun) Context() flows.Context             { return r.context }
+func (r *flowRun) Environment() flows.FlowEnvironment { return r.environment }
+func (r *flowRun) Results() flows.Results             { return r.results }
 
-func (r *run) Output() flows.RunOutput { return r.output }
-func (r *run) SetOutput(output flows.RunOutput) {
+func (r *flowRun) Output() flows.RunOutput { return r.output }
+func (r *flowRun) SetOutput(output flows.RunOutput) {
 	r.output = output
 	r.output.AddRun(r)
 }
-func (r *run) ResetOutput() {
+func (r *flowRun) ResetOutput() {
 	r.SetOutput(newRunOutput())
 }
 
-func (r *run) IsComplete() bool {
+func (r *flowRun) IsComplete() bool {
 	return r.status != flows.RunActive
 }
-func (r *run) setStatus(status flows.RunStatus) {
+func (r *flowRun) setStatus(status flows.RunStatus) {
 	now := time.Now()
 	r.status = status
 	r.exitedOn = &now
 	r.setModifiedOn(now)
 }
-func (r *run) Exit(status flows.RunStatus) { r.setStatus(status) }
-func (r *run) Status() flows.RunStatus     { return r.status }
+func (r *flowRun) Exit(status flows.RunStatus) { r.setStatus(status) }
+func (r *flowRun) Status() flows.RunStatus     { return r.status }
 
-func (r *run) Parent() flows.FlowRunReference { return r.parent }
-func (r *run) Child() flows.FlowRunReference  { return r.child }
+func (r *flowRun) Parent() flows.FlowRunReference { return r.parent }
+func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
 
-func (r *run) Wait() flows.Wait        { return r.wait }
-func (r *run) SetWait(wait flows.Wait) { r.wait = wait }
+func (r *flowRun) Wait() flows.Wait        { return r.wait }
+func (r *flowRun) SetWait(wait flows.Wait) { r.wait = wait }
 
-func (r *run) Input() flows.Input         { return r.input }
-func (r *run) SetInput(input flows.Input) { r.input = input }
+func (r *flowRun) Input() flows.Input         { return r.input }
+func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *run) SetEvent(event flows.Event) { r.event = event }
-func (r *run) Event() flows.Event         { return r.event }
+func (r *flowRun) SetEvent(event flows.Event) { r.event = event }
+func (r *flowRun) Event() flows.Event         { return r.event }
 
-func (r *run) AddEvent(s flows.Step, e flows.Event) {
+func (r *flowRun) AddEvent(s flows.Step, e flows.Event) {
 	now := time.Now()
 
 	e.SetCreatedOn(now)
@@ -161,51 +161,51 @@ func (r *run) AddEvent(s flows.Step, e flows.Event) {
 	r.setModifiedOn(now)
 }
 
-func (r *run) AddError(step flows.Step, err error) {
+func (r *flowRun) AddError(step flows.Step, err error) {
 	r.AddEvent(step, &events.ErrorEvent{Text: err.Error()})
 }
 
-func (r *run) Path() []flows.Step { return r.path }
-func (r *run) CreateStep(node flows.Node) flows.Step {
+func (r *flowRun) Path() []flows.Step { return r.path }
+func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := time.Now()
 	step := &step{uuid: flows.StepUUID(uuid.NewV4().String()), node: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	r.setModifiedOn(now)
 	return step
 }
-func (r *run) ClearPath() {
+func (r *flowRun) ClearPath() {
 	r.path = nil
 }
 
-func (r *run) Webhook() utils.RequestResponse { return r.webhook }
-func (r *run) SetWebhook(rr utils.RequestResponse) {
+func (r *flowRun) Webhook() utils.RequestResponse { return r.webhook }
+func (r *flowRun) SetWebhook(rr utils.RequestResponse) {
 	r.webhook = rr
 	r.setModifiedOn(time.Now())
 }
 
-func (r *run) CreatedOn() time.Time        { return r.createdOn }
-func (r *run) ModifiedOn() time.Time       { return r.modifiedOn }
-func (r *run) setModifiedOn(now time.Time) { r.modifiedOn = now }
-func (r *run) ExpiresOn() *time.Time       { return r.expiresOn }
-func (r *run) TimesOutOn() *time.Time      { return r.timesOutOn }
-func (r *run) ExitedOn() *time.Time        { return r.exitedOn }
+func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }
+func (r *flowRun) ModifiedOn() time.Time       { return r.modifiedOn }
+func (r *flowRun) setModifiedOn(now time.Time) { r.modifiedOn = now }
+func (r *flowRun) ExpiresOn() *time.Time       { return r.expiresOn }
+func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
+func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 
-func (r *run) updateTranslations() {
+func (r *flowRun) updateTranslations() {
 	if r.flowTranslations != nil {
 		r.translations = r.flowTranslations.GetTranslations(r.language)
 	} else {
 		r.translations = nil
 	}
 }
-func (r *run) SetFlowTranslations(ft flows.FlowTranslations) {
+func (r *flowRun) SetFlowTranslations(ft flows.FlowTranslations) {
 	r.flowTranslations = ft
 	r.updateTranslations()
 }
-func (r *run) SetLanguage(lang flows.Language) {
+func (r *flowRun) SetLanguage(lang flows.Language) {
 	r.language = lang
 	r.updateTranslations()
 }
-func (r *run) GetText(uuid flows.UUID, key string, backdown string) string {
+func (r *flowRun) GetText(uuid flows.UUID, key string, backdown string) string {
 	if r.translations == nil {
 		return backdown
 	}
@@ -213,10 +213,10 @@ func (r *run) GetText(uuid flows.UUID, key string, backdown string) string {
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
-func newRun(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, parent flows.FlowRun) flows.FlowRun {
+func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
 	now := time.Now()
 
-	r := &run{
+	r := &flowRun{
 		uuid:        flows.RunUUID(uuid.NewV4().String()),
 		flowUUID:    flow.UUID(),
 		contactUUID: contact.UUID(),
@@ -234,7 +234,7 @@ func newRun(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, p
 
 	// set our output
 	if parent != nil {
-		parentRun := parent.(*run)
+		parentRun := parent.(*flowRun)
 		r.parent = newReferenceFromRun(parentRun)
 		parentRun.child = newReferenceFromRun(r)
 
@@ -247,7 +247,7 @@ func newRun(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, p
 	return r
 }
 
-func (r *run) Resolve(key string) interface{} {
+func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
 
 	case "channel":
@@ -276,7 +276,7 @@ func (r *run) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on run", key)
 }
 
-func (r *run) Default() interface{} {
+func (r *flowRun) Default() interface{} {
 	return r
 }
 
@@ -284,7 +284,7 @@ func (r *run) Default() interface{} {
 // this is what is written and what will be read (and needed) when resuming that run
 type runReference struct {
 	uuid flows.RunUUID
-	run  *run
+	run  *flowRun
 }
 
 // Resolve provides a more limited set of results for parent and child references
@@ -335,7 +335,7 @@ func (r *runReference) ExitedOn() *time.Time   { return r.run.exitedOn }
 func (r *runReference) ExpiresOn() *time.Time  { return r.run.expiresOn }
 func (r *runReference) TimesOutOn() *time.Time { return r.run.timesOutOn }
 
-func newReferenceFromRun(r *run) *runReference {
+func newReferenceFromRun(r *flowRun) *runReference {
 	return &runReference{
 		uuid: r.UUID(),
 		run:  r,
@@ -348,7 +348,7 @@ func newReferenceFromRun(r *run) *runReference {
 
 // ReadRun decodes a run from the passed in JSON
 func ReadRun(data json.RawMessage) (flows.FlowRun, error) {
-	run := &run{}
+	run := &flowRun{}
 	err := json.Unmarshal(data, run)
 	if err == nil {
 		// err = run.Validate()
@@ -382,7 +382,7 @@ type runEnvelope struct {
 	ExitedOn   *time.Time `json:"exited_on"`
 }
 
-func (r *run) UnmarshalJSON(data []byte) error {
+func (r *flowRun) UnmarshalJSON(data []byte) error {
 	var envelope runEnvelope
 	var err error
 
@@ -447,7 +447,7 @@ func (r *run) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-func (r *run) MarshalJSON() ([]byte, error) {
+func (r *flowRun) MarshalJSON() ([]byte, error) {
 	var re runEnvelope
 	var err error
 

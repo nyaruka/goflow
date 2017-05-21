@@ -11,23 +11,8 @@ import (
 func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	switch envelope.Type {
 
-	case MSG:
-		action := MsgAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, envelope.TraceError(err)
-
 	case ADD_LABEL:
 		action := AddLabelAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, envelope.TraceError(err)
-
-	case EMAIL:
-		action := EmailAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, envelope.TraceError(err)
-
-	case SET_PREFERRED_CHANNEL:
-		action := PreferredChannelAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
@@ -36,8 +21,23 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
+	case EMAIL:
+		action := EmailAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
 	case FLOW:
 		action := FlowAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
+	case MSG:
+		action := MsgAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
+	case REMOVE_FROM_GROUP:
+		action := RemoveFromGroupAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
@@ -53,6 +53,11 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 
 	case SET_LANGUAGE:
 		action := SetLanguageAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
+	case SET_PREFERRED_CHANNEL:
+		action := PreferredChannelAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 

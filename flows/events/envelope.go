@@ -16,6 +16,11 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
+	case ERROR:
+		event := ErrorEvent{}
+		err := json.Unmarshal(envelope.Data, &event)
+		return &event, envelope.TraceError(err)
+
 	case FLOW_ENTER:
 		event := FlowEnterEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
@@ -41,6 +46,16 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
+	case MSG_WAIT:
+		event := MsgWaitEvent{}
+		err := json.Unmarshal(envelope.Data, &event)
+		return &event, envelope.TraceError(err)
+
+	case REMOVE_FROM_GROUP:
+		event := RemoveFromGroupEvent{}
+		err := json.Unmarshal(envelope.Data, &event)
+		return &event, envelope.TraceError(err)
+
 	case SAVE_RESULT:
 		event := SaveResultEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
@@ -53,16 +68,6 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 
 	case SET_LANGUAGE:
 		event := SetLanguageEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, envelope.TraceError(err)
-
-	case MSG_WAIT:
-		event := MsgWaitEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, envelope.TraceError(err)
-
-	case ERROR:
-		event := ErrorEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 

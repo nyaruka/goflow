@@ -10,9 +10,10 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/flow"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -57,7 +58,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	if err != nil {
 		return nil, err
 	}
-	runnerFlows, err := flow.ReadFlows(json.RawMessage(flowJSON))
+	runnerFlows, err := definition.ReadFlows(json.RawMessage(flowJSON))
 	if err != nil {
 		return nil, fmt.Errorf("Error unmarshalling flows '%s': %s", flowFilename, err)
 	}
@@ -66,7 +67,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	if err != nil {
 		return nil, err
 	}
-	contact, err := flow.ReadContact(json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(json.RawMessage(contactJSON))
 	if err != nil {
 		return nil, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
 	}
@@ -75,13 +76,13 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	if err != nil {
 		return nil, err
 	}
-	_, err = flow.ReadChannel(json.RawMessage(channelJSON))
+	_, err = flows.ReadChannel(json.RawMessage(channelJSON))
 	if err != nil {
 		return nil, fmt.Errorf("Error unmarshalling channel '%s': %s", channelFilename, err)
 	}
 
 	// start our contact down this flow
-	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{}, []flows.Contact{contact})
+	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 	output, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil)
 	if err != nil {
 		return nil, err
@@ -97,11 +98,11 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		}
 		outputs = append(outputs, outJSON)
 
-		output, err = flow.ReadRunOutput(outJSON)
+		output, err = runs.ReadRunOutput(outJSON)
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		flowEnv = engine.NewFlowEnvironment(env, runnerFlows, output.Runs(), []flows.Contact{contact})
+		flowEnv = engine.NewFlowEnvironment(env, runnerFlows, output.Runs(), []*flows.Contact{contact})
 
 		// hydrate our runs so we can call ActiveRun
 		for _, r := range output.Runs() {
@@ -193,11 +194,11 @@ func TestFlows(t *testing.T) {
 			}
 
 			for i := range outputs {
-				o, err := flow.ReadRunOutput(outputs[i])
+				o, err := runs.ReadRunOutput(outputs[i])
 				if err != nil {
 					t.Errorf("Error unmarshalling output: %s\n", err)
 				}
-				expectedO, err := flow.ReadRunOutput(flowTest.Outputs[i])
+				expectedO, err := runs.ReadRunOutput(flowTest.Outputs[i])
 				if err != nil {
 					t.Errorf("Error unmarshalling output: %s\n", err)
 				}

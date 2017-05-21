@@ -5,13 +5,24 @@ import (
 )
 
 type Label struct {
-	UUID LabelUUID
-	Name string
+	uuid LabelUUID
+	name string
+}
+
+// UUID returns the UUID of this label
+func (l *Label) UUID() LabelUUID { return l.uuid }
+
+// Name returns the name of this label
+func (l *Label) Name() string { return l.name }
+
+// NewLabel creates a new label given the passed in uuid and name
+func NewLabel(uuid LabelUUID, name string) *Label {
+	return &Label{uuid, name}
 }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
-//-------n-----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 
 type labelEnvelope struct {
 	UUID LabelUUID `json:"uuid"`
@@ -23,8 +34,8 @@ func (l *Label) UnmarshalJSON(data []byte) error {
 	var err error
 
 	err = json.Unmarshal(data, &le)
-	l.UUID = le.UUID
-	l.Name = le.Name
+	l.uuid = le.UUID
+	l.name = le.Name
 
 	return err
 }
@@ -32,8 +43,8 @@ func (l *Label) UnmarshalJSON(data []byte) error {
 func (l *Label) MarshalJSON() ([]byte, error) {
 	var le labelEnvelope
 
-	le.Name = l.Name
-	le.UUID = l.UUID
+	le.Name = l.name
+	le.UUID = l.uuid
 
 	return json.Marshal(le)
 }

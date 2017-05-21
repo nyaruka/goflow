@@ -12,7 +12,7 @@ type VisitedMap map[flows.NodeUUID]bool
 const noDestination = flows.NodeUUID("")
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact flows.Contact, parent flows.FlowRun) (flows.RunOutput, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) (flows.RunOutput, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 

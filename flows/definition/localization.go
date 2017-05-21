@@ -1,4 +1,4 @@
-package flow
+package definition
 
 import (
 	"github.com/nyaruka/goflow/flows"

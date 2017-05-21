@@ -1,4 +1,4 @@
-package flow
+package runs
 
 import (
 	"encoding/json"
@@ -49,7 +49,11 @@ func (s *step) Resolve(key string) interface{} {
 }
 
 func (s *step) Default() interface{} {
-	return s.Node
+	return s
+}
+
+func (s *step) String() string {
+	return string(s.node)
 }
 
 func (s *step) Leave(exit flows.ExitUUID) {

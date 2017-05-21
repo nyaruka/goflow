@@ -32,7 +32,7 @@ type Flow interface {
 
 	Validate() error
 
-	CreateRun(env FlowEnvironment, contact Contact, parent FlowRun) FlowRun
+	CreateRun(env FlowEnvironment, contact *Contact, parent FlowRun) FlowRun
 }
 
 // RunStatus represents the current status of the flow run
@@ -57,7 +57,7 @@ func (r RunStatus) String() string { return string(r) }
 type FlowEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetRun(RunUUID) (FlowRun, error)
-	GetContact(ContactUUID) (Contact, error)
+	GetContact(ContactUUID) (*Contact, error)
 	utils.Environment
 }
 
@@ -123,7 +123,7 @@ type Translations interface {
 
 type Context interface {
 	utils.VariableResolver
-	Contact() Contact
+	Contact() *Contact
 	Run() FlowRun
 }
 
@@ -157,53 +157,12 @@ type Step interface {
 	Events() []Event
 }
 
-type Contact interface {
-	utils.VariableResolver
-
-	UUID() ContactUUID
-
-	Name() string
-	SetName(string)
-
-	Language() Language
-	SetLanguage(Language)
-
-	Groups() GroupList
-	AddGroup(uuid GroupUUID, name string)
-	RemoveGroup(uuid GroupUUID) bool
-
-	Fields() Fields
-
-	URNs() URNList
-}
-
-type Group interface {
-	utils.VariableResolver
-
-	UUID() GroupUUID
-	Name() string
-}
-
-type GroupList interface {
-	FindGroup(GroupUUID) Group
-	utils.VariableResolver
-}
-
 type Results interface {
 	Save(node NodeUUID, name string, value string, category string, createdOn time.Time)
 	utils.VariableResolver
 }
 
 type Result interface {
-	utils.VariableResolver
-}
-
-type Fields interface {
-	Save(uuid FieldUUID, name string, value string, createdOn time.Time)
-	utils.VariableResolver
-}
-
-type Field interface {
 	utils.VariableResolver
 }
 
@@ -227,11 +186,11 @@ type FlowRun interface {
 	Hydrate(FlowEnvironment) error
 
 	ContactUUID() ContactUUID
-	Contact() Contact
+	Contact() *Contact
 
 	ChannelUUID() ChannelUUID
-	Channel() Channel
-	SetChannel(Channel)
+	Channel() *Channel
+	SetChannel(*Channel)
 
 	Context() Context
 	Results() Results
@@ -295,9 +254,3 @@ type FlowRunReference interface {
 type ChannelType string
 
 func (ct ChannelType) String() string { return string(ct) }
-
-type Channel interface {
-	UUID() ChannelUUID
-	Name() string
-	Type() ChannelType
-}

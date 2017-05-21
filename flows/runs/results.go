@@ -1,4 +1,4 @@
-package flow
+package runs
 
 import (
 	"encoding/json"

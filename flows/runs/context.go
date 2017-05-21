@@ -1,4 +1,4 @@
-package flow
+package runs
 
 import (
 	"encoding/json"
@@ -8,19 +8,19 @@ import (
 )
 
 // NewContextForContact creates a new context for the passed in contact
-func NewContextForContact(contact flows.Contact, run flows.FlowRun) flows.Context {
+func NewContextForContact(contact *flows.Contact, run flows.FlowRun) flows.Context {
 	context := context{contact: contact, run: run}
 	return &context
 }
 
 type context struct {
-	contact flows.Contact
+	contact *flows.Contact
 	run     flows.FlowRun
 }
 
 func (c *context) Run() flows.FlowRun { return c.run }
 
-func (c *context) Contact() flows.Contact { return c.contact }
+func (c *context) Contact() *flows.Contact { return c.contact }
 
 func (c *context) Validate() error {
 	// TODO: do some validation here
@@ -78,8 +78,8 @@ func ReadContext(data json.RawMessage) (flows.Context, error) {
 }
 
 type contextEnvelope struct {
-	Contact *contact
-	Run     *run
+	Contact *flows.Contact
+	Run     *flowRun
 }
 
 func (c *context) UnmarshalJSON(data []byte) error {
@@ -99,7 +99,7 @@ func (c *context) UnmarshalJSON(data []byte) error {
 func (c *context) MarshalJSON() ([]byte, error) {
 	var ce contextEnvelope
 
-	ce.Contact = c.contact.(*contact)
-	ce.Run = c.run.(*run)
+	ce.Contact = c.contact
+	ce.Run = c.run.(*flowRun)
 	return json.Marshal(ce)
 }

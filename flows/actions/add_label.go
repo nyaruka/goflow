@@ -9,7 +9,7 @@ const ADD_LABEL string = "add_label"
 
 type AddLabelAction struct {
 	BaseAction
-	Labels []flows.Label `json:"labels"`
+	Labels []*flows.Label `json:"labels"`
 }
 
 func (a *AddLabelAction) Type() string { return ADD_LABEL }

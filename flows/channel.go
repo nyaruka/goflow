@@ -1,24 +1,22 @@
-package flow
+package flows
 
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/nyaruka/goflow/flows"
 )
 
-type channel struct {
-	uuid        flows.ChannelUUID
+type Channel struct {
+	uuid        ChannelUUID
 	name        string
-	channelType flows.ChannelType
+	channelType ChannelType
 	config      string
 }
 
-func (c *channel) UUID() flows.ChannelUUID { return c.uuid }
-func (c *channel) Name() string            { return c.name }
-func (c *channel) Type() flows.ChannelType { return c.channelType }
+func (c *Channel) UUID() ChannelUUID { return c.uuid }
+func (c *Channel) Name() string      { return c.name }
+func (c *Channel) Type() ChannelType { return c.channelType }
 
-func (c *channel) Resolve(key string) interface{} {
+func (c *Channel) Resolve(key string) interface{} {
 	switch key {
 
 	case "name":
@@ -34,11 +32,11 @@ func (c *channel) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on channel", key)
 }
 
-func (c *channel) Default() interface{} {
+func (c *Channel) Default() interface{} {
 	return c
 }
 
-func (c *channel) String() interface{} {
+func (c *Channel) String() interface{} {
 	return c.name
 }
 
@@ -47,8 +45,8 @@ func (c *channel) String() interface{} {
 //------------------------------------------------------------------------------------------
 
 // ReadChannel decodes a channel from the passed in JSON
-func ReadChannel(data json.RawMessage) (flows.Channel, error) {
-	channel := &channel{}
+func ReadChannel(data json.RawMessage) (*Channel, error) {
+	channel := &Channel{}
 	err := json.Unmarshal(data, channel)
 	if err == nil {
 		// err = run.Validate()
@@ -57,12 +55,12 @@ func ReadChannel(data json.RawMessage) (flows.Channel, error) {
 }
 
 type channelEnvelope struct {
-	UUID        flows.ChannelUUID `json:"uuid"`
-	Name        string            `json:"name"`
-	ChannelType flows.ChannelType `json:"type"`
+	UUID        ChannelUUID `json:"uuid"`
+	Name        string      `json:"name"`
+	ChannelType ChannelType `json:"type"`
 }
 
-func (c *channel) UnmarshalJSON(data []byte) error {
+func (c *Channel) UnmarshalJSON(data []byte) error {
 	var ce channelEnvelope
 	var err error
 
@@ -78,7 +76,7 @@ func (c *channel) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *channel) MarshalJSON() ([]byte, error) {
+func (c *Channel) MarshalJSON() ([]byte, error) {
 	var ce channelEnvelope
 
 	ce.Name = c.name

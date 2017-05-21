@@ -13,9 +13,10 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/flow"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -124,7 +125,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading flow file: ", err)
 	}
-	runnerFlows, err := flow.ReadFlows(json.RawMessage(flowJSON))
+	runnerFlows, err := definition.ReadFlows(json.RawMessage(flowJSON))
 	if err != nil {
 		log.Fatal("Error reading flows: ", err)
 	}
@@ -133,7 +134,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading contact file: ", err)
 	}
-	contact, err := flow.ReadContact(json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(json.RawMessage(contactJSON))
 	if err != nil {
 		log.Fatal("Error unmarshalling contact: ", err)
 	}
@@ -142,13 +143,13 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading channel file: ", err)
 	}
-	_, err = flow.ReadChannel(json.RawMessage(channelJSON))
+	_, err = flows.ReadChannel(json.RawMessage(channelJSON))
 	if err != nil {
 		log.Fatal("Error unmarshalling channel: ", err)
 	}
 
 	// create our flow environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, []flows.FlowRun{}, []flows.Contact{contact})
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// and start our flow
 	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil)
@@ -185,11 +186,11 @@ func main() {
 		inputs = append(inputs, event)
 
 		// rebuild our output
-		output, err = flow.ReadRunOutput(outJSON)
+		output, err = runs.ReadRunOutput(outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
-		env = engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, output.Runs(), []flows.Contact{contact})
+		env = engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, output.Runs(), []*flows.Contact{contact})
 
 		for _, run := range output.Runs() {
 			err = run.Hydrate(env)

@@ -1,28 +1,26 @@
-package flow
+package flows
 
 import (
 	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
-
-	"github.com/nyaruka/goflow/flows"
 )
 
-type field struct {
-	field     flows.FieldUUID
+type Field struct {
+	field     FieldUUID
 	name      string
 	value     string
 	createdOn time.Time
 }
 
-type fields map[string]*field
+type Fields map[string]*Field
 
-func newFields() fields {
-	return make(fields)
+func newFields() Fields {
+	return make(Fields)
 }
 
-func (f fields) Resolve(key string) interface{} {
+func (f Fields) Resolve(key string) interface{} {
 	field, ok := f[key]
 	if !ok {
 		return nil
@@ -31,16 +29,16 @@ func (f fields) Resolve(key string) interface{} {
 	return field
 }
 
-func (f fields) Default() interface{} {
+func (f Fields) Default() interface{} {
 	return f
 }
 
-func (f fields) Save(uuid flows.FieldUUID, name string, value string, createdOn time.Time) {
-	field := field{uuid, name, value, createdOn}
+func (f Fields) Save(uuid FieldUUID, name string, value string, createdOn time.Time) {
+	field := Field{uuid, name, value, createdOn}
 	f[strings.ToLower(name)] = &field
 }
 
-func (f *field) Resolve(key string) interface{} {
+func (f *Field) Resolve(key string) interface{} {
 	switch key {
 
 	case "field":
@@ -60,7 +58,7 @@ func (f *field) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on contact field", key)
 }
 
-func (f *field) Default() interface{} {
+func (f *Field) Default() interface{} {
 	return f.value
 }
 
@@ -69,13 +67,13 @@ func (f *field) Default() interface{} {
 //------------------------------------------------------------------------------------------
 
 type fieldEnvelope struct {
-	Field     flows.FieldUUID `json:"field"`
-	Name      string          `json:"name"`
-	Value     string          `json:"value"`
-	CreatedOn time.Time       `json:"created_on"`
+	Field     FieldUUID `json:"field"`
+	Name      string    `json:"name"`
+	Value     string    `json:"value"`
+	CreatedOn time.Time `json:"created_on"`
 }
 
-func (f *field) UnmarshalJSON(data []byte) error {
+func (f *Field) UnmarshalJSON(data []byte) error {
 	var fe fieldEnvelope
 	var err error
 
@@ -88,7 +86,7 @@ func (f *field) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-func (f *field) MarshalJSON() ([]byte, error) {
+func (f *Field) MarshalJSON() ([]byte, error) {
 	var fe fieldEnvelope
 
 	fe.Field = f.field

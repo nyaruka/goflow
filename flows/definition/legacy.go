@@ -1,4 +1,4 @@
-package flow
+package definition
 
 import (
 	"encoding/json"
@@ -179,12 +179,9 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 	switch a.Type {
 	case "add_label":
 
-		labels := make([]flows.Label, len(a.Labels))
+		labels := make([]*flows.Label, len(a.Labels))
 		for i := range labels {
-			labels[i] = flows.Label{
-				Name: a.Labels[i].Name,
-				UUID: a.Labels[i].UUID,
-			}
+			labels[i] = flows.NewLabel(a.Labels[i].UUID, a.Labels[i].Name)
 		}
 
 		return &actions.AddLabelAction{
@@ -249,21 +246,25 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 			},
 		}, nil
 	case "add_group":
-		// TODO: list of groups per action?
-		group := a.Groups[0]
+		groups := make([]*flows.Group, len(a.Groups))
+		for i, group := range a.Groups {
+			groups[i] = flows.NewGroup(group.UUID, group.Name)
+		}
+
 		return &actions.AddToGroupAction{
-			Group: group.UUID,
-			Name:  group.Name,
+			Groups: groups,
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
 		}, nil
 	case "del_group":
-		// TODO: remove from group action
-		group := a.Groups[0]
-		return &actions.AddToGroupAction{
-			Group: group.UUID,
-			Name:  group.Name,
+		groups := make([]*flows.Group, len(a.Groups))
+		for i, group := range a.Groups {
+			groups[i] = flows.NewGroup(group.UUID, group.Name)
+		}
+
+		return &actions.RemoveFromGroupAction{
+			Groups: groups,
 			BaseAction: actions.BaseAction{
 				Uuid: a.UUID,
 			},
