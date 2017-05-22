@@ -153,9 +153,9 @@ func TestTranslate(t *testing.T) {
 		{old: "@(CODE(\"A\"))", new: "@(code(\"A\"))"},
 		{old: "@(CONCATENATE(contact.first_name, \" \", contact.last_name))", new: "@(contact.first_name & \" \" & contact.last_name)"},
 
-		{old: "@(FIXED(contact.balance))", new: "@(format_number(contact.fields.balance))"},
-		{old: "@(FIXED(contact.balance, 2))", new: "@(format_number(contact.fields.balance, 2))"},
-		{old: "@(FIXED(contact.balance, 2, false))", new: "@(format_number(contact.fields.balance, 2, false))"},
+		{old: "@(FIXED(contact.balance))", new: "@(fixed(contact.fields.balance))"},
+		{old: "@(FIXED(contact.balance, 2))", new: "@(fixed(contact.fields.balance, 2))"},
+		{old: "@(FIXED(contact.balance, 2, false))", new: "@(fixed(contact.fields.balance, 2, false))"},
 		{old: "@(INT(contact.balance))", new: "@(int(contact.fields.balance))"},
 		{old: "@(LEFT(contact.account_number, 4))", new: "@(left(contact.fields.account_number, 4))"},
 		{old: "@(RIGHT(contact.ssn, 4))", new: "@(right(contact.fields.ssn, 4))"},

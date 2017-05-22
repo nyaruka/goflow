@@ -19,10 +19,10 @@ const (
 	RRSuccess RequestResponseStatus = "S"
 
 	// RRConnectionFailure represents that the webhook had a connection failure
-	RRConnectionFailure RequestResponseStatus = "C"
+	RRConnectionFailure RequestResponseStatus = "F"
 
 	// RRStatusFailure represents that the webhook had a non 2xx status code
-	RRStatusFailure RequestResponseStatus = "F"
+	RRStatusFailure RequestResponseStatus = "E"
 )
 
 func (r RequestResponseStatus) String() string {

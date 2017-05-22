@@ -9,13 +9,13 @@ import (
 	"time"
 )
 
-var dd_mm_yyyy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_]([0-9]{1,2})[-.\\/_]([0-9]{4})`)
-var dd_mm_yy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_]([0-9]{1,2})[-.\\/_]([0-9]{2})`)
-var mm_dd_yyyy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_]([0-9]{1,2})[-.\\/_]([0-9]{4})`)
-var mm_dd_yy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_]([0-9]{1,2})[-.\\/_]([0-9]{2})`)
-var yyyy_mm_dd = regexp.MustCompile(`([0-9]{4})[-.\\/_]([0-9]{1,2})[-.\\/_]([0-9]{1,2})`)
-var yy_mm_dd = regexp.MustCompile(`([0-9]{1,2})[-.\\/_]([0-9]{1,2})[-.\\/_]([0-9]{1,2})`)
-var hh_mm_ss = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
+var dd_mm_yyyy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4,5})`)
+var dd_mm_yy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{2,3})`)
+var mm_dd_yyyy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4,5})`)
+var mm_dd_yy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{2,3})`)
+var yyyy_mm_dd = regexp.MustCompile(`([0-9]{4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,4})`)
+var yy_mm_dd = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,4})`)
+var hh_mm_ss = regexp.MustCompile(`([0-9]{1,4}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
 
 type DateFormat string
 type TimeFormat string
@@ -73,7 +73,7 @@ func dateFromFormats(env Environment, currentYear int, fourDigit *regexp.Regexp,
 
 		// convert to four digit year
 		year, _ := strconv.Atoi(match[y])
-		if year >= currentYear%1000 {
+		if year > currentYear%1000 {
 			year += 1900
 		} else {
 			year += 2000
@@ -163,14 +163,14 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	var err error
 	switch env.DateFormat() {
 
+	case YYYY_MM_DD:
+		parsed, err = dateFromFormats(env, currentYear, yyyy_mm_dd, yy_mm_dd, 3, 2, 1, str)
+
 	case DD_MM_YYYY:
 		parsed, err = dateFromFormats(env, currentYear, dd_mm_yyyy, dd_mm_yy, 1, 2, 3, str)
 
 	case MM_DD_YYYY:
 		parsed, err = dateFromFormats(env, currentYear, mm_dd_yyyy, mm_dd_yy, 2, 1, 3, str)
-
-	case YYYY_MM_DD:
-		parsed, err = dateFromFormats(env, currentYear, yyyy_mm_dd, yy_mm_dd, 3, 2, 1, str)
 
 	default:
 		err = fmt.Errorf("Unknown date format: %s", env.DateFormat())

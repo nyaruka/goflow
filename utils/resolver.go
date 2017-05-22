@@ -105,3 +105,18 @@ func popNextVariable(key string) (string, string) {
 
 	return key[keyStart:keyEnd], key[restStart:]
 }
+
+type mapResolver struct {
+	values map[string]interface{}
+}
+
+// NewMapResolver returns a simple resolver that resolves variables according to the values
+// passed in
+func NewMapResolver(values map[string]interface{}) VariableResolver {
+	return &mapResolver{
+		values: values,
+	}
+}
+
+func (r *mapResolver) Resolve(key string) interface{} { return r.values[key] }
+func (r *mapResolver) Default() interface{}           { return r }
