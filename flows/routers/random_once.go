@@ -13,7 +13,7 @@ import (
 const RANDOM_ONCE string = "random_once"
 
 type RandomOnceRouter struct {
-	Exit flows.ExitUUID `json:"exit"     validate:"nonzero"`
+	Exit flows.ExitUUID `json:"exit"     validate:"required"`
 	BaseRouter
 }
 

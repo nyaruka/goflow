@@ -11,9 +11,9 @@ const SAVE_RESULT string = "save_result"
 
 type SaveResultAction struct {
 	BaseAction
-	Name     string `json:"name"        validate:"nonzero"`
-	Value    string `json:"value"       validate:"nonzero"`
-	Category string `json:"category"    validate:"nonzero"`
+	Name     string `json:"name"        validate:"required"`
+	Value    string `json:"value"       validate:"required"`
+	Category string `json:"category"    validate:"required"`
 }
 
 func (a *SaveResultAction) Type() string { return SAVE_RESULT }

@@ -5,5 +5,5 @@ import (
 )
 
 type BaseAction struct {
-	Uuid flows.ActionUUID `json:"uuid"                     validate:"nonzero"`
+	Uuid flows.ActionUUID `json:"uuid"                     validate:"required"`
 }

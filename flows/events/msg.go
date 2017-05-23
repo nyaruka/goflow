@@ -38,10 +38,10 @@ func NewIncomingMsgEvent(channel flows.ChannelUUID, contact flows.ContactUUID, t
 // MsgInEvent represents either an incoming message
 type MsgInEvent struct {
 	ID      int64             `json:"id"` // can be unset/zero for new outgoing msgs
-	Channel flows.ChannelUUID `json:"channel"     validate:"nonzero"`
-	Contact flows.ContactUUID `json:"contact"     validate:"nonzero"`
-	URN     flows.URN         `json:"urn"         validate:"nonzero"`
-	Text    string            `json:"text"        validate:"nonzero"`
+	Channel flows.ChannelUUID `json:"channel"     validate:"required"`
+	Contact flows.ContactUUID `json:"contact"     validate:"required"`
+	URN     flows.URN         `json:"urn"         validate:"required"`
+	Text    string            `json:"text"        validate:"required"`
 	BaseEvent
 }
 
@@ -51,10 +51,10 @@ func (e *MsgInEvent) Type() string { return MSG_IN }
 // MsgOutEvent represents either an outgoing message
 type MsgOutEvent struct {
 	ID      int64             `json:"id"` // can be unset/zero for new outgoing msgs
-	Channel flows.ChannelUUID `json:"channel"     validate:"nonzero"`
-	Contact flows.ContactUUID `json:"contact"     validate:"nonzero"`
-	URN     flows.URN         `json:"urn"         validate:"nonzero"`
-	Text    string            `json:"text"        validate:"nonzero"`
+	Channel flows.ChannelUUID `json:"channel"     validate:"required"`
+	Contact flows.ContactUUID `json:"contact"     validate:"required"`
+	URN     flows.URN         `json:"urn"         validate:"required"`
+	Text    string            `json:"text"        validate:"required"`
 	BaseEvent
 }
 

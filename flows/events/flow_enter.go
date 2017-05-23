@@ -9,8 +9,8 @@ import (
 const FLOW_ENTER string = "flow_enter"
 
 type FlowEnterEvent struct {
-	Flow    flows.FlowUUID    `json:"flow"        validate:"nonzero"`
-	Contact flows.ContactUUID `json:"contact"     validate:"nonzero"`
+	Flow    flows.FlowUUID    `json:"flow"        validate:"required"`
+	Contact flows.ContactUUID `json:"contact"     validate:"required"`
 	BaseEvent
 }
 

@@ -9,10 +9,10 @@ func NewResultEvent(node flows.NodeUUID, name string, value string, category str
 }
 
 type SaveResultEvent struct {
-	Node     flows.NodeUUID `json:"node"        validate:"nonzero"`
-	Name     string         `json:"name"        validate:"nonzero"`
-	Value    string         `json:"value"       validate:"nonzero"`
-	Category string         `json:"category"       validate:"nonzero"`
+	Node     flows.NodeUUID `json:"node"        validate:"required"`
+	Name     string         `json:"name"        validate:"required"`
+	Value    string         `json:"value"       validate:"required"`
+	Category string         `json:"category"    validate:"required"`
 	BaseEvent
 }
 

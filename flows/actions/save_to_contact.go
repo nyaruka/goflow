@@ -11,9 +11,9 @@ const SAVE_TO_CONTACT string = "save_to_contact"
 
 type SaveToContactAction struct {
 	BaseAction
-	Field flows.FieldUUID `json:"field"    validate:"nonzero"`
-	Name  string          `json:"name"     validate:"nonzero"`
-	Value string          `json:"value"    validate:"nonzero"`
+	Field flows.FieldUUID `json:"field"    validate:"required"`
+	Name  string          `json:"name"     validate:"required"`
+	Value string          `json:"value"    validate:"required"`
 }
 
 func (a *SaveToContactAction) Type() string { return SAVE_TO_CONTACT }

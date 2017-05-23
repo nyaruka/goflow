@@ -12,7 +12,7 @@ const FLOW string = "flow"
 type FlowAction struct {
 	BaseAction
 	Name string         `json: "name"`
-	Flow flows.FlowUUID `json:"flow"         validate:"nonzero"`
+	Flow flows.FlowUUID `json:"flow"         validate:"required"`
 }
 
 func (a *FlowAction) Type() string { return FLOW }

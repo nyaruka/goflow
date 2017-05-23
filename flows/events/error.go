@@ -3,7 +3,7 @@ package events
 const ERROR string = "error"
 
 type ErrorEvent struct {
-	Text string `json:"text"     validate:"nonzero"`
+	Text string `json:"text"     validate:"required"`
 	BaseEvent
 }
 

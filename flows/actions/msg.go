@@ -11,7 +11,7 @@ const MSG string = "msg"
 
 type MsgAction struct {
 	BaseAction
-	Text string `json:"text"         validate:"nonzero"`
+	Text string `json:"text"         validate:"required"`
 }
 
 func (a *MsgAction) Type() string { return MSG }

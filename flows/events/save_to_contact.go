@@ -5,9 +5,9 @@ import "github.com/nyaruka/goflow/flows"
 const SAVE_TO_CONTACT string = "save_to_contact"
 
 type SaveToContactEvent struct {
-	Field flows.FieldUUID `json:"field"  validate:"nonzero"`
-	Name  string          `json:"name"   validate:"nonzero"`
-	Value string          `json:"value"  validate:"nonzero"`
+	Field flows.FieldUUID `json:"field"  validate:"required"`
+	Name  string          `json:"name"   validate:"required"`
+	Value string          `json:"value"  validate:"required"`
 	BaseEvent
 }
 

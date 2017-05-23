@@ -10,7 +10,7 @@ const ADD_TO_GROUP string = "add_to_group"
 
 type AddToGroupAction struct {
 	BaseAction
-	Groups []*flows.Group `json:"groups"    validate:"nonzero"`
+	Groups []*flows.Group `json:"groups"    validate:"required"`
 }
 
 func (a *AddToGroupAction) Type() string { return ADD_TO_GROUP }

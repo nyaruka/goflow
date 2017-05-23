@@ -10,10 +10,10 @@ import (
 const FLOW_EXIT string = "flow_exit"
 
 type FlowExitEvent struct {
-	Flow     flows.FlowUUID    `json:"flow"       validate:"nonzero"`
-	Status   flows.RunStatus   `json:"status"     validate:"nonzero"`
-	Contact  flows.ContactUUID `json:"contact"    validate:"nonzero"`
-	ExitedOn *time.Time        `json:"exited_on"  validate:"nonzero"`
+	Flow     flows.FlowUUID    `json:"flow"       validate:"required"`
+	Status   flows.RunStatus   `json:"status"     validate:"required"`
+	Contact  flows.ContactUUID `json:"contact"    validate:"required"`
+	ExitedOn *time.Time        `json:"exited_on"  validate:"required"`
 	BaseEvent
 }
 
