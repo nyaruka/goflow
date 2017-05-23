@@ -44,11 +44,7 @@ func (v *Visitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	context := v.Visit(ctx.Atom(0))
-	lookup, err := utils.ToString(v.env, v.Visit(ctx.Atom(1)))
-	if err != nil {
-		return err
-	}
-
+	lookup := ctx.Atom(1).GetText()
 	return utils.ResolveVariable(v.env, context, lookup)
 }
 
@@ -278,10 +274,6 @@ func (v *Visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) in
 
 	for i := range expressions {
 		params[i] = v.Visit(expressions[i])
-		error, isError := params[i].(error)
-		if isError {
-			return error
-		}
 	}
 	return params
 }

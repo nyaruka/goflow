@@ -12,7 +12,6 @@ import (
 )
 
 // TODO:
-// SubflowTest
 // RegexTest
 // HasWardTest
 // HasDistrictTest
@@ -75,19 +74,19 @@ func (t XTestResult) Match() interface{} { return t.match }
 
 // Default satisfies the utils.VariableResolver interface, we always default to whether we matched
 func (t XTestResult) Default() interface{} {
-	return t.Matched
+	return t.matched
 }
 
 // Resolve satisfies the utils.VariableResolver interface, users can look up the match or whether we matched
 func (t XTestResult) Resolve(key string) interface{} {
 	switch key {
 	case "matched":
-		return t.Matched
+		return t.matched
 
 	case "match":
-		return t.Match
+		return t.match
 	}
-	return fmt.Errorf("No such key '%s' on test result", key)
+	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
 // XFalseResult can be used as a singleton for false result values
@@ -101,6 +100,12 @@ var _ utils.VariableResolver = XTestResult{}
 //------------------------------------------------------------------------------------------
 
 // HasError returns whether the passed in argument is an error
+//
+//   @(has_error(date("foo"))) -> true
+//   @(has_error(not.existing)) -> false
+//   @(has_error("hello")) -> false
+//
+// @test has_error
 func HasError(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("HAS_ERROR takes exactly one argument, got %d", len(args))
@@ -119,14 +124,26 @@ func HasError(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
-// HasValue returns whether the passed in argument is non-nil
+// HasValue returns whether the passed in argument is non-nil and not an error
+//
+//   @(has_value(date("foo"))) -> false
+//   @(has_value(not.existing)) -> false
+//   @(has_value("hello")) -> true
+//
+// @test has_value
 func HasValue(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("HAS_VALUE takes exactly one argument, got %d", len(args))
 	}
 
-	// nil is not an error
+	// nil is not a value
 	if args[0] == nil {
+		return XFalseResult
+	}
+
+	// error is not a value
+	_, isErr := args[0].(error)
+	if isErr {
 		return XFalseResult
 	}
 
@@ -134,6 +151,14 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 }
 
 // HasRunStatus returns whether the passed in run has the passed in status
+//
+// Valid run statuses are "A" for active, "C" for complete, "E" for expired
+// and "I" for interrupted
+//
+//  @(has_run_status(run, "C")) -> true
+//  @(has_run_status(child, "E")) -> false
+//
+// @test has_run_status
 func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 2 {
 		return fmt.Errorf("HAS_RUN_STATUS takes exactly two arguments, got %d", len(args))
@@ -158,6 +183,14 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 }
 
 // HasWebhookStatus returns whether the passed in webhook response has the passed in status
+//
+// Valid webhook statuses are "S" for success, "F" for a connection failure and "E" for
+// a non-2xx response code.
+//
+//  @(has_webhook_status(webhook, "S")) -> true
+//  @(has_webhook_status(webhook, "F")) -> false
+//
+// @test has_webhook_status
 func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 2 {
 		return fmt.Errorf("HAS_WEBHOOK_STATUS takes exactly two arguments, got %d", len(args))
@@ -181,7 +214,11 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
-// HasGroup returns whether the passed in contact is part of the passed in group
+// HasGroup returns whether the passed in contact is part of group with the passed in UUID
+//
+//  @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> true
+//
+// @test has_group
 func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 2 {
 		return fmt.Errorf("HAS_GROUP takes exactly two arguments, got %d", len(args))
@@ -208,26 +245,68 @@ func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 }
 
 // HasPhrase tests whether the passed in phrase is contained in the text
+//
+// The words in the test phrase must appear in the same order with no other words
+// in between.
+//
+//   @(has_phrase("the quick brown fox", "brown fox")) -> true
+//   @(has_phrase("the Quick Brown fox", "quick fox")) -> false
+//   @(has_phrase("the.quick.brown.fox", "the quick").match) -> "the quick"
+//
+// @test has_phrase
 func HasPhrase(env utils.Environment, args ...interface{}) interface{} {
 	return testStringTokens(env, "HAS_PHRASE", hasPhraseTest, args)
 }
 
 // HasAllWords tests whether all the words are contained in the text
+//
+// The words can be in any order and may appear more than once.
+//
+//   @(has_all_words("the quick brown FOX", "the fox")) -> true
+//   @(has_all_words("the quick brown FOX", "the fox").match) -> "the FOX"
+//   @(has_all_words("the quick brown fox", "red fox")) -> false
+//
+// @test has_all_words
 func HasAllWords(env utils.Environment, args ...interface{}) interface{} {
 	return testStringTokens(env, "HAS_ALL_WORDS", hasAllWordsTest, args)
 }
 
 // HasAnyWord tests whether any of the words are contained in the text
+//
+// Only one of the words needs to match and it may appear more than once.
+//
+//  @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
+//  @(has_any_word("The Quick Brown Fox", "red fox")) -> true
+//  @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
+//
+// @test has_any_word
 func HasAnyWord(env utils.Environment, args ...interface{}) interface{} {
 	return testStringTokens(env, "HAS_ANY_WORD", hasAnyWordTest, args)
 }
 
 // HasOnlyPhrase tests whether the text contains only the phrase
+//
+// The phrase must be the only text in the string to match
+//
+//  @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
+//  @(has_only_phrase("Quick Brown", "quick brown")) -> true
+//  @(has_only_phrase("Quick Brown", "quick brown").match) -> "Quick Brown"
+//  @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
+//
+// @test has_only_phrase
 func HasOnlyPhrase(env utils.Environment, args ...interface{}) interface{} {
 	return testStringTokens(env, "HAS_ONLY_PHRASE", hasOnlyPhraseTest, args)
 }
 
-// HasText tests whether there is any text
+// HasText tests whether there the string has any characters in it
+//
+//   @(has_text("quick brown")) -> true
+//   @(has_text("quick brown").match) -> "quick brown"
+//   @(has_text("")) -> false
+//   @(has_text(" \n")) -> false
+//   @(has_text(123)) -> true
+//
+// @test has_text
 func HasText(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("HAS_TEXT takes exactly one arguments, got %d", len(args))
@@ -249,7 +328,17 @@ func HasText(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
-// HasBeginning tests whether the text starts with the words
+// HasBeginning tests whether the text starts the substring passed in
+//
+// Both strings are trimmed of surrounding whitespace, but otherwise matching is strict
+// without any tokenization.
+//
+//   @(has_beginning("The Quick Brown", "the quick")) -> true
+//   @(has_beginning("The Quick Brown", "the quick").match) -> "The Quick"
+//   @(has_beginning("The Quick Brown", "the   quick")) -> false
+//   @(has_beginning("The Quick Brown", "quick brown")) -> false
+//
+// @test has_beginning
 func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 2 {
 		return fmt.Errorf("HAS_BEGINNING takes exactly two arguments, got %d", len(args))
@@ -288,6 +377,12 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 }
 
 // HasNumber tests whether the text contains a number
+//
+//   @(has_number("the number is 42")) -> true
+//   @(has_number("the number is 42").match) -> 42
+//   @(has_number("the number is forty two")) -> false
+//
+// @test has_number
 func HasNumber(env utils.Environment, args ...interface{}) interface{} {
 	// only one argument for has number
 	if len(args) != 1 {
@@ -303,7 +398,15 @@ func HasNumber(env utils.Environment, args ...interface{}) interface{} {
 	return testDecimal(env, "HAS_NUMBER", isNumberTest, testArgs)
 }
 
-// HasNumberBetween tests whether the text contains a number between args[1] and args[2]
+// HasNumberBetween tests whether the text contains a number between min and max inclusive
+//
+//   @(has_number_between("the number is 42", 40, 44)) -> true
+//   @(has_number_between("the number is 42", 40, 44).match) -> 42
+//   @(has_number_between("the number is 42", 50, 60)) -> false
+//   @(has_number_between("the number is not there", 50, 60)) -> false
+//   @(has_number_between("the number is not there", "foo", 60)) -> ERROR
+//
+// @test has_number_between
 func HasNumberBetween(env utils.Environment, args ...interface{}) interface{} {
 	// need three arguments, value being tested and min, max
 	if len(args) != 3 {
@@ -337,31 +440,77 @@ func HasNumberBetween(env utils.Environment, args ...interface{}) interface{} {
 }
 
 // HasNumberLT tests whether the text contains a number less than the value
+//
+//   @(has_number_lt("the number is 42", 44)) -> true
+//   @(has_number_lt("the number is 42", 44).match) -> 42
+//   @(has_number_lt("the number is 42", 40)) -> false
+//   @(has_number_lt("the number is not there", 40)) -> false
+//   @(has_number_lt("the number is not there", "foo")) -> ERROR
+//
+// @test has_number_lt
 func HasNumberLT(env utils.Environment, args ...interface{}) interface{} {
 	return testDecimal(env, "HAS_NUMBER_LT", isNumberLT, args)
 }
 
 // HasNumberLTE tests whether the text contains a number less than or equal to the value
+//
+//   @(has_number_lte("the number is 42", 42)) -> true
+//   @(has_number_lte("the number is 42", 44).match) -> 42
+//   @(has_number_lte("the number is 42", 40)) -> false
+//   @(has_number_lte("the number is not there", 40)) -> false
+//   @(has_number_lte("the number is not there", "foo")) -> ERROR
+//
+// @test has_number_lte
 func HasNumberLTE(env utils.Environment, args ...interface{}) interface{} {
 	return testDecimal(env, "HAS_NUMBER_LTE", isNumberLTE, args)
 }
 
 // HasNumberEQ tests whether the text contains a number equal to the value
+//
+//   @(has_number_eq("the number is 42", 42)) -> true
+//   @(has_number_eq("the number is 42", 42).match) -> 42
+//   @(has_number_eq("the number is 42", 40)) -> false
+//   @(has_number_eq("the number is not there", 40)) -> false
+//   @(has_number_eq("the number is not there", "foo")) -> ERROR
+//
+// @test has_number_eq
 func HasNumberEQ(env utils.Environment, args ...interface{}) interface{} {
 	return testDecimal(env, "HAS_NUMBER_EQ", isNumberEQ, args)
 }
 
 // HasNumberGTE tests whether the text contains a number greater than or equal to the value
+//
+//   @(has_number_gte("the number is 42", 42)) -> true
+//   @(has_number_gte("the number is 42", 42).match) -> 42
+//   @(has_number_gte("the number is 42", 45)) -> false
+//   @(has_number_gte("the number is not there", 40)) -> false
+//   @(has_number_gte("the number is not there", "foo")) -> ERROR
+//
+// @test has_number_gte
 func HasNumberGTE(env utils.Environment, args ...interface{}) interface{} {
 	return testDecimal(env, "HAS_NUMBER_GTE", isNumberGTE, args)
 }
 
 // HasNumberGT tests whether the text contains a number greater than the value
+//
+//   @(has_number_gt("the number is 42", 40)) -> true
+//   @(has_number_gt("the number is 42", 40).match) -> 42
+//   @(has_number_gt("the number is 42", 42)) -> false
+//   @(has_number_gt("the number is not there", 40)) -> false
+//   @(has_number_gt("the number is not there", "foo")) -> ERROR
+//
+// @test has_number_gt
 func HasNumberGT(env utils.Environment, args ...interface{}) interface{} {
 	return testDecimal(env, "HAS_NUMBER_GT", isNumberGT, args)
 }
 
-// HasDate tests whether the text contains a date
+// HasDate tests whether the text contains a date formatted according to our environment
+//
+//   @(has_date("the date is 2017-01-15")) -> true
+//   @(has_date("the date is 2017-01-15").match) -> "2017-01-15 00:00"
+//   @(has_date("there is no date here, just a year 2017")) -> false
+//
+// @test has_date
 func HasDate(env utils.Environment, args ...interface{}) interface{} {
 	// only one argument for has date
 	if len(args) != 1 {
@@ -377,24 +526,53 @@ func HasDate(env utils.Environment, args ...interface{}) interface{} {
 	return testDate(env, "HAS_DATE", isDateTest, testArgs)
 }
 
-// HasDateLT tests whether the text contains a date before the value
+// HasDateLT tests whether the text contains a date before the date passed in
+//
+//   @(has_date_lt("the date is 2017-01-15", "2017-06-01")) -> true
+//   @(has_date_lt("the date is 2017-01-15", "2017-06-01").match) -> "2017-01-15 00:00"
+//   @(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) -> false
+//   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
+//
+// @test has_date_lt
 func HasDateLT(env utils.Environment, args ...interface{}) interface{} {
 	return testDate(env, "HAS_DATE_LT", isDateLTTest, args)
 }
 
-// HasDateEQ tests whether the text contains a date equal to the value
+// HasDateEQ tests whether the text contains a date equal to the date passed in
+//
+//   @(has_date_eq("the date is 2017-01-15", "2017-01-15")) -> true
+//   @(has_date_eq("the date is 2017-01-15", "2017-01-15").match) -> "2017-01-15 00:00"
+//   @(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) -> false
+//   @(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) -> false
+//   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
+//
+// @test has_date_eq
 func HasDateEQ(env utils.Environment, args ...interface{}) interface{} {
 	return testDate(env, "HAS_DATE_EQ", isDateEQTest, args)
 }
 
-// HasDateGT tests whether the text contains a date after the value
+// HasDateGT tests whether the text contains a date after the date passed in
+//
+//   @(has_date_gt("the date is 2017-01-15", "2017-01-01")) -> true
+//   @(has_date_gt("the date is 2017-01-15", "2017-01-01").match) -> "2017-01-15 00:00"
+//   @(has_date_gt("the date is 2017-01-15", "2017-03-15")) -> false
+//   @(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) -> false
+//   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
+//
+// @test has_date_gt
 func HasDateGT(env utils.Environment, args ...interface{}) interface{} {
 	return testDate(env, "HAS_DATE_GT", isDateGTTest, args)
 }
 
-var emailAddressRE = regexp.MustCompile(`^([\pL][-_.\pL]*)@([\pL][-_\pL]*)(\.[\pL][-_\pL]*)+$`)
+var emailAddressRE = regexp.MustCompile(`([\pL][-_.\pL]*)@([\pL][-_\pL]*)(\.[\pL][-_\pL]*)+`)
 
 // HasEmail tests whether an email is contained in the text
+//
+//   @(has_email("my email is foo@bar.com, please respond")) -> true
+//   @(has_email("my email is foo@bar.com, please respond").match) -> "foo@bar.com"
+//   @(has_email("i'm not sharing my email")) -> false
+//
+// @test has_email
 func HasEmail(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("HAS_EMAIL takes exactly one argument, got %d", len(args))
@@ -421,6 +599,12 @@ func HasEmail(env utils.Environment, args ...interface{}) interface{} {
 var phoneRE = regexp.MustCompile(`^\+?([0-9]{7,12})$`)
 
 // HasPhone tests whether a phone number is contained in the text
+//
+//   @(has_phone("my number is 2067799294")) -> true
+//  @(has_phone("my number is 206 779 9294").match) -> "+12067799294"
+//   @(has_phone("my number is none of your business")) -> false
+//
+// @test has_phone
 func HasPhone(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("HAS_PHONE takes exactly one argument, got %d", len(args))

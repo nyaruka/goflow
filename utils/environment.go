@@ -20,7 +20,7 @@ type Environment interface {
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
 func NewDefaultEnvironment() Environment {
-	return &environment{DD_MM_YYYY, HH_MM, time.UTC}
+	return &environment{YYYY_MM_DD, HH_MM, time.UTC}
 }
 
 // NewEnvironment creates a new Environment with the passed in date and time formats and timezone
