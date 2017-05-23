@@ -25,9 +25,10 @@ func main() {
 	fmt.Println()
 	fmt.Println("Server running on port 8080")
 	fmt.Println("Endpoints:")
-	fmt.Println("  /execute    - run a flow. requires flow and context")
-	fmt.Println("  /expression - evaluate an expression. requires flow and expression")
-	fmt.Println("  /migrate    - migrates a list of flows")
+	fmt.Println("  /flow/start    - start a flow. requires a list of flows (first will be started) and contact")
+	fmt.Println("  /flow/resume   - resume a flow. requires a contact, list of flows, list of runs and event causing the resumption")
+	fmt.Println("  /migrate       - migrates a list of flows")
+	fmt.Println("  /expression    - lets you test an expression, requires a context and expression")
 	fmt.Println()
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -76,6 +77,11 @@ func handleMigrate(w http.ResponseWriter, r *http.Request) {
 
 }
 
+type flowResponse struct {
+	Contact   *flows.Contact  `json:"contact"`
+	RunOutput flows.RunOutput `json:"run_output"`
+}
+
 type startRequest struct {
 	Flows   json.RawMessage `json:"flows"`
 	Contact json.RawMessage `json:"contact"`
@@ -109,12 +115,14 @@ func handleStart(w http.ResponseWriter, r *http.Request) {
 	startFlows, err := definition.ReadFlows(start.Flows)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
+		return
 	}
 
 	// read our contact
 	contact, err := flows.ReadContact(start.Contact)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error parsing contact: %s", err))
+		return
 	}
 
 	// build our environment
@@ -124,10 +132,12 @@ func handleStart(w http.ResponseWriter, r *http.Request) {
 	output, err := engine.StartFlow(env, startFlows[0], contact, nil)
 	if err != nil {
 		writeError(w, fmt.Errorf("Error starting flow: %s", err))
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(output)
+	resp := &flowResponse{Contact: contact, RunOutput: output}
+	json.NewEncoder(w).Encode(resp)
 }
 
 type resumeRequest struct {
@@ -208,8 +218,8 @@ func handleResume(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(output)
-
+	resp := &flowResponse{Contact: contact, RunOutput: output}
+	json.NewEncoder(w).Encode(resp)
 }
 
 //-----------------------------------------------------------------------------
@@ -275,6 +285,7 @@ func handleExpression(w http.ResponseWriter, r *http.Request) {
 			response.Errors = []string{err.Error()}
 		}
 	}
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }
 
