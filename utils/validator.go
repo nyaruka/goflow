@@ -1,11 +1,13 @@
 package utils
 
-import "gopkg.in/validator.v2"
+import validator "gopkg.in/go-playground/validator.v9"
 
-// Validates all the passed in arguments, failing fast on an error
+var validate = validator.New()
+
+// ValidateAll validates all the passed in arguments, failing fast on an error
 func ValidateAll(args ...interface{}) (err error) {
 	for _, arg := range args {
-		err = validator.Validate(arg)
+		err = validate.Struct(arg)
 		if err != nil {
 			return err
 		}

@@ -1,303 +1,119 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
-	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"strings"
+	"syscall"
+	"time"
 
-	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
-	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/runs"
-	"github.com/nyaruka/goflow/utils"
+	validator "gopkg.in/go-playground/validator.v9"
+
+	"errors"
+
+	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
+	"github.com/pressly/lg"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	http.HandleFunc("/flow/start", handleStart)
-	http.HandleFunc("/flow/resume", handleResume)
-	http.HandleFunc("/migrate", handleMigrate)
-	http.HandleFunc("/expression", handleExpression)
-	fmt.Println()
-	fmt.Println("Server running on port 8080")
-	fmt.Println("Endpoints:")
-	fmt.Println("  /flow/start    - start a flow. requires a list of flows (first will be started) and contact")
-	fmt.Println("  /flow/resume   - resume a flow. requires a contact, list of flows, list of runs and event causing the resumption")
-	fmt.Println("  /migrate       - migrates a list of flows")
-	fmt.Println("  /expression    - lets you test an expression, requires a context and expression")
-	fmt.Println()
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+	logger := logrus.New()
 
-//-----------------------------------------------------------------------------
-// Execute handler
-//-----------------------------------------------------------------------------
+	lg.RedirectStdlogOutput(logger)
+	lg.DefaultLogger = logger
 
-type migrateRequest struct {
-	Flows json.RawMessage `json:"flows"`
-}
+	r := chi.NewRouter()
 
-func handleMigrate(w http.ResponseWriter, r *http.Request) {
-	migrate := migrateRequest{}
+	r.Use(middleware.DefaultCompress)
+	r.Use(middleware.StripSlashes)
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+	r.Use(lg.RequestLogger(logger))
+	r.Use(middleware.Heartbeat("/ping"))
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.Timeout(60 * time.Second))
 
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	r.Post("/flow/start", jsonHandler(handleStart))
+	r.Post("/flow/resume", jsonHandler(handleResume))
+	r.Post("/flow/migrate", jsonHandler(handleMigrate))
+	r.Post("/expression", jsonHandler(handleExpression))
 
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		writeError(w, err)
-		return
+	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
+	r.MethodNotAllowed(errorHandler(http.StatusMethodNotAllowed, "method not allowed"))
+
+	httpServer := &http.Server{
+		Addr:         fmt.Sprintf(":%d", 8080),
+		Handler:      r,
+		ReadTimeout:  60 * time.Second,
+		WriteTimeout: 60 * time.Second,
 	}
 
-	if err := r.Body.Close(); err != nil {
-		writeError(w, err)
-		return
-	}
-
-	if err := json.Unmarshal(body, &migrate); err != nil {
-		writeError(w, err)
-		return
-	}
-
-	if migrate.Flows == nil {
-		writeError(w, fmt.Errorf("Missing flows element"))
-		return
-	}
-
-	flows, err := definition.ReadLegacyFlows(migrate.Flows)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(flows)
-
-}
-
-type flowResponse struct {
-	Contact   *flows.Contact  `json:"contact"`
-	RunOutput flows.RunOutput `json:"run_output"`
-}
-
-type startRequest struct {
-	Flows   json.RawMessage `json:"flows"`
-	Contact json.RawMessage `json:"contact"`
-}
-
-func handleStart(w http.ResponseWriter, r *http.Request) {
-	start := startRequest{}
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		writeError(w, err)
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		writeError(w, err)
-		return
-	}
-	if err := json.Unmarshal(body, &start); err != nil {
-		writeError(w, err)
-		return
-	}
-
-	if start.Flows == nil || start.Contact == nil {
-		writeError(w, fmt.Errorf("Missing contact or flows element"))
-		return
-	}
-
-	// read our flows
-	startFlows, err := definition.ReadFlows(start.Flows)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
-		return
-	}
-
-	// read our contact
-	contact, err := flows.ReadContact(start.Contact)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error parsing contact: %s", err))
-		return
-	}
-
-	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
-
-	// start our flow
-	output, err := engine.StartFlow(env, startFlows[0], contact, nil)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error starting flow: %s", err))
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	resp := &flowResponse{Contact: contact, RunOutput: output}
-	json.NewEncoder(w).Encode(resp)
-}
-
-type resumeRequest struct {
-	Contact   json.RawMessage      `json:"contact"`
-	Flows     json.RawMessage      `json:"flows"`
-	RunOutput json.RawMessage      `json:"run_output"`
-	Event     *utils.TypedEnvelope `json:"event"`
-}
-
-func handleResume(w http.ResponseWriter, r *http.Request) {
-	resume := resumeRequest{}
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		writeError(w, err)
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		writeError(w, err)
-		return
-	}
-	if err := json.Unmarshal(body, &resume); err != nil {
-		writeError(w, err)
-		return
-	}
-
-	if resume.Flows == nil || resume.RunOutput == nil || resume.Event == nil || resume.Contact == nil {
-		writeError(w, fmt.Errorf("Missing flows, run_output, contact or event element"))
-		return
-	}
-
-	// read our flows
-	flowList, err := definition.ReadFlows(resume.Flows)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error parsing flows: %s", err))
-		return
-	}
-
-	// read our run
-	runOutput, err := runs.ReadRunOutput(resume.RunOutput)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error parsing run output: %s", err))
-		return
-	}
-
-	// our contact
-	contact, err := flows.ReadContact(resume.Contact)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error parsing run contact: %s", err))
-		return
-	}
-
-	// and our event
-	event, err := events.EventFromEnvelope(resume.Event)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error reading event: %s", err))
-		return
-	}
-
-	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, runOutput.Runs(), []*flows.Contact{contact})
-
-	// hydrate all our runs
-	for _, run := range runOutput.Runs() {
-		run.Hydrate(env)
-	}
-
-	// set our contact on our run
-	activeRun := runOutput.ActiveRun()
-
-	// resume our flow
-	output, err := engine.ResumeFlow(env, activeRun, event)
-	if err != nil {
-		writeError(w, fmt.Errorf("Error resuming flow: %s", err))
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	resp := &flowResponse{Contact: contact, RunOutput: output}
-	json.NewEncoder(w).Encode(resp)
-}
-
-//-----------------------------------------------------------------------------
-// Expression handler
-//-----------------------------------------------------------------------------
-
-type expressionResponse struct {
-	Result string   `json:"result"`
-	Errors []string `json:"errors"`
-}
-
-type expressionRequest struct {
-	Expression string          `json:"expression"`
-	Context    json.RawMessage `json:"context"`
-}
-
-func handleExpression(w http.ResponseWriter, r *http.Request) {
-	expression := expressionRequest{}
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		writeError(w, err)
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		writeError(w, err)
-		return
-	}
-	if err := json.Unmarshal(body, &expression); err != nil {
-		writeError(w, err)
-		return
-	}
-
-	if expression.Context == nil || expression.Expression == "" {
-		writeError(w, fmt.Errorf("Missing context or expression element"))
-		return
-	}
-
-	// build up our context
-	context, err := runs.ReadContext(expression.Context)
-	if err != nil {
-		writeError(w, err)
-		return
-	}
-
-	// evaluate it
-	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression)
-
-	w.WriteHeader(http.StatusOK)
-	response := expressionResponse{Result: result}
-	if err != nil {
-		switch err.(type) {
-		case excellent.TemplateErrors:
-			templateErrs := err.(excellent.TemplateErrors)
-			errs := make([]string, len(templateErrs))
-			for i := range errs {
-				errs[i] = templateErrs[i].Error()
-			}
-			response.Errors = errs
-		default:
-			response.Errors = []string{err.Error()}
+	go func() {
+		err := httpServer.ListenAndServe()
+		if err != nil && err != http.ErrServerClosed {
+			logrus.WithFields(logrus.Fields{
+				"comp": "server",
+				"err":  err,
+			}).Error()
 		}
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(response)
-}
+	}()
+	logrus.WithField("comp", "server").WithField("port", "8080").Info("listening")
 
-//-----------------------------------------------------------------------------
-// Error utils
-//-----------------------------------------------------------------------------
+	ch := make(chan os.Signal)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+	logrus.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
+	httpServer.Shutdown(context.Background())
+}
 
 type errorResponse struct {
-	Text string `json:"error"`
+	Text []string `json:"errors"`
 }
 
-func writeError(w http.ResponseWriter, err error) {
-	w.WriteHeader(http.StatusBadRequest)
-	json.NewEncoder(w).Encode(errorResponse{err.Error()})
+// writeError writes a JSON response for the passed in error
+func writeError(w http.ResponseWriter, r *http.Request, status int, err error) error {
+	lg.Log(r.Context()).WithError(err).Error()
+	errors := []string{err.Error()}
+
+	vErrs, isValidation := err.(validator.ValidationErrors)
+	if isValidation {
+		status = http.StatusBadRequest
+		errors = []string{}
+		for i := range vErrs {
+			errors = append(errors, fmt.Sprintf("field '%s' %s", strings.ToLower(vErrs[i].Field()), vErrs[i].Tag()))
+		}
+	}
+	return writeJSONResponse(w, status, &errorResponse{errors})
+}
+
+func writeJSONResponse(w http.ResponseWriter, statusCode int, response interface{}) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	return json.NewEncoder(w).Encode(response)
+}
+
+type jsonHandlerFunc func(http.ResponseWriter, *http.Request) (interface{}, error)
+
+func jsonHandler(handler jsonHandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		value, err := handler(w, r)
+		if err != nil {
+			writeError(w, r, http.StatusInternalServerError, err)
+		} else {
+			err := writeJSONResponse(w, http.StatusOK, value)
+			if err != nil {
+				lg.Log(r.Context()).WithError(err).Error()
+			}
+		}
+	}
+}
+
+func errorHandler(status int, err string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		writeError(w, r, status, errors.New(err))
+	}
 }
