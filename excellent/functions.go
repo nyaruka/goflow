@@ -700,7 +700,7 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 //
 //   @(char(33)) -> "!"
 //   @(char(128512)) -> "😀"
-//   @(char"foo")) -> ERROR
+//   @(char("foo")) -> ERROR
 //
 // @function char
 func Char(env utils.Environment, args ...interface{}) interface{} {

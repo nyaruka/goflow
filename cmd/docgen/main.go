@@ -104,7 +104,7 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 
 					fmt.Printf("# %s\n\n", name)
 					fmt.Printf("%s", strings.Join(docs, "\n"))
-					fmt.Printf("```ruby\n")
+					fmt.Printf("```objective-c\n")
 					if len(examples) > 0 {
 						fmt.Printf("%s\n", strings.Join(examples, "\n"))
 					}
