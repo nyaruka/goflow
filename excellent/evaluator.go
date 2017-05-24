@@ -259,13 +259,13 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 			value = ""
 		}
 
-		_, isErr := value.(error)
+		err, isErr := value.(error)
 
 		// we got an error, return our raw value
 		if isErr {
 			buf.WriteString("@")
 			buf.WriteString(token)
-			return buf.String(), nil
+			return buf.String(), err
 		}
 
 		// found it, return that value

@@ -6,7 +6,7 @@
       {
          "uuid":"flow1-node1",
          "actions":[{
-                "type": "msg",
+                "type": "reply",
                 "text": "This is the parent flow"
              },{
              "type": "flow",
@@ -47,7 +47,7 @@
       },{
          "uuid":"flow1-node2",
          "actions":[{
-             "type": "msg",
+             "type": "reply",
              "text": "Flow succeeded, they said @child.results.name"
          }]
       },{
@@ -66,7 +66,7 @@
       {
         "uuid":"flow2-node1",
         "actions":[{
-            "type": "msg",
+            "type": "reply",
             "text": "What is your name?"
         }],
         "wait": {
@@ -96,7 +96,7 @@
       {
         "uuid":"flow2-node2",
         "actions":[{
-            "type": "msg",
+            "type": "reply",
             "text": "Got it!"
         }]
       }

@@ -2,25 +2,24 @@
   "resume_events": [
     {
       "type": "msg_in",
+      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+      "step": "",
       "id": 0,
-      "channel": "",
       "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-      "urn": "",
-      "text": "Ryan Lewis",
-      "run": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      "text": "Ryan Lewis"
     }
   ],
   "outputs": [
     {
       "runs": [
         {
-          "uuid": "85a1800b-dab6-4719-84a8-e1f0a2c1873a",
+          "uuid": "",
           "flow": "flow1",
           "channel": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "path": [
             {
+              "uuid": "",
               "node": "node1",
               "exit": "node1-exit1",
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -28,25 +27,23 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Hi! What is your name?",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "text": "Hi! What is your name?"
                 }
               ]
             },
             {
+              "uuid": "",
               "node": "node2",
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 }
               ]
             }
@@ -59,35 +56,37 @@
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-          "expires_on": "2000-01-01T00:00:00.000000000-00:00": null,
-          "exited_on": "2000-01-01T00:00:00.000000000-00:00": [
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        }
+      ],
+      "events": [
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Hi! What is your name?",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "text": "Hi! What is your name?"
         },
         {
           "type": "msg_wait",
           "timeout": 600,
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": ""
         }
       ]
     },
     {
       "runs": [
         {
-          "uuid": "85a1800b-dab6-4719-84a8-e1f0a2c1873a",
+          "uuid": "",
           "flow": "flow1",
           "channel": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "path": [
             {
+              "uuid": "",
               "node": "node1",
               "exit": "node1-exit1",
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -95,17 +94,15 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Hi! What is your name?",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "text": "Hi! What is your name?"
                 }
               ]
             },
             {
+              "uuid": "",
               "node": "node2",
               "exit": "node2-exit1",
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -114,59 +111,48 @@
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 },
                 {
                   "type": "msg_in",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "id": 0,
-                  "channel": "",
                   "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Ryan Lewis",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "text": "Ryan Lewis"
                 },
                 {
                   "type": "save_result",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "node": "node2",
                   "name": "name",
                   "value": "Ryan Lewis",
-                  "category": "",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "category": ""
                 }
               ]
             },
             {
+              "uuid": "",
               "node": "node3",
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
                   "type": "save_to_contact",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "field": "field1",
                   "name": "name",
-                  "value": "Ryan Lewis",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
-                },
-                {
-                  "type": "add_to_group",
-                  "group": "group2",
-                  "name": "Registered Users",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "value": "Ryan Lewis"
                 },
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Great, you are Ryan Lewis, thanks for joining!",
-                  "run": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "text": "Great, you are Ben Haggerty, thanks for joining!"
                 }
               ]
             }
@@ -174,13 +160,11 @@
           "status": "C",
           "input": {
             "type": "msg_in",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "step": "",
             "id": 0,
-            "channel": "",
             "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-            "urn": "",
-            "text": "Ryan Lewis",
-            "run": "",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+            "text": "Ryan Lewis"
           },
           "results": {
             "name": {
@@ -192,54 +176,43 @@
           },
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-          "expires_on": "2000-01-01T00:00:00.000000000-00:00": null,
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
           "exited_on": "2000-01-01T00:00:00.000000000-00:00"
         }
       ],
       "events": [
         {
           "type": "msg_in",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "id": 0,
-          "channel": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Ryan Lewis",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "text": "Ryan Lewis"
         },
         {
           "type": "save_result",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "node": "node2",
           "name": "name",
           "value": "Ryan Lewis",
-          "category": "",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "category": ""
         },
         {
           "type": "save_to_contact",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "field": "field1",
           "name": "name",
-          "value": "Ryan Lewis",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
-        },
-        {
-          "type": "add_to_group",
-          "group": "group2",
-          "name": "Registered Users",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "value": "Ryan Lewis"
         },
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Great, you are Ryan Lewis, thanks for joining!",
-          "run": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "text": "Great, you are Ben Haggerty, thanks for joining!"
         }
       ]
     }

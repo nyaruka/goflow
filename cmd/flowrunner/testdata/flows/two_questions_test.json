@@ -144,8 +144,10 @@
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
-                  "type": "set_language",
-                  "language": "fra",
+                  "type": "save_to_contact",
+                  "field": "language",
+                  "name": "Language",
+                  "value": "fra",
                   "step": "",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00"
                 },
@@ -220,8 +222,10 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00"
         },
         {
-          "type": "set_language",
-          "language": "fra",
+          "type": "save_to_contact",
+          "field": "language",
+          "name": "Language",
+          "value": "fra",
           "step": "",
           "created_on": "2000-01-01T00:00:00.000000000-00:00"
         },
@@ -303,8 +307,10 @@
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
-                  "type": "set_language",
-                  "language": "fra",
+                  "type": "save_to_contact",
+                  "field": "language",
+                  "name": "Language",
+                  "value": "fra",
                   "step": "",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00"
                 },

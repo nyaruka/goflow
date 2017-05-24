@@ -8,7 +8,7 @@
          "actions":[
             {
                "uuid": "node1-action1",
-               "type":"msg",
+               "type": "reply",
                "text": "Hi! What is your name?"
             }],
 	  "exits":[{
@@ -64,7 +64,7 @@
             },
             {
              "uuid": "node3-action3 ",
-             "type": "msg",
+             "type": "reply",
              "text": "Great, you are @contact.name, thanks for joining!"
            }
          ]
