@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-const SWITCH string = "switch"
+const TypeSwitch string = "switch"
 
 type Case struct {
 	UUID      flows.UUID     `json:"uuid"        validate:"required"`
@@ -25,7 +25,7 @@ type SwitchRouter struct {
 	BaseRouter
 }
 
-func (r *SwitchRouter) Type() string { return SWITCH }
+func (r *SwitchRouter) Type() string { return TypeSwitch }
 
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 	err := utils.ValidateAll(r)

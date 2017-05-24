@@ -42,7 +42,7 @@ type flowRun struct {
 	flowTranslations flows.FlowTranslations
 	translations     flows.Translations
 	environment      flows.FlowEnvironment
-	language         flows.Language
+	language         utils.Language
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -201,7 +201,7 @@ func (r *flowRun) SetFlowTranslations(ft flows.FlowTranslations) {
 	r.flowTranslations = ft
 	r.updateTranslations()
 }
-func (r *flowRun) SetLanguage(lang flows.Language) {
+func (r *flowRun) SetLanguage(lang utils.Language) {
 	r.language = lang
 	r.updateTranslations()
 }

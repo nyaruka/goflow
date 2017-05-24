@@ -259,13 +259,13 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 			value = ""
 		}
 
-		err, isErr := value.(error)
+		_, isErr := value.(error)
 
-		// we got an error, return that
+		// we got an error, return our raw value
 		if isErr {
 			buf.WriteString("@")
 			buf.WriteString(token)
-			return buf.String(), err
+			return buf.String(), nil
 		}
 
 		// found it, return that value
@@ -300,13 +300,12 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableReso
 			if value == nil {
 				value = ""
 			}
-			err, isErr := value.(error)
+			_, isErr := value.(error)
 
-			// we got an error, output our template but log the error
+			// we got an error, return our raw variable
 			if isErr {
 				buf.WriteString("@")
 				buf.WriteString(token)
-				errors = append(errors, err)
 			} else {
 				strValue, _ := utils.ToString(env, value)
 				buf.WriteString(strValue)

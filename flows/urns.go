@@ -18,6 +18,7 @@ const (
 	TwitterScheme  = "twitter"
 	ViberScheme    = "viber"
 	TelegramScheme = "telegram"
+	EmailScheme    = "email"
 )
 
 // Used as a lookup for faster checks whether a Scheme is supported
@@ -27,6 +28,7 @@ var schemes = map[string]bool{
 	TwitterScheme:  true,
 	ViberScheme:    true,
 	TelegramScheme: true,
+	EmailScheme:    true,
 }
 
 func (u URN) String() string       { return string(u.Path()) }

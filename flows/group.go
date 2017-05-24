@@ -4,13 +4,31 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/nyaruka/goflow/utils"
+	validator "gopkg.in/go-playground/validator.v9"
 )
+
+func init() {
+	utils.Validator.RegisterStructValidation(ValidateGroup, Group{})
+}
 
 // Group represents a grouping of contacts. From an engine perspective the only piece that matter is
 // the UUID of the group and its name
 type Group struct {
 	uuid GroupUUID
 	name string
+}
+
+// ValidateGroup is our global validator for our group struct
+func ValidateGroup(sl validator.StructLevel) {
+	group := sl.Current().Interface().(Group)
+	if len(group.uuid) == 0 {
+		sl.ReportError(group.uuid, "uuid", "uuid", "uuid4", "")
+	}
+	if len(group.name) == 0 {
+		sl.ReportError(group.uuid, "name", "name", "required", "")
+	}
 }
 
 // NewGroup returns a new group object with the passed in uuid and name

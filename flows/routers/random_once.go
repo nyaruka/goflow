@@ -10,14 +10,14 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-const RANDOM_ONCE string = "random_once"
+const TypeRandomOnce string = "random_once"
 
 type RandomOnceRouter struct {
 	Exit flows.ExitUUID `json:"exit"     validate:"required"`
 	BaseRouter
 }
 
-func (r *RandomOnceRouter) Type() string { return RANDOM_ONCE }
+func (r *RandomOnceRouter) Type() string { return TypeRandomOnce }
 
 func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
 	err := utils.ValidateAll(r)

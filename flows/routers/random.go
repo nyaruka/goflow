@@ -8,13 +8,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-const RANDOM string = "random"
+const TypeRandom string = "random"
 
 type RandomRouter struct {
 	BaseRouter
 }
 
-func (r *RandomRouter) Type() string { return RANDOM }
+func (r *RandomRouter) Type() string { return TypeRandom }
 
 func (r *RandomRouter) Validate(exits []flows.Exit) error {
 	return utils.ValidateAll(r)

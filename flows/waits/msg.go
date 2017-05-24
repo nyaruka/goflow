@@ -7,7 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-const MSG string = "msg"
+const TypeMsg string = "msg"
 
 type MsgWait struct {
 	Timeout int `json:"timeout,omitempty"`
@@ -23,10 +23,10 @@ func (w *MsgWait) Resolve(key string) interface{} {
 }
 
 func (w *MsgWait) Default() interface{} {
-	return MSG
+	return TypeMsg
 }
 
-func (w *MsgWait) Type() string { return MSG }
+func (w *MsgWait) Type() string { return TypeMsg }
 
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) error {
 	run.AddEvent(step, &events.MsgWaitEvent{Timeout: w.Timeout})

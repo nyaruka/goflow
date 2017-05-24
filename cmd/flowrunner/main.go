@@ -172,7 +172,7 @@ func main() {
 
 		// print any events
 		for _, e := range output.Events() {
-			if e.Type() == events.MSG_OUT {
+			if e.Type() == events.TypeMsgOut {
 				fmt.Printf(">>> %s\n", e.(*events.MsgOutEvent).Text)
 			}
 		}

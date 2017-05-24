@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 )
 
+// Label represents a msg label
 type Label struct {
-	uuid LabelUUID
-	name string
+	uuid LabelUUID `validate:"required,uuid"`
+	name string    `validate:"required"`
 }
 
 // UUID returns the UUID of this label

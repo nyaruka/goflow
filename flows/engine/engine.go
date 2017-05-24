@@ -226,7 +226,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 
 	// save our results if appropriate
 	if router != nil && router.Name() != "" {
-		event := events.NewResultEvent(node.UUID(), router.Name(), route.Match(), exitName)
+		event := events.NewSaveResult(node.UUID(), router.Name(), route.Match(), exitName)
 		run.AddEvent(step, event)
 		run.Results().Save(node.UUID(), router.Name(), route.Match(), exitName, *event.CreatedOn())
 	}

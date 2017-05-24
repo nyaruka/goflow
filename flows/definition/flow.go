@@ -6,11 +6,12 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type flow struct {
 	name     string
-	language flows.Language
+	language utils.Language
 	uuid     flows.FlowUUID
 
 	translations flows.FlowTranslations
@@ -21,7 +22,7 @@ type flow struct {
 }
 
 func (f *flow) Name() string                           { return f.name }
-func (f *flow) Language() flows.Language               { return f.language }
+func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) UUID() flows.FlowUUID                   { return f.uuid }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Translations() flows.FlowTranslations   { return f.translations }
@@ -115,7 +116,7 @@ func ReadFlows(data json.RawMessage) ([]flows.Flow, error) {
 
 type flowEnvelope struct {
 	Name         string           `json:"name"`
-	Language     flows.Language   `json:"language"`
+	Language     utils.Language   `json:"language"`
 	UUID         flows.FlowUUID   `json:"uuid"`
 	Localization flowTranslations `json:"localization"`
 	Nodes        []*node          `json:"nodes"`

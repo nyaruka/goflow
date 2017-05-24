@@ -5,7 +5,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-const SET_PREFERRED_CHANNEL string = "set_preferred_channel"
+const TypeSetPreferredChannel string = "set_preferred_channel"
 
 type PreferredChannelAction struct {
 	BaseAction
@@ -13,7 +13,7 @@ type PreferredChannelAction struct {
 	Channel flows.ChannelUUID `json:"channel"`
 }
 
-func (a *PreferredChannelAction) Type() string { return SET_PREFERRED_CHANNEL }
+func (a *PreferredChannelAction) Type() string { return TypeSetPreferredChannel }
 
 func (a *PreferredChannelAction) Validate() error {
 	return utils.ValidateAll(a)

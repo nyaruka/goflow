@@ -11,67 +11,67 @@ import (
 func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	switch envelope.Type {
 
-	case ADD_TO_GROUP:
+	case TypeAddToGroup:
 		event := AddToGroupEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case ERROR:
+	case TypeEmail:
+		event := EmailEvent{}
+		err := json.Unmarshal(envelope.Data, &event)
+		return &event, envelope.TraceError(err)
+
+	case TypeError:
 		event := ErrorEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case FLOW_ENTER:
+	case TypeFlowEnter:
 		event := FlowEnterEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case FLOW_EXIT:
+	case TypeFlowExit:
 		event := FlowExitEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case FLOW_WAIT:
+	case TypeFlowWait:
 		event := FlowWaitEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case MSG_IN:
+	case TypeMsgIn:
 		event := MsgInEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case MSG_OUT:
+	case TypeMsgOut:
 		event := MsgOutEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case MSG_WAIT:
+	case TypeMsgWait:
 		event := MsgWaitEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case REMOVE_FROM_GROUP:
+	case TypeRemoveFromGroup:
 		event := RemoveFromGroupEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case SAVE_RESULT:
+	case TypeSaveResult:
 		event := SaveResultEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case SAVE_TO_CONTACT:
+	case TypeSaveToContact:
 		event := SaveToContactEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)
 
-	case SET_LANGUAGE:
-		event := SetLanguageEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, envelope.TraceError(err)
-
-	case WEBHOOK:
+	case TypeWebhook:
 		event := WebhookEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, envelope.TraceError(err)

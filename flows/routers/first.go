@@ -5,13 +5,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-const FIRST string = "first"
+const TypeFirst string = "first"
 
 type FirstRouter struct {
 	BaseRouter
 }
 
-func (r *FirstRouter) Type() string { return FIRST }
+func (r *FirstRouter) Type() string { return TypeFirst }
 
 func (r *FirstRouter) Validate(exits []flows.Exit) error {
 	return utils.ValidateAll(r)

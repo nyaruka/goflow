@@ -3,19 +3,21 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 type Contact struct {
 	uuid     ContactUUID
 	name     string
-	language Language
+	language utils.Language
 	urns     URNList
 	groups   GroupList
 	fields   Fields
 }
 
-func (c *Contact) SetLanguage(lang Language) { c.language = lang }
-func (c *Contact) Language() Language        { return c.language }
+func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
+func (c *Contact) Language() utils.Language        { return c.language }
 
 func (c *Contact) SetName(name string) { c.name = name }
 func (c *Contact) Name() string        { return c.name }
@@ -30,7 +32,7 @@ func (c *Contact) AddGroup(uuid GroupUUID, name string) {
 func (c *Contact) RemoveGroup(uuid GroupUUID) bool {
 	for i := range c.groups {
 		if c.groups[i].uuid == uuid {
-			c.groups = append(c.groups[:i], c.groups[i+1])
+			c.groups = append(c.groups[:i], c.groups[i+1:]...)
 			return true
 		}
 	}
@@ -71,6 +73,11 @@ func (c *Contact) Default() interface{} {
 	return c
 }
 
+type ContactReference struct {
+	UUID ContactUUID `json:"uuid"    validate:"required,uuid4"`
+	Name string      `json:"name"`
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -86,12 +93,12 @@ func ReadContact(data json.RawMessage) (*Contact, error) {
 }
 
 type contactEnvelope struct {
-	UUID     ContactUUID `json:"uuid"`
-	Name     string      `json:"name"`
-	Language Language    `json:"language"`
-	URNs     URNList     `json:"urns"`
-	Groups   GroupList   `json:"groups"`
-	Fields   Fields      `json:"fields"`
+	UUID     ContactUUID    `json:"uuid"`
+	Name     string         `json:"name"`
+	Language utils.Language `json:"language"`
+	URNs     URNList        `json:"urns"`
+	Groups   GroupList      `json:"groups"`
+	Fields   Fields         `json:"fields"`
 }
 
 func (c *Contact) UnmarshalJSON(data []byte) error {

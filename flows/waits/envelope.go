@@ -11,12 +11,12 @@ import (
 func WaitFromEnvelope(envelope *utils.TypedEnvelope) (flows.Wait, error) {
 	switch envelope.Type {
 
-	case MSG:
+	case TypeMsg:
 		wait := MsgWait{}
 		err := json.Unmarshal(envelope.Data, &wait)
 		return &wait, envelope.TraceError(err)
 
-	case FLOW:
+	case TypeFlow:
 		wait := FlowWait{}
 		err := json.Unmarshal(envelope.Data, &wait)
 		return &wait, envelope.TraceError(err)

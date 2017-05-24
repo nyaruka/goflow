@@ -11,57 +11,57 @@ import (
 func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	switch envelope.Type {
 
-	case ADD_LABEL:
+	case TypeAddLabel:
 		action := AddLabelAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case ADD_TO_GROUP:
+	case TypeAddToGroup:
 		action := AddToGroupAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case EMAIL:
+	case TypeEmail:
 		action := EmailAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case FLOW:
+	case TypeFlow:
 		action := FlowAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case MSG:
+	case TypeMsg:
 		action := MsgAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case REMOVE_FROM_GROUP:
+	case TypeRemoveFromGroup:
 		action := RemoveFromGroupAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case SAVE_RESULT:
+	case TypeReply:
+		action := ReplyAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, envelope.TraceError(err)
+
+	case TypeSaveResult:
 		action := SaveResultAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case SAVE_TO_CONTACT:
+	case TypeSaveToContact:
 		action := SaveToContactAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case SET_LANGUAGE:
-		action := SetLanguageAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, envelope.TraceError(err)
-
-	case SET_PREFERRED_CHANNEL:
+	case TypeSetPreferredChannel:
 		action := PreferredChannelAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)
 
-	case WEBHOOK:
+	case TypeWebhook:
 		action := WebhookAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, envelope.TraceError(err)

@@ -47,12 +47,13 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(\"hello\\nworld\")", "hello\nworld", false},
 		{"@(\"hello😁world\")", "hello😁world", false},
 		{"@(\"hello\\U0001F601world\")", "hello😁world", false},
-		{"@hello", "@hello", true},
-		{"@hello.bar", "@hello.bar", true},
+		{"@hello", "@hello", false},
+		{"@hello.bar", "@hello.bar", false},
 		{"@(title(\"hello\"))", "Hello", false},
 		{"@(title(hello))", "", true},
 		{"Hello @(title(string1))", "Hello Foo", false},
 		{"Hello @@string1", "Hello @string1", false},
+		{"My email is foo@bar.com", "My email is foo@bar.com", false},
 
 		{"1 + 2", "1 + 2", false},
 		{"@(1 + 2)", "3", false},
@@ -61,7 +62,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@string1@string2", "foobar", false},
 		{"@(string1 & string2)", "foobar", false},
 		{"@string1.@string2", "foo.bar", false},
-		{"@string1.@string2.@string3", "foo.bar.@string3", true},
+		{"@string1.@string2.@string3", "foo.bar.@string3", false},
 
 		{"@(string1", "@(string1", false},
 		{"@ (string1", "@ (string1", false},
@@ -74,7 +75,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(dec1 + dec2)", "4", false},
 
-		{"@missing", "@missing", true},
+		{"@missing", "@missing", false},
 		{"@(TITLE(missing))", "", true},
 
 		{"@array", "one, two, three", false},

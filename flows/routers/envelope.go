@@ -11,20 +11,20 @@ import (
 func RouterFromEnvelope(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	switch envelope.Type {
 
-	case FIRST:
+	case TypeFirst:
 		router := FirstRouter{}
 		return &router, nil
 
-	case SWITCH:
+	case TypeSwitch:
 		router := SwitchRouter{}
 		err := json.Unmarshal(envelope.Data, &router)
 		return &router, envelope.TraceError(err)
 
-	case RANDOM:
+	case TypeRandom:
 		router := RandomRouter{}
 		return &router, nil
 
-	case RANDOM_ONCE:
+	case TypeRandomOnce:
 		router := RandomOnceRouter{}
 		err := json.Unmarshal(envelope.Data, &router)
 		return &router, envelope.TraceError(err)

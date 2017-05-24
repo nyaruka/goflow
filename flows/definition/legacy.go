@@ -20,7 +20,7 @@ type legacyFlow struct {
 }
 
 type legacyFlowEnvelope struct {
-	BaseLanguage flows.Language         `json:"base_language"`
+	BaseLanguage utils.Language         `json:"base_language"`
 	Metadata     legacyMetadataEnvelope `json:"metadata"`
 	RuleSets     []legacyRuleSet        `json:"rule_sets"`
 	ActionSets   []legacyActionSet      `json:"action_sets"`
@@ -35,7 +35,7 @@ type legacyMetadataEnvelope struct {
 type legacyRule struct {
 	Destination flows.NodeUUID            `json:"destination"`
 	Test        utils.TypedEnvelope       `json:"test"`
-	Category    map[flows.Language]string `json:"category"`
+	Category    map[utils.Language]string `json:"category"`
 	ExitType    string                    `json:"exit_type"`
 }
 
@@ -85,7 +85,7 @@ type legacyAction struct {
 	Label string `json:"label"`
 
 	// set language
-	Language flows.Language `json:"lang"`
+	Language utils.Language `json:"lang"`
 
 	// webhook
 	Action  string `json:"action"`
@@ -118,14 +118,14 @@ type webhookTest struct {
 }
 
 type localizedStringTest struct {
-	Test map[flows.Language]string `json:"test"`
+	Test map[utils.Language]string `json:"test"`
 }
 
 type stringTest struct {
 	Test string `jons:"test"`
 }
 
-type localizations map[flows.Language]flows.Action
+type localizations map[utils.Language]flows.Action
 
 // ReadLegacyFlows reads in legacy formatted flows
 func ReadLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
@@ -134,9 +134,9 @@ func ReadLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
 	return flows, err
 }
 
-type translationMap map[flows.Language]string
+type translationMap map[utils.Language]string
 
-func addTranslationMap(baseLanguage flows.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
+func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
 	for language, translation := range mapped {
 		items := itemTranslations{}
 		expression, _ := excellent.TranslateTemplate(translation)
@@ -147,7 +147,7 @@ func addTranslationMap(baseLanguage flows.Language, translations *flowTranslatio
 	}
 }
 
-func addTranslation(baseLanguage flows.Language, translations *flowTranslations, lang flows.Language, uuid flows.UUID, items itemTranslations) {
+func addTranslation(baseLanguage utils.Language, translations *flowTranslations, lang utils.Language, uuid flows.UUID, items itemTranslations) {
 	langTranslations, ok := (*translations)[lang]
 	if !ok {
 		langTranslations = &languageTranslations{}
@@ -170,7 +170,7 @@ func translateTest(test string) string {
 	return test
 }
 
-func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
+func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
 
 	if a.UUID == "" {
 		a.UUID = flows.ActionUUID(uuid.NewV4().String())
@@ -187,7 +187,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 		return &actions.AddLabelAction{
 			Labels: labels,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 
@@ -203,15 +203,17 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 			Body:    msg,
 			Emails:  a.Emails,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 
 	case "lang":
-		return &actions.SetLanguageAction{
-			Language: a.Language,
+		return &actions.SaveToContactAction{
+			Field: "language",
+			Name:  "Language",
+			Value: string(a.Language),
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "channel":
@@ -219,7 +221,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 			Channel: a.Channel,
 			Name:    a.Name,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "flow":
@@ -227,11 +229,11 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 			Flow: a.Flow.UUID,
 			Name: a.Name,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "reply":
-		msg := make(map[flows.Language]string)
+		msg := make(map[utils.Language]string)
 		err := json.Unmarshal(a.Msg, &msg)
 		if err != nil {
 			return nil, err
@@ -242,7 +244,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 		return &actions.MsgAction{
 			Text: expression,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "add_group":
@@ -254,7 +256,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 		return &actions.AddToGroupAction{
 			Groups: groups,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "del_group":
@@ -266,7 +268,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 		return &actions.RemoveFromGroupAction{
 			Groups: groups,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "save":
@@ -283,14 +285,16 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 			Value: translated,
 			Field: fieldUUID,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "set_language":
-		return &actions.SetLanguageAction{
-			Language: a.Language,
+		return &actions.SaveToContactAction{
+			Field: "language",
+			Name:  "Language",
+			Value: string(a.Value),
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	case "api":
@@ -299,7 +303,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 			Method: a.Action,
 			URL:    translated,
 			BaseAction: actions.BaseAction{
-				Uuid: a.UUID,
+				UUID: a.UUID,
 			},
 		}, nil
 	default:
@@ -307,7 +311,7 @@ func createAction(baseLanguage flows.Language, a legacyAction, fieldMap map[stri
 	}
 }
 
-func createCase(baseLanguage flows.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
+func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
 	category := r.Category[baseLanguage]
 	testType := r.Test.Type
 	var arguments []string
@@ -369,7 +373,7 @@ type categoryName struct {
 	order        int
 }
 
-func parseRules(baseLanguage flows.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID) {
+func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID) {
 
 	// find our discrete categories
 	categoryMap := make(map[string]categoryName)
@@ -425,7 +429,7 @@ func parseRules(baseLanguage flows.Language, r legacyRuleSet, translations *flow
 	return exits, cases, defaultExit
 }
 
-func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
+func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
 	node := &node{}
 	node.uuid = r.UUID
 
@@ -517,7 +521,7 @@ func createRuleNode(lang flows.Language, r legacyRuleSet, translations *flowTran
 	return node, nil
 }
 
-func createActionNode(lang flows.Language, a legacyActionSet, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) *node {
+func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) *node {
 	node := &node{}
 
 	node.uuid = a.UUID

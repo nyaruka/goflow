@@ -7,7 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-const FLOW string = "flow"
+const TypeFlow string = "flow"
 
 type FlowWait struct {
 	Flow flows.FlowUUID `json:"flow"`
@@ -23,10 +23,10 @@ func (w *FlowWait) Resolve(key string) interface{} {
 }
 
 func (w *FlowWait) Default() interface{} {
-	return FLOW
+	return TypeFlow
 }
 
-func (w *FlowWait) Type() string { return FLOW }
+func (w *FlowWait) Type() string { return TypeFlow }
 
 func (w *FlowWait) Begin(run flows.FlowRun, step flows.Step) error {
 	run.AddEvent(step, &events.FlowWaitEvent{Flow: w.Flow})

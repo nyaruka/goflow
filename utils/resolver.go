@@ -1,6 +1,8 @@
 package utils
 
-import "strconv"
+import (
+	"strconv"
+)
 
 // VariableResolver defines the interface used by Excellent objects that can be indexed into
 type VariableResolver interface {

@@ -12,18 +12,16 @@ type ExitUUID UUID
 type FlowUUID UUID
 type ActionUUID UUID
 type ContactUUID UUID
-type GroupUUID UUID
 type FieldUUID UUID
 type ChannelUUID UUID
 type RunUUID UUID
 type StepUUID UUID
 type LabelUUID UUID
-
-type Language string
+type GroupUUID UUID
 
 type Flow interface {
 	Name() string
-	Language() Language
+	Language() utils.Language
 	UUID() FlowUUID
 	Translations() FlowTranslations
 
@@ -113,7 +111,7 @@ type Wait interface {
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
 type FlowTranslations interface {
-	GetTranslations(Language) Translations
+	GetTranslations(utils.Language) Translations
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
@@ -216,7 +214,7 @@ type FlowRun interface {
 	CreateStep(Node) Step
 	Path() []Step
 
-	SetLanguage(Language)
+	SetLanguage(utils.Language)
 	SetFlowTranslations(FlowTranslations)
 	GetText(uuid UUID, key string, backdown string) string
 
@@ -254,3 +252,14 @@ type FlowRunReference interface {
 type ChannelType string
 
 func (ct ChannelType) String() string { return string(ct) }
+
+// MsgDirection is the direction of a Msg (either in or out)
+type MsgDirection string
+
+const (
+	// MsgOut represents an outgoing message
+	MsgOut MsgDirection = "O"
+
+	// MsgIn represents an incoming message
+	MsgIn MsgDirection = "I"
+)

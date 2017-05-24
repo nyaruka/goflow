@@ -2,12 +2,31 @@ package events
 
 import "github.com/nyaruka/goflow/flows"
 
-const REMOVE_FROM_GROUP string = "remove_from_group"
+// TypeRemoveFromGroup is the type fo our remove from group action
+const TypeRemoveFromGroup string = "remove_from_group"
 
+// RemoveFromGroupEvent events are created when a contact is removed from one or more
+// groups.
+//
+// ```
+//   {
+//    "step": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//    "created_on": "2006-01-02T15:04:05Z",
+//    "type": "remove_from_group",
+//    "groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"]
+//   }
+// ```
+//
+// @event remove_from_group
 type RemoveFromGroupEvent struct {
-	Group flows.GroupUUID `json:"group"  validate:"required"`
-	Name  string          `json:"name"   validate:"required"`
+	Groups []flows.GroupUUID `json:"groups"  validate:"required,min=1"`
 	BaseEvent
 }
 
-func (e *RemoveFromGroupEvent) Type() string { return REMOVE_FROM_GROUP }
+// NewRemoveFromGroup returns a new remove from group event
+func NewRemoveFromGroup(groups []flows.GroupUUID) *RemoveFromGroupEvent {
+	return &RemoveFromGroupEvent{Groups: groups}
+}
+
+// Type returns the type of this event
+func (e *RemoveFromGroupEvent) Type() string { return TypeRemoveFromGroup }
