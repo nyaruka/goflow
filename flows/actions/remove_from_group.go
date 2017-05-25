@@ -40,20 +40,20 @@ func (a *RemoveFromGroupAction) Validate() error {
 func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	contact := run.Contact()
 	if contact != nil {
-		groups := make([]flows.GroupUUID, 0)
+		groups := make([]*flows.Group, 0)
 
 		// no groups in our action means remove all
 		if len(a.Groups) == 0 {
 			for _, group := range contact.Groups() {
 				contact.RemoveGroup(group.UUID())
-				groups = append(groups, group.UUID())
+				groups = append(groups, group)
 			}
 
 		} else {
 			for _, group := range a.Groups {
 				removed := contact.RemoveGroup(group.UUID())
 				if removed {
-					groups = append(groups, group.UUID())
+					groups = append(groups, group)
 				}
 			}
 		}

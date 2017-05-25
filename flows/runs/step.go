@@ -57,13 +57,13 @@ func (s *step) String() string {
 }
 
 func (s *step) Leave(exit flows.ExitUUID) {
-	now := time.Now()
+	now := time.Now().In(time.UTC)
 	s.exit = exit
 	s.leftOn = &now
 }
 
 func (s *step) addEvent(e flows.Event) {
-	e.SetCreatedOn(time.Now())
+	e.SetCreatedOn(time.Now().In(time.UTC))
 	s.events = append(s.events, e)
 }
 

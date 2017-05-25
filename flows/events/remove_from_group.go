@@ -13,18 +13,21 @@ const TypeRemoveFromGroup string = "remove_from_group"
 //    "step": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //    "created_on": "2006-01-02T15:04:05Z",
 //    "type": "remove_from_group",
-//    "groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"]
+//    "groups": [{
+//	     "name": "Survey Audience",
+//	     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//	  }]
 //   }
 // ```
 //
 // @event remove_from_group
 type RemoveFromGroupEvent struct {
-	Groups []flows.GroupUUID `json:"groups"  validate:"required,min=1"`
+	Groups []*flows.Group `json:"groups"  validate:"required,min=1"`
 	BaseEvent
 }
 
 // NewRemoveFromGroup returns a new remove from group event
-func NewRemoveFromGroup(groups []flows.GroupUUID) *RemoveFromGroupEvent {
+func NewRemoveFromGroup(groups []*flows.Group) *RemoveFromGroupEvent {
 	return &RemoveFromGroupEvent{Groups: groups}
 }
 

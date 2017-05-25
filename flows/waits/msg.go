@@ -34,7 +34,7 @@ func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) error {
 	return nil
 }
 
-func (w *MsgWait) ShouldEnd(run flows.FlowRun, step flows.Step) (flows.Event, error) {
+func (w *MsgWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event, error) {
 	return nil, nil
 }
 

@@ -34,7 +34,7 @@ func (w *FlowWait) Begin(run flows.FlowRun, step flows.Step) error {
 	return nil
 }
 
-func (w *FlowWait) ShouldEnd(run flows.FlowRun, step flows.Step) (flows.Event, error) {
+func (w *FlowWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event, error) {
 	child := run.Child()
 	if child == nil {
 		return nil, fmt.Errorf("FlowWait should always have a child run set")
@@ -45,7 +45,16 @@ func (w *FlowWait) ShouldEnd(run flows.FlowRun, step flows.Step) (flows.Event, e
 		return nil, nil
 	}
 
-	return events.NewFlowExitEvent(child), nil
+	// see if we already have an exit event on our step for this flow
+	for _, evt := range step.Events() {
+		exit, isExit := evt.(*events.FlowExitEvent)
+		if isExit && exit.Flow == w.Flow {
+			return exit, nil
+		}
+	}
+
+	// our flow didn't exit, return nil
+	return nil, nil
 }
 
 func (w *FlowWait) End(run flows.FlowRun, step flows.Step, event flows.Event) error {

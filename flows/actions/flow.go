@@ -49,12 +49,19 @@ func (a *FlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	run.AddEvent(step, events.NewFlowEnterEvent(a.Flow, run.Contact().UUID()))
 
 	// start it for our current contact
-	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run)
+	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run, nil)
 
 	// log any error we receive
 	if err != nil {
 		run.AddError(step, err)
 		return err
 	}
+
+	// did we complete?
+	if run.Child().Status() != flows.RunActive {
+		// add our exit event
+		run.AddEvent(step, events.NewFlowExitEvent(run.Child()))
+	}
+
 	return nil
 }

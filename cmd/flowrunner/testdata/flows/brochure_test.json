@@ -5,6 +5,8 @@
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
       "step": "",
       "id": 0,
+      "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "urn": "tel:+12065551212",
       "contact": "contact1-test-4b7f-a34b-e37e31e86451",
       "text": "Ryan Lewis"
     }
@@ -119,6 +121,8 @@
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "id": 0,
+                  "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                  "urn": "tel:+12065551212",
                   "contact": "contact1-test-4b7f-a34b-e37e31e86451",
                   "text": "Ryan Lewis"
                 },
@@ -163,6 +167,8 @@
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "step": "",
             "id": 0,
+            "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "urn": "tel:+12065551212",
             "contact": "contact1-test-4b7f-a34b-e37e31e86451",
             "text": "Ryan Lewis"
           },
@@ -187,6 +193,8 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
           "id": 0,
+          "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+          "urn": "tel:+12065551212",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "text": "Ryan Lewis"
         },

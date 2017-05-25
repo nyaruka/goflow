@@ -14,18 +14,21 @@ const TypeAddToGroup string = "add_to_group"
 //    "step": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //    "created_on": "2006-01-02T15:04:05Z",
 //    "type": "add_to_group",
-//    "groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"]
+//    "groups": [{
+//	    "uuid": b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//      "name": "Survey Audience"
+//    }]
 //   }
 // ```
 //
 // @event add_to_group
 type AddToGroupEvent struct {
 	BaseEvent
-	Groups []flows.GroupUUID `json:"groups"  validate:"required,min=1,dive,uuid4"`
+	Groups []*flows.Group `json:"groups"  validate:"required,min=1,dive,uuid4"`
 }
 
 // NewGroupEvent returns a new group event
-func NewGroupEvent(groups []flows.GroupUUID) *AddToGroupEvent {
+func NewGroupEvent(groups []*flows.Group) *AddToGroupEvent {
 	return &AddToGroupEvent{Groups: groups}
 }
 

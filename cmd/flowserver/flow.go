@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -21,8 +22,9 @@ type flowResponse struct {
 }
 
 type startRequest struct {
-	Flows   json.RawMessage `json:"flows"`
-	Contact json.RawMessage `json:"contact"`
+	Flows   json.RawMessage      `json:"flows"`
+	Contact json.RawMessage      `json:"contact"`
+	Input   *utils.TypedEnvelope `json:"input"`
 }
 
 func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -48,17 +50,30 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, fmt.Errorf("error parsing flows: %s", err)
 	}
 
+	if len(startFlows) == 0 {
+		return nil, fmt.Errorf("must have at least one flow to start")
+	}
+
 	// read our contact
 	contact, err := flows.ReadContact(start.Contact)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing contact: %s", err)
 	}
 
+	// read our input
+	var input flows.Input
+	if start.Input != nil {
+		input, err = inputs.InputFromEnvelope(start.Input)
+		if err != nil {
+			return nil, fmt.Errorf("error parsing input: %s", err)
+		}
+	}
+
 	// build our environment
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	output, err := engine.StartFlow(env, startFlows[0], contact, nil)
+	output, err := engine.StartFlow(env, startFlows[0], contact, nil, input)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}

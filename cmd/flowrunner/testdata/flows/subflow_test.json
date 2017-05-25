@@ -2,13 +2,13 @@
   "resume_events": [
     {
       "type": "msg_in",
-      "id": 0,
-      "channel": "",
-      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-      "urn": "",
-      "text": "Ryan Lewis",
+      "created_on": "2000-01-01T00:00:00.000000000-00:00",
       "step": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      "id": 0,
+      "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "urn": "tel:+12065551212",
+      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+      "text": "Ryan Lewis"
     }
   ],
   "outputs": [
@@ -27,26 +27,23 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "This is the parent flow",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "This is the parent flow"
                 },
                 {
                   "type": "flow_enter",
-                  "flow": "flow2",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "flow": "flow2",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451"
                 },
                 {
                   "type": "flow_wait",
-                  "flow": "flow2",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "flow": "flow2"
                 }
               ]
             }
@@ -56,7 +53,7 @@
             "type": "flow",
             "flow": "flow2"
           },
-          "child": "70c87c0e-271d-4e20-90f1-283af2f0f5bc",
+          "child": "55abd5d1-624b-4322-b72d-bc76821b9a11",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -77,19 +74,16 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "What is your name?",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "What is your name?"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 0,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 }
               ]
             }
@@ -98,7 +92,7 @@
           "wait": {
             "type": "msg"
           },
-          "parent": "3d445cdd-8676-4114-b957-f88d272b9158",
+          "parent": "a4f1694f-565c-466d-b684-19ce11bedc2b",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -110,42 +104,36 @@
       "events": [
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "This is the parent flow",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "This is the parent flow"
         },
         {
           "type": "flow_enter",
-          "flow": "flow2",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "flow": "flow2",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451"
         },
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "What is your name?",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "What is your name?"
         },
         {
           "type": "msg_wait",
           "timeout": 0,
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": ""
         },
         {
           "type": "flow_wait",
-          "flow": "flow2",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "flow": "flow2"
         }
       ]
     },
@@ -166,38 +154,35 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "What is your name?",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "What is your name?"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 0,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 },
                 {
                   "type": "msg_in",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Ryan Lewis",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "id": 0,
+                  "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                  "urn": "tel:+12065551212",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Ryan Lewis"
                 },
                 {
                   "type": "save_result",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "node": "flow2-node1",
                   "name": "name",
                   "value": "Ryan Lewis",
-                  "category": "Name",
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "category": "Name"
                 }
               ]
             },
@@ -209,13 +194,10 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Got it!",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Got it!"
                 }
               ]
             }
@@ -223,15 +205,15 @@
           "status": "C",
           "input": {
             "type": "msg_in",
-            "id": 0,
-            "channel": "",
-            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-            "urn": "",
-            "text": "Ryan Lewis",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "step": "",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+            "id": 0,
+            "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "urn": "tel:+12065551212",
+            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+            "text": "Ryan Lewis"
           },
-          "parent": "3d445cdd-8676-4114-b957-f88d272b9158",
+          "parent": "a4f1694f-565c-466d-b684-19ce11bedc2b",
           "results": {
             "name": {
               "node": "flow2-node1",
@@ -262,35 +244,32 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "This is the parent flow",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "This is the parent flow"
                 },
                 {
                   "type": "flow_enter",
-                  "flow": "flow2",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "flow": "flow2",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451"
                 },
                 {
                   "type": "flow_wait",
-                  "flow": "flow2",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "flow": "flow2"
                 },
                 {
                   "type": "flow_exit",
-                  "flow": "flow2",
-                  "status": "C",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "flow": "flow2",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "status": "C",
+                  "exited_on": "2000-01-01T00:00:00.000000000-00:00"
                 }
               ]
             },
@@ -302,19 +281,16 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Flow succeeded, they said Ryan Lewis",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Flow succeeded, they said Ryan Lewis"
                 }
               ]
             }
           ],
           "status": "C",
-          "child": "70c87c0e-271d-4e20-90f1-283af2f0f5bc",
+          "child": "55abd5d1-624b-4322-b72d-bc76821b9a11",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -326,51 +302,45 @@
       "events": [
         {
           "type": "msg_in",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Ryan Lewis",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "id": 0,
+          "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+          "urn": "tel:+12065551212",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Ryan Lewis"
         },
         {
           "type": "save_result",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "node": "flow2-node1",
           "name": "name",
           "value": "Ryan Lewis",
-          "category": "Name",
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "category": "Name"
         },
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Got it!",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Got it!"
         },
         {
           "type": "flow_exit",
-          "flow": "flow2",
-          "status": "C",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "flow": "flow2",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "status": "C",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
         },
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Flow succeeded, they said Ryan Lewis",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Flow succeeded, they said Ryan Lewis"
         }
       ]
     }

@@ -1,0 +1,95 @@
+[
+    {
+        "uuid": "flow1",
+        "name": "Registration Flow",
+        "language": "eng",
+        "nodes": [
+            {
+                "uuid": "node1",
+                "actions": [
+                    {
+                        "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                        "type": "add_to_group",
+                        "groups": [
+                            {
+                                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                                "name": "Survey Audience"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
+                        "type": "save_to_contact",
+                        "field": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+                        "name": "activation_token",
+                        "value": "XXX-YYY-ZZZ"
+                    },
+                    {
+                        "uuid": "4f452fb8-f0aa-442d-865b-a2b629c09c21",
+                        "type": "email",
+                        "subject": "Here is your activation token",
+                        "body": "Your activation token is @contact.fields.activation_token",
+                        "emails": [
+                            "@contact.urns.email"
+                        ]
+                    },
+                    {
+                        "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                        "type": "flow",
+                        "name": "Collect Language",
+                        "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    },
+                    {
+                        "uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
+                        "type": "msg",
+                        "urns": [
+                            "tel:+12065551212"
+                        ],
+                        "text": "Hi @contact.name, are you ready?"
+                    },
+                    {
+                        "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
+                        "type": "remove_from_group",
+                        "groups": [
+                            {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Registered Users"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                        "type": "reply",
+                        "text": "Hi @contact.name, are you ready to complete today's survey?"
+                    },
+                    {
+                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                        "type": "save_result",
+                        "name": "gender",
+                        "value": "m",
+                        "category": "Male"
+                    },
+                    {
+                        "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
+                        "type": "save_to_contact",
+                        "field": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+                        "name": "Gender",
+                        "value": "@run.results.gender.category"
+                    },
+                    {
+                        "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
+                        "type": "webhook",
+                        "method": "get",
+                        "url": "http://echo.jsontest.com/key/value/one/two"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Registration Flow",
+        "language": "eng",
+        "nodes": []
+    }
+]

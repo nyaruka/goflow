@@ -1,0 +1,26 @@
+[
+    {
+        "uuid": "flow1",
+        "name": "Registration Flow",
+        "language": "eng",
+        "nodes": [
+            {
+                "uuid": "node1",
+                "actions": [
+                    {
+                        "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                        "type": "flow",
+                        "name": "Subflow",
+                        "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Subflow",
+        "language": "eng",
+        "nodes": []
+    }
+]

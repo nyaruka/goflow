@@ -8,7 +8,7 @@ import (
 
 type BaseEvent struct {
 	CreatedOn_ *time.Time     `json:"created_on"    validate:"required"`
-	Step_      flows.StepUUID `json:"step"          validate:"required"`
+	Step_      flows.StepUUID `json:"step"`
 }
 
 func (e *BaseEvent) CreatedOn() *time.Time       { return e.CreatedOn_ }

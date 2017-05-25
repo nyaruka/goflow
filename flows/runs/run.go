@@ -128,13 +128,14 @@ func (r *flowRun) IsComplete() bool {
 	return r.status != flows.RunActive
 }
 func (r *flowRun) setStatus(status flows.RunStatus) {
-	now := time.Now()
 	r.status = status
-	r.exitedOn = &now
-	r.setModifiedOn(now)
+	r.setModifiedOn(time.Now())
 }
-func (r *flowRun) Exit(status flows.RunStatus) { r.setStatus(status) }
-func (r *flowRun) Status() flows.RunStatus     { return r.status }
+func (r *flowRun) Exit(status flows.RunStatus) {
+	r.setStatus(status)
+	r.exitedOn = &r.modifiedOn
+}
+func (r *flowRun) Status() flows.RunStatus { return r.status }
 
 func (r *flowRun) Parent() flows.FlowRunReference { return r.parent }
 func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
@@ -149,7 +150,7 @@ func (r *flowRun) SetEvent(event flows.Event) { r.event = event }
 func (r *flowRun) Event() flows.Event         { return r.event }
 
 func (r *flowRun) AddEvent(s flows.Step, e flows.Event) {
-	now := time.Now()
+	now := time.Now().In(time.UTC)
 
 	e.SetCreatedOn(now)
 	e.SetStep(s.UUID())
@@ -167,7 +168,7 @@ func (r *flowRun) AddError(step flows.Step, err error) {
 
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
-	now := time.Now()
+	now := time.Now().In(time.UTC)
 	step := &step{uuid: flows.StepUUID(uuid.NewV4().String()), node: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	r.setModifiedOn(now)
@@ -180,7 +181,7 @@ func (r *flowRun) ClearPath() {
 func (r *flowRun) Webhook() utils.RequestResponse { return r.webhook }
 func (r *flowRun) SetWebhook(rr utils.RequestResponse) {
 	r.webhook = rr
-	r.setModifiedOn(time.Now())
+	r.setModifiedOn(time.Now().In(time.UTC))
 }
 
 func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }

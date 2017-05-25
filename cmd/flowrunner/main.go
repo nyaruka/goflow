@@ -152,7 +152,7 @@ func main() {
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// and start our flow
-	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil)
+	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}

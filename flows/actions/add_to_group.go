@@ -39,10 +39,10 @@ func (a *AddToGroupAction) Validate() error {
 func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	contact := run.Contact()
 	if contact != nil {
-		groups := make([]flows.GroupUUID, 0, len(a.Groups))
+		groups := make([]*flows.Group, 0, len(a.Groups))
 		for _, group := range a.Groups {
 			if contact.Groups().FindGroup(group.UUID()) == nil {
-				groups = append(groups, group.UUID())
+				groups = append(groups, group)
 			}
 
 		}

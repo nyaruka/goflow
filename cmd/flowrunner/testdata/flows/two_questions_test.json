@@ -2,23 +2,23 @@
   "resume_events": [
     {
       "type": "msg_in",
-      "id": 0,
-      "channel": "",
-      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-      "urn": "",
-      "text": "Blue",
+      "created_on": "2000-01-01T00:00:00.000000000-00:00",
       "step": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      "id": 0,
+      "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "urn": "tel:+12065551212",
+      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+      "text": "Blue"
     },
     {
       "type": "msg_in",
-      "id": 0,
-      "channel": "",
-      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-      "urn": "",
-      "text": "Coke",
+      "created_on": "2000-01-01T00:00:00.000000000-00:00",
       "step": "",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00"
+      "id": 0,
+      "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "urn": "tel:+12065551212",
+      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+      "text": "Coke"
     }
   ],
   "outputs": [
@@ -37,19 +37,16 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 }
               ]
             }
@@ -70,19 +67,16 @@
       "events": [
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
         },
         {
           "type": "msg_wait",
           "timeout": 600,
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": ""
         }
       ]
     },
@@ -103,38 +97,35 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 },
                 {
                   "type": "msg_in",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Blue",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "id": 0,
+                  "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                  "urn": "tel:+12065551212",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Blue"
                 },
                 {
                   "type": "save_result",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "node": "node1",
                   "name": "favorite_color",
                   "value": "Blue",
-                  "category": "Blue",
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "category": "Blue"
                 }
               ]
             },
@@ -145,27 +136,24 @@
               "events": [
                 {
                   "type": "save_to_contact",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "field": "language",
                   "name": "Language",
-                  "value": "fra",
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "value": "fra"
                 },
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 }
               ]
             }
@@ -173,13 +161,13 @@
           "status": "A",
           "input": {
             "type": "msg_in",
-            "id": 0,
-            "channel": "",
-            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-            "urn": "",
-            "text": "Blue",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "step": "",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+            "id": 0,
+            "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "urn": "tel:+12065551212",
+            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+            "text": "Blue"
           },
           "wait": {
             "type": "msg",
@@ -204,46 +192,43 @@
       "events": [
         {
           "type": "msg_in",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Blue",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "id": 0,
+          "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+          "urn": "tel:+12065551212",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Blue"
         },
         {
           "type": "save_result",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "node": "node1",
           "name": "favorite_color",
           "value": "Blue",
-          "category": "Blue",
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "category": "Blue"
         },
         {
           "type": "save_to_contact",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "field": "language",
           "name": "Language",
-          "value": "fra",
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "value": "fra"
         },
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
         },
         {
           "type": "msg_wait",
           "timeout": 600,
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": ""
         }
       ]
     },
@@ -264,38 +249,35 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 },
                 {
                   "type": "msg_in",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Blue",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "id": 0,
+                  "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                  "urn": "tel:+12065551212",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Blue"
                 },
                 {
                   "type": "save_result",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "node": "node1",
                   "name": "favorite_color",
                   "value": "Blue",
-                  "category": "Blue",
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "category": "Blue"
                 }
               ]
             },
@@ -308,46 +290,43 @@
               "events": [
                 {
                   "type": "save_to_contact",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "field": "language",
                   "name": "Language",
-                  "value": "fra",
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "value": "fra"
                 },
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                 },
                 {
                   "type": "msg_wait",
                   "timeout": 600,
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
                 },
                 {
                   "type": "msg_in",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Coke",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "id": 0,
+                  "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                  "urn": "tel:+12065551212",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Coke"
                 },
                 {
                   "type": "save_result",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
                   "node": "node2",
                   "name": "soda",
                   "value": "Coke",
-                  "category": "Coke",
-                  "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "category": "Coke"
                 }
               ]
             },
@@ -359,13 +338,10 @@
               "events": [
                 {
                   "type": "msg_out",
-                  "id": 0,
-                  "channel": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "urn": "",
-                  "text": "Parfait, vous avez finis et tu aimes Coke",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00"
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Parfait, vous avez finis et tu aimes Coke"
                 }
               ]
             }
@@ -373,13 +349,13 @@
           "status": "C",
           "input": {
             "type": "msg_in",
-            "id": 0,
-            "channel": "",
-            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-            "urn": "",
-            "text": "Coke",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "step": "",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00"
+            "id": 0,
+            "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "urn": "tel:+12065551212",
+            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+            "text": "Coke"
           },
           "results": {
             "favorite_color": {
@@ -407,32 +383,29 @@
       "events": [
         {
           "type": "msg_in",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Coke",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "id": 0,
+          "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+          "urn": "tel:+12065551212",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Coke"
         },
         {
           "type": "save_result",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
           "node": "node2",
           "name": "soda",
           "value": "Coke",
-          "category": "Coke",
-          "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "category": "Coke"
         },
         {
           "type": "msg_out",
-          "id": 0,
-          "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "urn": "",
-          "text": "Parfait, vous avez finis et tu aimes Coke",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00"
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Parfait, vous avez finis et tu aimes Coke"
         }
       ]
     }

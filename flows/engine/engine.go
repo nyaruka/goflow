@@ -12,19 +12,25 @@ type VisitedMap map[flows.NodeUUID]bool
 const noDestination = flows.NodeUUID("")
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) (flows.RunOutput, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input) (flows.RunOutput, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
+	// if we got an input, set it
+	if input != nil {
+		run.SetInput(input)
+	}
+
 	// no first node, nothing to do (valid but weird)
 	if len(flow.Nodes()) == 0 {
+		run.Exit(flows.RunCompleted)
 		return run.Output(), nil
 	}
 
 	initTranslations(run)
 
 	// off to the races
-	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil)
+	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
 	return run.Output(), err
 }
 
@@ -56,7 +62,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 		return run.Output(), err
 	}
 
-	err = continueRunUntilWait(run, destination, step)
+	err = continueRunUntilWait(run, destination, step, nil)
 	if err != nil {
 		return run.Output(), err
 	}
@@ -90,7 +96,7 @@ func initTranslations(run flows.FlowRun) {
 }
 
 // Continues the flow entering the passed in flow
-func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step) (err error) {
+func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, event flows.Event) (err error) {
 	// set of uuids we've visited
 	visited := make(VisitedMap)
 
@@ -115,7 +121,12 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 			break
 		}
 
-		destination, step, err = enterNode(run, node)
+		destination, step, err = enterNode(run, node, event)
+
+		// only pass our event to the first node, it is in charge of logging it
+		event = nil
+
+		// mark this node as visited to prevent loops
 		visited[node.UUID()] = true
 	}
 
@@ -144,9 +155,14 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, event flows
 	return pickNodeExit(run, node, step)
 }
 
-func enterNode(run flows.FlowRun, node flows.Node) (flows.NodeUUID, flows.Step, error) {
+func enterNode(run flows.FlowRun, node flows.Node, event flows.Event) (flows.NodeUUID, flows.Step, error) {
 	// create our step
 	step := run.CreateStep(node)
+
+	// log our entry event if we have one
+	if event != nil {
+		run.AddEvent(step, event)
+	}
 
 	// execute our actions
 	if node.Actions() != nil {
@@ -167,7 +183,7 @@ func enterNode(run flows.FlowRun, node flows.Node) (flows.NodeUUID, flows.Step, 
 		}
 
 		// can we end immediately?
-		event, err := wait.ShouldEnd(run, step)
+		event, err := wait.GetEndEvent(run, step)
 		if err != nil {
 			return noDestination, step, err
 		}

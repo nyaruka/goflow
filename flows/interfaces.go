@@ -103,7 +103,7 @@ type Exit interface {
 
 type Wait interface {
 	Begin(FlowRun, Step) error
-	ShouldEnd(FlowRun, Step) (Event, error)
+	GetEndEvent(FlowRun, Step) (Event, error)
 	End(FlowRun, Step, Event) error
 	utils.Typed
 	utils.VariableResolver
@@ -125,11 +125,6 @@ type Context interface {
 	Run() FlowRun
 }
 
-type Input interface {
-	utils.VariableResolver
-	utils.Typed
-}
-
 type Event interface {
 	CreatedOn() *time.Time
 	SetCreatedOn(time.Time)
@@ -138,6 +133,11 @@ type Event interface {
 	SetStep(StepUUID)
 
 	utils.Typed
+}
+
+type Input interface {
+	Event
+	utils.VariableResolver
 }
 
 type Step interface {

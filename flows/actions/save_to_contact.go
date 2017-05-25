@@ -76,7 +76,7 @@ func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 		}
 	} else {
 		// save to our field dictionary
-		run.Contact().Fields().Save(a.Field, a.Name, value, time.Now())
+		run.Contact().Fields().Save(a.Field, a.Name, value, time.Now().In(time.UTC))
 	}
 
 	// log our event
