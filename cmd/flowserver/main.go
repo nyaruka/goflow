@@ -21,6 +21,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var version = "dev"
+
 func main() {
 	logger := logrus.New()
 
@@ -62,7 +64,7 @@ func main() {
 			}).Error()
 		}
 	}()
-	logrus.WithField("comp", "server").WithField("port", "8080").Info("listening")
+	logrus.WithField("comp", "server").WithField("port", "8080").WithField("version", version).Info("listening")
 
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
