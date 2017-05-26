@@ -1,5 +1,5 @@
 build:
-  main: ./cmd/flowserver/main.go
+  main: ./cmd/flowserver/
   binary: flowserver
   goos:
     - windows
