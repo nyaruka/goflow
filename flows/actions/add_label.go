@@ -12,6 +12,7 @@ const TypeAddLabel string = "add_label"
 // event will be created with the msg id and label id when this action is encountered. If there is
 // no incoming msg at that point an error will be output.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_label",
@@ -20,6 +21,7 @@ const TypeAddLabel string = "add_label"
 //       "name": "complaint"
 //     }]
 //   }
+// ```
 //
 // @disabled_action add_label
 type AddLabelAction struct {

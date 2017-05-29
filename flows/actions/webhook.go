@@ -18,12 +18,14 @@ const TypeWebhook string = "webhook"
 //
 // A `webhook_result` event will be created based on the results of the HTTP call.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "webhook",
 //     "method": "get",
 //     "url": "https://api.ipify.org?format=json"
 //   }
+// ```
 //
 // @action webhook
 type WebhookAction struct {

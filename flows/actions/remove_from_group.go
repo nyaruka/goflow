@@ -13,6 +13,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // for each group which the contact is removed from. If no groups are specified, then the contact will be removed from
 // all groups.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "remove_from_group",
@@ -21,6 +22,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 //       "name": "Registered Users"
 //     }]
 //   }
+// ```
 //
 // @action remove_from_group
 type RemoveFromGroupAction struct {

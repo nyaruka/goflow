@@ -15,7 +15,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 //    "type": "remove_from_group",
 //    "groups": [{
 //	     "name": "Survey Audience",
-//	     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//	     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
 //	  }]
 //   }
 // ```

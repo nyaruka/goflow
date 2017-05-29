@@ -15,7 +15,7 @@ const TypeAddToGroup string = "add_to_group"
 //    "created_on": "2006-01-02T15:04:05Z",
 //    "type": "add_to_group",
 //    "groups": [{
-//	    "uuid": b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//	    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 //      "name": "Survey Audience"
 //    }]
 //   }

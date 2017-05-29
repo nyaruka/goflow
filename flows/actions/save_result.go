@@ -17,6 +17,7 @@ const TypeSaveResult string = "save_result"
 // Both the value and category fields may be templates. A `save_result` event will be created with the
 // final values.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "save_result",
@@ -24,6 +25,7 @@ const TypeSaveResult string = "save_result"
 //     "value": "m",
 //     "category": "Male"
 //   }
+// ```
 //
 // @action save_result
 type SaveResultAction struct {

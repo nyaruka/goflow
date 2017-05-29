@@ -16,12 +16,14 @@ const TypeMsg string = "msg"
 // The URNs and text fields may be templates. A `msg_out` event will be created for each unique urn, contact and group
 // with the evaluated text.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "msg",
 //     "urns": ["tel:+12065551212"],
 //     "text": "Hi @contact.name, are you ready to complete today's survey?"
 //   }
+// ```
 //
 // @action msg
 type MsgAction struct {

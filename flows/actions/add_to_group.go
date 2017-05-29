@@ -12,6 +12,7 @@ const TypeAddToGroup string = "add_to_group"
 // AddToGroupAction can be used to add a contact to one or more groups. An `add_to_group` event will be created
 // for each group which the contact is added to.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_to_group",
@@ -20,6 +21,7 @@ const TypeAddToGroup string = "add_to_group"
 //       "name": "Survey Audience"
 //     }]
 //   }
+// ```
 //
 // @action add_to_group
 type AddToGroupAction struct {

@@ -14,11 +14,13 @@ const TypeReply string = "reply"
 //
 // A `msg_out` event will be created with the evaluated text.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "reply",
 //     "text": "Hi @contact.name, are you ready to complete today's survey?"
 //   }
+// ```
 //
 // @action reply
 type ReplyAction struct {

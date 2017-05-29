@@ -14,6 +14,7 @@ const TypeEmail string = "email"
 //
 // An `email` event will be created for each email address.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "email",
@@ -21,6 +22,7 @@ const TypeEmail string = "email"
 //     "body": "Your activation token is @contact.fields.activation_token",
 //     "emails": ["@contact.urns.email"]
 //   }
+// ```
 //
 // @action email
 type EmailAction struct {

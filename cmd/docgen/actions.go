@@ -111,10 +111,13 @@ func handleActionDoc(prefix string, typeName string, docString string) {
 
 	docs := make([]string, 0, len(lines))
 	example := make([]string, 0, len(lines))
+	inExample := false
 	for _, l := range lines {
 		if strings.HasPrefix(l, prefix) {
 			name = l[len(prefix)+1:]
-		} else if strings.HasPrefix(l, "  ") {
+		} else if strings.HasPrefix(l, "```") {
+			inExample = !inExample
+		} else if inExample {
 			example = append(example, l[2:])
 		} else {
 			docs = append(docs, l)

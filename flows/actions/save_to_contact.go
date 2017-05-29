@@ -18,6 +18,7 @@ const TypeSaveToContact string = "save_to_contact"
 // Two fields are treated specially, "name" and "language", which can be used as the "field" parameter
 // and which will set the special contact fields of the same name.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "save_to_contact",
@@ -25,6 +26,7 @@ const TypeSaveToContact string = "save_to_contact"
 //     "name": "Gender",
 //     "value": "Male"
 //   }
+// ```
 //
 // @action save_to_contact
 type SaveToContactAction struct {

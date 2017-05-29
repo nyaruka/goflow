@@ -14,12 +14,14 @@ const TypeFlow string = "flow"
 //
 // A `flow_enter` event will be created when the flow is started, a `flow_exit` event will be created upon the subflows exit.
 //
+// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "flow",
 //     "name": "Collect Language",
 //     "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
 //   }
+// ```
 //
 // @action flow
 type FlowAction struct {
