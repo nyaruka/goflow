@@ -18,7 +18,7 @@ func InputFromEnvelope(envelope *utils.TypedEnvelope) (flows.Input, error) {
 		if err == nil {
 			err = utils.ValidateAll(event)
 		}
-		return &event, envelope.TraceError(err)
+		return &event, err
 
 	default:
 		return nil, fmt.Errorf("Unknown input type: %s", envelope.Type)

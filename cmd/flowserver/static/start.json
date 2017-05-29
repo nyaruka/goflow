@@ -1,0 +1,46 @@
+{
+    "flows": [
+        {
+            "uuid": "ba32aba5-661d-4680-b5f7-d80444e4728c",
+            "name": "Echo Flow",
+            "language": "eng",
+            "nodes": [
+                {
+                    "uuid": "0edcf559-5233-4d1c-bbea-18686b829427",
+                    "actions": [
+                        {
+                            "uuid": "accca030-7963-4660-92e9-5b86d5f21d05",
+                            "type": "reply",
+                            "text": "You said '@input.text'"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "contact": {
+        "uuid": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
+        "name": "Ben Haggerty",
+        "language": "eng",
+        "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore"
+        ],
+        "fields": {
+            "birth_year": {
+                "name": "Birth Year",
+                "field": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
+                "value": "1983",
+                "created_on": "2017-05-29T18:52:49.142572463Z"
+            }
+        }
+    },
+    "input": {
+        "contact": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
+        "type": "msg_in",
+        "text": "Let's go thrifting!",
+        "channel": "8f3ddc92-d04f-4205-a312-bac0a6e311ef",
+        "urn": "tel:+12065551212",
+        "created_on": "2017-05-29T00:00:00.000000000-00:00"
+    }
+}

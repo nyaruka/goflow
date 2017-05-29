@@ -14,12 +14,12 @@ func WaitFromEnvelope(envelope *utils.TypedEnvelope) (flows.Wait, error) {
 	case TypeMsg:
 		wait := MsgWait{}
 		err := json.Unmarshal(envelope.Data, &wait)
-		return &wait, envelope.TraceError(err)
+		return &wait, err
 
 	case TypeFlow:
 		wait := FlowWait{}
 		err := json.Unmarshal(envelope.Data, &wait)
-		return &wait, envelope.TraceError(err)
+		return &wait, err
 
 	default:
 		return nil, fmt.Errorf("Unknown wait type: %s", envelope.Type)

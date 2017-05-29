@@ -3,7 +3,6 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 type Typed interface {
@@ -72,11 +71,4 @@ func EnvelopeFromTyped(typed Typed) (*TypedEnvelope, error) {
 
 	envelope := TypedEnvelope{typed.Type(), typedData}
 	return &envelope, nil
-}
-
-func (e *TypedEnvelope) TraceError(err error) error {
-	if err == nil {
-		return nil
-	}
-	return fmt.Errorf("%s: %s", err.Error(), e.Data)
 }

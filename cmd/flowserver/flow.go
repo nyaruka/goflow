@@ -22,8 +22,8 @@ type flowResponse struct {
 }
 
 type startRequest struct {
-	Flows   json.RawMessage      `json:"flows"`
-	Contact json.RawMessage      `json:"contact"`
+	Flows   json.RawMessage      `json:"flows"    validate:"required"`
+	Contact json.RawMessage      `json:"contact"  validate:"required"`
 	Input   *utils.TypedEnvelope `json:"input"`
 }
 
@@ -40,24 +40,26 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	if start.Flows == nil || start.Contact == nil {
-		return nil, fmt.Errorf("missing contact or flows element")
+	// validate our input
+	err = utils.ValidateAll(start)
+	if err != nil {
+		return nil, err
 	}
 
 	// read our flows
 	startFlows, err := definition.ReadFlows(start.Flows)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing flows: %s", err)
+		return nil, err
 	}
 
 	if len(startFlows) == 0 {
-		return nil, fmt.Errorf("must have at least one flow to start")
+		return nil, fmt.Errorf("flows: must have at least one flow to start")
 	}
 
 	// read our contact
 	contact, err := flows.ReadContact(start.Contact)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing contact: %s", err)
+		return nil, err
 	}
 
 	// read our input
@@ -65,7 +67,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	if start.Input != nil {
 		input, err = inputs.InputFromEnvelope(start.Input)
 		if err != nil {
-			return nil, fmt.Errorf("error parsing input: %s", err)
+			return nil, err
 		}
 	}
 
@@ -82,10 +84,10 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 type resumeRequest struct {
-	Contact   json.RawMessage      `json:"contact"`
-	Flows     json.RawMessage      `json:"flows"`
-	RunOutput json.RawMessage      `json:"run_output"`
-	Event     *utils.TypedEnvelope `json:"event"`
+	Flows     json.RawMessage      `json:"flows"       validate:"required,min=1"`
+	Contact   json.RawMessage      `json:"contact"     validate:"required"`
+	RunOutput json.RawMessage      `json:"run_output"  validate:"required"`
+	Event     *utils.TypedEnvelope `json:"event"       validate:"required"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -101,32 +103,34 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	if resume.Flows == nil || resume.RunOutput == nil || resume.Event == nil || resume.Contact == nil {
+	// validate our input
+	err = utils.ValidateAll(resume)
+	if err != nil {
 		return nil, err
 	}
 
 	// read our flows
 	flowList, err := definition.ReadFlows(resume.Flows)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing flows: %s", err)
+		return nil, err
 	}
 
 	// read our run
 	runOutput, err := runs.ReadRunOutput(resume.RunOutput)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing run output: %s", err)
+		return nil, err
 	}
 
 	// our contact
 	contact, err := flows.ReadContact(resume.Contact)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing run contact: %s", err)
+		return nil, err
 	}
 
 	// and our event
 	event, err := events.EventFromEnvelope(resume.Event)
 	if err != nil {
-		return nil, fmt.Errorf("error reading event: %s", err)
+		return nil, err
 	}
 
 	// build our environment
@@ -143,7 +147,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	// resume our flow
 	output, err := engine.ResumeFlow(env, activeRun, event)
 	if err != nil {
-		return nil, fmt.Errorf("Error resuming flow: %s", err)
+		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}
 
 	return &flowResponse{Contact: contact, RunOutput: output}, nil

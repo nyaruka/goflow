@@ -18,7 +18,7 @@ func RouterFromEnvelope(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	case TypeSwitch:
 		router := SwitchRouter{}
 		err := json.Unmarshal(envelope.Data, &router)
-		return &router, envelope.TraceError(err)
+		return &router, err
 
 	case TypeRandom:
 		router := RandomRouter{}
@@ -27,7 +27,7 @@ func RouterFromEnvelope(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	case TypeRandomOnce:
 		router := RandomOnceRouter{}
 		err := json.Unmarshal(envelope.Data, &router)
-		return &router, envelope.TraceError(err)
+		return &router, err
 
 	default:
 		return nil, fmt.Errorf("Unknown router type: %s", envelope.Type)
