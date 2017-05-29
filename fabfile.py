@@ -133,7 +133,11 @@ def choose_version():
         if release['name'] == version:
             for asset in release['assets']:
                 if asset['name'].find("linux_amd64") > 0:
-                    env.config['asset_url'] = 'https://api.github.com/repos/nyaruka/goflow/releases/assets/3970279'
+                    env.config['asset_url'] = asset['url']
+                    break
+
+        if env.config['asset_url'] is not None:
+            break
 
     if env.config.get('asset_url') is None:
         print Fore.RED + "No release found for %s" % version

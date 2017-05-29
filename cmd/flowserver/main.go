@@ -43,7 +43,6 @@ func main() {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(lg.RequestLogger(logger))
-	r.Use(middleware.Heartbeat("/ping"))
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
 
@@ -64,6 +63,7 @@ func main() {
 
 	// root page just serves our example and "postman"" interface
 	r.Get("/", templateHandler(staticDir, indexHandler))
+	r.Get("/version", jsonHandler(handleVersion))
 
 	r.Post("/flow/start", jsonHandler(handleStart))
 	r.Post("/flow/resume", jsonHandler(handleResume))
@@ -160,4 +160,11 @@ func templateHandler(fs http.FileSystem, handler templateHandlerFunc) http.Handl
 			writeError(w, r, http.StatusInternalServerError, err)
 		}
 	}
+}
+
+func handleVersion(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	response := map[string]string{
+		"version": version,
+	}
+	return response, nil
 }

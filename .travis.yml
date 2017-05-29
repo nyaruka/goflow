@@ -20,4 +20,4 @@ script:
  - go test $(go list ./... | grep -v /vendor/) -cover -bench=. -benchmem
 
 after_success:
-  test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
+  test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | VERSION=v0.20.0 bash
