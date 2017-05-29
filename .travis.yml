@@ -16,7 +16,6 @@ before_script:
  - psql -U postgres -d goflow_test -f schema.sql
 
 script:
- - go generate github.com/nyaruka/goflow/cmd/...
  - go test $(go list ./... | grep -v /vendor/) -cover
  - go test $(go list ./... | grep -v /vendor/) -cover -bench=. -benchmem
 
