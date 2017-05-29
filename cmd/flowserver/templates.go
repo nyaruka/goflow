@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -25,6 +27,8 @@ func indexHandler(fs http.FileSystem, w http.ResponseWriter, r *http.Request) er
 		fmt.Printf("start doesn't exit\n")
 		return err
 	}
+	indented := bytes.Buffer{}
+	json.Indent(&indented, []byte(startFlow), "", "  ")
 
 	indexTpl, err := readFSFile(fs, "/index.html")
 	if err != nil {
@@ -37,5 +41,5 @@ func indexHandler(fs http.FileSystem, w http.ResponseWriter, r *http.Request) er
 	if err != nil {
 		return err
 	}
-	return t.ExecuteTemplate(w, "index.html", startFlow)
+	return t.ExecuteTemplate(w, "index.html", indented.String())
 }

@@ -67,20 +67,20 @@
             // get our content
             var body = ace.edit("request").getValue();
 
-            // post it to our start endpoint
-            var start = performance.now()
             $.ajax({
                 method: "post",
                 url: $(this).data("url"),
                 data: body,
                 dataType: "json",
-                success: function (data) {
-                    $("#response_status").text("200 - " + (performance.now() - start).toString().substr(0, 6) + "ms");
+                complete: function (xhr, status) {
+                    elapsed = xhr.getResponseHeader("X-Elapsed-Ns")
+                    $("#response_status").text("200 - " + (elapsed / 1000000.0) + "ms")
                     var response = ace.edit("response");
-                    response.setValue(JSON.stringify(data, null, "  "), -1);
+                    response.setValue(xhr.responseText, -1);
                 },
                 error: function (xhr, status, error) {
-                    $("#response_status").text(status + " - " + (performance.now() - start).toString().substr(0, 6) + "ms");
+                    elapsed = xhr.getResponseHeader("X-Elapsed-Ns")
+                    $("#response_status").text(status + " - " + (elapsed / 1000000.0) + "ms")
                     var response = ace.edit("response");
                     response.setValue(xhr.responseText, -1);
                 }
