@@ -17,8 +17,8 @@ import (
 )
 
 type flowResponse struct {
-	Contact   *flows.Contact  `json:"contact"`
-	RunOutput flows.RunOutput `json:"run_output"`
+	Contact *flows.Contact `json:"contact"`
+	Session flows.Session  `json:"session"`
 }
 
 type startRequest struct {
@@ -75,19 +75,19 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	output, err := engine.StartFlow(env, startFlows[0], contact, nil, input)
+	session, err := engine.StartFlow(env, startFlows[0], contact, nil, input)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
 
-	return &flowResponse{Contact: contact, RunOutput: output}, nil
+	return &flowResponse{Contact: contact, Session: session}, nil
 }
 
 type resumeRequest struct {
-	Flows     json.RawMessage      `json:"flows"       validate:"required,min=1"`
-	Contact   json.RawMessage      `json:"contact"     validate:"required"`
-	RunOutput json.RawMessage      `json:"run_output"  validate:"required"`
-	Event     *utils.TypedEnvelope `json:"event"       validate:"required"`
+	Flows   json.RawMessage      `json:"flows"       validate:"required,min=1"`
+	Contact json.RawMessage      `json:"contact"     validate:"required"`
+	Session json.RawMessage      `json:"session"     validate:"required"`
+	Event   *utils.TypedEnvelope `json:"event"       validate:"required"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -116,7 +116,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read our run
-	runOutput, err := runs.ReadRunOutput(resume.RunOutput)
+	runOutput, err := runs.ReadSession(resume.Session)
 	if err != nil {
 		return nil, err
 	}
@@ -145,10 +145,10 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	activeRun := runOutput.ActiveRun()
 
 	// resume our flow
-	output, err := engine.ResumeFlow(env, activeRun, event)
+	session, err := engine.ResumeFlow(env, activeRun, event)
 	if err != nil {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}
 
-	return &flowResponse{Contact: contact, RunOutput: output}, nil
+	return &flowResponse{Contact: contact, Session: session}, nil
 }

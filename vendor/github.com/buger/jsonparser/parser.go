@@ -188,7 +188,12 @@ func searchKeys(data []byte, keys ...string) int {
 					if curIdx == aIdx {
 						valueFound = value
 						valueOffset = offset
+						if dataType == String {
+							valueOffset = valueOffset - 2
+							valueFound = data[i+valueOffset : i+valueOffset+len(value)+2]
+						}
 					}
+
 					curIdx += 1
 				})
 

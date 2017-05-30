@@ -120,6 +120,8 @@ func TestEvaluateTemplate(t *testing.T) {
 	strMap["2"] = "two"
 	strMap["3"] = "three"
 	strMap["four"] = "four"
+	strMap["with space"] = "spacy"
+	strMap["with-dash"] = "dashy"
 
 	intMap := make(map[int]string)
 	intMap[1] = "one"
@@ -165,6 +167,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(str_map[key])", "four", false},
 		{"@(str_map[lower(key)])", "four", false},
 		{"@(title(missing))", "", true},
+		{`@(str_map["with-dash"])`, "dashy", false},
+		{`@(str_map["with space"])`, "spacy", false},
 
 		{"@string1 world", "foo world", false},
 

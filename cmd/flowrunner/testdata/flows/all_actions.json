@@ -80,7 +80,7 @@
                         "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                         "type": "webhook",
                         "method": "get",
-                        "url": "http://echo.jsontest.com/key/value/one/two"
+                        "url": "http://localhost/?cmd=success"
                     }
                 ]
             }

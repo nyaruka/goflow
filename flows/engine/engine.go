@@ -12,7 +12,7 @@ type VisitedMap map[flows.NodeUUID]bool
 const noDestination = flows.NodeUUID("")
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input) (flows.RunOutput, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input) (flows.Session, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
@@ -24,24 +24,24 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	// no first node, nothing to do (valid but weird)
 	if len(flow.Nodes()) == 0 {
 		run.Exit(flows.RunCompleted)
-		return run.Output(), nil
+		return run.Session(), nil
 	}
 
 	initTranslations(run)
 
 	// off to the races
 	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
-	return run.Output(), err
+	return run.Session(), err
 }
 
 // ResumeFlow resumes our flow from the last step
-func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.RunOutput, error) {
+func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.Session, error) {
 	// to resume a flow, hydrate our run with the environment
 	run.Hydrate(env)
 
 	// no steps to resume from, nothing to do, return
 	if len(run.Path()) == 0 {
-		return run.Output(), nil
+		return run.Session(), nil
 	}
 
 	initTranslations(run)
@@ -54,17 +54,17 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	if node == nil {
 		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.Node())
 		run.AddError(step, err)
-		return run.Output(), err
+		return run.Session(), err
 	}
 
 	destination, step, err := resumeNode(run, node, step, event)
 	if err != nil {
-		return run.Output(), err
+		return run.Session(), err
 	}
 
 	err = continueRunUntilWait(run, destination, step, nil)
 	if err != nil {
-		return run.Output(), err
+		return run.Session(), err
 	}
 
 	// if we ran to completion and have a parent, resume that flow
@@ -72,13 +72,13 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 		event := events.NewFlowExitEvent(run)
 		parentRun, err := env.GetRun(run.Parent().UUID())
 		if err != nil {
-			return run.Output(), err
+			return run.Session(), err
 		}
-		parentRun.SetOutput(run.Output())
+		parentRun.SetSession(run.Session())
 		return ResumeFlow(env, parentRun, event)
 	}
 
-	return run.Output(), nil
+	return run.Session(), nil
 }
 
 // initializes our context based on our flow and current context
