@@ -118,9 +118,9 @@ var testTests = []struct {
 	{"has_number_between", []interface{}{"nothing here", "10", "15"}, false, nil, false},
 	{"has_number_between", []interface{}{"one", "two"}, false, nil, true},
 
-	// {"has_number_between", []interface{}{"but foo", noStr{}, "10"}, false, nil, true},
-	// {"has_number_between", []interface{}{noStr{}, "but foo", "10"}, false, nil, true},
-	// {"has_number_between", []interface{}{"a string", "10", "not number"}, false, nil, true},
+	{"has_number_between", []interface{}{"but foo", noStr{}, "10"}, false, nil, true},
+	{"has_number_between", []interface{}{noStr{}, "but foo", "10"}, false, nil, true},
+	{"has_number_between", []interface{}{"a string", "10", "not number"}, false, nil, true},
 
 	{"has_date", []interface{}{"last date was 1.10.2017"}, true, time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC), false},
 	{"has_date", []interface{}{"last date was 1.10.99"}, true, time.Date(1999, 10, 1, 0, 0, 0, 0, time.UTC), false},
@@ -154,10 +154,14 @@ var testTests = []struct {
 	{"has_email", []interface{}{noStr{}}, false, nil, true},
 	{"has_email", []interface{}{"too", "many", "args"}, false, nil, true},
 
-	{"has_phone", []interface{}{"my number is 0788123123"}, true, "0788123123", false},
-	{"has_phone", []interface{}{"my number is +250788123123"}, true, "+250788123123", false},
-	{"has_phone", []interface{}{"my number is 12345"}, false, nil, false},
+	{"has_phone", []interface{}{"my number is 0788123123", "RW"}, true, "+250788123123", false},
+	{"has_phone", []interface{}{"my number is +250788123123", "RW"}, true, "+250788123123", false},
+	{"has_phone", []interface{}{"my number is +12065551212", "RW"}, true, "+12065551212", false},
+	{"has_phone", []interface{}{"my number is 12065551212", "US"}, true, "+12065551212", false},
+	{"has_phone", []interface{}{"my number is 206 555 1212", "US"}, true, "+12065551212", false},
+	{"has_phone", []interface{}{"my number is none of your business", "US"}, false, nil, false},
 	{"has_phone", []interface{}{noStr{}}, false, nil, true},
+	{"has_phone", []interface{}{"number", noStr{}}, false, nil, true},
 	{"has_phone", []interface{}{"too", "many", "args"}, false, nil, true},
 }
 

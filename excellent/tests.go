@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/phonenumbers"
 	"github.com/shopspring/decimal"
 )
 
@@ -595,36 +596,39 @@ func HasEmail(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
-// TODO: plug in a real phone number parsing library
-var phoneRE = regexp.MustCompile(`^\+?([0-9]{7,12})$`)
-
-// HasPhone tests whether a phone number is contained in the text
+// HasPhone tests whether a phone number (in the passed in country) is contained in the text
 //
-//   @(has_phone("my number is 2067799294")) -> true
-//  @(has_phone("my number is 206 779 9294").match) -> "+12067799294"
-//   @(has_phone("my number is none of your business")) -> false
+//   @(has_phone("my number is 2067799294", "US")) -> true
+//   @(has_phone("my number is 206 779 9294", "US").match) -> "+12067799294"
+//   @(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone
 func HasPhone(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) != 1 {
-		return fmt.Errorf("HAS_PHONE takes exactly one argument, got %d", len(args))
+	if len(args) != 2 {
+		return fmt.Errorf("HAS_PHONE takes exactly two arguments, the string to search and the country code, got %d", len(args))
 	}
 
-	// convert our arg to a string
+	// grab the text we will search
 	text, err := utils.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	// split by whitespace
-	for _, word := range strings.Fields(text) {
-		phone := phoneRE.FindString(word)
-		if phone != "" {
-			return XTestResult{true, phone}
-		}
+	// and the country we are searching
+	country, err := utils.ToString(env, args[1])
+	if err != nil {
+		return err
 	}
 
-	return XFalseResult
+	// try to find a phone number
+	phone, err := phonenumbers.Parse(text, country)
+	if err != nil {
+		return XFalseResult
+	}
+
+	// format as E164 number
+	formatted := phonenumbers.Format(phone, phonenumbers.E164)
+	return XTestResult{true, formatted}
 }
 
 //------------------------------------------------------------------------------------------
