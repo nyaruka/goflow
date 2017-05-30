@@ -186,7 +186,7 @@ func main() {
 		inputs = append(inputs, event)
 
 		// rebuild our output
-		output, err = runs.ReadRunOutput(outJSON)
+		output, err = runs.ReadSession(outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}

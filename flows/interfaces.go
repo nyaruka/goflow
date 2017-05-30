@@ -164,8 +164,8 @@ type Result interface {
 	utils.VariableResolver
 }
 
-// RunOutput represents the output of a Run in its last execution cycle
-type RunOutput interface {
+// Session represents the session of a flow run which may contain many runs
+type Session interface {
 	Runs() []FlowRun
 	AddRun(FlowRun)
 
@@ -194,9 +194,9 @@ type FlowRun interface {
 	Results() Results
 	Environment() FlowEnvironment
 
-	Output() RunOutput
-	SetOutput(RunOutput)
-	ResetOutput()
+	Session() Session
+	SetSession(Session)
+	ResetSession()
 
 	Status() RunStatus
 	Exit(RunStatus)

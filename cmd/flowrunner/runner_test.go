@@ -6,10 +6,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -26,9 +30,11 @@ var flowTests = []struct {
 	{"two_questions.json", "", "", "two_questions_test.json"},
 	{"subflow.json", "", "", "subflow_test.json"},
 	{"brochure.json", "", "", "brochure_test.json"},
+	{"all_actions.json", "", "", "all_actions_test.json"},
 }
 
 var writeOutput bool
+var serverURL = ""
 
 func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite TestFlow output")
@@ -62,6 +68,18 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	runnerFlows, err := definition.ReadFlows(json.RawMessage(flowJSON))
 	if err != nil {
 		return nil, fmt.Errorf("Error unmarshalling flows '%s': %s", flowFilename, err)
+	}
+
+	// rewrite the URL on any webhook actions
+	for _, flow := range runnerFlows {
+		for _, n := range flow.Nodes() {
+			for _, a := range n.Actions() {
+				webhook, isWebhook := a.(*actions.WebhookAction)
+				if isWebhook {
+					webhook.URL = strings.Replace(webhook.URL, "http://localhost", serverURL, 1)
+				}
+			}
+		}
 	}
 
 	contactJSON, err := readFile("contacts/", contactFilename)
@@ -99,7 +117,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		}
 		outputs = append(outputs, outJSON)
 
-		output, err = runs.ReadRunOutput(outJSON)
+		output, err = runs.ReadSession(outJSON)
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -134,8 +152,43 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	return outputs, nil
 }
 
+// set up a mock server for webhook actions
+func newTestHTTPServer() *httptest.Server {
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cmd := r.URL.Query().Get("cmd")
+		defer r.Body.Close()
+		w.Header().Set("Date", "")
+
+		switch cmd {
+		case "success":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{ "ok": "true" }`))
+		case "unavailable":
+			w.WriteHeader(http.StatusServiceUnavailable)
+			w.Write([]byte(`{ "errors": ["service unavailable"] }`))
+		default:
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(`{ "errors": ["bad_request"] }`))
+		}
+	}))
+	// manually create a listener for our test server so that our output is predictable
+	l, err := net.Listen("tcp", "127.0.0.1:49999")
+	if err != nil {
+		log.Fatal(err)
+	}
+	server.Listener = l
+	return server
+}
+
 func TestFlows(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
+
+	server := newTestHTTPServer()
+	server.Start()
+	defer server.Close()
+
+	// save away our server URL so we can rewrite our URLs
+	serverURL = server.URL
 
 	for _, test := range flowTests {
 		testJSON, err := readFile("flows/", test.output)
@@ -195,11 +248,11 @@ func TestFlows(t *testing.T) {
 			}
 
 			for i := range outputs {
-				o, err := runs.ReadRunOutput(outputs[i])
+				o, err := runs.ReadSession(outputs[i])
 				if err != nil {
 					t.Errorf("Error unmarshalling output: %s\n", err)
 				}
-				expectedO, err := runs.ReadRunOutput(flowTest.Outputs[i])
+				expectedO, err := runs.ReadSession(flowTest.Outputs[i])
 				if err != nil {
 					t.Errorf("Error unmarshalling output: %s\n", err)
 				}

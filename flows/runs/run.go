@@ -36,7 +36,7 @@ type flowRun struct {
 	parent flows.FlowRunReference
 	child  flows.FlowRunReference
 
-	output flows.RunOutput
+	session flows.Session
 
 	path             []flows.Step
 	flowTranslations flows.FlowTranslations
@@ -58,8 +58,8 @@ func (r *flowRun) Contact() *flows.Contact        { return r.contact }
 // Hydrate prepares a deserialized run for executions
 func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	// start with a fresh output if we don't have one
-	if r.output == nil {
-		r.ResetOutput()
+	if r.session == nil {
+		r.ResetSession()
 	}
 
 	// save off our environment
@@ -115,13 +115,13 @@ func (r *flowRun) Context() flows.Context             { return r.context }
 func (r *flowRun) Environment() flows.FlowEnvironment { return r.environment }
 func (r *flowRun) Results() flows.Results             { return r.results }
 
-func (r *flowRun) Output() flows.RunOutput { return r.output }
-func (r *flowRun) SetOutput(output flows.RunOutput) {
-	r.output = output
-	r.output.AddRun(r)
+func (r *flowRun) Session() flows.Session { return r.session }
+func (r *flowRun) SetSession(session flows.Session) {
+	r.session = session
+	r.session.AddRun(r)
 }
-func (r *flowRun) ResetOutput() {
-	r.SetOutput(newRunOutput())
+func (r *flowRun) ResetSession() {
+	r.SetSession(newSession())
 }
 
 func (r *flowRun) IsComplete() bool {
@@ -158,7 +158,7 @@ func (r *flowRun) AddEvent(s flows.Step, e flows.Event) {
 	fs := s.(*step)
 	fs.addEvent(e)
 
-	r.Output().AddEvent(e)
+	r.Session().AddEvent(e)
 	r.setModifiedOn(now)
 }
 
@@ -233,17 +233,17 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 	// create our new context
 	r.context = NewContextForContact(contact, r)
 
-	// set our output
+	// set our session
 	if parent != nil {
 		parentRun := parent.(*flowRun)
 		r.parent = newReferenceFromRun(parentRun)
 		parentRun.child = newReferenceFromRun(r)
 
-		r.output = parent.Output()
+		r.session = parent.Session()
 	} else {
-		r.output = newRunOutput()
+		r.session = newSession()
 	}
-	r.output.AddRun(r)
+	r.session.AddRun(r)
 
 	return r
 }

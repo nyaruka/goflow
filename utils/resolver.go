@@ -2,6 +2,7 @@ package utils
 
 import (
 	"strconv"
+	"strings"
 )
 
 // VariableResolver defines the interface used by Excellent objects that can be indexed into
@@ -74,16 +75,17 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 }
 
 // popNextVariable pops the next variable off our string:
-//     "foo.bar.baz" -> "foo", "bar.baz"
-//     "foo[0].bar" -> "foo", "[0].baz"
-//     "foo.0.bar" -> "foo", "0.baz"
-//     "[0].bar" -> "0", "bar"
-func popNextVariable(key string) (string, string) {
+//     foo.bar.baz -> "foo", "bar.baz"
+//     foo[0].bar -> "foo", "[0].baz"
+//     foo.0.bar -> "foo", "0.baz"
+//     [0].bar -> "0", "bar"
+//     foo["my key"] -> "foo", "my key"
+func popNextVariable(input string) (string, string) {
 	var keyStart = 0
 	var keyEnd = -1
 	var restStart = -1
 
-	for i, c := range key {
+	for i, c := range input {
 		if i == 0 && c == '[' {
 			keyStart++
 		} else if c == '[' {
@@ -102,10 +104,13 @@ func popNextVariable(key string) (string, string) {
 	}
 
 	if keyEnd == -1 {
-		return key, ""
+		return input, ""
 	}
 
-	return key[keyStart:keyEnd], key[restStart:]
+	key := strings.Trim(input[keyStart:keyEnd], "\"")
+	rest := input[restStart:]
+
+	return key, rest
 }
 
 type mapResolver struct {

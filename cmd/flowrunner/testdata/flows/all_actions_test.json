@@ -1,0 +1,226 @@
+{
+  "resume_events": [],
+  "outputs": [
+    {
+      "runs": [
+        {
+          "uuid": "",
+          "flow": "flow1",
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "path": [
+            {
+              "uuid": "",
+              "node": "node1",
+              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+              "left_on": "2000-01-01T00:00:00.000000000-00:00",
+              "events": [
+                {
+                  "type": "add_to_group",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "groups": [
+                    {
+                      "uuid": "",
+                      "name": "Survey Audience"
+                    }
+                  ]
+                },
+                {
+                  "type": "save_to_contact",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "field": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+                  "name": "activation_token",
+                  "value": "XXX-YYY-ZZZ"
+                },
+                {
+                  "type": "email",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "email": "",
+                  "subject": "Here is your activation token",
+                  "body": "Your activation token is XXX-YYY-ZZZ"
+                },
+                {
+                  "type": "flow_enter",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451"
+                },
+                {
+                  "type": "flow_exit",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "status": "C",
+                  "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+                },
+                {
+                  "type": "msg_out",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "urn": "tel:+12065551212",
+                  "text": "Hi Ben Haggerty, are you ready?"
+                },
+                {
+                  "type": "msg_out",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "text": "Hi Ben Haggerty, are you ready to complete today's survey?"
+                },
+                {
+                  "type": "save_result",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "node": "node1",
+                  "name": "gender",
+                  "value": "m",
+                  "category": "Male"
+                },
+                {
+                  "type": "save_to_contact",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "field": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+                  "name": "Gender",
+                  "value": "Male"
+                },
+                {
+                  "type": "webhook",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "url": "http://127.0.0.1:49999/?cmd=success",
+                  "status": "S",
+                  "status_code": 200,
+                  "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                  "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }"
+                }
+              ]
+            }
+          ],
+          "status": "C",
+          "child": "c9943827-b80b-4e22-8e46-6be598049f4e",
+          "results": {
+            "gender": {
+              "node": "node1",
+              "name": "gender",
+              "value": "m",
+              "category": "Male",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00"
+            }
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "uuid": "",
+          "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+          "channel": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "path": [],
+          "status": "C",
+          "parent": "746ab857-7354-4aa9-8b16-a9b62d23c4aa",
+          "results": {},
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        }
+      ],
+      "events": [
+        {
+          "type": "add_to_group",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "groups": [
+            {
+              "uuid": "",
+              "name": "Survey Audience"
+            }
+          ]
+        },
+        {
+          "type": "save_to_contact",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "field": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+          "name": "activation_token",
+          "value": "XXX-YYY-ZZZ"
+        },
+        {
+          "type": "email",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "email": "",
+          "subject": "Here is your activation token",
+          "body": "Your activation token is XXX-YYY-ZZZ"
+        },
+        {
+          "type": "flow_enter",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451"
+        },
+        {
+          "type": "flow_exit",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "flow": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "status": "C",
+          "exited_on": "2000-01-01T00:00:00.000000000-00:00"
+        },
+        {
+          "type": "msg_out",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "urn": "tel:+12065551212",
+          "text": "Hi Ben Haggerty, are you ready?"
+        },
+        {
+          "type": "msg_out",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "text": "Hi Ben Haggerty, are you ready to complete today's survey?"
+        },
+        {
+          "type": "save_result",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "node": "node1",
+          "name": "gender",
+          "value": "m",
+          "category": "Male"
+        },
+        {
+          "type": "save_to_contact",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "field": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+          "name": "Gender",
+          "value": "Male"
+        },
+        {
+          "type": "webhook",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "url": "http://127.0.0.1:49999/?cmd=success",
+          "status": "S",
+          "status_code": 200,
+          "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+          "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }"
+        }
+      ]
+    }
+  ]
+}
