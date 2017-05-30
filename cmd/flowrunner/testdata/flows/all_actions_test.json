@@ -90,26 +90,20 @@
                   "value": "Male"
                 },
                 {
-                  "type": "error",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step": "",
-                  "text": "Get http://127.0.0.1:49999/?cmd=success: dial tcp 127.0.0.1:49999: getsockopt: connection refused"
-                },
-                {
                   "type": "webhook",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "url": "http://127.0.0.1:49999/?cmd=success",
-                  "status": "F",
-                  "status_code": 0,
+                  "status": "S",
+                  "status_code": 200,
                   "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-                  "response": ""
+                  "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }"
                 }
               ]
             }
           ],
           "status": "C",
-          "child": "c458a838-efa8-42d7-a655-3e4784bcbf5b",
+          "child": "c9943827-b80b-4e22-8e46-6be598049f4e",
           "results": {
             "gender": {
               "node": "node1",
@@ -132,7 +126,7 @@
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "path": [],
           "status": "C",
-          "parent": "2d17c317-93c1-497d-879d-3ed56cf1b0d4",
+          "parent": "746ab857-7354-4aa9-8b16-a9b62d23c4aa",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -217,20 +211,14 @@
           "value": "Male"
         },
         {
-          "type": "error",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step": "",
-          "text": "Get http://127.0.0.1:49999/?cmd=success: dial tcp 127.0.0.1:49999: getsockopt: connection refused"
-        },
-        {
           "type": "webhook",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
           "url": "http://127.0.0.1:49999/?cmd=success",
-          "status": "F",
-          "status_code": 0,
+          "status": "S",
+          "status_code": 200,
           "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-          "response": ""
+          "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }"
         }
       ]
     }

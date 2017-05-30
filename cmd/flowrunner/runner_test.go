@@ -153,7 +153,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 }
 
 // set up a mock server for webhook actions
-func startTestHTTPServer() {
+func newTestHTTPServer() *httptest.Server {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cmd := r.URL.Query().Get("cmd")
 		defer r.Body.Close()
@@ -177,14 +177,18 @@ func startTestHTTPServer() {
 		log.Fatal(err)
 	}
 	server.Listener = l
-	server.Start()
-	defer server.Close()
-	serverURL = server.URL
+	return server
 }
 
 func TestFlows(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
-	startTestHTTPServer()
+
+	server := newTestHTTPServer()
+	server.Start()
+	defer server.Close()
+
+	// save away our server URL so we can rewrite our URLs
+	serverURL = server.URL
 
 	for _, test := range flowTests {
 		testJSON, err := readFile("flows/", test.output)
