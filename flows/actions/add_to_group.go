@@ -44,6 +44,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 		groups := make([]*flows.Group, 0, len(a.Groups))
 		for _, group := range a.Groups {
 			if contact.Groups().FindGroup(group.UUID()) == nil {
+				contact.AddGroup(group.UUID(), group.Name())
 				groups = append(groups, group)
 			}
 

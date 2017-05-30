@@ -66,6 +66,17 @@
                   "text": "Hi Ben Haggerty, are you ready?"
                 },
                 {
+                  "type": "remove_from_group",
+                  "groups": [
+                    {
+                      "uuid": "",
+                      "name": "Survey Audience"
+                    }
+                  ],
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": ""
+                },
+                {
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
@@ -103,7 +114,7 @@
             }
           ],
           "status": "C",
-          "child": "c9943827-b80b-4e22-8e46-6be598049f4e",
+          "child": "0a020b41-fe73-4bd2-ae79-62efd9af5a98",
           "results": {
             "gender": {
               "node": "node1",
@@ -126,7 +137,7 @@
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
           "path": [],
           "status": "C",
-          "parent": "746ab857-7354-4aa9-8b16-a9b62d23c4aa",
+          "parent": "2963771a-2b7a-4b99-86aa-3ab76c769408",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -185,6 +196,17 @@
           "step": "",
           "urn": "tel:+12065551212",
           "text": "Hi Ben Haggerty, are you ready?"
+        },
+        {
+          "type": "remove_from_group",
+          "groups": [
+            {
+              "uuid": "",
+              "name": "Survey Audience"
+            }
+          ],
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": ""
         },
         {
           "type": "msg_out",

@@ -52,8 +52,8 @@
                         "type": "remove_from_group",
                         "groups": [
                             {
-                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                                "name": "Registered Users"
+                                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                                "name": "Survey Audience"
                             }
                         ]
                     },
