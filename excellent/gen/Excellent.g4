@@ -1,5 +1,7 @@
 grammar Excellent;
 
+# rebuild with % antlr4 -Dlanguage=Go excellent/gen/Excellent.g4 -visitor -package gen
+
 import LexUnicode;
 
 COMMA      : ',';
