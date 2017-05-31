@@ -78,7 +78,7 @@ func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
 
 	// start our flow
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), []flows.Flow{subflow}, []flows.FlowRun{}, []*flows.Contact{})
-	output, err := engine.StartFlow(env, flow, contact, nil, nil)
+	output, err := engine.StartFlow(env, flow, contact, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}

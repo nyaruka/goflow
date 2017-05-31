@@ -60,7 +60,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 	return bytes, err
 }
 
-func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeEvents []flows.Event) ([]json.RawMessage, error) {
+func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeEvents []flows.Event, extra json.RawMessage) ([]json.RawMessage, error) {
 	flowJSON, err := readFile("flows/", flowFilename)
 	if err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 	// start our contact down this flow
 	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
-	output, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil, nil)
+	output, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil, nil, extra)
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +215,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		outputs, err := runFlow(env, test.flow, test.contact, test.channel, resumeEvents)
+		outputs, err := runFlow(env, test.flow, test.contact, test.channel, resumeEvents, flowTest.Extra)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.flow, test.output, err)
 			continue
@@ -228,7 +228,7 @@ func TestFlows(t *testing.T) {
 				log.Fatal("Error marshalling inputs: ", err)
 			}
 
-			flowTest := FlowTest{envelopes, outputs}
+			flowTest := FlowTest{flowTest.Extra, envelopes, outputs}
 			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 			if err != nil {
 				log.Fatal("Error marshalling test definition: ", err)

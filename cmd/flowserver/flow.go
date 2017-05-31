@@ -24,6 +24,7 @@ type flowResponse struct {
 type startRequest struct {
 	Flows   json.RawMessage      `json:"flows"    validate:"required"`
 	Contact json.RawMessage      `json:"contact"  validate:"required"`
+	Extra   json.RawMessage      `json:"extra,omitempty"`
 	Input   *utils.TypedEnvelope `json:"input"`
 }
 
@@ -75,7 +76,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	session, err := engine.StartFlow(env, startFlows[0], contact, nil, input)
+	session, err := engine.StartFlow(env, startFlows[0], contact, nil, input, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}

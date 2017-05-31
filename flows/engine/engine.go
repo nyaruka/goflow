@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -12,13 +13,18 @@ type VisitedMap map[flows.NodeUUID]bool
 const noDestination = flows.NodeUUID("")
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input) (flows.Session, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input, extra json.RawMessage) (flows.Session, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
 	// if we got an input, set it
 	if input != nil {
 		run.SetInput(input)
+	}
+
+	// if we got extra, set it
+	if extra != nil {
+		run.SetExtra(extra)
 	}
 
 	// no first node, nothing to do (valid but weird)

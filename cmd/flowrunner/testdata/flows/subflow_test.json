@@ -53,7 +53,7 @@
             "type": "flow",
             "flow": "flow2"
           },
-          "child": "3f206963-8c04-4e04-b7f1-236389fe29d1",
+          "child": "",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -92,7 +92,7 @@
           "wait": {
             "type": "msg"
           },
-          "parent": "bf32954c-3278-457b-82c5-997fee8c375d",
+          "parent": "",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -213,7 +213,7 @@
             "contact": "contact1-test-4b7f-a34b-e37e31e86451",
             "text": "Ryan Lewis"
           },
-          "parent": "bf32954c-3278-457b-82c5-997fee8c375d",
+          "parent": "",
           "results": {
             "name": {
               "node": "flow2-node1",
@@ -290,7 +290,7 @@
             }
           ],
           "status": "C",
-          "child": "3f206963-8c04-4e04-b7f1-236389fe29d1",
+          "child": "",
           "results": {},
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",

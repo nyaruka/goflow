@@ -51,7 +51,7 @@ func (a *FlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	run.AddEvent(step, events.NewFlowEnterEvent(a.Flow, run.Contact().UUID()))
 
 	// start it for our current contact
-	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run, nil)
+	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run, nil, nil)
 
 	// log any error we receive
 	if err != nil {

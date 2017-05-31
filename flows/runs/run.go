@@ -25,6 +25,7 @@ type flowRun struct {
 	channel     *flows.Channel
 	channelUUID flows.ChannelUUID
 
+	extra   json.RawMessage
 	results results
 	context flows.Context
 	status  flows.RunStatus
@@ -184,6 +185,11 @@ func (r *flowRun) SetWebhook(rr utils.RequestResponse) {
 	r.setModifiedOn(time.Now().In(time.UTC))
 }
 
+func (r *flowRun) Extra() utils.JSONFragment {
+	return utils.NewJSONFragment([]byte(r.extra))
+}
+func (r *flowRun) SetExtra(extra json.RawMessage) { r.extra = extra }
+
 func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time       { return r.modifiedOn }
 func (r *flowRun) setModifiedOn(now time.Time) { r.modifiedOn = now }
@@ -256,6 +262,9 @@ func (r *flowRun) Resolve(key string) interface{} {
 
 	case "contact":
 		return r.Contact()
+
+	case "extra":
+		return r.Extra()
 
 	case "flow":
 		return r.Flow()
@@ -375,6 +384,7 @@ type runEnvelope struct {
 
 	Results results               `json:"results"`
 	Webhook utils.RequestResponse `json:"webhook,omitempty"`
+	Extra   json.RawMessage       `json:"extra,omitempty"`
 
 	CreatedOn  time.Time  `json:"created_on"`
 	ModifiedOn time.Time  `json:"modified_on"`
@@ -402,6 +412,7 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
+	r.extra = envelope.Extra
 
 	if envelope.Parent != "" {
 		r.parent = &runReference{uuid: envelope.Parent}
@@ -464,6 +475,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.TimesOutOn = r.timesOutOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
+	re.Extra = r.extra
 
 	if r.parent != nil {
 		re.Parent = r.parent.UUID()

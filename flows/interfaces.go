@@ -3,6 +3,8 @@ package flows
 import (
 	"time"
 
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -193,6 +195,9 @@ type FlowRun interface {
 	Context() Context
 	Results() Results
 	Environment() FlowEnvironment
+
+	SetExtra(json.RawMessage)
+	Extra() utils.JSONFragment
 
 	Session() Session
 	SetSession(Session)

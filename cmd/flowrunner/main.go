@@ -21,6 +21,7 @@ import (
 )
 
 type FlowTest struct {
+	Extra        json.RawMessage        `json:"extra,omitempty"`
 	ResumeEvents []*utils.TypedEnvelope `json:"resume_events"`
 	Outputs      []json.RawMessage      `json:"outputs"`
 }
@@ -63,6 +64,8 @@ func replaceFields(input []byte) []byte {
 		"timesout_on": "2000-01-01T00:00:00.000000000-00:00",
 		"uuid":        "",
 		"step":        "",
+		"parent":      "",
+		"child":       "",
 	}
 
 	output := bytes.Buffer{}
@@ -152,7 +155,7 @@ func main() {
 	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// and start our flow
-	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil)
+	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
@@ -227,7 +230,7 @@ func main() {
 			log.Fatal("Error marshalling inputs: ", err)
 		}
 
-		flowTest := FlowTest{envelopes, outputs}
+		flowTest := FlowTest{nil, envelopes, outputs}
 		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)
