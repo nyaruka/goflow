@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Another Flow",
+    "uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+    "nodes": [
+      {
+        "uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
+        "exits": [
+          {
+            "uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
+            "destination": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
+          }
+        ],
+        "actions": [
+          {
+            "text": "What is your name?",
+            "type": "reply",
+            "uuid": "d3cd8da7-55f2-4bd3-9a0c-efc93c99e498"
+          }
+        ]
+      },
+      {
+        "uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+        "wait": {
+          "type": "msg"
+        },
+        "exits": [
+          {
+            "name": "All Responses",
+            "uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+            "destination": "2929d2fc-2778-4d98-a4bc-73a7345710b0"
+          }
+        ],
+        "router": {
+          "name": "Name",
+          "type": "switch",
+          "cases": [],
+          "default": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+          "operand": "@input"
+        }
+      },
+      {
+        "uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
+        "actions": [
+          {
+            "name": "Name",
+            "type": "save_to_contact",
+            "uuid": "aafb505c-603d-4025-864d-471345ed236d",
+            "field": "name",
+            "value": "@run.results.name"
+          },
+          {
+            "type": "reply",
+            "uuid": "aafb505c-603d-4025-864d-471345ed237d",
+            "text": "Great, pleased to meet you @run.results.name"
+          }
+        ]
+      }
+    ]
+  }
+]

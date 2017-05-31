@@ -31,6 +31,7 @@ var flowTests = []struct {
 	{"subflow.json", "", "", "subflow_test.json"},
 	{"brochure.json", "", "", "brochure_test.json"},
 	{"all_actions.json", "", "", "all_actions_test.json"},
+	{"default_result.json", "", "", "default_result_test.json"},
 }
 
 var writeOutput bool

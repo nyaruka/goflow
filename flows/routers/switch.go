@@ -109,7 +109,13 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 
 	// we have a default exit, use that
 	if r.Default != "" {
-		return flows.NewRoute(r.Default, "default"), nil
+		// evaluate our operand as a string
+		value, err := utils.ToString(env, operand)
+		if err != nil {
+			run.AddError(step, err)
+		}
+
+		return flows.NewRoute(r.Default, value), nil
 	}
 
 	// no matches, no defaults, no route
