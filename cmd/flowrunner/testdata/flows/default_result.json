@@ -32,7 +32,7 @@
           }
         ],
         "router": {
-          "name": "Name",
+          "name": "Contact Name",
           "type": "switch",
           "cases": [],
           "default": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
@@ -47,12 +47,19 @@
             "type": "save_to_contact",
             "uuid": "aafb505c-603d-4025-864d-471345ed236d",
             "field": "name",
-            "value": "@run.results.name"
+            "value": "@run.results.contact_name"
+          },
+          {
+            "name": "First Name",
+            "type": "save_to_contact",
+            "uuid": "aafb505c-603d-4025-864d-471345ed237d",
+            "field": "first-name-uuid",
+            "value": "@(WORD(run.results.contact_name, 1))"
           },
           {
             "type": "reply",
             "uuid": "aafb505c-603d-4025-864d-471345ed237d",
-            "text": "Great, pleased to meet you @run.results.name"
+            "text": "Great, pleased to meet you @contact.fields.first_name"
           }
         ]
       }

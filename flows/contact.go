@@ -13,7 +13,7 @@ type Contact struct {
 	language utils.Language
 	urns     URNList
 	groups   GroupList
-	fields   Fields
+	fields   *Fields
 }
 
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
@@ -39,7 +39,7 @@ func (c *Contact) RemoveGroup(uuid GroupUUID) bool {
 	return false
 }
 
-func (c *Contact) Fields() Fields { return c.fields }
+func (c *Contact) Fields() *Fields { return c.fields }
 
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
@@ -98,7 +98,7 @@ type contactEnvelope struct {
 	Language utils.Language `json:"language"`
 	URNs     URNList        `json:"urns"`
 	Groups   GroupList      `json:"groups"`
-	Fields   Fields         `json:"fields"`
+	Fields   *Fields        `json:"fields,omitempty"`
 }
 
 func (c *Contact) UnmarshalJSON(data []byte) error {
@@ -127,7 +127,7 @@ func (c *Contact) UnmarshalJSON(data []byte) error {
 	}
 
 	if ce.Fields == nil {
-		c.fields = newFields()
+		c.fields = NewFields()
 	} else {
 		c.fields = ce.Fields
 	}

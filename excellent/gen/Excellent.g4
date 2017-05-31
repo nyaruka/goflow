@@ -1,5 +1,7 @@
 grammar Excellent;
 
+import LexUnicode;
+
 COMMA      : ',';
 LPAREN     : '(';
 RPAREN     : ')';
@@ -30,7 +32,7 @@ STRING     : '"' (~["] | '""')* '"';
 TRUE       : [Tt][Rr][Uu][Ee];
 FALSE      : [Ff][Aa][Ll][Ss][Ee];
 
-NAME       : [a-zA-Z][a-zA-Z0-9_.]*;    // variable names, e.g. contact.name or function names, e.g. SUM
+NAME       : UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_')*;    // variable names, e.g. contact.name or function names, e.g. SUM
 
 WS         : [ \t\n\r]+ -> skip;        // ignore whitespace
 

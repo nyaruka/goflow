@@ -130,7 +130,7 @@
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                  "name": "Name",
+                  "name": "Contact Name",
                   "value": "Ryan Lewis",
                   "category": "All Responses"
                 }
@@ -151,11 +151,19 @@
                   "value": "Ryan Lewis"
                 },
                 {
+                  "type": "save_to_contact",
+                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                  "step": "",
+                  "field": "first-name-uuid",
+                  "name": "First Name",
+                  "value": "Ryan"
+                },
+                {
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-                  "text": "Great, pleased to meet you Ryan Lewis"
+                  "text": "Great, pleased to meet you Ryan"
                 }
               ]
             }
@@ -172,9 +180,9 @@
             "text": "Ryan Lewis"
           },
           "results": {
-            "name": {
+            "Contact Name": {
               "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-              "name": "Name",
+              "name": "Contact Name",
               "value": "Ryan Lewis",
               "category": "All Responses",
               "created_on": "2000-01-01T00:00:00.000000000-00:00"
@@ -203,7 +211,7 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
           "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-          "name": "Name",
+          "name": "Contact Name",
           "value": "Ryan Lewis",
           "category": "All Responses"
         },
@@ -216,11 +224,19 @@
           "value": "Ryan Lewis"
         },
         {
+          "type": "save_to_contact",
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step": "",
+          "field": "first-name-uuid",
+          "name": "First Name",
+          "value": "Ryan"
+        },
+        {
           "type": "msg_out",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
           "contact": "contact1-test-4b7f-a34b-e37e31e86451",
-          "text": "Great, pleased to meet you Ryan Lewis"
+          "text": "Great, pleased to meet you Ryan"
         }
       ]
     }

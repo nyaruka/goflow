@@ -87,6 +87,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	if err != nil {
 		return nil, err
 	}
+
 	contact, err := flows.ReadContact(json.RawMessage(contactJSON))
 	if err != nil {
 		return nil, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
