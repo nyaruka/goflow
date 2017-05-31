@@ -1,4 +1,4 @@
-// Generated from src/github.com/nyaruka/goflow/excellent/gen/Excellent.g4 by ANTLR 4.7.
+// Generated from excellent/gen/Excellent.g4 by ANTLR 4.7.
 
 package gen // Excellent
 import "github.com/antlr/antlr4/runtime/Go/antlr"

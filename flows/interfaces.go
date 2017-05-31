@@ -157,15 +157,6 @@ type Step interface {
 	Events() []Event
 }
 
-type Results interface {
-	Save(node NodeUUID, name string, value string, category string, createdOn time.Time)
-	utils.VariableResolver
-}
-
-type Result interface {
-	utils.VariableResolver
-}
-
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Runs() []FlowRun
@@ -193,7 +184,7 @@ type FlowRun interface {
 	SetChannel(*Channel)
 
 	Context() Context
-	Results() Results
+	Results() *Results
 	Environment() FlowEnvironment
 
 	SetExtra(json.RawMessage)
@@ -243,7 +234,7 @@ type FlowRunReference interface {
 	ContactUUID() ContactUUID
 	ChannelUUID() ChannelUUID
 
-	Results() Results
+	Results() *Results
 	Status() RunStatus
 
 	CreatedOn() time.Time

@@ -26,7 +26,7 @@ type flowRun struct {
 	channelUUID flows.ChannelUUID
 
 	extra   json.RawMessage
-	results results
+	results *flows.Results
 	context flows.Context
 	status  flows.RunStatus
 	wait    flows.Wait
@@ -114,7 +114,7 @@ func (r *flowRun) SetChannel(channel *flows.Channel) {
 
 func (r *flowRun) Context() flows.Context             { return r.context }
 func (r *flowRun) Environment() flows.FlowEnvironment { return r.environment }
-func (r *flowRun) Results() flows.Results             { return r.results }
+func (r *flowRun) Results() *flows.Results            { return r.results }
 
 func (r *flowRun) Session() flows.Session { return r.session }
 func (r *flowRun) SetSession(session flows.Session) {
@@ -227,7 +227,7 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		uuid:        flows.RunUUID(uuid.NewV4().String()),
 		flowUUID:    flow.UUID(),
 		contactUUID: contact.UUID(),
-		results:     make(results, 0),
+		results:     flows.NewResults(),
 		environment: env,
 		contact:     contact,
 		flow:        flow,
@@ -336,7 +336,7 @@ func (r *runReference) FlowUUID() flows.FlowUUID       { return r.run.flowUUID }
 func (r *runReference) ContactUUID() flows.ContactUUID { return r.run.contactUUID }
 func (r *runReference) ChannelUUID() flows.ChannelUUID { return r.run.channelUUID }
 
-func (r *runReference) Results() flows.Results  { return r.run.results }
+func (r *runReference) Results() *flows.Results { return r.run.results }
 func (r *runReference) Status() flows.RunStatus { return r.run.status }
 
 func (r *runReference) CreatedOn() time.Time   { return r.run.createdOn }
@@ -382,7 +382,7 @@ type runEnvelope struct {
 	Parent flows.RunUUID `json:"parent,omitempty"`
 	Child  flows.RunUUID `json:"child,omitempty"`
 
-	Results results               `json:"results"`
+	Results *flows.Results        `json:"results,omitempty"`
 	Webhook utils.RequestResponse `json:"webhook,omitempty"`
 	Extra   json.RawMessage       `json:"extra,omitempty"`
 
@@ -444,6 +444,8 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 
 	if envelope.Results != nil {
 		r.results = envelope.Results
+	} else {
+		r.results = flows.NewResults()
 	}
 
 	if envelope.Webhook != nil {

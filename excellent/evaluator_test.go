@@ -29,6 +29,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	varMap := make(map[string]interface{})
 	varMap["string1"] = "foo"
 	varMap["string2"] = "bar"
+	varMap["汉字"] = "simplified chinese"
 	varMap["int1"] = 1
 	varMap["int2"] = 2
 	varMap["dec1"] = 1.5
@@ -64,6 +65,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@string1.@string2", "foo.bar", false},
 		{"@string1.@string2.@string3", "foo.bar.@string3", false},
 
+		{"@(汉字)", "simplified chinese", false},
 		{"@(string1", "@(string1", false},
 		{"@ (string1", "@ (string1", false},
 		{"@ (string1)", "@ (string1)", false},
@@ -122,6 +124,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	strMap["four"] = "four"
 	strMap["with space"] = "spacy"
 	strMap["with-dash"] = "dashy"
+	strMap["汉字"] = "simplified chinese"
 
 	intMap := make(map[int]string)
 	intMap[1] = "one"
@@ -162,6 +165,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@str_map.1", "one", false},
 		{"@(str_map[1])", "one", false},
 		{"@(str_map[10])", nil, false},
+		{"@(str_map.汉字)", "simplified chinese", false},
 		{"@(int_map[1])", nil, true},
 		{"@(str_map[\"four\"])", "four", false},
 		{"@(str_map[key])", "four", false},
