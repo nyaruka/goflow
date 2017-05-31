@@ -21,20 +21,16 @@ type Fields struct {
 // Save saves a new field to our map
 func (f *Fields) Save(uuid FieldUUID, name string, value string, createdOn time.Time) {
 	field := Field{uuid, name, value, createdOn}
-
-	fmt.Printf("Saving field: %s with value: %s\n", name, value)
 	f.fields[utils.Snakify(name)] = &field
 }
 
 // Resolve resolves the field for the passed in key which will be snakified
 func (f *Fields) Resolve(key string) interface{} {
 	key = utils.Snakify(key)
-	fmt.Printf("Looking up key: %s in: %s\n", key, f.fields)
 	value, ok := f.fields[key]
 	if !ok {
 		return nil
 	}
-	fmt.Printf("returning: %s\n", value)
 
 	return value
 }
