@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -53,8 +52,45 @@ func eventAsJSON(event flows.Event) (string, error) {
 	return string(replaceFields(envJSON)), nil
 }
 
+func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
+	for _, e := range arrFields {
+		switch child := e.(type) {
+		case map[string]interface{}:
+			replaceMapFields(replacements, parent, child)
+		case []interface{}:
+			replaceArrayFields(replacements, parent, child)
+		}
+	}
+}
+
+func replaceMapFields(replacements map[string]interface{}, parent string, mapFields map[string]interface{}) {
+	for k, v := range mapFields {
+		replacement, found := replacements[k]
+		if found {
+			mapFields[k] = replacement
+			continue
+		}
+
+		if parent != "" {
+			parentKey := parent + "." + k
+			replacement, found = replacements[parentKey]
+			if found {
+				mapFields[k] = replacement
+				continue
+			}
+		}
+
+		switch child := v.(type) {
+		case map[string]interface{}:
+			replaceMapFields(replacements, k, child)
+		case []interface{}:
+			replaceArrayFields(replacements, k, child)
+		}
+	}
+}
+
 func replaceFields(input []byte) []byte {
-	fields := map[string]string{
+	replacements := map[string]interface{}{
 		"arrived_on":  "2000-01-01T00:00:00.000000000-00:00",
 		"left_on":     "2000-01-01T00:00:00.000000000-00:00",
 		"exited_on":   "2000-01-01T00:00:00.000000000-00:00",
@@ -62,49 +98,27 @@ func replaceFields(input []byte) []byte {
 		"modified_on": "2000-01-01T00:00:00.000000000-00:00",
 		"expires_on":  "2000-01-01T00:00:00.000000000-00:00",
 		"timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-		"uuid":        "",
+		"event.uuid":  "",
 		"step":        "",
 		"parent":      "",
 		"child":       "",
 	}
 
-	output := bytes.Buffer{}
-	for i := 0; i < len(input); i++ {
-		b := input[i]
-		output.WriteByte(b)
-
-		// if this is a quote, figure out if we were part of one of our fields
-		if b == '"' {
-			replaceField := ""
-			outputLen := output.Len()
-			for f := range fields {
-				field := fmt.Sprintf("\"%s\"", f)
-				if outputLen < len(field) {
-					continue
-				}
-				lastPiece := output.String()[outputLen-len(field):]
-				if lastPiece == field {
-					replaceField = f
-					break
-				}
-			}
-
-			// we are skipping this field, read until we see a newline
-			if replaceField != "" {
-				i++
-				var addRune = ' '
-				for ; i < len(input) && addRune == ' '; i++ {
-					if input[i] == ',' || input[i] == '\n' {
-						addRune = rune(input[i])
-					}
-				}
-				i--
-				// write our empty value
-				output.WriteString(fmt.Sprintf(": \"%s\"%c", fields[replaceField], addRune))
-			}
-		}
+	// unmarshal to arbitrary json
+	inputJSON := make(map[string]interface{})
+	err := json.Unmarshal(input, &inputJSON)
+	if err != nil {
+		log.Fatalf("Error unmarshalling: %s", err)
 	}
-	return output.Bytes()
+
+	replaceMapFields(replacements, "", inputJSON)
+
+	// return our marshalled result
+	outputJSON, err := json.MarshalIndent(inputJSON, "", "  ")
+	if err != nil {
+		log.Fatalf("Error marshalling: %s", err)
+	}
+	return outputJSON
 }
 
 func main() {

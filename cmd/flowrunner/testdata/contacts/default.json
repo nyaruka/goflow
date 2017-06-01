@@ -4,7 +4,8 @@
     "language": "eng",
     "urns": [
         "tel:+12065551212",
-        "facebook:macklemore"
+        "facebook:macklemore",
+        "email:ben@macklemore"
     ],
     "fields": {
         "First Name": {

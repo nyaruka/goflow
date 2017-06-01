@@ -252,11 +252,11 @@ func TestFlows(t *testing.T) {
 			for i := range outputs {
 				o, err := runs.ReadSession(outputs[i])
 				if err != nil {
-					t.Errorf("Error unmarshalling output: %s\n", err)
+					t.Errorf("Error unmarshalling output running flow '%s': %s\n", test.flow, err)
 				}
 				expectedO, err := runs.ReadSession(flowTest.Outputs[i])
 				if err != nil {
-					t.Errorf("Error unmarshalling output: %s\n", err)
+					t.Errorf("Error unmarshalling expected output running flow '%s': %s\n", test.flow, err)
 				}
 
 				if len(o.Events()) != len(expectedO.Events()) {
