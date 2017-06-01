@@ -5,7 +5,7 @@
     "language": "eng",
     "localization": {
       "fra": {
-        "node1-action1": {
+        "e97cd6d5-3354-4dbd-85bc-6c1f87849eec": {
           "text": "Quelle est votres couleur preferee? (rouge/blue)"
         },
         "node1-case1": {
@@ -23,7 +23,7 @@
         "node1-exit3": {
           "label": "Autres"
         },
-        "node2-action1": {
+        "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
           "text": "@(TITLE(input.text))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
         },
         "node2-case1": {
@@ -41,7 +41,7 @@
         "node2-exit3": {
           "label": "Autres"
         },
-        "node3-action1": {
+        "0a8467eb-911a-41db-8101-ccf415c48e6a": {
           "text": "Parfait, vous avez finis et tu aimes @run.results.soda.category"
         }
       }

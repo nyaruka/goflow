@@ -147,7 +147,7 @@
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                  "text": "Blue it is! What is your favorite soda? (pepsi/coke)"
+                  "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                 },
                 {
                   "type": "msg_wait",
@@ -222,7 +222,7 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
           "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "text": "Blue it is! What is your favorite soda? (pepsi/coke)"
+          "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
         },
         {
           "type": "msg_wait",
@@ -301,7 +301,7 @@
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                  "text": "Blue it is! What is your favorite soda? (pepsi/coke)"
+                  "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                 },
                 {
                   "type": "msg_wait",
@@ -341,7 +341,7 @@
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
                   "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                  "text": "Great, you are done and like Coke!"
+                  "text": "Parfait, vous avez finis et tu aimes Coke"
                 }
               ]
             }
@@ -405,7 +405,7 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
           "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "text": "Great, you are done and like Coke!"
+          "text": "Parfait, vous avez finis et tu aimes Coke"
         }
       ]
     }
