@@ -28,7 +28,7 @@
           "uuid": "",
           "flow": "flow1",
           "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "path": [
             {
               "uuid": "",
@@ -39,7 +39,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
                 },
                 {
@@ -69,7 +69,7 @@
           "type": "msg_out",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
         },
         {
@@ -86,7 +86,7 @@
           "uuid": "",
           "flow": "flow1",
           "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "path": [
             {
               "uuid": "",
@@ -99,7 +99,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
                 },
                 {
@@ -146,7 +146,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                 },
                 {
@@ -221,7 +221,7 @@
           "type": "msg_out",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
         },
         {
@@ -238,7 +238,7 @@
           "uuid": "",
           "flow": "flow1",
           "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "path": [
             {
               "uuid": "",
@@ -251,7 +251,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212"
                 },
                 {
@@ -300,7 +300,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                 },
                 {
@@ -340,7 +340,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Parfait, vous avez finis et tu aimes Coke"
                 }
               ]
@@ -404,7 +404,7 @@
           "type": "msg_out",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "text": "Parfait, vous avez finis et tu aimes Coke"
         }
       ]
