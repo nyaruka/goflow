@@ -18,7 +18,7 @@
           "uuid": "",
           "flow": "c37ae862-4802-447a-a783-1fe029a170e9",
           "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "path": [
             {
               "uuid": "",
@@ -31,7 +31,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "What is your name?"
                 }
               ]
@@ -67,7 +67,7 @@
           "type": "msg_out",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "text": "What is your name?"
         },
         {
@@ -84,7 +84,7 @@
           "uuid": "",
           "flow": "c37ae862-4802-447a-a783-1fe029a170e9",
           "channel": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "path": [
             {
               "uuid": "",
@@ -97,7 +97,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "What is your name?"
                 }
               ]
@@ -162,7 +162,7 @@
                   "type": "msg_out",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step": "",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "text": "Great, pleased to meet you Ryan"
                 }
               ]
@@ -235,7 +235,7 @@
           "type": "msg_out",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step": "",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "text": "Great, pleased to meet you Ryan"
         }
       ]

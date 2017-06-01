@@ -27,7 +27,7 @@ type SaveResultEvent struct {
 	Node     flows.NodeUUID `json:"node"        validate:"required"`
 	Name     string         `json:"name"        validate:"required"`
 	Value    string         `json:"value"       validate:"required"`
-	Category string         `json:"category"    validate:"required"`
+	Category string         `json:"category"`
 }
 
 // NewSaveResult returns a new save result event for the passed in values

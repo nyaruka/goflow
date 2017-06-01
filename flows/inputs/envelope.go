@@ -15,10 +15,7 @@ func InputFromEnvelope(envelope *utils.TypedEnvelope) (flows.Input, error) {
 	case events.TypeMsgIn:
 		event := events.MsgInEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		if err == nil {
-			err = utils.ValidateAll(event)
-		}
-		return &event, err
+		return &event, utils.ValidateAllWithErr(err, &event)
 
 	default:
 		return nil, fmt.Errorf("Unknown input type: %s", envelope.Type)

@@ -1,104 +1,135 @@
-[{
-   "uuid":"flow1",
-   "name":"Parent Flow",
-   "language":"eng",
-   "nodes":[
-      {
-         "uuid":"flow1-node1",
-         "actions":[{
-                "type": "reply",
-                "text": "This is the parent flow"
-             },{
-             "type": "flow",
-             "flow": "flow2"
-         }],
-         "wait": {
-             "type": "flow",
-             "flow": "flow2"
-         },
-         "router":{
-            "type":"switch",
-            "operand": "@child",
-            "cases": [
-              {
-                "uuid": "node1-case1",
-                "type": "has_run_status",
-                "arguments": ["C"],
-                "exit": "node1-exit1"
-              },{
-                "uuid": "node1-case2",
-                "type": "true",
-                "exit": "node1-exit2"
-              }
-            ]
-         },
-         "exits":[
+[
+    {
+        "uuid": "flow1",
+        "name": "Parent Flow",
+        "language": "eng",
+        "nodes": [
             {
-               "uuid":"node1-exit1",
-               "name":"Completed",
-               "destination":"flow1-node2"
+                "uuid": "flow1-node1",
+                "actions": [
+                    {
+                        "uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
+                        "type": "reply",
+                        "text": "This is the parent flow"
+                    },
+                    {
+                        "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
+                        "type": "flow",
+                        "name": "Child Flow",
+                        "flow": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                    }
+                ],
+                "wait": {
+                    "type": "flow",
+                    "flow": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                },
+                "router": {
+                    "type": "switch",
+                    "operand": "@child",
+                    "cases": [
+                        {
+                            "uuid": "node1-case1",
+                            "type": "has_run_status",
+                            "arguments": [
+                                "C"
+                            ],
+                            "exit": "node1-exit1"
+                        },
+                        {
+                            "uuid": "node1-case2",
+                            "type": "true",
+                            "exit": "node1-exit2"
+                        }
+                    ]
+                },
+                "exits": [
+                    {
+                        "uuid": "node1-exit1",
+                        "name": "Completed",
+                        "destination": "flow1-node2"
+                    },
+                    {
+                        "uuid": "node1-exit2",
+                        "name": "Other",
+                        "destination": "flow1-node3"
+                    }
+                ]
             },
             {
-               "uuid":"node1-exit2",
-               "name":"Other",
-               "destination":"flow1-node3"
+                "uuid": "flow1-node2",
+                "actions": [
+                    {
+                        "uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
+                        "type": "reply",
+                        "text": "Flow succeeded, they said @child.results.name"
+                    }
+                ]
+            },
+            {
+                "uuid": "flow1-node3",
+                "actions": [
+                    {
+                        "uuid": "d80b2a5c-3b5c-47cd-b6ea-2f59bf2bb477",
+                        "type": "msg",
+                        "text": "Flow failed"
+                    }
+                ]
             }
-         ]
-      },{
-         "uuid":"flow1-node2",
-         "actions":[{
-             "type": "reply",
-             "text": "Flow succeeded, they said @child.results.name"
-         }]
-      },{
-         "uuid":"flow1-node3",
-         "actions":[{
-             "type": "msg",
-             "text": "Flow failed"
-         }]
-      }
-   ]
-},{
-   "uuid":"flow2",
-   "name":"Child flow",
-   "language":"eng",
-   "nodes":[
-      {
-        "uuid":"flow2-node1",
-        "actions":[{
-            "type": "reply",
-            "text": "What is your name?"
-        }],
-        "wait": {
-            "type": "msg"
-        },
-        "router": {
-            "name": "name",
-            "type": "switch",
-            "default": "flow2-node1-exit2",
-            "operand": "@input.text",
-            "cases": [{
-                "uuid": "flow2-node1-case1",
-                "type": "has_text",
-                "exit": "flow2-node1-exit1"
-            }]
-        },
-        "exits": [{
-            "uuid": "flow2-node1-exit1",
-            "name": "Name",
-            "destination": "flow2-node2"
-        },{
-            "uuid": "flow2-node1-exit2",
-            "name": "Other",
-            "destination": "flow2-node1"
-        }]
-      },
-      {
-        "uuid":"flow2-node2",
-        "actions":[{
-            "type": "reply",
-            "text": "Got it!"
-        }]
-      }
-   ]
-}]
+        ]
+    },
+    {
+        "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+        "name": "Child flow",
+        "language": "eng",
+        "nodes": [
+            {
+                "uuid": "flow2-node1",
+                "actions": [
+                    {
+                        "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
+                        "type": "reply",
+                        "text": "What is your name?"
+                    }
+                ],
+                "wait": {
+                    "type": "msg"
+                },
+                "router": {
+                    "name": "name",
+                    "type": "switch",
+                    "default": "flow2-node1-exit2",
+                    "operand": "@input.text",
+                    "cases": [
+                        {
+                            "uuid": "flow2-node1-case1",
+                            "type": "has_text",
+                            "exit": "flow2-node1-exit1"
+                        }
+                    ]
+                },
+                "exits": [
+                    {
+                        "uuid": "flow2-node1-exit1",
+                        "name": "Name",
+                        "destination": "flow2-node2"
+                    },
+                    {
+                        "uuid": "flow2-node1-exit2",
+                        "name": "Other",
+                        "destination": "flow2-node1"
+                    }
+                ]
+            },
+            {
+                "uuid": "flow2-node2",
+                "actions": [
+                    {
+                        "uuid": "d63929fe-e999-42ef-abf1-4b281f58891e",
+                        "type": "reply",
+                        "text": "Got it!"
+                    }
+                ]
+            }
+        ]
+    }
+]
