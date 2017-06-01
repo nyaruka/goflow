@@ -11,8 +11,8 @@ import (
 // Validator is our system validator, it can be shared across threads
 var Validator = validator.New()
 
-// ValidateAllWithErr validates all the passed in arguments, failing fast on an error including the passed in one
-func ValidateAllWithErr(err error, args ...interface{}) error {
+// ValidateAllUnlessErr validates all the passed in arguments, failing fast on any error including the passed in one
+func ValidateAllUnlessErr(err error, args ...interface{}) error {
 	if err != nil {
 		return err
 	}
