@@ -52,9 +52,8 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	if len(startFlows) == 0 {
-		return nil, fmt.Errorf("flows: must have at least one flow to start")
+		return nil, utils.NewValidationError("flows: must include at least one flow")
 	}
 
 	// read our contact
@@ -115,11 +114,17 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(flowList) == 0 {
+		return nil, utils.NewValidationError("flows: must include at least one flow")
+	}
 
-	// read our run
-	runOutput, err := runs.ReadSession(resume.Session)
+	// read our session
+	session, err := runs.ReadSession(resume.Session)
 	if err != nil {
 		return nil, err
+	}
+	if len(session.Runs()) == 0 {
+		return nil, utils.NewValidationError("session: must include at least one run")
 	}
 
 	// our contact
@@ -135,18 +140,21 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, runOutput.Runs(), []*flows.Contact{contact})
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, session.Runs(), []*flows.Contact{contact})
 
 	// hydrate all our runs
-	for _, run := range runOutput.Runs() {
+	for _, run := range session.Runs() {
 		run.Hydrate(env)
 	}
 
 	// set our contact on our run
-	activeRun := runOutput.ActiveRun()
+	activeRun := session.ActiveRun()
+	if activeRun == nil {
+		return nil, utils.NewValidationError("session: no active run to resume")
+	}
 
 	// resume our flow
-	session, err := engine.ResumeFlow(env, activeRun, event)
+	session, err = engine.ResumeFlow(env, activeRun, event)
 	if err != nil {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}

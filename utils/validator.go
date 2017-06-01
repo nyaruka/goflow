@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -56,6 +57,11 @@ func ValidateAll(args ...interface{}) (err error) {
 		}
 	}
 	return nil
+}
+
+// NewValidationError creates a new ValidationError with the single passed in error messages
+func NewValidationError(err string) ValidationError {
+	return ValidationError([]error{errors.New(err)})
 }
 
 // ValidationError is our error type for validation errors
