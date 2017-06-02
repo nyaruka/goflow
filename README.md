@@ -17,7 +17,7 @@
 ## expression tester
 
 ```
-% go install github.com/nyaruka/goflow/cmd/excellent/exptester
+% go install github.com/nyaruka/goflow/cmd/exptester
 % $GOPATH/bin/exptester '@(10 / 5 >= 2)'
 % $GOPATH/bin/exptester '@(TITLE("foo"))'
 ```
