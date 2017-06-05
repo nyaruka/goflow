@@ -70,6 +70,12 @@
                         "category": "Male"
                     },
                     {
+                        "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
+                        "type": "update_contact",
+                        "field_name": "language",
+                        "value": "eng"
+                    },
+                    {
                         "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                         "type": "save_contact_field",
                         "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
