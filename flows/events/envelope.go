@@ -16,8 +16,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeEmail:
-		event := EmailEvent{}
+	case TypeSendEmail:
+		event := SendEmailEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
@@ -26,13 +26,13 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeFlowEnter:
-		event := FlowEnterEvent{}
+	case TypeFlowEntered:
+		event := FlowEnteredEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeFlowExit:
-		event := FlowExitEvent{}
+	case TypeFlowExited:
+		event := FlowExitedEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
@@ -41,13 +41,13 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeMsgIn:
-		event := MsgInEvent{}
+	case TypeMsgReceived:
+		event := MsgReceivedEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeMsgOut:
-		event := MsgOutEvent{}
+	case TypeSendMsg:
+		event := SendMsgEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
@@ -61,18 +61,23 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeSaveResult:
-		event := SaveResultEvent{}
+	case TypeSaveFlowResult:
+		event := SaveFlowResultEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeSaveToContact:
-		event := SaveToContactEvent{}
+	case TypeSaveContactField:
+		event := SaveContactFieldEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
-	case TypeWebhook:
-		event := WebhookEvent{}
+	case TypeUpdateContact:
+		event := UpdateContactEvent{}
+		err := json.Unmarshal(envelope.Data, &event)
+		return &event, utils.ValidateAllUnlessErr(err, &event)
+
+	case TypeWebhookCalled:
+		event := WebhookCalledEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 

@@ -29,12 +29,11 @@ func ValidateAll(args ...interface{}) (err error) {
 
 		err = Validator.Struct(arg)
 		if err != nil {
-			errFormat := "%sfield '%s' %s"
+			errFormat := "%s field '%s' %s"
 
 			// see if we are a typed envelope, if so can provide better errors
 			typeDesc := ""
 			typed, isTyped := arg.(Typed)
-			fmt.Printf("%#v is typed: %s\n", arg, isTyped)
 			if isTyped {
 				errFormat = "%s: field '%s' %s"
 				typeDesc = typed.Type()

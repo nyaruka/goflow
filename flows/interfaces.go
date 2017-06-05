@@ -99,7 +99,7 @@ func NewRoute(exit ExitUUID, match string) Route {
 
 type Exit interface {
 	UUID() ExitUUID
-	Destination() NodeUUID
+	DestinationNodeUUID() NodeUUID
 	Name() string
 }
 
@@ -146,8 +146,8 @@ type Step interface {
 	utils.VariableResolver
 
 	UUID() StepUUID
-	Node() NodeUUID
-	Exit() ExitUUID
+	NodeUUID() NodeUUID
+	ExitUUID() ExitUUID
 
 	ArrivedOn() time.Time
 	LeftOn() *time.Time

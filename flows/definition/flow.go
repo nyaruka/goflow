@@ -42,7 +42,7 @@ func (f *flow) Validate() error {
 	for i, node := range f.nodes {
 		// make sure we haven't seen this node before
 		if f.nodeMap[node.UUID()] != nil {
-			return fmt.Errorf("Duplicate node uuid: '%s'", node.UUID())
+			return fmt.Errorf("duplicate node uuid: '%s'", node.UUID())
 		}
 		f.nodeMap[node.UUID()] = f.nodes[i]
 	}
@@ -75,8 +75,8 @@ func (f *flow) Validate() error {
 
 		// make sure all our exits have valid destinations
 		for _, exit := range node.Exits() {
-			if exit.Destination() != "" && f.nodeMap[exit.Destination()] == nil {
-				return fmt.Errorf("Invalid destination node uuid:'%s'", exit.Destination())
+			if exit.DestinationNodeUUID() != "" && f.nodeMap[exit.DestinationNodeUUID()] == nil {
+				return fmt.Errorf("invalid destination node uuid:'%s'", exit.DestinationNodeUUID())
 			}
 		}
 	}
@@ -115,9 +115,9 @@ func ReadFlows(data json.RawMessage) ([]flows.Flow, error) {
 }
 
 type flowEnvelope struct {
-	Name         string           `json:"name"`
+	Name         string           `json:"name"               validate:"required"`
 	Language     utils.Language   `json:"language"`
-	UUID         flows.FlowUUID   `json:"uuid"`
+	UUID         flows.FlowUUID   `json:"uuid"               validate:"required,uuid4"`
 	Localization flowTranslations `json:"localization"`
 	Nodes        []*node          `json:"nodes"`
 
@@ -130,6 +130,7 @@ func (f *flow) UnmarshalJSON(data []byte) error {
 	var err error
 
 	err = json.Unmarshal(data, &envelope)
+	err = utils.ValidateAllUnlessErr(err, &envelope)
 	if err != nil {
 		return err
 	}

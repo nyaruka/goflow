@@ -2,18 +2,18 @@ package events
 
 import "github.com/nyaruka/goflow/utils"
 
-// TypeWebhook is the type for our webhook events
-const TypeWebhook string = "webhook"
+// TypeWebhookCalled is the type for our webhook events
+const TypeWebhookCalled string = "webhook_called"
 
-// WebhookEvent events are created when a webhook is called. The event contains
+// WebhookCalledEvent events are created when a webhook is called. The event contains
 // the status and status code of the response, as well as a full dump of the
 // request and response.
 //
 // ```
 //   {
-//    "step": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //    "created_on": "2006-01-02T15:04:05Z",
-//    "type": "webhook",
+//    "type": "webhook_called",
 //    "url": "https://api.ipify.org?format=json",
 //    "status": "S",
 //    "status_code": 200,
@@ -22,8 +22,8 @@ const TypeWebhook string = "webhook"
 //   }
 // ```
 //
-// @event webhook
-type WebhookEvent struct {
+// @event webhook_called
+type WebhookCalledEvent struct {
 	BaseEvent
 	URL        string                      `json:"url"         validate:"required"`
 	Status     utils.RequestResponseStatus `json:"status"      validate:"required"`
@@ -33,4 +33,4 @@ type WebhookEvent struct {
 }
 
 // Type returns the type of this event
-func (e *WebhookEvent) Type() string { return TypeWebhook }
+func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }

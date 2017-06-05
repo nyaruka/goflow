@@ -8,9 +8,9 @@ const TypeError string = "error"
 //
 // ```
 //   {
-//    "step": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "created_on": "2006-01-02T15:04:05Z",
 //    "type": "error",
+//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//    "created_on": "2006-01-02T15:04:05Z",
 //    "text": "invalid date format: '12th of October'"
 //   }
 // ```

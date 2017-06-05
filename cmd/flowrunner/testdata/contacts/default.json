@@ -8,8 +8,8 @@
         "email:ben@macklemore"
     ],
     "fields": {
-        "First Name": {
-            "name": "First Name",
+        "first_name": {
+            "field_name": "First Name",
             "value": "Ben",
             "created_on": "2000-01-01T00:00:00.000000000-00:00"
         }

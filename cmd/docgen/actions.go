@@ -46,8 +46,8 @@ var contactDef = `
 	}],
 	"fields": {
 		"activation_token": {
-			"field": "ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1",
-			"name": "activation_token",
+			"field_uuid": "ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1",
+			"field_name": "Activation Token",
 			"value": "XFW-JEV-9QE",
 			"created_on": "2017-05-24T11:31:15.035757258-05:00"
 		}

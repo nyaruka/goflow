@@ -9,8 +9,8 @@ const TypeSetPreferredChannel string = "set_preferred_channel"
 
 type PreferredChannelAction struct {
 	BaseAction
-	Name    string            `json:"name"`
-	Channel flows.ChannelUUID `json:"channel"`
+	Name        string            `json:"name"`
+	ChannelUUID flows.ChannelUUID `json:"channel_uuid"`
 }
 
 func (a *PreferredChannelAction) Type() string { return TypeSetPreferredChannel }

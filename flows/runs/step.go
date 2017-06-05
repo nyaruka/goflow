@@ -11,20 +11,20 @@ import (
 )
 
 type step struct {
-	uuid      flows.StepUUID
-	node      flows.NodeUUID
-	exit      flows.ExitUUID
+	stepUUID  flows.StepUUID
+	nodeUUID  flows.NodeUUID
+	exitUUID  flows.ExitUUID
 	arrivedOn time.Time
 	leftOn    *time.Time
 	events    []flows.Event
 }
 
-func (s *step) UUID() flows.StepUUID  { return s.uuid }
-func (s *step) Node() flows.NodeUUID  { return s.node }
-func (s *step) Exit() flows.ExitUUID  { return s.exit }
-func (s *step) ArrivedOn() time.Time  { return s.arrivedOn }
-func (s *step) LeftOn() *time.Time    { return s.leftOn }
-func (s *step) Events() []flows.Event { return s.events }
+func (s *step) UUID() flows.StepUUID     { return s.stepUUID }
+func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
+func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
+func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
+func (s *step) LeftOn() *time.Time       { return s.leftOn }
+func (s *step) Events() []flows.Event    { return s.events }
 
 func (s *step) Resolve(key string) interface{} {
 	switch key {
@@ -32,11 +32,11 @@ func (s *step) Resolve(key string) interface{} {
 	case "uuid":
 		return s.UUID
 
-	case "node":
-		return s.Node
+	case "node_uuid":
+		return s.NodeUUID
 
-	case "exit":
-		return s.Exit
+	case "exit_uuid":
+		return s.ExitUUID
 
 	case "arrived_on":
 		return s.ArrivedOn
@@ -53,12 +53,12 @@ func (s *step) Default() interface{} {
 }
 
 func (s *step) String() string {
-	return string(s.node)
+	return string(s.nodeUUID)
 }
 
 func (s *step) Leave(exit flows.ExitUUID) {
 	now := time.Now().In(time.UTC)
-	s.exit = exit
+	s.exitUUID = exit
 	s.leftOn = &now
 }
 
@@ -77,8 +77,8 @@ func (s *step) addError(err error) {
 
 type stepEnvelope struct {
 	UUID      flows.StepUUID         `json:"uuid"`
-	Node      flows.NodeUUID         `json:"node"`
-	Exit      flows.ExitUUID         `json:"exit,omitempty"`
+	NodeUUID  flows.NodeUUID         `json:"node_uuid"`
+	ExitUUID  flows.ExitUUID         `json:"exit_uuid,omitempty"`
 	ArrivedOn time.Time              `json:"arrived_on"`
 	LeftOn    *time.Time             `json:"left_on,omitempty"`
 	Events    []*utils.TypedEnvelope `json:"events,omitempty"`
@@ -93,9 +93,9 @@ func (s *step) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	s.uuid = se.UUID
-	s.node = se.Node
-	s.exit = se.Exit
+	s.stepUUID = se.UUID
+	s.nodeUUID = se.NodeUUID
+	s.exitUUID = se.ExitUUID
 	s.arrivedOn = se.ArrivedOn
 	s.leftOn = se.LeftOn
 
@@ -113,9 +113,9 @@ func (s *step) UnmarshalJSON(data []byte) error {
 func (s *step) MarshalJSON() ([]byte, error) {
 	var se stepEnvelope
 
-	se.UUID = s.uuid
-	se.Node = s.node
-	se.Exit = s.exit
+	se.UUID = s.stepUUID
+	se.NodeUUID = s.nodeUUID
+	se.ExitUUID = s.exitUUID
 	se.ArrivedOn = s.arrivedOn
 	se.LeftOn = s.leftOn
 

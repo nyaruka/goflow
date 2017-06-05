@@ -46,8 +46,8 @@ func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step
 	// find all the exits we have taken
 	exited := make(map[flows.ExitUUID]bool)
 	for _, s := range run.Path() {
-		if s.Node() == step.Node() {
-			exited[s.Exit()] = true
+		if s.NodeUUID() == step.NodeUUID() {
+			exited[s.ExitUUID()] = true
 		}
 	}
 

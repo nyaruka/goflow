@@ -21,18 +21,18 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeEmail:
+	case TypeSendEmail:
 		action := EmailAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeFlow:
-		action := FlowAction{}
+	case TypeStartFlow:
+		action := StartFlowAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeMsg:
-		action := MsgAction{}
+	case TypeSendMsg:
+		action := SendMsgAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
@@ -46,13 +46,13 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeSaveResult:
-		action := SaveResultAction{}
+	case TypeSaveFlowResult:
+		action := SaveFlowResultAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeSaveToContact:
-		action := SaveToContactAction{}
+	case TypeSaveContactField:
+		action := SaveContactField{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
@@ -61,7 +61,12 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeWebhook:
+	case TypeUpdateContact:
+		action := UpdateContactAction{}
+		err := json.Unmarshal(envelope.Data, &action)
+		return &action, utils.ValidateAllUnlessErr(err, &action)
+
+	case TypeCallWebhook:
 		action := WebhookAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)

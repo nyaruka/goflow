@@ -1,51 +1,46 @@
 package actions
 
 import (
-	"time"
-
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeSaveToContact is the type for our save to contact action
-const TypeSaveToContact string = "save_to_contact"
+// TypeSaveContactField is the type for our save to contact action
+const TypeSaveContactField string = "save_contact_field"
 
-// SaveToContactAction can be used to save a value to a contact. The value can be a template and will
-// be evaluated during the flow. A `save_to_contact` event will be created with the corresponding value.
-//
-// Two fields are treated specially, "name" and "language", which can be used as the "field" parameter
-// and which will set the special contact fields of the same name.
+// SaveContactField can be used to save a value to a contact. The value can be a template and will
+// be evaluated during the flow. A `save_contact_field` event will be created with the corresponding value.
 //
 // ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "save_to_contact",
-//     "field": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
-//     "name": "Gender",
+//     "type": "save_contact_field",
+//     "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+//     "field_name": "Gender",
 //     "value": "Male"
 //   }
 // ```
 //
-// @action save_to_contact
-type SaveToContactAction struct {
+// @action save_contact_field
+type SaveContactField struct {
 	BaseAction
-	Field flows.FieldUUID `json:"field"    validate:"required"`
-	Name  string          `json:"name"     validate:"required"`
-	Value string          `json:"value"    validate:"required"`
+	FieldUUID flows.FieldUUID `json:"field_uuid"    validate:"uuid4"`
+	FieldName string          `json:"field_name"    validate:"required"`
+	Value     string          `json:"value"         validate:"required"`
 }
 
 // Type returns the type of this action
-func (a *SaveToContactAction) Type() string { return TypeSaveToContact }
+func (a *SaveContactField) Type() string { return TypeSaveContactField }
 
 // Validate validates this action
-func (a *SaveToContactAction) Validate() error {
+func (a *SaveContactField) Validate() error {
 	return utils.ValidateAll(a)
 }
 
 // Execute runs this action
-func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) error {
 	// this is a no-op if we have no contact
 	if run.Contact() == nil {
 		return nil
@@ -61,9 +56,9 @@ func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 	}
 
 	// if this is either name or language, we save directly to the contact
-	if a.Field == "name" {
+	if a.FieldName == "name" && a.FieldUUID == "" {
 		run.Contact().SetName(value)
-	} else if a.Field == "language" {
+	} else if a.FieldName == "language" && a.FieldUUID == "" {
 		// try to parse our language
 		lang := utils.NilLanguage
 		lang, err = utils.ParseLanguage(value)
@@ -78,12 +73,12 @@ func (a *SaveToContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 		}
 	} else {
 		// save to our field dictionary
-		run.Contact().Fields().Save(a.Field, a.Name, value, time.Now().In(time.UTC))
+		run.Contact().Fields().Save(a.FieldUUID, a.FieldName, value)
 	}
 
 	// log our event
 	if err == nil {
-		run.AddEvent(step, events.NewSaveToContact(a.Field, a.Name, value))
+		run.AddEvent(step, events.NewSaveToContact(a.FieldUUID, a.FieldName, value))
 	}
 
 	return nil

@@ -99,9 +99,9 @@ func replaceFields(input []byte) []byte {
 		"expires_on":  "2000-01-01T00:00:00.000000000-00:00",
 		"timesout_on": "2000-01-01T00:00:00.000000000-00:00",
 		"event.uuid":  "",
-		"step":        "",
-		"parent":      "",
-		"child":       "",
+		"step_uuid":   "",
+		"parent_uuid": "",
+		"child_uuid":  "",
 	}
 
 	// unmarshal to arbitrary json
@@ -189,8 +189,8 @@ func main() {
 
 		// print any events
 		for _, e := range output.Events() {
-			if e.Type() == events.TypeMsgOut {
-				fmt.Printf(">>> %s\n", e.(*events.MsgOutEvent).Text)
+			if e.Type() == events.TypeSendMsg {
+				fmt.Printf(">>> %s\n", e.(*events.SendMsgEvent).Text)
 			}
 		}
 
@@ -199,7 +199,7 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		event := events.NewIncomingMsgEvent("", contact.UUID(), scanner.Text())
+		event := events.NewMsgReceivedEvent("", contact.UUID(), scanner.Text())
 		inputs = append(inputs, event)
 
 		// rebuild our output

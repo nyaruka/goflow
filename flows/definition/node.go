@@ -17,9 +17,9 @@ type exit struct {
 	name        string
 }
 
-func (e *exit) UUID() flows.ExitUUID        { return e.uuid }
-func (e *exit) Destination() flows.NodeUUID { return e.destination }
-func (e *exit) Name() string                { return e.name }
+func (e *exit) UUID() flows.ExitUUID                { return e.uuid }
+func (e *exit) DestinationNodeUUID() flows.NodeUUID { return e.destination }
+func (e *exit) Name() string                        { return e.name }
 
 type node struct {
 	uuid flows.NodeUUID
@@ -53,7 +53,7 @@ func (n *node) Resolve(key string) interface{} {
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID         `json:"uuid"`
+	UUID    flows.NodeUUID         `json:"uuid"                  validate:"required,uuid4"`
 	Actions []*utils.TypedEnvelope `json:"actions,omitempty"`
 	Router  *utils.TypedEnvelope   `json:"router,omitempty"`
 	Exits   []*exit                `json:"exits"`
@@ -64,6 +64,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	envelope := nodeEnvelope{}
 
 	err := json.Unmarshal(data, &envelope)
+	err = utils.ValidateAllUnlessErr(err, &envelope)
 	if err != nil {
 		return err
 	}
@@ -138,21 +139,22 @@ func (n *node) MarshalJSON() ([]byte, error) {
 }
 
 type exitEnvelope struct {
-	UUID        flows.ExitUUID `json:"uuid"`
-	Destination flows.NodeUUID `json:"destination,omitempty"`
-	Name        string         `json:"name,omitempty"`
+	UUID                flows.ExitUUID `json:"uuid"                               validate:"required,uuid4"`
+	DestinationNodeUUID flows.NodeUUID `json:"destination_node_uuid,omitempty"    validate:"uuid4"`
+	Name                string         `json:"name,omitempty"`
 }
 
 func (e *exit) UnmarshalJSON(data []byte) error {
 	envelope := exitEnvelope{}
 
 	err := json.Unmarshal(data, &envelope)
+	err = utils.ValidateAllUnlessErr(err, &envelope)
 	if err != nil {
 		return err
 	}
 
 	e.uuid = envelope.UUID
-	e.destination = envelope.Destination
+	e.destination = envelope.DestinationNodeUUID
 	e.name = envelope.Name
 
 	return nil

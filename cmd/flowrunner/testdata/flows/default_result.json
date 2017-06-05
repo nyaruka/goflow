@@ -8,7 +8,7 @@
         "exits": [
           {
             "uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
-            "destination": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
+            "destination_node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
           }
         ],
         "actions": [
@@ -28,14 +28,14 @@
           {
             "name": "All Responses",
             "uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
-            "destination": "2929d2fc-2778-4d98-a4bc-73a7345710b0"
+            "destination_node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0"
           }
         ],
         "router": {
           "name": "Contact Name",
           "type": "switch",
           "cases": [],
-          "default": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+          "default_exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
           "operand": "@input"
         }
       },
@@ -43,17 +43,17 @@
         "uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
         "actions": [
           {
-            "name": "Name",
-            "type": "save_to_contact",
+            "type": "update_contact",
             "uuid": "aafb505c-603d-4025-864d-471345ed236d",
-            "field": "name",
+            "field_name": "name",
             "value": "@run.results.contact_name"
           },
           {
             "name": "First Name",
-            "type": "save_to_contact",
+            "type": "save_contact_field",
             "uuid": "aafb505c-603d-4025-864d-471345ed237d",
-            "field": "first-name-uuid",
+            "field_name": "First Name",
+            "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
             "value": "@(WORD(run.results.contact_name, 1))"
           },
           {

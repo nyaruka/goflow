@@ -1,6 +1,6 @@
 [
   {
-    "uuid": "flow1",
+    "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
     "name": "U-Report Registration Flow",
     "language": "eng",
     "localization": {
@@ -8,37 +8,37 @@
         "e97cd6d5-3354-4dbd-85bc-6c1f87849eec": {
           "text": "Quelle est votres couleur preferee? (rouge/blue)"
         },
-        "node1-case1": {
+        "98503572-25bf-40ce-ad72-8836b6549a38": {
           "test": "rouge"
         },
-        "node1-case2": {
+        "a51e5c8c-c891-401d-9c62-15fc37278c94": {
           "test": "blue"
         },
-        "node1-exit1": {
+        "598ae7a5-2f81-48f1-afac-595262514aa1": {
           "label": "Rouge"
         },
-        "node1-exit2": {
+        "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e": {
           "label": "Blue"
         },
-        "node1-exit3": {
+        "78ae8f05-f92e-43b2-a886-406eaea1b8e0": {
           "label": "Autres"
         },
         "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
           "text": "@(TITLE(input.text))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
         },
-        "node2-case1": {
+        "e27c3bce-1095-4d08-9164-dc4530a0688a": {
           "test": "pepsi"
         },
-        "node2-case2": {
+        "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87": {
           "test": "coke"
         },
-        "node2-exit1": {
+        "2ab9b033-77a8-4e56-a558-b568c00c9492": {
           "label": "Pepsi"
         },
-        "node2-exit2": {
+        "c7bca181-0cb3-4ec6-8555-f7e5644238ad": {
           "label": "Coke"
         },
-        "node2-exit3": {
+        "5ce6c69a-fdfe-4594-ab71-26be534d31c3": {
           "label": "Autres"
         },
         "0a8467eb-911a-41db-8101-ccf415c48e6a": {
@@ -48,7 +48,7 @@
     },
     "nodes": [
       {
-        "uuid": "node1",
+        "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
         "actions": [
           {
             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
@@ -63,53 +63,52 @@
         "router": {
           "type": "switch",
           "name": "favorite_color",
-          "default": "node1-exit3",
+          "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
           "operand": "@input",
           "cases": [
             {
-              "uuid": "node1-case1",
+              "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
               "type": "has_any_word",
               "arguments": [
                 "red"
               ],
-              "exit": "node1-exit1"
+              "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
             },
             {
-              "uuid": "node1-case2",
+              "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
               "type": "has_any_word",
               "arguments": [
                 "blue"
               ],
-              "exit": "node1-exit2"
+              "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
             }
           ]
         },
         "exits": [
           {
-            "uuid": "node1-exit1",
+            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
             "name": "Red",
-            "destination": "node2"
+            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
           },
           {
-            "uuid": "node1-exit2",
+            "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
             "name": "Blue",
-            "destination": "node2"
+            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
           },
           {
-            "uuid": "node1-exit3",
+            "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
             "name": "Other",
-            "destination": "node1"
+            "destination_node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
           }
         ]
       },
       {
-        "uuid": "node2",
+        "uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
         "actions": [
           {
             "uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
-            "type": "save_to_contact",
-            "field": "language",
-            "name": "Language",
+            "type": "update_contact",
+            "field_name": "language",
             "value": "fra"
           },
           {
@@ -124,48 +123,48 @@
         },
         "router": {
           "type": "switch",
-          "default": "node2-exit3",
+          "default_exit_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
           "name": "soda",
           "operand": "@input",
           "cases": [
             {
-              "uuid": "node2-case1",
+              "uuid": "e27c3bce-1095-4d08-9164-dc4530a0688a",
               "type": "has_any_word",
               "arguments": [
                 "pepsi"
               ],
-              "exit": "node2-exit1"
+              "exit_uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492"
             },
             {
-              "uuid": "node2-case2",
+              "uuid": "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87",
               "type": "has_any_word",
               "arguments": [
                 "coke coca cola"
               ],
-              "exit": "node2-exit2"
+              "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad"
             }
           ]
         },
         "exits": [
           {
-            "uuid": "node2-exit1",
+            "uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",
             "name": "Pepsi",
-            "destination": "node3"
+            "destination_node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
           },
           {
-            "uuid": "node2-exit2",
+            "uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
             "name": "Coke",
-            "destination": "node3"
+            "destination_node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
           },
           {
-            "uuid": "node2-exit3",
+            "uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
             "name": "Other",
-            "destination": "node2"
+            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
           }
         ]
       },
       {
-        "uuid": "node3",
+        "uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
         "actions": [
           {
             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",

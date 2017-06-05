@@ -10,13 +10,13 @@ import (
 const TypeFlow string = "flow"
 
 type FlowWait struct {
-	Flow flows.FlowUUID `json:"flow"`
+	FlowUUID flows.FlowUUID `json:"flow_uuid"   validate:"required,uuid4"`
 }
 
 func (w *FlowWait) Resolve(key string) interface{} {
 	switch key {
 	case "flow":
-		return w.Flow
+		return w.FlowUUID
 	}
 
 	return nil
@@ -29,7 +29,7 @@ func (w *FlowWait) Default() interface{} {
 func (w *FlowWait) Type() string { return TypeFlow }
 
 func (w *FlowWait) Begin(run flows.FlowRun, step flows.Step) error {
-	run.AddEvent(step, &events.FlowWaitEvent{Flow: w.Flow})
+	run.AddEvent(step, &events.FlowWaitEvent{FlowUUID: w.FlowUUID})
 	run.SetWait(w)
 	return nil
 }
@@ -47,8 +47,8 @@ func (w *FlowWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event,
 
 	// see if we already have an exit event on our step for this flow
 	for _, evt := range step.Events() {
-		exit, isExit := evt.(*events.FlowExitEvent)
-		if isExit && exit.Flow == w.Flow {
+		exit, isExit := evt.(*events.FlowExitedEvent)
+		if isExit && exit.FlowUUID == w.FlowUUID {
 			return exit, nil
 		}
 	}
@@ -58,14 +58,14 @@ func (w *FlowWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event,
 }
 
 func (w *FlowWait) End(run flows.FlowRun, step flows.Step, event flows.Event) error {
-	flowEvent, isFlow := event.(*events.FlowExitEvent)
+	flowEvent, isFlow := event.(*events.FlowExitedEvent)
 	if !isFlow {
 		return fmt.Errorf("Must end FlowWait with FlowExitEvent, got: %#v", event)
 	}
 
 	// make sure the flows match
-	if flowEvent.Flow != w.Flow {
-		return fmt.Errorf("Must end FlowWait with FlowExitEvent for the same flow, expected '%s', got '%s'", w.Flow, flowEvent.Flow)
+	if flowEvent.FlowUUID != w.FlowUUID {
+		return fmt.Errorf("Must end FlowWait with FlowExitEvent for the same flow, expected '%s', got '%s'", w.FlowUUID, flowEvent.FlowUUID)
 	}
 
 	// log this event

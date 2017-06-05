@@ -12,15 +12,15 @@ import (
 const TypeSwitch string = "switch"
 
 type Case struct {
-	UUID      flows.UUID     `json:"uuid"        validate:"required"`
-	Type      string         `json:"type"        validate:"required"`
+	UUID      flows.UUID     `json:"uuid"              validate:"required"`
+	Type      string         `json:"type"              validate:"required"`
 	Arguments []string       `json:"arguments"`
-	Exit      flows.ExitUUID `json:"exit"        validate:"required"`
+	ExitUUID  flows.ExitUUID `json:"exit_uuid"         validate:"required"`
 }
 
 type SwitchRouter struct {
-	Default flows.ExitUUID `json:"default"`
-	Operand string         `json:"operand"       validate:"required"`
+	Default flows.ExitUUID `json:"default_exit_uuid"`
+	Operand string         `json:"operand"             validate:"required"`
 	Cases   []Case         `json:"cases"`
 	BaseRouter
 }
@@ -38,14 +38,14 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 		// find the matching exit
 		found := false
 		for _, e := range exits {
-			if e.UUID() == c.Exit {
+			if e.UUID() == c.ExitUUID {
 				found = true
 				break
 			}
 		}
 
 		if !found {
-			return fmt.Errorf("Exit '%s' missing from node", c.Exit)
+			return fmt.Errorf("Exit '%s' missing from node", c.ExitUUID)
 		}
 	}
 
@@ -103,7 +103,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 				return flows.NoRoute, err
 			}
 
-			return flows.NewRoute(c.Exit, asStr), nil
+			return flows.NewRoute(c.ExitUUID, asStr), nil
 		}
 	}
 

@@ -208,26 +208,26 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}, nil
 
 	case "lang":
-		return &actions.SaveToContactAction{
-			Field: "language",
-			Name:  "Language",
-			Value: string(a.Language),
+		return &actions.SaveContactField{
+			FieldUUID: "language",
+			FieldName: "Language",
+			Value:     string(a.Language),
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
 		}, nil
 	case "channel":
 		return &actions.PreferredChannelAction{
-			Channel: a.Channel,
-			Name:    a.Name,
+			ChannelUUID: a.Channel,
+			Name:        a.Name,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
 		}, nil
 	case "flow":
-		return &actions.FlowAction{
-			Flow: a.Flow.UUID,
-			Name: a.Name,
+		return &actions.StartFlowAction{
+			FlowUUID: a.Flow.UUID,
+			FlowName: a.Name,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
@@ -241,7 +241,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
 		expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
-		return &actions.MsgAction{
+		return &actions.SendMsgAction{
 			Text: expression,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
@@ -280,19 +280,19 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 		translated, _ := excellent.TranslateTemplate(a.Value)
 
-		return &actions.SaveToContactAction{
-			Name:  a.Label,
-			Value: translated,
-			Field: fieldUUID,
+		return &actions.SaveContactField{
+			FieldName: a.Label,
+			Value:     translated,
+			FieldUUID: fieldUUID,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
 		}, nil
 	case "set_language":
-		return &actions.SaveToContactAction{
-			Field: "language",
-			Name:  "Language",
-			Value: string(a.Value),
+		return &actions.SaveContactField{
+			FieldUUID: "language",
+			FieldName: "Language",
+			Value:     string(a.Value),
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
@@ -362,7 +362,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	return routers.Case{
 		UUID:      caseUUID,
 		Type:      testType,
-		Exit:      exitMap[category].UUID(),
+		ExitUUID:  exitMap[category].UUID(),
 		Arguments: arguments,
 	}, err
 }
@@ -454,14 +454,14 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		flowName := config["flow"]["name"]
 
 		node.actions = []flows.Action{
-			&actions.FlowAction{
-				Flow: flowUUID,
-				Name: flowName,
+			&actions.StartFlowAction{
+				FlowUUID: flowUUID,
+				FlowName: flowName,
 			},
 		}
 
 		node.wait = &waits.FlowWait{
-			Flow: flowUUID,
+			FlowUUID: flowUUID,
 		}
 
 	case "webhook":

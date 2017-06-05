@@ -56,9 +56,9 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	step := run.Path()[len(run.Path())-1]
 
 	// and the last node
-	node := run.Flow().GetNode(step.Node())
+	node := run.Flow().GetNode(step.NodeUUID())
 	if node == nil {
-		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.Node())
+		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.NodeUUID())
 		run.AddError(step, err)
 		return run.Session(), err
 	}
@@ -75,7 +75,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 
 	// if we ran to completion and have a parent, resume that flow
 	if run.Parent() != nil && run.IsComplete() {
-		event := events.NewFlowExitEvent(run)
+		event := events.NewFlowExitedEvent(run)
 		parentRun, err := env.GetRun(run.Parent().UUID())
 		if err != nil {
 			return run.Session(), err
@@ -248,7 +248,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 
 	// save our results if appropriate
 	if router != nil && router.Name() != "" {
-		event := events.NewSaveResult(node.UUID(), router.Name(), route.Match(), exitName)
+		event := events.NewSaveFlowResult(node.UUID(), router.Name(), route.Match(), exitName)
 		run.AddEvent(step, event)
 		run.Results().Save(node.UUID(), router.Name(), route.Match(), exitName, *event.CreatedOn())
 	}
@@ -258,7 +258,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 		return noDestination, step, err
 	}
 
-	return exit.Destination(), step, nil
+	return exit.DestinationNodeUUID(), step, nil
 }
 
 func GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {

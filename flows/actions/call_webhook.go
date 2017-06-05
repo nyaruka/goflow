@@ -10,8 +10,8 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeWebhook is the type for our webhook action
-const TypeWebhook string = "webhook"
+// TypeCallWebhook is the type for our webhook action
+const TypeCallWebhook string = "call_webhook"
 
 // WebhookAction can be used to call an external service and insert the results in the @webhook
 // context variable. The body, header and url fields may be templates and will be evaluated at runtime.
@@ -21,13 +21,13 @@ const TypeWebhook string = "webhook"
 // ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "webhook",
+//     "type": "call_webhook",
 //     "method": "get",
 //     "url": "https://api.ipify.org?format=json"
 //   }
 // ```
 //
-// @action webhook
+// @action call_webhook
 type WebhookAction struct {
 	BaseAction
 	Method  string            `json:"method"                validate:"required"`
@@ -37,7 +37,7 @@ type WebhookAction struct {
 }
 
 // Type returns the type of this action
-func (a *WebhookAction) Type() string { return TypeWebhook }
+func (a *WebhookAction) Type() string { return TypeCallWebhook }
 
 // Validate validates the fields on this action
 func (a *WebhookAction) Validate() error {
@@ -80,7 +80,7 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 	run.SetWebhook(rr)
 
-	event := events.WebhookEvent{URL: rr.URL(), Status: rr.Status(), StatusCode: rr.StatusCode(), Request: rr.Request(), Response: rr.Response()}
+	event := events.WebhookCalledEvent{URL: rr.URL(), Status: rr.Status(), StatusCode: rr.StatusCode(), Request: rr.Request(), Response: rr.Response()}
 	run.AddEvent(step, &event)
 
 	return nil
