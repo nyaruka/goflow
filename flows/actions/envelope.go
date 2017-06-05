@@ -46,8 +46,8 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
-	case TypeSaveResult:
-		action := SaveResultAction{}
+	case TypeSaveFlowResult:
+		action := SaveFlowResultAction{}
 		err := json.Unmarshal(envelope.Data, &action)
 		return &action, utils.ValidateAllUnlessErr(err, &action)
 
