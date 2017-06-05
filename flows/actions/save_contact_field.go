@@ -26,7 +26,7 @@ const TypeSaveContactField string = "save_contact_field"
 // @action save_contact_field
 type SaveContactField struct {
 	BaseAction
-	FieldUUID flows.FieldUUID `json:"field_uuid"    validate:"uuid4"`
+	FieldUUID flows.FieldUUID `json:"field_uuid"    validate:"required,uuid4"`
 	FieldName string          `json:"field_name"    validate:"required"`
 	Value     string          `json:"value"         validate:"required"`
 }

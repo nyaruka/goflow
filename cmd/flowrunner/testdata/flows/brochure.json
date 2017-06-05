@@ -54,6 +54,12 @@
       },
       {
         "uuid": "7acb54fd-0db0-40b9-970b-93f7bfb4277b",
+        "exits": [
+          {
+            "uuid": "388bbce3-8079-4573-922f-8dea469d93f3",
+            "destination_node_uuid": null
+          }
+        ],
         "actions": [
           {
             "uuid": "455ba297-f6d2-45e6-bf3e-c1ef028b55ae",

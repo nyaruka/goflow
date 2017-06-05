@@ -19,7 +19,7 @@ type Case struct {
 }
 
 type SwitchRouter struct {
-	Default flows.ExitUUID `json:"default_exit_uuid"`
+	Default flows.ExitUUID `json:"default_exit_uuid"   validate:"omitempty,uuid4"`
 	Operand string         `json:"operand"             validate:"required"`
 	Cases   []Case         `json:"cases"`
 	BaseRouter
