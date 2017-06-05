@@ -139,7 +139,7 @@ func (n *node) MarshalJSON() ([]byte, error) {
 
 type exitEnvelope struct {
 	UUID            flows.ExitUUID `json:"uuid"`
-	DestinationUUID flows.NodeUUID `json:"destination_uuid,omitempty"`
+	DestinationUUID flows.NodeUUID `json:"destination_node_uuid,omitempty"`
 	Name            string         `json:"name,omitempty"`
 }
 

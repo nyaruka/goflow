@@ -16,7 +16,7 @@
         "exits": [
           {
             "uuid": "node1-exit1",
-            "destination_uuid": "node2"
+            "destination_node_uuid": "node2"
           }
         ]
       },
@@ -43,12 +43,12 @@
           {
             "uuid": "node2-exit1",
             "label": "Not Empty",
-            "destination_uuid": "node3"
+            "destination_node_uuid": "node3"
           },
           {
             "uuid": "node2-exit2",
             "label": "Other",
-            "destination_uuid": "node2"
+            "destination_node_uuid": "node2"
           }
         ]
       },

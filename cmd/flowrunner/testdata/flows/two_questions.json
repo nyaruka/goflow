@@ -88,17 +88,17 @@
           {
             "uuid": "node1-exit1",
             "name": "Red",
-            "destination_uuid": "node2"
+            "destination_node_uuid": "node2"
           },
           {
             "uuid": "node1-exit2",
             "name": "Blue",
-            "destination_uuid": "node2"
+            "destination_node_uuid": "node2"
           },
           {
             "uuid": "node1-exit3",
             "name": "Other",
-            "destination_uuid": "node1"
+            "destination_node_uuid": "node1"
           }
         ]
       },
@@ -149,17 +149,17 @@
           {
             "uuid": "node2-exit1",
             "name": "Pepsi",
-            "destination_uuid": "node3"
+            "destination_node_uuid": "node3"
           },
           {
             "uuid": "node2-exit2",
             "name": "Coke",
-            "destination_uuid": "node3"
+            "destination_node_uuid": "node3"
           },
           {
             "uuid": "node2-exit3",
             "name": "Other",
-            "destination_uuid": "node2"
+            "destination_node_uuid": "node2"
           }
         ]
       },

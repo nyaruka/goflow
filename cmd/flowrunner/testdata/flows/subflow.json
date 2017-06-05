@@ -46,12 +46,12 @@
                     {
                         "uuid": "node1-exit1",
                         "name": "Completed",
-                        "destination_uuid": "flow1-node2"
+                        "destination_node_uuid": "flow1-node2"
                     },
                     {
                         "uuid": "node1-exit2",
                         "name": "Other",
-                        "destination_uuid": "flow1-node3"
+                        "destination_node_uuid": "flow1-node3"
                     }
                 ]
             },
@@ -111,12 +111,12 @@
                     {
                         "uuid": "flow2-node1-exit1",
                         "name": "Name",
-                        "destination_uuid": "flow2-node2"
+                        "destination_node_uuid": "flow2-node2"
                     },
                     {
                         "uuid": "flow2-node1-exit2",
                         "name": "Other",
-                        "destination_uuid": "flow2-node1"
+                        "destination_node_uuid": "flow2-node1"
                     }
                 ]
             },
