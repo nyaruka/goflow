@@ -12,15 +12,15 @@ import (
 const TypeSwitch string = "switch"
 
 type Case struct {
-	UUID      flows.UUID     `json:"uuid"          validate:"required"`
-	Type      string         `json:"type"          validate:"required"`
+	UUID      flows.UUID     `json:"uuid"              validate:"required"`
+	Type      string         `json:"type"              validate:"required"`
 	Arguments []string       `json:"arguments"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid"     validate:"required"`
+	ExitUUID  flows.ExitUUID `json:"exit_uuid"         validate:"required"`
 }
 
 type SwitchRouter struct {
 	Default flows.ExitUUID `json:"default_exit_uuid"`
-	Operand string         `json:"operand"       validate:"required"`
+	Operand string         `json:"operand"             validate:"required"`
 	Cases   []Case         `json:"cases"`
 	BaseRouter
 }

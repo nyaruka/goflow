@@ -37,10 +37,10 @@
                   "type": "send_msg"
                 }
               ],
-              "exit": "19f677bf-2b34-48bd-8a05-3839191b51b2",
+              "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-              "uuid": "9d433cc3-cddf-4af6-8aec-ebaf384ffda1"
+              "uuid": "3dca8f9a-89af-4bef-9cad-51e545265209"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -53,13 +53,13 @@
                 }
               ],
               "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-              "uuid": "5e3f7c6b-a881-4604-8835-95231b6dd425"
+              "uuid": "add4b286-1f60-4c31-aa4f-5c2a37784f4b"
             }
           ],
           "results": {},
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "f32393b6-c59f-42b1-a558-4adf2da32af7",
+          "uuid": "95ce3732-de20-4a1e-9017-8dd2ccc72298",
           "wait": {
             "type": "msg"
           }
@@ -141,10 +141,10 @@
                   "type": "send_msg"
                 }
               ],
-              "exit": "19f677bf-2b34-48bd-8a05-3839191b51b2",
+              "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-              "uuid": "9d433cc3-cddf-4af6-8aec-ebaf384ffda1"
+              "uuid": "3dca8f9a-89af-4bef-9cad-51e545265209"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -175,10 +175,10 @@
                   "value": "Ryan Lewis"
                 }
               ],
-              "exit": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+              "exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-              "uuid": "5e3f7c6b-a881-4604-8835-95231b6dd425"
+              "uuid": "add4b286-1f60-4c31-aa4f-5c2a37784f4b"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -208,7 +208,7 @@
               ],
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
-              "uuid": "45924d80-b30f-423d-ae54-ced5ba9c3896"
+              "uuid": "2cc1163c-9b88-4991-838b-b71e40661862"
             }
           ],
           "results": {
@@ -222,7 +222,7 @@
           },
           "status": "C",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "f32393b6-c59f-42b1-a558-4adf2da32af7"
+          "uuid": "95ce3732-de20-4a1e-9017-8dd2ccc72298"
         }
       ]
     }

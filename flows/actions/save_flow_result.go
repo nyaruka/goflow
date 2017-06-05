@@ -55,11 +55,11 @@ func (a *SaveResultAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	// log our event
-	event := events.NewSaveFlowResult(step.Node(), a.ResultName, value, a.Category)
+	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category)
 	run.AddEvent(step, event)
 
 	// and save our result
-	run.Results().Save(step.Node(), a.ResultName, value, a.Category, *event.CreatedOn())
+	run.Results().Save(step.NodeUUID(), a.ResultName, value, a.Category, *event.CreatedOn())
 
 	return nil
 }

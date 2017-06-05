@@ -170,7 +170,7 @@ func (r *flowRun) AddError(step flows.Step, err error) {
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := time.Now().In(time.UTC)
-	step := &step{uuid: flows.StepUUID(uuid.NewV4().String()), node: node.UUID(), arrivedOn: now}
+	step := &step{stepUUID: flows.StepUUID(uuid.NewV4().String()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	r.setModifiedOn(now)
 	return step

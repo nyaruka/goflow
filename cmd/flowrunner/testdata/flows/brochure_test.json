@@ -23,7 +23,7 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "exited_on": "2000-01-01T00:00:00.000000000-00:00",
           "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow_uuid": "flow1",
+          "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
           "path": [
             {
@@ -37,10 +37,10 @@
                   "type": "send_msg"
                 }
               ],
-              "exit": "node1-exit1",
+              "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "node1",
-              "uuid": "4877c53b-3c4e-4ccd-ae06-1e14fa82d29f"
+              "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+              "uuid": "83635cfd-6bcd-42aa-b6d5-a8f17313288a"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -52,14 +52,14 @@
                   "type": "msg_wait"
                 }
               ],
-              "node_uuid": "node2",
-              "uuid": "6c925b07-26ef-4c27-a194-24ce41564be7"
+              "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+              "uuid": "059e764e-d93b-4b63-bc06-155b73fef755"
             }
           ],
           "results": {},
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "01fb246f-b1d6-46dd-818a-5a0578485d0e",
+          "uuid": "abac4eb5-d3d7-419b-93aa-101af08deafe",
           "wait": {
             "timeout": 600,
             "type": "msg"
@@ -83,7 +83,7 @@
           "category": "",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "name": "name",
-          "node_uuid": "node2",
+          "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
           "step_uuid": "",
           "type": "save_flow_result",
           "value": "Ryan Lewis"
@@ -121,7 +121,7 @@
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "exited_on": "2000-01-01T00:00:00.000000000-00:00",
           "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow_uuid": "flow1",
+          "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
           "input": {
             "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -145,10 +145,10 @@
                   "type": "send_msg"
                 }
               ],
-              "exit": "node1-exit1",
+              "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "node1",
-              "uuid": "4877c53b-3c4e-4ccd-ae06-1e14fa82d29f"
+              "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
+              "uuid": "83635cfd-6bcd-42aa-b6d5-a8f17313288a"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -173,16 +173,16 @@
                   "category": "",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "name": "name",
-                  "node_uuid": "node2",
+                  "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
                   "step_uuid": "",
                   "type": "save_flow_result",
                   "value": "Ryan Lewis"
                 }
               ],
-              "exit": "node2-exit1",
+              "exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "node2",
-              "uuid": "6c925b07-26ef-4c27-a194-24ce41564be7"
+              "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+              "uuid": "059e764e-d93b-4b63-bc06-155b73fef755"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -214,21 +214,21 @@
                 }
               ],
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "node3",
-              "uuid": "3ab99222-bb2c-4c40-8677-5e766d26c4d1"
+              "node_uuid": "7acb54fd-0db0-40b9-970b-93f7bfb4277b",
+              "uuid": "a2fd3db5-50c0-40d1-b071-307619b144f4"
             }
           ],
           "results": {
             "name": {
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "node2",
+              "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
               "result_name": "name",
               "value": "Ryan Lewis"
             }
           },
           "status": "C",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "01fb246f-b1d6-46dd-818a-5a0578485d0e"
+          "uuid": "abac4eb5-d3d7-419b-93aa-101af08deafe"
         }
       ]
     }

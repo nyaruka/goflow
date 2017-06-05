@@ -56,9 +56,9 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	step := run.Path()[len(run.Path())-1]
 
 	// and the last node
-	node := run.Flow().GetNode(step.Node())
+	node := run.Flow().GetNode(step.NodeUUID())
 	if node == nil {
-		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.Node())
+		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.NodeUUID())
 		run.AddError(step, err)
 		return run.Session(), err
 	}
@@ -258,7 +258,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 		return noDestination, step, err
 	}
 
-	return exit.Destination(), step, nil
+	return exit.DestinationNodeUUID(), step, nil
 }
 
 func GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
