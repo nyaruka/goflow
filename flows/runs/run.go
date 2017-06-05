@@ -368,9 +368,9 @@ func ReadRun(data json.RawMessage) (flows.FlowRun, error) {
 
 type runEnvelope struct {
 	UUID    flows.RunUUID     `json:"uuid"`
-	Flow    flows.FlowUUID    `json:"flow"`
-	Channel flows.ChannelUUID `json:"channel"`
-	Contact flows.ContactUUID `json:"contact"`
+	Flow    flows.FlowUUID    `json:"flow_uuid"`
+	Channel flows.ChannelUUID `json:"channel_uuid"`
+	Contact flows.ContactUUID `json:"contact_uuid"`
 	Path    []*step           `json:"path"`
 
 	Status flows.RunStatus `json:"status"`
@@ -379,8 +379,8 @@ type runEnvelope struct {
 	Wait  *utils.TypedEnvelope `json:"wait,omitempty"`
 	Event *utils.TypedEnvelope `json:"event,omitempty"`
 
-	Parent flows.RunUUID `json:"parent,omitempty"`
-	Child  flows.RunUUID `json:"child,omitempty"`
+	Parent flows.RunUUID `json:"parent_uuid,omitempty"`
+	Child  flows.RunUUID `json:"child_uuid,omitempty"`
 
 	Results *flows.Results        `json:"results,omitempty"`
 	Webhook utils.RequestResponse `json:"webhook,omitempty"`

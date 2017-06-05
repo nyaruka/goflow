@@ -9,22 +9,22 @@ const TypeFlowWait string = "flow_wait"
 //
 // ```
 //   {
-//    "step": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "created_on": "2006-01-02T15:04:05Z",
 //    "type": "flow_wait",
-//    "flow": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a"
+//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//    "created_on": "2006-01-02T15:04:05Z",
+//    "flow_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a"
 //   }
 // ```
 //
 // @event flow_wait
 type FlowWaitEvent struct {
 	BaseEvent
-	Flow flows.FlowUUID `json:"flow"`
+	FlowUUID flows.FlowUUID `json:"flow_uuid"`
 }
 
 // NewFlowWait returns a new flow wait event
 func NewFlowWait(flow flows.FlowUUID) *FlowWaitEvent {
-	return &FlowWaitEvent{Flow: flow}
+	return &FlowWaitEvent{FlowUUID: flow}
 }
 
 // Type returns the type of this event

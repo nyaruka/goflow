@@ -3,7 +3,6 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -19,8 +18,8 @@ type Fields struct {
 }
 
 // Save saves a new field to our map
-func (f *Fields) Save(uuid FieldUUID, name string, value string, createdOn time.Time) {
-	field := Field{uuid, name, value, createdOn}
+func (f *Fields) Save(uuid FieldUUID, name string, value string) {
+	field := Field{uuid, name, value}
 	f.fields[utils.Snakify(name)] = &field
 }
 
@@ -51,28 +50,23 @@ func (f *Fields) String() string {
 
 // Field represents a contact field and value for a contact
 type Field struct {
-	field     FieldUUID
-	name      string
-	value     string
-	createdOn time.Time
+	field FieldUUID
+	name  string
+	value string
 }
 
 // Resolve resolves one of the fields on a Field
 func (f *Field) Resolve(key string) interface{} {
 	switch key {
 
-	case "field":
+	case "field_uuid":
 		return f.field
 
-	case "name":
+	case "field_name":
 		return f.name
 
 	case "value":
 		return f.value
-
-	case "created_on":
-		return f.createdOn
-
 	}
 
 	return fmt.Errorf("No field '%s' on contact field", key)
@@ -92,7 +86,7 @@ func (f *Field) String() string {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// UnmarshalJSON is our custom unmarshalling of a Fields object, we build our map with snakified keys
+// UnmarshalJSON is our custom unmarshalling of a Fields object, we validate our keys against snaked names
 func (f *Fields) UnmarshalJSON(data []byte) error {
 	f.fields = make(map[string]*Field)
 	incoming := make(map[string]*Field)
@@ -104,11 +98,12 @@ func (f *Fields) UnmarshalJSON(data []byte) error {
 	// populate ourselves with the fields, but keyed with snakified values
 	for k, v := range incoming {
 		// validate name and key are the same
-		if k != v.name {
-			return fmt.Errorf("invalid fields map, key: '%s' does not match field name: '%s'", k, v.name)
+		snaked := utils.Snakify(v.name)
+		if k != snaked {
+			return fmt.Errorf("invalid fields map, key: '%s' does not match snaked field name: '%s'", k, v.name)
 		}
 
-		f.fields[utils.Snakify(v.name)] = v
+		f.fields[k] = v
 	}
 	return nil
 }
@@ -116,18 +111,13 @@ func (f *Fields) UnmarshalJSON(data []byte) error {
 // MarshalJSON is our custom marshalling of a Fields object, we build a map with
 // the full names and then marshal that with snakified keys
 func (f *Fields) MarshalJSON() ([]byte, error) {
-	outgoing := make(map[string]*Field)
-	for _, v := range f.fields {
-		outgoing[v.name] = v
-	}
-	return json.Marshal(outgoing)
+	return json.Marshal(f.fields)
 }
 
 type fieldEnvelope struct {
-	Field     FieldUUID `json:"field"`
-	Name      string    `json:"name"`
-	Value     string    `json:"value"`
-	CreatedOn time.Time `json:"created_on"`
+	Field FieldUUID `json:"field_uuid"`
+	Name  string    `json:"field_name"`
+	Value string    `json:"value"`
 }
 
 // UnmarshalJSON is our custom unmarshalling for Field
@@ -139,7 +129,6 @@ func (f *Field) UnmarshalJSON(data []byte) error {
 	f.field = fe.Field
 	f.name = fe.Name
 	f.value = fe.Value
-	f.createdOn = fe.CreatedOn
 
 	return err
 }
@@ -151,7 +140,6 @@ func (f *Field) MarshalJSON() ([]byte, error) {
 	fe.Field = f.field
 	fe.Name = f.name
 	fe.Value = f.value
-	fe.CreatedOn = f.createdOn
 
 	return json.Marshal(fe)
 }

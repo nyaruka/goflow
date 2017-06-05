@@ -5,25 +5,25 @@
         {
           "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step": "",
+          "step_uuid": "",
           "text": "What is your name?",
-          "type": "msg_out"
+          "type": "send_msg"
         },
         {
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step": "",
+          "step_uuid": "",
           "timeout": 0,
           "type": "msg_wait"
         }
       ],
       "runs": [
         {
-          "channel": "",
-          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+          "channel_uuid": "",
+          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "exited_on": "2000-01-01T00:00:00.000000000-00:00",
           "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow": "c37ae862-4802-447a-a783-1fe029a170e9",
+          "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
           "path": [
             {
@@ -32,34 +32,34 @@
                 {
                   "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step": "",
+                  "step_uuid": "",
                   "text": "What is your name?",
-                  "type": "msg_out"
+                  "type": "send_msg"
                 }
               ],
               "exit": "19f677bf-2b34-48bd-8a05-3839191b51b2",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-              "uuid": "f1de1baa-38f6-4d54-81a5-8bbcb4d9dc9e"
+              "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
+              "uuid": "d8fa7899-dbde-45ca-932e-f856f257f08a"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step": "",
+                  "step_uuid": "",
                   "timeout": 0,
                   "type": "msg_wait"
                 }
               ],
-              "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-              "uuid": "50e47cc7-6f18-4939-acb3-30d2ec15351b"
+              "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+              "uuid": "6c4eb46b-a737-475f-961e-4a25c72484fe"
             }
           ],
           "results": {},
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "c9065d96-775f-404b-9938-f20f18bce6a7",
+          "uuid": "0d96b896-40e7-4ade-b9a0-0b5553e159b0",
           "wait": {
             "type": "msg"
           }
@@ -69,64 +69,63 @@
     {
       "events": [
         {
-          "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "id": 0,
-          "step": "",
+          "step_uuid": "",
           "text": "Ryan Lewis",
-          "type": "msg_in",
+          "type": "msg_received",
           "urn": "tel:+12065551212"
         },
         {
           "category": "All Responses",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "name": "Contact Name",
-          "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-          "step": "",
-          "type": "save_result",
+          "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+          "step_uuid": "",
+          "type": "save_flow_result",
           "value": "Ryan Lewis"
         },
         {
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "field": "name",
-          "name": "Name",
-          "step": "",
-          "type": "save_to_contact",
+          "field_name": "name",
+          "step_uuid": "",
+          "type": "update_contact",
           "value": "Ryan Lewis"
         },
         {
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "field": "first-name-uuid",
-          "name": "First Name",
-          "step": "",
-          "type": "save_to_contact",
+          "field_name": "First Name",
+          "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+          "step_uuid": "",
+          "type": "save_contact_field",
           "value": "Ryan"
         },
         {
           "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step": "",
+          "step_uuid": "",
           "text": "Great, pleased to meet you Ryan",
-          "type": "msg_out"
+          "type": "send_msg"
         }
       ],
       "runs": [
         {
-          "channel": "",
-          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+          "channel_uuid": "",
+          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "exited_on": "2000-01-01T00:00:00.000000000-00:00",
           "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow": "c37ae862-4802-447a-a783-1fe029a170e9",
+          "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
           "input": {
-            "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+            "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "id": 0,
-            "step": "",
+            "step_uuid": "",
             "text": "Ryan Lewis",
-            "type": "msg_in",
+            "type": "msg_received",
             "urn": "tel:+12065551212"
           },
           "modified_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -137,107 +136,106 @@
                 {
                   "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step": "",
+                  "step_uuid": "",
                   "text": "What is your name?",
-                  "type": "msg_out"
+                  "type": "send_msg"
                 }
               ],
               "exit": "19f677bf-2b34-48bd-8a05-3839191b51b2",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-              "uuid": "f1de1baa-38f6-4d54-81a5-8bbcb4d9dc9e"
+              "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
+              "uuid": "d8fa7899-dbde-45ca-932e-f856f257f08a"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step": "",
+                  "step_uuid": "",
                   "timeout": 0,
                   "type": "msg_wait"
                 },
                 {
-                  "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                  "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+                  "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "id": 0,
-                  "step": "",
+                  "step_uuid": "",
                   "text": "Ryan Lewis",
-                  "type": "msg_in",
+                  "type": "msg_received",
                   "urn": "tel:+12065551212"
                 },
                 {
                   "category": "All Responses",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "name": "Contact Name",
-                  "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                  "step": "",
-                  "type": "save_result",
+                  "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+                  "step_uuid": "",
+                  "type": "save_flow_result",
                   "value": "Ryan Lewis"
                 }
               ],
               "exit": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-              "uuid": "50e47cc7-6f18-4939-acb3-30d2ec15351b"
+              "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+              "uuid": "6c4eb46b-a737-475f-961e-4a25c72484fe"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "field": "name",
-                  "name": "Name",
-                  "step": "",
-                  "type": "save_to_contact",
+                  "field_name": "name",
+                  "step_uuid": "",
+                  "type": "update_contact",
                   "value": "Ryan Lewis"
                 },
                 {
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "field": "first-name-uuid",
-                  "name": "First Name",
-                  "step": "",
-                  "type": "save_to_contact",
+                  "field_name": "First Name",
+                  "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+                  "step_uuid": "",
+                  "type": "save_contact_field",
                   "value": "Ryan"
                 },
                 {
                   "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step": "",
+                  "step_uuid": "",
                   "text": "Great, pleased to meet you Ryan",
-                  "type": "msg_out"
+                  "type": "send_msg"
                 }
               ],
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
-              "uuid": "563a8901-8573-4d37-b8ee-bdad67c843d2"
+              "node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
+              "uuid": "cf64b659-0743-45aa-90d2-3816a90650b0"
             }
           ],
           "results": {
-            "Contact Name": {
+            "contact_name": {
               "category": "All Responses",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "name": "Contact Name",
-              "node": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+              "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+              "result_name": "Contact Name",
               "value": "Ryan Lewis"
             }
           },
           "status": "C",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "c9065d96-775f-404b-9938-f20f18bce6a7"
+          "uuid": "0d96b896-40e7-4ade-b9a0-0b5553e159b0"
         }
       ]
     }
   ],
   "resume_events": [
     {
-      "channel": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-      "contact": "contact1-test-4b7f-a34b-e37e31e86451",
+      "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
       "id": 0,
-      "step": "",
+      "step_uuid": "",
       "text": "Ryan Lewis",
-      "type": "msg_in",
+      "type": "msg_received",
       "urn": "tel:+12065551212"
     }
   ]

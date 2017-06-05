@@ -12,8 +12,8 @@ import (
 func InputFromEnvelope(envelope *utils.TypedEnvelope) (flows.Input, error) {
 	switch envelope.Type {
 
-	case events.TypeMsgIn:
-		event := events.MsgInEvent{}
+	case events.TypeMsgReceived:
+		event := events.MsgReceivedEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 

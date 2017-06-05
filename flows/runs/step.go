@@ -77,7 +77,7 @@ func (s *step) addError(err error) {
 
 type stepEnvelope struct {
 	UUID      flows.StepUUID         `json:"uuid"`
-	Node      flows.NodeUUID         `json:"node"`
+	Node      flows.NodeUUID         `json:"node_uuid"`
 	Exit      flows.ExitUUID         `json:"exit,omitempty"`
 	ArrivedOn time.Time              `json:"arrived_on"`
 	LeftOn    *time.Time             `json:"left_on,omitempty"`

@@ -14,10 +14,10 @@ func TestFields(t *testing.T) {
 		expected string
 	}{
 		{[]byte(`{}`), "key", ""},
-		{[]byte(`{ "Name": { "name": "Name", "value": "Ryan Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "key", ""},
-		{[]byte(`{ "Name": { "name": "Name", "value": "Ryan Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "name", "Ryan Lewis"},
-		{[]byte(`{ "Last Name": { "name": "Last Name", "value": "Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "last_name", "Lewis"},
-		{[]byte(`{ "Last Name": { "name": "Last Name", "value": "Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "Last Name", "Lewis"},
+		{[]byte(`{ "name": { "field_name": "Name", "value": "Ryan Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "key", ""},
+		{[]byte(`{ "name": { "field_name": "Name", "value": "Ryan Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "name", "Ryan Lewis"},
+		{[]byte(`{ "last_name": { "field_name": "Last Name", "value": "Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "last_name", "Lewis"},
+		{[]byte(`{ "last_name": { "field_name": "Last Name", "value": "Lewis", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}`), "Last Name", "Lewis"},
 	}
 
 	env := utils.NewDefaultEnvironment()

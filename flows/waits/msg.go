@@ -39,7 +39,7 @@ func (w *MsgWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event, 
 }
 
 func (w *MsgWait) End(run flows.FlowRun, step flows.Step, event flows.Event) error {
-	msgEvent, isMsg := event.(*events.MsgInEvent)
+	msgEvent, isMsg := event.(*events.MsgReceivedEvent)
 	if !isMsg {
 		return fmt.Errorf("Must end MsgWait with MsgInEvent, got: %#v", event)
 	}

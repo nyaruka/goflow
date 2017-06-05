@@ -42,6 +42,6 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if err != nil {
 		run.AddError(step, err)
 	}
-	run.AddEvent(step, events.NewMsgToContact(run.Contact().UUID(), text))
+	run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text))
 	return nil
 }

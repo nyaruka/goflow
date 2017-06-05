@@ -75,7 +75,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 
 	// if we ran to completion and have a parent, resume that flow
 	if run.Parent() != nil && run.IsComplete() {
-		event := events.NewFlowExitEvent(run)
+		event := events.NewFlowExitedEvent(run)
 		parentRun, err := env.GetRun(run.Parent().UUID())
 		if err != nil {
 			return run.Session(), err
@@ -248,7 +248,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 
 	// save our results if appropriate
 	if router != nil && router.Name() != "" {
-		event := events.NewSaveResult(node.UUID(), router.Name(), route.Match(), exitName)
+		event := events.NewSaveFlowResult(node.UUID(), router.Name(), route.Match(), exitName)
 		run.AddEvent(step, event)
 		run.Results().Save(node.UUID(), router.Name(), route.Match(), exitName, *event.CreatedOn())
 	}

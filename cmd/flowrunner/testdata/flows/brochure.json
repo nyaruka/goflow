@@ -16,7 +16,7 @@
         "exits": [
           {
             "uuid": "node1-exit1",
-            "destination": "node2"
+            "destination_uuid": "node2"
           }
         ]
       },
@@ -28,14 +28,14 @@
         },
         "router": {
           "type": "switch",
-          "default": "node2-exit2",
+          "default_exit_uuid": "node2-exit2",
           "name": "name",
           "operand": "@input",
           "cases": [
             {
               "uuid": "node2-case1",
               "type": "has_text",
-              "exit": "node2-exit1"
+              "exit_uuid": "node2-exit1"
             }
           ]
         },
@@ -43,12 +43,12 @@
           {
             "uuid": "node2-exit1",
             "label": "Not Empty",
-            "destination": "node3"
+            "destination_uuid": "node3"
           },
           {
             "uuid": "node2-exit2",
             "label": "Other",
-            "destination": "node2"
+            "destination_uuid": "node2"
           }
         ]
       },
@@ -57,9 +57,8 @@
         "actions": [
           {
             "uuid": "455ba297-f6d2-45e6-bf3e-c1ef028b55ae",
-            "field": "field1",
-            "type": "save_to_contact",
-            "name": "name",
+            "type": "update_contact",
+            "field_name": "name",
             "value": "@input.text"
           },
           {

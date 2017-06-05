@@ -63,7 +63,7 @@
         "router": {
           "type": "switch",
           "name": "favorite_color",
-          "default": "node1-exit3",
+          "default_exit_uuid": "node1-exit3",
           "operand": "@input",
           "cases": [
             {
@@ -72,7 +72,7 @@
               "arguments": [
                 "red"
               ],
-              "exit": "node1-exit1"
+              "exit_uuid": "node1-exit1"
             },
             {
               "uuid": "node1-case2",
@@ -80,7 +80,7 @@
               "arguments": [
                 "blue"
               ],
-              "exit": "node1-exit2"
+              "exit_uuid": "node1-exit2"
             }
           ]
         },
@@ -88,17 +88,17 @@
           {
             "uuid": "node1-exit1",
             "name": "Red",
-            "destination": "node2"
+            "destination_uuid": "node2"
           },
           {
             "uuid": "node1-exit2",
             "name": "Blue",
-            "destination": "node2"
+            "destination_uuid": "node2"
           },
           {
             "uuid": "node1-exit3",
             "name": "Other",
-            "destination": "node1"
+            "destination_uuid": "node1"
           }
         ]
       },
@@ -107,9 +107,8 @@
         "actions": [
           {
             "uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
-            "type": "save_to_contact",
-            "field": "language",
-            "name": "Language",
+            "type": "update_contact",
+            "field_name": "language",
             "value": "fra"
           },
           {
@@ -124,7 +123,7 @@
         },
         "router": {
           "type": "switch",
-          "default": "node2-exit3",
+          "default_exit_uuid": "node2-exit3",
           "name": "soda",
           "operand": "@input",
           "cases": [
@@ -134,7 +133,7 @@
               "arguments": [
                 "pepsi"
               ],
-              "exit": "node2-exit1"
+              "exit_uuid": "node2-exit1"
             },
             {
               "uuid": "node2-case2",
@@ -142,7 +141,7 @@
               "arguments": [
                 "coke coca cola"
               ],
-              "exit": "node2-exit2"
+              "exit_uuid": "node2-exit2"
             }
           ]
         },
@@ -150,17 +149,17 @@
           {
             "uuid": "node2-exit1",
             "name": "Pepsi",
-            "destination": "node3"
+            "destination_uuid": "node3"
           },
           {
             "uuid": "node2-exit2",
             "name": "Coke",
-            "destination": "node3"
+            "destination_uuid": "node3"
           },
           {
             "uuid": "node2-exit3",
             "name": "Other",
-            "destination": "node2"
+            "destination_uuid": "node2"
           }
         ]
       },

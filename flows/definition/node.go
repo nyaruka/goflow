@@ -138,9 +138,9 @@ func (n *node) MarshalJSON() ([]byte, error) {
 }
 
 type exitEnvelope struct {
-	UUID        flows.ExitUUID `json:"uuid"`
-	Destination flows.NodeUUID `json:"destination,omitempty"`
-	Name        string         `json:"name,omitempty"`
+	UUID            flows.ExitUUID `json:"uuid"`
+	DestinationUUID flows.NodeUUID `json:"destination_uuid,omitempty"`
+	Name            string         `json:"name,omitempty"`
 }
 
 func (e *exit) UnmarshalJSON(data []byte) error {
@@ -152,7 +152,7 @@ func (e *exit) UnmarshalJSON(data []byte) error {
 	}
 
 	e.uuid = envelope.UUID
-	e.destination = envelope.Destination
+	e.destination = envelope.DestinationUUID
 	e.name = envelope.Name
 
 	return nil

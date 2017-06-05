@@ -14,14 +14,14 @@
                     },
                     {
                         "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
-                        "type": "flow",
-                        "name": "Child Flow",
-                        "flow": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                        "type": "start_flow",
+                        "flow_name": "Child Flow",
+                        "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     }
                 ],
                 "wait": {
                     "type": "flow",
-                    "flow": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                    "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                 },
                 "router": {
                     "type": "switch",
@@ -33,12 +33,12 @@
                             "arguments": [
                                 "C"
                             ],
-                            "exit": "node1-exit1"
+                            "exit_uuid": "node1-exit1"
                         },
                         {
                             "uuid": "node1-case2",
                             "type": "true",
-                            "exit": "node1-exit2"
+                            "exit_uuid": "node1-exit2"
                         }
                     ]
                 },
@@ -46,12 +46,12 @@
                     {
                         "uuid": "node1-exit1",
                         "name": "Completed",
-                        "destination": "flow1-node2"
+                        "destination_uuid": "flow1-node2"
                     },
                     {
                         "uuid": "node1-exit2",
                         "name": "Other",
-                        "destination": "flow1-node3"
+                        "destination_uuid": "flow1-node3"
                     }
                 ]
             },
@@ -70,7 +70,7 @@
                 "actions": [
                     {
                         "uuid": "d80b2a5c-3b5c-47cd-b6ea-2f59bf2bb477",
-                        "type": "msg",
+                        "type": "reply",
                         "text": "Flow failed"
                     }
                 ]
@@ -103,7 +103,7 @@
                         {
                             "uuid": "flow2-node1-case1",
                             "type": "has_text",
-                            "exit": "flow2-node1-exit1"
+                            "exit_uuid": "flow2-node1-exit1"
                         }
                     ]
                 },
@@ -111,12 +111,12 @@
                     {
                         "uuid": "flow2-node1-exit1",
                         "name": "Name",
-                        "destination": "flow2-node2"
+                        "destination_uuid": "flow2-node2"
                     },
                     {
                         "uuid": "flow2-node1-exit2",
                         "name": "Other",
-                        "destination": "flow2-node1"
+                        "destination_uuid": "flow2-node1"
                     }
                 ]
             },

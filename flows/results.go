@@ -68,11 +68,11 @@ func (r *Result) Resolve(key string) interface{} {
 	case "created_on":
 		return r.createdOn
 
-	case "name":
-		return r.name
-
-	case "node":
+	case "node_uuid":
 		return r.node
+
+	case "result_name":
+		return r.name
 
 	case "value":
 		return r.value
@@ -107,12 +107,12 @@ func (r *Results) UnmarshalJSON(data []byte) error {
 
 	// populate ourselves with the values, but keyed with snakified values
 	for k, v := range incoming {
-		// validate name and key are the same
-		if k != v.name {
-			return fmt.Errorf("invalid results map, key: '%s' does not match result name: '%s'", k, v.name)
+		snaked := utils.Snakify(v.name)
+		if k != snaked {
+			return fmt.Errorf("invalid results map, key: '%s' does not match snaked result name: '%s'", k, v.name)
 		}
 
-		r.results[utils.Snakify(v.name)] = v
+		r.results[k] = v
 	}
 	return nil
 }
@@ -120,16 +120,12 @@ func (r *Results) UnmarshalJSON(data []byte) error {
 // MarshalJSON is our custom marshalling of a Results object, we build a map with
 // the full names and then marshal that with snakified keys
 func (r *Results) MarshalJSON() ([]byte, error) {
-	outgoing := make(map[string]*Result)
-	for _, v := range r.results {
-		outgoing[v.name] = v
-	}
-	return json.Marshal(outgoing)
+	return json.Marshal(r.results)
 }
 
 type resultEnvelope struct {
-	Node      NodeUUID  `json:"node"`
-	Name      string    `json:"name"`
+	Node      NodeUUID  `json:"node_uuid"`
+	Name      string    `json:"result_name"`
 	Value     string    `json:"value"`
 	Category  string    `json:"category,omitempty"`
 	CreatedOn time.Time `json:"created_on"`
