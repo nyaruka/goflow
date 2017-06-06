@@ -15,7 +15,7 @@ const TypeSaveFlowResult string = "save_flow_result"
 //    "created_on": "2006-01-02T15:04:05Z",
 //    "type": "save_flow_result",
 //    "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//    "name": "Gender",
+//    "result_name": "Gender",
 //    "value": "m",
 //    "category": "Make"
 //   }
@@ -24,15 +24,15 @@ const TypeSaveFlowResult string = "save_flow_result"
 // @event save_flow_result
 type SaveFlowResultEvent struct {
 	BaseEvent
-	NodeUUID flows.NodeUUID `json:"node_uuid"        validate:"required"`
-	Name     string         `json:"name"        validate:"required"`
-	Value    string         `json:"value"       validate:"required"`
-	Category string         `json:"category"`
+	NodeUUID   flows.NodeUUID `json:"node_uuid"        validate:"required"`
+	ResultName string         `json:"result_name"      validate:"required"`
+	Value      string         `json:"value"            validate:"required"`
+	Category   string         `json:"category"`
 }
 
 // NewSaveFlowResult returns a new save result event for the passed in values
 func NewSaveFlowResult(node flows.NodeUUID, name string, value string, category string) *SaveFlowResultEvent {
-	return &SaveFlowResultEvent{NodeUUID: node, Name: name, Value: value, Category: category}
+	return &SaveFlowResultEvent{NodeUUID: node, ResultName: name, Value: value, Category: category}
 }
 
 // Type returns the type of this event

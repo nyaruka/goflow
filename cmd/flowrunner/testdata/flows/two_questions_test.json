@@ -44,13 +44,13 @@
                 }
               ],
               "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-              "uuid": "6e3d9b80-6139-4d5f-bab0-27d7e6a95d2e"
+              "uuid": "bf06513e-dbc5-450c-a62e-4d6fd9c93764"
             }
           ],
           "results": {},
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "ccadfe08-7771-4a30-a8ef-2a239abb42d0",
+          "uuid": "1ef088a2-fe80-43d7-8c92-8dfa5f51b9cc",
           "wait": {
             "timeout": 600,
             "type": "msg"
@@ -73,8 +73,8 @@
         {
           "category": "Blue",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "name": "favorite_color",
           "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+          "result_name": "favorite_color",
           "step_uuid": "",
           "type": "save_flow_result",
           "value": "Blue"
@@ -149,8 +149,8 @@
                 {
                   "category": "Blue",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "name": "favorite_color",
                   "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                  "result_name": "favorite_color",
                   "step_uuid": "",
                   "type": "save_flow_result",
                   "value": "Blue"
@@ -159,7 +159,7 @@
               "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-              "uuid": "6e3d9b80-6139-4d5f-bab0-27d7e6a95d2e"
+              "uuid": "bf06513e-dbc5-450c-a62e-4d6fd9c93764"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -186,7 +186,7 @@
                 }
               ],
               "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-              "uuid": "27213941-56f7-4995-b584-2ca78f1bc1e2"
+              "uuid": "bb577668-9cc7-4b04-9b16-a8b3bc1446c9"
             }
           ],
           "results": {
@@ -200,7 +200,7 @@
           },
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "ccadfe08-7771-4a30-a8ef-2a239abb42d0",
+          "uuid": "1ef088a2-fe80-43d7-8c92-8dfa5f51b9cc",
           "wait": {
             "timeout": 600,
             "type": "msg"
@@ -223,8 +223,8 @@
         {
           "category": "Coke",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "name": "soda",
           "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+          "result_name": "soda",
           "step_uuid": "",
           "type": "save_flow_result",
           "value": "Coke"
@@ -286,8 +286,8 @@
                 {
                   "category": "Blue",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "name": "favorite_color",
                   "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                  "result_name": "favorite_color",
                   "step_uuid": "",
                   "type": "save_flow_result",
                   "value": "Blue"
@@ -296,7 +296,7 @@
               "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-              "uuid": "6e3d9b80-6139-4d5f-bab0-27d7e6a95d2e"
+              "uuid": "bf06513e-dbc5-450c-a62e-4d6fd9c93764"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -334,8 +334,8 @@
                 {
                   "category": "Coke",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "name": "soda",
                   "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                  "result_name": "soda",
                   "step_uuid": "",
                   "type": "save_flow_result",
                   "value": "Coke"
@@ -344,7 +344,7 @@
               "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-              "uuid": "27213941-56f7-4995-b584-2ca78f1bc1e2"
+              "uuid": "bb577668-9cc7-4b04-9b16-a8b3bc1446c9"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -359,7 +359,7 @@
               ],
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-              "uuid": "a9a4eeec-ff83-413d-bdff-5df0776d30de"
+              "uuid": "cf11d292-bd2e-443e-9c6d-07f01b301f34"
             }
           ],
           "results": {
@@ -380,7 +380,7 @@
           },
           "status": "C",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "ccadfe08-7771-4a30-a8ef-2a239abb42d0"
+          "uuid": "1ef088a2-fe80-43d7-8c92-8dfa5f51b9cc"
         }
       ]
     }
