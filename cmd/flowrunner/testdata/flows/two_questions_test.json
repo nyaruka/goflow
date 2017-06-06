@@ -3,7 +3,7 @@
     {
       "events": [
         {
-          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step_uuid": "",
           "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
@@ -30,7 +30,7 @@
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
-                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step_uuid": "",
                   "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
@@ -44,13 +44,13 @@
                 }
               ],
               "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-              "uuid": "35f70ea9-8a15-4d50-ba37-2a38bf8e2fba"
+              "uuid": "6e3d9b80-6139-4d5f-bab0-27d7e6a95d2e"
             }
           ],
           "results": {},
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "ee88a9fc-fecd-4287-a6bc-a551d0f5f2ce",
+          "uuid": "ccadfe08-7771-4a30-a8ef-2a239abb42d0",
           "wait": {
             "timeout": 600,
             "type": "msg"
@@ -87,7 +87,7 @@
           "value": "fra"
         },
         {
-          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step_uuid": "",
           "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
@@ -124,7 +124,7 @@
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
-                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step_uuid": "",
                   "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
@@ -159,7 +159,7 @@
               "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-              "uuid": "35f70ea9-8a15-4d50-ba37-2a38bf8e2fba"
+              "uuid": "6e3d9b80-6139-4d5f-bab0-27d7e6a95d2e"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -172,7 +172,7 @@
                   "value": "fra"
                 },
                 {
-                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step_uuid": "",
                   "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
@@ -186,7 +186,7 @@
                 }
               ],
               "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-              "uuid": "1d8b735d-d089-4e68-9f01-f56054c3b046"
+              "uuid": "27213941-56f7-4995-b584-2ca78f1bc1e2"
             }
           ],
           "results": {
@@ -200,7 +200,7 @@
           },
           "status": "A",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "ee88a9fc-fecd-4287-a6bc-a551d0f5f2ce",
+          "uuid": "ccadfe08-7771-4a30-a8ef-2a239abb42d0",
           "wait": {
             "timeout": 600,
             "type": "msg"
@@ -230,7 +230,7 @@
           "value": "Coke"
         },
         {
-          "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step_uuid": "",
           "text": "Parfait, vous avez finis et tu aimes Coke",
@@ -261,7 +261,7 @@
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
-                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step_uuid": "",
                   "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is +12065551212",
@@ -296,7 +296,7 @@
               "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-              "uuid": "35f70ea9-8a15-4d50-ba37-2a38bf8e2fba"
+              "uuid": "6e3d9b80-6139-4d5f-bab0-27d7e6a95d2e"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -309,7 +309,7 @@
                   "value": "fra"
                 },
                 {
-                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step_uuid": "",
                   "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
@@ -344,13 +344,13 @@
               "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-              "uuid": "1d8b735d-d089-4e68-9f01-f56054c3b046"
+              "uuid": "27213941-56f7-4995-b584-2ca78f1bc1e2"
             },
             {
               "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
               "events": [
                 {
-                  "contact": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                   "created_on": "2000-01-01T00:00:00.000000000-00:00",
                   "step_uuid": "",
                   "text": "Parfait, vous avez finis et tu aimes Coke",
@@ -359,7 +359,7 @@
               ],
               "left_on": "2000-01-01T00:00:00.000000000-00:00",
               "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-              "uuid": "47259c9f-0fe1-48a5-b396-c775e1d41439"
+              "uuid": "a9a4eeec-ff83-413d-bdff-5df0776d30de"
             }
           ],
           "results": {
@@ -380,7 +380,7 @@
           },
           "status": "C",
           "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": "ee88a9fc-fecd-4287-a6bc-a551d0f5f2ce"
+          "uuid": "ccadfe08-7771-4a30-a8ef-2a239abb42d0"
         }
       ]
     }

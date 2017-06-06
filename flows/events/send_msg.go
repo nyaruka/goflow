@@ -23,7 +23,7 @@ const TypeSendMsg string = "send_msg"
 type SendMsgEvent struct {
 	BaseEvent
 	URN         flows.URN         `json:"urn,omitempty"`
-	ContactUUID flows.ContactUUID `json:"contact,omitempty"`
+	ContactUUID flows.ContactUUID `json:"contact_uuid,omitempty"`
 	GroupUUID   flows.GroupUUID   `json:"group,omitempty"`
 	Text        string            `json:"text"                  validate:"required"`
 }
