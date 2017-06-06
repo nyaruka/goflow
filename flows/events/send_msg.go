@@ -24,8 +24,8 @@ type SendMsgEvent struct {
 	BaseEvent
 	URN         flows.URN         `json:"urn,omitempty"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid,omitempty"`
-	GroupUUID   flows.GroupUUID   `json:"group,omitempty"`
-	Text        string            `json:"text"                  validate:"required"`
+	GroupUUID   flows.GroupUUID   `json:"group_uuid,omitempty"`
+	Text        string            `json:"text"                      validate:"required"`
 }
 
 // NewSendMsgToContact creates a new outgoing msg event for the passed in channel, contact and string
