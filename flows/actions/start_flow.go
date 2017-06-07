@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -45,6 +47,28 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if err != nil {
 		run.AddError(step, err)
 		return err
+	}
+
+	// how many times have we started this flow in this session without exiting?
+	startCount := 0
+	for _, evt := range run.Session().Events() {
+		enter, isEnter := evt.(*events.FlowEnteredEvent)
+		if isEnter && enter.FlowUUID == a.FlowUUID {
+			startCount++
+			continue
+		}
+
+		exit, isExit := evt.(*events.FlowExitedEvent)
+		if isExit && exit.FlowUUID == a.FlowUUID {
+			startCount--
+			continue
+		}
+	}
+
+	// we allow a stack depth of 4, if greater than that log an error and exit
+	if startCount >= 4 {
+		run.AddError(step, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
+		return nil
 	}
 
 	// log our event
