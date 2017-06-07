@@ -3,7 +3,7 @@ package events
 // TypeUpdateContact is the type of our update contact event
 const TypeUpdateContact string = "update_contact"
 
-// UpdateContact events are created when a contact's built in field is updated.
+// UpdateContactEvent events are created when a contact's built in field is updated.
 //
 // ```
 //   {

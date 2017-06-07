@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,7 +11,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func handleEventDoc(prefix string, typeName string, docString string) {
+func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docString string) {
 	lines := strings.Split(docString, "\n")
 	name := ""
 
@@ -34,12 +35,12 @@ func handleEventDoc(prefix string, typeName string, docString string) {
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	if err != nil {
-		log.Fatalf("unable to parse example: %s\nHas err:", exampleJSON, err)
+		log.Fatalf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
 	}
 
 	event, err := events.EventFromEnvelope(typed)
 	if err != nil {
-		log.Fatalf("unable to parse example: %s\nHas err:", exampleJSON, err)
+		log.Fatalf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
 	}
 
 	// make sure types match
@@ -57,7 +58,7 @@ func handleEventDoc(prefix string, typeName string, docString string) {
 	if err != nil {
 		log.Fatalf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
 	}
-	exampleJSON, err = json.MarshalIndent(typed, "", "  ")
+	exampleJSON, err = json.MarshalIndent(typed, "", "    ")
 	if err != nil {
 		log.Fatalf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
 	}
@@ -67,13 +68,15 @@ func handleEventDoc(prefix string, typeName string, docString string) {
 			docs[0] = strings.Replace(docs[0], typeName, name, 1)
 		}
 
-		fmt.Printf("# %s\n\n", name)
-		fmt.Printf("%s", strings.Join(docs, "\n"))
+		output.WriteString(fmt.Sprintf("## %s\n\n", name))
+		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
 		if len(example) > 0 {
-			fmt.Printf("```json\n")
-			fmt.Printf("%s\n", exampleJSON)
-			fmt.Printf("```\n")
+			output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+			output.WriteString("```json\n")
+			output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
+			output.WriteString("```\n")
+			output.WriteString(`</div>`)
 		}
-		fmt.Printf("\n")
+		output.WriteString(fmt.Sprintf("\n"))
 	}
 }

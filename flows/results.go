@@ -3,6 +3,7 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
@@ -40,13 +41,13 @@ func (r *Results) Default() interface{} {
 	return r
 }
 
-// String returns the string representation of our Results, which is just our json representation
+// String returns the string representation of our Results, which is a key/value pairing of our fields
 func (r *Results) String() string {
-	resultJSON, err := json.Marshal(r)
-	if err != nil {
-		return err.Error()
+	results := make([]string, 0, len(r.results))
+	for _, v := range r.results {
+		results = append(results, fmt.Sprintf("%s: %s", v.name, v.value))
 	}
-	return string(resultJSON)
+	return strings.Join(results, ", ")
 }
 
 // Result represents a result value in our flow run. Results have a name for which they are the result for,

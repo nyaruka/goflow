@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"go/ast"
 	"log"
@@ -10,11 +11,12 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func newFuncVisitor(funcType string) ast.Visitor {
+func newFuncVisitor(funcType string, output *bytes.Buffer) ast.Visitor {
 	return &funcVisitor{
 		prefix:   "@" + funcType,
 		env:      utils.NewDefaultEnvironment(),
 		resolver: utils.NewMapResolver(make(map[string]interface{})),
+		output:   output,
 	}
 }
 
@@ -22,6 +24,7 @@ type funcVisitor struct {
 	prefix   string
 	env      utils.Environment
 	resolver utils.VariableResolver
+	output   *bytes.Buffer
 }
 
 func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
@@ -30,14 +33,14 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 		case *ast.FuncDecl:
 			if exp.Doc != nil && strings.Contains(exp.Doc.Text(), v.prefix) {
 				lines := strings.Split(exp.Doc.Text(), "\n")
-				name := ""
+				signature := ""
 
 				docs := make([]string, 0, len(lines))
 				examples := make([]string, 0, len(lines))
 				literalExamples := make([]string, 0, len(lines))
 				for _, l := range lines {
 					if strings.HasPrefix(l, v.prefix) {
-						name = l[len(v.prefix)+1:]
+						signature = l[len(v.prefix)+1:]
 					} else if strings.HasPrefix(l, "  ") {
 						examples = append(examples, l[2:])
 					} else if strings.HasPrefix(l, " ") {
@@ -47,7 +50,8 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 					}
 				}
 
-				if name != "" {
+				if signature != "" {
+					name := signature[0:strings.Index(signature, "(")]
 					if len(docs) > 0 && strings.HasPrefix(docs[0], exp.Name.String()) {
 						docs[0] = strings.Replace(docs[0], exp.Name.String(), name, 1)
 					}
@@ -74,17 +78,17 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 						}
 					}
 
-					fmt.Printf("# %s\n\n", name)
-					fmt.Printf("%s", strings.Join(docs, "\n"))
-					fmt.Printf("```objective-c\n")
+					v.output.WriteString(fmt.Sprintf("## %s\n\n", signature))
+					v.output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
+					v.output.WriteString(fmt.Sprintf("```objectivec\n"))
 					if len(examples) > 0 {
-						fmt.Printf("%s\n", strings.Join(examples, "\n"))
+						v.output.WriteString(fmt.Sprintf("%s\n", strings.Join(examples, "\n")))
 					}
 					if len(literalExamples) > 0 {
-						fmt.Printf("%s\n", strings.Join(literalExamples, "\n"))
+						v.output.WriteString(fmt.Sprintf("%s\n", strings.Join(literalExamples, "\n")))
 					}
-					fmt.Printf("```\n")
-					fmt.Printf("\n")
+					v.output.WriteString(fmt.Sprintf("```\n"))
+					v.output.WriteString(fmt.Sprintf("\n"))
 				}
 			}
 		}

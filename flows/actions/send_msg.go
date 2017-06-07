@@ -13,7 +13,7 @@ const TypeSendMsg string = "send_msg"
 // SendMsgAction can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 // and a list of contacts.
 //
-// The URNs and text fields may be templates. A `msg_out` event will be created for each unique urn, contact and group
+// The URNs and text fields may be templates. A `send_msg` event will be created for each unique urn, contact and group
 // with the evaluated text.
 //
 // ```

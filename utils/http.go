@@ -72,7 +72,7 @@ func (r *requestResponse) Body() string                  { return r.body }
 func (r *requestResponse) JSON() JSONFragment            { return JSONFragment{[]byte(r.body)} }
 
 func (r *requestResponse) Default() interface{} {
-	return r.Body()
+	return r.JSON()
 }
 
 func (r *requestResponse) Resolve(key string) interface{} {

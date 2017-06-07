@@ -5,9 +5,7 @@ import "github.com/nyaruka/goflow/flows"
 // TypeAddToGroup is the type of our add to group action
 const TypeAddToGroup string = "add_to_group"
 
-// AddToGroupEvent events will be created with the groups a contact should be added to. It is usually created
-// from an `add_to_group` action. Only groups which the contact was not originally in will
-// be present in the event.
+// AddToGroupEvent events will be created with the groups a contact should be added to.
 //
 // ```
 //   {

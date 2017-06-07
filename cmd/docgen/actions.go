@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -90,7 +91,7 @@ func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
 		if err != nil {
 			return nil, err
 		}
-		eventJSON[i], err = json.MarshalIndent(typed, "", "  ")
+		eventJSON[i], err = json.MarshalIndent(typed, "", "    ")
 		if err != nil {
 			return nil, err
 		}
@@ -98,14 +99,14 @@ func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
 	if len(events) == 1 {
 		return eventJSON[0], err
 	}
-	js, err := json.MarshalIndent(eventJSON, "", "  ")
+	js, err := json.MarshalIndent(eventJSON, "", "    ")
 	if err != nil {
 		return nil, err
 	}
 	return js, nil
 }
 
-func handleActionDoc(prefix string, typeName string, docString string) {
+func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docString string) {
 	lines := strings.Split(docString, "\n")
 	name := ""
 
@@ -166,17 +167,21 @@ func handleActionDoc(prefix string, typeName string, docString string) {
 			docs[0] = strings.Replace(docs[0], typeName, name, 1)
 		}
 
-		fmt.Printf("# %s\n\n", name)
-		fmt.Printf("%s", strings.Join(docs, "\n"))
+		output.WriteString(fmt.Sprintf("## %s\n\n", name))
+		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
 		if len(example) > 0 {
-			fmt.Printf("```json\n")
-			fmt.Printf("%s\n", exampleJSON)
-			fmt.Printf("```\n")
+			output.WriteString(`<div class="input_action"><h3>Action</h3>`)
+			output.WriteString("```json\n")
+			output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
+			output.WriteString("```\n")
+			output.WriteString(`</div>`)
 
-			fmt.Printf("```json\n")
-			fmt.Printf("%s\n", events)
-			fmt.Printf("```\n")
+			output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+			output.WriteString("```json\n")
+			output.WriteString(fmt.Sprintf("%s\n", events))
+			output.WriteString("```\n")
+			output.WriteString(`</div>`)
 		}
-		fmt.Printf("\n")
+		output.WriteString(fmt.Sprintf("\n"))
 	}
 }

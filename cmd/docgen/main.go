@@ -1,6 +1,11 @@
 package main
 
+// generate full docs with:
+// go install github.com/nyaruka/goflow/cmd/docgen && $GOPATH/bin/docgen . | pandoc --from=markdown --to=html -o docs.html --standalone --template=cmd/docgen/templates/template.html
+
 import (
+	"bytes"
+	"fmt"
 	"go/ast"
 	"go/doc"
 	"go/parser"
@@ -9,9 +14,10 @@ import (
 	"os"
 	"path"
 	"strings"
+	"text/template"
 )
 
-func buildExcellentDocs(goflowPath string) {
+func buildExcellentDocs(goflowPath string) (string, string) {
 	excellentPath := path.Join(goflowPath, "excellent")
 
 	fset := token.NewFileSet()
@@ -27,15 +33,20 @@ func buildExcellentDocs(goflowPath string) {
 		}
 	}
 
+	functionOutput := bytes.Buffer{}
 	for _, f := range astf {
-		ast.Walk(newFuncVisitor("function"), f)
+		ast.Walk(newFuncVisitor("function", &functionOutput), f)
 	}
+
+	testOutput := bytes.Buffer{}
 	for _, f := range astf {
-		ast.Walk(newFuncVisitor("test"), f)
+		ast.Walk(newFuncVisitor("test", &testOutput), f)
 	}
+	return functionOutput.String(), testOutput.String()
 }
 
-func buildExampleDocs(goflowPath string, subdir string, tag string, handler handleExampleFunc) {
+func buildExampleDocs(goflowPath string, subdir string, tag string, handler handleExampleFunc) string {
+	output := bytes.Buffer{}
 	examplePath := path.Join(goflowPath, subdir)
 
 	fset := token.NewFileSet()
@@ -48,17 +59,42 @@ func buildExampleDocs(goflowPath string, subdir string, tag string, handler hand
 		p := doc.New(f, "./", 0)
 		for _, t := range p.Types {
 			if strings.Contains(t.Doc, tag) {
-				handler(tag, t.Name, t.Doc)
+				handler(&output, tag, t.Name, t.Doc)
 			}
 		}
 	}
+	return output.String()
 }
 
-type handleExampleFunc func(prefix string, typeName string, docString string)
+type handleExampleFunc func(output *bytes.Buffer, prefix string, typeName string, docString string)
+
+type docContext struct {
+	ExcellentFunctionDocs string
+	ExcellentTestDocs     string
+	ActionDocs            string
+	EventDocs             string
+}
 
 func main() {
 	path := os.Args[1]
-	buildExcellentDocs(path)
-	buildExampleDocs(path, "flows/actions", "@action", handleActionDoc)
-	buildExampleDocs(path, "flows/events", "@event", handleEventDoc)
+
+	context := docContext{}
+
+	context.ExcellentFunctionDocs, context.ExcellentTestDocs = buildExcellentDocs(path)
+	context.ActionDocs = buildExampleDocs(path, "flows/actions", "@action", handleActionDoc)
+	context.EventDocs = buildExampleDocs(path, "flows/events", "@event", handleEventDoc)
+
+	// generate our complete docs
+	docTpl, err := template.ParseFiles("cmd/docgen/templates/docs.md")
+	if err != nil {
+		log.Fatalf("Error reading template file: %s", err)
+	}
+
+	output := bytes.Buffer{}
+	err = docTpl.Execute(&output, context)
+	if err != nil {
+		log.Fatalf("Error executing template: %s", err)
+	}
+
+	fmt.Println(output.String())
 }

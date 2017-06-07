@@ -290,6 +290,11 @@ func (r *flowRun) Default() interface{} {
 	return r
 }
 
+// String returns the default string value for this run, which is just our status
+func (r *flowRun) String() string {
+	return string(r.status)
+}
+
 // runReference provides a standalone and serializable version of a run reference. When a run is written
 // this is what is written and what will be read (and needed) when resuming that run
 type runReference struct {
@@ -329,6 +334,10 @@ func (r *runReference) Resolve(key string) interface{} {
 
 func (r *runReference) Default() interface{} {
 	return r
+}
+
+func (r *runReference) String() string {
+	return string(r.Status())
 }
 
 func (r *runReference) UUID() flows.RunUUID            { return r.uuid }

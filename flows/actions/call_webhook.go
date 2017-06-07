@@ -16,14 +16,17 @@ const TypeCallWebhook string = "call_webhook"
 // WebhookAction can be used to call an external service and insert the results in the @webhook
 // context variable. The body, header and url fields may be templates and will be evaluated at runtime.
 //
-// A `webhook_result` event will be created based on the results of the HTTP call.
+// A `webhook_called` event will be created based on the results of the HTTP call.
 //
 // ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "call_webhook",
 //     "method": "get",
-//     "url": "https://api.ipify.org?format=json"
+//     "url": "https://api.ipify.org?format=json",
+//     "headers": {
+//	      "Authorization": "Token AAFFZZHH"
+//     }
 //   }
 // ```
 //

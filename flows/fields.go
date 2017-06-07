@@ -3,6 +3,7 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -41,11 +42,11 @@ func (f *Fields) Default() interface{} {
 
 // String returns the string representation of these Fields, which is our JSON representation
 func (f *Fields) String() string {
-	fieldJSON, err := json.Marshal(f)
-	if err != nil {
-		return err.Error()
+	fields := make([]string, 0, len(f.fields))
+	for _, v := range f.fields {
+		fields = append(fields, fmt.Sprintf("%s: %s", v.name, v.value))
 	}
-	return string(fieldJSON)
+	return strings.Join(fields, ", ")
 }
 
 // Field represents a contact field and value for a contact

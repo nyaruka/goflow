@@ -12,7 +12,7 @@ const TypeReply string = "reply"
 
 // ReplyAction can be used to reply to the current contact in a flow. The text field may contain templates.
 //
-// A `msg_out` event will be created with the evaluated text.
+// A `send_msg` event will be created with the evaluated text.
 //
 // ```
 //   {

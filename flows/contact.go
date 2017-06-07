@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// Contact represents a single contact
 type Contact struct {
 	uuid     ContactUUID
 	name     string
@@ -69,8 +70,14 @@ func (c *Contact) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on contact", key)
 }
 
+// Default returns our default value in the context
 func (c *Contact) Default() interface{} {
 	return c
+}
+
+// String returns our string value in the context
+func (c *Contact) String() string {
+	return c.name
 }
 
 type ContactReference struct {
@@ -86,9 +93,7 @@ type ContactReference struct {
 func ReadContact(data json.RawMessage) (*Contact, error) {
 	contact := &Contact{}
 	err := json.Unmarshal(data, contact)
-	if err == nil {
-		// err = run.Validate()
-	}
+	err = utils.ValidateAllUnlessErr(err, contact)
 	return contact, err
 }
 

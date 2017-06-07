@@ -15,7 +15,7 @@ type FlowWait struct {
 
 func (w *FlowWait) Resolve(key string) interface{} {
 	switch key {
-	case "flow":
+	case "flow_uuid":
 		return w.FlowUUID
 	}
 

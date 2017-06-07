@@ -3,7 +3,7 @@ package events
 // TypeSendEmail is our type for the email event
 const TypeSendEmail string = "send_email"
 
-// SendEmailEvent events will be created for each email in an `email` action.
+// SendEmailEvent events are created for each recipient which should receive an email.
 //
 // ```
 //   {
