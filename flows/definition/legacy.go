@@ -507,7 +507,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 			Operand: operand,
 			Cases:   cases,
 			BaseRouter: routers.BaseRouter{
-				Name_: r.Label,
+				ResultName_: r.Label,
 			},
 		}
 	case "random":

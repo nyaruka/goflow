@@ -1,7 +1,7 @@
 package routers
 
 type BaseRouter struct {
-	Name_ string `json:"name,omitempty"`
+	ResultName_ string `json:"result_name,omitempty"`
 }
 
-func (r *BaseRouter) Name() string { return r.Name_ }
+func (r *BaseRouter) ResultName() string { return r.ResultName_ }

@@ -62,7 +62,7 @@
         },
         "router": {
           "type": "switch",
-          "name": "favorite_color",
+          "result_name": "favorite_color",
           "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
           "operand": "@input",
           "cases": [
@@ -124,7 +124,7 @@
         "router": {
           "type": "switch",
           "default_exit_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
-          "name": "soda",
+          "result_name": "soda",
           "operand": "@input",
           "cases": [
             {

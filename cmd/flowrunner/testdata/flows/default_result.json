@@ -32,7 +32,7 @@
           }
         ],
         "router": {
-          "name": "Contact Name",
+          "result_name": "Contact Name",
           "type": "switch",
           "cases": [],
           "default_exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",

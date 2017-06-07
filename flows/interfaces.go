@@ -79,7 +79,7 @@ type Action interface {
 type Router interface {
 	PickRoute(FlowRun, []Exit, Step) (Route, error)
 	Validate([]Exit) error
-	Name() string
+	ResultName() string
 	utils.Typed
 }
 
