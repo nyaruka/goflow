@@ -8,10 +8,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-type VisitedMap map[flows.NodeUUID]bool
-
-const noDestination = flows.NodeUUID("")
-
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
 func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input, extra json.RawMessage) (flows.Session, error) {
 	// build our run
@@ -29,7 +25,7 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 
 	// no first node, nothing to do (valid but weird)
 	if len(flow.Nodes()) == 0 {
-		run.Exit(flows.RunCompleted)
+		run.Exit(flows.StatusCompleted)
 		return run.Session(), nil
 	}
 
@@ -60,6 +56,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	if node == nil {
 		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.NodeUUID())
 		run.AddError(step, err)
+		run.Exit(flows.StatusErrored)
 		return run.Session(), nil
 	}
 
@@ -79,6 +76,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 		parentRun, err := env.GetRun(run.Parent().UUID())
 		if err != nil {
 			run.AddError(step, err)
+			run.Exit(flows.StatusErrored)
 			return run.Session(), nil
 		}
 		parentRun.SetSession(run.Session())
@@ -105,7 +103,7 @@ func initTranslations(run flows.FlowRun) {
 // Continues the flow entering the passed in flow
 func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, event flows.Event) (err error) {
 	// set of uuids we've visited
-	visited := make(VisitedMap)
+	visited := make(visitedMap)
 
 	for destination != noDestination {
 		// this is a loop, we log it and stop execution
@@ -138,11 +136,12 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 	// if we have an error, log it if we have a step
 	if err != nil && step != nil {
 		run.AddError(step, err)
+		run.Exit(flows.StatusErrored)
 	}
 
-	// we are complete if we had an error or our run is active and we have no wait
-	if err != nil || (run.Wait() == nil && run.Status() == flows.RunActive) {
-		run.Exit(flows.RunCompleted)
+	// mark ourselves as complete if our run is active and we have no wait
+	if run.Wait() == nil && run.Status() == flows.StatusActive {
+		run.Exit(flows.StatusCompleted)
 	}
 
 	return nil
@@ -155,12 +154,14 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, event flows
 	if wait == nil {
 		err := fmt.Errorf("cannot resume flow at node '%s' which no longer contains wait", node.UUID())
 		run.AddError(step, err)
+		run.Exit(flows.StatusErrored)
 		return noDestination, step, nil
 	}
 
 	err := wait.End(run, step, event)
 	if err != nil {
 		run.AddError(step, err)
+		run.Exit(flows.StatusErrored)
 		return noDestination, step, nil
 	}
 
@@ -183,6 +184,7 @@ func enterNode(run flows.FlowRun, node flows.Node, event flows.Event) (flows.Nod
 			err := action.Execute(run, step)
 			if err != nil {
 				run.AddError(step, err)
+				run.Exit(flows.StatusErrored)
 				return noDestination, step, nil
 			}
 		}
@@ -194,6 +196,7 @@ func enterNode(run flows.FlowRun, node flows.Node, event flows.Event) (flows.Nod
 		err := wait.Begin(run, step)
 		if err != nil {
 			run.AddError(step, err)
+			run.Exit(flows.StatusErrored)
 			return noDestination, step, nil
 		}
 
@@ -201,6 +204,7 @@ func enterNode(run flows.FlowRun, node flows.Node, event flows.Event) (flows.Nod
 		event, err := wait.GetEndEvent(run, step)
 		if err != nil {
 			run.AddError(step, err)
+			run.Exit(flows.StatusErrored)
 			return noDestination, step, nil
 		}
 
@@ -213,6 +217,7 @@ func enterNode(run flows.FlowRun, node flows.Node, event flows.Event) (flows.Nod
 		err = wait.End(run, step, event)
 		if err != nil {
 			run.AddError(step, err)
+			run.Exit(flows.StatusErrored)
 			return noDestination, step, nil
 		}
 	}
@@ -242,6 +247,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 	// if we had an error routing, that's it, we are done
 	if err != nil {
 		run.AddError(step, err)
+		run.Exit(flows.StatusErrored)
 		return noDestination, step, err
 	}
 
@@ -270,6 +276,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 	// log any error we received
 	if err != nil {
 		run.AddError(step, err)
+		run.Exit(flows.StatusErrored)
 	}
 
 	// no exit? return no destination
@@ -280,6 +287,6 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 	return exit.DestinationNodeUUID(), step, nil
 }
 
-func GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	return nil, nil
-}
+type visitedMap map[flows.NodeUUID]bool
+
+const noDestination = flows.NodeUUID("")

@@ -32,7 +32,7 @@ func (s *session) ActiveRun() flows.FlowRun {
 		}
 
 		// We have a child, and it isn't complete, we can't be active
-		if run.Child() != nil && run.Child().Status() == flows.RunActive {
+		if run.Child() != nil && run.Child().Status() == flows.StatusActive {
 			continue
 		}
 

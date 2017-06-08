@@ -126,7 +126,7 @@ func (r *flowRun) ResetSession() {
 }
 
 func (r *flowRun) IsComplete() bool {
-	return r.status != flows.RunActive
+	return r.status != flows.StatusActive
 }
 func (r *flowRun) setStatus(status flows.RunStatus) {
 	r.status = status
@@ -231,7 +231,7 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		environment: env,
 		contact:     contact,
 		flow:        flow,
-		status:      flows.RunActive,
+		status:      flows.StatusActive,
 		createdOn:   now,
 		modifiedOn:  now,
 	}

@@ -65,10 +65,9 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 		}
 	}
 
-	// we allow a stack depth of 4, if greater than that log an error and exit
-	if startCount >= 4 {
-		run.AddError(step, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
-		return nil
+	// we don't allow recursion, you can't call back into yourself
+	if startCount > 0 {
+		return fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID)
 	}
 
 	// log our event
@@ -77,14 +76,19 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// start it for our current contact
 	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run, nil, nil)
 
-	// log any error we receive
+	// if we received an error, shortcut out, this session is horked
 	if err != nil {
-		run.AddError(step, err)
 		return err
 	}
 
+	// same thing if our child ended as an error, session is horked
+	if run.Child().Status() == flows.StatusErrored {
+		run.AddEvent(step, events.NewFlowExitedEvent(run.Child()))
+		return fmt.Errorf("child run for flow '%s' ended in error, ending execution", a.FlowUUID)
+	}
+
 	// did we complete?
-	if run.Child().Status() != flows.RunActive {
+	if run.Child().Status() != flows.StatusActive {
 		// add our exit event
 		run.AddEvent(step, events.NewFlowExitedEvent(run.Child()))
 	}
