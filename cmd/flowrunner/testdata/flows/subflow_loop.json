@@ -1,0 +1,68 @@
+[
+    {
+        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+        "name": "Parent Flow",
+        "language": "eng",
+        "nodes": [
+            {
+                "uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
+                "actions": [
+                    {
+                        "uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
+                        "type": "reply",
+                        "text": "This is the parent flow"
+                    },
+                    {
+                        "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
+                        "type": "start_flow",
+                        "flow_name": "Child Flow",
+                        "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                    }
+                ],
+                "wait": {
+                    "type": "flow",
+                    "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                },
+                "exits": [
+                    {
+                        "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
+                        "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                    }
+                ]
+            },
+            {
+                "uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
+                "actions": [
+                    {
+                        "uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
+                        "type": "reply",
+                        "text": "Flow succeeded"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+        "name": "Child flow",
+        "language": "eng",
+        "nodes": [
+            {
+                "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
+                "actions": [
+                    {
+                        "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
+                        "type": "reply",
+                        "text": "This is the child flow"
+                    },
+                    {
+                        "uuid": "a25014c5-aaa5-47d7-9376-429f317360f1",
+                        "type": "start_flow",
+                        "flow_name": "Parent Flow",
+                        "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+                    }
+                ]
+            }
+        ]
+    }
+]

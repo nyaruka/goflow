@@ -36,17 +36,21 @@ func (w *FlowWait) Begin(run flows.FlowRun, step flows.Step) error {
 
 func (w *FlowWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event, error) {
 	child := run.Child()
+
+	// we don't have a child, so stop execution
 	if child == nil {
-		return nil, fmt.Errorf("FlowWait should always have a child run set")
+		return nil, nil
 	}
 
 	// child isn't complete yet, shouldn't end
-	if child.Status() == flows.RunActive {
+	if child.Status() == flows.StatusActive {
 		return nil, nil
 	}
 
 	// see if we already have an exit event on our step for this flow
-	for _, evt := range step.Events() {
+	evts := step.Events()
+	for i := len(evts) - 1; i >= 0; i-- {
+		evt := evts[i]
 		exit, isExit := evt.(*events.FlowExitedEvent)
 		if isExit && exit.FlowUUID == w.FlowUUID {
 			return exit, nil
@@ -60,12 +64,12 @@ func (w *FlowWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event,
 func (w *FlowWait) End(run flows.FlowRun, step flows.Step, event flows.Event) error {
 	flowEvent, isFlow := event.(*events.FlowExitedEvent)
 	if !isFlow {
-		return fmt.Errorf("Must end FlowWait with FlowExitEvent, got: %#v", event)
+		return fmt.Errorf("must end flow wait with flow_exited event, got: %#v", event.Type())
 	}
 
 	// make sure the flows match
 	if flowEvent.FlowUUID != w.FlowUUID {
-		return fmt.Errorf("Must end FlowWait with FlowExitEvent for the same flow, expected '%s', got '%s'", w.FlowUUID, flowEvent.FlowUUID)
+		return fmt.Errorf("must end flow wait with flow_exited for the same flow, expected '%s', got '%s'", w.FlowUUID, flowEvent.FlowUUID)
 	}
 
 	// log this event
