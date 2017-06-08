@@ -27,8 +27,13 @@ func TestToString(t *testing.T) {
 	strMap := make(map[string]string)
 	strMap["one"] = "1.0"
 
+	chi, err := time.LoadLocation("America/Chicago")
+	if err != nil {
+		t.Fatal("Unable to load America/Chicago timezone")
+	}
+
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
-	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, time.UTC)
+	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
 
 	testStringer := &stringer{}
 	testResolver := &resolver{"Resolver"}
@@ -50,8 +55,8 @@ func TestToString(t *testing.T) {
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testStringer, "Stringer", false},
 		{testResolver, "Resolver", false},
-		{date1, "2017-06-23 15:30", false},
-		{[]time.Time{date1, date2}, "2017-06-23 15:30, 2017-07-18 15:30", false},
+		{date1, "2017-06-23T15:30:00.000000Z", false},
+		{[]time.Time{date1, date2}, "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
 		{[]string{"one", "two", "three"}, "one, two, three", false},
 		{[]bool{true, false, true}, "true, false, true", false},
 		{[]decimal.Decimal{decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)}, "1.5, 2.5", false},

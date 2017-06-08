@@ -1,59 +1,63 @@
 package utils
 
 import (
-	"fmt"
 	"testing"
 	"time"
 )
 
 var timeTests = []struct {
-	DateFormat string
-	TimeFormat string
+	DateFormat DateFormat
+	TimeFormat TimeFormat
 	Timezone   string
 	Value      string
 	Expected   string
 	Error      bool
 }{
 	// valid cases, varying formats
-	{"DD-MM-YYYY", "hh:mm", "UTC", "01-02-2001", "01-02-2001 00:00:00 +0000 UTC", false},
-	{"DD-MM-YYYY", "hh:mm", "UTC", "date is 01.02.2001 yes", "01-02-2001 00:00:00 +0000 UTC", false},
-	{"DD-MM-YYYY", "hh:mm", "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
-	{"DD-MM-YYYY", "hh:mm", "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-02-2001", "01-02-2001 00:00:00 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "date is 01.02.2001 yes", "01-02-2001 00:00:00 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
 	// month first
-	{"MM-DD-YYYY", "hh:mm", "UTC", "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
+	{DateFormat_MM_dd_yyyy, TimeFormat_HH_mm, "UTC", "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
 
 	// year first
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
 
 	// specific timezone
-	{"DD-MM-YYYY", "hh:mm", "America/Los_Angeles", "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "America/Los_Angeles", "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
 
 	// illegal day
-	{"DD-MM-YYYY", "hh:mm", "UTC", "33-01-2001", "01-01-0001 00:00:00 +0000 UTC", true},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "33-01-2001", "01-01-0001 00:00:00 +0000 UTC", true},
 
 	// illegal month
-	{"DD-MM-YYYY", "hh:mm", "UTC", "01-13-2001", "01-01-0001 00:00:00 +0000 UTC", true},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-13-2001", "01-01-0001 00:00:00 +0000 UTC", true},
 
 	// valid two digit cases
-	{"DD-MM-YYYY", "hh:mm", "UTC", "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
-	{"DD-MM-YYYY", "hh:mm", "UTC", "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
+
+	// iso dates
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 -0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 -0000 UTC", false},
 
 	// with time
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01 03:15pm", "01-02-2001 15:15:00 +0000 UTC", false},
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01 03:15 AM", "01-02-2001 03:15:00 +0000 UTC", false},
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
-	{"YYYY-MM-DD", "hh:mm", "UTC", "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15pm", "01-02-2001 15:15:00 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15 AM", "01-02-2001 03:15:00 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
+	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
 }
 
 func TestDateFromString(t *testing.T) {
-	env := NewEnvironment(DD_MM_YYYY, HH_MM_SS, time.UTC)
+	env := NewEnvironment(DateFormat_dd_MM_yyyy, TimeFormat_HH_mm_ss, time.UTC)
 
 	for _, test := range timeTests {
-		env.SetDateFormat(DateFormat(test.DateFormat))
-		env.SetTimeFormat(TimeFormat(test.TimeFormat))
+		env.SetDateFormat(test.DateFormat)
+		env.SetTimeFormat(test.TimeFormat)
 		timezone, err := time.LoadLocation(test.Timezone)
 		env.SetTimezone(timezone)
 
@@ -75,8 +79,7 @@ func TestDateFromString(t *testing.T) {
 		}
 
 		if !value.Equal(expected) {
-			fmt.Printf("value: %s  expected: %s\n", value.UTC(), expected.UTC())
-			t.Errorf("Date '%s' not match expected date '%s'", value, expected)
+			t.Errorf("Date '%s' not match expected date '%s' for input: '%s'", value, expected, test.Value)
 		}
 	}
 }
@@ -119,6 +122,39 @@ func TestMonthsBetween(t *testing.T) {
 		actual := DaysBetween(test.d1, test.d2)
 		if actual != test.expected {
 			t.Errorf("Months between: %d did not match expected: %d for %s - %s", actual, test.expected, test.d1, test.d2)
+		}
+	}
+}
+
+func TestDateFormat(t *testing.T) {
+	formatTests := []struct {
+		input    string
+		expected string
+		hasErr   bool
+	}{
+		{"MM-dd-yyyy", "01-02-2006", false},
+		{"M-d-yy", "1-2-06", false},
+		{"h:m", "3:4", false},
+		{"h:m:s tt", "3:4:5 PM", false},
+		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-0700", false},
+		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-0700", false},
+		{"yyyy-MM-ddThh:mm:ss.fffzzz", "2006-01-02T03:04:05.000-0700", false},
+		{"yyyy-MM-dd", "2006-01-02", false},
+		{"2006-01-02", "", true},
+	}
+
+	for _, test := range formatTests {
+		actual, err := ToGoDateFormat(test.input)
+		if actual != test.expected {
+			t.Errorf("Date format invalid for '%s'  Expected: '%s' Got: '%s'", test.input, test.expected, actual)
+		}
+
+		if err != nil && !test.hasErr {
+			t.Errorf("Date format received error for '%s': %s", test.input, err)
+		}
+
+		if err == nil && test.hasErr {
+			t.Errorf("Date format expected error for '%s'", test.input)
 		}
 	}
 }

@@ -21,14 +21,14 @@ type DateFormat string
 type TimeFormat string
 
 const (
-	YYYY_MM_DD DateFormat = "YYYY-MM-DD"
-	MM_DD_YYYY DateFormat = "MM-DD-YYYY"
-	DD_MM_YYYY DateFormat = "DD-MM-YYYY"
+	DateFormat_yyyy_MM_dd DateFormat = "yyyy-MM-dd"
+	DateFormat_MM_dd_yyyy DateFormat = "MM-dd-yyyy"
+	DateFormat_dd_MM_yyyy DateFormat = "dd-MM-yyyy"
 
-	HH_MM       TimeFormat = "hh:mm"
-	HH_MM_AP    TimeFormat = "hh:mm ap"
-	HH_MM_SS    TimeFormat = "hh:mm:ss"
-	HH_MM_SS_AP TimeFormat = "hh:mm:ss ap"
+	TimeFormat_HH_mm       TimeFormat = "hh:mm"
+	TimeFormat_hh_mm_tt    TimeFormat = "hh:mm tt"
+	TimeFormat_HH_mm_ss    TimeFormat = "HH:mm:ss"
+	TimeFormat_hh_mm_ss_tt TimeFormat = "hh:mm:ss tt"
 )
 
 func (df DateFormat) String() string { return string(df) }
@@ -109,71 +109,61 @@ func MonthsBetween(date1 time.Time, date2 time.Time) int {
 	return months
 }
 
+var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
+var iso8601FormatUTC = "2006-01-02T15:04:05Z"
+var iso8601MilliFormatUTC = "2006-01-02T15:04:05.000Z"
+var iso8601MicroFormatUTC = "2006-01-02T15:04:05.000000Z"
+var iso8601NanoFormatUTC = "2006-01-02T15:04:05.000000000Z"
+var iso8601FormatZoned = "2006-01-02T15:04:05-07:00"
+var iso8601MilliFormatZoned = "2006-01-02T15:04:05.000-07:00"
+var iso8601MicroFormatZoned = "2006-01-02T15:04:05.000000-07:00"
+var iso8601NanoFormatZoned = "2006-01-02T15:04:05.000000000-07:00"
+
+var isoFormats = []string{iso8601Default, iso8601MicroFormatUTC, iso8601FormatUTC, iso8601MicroFormatUTC, iso8601NanoFormatUTC,
+	iso8601MicroFormatZoned, iso8601FormatZoned, iso8601MicroFormatZoned, iso8601NanoFormatZoned}
+
+// DateToISO converts the passed in time.Time to a string in ISO8601 format
+func DateToISO(date time.Time) string {
+	return date.Format(iso8601Default)
+}
+
 // DateToString converts the passed in time element to the right format based on the environment settings
 func DateToString(env Environment, date time.Time) string {
-	var buf bytes.Buffer
-
-	switch env.DateFormat() {
-	case DD_MM_YYYY:
-		buf.WriteString(fmt.Sprintf("%02d-%02d-%04d", date.Day(), date.Month(), date.Year()))
-
-	case MM_DD_YYYY:
-		buf.WriteString(fmt.Sprintf("%02d-%02d-%04d", date.Month(), date.Day(), date.Year()))
-
-	case YYYY_MM_DD:
-		buf.WriteString(fmt.Sprintf("%04d-%02d-%02d", date.Year(), date.Month(), date.Day()))
-	}
-
-	amPM := "AM"
-
-	// write hour and minute
-	switch env.TimeFormat() {
-	case HH_MM, HH_MM_SS:
-		buf.WriteString(fmt.Sprintf(" %02d:%02d", date.Hour(), date.Minute()))
-
-	case HH_MM_AP, HH_MM_SS_AP:
-		hour := date.Hour()
-		if hour > 12 {
-			hour -= 12
-			amPM = "PM"
-		}
-		buf.WriteString(fmt.Sprintf(" %02d:%02d", hour, date.Minute()))
-	}
-
-	// write seconds if appropriate
-	switch env.TimeFormat() {
-	case HH_MM_SS, HH_MM_SS_AP:
-		buf.WriteString(fmt.Sprintf(":%02d", date.Second()))
-	}
-
-	// write AM/PM if appropriate
-	switch env.TimeFormat() {
-	case HH_MM_AP, HH_MM_SS_AP:
-		buf.WriteString(fmt.Sprintf(" %s", amPM))
-	}
-
-	return buf.String()
+	goFormat, _ := ToGoDateFormat(string(env.DateFormat()) + " " + string(env.TimeFormat()))
+	return date.Format(goFormat)
 }
 
 // DateFromString returns a date constructed from the passed in string, or an error if we
 // are unable to extract one
 func DateFromString(env Environment, str string) (time.Time, error) {
-	currentYear := time.Now().Year()
+	// first see if we can parse in any known iso formats, if so return that
+	for _, format := range isoFormats {
+		parsed, err := time.Parse(format, str)
+		if err == nil {
+			if env.Timezone() != nil {
+				parsed = parsed.In(env.Timezone())
+			}
+			return parsed, nil
+		}
+	}
+
+	// otherwise, try to parse according to their env settings
 	parsed := ZeroTime
+	currentYear := time.Now().Year()
 	var err error
 	switch env.DateFormat() {
 
-	case YYYY_MM_DD:
+	case DateFormat_yyyy_MM_dd:
 		parsed, err = dateFromFormats(env, currentYear, yyyy_mm_dd, yy_mm_dd, 3, 2, 1, str)
 
-	case DD_MM_YYYY:
+	case DateFormat_dd_MM_yyyy:
 		parsed, err = dateFromFormats(env, currentYear, dd_mm_yyyy, dd_mm_yy, 1, 2, 3, str)
 
-	case MM_DD_YYYY:
+	case DateFormat_MM_dd_yyyy:
 		parsed, err = dateFromFormats(env, currentYear, mm_dd_yyyy, mm_dd_yy, 2, 1, 3, str)
 
 	default:
-		err = fmt.Errorf("Unknown date format: %s", env.DateFormat())
+		err = fmt.Errorf("unknown date format: %s", env.DateFormat())
 	}
 
 	// couldn't find a date? bail
@@ -227,5 +217,137 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, seconds, ns, env.Timezone())
 	}
 
+	// set our timezone if we have one
+	if env.Timezone() != nil && parsed != ZeroTime {
+		parsed = parsed.In(env.Timezone())
+	}
+
 	return parsed, nil
+}
+
+// ToGoDateFormat converst the passed in format to a GoLang format string.
+//
+// Format strings we support:
+//
+// d       - day of month, 1-31
+// dd      - day of month, zero padded 0-31
+// fff     - thousandths of a second
+// h       - hour of the day 1-12
+// hh      - hour of the day 01-12
+// H       - hour of the day 1-23
+// HH      - hour of the day 01-23
+// m       - minute 0-59
+// mm      - minute 00-59
+// M       - month 1-12
+// MM      - month 01-12
+// s       - second 0-59
+// ss      - second 00-59
+// tt      - AM or PM
+// yy      - last two digits of year 0-99
+// yyyy    - four digits of your 0000-9999
+// zzz     - hour and minute offset from UTC
+// ignored chars: ' ', ':', ',', 'T', 'Z', '-', '_', '/'
+func ToGoDateFormat(format string) (string, error) {
+	runes := []rune(format)
+	goFormat := bytes.Buffer{}
+
+	repeatCount := func(runes []rune, offset int, test rune) int {
+		count := 0
+		for i := offset; i < len(runes); i++ {
+			if runes[i] == test {
+				count++
+			} else {
+				break
+			}
+		}
+		return count
+	}
+
+	for i := 0; i < len(runes); i++ {
+		r := runes[i]
+		count := repeatCount(runes, i, r)
+
+		switch r {
+		case 'd':
+			if count == 1 {
+				goFormat.WriteString("2")
+			} else if count >= 2 {
+				goFormat.WriteString("02")
+				i++
+			}
+
+		case 'f':
+			if count >= 3 {
+				goFormat.WriteString("000")
+				i += 2
+			}
+
+		case 'h':
+			if count == 1 {
+				goFormat.WriteString("3")
+			} else if count >= 2 {
+				goFormat.WriteString("03")
+				i++
+			}
+
+		case 'H':
+			if count >= 2 {
+				goFormat.WriteString("15")
+				i++
+			}
+
+		case 'm':
+			if count == 1 {
+				goFormat.WriteString("4")
+			} else if count >= 2 {
+				goFormat.WriteString("04")
+				i++
+			}
+
+		case 'M':
+			if count == 1 {
+				goFormat.WriteString("1")
+			} else if count >= 2 {
+				goFormat.WriteString("01")
+				i++
+			}
+
+		case 's':
+			if count == 1 {
+				goFormat.WriteString("5")
+			} else if count >= 2 {
+				goFormat.WriteString("05")
+				i++
+			}
+
+		case 't':
+			if count >= 2 {
+				goFormat.WriteString("PM")
+				i++
+			}
+
+		case 'y':
+			if count == 2 {
+				goFormat.WriteString("06")
+				i++
+			} else if count >= 4 {
+				goFormat.WriteString("2006")
+				i += 3
+			}
+
+		case 'z':
+			if count == 3 {
+				goFormat.WriteString("-0700")
+				i += 2
+			}
+
+		case ' ', ':', '/', '.', 'T', 'Z', '-', '_':
+			goFormat.WriteRune(r)
+
+		default:
+			return "", fmt.Errorf("invalid date format, unknown format char: %c", r)
+		}
+	}
+
+	return goFormat.String(), nil
 }

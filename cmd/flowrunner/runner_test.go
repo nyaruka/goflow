@@ -11,6 +11,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -35,6 +36,7 @@ var flowTests = []struct {
 	{"empty.json", "", "", "empty_test.json"},
 	{"node_loop.json", "", "", "node_loop_test.json"},
 	{"subflow_loop.json", "", "", "subflow_loop_test.json"},
+	{"date_parse.json", "", "", "date_parse_test.json"},
 }
 
 var writeOutput bool
@@ -187,6 +189,8 @@ func newTestHTTPServer() *httptest.Server {
 
 func TestFlows(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
+	la, _ := time.LoadLocation("America/Los_Angeles")
+	env.SetTimezone(la)
 
 	server := newTestHTTPServer()
 	server.Start()

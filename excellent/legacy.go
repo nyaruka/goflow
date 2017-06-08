@@ -83,7 +83,7 @@ var functionTemplates = map[string]functionTemplate{
 	"days":       {name: "date_diff", params: "(%s, %s, \"D\")"},
 	"now":        {name: "now", params: "()"},
 	"average":    {name: "mean"},
-	"fixed":      {name: "fixed", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
+	"fixed":      {name: "format_num", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
 
 	"roundup":     {name: "round_up"},
 	"rounddown":   {name: "round_down"},

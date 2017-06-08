@@ -508,7 +508,7 @@ func HasNumberGT(env utils.Environment, args ...interface{}) interface{} {
 // HasDate tests whether `string` contains a date formatted according to our environment
 //
 //   @(has_date("the date is 2017-01-15")) -> true
-//   @(has_date("the date is 2017-01-15").match) -> "2017-01-15 00:00"
+//   @(has_date("the date is 2017-01-15").match) -> 2017-01-15T00:00:00.000000Z
 //   @(has_date("there is no date here, just a year 2017")) -> false
 //
 // @test has_date(string)
@@ -530,7 +530,7 @@ func HasDate(env utils.Environment, args ...interface{}) interface{} {
 // HasDateLT tests whether `value` contains a date before the date `max`
 //
 //   @(has_date_lt("the date is 2017-01-15", "2017-06-01")) -> true
-//   @(has_date_lt("the date is 2017-01-15", "2017-06-01").match) -> "2017-01-15 00:00"
+//   @(has_date_lt("the date is 2017-01-15", "2017-06-01").match) -> 2017-01-15T00:00:00.000000Z
 //   @(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) -> false
 //   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
@@ -542,7 +542,7 @@ func HasDateLT(env utils.Environment, args ...interface{}) interface{} {
 // HasDateEQ tests whether `string` a date equal to `date`
 //
 //   @(has_date_eq("the date is 2017-01-15", "2017-01-15")) -> true
-//   @(has_date_eq("the date is 2017-01-15", "2017-01-15").match) -> "2017-01-15 00:00"
+//   @(has_date_eq("the date is 2017-01-15", "2017-01-15").match) -> 2017-01-15T00:00:00.000000Z
 //   @(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) -> false
 //   @(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) -> false
 //   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
@@ -555,7 +555,7 @@ func HasDateEQ(env utils.Environment, args ...interface{}) interface{} {
 // HasDateGT tests whether `string` a date after the date `min`
 //
 //   @(has_date_gt("the date is 2017-01-15", "2017-01-01")) -> true
-//   @(has_date_gt("the date is 2017-01-15", "2017-01-01").match) -> "2017-01-15 00:00"
+//   @(has_date_gt("the date is 2017-01-15", "2017-01-01").match) -> 2017-01-15T00:00:00.000000Z
 //   @(has_date_gt("the date is 2017-01-15", "2017-03-15")) -> false
 //   @(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) -> false
 //   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR

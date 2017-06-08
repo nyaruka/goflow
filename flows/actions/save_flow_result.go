@@ -54,8 +54,14 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 		run.AddError(step, err)
 	}
 
+	template = run.GetText(flows.UUID(a.UUID), "category", a.Category)
+	category, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
+	if err != nil {
+		run.AddError(step, err)
+	}
+
 	// log our event
-	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category)
+	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, category)
 	run.AddEvent(step, event)
 
 	// and save our result

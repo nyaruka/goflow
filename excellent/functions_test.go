@@ -233,14 +233,14 @@ var funcTests = []struct {
 	{"date", []interface{}{struct{}{}}, nil, true},
 	{"date", []interface{}{}, nil, true},
 
-	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "D"}, 2, false},
-	{"date_diff", []interface{}{"03-12-2017 10:15", "03-12-2017 18:15", "D"}, 0, false},
-	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "W"}, 0, false},
-	{"date_diff", []interface{}{"22-12-2017", "01-12-2017", "W"}, 3, false},
+	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "d"}, 2, false},
+	{"date_diff", []interface{}{"03-12-2017 10:15", "03-12-2017 18:15", "d"}, 0, false},
+	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "w"}, 0, false},
+	{"date_diff", []interface{}{"22-12-2017", "01-12-2017", "w"}, 3, false},
 	{"date_diff", []interface{}{"03-12-2017", "03-12-2017", "M"}, 0, false},
 	{"date_diff", []interface{}{"01-05-2018", "03-12-2017", "M"}, 5, false},
-	{"date_diff", []interface{}{"01-12-2018", "03-12-2017", "Y"}, 1, false},
-	{"date_diff", []interface{}{"01-01-2017", "03-12-2017", "Y"}, 0, false},
+	{"date_diff", []interface{}{"01-12-2018", "03-12-2017", "y"}, 1, false},
+	{"date_diff", []interface{}{"01-01-2017", "03-12-2017", "y"}, 0, false},
 	{"date_diff", []interface{}{"04-12-2018 10:15", "03-12-2018 14:00", "h"}, 20, false},
 	{"date_diff", []interface{}{"04-12-2018 10:15", "04-12-2018 14:00", "h"}, -3, false},
 	{"date_diff", []interface{}{"04-12-2018 10:15", "04-12-2018 14:00", "m"}, -225, false},
@@ -249,26 +249,26 @@ var funcTests = []struct {
 	{"date_diff", []interface{}{"05-12-2018 10:15:15", "05-12-2018 10:15:35", "s"}, -20, false},
 	{"date_diff", []interface{}{"05-12-2018 10:15:15", "05-12-2018 10:16:10", "s"}, -55, false},
 	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "Z"}, nil, true},
-	{"date_diff", []interface{}{struct{}{}, "01-12-2017", "Y"}, nil, true},
-	{"date_diff", []interface{}{"01-12-2017", struct{}{}, "Y"}, nil, true},
+	{"date_diff", []interface{}{struct{}{}, "01-12-2017", "y"}, nil, true},
+	{"date_diff", []interface{}{"01-12-2017", struct{}{}, "y"}, nil, true},
 	{"date_diff", []interface{}{"01-12-2017", "01-12-2017", struct{}{}}, nil, true},
 	{"date_diff", []interface{}{struct{}{}}, nil, true},
 
-	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "Y"}, time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC), false},
-	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "Y"}, time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC), false},
+	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "y"}, time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC), false},
+	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "y"}, time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "M"}, time.Date(2018, 2, 03, 22, 15, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "M"}, time.Date(2017, 10, 3, 22, 15, 0, 0, time.UTC), false},
-	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "W"}, time.Date(2017, 12, 17, 22, 15, 0, 0, time.UTC), false},
-	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "W"}, time.Date(2017, 11, 19, 22, 15, 0, 0, time.UTC), false},
-	{"date_add", []interface{}{"03-12-2017", "2", "D"}, time.Date(2017, 12, 5, 0, 0, 0, 0, time.UTC), false},
-	{"date_add", []interface{}{"03-12-2017", "-4", "D"}, time.Date(2017, 11, 29, 0, 0, 0, 0, time.UTC), false},
+	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "w"}, time.Date(2017, 12, 17, 22, 15, 0, 0, time.UTC), false},
+	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "w"}, time.Date(2017, 11, 19, 22, 15, 0, 0, time.UTC), false},
+	{"date_add", []interface{}{"03-12-2017", "2", "d"}, time.Date(2017, 12, 5, 0, 0, 0, 0, time.UTC), false},
+	{"date_add", []interface{}{"03-12-2017", "-4", "d"}, time.Date(2017, 11, 29, 0, 0, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "h"}, time.Date(2017, 12, 4, 0, 15, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "h"}, time.Date(2017, 12, 3, 20, 15, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "105", "m"}, time.Date(2017, 12, 4, 0, 0, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "-20", "m"}, time.Date(2017, 12, 3, 21, 55, 0, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "2", "s"}, time.Date(2017, 12, 3, 22, 15, 2, 0, time.UTC), false},
 	{"date_add", []interface{}{"03-12-2017 10:15pm", "-2", "s"}, time.Date(2017, 12, 3, 22, 14, 58, 0, time.UTC), false},
-	{"date_add", []interface{}{struct{}{}, "2", "D"}, nil, true},
+	{"date_add", []interface{}{struct{}{}, "2", "d"}, nil, true},
 	{"date_add", []interface{}{"03-12-2017 10:15", struct{}{}, "D"}, nil, true},
 	{"date_add", []interface{}{"03-12-2017 10:15", "2", struct{}{}}, nil, true},
 	{"date_add", []interface{}{"03-12-2017", "2", "Z"}, nil, true},
@@ -331,7 +331,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DD_MM_YYYY, utils.HH_MM_SS, time.UTC)
+	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC)
 
 	for _, test := range funcTests {
 		xFunc := XFUNCTIONS[test.name]
@@ -390,7 +390,7 @@ var rangeTests = []struct {
 }
 
 func TestRangeFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DD_MM_YYYY, utils.HH_MM_SS, time.UTC)
+	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC)
 
 	for _, test := range rangeTests {
 		xFunc := XFUNCTIONS[test.name]
