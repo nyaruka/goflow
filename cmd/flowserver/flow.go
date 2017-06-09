@@ -127,6 +127,9 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, utils.NewValidationError("session: must include at least one run")
 	}
 
+	// clear events if they passed them in
+	session.ClearEvents()
+
 	// our contact
 	contact, err := flows.ReadContact(resume.Contact)
 	if err != nil {
@@ -144,7 +147,10 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
 	// hydrate all our runs
 	for _, run := range session.Runs() {
-		run.Hydrate(env)
+		err = run.Hydrate(env)
+		if err != nil {
+			return nil, utils.NewValidationError(err.Error())
+		}
 	}
 
 	// set our contact on our run

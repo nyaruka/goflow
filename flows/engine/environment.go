@@ -39,7 +39,7 @@ func (e *flowEnvironment) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	if exists {
 		return flow, nil
 	}
-	return nil, fmt.Errorf("Unable to find flow with UUID: %s", uuid)
+	return nil, fmt.Errorf("unable to find flow with UUID: %s", uuid)
 }
 
 func (e *flowEnvironment) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
@@ -47,7 +47,7 @@ func (e *flowEnvironment) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 	if exists {
 		return run, nil
 	}
-	return nil, fmt.Errorf("Unable to find run with UUID: %s", uuid)
+	return nil, fmt.Errorf("unable to find run with UUID: %s", uuid)
 }
 
 func (e *flowEnvironment) GetContact(uuid flows.ContactUUID) (*flows.Contact, error) {
@@ -55,5 +55,5 @@ func (e *flowEnvironment) GetContact(uuid flows.ContactUUID) (*flows.Contact, er
 	if exists {
 		return contact, nil
 	}
-	return nil, fmt.Errorf("Unable to find contact with UUID: %s", uuid)
+	return nil, fmt.Errorf("unable to find contact with UUID: %s", uuid)
 }

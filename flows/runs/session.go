@@ -18,8 +18,16 @@ func newSession() *session {
 	return &session
 }
 
-func (s *session) AddRun(run flows.FlowRun) { s.runs = append(s.runs, run) }
-func (s *session) Runs() []flows.FlowRun    { return s.runs }
+func (s *session) AddRun(run flows.FlowRun) {
+	// check if we already have this run
+	for _, r := range s.runs {
+		if r.UUID() == run.UUID() {
+			return
+		}
+	}
+	s.runs = append(s.runs, run)
+}
+func (s *session) Runs() []flows.FlowRun { return s.runs }
 
 func (s *session) ActiveRun() flows.FlowRun {
 	var active flows.FlowRun
@@ -47,6 +55,7 @@ func (s *session) ActiveRun() flows.FlowRun {
 
 func (s *session) AddEvent(event flows.Event) { s.events = append(s.events, event) }
 func (s *session) Events() []flows.Event      { return s.events }
+func (s *session) ClearEvents()               { s.events = nil }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -79,6 +88,7 @@ func (s *session) UnmarshalJSON(data []byte) error {
 	s.runs = make([]flows.FlowRun, len(se.Runs))
 	for i := range s.runs {
 		s.runs[i] = se.Runs[i]
+		s.runs[i].SetSession(s)
 	}
 
 	s.events = make([]flows.Event, len(se.Events))

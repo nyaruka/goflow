@@ -2,12 +2,14 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -21,6 +23,10 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"strconv"
+
+	"io"
+
+	"io/ioutil"
 
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
 	"github.com/nyaruka/goflow/utils"
@@ -44,8 +50,8 @@ func main() {
 	r.Use(middleware.StripSlashes)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
+	r.Use(traceErrors(logger))
 	r.Use(lg.RequestLogger(logger))
-	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	// no static dir passed in? serve from statik
@@ -177,6 +183,26 @@ func handleVersion(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 		"version": version,
 	}
 	return response, nil
+}
+
+func traceErrors(logger *logrus.Logger) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		fn := func(w http.ResponseWriter, r *http.Request) {
+			body := bytes.Buffer{}
+			r.Body = ioutil.NopCloser(io.TeeReader(r.Body, &body))
+			ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+			next.ServeHTTP(ww, r)
+
+			// we are returning an error of some kind, log the incoming request body
+			if ww.Status() != 200 && strings.ToLower(r.Method) == "post" {
+				logger.WithFields(logrus.Fields{
+					"request_body": body.String(),
+					"status":       ww.Status(),
+					"req_id":       r.Context().Value(middleware.RequestIDKey)}).Error()
+			}
+		}
+		return http.HandlerFunc(fn)
+	}
 }
 
 type contextKey string

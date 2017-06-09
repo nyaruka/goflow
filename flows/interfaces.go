@@ -169,6 +169,7 @@ type Session interface {
 
 	Events() []Event
 	AddEvent(Event)
+	ClearEvents()
 }
 
 // FlowRun represents a single run on a flow by a single contact
