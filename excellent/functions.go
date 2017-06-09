@@ -41,8 +41,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"rand":       Rand,
 	"abs":        Abs,
 
-	"fixed":     Fixed,
-	"read_code": ReadCode,
+	"format_num": FormatNum,
+	"read_code":  ReadCode,
 
 	"char":              Char,
 	"code":              Code,
@@ -65,6 +65,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"upper":             Upper,
 	"percent":           Percent,
 
+	"format_date":     FormatDate,
+	"parse_date":      ParseDate,
 	"date":            Date,
 	"date_from_parts": DateFromParts,
 	"date_diff":       DateDiff,
@@ -497,16 +499,16 @@ func Rand(env utils.Environment, args ...interface{}) interface{} {
 	return max.Add(decimal.NewFromFloat(float64(add)))
 }
 
-// Fixed returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
+// FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 //
-//   @(fixed(31337, 2, true)) -> "31,337.00"
-//   @(fixed(31337, 0, false)) -> "31337"
-//   @(fixed("foo", 2, false)) -> ERROR
+//   @(format_num(31337, 2, true)) -> "31,337.00"
+//   @(format_num(31337, 0, false)) -> "31337"
+//   @(format_num("foo", 2, false)) -> ERROR
 //
-// @function fixed(num, places, commas)
-func Fixed(env utils.Environment, args ...interface{}) interface{} {
+// @function format_num(num, places, commas)
+func FormatNum(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 3 {
-		return fmt.Errorf("FIXED takes exactly three arguments, got %d", len(args))
+		return fmt.Errorf("FORMAT_NUM takes exactly three arguments, got %d", len(args))
 	}
 
 	dec, err := utils.ToDecimal(env, args[0])
@@ -519,7 +521,7 @@ func Fixed(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 	if places < 0 || places > 9 {
-		return fmt.Errorf("FIXED must take 0-9 number of places, got %d", args[1])
+		return fmt.Errorf("FORMAT_NUM must take 0-9 number of places, got %d", args[1])
 	}
 
 	commas, err := utils.ToBool(env, args[2])
@@ -1069,12 +1071,170 @@ func Percent(env utils.Environment, args ...interface{}) interface{} {
 // Date & Time Functions
 //------------------------------------------------------------------------------------------
 
+// ParseDate turns `string` into a date according to the `format` and optional `timezone` specified
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', 'Z', '-' and '_' are ignored. Any other character is an error.
+//
+//  `d`     - day of month, 1-31
+//  `dd`    - day of month, zero padded 0-31
+//  `fff`   - thousandths of a second
+//  `h`     - hour of the day 1-12
+//  `hh`    - hour of the day 01-12
+//  `H`     - hour of the day 1-23
+//  `HH`    - hour of the day 01-23
+//  `K`     - hour and minute offset from UTC, or Z for UTC
+//  `m`     - minute 0-59
+//  `mm`    - minute 00-59
+//  `M`     - month 1-12
+//  `MM`    - month 01-12
+//  `s`     - second 0-59
+//  `ss`    - second 00-59
+//  `tt`    - am or pm
+//  `TT`    - AM or PM
+//  `yy`    - last two digits of year 0-99
+//  `yyyy`  - four digits of your 0000-9999
+//  `zzz`   - hour and minute offset from UTC
+//
+// Timezone should be a location name as specified in the IANA Time Zone database, such
+// as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
+// environment will be used. An error will be returned if the timezone is not recognized.
+//
+// parse_date will return an error if it is unable to convert the string to a date.
+//
+//   @(parse_date("1979-07-18", "yyyy-MM-dd")) -> 1979-07-18T00:00:00.000000Z
+//   @(parse_date("2010 5 10", "yyyy M dd")) -> 2010-05-10T00:00:00.000000Z
+//   @(parse_date("2010 5 10 12:50", "yyyy M dd HH:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
+//   @(parse_date("NOT DATE", "yyyy-mm-dd")) -> ERROR
+//
+// @function parse_date(string, format [,timezone])
+func ParseDate(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) < 2 || len(args) > 3 {
+		return fmt.Errorf("PARSE_DATE requires at least two arguments, got %d", len(args))
+	}
+	arg1, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	format, err := utils.ToString(env, args[1])
+	if err != nil {
+		return err
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format)
+	if err != nil {
+		return err
+	}
+
+	// grab our location
+	location := env.Timezone()
+	if len(args) == 3 {
+		arg3, err := utils.ToString(env, args[2])
+		if err != nil {
+			return err
+		}
+		location, err = time.LoadLocation(arg3)
+		if err != nil {
+			return err
+		}
+	}
+
+	// finally try to parse the date
+	parsed, err := time.ParseInLocation(goFormat, arg1, location)
+	if err != nil {
+		return err
+	}
+
+	parsed = parsed.In(location)
+	return parsed
+}
+
+// FormatDate turns `date` into a string according to the `format` specified and in
+// the optional `timezone`.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', 'Z', '-' and '_' are ignored. Any other character is an error.
+//
+//  `d`     - day of month, 1-31
+//  `dd`    - day of month, zero padded 0-31
+//  `fff`   - thousandths of a second
+//  `h`     - hour of the day 1-12
+//  `hh`    - hour of the day 01-12
+//  `H`     - hour of the day 1-23
+//  `HH`    - hour of the day 01-23
+//  `K`     - hour and minute offset from UTC, or Z for UTC
+//  `m`     - minute 0-59
+//  `mm`    - minute 00-59
+//  `M`     - month 1-12
+//  `MM`    - month 01-12
+//  `s`     - second 0-59
+//  `ss`    - second 00-59
+//  `tt`    - am or pm
+//  `TT`    - AM or PM
+//  `yy`    - last two digits of year 0-99
+//  `yyyy`  - four digits of your 0000-9999
+//  `zzz`   - hour and minute offset from UTC
+//
+// Timezone should be a location name as specified in the IANA Time Zone database, such
+// as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
+// environment will be used. An error will be returned if the timezone is not recognized.
+//
+//   @(format_date("1979-07-18T00:00:00.000000Z", "yyyy-MM-dd")) -> 1979-07-18
+//   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy M dd HH:mm")) -> 2010 5 10 19:50
+//   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_date("NOT DATE", "yyyy-mm-dd")) -> ERROR
+//
+// @function format_date(date, format [,timezone])
+func FormatDate(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) < 2 || len(args) > 3 {
+		return fmt.Errorf("FORMAT_DATE takes at least two arguments, got %d", len(args))
+	}
+	date, err := utils.ToDate(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	format, err := utils.ToString(env, args[1])
+	if err != nil {
+		return err
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format)
+	if err != nil {
+		return err
+	}
+
+	// grab our location
+	location := env.Timezone()
+	if len(args) == 3 {
+		arg3, err := utils.ToString(env, args[2])
+		if err != nil {
+			return err
+		}
+		location, err = time.LoadLocation(arg3)
+		if err != nil {
+			return err
+		}
+	}
+
+	// convert to our timezone if we have one (otherwise we remain in the date's default)
+	if location != nil {
+		date = date.In(location)
+	}
+
+	// return the formatted date
+	return date.Format(goFormat)
+}
+
 // Date turns `string` into a date according to the environment's settings
 //
 // date will return an error if it is unable to convert the string to a date.
 //
-//   @(date("1979-07-18")) -> 1979-07-18 00:00
-//   @(date("2010 05 10")) -> 2010-05-10 00:00
+//   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000Z
+//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000Z
 //   @(date("NOT DATE")) -> ERROR
 //
 // @function date(string)
@@ -1097,8 +1257,8 @@ func Date(env utils.Environment, args ...interface{}) interface{} {
 
 // DateFromParts converts the passed in `year`, `month`` and `day`
 //
-//   @(date_from_parts(2017, 1, 15)) -> "2017-01-15 00:00"
-//   @(date_from_parts(2017, 2, 31)) -> "2017-03-03 00:00"
+//   @(date_from_parts(2017, 1, 15)) -> 2017-01-15T00:00:00.000000Z
+//   @(date_from_parts(2017, 2, 31)) -> 2017-03-03T00:00:00.000000Z
 //   @(date_from_parts(2017, 13, 15)) -> ERROR
 //
 // @function date_from_parts(year, month, day)
@@ -1128,12 +1288,12 @@ func DateFromParts(env utils.Environment, args ...interface{}) interface{} {
 
 // DateDiff returns the integer duration between `date1` and `date2` in the `unit` specified.
 //
-// Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, h" for hour,
+// Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, h" for hour,
 // "m" for minutes, "s" for seconds
 //
-//   @(date_diff("2017-01-17", "2017-01-15", "D")) -> 2
+//   @(date_diff("2017-01-17", "2017-01-15", "d")) -> 2
 //   @(date_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) -> -1
-//   @(date_diff("2017-01-17", "2015-12-17", "Y")) -> 2
+//   @(date_diff("2017-01-17", "2015-12-17", "y")) -> 2
 //
 // @function date_diff(date1, date2, unit)
 func DateDiff(env utils.Environment, args ...interface{}) interface{} {
@@ -1171,16 +1331,16 @@ func DateDiff(env utils.Environment, args ...interface{}) interface{} {
 	case "h":
 		return int(duration / time.Hour)
 
-	case "D":
+	case "d":
 		return utils.DaysBetween(date1, date2)
 
-	case "W":
+	case "w":
 		return int(utils.DaysBetween(date1, date2) / 7)
 
 	case "M":
 		return utils.MonthsBetween(date1, date2)
 
-	case "Y":
+	case "y":
 		return date1.Year() - date2.Year()
 	}
 
@@ -1189,11 +1349,11 @@ func DateDiff(env utils.Environment, args ...interface{}) interface{} {
 
 // DateAdd calculates the date value arrived at by adding `offset` number of `unit` to the `date`
 //
-// Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, h" for hour,
+// Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, h" for hour,
 // "m" for minutes, "s" for seconds
 //
-//   @(date_add("2017-01-15", 5, "D")) -> "2017-01-20 00:00"
-//   @(date_add("2017-01-15 10:45", 30, "m")) -> "2017-01-15 11:15"
+//   @(date_add("2017-01-15", 5, "d")) -> 2017-01-20T00:00:00.000000Z
+//   @(date_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000Z
 //
 // @function date_add(date, offset, unit)
 func DateAdd(env utils.Environment, args ...interface{}) interface{} {
@@ -1227,16 +1387,16 @@ func DateAdd(env utils.Environment, args ...interface{}) interface{} {
 	case "h":
 		return date.Add(time.Duration(duration) * time.Hour)
 
-	case "D":
+	case "d":
 		return date.AddDate(0, 0, duration)
 
-	case "W":
+	case "w":
 		return date.AddDate(0, 0, duration*7)
 
 	case "M":
 		return date.AddDate(0, duration, 0)
 
-	case "Y":
+	case "y":
 		return date.AddDate(duration, 0, 0)
 	}
 

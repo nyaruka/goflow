@@ -178,7 +178,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 		return val.String(), nil
 
 	case time.Time:
-		return DateToString(env, val), nil
+		return DateToISO(val), nil
 
 	case fmt.Stringer:
 		return val.String(), nil
@@ -211,7 +211,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 			if i > 0 {
 				output.WriteString(", ")
 			}
-			output.WriteString(DateToString(env, val[i]))
+			output.WriteString(DateToISO(val[i]))
 		}
 		return output.String(), nil
 

@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -168,7 +169,10 @@ func main() {
 	}
 
 	// create our flow environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
+	baseEnv := utils.NewDefaultEnvironment()
+	la, _ := time.LoadLocation("America/Los_Angeles")
+	baseEnv.SetTimezone(la)
+	env := engine.NewFlowEnvironment(baseEnv, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// and start our flow
 	output, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
@@ -209,7 +213,10 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
-		env = engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), runnerFlows, output.Runs(), []*flows.Contact{contact})
+		baseEnv := utils.NewDefaultEnvironment()
+		la, _ := time.LoadLocation("America/Los_Angeles")
+		baseEnv.SetTimezone(la)
+		env = engine.NewFlowEnvironment(baseEnv, runnerFlows, output.Runs(), []*flows.Contact{contact})
 
 		for _, run := range output.Runs() {
 			err = run.Hydrate(env)
