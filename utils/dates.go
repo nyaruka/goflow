@@ -269,7 +269,13 @@ func ToGoDateFormat(format string) (string, error) {
 			}
 
 		case 'f':
-			if count >= 3 {
+			if count >= 9 {
+				goFormat.WriteString("000000000")
+				i += 8
+			} else if count >= 6 {
+				goFormat.WriteString("000000")
+				i += 5
+			} else if count >= 3 {
 				goFormat.WriteString("000")
 				i += 2
 			} else {

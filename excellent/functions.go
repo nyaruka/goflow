@@ -1146,6 +1146,7 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
+	parsed = parsed.In(location)
 	return parsed
 }
 

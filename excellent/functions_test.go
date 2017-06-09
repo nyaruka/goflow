@@ -11,6 +11,7 @@ import (
 )
 
 var errorArg = fmt.Errorf("I am error")
+var la, _ = time.LoadLocation("America/Los_Angeles")
 
 var funcTests = []struct {
 	name     string
@@ -234,7 +235,11 @@ var funcTests = []struct {
 	{"date", []interface{}{}, nil, true},
 
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffzzz", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
-	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "yyyy-MM-ddTHH:mm:ss.fffzzz", "UTC"}, "1977-06-23T15:34:00.000+00:00", false},
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffK", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
+	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "yyyy-MM-ddTHH:mm:ss.fffK", "UTC"}, "1977-06-23T15:34:00.000Z", false},
+
+	{"parse_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.ffffffK", "America/Los_Angeles"}, time.Date(1977, 06, 23, 8, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23 15:34", "yyyy-MM-dd HH:mm", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
 
 	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "d"}, 2, false},
 	{"date_diff", []interface{}{"03-12-2017 10:15", "03-12-2017 18:15", "d"}, 0, false},
