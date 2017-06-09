@@ -1557,7 +1557,7 @@ func TZOffset(env utils.Environment, args ...interface{}) interface{} {
 
 // Today returns the current date in the current timezone, time is set to midnight in the environment timezone
 //
-//  @(today()) -> "2017-01-15 00:00"
+//  @(today()) -> 2017-01-20T00:00:00.000000Z
 //
 // @function today()
 func Today(env utils.Environment, args ...interface{}) interface{} {
@@ -1571,7 +1571,7 @@ func Today(env utils.Environment, args ...interface{}) interface{} {
 
 // Now returns the current date and time in the environment timezone
 //
-//  @(now()) -> "2017-01-15 02:15"
+//  @(now()) -> 2017-01-20T15:35:65.153654Z
 //
 // @function now()
 func Now(env utils.Environment, args ...interface{}) interface{} {
