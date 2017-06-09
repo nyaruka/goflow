@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -47,10 +49,18 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 		if err != nil {
 			run.AddError(step, err)
 		}
+		if email == "" {
+			run.AddError(step, fmt.Errorf("send_email email evaluated to empty string, skipping"))
+			continue
+		}
 
 		subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject)
 		if err != nil {
 			run.AddError(step, err)
+		}
+		if subject == "" {
+			run.AddError(step, fmt.Errorf("send_email subject evaluated to empty string, skipping"))
+			continue
 		}
 
 		body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body)

@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -31,7 +33,7 @@ type SendMsgAction struct {
 	URNs     []flows.URN               `json:"urns"`
 	Contacts []*flows.ContactReference `json:"contacts"     validate:"dive"`
 	Groups   []*flows.Group            `json:"groups"       validate:"dive"`
-	Text     string                    `json:"text"         validate:"required"`
+	Text     string                    `json:"text"`
 }
 
 // Type returns the type of this action
@@ -48,6 +50,10 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID), "text", a.Text))
 	if err != nil {
 		run.AddError(step, err)
+	}
+	if text == "" {
+		run.AddError(step, fmt.Errorf("send_msg text evaluated to empty string, skipping"))
+		return nil
 	}
 
 	// create events for each URN

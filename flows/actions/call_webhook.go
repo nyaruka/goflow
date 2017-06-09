@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -53,6 +54,10 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL)
 	if err != nil {
 		run.AddError(step, err)
+	}
+	if url == "" {
+		run.AddError(step, fmt.Errorf("call_webhook URL evaluated to empty string, skipping"))
+		return nil
 	}
 
 	// substitute any body variables

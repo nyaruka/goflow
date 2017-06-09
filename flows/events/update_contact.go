@@ -19,7 +19,7 @@ const TypeUpdateContact string = "update_contact"
 type UpdateContactEvent struct {
 	BaseEvent
 	FieldName string `json:"field_name"  validate:"required"`
-	Value     string `json:"value"       validate:"required"`
+	Value     string `json:"value"`
 }
 
 // NewUpdateContact returns a new save to contact event

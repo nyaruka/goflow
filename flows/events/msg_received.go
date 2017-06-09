@@ -31,7 +31,7 @@ type MsgReceivedEvent struct {
 	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"required,uuid4"`
 	URN         flows.URN         `json:"urn"              validate:"required"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
-	Text        string            `json:"text"             validate:"required"`
+	Text        string            `json:"text"`
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string

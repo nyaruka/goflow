@@ -23,7 +23,7 @@ type SaveContactFieldEvent struct {
 	BaseEvent
 	FieldUUID flows.FieldUUID `json:"field_uuid"  validate:"required"`
 	FieldName string          `json:"field_name"  validate:"required"`
-	Value     string          `json:"value"       validate:"required"`
+	Value     string          `json:"value"`
 }
 
 // NewSaveToContact returns a new save to contact event

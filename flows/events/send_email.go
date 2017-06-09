@@ -21,7 +21,7 @@ type SendEmailEvent struct {
 	BaseEvent
 	Email   string `json:"email"   validate:"required"`
 	Subject string `json:"subject" validate:"required"`
-	Body    string `json:"body"    validate:"required"`
+	Body    string `json:"body"`
 }
 
 // NewSendEmailEvent returns a new email event witht he passed in subject, body and emails

@@ -26,7 +26,7 @@ type SaveFlowResultEvent struct {
 	BaseEvent
 	NodeUUID   flows.NodeUUID `json:"node_uuid"        validate:"required"`
 	ResultName string         `json:"result_name"      validate:"required"`
-	Value      string         `json:"value"            validate:"required"`
+	Value      string         `json:"value"`
 	Category   string         `json:"category"`
 }
 
