@@ -45,7 +45,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 		run.AddError(step, err)
 	}
 	if text == "" {
-		run.AddError(step, fmt.Errorf("send_msg text evaluated to empty string, skipping"))
+		run.AddError(step, fmt.Errorf("reply text evaluated to empty string, skipping"))
 		return nil
 	}
 
