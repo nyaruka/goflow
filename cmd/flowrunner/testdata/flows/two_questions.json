@@ -167,9 +167,16 @@
         "uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
         "actions": [
           {
+            "uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
+            "type": "call_webhook",
+            "url": "http://localhost/?cmd=success",
+            "method": "post",
+            "body": "{ \"contact\": @(to_json(contact.uuid)), \"soda\": @(to_json(run.results.soda)) }"
+          },
+          {
             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
             "type": "reply",
-            "text": "Great, you are done and like @run.results.soda!"
+            "text": "Great, you are done and like @run.results.soda! Webhook status was @webhook.status_code"
           }
         ]
       }

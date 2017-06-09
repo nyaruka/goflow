@@ -170,8 +170,8 @@ func TestToJSON(t *testing.T) {
 	env := NewDefaultEnvironment()
 
 	for _, test := range tests {
-		resultBytes, err := ToJSON(env, test.input)
-		result := string(resultBytes)
+		fragment, err := ToJSON(env, test.input)
+		result := fragment.String()
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToJSON on '%v': %s", test.input, err)

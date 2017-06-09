@@ -96,12 +96,12 @@ func TestTranslate(t *testing.T) {
 		{old: "@(EDATE(\"2012-02-03\", 1))", new: "@(date_add(\"2012-02-03\", \"m\", 1))"},
 		{old: "@(DATEDIF(contact.join_date, date.now, \"M\"))", new: "@(date_diff(contact.fields.join_date, now(), \"M\"))"},
 		{old: "@(DAYS(\"02-28-2016\", \"02-28-2015\"))", new: "@(date_diff(\"02-28-2016\", \"02-28-2015\", \"D\"))"},
-		{old: "@(DAY(contact.joined_date))", new: "@(day(contact.fields.joined_date))"},
-		{old: "@(HOUR(NOW()))", new: "@(hour(now()))"},
-		{old: "@(MINUTE(NOW()))", new: "@(minute(now()))"},
-		{old: "@(MONTH(NOW()))", new: "@(month(now()))"},
+		{old: "@(DAY(contact.joined_date))", new: "@(format_date(contact.fields.joined_date, \"d\"))"},
+		{old: "@(HOUR(NOW()))", new: "@(format_date(now(), \"h\"))"},
+		{old: "@(MINUTE(NOW()))", new: "@(format_date(now(), \"m\"))"},
+		{old: "@(MONTH(NOW()))", new: "@(format_date(now(), \"M\"))"},
 		{old: "@(NOW())", new: "@(now())"},
-		{old: "@(SECOND(NOW()))", new: "@(second(now()))"},
+		{old: "@(SECOND(NOW()))", new: "@(format_date(now(), \"s\"))"},
 		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
 
 		// date addition should get converted to date_add
@@ -130,7 +130,7 @@ func TestTranslate(t *testing.T) {
 
 		{old: "@((5 + contact.balance) / 2)", new: "@((legacy_add(5, contact.fields.balance)) / 2)"},
 		{old: "@(WEEKDAY(TODAY()))", new: "@(weekday(today()))"},
-		{old: "@(YEAR(date.now))", new: "@(year(now()))"},
+		{old: "@(YEAR(date.now))", new: "@(format_date(now(), \"yyyy\"))"},
 
 		// booleans and conditionals
 		{old: "@(AND(contact.gender = \"F\", contact.age >= 18))", new: "@(and(contact.fields.gender == \"F\", contact.fields.age >= 18))"},

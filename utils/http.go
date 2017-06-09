@@ -43,14 +43,20 @@ type RequestResponse interface {
 // MakeHTTPRequest fires the passed in http request, returning any errors encountered. RequestResponse is always set
 // regardless of any errors being set
 func MakeHTTPRequest(req *http.Request) (RequestResponse, error) {
+	requestTrace, err := httputil.DumpRequestOut(req, true)
+	if err != nil {
+		rr, _ := newRRFromRequestAndError(req, string(requestTrace), err)
+		return rr, err
+	}
+
 	resp, err := getClient().Do(req)
 	if err != nil {
-		rr, _ := newRRFromRequestAndError(req, err)
+		rr, _ := newRRFromRequestAndError(req, string(requestTrace), err)
 		return rr, err
 	}
 	defer resp.Body.Close()
 
-	rr, err := newRRFromResponse(resp)
+	rr, err := newRRFromResponse(string(requestTrace), resp)
 	return rr, err
 }
 
@@ -104,15 +110,11 @@ func (r *requestResponse) Resolve(key string) interface{} {
 }
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http request and error (when we received no response)
-func newRRFromRequestAndError(r *http.Request, requestError error) (RequestResponse, error) {
+func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError error) (RequestResponse, error) {
 	rr := requestResponse{}
 	rr.url = r.URL.String()
 
-	request, err := httputil.DumpRequestOut(r, true)
-	if err != nil {
-		return &rr, err
-	}
-	rr.request = string(request)
+	rr.request = requestTrace
 	rr.status = RRConnectionFailure
 	rr.body = requestError.Error()
 
@@ -120,7 +122,7 @@ func newRRFromRequestAndError(r *http.Request, requestError error) (RequestRespo
 }
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http Response
-func newRRFromResponse(r *http.Response) (RequestResponse, error) {
+func newRRFromResponse(requestTrace string, r *http.Response) (RequestResponse, error) {
 	var err error
 	rr := requestResponse{}
 	rr.url = r.Request.URL.String()
@@ -133,11 +135,7 @@ func newRRFromResponse(r *http.Response) (RequestResponse, error) {
 		rr.status = RRStatusFailure
 	}
 
-	request, err := httputil.DumpRequestOut(r.Request, true)
-	if err != nil {
-		return &rr, err
-	}
-	rr.request = string(request)
+	rr.request = requestTrace
 
 	// figure out if our Response is something that looks like text from our headers
 	isText := false

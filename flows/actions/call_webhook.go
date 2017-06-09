@@ -70,7 +70,11 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	// build our request
-	req, err := http.NewRequest(strings.ToUpper(a.Method), url, nil)
+	req, err := http.NewRequest(strings.ToUpper(a.Method), url, strings.NewReader(body))
+	if err != nil {
+		run.AddError(step, err)
+		return nil
+	}
 
 	// add our headers, substituting any template vars
 	for key, value := range a.Headers {

@@ -14,6 +14,9 @@ type ExitUUID UUID
 type FlowUUID UUID
 type ActionUUID UUID
 type ContactUUID UUID
+
+func (u ContactUUID) String() string { return string(u) }
+
 type FieldUUID UUID
 type ChannelUUID UUID
 type RunUUID UUID

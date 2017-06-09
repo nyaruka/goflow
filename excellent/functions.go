@@ -11,6 +11,8 @@ import (
 
 	"math"
 
+	"encoding/json"
+
 	humanize "github.com/dustin/go-humanize"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"
@@ -44,6 +46,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"format_num": FormatNum,
 	"read_code":  ReadCode,
 
+	"to_json":   ToJSON,
+	"from_json": FromJSON,
+
 	"char":              Char,
 	"code":              Code,
 	"split":             Split,
@@ -71,13 +76,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"date_from_parts": DateFromParts,
 	"date_diff":       DateDiff,
 	"date_add":        DateAdd,
-	"day":             Day,
 	"weekday":         Weekday,
-	"month":           Month,
-	"year":            Year,
-	"hour":            Hour,
-	"minute":          Minute,
-	"second":          Second,
 	"tz":              TZ,
 	"tz_offset":       TZOffset,
 	"today":           Today,
@@ -187,6 +186,54 @@ func Default(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return args[0]
+}
+
+// FromJSON tries to parse `string` as JSON, returning a fragment you can index into
+//
+// If the passed in value is not JSON, then an error is returned
+//
+//   @(from_json("[1,2,3,4]").2) -> 3
+//   @(from_json("invalid json")) -> ERROR
+//
+// @function from_json(string)
+func FromJSON(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("FROM_JSON takes exactly one string argument, got %d", len(args))
+	}
+
+	arg, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	// unmarshal our string into a JSON fragment
+	fragment := utils.JSONFragment{}
+	err = json.Unmarshal([]byte(arg), &fragment)
+	if err != nil {
+		return err
+	}
+	return fragment
+}
+
+// ToJSON tries to return a JSON representation of `value`. An error is returned if there is
+// no JSON representation of that object.
+//
+//  @(to_json("string")) -> "string"
+//  @(to_json(10)) -> 10
+//  @(to_json(contact)) -> { "contact_uuid": ... }
+//  @(to_json(now())) -> "2010-05-10T12:50:00.000000-07:00"
+//
+// @function to_json(value)
+func ToJSON(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("TO_JSON takes exactly one argument, got %d", len(args))
+	}
+
+	json, err := utils.ToJSON(env, args[0])
+	if err != nil {
+		return err
+	}
+	return json
 }
 
 //------------------------------------------------------------------------------------------
@@ -1403,21 +1450,6 @@ func DateAdd(env utils.Environment, args ...interface{}) interface{} {
 	return fmt.Errorf("Unknown unit: %s, must be one of s, m, h, d, w, M, y", unit)
 }
 
-// Day returns the day of the month for `date`
-//
-//   @(day("2017-01-15")) -> 15
-//   @(day("foo")) -> ERROR
-//
-// @function day(date)
-func Day(env utils.Environment, args ...interface{}) interface{} {
-	date, err := checkOneDateArg(env, "DAY", args)
-	if err != nil {
-		return err
-	}
-
-	return date.Day()
-}
-
 // Weekday returns the day of the week for `date`, 0 is sunday, 1 is monday..
 //
 //   @(weekday("2017-01-15")) -> 0
@@ -1431,86 +1463,6 @@ func Weekday(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return int(date.Weekday())
-}
-
-// Month returns the month of the year for `date`
-//
-//   @(month("2017-01-15")) -> 1
-//   @(month("foo")) -> ERROR
-//
-// @function month(date)
-func Month(env utils.Environment, args ...interface{}) interface{} {
-	date, err := checkOneDateArg(env, "MONTH", args)
-	if err != nil {
-		return err
-	}
-
-	return int(date.Month())
-}
-
-// Year returns the year for `date`
-//
-//   @(year("2017-01-15")) -> 2017
-//   @(year("foo")) -> ERROR
-//
-// @function year(date)
-func Year(env utils.Environment, args ...interface{}) interface{} {
-	date, err := checkOneDateArg(env, "YEAR", args)
-	if err != nil {
-		return err
-	}
-
-	return int(date.Year())
-}
-
-// Hour returns the hour of the day (0-24) for `date`
-//
-//   @(hour("2017-01-15 02:15:18PM")) -> 14
-//   @(hour("2017-01-15 00:15:00AM")) -> 0
-//   @(hour("2017-01-15")) -> 0
-//   @(hour("foo")) -> ERROR
-//
-// @function hour(date)
-func Hour(env utils.Environment, args ...interface{}) interface{} {
-	date, err := checkOneDateArg(env, "HOUR", args)
-	if err != nil {
-		return err
-	}
-
-	return int(date.Hour())
-}
-
-// Minute returns the minute of the hour for `date`
-//
-//   @(minute("2017-01-15 02:15:18PM")) -> 15
-//   @(minute("2017-01-15")) -> 0
-//   @(minute("foo")) -> ERROR
-//
-// @function minute(date)
-func Minute(env utils.Environment, args ...interface{}) interface{} {
-	date, err := checkOneDateArg(env, "MINUTE", args)
-	if err != nil {
-		return err
-	}
-
-	return int(date.Minute())
-}
-
-// Second returns the second of the minute for `date`
-//
-//   @(second("2017-01-15 02:15:18PM")) -> 18
-//   @(second("2017-01-15 02:15")) -> 0
-//   @(second("2017-01-15")) -> 0
-//   @(second("foo")) -> ERROR
-//
-// @function second(date)
-func Second(env utils.Environment, args ...interface{}) interface{} {
-	date, err := checkOneDateArg(env, "SECOND", args)
-	if err != nil {
-		return err
-	}
-
-	return int(date.Second())
 }
 
 // TZ returns the timezone for `date``

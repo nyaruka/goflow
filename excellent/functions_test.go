@@ -284,40 +284,10 @@ var funcTests = []struct {
 	{"date_add", []interface{}{"03-12-2017", "2", "Z"}, nil, true},
 	{"date_add", []interface{}{"22-12-2017"}, nil, true},
 
-	{"year", []interface{}{"01-12-2017"}, 2017, false},
-	{"year", []interface{}{"01-12-2017 10:15pm"}, 2017, false},
-	{"year", []interface{}{struct{}{}}, nil, true},
-	{"year", []interface{}{}, nil, true},
-
-	{"month", []interface{}{"01-12-2017"}, 12, false},
-	{"month", []interface{}{"01-12-2017 10:15pm"}, 12, false},
-	{"month", []interface{}{struct{}{}}, nil, true},
-	{"month", []interface{}{}, nil, true},
-
-	{"day", []interface{}{"01-12-2017"}, 1, false},
-	{"day", []interface{}{"01-12-2017 10:15pm"}, 1, false},
-	{"day", []interface{}{struct{}{}}, nil, true},
-	{"day", []interface{}{}, nil, true},
-
 	{"weekday", []interface{}{"01-12-2017"}, 5, false},
 	{"weekday", []interface{}{"01-12-2017 10:15pm"}, 5, false},
 	{"weekday", []interface{}{struct{}{}}, nil, true},
 	{"weekday", []interface{}{}, nil, true},
-
-	{"hour", []interface{}{"01-12-2017"}, 0, false},
-	{"hour", []interface{}{"01-12-2017 10:15pm"}, 22, false},
-	{"hour", []interface{}{struct{}{}}, nil, true},
-	{"hour", []interface{}{}, nil, true},
-
-	{"minute", []interface{}{"01-12-2017"}, 0, false},
-	{"minute", []interface{}{"01-12-2017 10:15pm"}, 15, false},
-	{"minute", []interface{}{struct{}{}}, nil, true},
-	{"minute", []interface{}{}, nil, true},
-
-	{"second", []interface{}{"01-12-2017"}, 0, false},
-	{"second", []interface{}{"01-12-2017 10:15:33pm"}, 33, false},
-	{"second", []interface{}{struct{}{}}, nil, true},
-	{"second", []interface{}{}, nil, true},
 
 	{"tz", []interface{}{"01-12-2017"}, "UTC", false},
 	{"tz", []interface{}{"01-12-2017 10:15:33pm"}, "UTC", false},
