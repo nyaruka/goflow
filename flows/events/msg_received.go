@@ -35,8 +35,8 @@ type MsgReceivedEvent struct {
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, text string) *MsgReceivedEvent {
-	event := MsgReceivedEvent{ChannelUUID: channel, ContactUUID: contact, Text: text}
+func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, urn flows.URN, text string) *MsgReceivedEvent {
+	event := MsgReceivedEvent{ChannelUUID: channel, ContactUUID: contact, URN: urn, Text: text}
 	return &event
 }
 

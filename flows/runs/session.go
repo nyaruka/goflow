@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -72,8 +71,7 @@ func ReadSession(data json.RawMessage) (flows.Session, error) {
 }
 
 type sessionEnvelope struct {
-	Runs   []*flowRun             `json:"runs"`
-	Events []*utils.TypedEnvelope `json:"events"`
+	Runs []*flowRun `json:"runs"`
 }
 
 func (s *session) UnmarshalJSON(data []byte) error {
@@ -90,29 +88,11 @@ func (s *session) UnmarshalJSON(data []byte) error {
 		s.runs[i] = se.Runs[i]
 		s.runs[i].SetSession(s)
 	}
-
-	s.events = make([]flows.Event, len(se.Events))
-	for i := range s.events {
-		s.events[i], err = events.EventFromEnvelope(se.Events[i])
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
 func (s *session) MarshalJSON() ([]byte, error) {
 	var se sessionEnvelope
-
-	se.Events = make([]*utils.TypedEnvelope, len(s.events))
-	for i, event := range s.events {
-		eventData, err := json.Marshal(event)
-		if err != nil {
-			return nil, err
-		}
-		se.Events[i] = &utils.TypedEnvelope{Type: event.Type(), Data: eventData}
-	}
-
 	se.Runs = make([]*flowRun, len(s.runs))
 	for i := range s.runs {
 		se.Runs[i] = s.runs[i].(*flowRun)

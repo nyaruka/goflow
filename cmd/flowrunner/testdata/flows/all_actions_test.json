@@ -113,165 +113,167 @@
           "url": "http://127.0.0.1:49999/?cmd=success"
         }
       ],
-      "runs": [
-        {
-          "channel_uuid": "",
-          "child_uuid": "",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-          "extra": {
-            "coupons": [
-              {
-                "code": "AAA-BBB-CCC",
-                "expiration": "2000-01-01T00:00:00.000000000-00:00"
-              }
-            ]
-          },
-          "flow_uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
-          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-          "path": [
-            {
-              "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-              "events": [
+      "session": {
+        "runs": [
+          {
+            "channel_uuid": "",
+            "child_uuid": "",
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+            "extra": {
+              "coupons": [
                 {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "groups": [
-                    {
-                      "name": "Survey Audience",
-                      "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-                    }
-                  ],
-                  "step_uuid": "",
-                  "type": "add_to_group"
-                },
-                {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "field_name": "Activation Token",
-                  "field_uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
-                  "step_uuid": "",
-                  "type": "save_contact_field",
-                  "value": "XXX-YYY-ZZZ"
-                },
-                {
-                  "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "email": "ben@macklemore",
-                  "step_uuid": "",
-                  "subject": "Here is your activation token",
-                  "type": "send_email"
-                },
-                {
-                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                  "step_uuid": "",
-                  "type": "flow_entered"
-                },
-                {
-                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                  "status": "C",
-                  "step_uuid": "",
-                  "type": "flow_exited"
-                },
-                {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step_uuid": "",
-                  "text": "Hi Ben Haggerty, are you ready?",
-                  "type": "send_msg",
-                  "urn": "tel:+12065551212"
-                },
-                {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "groups": [
-                    {
-                      "name": "Survey Audience",
-                      "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-                    }
-                  ],
-                  "step_uuid": "",
-                  "type": "remove_from_group"
-                },
-                {
-                  "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "step_uuid": "",
-                  "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
-                  "type": "send_msg"
-                },
-                {
-                  "category": "Male",
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                  "result_name": "gender",
-                  "step_uuid": "",
-                  "type": "save_flow_result",
-                  "value": "m"
-                },
-                {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "field_name": "language",
-                  "step_uuid": "",
-                  "type": "update_contact",
-                  "value": "eng"
-                },
-                {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "field_name": "Gender",
-                  "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
-                  "step_uuid": "",
-                  "type": "save_contact_field",
-                  "value": "Male"
-                },
-                {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-                  "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-                  "status": "S",
-                  "status_code": 200,
-                  "step_uuid": "",
-                  "type": "webhook_called",
-                  "url": "http://127.0.0.1:49999/?cmd=success"
+                  "code": "AAA-BBB-CCC",
+                  "expiration": "2000-01-01T00:00:00.000000000-00:00"
                 }
-              ],
-              "left_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-              "uuid": ""
-            }
-          ],
-          "results": {
-            "gender": {
-              "category": "Male",
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-              "result_name": "gender",
-              "value": "m"
-            }
+              ]
+            },
+            "flow_uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
+            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+            "path": [
+              {
+                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                "events": [
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "groups": [
+                      {
+                        "name": "Survey Audience",
+                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                      }
+                    ],
+                    "step_uuid": "",
+                    "type": "add_to_group"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "field_name": "Activation Token",
+                    "field_uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+                    "step_uuid": "",
+                    "type": "save_contact_field",
+                    "value": "XXX-YYY-ZZZ"
+                  },
+                  {
+                    "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "email": "ben@macklemore",
+                    "step_uuid": "",
+                    "subject": "Here is your activation token",
+                    "type": "send_email"
+                  },
+                  {
+                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "step_uuid": "",
+                    "type": "flow_entered"
+                  },
+                  {
+                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "status": "C",
+                    "step_uuid": "",
+                    "type": "flow_exited"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "",
+                    "text": "Hi Ben Haggerty, are you ready?",
+                    "type": "send_msg",
+                    "urn": "tel:+12065551212"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "groups": [
+                      {
+                        "name": "Survey Audience",
+                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                      }
+                    ],
+                    "step_uuid": "",
+                    "type": "remove_from_group"
+                  },
+                  {
+                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "",
+                    "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
+                    "type": "send_msg"
+                  },
+                  {
+                    "category": "Male",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "result_name": "gender",
+                    "step_uuid": "",
+                    "type": "save_flow_result",
+                    "value": "m"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "field_name": "language",
+                    "step_uuid": "",
+                    "type": "update_contact",
+                    "value": "eng"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "field_name": "Gender",
+                    "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+                    "step_uuid": "",
+                    "type": "save_contact_field",
+                    "value": "Male"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+                    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+                    "status": "S",
+                    "status_code": 200,
+                    "step_uuid": "",
+                    "type": "webhook_called",
+                    "url": "http://127.0.0.1:49999/?cmd=success"
+                  }
+                ],
+                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "uuid": ""
+              }
+            ],
+            "results": {
+              "gender": {
+                "category": "Male",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                "result_name": "gender",
+                "value": "m"
+              }
+            },
+            "status": "C",
+            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+            "uuid": ""
           },
-          "status": "C",
-          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": ""
-        },
-        {
-          "channel_uuid": "",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-          "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-          "modified_on": "2000-01-01T00:00:00.000000000-00:00",
-          "parent_uuid": "",
-          "path": [],
-          "results": {},
-          "status": "C",
-          "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "uuid": ""
-        }
-      ]
+          {
+            "channel_uuid": "",
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+            "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
+            "parent_uuid": "",
+            "path": [],
+            "results": {},
+            "status": "C",
+            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+            "uuid": ""
+          }
+        ]
+      }
     }
   ],
   "resume_events": []

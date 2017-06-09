@@ -66,7 +66,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 	return bytes, err
 }
 
-func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeEvents []flows.Event, extra json.RawMessage) ([]json.RawMessage, error) {
+func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeEvents []flows.Event, extra json.RawMessage) ([]*Output, error) {
 	flowJSON, err := readFile("flows/", flowFilename)
 	if err != nil {
 		return nil, err
@@ -109,52 +109,52 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 	// start our contact down this flow
 	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
-	output, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil, nil, extra)
+	session, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil, nil, extra)
 	if err != nil {
 		return nil, err
 	}
 
-	outputs := make([]json.RawMessage, 0)
+	outputs := make([]*Output, 0)
 
 	// for each of our resume events
 	for i := range resumeEvents {
-		outJSON, err := json.MarshalIndent(output, "", "  ")
+		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		outputs = append(outputs, outJSON)
+		outputs = append(outputs, &Output{outJSON, envelopesForEvents(session.Events())})
 
-		output, err = runs.ReadSession(outJSON)
+		session, err = runs.ReadSession(outJSON)
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		flowEnv = engine.NewFlowEnvironment(env, runnerFlows, output.Runs(), []*flows.Contact{contact})
+		flowEnv = engine.NewFlowEnvironment(env, runnerFlows, session.Runs(), []*flows.Contact{contact})
 
 		// hydrate our runs so we can call ActiveRun
-		for _, r := range output.Runs() {
+		for _, r := range session.Runs() {
 			err := r.Hydrate(flowEnv)
 			if err != nil {
 				return nil, fmt.Errorf("Error marshalling output: %s", err)
 			}
 		}
 
-		activeRun := output.ActiveRun()
+		activeRun := session.ActiveRun()
 
 		// if we aren't at a wait, that's an error
 		if activeRun == nil {
 			return nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
 		}
-		output, err = engine.ResumeFlow(flowEnv, activeRun, resumeEvents[i])
+		session, err = engine.ResumeFlow(flowEnv, activeRun, resumeEvents[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	outJSON, err := json.MarshalIndent(output, "", "  ")
+	outJSON, err := json.MarshalIndent(session, "", "  ")
 	if err != nil {
 		return nil, fmt.Errorf("Error marshalling output: %s", err)
 	}
-	outputs = append(outputs, outJSON)
+	outputs = append(outputs, &Output{outJSON, envelopesForEvents(session.Events())})
 
 	return outputs, nil
 }
@@ -232,12 +232,15 @@ func TestFlows(t *testing.T) {
 
 		if writeOutput {
 			// we are writing new outputs, we write new files but don't test anything
-			envelopes, err := envelopesForEvents(resumeEvents)
-			if err != nil {
-				log.Fatal("Error marshalling inputs: ", err)
+			envelopes := envelopesForEvents(resumeEvents)
+			rawOutputs := make([]json.RawMessage, len(outputs))
+			for i := range outputs {
+				rawOutputs[i], err = json.Marshal(outputs[i])
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
-
-			flowTest := FlowTest{flowTest.Extra, envelopes, outputs}
+			flowTest := FlowTest{Extra: flowTest.Extra, ResumeEvents: envelopes, Outputs: rawOutputs}
 			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 			if err != nil {
 				log.Fatal("Error marshalling test definition: ", err)
@@ -250,36 +253,69 @@ func TestFlows(t *testing.T) {
 				log.Fatalf("Error writing test file to %s: %s\n", outputFilename, err)
 			}
 		} else {
+			// unmarshal our expected outputs
+			expectedOutputs := make([]*Output, len(flowTest.Outputs))
+			for i := range expectedOutputs {
+				output := &Output{}
+				err := json.Unmarshal(flowTest.Outputs[i], output)
+				if err != nil {
+					log.Fatalf("Error unmarshalling output: %s", err)
+				}
+				expectedOutputs[i] = output
+			}
+
 			// read our output and test that we are the same
-			if len(outputs) != len(flowTest.Outputs) {
-				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", outputs, flowTest.Outputs, test.flow)
+			if len(outputs) != len(expectedOutputs) {
+				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", outputs, expectedOutputs, test.flow)
 				continue
 			}
 
 			for i := range outputs {
-				o, err := runs.ReadSession(outputs[i])
+				actualOutput := outputs[i]
+				expectedOutput := expectedOutputs[i]
+
+				actualSession, err := runs.ReadSession(actualOutput.Session)
 				if err != nil {
-					t.Errorf("Error unmarshalling output running flow '%s': %s\n", test.flow, err)
+					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.flow, err)
 				}
-				expectedO, err := runs.ReadSession(flowTest.Outputs[i])
+				expectedSession, err := runs.ReadSession(expectedOutput.Session)
 				if err != nil {
-					t.Errorf("Error unmarshalling expected output running flow '%s': %s\n", test.flow, err)
+					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.flow, err)
 				}
 
-				if len(o.Events()) != len(expectedO.Events()) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", o.Events(), expectedO.Events(), test.flow)
+				// number of runs should be the same
+				if len(actualSession.Runs()) != len(expectedSession.Runs()) {
+					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), test.flow)
 				}
 
-				for j := range o.Events() {
-					event := o.Events()[j]
-					expected := expectedO.Events()[j]
+				// runs should have same status and flows
+				for i := range actualSession.Runs() {
+					run := actualSession.Runs()[i]
+					expected := expectedSession.Runs()[i]
+
+					if run.FlowUUID() != expected.FlowUUID() {
+						t.Errorf("Actual run flow UUID: %s does not match expected: %s for flow '%s'", run.FlowUUID(), expected.FlowUUID(), test.flow)
+					}
+
+					if run.Status() != expected.Status() {
+						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), test.flow)
+					}
+				}
+
+				if len(actualOutput.Events) != len(expectedOutput.Events) {
+					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, test.flow)
+				}
+
+				for j := range actualOutput.Events {
+					event := actualOutput.Events[j]
+					expected := expectedOutput.Events[j]
 
 					// write our events as json
-					eventJSON, err := eventAsJSON(event)
+					eventJSON, err := envelopeAsJSON(event)
 					if err != nil {
 						t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
 					}
-					expectedJSON, err := eventAsJSON(expected)
+					expectedJSON, err := envelopeAsJSON(expected)
 					if err != nil {
 						t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
 					}
