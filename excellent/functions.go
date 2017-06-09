@@ -1183,7 +1183,7 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 //
 //   @(format_date("1979-07-18T00:00:00.000000Z", "yyyy-MM-dd")) -> 1979-07-18
 //   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy M dd HH:mm")) -> 2010 5 10 19:50
-//   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy-MM-dd HH:mm tt", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
 //   @(format_date("NOT DATE", "yyyy-mm-dd")) -> ERROR
 //
 // @function format_date(date, format [,timezone])
