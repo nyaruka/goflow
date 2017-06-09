@@ -220,8 +220,8 @@ func FromJSON(env utils.Environment, args ...interface{}) interface{} {
 //
 //  @(to_json("string")) -> "string"
 //  @(to_json(10)) -> 10
-//  @(to_json(contact)) -> { "contact_uuid": ... }
-//  @(to_json(now())) -> "2010-05-10T12:50:00.000000-07:00"
+//  @(to_json(contact.uuid)) -> "ce2b5142-453b-4e43-868e-abdafafaa878"
+//  @(to_json(now())) -> "2017-05-10T12:50:00.000000-07:00"
 //
 // @function to_json(value)
 func ToJSON(env utils.Environment, args ...interface{}) interface{} {
