@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -42,6 +44,11 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if err != nil {
 		run.AddError(step, err)
 	}
+	if text == "" {
+		run.AddError(step, fmt.Errorf("send_msg text evaluated to empty string, skipping"))
+		return nil
+	}
+
 	run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text))
 	return nil
 }
