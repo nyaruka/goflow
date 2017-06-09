@@ -144,6 +144,95 @@ func ToStringArray(env Environment, v interface{}) ([]string, error) {
 	return strArr, nil
 }
 
+// ToJSON tries to turn the passed in interface to a JSON fragment
+func ToJSON(env Environment, val interface{}) (string, error) {
+	toString := func(bytes []byte, err error) (string, error) {
+		if bytes == nil {
+			return "", err
+		}
+		return string(bytes), err
+	}
+
+	// null is null
+	if val == nil {
+		return toString(json.Marshal(nil))
+	}
+
+	switch val := val.(type) {
+
+	case error:
+		return "", val
+
+	case string:
+		return toString(json.Marshal(val))
+
+	case bool:
+		return toString(json.Marshal(val))
+
+	case int, int32, int64:
+		return toString(json.Marshal(val))
+
+	case float32, float64:
+		return toString(json.Marshal(val))
+
+	case decimal.Decimal:
+		floatVal, _ := val.Float64()
+		return toString(json.Marshal(floatVal))
+
+	case time.Time:
+		return toString(json.Marshal(DateToISO(val)))
+
+	case JSONFragment:
+		return val.String(), nil
+
+	case fmt.Stringer:
+		return toString(json.Marshal(val.String()))
+
+	case VariableResolver:
+		// this checks that we aren't getting into an infinite loop
+		valDefault := val.Default()
+		valResolver, isResolver := valDefault.(VariableResolver)
+		if isResolver && reflect.DeepEqual(valResolver, val) {
+			return "", fmt.Errorf("Loop found in ToJSON of '%s' with value '%+v'", reflect.TypeOf(val), val)
+		}
+		return ToJSON(env, valDefault)
+
+	case []string:
+		return toString(json.Marshal(val))
+
+	case []bool:
+		return toString(json.Marshal(val))
+
+	case []time.Time:
+		times := make([]string, len(val))
+		for i := range val {
+			times[i] = DateToISO(val[i])
+		}
+		return toString(json.Marshal(times))
+
+	case []decimal.Decimal:
+		return toString(json.Marshal(val))
+
+	case []int:
+		return toString(json.Marshal(val))
+
+	case map[string]string:
+		return toString(json.Marshal(val))
+
+	case map[string]bool:
+		return toString(json.Marshal(val))
+
+	case map[string]int:
+		return toString(json.Marshal(val))
+
+	case map[string]interface{}:
+		return toString(json.Marshal(val))
+	}
+
+	// welp, we give up, this isn't something we can convert, return an error
+	return "", fmt.Errorf("ToString unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+}
+
 // ToString tries to turn the passed in interface to a string
 func ToString(env Environment, val interface{}) (string, error) {
 	// Strings are always defined, just empty
