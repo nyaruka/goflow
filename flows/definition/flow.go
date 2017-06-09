@@ -83,6 +83,29 @@ func (f *flow) Validate() error {
 	return err
 }
 
+func (f *flow) Resolve(key string) interface{} {
+	switch key {
+
+	case "name":
+		return f.Name()
+
+	case "uuid":
+		return f.UUID()
+
+	}
+
+	return fmt.Errorf("No field '%s' on flow", key)
+}
+
+func (f *flow) Default() interface{} {
+	return f
+}
+
+// String returns the default string value for this flow, which is just our name
+func (f *flow) String() string {
+	return f.name
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

@@ -10,19 +10,48 @@ import (
 
 type UUID string
 type NodeUUID UUID
+
+func (u NodeUUID) String() string { return string(u) }
+
 type ExitUUID UUID
+
+func (u ExitUUID) String() string { return string(u) }
+
 type FlowUUID UUID
+
+func (u FlowUUID) String() string { return string(u) }
+
 type ActionUUID UUID
+
+func (u ActionUUID) String() string { return string(u) }
+
 type ContactUUID UUID
 
 func (u ContactUUID) String() string { return string(u) }
 
 type FieldUUID UUID
+
+func (u FieldUUID) String() string { return string(u) }
+
 type ChannelUUID UUID
+
+func (u ChannelUUID) String() string { return string(u) }
+
 type RunUUID UUID
+
+func (u RunUUID) String() string { return string(u) }
+
 type StepUUID UUID
+
+func (u StepUUID) String() string { return string(u) }
+
 type LabelUUID UUID
+
+func (u LabelUUID) String() string { return string(u) }
+
 type GroupUUID UUID
+
+func (u GroupUUID) String() string { return string(u) }
 
 type Flow interface {
 	Name() string
