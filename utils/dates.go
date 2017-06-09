@@ -234,7 +234,8 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 // MM      - month 01-12
 // s       - second 0-59
 // ss      - second 00-59
-// tt      - AM or PM
+// TT      - AM or PM
+// tt      - am or pm
 // yy      - last two digits of year 0-99
 // yyyy    - four digits of your 0000-9999
 // zzz     - hour and minute offset from UTC
@@ -327,10 +328,18 @@ func ToGoDateFormat(format string) (string, error) {
 
 		case 't':
 			if count >= 2 {
-				goFormat.WriteString("PM")
+				goFormat.WriteString("pm")
 				i++
 			} else {
 				return "", fmt.Errorf("invalid date format, invalid count of 't' format: %d", count)
+			}
+
+		case 'T':
+			if count == 1 {
+				goFormat.WriteString("T")
+			} else if count >= 2 {
+				goFormat.WriteString("PM")
+				i++
 			}
 
 		case 'y':
@@ -352,7 +361,7 @@ func ToGoDateFormat(format string) (string, error) {
 				return "", fmt.Errorf("invalid date format, invalid count of 'z' format: %d", count)
 			}
 
-		case ' ', ':', '/', '.', 'T', 'Z', '-', '_':
+		case ' ', ':', '/', '.', 'Z', '-', '_':
 			goFormat.WriteRune(r)
 
 		default:

@@ -240,6 +240,8 @@ var funcTests = []struct {
 
 	{"parse_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.ffffffK", "America/Los_Angeles"}, time.Date(1977, 06, 23, 8, 34, 0, 0, la), false},
 	{"parse_date", []interface{}{"1977-06-23 15:34", "yyyy-MM-dd HH:mm", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23 03:34 pm", "yyyy-MM-dd HH:mm tt", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23 03:34 PM", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
 
 	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "d"}, 2, false},
 	{"date_diff", []interface{}{"03-12-2017 10:15", "03-12-2017 18:15", "d"}, 0, false},

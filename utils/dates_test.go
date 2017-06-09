@@ -138,7 +138,7 @@ func TestDateFormat(t *testing.T) {
 		{"MM-dd-yyyy", "01-02-2006", false},
 		{"M-d-yy", "1-2-06", false},
 		{"h:m", "3:4", false},
-		{"h:m:s tt", "3:4:5 PM", false},
+		{"h:m:s tt", "3:4:5 pm", false},
 		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-07:00", false},
 		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-07:00", false},
 		{"yyyy-MM-ddThh:mm:ss.fffzzz", "2006-01-02T03:04:05.000-07:00", false},

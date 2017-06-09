@@ -1090,7 +1090,8 @@ func Percent(env utils.Environment, args ...interface{}) interface{} {
 //  `MM`    - month 01-12
 //  `s`     - second 0-59
 //  `ss`    - second 00-59
-//  `tt`    - AM or PM
+//  `tt`    - am or pm
+//  `TT`    - AM or PM
 //  `yy`    - last two digits of year 0-99
 //  `yyyy`  - four digits of your 0000-9999
 //  `zzz`   - hour and minute offset from UTC
@@ -1170,7 +1171,8 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 //  `MM`    - month 01-12
 //  `s`     - second 0-59
 //  `ss`    - second 00-59
-//  `tt`    - AM or PM
+//  `tt`    - am or pm
+//  `TT`    - AM or PM
 //  `yy`    - last two digits of year 0-99
 //  `yyyy`  - four digits of your 0000-9999
 //  `zzz`   - hour and minute offset from UTC
