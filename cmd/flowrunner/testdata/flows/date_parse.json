@@ -56,7 +56,7 @@
                     {
                         "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                         "type": "reply",
-                        "text": "Awesome, you were born on @(FORMAT_DATE(run.results.birth_date, \"MM-dd-yyyyy\")) at @(FORMAT_DATE(run.results.birth_date, \"HH:mm\"))"
+                        "text": "Awesome, you were born on @(FORMAT_DATE(run.results.birth_date, \"MM-dd-yyyy\")) at @(FORMAT_DATE(run.results.birth_date, \"HH:mm\"))"
                     }
                 ]
             }

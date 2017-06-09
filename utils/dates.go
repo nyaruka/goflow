@@ -109,18 +109,11 @@ func MonthsBetween(date1 time.Time, date2 time.Time) int {
 	return months
 }
 
+// format we use for output
 var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
-var iso8601FormatUTC = "2006-01-02T15:04:05Z"
-var iso8601MilliFormatUTC = "2006-01-02T15:04:05.000Z"
-var iso8601MicroFormatUTC = "2006-01-02T15:04:05.000000Z"
-var iso8601NanoFormatUTC = "2006-01-02T15:04:05.000000000Z"
-var iso8601FormatZoned = "2006-01-02T15:04:05-07:00"
-var iso8601MilliFormatZoned = "2006-01-02T15:04:05.000-07:00"
-var iso8601MicroFormatZoned = "2006-01-02T15:04:05.000000-07:00"
-var iso8601NanoFormatZoned = "2006-01-02T15:04:05.000000000-07:00"
 
-var isoFormats = []string{iso8601Default, iso8601MicroFormatUTC, iso8601FormatUTC, iso8601MicroFormatUTC, iso8601NanoFormatUTC,
-	iso8601MicroFormatZoned, iso8601FormatZoned, iso8601MicroFormatZoned, iso8601NanoFormatZoned}
+// generic format for parsing any 8601 date
+var iso8601Format = "2006-01-02T15:04:05Z07:00"
 
 // DateToISO converts the passed in time.Time to a string in ISO8601 format
 func DateToISO(date time.Time) string {
@@ -137,20 +130,18 @@ func DateToString(env Environment, date time.Time) string {
 // are unable to extract one
 func DateFromString(env Environment, str string) (time.Time, error) {
 	// first see if we can parse in any known iso formats, if so return that
-	for _, format := range isoFormats {
-		parsed, err := time.Parse(format, str)
-		if err == nil {
-			if env.Timezone() != nil {
-				parsed = parsed.In(env.Timezone())
-			}
-			return parsed, nil
+	parsed, err := time.Parse(iso8601Format, str)
+	if err == nil {
+		if env.Timezone() != nil {
+			parsed = parsed.In(env.Timezone())
 		}
+		return parsed, nil
 	}
 
 	// otherwise, try to parse according to their env settings
-	parsed := ZeroTime
+	parsed = ZeroTime
 	currentYear := time.Now().Year()
-	var err error
+	err = nil
 	switch env.DateFormat() {
 
 	case DateFormat_yyyy_MM_dd:
@@ -236,6 +227,7 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 // hh      - hour of the day 01-12
 // H       - hour of the day 1-23
 // HH      - hour of the day 01-23
+// K       - hour and minute offset from UTC, or Z fo UTC
 // m       - minute 0-59
 // mm      - minute 00-59
 // M       - month 1-12
@@ -280,6 +272,8 @@ func ToGoDateFormat(format string) (string, error) {
 			if count >= 3 {
 				goFormat.WriteString("000")
 				i += 2
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'f' format: %d", count)
 			}
 
 		case 'h':
@@ -294,7 +288,12 @@ func ToGoDateFormat(format string) (string, error) {
 			if count >= 2 {
 				goFormat.WriteString("15")
 				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'H' format: %d", count)
 			}
+
+		case 'K':
+			goFormat.WriteString("Z07:00")
 
 		case 'm':
 			if count == 1 {
@@ -324,6 +323,8 @@ func ToGoDateFormat(format string) (string, error) {
 			if count >= 2 {
 				goFormat.WriteString("PM")
 				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 't' format: %d", count)
 			}
 
 		case 'y':
@@ -333,12 +334,16 @@ func ToGoDateFormat(format string) (string, error) {
 			} else if count >= 4 {
 				goFormat.WriteString("2006")
 				i += 3
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'y' format: %d", count)
 			}
 
 		case 'z':
 			if count == 3 {
-				goFormat.WriteString("-0700")
+				goFormat.WriteString("-07:00")
 				i += 2
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'z' format: %d", count)
 			}
 
 		case ' ', ':', '/', '.', 'T', 'Z', '-', '_':

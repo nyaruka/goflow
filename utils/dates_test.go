@@ -40,8 +40,11 @@ var timeTests = []struct {
 
 	// iso dates
 	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 -0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 -0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000-07:00", "23-06-1977 15:34:00.000 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250-07:00", "23-06-1977 15:34:00.000250 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250500-07:00", "23-06-1977 15:34:00.000250500 +0000 UTC", false},
 
 	// with time
 	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
@@ -66,7 +69,7 @@ func TestDateFromString(t *testing.T) {
 			continue
 		}
 
-		expected, err := time.Parse("02-01-2006 15:04:05 -0700 MST", test.Expected)
+		expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
 		if err != nil {
 			t.Errorf("Error parsing expected date: %s", err)
 			continue
@@ -136,9 +139,10 @@ func TestDateFormat(t *testing.T) {
 		{"M-d-yy", "1-2-06", false},
 		{"h:m", "3:4", false},
 		{"h:m:s tt", "3:4:5 PM", false},
-		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-0700", false},
-		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-0700", false},
-		{"yyyy-MM-ddThh:mm:ss.fffzzz", "2006-01-02T03:04:05.000-0700", false},
+		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-07:00", false},
+		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-07:00", false},
+		{"yyyy-MM-ddThh:mm:ss.fffzzz", "2006-01-02T03:04:05.000-07:00", false},
+		{"yyyy-MM-ddThh:mm:ss.fffK", "2006-01-02T03:04:05.000Z07:00", false},
 		{"yyyy-MM-dd", "2006-01-02", false},
 		{"2006-01-02", "", true},
 	}

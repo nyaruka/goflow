@@ -1083,6 +1083,7 @@ func Percent(env utils.Environment, args ...interface{}) interface{} {
 //  `hh`    - hour of the day 01-12
 //  `H`     - hour of the day 1-23
 //  `HH`    - hour of the day 01-23
+//  `K`     - hour and minute offset from UTC, or Z for UTC
 //  `m`     - minute 0-59
 //  `mm`    - minute 00-59
 //  `M`     - month 1-12
@@ -1161,6 +1162,7 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 //  `hh`    - hour of the day 01-12
 //  `H`     - hour of the day 1-23
 //  `HH`    - hour of the day 01-23
+//  `K`     - hour and minute offset from UTC, or Z for UTC
 //  `m`     - minute 0-59
 //  `mm`    - minute 00-59
 //  `M`     - month 1-12
