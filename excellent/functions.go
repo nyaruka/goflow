@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"math/rand"
+	"net/url"
 	"strings"
 	"time"
 
@@ -46,8 +47,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"format_num": FormatNum,
 	"read_code":  ReadCode,
 
-	"to_json":   ToJSON,
-	"from_json": FromJSON,
+	"to_json":    ToJSON,
+	"from_json":  FromJSON,
+	"url_encode": URLEncode,
 
 	"char":              Char,
 	"code":              Code,
@@ -235,6 +237,25 @@ func ToJSON(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return json
+}
+
+// URLEncode URL encodes `string` for use in a URL parameter
+//
+//  @(url_encode("two words")) -> two+words
+//  @(url_encode(10)) -> 10
+//
+// @function url_encode(string)
+func URLEncode(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("URL_ENCODE takes exactly one argument, got %d", len(args))
+	}
+
+	arg1, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	return url.QueryEscape(arg1)
 }
 
 //------------------------------------------------------------------------------------------

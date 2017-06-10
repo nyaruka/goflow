@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -182,6 +183,7 @@ func getClient() *http.Client {
 		transport = &http.Transport{
 			MaxIdleConns:    10,
 			IdleConnTimeout: 30 * time.Second,
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 		client = &http.Client{Transport: transport, Timeout: timeout}
 	})
