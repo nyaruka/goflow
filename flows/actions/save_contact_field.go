@@ -28,7 +28,7 @@ type SaveContactField struct {
 	BaseAction
 	FieldUUID flows.FieldUUID `json:"field_uuid"    validate:"required,uuid4"`
 	FieldName string          `json:"field_name"    validate:"required"`
-	Value     string          `json:"value"         validate:"required"`
+	Value     string          `json:"value"`
 }
 
 // Type returns the type of this action

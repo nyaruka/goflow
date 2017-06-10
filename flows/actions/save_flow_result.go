@@ -31,7 +31,7 @@ const TypeSaveFlowResult string = "save_flow_result"
 type SaveFlowResultAction struct {
 	BaseAction
 	ResultName string `json:"result_name"        validate:"required"`
-	Value      string `json:"value"              validate:"required"`
+	Value      string `json:"value"`
 	Category   string `json:"category"`
 }
 
