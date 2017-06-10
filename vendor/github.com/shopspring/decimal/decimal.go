@@ -423,6 +423,28 @@ func (d Decimal) Equals(d2 Decimal) bool {
 	return d.Equal(d2)
 }
 
+// Greater Than (GT) returns true when d is greater than d2.
+func (d Decimal) GreaterThan(d2 Decimal) bool {
+	return d.Cmp(d2) == 1
+}
+
+// Greater Than or Equal (GTE) returns true when d is greater than or equal to d2.
+func (d Decimal) GreaterThanOrEqual(d2 Decimal) bool {
+	cmp := d.Cmp(d2)
+	return cmp == 1 || cmp == 0
+}
+
+// Less Than (LT) returns true when d is less than d2.
+func (d Decimal) LessThan(d2 Decimal) bool {
+	return d.Cmp(d2) == -1
+}
+
+// Less Than or Equal (LTE) returns true when d is less than or equal to d2.
+func (d Decimal) LessThanOrEqual(d2 Decimal) bool {
+	cmp := d.Cmp(d2)
+	return cmp == -1 || cmp == 0
+}
+
 // Sign returns:
 //
 //	-1 if d <  0
@@ -443,7 +465,9 @@ func (d Decimal) Exponent() int32 {
 
 // Coefficient returns the coefficient of the decimal.  It is scaled by 10^Exponent()
 func (d Decimal) Coefficient() *big.Int {
-	return d.value
+	// we copy the coefficient so that mutating the result does not mutate the
+	// Decimal.
+	return big.NewInt(0).Set(d.value)
 }
 
 // IntPart returns the integer component of the decimal.
