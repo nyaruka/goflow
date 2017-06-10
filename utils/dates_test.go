@@ -45,6 +45,7 @@ var timeTests = []struct {
 	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000-07:00", "23-06-1977 15:34:00.000 +0000 UTC", false},
 	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250-07:00", "23-06-1977 15:34:00.000250 +0000 UTC", false},
 	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250500-07:00", "23-06-1977 15:34:00.000250500 +0000 UTC", false},
+	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2017-06-10T17:34-06:00", "10-06-2017 23:34:00.000000 +0000 UTC", false},
 
 	// with time
 	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},

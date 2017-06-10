@@ -114,6 +114,9 @@ var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
 
 // generic format for parsing any 8601 date
 var iso8601Format = "2006-01-02T15:04:05Z07:00"
+var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
+
+var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat}
 
 // DateToISO converts the passed in time.Time to a string in ISO8601 format
 func DateToISO(date time.Time) string {
@@ -130,18 +133,20 @@ func DateToString(env Environment, date time.Time) string {
 // are unable to extract one
 func DateFromString(env Environment, str string) (time.Time, error) {
 	// first see if we can parse in any known iso formats, if so return that
-	parsed, err := time.Parse(iso8601Format, str)
-	if err == nil {
-		if env.Timezone() != nil {
-			parsed = parsed.In(env.Timezone())
+	for _, format := range isoFormats {
+		parsed, err := time.Parse(format, str)
+		if err == nil {
+			if env.Timezone() != nil {
+				parsed = parsed.In(env.Timezone())
+			}
+			return parsed, nil
 		}
-		return parsed, nil
 	}
 
 	// otherwise, try to parse according to their env settings
-	parsed = ZeroTime
+	parsed := ZeroTime
 	currentYear := time.Now().Year()
-	err = nil
+	var err error
 	switch env.DateFormat() {
 
 	case DateFormat_yyyy_MM_dd:

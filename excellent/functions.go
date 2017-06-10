@@ -233,6 +233,7 @@ func ToJSON(env utils.Environment, args ...interface{}) interface{} {
 	if err != nil {
 		return err
 	}
+
 	return json
 }
 
