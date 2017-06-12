@@ -1147,25 +1147,25 @@ func Percent(env utils.Environment, args ...interface{}) interface{} {
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', 'Z', '-' and '_' are ignored. Any other character is an error.
 //
-//  `d`     - day of month, 1-31
-//  `dd`    - day of month, zero padded 0-31
-//  `fff`   - thousandths of a second
-//  `h`     - hour of the day 1-12
-//  `hh`    - hour of the day 01-12
-//  `H`     - hour of the day 1-23
-//  `HH`    - hour of the day 01-23
-//  `K`     - hour and minute offset from UTC, or Z for UTC
-//  `m`     - minute 0-59
-//  `mm`    - minute 00-59
-//  `M`     - month 1-12
-//  `MM`    - month 01-12
-//  `s`     - second 0-59
-//  `ss`    - second 00-59
-//  `tt`    - am or pm
-//  `TT`    - AM or PM
-//  `yy`    - last two digits of year 0-99
-//  `yyyy`  - four digits of your 0000-9999
-//  `zzz`   - hour and minute offset from UTC
+// * `d`     - day of month, 1-31
+// * `dd`    - day of month, zero padded 0-31
+// * `fff`   - thousandths of a second
+// * `h`     - hour of the day 1-12
+// * `hh`    - hour of the day 01-12
+// * `H`     - hour of the day 1-23
+// * `HH`    - hour of the day 01-23
+// * `K`     - hour and minute offset from UTC, or Z for UTC
+// * `m`     - minute 0-59
+// * `mm`    - minute 00-59
+// * `M`     - month 1-12
+// * `MM`    - month 01-12
+// * `s`     - second 0-59
+// * `ss`    - second 00-59
+// * `tt`    - am or pm
+// * `TT`    - AM or PM
+// * `yy`    - last two digits of year 0-99
+// * `yyyy`  - four digits of your 0000-9999
+// * `zzz`   - hour and minute offset from UTC
 //
 // Timezone should be a location name as specified in the IANA Time Zone database, such
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
@@ -1228,25 +1228,25 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', 'Z', '-' and '_' are ignored. Any other character is an error.
 //
-//  `d`     - day of month, 1-31
-//  `dd`    - day of month, zero padded 0-31
-//  `fff`   - thousandths of a second
-//  `h`     - hour of the day 1-12
-//  `hh`    - hour of the day 01-12
-//  `H`     - hour of the day 1-23
-//  `HH`    - hour of the day 01-23
-//  `K`     - hour and minute offset from UTC, or Z for UTC
-//  `m`     - minute 0-59
-//  `mm`    - minute 00-59
-//  `M`     - month 1-12
-//  `MM`    - month 01-12
-//  `s`     - second 0-59
-//  `ss`    - second 00-59
-//  `tt`    - am or pm
-//  `TT`    - AM or PM
-//  `yy`    - last two digits of year 0-99
-//  `yyyy`  - four digits of your 0000-9999
-//  `zzz`   - hour and minute offset from UTC
+// * `d`     - day of month, 1-31
+// * `dd`    - day of month, zero padded 0-31
+// * `fff`   - thousandths of a second
+// * `h`     - hour of the day 1-12
+// * `hh`    - hour of the day 01-12
+// * `H`     - hour of the day 1-23
+// * `HH`    - hour of the day 01-23
+// * `K`     - hour and minute offset from UTC, or Z for UTC
+// * `m`     - minute 0-59
+// * `mm`    - minute 00-59
+// * `M`     - month 1-12
+// * `MM`    - month 01-12
+// * `s`     - second 0-59
+// * `ss`    - second 00-59
+// * `tt`    - am or pm
+// * `TT`    - AM or PM
+// * `yy`    - last two digits of year 0-99
+// * `yyyy`  - four digits of your 0000-9999
+// * `zzz`   - hour and minute offset from UTC
 //
 // Timezone should be a location name as specified in the IANA Time Zone database, such
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
