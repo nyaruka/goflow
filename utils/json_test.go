@@ -13,6 +13,7 @@ func TestJSON(t *testing.T) {
 		{nil, "key", ""},
 		{[]byte(`malformed`), "key", ""},
 		{[]byte(`["one", "two", "three"]`), "0", "one"},
+		{[]byte(`["escaped \"string\""]`), "0", `escaped "string"`},
 		{[]byte(`{"1": "one"}`), "1", "one"},
 		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", "two"},
 		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", "two"},

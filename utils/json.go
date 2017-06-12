@@ -34,14 +34,29 @@ func (j JSONFragment) Resolve(key string) interface{} {
 	// this is a numerical index, convert to jsonparser format
 	if err == nil {
 		jIdx := "[" + key + "]"
-		val, _, _, err := jsonparser.Get(j.json, jIdx)
+		val, valType, _, err := jsonparser.Get(j.json, jIdx)
 		if err == nil {
-			return JSONFragment{val}
+			if err == nil {
+				if valType == jsonparser.String {
+					strVal, err := jsonparser.ParseString(val)
+					if err == nil {
+						return strVal
+					}
+				}
+				return JSONFragment{val}
+			}
 		}
 	}
-	val, _, _, err := jsonparser.Get(j.json, key)
+	val, valType, _, err := jsonparser.Get(j.json, key)
 	if err != nil {
 		return err
+	}
+
+	if valType == jsonparser.String {
+		strVal, err := jsonparser.ParseString(val)
+		if err == nil {
+			return strVal
+		}
 	}
 	return JSONFragment{val}
 }

@@ -125,6 +125,57 @@ func TestToDecimal(t *testing.T) {
 	}
 }
 
+func TestToBool(t *testing.T) {
+	testResolver := &resolver{"155"}
+
+	var tests = []struct {
+		input    interface{}
+		expected bool
+		hasError bool
+	}{
+		{nil, false, false},
+		{fmt.Errorf("Error"), false, true},
+		{decimal.NewFromFloat(42), true, false},
+		{int(0), false, false},
+		{int(15), true, false},
+		{int32(15), true, false},
+		{int64(15), true, false},
+		{float32(15.5), true, false},
+		{float64(15.5), true, false},
+		{"15.5", true, false},
+		{"lO.5", true, false},
+		{"", false, false},
+		{testResolver, true, false},
+		{NewJSONFragment([]byte(`false`)), false, false},
+		{NewJSONFragment([]byte(`true`)), true, false},
+		{NewJSONFragment([]byte(`[]`)), false, false},
+		{NewJSONFragment([]byte(`15.5`)), true, false},
+		{NewJSONFragment([]byte(`0`)), false, false},
+		{NewJSONFragment([]byte(`[5]`)), true, false},
+		{NewJSONFragment([]byte("{\n}")), false, false},
+		{NewJSONFragment([]byte(`{"one": "two"}`)), true, false},
+		{struct{}{}, false, true},
+	}
+
+	env := NewDefaultEnvironment()
+
+	for _, test := range tests {
+		result, err := ToBool(env, test.input)
+
+		if err != nil && !test.hasError {
+			t.Errorf("Unexpected error calling ToBool on '%v': %s", test.input, err)
+		}
+
+		if err == nil && test.hasError {
+			t.Errorf("Did not receive expected error calling ToBool on '%v': %s", test.input, err)
+		}
+
+		if result != test.expected {
+			t.Errorf("Unexpected result calling ToBool on '%v', got: %s expected: %s", test.input, result, test.expected)
+		}
+	}
+}
+
 func TestToJSON(t *testing.T) {
 	strMap := make(map[string]string)
 	strMap["one"] = "1.0"

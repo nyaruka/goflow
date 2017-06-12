@@ -469,10 +469,41 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 		return !test.IsZero(), nil
 
 	case string:
-		return test != "", nil
+		return test != "" && strings.ToLower(test) != "false", nil
+
+	case JSONFragment:
+		asString, err := ToString(env, test)
+		if err != nil {
+			return false, err
+		}
+		// is this a number?
+		num, err := ToDecimal(env, asString)
+		if err == nil {
+			return !num.Equals(decimal.Zero), nil
+		}
+
+		noWhite := strings.Join(strings.Fields(asString), "")
+
+		// empty array?
+		if noWhite == "[]" {
+			return false, nil
+		}
+
+		// empty dict
+		if noWhite == "{}" {
+			return false, nil
+		}
+
+		// finally just string version
+		return asString != "" && strings.ToLower(asString) != "false", nil
 	}
 
-	return false, fmt.Errorf("ToBool unknown type '%s' with value '%+v'", reflect.TypeOf(test), test)
+	asString, err := ToString(env, test)
+	if err != nil {
+		return false, err
+	}
+
+	return ToBool(env, asString)
 }
 
 // XType is an an enumeration of the possible types we can deal with
