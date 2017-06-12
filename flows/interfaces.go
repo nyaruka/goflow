@@ -250,8 +250,8 @@ type FlowRun interface {
 	SetFlowTranslations(FlowTranslations)
 	GetText(uuid UUID, key string, backdown string) string
 
-	Webhook() utils.RequestResponse
-	SetWebhook(utils.RequestResponse)
+	Webhook() *utils.RequestResponse
+	SetWebhook(*utils.RequestResponse)
 
 	Child() FlowRunReference
 	Parent() FlowRunReference

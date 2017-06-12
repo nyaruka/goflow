@@ -31,19 +31,18 @@ func (r RequestResponseStatus) String() string {
 }
 
 // RequestResponse represents both the outgoing request and response for a particular URL/method/body
-type RequestResponse interface {
-	URL() string
-	Status() RequestResponseStatus
-	StatusCode() int
-	Request() string
-	Response() string
-	Body() string
-	JSON() JSONFragment
+type RequestResponse struct {
+	url        string
+	status     RequestResponseStatus
+	statusCode int
+	request    string
+	response   string
+	body       string
 }
 
 // MakeHTTPRequest fires the passed in http request, returning any errors encountered. RequestResponse is always set
 // regardless of any errors being set
-func MakeHTTPRequest(req *http.Request) (RequestResponse, error) {
+func MakeHTTPRequest(req *http.Request) (*RequestResponse, error) {
 	requestTrace, err := httputil.DumpRequestOut(req, true)
 	if err != nil {
 		rr, _ := newRRFromRequestAndError(req, string(requestTrace), err)
@@ -61,28 +60,19 @@ func MakeHTTPRequest(req *http.Request) (RequestResponse, error) {
 	return rr, err
 }
 
-type requestResponse struct {
-	url        string
-	status     RequestResponseStatus
-	statusCode int
-	request    string
-	response   string
-	body       string
-}
+func (r *RequestResponse) URL() string                   { return r.url }
+func (r *RequestResponse) Status() RequestResponseStatus { return r.status }
+func (r *RequestResponse) StatusCode() int               { return r.statusCode }
+func (r *RequestResponse) Request() string               { return r.request }
+func (r *RequestResponse) Response() string              { return r.response }
+func (r *RequestResponse) Body() string                  { return r.body }
+func (r *RequestResponse) JSON() JSONFragment            { return JSONFragment{[]byte(r.body)} }
 
-func (r *requestResponse) URL() string                   { return r.url }
-func (r *requestResponse) Status() RequestResponseStatus { return r.status }
-func (r *requestResponse) StatusCode() int               { return r.statusCode }
-func (r *requestResponse) Request() string               { return r.request }
-func (r *requestResponse) Response() string              { return r.response }
-func (r *requestResponse) Body() string                  { return r.body }
-func (r *requestResponse) JSON() JSONFragment            { return JSONFragment{[]byte(r.body)} }
-
-func (r *requestResponse) Default() interface{} {
+func (r *RequestResponse) Default() interface{} {
 	return r.JSON()
 }
 
-func (r *requestResponse) Resolve(key string) interface{} {
+func (r *RequestResponse) Resolve(key string) interface{} {
 	switch key {
 
 	case "body":
@@ -111,8 +101,8 @@ func (r *requestResponse) Resolve(key string) interface{} {
 }
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http request and error (when we received no response)
-func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError error) (RequestResponse, error) {
-	rr := requestResponse{}
+func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError error) (*RequestResponse, error) {
+	rr := RequestResponse{}
 	rr.url = r.URL.String()
 
 	rr.request = requestTrace
@@ -123,9 +113,9 @@ func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError
 }
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http Response
-func newRRFromResponse(requestTrace string, r *http.Response) (RequestResponse, error) {
+func newRRFromResponse(requestTrace string, r *http.Response) (*RequestResponse, error) {
 	var err error
-	rr := requestResponse{}
+	rr := RequestResponse{}
 	rr.url = r.Request.URL.String()
 	rr.statusCode = r.StatusCode
 
@@ -199,11 +189,12 @@ type rrEnvelope struct {
 	URL        string                `json:"url"`
 	Status     RequestResponseStatus `json:"status"`
 	StatusCode int                   `json:"status_code"`
+	Body       string                `json:"body"`
 	Request    string                `json:"request"`
 	Response   string                `json:"response"`
 }
 
-func (r *requestResponse) UnmarshalJSON(data []byte) error {
+func (r *RequestResponse) UnmarshalJSON(data []byte) error {
 	var envelope rrEnvelope
 	var err error
 
@@ -217,11 +208,12 @@ func (r *requestResponse) UnmarshalJSON(data []byte) error {
 	r.statusCode = envelope.StatusCode
 	r.request = envelope.Request
 	r.response = envelope.Response
+	r.body = envelope.Body
 
 	return nil
 }
 
-func (r *requestResponse) MarshalJSON() ([]byte, error) {
+func (r *RequestResponse) MarshalJSON() ([]byte, error) {
 	var re rrEnvelope
 
 	re.URL = r.url
@@ -229,6 +221,7 @@ func (r *requestResponse) MarshalJSON() ([]byte, error) {
 	re.StatusCode = r.statusCode
 	re.Request = r.request
 	re.Response = r.response
+	re.Body = r.body
 
 	return json.Marshal(re)
 }

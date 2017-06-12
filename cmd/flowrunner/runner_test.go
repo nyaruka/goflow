@@ -37,6 +37,7 @@ var flowTests = []struct {
 	{"node_loop.json", "", "", "node_loop_test.json"},
 	{"subflow_loop.json", "", "", "subflow_loop_test.json"},
 	{"date_parse.json", "", "", "date_parse_test.json"},
+	{"webhook_persists.json", "", "", "webhook_persists_test.json"},
 }
 
 var writeOutput bool

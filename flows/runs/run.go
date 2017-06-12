@@ -30,7 +30,7 @@ type flowRun struct {
 	context flows.Context
 	status  flows.RunStatus
 	wait    flows.Wait
-	webhook utils.RequestResponse
+	webhook *utils.RequestResponse
 	input   flows.Input
 	event   flows.Event
 
@@ -179,8 +179,8 @@ func (r *flowRun) ClearPath() {
 	r.path = nil
 }
 
-func (r *flowRun) Webhook() utils.RequestResponse { return r.webhook }
-func (r *flowRun) SetWebhook(rr utils.RequestResponse) {
+func (r *flowRun) Webhook() *utils.RequestResponse { return r.webhook }
+func (r *flowRun) SetWebhook(rr *utils.RequestResponse) {
 	r.webhook = rr
 	r.setModifiedOn(time.Now().In(time.UTC))
 }
@@ -391,9 +391,9 @@ type runEnvelope struct {
 	Parent flows.RunUUID `json:"parent_uuid,omitempty"`
 	Child  flows.RunUUID `json:"child_uuid,omitempty"`
 
-	Results *flows.Results        `json:"results,omitempty"`
-	Webhook utils.RequestResponse `json:"webhook,omitempty"`
-	Extra   json.RawMessage       `json:"extra,omitempty"`
+	Results *flows.Results         `json:"results,omitempty"`
+	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
+	Extra   json.RawMessage        `json:"extra,omitempty"`
 
 	CreatedOn  time.Time  `json:"created_on"`
 	ModifiedOn time.Time  `json:"modified_on"`
@@ -487,6 +487,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
 	re.Extra = r.extra
+	re.Webhook = r.webhook
 
 	if r.parent != nil {
 		re.Parent = r.parent.UUID()

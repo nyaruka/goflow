@@ -198,7 +198,7 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// first parameter needs to be a request response
-	rr, isRR := args[0].(utils.RequestResponse)
+	rr, isRR := args[0].(*utils.RequestResponse)
 	if !isRR {
 		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with webhook as first argument")
 	}
