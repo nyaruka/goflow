@@ -83,6 +83,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"tz_offset":       TZOffset,
 	"today":           Today,
 	"now":             Now,
+	"from_epoch":      FromEpoch,
+	"to_epoch":        ToEpoch,
 }
 
 //------------------------------------------------------------------------------------------
@@ -1541,6 +1543,42 @@ func Today(env utils.Environment, args ...interface{}) interface{} {
 
 	nowTZ := time.Now().In(env.Timezone())
 	return time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone())
+}
+
+// FromEpoch returns a new date created from `num` which represents number of nanoseconds since January 1st, 1970 GMT
+//
+//   @(from_epoch(1497286619000000000)) -> 2017-06-12T16:56:59.000000Z
+//
+// @function from_epoch(num)
+func FromEpoch(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("FROM_EPOCH takes exactly one number argument, got %d", len(args))
+	}
+
+	offset, err := utils.ToDecimal(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	return time.Unix(0, offset.IntPart()).In(env.Timezone())
+}
+
+// ToEpoch converts `date` to the number of nanoseconds since January 1st, 1970 GMT
+//
+//   @(to_epoch("2017-06-12T16:56:59.000000Z")) -> 1497286619000000000
+//
+// @function to_epoch(date)
+func ToEpoch(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("TO_EPOCH takes exactly one date argument, got %d", len(args))
+	}
+
+	date, err := utils.ToDate(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	return date.UnixNano()
 }
 
 // Now returns the current date and time in the environment timezone
