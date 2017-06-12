@@ -554,7 +554,7 @@ func Rand(env utils.Environment, args ...interface{}) interface{} {
 
 	// turn to integers
 	min = min.Floor()
-	max = min.Floor()
+	max = max.Floor()
 
 	spread := min.Sub(max).Abs()
 
