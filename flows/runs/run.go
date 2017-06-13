@@ -130,7 +130,7 @@ func (r *flowRun) IsComplete() bool {
 }
 func (r *flowRun) setStatus(status flows.RunStatus) {
 	r.status = status
-	r.setModifiedOn(time.Now())
+	r.setModifiedOn(time.Now().UTC())
 }
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.setStatus(status)
@@ -151,7 +151,7 @@ func (r *flowRun) SetEvent(event flows.Event) { r.event = event }
 func (r *flowRun) Event() flows.Event         { return r.event }
 
 func (r *flowRun) AddEvent(s flows.Step, e flows.Event) {
-	now := time.Now().In(time.UTC)
+	now := time.Now().UTC()
 
 	e.SetCreatedOn(now)
 	e.SetStep(s.UUID())
@@ -169,7 +169,7 @@ func (r *flowRun) AddError(step flows.Step, err error) {
 
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
-	now := time.Now().In(time.UTC)
+	now := time.Now().UTC()
 	step := &step{stepUUID: flows.StepUUID(uuid.NewV4().String()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	r.setModifiedOn(now)
@@ -182,7 +182,7 @@ func (r *flowRun) ClearPath() {
 func (r *flowRun) Webhook() *utils.RequestResponse { return r.webhook }
 func (r *flowRun) SetWebhook(rr *utils.RequestResponse) {
 	r.webhook = rr
-	r.setModifiedOn(time.Now().In(time.UTC))
+	r.setModifiedOn(time.Now().UTC())
 }
 
 func (r *flowRun) Extra() utils.JSONFragment {
@@ -221,7 +221,7 @@ func (r *flowRun) GetText(uuid flows.UUID, key string, backdown string) string {
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
-	now := time.Now()
+	now := time.Now().UTC()
 
 	r := &flowRun{
 		uuid:        flows.RunUUID(uuid.NewV4().String()),

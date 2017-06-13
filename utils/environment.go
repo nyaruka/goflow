@@ -25,6 +25,9 @@ func NewDefaultEnvironment() Environment {
 
 // NewEnvironment creates a new Environment with the passed in date and time formats and timezone
 func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location) Environment {
+	if timezone == nil {
+		timezone = time.UTC
+	}
 	return &environment{dateFormat, timeFormat, timezone}
 }
 
@@ -40,17 +43,23 @@ func (e *environment) SetDateFormat(dateFormat DateFormat) { e.dateFormat = date
 func (e *environment) TimeFormat() TimeFormat              { return e.timeFormat }
 func (e *environment) SetTimeFormat(timeFormat TimeFormat) { e.timeFormat = timeFormat }
 
-func (e *environment) Timezone() *time.Location            { return e.timezone }
-func (e *environment) SetTimezone(timezone *time.Location) { e.timezone = timezone }
+func (e *environment) Timezone() *time.Location { return e.timezone }
+func (e *environment) SetTimezone(timezone *time.Location) {
+	if timezone == nil {
+		e.timezone = time.UTC
+	} else {
+		e.timezone = timezone
+	}
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat DateFormat     `json:"date_format"`
-	TimeFormat TimeFormat     `json:"time_format"`
-	Timezone   *time.Location `json:"timezone"`
+	DateFormat DateFormat `json:"date_format"`
+	TimeFormat TimeFormat `json:"time_format"`
+	Timezone   string     `json:"timezone"`
 }
 
 func (e *environment) UnmarshalJSON(data []byte) error {
@@ -64,11 +73,15 @@ func (e *environment) UnmarshalJSON(data []byte) error {
 
 	e.dateFormat = envelope.DateFormat
 	e.timeFormat = envelope.TimeFormat
-	e.timezone = envelope.Timezone
+	tz, err := time.LoadLocation(envelope.Timezone)
+	if err != nil {
+		return err
+	}
+	e.timezone = tz
 	return nil
 }
 
 func (e *environment) MarshalJSON() ([]byte, error) {
-	ee := envEnvelope{e.dateFormat, e.timeFormat, e.timezone}
+	ee := envEnvelope{e.dateFormat, e.timeFormat, e.timezone.String()}
 	return json.Marshal(ee)
 }
