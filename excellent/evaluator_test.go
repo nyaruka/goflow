@@ -1,29 +1,12 @@
 package excellent
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
 )
-
-type TestVars struct {
-	vars map[string]interface{}
-}
-
-func (v *TestVars) Resolve(key string) interface{} {
-	val, present := v.vars[key]
-	if !present {
-		return fmt.Errorf("No such key: %s", key)
-	}
-	return val
-}
-
-func (v *TestVars) Default() interface{} {
-	return v.vars
-}
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 	varMap := make(map[string]interface{})
@@ -36,7 +19,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	varMap["dec2"] = 2.5
 	varMap["words"] = "one two three"
 	varMap["array"] = []string{"one", "two", "three"}
-	vars := &TestVars{varMap}
+	vars := utils.NewMapResolver(varMap)
 
 	evaluateAsStringTests := []struct {
 		template string
@@ -150,7 +133,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	varMap["int_map"] = intMap
 	varMap["inner_map"] = innerMap
 	varMap["inner_arr"] = innerArr
-	vars := &TestVars{varMap}
+	vars := utils.NewMapResolver(varMap)
 
 	env := utils.NewDefaultEnvironment()
 

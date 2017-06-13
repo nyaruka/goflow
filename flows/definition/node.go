@@ -36,10 +36,6 @@ func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 func (n *node) Wait() flows.Wait        { return n.wait }
 
-func (n *node) Default() interface{} {
-	return n.uuid
-}
-
 func (n *node) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
@@ -47,6 +43,11 @@ func (n *node) Resolve(key string) interface{} {
 	}
 	return fmt.Errorf("No field '%s' on node", key)
 }
+
+func (n *node) Default() interface{} { return n.uuid }
+func (n *node) String() string       { return n.uuid.String() }
+
+var _ utils.VariableResolver = (*node)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

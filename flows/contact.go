@@ -95,6 +95,8 @@ func (c *Contact) String() string {
 	return c.name
 }
 
+var _ utils.VariableResolver = (*Contact)(nil)
+
 type ContactReference struct {
 	UUID ContactUUID `json:"uuid"    validate:"required,uuid4"`
 	Name string      `json:"name"`

@@ -68,10 +68,6 @@ func (r *RequestResponse) Response() string              { return r.response }
 func (r *RequestResponse) Body() string                  { return r.body }
 func (r *RequestResponse) JSON() JSONFragment            { return JSONFragment{[]byte(r.body)} }
 
-func (r *RequestResponse) Default() interface{} {
-	return r.JSON()
-}
-
 func (r *RequestResponse) Resolve(key string) interface{} {
 	switch key {
 
@@ -99,6 +95,16 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 
 	return fmt.Errorf("No field '%s' on webhook", key)
 }
+
+func (r *RequestResponse) Default() interface{} {
+	return r.JSON()
+}
+
+func (r *RequestResponse) String() string {
+	return r.body
+}
+
+var _ VariableResolver = (*RequestResponse)(nil)
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http request and error (when we received no response)
 func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError error) (*RequestResponse, error) {

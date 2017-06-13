@@ -77,4 +77,9 @@ func (e *MsgReceivedEvent) Default() interface{} {
 	return e.Text
 }
 
+// String returns our default value if evaluated in a context, our text in our case
+func (e *MsgReceivedEvent) String() string {
+	return e.Text
+}
+
 var _ flows.Input = (*MsgReceivedEvent)(nil)

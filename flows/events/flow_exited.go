@@ -70,6 +70,8 @@ func (e *FlowExitedEvent) Default() interface{} {
 }
 
 // String returns the default string value
-func (e *FlowExitedEvent) String() interface{} {
+func (e *FlowExitedEvent) String() string {
 	return string(e.FlowUUID)
 }
+
+var _ flows.Input = (*FlowExitedEvent)(nil)

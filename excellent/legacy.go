@@ -32,8 +32,11 @@ func (v vars) Resolve(key string) interface{} {
 }
 
 func (v vars) Default() interface{} {
-	// fmt.Printf("default %s\n", v)
 	return v["__default__"]
+}
+
+func (v vars) String() string {
+	return fmt.Sprintf("%s", v["__default__"])
 }
 
 type arbitraryVars struct {

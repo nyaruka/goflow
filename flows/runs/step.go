@@ -52,6 +52,8 @@ func (s *step) Default() interface{} {
 	return s
 }
 
+var _ utils.VariableResolver = (*step)(nil)
+
 func (s *step) String() string {
 	return string(s.nodeUUID)
 }

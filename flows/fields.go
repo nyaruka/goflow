@@ -49,6 +49,8 @@ func (f *Fields) String() string {
 	return strings.Join(fields, ", ")
 }
 
+var _ utils.VariableResolver = (*Fields)(nil)
+
 // Field represents a contact field and value for a contact
 type Field struct {
 	field FieldUUID
@@ -82,6 +84,8 @@ func (f *Field) Default() interface{} {
 func (f *Field) String() string {
 	return f.value
 }
+
+var _ utils.VariableResolver = (*Field)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

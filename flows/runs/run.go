@@ -290,6 +290,8 @@ func (r *flowRun) Default() interface{} {
 	return r
 }
 
+var _ utils.VariableResolver = (*flowRun)(nil)
+
 // String returns the default string value for this run, which is just our status
 func (r *flowRun) String() string {
 	return string(r.status)
@@ -335,6 +337,8 @@ func (r *runReference) Resolve(key string) interface{} {
 func (r *runReference) Default() interface{} {
 	return r
 }
+
+var _ utils.VariableResolver = (*runReference)(nil)
 
 func (r *runReference) String() string {
 	return string(r.Status())

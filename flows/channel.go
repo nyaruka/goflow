@@ -3,6 +3,8 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 type Channel struct {
@@ -36,9 +38,11 @@ func (c *Channel) Default() interface{} {
 	return c
 }
 
-func (c *Channel) String() interface{} {
+func (c *Channel) String() string {
 	return c.name
 }
+
+var _ utils.VariableResolver = (*Channel)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

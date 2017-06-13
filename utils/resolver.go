@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,6 +19,7 @@ func Snakify(text string) string {
 type VariableResolver interface {
 	Resolve(key string) interface{}
 	Default() interface{}
+	String() string
 }
 
 // ResolveVariable will resolve the passed in string variable given in dot notation and return
@@ -134,5 +136,12 @@ func NewMapResolver(values map[string]interface{}) VariableResolver {
 	}
 }
 
-func (r *mapResolver) Resolve(key string) interface{} { return r.values[key] }
-func (r *mapResolver) Default() interface{}           { return r }
+func (r *mapResolver) Resolve(key string) interface{} {
+	val, found := r.values[key]
+	if !found {
+		return fmt.Errorf("No key '%s' in map", key)
+	}
+	return val
+}
+func (r *mapResolver) Default() interface{} { return r }
+func (r *mapResolver) String() string       { return fmt.Sprintf("%s", r.values) }

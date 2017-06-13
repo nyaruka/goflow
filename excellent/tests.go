@@ -3,6 +3,7 @@ package excellent
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -73,11 +74,6 @@ func (t XTestResult) Matched() bool { return t.matched }
 // Match returns the item which was matched
 func (t XTestResult) Match() interface{} { return t.match }
 
-// Default satisfies the utils.VariableResolver interface, we always default to whether we matched
-func (t XTestResult) Default() interface{} {
-	return t.matched
-}
-
 // Resolve satisfies the utils.VariableResolver interface, users can look up the match or whether we matched
 func (t XTestResult) Resolve(key string) interface{} {
 	switch key {
@@ -88,6 +84,16 @@ func (t XTestResult) Resolve(key string) interface{} {
 		return t.match
 	}
 	return fmt.Errorf("no such key '%s' on test result", key)
+}
+
+// Default satisfies the utils.VariableResolver interface, we always default to whether we matched
+func (t XTestResult) Default() interface{} {
+	return t.matched
+}
+
+// String satisfies the utils.VariableResolver interface, we always default to whether we matched
+func (t XTestResult) String() string {
+	return strconv.FormatBool(t.matched)
 }
 
 // XFalseResult can be used as a singleton for false result values
@@ -102,8 +108,13 @@ var _ utils.VariableResolver = XTestResult{}
 
 // HasError returns whether `value` is an error
 //
+// Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
+// to try to retrieve a value from fields or results which don't exist, rather these return an empty
+// value.
+//
 //   @(has_error(date("foo"))) -> true
-//   @(has_error(not.existing)) -> false
+//   @(has_error(run.not.existing)) -> true
+//   @(has_error(contact.fields.unset)) -> false
 //   @(has_error("hello")) -> false
 //
 // @test has_error(value)
@@ -127,8 +138,13 @@ func HasError(env utils.Environment, args ...interface{}) interface{} {
 
 // HasValue returns whether `value` is non-nil and not an error
 //
+// Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
+// to try to retrieve a value from fields or results which don't exist, rather these return an empty
+// value.
+//
 //   @(has_value(date("foo"))) -> false
 //   @(has_value(not.existing)) -> false
+//   @(has_value(contact.fields.unset)) -> false
 //   @(has_value("hello")) -> true
 //
 // @test has_value(value)

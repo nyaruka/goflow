@@ -62,6 +62,8 @@ func (g *Group) Default() interface{} { return g }
 // String satisfies the stringer interface returning the name of the group
 func (g *Group) String() string { return g.name }
 
+var _ utils.VariableResolver = (*Group)(nil)
+
 // GroupList defines a list of groups
 type GroupList []*Group
 
@@ -95,6 +97,8 @@ func (l GroupList) String() string {
 	}
 	return strings.Join(names, ", ")
 }
+
+var _ utils.VariableResolver = (GroupList)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

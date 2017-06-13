@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 const TypeFlow string = "flow"
@@ -25,6 +26,12 @@ func (w *FlowWait) Resolve(key string) interface{} {
 func (w *FlowWait) Default() interface{} {
 	return TypeFlow
 }
+
+func (w *FlowWait) String() string {
+	return TypeFlow
+}
+
+var _ utils.VariableResolver = (*FlowWait)(nil)
 
 func (w *FlowWait) Type() string { return TypeFlow }
 

@@ -14,6 +14,7 @@ type resolver struct {
 }
 
 func (r *resolver) Default() interface{} { return r.defaultString }
+func (r *resolver) String() string       { return r.defaultString }
 func (r *resolver) Resolve(key string) interface{} {
 	return fmt.Errorf("No such key")
 }

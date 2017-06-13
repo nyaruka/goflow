@@ -12,10 +12,15 @@ import (
 )
 
 func newFuncVisitor(funcType string, output *bytes.Buffer) ast.Visitor {
+	session, err := createExampleSession(emptyDef)
+	if err != nil {
+		log.Fatalf("Error creating example session: %s", err)
+	}
+
 	return &funcVisitor{
 		prefix:   "@" + funcType,
 		env:      utils.NewDefaultEnvironment(),
-		resolver: utils.NewMapResolver(make(map[string]interface{})),
+		resolver: session.Runs()[0].Context(),
 		output:   output,
 	}
 }

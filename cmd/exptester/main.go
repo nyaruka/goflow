@@ -8,30 +8,15 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type Vars struct {
-}
-
-func (vars *Vars) Resolve(key string) interface{} {
-	switch key {
-	case "int1":
-		return 1
-	case "string1":
-		return "string1"
-	case "int2":
-		return 2
-	}
-	return nil
-}
-
-func (vars *Vars) Default() interface{} {
-	return nil
-}
-
 func main() {
-	vars := Vars{}
+	vars := make(map[string]interface{})
+	vars["int1"] = 1
+	vars["string1"] = "string1"
+	vars["int2"] = 2
+
 	env := utils.NewDefaultEnvironment()
 
-	val, err := excellent.EvaluateTemplateAsString(env, &vars, os.Args[1])
+	val, err := excellent.EvaluateTemplateAsString(env, utils.NewMapResolver(vars), os.Args[1])
 
 	fmt.Printf("Value: %s\n", val)
 	if err != nil {

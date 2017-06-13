@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // NewContextForContact creates a new context for the passed in contact
@@ -62,6 +63,12 @@ func (c *context) Resolve(key string) interface{} {
 func (c *context) Default() interface{} {
 	return c
 }
+
+func (c *context) String() string {
+	return c.run.UUID().String()
+}
+
+var _ utils.VariableResolver = (*context)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

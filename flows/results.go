@@ -50,6 +50,8 @@ func (r *Results) String() string {
 	return strings.Join(results, ", ")
 }
 
+var _ utils.VariableResolver = (*Results)(nil)
+
 // Result represents a result value in our flow run. Results have a name for which they are the result for,
 // the value itself of the result, optional category and the date and node the result was collected on
 type Result struct {
@@ -91,6 +93,8 @@ func (r *Result) Default() interface{} {
 func (r *Result) String() string {
 	return r.value
 }
+
+var _ utils.VariableResolver = (*Result)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

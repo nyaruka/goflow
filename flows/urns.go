@@ -3,6 +3,8 @@ package flows
 import (
 	"fmt"
 	"strings"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 type URN string
@@ -31,7 +33,6 @@ var schemes = map[string]bool{
 	EmailScheme:    true,
 }
 
-func (u URN) String() string       { return string(u.Path()) }
 func (u URNScheme) String() string { return string(u) }
 func (u URNPath) String() string   { return string(u) }
 
@@ -75,16 +76,10 @@ func (u URN) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on URN", key)
 }
 
-func (u URN) Default() interface{} {
-	return u
-}
+func (u URN) Default() interface{} { return u }
+func (u URN) String() string       { return string(u.Path()) }
 
-func (l URNList) Default() interface{} {
-	if len(l) > 0 {
-		return l[0]
-	}
-	return nil
-}
+var _ utils.VariableResolver = (URN)("")
 
 func (l URNList) Resolve(key string) interface{} {
 	// If this isn't a valid scheme, bail
@@ -103,3 +98,19 @@ func (l URNList) Resolve(key string) interface{} {
 
 	return found
 }
+
+func (l URNList) Default() interface{} {
+	if len(l) > 0 {
+		return l[0]
+	}
+	return nil
+}
+
+func (l URNList) String() string {
+	if len(l) > 0 {
+		return l[0].String()
+	}
+	return ""
+}
+
+var _ utils.VariableResolver = (URNList)(nil)

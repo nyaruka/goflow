@@ -63,3 +63,5 @@ func (e *FlowEnteredEvent) Default() interface{} {
 func (e *FlowEnteredEvent) String() string {
 	return string(e.FlowUUID)
 }
+
+var _ flows.Input = (*FlowEnteredEvent)(nil)
