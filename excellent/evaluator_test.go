@@ -131,6 +131,11 @@ func TestEvaluateTemplate(t *testing.T) {
 	intMap[2] = "two"
 	intMap[3] = "three"
 
+	innerMap := make(map[string]interface{})
+	innerMap["int_map"] = intMap
+
+	innerArr := []map[string]string{strMap}
+
 	varMap := make(map[string]interface{})
 	varMap["string1"] = "foo"
 	varMap["string2"] = "bar"
@@ -143,6 +148,8 @@ func TestEvaluateTemplate(t *testing.T) {
 	varMap["array1"] = arr
 	varMap["str_map"] = strMap
 	varMap["int_map"] = intMap
+	varMap["inner_map"] = innerMap
+	varMap["inner_arr"] = innerArr
 	vars := &TestVars{varMap}
 
 	env := utils.NewDefaultEnvironment()
@@ -161,18 +168,24 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@array1", arr, false},
 		{"@str_map", strMap, false},
 		{"@int_map", intMap, false},
-		{"@int_map.1", nil, true},
+		{"@int_map.1", "one", false},
 		{"@str_map.1", "one", false},
 		{"@(str_map[1])", "one", false},
 		{"@(str_map[10])", nil, false},
 		{"@(str_map.汉字)", "simplified chinese", false},
-		{"@(int_map[1])", nil, true},
+		{"@(int_map[1])", "one", false},
+		{"@(int_map[10])", nil, false},
 		{"@(str_map[\"four\"])", "four", false},
 		{"@(str_map[key])", "four", false},
 		{"@(str_map[lower(key)])", "four", false},
 		{"@(title(missing))", "", true},
 		{`@(str_map["with-dash"])`, "dashy", false},
 		{`@(str_map["with space"])`, "spacy", false},
+		{`@(inner_map["int_map"].1)`, `one`, false},
+		{`@(inner_map.int_map.1)`, `one`, false},
+		{`@(inner_arr[0].four)`, `four`, false},
+		{`@(inner_arr[0].0)`, nil, false},
+		{`@(inner_arr[0].1)`, `one`, false},
 
 		{"@string1 world", "foo world", false},
 
