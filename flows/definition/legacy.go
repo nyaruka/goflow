@@ -33,6 +33,7 @@ type legacyMetadataEnvelope struct {
 }
 
 type legacyRule struct {
+	UUID        flows.ExitUUID            `json:"uuid"`
 	Destination flows.NodeUUID            `json:"destination"`
 	Test        utils.TypedEnvelope       `json:"test"`
 	Category    map[utils.Language]string `json:"category"`
@@ -368,6 +369,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 }
 
 type categoryName struct {
+	uuid         flows.ExitUUID
 	destination  flows.NodeUUID
 	translations translationMap
 	order        int
@@ -383,6 +385,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 		_, ok := categoryMap[category]
 		if !ok {
 			categoryMap[category] = categoryName{
+				uuid:         r.Rules[i].UUID,
 				destination:  r.Rules[i].Destination,
 				translations: r.Rules[i].Category,
 				order:        order,
@@ -391,17 +394,15 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 		}
 	}
 
-	// create exists for each category
+	// create exits for each category
 	exits := make([]flows.Exit, len(categoryMap))
 	exitMap := make(map[string]flows.Exit)
 	for k, category := range categoryMap {
-		uuid := flows.ExitUUID(uuid.NewV4().String())
-
-		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(uuid), "label")
+		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(category.uuid), "label")
 
 		exits[category.order] = &exit{
 			name:        k,
-			uuid:        uuid,
+			uuid:        category.uuid,
 			destination: category.destination,
 		}
 		exitMap[k] = exits[category.order]
@@ -501,7 +502,6 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		fallthrough
 	case "expression":
 		operand, _ := excellent.TranslateTemplate(r.Operand)
-		fmt.Println(operand)
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
 			Operand: operand,
@@ -538,7 +538,7 @@ func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[strin
 	node.exits = make([]flows.Exit, 1)
 	node.exits[0] = &exit{
 		destination: a.Destination,
-		uuid:        flows.ExitUUID(uuid.NewV4().String()),
+		uuid:        flows.ExitUUID(a.UUID),
 	}
 	return node
 
