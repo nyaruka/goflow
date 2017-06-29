@@ -31,6 +31,11 @@ type VariableResolver interface {
 func ResolveVariable(env Environment, variable interface{}, key string) interface{} {
 	var err error
 
+	err, isErr := variable.(error)
+	if isErr {
+		return err
+	}
+
 	// self referencing
 	if key == "" {
 		return variable
@@ -50,6 +55,7 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 		// look it up in our resolver
 		if isResolver {
 			variable = resolver.Resolve(key)
+
 			err, isErr := variable.(error)
 			if isErr {
 				return err
@@ -80,6 +86,8 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 			}
 			continue
 		}
+
+		variable = fmt.Sprintf("%s.%s", variable, key)
 	}
 
 	return variable
