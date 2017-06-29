@@ -241,7 +241,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
 		expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
-		return &actions.SendMsgAction{
+		return &actions.ReplyAction{
 			Text: expression,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
