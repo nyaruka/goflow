@@ -252,13 +252,19 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
 
-		// TODO translations for each attachment
+		// TODO translations for each attachment?
 
 		text_expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
 		attachment_expression, _ := excellent.TranslateTemplate(media[baseLanguage])
+
+		attachments := []string{}
+		if attachment_expression != "" {
+			attachments = append(attachments, attachment_expression)
+		}
+
 		return &actions.ReplyAction{
 			Text:        text_expression,
-			Attachments: []string{attachment_expression},
+			Attachments: attachments,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
