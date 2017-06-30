@@ -75,7 +75,8 @@ type legacyAction struct {
 	Name string           `json:"name"`
 
 	// message  and email
-	Msg json.RawMessage `json:"msg"`
+	Msg   json.RawMessage `json:"msg"`
+	Media json.RawMessage `json:"media"`
 
 	// groups
 	Groups []legacyGroup `json:"groups"`
@@ -235,15 +236,29 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}, nil
 	case "reply":
 		msg := make(map[utils.Language]string)
+		media := make(map[utils.Language]string)
+
 		err := json.Unmarshal(a.Msg, &msg)
 		if err != nil {
 			return nil, err
 		}
 
+		if a.Media != nil {
+			err := json.Unmarshal(a.Media, &media)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
-		expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
+
+		// TODO translations for each attachment
+
+		text_expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
+		attachment_expression, _ := excellent.TranslateTemplate(media[baseLanguage])
 		return &actions.ReplyAction{
-			Text: expression,
+			Text:        text_expression,
+			Attachments: []string{attachment_expression},
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},

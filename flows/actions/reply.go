@@ -20,14 +20,16 @@ const TypeReply string = "reply"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "reply",
-//     "text": "Hi @contact.name, are you ready to complete today's survey?"
+//     "text": "Hi @contact.name, are you ready to complete today's survey?",
+//     "attachments": []
 //   }
 // ```
 //
 // @action reply
 type ReplyAction struct {
 	BaseAction
-	Text string `json:"text"         validate:"required"`
+	Text        string   `json:"text"         validate:"required"`
+	Attachments []string `json:"attachments"`
 }
 
 // Type returns the type of this action
@@ -49,6 +51,11 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 		return nil
 	}
 
-	run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text))
+	attachments := a.Attachments
+	if attachments == nil {
+		attachments = []string{}
+	}
+
+	run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, attachments))
 	return nil
 }
