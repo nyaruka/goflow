@@ -23,14 +23,7 @@ func (t *languageTranslations) GetTranslations(uuid flows.UUID, key string, back
 }
 
 func (t *languageTranslations) GetText(uuid flows.UUID, key string, backdown string) string {
-	item, found := (*t)[uuid]
-	if found {
-		translation, found := item[key]
-		if found && len(translation) > 0 {
-			return translation[0]
-		}
-	}
-	return backdown
+	return t.GetTranslations(uuid, key, []string{backdown})[0]
 }
 
 // flowTranslations are our top level container for all the translations for a language
