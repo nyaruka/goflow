@@ -51,11 +51,6 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 		return nil
 	}
 
-	attachments := a.Attachments
-	if attachments == nil {
-		attachments = []string{}
-	}
-
-	run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, attachments))
+	run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
 	return nil
 }
