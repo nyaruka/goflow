@@ -14,7 +14,8 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-type legacyFlow struct {
+// LegacyFlow imports an old-world flow so it can be exported anew
+type LegacyFlow struct {
 	flow
 	envelope legacyFlowEnvelope
 }
@@ -130,8 +131,8 @@ type stringTest struct {
 type localizations map[utils.Language]flows.Action
 
 // ReadLegacyFlows reads in legacy formatted flows
-func ReadLegacyFlows(data json.RawMessage) ([]legacyFlow, error) {
-	var flows []legacyFlow
+func ReadLegacyFlows(data json.RawMessage) ([]LegacyFlow, error) {
+	var flows []LegacyFlow
 	err := json.Unmarshal(data, &flows)
 	return flows, err
 }
@@ -142,7 +143,7 @@ func addTranslationMap(baseLanguage utils.Language, translations *flowTranslatio
 	for language, translation := range mapped {
 		items := itemTranslations{}
 		expression, _ := excellent.TranslateTemplate(translation)
-		items[key] = expression
+		items[key] = []string{expression}
 		if language != baseLanguage {
 			addTranslation(baseLanguage, translations, language, uuid, items)
 		}
@@ -253,17 +254,16 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
 
 		// TODO translations for each attachment?
-
-		text_expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
-		attachment_expression, _ := excellent.TranslateTemplate(media[baseLanguage])
+		textExpression, _ := excellent.TranslateTemplate(msg[baseLanguage])
+		attachmentExpression, _ := excellent.TranslateTemplate(media[baseLanguage])
 
 		attachments := []string{}
-		if attachment_expression != "" {
-			attachments = append(attachments, attachment_expression)
+		if attachmentExpression != "" {
+			attachments = append(attachments, attachmentExpression)
 		}
 
 		return &actions.ReplyAction{
-			Text:        text_expression,
+			Text:        textExpression,
 			Attachments: attachments,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
@@ -419,7 +419,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	exits := make([]flows.Exit, len(categoryMap))
 	exitMap := make(map[string]flows.Exit)
 	for k, category := range categoryMap {
-		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(category.uuid), "label")
+		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(category.uuid), "name")
 
 		exits[category.order] = &exit{
 			name:        k,
@@ -559,13 +559,14 @@ func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[strin
 	node.exits = make([]flows.Exit, 1)
 	node.exits[0] = &exit{
 		destination: a.Destination,
-		uuid:        flows.ExitUUID(a.UUID),
+		uuid:        flows.ExitUUID(uuid.NewV4().String()),
 	}
 	return node
 
 }
 
-func (f *legacyFlow) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON imports our JSON into a LegacyFlow object
+func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	var envelope legacyFlowEnvelope
 	var err error
 
@@ -611,7 +612,8 @@ func (f *legacyFlow) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-func (f *legacyFlow) MarshalJSON() ([]byte, error) {
+// MarshalJSON sends turns our legacy flow into bytes
+func (f *LegacyFlow) MarshalJSON() ([]byte, error) {
 
 	var fe = flowEnvelope{}
 	fe.Name = f.name

@@ -5,18 +5,29 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// itemTranslations map a key for a node to a key - say "text" to "je suis francais!"
-type itemTranslations map[string]string
+// itemTranslations map a key for a node to a key - say "text" to "[je suis francais!]"
+type itemTranslations map[string][]string
 
 // languageTranslations map a node uuid to item_translations - say "node1-asdf" to { "text": "je suis francais!" }
 type languageTranslations map[flows.UUID]itemTranslations
 
-func (t *languageTranslations) GetText(uuid flows.UUID, key string, backdown string) string {
+func (t *languageTranslations) GetTranslations(uuid flows.UUID, key string, backdown []string) []string {
 	item, found := (*t)[uuid]
 	if found {
 		translation, found := item[key]
 		if found {
 			return translation
+		}
+	}
+	return backdown
+}
+
+func (t *languageTranslations) GetText(uuid flows.UUID, key string, backdown string) string {
+	item, found := (*t)[uuid]
+	if found {
+		translation, found := item[key]
+		if found && len(translation) > 0 {
+			return translation[0]
 		}
 	}
 	return backdown

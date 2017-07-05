@@ -61,11 +61,16 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 	}
 
 	// log our event
-	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, category)
+	var categoryOriginal string
+	if template != a.Category {
+		categoryOriginal = a.Category
+	}
+
+	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, category, categoryOriginal)
 	run.AddEvent(step, event)
 
 	// and save our result
-	run.Results().Save(step.NodeUUID(), a.ResultName, value, a.Category, *event.CreatedOn())
+	run.Results().Save(step.NodeUUID(), a.ResultName, value, a.Category, categoryOriginal, *event.CreatedOn())
 
 	return nil
 }
