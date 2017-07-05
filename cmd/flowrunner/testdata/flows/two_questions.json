@@ -6,43 +6,69 @@
     "localization": {
       "fra": {
         "e97cd6d5-3354-4dbd-85bc-6c1f87849eec": {
-          "text": "Quelle est votres couleur preferee? (rouge/blue)"
+          "text": [
+            "Quelle est votres couleur preferee? (rouge/blue)"
+          ]
         },
         "98503572-25bf-40ce-ad72-8836b6549a38": {
-          "test": "rouge"
+          "test": [
+            "rouge"
+          ]
         },
         "a51e5c8c-c891-401d-9c62-15fc37278c94": {
-          "test": "blue"
+          "test": [
+            "blue"
+          ]
         },
         "598ae7a5-2f81-48f1-afac-595262514aa1": {
-          "label": "Rouge"
+          "name": [
+            "Rouge"
+          ]
         },
         "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e": {
-          "label": "Blue"
+          "name": [
+            "Blue"
+          ]
         },
         "78ae8f05-f92e-43b2-a886-406eaea1b8e0": {
-          "label": "Autres"
+          "name": [
+            "Autres"
+          ]
         },
         "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
-          "text": "@(TITLE(input.text))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
+          "text": [
+            "@(TITLE(input.text))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
+          ]
         },
         "e27c3bce-1095-4d08-9164-dc4530a0688a": {
-          "test": "pepsi"
+          "test": [
+            "pepsi"
+          ]
         },
         "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87": {
-          "test": "coke"
+          "test": [
+            "coke"
+          ]
         },
         "2ab9b033-77a8-4e56-a558-b568c00c9492": {
-          "label": "Pepsi"
+          "label": [
+            "Pepsi"
+          ]
         },
         "c7bca181-0cb3-4ec6-8555-f7e5644238ad": {
-          "label": "Coke"
+          "label": [
+            "Coke"
+          ]
         },
         "5ce6c69a-fdfe-4594-ab71-26be534d31c3": {
-          "label": "Autres"
+          "label": [
+            "Autres"
+          ]
         },
         "0a8467eb-911a-41db-8101-ccf415c48e6a": {
-          "text": "Parfait, vous avez finis et tu aimes @run.results.soda.category"
+          "text": [
+            "Parfait, vous avez finis et tu aimes @run.results.soda.category"
+          ]
         }
       }
     },
