@@ -266,7 +266,6 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 		// find our exit
 		for _, e := range node.Exits() {
 			if e.UUID() == exitUUID {
-				// exitName = e.Name()
 				exitName = run.GetText(flows.UUID(exitUUID), "name", e.Name())
 				exit = e
 				break
