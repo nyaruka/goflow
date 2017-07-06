@@ -33,6 +33,7 @@ type legacyMetadataEnvelope struct {
 }
 
 type legacyRule struct {
+	UUID        flows.ExitUUID            `json:"uuid"`
 	Destination flows.NodeUUID            `json:"destination"`
 	Test        utils.TypedEnvelope       `json:"test"`
 	Category    map[utils.Language]string `json:"category"`
@@ -74,7 +75,8 @@ type legacyAction struct {
 	Name string           `json:"name"`
 
 	// message  and email
-	Msg json.RawMessage `json:"msg"`
+	Msg   json.RawMessage `json:"msg"`
+	Media json.RawMessage `json:"media"`
 
 	// groups
 	Groups []legacyGroup `json:"groups"`
@@ -234,15 +236,35 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}, nil
 	case "reply":
 		msg := make(map[utils.Language]string)
+		media := make(map[utils.Language]string)
+
 		err := json.Unmarshal(a.Msg, &msg)
 		if err != nil {
 			return nil, err
 		}
 
+		if a.Media != nil {
+			err := json.Unmarshal(a.Media, &media)
+			if err != nil {
+				return nil, err
+			}
+		}
+
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
-		expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
-		return &actions.SendMsgAction{
-			Text: expression,
+
+		// TODO translations for each attachment?
+
+		text_expression, _ := excellent.TranslateTemplate(msg[baseLanguage])
+		attachment_expression, _ := excellent.TranslateTemplate(media[baseLanguage])
+
+		attachments := []string{}
+		if attachment_expression != "" {
+			attachments = append(attachments, attachment_expression)
+		}
+
+		return &actions.ReplyAction{
+			Text:        text_expression,
+			Attachments: attachments,
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
@@ -368,6 +390,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 }
 
 type categoryName struct {
+	uuid         flows.ExitUUID
 	destination  flows.NodeUUID
 	translations translationMap
 	order        int
@@ -383,6 +406,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 		_, ok := categoryMap[category]
 		if !ok {
 			categoryMap[category] = categoryName{
+				uuid:         r.Rules[i].UUID,
 				destination:  r.Rules[i].Destination,
 				translations: r.Rules[i].Category,
 				order:        order,
@@ -391,17 +415,15 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 		}
 	}
 
-	// create exists for each category
+	// create exits for each category
 	exits := make([]flows.Exit, len(categoryMap))
 	exitMap := make(map[string]flows.Exit)
 	for k, category := range categoryMap {
-		uuid := flows.ExitUUID(uuid.NewV4().String())
-
-		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(uuid), "label")
+		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(category.uuid), "label")
 
 		exits[category.order] = &exit{
 			name:        k,
-			uuid:        uuid,
+			uuid:        category.uuid,
 			destination: category.destination,
 		}
 		exitMap[k] = exits[category.order]
@@ -501,7 +523,6 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		fallthrough
 	case "expression":
 		operand, _ := excellent.TranslateTemplate(r.Operand)
-		fmt.Println(operand)
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
 			Operand: operand,
@@ -538,7 +559,7 @@ func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[strin
 	node.exits = make([]flows.Exit, 1)
 	node.exits[0] = &exit{
 		destination: a.Destination,
-		uuid:        flows.ExitUUID(uuid.NewV4().String()),
+		uuid:        flows.ExitUUID(a.UUID),
 	}
 	return node
 

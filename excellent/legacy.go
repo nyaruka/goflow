@@ -121,6 +121,7 @@ func newVars() vars {
 		"last_name":   "last_name",
 		"language":    "language",
 		"name":        "name",
+		"groups":      "groups",
 		"tel":         "urns.tel",
 		"tel_e164":    "urns.tel_e164",
 		"telegram":    "urns.telegram",

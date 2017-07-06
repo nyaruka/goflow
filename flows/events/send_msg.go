@@ -10,12 +10,13 @@ const TypeSendMsg string = "send_msg"
 //
 // ```
 //   {
-//    "type": "send_msg",
-//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "created_on": "2006-01-02T15:04:05Z",
-//    "urn": "tel:%2B12065551212",
-//    "contact_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
-//    "text": "hi, what's up"
+//     "type": "send_msg",
+//     "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//     "created_on": "2006-01-02T15:04:05Z",
+//     "urn": "tel:%2B12065551212",
+//     "contact_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+//     "text": "hi, what's up",
+//     "attachments": []
 //   }
 // ```
 //
@@ -26,23 +27,24 @@ type SendMsgEvent struct {
 	ContactUUID flows.ContactUUID `json:"contact_uuid,omitempty"`
 	GroupUUID   flows.GroupUUID   `json:"group_uuid,omitempty"`
 	Text        string            `json:"text"                      validate:"required"`
+	Attachments []string          `json:"attachments,omitempty"`
 }
 
 // NewSendMsgToContact creates a new outgoing msg event for the passed in channel, contact and string
-func NewSendMsgToContact(contact flows.ContactUUID, text string) *SendMsgEvent {
-	event := SendMsgEvent{ContactUUID: contact, Text: text}
+func NewSendMsgToContact(contact flows.ContactUUID, text string, attachments []string) *SendMsgEvent {
+	event := SendMsgEvent{ContactUUID: contact, Text: text, Attachments: attachments}
 	return &event
 }
 
 // NewSendMsgToURN creates a new outgoing msg event for the passed in channel, urn and string
-func NewSendMsgToURN(urn flows.URN, text string) *SendMsgEvent {
-	event := SendMsgEvent{URN: urn, Text: text}
+func NewSendMsgToURN(urn flows.URN, text string, attachments []string) *SendMsgEvent {
+	event := SendMsgEvent{URN: urn, Text: text, Attachments: attachments}
 	return &event
 }
 
 // NewSendMsgToGroup creates a new outgoing msg event for the passed in channel, group and string
-func NewSendMsgToGroup(group flows.GroupUUID, text string) *SendMsgEvent {
-	event := SendMsgEvent{GroupUUID: group, Text: text}
+func NewSendMsgToGroup(group flows.GroupUUID, text string, attachments []string) *SendMsgEvent {
+	event := SendMsgEvent{GroupUUID: group, Text: text, Attachments: attachments}
 	return &event
 }
 

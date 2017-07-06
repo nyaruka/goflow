@@ -30,10 +30,11 @@ const TypeSendMsg string = "send_msg"
 // @action send_msg
 type SendMsgAction struct {
 	BaseAction
-	URNs     []flows.URN               `json:"urns"`
-	Contacts []*flows.ContactReference `json:"contacts"     validate:"dive"`
-	Groups   []*flows.Group            `json:"groups"       validate:"dive"`
-	Text     string                    `json:"text"`
+	URNs        []flows.URN               `json:"urns"`
+	Contacts    []*flows.ContactReference `json:"contacts"     validate:"dive"`
+	Groups      []*flows.Group            `json:"groups"       validate:"dive"`
+	Text        string                    `json:"text"`
+	Attachments []string                  `json:"attachments"`
 }
 
 // Type returns the type of this action
@@ -56,17 +57,22 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 		return nil
 	}
 
+	attachments := a.Attachments
+	if attachments == nil {
+		attachments = []string{}
+	}
+
 	// create events for each URN
 	for _, urn := range a.URNs {
-		run.AddEvent(step, events.NewSendMsgToURN(urn, text))
+		run.AddEvent(step, events.NewSendMsgToURN(urn, text, attachments))
 	}
 
 	for _, contact := range a.Contacts {
-		run.AddEvent(step, events.NewSendMsgToContact(contact.UUID, text))
+		run.AddEvent(step, events.NewSendMsgToContact(contact.UUID, text, attachments))
 	}
 
 	for _, group := range a.Groups {
-		run.AddEvent(step, events.NewSendMsgToGroup(group.UUID(), text))
+		run.AddEvent(step, events.NewSendMsgToGroup(group.UUID(), text, attachments))
 	}
 	return nil
 }
