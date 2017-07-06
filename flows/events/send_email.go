@@ -24,7 +24,7 @@ type SendEmailEvent struct {
 	Body    string `json:"body"`
 }
 
-// NewSendEmailEvent returns a new email event witht he passed in subject, body and emails
+// NewSendEmailEvent returns a new email event with the passed in subject, body and emails
 func NewSendEmailEvent(email string, subject string, body string) *SendEmailEvent {
 	return &SendEmailEvent{
 		Subject: subject,

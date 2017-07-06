@@ -84,7 +84,7 @@ func ContactURNForURN(db *sqlx.DB, org OrgID, channel ChannelID, contact Contact
 		err = UpdateContactURN(db, contactURN)
 	}
 
-	return contactURN, nil
+	return contactURN, err
 }
 
 // InsertContactURN inserts the passed in urn, the id field will be populated with the result on success

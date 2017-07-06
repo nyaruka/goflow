@@ -197,7 +197,7 @@ func TranslateTemplate(template string) (string, error) {
 func translateTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
-	scanner := NewXScanner(strings.NewReader(template))
+	scanner := newXScanner(strings.NewReader(template))
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -258,7 +258,7 @@ func toString(params interface{}) (string, error) {
 
 // translateExpression will turn an old expression into a new format expression
 func translateExpression(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
-	errors := NewErrorListener()
+	errors := newErrorListener()
 
 	input := antlr.NewInputStream(template)
 	lexer := gen.NewExcellentLexer(input)

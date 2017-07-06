@@ -869,7 +869,7 @@ func WordSlice(env utils.Environment, args ...interface{}) interface{} {
 
 	start, err := utils.ToInt(env, args[1])
 	if err != nil || start <= 0 {
-		return fmt.Errorf("WORD_SLICE must start with a postive index")
+		return fmt.Errorf("WORD_SLICE must start with a positive index")
 	}
 	start--
 

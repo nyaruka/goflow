@@ -8,18 +8,23 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// TypeRandom is the type for a random router
 const TypeRandom string = "random"
 
+// RandomRouter is a router which will exit out a random exit
 type RandomRouter struct {
 	BaseRouter
 }
 
+// Type returns the type of this router
 func (r *RandomRouter) Type() string { return TypeRandom }
 
+// Validate validates that the fields on this router are valid
 func (r *RandomRouter) Validate(exits []flows.Exit) error {
 	return utils.ValidateAll(r)
 }
 
+// PickRoute picks a route randomly from our available exits
 func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (flows.Route, error) {
 	if len(exits) == 0 {
 		return flows.NoRoute, nil

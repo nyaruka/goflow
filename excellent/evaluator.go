@@ -14,13 +14,20 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type Token int
+type xToken int
 
 const (
-	BODY       Token = iota // BODY: Not in expression
-	IDENTIFIER              // IDENTIFIER: 'contact.age' in '@contact.age'
-	EXPRESSION              // EXPRESSION: the body of an expression '1+2' in '@(1+2)'
-	EOF                     // EOF: end of expression
+	// BODY - Not in expression
+	BODY xToken = iota
+
+	// IDENTIFIER - 'contact.age' in '@contact.age'
+	IDENTIFIER
+
+	// EXPRESSION - the body of an expression '1+2' in '@(1+2)'
+	EXPRESSION
+
+	// EOF - end of expression
+	EOF
 )
 
 const eof rune = rune(0)
@@ -29,20 +36,20 @@ func isIdentifierChar(ch rune) bool {
 	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '.' || ch == '_'
 }
 
-// XScanner represents a lexical scanner.
-type XScanner struct {
+// xscanner represents a lexical scanner.
+type xscanner struct {
 	r           *bufio.Reader
 	unreadRunes []rune
 	unreadCount int
 }
 
-// NewXScanner returns a new instance of Scanner.
-func NewXScanner(r io.Reader) *XScanner {
-	return &XScanner{r: bufio.NewReader(r), unreadRunes: make([]rune, 4)}
+// newXScanner returns a new instance of Scanner.
+func newXScanner(r io.Reader) *xscanner {
+	return &xscanner{r: bufio.NewReader(r), unreadRunes: make([]rune, 4)}
 }
 
 // gets the next rune or EOF if we are at the end of the string
-func (s *XScanner) read() rune {
+func (s *xscanner) read() rune {
 	// first see if we have any unread runes to return
 	if s.unreadCount > 0 {
 		ch := s.unreadRunes[s.unreadCount-1]
@@ -59,14 +66,14 @@ func (s *XScanner) read() rune {
 }
 
 // pops the passed in rune as the next rune to be returned
-func (s *XScanner) unread(ch rune) {
+func (s *xscanner) unread(ch rune) {
 	s.unreadRunes[s.unreadCount] = ch
 	s.unreadCount++
 }
 
 // scanExpression consumes the current rune and all contiguous pieces until the end of the expression
 // our read should be after the '('
-func (s *XScanner) scanExpression() (Token, string) {
+func (s *xscanner) scanExpression() (xToken, string) {
 	// Create a buffer and read the current character into it.
 	var buf bytes.Buffer
 
@@ -100,7 +107,7 @@ func (s *XScanner) scanExpression() (Token, string) {
 
 // scanIdentifier consumes the current rune and all contiguous pieces until the end of the identifer
 // our read should be after the '@'
-func (s *XScanner) scanIdentifier() (Token, string) {
+func (s *xscanner) scanIdentifier() (xToken, string) {
 	// Create a buffer and read the current character into it.
 	var buf bytes.Buffer
 
@@ -125,7 +132,7 @@ func (s *XScanner) scanIdentifier() (Token, string) {
 }
 
 // scanBody consumes the current body until we reach the end of the file or the start of an expression
-func (s *XScanner) scanBody() (Token, string) {
+func (s *xscanner) scanBody() (xToken, string) {
 	// Create a buffer and read the current character into it.
 	var buf bytes.Buffer
 
@@ -165,7 +172,7 @@ func (s *XScanner) scanBody() (Token, string) {
 }
 
 // Scan returns the next token and literal value.
-func (s *XScanner) Scan() (Token, string) {
+func (s *xscanner) Scan() (xToken, string) {
 	for ch := s.read(); ch != eof; ch = s.read() {
 		switch ch {
 		case '@':
@@ -202,8 +209,9 @@ func (s *XScanner) Scan() (Token, string) {
 	return EOF, ""
 }
 
+// EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
 func EvaluateExpression(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
-	errors := NewErrorListener()
+	errors := newErrorListener()
 
 	input := antlr.NewInputStream(template)
 	lexer := gen.NewExcellentLexer(input)
@@ -237,7 +245,7 @@ func EvaluateExpression(env utils.Environment, resolver utils.VariableResolver, 
 func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
 	var buf bytes.Buffer
 	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template))
+	scanner := newXScanner(strings.NewReader(template))
 
 	// parse our first token
 	tokenType, token := scanner.Scan()
@@ -284,10 +292,11 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 	return EvaluateTemplateAsString(env, resolver, template)
 }
 
+// EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
 func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableResolver, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
-	scanner := NewXScanner(strings.NewReader(template))
+	scanner := newXScanner(strings.NewReader(template))
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -328,8 +337,10 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableReso
 	return buf.String(), nil
 }
 
+// TemplateErrors represents the list of errors we may have received during execution
 type TemplateErrors []error
 
+// Error returns a single string describing all the errors encountered
 func (e TemplateErrors) Error() string {
 	if len(e) == 1 {
 		return e[0].Error()
@@ -342,23 +353,23 @@ func (e TemplateErrors) Error() string {
 	return msg
 }
 
-type ErrorListener struct {
+type errorListener struct {
 	errors bytes.Buffer
 	*antlr.DefaultErrorListener
 }
 
-func NewErrorListener() *ErrorListener {
-	return &ErrorListener{}
+func newErrorListener() *errorListener {
+	return &errorListener{}
 }
 
-func (l *ErrorListener) HasErrors() bool {
+func (l *errorListener) HasErrors() bool {
 	return l.errors.Len() > 0
 }
 
-func (l *ErrorListener) Errors() string {
+func (l *errorListener) Errors() string {
 	return l.errors.String()
 }
 
-func (l *ErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
 	l.errors.WriteString(fmt.Sprintln("line " + strconv.Itoa(line) + ":" + strconv.Itoa(column) + " " + msg))
 }

@@ -2,7 +2,6 @@ package routers
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"time"
 
@@ -10,15 +9,19 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// TypeRandomOnce is the constant for our random once router
 const TypeRandomOnce string = "random_once"
 
+// RandomOnceRouter exits of our exits once (randomly) before taking exit
 type RandomOnceRouter struct {
 	Exit flows.ExitUUID `json:"exit"     validate:"required"`
 	BaseRouter
 }
 
+// Type returns the type of our router
 func (r *RandomOnceRouter) Type() string { return TypeRandomOnce }
 
+// Validate validates the parameters on this router
 func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
 	err := utils.ValidateAll(r)
 	if err != nil {
@@ -38,6 +41,8 @@ func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
 	return err
 }
 
+// PickRoute will attempt to take a random exit it hasn't taken before. If all exits have been taken, then it will
+// take the exit specified in it's Exit parameter
 func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (flows.Route, error) {
 	if len(exits) == 0 {
 		return flows.NoRoute, nil
@@ -68,6 +73,5 @@ func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step
 	// ok, now pick one randomly
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	exitN := random.Intn(len(validExits))
-	log.Printf("Picked exit: %d of %d", exitN, len(validExits))
 	return flows.NewRoute(validExits[exitN], string(exitN)), nil
 }

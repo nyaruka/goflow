@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// RouterFromEnvelope attempts to build a router given the passed in TypedEnvelope
 func RouterFromEnvelope(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	switch envelope.Type {
 

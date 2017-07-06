@@ -9,8 +9,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// TypeSwitch is the constant for our switch router
 const TypeSwitch string = "switch"
 
+// Case represents a single case and test in our switch
 type Case struct {
 	UUID      flows.UUID     `json:"uuid"              validate:"required"`
 	Type      string         `json:"type"              validate:"required"`
@@ -18,6 +20,8 @@ type Case struct {
 	ExitUUID  flows.ExitUUID `json:"exit_uuid"         validate:"required"`
 }
 
+// SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
+// whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
 	Default flows.ExitUUID `json:"default_exit_uuid"   validate:"omitempty,uuid4"`
 	Operand string         `json:"operand"             validate:"required"`
@@ -25,8 +29,10 @@ type SwitchRouter struct {
 	BaseRouter
 }
 
+// Type returns the type of this router
 func (r *SwitchRouter) Type() string { return TypeSwitch }
 
+// Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 	err := utils.ValidateAll(r)
 	for _, c := range r.Cases {
@@ -52,6 +58,8 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 	return err
 }
 
+// PickRoute evaluates each of the tests on our cases in order, returning the exit for the first case which
+// evaluates to a true. If no cases evaluate to true, then the default exit (if specified) is returned
 func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (flows.Route, error) {
 	env := run.Environment()
 

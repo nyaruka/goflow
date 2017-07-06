@@ -221,7 +221,7 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	return parsed, nil
 }
 
-// ToGoDateFormat converst the passed in format to a GoLang format string.
+// ToGoDateFormat converts the passed in format to a GoLang format string.
 //
 // Format strings we support:
 //
