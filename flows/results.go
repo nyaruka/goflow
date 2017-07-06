@@ -20,8 +20,8 @@ type Results struct {
 }
 
 // Save saves a new result in our map. The key is saved in a snakified format
-func (r *Results) Save(node NodeUUID, name string, value string, category string, categoryOriginal string, createdOn time.Time) {
-	result := Result{node, name, value, category, categoryOriginal, createdOn}
+func (r *Results) Save(node NodeUUID, name string, value string, category string, categoryLocalized string, createdOn time.Time) {
+	result := Result{node, name, value, category, categoryLocalized, createdOn}
 	r.results[utils.Snakify(name)] = &result
 }
 
@@ -55,20 +55,28 @@ var _ utils.VariableResolver = (*Results)(nil)
 // Result represents a result value in our flow run. Results have a name for which they are the result for,
 // the value itself of the result, optional category and the date and node the result was collected on
 type Result struct {
-	node             NodeUUID
-	name             string
-	value            string
-	category         string
-	categoryOriginal string
-	createdOn        time.Time
+	node              NodeUUID
+	name              string
+	value             string
+	category          string
+	categoryLocalized string
+	createdOn         time.Time
 }
 
 // Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
 func (r *Result) Resolve(key string) interface{} {
 	switch key {
 	case "category":
+		if r.categoryLocalized != "" {
+			return r.categoryLocalized
+		}
 		return r.category
 
+	case "category_localized":
+		if r.categoryLocalized == "" {
+			return r.category
+		}
+		return r.categoryLocalized
 	case "created_on":
 		return r.createdOn
 
@@ -130,12 +138,12 @@ func (r *Results) MarshalJSON() ([]byte, error) {
 }
 
 type resultEnvelope struct {
-	Node             NodeUUID  `json:"node_uuid"`
-	Name             string    `json:"result_name"`
-	Value            string    `json:"value"`
-	Category         string    `json:"category,omitempty"`
-	CategoryOriginal string    `json:"category_original,omitempty"`
-	CreatedOn        time.Time `json:"created_on"`
+	Node              NodeUUID  `json:"node_uuid"`
+	Name              string    `json:"result_name"`
+	Value             string    `json:"value"`
+	Category          string    `json:"category,omitempty"`
+	CategoryLocalized string    `json:"category_localized,omitempty"`
+	CreatedOn         time.Time `json:"created_on"`
 }
 
 // UnmarshalJSON is our custom unmarshalling of a Result object
@@ -148,7 +156,7 @@ func (r *Result) UnmarshalJSON(data []byte) error {
 	r.name = re.Name
 	r.value = re.Value
 	r.category = re.Category
-	r.categoryOriginal = re.CategoryOriginal
+	r.categoryLocalized = re.CategoryLocalized
 	r.createdOn = re.CreatedOn
 
 	return err
@@ -162,7 +170,7 @@ func (r *Result) MarshalJSON() ([]byte, error) {
 	re.Name = r.name
 	re.Value = r.value
 	re.Category = r.category
-	re.CategoryOriginal = r.categoryOriginal
+	re.CategoryLocalized = r.categoryLocalized
 	re.CreatedOn = r.createdOn
 
 	return json.Marshal(re)
