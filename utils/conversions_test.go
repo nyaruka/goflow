@@ -172,7 +172,7 @@ func TestToBool(t *testing.T) {
 		}
 
 		if result != test.expected {
-			t.Errorf("Unexpected result calling ToBool on '%v', got: %s expected: %s", test.input, result, test.expected)
+			t.Errorf("Unexpected result calling ToBool on '%v', got: %t expected: %t", test.input, result, test.expected)
 		}
 	}
 }
