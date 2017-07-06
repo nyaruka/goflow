@@ -67,9 +67,6 @@ type Result struct {
 func (r *Result) Resolve(key string) interface{} {
 	switch key {
 	case "category":
-		if r.categoryLocalized != "" {
-			return r.categoryLocalized
-		}
 		return r.category
 
 	case "category_localized":
