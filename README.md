@@ -4,7 +4,7 @@
 
 ```
 % go install github.com/nyaruka/goflow/cmd/flowrunner
-% $GOPATH/bin/flowrunner sample.json
+% $GOPATH/bin/flowrunner cmd/flowrunner/testdata/flows/two_questions.json
 ```
 
 ## server
