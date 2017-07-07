@@ -24,15 +24,16 @@ const TypeSaveFlowResult string = "save_flow_result"
 // @event save_flow_result
 type SaveFlowResultEvent struct {
 	BaseEvent
-	NodeUUID   flows.NodeUUID `json:"node_uuid"        validate:"required"`
-	ResultName string         `json:"result_name"      validate:"required"`
-	Value      string         `json:"value"`
-	Category   string         `json:"category"`
+	NodeUUID          flows.NodeUUID `json:"node_uuid"        validate:"required"`
+	ResultName        string         `json:"result_name"      validate:"required"`
+	Value             string         `json:"value"`
+	Category          string         `json:"category"`
+	CategoryLocalized string         `json:"category_localized,omitempty"`
 }
 
 // NewSaveFlowResult returns a new save result event for the passed in values
-func NewSaveFlowResult(node flows.NodeUUID, name string, value string, category string) *SaveFlowResultEvent {
-	return &SaveFlowResultEvent{NodeUUID: node, ResultName: name, Value: value, Category: category}
+func NewSaveFlowResult(node flows.NodeUUID, name string, value string, categoryName string, categoryLocalized string) *SaveFlowResultEvent {
+	return &SaveFlowResultEvent{NodeUUID: node, ResultName: name, Value: value, Category: categoryName, CategoryLocalized: categoryLocalized}
 }
 
 // Type returns the type of this event

@@ -55,17 +55,20 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 	}
 
 	template = run.GetText(flows.UUID(a.UUID), "category", a.Category)
-	category, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
+	categoryLocalized, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 	if err != nil {
 		run.AddError(step, err)
 	}
 
-	// log our event
-	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, category)
+	if a.Category == categoryLocalized {
+		categoryLocalized = ""
+	}
+
+	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized)
 	run.AddEvent(step, event)
 
 	// and save our result
-	run.Results().Save(step.NodeUUID(), a.ResultName, value, a.Category, *event.CreatedOn())
+	run.Results().Save(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized, *event.CreatedOn())
 
 	return nil
 }

@@ -51,7 +51,7 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.blerg", new: "@contact.fields.blerg"},
 		{old: "@flow.blerg", new: "@run.results.blerg"},
-		{old: "@flow.blerg.category", new: "@run.results.blerg.category"},
+		{old: "@flow.blerg.category", new: "@run.results.blerg.category_localized"},
 		{old: "@step.value", new: "@input.text"},
 		{old: "@step.contact", new: "@step.contact"},
 		{old: "@date.now", new: "@(now())"},

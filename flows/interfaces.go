@@ -154,6 +154,7 @@ type FlowTranslations interface {
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
 	GetText(uuid UUID, key string, backdown string) string
+	GetTranslations(uuid UUID, key string, backdown []string) []string
 }
 
 type Context interface {
@@ -249,6 +250,7 @@ type FlowRun interface {
 	SetLanguage(utils.Language)
 	SetFlowTranslations(FlowTranslations)
 	GetText(uuid UUID, key string, backdown string) string
+	GetTranslations(uuid UUID, key string, backdown []string) []string
 
 	Webhook() *utils.RequestResponse
 	SetWebhook(*utils.RequestResponse)

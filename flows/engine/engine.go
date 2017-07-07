@@ -265,7 +265,11 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 		// find our exit
 		for _, e := range node.Exits() {
 			if e.UUID() == exitUUID {
-				exitName = e.Name()
+
+				localizedName := run.GetText(flows.UUID(exitUUID), "name", e.Name())
+				if localizedName != e.Name() {
+					exitName = localizedName
+				}
 				exit = e
 				break
 			}
@@ -277,9 +281,9 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" {
-		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exitName)
+		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
 		run.AddEvent(step, event)
-		run.Results().Save(node.UUID(), router.ResultName(), route.Match(), exitName, *event.CreatedOn())
+		run.Results().Save(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName, *event.CreatedOn())
 	}
 
 	// log any error we received

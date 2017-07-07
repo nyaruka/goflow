@@ -219,6 +219,13 @@ func (r *flowRun) GetText(uuid flows.UUID, key string, backdown string) string {
 	return r.translations.GetText(uuid, key, backdown)
 }
 
+func (r *flowRun) GetTranslations(uuid flows.UUID, key string, backdown []string) []string {
+	if r.translations == nil {
+		return backdown
+	}
+	return r.translations.GetTranslations(uuid, key, backdown)
+}
+
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
 	now := time.Now().UTC()

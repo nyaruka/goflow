@@ -40,22 +40,33 @@ func (v vars) String() string {
 }
 
 type arbitraryVars struct {
-	vars    vars
-	base    string
-	nesting string
+	vars       vars
+	base       string
+	nesting    string
+	nestedVars vars
 }
 
 func (v arbitraryVars) Resolve(key string) interface{} {
+
 	value, ok := v.vars[key]
 	if ok {
 		return fmt.Sprintf("%s.%s", v.base, value)
 	}
 
+	prefix := v.base
 	if v.nesting != "" {
-		return fmt.Sprintf("%s.%s.%s", v.base, v.nesting, key)
+		prefix = fmt.Sprintf("%s.%s", v.base, v.nesting)
 	}
 
-	return fmt.Sprintf("%s.%s", v.base, key)
+	if v.nestedVars != nil {
+		return &arbitraryVars{
+			base: fmt.Sprintf("%s.%s", prefix, key),
+			vars: v.nestedVars,
+		}
+	}
+
+	return fmt.Sprintf("%s.%s", prefix, key)
+
 }
 
 func (v arbitraryVars) Default() interface{} {
@@ -140,6 +151,9 @@ func newVars() vars {
 		},
 		"flow": arbitraryVars{
 			base: "run.results",
+			nestedVars: map[string]interface{}{
+				"category": "category_localized",
+			},
 		},
 		"step": vars{
 			"value": "input.text",
