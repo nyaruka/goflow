@@ -48,16 +48,6 @@
                         "text": "Hi @contact.name, are you ready?"
                     },
                     {
-                        "uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
-                        "type": "send_msg",
-                        "urns": [
-                            "tel:+12065551212",
-                            "twitter:benhaggerty"
-                        ],
-                        "all_urns": true,
-                        "text": "I'm a message to both of @contact.name's urns."
-                    },
-                    {
                         "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
                         "type": "remove_from_group",
                         "groups": [
