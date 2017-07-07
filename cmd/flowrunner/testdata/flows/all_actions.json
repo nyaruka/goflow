@@ -55,7 +55,7 @@
                             "twitter:benhaggerty"
                         ],
                         "all_urns": true,
-                        "text": "Hi @contact.name, are you ready?"
+                        "text": "I'm a message to both of @contact.name's urns."
                     },
                     {
                         "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",

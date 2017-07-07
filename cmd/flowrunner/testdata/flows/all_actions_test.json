@@ -63,14 +63,14 @@
         {
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step_uuid": "",
-          "text": "Hi Ben Haggerty, are you ready?",
+          "text": "I'm a message to both of Ben Haggerty's urns.",
           "type": "send_msg",
           "urn": "tel:+12065551212"
         },
         {
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "step_uuid": "",
-          "text": "Hi Ben Haggerty, are you ready?",
+          "text": "I'm a message to both of Ben Haggerty's urns.",
           "type": "send_msg",
           "urn": "twitter:benhaggerty"
         },
@@ -203,14 +203,14 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "",
-                    "text": "Hi Ben Haggerty, are you ready?",
+                    "text": "I'm a message to both of Ben Haggerty's urns.",
                     "type": "send_msg",
                     "urn": "tel:+12065551212"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "",
-                    "text": "Hi Ben Haggerty, are you ready?",
+                    "text": "I'm a message to both of Ben Haggerty's urns.",
                     "type": "send_msg",
                     "urn": "twitter:benhaggerty"
                   },
