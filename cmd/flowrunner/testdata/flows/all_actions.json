@@ -60,7 +60,8 @@
                     {
                         "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
                         "type": "reply",
-                        "text": "Hi @contact.name, are you ready to complete today's survey?"
+                        "text": "Hi @contact.name, are you ready to complete today's survey?",
+                        "all_urns": true
                     },
                     {
                         "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
