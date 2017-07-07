@@ -76,8 +76,9 @@ type legacyAction struct {
 	Name string           `json:"name"`
 
 	// message  and email
-	Msg   json.RawMessage `json:"msg"`
-	Media json.RawMessage `json:"media"`
+	Msg     json.RawMessage `json:"msg"`
+	Media   json.RawMessage `json:"media"`
+	SendAll bool            `json:"send_all"`
 
 	// groups
 	Groups []legacyGroup `json:"groups"`
@@ -268,6 +269,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 			BaseAction: actions.BaseAction{
 				UUID: a.UUID,
 			},
+			AllURNs: a.SendAll,
 		}, nil
 	case "add_group":
 		groups := make([]*flows.Group, len(a.Groups))
