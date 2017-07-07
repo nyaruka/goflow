@@ -22,7 +22,7 @@ const TypeReply string = "reply"
 //     "type": "reply",
 //     "text": "Hi @contact.name, are you ready to complete today's survey?",
 //     "attachments": [],
-//     "all_urns": true
+//     "all_urns": false
 //   }
 // ```
 //
@@ -56,8 +56,8 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	urns := run.Contact().URNs()
 	if a.AllURNs && len(urns) > 0 {
-		for i := range urns {
-			run.AddEvent(step, events.NewSendMsgToURN(urns[i], text, a.Attachments))
+		for _, urn := range urns {
+			run.AddEvent(step, events.NewSendMsgToURN(urn, text, a.Attachments))
 		}
 	} else {
 		run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
