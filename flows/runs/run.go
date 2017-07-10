@@ -41,9 +41,8 @@ type flowRun struct {
 
 	path             []flows.Step
 	flowTranslations flows.FlowTranslations
-	translations     flows.Translations
 	environment      flows.FlowEnvironment
-	language         utils.Language
+	languages        utils.LanguageList
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -197,33 +196,29 @@ func (r *flowRun) ExpiresOn() *time.Time       { return r.expiresOn }
 func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
 func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 
-func (r *flowRun) updateTranslations() {
-	if r.flowTranslations != nil {
-		r.translations = r.flowTranslations.GetTranslations(r.language)
-	} else {
-		r.translations = nil
-	}
+func (r *flowRun) SetLanguages(langs utils.LanguageList) {
+	r.languages = append(langs, r.Flow().Language())
 }
-func (r *flowRun) SetFlowTranslations(ft flows.FlowTranslations) {
-	r.flowTranslations = ft
-	r.updateTranslations()
-}
-func (r *flowRun) SetLanguage(lang utils.Language) {
-	r.language = lang
-	r.updateTranslations()
-}
-func (r *flowRun) GetText(uuid flows.UUID, key string, backdown string) string {
-	if r.translations == nil {
-		return backdown
-	}
-	return r.translations.GetText(uuid, key, backdown)
+func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
+	textArray := r.GetTextArray(uuid, key, []string{native})
+	return textArray[0]
 }
 
-func (r *flowRun) GetTranslations(uuid flows.UUID, key string, backdown []string) []string {
-	if r.translations == nil {
-		return backdown
+func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []string {
+	for _, lang := range r.languages {
+		if lang == r.Flow().Language() {
+			return native
+		}
+
+		translations, found := r.Flow().Translations().GetLanguageTranslations(lang)
+		if found {
+			textArray, found := translations.GetTextArray(uuid, key)
+			if found && len(textArray) == len(native) {
+				return textArray
+			}
+		}
 	}
-	return r.translations.GetTranslations(uuid, key, backdown)
+	return native
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact

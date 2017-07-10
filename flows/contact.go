@@ -11,17 +11,32 @@ import (
 
 // Contact represents a single contact
 type Contact struct {
-	uuid     ContactUUID
-	name     string
-	language utils.Language
-	timezone *time.Location
-	urns     URNList
-	groups   GroupList
-	fields   *Fields
+	uuid           ContactUUID
+	name           string
+	language       utils.Language
+	otherLanguages utils.LanguageList
+	timezone       *time.Location
+	urns           URNList
+	groups         GroupList
+	fields         *Fields
 }
 
+// SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
-func (c *Contact) Language() utils.Language        { return c.language }
+
+// Language gets the language for this contact
+func (c *Contact) Language() utils.Language { return c.language }
+
+// PreferredLanguages gets all languages for this contact in order of preference
+func (c *Contact) PreferredLanguages() utils.LanguageList {
+	var languages utils.LanguageList
+
+	if c.language != utils.NilLanguage {
+		languages = append(languages, c.language)
+	}
+
+	return append(languages, c.otherLanguages...)
+}
 
 func (c *Contact) SetTimezone(tz *time.Location) {
 	if tz == nil {
@@ -115,13 +130,14 @@ func ReadContact(data json.RawMessage) (*Contact, error) {
 }
 
 type contactEnvelope struct {
-	UUID     ContactUUID    `json:"uuid"`
-	Name     string         `json:"name"`
-	Language utils.Language `json:"language"`
-	Timezone string         `json:"timezone"`
-	URNs     URNList        `json:"urns"`
-	Groups   GroupList      `json:"groups"`
-	Fields   *Fields        `json:"fields,omitempty"`
+	UUID           ContactUUID        `json:"uuid"`
+	Name           string             `json:"name"`
+	Language       utils.Language     `json:"language"`
+	OtherLanguages utils.LanguageList `json:"other_languages,omitempty"`
+	Timezone       string             `json:"timezone"`
+	URNs           URNList            `json:"urns"`
+	Groups         GroupList          `json:"groups"`
+	Fields         *Fields            `json:"fields,omitempty"`
 }
 
 func (c *Contact) UnmarshalJSON(data []byte) error {
@@ -136,6 +152,7 @@ func (c *Contact) UnmarshalJSON(data []byte) error {
 	c.name = ce.Name
 	c.uuid = ce.UUID
 	c.language = ce.Language
+	c.otherLanguages = ce.OtherLanguages
 	tz, err := time.LoadLocation(ce.Timezone)
 	if err != nil {
 		return err
@@ -169,6 +186,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.Name = c.name
 	ce.UUID = c.uuid
 	ce.Language = c.language
+	ce.OtherLanguages = c.otherLanguages
 	ce.Timezone = c.timezone.String()
 	ce.URNs = c.urns
 	ce.Groups = c.groups

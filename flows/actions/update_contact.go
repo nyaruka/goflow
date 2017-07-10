@@ -68,7 +68,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 			run.AddError(step, err)
 		} else {
 			run.Contact().SetLanguage(lang)
-			run.SetLanguage(lang)
+			run.SetLanguages(run.Contact().PreferredLanguages())
 			value = string(lang)
 		}
 	}

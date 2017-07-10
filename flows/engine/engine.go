@@ -32,7 +32,8 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 		return run.Session(), nil
 	}
 
-	initTranslations(run)
+	// set our language based on our contact
+	run.SetLanguages(run.Contact().PreferredLanguages())
 
 	// off to the races
 	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
@@ -55,7 +56,8 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 		return run.Session(), nil
 	}
 
-	initTranslations(run)
+	// set our language based on our contact
+	run.SetLanguages(run.Contact().PreferredLanguages())
 
 	// grab the last step
 	step := run.Path()[len(run.Path())-1]
@@ -93,20 +95,6 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	}
 
 	return run.Session(), nil
-}
-
-// initializes our context based on our flow and current context
-func initTranslations(run flows.FlowRun) {
-	// set our language based on our contact if we have one
-	contact := run.Contact()
-	if contact != nil {
-		run.SetLanguage(contact.Language())
-	} else {
-		run.SetLanguage(run.Flow().Language())
-	}
-
-	// set the translations on our context
-	run.SetFlowTranslations(run.Flow().Translations())
 }
 
 // Continues the flow entering the passed in flow

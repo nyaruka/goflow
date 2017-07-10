@@ -12,6 +12,8 @@ type Language string
 // NilLanguage represents our nil, or unknown language
 var NilLanguage = Language("")
 
+type LanguageList []Language
+
 // ParseLanguage returns a new Language for the passed in language string, or an error if not found
 func ParseLanguage(lang string) (Language, error) {
 	if len(lang) != 3 {
