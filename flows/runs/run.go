@@ -210,10 +210,10 @@ func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []s
 			return native
 		}
 
-		translations, found := r.Flow().Translations().GetLanguageTranslations(lang)
-		if found {
-			textArray, found := translations.GetTextArray(uuid, key)
-			if found && len(textArray) == len(native) {
+		translations := r.Flow().Translations().GetLanguageTranslations(lang)
+		if translations != nil {
+			textArray := translations.GetTextArray(uuid, key)
+			if textArray != nil && len(textArray) == len(native) {
 				return textArray
 			}
 		}

@@ -148,12 +148,12 @@ type Wait interface {
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
 type FlowTranslations interface {
-	GetLanguageTranslations(utils.Language) (Translations, bool)
+	GetLanguageTranslations(utils.Language) Translations
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
-	GetTextArray(uuid UUID, key string) ([]string, bool)
+	GetTextArray(uuid UUID, key string) []string
 }
 
 type Context interface {
