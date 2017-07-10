@@ -155,6 +155,18 @@ func newVars() vars {
 				"category": "category_localized",
 			},
 		},
+		"parent": arbitraryVars{
+			base: "parent.results",
+			nestedVars: map[string]interface{}{
+				"category": "category_localized",
+			},
+		},
+		"child": arbitraryVars{
+			base: "child.results",
+			nestedVars: map[string]interface{}{
+				"category": "category_localized",
+			},
+		},
 		"step": vars{
 			"value": "input.text",
 			"contact": arbitraryVars{
