@@ -79,6 +79,27 @@
           "type": "send_msg"
         },
         {
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step_uuid": "",
+          "text": "This is a message to each of Ben Haggerty's urns.",
+          "type": "send_msg",
+          "urn": "tel:+12065551212"
+        },
+        {
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step_uuid": "",
+          "text": "This is a message to each of Ben Haggerty's urns.",
+          "type": "send_msg",
+          "urn": "facebook:macklemore"
+        },
+        {
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "step_uuid": "",
+          "text": "This is a message to each of Ben Haggerty's urns.",
+          "type": "send_msg",
+          "urn": "email:ben@macklemore"
+        },
+        {
           "category": "Male",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -203,6 +224,27 @@
                     "step_uuid": "",
                     "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                     "type": "send_msg"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "",
+                    "text": "This is a message to each of Ben Haggerty's urns.",
+                    "type": "send_msg",
+                    "urn": "tel:+12065551212"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "",
+                    "text": "This is a message to each of Ben Haggerty's urns.",
+                    "type": "send_msg",
+                    "urn": "facebook:macklemore"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "",
+                    "text": "This is a message to each of Ben Haggerty's urns.",
+                    "type": "send_msg",
+                    "urn": "email:ben@macklemore"
                   },
                   {
                     "category": "Male",
