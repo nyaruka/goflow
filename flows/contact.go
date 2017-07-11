@@ -11,14 +11,14 @@ import (
 
 // Contact represents a single contact
 type Contact struct {
-	uuid           ContactUUID
-	name           string
-	language       utils.Language
-	otherLanguages utils.LanguageList
-	timezone       *time.Location
-	urns           URNList
-	groups         GroupList
-	fields         *Fields
+	uuid              ContactUUID
+	name              string
+	language          utils.Language
+	backdownLanguages utils.LanguageList
+	timezone          *time.Location
+	urns              URNList
+	groups            GroupList
+	fields            *Fields
 }
 
 // SetLanguage sets the language for this contact
@@ -35,7 +35,7 @@ func (c *Contact) PreferredLanguages() utils.LanguageList {
 		languages = append(languages, c.language)
 	}
 
-	return append(languages, c.otherLanguages...)
+	return append(languages, c.backdownLanguages...)
 }
 
 func (c *Contact) SetTimezone(tz *time.Location) {
@@ -130,14 +130,14 @@ func ReadContact(data json.RawMessage) (*Contact, error) {
 }
 
 type contactEnvelope struct {
-	UUID           ContactUUID        `json:"uuid"`
-	Name           string             `json:"name"`
-	Language       utils.Language     `json:"language"`
-	OtherLanguages utils.LanguageList `json:"other_languages,omitempty"`
-	Timezone       string             `json:"timezone"`
-	URNs           URNList            `json:"urns"`
-	Groups         GroupList          `json:"groups"`
-	Fields         *Fields            `json:"fields,omitempty"`
+	UUID              ContactUUID        `json:"uuid"`
+	Name              string             `json:"name"`
+	Language          utils.Language     `json:"language"`
+	BackdownLanguages utils.LanguageList `json:"backdown_languages,omitempty"`
+	Timezone          string             `json:"timezone"`
+	URNs              URNList            `json:"urns"`
+	Groups            GroupList          `json:"groups"`
+	Fields            *Fields            `json:"fields,omitempty"`
 }
 
 func (c *Contact) UnmarshalJSON(data []byte) error {
@@ -152,7 +152,7 @@ func (c *Contact) UnmarshalJSON(data []byte) error {
 	c.name = ce.Name
 	c.uuid = ce.UUID
 	c.language = ce.Language
-	c.otherLanguages = ce.OtherLanguages
+	c.backdownLanguages = ce.BackdownLanguages
 	tz, err := time.LoadLocation(ce.Timezone)
 	if err != nil {
 		return err
@@ -186,7 +186,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.Name = c.name
 	ce.UUID = c.uuid
 	ce.Language = c.language
-	ce.OtherLanguages = c.otherLanguages
+	ce.BackdownLanguages = c.backdownLanguages
 	ce.Timezone = c.timezone.String()
 	ce.URNs = c.urns
 	ce.Groups = c.groups

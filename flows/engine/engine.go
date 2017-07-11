@@ -32,9 +32,6 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 		return run.Session(), nil
 	}
 
-	// set our language based on our contact
-	run.SetLanguages(run.Contact().PreferredLanguages())
-
 	// off to the races
 	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
 	return run.Session(), err
@@ -55,9 +52,6 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	if len(run.Path()) == 0 {
 		return run.Session(), nil
 	}
-
-	// set our language based on our contact
-	run.SetLanguages(run.Contact().PreferredLanguages())
 
 	// grab the last step
 	step := run.Path()[len(run.Path())-1]

@@ -77,10 +77,8 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	if err != nil {
 		return err
 	}
-	r.contact = runContact
 
-	// build our context
-	r.context = NewContextForContact(runContact, r)
+	r.setContact(runContact)
 
 	// populate our run references
 	if r.parent != nil {
@@ -100,6 +98,19 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	}
 
 	return nil
+}
+
+func (r *flowRun) setContact(contact *flows.Contact) {
+	r.contact = contact
+
+	// build our context
+	r.context = NewContextForContact(contact, r)
+
+	if contact != nil {
+		r.SetLanguages(contact.PreferredLanguages())
+	} else {
+		r.SetLanguages(nil)
+	}
 }
 
 func (r *flowRun) FlowUUID() flows.FlowUUID       { return r.flowUUID }
@@ -238,8 +249,7 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		modifiedOn:  now,
 	}
 
-	// create our new context
-	r.context = NewContextForContact(contact, r)
+	r.setContact(contact)
 
 	// set our session
 	if parent != nil {
