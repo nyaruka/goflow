@@ -210,7 +210,7 @@ func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 func (r *flowRun) SetLanguages(langs utils.LanguageList) {
 	r.languages = langs
 
-	// if languge list doesn't include the flow's native language, add that last
+	// if language list doesn't include the flow's native language, add that last
 	includesFlowLang := false
 	for _, lang := range r.languages {
 		if lang == r.Flow().Language() {
