@@ -208,7 +208,18 @@ func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
 func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 
 func (r *flowRun) SetLanguages(langs utils.LanguageList) {
-	r.languages = append(langs, r.Flow().Language())
+	r.languages = langs
+
+	// if languge list doesn't include the flow's native language, add that last
+	includesFlowLang := false
+	for _, lang := range r.languages {
+		if lang == r.Flow().Language() {
+			includesFlowLang = true
+		}
+	}
+	if !includesFlowLang {
+		r.languages = append(r.languages, r.Flow().Language())
+	}
 }
 func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
