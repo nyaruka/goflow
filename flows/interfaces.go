@@ -148,13 +148,12 @@ type Wait interface {
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
 type FlowTranslations interface {
-	GetTranslations(utils.Language) Translations
+	GetLanguageTranslations(utils.Language) Translations
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
-	GetText(uuid UUID, key string, backdown string) string
-	GetTranslations(uuid UUID, key string, backdown []string) []string
+	GetTextArray(uuid UUID, key string) []string
 }
 
 type Context interface {
@@ -247,10 +246,8 @@ type FlowRun interface {
 	CreateStep(Node) Step
 	Path() []Step
 
-	SetLanguage(utils.Language)
-	SetFlowTranslations(FlowTranslations)
-	GetText(uuid UUID, key string, backdown string) string
-	GetTranslations(uuid UUID, key string, backdown []string) []string
+	GetText(uuid UUID, key string, native string) string
+	GetTextArray(uuid UUID, key string, native []string) []string
 
 	Webhook() *utils.RequestResponse
 	SetWebhook(*utils.RequestResponse)

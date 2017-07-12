@@ -10,9 +10,6 @@ import (
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
 func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input, extra json.RawMessage) (flows.Session, error) {
-	// set our environment's timezone to our contact's timezone
-	env.SetTimezone(contact.Timezone())
-
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
@@ -32,8 +29,6 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 		return run.Session(), nil
 	}
 
-	initTranslations(run)
-
 	// off to the races
 	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
 	return run.Session(), err
@@ -41,9 +36,6 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 
 // ResumeFlow resumes our flow from the last step
 func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.Session, error) {
-	// set our environment's timezone to our contact's timezone
-	env.SetTimezone(run.Contact().Timezone())
-
 	// to resume a flow, hydrate our run with the environment
 	err := run.Hydrate(env)
 	if err != nil {
@@ -54,8 +46,6 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	if len(run.Path()) == 0 {
 		return run.Session(), nil
 	}
-
-	initTranslations(run)
 
 	// grab the last step
 	step := run.Path()[len(run.Path())-1]
@@ -93,20 +83,6 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 	}
 
 	return run.Session(), nil
-}
-
-// initializes our context based on our flow and current context
-func initTranslations(run flows.FlowRun) {
-	// set our language based on our contact if we have one
-	contact := run.Contact()
-	if contact != nil {
-		run.SetLanguage(contact.Language())
-	} else {
-		run.SetLanguage(run.Flow().Language())
-	}
-
-	// set the translations on our context
-	run.SetFlowTranslations(run.Flow().Translations())
 }
 
 // Continues the flow entering the passed in flow

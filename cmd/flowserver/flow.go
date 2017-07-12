@@ -44,10 +44,11 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Flows   json.RawMessage      `json:"flows"    validate:"required"`
-	Contact json.RawMessage      `json:"contact"  validate:"required"`
-	Extra   json.RawMessage      `json:"extra,omitempty"`
-	Input   *utils.TypedEnvelope `json:"input"`
+	Environment *json.RawMessage     `json:"environment"`
+	Flows       json.RawMessage      `json:"flows"    validate:"required"`
+	Contact     json.RawMessage      `json:"contact"  validate:"required"`
+	Extra       json.RawMessage      `json:"extra,omitempty"`
+	Input       *utils.TypedEnvelope `json:"input"`
 }
 
 func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -67,6 +68,16 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	err = utils.ValidateAll(start)
 	if err != nil {
 		return nil, err
+	}
+
+	var env utils.Environment
+	if start.Environment != nil {
+		env, err = utils.ReadEnvironment(start.Environment)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		env = utils.NewDefaultEnvironment()
 	}
 
 	// read our flows
@@ -93,11 +104,11 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		}
 	}
 
-	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
+	// build our flow environment
+	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	session, err := engine.StartFlow(env, startFlows[0], contact, nil, input, start.Extra)
+	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, input, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
@@ -106,10 +117,11 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 type resumeRequest struct {
-	Flows   json.RawMessage      `json:"flows"       validate:"required,min=1"`
-	Contact json.RawMessage      `json:"contact"     validate:"required"`
-	Session json.RawMessage      `json:"session"     validate:"required"`
-	Event   *utils.TypedEnvelope `json:"event"       validate:"required"`
+	Environment *json.RawMessage     `json:"environment"`
+	Flows       json.RawMessage      `json:"flows"       validate:"required,min=1"`
+	Contact     json.RawMessage      `json:"contact"     validate:"required"`
+	Session     json.RawMessage      `json:"session"     validate:"required"`
+	Event       *utils.TypedEnvelope `json:"event"       validate:"required"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -129,6 +141,16 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	err = utils.ValidateAll(resume)
 	if err != nil {
 		return nil, err
+	}
+
+	var env utils.Environment
+	if resume.Environment != nil {
+		env, err = utils.ReadEnvironment(resume.Environment)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		env = utils.NewDefaultEnvironment()
 	}
 
 	// read our flows
@@ -165,11 +187,11 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// build our environment
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), flowList, session.Runs(), []*flows.Contact{contact})
+	flowEnv := engine.NewFlowEnvironment(env, flowList, session.Runs(), []*flows.Contact{contact})
 
 	// hydrate all our runs
 	for _, run := range session.Runs() {
-		err = run.Hydrate(env)
+		err = run.Hydrate(flowEnv)
 		if err != nil {
 			return nil, utils.NewValidationError(err.Error())
 		}
@@ -182,7 +204,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// resume our flow
-	session, err = engine.ResumeFlow(env, activeRun, event)
+	session, err = engine.ResumeFlow(flowEnv, activeRun, event)
 	if err != nil {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}

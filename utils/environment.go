@@ -16,25 +16,28 @@ type Environment interface {
 
 	Timezone() *time.Location
 	SetTimezone(*time.Location)
+
+	Languages() LanguageList
 }
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
 func NewDefaultEnvironment() Environment {
-	return &environment{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, time.UTC}
+	return &environment{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, time.UTC, LanguageList{}}
 }
 
 // NewEnvironment creates a new Environment with the passed in date and time formats and timezone
-func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location) Environment {
+func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location, languages LanguageList) Environment {
 	if timezone == nil {
 		timezone = time.UTC
 	}
-	return &environment{dateFormat, timeFormat, timezone}
+	return &environment{dateFormat, timeFormat, timezone, languages}
 }
 
 type environment struct {
 	dateFormat DateFormat
 	timeFormat TimeFormat
 	timezone   *time.Location
+	languages  LanguageList
 }
 
 func (e *environment) DateFormat() DateFormat              { return e.dateFormat }
@@ -52,36 +55,42 @@ func (e *environment) SetTimezone(timezone *time.Location) {
 	}
 }
 
+func (e *environment) Languages() LanguageList { return e.languages }
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat DateFormat `json:"date_format"`
-	TimeFormat TimeFormat `json:"time_format"`
-	Timezone   string     `json:"timezone"`
+	DateFormat DateFormat   `json:"date_format"`
+	TimeFormat TimeFormat   `json:"time_format"`
+	Timezone   string       `json:"timezone"`
+	Languages  LanguageList `json:"languages"`
 }
 
-func (e *environment) UnmarshalJSON(data []byte) error {
+func ReadEnvironment(data *json.RawMessage) (*environment, error) {
+	env := NewDefaultEnvironment().(*environment)
+
 	var envelope envEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &envelope)
+	err = json.Unmarshal(*data, &envelope)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	e.dateFormat = envelope.DateFormat
-	e.timeFormat = envelope.TimeFormat
+	env.dateFormat = envelope.DateFormat
+	env.timeFormat = envelope.TimeFormat
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	e.timezone = tz
-	return nil
+	env.timezone = tz
+	env.languages = envelope.Languages
+	return env, nil
 }
 
 func (e *environment) MarshalJSON() ([]byte, error) {
-	ee := envEnvelope{e.dateFormat, e.timeFormat, e.timezone.String()}
+	ee := envEnvelope{e.dateFormat, e.timeFormat, e.timezone.String(), e.languages}
 	return json.Marshal(ee)
 }

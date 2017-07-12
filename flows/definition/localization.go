@@ -11,7 +11,7 @@ type itemTranslations map[string][]string
 // languageTranslations map a node uuid to item_translations - say "node1-asdf" to { "text": "je suis francais!" }
 type languageTranslations map[flows.UUID]itemTranslations
 
-func (t *languageTranslations) GetTranslations(uuid flows.UUID, key string, backdown []string) []string {
+func (t *languageTranslations) GetTextArray(uuid flows.UUID, key string) []string {
 	item, found := (*t)[uuid]
 	if found {
 		translation, found := item[key]
@@ -19,24 +19,13 @@ func (t *languageTranslations) GetTranslations(uuid flows.UUID, key string, back
 			return translation
 		}
 	}
-	return backdown
-}
-
-func (t *languageTranslations) GetText(uuid flows.UUID, key string, backdown string) string {
-	item, found := (*t)[uuid]
-	if found {
-		translation, found := item[key]
-		if found && len(translation) > 0 {
-			return translation[0]
-		}
-	}
-	return backdown
+	return nil
 }
 
 // flowTranslations are our top level container for all the translations for a language
 type flowTranslations map[utils.Language]*languageTranslations
 
-func (t *flowTranslations) GetTranslations(lang utils.Language) flows.Translations {
+func (t *flowTranslations) GetLanguageTranslations(lang utils.Language) flows.Translations {
 	translations, found := (*t)[lang]
 	if found {
 		return translations

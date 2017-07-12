@@ -55,26 +55,7 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) error {
 		run.AddError(step, err)
 	}
 
-	// if this is either name or language, we save directly to the contact
-	if a.FieldName == "name" && a.FieldUUID == "" {
-		run.Contact().SetName(value)
-	} else if a.FieldName == "language" && a.FieldUUID == "" {
-		// try to parse our language
-		lang := utils.NilLanguage
-		lang, err = utils.ParseLanguage(value)
-
-		// if this doesn't look valid, log an error and don't set our language
-		if err != nil {
-			run.AddError(step, err)
-		} else {
-			run.Contact().SetLanguage(lang)
-			run.SetLanguage(lang)
-			value = string(lang)
-		}
-	} else {
-		// save to our field dictionary
-		run.Contact().Fields().Save(a.FieldUUID, a.FieldName, value)
-	}
+	run.Contact().Fields().Save(a.FieldUUID, a.FieldName, value)
 
 	// log our event
 	if err == nil {

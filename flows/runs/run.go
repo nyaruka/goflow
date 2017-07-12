@@ -13,6 +13,58 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// a run specific environment which allows values to be overridden by the contact
+type runEnvironment struct {
+	flows.FlowEnvironment
+	run *flowRun
+
+	cachedLanguages utils.LanguageList
+}
+
+// creates a run environment based on the given run
+func newRunEnvironment(base flows.FlowEnvironment, run *flowRun) *runEnvironment {
+	env := &runEnvironment{base, run, nil}
+	env.refreshLanguagesCache()
+	return env
+}
+
+func (e *runEnvironment) Timezone() *time.Location {
+	contact := e.run.contact
+
+	// if run has a contact with a timezone, that overrides the enviroment's timezone
+	if contact != nil && contact.Timezone() != nil {
+		return contact.Timezone()
+	}
+	return e.FlowEnvironment.Timezone()
+}
+
+func (e *runEnvironment) Languages() utils.LanguageList {
+	// if contact language has changed, rebuild our cached language list
+	if e.run.Contact() != nil && e.cachedLanguages[0] != e.run.Contact().Language() {
+		e.refreshLanguagesCache()
+	}
+
+	return e.cachedLanguages
+}
+
+func (e *runEnvironment) refreshLanguagesCache() {
+	contact := e.run.contact
+	var languages utils.LanguageList
+
+	// if contact has a language, it takes priority
+	if contact != nil && contact.Language() != utils.NilLanguage {
+		languages = append(languages, contact.Language())
+	}
+
+	// next we include any environment languages
+	languages = append(languages, e.FlowEnvironment.Languages()...)
+
+	// finally we include the flow native language
+	languages = append(languages, e.run.flow.Language())
+
+	e.cachedLanguages = languages.RemoveDuplicates()
+}
+
 type flowRun struct {
 	uuid flows.RunUUID
 
@@ -39,11 +91,8 @@ type flowRun struct {
 
 	session flows.Session
 
-	path             []flows.Step
-	flowTranslations flows.FlowTranslations
-	translations     flows.Translations
-	environment      flows.FlowEnvironment
-	language         utils.Language
+	path        []flows.Step
+	environment flows.FlowEnvironment
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -63,9 +112,6 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 		r.ResetSession()
 	}
 
-	// save off our environment
-	r.environment = env
-
 	// set our flow
 	runFlow, err := env.GetFlow(r.FlowUUID())
 	if err != nil {
@@ -74,14 +120,16 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	r.flow = runFlow
 
 	// make sure we have a contact
-	runContact, err := env.GetContact(r.ContactUUID())
+	r.contact, err = env.GetContact(r.ContactUUID())
 	if err != nil {
 		return err
 	}
-	r.contact = runContact
+
+	// save off our environment
+	r.environment = newRunEnvironment(env, r)
 
 	// build our context
-	r.context = NewContextForContact(runContact, r)
+	r.context = NewContextForContact(r.contact, r)
 
 	// populate our run references
 	if r.parent != nil {
@@ -197,33 +245,26 @@ func (r *flowRun) ExpiresOn() *time.Time       { return r.expiresOn }
 func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
 func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 
-func (r *flowRun) updateTranslations() {
-	if r.flowTranslations != nil {
-		r.translations = r.flowTranslations.GetTranslations(r.language)
-	} else {
-		r.translations = nil
-	}
-}
-func (r *flowRun) SetFlowTranslations(ft flows.FlowTranslations) {
-	r.flowTranslations = ft
-	r.updateTranslations()
-}
-func (r *flowRun) SetLanguage(lang utils.Language) {
-	r.language = lang
-	r.updateTranslations()
-}
-func (r *flowRun) GetText(uuid flows.UUID, key string, backdown string) string {
-	if r.translations == nil {
-		return backdown
-	}
-	return r.translations.GetText(uuid, key, backdown)
+func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
+	textArray := r.GetTextArray(uuid, key, []string{native})
+	return textArray[0]
 }
 
-func (r *flowRun) GetTranslations(uuid flows.UUID, key string, backdown []string) []string {
-	if r.translations == nil {
-		return backdown
+func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []string {
+	for _, lang := range r.environment.Languages() {
+		if lang == r.Flow().Language() {
+			return native
+		}
+
+		translations := r.Flow().Translations().GetLanguageTranslations(lang)
+		if translations != nil {
+			textArray := translations.GetTextArray(uuid, key)
+			if textArray != nil && len(textArray) == len(native) {
+				return textArray
+			}
+		}
 	}
-	return r.translations.GetTranslations(uuid, key, backdown)
+	return native
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
@@ -235,7 +276,6 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		flowUUID:    flow.UUID(),
 		contactUUID: contact.UUID(),
 		results:     flows.NewResults(),
-		environment: env,
 		contact:     contact,
 		flow:        flow,
 		status:      flows.StatusActive,
@@ -243,7 +283,9 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		modifiedOn:  now,
 	}
 
-	// create our new context
+	r.environment = newRunEnvironment(env, r)
+
+	// build our context
 	r.context = NewContextForContact(contact, r)
 
 	// set our session
