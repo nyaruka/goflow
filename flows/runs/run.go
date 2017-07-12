@@ -13,6 +13,40 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// an environment which allows some settings to be overridden by a contact
+type flowRunEnvironment struct {
+	flows.FlowEnvironment
+	run *flowRun
+}
+
+func (e *flowRunEnvironment) Languages() utils.LanguageList {
+	contact := e.run.contact
+	var languages utils.LanguageList
+
+	// if contact has a language, it takes priority
+	if contact != nil && contact.Language() != utils.NilLanguage {
+		languages = append(languages, contact.Language())
+	}
+
+	// next we include any environment languages
+	languages = append(languages, e.FlowEnvironment.Languages()...)
+
+	// finally we include the flow native language
+	languages = append(languages, e.run.flow.Language())
+
+	return languages.RemoveDuplicates()
+}
+
+func (e *flowRunEnvironment) Timezone() *time.Location {
+	contact := e.run.contact
+
+	// if run has a contact with a timezone, that overrides the enviroment's timezone
+	if contact != nil && contact.Timezone() != nil {
+		return contact.Timezone()
+	}
+	return e.FlowEnvironment.Timezone()
+}
+
 type flowRun struct {
 	uuid flows.RunUUID
 
@@ -39,10 +73,8 @@ type flowRun struct {
 
 	session flows.Session
 
-	path             []flows.Step
-	flowTranslations flows.FlowTranslations
-	environment      flows.FlowEnvironment
-	languages        utils.LanguageList
+	path        []flows.Step
+	environment flows.FlowEnvironment
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -63,7 +95,7 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	}
 
 	// save off our environment
-	r.environment = env
+	r.environment = &flowRunEnvironment{env, r}
 
 	// set our flow
 	runFlow, err := env.GetFlow(r.FlowUUID())
@@ -73,12 +105,13 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	r.flow = runFlow
 
 	// make sure we have a contact
-	runContact, err := env.GetContact(r.ContactUUID())
+	r.contact, err = env.GetContact(r.ContactUUID())
 	if err != nil {
 		return err
 	}
 
-	r.setContact(runContact)
+	// build our context
+	r.context = NewContextForContact(r.contact, r)
 
 	// populate our run references
 	if r.parent != nil {
@@ -98,19 +131,6 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	}
 
 	return nil
-}
-
-func (r *flowRun) setContact(contact *flows.Contact) {
-	r.contact = contact
-
-	// build our context
-	r.context = NewContextForContact(contact, r)
-
-	if contact != nil {
-		r.SetLanguages(contact.PreferredLanguages())
-	} else {
-		r.SetLanguages(nil)
-	}
 }
 
 func (r *flowRun) FlowUUID() flows.FlowUUID       { return r.flowUUID }
@@ -207,27 +227,13 @@ func (r *flowRun) ExpiresOn() *time.Time       { return r.expiresOn }
 func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
 func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 
-func (r *flowRun) SetLanguages(langs utils.LanguageList) {
-	r.languages = langs
-
-	// if language list doesn't include the flow's native language, add that last
-	includesFlowLang := false
-	for _, lang := range r.languages {
-		if lang == r.Flow().Language() {
-			includesFlowLang = true
-		}
-	}
-	if !includesFlowLang {
-		r.languages = append(r.languages, r.Flow().Language())
-	}
-}
 func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
 	return textArray[0]
 }
 
 func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []string {
-	for _, lang := range r.languages {
+	for _, lang := range r.environment.Languages() {
 		if lang == r.Flow().Language() {
 			return native
 		}
@@ -252,7 +258,6 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		flowUUID:    flow.UUID(),
 		contactUUID: contact.UUID(),
 		results:     flows.NewResults(),
-		environment: env,
 		contact:     contact,
 		flow:        flow,
 		status:      flows.StatusActive,
@@ -260,7 +265,10 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		modifiedOn:  now,
 	}
 
-	r.setContact(contact)
+	r.environment = &flowRunEnvironment{env, r}
+
+	// build our context
+	r.context = NewContextForContact(contact, r)
 
 	// set our session
 	if parent != nil {

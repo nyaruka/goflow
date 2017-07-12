@@ -57,7 +57,7 @@ var timeTests = []struct {
 }
 
 func TestDateFromString(t *testing.T) {
-	env := NewEnvironment(DateFormat_dd_MM_yyyy, TimeFormat_HH_mm_ss, time.UTC)
+	env := NewEnvironment(DateFormat_dd_MM_yyyy, TimeFormat_HH_mm_ss, time.UTC, LanguageList{})
 
 	for _, test := range timeTests {
 		env.SetDateFormat(test.DateFormat)

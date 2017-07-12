@@ -166,7 +166,7 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC)
+	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC, utils.LanguageList{})
 
 	for _, test := range testTests {
 		testFunc := XTESTS[test.name]

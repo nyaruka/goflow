@@ -12,8 +12,6 @@ type Language string
 // NilLanguage represents our nil, or unknown language
 var NilLanguage = Language("")
 
-type LanguageList []Language
-
 // ParseLanguage returns a new Language for the passed in language string, or an error if not found
 func ParseLanguage(lang string) (Language, error) {
 	if len(lang) != 3 {
@@ -26,4 +24,18 @@ func ParseLanguage(lang string) (Language, error) {
 	}
 
 	return Language(base.ISO3()), nil
+}
+
+type LanguageList []Language
+
+func (ll LanguageList) RemoveDuplicates() LanguageList {
+	result := LanguageList{}
+	seen := map[Language]bool{}
+	for _, val := range ll {
+		if _, ok := seen[val]; !ok {
+			result = append(result, val)
+			seen[val] = true
+		}
+	}
+	return result
 }

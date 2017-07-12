@@ -10,9 +10,6 @@ import (
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
 func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input, extra json.RawMessage) (flows.Session, error) {
-	// set our environment's timezone to our contact's timezone
-	env.SetTimezone(contact.Timezone())
-
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
@@ -39,9 +36,6 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 
 // ResumeFlow resumes our flow from the last step
 func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.Session, error) {
-	// set our environment's timezone to our contact's timezone
-	env.SetTimezone(run.Contact().Timezone())
-
 	// to resume a flow, hydrate our run with the environment
 	err := run.Hydrate(env)
 	if err != nil {

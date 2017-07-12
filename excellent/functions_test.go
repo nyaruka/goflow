@@ -311,7 +311,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC)
+	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC, utils.LanguageList{})
 
 	for _, test := range funcTests {
 		xFunc := XFUNCTIONS[test.name]
@@ -370,7 +370,7 @@ var rangeTests = []struct {
 }
 
 func TestRangeFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC)
+	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC, utils.LanguageList{})
 
 	for _, test := range rangeTests {
 		xFunc := XFUNCTIONS[test.name]

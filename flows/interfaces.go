@@ -246,7 +246,6 @@ type FlowRun interface {
 	CreateStep(Node) Step
 	Path() []Step
 
-	SetLanguages(utils.LanguageList)
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string
 
