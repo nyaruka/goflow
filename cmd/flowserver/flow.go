@@ -44,7 +44,7 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Environment *json.RawMessage     `json:"env"`
+	Environment *json.RawMessage     `json:"environment"`
 	Flows       json.RawMessage      `json:"flows"    validate:"required"`
 	Contact     json.RawMessage      `json:"contact"  validate:"required"`
 	Extra       json.RawMessage      `json:"extra,omitempty"`
@@ -117,7 +117,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 type resumeRequest struct {
-	Environment *json.RawMessage     `json:"env"`
+	Environment *json.RawMessage     `json:"environment"`
 	Flows       json.RawMessage      `json:"flows"       validate:"required,min=1"`
 	Contact     json.RawMessage      `json:"contact"     validate:"required"`
 	Session     json.RawMessage      `json:"session"     validate:"required"`
