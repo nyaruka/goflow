@@ -13,13 +13,41 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// an environment which allows some settings to be overridden by a contact
-type flowRunEnvironment struct {
+// a run specific environment which allows values to be overridden by the contact
+type runEnvironment struct {
 	flows.FlowEnvironment
 	run *flowRun
+
+	cachedLanguages utils.LanguageList
 }
 
-func (e *flowRunEnvironment) Languages() utils.LanguageList {
+// creates a run environment based on the given run
+func newRunEnvironment(base flows.FlowEnvironment, run *flowRun) *runEnvironment {
+	env := &runEnvironment{base, run, nil}
+	env.refreshLanguagesCache()
+	return env
+}
+
+func (e *runEnvironment) Timezone() *time.Location {
+	contact := e.run.contact
+
+	// if run has a contact with a timezone, that overrides the enviroment's timezone
+	if contact != nil && contact.Timezone() != nil {
+		return contact.Timezone()
+	}
+	return e.FlowEnvironment.Timezone()
+}
+
+func (e *runEnvironment) Languages() utils.LanguageList {
+	// if contact language has changed, rebuild our cached language list
+	if e.run.Contact() != nil && e.cachedLanguages[0] != e.run.Contact().Language() {
+		e.refreshLanguagesCache()
+	}
+
+	return e.cachedLanguages
+}
+
+func (e *runEnvironment) refreshLanguagesCache() {
 	contact := e.run.contact
 	var languages utils.LanguageList
 
@@ -34,17 +62,7 @@ func (e *flowRunEnvironment) Languages() utils.LanguageList {
 	// finally we include the flow native language
 	languages = append(languages, e.run.flow.Language())
 
-	return languages.RemoveDuplicates()
-}
-
-func (e *flowRunEnvironment) Timezone() *time.Location {
-	contact := e.run.contact
-
-	// if run has a contact with a timezone, that overrides the enviroment's timezone
-	if contact != nil && contact.Timezone() != nil {
-		return contact.Timezone()
-	}
-	return e.FlowEnvironment.Timezone()
+	e.cachedLanguages = languages.RemoveDuplicates()
 }
 
 type flowRun struct {
@@ -94,9 +112,6 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 		r.ResetSession()
 	}
 
-	// save off our environment
-	r.environment = &flowRunEnvironment{env, r}
-
 	// set our flow
 	runFlow, err := env.GetFlow(r.FlowUUID())
 	if err != nil {
@@ -109,6 +124,9 @@ func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
 	if err != nil {
 		return err
 	}
+
+	// save off our environment
+	r.environment = newRunEnvironment(env, r)
 
 	// build our context
 	r.context = NewContextForContact(r.contact, r)
@@ -265,7 +283,7 @@ func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, 
 		modifiedOn:  now,
 	}
 
-	r.environment = &flowRunEnvironment{env, r}
+	r.environment = newRunEnvironment(env, r)
 
 	// build our context
 	r.context = NewContextForContact(contact, r)
