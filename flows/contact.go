@@ -26,15 +26,8 @@ func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
 // Language gets the language for this contact
 func (c *Contact) Language() utils.Language { return c.language }
 
-// Language gets the language for this contact
-func (c *Contact) PreferredLanguages() utils.LanguageList { return utils.LanguageList{c.language} }
-
 func (c *Contact) SetTimezone(tz *time.Location) {
-	if tz == nil {
-		c.timezone = time.UTC
-	} else {
-		c.timezone = tz
-	}
+	c.timezone = tz
 }
 func (c *Contact) Timezone() *time.Location { return c.timezone }
 
@@ -175,10 +168,12 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.Name = c.name
 	ce.UUID = c.uuid
 	ce.Language = c.language
-	ce.Timezone = c.timezone.String()
 	ce.URNs = c.urns
 	ce.Groups = c.groups
 	ce.Fields = c.fields
+	if c.timezone != nil {
+		ce.Timezone = c.timezone.String()
+	}
 
 	return json.Marshal(ce)
 }
