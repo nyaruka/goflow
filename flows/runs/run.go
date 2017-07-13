@@ -541,11 +541,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 		re.Child = r.child.UUID()
 	}
 
-	//re.Input, err = utils.EnvelopeFromTyped(r.input)
-	//if err != nil {
-	//	return nil, err
-	//}
-
 	re.Wait, err = utils.EnvelopeFromTyped(r.wait)
 	if err != nil {
 		return nil, err
