@@ -151,7 +151,6 @@
           "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
           "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
           "step_uuid": "",
           "text": "neither",
           "type": "msg_received",
@@ -247,10 +246,7 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
-              "step_uuid": "",
               "text": "neither",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -287,7 +283,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
@@ -363,7 +358,6 @@
           "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
           "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
           "step_uuid": "",
           "text": "yes",
           "type": "msg_received",
@@ -514,10 +508,7 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
-              "step_uuid": "",
               "text": "yes",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -554,7 +545,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
@@ -604,7 +594,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "yes",
                     "type": "msg_received",
@@ -664,7 +653,6 @@
           "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
           "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
           "step_uuid": "",
           "text": "never",
           "type": "msg_received",
@@ -705,10 +693,7 @@
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
-              "step_uuid": "",
               "text": "never",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -791,7 +776,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "never",
                     "type": "msg_received",
@@ -867,10 +851,7 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
-              "step_uuid": "",
               "text": "yes",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -907,7 +888,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
@@ -957,7 +937,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "yes",
                     "type": "msg_received",
@@ -1017,7 +996,6 @@
           "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
           "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
           "step_uuid": "",
           "text": "no",
           "type": "msg_received",
@@ -1052,10 +1030,7 @@
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
-              "step_uuid": "",
               "text": "no",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -1138,7 +1113,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "never",
                     "type": "msg_received",
@@ -1188,7 +1162,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "no",
                     "type": "msg_received",
@@ -1248,10 +1221,7 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
-              "step_uuid": "",
               "text": "yes",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -1288,7 +1258,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
@@ -1338,7 +1307,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "yes",
                     "type": "msg_received",
@@ -1397,7 +1365,6 @@
     {
       "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "id": 0,
       "text": "neither",
       "type": "msg",
       "urn": "tel:+12065551212"
@@ -1405,7 +1372,6 @@
     {
       "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "id": 0,
       "text": "yes",
       "type": "msg",
       "urn": "tel:+12065551212"
@@ -1413,7 +1379,6 @@
     {
       "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "id": 0,
       "text": "never",
       "type": "msg",
       "urn": "tel:+12065551212"
@@ -1421,7 +1386,6 @@
     {
       "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "id": 0,
       "text": "no",
       "type": "msg",
       "urn": "tel:+12065551212"

@@ -436,7 +436,7 @@ type runEnvelope struct {
 
 	Status flows.RunStatus `json:"status"`
 
-	//Input *utils.TypedEnvelope `json:"input,omitempty"`
+	Input *utils.TypedEnvelope `json:"input,omitempty"`
 	Wait  *utils.TypedEnvelope `json:"wait,omitempty"`
 	Event *utils.TypedEnvelope `json:"event,omitempty"`
 
@@ -481,13 +481,6 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 	if envelope.Child != "" {
 		r.child = &runReference{uuid: envelope.Child}
 	}
-
-	//if envelope.Input != nil {
-	//	r.input, err = inputs.InputFromEnvelope(envelope.Input)
-	//	if err != nil {
-	//		return err
-	//	}
-	//}
 
 	if envelope.Wait != nil {
 		r.wait, err = waits.WaitFromEnvelope(envelope.Wait)

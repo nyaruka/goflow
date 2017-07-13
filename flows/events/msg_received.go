@@ -25,7 +25,6 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	ID          int64             `json:"id"`
 	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"required,uuid4"`
 	URN         flows.URN         `json:"urn"              validate:"required"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
