@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -17,7 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -40,12 +39,7 @@ var flowTests = []struct {
 	{"webhook_persists.json", "", "", "webhook_persists_test.json"},
 }
 
-var writeOutput bool
 var serverURL = ""
-
-func init() {
-	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite TestFlow output")
-}
 
 func deriveFilename(prefix string, filename string) string {
 	if filename == "" {
@@ -67,7 +61,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 	return bytes, err
 }
 
-func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeEvents []flows.Event, extra json.RawMessage) ([]*Output, error) {
+func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeInputs []flows.Input, extra json.RawMessage) ([]*Output, error) {
 	flowJSON, err := readFile("flows/", flowFilename)
 	if err != nil {
 		return nil, err
@@ -117,8 +111,8 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 	outputs := make([]*Output, 0)
 
-	// for each of our resume events
-	for i := range resumeEvents {
+	// for each of our inputs
+	for i, input := range resumeInputs {
 		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
@@ -143,9 +137,13 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 		// if we aren't at a wait, that's an error
 		if activeRun == nil {
-			return nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
+			return nil, fmt.Errorf("Did not stop at expected wait, have unused inputs: %#v", resumeInputs[i:])
 		}
-		session, err = engine.ResumeFlow(flowEnv, activeRun, resumeEvents[i])
+
+		event := input.Event(activeRun)
+		activeRun.SetInput(input)
+
+		session, err = engine.ResumeFlow(flowEnv, activeRun, event)
 		if err != nil {
 			return nil, err
 		}
@@ -189,7 +187,7 @@ func newTestHTTPServer() *httptest.Server {
 }
 
 func TestFlows(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
+	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), []flows.Flow{}, []flows.FlowRun{}, []*flows.Contact{})
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
@@ -214,117 +212,93 @@ func TestFlows(t *testing.T) {
 			continue
 		}
 
-		// unmarshal our resume events
-		resumeEvents := make([]flows.Event, len(flowTest.ResumeEvents))
-		for i := range flowTest.ResumeEvents {
-			resumeEvents[i], err = events.EventFromEnvelope(flowTest.ResumeEvents[i])
+		// unmarshal our inputs
+		resumeInputs := make([]flows.Input, len(flowTest.Inputs))
+		for i := range flowTest.Inputs {
+			resumeInputs[i], err = inputs.InputFromEnvelope(env, flowTest.Inputs[i])
 			if err != nil {
-				t.Errorf("Error unmarshalling resume events for flow '%s' and output '%s': %s", test.flow, test.output, err)
+				t.Errorf("Error unmarshalling inputs for flow '%s' and output '%s': %s", test.flow, test.output, err)
 				continue
 			}
 		}
 
 		// run our flow
-		outputs, err := runFlow(env, test.flow, test.contact, test.channel, resumeEvents, flowTest.Extra)
+		outputs, err := runFlow(env, test.flow, test.contact, test.channel, resumeInputs, flowTest.Extra)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.flow, test.output, err)
 			continue
 		}
 
-		if writeOutput {
-			// we are writing new outputs, we write new files but don't test anything
-			envelopes := envelopesForEvents(resumeEvents)
-			rawOutputs := make([]json.RawMessage, len(outputs))
-			for i := range outputs {
-				rawOutputs[i], err = json.Marshal(outputs[i])
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
-			flowTest := FlowTest{Extra: flowTest.Extra, ResumeEvents: envelopes, Outputs: rawOutputs}
-			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
+		// unmarshal our expected outputs
+		expectedOutputs := make([]*Output, len(flowTest.Outputs))
+		for i := range expectedOutputs {
+			output := &Output{}
+			err := json.Unmarshal(flowTest.Outputs[i], output)
 			if err != nil {
-				log.Fatal("Error marshalling test definition: ", err)
+				log.Fatalf("Error unmarshalling output: %s", err)
 			}
+			expectedOutputs[i] = output
+		}
 
-			// write our output
-			outputFilename := deriveFilename("flows/", test.output)
-			err = ioutil.WriteFile(outputFilename, replaceFields(testJSON), 0644)
+		// read our output and test that we are the same
+		if len(outputs) != len(expectedOutputs) {
+			t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", outputs, expectedOutputs, test.flow)
+			continue
+		}
+
+		for i := range outputs {
+			actualOutput := outputs[i]
+			expectedOutput := expectedOutputs[i]
+
+			actualSession, err := runs.ReadSession(actualOutput.Session)
 			if err != nil {
-				log.Fatalf("Error writing test file to %s: %s\n", outputFilename, err)
+				t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.flow, err)
 			}
-		} else {
-			// unmarshal our expected outputs
-			expectedOutputs := make([]*Output, len(flowTest.Outputs))
-			for i := range expectedOutputs {
-				output := &Output{}
-				err := json.Unmarshal(flowTest.Outputs[i], output)
-				if err != nil {
-					log.Fatalf("Error unmarshalling output: %s", err)
-				}
-				expectedOutputs[i] = output
+			expectedSession, err := runs.ReadSession(expectedOutput.Session)
+			if err != nil {
+				t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.flow, err)
 			}
 
-			// read our output and test that we are the same
-			if len(outputs) != len(expectedOutputs) {
-				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", outputs, expectedOutputs, test.flow)
-				continue
+			// number of runs should be the same
+			if len(actualSession.Runs()) != len(expectedSession.Runs()) {
+				t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), test.flow)
 			}
 
-			for i := range outputs {
-				actualOutput := outputs[i]
-				expectedOutput := expectedOutputs[i]
+			// runs should have same status and flows
+			for i := range actualSession.Runs() {
+				run := actualSession.Runs()[i]
+				expected := expectedSession.Runs()[i]
 
-				actualSession, err := runs.ReadSession(actualOutput.Session)
+				if run.FlowUUID() != expected.FlowUUID() {
+					t.Errorf("Actual run flow UUID: %s does not match expected: %s for flow '%s'", run.FlowUUID(), expected.FlowUUID(), test.flow)
+				}
+
+				if run.Status() != expected.Status() {
+					t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), test.flow)
+				}
+			}
+
+			if len(actualOutput.Events) != len(expectedOutput.Events) {
+				t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, test.flow)
+			}
+
+			for j := range actualOutput.Events {
+				event := actualOutput.Events[j]
+				expected := expectedOutput.Events[j]
+
+				// write our events as json
+				eventJSON, err := envelopeAsJSON(event)
 				if err != nil {
-					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.flow, err)
+					t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
 				}
-				expectedSession, err := runs.ReadSession(expectedOutput.Session)
+				expectedJSON, err := envelopeAsJSON(expected)
 				if err != nil {
-					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.flow, err)
+					t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
 				}
 
-				// number of runs should be the same
-				if len(actualSession.Runs()) != len(expectedSession.Runs()) {
-					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), test.flow)
-				}
-
-				// runs should have same status and flows
-				for i := range actualSession.Runs() {
-					run := actualSession.Runs()[i]
-					expected := expectedSession.Runs()[i]
-
-					if run.FlowUUID() != expected.FlowUUID() {
-						t.Errorf("Actual run flow UUID: %s does not match expected: %s for flow '%s'", run.FlowUUID(), expected.FlowUUID(), test.flow)
-					}
-
-					if run.Status() != expected.Status() {
-						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), test.flow)
-					}
-				}
-
-				if len(actualOutput.Events) != len(expectedOutput.Events) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, test.flow)
-				}
-
-				for j := range actualOutput.Events {
-					event := actualOutput.Events[j]
-					expected := expectedOutput.Events[j]
-
-					// write our events as json
-					eventJSON, err := envelopeAsJSON(event)
-					if err != nil {
-						t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
-					}
-					expectedJSON, err := envelopeAsJSON(expected)
-					if err != nil {
-						t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
-					}
-
-					if eventJSON != expectedJSON {
-						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, test.flow, test.output)
-						break
-					}
+				if eventJSON != expectedJSON {
+					t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, test.flow, test.output)
+					break
 				}
 			}
 		}

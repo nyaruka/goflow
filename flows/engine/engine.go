@@ -13,9 +13,11 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
-	// if we got an input, set it
+	// if we got an input, set it and covert it to an event
+	var event flows.Event
 	if input != nil {
 		run.SetInput(input)
+		event = input.Event(run)
 	}
 
 	// if we got extra, set it
@@ -30,7 +32,7 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	}
 
 	// off to the races
-	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
+	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, event)
 	return run.Session(), err
 }
 

@@ -93,6 +93,7 @@ type FlowEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetRun(RunUUID) (FlowRun, error)
 	GetContact(ContactUUID) (*Contact, error)
+	//GetChannel(ChannelUUID) (*Channel, error) TODO
 	utils.Environment
 }
 
@@ -173,7 +174,15 @@ type Event interface {
 }
 
 type Input interface {
-	Event
+	ChannelUUID() ChannelUUID
+	SetChannelUUID(ChannelUUID)
+
+	CreatedOn() time.Time
+	SetCreatedOn(time.Time)
+
+	Event(FlowRun) Event
+
+	utils.Typed
 	utils.VariableResolver
 }
 

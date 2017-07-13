@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -42,44 +40,3 @@ func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, u
 
 // Type returns the type of this event
 func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
-
-// Resolve resolves the passed in key to a value, returning an error if the key is unknown
-func (e *MsgReceivedEvent) Resolve(key string) interface{} {
-	switch key {
-
-	case "id":
-		return e.ID
-
-	case "direction":
-		return flows.MsgIn
-
-	case "channel_uuid":
-		return e.ChannelUUID
-
-	case "contact_uuid":
-		return e.ContactUUID
-
-	case "urn":
-		return e.URN
-
-	case "text":
-		return e.Text
-
-	case "created_on":
-		return e.CreatedOn
-
-	}
-	return fmt.Errorf("No such field '%s' on Msg event", key)
-}
-
-// Default returns our default value if evaluated in a context, our text in our case
-func (e *MsgReceivedEvent) Default() interface{} {
-	return e.Text
-}
-
-// String returns our default value if evaluated in a context, our text in our case
-func (e *MsgReceivedEvent) String() string {
-	return e.Text
-}
-
-var _ flows.Input = (*MsgReceivedEvent)(nil)

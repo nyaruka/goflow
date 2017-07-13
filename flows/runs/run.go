@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 	uuid "github.com/satori/go.uuid"
@@ -437,7 +436,7 @@ type runEnvelope struct {
 
 	Status flows.RunStatus `json:"status"`
 
-	Input *utils.TypedEnvelope `json:"input,omitempty"`
+	//Input *utils.TypedEnvelope `json:"input,omitempty"`
 	Wait  *utils.TypedEnvelope `json:"wait,omitempty"`
 	Event *utils.TypedEnvelope `json:"event,omitempty"`
 
@@ -483,12 +482,12 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 		r.child = &runReference{uuid: envelope.Child}
 	}
 
-	if envelope.Input != nil {
-		r.input, err = inputs.InputFromEnvelope(envelope.Input)
-		if err != nil {
-			return err
-		}
-	}
+	//if envelope.Input != nil {
+	//	r.input, err = inputs.InputFromEnvelope(envelope.Input)
+	//	if err != nil {
+	//		return err
+	//	}
+	//}
 
 	if envelope.Wait != nil {
 		r.wait, err = waits.WaitFromEnvelope(envelope.Wait)
@@ -549,10 +548,10 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 		re.Child = r.child.UUID()
 	}
 
-	re.Input, err = utils.EnvelopeFromTyped(r.input)
-	if err != nil {
-		return nil, err
-	}
+	//re.Input, err = utils.EnvelopeFromTyped(r.input)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	re.Wait, err = utils.EnvelopeFromTyped(r.wait)
 	if err != nil {
