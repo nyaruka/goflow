@@ -162,6 +162,7 @@ func addTranslation(baseLanguage utils.Language, translations *flowTranslations,
 }
 
 var testTranslations = map[string]string{
+	"contains":     "has_all_words",
 	"contains_any": "has_any_word",
 	"not_empty":    "has_text",
 }
@@ -304,6 +305,16 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 		translated, _ := excellent.TranslateTemplate(a.Value)
 
+		if a.Field == "name" || a.Field == "language" {
+			return &actions.UpdateContactAction{
+				FieldName: a.Field,
+				Value:     translated,
+				BaseAction: actions.BaseAction{
+					UUID: a.UUID,
+				},
+			}, nil
+		}
+
 		return &actions.SaveContactField{
 			FieldName: a.Label,
 			Value:     translated,
@@ -369,7 +380,8 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 
 	case "regex":
 		fallthrough
-
+	case "contains":
+		fallthrough
 	case "contains_any":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
@@ -446,7 +458,10 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
 			}
 		} else {
-			defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
+			// take the first true rule as our default exit
+			if defaultExit == "" {
+				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
+			}
 		}
 	}
 
@@ -525,6 +540,11 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		fallthrough
 	case "expression":
 		operand, _ := excellent.TranslateTemplate(r.Operand)
+
+		if operand == "" {
+			operand = "@input.text"
+		}
+
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
 			Operand: operand,
