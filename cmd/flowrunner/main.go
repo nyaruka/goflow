@@ -26,9 +26,9 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Extra        json.RawMessage        `json:"extra,omitempty"`
-	ResumeEvents []*utils.TypedEnvelope `json:"resume_events"`
-	Outputs      []json.RawMessage      `json:"outputs"`
+	Extra   json.RawMessage        `json:"extra,omitempty"`
+	Inputs  []*utils.TypedEnvelope `json:"inputs"`
+	Outputs []json.RawMessage      `json:"outputs"`
 }
 
 func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {

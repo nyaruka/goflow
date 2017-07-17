@@ -1,21 +1,24 @@
 package inputs
 
 import (
-	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
-func InputFromEnvelope(envelope *utils.TypedEnvelope) (flows.Input, error) {
+type baseInputEnvelope struct {
+	ChannelUUID flows.ChannelUUID `json:"channel_uuid"` // TODO validate:"required,uuid4"`
+	CreatedOn   time.Time         `json:"created_on"   validate:"required"`
+}
+
+func InputFromEnvelope(env flows.FlowEnvironment, envelope *utils.TypedEnvelope) (flows.Input, error) {
 	switch envelope.Type {
 
-	case events.TypeMsgReceived:
-		event := events.MsgReceivedEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+	case TypeMsg:
+		input, err := ReadMsgInput(env, envelope)
+		return input, utils.ValidateAllUnlessErr(err, input)
 
 	default:
 		return nil, fmt.Errorf("Unknown input type: %s", envelope.Type)

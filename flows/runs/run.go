@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 	uuid "github.com/satori/go.uuid"
@@ -483,13 +482,6 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 		r.child = &runReference{uuid: envelope.Child}
 	}
 
-	if envelope.Input != nil {
-		r.input, err = inputs.InputFromEnvelope(envelope.Input)
-		if err != nil {
-			return err
-		}
-	}
-
 	if envelope.Wait != nil {
 		r.wait, err = waits.WaitFromEnvelope(envelope.Wait)
 		if err != nil {
@@ -547,11 +539,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	}
 	if r.child != nil {
 		re.Child = r.child.UUID()
-	}
-
-	re.Input, err = utils.EnvelopeFromTyped(r.input)
-	if err != nil {
-		return nil, err
 	}
 
 	re.Wait, err = utils.EnvelopeFromTyped(r.wait)

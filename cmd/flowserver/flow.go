@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
@@ -70,6 +69,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
+	// read our base environment
 	var env utils.Environment
 	if start.Environment != nil {
 		env, err = utils.ReadEnvironment(start.Environment)
@@ -95,17 +95,17 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
+	// build our flow environment
+	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
+
 	// read our input
 	var input flows.Input
 	if start.Input != nil {
-		input, err = inputs.InputFromEnvelope(start.Input)
+		input, err = inputs.InputFromEnvelope(flowEnv, start.Input)
 		if err != nil {
 			return nil, err
 		}
 	}
-
-	// build our flow environment
-	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
 	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, input, start.Extra)
@@ -121,7 +121,7 @@ type resumeRequest struct {
 	Flows       json.RawMessage      `json:"flows"       validate:"required,min=1"`
 	Contact     json.RawMessage      `json:"contact"     validate:"required"`
 	Session     json.RawMessage      `json:"session"     validate:"required"`
-	Event       *utils.TypedEnvelope `json:"event"       validate:"required"`
+	Input       *utils.TypedEnvelope `json:"input"       validate:"required"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -143,6 +143,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
+	// read our base environment
 	var env utils.Environment
 	if resume.Environment != nil {
 		env, err = utils.ReadEnvironment(resume.Environment)
@@ -180,14 +181,14 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// and our event
-	event, err := events.EventFromEnvelope(resume.Event)
+	// build our flow environment
+	flowEnv := engine.NewFlowEnvironment(env, flowList, session.Runs(), []*flows.Contact{contact})
+
+	// finally read our input
+	input, err := inputs.InputFromEnvelope(flowEnv, resume.Input)
 	if err != nil {
 		return nil, err
 	}
-
-	// build our environment
-	flowEnv := engine.NewFlowEnvironment(env, flowList, session.Runs(), []*flows.Contact{contact})
 
 	// hydrate all our runs
 	for _, run := range session.Runs() {
@@ -202,6 +203,10 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	if activeRun == nil {
 		return nil, utils.NewValidationError("session: no active run to resume")
 	}
+
+	// set the input on our active run and convert to an event
+	event := input.Event(activeRun)
+	activeRun.SetInput(input)
 
 	// resume our flow
 	session, err = engine.ResumeFlow(flowEnv, activeRun, event)
