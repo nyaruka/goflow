@@ -27,7 +27,6 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	ID          int64             `json:"id"`
 	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"required,uuid4"`
 	URN         flows.URN         `json:"urn"              validate:"required"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
@@ -51,9 +50,6 @@ func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 // Resolve resolves the passed in key to a value, returning an error if the key is unknown
 func (e *MsgReceivedEvent) Resolve(key string) interface{} {
 	switch key {
-
-	case "id":
-		return e.ID
 
 	case "direction":
 		return flows.MsgIn
