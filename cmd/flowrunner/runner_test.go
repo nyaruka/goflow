@@ -67,7 +67,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 	return bytes, err
 }
 
-func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, resumeEvents []flows.Event, extra json.RawMessage) ([]*Output, error) {
+func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, callerEvents []flows.Event, extra json.RawMessage) ([]*Output, error) {
 	flowJSON, err := readFile("flows/", flowFilename)
 	if err != nil {
 		return nil, err
@@ -117,8 +117,8 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 	outputs := make([]*Output, 0)
 
-	// for each of our resume events
-	for i := range resumeEvents {
+	// for each of our caller events
+	for i := range callerEvents {
 		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
@@ -143,9 +143,9 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 		// if we aren't at a wait, that's an error
 		if activeRun == nil {
-			return nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
+			return nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", callerEvents[i:])
 		}
-		session, err = engine.ResumeFlow(flowEnv, activeRun, []flows.Event{resumeEvents[i]})
+		session, err = engine.ResumeFlow(flowEnv, activeRun, []flows.Event{callerEvents[i]})
 		if err != nil {
 			return nil, err
 		}
@@ -214,11 +214,11 @@ func TestFlows(t *testing.T) {
 			continue
 		}
 
-		// unmarshal our resume events
-		resumeEvents := make([]flows.Event, len(flowTest.CallerEvents))
+		// unmarshal our caller events
+		callerEvents := make([]flows.Event, len(flowTest.CallerEvents))
 		for i := range flowTest.CallerEvents {
-			resumeEvents[i], err = events.EventFromEnvelope(flowTest.CallerEvents[i])
-			resumeEvents[i].SetFromCaller(true)
+			callerEvents[i], err = events.EventFromEnvelope(flowTest.CallerEvents[i])
+			callerEvents[i].SetFromCaller(true)
 			if err != nil {
 				t.Errorf("Error unmarshalling resume events for flow '%s' and output '%s': %s", test.flow, test.output, err)
 				continue
@@ -226,7 +226,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		outputs, err := runFlow(env, test.flow, test.contact, test.channel, resumeEvents, flowTest.Extra)
+		outputs, err := runFlow(env, test.flow, test.contact, test.channel, callerEvents, flowTest.Extra)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.flow, test.output, err)
 			continue
@@ -234,7 +234,7 @@ func TestFlows(t *testing.T) {
 
 		if writeOutput {
 			// we are writing new outputs, we write new files but don't test anything
-			envelopes := envelopesForEvents(resumeEvents)
+			envelopes := envelopesForEvents(callerEvents)
 			rawOutputs := make([]json.RawMessage, len(outputs))
 			for i := range outputs {
 				rawOutputs[i], err = json.Marshal(outputs[i])

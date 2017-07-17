@@ -128,6 +128,7 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 	return nil
 }
 
+// Resumes the node that the run is currently waiting on using the provided caller events
 func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
 	wait := node.Wait()
 
@@ -147,7 +148,7 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, callerEvent
 		return noDestination, step, nil
 	}
 
-	// we can now apply the caller events
+	// if we are allowed to proceed then we can apply the caller events
 	for _, event := range callerEvents {
 		run.ApplyEvent(step, event)
 	}
