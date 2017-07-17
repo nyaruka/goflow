@@ -8,6 +8,18 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
+	events := make([]flows.Event, len(envelopes))
+	for e, envelope := range envelopes {
+		event, err := EventFromEnvelope(envelope)
+		if err != nil {
+			return nil, err
+		}
+		events[e] = event
+	}
+	return events, nil
+}
+
 func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	switch envelope.Type {
 
