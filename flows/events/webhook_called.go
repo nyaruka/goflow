@@ -51,4 +51,4 @@ func NewWebhookCalledEvent(url string, status utils.RequestResponseStatus, statu
 func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
 
 // Apply applies this event to the given run
-func (e *WebhookCalledEvent) Apply(run flows.FlowRun, step flows.Step) {}
+func (e *WebhookCalledEvent) Apply(run flows.FlowRun) {}

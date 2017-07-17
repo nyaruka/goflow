@@ -46,6 +46,6 @@ func NewSaveFlowResult(node flows.NodeUUID, name string, value string, categoryN
 func (e *SaveFlowResultEvent) Type() string { return TypeSaveFlowResult }
 
 // Apply applies this event to the given run
-func (e *SaveFlowResultEvent) Apply(run flows.FlowRun, step flows.Step) {
+func (e *SaveFlowResultEvent) Apply(run flows.FlowRun) {
 	run.Results().Save(e.NodeUUID, e.ResultName, e.Value, e.Category, e.CategoryLocalized, e.BaseEvent.CreatedOn())
 }

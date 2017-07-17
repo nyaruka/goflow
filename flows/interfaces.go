@@ -169,7 +169,7 @@ type Event interface {
 	Step() StepUUID
 	SetStep(StepUUID)
 
-	Apply(FlowRun, Step)
+	Apply(FlowRun)
 
 	utils.Typed
 }

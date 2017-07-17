@@ -52,4 +52,4 @@ func NewSendMsgToGroup(group flows.GroupUUID, text string, attachments []string)
 func (e *SendMsgEvent) Type() string { return TypeSendMsg }
 
 // Apply applies this event to the given run
-func (e *SendMsgEvent) Apply(run flows.FlowRun, step flows.Step) {}
+func (e *SendMsgEvent) Apply(run flows.FlowRun) {}

@@ -1,7 +1,6 @@
 package events
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
@@ -48,38 +47,5 @@ func NewFlowExitedEvent(run flows.FlowRunReference) *FlowExitedEvent {
 // Type returns the type of our event
 func (e *FlowExitedEvent) Type() string { return TypeFlowExited }
 
-// Resolve resolves the passed in key
-func (e *FlowExitedEvent) Resolve(key string) interface{} {
-	switch key {
-
-	case "contact_uuid":
-		return e.ContactUUID
-
-	case "exited_on":
-		return e.ExitedOn
-
-	case "flow_uuid":
-		return e.FlowUUID
-
-	case "status":
-		return e.Status
-
-	}
-
-	return fmt.Errorf("no such field '%s' on Flow Exit event", key)
-}
-
-// Default returns the default value for this event
-func (e *FlowExitedEvent) Default() interface{} {
-	return e
-}
-
-// String returns the default string value
-func (e *FlowExitedEvent) String() string {
-	return string(e.FlowUUID)
-}
-
 // Apply applies this event to the given run
-func (e *FlowExitedEvent) Apply(run flows.FlowRun, step flows.Step) {}
-
-var _ flows.Input = (*FlowExitedEvent)(nil)
+func (e *FlowExitedEvent) Apply(run flows.FlowRun) {}

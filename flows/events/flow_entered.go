@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -40,34 +38,5 @@ func NewFlowEnterEvent(flow flows.FlowUUID, contact flows.ContactUUID) *FlowEnte
 // Type returns the type of this event
 func (e *FlowEnteredEvent) Type() string { return TypeFlowEntered }
 
-// Resolve resolves the passed in key for this event
-func (e *FlowEnteredEvent) Resolve(key string) interface{} {
-	switch key {
-
-	case "contact_uuid":
-		return e.ContactUUID
-
-	case "created_on":
-		return e.CreatedOn
-
-	case "flow_uuid":
-		return e.FlowUUID
-	}
-
-	return fmt.Errorf("No such field '%s' on Flow Enter event", key)
-}
-
-// Default returns the default value for this event
-func (e *FlowEnteredEvent) Default() interface{} {
-	return e
-}
-
-// String returns the default string value for this event
-func (e *FlowEnteredEvent) String() string {
-	return string(e.FlowUUID)
-}
-
 // Apply applies this event to the given run
-func (e *FlowEnteredEvent) Apply(run flows.FlowRun, step flows.Step) {}
-
-var _ flows.Input = (*FlowEnteredEvent)(nil)
+func (e *FlowEnteredEvent) Apply(run flows.FlowRun) {}

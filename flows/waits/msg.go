@@ -54,9 +54,6 @@ func (w *MsgWait) End(run flows.FlowRun, step flows.Step, event flows.Event) err
 	// add our msg to our step
 	run.ApplyEvent(step, msgEvent)
 
-	// and set our input @input.text
-	run.SetInput(msgEvent)
-
 	// and clear our wait
 	run.SetWait(nil)
 

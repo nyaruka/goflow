@@ -95,10 +95,10 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our input
-	var input flows.Input
+	// read our initial event
+	var initialEvent flows.Event
 	if start.Input != nil {
-		input, err = inputs.InputFromEnvelope(start.Input)
+		initialEvent, err = inputs.InputFromEnvelope(start.Input)
 		if err != nil {
 			return nil, err
 		}
@@ -108,7 +108,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, input, start.Extra)
+	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, initialEvent, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}

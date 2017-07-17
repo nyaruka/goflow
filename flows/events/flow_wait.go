@@ -34,4 +34,4 @@ func NewFlowWait(flow flows.FlowUUID) *FlowWaitEvent {
 func (e *FlowWaitEvent) Type() string { return TypeFlowWait }
 
 // Apply applies this event to the given run
-func (e *FlowWaitEvent) Apply(run flows.FlowRun, step flows.Step) {}
+func (e *FlowWaitEvent) Apply(run flows.FlowRun) {}

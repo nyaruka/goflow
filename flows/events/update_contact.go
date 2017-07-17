@@ -37,4 +37,4 @@ func NewUpdateContact(name string, value string) *UpdateContactEvent {
 func (e *UpdateContactEvent) Type() string { return TypeUpdateContact }
 
 // Apply applies this event to the given run
-func (e *UpdateContactEvent) Apply(run flows.FlowRun, step flows.Step) {}
+func (e *UpdateContactEvent) Apply(run flows.FlowRun) {}

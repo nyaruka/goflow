@@ -9,13 +9,13 @@ import (
 )
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input, extra json.RawMessage) (flows.Session, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, initialEvent flows.Event, extra json.RawMessage) (flows.Session, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
-	// if we got an input, set it
-	if input != nil {
-		run.SetInput(input)
+	// if we got an initial event, apply it
+	if initialEvent != nil {
+		initialEvent.Apply(run)
 	}
 
 	// if we got extra, set it
@@ -30,7 +30,7 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	}
 
 	// off to the races
-	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
+	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, initialEvent)
 	return run.Session(), err
 }
 

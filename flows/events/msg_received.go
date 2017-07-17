@@ -88,6 +88,6 @@ func (e *MsgReceivedEvent) String() string {
 }
 
 // Apply applies this event to the given run
-func (e *MsgReceivedEvent) Apply(run flows.FlowRun, step flows.Step) {}
-
-var _ flows.Input = (*MsgReceivedEvent)(nil)
+func (e *MsgReceivedEvent) Apply(run flows.FlowRun) {
+	run.SetInput(e)
+}

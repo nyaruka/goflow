@@ -35,4 +35,4 @@ func NewErrorEvent(err error) *ErrorEvent {
 func (e *ErrorEvent) Type() string { return TypeError }
 
 // Apply applies this event to the given run
-func (e *ErrorEvent) Apply(run flows.FlowRun, step flows.Step) {}
+func (e *ErrorEvent) Apply(run flows.FlowRun) {}

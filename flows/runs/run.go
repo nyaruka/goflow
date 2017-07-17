@@ -195,11 +195,8 @@ func (r *flowRun) SetWait(wait flows.Wait) { r.wait = wait }
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) SetEvent(event flows.Event) { r.event = event }
-func (r *flowRun) Event() flows.Event         { return r.event }
-
 func (r *flowRun) ApplyEvent(s flows.Step, e flows.Event) {
-	e.Apply(r, s)
+	e.Apply(r)
 
 	e.SetStep(s.UUID())
 
