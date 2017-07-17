@@ -79,9 +79,6 @@ func (w *FlowWait) End(run flows.FlowRun, step flows.Step, event flows.Event) er
 		return fmt.Errorf("must end flow wait with flow_exited for the same flow, expected '%s', got '%s'", w.FlowUUID, flowEvent.FlowUUID)
 	}
 
-	// log this event
-	run.ApplyEvent(step, flowEvent)
-
 	// and clear our wait
 	run.SetWait(nil)
 	return nil

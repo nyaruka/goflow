@@ -242,7 +242,7 @@ func main() {
 		}
 		run = session.ActiveRun()
 
-		session, err = engine.ResumeFlow(env, run, event)
+		session, err = engine.ResumeFlow(env, run, []flows.Event{event})
 		if err != nil {
 			log.Print("Error resuming flow: ", err)
 			break

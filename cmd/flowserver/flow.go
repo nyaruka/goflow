@@ -95,20 +95,21 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our initial event
-	var initialEvent flows.Event
+	// read our initial events
+	var initialEvents []flows.Event
 	if start.Input != nil {
-		initialEvent, err = inputs.InputFromEnvelope(start.Input)
+		initialEvent, err := inputs.InputFromEnvelope(start.Input)
 		if err != nil {
 			return nil, err
 		}
+		initialEvents = []flows.Event{initialEvent}
 	}
 
 	// build our flow environment
 	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, initialEvent, start.Extra)
+	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, initialEvents, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
@@ -180,7 +181,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// and our event
+	// and our initial event
 	event, err := events.EventFromEnvelope(resume.Event)
 	if err != nil {
 		return nil, err
@@ -204,7 +205,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// resume our flow
-	session, err = engine.ResumeFlow(flowEnv, activeRun, event)
+	session, err = engine.ResumeFlow(flowEnv, activeRun, []flows.Event{event})
 	if err != nil {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}

@@ -145,7 +145,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		if activeRun == nil {
 			return nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
 		}
-		session, err = engine.ResumeFlow(flowEnv, activeRun, resumeEvents[i])
+		session, err = engine.ResumeFlow(flowEnv, activeRun, []flows.Event{resumeEvents[i]})
 		if err != nil {
 			return nil, err
 		}
