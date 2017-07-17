@@ -148,16 +148,6 @@
     {
       "events": [
         {
-          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
-          "step_uuid": "",
-          "text": "neither",
-          "type": "msg_received",
-          "urn": "tel:+12065551212"
-        },
-        {
           "category": "Other",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
@@ -359,16 +349,6 @@
     },
     {
       "events": [
-        {
-          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
-          "step_uuid": "",
-          "text": "yes",
-          "type": "msg_received",
-          "urn": "tel:+12065551212"
-        },
         {
           "category": "Yes",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -660,16 +640,6 @@
     },
     {
       "events": [
-        {
-          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
-          "step_uuid": "",
-          "text": "never",
-          "type": "msg_received",
-          "urn": "tel:+12065551212"
-        },
         {
           "category": "Other",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1013,16 +983,6 @@
     },
     {
       "events": [
-        {
-          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
-          "step_uuid": "",
-          "text": "no",
-          "type": "msg_received",
-          "urn": "tel:+12065551212"
-        },
         {
           "category": "No",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",

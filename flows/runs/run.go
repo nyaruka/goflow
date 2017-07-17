@@ -203,8 +203,10 @@ func (r *flowRun) ApplyEvent(s flows.Step, e flows.Event) {
 	fs := s.(*step)
 	fs.addEvent(e)
 
-	r.Session().AddEvent(e)
-	r.setModifiedOn(time.Now().UTC())
+	if !e.FromCaller() {
+		r.Session().AddEvent(e)
+		r.setModifiedOn(time.Now().UTC())
+	}
 }
 
 func (r *flowRun) AddError(step flows.Step, err error) {

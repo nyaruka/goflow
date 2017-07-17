@@ -169,6 +169,9 @@ type Event interface {
 	Step() StepUUID
 	SetStep(StepUUID)
 
+	FromCaller() bool
+	SetFromCaller(bool)
+
 	Apply(FlowRun)
 
 	utils.Typed

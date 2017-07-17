@@ -9,7 +9,7 @@ import (
 )
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, initialEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
 
@@ -25,12 +25,12 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	}
 
 	// off to the races
-	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, initialEvents)
+	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, callerEvents)
 	return run.Session(), err
 }
 
 // ResumeFlow resumes our flow from the last step
-func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, initialEvents []flows.Event) (flows.Session, error) {
+func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, callerEvents []flows.Event) (flows.Session, error) {
 	// to resume a flow, hydrate our run with the environment
 	err := run.Hydrate(env)
 	if err != nil {
@@ -55,7 +55,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, initialEvents []fl
 	}
 
 	// the first event resumes the wait
-	destination, step, err := resumeNode(run, node, step, initialEvents)
+	destination, step, err := resumeNode(run, node, step, callerEvents)
 	if err != nil {
 		return run.Session(), err
 	}
@@ -82,7 +82,7 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, initialEvents []fl
 }
 
 // Continues the flow entering the passed in flow
-func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, initialEvents []flows.Event) (err error) {
+func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
 	// set of uuids we've visited
 	visited := make(visitedMap)
 
@@ -100,10 +100,10 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 			break
 		}
 
-		destination, step, err = enterNode(run, node, initialEvents)
+		destination, step, err = enterNode(run, node, callerEvents)
 
 		// only pass our initial events to the first node, it is in charge of applying them
-		initialEvents = nil
+		callerEvents = nil
 
 		// mark this node as visited to prevent loops
 		visited[node.UUID()] = true
@@ -128,7 +128,7 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 	return nil
 }
 
-func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, initialEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
+func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
 	wait := node.Wait()
 
 	// it's an error to resume a flow at a wait that no longer exists, error
@@ -139,16 +139,16 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, initialEven
 		return noDestination, step, nil
 	}
 
-	// try to resume our wait with the first initial event
-	err := wait.End(run, step, initialEvents[0])
+	// try to resume our wait with the first caller event
+	err := wait.End(run, step, callerEvents[0])
 	if err != nil {
 		run.AddError(step, err)
 		run.Exit(flows.StatusErrored)
 		return noDestination, step, nil
 	}
 
-	// we can now apply the initial events
-	for _, event := range initialEvents {
+	// we can now apply the caller events
+	for _, event := range callerEvents {
 		run.ApplyEvent(step, event)
 	}
 
@@ -156,12 +156,12 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, initialEven
 	return pickNodeExit(run, node, step)
 }
 
-func enterNode(run flows.FlowRun, node flows.Node, initialEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
+func enterNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
 	// create our step
 	step := run.CreateStep(node)
 
-	// apply any entry events
-	for _, event := range initialEvents {
+	// apply any caller events
+	for _, event := range callerEvents {
 		run.ApplyEvent(step, event)
 	}
 

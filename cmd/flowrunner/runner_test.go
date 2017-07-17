@@ -218,6 +218,7 @@ func TestFlows(t *testing.T) {
 		resumeEvents := make([]flows.Event, len(flowTest.ResumeEvents))
 		for i := range flowTest.ResumeEvents {
 			resumeEvents[i], err = events.EventFromEnvelope(flowTest.ResumeEvents[i])
+			resumeEvents[i].SetFromCaller(true)
 			if err != nil {
 				t.Errorf("Error unmarshalling resume events for flow '%s' and output '%s': %s", test.flow, test.output, err)
 				continue

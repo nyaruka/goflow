@@ -15,6 +15,7 @@ func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
 		if err != nil {
 			return nil, err
 		}
+		event.SetFromCaller(true)
 		events[e] = event
 	}
 	return events, nil
