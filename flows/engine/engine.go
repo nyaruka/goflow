@@ -102,7 +102,7 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 
 		destination, step, err = enterNode(run, node, callerEvents)
 
-		// only pass our initial events to the first node, it is in charge of applying them
+		// only pass our caller events to the first node as it is responsible for handling them
 		callerEvents = nil
 
 		// mark this node as visited to prevent loops

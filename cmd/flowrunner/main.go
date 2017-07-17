@@ -27,7 +27,7 @@ type Output struct {
 
 type FlowTest struct {
 	Extra        json.RawMessage        `json:"extra,omitempty"`
-	ResumeEvents []*utils.TypedEnvelope `json:"resume_events"`
+	CallerEvents []*utils.TypedEnvelope `json:"caller_events"`
 	Outputs      []json.RawMessage      `json:"outputs"`
 }
 
