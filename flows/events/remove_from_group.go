@@ -28,8 +28,18 @@ type RemoveFromGroupEvent struct {
 
 // NewRemoveFromGroup returns a new remove from group event
 func NewRemoveFromGroup(groups []*flows.Group) *RemoveFromGroupEvent {
-	return &RemoveFromGroupEvent{Groups: groups}
+	return &RemoveFromGroupEvent{
+		BaseEvent: NewBaseEvent(),
+		Groups:    groups,
+	}
 }
 
 // Type returns the type of this event
 func (e *RemoveFromGroupEvent) Type() string { return TypeRemoveFromGroup }
+
+// Apply applies this event to the given run
+func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun, step flows.Step) {
+	for _, group := range e.Groups {
+		run.Contact().RemoveGroup(group.UUID())
+	}
+}

@@ -36,8 +36,13 @@ type MsgReceivedEvent struct {
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
 func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, urn flows.URN, text string) *MsgReceivedEvent {
-	event := MsgReceivedEvent{ChannelUUID: channel, ContactUUID: contact, URN: urn, Text: text}
-	return &event
+	return &MsgReceivedEvent{
+		BaseEvent:   NewBaseEvent(),
+		ChannelUUID: channel,
+		ContactUUID: contact,
+		URN:         urn,
+		Text:        text,
+	}
 }
 
 // Type returns the type of this event
@@ -81,5 +86,8 @@ func (e *MsgReceivedEvent) Default() interface{} {
 func (e *MsgReceivedEvent) String() string {
 	return e.Text
 }
+
+// Apply applies this event to the given run
+func (e *MsgReceivedEvent) Apply(run flows.FlowRun, step flows.Step) {}
 
 var _ flows.Input = (*MsgReceivedEvent)(nil)

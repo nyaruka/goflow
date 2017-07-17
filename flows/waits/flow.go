@@ -36,7 +36,7 @@ var _ utils.VariableResolver = (*FlowWait)(nil)
 func (w *FlowWait) Type() string { return TypeFlow }
 
 func (w *FlowWait) Begin(run flows.FlowRun, step flows.Step) error {
-	run.AddEvent(step, &events.FlowWaitEvent{FlowUUID: w.FlowUUID})
+	run.ApplyEvent(step, &events.FlowWaitEvent{FlowUUID: w.FlowUUID})
 	run.SetWait(w)
 	return nil
 }
@@ -80,7 +80,7 @@ func (w *FlowWait) End(run flows.FlowRun, step flows.Step, event flows.Event) er
 	}
 
 	// log this event
-	run.AddEvent(step, flowEvent)
+	run.ApplyEvent(step, flowEvent)
 
 	// and clear our wait
 	run.SetWait(nil)

@@ -36,8 +36,13 @@ type FlowExitedEvent struct {
 
 // NewFlowExitedEvent returns a new flow exit event
 func NewFlowExitedEvent(run flows.FlowRunReference) *FlowExitedEvent {
-	event := FlowExitedEvent{FlowUUID: run.FlowUUID(), Status: run.Status(), ContactUUID: run.ContactUUID(), ExitedOn: run.ExitedOn()}
-	return &event
+	return &FlowExitedEvent{
+		BaseEvent:   NewBaseEvent(),
+		FlowUUID:    run.FlowUUID(),
+		Status:      run.Status(),
+		ContactUUID: run.ContactUUID(),
+		ExitedOn:    run.ExitedOn(),
+	}
 }
 
 // Type returns the type of our event
@@ -73,5 +78,8 @@ func (e *FlowExitedEvent) Default() interface{} {
 func (e *FlowExitedEvent) String() string {
 	return string(e.FlowUUID)
 }
+
+// Apply applies this event to the given run
+func (e *FlowExitedEvent) Apply(run flows.FlowRun, step flows.Step) {}
 
 var _ flows.Input = (*FlowExitedEvent)(nil)

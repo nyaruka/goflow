@@ -30,8 +30,11 @@ type FlowEnteredEvent struct {
 
 // NewFlowEnterEvent returns a new flow enter event for the passed in flow and contact
 func NewFlowEnterEvent(flow flows.FlowUUID, contact flows.ContactUUID) *FlowEnteredEvent {
-	event := FlowEnteredEvent{FlowUUID: flow, ContactUUID: contact}
-	return &event
+	return &FlowEnteredEvent{
+		BaseEvent:   NewBaseEvent(),
+		FlowUUID:    flow,
+		ContactUUID: contact,
+	}
 }
 
 // Type returns the type of this event
@@ -63,5 +66,8 @@ func (e *FlowEnteredEvent) Default() interface{} {
 func (e *FlowEnteredEvent) String() string {
 	return string(e.FlowUUID)
 }
+
+// Apply applies this event to the given run
+func (e *FlowEnteredEvent) Apply(run flows.FlowRun, step flows.Step) {}
 
 var _ flows.Input = (*FlowEnteredEvent)(nil)

@@ -1,6 +1,9 @@
 package events
 
-import "github.com/nyaruka/goflow/utils"
+import (
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
+)
 
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
@@ -32,5 +35,20 @@ type WebhookCalledEvent struct {
 	Response   string                      `json:"response"`
 }
 
+// NewWebhookCalledEvent returns a new webhook called event
+func NewWebhookCalledEvent(url string, status utils.RequestResponseStatus, statusCode int, request string, response string) *WebhookCalledEvent {
+	return &WebhookCalledEvent{
+		BaseEvent:  NewBaseEvent(),
+		URL:        url,
+		Status:     status,
+		StatusCode: statusCode,
+		Request:    request,
+		Response:   response,
+	}
+}
+
 // Type returns the type of this event
 func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
+
+// Apply applies this event to the given run
+func (e *WebhookCalledEvent) Apply(run flows.FlowRun, step flows.Step) {}

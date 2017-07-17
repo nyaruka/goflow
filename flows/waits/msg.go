@@ -36,7 +36,7 @@ var _ utils.VariableResolver = (*MsgWait)(nil)
 func (w *MsgWait) Type() string { return TypeMsg }
 
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) error {
-	run.AddEvent(step, &events.MsgWaitEvent{Timeout: w.Timeout})
+	run.ApplyEvent(step, &events.MsgWaitEvent{Timeout: w.Timeout})
 	run.SetWait(w)
 	return nil
 }
@@ -52,7 +52,7 @@ func (w *MsgWait) End(run flows.FlowRun, step flows.Step, event flows.Event) err
 	}
 
 	// add our msg to our step
-	run.AddEvent(step, msgEvent)
+	run.ApplyEvent(step, msgEvent)
 
 	// and set our input @input.text
 	run.SetInput(msgEvent)

@@ -39,18 +39,18 @@ func (a *AddToGroupAction) Validate() error {
 
 // Execute adds our contact to the specified groups
 func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
+	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact != nil {
 		groups := make([]*flows.Group, 0, len(a.Groups))
 		for _, group := range a.Groups {
-			if contact.Groups().FindGroup(group.UUID()) == nil {
-				contact.AddGroup(group.UUID(), group.Name())
+			if !contact.InGroup(group) {
 				groups = append(groups, group)
 			}
 
 		}
 		if len(groups) > 0 {
-			run.AddEvent(step, events.NewGroupEvent(groups))
+			run.ApplyEvent(step, events.NewGroupEvent(groups))
 		}
 	}
 

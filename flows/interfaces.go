@@ -163,11 +163,13 @@ type Context interface {
 }
 
 type Event interface {
-	CreatedOn() *time.Time
+	CreatedOn() time.Time
 	SetCreatedOn(time.Time)
 
 	Step() StepUUID
 	SetStep(StepUUID)
+
+	Apply(FlowRun, Step)
 
 	utils.Typed
 }
@@ -240,7 +242,7 @@ type FlowRun interface {
 	Input() Input
 	SetInput(Input)
 
-	AddEvent(Step, Event)
+	ApplyEvent(Step, Event)
 	AddError(Step, error)
 
 	CreateStep(Node) Step

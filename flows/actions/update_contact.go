@@ -74,7 +74,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 
 	// log our event
 	if err == nil {
-		run.AddEvent(step, events.NewUpdateContact(strings.ToLower(a.FieldName), value))
+		run.ApplyEvent(step, events.NewUpdateContact(strings.ToLower(a.FieldName), value))
 	}
 
 	return nil

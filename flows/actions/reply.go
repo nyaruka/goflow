@@ -57,10 +57,10 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 	urns := run.Contact().URNs()
 	if a.AllURNs && len(urns) > 0 {
 		for _, urn := range urns {
-			run.AddEvent(step, events.NewSendMsgToURN(urn, text, a.Attachments))
+			run.ApplyEvent(step, events.NewSendMsgToURN(urn, text, a.Attachments))
 		}
 	} else {
-		run.AddEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
+		run.ApplyEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
 	}
 
 	return nil

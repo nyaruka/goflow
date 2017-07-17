@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/flows"
+
 // TypeMsgWait is the type of our msg wait event
 const TypeMsgWait string = "msg_wait"
 
@@ -24,8 +26,14 @@ type MsgWaitEvent struct {
 
 // NewMsgWait returns a new msg wait with the passed in timeout
 func NewMsgWait(timeout int) *MsgWaitEvent {
-	return &MsgWaitEvent{Timeout: timeout}
+	return &MsgWaitEvent{
+		BaseEvent: NewBaseEvent(),
+		Timeout:   timeout,
+	}
 }
 
 // Type returns the type of this event
 func (e *MsgWaitEvent) Type() string { return TypeMsgWait }
+
+// Apply applies this event to the given run
+func (e *MsgWaitEvent) Apply(run flows.FlowRun, step flows.Step) {}
