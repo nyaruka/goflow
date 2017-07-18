@@ -911,10 +911,12 @@ func WordCount(env utils.Environment, args ...interface{}) interface{} {
 	return decimal.NewFromFloat(float64(len(words)))
 }
 
-// Field splits `string` based on the passed in `delimeter` and returns the field at `offset`. (first field is 1)
+// Field splits `string` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
+// with spaces, the delimiter is considered to be all whitespace.  (first field is 0)
 //
-//   @(field("a,b,c", 2, ",")) -> "b"
-//   @(field("a,b,c", 5, ",")) -> ""
+//   @(field("a,b,c", 1, ",")) -> "b"
+//   @(field("a,,b,c", 1, ",")) -> ""
+//   @(field("a   b c", 1, " ")) -> "b"
 //   @(field("a,b,c", "foo", ",")) -> ERROR
 //
 // @function field(string, offset, delimeter)
@@ -939,10 +941,22 @@ func Field(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	fields := strings.Split(source, sep)
-	if field-1 >= len(fields) {
+	if field >= len(fields) {
 		return ""
 	}
-	return strings.TrimSpace(fields[field-1])
+
+	// when using spaces as a delimiter, we consider it splitting on whitespace, so remove empty values
+	if len(strings.TrimSpace(sep)) == 0 {
+		var newFields []string
+		for _, field := range fields {
+			if field != "" {
+				newFields = append(newFields, field)
+			}
+		}
+		fields = newFields
+	}
+
+	return strings.TrimSpace(fields[field])
 }
 
 // Clean strips any leading or trailing whitespace from `string``

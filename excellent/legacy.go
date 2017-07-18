@@ -91,7 +91,7 @@ var functionTemplates = map[string]functionTemplate{
 	"datevalue":  {name: "date"},
 	"edate":      {name: "date_add", params: "(%s, \"m\", %s)"},
 	"word_slice": {name: "word_slice", params: "(%s, %s)", three: "(%s, %s, %s)", four: "(%s, %s, %s, %v)"},
-	"field":      {name: "field", params: "(%s, %s, %s)"},
+	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
 	"datedif":    {name: "date_diff"},
 	"date":       {name: "date", params: "(\"%s-%s-%s\")"},
 	"days":       {name: "date_diff", params: "(%s, %s, \"D\")"},

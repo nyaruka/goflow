@@ -126,7 +126,12 @@ type localizedStringTest struct {
 }
 
 type stringTest struct {
-	Test string `jons:"test"`
+	Test string `json:"test"`
+}
+
+type betweenTest struct {
+	Min string `json:"min"`
+	Max string `json:"max"`
 }
 
 type localizations map[utils.Language]flows.Action
@@ -165,6 +170,7 @@ var testTranslations = map[string]string{
 	"contains":     "has_all_words",
 	"contains_any": "has_any_word",
 	"not_empty":    "has_text",
+	"between":      "has_number_between",
 }
 
 func translateTest(test string) string {
@@ -377,6 +383,11 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Test}
+	case "between":
+		test := betweenTest{}
+		testType = translateTest(testType)
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Min, test.Max}
 
 	case "regex":
 		fallthrough
@@ -468,6 +479,11 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	return exits, cases, defaultExit
 }
 
+type fieldConfig struct {
+	FieldDelimiter string `json:"field_delimiter"`
+	FieldIndex     int    `json:"field_index"`
+}
+
 func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
 	node := &node{}
 	node.uuid = r.UUID
@@ -524,15 +540,29 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 			Cases:   cases,
 		}
 
-	case "flow_field":
-		fallthrough
 	case "form_field":
-		fallthrough
+
+		var config fieldConfig
+		json.Unmarshal(r.Config, &config)
+
+		operand, _ := excellent.TranslateTemplate(r.Operand)
+		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
+		node.router = &routers.SwitchRouter{
+			Default: defaultExit,
+			Operand: operand,
+			Cases:   cases,
+			BaseRouter: routers.BaseRouter{
+				ResultName_: r.Label,
+			},
+		}
+
 	case "wait_message":
 
 		// TODO: add in timeout
 		node.wait = &waits.MsgWait{}
 
+		fallthrough
+	case "flow_field":
 		fallthrough
 	case "group":
 		fallthrough
