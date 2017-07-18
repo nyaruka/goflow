@@ -27,8 +27,18 @@ type AddToGroupEvent struct {
 
 // NewGroupEvent returns a new group event
 func NewGroupEvent(groups []*flows.Group) *AddToGroupEvent {
-	return &AddToGroupEvent{Groups: groups}
+	return &AddToGroupEvent{
+		BaseEvent: NewBaseEvent(),
+		Groups:    groups,
+	}
 }
 
 // Type returns the type of this event
 func (e *AddToGroupEvent) Type() string { return TypeAddToGroup }
+
+// Apply applies this event to the given run
+func (e *AddToGroupEvent) Apply(run flows.FlowRun) {
+	for _, group := range e.Groups {
+		run.Contact().AddGroup(group.UUID(), group.Name())
+	}
+}

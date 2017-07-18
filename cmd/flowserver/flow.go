@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -44,11 +43,11 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Environment *json.RawMessage     `json:"environment"`
-	Flows       json.RawMessage      `json:"flows"    validate:"required"`
-	Contact     json.RawMessage      `json:"contact"  validate:"required"`
-	Extra       json.RawMessage      `json:"extra,omitempty"`
-	Input       *utils.TypedEnvelope `json:"input"`
+	Environment *json.RawMessage       `json:"environment"`
+	Flows       json.RawMessage        `json:"flows"    validate:"required"`
+	Contact     json.RawMessage        `json:"contact"  validate:"required"`
+	Extra       json.RawMessage        `json:"extra,omitempty"`
+	Events      []*utils.TypedEnvelope `json:"events"`
 }
 
 func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -95,20 +94,17 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our input
-	var input flows.Input
-	if start.Input != nil {
-		input, err = inputs.InputFromEnvelope(start.Input)
-		if err != nil {
-			return nil, err
-		}
+	// read our caller events
+	callerEvents, err := events.ReadEvents(start.Events)
+	if err != nil {
+		return nil, err
 	}
 
 	// build our flow environment
 	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// start our flow
-	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, input, start.Extra)
+	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, callerEvents, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
@@ -117,11 +113,11 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 type resumeRequest struct {
-	Environment *json.RawMessage     `json:"environment"`
-	Flows       json.RawMessage      `json:"flows"       validate:"required,min=1"`
-	Contact     json.RawMessage      `json:"contact"     validate:"required"`
-	Session     json.RawMessage      `json:"session"     validate:"required"`
-	Event       *utils.TypedEnvelope `json:"event"       validate:"required"`
+	Environment *json.RawMessage       `json:"environment"`
+	Flows       json.RawMessage        `json:"flows"       validate:"required,min=1"`
+	Contact     json.RawMessage        `json:"contact"     validate:"required"`
+	Session     json.RawMessage        `json:"session"     validate:"required"`
+	Events      []*utils.TypedEnvelope `json:"events"      validate:"required,min=1"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -180,8 +176,8 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// and our event
-	event, err := events.EventFromEnvelope(resume.Event)
+	// and our caller events
+	callerEvents, err := events.ReadEvents(resume.Events)
 	if err != nil {
 		return nil, err
 	}
@@ -204,7 +200,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// resume our flow
-	session, err = engine.ResumeFlow(flowEnv, activeRun, event)
+	session, err = engine.ResumeFlow(flowEnv, activeRun, callerEvents)
 	if err != nil {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}

@@ -64,11 +64,7 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 		categoryLocalized = ""
 	}
 
-	event := events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized)
-	run.AddEvent(step, event)
-
-	// and save our result
-	run.Results().Save(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized, *event.CreatedOn())
+	run.ApplyEvent(step, events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized))
 
 	return nil
 }

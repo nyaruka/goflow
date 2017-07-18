@@ -27,7 +27,6 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	ID          int64             `json:"id"`
 	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"required,uuid4"`
 	URN         flows.URN         `json:"urn"              validate:"required"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
@@ -36,8 +35,13 @@ type MsgReceivedEvent struct {
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
 func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, urn flows.URN, text string) *MsgReceivedEvent {
-	event := MsgReceivedEvent{ChannelUUID: channel, ContactUUID: contact, URN: urn, Text: text}
-	return &event
+	return &MsgReceivedEvent{
+		BaseEvent:   NewBaseEvent(),
+		ChannelUUID: channel,
+		ContactUUID: contact,
+		URN:         urn,
+		Text:        text,
+	}
 }
 
 // Type returns the type of this event
@@ -46,9 +50,6 @@ func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 // Resolve resolves the passed in key to a value, returning an error if the key is unknown
 func (e *MsgReceivedEvent) Resolve(key string) interface{} {
 	switch key {
-
-	case "id":
-		return e.ID
 
 	case "direction":
 		return flows.MsgIn
@@ -82,4 +83,7 @@ func (e *MsgReceivedEvent) String() string {
 	return e.Text
 }
 
-var _ flows.Input = (*MsgReceivedEvent)(nil)
+// Apply applies this event to the given run
+func (e *MsgReceivedEvent) Apply(run flows.FlowRun) {
+	run.SetInput(e)
+}

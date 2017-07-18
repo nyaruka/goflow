@@ -24,8 +24,14 @@ type FlowWaitEvent struct {
 
 // NewFlowWait returns a new flow wait event
 func NewFlowWait(flow flows.FlowUUID) *FlowWaitEvent {
-	return &FlowWaitEvent{FlowUUID: flow}
+	return &FlowWaitEvent{
+		BaseEvent: NewBaseEvent(),
+		FlowUUID:  flow,
+	}
 }
 
 // Type returns the type of this event
 func (e *FlowWaitEvent) Type() string { return TypeFlowWait }
+
+// Apply applies this event to the given run
+func (e *FlowWaitEvent) Apply(run flows.FlowRun) {}

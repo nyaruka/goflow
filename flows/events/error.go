@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/flows"
+
 // TypeError is the type of our error events
 const TypeError string = "error"
 
@@ -24,9 +26,13 @@ type ErrorEvent struct {
 // NewErrorEvent returns a new error event for the passed in error
 func NewErrorEvent(err error) *ErrorEvent {
 	return &ErrorEvent{
-		Text: err.Error(),
+		BaseEvent: NewBaseEvent(),
+		Text:      err.Error(),
 	}
 }
 
 // Type returns the type of this event
 func (e *ErrorEvent) Type() string { return TypeError }
+
+// Apply applies this event to the given run
+func (e *ErrorEvent) Apply(run flows.FlowRun) {}

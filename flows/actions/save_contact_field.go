@@ -59,7 +59,7 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// log our event
 	if err == nil {
-		run.AddEvent(step, events.NewSaveToContact(a.FieldUUID, a.FieldName, value))
+		run.ApplyEvent(step, events.NewSaveToContact(a.FieldUUID, a.FieldName, value))
 	}
 
 	return nil

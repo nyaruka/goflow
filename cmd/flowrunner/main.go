@@ -27,7 +27,7 @@ type Output struct {
 
 type FlowTest struct {
 	Extra        json.RawMessage        `json:"extra,omitempty"`
-	ResumeEvents []*utils.TypedEnvelope `json:"resume_events"`
+	CallerEvents []*utils.TypedEnvelope `json:"caller_events"`
 	Outputs      []json.RawMessage      `json:"outputs"`
 }
 
@@ -242,7 +242,7 @@ func main() {
 		}
 		run = session.ActiveRun()
 
-		session, err = engine.ResumeFlow(env, run, event)
+		session, err = engine.ResumeFlow(env, run, []flows.Event{event})
 		if err != nil {
 			log.Print("Error resuming flow: ", err)
 			break

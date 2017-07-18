@@ -195,24 +195,22 @@ func (r *flowRun) SetWait(wait flows.Wait) { r.wait = wait }
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) SetEvent(event flows.Event) { r.event = event }
-func (r *flowRun) Event() flows.Event         { return r.event }
+func (r *flowRun) ApplyEvent(s flows.Step, e flows.Event) {
+	e.Apply(r)
 
-func (r *flowRun) AddEvent(s flows.Step, e flows.Event) {
-	now := time.Now().UTC()
-
-	e.SetCreatedOn(now)
 	e.SetStep(s.UUID())
 
 	fs := s.(*step)
 	fs.addEvent(e)
 
-	r.Session().AddEvent(e)
-	r.setModifiedOn(now)
+	if !e.FromCaller() {
+		r.Session().AddEvent(e)
+		r.setModifiedOn(time.Now().UTC())
+	}
 }
 
 func (r *flowRun) AddError(step flows.Step, err error) {
-	r.AddEvent(step, &events.ErrorEvent{Text: err.Error()})
+	r.ApplyEvent(step, &events.ErrorEvent{Text: err.Error()})
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

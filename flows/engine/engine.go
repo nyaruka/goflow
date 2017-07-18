@@ -9,14 +9,9 @@ import (
 )
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, input flows.Input, extra json.RawMessage) (flows.Session, error) {
+func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
 	// build our run
 	run := flow.CreateRun(env, contact, parent)
-
-	// if we got an input, set it
-	if input != nil {
-		run.SetInput(input)
-	}
 
 	// if we got extra, set it
 	if extra != nil {
@@ -30,12 +25,12 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	}
 
 	// off to the races
-	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, input)
+	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, callerEvents)
 	return run.Session(), err
 }
 
 // ResumeFlow resumes our flow from the last step
-func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event) (flows.Session, error) {
+func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, callerEvents []flows.Event) (flows.Session, error) {
 	// to resume a flow, hydrate our run with the environment
 	err := run.Hydrate(env)
 	if err != nil {
@@ -59,7 +54,8 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 		return run.Session(), nil
 	}
 
-	destination, step, err := resumeNode(run, node, step, event)
+	// the first event resumes the wait
+	destination, step, err := resumeNode(run, node, step, callerEvents)
 	if err != nil {
 		return run.Session(), err
 	}
@@ -79,14 +75,14 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, event flows.Event)
 			return run.Session(), nil
 		}
 		parentRun.SetSession(run.Session())
-		return ResumeFlow(env, parentRun, event)
+		return ResumeFlow(env, parentRun, []flows.Event{event})
 	}
 
 	return run.Session(), nil
 }
 
 // Continues the flow entering the passed in flow
-func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, event flows.Event) (err error) {
+func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
 	// set of uuids we've visited
 	visited := make(visitedMap)
 
@@ -104,10 +100,10 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 			break
 		}
 
-		destination, step, err = enterNode(run, node, event)
+		destination, step, err = enterNode(run, node, callerEvents)
 
-		// only pass our event to the first node, it is in charge of logging it
-		event = nil
+		// only pass our caller events to the first node as it is responsible for handling them
+		callerEvents = nil
 
 		// mark this node as visited to prevent loops
 		visited[node.UUID()] = true
@@ -132,7 +128,8 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 	return nil
 }
 
-func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, event flows.Event) (flows.NodeUUID, flows.Step, error) {
+// Resumes the node that the run is currently waiting on using the provided caller events
+func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
 	wait := node.Wait()
 
 	// it's an error to resume a flow at a wait that no longer exists, error
@@ -143,24 +140,30 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, event flows
 		return noDestination, step, nil
 	}
 
-	err := wait.End(run, step, event)
+	// try to resume our wait with the first caller event
+	err := wait.End(run, step, callerEvents[0])
 	if err != nil {
 		run.AddError(step, err)
 		run.Exit(flows.StatusErrored)
 		return noDestination, step, nil
 	}
 
+	// if we are allowed to proceed then we can apply the caller events
+	for _, event := range callerEvents {
+		run.ApplyEvent(step, event)
+	}
+
 	// determine our exit
 	return pickNodeExit(run, node, step)
 }
 
-func enterNode(run flows.FlowRun, node flows.Node, event flows.Event) (flows.NodeUUID, flows.Step, error) {
+func enterNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
 	// create our step
 	step := run.CreateStep(node)
 
-	// log our entry event if we have one
-	if event != nil {
-		run.AddEvent(step, event)
+	// apply any caller events
+	for _, event := range callerEvents {
+		run.ApplyEvent(step, event)
 	}
 
 	// execute our actions
@@ -258,8 +261,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" {
 		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
-		run.AddEvent(step, event)
-		run.Results().Save(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName, *event.CreatedOn())
+		run.ApplyEvent(step, event)
 	}
 
 	// log any error we received

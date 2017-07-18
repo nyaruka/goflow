@@ -29,6 +29,7 @@ type SaveContactFieldEvent struct {
 // NewSaveToContact returns a new save to contact event
 func NewSaveToContact(field flows.FieldUUID, name string, value string) *SaveContactFieldEvent {
 	return &SaveContactFieldEvent{
+		BaseEvent: NewBaseEvent(),
 		FieldUUID: field,
 		FieldName: name,
 		Value:     value,
@@ -37,3 +38,6 @@ func NewSaveToContact(field flows.FieldUUID, name string, value string) *SaveCon
 
 // Type returns the type of this event
 func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
+
+// Apply applies this event to the given run
+func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) {}

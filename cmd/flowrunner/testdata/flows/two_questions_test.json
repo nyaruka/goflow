@@ -63,16 +63,6 @@
     {
       "events": [
         {
-          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
-          "step_uuid": "",
-          "text": "Blue",
-          "type": "msg_received",
-          "urn": "tel:+12065551212"
-        },
-        {
           "category": "Blue",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -115,7 +105,6 @@
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
               "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
               "step_uuid": "",
               "text": "Blue",
               "type": "msg_received",
@@ -143,7 +132,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "Blue",
                     "type": "msg_received",
@@ -215,16 +203,6 @@
     {
       "events": [
         {
-          "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "id": 0,
-          "step_uuid": "",
-          "text": "Coke",
-          "type": "msg_received",
-          "urn": "tel:+12065551212"
-        },
-        {
           "category": "Coke",
           "created_on": "2000-01-01T00:00:00.000000000-00:00",
           "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -264,7 +242,6 @@
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
               "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "id": 0,
               "step_uuid": "",
               "text": "Coke",
               "type": "msg_received",
@@ -292,7 +269,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "Blue",
                     "type": "msg_received",
@@ -340,7 +316,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "id": 0,
                     "step_uuid": "",
                     "text": "Coke",
                     "type": "msg_received",
@@ -419,12 +394,11 @@
       }
     }
   ],
-  "resume_events": [
+  "caller_events": [
     {
       "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
       "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "id": 0,
       "step_uuid": "",
       "text": "Blue",
       "type": "msg_received",
@@ -434,7 +408,6 @@
       "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
       "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
       "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "id": 0,
       "step_uuid": "",
       "text": "Coke",
       "type": "msg_received",

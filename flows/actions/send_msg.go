@@ -64,15 +64,15 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// create events for each URN
 	for _, urn := range a.URNs {
-		run.AddEvent(step, events.NewSendMsgToURN(urn, text, attachments))
+		run.ApplyEvent(step, events.NewSendMsgToURN(urn, text, attachments))
 	}
 
 	for _, contact := range a.Contacts {
-		run.AddEvent(step, events.NewSendMsgToContact(contact.UUID, text, attachments))
+		run.ApplyEvent(step, events.NewSendMsgToContact(contact.UUID, text, attachments))
 	}
 
 	for _, group := range a.Groups {
-		run.AddEvent(step, events.NewSendMsgToGroup(group.UUID(), text, attachments))
+		run.ApplyEvent(step, events.NewSendMsgToGroup(group.UUID(), text, attachments))
 	}
 	return nil
 }

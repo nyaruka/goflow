@@ -92,8 +92,7 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 	run.SetWebhook(rr)
 
-	event := events.WebhookCalledEvent{URL: rr.URL(), Status: rr.Status(), StatusCode: rr.StatusCode(), Request: rr.Request(), Response: rr.Response()}
-	run.AddEvent(step, &event)
+	run.ApplyEvent(step, events.NewWebhookCalledEvent(rr.URL(), rr.Status(), rr.StatusCode(), rr.Request(), rr.Response()))
 
 	return nil
 }

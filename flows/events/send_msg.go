@@ -32,21 +32,24 @@ type SendMsgEvent struct {
 
 // NewSendMsgToContact creates a new outgoing msg event for the passed in channel, contact and string
 func NewSendMsgToContact(contact flows.ContactUUID, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{ContactUUID: contact, Text: text, Attachments: attachments}
+	event := SendMsgEvent{BaseEvent: NewBaseEvent(), ContactUUID: contact, Text: text, Attachments: attachments}
 	return &event
 }
 
 // NewSendMsgToURN creates a new outgoing msg event for the passed in channel, urn and string
 func NewSendMsgToURN(urn flows.URN, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{URN: urn, Text: text, Attachments: attachments}
+	event := SendMsgEvent{BaseEvent: NewBaseEvent(), URN: urn, Text: text, Attachments: attachments}
 	return &event
 }
 
 // NewSendMsgToGroup creates a new outgoing msg event for the passed in channel, group and string
 func NewSendMsgToGroup(group flows.GroupUUID, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{GroupUUID: group, Text: text, Attachments: attachments}
+	event := SendMsgEvent{BaseEvent: NewBaseEvent(), GroupUUID: group, Text: text, Attachments: attachments}
 	return &event
 }
 
 // Type returns the type of this event
 func (e *SendMsgEvent) Type() string { return TypeSendMsg }
+
+// Apply applies this event to the given run
+func (e *SendMsgEvent) Apply(run flows.FlowRun) {}

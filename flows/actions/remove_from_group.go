@@ -40,6 +40,7 @@ func (a *RemoveFromGroupAction) Validate() error {
 
 // Execute runs the action
 func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
+	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact != nil {
 		groups := make([]*flows.Group, 0)
@@ -47,21 +48,21 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) erro
 		// no groups in our action means remove all
 		if len(a.Groups) == 0 {
 			for _, group := range contact.Groups() {
-				contact.RemoveGroup(group.UUID())
-				groups = append(groups, group)
+				if contact.InGroup(group) {
+					groups = append(groups, group)
+				}
 			}
 
 		} else {
 			for _, group := range a.Groups {
-				removed := contact.RemoveGroup(group.UUID())
-				if removed {
+				if contact.InGroup(group) {
 					groups = append(groups, group)
 				}
 			}
 		}
 
 		if len(groups) > 0 {
-			run.AddEvent(step, events.NewRemoveFromGroup(groups))
+			run.ApplyEvent(step, events.NewRemoveFromGroup(groups))
 		}
 	}
 

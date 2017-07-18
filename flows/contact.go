@@ -51,6 +51,15 @@ func (c *Contact) RemoveGroup(uuid GroupUUID) bool {
 	return false
 }
 
+func (c *Contact) InGroup(group *Group) bool {
+	for i := range c.groups {
+		if c.groups[i].uuid == group.UUID() {
+			return true
+		}
+	}
+	return false
+}
+
 func (c *Contact) Fields() *Fields { return c.fields }
 
 func (c *Contact) Resolve(key string) interface{} {

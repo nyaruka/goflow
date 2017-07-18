@@ -71,7 +71,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	// log our event
-	run.AddEvent(step, events.NewFlowEnterEvent(a.FlowUUID, run.Contact().UUID()))
+	run.ApplyEvent(step, events.NewFlowEnterEvent(a.FlowUUID, run.Contact().UUID()))
 
 	// start it for our current contact
 	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run, nil, nil)
@@ -83,14 +83,14 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// same thing if our child ended as an error, session is horked
 	if run.Child().Status() == flows.StatusErrored {
-		run.AddEvent(step, events.NewFlowExitedEvent(run.Child()))
+		run.ApplyEvent(step, events.NewFlowExitedEvent(run.Child()))
 		return fmt.Errorf("child run for flow '%s' ended in error, ending execution", a.FlowUUID)
 	}
 
 	// did we complete?
 	if run.Child().Status() != flows.StatusActive {
 		// add our exit event
-		run.AddEvent(step, events.NewFlowExitedEvent(run.Child()))
+		run.ApplyEvent(step, events.NewFlowExitedEvent(run.Child()))
 	}
 
 	return nil

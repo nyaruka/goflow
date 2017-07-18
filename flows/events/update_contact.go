@@ -1,5 +1,7 @@
 package events
 
+import "github.com/nyaruka/goflow/flows"
+
 // TypeUpdateContact is the type of our update contact event
 const TypeUpdateContact string = "update_contact"
 
@@ -25,6 +27,7 @@ type UpdateContactEvent struct {
 // NewUpdateContact returns a new save to contact event
 func NewUpdateContact(name string, value string) *UpdateContactEvent {
 	return &UpdateContactEvent{
+		BaseEvent: NewBaseEvent(),
 		FieldName: name,
 		Value:     value,
 	}
@@ -32,3 +35,6 @@ func NewUpdateContact(name string, value string) *UpdateContactEvent {
 
 // Type returns the type of this event
 func (e *UpdateContactEvent) Type() string { return TypeUpdateContact }
+
+// Apply applies this event to the given run
+func (e *UpdateContactEvent) Apply(run flows.FlowRun) {}
