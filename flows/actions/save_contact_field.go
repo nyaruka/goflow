@@ -47,7 +47,7 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	// get our localized value if any
-	template := run.GetText(flows.UUID(a.UUID), "value", a.Value)
+	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 
 	// if we received an error, log it
@@ -59,7 +59,7 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// log our event
 	if err == nil {
-		run.ApplyEvent(step, events.NewSaveToContact(a.FieldUUID, a.FieldName, value))
+		run.ApplyEvent(step, a, events.NewSaveToContact(a.FieldUUID, a.FieldName, value))
 	}
 
 	return nil

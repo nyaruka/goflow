@@ -45,7 +45,7 @@ func (a *ReplyAction) Validate() error {
 // Execute runs this action
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 
-	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID), "text", a.Text))
+	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
 	if err != nil {
 		run.AddError(step, err)
 	}
@@ -57,10 +57,10 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 	urns := run.Contact().URNs()
 	if a.AllURNs && len(urns) > 0 {
 		for _, urn := range urns {
-			run.ApplyEvent(step, events.NewSendMsgToURN(urn, text, a.Attachments))
+			run.ApplyEvent(step, a, events.NewSendMsgToURN(urn, text, a.Attachments))
 		}
 	} else {
-		run.ApplyEvent(step, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
+		run.ApplyEvent(step, a, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
 	}
 
 	return nil

@@ -16,29 +16,22 @@ import (
 )
 
 type flowResponse struct {
-	Contact *flows.Contact `json:"contact"`
-	Session flows.Session  `json:"session"`
-	Events  []flows.Event  `json:"events"`
+	Contact *flows.Contact        `json:"contact"`
+	Session flows.Session         `json:"session"`
+	Events  []flows.EventLogEntry `json:"events"`
 }
 
 func (r *flowResponse) MarshalJSON() ([]byte, error) {
 	envelope := struct {
-		Contact *flows.Contact         `json:"contact"`
-		Session flows.Session          `json:"session"`
-		Events  []*utils.TypedEnvelope `json:"events"`
+		Contact *flows.Contact        `json:"contact"`
+		Session flows.Session         `json:"session"`
+		Events  []flows.EventLogEntry `json:"events"`
 	}{
 		Contact: r.Contact,
 		Session: r.Session,
+		Events:  r.Session.EventLog(),
 	}
 
-	envelope.Events = make([]*utils.TypedEnvelope, len(r.Events))
-	var err error
-	for i := range r.Events {
-		envelope.Events[i], err = utils.EnvelopeFromTyped(r.Events[i])
-		if err != nil {
-			return nil, err
-		}
-	}
 	return json.Marshal(envelope)
 }
 
@@ -109,7 +102,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
 
-	return &flowResponse{Contact: contact, Session: session, Events: session.Events()}, nil
+	return &flowResponse{Contact: contact, Session: session, Events: session.EventLog()}, nil
 }
 
 type resumeRequest struct {
@@ -167,8 +160,8 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, utils.NewValidationError("session: must include at least one run")
 	}
 
-	// clear events if they passed them in
-	session.ClearEvents()
+	// clear the event log if it was passed in
+	session.ClearEventLog()
 
 	// our contact
 	contact, err := flows.ReadContact(resume.Contact)
@@ -205,5 +198,5 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}
 
-	return &flowResponse{Contact: contact, Session: session, Events: session.Events()}, nil
+	return &flowResponse{Contact: contact, Session: session, Events: session.EventLog()}, nil
 }

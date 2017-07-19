@@ -150,7 +150,7 @@ func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, callerEvent
 
 	// if we are allowed to proceed then we can apply the caller events
 	for _, event := range callerEvents {
-		run.ApplyEvent(step, event)
+		run.ApplyEvent(step, nil, event)
 	}
 
 	// determine our exit
@@ -163,7 +163,7 @@ func enterNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (
 
 	// apply any caller events
 	for _, event := range callerEvents {
-		run.ApplyEvent(step, event)
+		run.ApplyEvent(step, nil, event)
 	}
 
 	// execute our actions
@@ -261,7 +261,7 @@ func pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.No
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" {
 		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
-		run.ApplyEvent(step, event)
+		run.ApplyEvent(step, nil, event)
 	}
 
 	// log any error we received
