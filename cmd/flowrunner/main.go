@@ -66,15 +66,6 @@ func rawMessageAsJSON(msg json.RawMessage) (string, error) {
 	return string(replaceFields(envJSON)), nil
 }
 
-func envelopeAsJSON(typed *utils.TypedEnvelope) (string, error) {
-	envJSON, err := json.MarshalIndent(typed, "", "  ")
-	if err != nil {
-		return "", err
-	}
-
-	return string(replaceFields(envJSON)), nil
-}
-
 func eventAsJSON(event flows.Event) (string, error) {
 	env, err := utils.EnvelopeFromTyped(event)
 	if err != nil {
