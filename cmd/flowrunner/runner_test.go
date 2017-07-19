@@ -123,7 +123,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		outputs = append(outputs, &Output{outJSON, envelopesForEvents(session.Events())})
+		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.EventLog())})
 
 		session, err = runs.ReadSession(outJSON)
 		if err != nil {
@@ -155,7 +155,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	if err != nil {
 		return nil, fmt.Errorf("Error marshalling output: %s", err)
 	}
-	outputs = append(outputs, &Output{outJSON, envelopesForEvents(session.Events())})
+	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.EventLog())})
 
 	return outputs, nil
 }
@@ -304,20 +304,20 @@ func TestFlows(t *testing.T) {
 					}
 				}
 
-				if len(actualOutput.Events) != len(expectedOutput.Events) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, test.flow)
+				if len(actualOutput.EventLog) != len(expectedOutput.EventLog) {
+					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.EventLog, expectedOutput.EventLog, test.flow)
 				}
 
-				for j := range actualOutput.Events {
-					event := actualOutput.Events[j]
-					expected := expectedOutput.Events[j]
+				for j := range actualOutput.EventLog {
+					event := actualOutput.EventLog[j]
+					expected := expectedOutput.EventLog[j]
 
 					// write our events as json
-					eventJSON, err := envelopeAsJSON(event)
+					eventJSON, err := rawMessageAsJSON(event)
 					if err != nil {
 						t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
 					}
-					expectedJSON, err := envelopeAsJSON(expected)
+					expectedJSON, err := rawMessageAsJSON(expected)
 					if err != nil {
 						t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
 					}
