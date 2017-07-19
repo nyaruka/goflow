@@ -244,6 +244,7 @@ func main() {
 
 		// create our event to resume with
 		event := events.NewMsgReceivedEvent(channelUUID, contact.UUID(), contact.URNs()[0], scanner.Text())
+		event.SetFromCaller(true)
 		inputs = append(inputs, event)
 
 		// rebuild our session
