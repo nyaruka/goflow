@@ -1,36 +1,58 @@
 {
+  "caller_events": [
+    {
+      "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+      "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+      "text": "Something!",
+      "type": "msg_received",
+      "urn": "tel:+12065551212"
+    }
+  ],
   "outputs": [
     {
       "events": [
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "This is the first message.",
-          "type": "send_msg"
+          "action_uuid": "59cee8f1-ed9e-453e-bc17-6f1996e959d0",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "This is the first message.",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
-          "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-          "status": "S",
-          "status_code": 200,
-          "step_uuid": "",
-          "type": "webhook_called",
-          "url": "http://127.0.0.1:49999/?cmd=success"
+          "action_uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
+            "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+            "status": "S",
+            "status_code": 200,
+            "type": "webhook_called",
+            "url": "http://127.0.0.1:49999/?cmd=success"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "The status is true. Send something",
-          "type": "send_msg"
+          "action_uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "The status is true. Send something",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "timeout": 0,
-          "type": "msg_wait"
+          "action_uuid": null,
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "timeout": 0,
+            "type": "msg_wait"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
@@ -50,7 +72,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "This is the first message.",
                     "type": "send_msg"
                   }
@@ -69,7 +90,6 @@
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
                     "status": "S",
                     "status_code": 200,
-                    "step_uuid": "",
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                   }
@@ -85,7 +105,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "The status is true. Send something",
                     "type": "send_msg"
                   }
@@ -100,7 +119,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "timeout": 0,
                     "type": "msg_wait"
                   }
@@ -131,11 +149,14 @@
     {
       "events": [
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "The status is now true",
-          "type": "send_msg"
+          "action_uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "The status is now true",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
@@ -151,7 +172,6 @@
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
               "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "Something!",
               "type": "msg_received",
               "urn": "tel:+12065551212"
@@ -164,7 +184,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "This is the first message.",
                     "type": "send_msg"
                   }
@@ -183,7 +202,6 @@
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
                     "status": "S",
                     "status_code": 200,
-                    "step_uuid": "",
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                   }
@@ -199,7 +217,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "The status is true. Send something",
                     "type": "send_msg"
                   }
@@ -214,7 +231,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "timeout": 0,
                     "type": "msg_wait"
                   },
@@ -222,7 +238,6 @@
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Something!",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -239,7 +254,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "The status is now true",
                     "type": "send_msg"
                   }
@@ -265,17 +279,6 @@
           }
         ]
       }
-    }
-  ],
-  "caller_events": [
-    {
-      "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-      "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-      "created_on": "2000-01-01T00:00:00.000000000-00:00",
-      "step_uuid": "",
-      "text": "Something!",
-      "type": "msg_received",
-      "urn": "tel:+12065551212"
     }
   ]
 }

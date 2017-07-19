@@ -1,4 +1,5 @@
 {
+  "caller_events": [],
   "outputs": [
     {
       "events": [],
@@ -21,6 +22,5 @@
         ]
       }
     }
-  ],
-  "caller_events": []
+  ]
 }
