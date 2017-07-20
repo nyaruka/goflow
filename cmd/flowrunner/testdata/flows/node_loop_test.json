@@ -2,7 +2,7 @@
   "caller_events": [],
   "outputs": [
     {
-      "events": [
+      "log": [
         {
           "action_uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
           "event": {

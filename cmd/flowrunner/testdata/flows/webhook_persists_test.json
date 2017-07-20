@@ -11,7 +11,7 @@
   ],
   "outputs": [
     {
-      "events": [
+      "log": [
         {
           "action_uuid": "59cee8f1-ed9e-453e-bc17-6f1996e959d0",
           "event": {
@@ -147,7 +147,7 @@
       }
     },
     {
-      "events": [
+      "log": [
         {
           "action_uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
           "event": {

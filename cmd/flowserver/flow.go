@@ -16,20 +16,20 @@ import (
 )
 
 type flowResponse struct {
-	Contact *flows.Contact        `json:"contact"`
-	Session flows.Session         `json:"session"`
-	Events  []flows.LogEntry `json:"events"`
+	Contact *flows.Contact   `json:"contact"`
+	Session flows.Session    `json:"session"`
+	Log     []flows.LogEntry `json:"log"`
 }
 
 func (r *flowResponse) MarshalJSON() ([]byte, error) {
 	envelope := struct {
-		Contact *flows.Contact        `json:"contact"`
-		Session flows.Session         `json:"session"`
-		Events  []flows.LogEntry `json:"events"`
+		Contact *flows.Contact   `json:"contact"`
+		Session flows.Session    `json:"session"`
+		Log     []flows.LogEntry `json:"log"`
 	}{
 		Contact: r.Contact,
 		Session: r.Session,
-		Events:  r.Session.Log(),
+		Log:     r.Session.Log(),
 	}
 
 	return json.Marshal(envelope)
@@ -102,7 +102,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
 
-	return &flowResponse{Contact: contact, Session: session, Events: session.Log()}, nil
+	return &flowResponse{Contact: contact, Session: session, Log: session.Log()}, nil
 }
 
 type resumeRequest struct {
@@ -198,5 +198,5 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}
 
-	return &flowResponse{Contact: contact, Session: session, Events: session.Log()}, nil
+	return &flowResponse{Contact: contact, Session: session, Log: session.Log()}, nil
 }

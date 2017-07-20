@@ -21,8 +21,8 @@ import (
 )
 
 type Output struct {
-	Session  json.RawMessage   `json:"session"`
-	EventLog []json.RawMessage `json:"events"`
+	Session json.RawMessage   `json:"session"`
+	Log     []json.RawMessage `json:"log"`
 }
 
 type FlowTest struct {
