@@ -135,13 +135,13 @@ var funcTests = []struct {
 	{"word_count", []interface{}{struct{}{}}, nil, true},
 	{"word_count", []interface{}{}, nil, true},
 
-	{"field", []interface{}{"hello,World", "2", ","}, "World", false},
-	{"field", []interface{}{"hello,world", "3", ","}, "", false},
-	{"field", []interface{}{"hello", "1", ","}, "hello", false},
+	{"field", []interface{}{"hello,World", "1", ","}, "World", false},
+	{"field", []interface{}{"hello,world", "2", ","}, "", false},
+	{"field", []interface{}{"hello", "0", ","}, "hello", false},
 	{"field", []interface{}{"hello,World", "-2", ","}, nil, true},
 	{"field", []interface{}{"", "notnum", ","}, nil, true},
-	{"field", []interface{}{struct{}{}, "1", ","}, nil, true},
-	{"field", []interface{}{"hello", "1", struct{}{}}, nil, true},
+	{"field", []interface{}{struct{}{}, "0", ","}, nil, true},
+	{"field", []interface{}{"hello", "0", struct{}{}}, nil, true},
 	{"field", []interface{}{struct{}{}}, nil, true},
 
 	{"clean", []interface{}{"hello"}, "hello", false},
