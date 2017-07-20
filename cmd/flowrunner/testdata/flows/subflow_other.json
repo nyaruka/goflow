@@ -39,7 +39,7 @@
                             "type": "has_run_status",
                             "uuid": "57eda3da-817b-4942-a5fc-e1ea5d12c82d",
                             "arguments": [
-                                "C"
+                                "completed"
                             ],
                             "exit_uuid": "f68d80e5-651c-404a-bbc0-efa6966254a6"
                         }

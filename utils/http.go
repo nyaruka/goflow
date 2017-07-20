@@ -17,13 +17,13 @@ type RequestResponseStatus string
 
 const (
 	// RRSuccess represents that the webhook was successful
-	RRSuccess RequestResponseStatus = "S"
+	RRSuccess RequestResponseStatus = "success"
 
-	// RRConnectionFailure represents that the webhook had a connection failure
-	RRConnectionFailure RequestResponseStatus = "F"
+	// RRConnectionError represents that the webhook had a connection error
+	RRConnectionError RequestResponseStatus = "connection_error"
 
-	// RRStatusFailure represents that the webhook had a non 2xx status code
-	RRStatusFailure RequestResponseStatus = "E"
+	// RRResponseError represents that the webhook response had a non 2xx status code
+	RRResponseError RequestResponseStatus = "response_error"
 )
 
 func (r RequestResponseStatus) String() string {
@@ -112,7 +112,7 @@ func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError
 	rr.url = r.URL.String()
 
 	rr.request = requestTrace
-	rr.status = RRConnectionFailure
+	rr.status = RRConnectionError
 	rr.body = requestError.Error()
 
 	return &rr, nil
@@ -129,7 +129,7 @@ func newRRFromResponse(requestTrace string, r *http.Response) (*RequestResponse,
 	if rr.statusCode/100 == 2 {
 		rr.status = RRSuccess
 	} else {
-		rr.status = RRStatusFailure
+		rr.status = RRResponseError
 	}
 
 	rr.request = requestTrace

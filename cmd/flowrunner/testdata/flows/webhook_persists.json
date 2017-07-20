@@ -48,7 +48,7 @@
                     "cases": [
                         {
                             "arguments": [
-                                "S"
+                                "success"
                             ],
                             "uuid": "789b45bc-005a-46db-8331-6a966c0141c2",
                             "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",

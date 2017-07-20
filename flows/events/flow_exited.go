@@ -20,7 +20,7 @@ const TypeFlowExited string = "flow_exited"
 //    "flow_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
 //    "contact_uuid": "95eb96df-461b-4668-b168-727f8ceb13dd",
 //    "exited_on": "2006-01-02T15:04:05Z",
-//    "status": "C"
+//    "status": "completed"
 //   }
 // ```
 //

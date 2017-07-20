@@ -63,7 +63,7 @@
               }
             ],
             "results": {},
-            "status": "A",
+            "status": "active",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
             "wait": {
@@ -196,7 +196,7 @@
                 "value": "1977-06-23T15:34:00.000000-05:00"
               }
             },
-            "status": "C",
+            "status": "completed",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }

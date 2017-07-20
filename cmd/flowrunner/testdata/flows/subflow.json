@@ -31,7 +31,7 @@
                             "uuid": "19a95efc-ac69-4b6a-a90b-f84a60b49e4f",
                             "type": "has_run_status",
                             "arguments": [
-                                "C"
+                                "completed"
                             ],
                             "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef"
                         },
