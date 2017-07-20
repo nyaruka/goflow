@@ -354,7 +354,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
 			testType = "has_webhook_status"
-			arguments = []string{"S"}
+			arguments = []string{"success"}
 		} else {
 			return routers.Case{}, fmt.Errorf("No failure test")
 		}

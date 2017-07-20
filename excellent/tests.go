@@ -200,11 +200,11 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 
 // HasWebhookStatus returns whether the passed in webhook response, `response`, has the passed in status
 //
-// Valid webhook statuses are "S" for success, "F" for a connection failure and "E" for
+// Valid webhook statuses are "success", "connection_error" for a connection error, and "response_error" for
 // a non-2xx response code.
 //
-//  @(has_webhook_status(webhook, "S")) -> true
-//  @(has_webhook_status(webhook, "F")) -> false
+//  @(has_webhook_status(webhook, "success")) -> true
+//  @(has_webhook_status(webhook, "connection_error")) -> false
 //
 // @test has_webhook_status(response)
 func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
@@ -223,7 +223,7 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with a string as second argument")
 	}
 
-	if utils.RequestResponseStatus(strings.ToUpper(status)) == rr.Status() {
+	if utils.RequestResponseStatus(strings.ToLower(status)) == rr.Status() {
 		return XTestResult{true, rr.Status()}
 	}
 
