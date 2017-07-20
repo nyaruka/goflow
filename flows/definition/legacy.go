@@ -167,10 +167,13 @@ func addTranslation(baseLanguage utils.Language, translations *flowTranslations,
 }
 
 var testTranslations = map[string]string{
-	"contains":     "has_all_words",
-	"contains_any": "has_any_word",
-	"not_empty":    "has_text",
-	"between":      "has_number_between",
+	"contains":             "has_all_words",
+	"contains_any":         "has_any_word",
+	"contains_phrase":      "has_phrase",
+	"contains_only_phrase": "has_only_phrase",
+	"not_empty":            "has_text",
+	"number":               "has_number",
+	"between":              "has_number_between",
 }
 
 func translateTest(test string) string {
@@ -364,12 +367,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		testType = translateTest(testType)
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Min, test.Max}
-
-	case "regex":
-		fallthrough
-	case "contains":
-		fallthrough
-	case "contains_any":
+	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 
