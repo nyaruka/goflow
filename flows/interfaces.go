@@ -72,19 +72,19 @@ type RunStatus string
 
 const (
 	// StatusActive represents an active flow run that is awaiting input
-	StatusActive RunStatus = "A"
+	StatusActive RunStatus = "active"
 
 	// StatusCompleted represents a flow run that has run to completion
-	StatusCompleted RunStatus = "C"
+	StatusCompleted RunStatus = "completed"
 
 	// StatusErrored represents a flow run that encountered an error
-	StatusErrored RunStatus = "E"
+	StatusErrored RunStatus = "errored"
 
 	// StatusExpired represents a flow run that expired due to inactivity
-	StatusExpired RunStatus = "X"
+	StatusExpired RunStatus = "expired"
 
 	// StatusInterrupted represents a flow run that was interrupted by another flow
-	StatusInterrupted RunStatus = "I"
+	StatusInterrupted RunStatus = "interrupted"
 )
 
 func (r RunStatus) String() string { return string(r) }

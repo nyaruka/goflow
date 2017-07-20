@@ -169,11 +169,10 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 
 // HasRunStatus returns whether `run` has the passed in status
 //
-// Valid run statuses are "A" for active, "C" for complete, "E" for expired
-// and "I" for interrupted
+// Valid run statuses are "active", "completed", "expired" and "interrupted"
 //
-//  @(has_run_status(run, "C")) -> true
-//  @(has_run_status(child, "E")) -> false
+//  @(has_run_status(run, "completed")) -> true
+//  @(has_run_status(child, "expired")) -> false
 //
 // @test has_run_status(run)
 func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
@@ -192,7 +191,7 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_RUN_STATUS must be called with a string as second argument")
 	}
 
-	if flows.RunStatus(strings.ToUpper(status)) == run.Status() {
+	if flows.RunStatus(strings.ToLower(status)) == run.Status() {
 		return XTestResult{true, run.Status()}
 	}
 

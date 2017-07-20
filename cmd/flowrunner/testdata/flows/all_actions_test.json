@@ -64,7 +64,7 @@
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "status": "C",
+            "status": "completed",
             "type": "flow_exited"
           },
           "step_uuid": ""
@@ -238,7 +238,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "status": "C",
+                    "status": "completed",
                     "type": "flow_exited"
                   },
                   {
@@ -326,7 +326,7 @@
                 "value": "m"
               }
             },
-            "status": "C",
+            "status": "completed",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
             "webhook": {
@@ -349,7 +349,7 @@
             "parent_uuid": "",
             "path": [],
             "results": {},
-            "status": "C",
+            "status": "completed",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }

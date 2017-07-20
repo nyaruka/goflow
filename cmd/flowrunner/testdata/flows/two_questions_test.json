@@ -71,7 +71,7 @@
               }
             ],
             "results": {},
-            "status": "A",
+            "status": "active",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
             "wait": {
@@ -215,7 +215,7 @@
                 "value": "Blue"
               }
             },
-            "status": "A",
+            "status": "active",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
             "wait": {
@@ -401,7 +401,7 @@
                 "value": "Coke"
               }
             },
-            "status": "C",
+            "status": "completed",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
             "webhook": {
