@@ -51,7 +51,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// how many times have we started this flow in this session without exiting?
 	startCount := 0
-	for _, logEntry := range run.Session().EventLog() {
+	for _, logEntry := range run.Session().Log() {
 		evt := logEntry.Event()
 		enter, isEnter := evt.(*events.FlowEnteredEvent)
 		if isEnter && enter.FlowUUID == a.FlowUUID {

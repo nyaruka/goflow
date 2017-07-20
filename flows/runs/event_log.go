@@ -7,38 +7,38 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type eventLogEntry struct {
+type logEntry struct {
 	stepUUID   flows.StepUUID
 	actionUUID flows.ActionUUID
 	event      flows.Event
 }
 
-// NewEventLogEntry creates a new event log entry
-func NewEventLogEntry(step flows.Step, action flows.Action, event flows.Event) flows.EventLogEntry {
+// NewLogEntry creates a new event log entry
+func NewLogEntry(step flows.Step, action flows.Action, event flows.Event) flows.LogEntry {
 	var actionUUID flows.ActionUUID
 	if action != nil {
 		actionUUID = action.UUID()
 	}
 
-	return &eventLogEntry{stepUUID: step.UUID(), actionUUID: actionUUID, event: event}
+	return &logEntry{stepUUID: step.UUID(), actionUUID: actionUUID, event: event}
 }
 
-func (s *eventLogEntry) StepUUID() flows.StepUUID     { return s.stepUUID }
-func (s *eventLogEntry) ActionUUID() flows.ActionUUID { return s.actionUUID }
-func (s *eventLogEntry) Event() flows.Event           { return s.event }
+func (s *logEntry) StepUUID() flows.StepUUID     { return s.stepUUID }
+func (s *logEntry) ActionUUID() flows.ActionUUID { return s.actionUUID }
+func (s *logEntry) Event() flows.Event           { return s.event }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type eventLogEntryEnvelope struct {
+type logEntryEnvelope struct {
 	StepUUID   flows.StepUUID       `json:"step_uuid"   validate:"required"`
 	ActionUUID *flows.ActionUUID    `json:"action_uuid"`
 	Event      *utils.TypedEnvelope `json:"event"       validate:"required"`
 }
 
-func (s *eventLogEntry) MarshalJSON() ([]byte, error) {
-	var se eventLogEntryEnvelope
+func (s *logEntry) MarshalJSON() ([]byte, error) {
+	var se logEntryEnvelope
 
 	se.StepUUID = s.stepUUID
 	if s.actionUUID != "" {
@@ -50,7 +50,7 @@ func (s *eventLogEntry) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	se.Event = &utils.TypedEnvelope{s.event.Type(), eventData}
+	se.Event = &utils.TypedEnvelope{Type: s.event.Type(), Data: eventData}
 
 	return json.Marshal(se)
 }

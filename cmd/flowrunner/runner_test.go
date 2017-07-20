@@ -123,7 +123,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.EventLog())})
+		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
 		session, err = runs.ReadSession(outJSON)
 		if err != nil {
@@ -155,7 +155,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	if err != nil {
 		return nil, fmt.Errorf("Error marshalling output: %s", err)
 	}
-	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.EventLog())})
+	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
 	return outputs, nil
 }

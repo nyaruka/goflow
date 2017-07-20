@@ -44,7 +44,7 @@ func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {
 	return envelopes
 }
 
-func marshalEventLog(eventLog []flows.EventLogEntry) []json.RawMessage {
+func marshalEventLog(eventLog []flows.LogEntry) []json.RawMessage {
 	envelopes := make([]json.RawMessage, len(eventLog))
 	for i := range eventLog {
 		envelope, err := json.Marshal(eventLog[i])
@@ -220,10 +220,10 @@ func main() {
 			log.Fatal("Error marshalling output: ", err)
 		}
 		fmt.Printf("%s\n", outJSON)
-		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.EventLog())})
+		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
 		// print any send_msg events
-		for _, e := range session.EventLog() {
+		for _, e := range session.Log() {
 			if e.Event().Type() == events.TypeSendMsg {
 				fmt.Printf(">>> %s\n", e.Event().(*events.SendMsgEvent).Text)
 			}
@@ -271,7 +271,7 @@ func main() {
 		log.Fatal("Error marshalling output: ", err)
 	}
 	fmt.Printf("%s\n", outJSON)
-	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.EventLog())})
+	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
 	// write out our test file
 	if *writePtr {
