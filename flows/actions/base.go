@@ -6,5 +6,11 @@ import (
 
 // BaseAction is our base action type
 type BaseAction struct {
-	UUID flows.ActionUUID `json:"uuid"    validate:"required,uuid4"`
+	UUID_ flows.ActionUUID `json:"uuid"    validate:"required,uuid4"`
 }
+
+func NewBaseAction(uuid flows.ActionUUID) BaseAction {
+	return BaseAction{UUID_: uuid}
+}
+
+func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }

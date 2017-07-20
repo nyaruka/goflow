@@ -48,7 +48,7 @@ func (a *SendMsgAction) Validate() error {
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// TODO: customize this for receiving contacts instead of one global replace
-	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID), "text", a.Text))
+	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
 	if err != nil {
 		run.AddError(step, err)
 	}
@@ -64,15 +64,15 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// create events for each URN
 	for _, urn := range a.URNs {
-		run.ApplyEvent(step, events.NewSendMsgToURN(urn, text, attachments))
+		run.ApplyEvent(step, a, events.NewSendMsgToURN(urn, text, attachments))
 	}
 
 	for _, contact := range a.Contacts {
-		run.ApplyEvent(step, events.NewSendMsgToContact(contact.UUID, text, attachments))
+		run.ApplyEvent(step, a, events.NewSendMsgToContact(contact.UUID, text, attachments))
 	}
 
 	for _, group := range a.Groups {
-		run.ApplyEvent(step, events.NewSendMsgToGroup(group.UUID(), text, attachments))
+		run.ApplyEvent(step, a, events.NewSendMsgToGroup(group.UUID(), text, attachments))
 	}
 	return nil
 }

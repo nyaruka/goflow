@@ -9,7 +9,7 @@ import (
 
 type session struct {
 	runs   []flows.FlowRun
-	events []flows.Event
+	events []flows.LogEntry
 }
 
 func newSession() *session {
@@ -52,9 +52,11 @@ func (s *session) ActiveRun() flows.FlowRun {
 	return active
 }
 
-func (s *session) AddEvent(event flows.Event) { s.events = append(s.events, event) }
-func (s *session) Events() []flows.Event      { return s.events }
-func (s *session) ClearEvents()               { s.events = nil }
+func (s *session) LogEvent(step flows.Step, action flows.Action, event flows.Event) {
+	s.events = append(s.events, NewLogEntry(step, action, event))
+}
+func (s *session) Log() []flows.LogEntry { return s.events }
+func (s *session) ClearLog()                  { s.events = nil }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

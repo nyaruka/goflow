@@ -91,10 +91,10 @@ func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
 		return nil, err
 	}
 
-	events := session.Events()
-	eventJSON := make([]json.RawMessage, len(events))
-	for i, event := range events {
-		typed, err := utils.EnvelopeFromTyped(event)
+	eventLog := session.Log()
+	eventJSON := make([]json.RawMessage, len(eventLog))
+	for i, logEntry := range eventLog {
+		typed, err := utils.EnvelopeFromTyped(logEntry.Event())
 		if err != nil {
 			return nil, err
 		}
@@ -103,7 +103,7 @@ func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
 			return nil, err
 		}
 	}
-	if len(events) == 1 {
+	if len(eventLog) == 1 {
 		return eventJSON[0], err
 	}
 	js, err := json.MarshalIndent(eventJSON, "", "    ")

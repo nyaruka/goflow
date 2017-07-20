@@ -50,7 +50,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 		}
 		if len(groups) > 0 {
-			run.ApplyEvent(step, events.NewGroupEvent(groups))
+			run.ApplyEvent(step, a, events.NewGroupEvent(groups))
 		}
 	}
 

@@ -62,7 +62,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) erro
 		}
 
 		if len(groups) > 0 {
-			run.ApplyEvent(step, events.NewRemoveFromGroup(groups))
+			run.ApplyEvent(step, a, events.NewRemoveFromGroup(groups))
 		}
 	}
 

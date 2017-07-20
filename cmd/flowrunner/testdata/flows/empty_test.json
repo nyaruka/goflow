@@ -1,7 +1,8 @@
 {
+  "caller_events": [],
   "outputs": [
     {
-      "events": [],
+      "log": [],
       "session": {
         "runs": [
           {
@@ -21,6 +22,5 @@
         ]
       }
     }
-  ],
-  "caller_events": []
+  ]
 }

@@ -67,7 +67,7 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 		if err != nil {
 			run.AddError(step, err)
 		}
-		run.ApplyEvent(step, events.NewSendEmailEvent(email, subject, body))
+		run.ApplyEvent(step, a, events.NewSendEmailEvent(email, subject, body))
 	}
 	return nil
 }

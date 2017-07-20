@@ -190,10 +190,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}
 
 		return &actions.AddLabelAction{
-			Labels: labels,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			Labels:     labels,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 
 	case "email":
@@ -204,38 +202,30 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}
 
 		return &actions.EmailAction{
-			Subject: a.Subject,
-			Body:    msg,
-			Emails:  a.Emails,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			Subject:    a.Subject,
+			Body:       msg,
+			Emails:     a.Emails,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 
 	case "lang":
 		return &actions.SaveContactField{
-			FieldUUID: "language",
-			FieldName: "Language",
-			Value:     string(a.Language),
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			FieldUUID:  "language",
+			FieldName:  "Language",
+			Value:      string(a.Language),
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "channel":
 		return &actions.PreferredChannelAction{
 			ChannelUUID: a.Channel,
 			Name:        a.Name,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			BaseAction:  actions.NewBaseAction(a.UUID),
 		}, nil
 	case "flow":
 		return &actions.StartFlowAction{
-			FlowUUID: a.Flow.UUID,
-			FlowName: a.Name,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			FlowUUID:   a.Flow.UUID,
+			FlowName:   a.Name,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "reply":
 		msg := make(map[utils.Language]string)
@@ -267,10 +257,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		return &actions.ReplyAction{
 			Text:        textExpression,
 			Attachments: attachments,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
-			AllURNs: a.SendAll,
+			BaseAction:  actions.NewBaseAction(a.UUID),
+			AllURNs:     a.SendAll,
 		}, nil
 	case "add_group":
 		groups := make([]*flows.Group, len(a.Groups))
@@ -279,10 +267,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}
 
 		return &actions.AddToGroupAction{
-			Groups: groups,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			Groups:     groups,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "del_group":
 		groups := make([]*flows.Group, len(a.Groups))
@@ -291,10 +277,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}
 
 		return &actions.RemoveFromGroupAction{
-			Groups: groups,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			Groups:     groups,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":
 		fieldUUID, ok := fieldMap[a.Value]
@@ -307,39 +291,31 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 		if a.Field == "name" || a.Field == "language" {
 			return &actions.UpdateContactAction{
-				FieldName: a.Field,
-				Value:     translated,
-				BaseAction: actions.BaseAction{
-					UUID: a.UUID,
-				},
+				FieldName:  a.Field,
+				Value:      translated,
+				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil
 		}
 
 		return &actions.SaveContactField{
-			FieldName: a.Label,
-			Value:     translated,
-			FieldUUID: fieldUUID,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			FieldName:  a.Label,
+			Value:      translated,
+			FieldUUID:  fieldUUID,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "set_language":
 		return &actions.SaveContactField{
-			FieldUUID: "language",
-			FieldName: "Language",
-			Value:     string(a.Value),
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			FieldUUID:  "language",
+			FieldName:  "Language",
+			Value:      string(a.Value),
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":
 		translated, _ := excellent.TranslateTemplate(a.Webhook)
 		return &actions.WebhookAction{
-			Method: a.Action,
-			URL:    translated,
-			BaseAction: actions.BaseAction{
-				UUID: a.UUID,
-			},
+			Method:     a.Action,
+			URL:        translated,
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	default:
 		return nil, fmt.Errorf("couldn't create action for %s", a.Type)

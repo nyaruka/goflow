@@ -21,8 +21,8 @@ import (
 )
 
 type Output struct {
-	Session json.RawMessage        `json:"session"`
-	Events  []*utils.TypedEnvelope `json:"events"`
+	Session json.RawMessage   `json:"session"`
+	Log     []json.RawMessage `json:"log"`
 }
 
 type FlowTest struct {
@@ -44,8 +44,21 @@ func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {
 	return envelopes
 }
 
-func envelopeAsJSON(typed *utils.TypedEnvelope) (string, error) {
-	envJSON, err := json.MarshalIndent(typed, "", "  ")
+func marshalEventLog(eventLog []flows.LogEntry) []json.RawMessage {
+	envelopes := make([]json.RawMessage, len(eventLog))
+	for i := range eventLog {
+		envelope, err := json.Marshal(eventLog[i])
+		if err != nil {
+			log.Fatalf("Error creating envelope for %s: %s", eventLog[i], err)
+		}
+
+		envelopes[i] = envelope
+	}
+	return envelopes
+}
+
+func rawMessageAsJSON(msg json.RawMessage) (string, error) {
+	envJSON, err := json.MarshalIndent(msg, "", "  ")
 	if err != nil {
 		return "", err
 	}
@@ -207,12 +220,12 @@ func main() {
 			log.Fatal("Error marshalling output: ", err)
 		}
 		fmt.Printf("%s\n", outJSON)
-		outputs = append(outputs, &Output{outJSON, envelopesForEvents(session.Events())})
+		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		// print any events
-		for _, e := range session.Events() {
-			if e.Type() == events.TypeSendMsg {
-				fmt.Printf(">>> %s\n", e.(*events.SendMsgEvent).Text)
+		// print any send_msg events
+		for _, e := range session.Log() {
+			if e.Event().Type() == events.TypeSendMsg {
+				fmt.Printf(">>> %s\n", e.Event().(*events.SendMsgEvent).Text)
 			}
 		}
 
@@ -222,6 +235,7 @@ func main() {
 
 		// create our event to resume with
 		event := events.NewMsgReceivedEvent(channelUUID, contact.UUID(), contact.URNs()[0], scanner.Text())
+		event.SetFromCaller(true)
 		inputs = append(inputs, event)
 
 		// rebuild our session
@@ -257,7 +271,7 @@ func main() {
 		log.Fatal("Error marshalling output: ", err)
 	}
 	fmt.Printf("%s\n", outJSON)
-	outputs = append(outputs, &Output{outJSON, envelopesForEvents(session.Events())})
+	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
 	// write out our test file
 	if *writePtr {

@@ -46,7 +46,7 @@ func (a *SaveFlowResultAction) Validate() error {
 // Execute runs this action
 func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// get our localized value if any
-	template := run.GetText(flows.UUID(a.UUID), "value", a.Value)
+	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 
 	// log any error received
@@ -54,7 +54,7 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 		run.AddError(step, err)
 	}
 
-	template = run.GetText(flows.UUID(a.UUID), "category", a.Category)
+	template = run.GetText(flows.UUID(a.UUID()), "category", a.Category)
 	categoryLocalized, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 	if err != nil {
 		run.AddError(step, err)
@@ -64,7 +64,7 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 		categoryLocalized = ""
 	}
 
-	run.ApplyEvent(step, events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized))
+	run.ApplyEvent(step, a, events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized))
 
 	return nil
 }
