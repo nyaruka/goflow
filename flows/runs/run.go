@@ -84,7 +84,6 @@ type flowRun struct {
 	wait    flows.Wait
 	webhook *utils.RequestResponse
 	input   flows.Input
-	event   flows.Event
 
 	parent flows.FlowRunReference
 	child  flows.FlowRunReference
@@ -435,7 +434,6 @@ type runEnvelope struct {
 
 	Input *utils.TypedEnvelope `json:"input,omitempty"`
 	Wait  *utils.TypedEnvelope `json:"wait,omitempty"`
-	Event *utils.TypedEnvelope `json:"event,omitempty"`
 
 	Parent flows.RunUUID `json:"parent_uuid,omitempty"`
 	Child  flows.RunUUID `json:"child_uuid,omitempty"`
@@ -493,13 +491,6 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 		}
 	}
 
-	if envelope.Event != nil {
-		r.event, err = events.EventFromEnvelope(envelope.Event)
-		if err != nil {
-			return err
-		}
-	}
-
 	if envelope.Results != nil {
 		r.results = envelope.Results
 	} else {
@@ -551,11 +542,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	}
 
 	re.Wait, err = utils.EnvelopeFromTyped(r.wait)
-	if err != nil {
-		return nil, err
-	}
-
-	re.Event, err = utils.EnvelopeFromTyped(r.event)
 	if err != nil {
 		return nil, err
 	}
