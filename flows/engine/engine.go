@@ -10,8 +10,10 @@ import (
 )
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.SessionEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
-	session := runs.NewSession(env)
+func StartFlow(env flows.SessionEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage, session flows.Session) (flows.Session, error) {
+	if session == nil {
+		session = runs.NewSession(env)
+	}
 
 	// create our new run
 	run := session.CreateRun(flow, contact, parent)

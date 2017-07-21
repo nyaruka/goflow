@@ -104,7 +104,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// start our flow
-	session, err := engine.StartFlow(sessionEnv, flowlist[0], contact, nil, callerEvents, start.Extra)
+	session, err := engine.StartFlow(sessionEnv, flowlist[0], contact, nil, callerEvents, start.Extra, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}

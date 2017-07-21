@@ -69,17 +69,27 @@ type channelEnvelope struct {
 	ChannelType ChannelType `json:"type"`
 }
 
-// ReadChannel decodes a channel from the passed in JSON
+// ReadChannels decodes channels from the passed in JSON
 func ReadChannels(data []json.RawMessage) ([]Channel, error) {
 	channels := make([]Channel, len(data))
+	var err error
 	for c := range data {
-		channels[c] = &channel{}
-		err := json.Unmarshal(data[c], channels[c])
+		channels[c], err = ReadChannel(data[c])
 		if err != nil {
 			return nil, err
 		}
 	}
 	return channels, nil
+}
+
+// ReadChannel decodes a channel from the passed in JSON
+func ReadChannel(data json.RawMessage) (Channel, error) {
+	c := &channel{}
+	err := json.Unmarshal(data, c)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 // UnmarshalJSON is our custom unmarshalling of a channel

@@ -1,5 +1,6 @@
 {
-        "uuid": "channel1-test-4b7f-a34b-e37e31e86451",
+        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
         "name": "Twilio Channel",
+        "address": "+12345671111",
         "type": "T"
-    }
+}

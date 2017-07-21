@@ -84,7 +84,7 @@ type sessionEnvelope struct {
 
 // ReadSession decodes a session from the passed in JSON
 func ReadSession(env flows.SessionEnvironment, data json.RawMessage) (flows.Session, error) {
-	s := &session{}
+	s := NewSession(env)
 	var envelope sessionEnvelope
 	var err error
 
@@ -93,14 +93,12 @@ func ReadSession(env flows.SessionEnvironment, data json.RawMessage) (flows.Sess
 		return nil, err
 	}
 
-	s.runs = make([]flows.FlowRun, len(envelope.Runs))
 	for i := range envelope.Runs {
 		run, err := ReadRun(s, envelope.Runs[i])
-		s.addRun(run)
-		s.runs[i] = run
 		if err != nil {
 			return nil, err
 		}
+		s.addRun(run)
 	}
 
 	// once all runs are read, we can resolve references between runs
