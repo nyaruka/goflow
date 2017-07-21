@@ -38,6 +38,7 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 type startRequest struct {
 	Environment *json.RawMessage       `json:"environment"`
 	Flows       json.RawMessage        `json:"flows"    validate:"required"`
+	Channels    []json.RawMessage      `json:"channels,omit_empty"`
 	Contact     json.RawMessage        `json:"contact"  validate:"required"`
 	Extra       json.RawMessage        `json:"extra,omitempty"`
 	Events      []*utils.TypedEnvelope `json:"events"`
@@ -73,12 +74,18 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read our flows
-	startFlows, err := definition.ReadFlows(start.Flows)
+	flowlist, err := definition.ReadFlows(start.Flows)
 	if err != nil {
 		return nil, err
 	}
-	if len(startFlows) == 0 {
+	if len(flowlist) == 0 {
 		return nil, utils.NewValidationError("flows: must include at least one flow")
+	}
+
+	// read our channels
+	channelList, err := flows.ReadChannels(start.Channels)
+	if err != nil {
+		return nil, err
 	}
 
 	// read our contact
@@ -87,17 +94,17 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
+	// build our flow environment
+	flowEnv := engine.NewFlowEnvironment(env, flowlist, channelList, []*flows.Contact{contact})
+
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
 	if err != nil {
 		return nil, err
 	}
 
-	// build our flow environment
-	flowEnv := engine.NewFlowEnvironment(env, startFlows, []flows.FlowRun{}, []*flows.Contact{contact})
-
 	// start our flow
-	session, err := engine.StartFlow(flowEnv, startFlows[0], contact, nil, callerEvents, start.Extra)
+	session, err := engine.StartFlow(flowEnv, flowlist[0], contact, nil, callerEvents, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
@@ -108,6 +115,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 type resumeRequest struct {
 	Environment *json.RawMessage       `json:"environment"`
 	Flows       json.RawMessage        `json:"flows"       validate:"required,min=1"`
+	Channels    []json.RawMessage      `json:"channels,omit_empty"`
 	Contact     json.RawMessage        `json:"contact"     validate:"required"`
 	Session     json.RawMessage        `json:"session"     validate:"required"`
 	Events      []*utils.TypedEnvelope `json:"events"      validate:"required,min=1"`
@@ -151,8 +159,23 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, utils.NewValidationError("flows: must include at least one flow")
 	}
 
+	// read our channels
+	channelList, err := flows.ReadChannels(resume.Channels)
+	if err != nil {
+		return nil, err
+	}
+
+	// read our contact
+	contact, err := flows.ReadContact(resume.Contact)
+	if err != nil {
+		return nil, err
+	}
+
+	// build our environment
+	flowEnv := engine.NewFlowEnvironment(env, flowList, channelList, []*flows.Contact{contact})
+
 	// read our session
-	session, err := runs.ReadSession(resume.Session)
+	session, err := runs.ReadSession(flowEnv, resume.Session)
 	if err != nil {
 		return nil, err
 	}
@@ -163,20 +186,11 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	// clear the event log if it was passed in
 	session.ClearLog()
 
-	// our contact
-	contact, err := flows.ReadContact(resume.Contact)
-	if err != nil {
-		return nil, err
-	}
-
-	// and our caller events
+	// read our new caller events
 	callerEvents, err := events.ReadEvents(resume.Events)
 	if err != nil {
 		return nil, err
 	}
-
-	// build our environment
-	flowEnv := engine.NewFlowEnvironment(env, flowList, session.Runs(), []*flows.Contact{contact})
 
 	// hydrate all our runs
 	for _, run := range session.Runs() {

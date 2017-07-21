@@ -91,8 +91,10 @@ func (r RunStatus) String() string { return string(r) }
 
 type FlowEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
-	GetRun(RunUUID) (FlowRun, error)
+	GetChannel(ChannelUUID) (Channel, error)
 	GetContact(ContactUUID) (*Contact, error)
+	GetRun(RunUUID) (FlowRun, error)
+	AddRun(FlowRun)
 	utils.Environment
 }
 
@@ -177,8 +179,11 @@ type Event interface {
 }
 
 type Input interface {
-	Event
 	utils.VariableResolver
+	utils.Typed
+
+	CreatedOn() time.Time
+	Channel() Channel
 }
 
 type Step interface {
@@ -218,21 +223,14 @@ type Session interface {
 // FlowRun represents a single run on a flow by a single contact
 type FlowRun interface {
 	UUID() RunUUID
-	FlowUUID() FlowUUID
-	Flow() Flow
 
 	Hydrate(FlowEnvironment) error
-
-	ContactUUID() ContactUUID
-	Contact() *Contact
-
-	ChannelUUID() ChannelUUID
-	Channel() *Channel
-	SetChannel(*Channel)
-
 	Context() Context
-	Results() *Results
 	Environment() FlowEnvironment
+
+	Flow() Flow
+	Contact() *Contact
+	Results() *Results
 
 	SetExtra(json.RawMessage)
 	Extra() utils.JSONFragment
@@ -276,9 +274,8 @@ type FlowRun interface {
 // FlowRunReference represents a flow run reference within a flow
 type FlowRunReference interface {
 	UUID() RunUUID
-	FlowUUID() FlowUUID
-	ContactUUID() ContactUUID
-	ChannelUUID() ChannelUUID
+	Flow() Flow
+	Contact() *Contact
 
 	Results() *Results
 	Status() RunStatus
@@ -294,6 +291,14 @@ type FlowRunReference interface {
 type ChannelType string
 
 func (ct ChannelType) String() string { return string(ct) }
+
+// Channel represents a channel for sending and receiving messages
+type Channel interface {
+	UUID() ChannelUUID
+	Name() string
+	Address() string
+	Type() ChannelType
+}
 
 // MsgDirection is the direction of a Msg (either in or out)
 type MsgDirection string

@@ -31,9 +31,6 @@ func (c *context) Validate() error {
 func (c *context) Resolve(key string) interface{} {
 	switch key {
 
-	case "channel":
-		return c.run.Channel()
-
 	case "contact":
 		return c.Contact()
 
