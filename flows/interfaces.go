@@ -91,8 +91,6 @@ type SessionEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetChannel(ChannelUUID) (Channel, error)
 	GetContact(ContactUUID) (*Contact, error)
-	GetRun(RunUUID) (FlowRun, error)
-	AddRun(FlowRun)
 	utils.Environment
 }
 
@@ -212,6 +210,7 @@ type Session interface {
 
 	CreateRun(Flow, *Contact, FlowRun) FlowRun
 	Runs() []FlowRun
+	GetRun(RunUUID) (FlowRun, error)
 	ActiveRun() FlowRun
 
 	Log() []LogEntry

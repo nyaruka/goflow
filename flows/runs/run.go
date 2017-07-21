@@ -373,6 +373,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		return nil, err
 	}
 
+	r.session = session
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
 	r.createdOn = envelope.CreatedOn
@@ -428,20 +429,17 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		r.path[i] = step
 	}
 
-	// add ourselves to the environment and save it off
-	session.Environment().AddRun(r)
+	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
-
-	// build our context
 	r.context = NewContextForContact(r.contact, r)
 
 	return r, nil
 }
 
-// ResolveReferences resolves parent/child run references for unmarshaled runs
-func (r *flowRun) ResolveReferences(env flows.SessionEnvironment) error {
+// resolves parent/child run references for unmarshaled runs
+func (r *flowRun) resolveReferences(session flows.Session) error {
 	if r.parent != nil {
-		parent, err := env.GetRun(r.parent.UUID())
+		parent, err := session.GetRun(r.parent.UUID())
 		if err != nil {
 			return err
 		}
@@ -449,7 +447,7 @@ func (r *flowRun) ResolveReferences(env flows.SessionEnvironment) error {
 	}
 
 	if r.child != nil {
-		child, err := env.GetRun(r.child.UUID())
+		child, err := session.GetRun(r.child.UUID())
 		if err != nil {
 			return err
 		}

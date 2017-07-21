@@ -65,7 +65,7 @@ func ResumeFlow(env flows.SessionEnvironment, run flows.FlowRun, callerEvents []
 	// if we ran to completion and have a parent, resume that flow
 	if run.Parent() != nil && run.IsComplete() {
 		event := events.NewFlowExitedEvent(run)
-		parentRun, err := env.GetRun(run.Parent().UUID())
+		parentRun, err := run.Session().GetRun(run.Parent().UUID())
 		if err != nil {
 			run.AddError(step, err)
 			run.Exit(flows.StatusErrored)

@@ -2,31 +2,42 @@ package runs
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
 
 type session struct {
-	env    flows.SessionEnvironment
-	runs   []flows.FlowRun
-	events []flows.LogEntry
+	env        flows.SessionEnvironment
+	runs       []flows.FlowRun
+	runsByUUID map[flows.RunUUID]flows.FlowRun
+	events     []flows.LogEntry
 }
 
 // NewSession creates a new session
 func NewSession(env flows.SessionEnvironment) *session {
-	return &session{env: env}
+	runsByUUID := make(map[flows.RunUUID]flows.FlowRun)
+	return &session{env: env, runsByUUID: runsByUUID}
 }
 
 func (s *session) Environment() flows.SessionEnvironment { return s.env }
 
 func (s *session) CreateRun(flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
 	run := NewRun(s, flow, contact, parent)
-	s.runs = append(s.runs, run)
+	s.addRun(run)
 	return run
 }
 
 func (s *session) Runs() []flows.FlowRun { return s.runs }
+
+func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
+	run, exists := s.runsByUUID[uuid]
+	if exists {
+		return run, nil
+	}
+	return nil, fmt.Errorf("unable to find run with UUID: %s", uuid)
+}
 
 func (s *session) ActiveRun() flows.FlowRun {
 	var active flows.FlowRun
@@ -50,6 +61,11 @@ func (s *session) ActiveRun() flows.FlowRun {
 		}
 	}
 	return active
+}
+
+func (s *session) addRun(run flows.FlowRun) {
+	s.runs = append(s.runs, run)
+	s.runsByUUID[run.UUID()] = run
 }
 
 func (s *session) LogEvent(step flows.Step, action flows.Action, event flows.Event) {
@@ -79,7 +95,9 @@ func ReadSession(env flows.SessionEnvironment, data json.RawMessage) (flows.Sess
 
 	s.runs = make([]flows.FlowRun, len(envelope.Runs))
 	for i := range envelope.Runs {
-		s.runs[i], err = ReadRun(s, envelope.Runs[i])
+		run, err := ReadRun(s, envelope.Runs[i])
+		s.addRun(run)
+		s.runs[i] = run
 		if err != nil {
 			return nil, err
 		}
@@ -87,7 +105,7 @@ func ReadSession(env flows.SessionEnvironment, data json.RawMessage) (flows.Sess
 
 	// once all runs are read, we can resolve references between runs
 	for _, run := range s.runs {
-		err = run.(*flowRun).ResolveReferences(env)
+		err = run.(*flowRun).resolveReferences(s)
 		if err != nil {
 			return nil, utils.NewValidationError(err.Error())
 		}

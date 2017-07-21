@@ -24,16 +24,13 @@ func NewSessionEnvironment(env utils.Environment, flowList []flows.Flow, channel
 		contactMap[c.UUID()] = c
 	}
 
-	runMap := make(map[flows.RunUUID]flows.FlowRun)
-
-	return &sessionEnvironment{env, flowMap, channelMap, runMap, contactMap}
+	return &sessionEnvironment{env, flowMap, channelMap, contactMap}
 }
 
 type sessionEnvironment struct {
 	utils.Environment
 	flows    map[flows.FlowUUID]flows.Flow
 	channels map[flows.ChannelUUID]flows.Channel
-	runs     map[flows.RunUUID]flows.FlowRun
 	contacts map[flows.ContactUUID]*flows.Contact
 }
 
@@ -59,16 +56,4 @@ func (e *sessionEnvironment) GetContact(uuid flows.ContactUUID) (*flows.Contact,
 		return contact, nil
 	}
 	return nil, fmt.Errorf("unable to find contact with UUID: %s", uuid)
-}
-
-func (e *sessionEnvironment) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
-	run, exists := e.runs[uuid]
-	if exists {
-		return run, nil
-	}
-	return nil, fmt.Errorf("unable to find run with UUID: %s", uuid)
-}
-
-func (e *sessionEnvironment) AddRun(run flows.FlowRun) {
-	e.runs[run.UUID()] = run
 }
