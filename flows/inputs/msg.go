@@ -61,7 +61,7 @@ type msgInputEnvelope struct {
 	Text string    `json:"text" validate:"required"`
 }
 
-func ReadMsgInput(env flows.FlowEnvironment, envelope *utils.TypedEnvelope) (*MsgInput, error) {
+func ReadMsgInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (*MsgInput, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
 	err := json.Unmarshal(envelope.Data, &i)

@@ -63,8 +63,6 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 
 	Validate() error
-
-	CreateRun(env FlowEnvironment, contact *Contact, parent FlowRun) FlowRun
 }
 
 // RunStatus represents the current status of the flow run
@@ -89,7 +87,7 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
-type FlowEnvironment interface {
+type SessionEnvironment interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetChannel(ChannelUUID) (Channel, error)
 	GetContact(ContactUUID) (*Contact, error)
@@ -210,9 +208,10 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Runs() []FlowRun
-	AddRun(FlowRun)
+	Environment() SessionEnvironment
 
+	CreateRun(Flow, *Contact, FlowRun) FlowRun
+	Runs() []FlowRun
 	ActiveRun() FlowRun
 
 	Log() []LogEntry
@@ -224,9 +223,9 @@ type Session interface {
 type FlowRun interface {
 	UUID() RunUUID
 
-	Hydrate(FlowEnvironment) error
+	Environment() SessionEnvironment
+	Session() Session
 	Context() Context
-	Environment() FlowEnvironment
 
 	Flow() Flow
 	Contact() *Contact
@@ -234,10 +233,6 @@ type FlowRun interface {
 
 	SetExtra(json.RawMessage)
 	Extra() utils.JSONFragment
-
-	Session() Session
-	SetSession(Session)
-	ResetSession()
 
 	Status() RunStatus
 	Exit(RunStatus)

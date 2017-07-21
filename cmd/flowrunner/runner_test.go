@@ -109,7 +109,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	}
 
 	// start our contact down this flow
-	flowEnv := engine.NewFlowEnvironment(env, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
+	flowEnv := engine.NewSessionEnvironment(env, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 	session, err := engine.StartFlow(flowEnv, runnerFlows[0], contact, nil, nil, extra)
 	if err != nil {
 		return nil, err
@@ -129,7 +129,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		if err != nil {
 			return nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		flowEnv = engine.NewFlowEnvironment(env, runnerFlows, session.Runs(), []*flows.Contact{contact})
+		flowEnv = engine.NewSessionEnvironment(env, runnerFlows, session.Runs(), []*flows.Contact{contact})
 
 		// hydrate our runs so we can call ActiveRun
 		for _, r := range session.Runs() {

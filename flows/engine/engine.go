@@ -6,12 +6,15 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/runs"
 )
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
-	// build our run
-	run := flow.CreateRun(env, contact, parent)
+func StartFlow(env flows.SessionEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
+	session := runs.NewSession(env)
+
+	// create our new run
+	run := session.CreateRun(flow, contact, parent)
 
 	// if we got extra, set it
 	if extra != nil {
@@ -21,22 +24,16 @@ func StartFlow(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contac
 	// no first node, nothing to do (valid but weird)
 	if len(flow.Nodes()) == 0 {
 		run.Exit(flows.StatusCompleted)
-		return run.Session(), nil
+		return session, nil
 	}
 
 	// off to the races
 	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, callerEvents)
-	return run.Session(), err
+	return session, err
 }
 
 // ResumeFlow resumes our flow from the last step
-func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, callerEvents []flows.Event) (flows.Session, error) {
-	// to resume a flow, hydrate our run with the environment
-	err := run.Hydrate(env)
-	if err != nil {
-		return run.Session(), err
-	}
-
+func ResumeFlow(env flows.SessionEnvironment, run flows.FlowRun, callerEvents []flows.Event) (flows.Session, error) {
 	// no steps to resume from, nothing to do, return
 	if len(run.Path()) == 0 {
 		return run.Session(), nil
@@ -74,7 +71,6 @@ func ResumeFlow(env flows.FlowEnvironment, run flows.FlowRun, callerEvents []flo
 			run.Exit(flows.StatusErrored)
 			return run.Session(), nil
 		}
-		parentRun.SetSession(run.Session())
 		return ResumeFlow(env, parentRun, []flows.Event{event})
 	}
 

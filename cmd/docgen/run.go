@@ -80,7 +80,7 @@ func createExampleSession(flowDef string) (flows.Session, error) {
 	}
 
 	// start our flow
-	env := engine.NewFlowEnvironment(utils.NewDefaultEnvironment(), []flows.Flow{subflow}, []flows.FlowRun{}, []*flows.Contact{})
+	env := engine.NewSessionEnvironment(utils.NewDefaultEnvironment(), []flows.Flow{subflow}, []flows.Channel{}, []*flows.Contact{})
 	return engine.StartFlow(env, flow, contact, nil, nil, nil)
 }
 

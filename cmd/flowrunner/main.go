@@ -199,7 +199,7 @@ func main() {
 	baseEnv := utils.NewDefaultEnvironment()
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	baseEnv.SetTimezone(la)
-	env := engine.NewFlowEnvironment(baseEnv, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
+	env := engine.NewSessionEnvironment(baseEnv, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
 
 	// and start our flow
 	session, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
@@ -246,7 +246,7 @@ func main() {
 		baseEnv := utils.NewDefaultEnvironment()
 		la, _ := time.LoadLocation("America/Los_Angeles")
 		baseEnv.SetTimezone(la)
-		env = engine.NewFlowEnvironment(baseEnv, runnerFlows, session.Runs(), []*flows.Contact{contact})
+		env = engine.NewSessionEnvironment(baseEnv, runnerFlows, session.Runs(), []*flows.Contact{contact})
 
 		for _, run := range session.Runs() {
 			err = run.Hydrate(env)

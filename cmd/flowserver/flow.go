@@ -94,8 +94,8 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// build our flow environment
-	flowEnv := engine.NewFlowEnvironment(env, flowlist, channelList, []*flows.Contact{contact})
+	// build our session environment
+	sessionEnv := engine.NewSessionEnvironment(env, flowlist, channelList, []*flows.Contact{contact})
 
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
@@ -104,7 +104,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// start our flow
-	session, err := engine.StartFlow(flowEnv, flowlist[0], contact, nil, callerEvents, start.Extra)
+	session, err := engine.StartFlow(sessionEnv, flowlist[0], contact, nil, callerEvents, start.Extra)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
@@ -172,10 +172,10 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// build our environment
-	flowEnv := engine.NewFlowEnvironment(env, flowList, channelList, []*flows.Contact{contact})
+	sessionEnv := engine.NewSessionEnvironment(env, flowList, channelList, []*flows.Contact{contact})
 
 	// read our session
-	session, err := runs.ReadSession(flowEnv, resume.Session)
+	session, err := runs.ReadSession(sessionEnv, resume.Session)
 	if err != nil {
 		return nil, err
 	}
@@ -192,14 +192,6 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// hydrate all our runs
-	for _, run := range session.Runs() {
-		err = run.Hydrate(flowEnv)
-		if err != nil {
-			return nil, utils.NewValidationError(err.Error())
-		}
-	}
-
 	// set our contact on our run
 	activeRun := session.ActiveRun()
 	if activeRun == nil {
@@ -207,7 +199,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// resume our flow
-	session, err = engine.ResumeFlow(flowEnv, activeRun, callerEvents)
+	session, err = engine.ResumeFlow(sessionEnv, activeRun, callerEvents)
 	if err != nil {
 		return nil, fmt.Errorf("error resuming flow: %s", err)
 	}

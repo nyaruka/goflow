@@ -13,7 +13,7 @@ type baseInputEnvelope struct {
 	CreatedOn   time.Time         `json:"created_on"   validate:"required"`
 }
 
-func ReadInput(env flows.FlowEnvironment, envelope *utils.TypedEnvelope) (flows.Input, error) {
+func ReadInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (flows.Input, error) {
 	switch envelope.Type {
 
 	case TypeMsg:

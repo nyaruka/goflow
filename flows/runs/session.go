@@ -8,24 +8,24 @@ import (
 )
 
 type session struct {
+	env    flows.SessionEnvironment
 	runs   []flows.FlowRun
 	events []flows.LogEntry
 }
 
-func newSession() *session {
-	session := session{}
-	return &session
+// NewSession creates a new session
+func NewSession(env flows.SessionEnvironment) *session {
+	return &session{env: env}
 }
 
-func (s *session) AddRun(run flows.FlowRun) {
-	// check if we already have this run
-	for _, r := range s.runs {
-		if r.UUID() == run.UUID() {
-			return
-		}
-	}
+func (s *session) Environment() flows.SessionEnvironment { return s.env }
+
+func (s *session) CreateRun(flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
+	run := NewRun(s, flow, contact, parent)
 	s.runs = append(s.runs, run)
+	return run
 }
+
 func (s *session) Runs() []flows.FlowRun { return s.runs }
 
 func (s *session) ActiveRun() flows.FlowRun {
@@ -67,23 +67,30 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(env flows.FlowEnvironment, data json.RawMessage) (flows.Session, error) {
+func ReadSession(env flows.SessionEnvironment, data json.RawMessage) (flows.Session, error) {
 	s := &session{}
-	var se sessionEnvelope
+	var envelope sessionEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &se)
+	err = json.Unmarshal(data, &envelope)
 	if err != nil {
 		return nil, err
 	}
 
-	s.runs = make([]flows.FlowRun, len(se.Runs))
-	for i := range se.Runs {
-		s.runs[i], err = ReadRun(env, se.Runs[i])
+	s.runs = make([]flows.FlowRun, len(envelope.Runs))
+	for i := range envelope.Runs {
+		s.runs[i], err = ReadRun(s, envelope.Runs[i])
 		if err != nil {
 			return nil, err
 		}
-		s.runs[i].SetSession(s)
+	}
+
+	// once all runs are read, we can resolve references between runs
+	for _, run := range s.runs {
+		err = run.(*flowRun).ResolveReferences(env)
+		if err != nil {
+			return nil, utils.NewValidationError(err.Error())
+		}
 	}
 
 	err = utils.ValidateAll(s)
@@ -91,15 +98,15 @@ func ReadSession(env flows.FlowEnvironment, data json.RawMessage) (flows.Session
 }
 
 func (s *session) MarshalJSON() ([]byte, error) {
-	var se sessionEnvelope
+	var envelope sessionEnvelope
 	var err error
-	se.Runs = make([]json.RawMessage, len(s.runs))
+	envelope.Runs = make([]json.RawMessage, len(s.runs))
 	for i := range s.runs {
-		se.Runs[i], err = json.Marshal(s.runs[i])
+		envelope.Runs[i], err = json.Marshal(s.runs[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	return json.Marshal(se)
+	return json.Marshal(envelope)
 }
