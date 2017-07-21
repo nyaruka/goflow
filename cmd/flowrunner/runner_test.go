@@ -111,7 +111,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 	// start our contact down this flow
 	sessionEnv := engine.NewSessionEnvironment(env, runnerFlows, []flows.Channel{channel}, []*flows.Contact{contact})
-	session, err := engine.StartFlow(sessionEnv, runnerFlows[0], contact, nil, nil, extra, nil)
+	session, err := engine.StartFlow(sessionEnv, runnerFlows[0], contact, nil, nil, extra)
 	if err != nil {
 		return nil, nil, err
 	}

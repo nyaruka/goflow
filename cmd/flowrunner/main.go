@@ -202,7 +202,7 @@ func main() {
 	env := engine.NewSessionEnvironment(baseEnv, runnerFlows, []flows.Channel{channel}, []*flows.Contact{contact})
 
 	// and start our flow
-	session, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil, nil)
+	session, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
