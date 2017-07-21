@@ -51,5 +51,5 @@ func (e *MsgReceivedEvent) Apply(run flows.FlowRun) {
 	channel, _ := run.Environment().GetChannel(e.ChannelUUID)
 
 	// update this run's input
-	run.SetInput(inputs.NewMsgInput(channel, e.URN, e.Text))
+	run.SetInput(inputs.NewMsgInput(channel, e.CreatedOn(), e.URN, e.Text))
 }

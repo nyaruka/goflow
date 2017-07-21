@@ -12,11 +12,8 @@ type baseInput struct {
 	createdOn time.Time
 }
 
-func (i *baseInput) Channel() flows.Channel           { return i.channel }
-func (i *baseInput) SetChannel(channel flows.Channel) { i.channel = channel }
-
-func (i *baseInput) CreatedOn() time.Time        { return i.createdOn }
-func (i *baseInput) SetCreatedOn(time time.Time) { i.createdOn = time }
+func (i *baseInput) Channel() flows.Channel { return i.channel }
+func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 
 // Resolve resolves the passed in key to a value, returning an error if the key is unknown
 func (i *baseInput) Resolve(key string) interface{} {

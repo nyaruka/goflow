@@ -17,8 +17,7 @@ func ReadInput(env flows.FlowEnvironment, envelope *utils.TypedEnvelope) (flows.
 	switch envelope.Type {
 
 	case TypeMsg:
-		input, err := ReadMsgInput(env, envelope)
-		return input, utils.ValidateAllUnlessErr(err, input)
+		return ReadMsgInput(env, envelope)
 
 	default:
 		return nil, fmt.Errorf("Unknown input type: %s", envelope.Type)

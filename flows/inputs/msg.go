@@ -3,6 +3,8 @@ package inputs
 import (
 	"encoding/json"
 
+	"time"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -17,8 +19,8 @@ type MsgInput struct {
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgInput(channel flows.Channel, urn flows.URN, text string) *MsgInput {
-	return &MsgInput{baseInput: baseInput{channel: channel}, urn: urn, text: text}
+func NewMsgInput(channel flows.Channel, createdOn time.Time, urn flows.URN, text string) *MsgInput {
+	return &MsgInput{baseInput: baseInput{channel: channel, createdOn: createdOn}, urn: urn, text: text}
 }
 
 // Type returns the type of this event
@@ -67,13 +69,19 @@ func ReadMsgInput(env flows.FlowEnvironment, envelope *utils.TypedEnvelope) (*Ms
 		return nil, err
 	}
 
+	err = utils.ValidateAll(i)
+	if err != nil {
+		return nil, err
+	}
+
+	// lookup the channel
 	channel, err := env.GetChannel(i.ChannelUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	input.baseInput.SetChannel(channel)
-	input.baseInput.SetCreatedOn(i.CreatedOn)
+	input.baseInput.channel = channel
+	input.baseInput.createdOn = i.CreatedOn
 	input.urn = i.URN
 	input.text = i.Text
 	return &input, nil
