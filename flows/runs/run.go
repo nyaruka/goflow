@@ -15,14 +15,14 @@ import (
 
 // a run specific environment which allows values to be overridden by the contact
 type runEnvironment struct {
-	flows.FlowEnvironment
+	flows.SessionEnvironment
 	run *flowRun
 
 	cachedLanguages utils.LanguageList
 }
 
 // creates a run environment based on the given run
-func newRunEnvironment(base flows.FlowEnvironment, run *flowRun) *runEnvironment {
+func newRunEnvironment(base flows.SessionEnvironment, run *flowRun) *runEnvironment {
 	env := &runEnvironment{base, run, nil}
 	env.refreshLanguagesCache()
 	return env
@@ -35,7 +35,7 @@ func (e *runEnvironment) Timezone() *time.Location {
 	if contact != nil && contact.Timezone() != nil {
 		return contact.Timezone()
 	}
-	return e.FlowEnvironment.Timezone()
+	return e.SessionEnvironment.Timezone()
 }
 
 func (e *runEnvironment) Languages() utils.LanguageList {
@@ -57,7 +57,7 @@ func (e *runEnvironment) refreshLanguagesCache() {
 	}
 
 	// next we include any environment languages
-	languages = append(languages, e.FlowEnvironment.Languages()...)
+	languages = append(languages, e.SessionEnvironment.Languages()...)
 
 	// finally we include the flow native language
 	languages = append(languages, e.run.flow.Language())
@@ -68,14 +68,8 @@ func (e *runEnvironment) refreshLanguagesCache() {
 type flowRun struct {
 	uuid flows.RunUUID
 
-	contact     *flows.Contact
-	contactUUID flows.ContactUUID
-
-	flow     flows.Flow
-	flowUUID flows.FlowUUID
-
-	channel     *flows.Channel
-	channelUUID flows.ChannelUUID
+	flow    flows.Flow
+	contact *flows.Contact
 
 	extra   json.RawMessage
 	results *flows.Results
@@ -91,7 +85,7 @@ type flowRun struct {
 	session flows.Session
 
 	path        []flows.Step
-	environment flows.FlowEnvironment
+	environment flows.SessionEnvironment
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -100,77 +94,14 @@ type flowRun struct {
 	exitedOn   *time.Time
 }
 
-func (r *flowRun) UUID() flows.RunUUID            { return r.uuid }
-func (r *flowRun) ContactUUID() flows.ContactUUID { return r.contactUUID }
-func (r *flowRun) Contact() *flows.Contact        { return r.contact }
+func (r *flowRun) UUID() flows.RunUUID     { return r.uuid }
+func (r *flowRun) Flow() flows.Flow        { return r.flow }
+func (r *flowRun) Contact() *flows.Contact { return r.contact }
 
-// Hydrate prepares a deserialized run for executions
-func (r *flowRun) Hydrate(env flows.FlowEnvironment) error {
-	// start with a fresh output if we don't have one
-	if r.session == nil {
-		r.ResetSession()
-	}
-
-	// set our flow
-	runFlow, err := env.GetFlow(r.FlowUUID())
-	if err != nil {
-		return err
-	}
-	r.flow = runFlow
-
-	// make sure we have a contact
-	r.contact, err = env.GetContact(r.ContactUUID())
-	if err != nil {
-		return err
-	}
-
-	// save off our environment
-	r.environment = newRunEnvironment(env, r)
-
-	// build our context
-	r.context = NewContextForContact(r.contact, r)
-
-	// populate our run references
-	if r.parent != nil {
-		parent, err := env.GetRun(r.parent.UUID())
-		if err != nil {
-			return err
-		}
-		r.parent = newReferenceFromRun(parent.(*flowRun))
-	}
-
-	if r.child != nil {
-		child, err := env.GetRun(r.child.UUID())
-		if err != nil {
-			return err
-		}
-		r.child = newReferenceFromRun(child.(*flowRun))
-	}
-
-	return nil
-}
-
-func (r *flowRun) FlowUUID() flows.FlowUUID       { return r.flowUUID }
-func (r *flowRun) Flow() flows.Flow               { return r.flow }
-func (r *flowRun) ChannelUUID() flows.ChannelUUID { return r.channelUUID }
-func (r *flowRun) Channel() *flows.Channel        { return r.channel }
-func (r *flowRun) SetChannel(channel *flows.Channel) {
-	r.channelUUID = channel.UUID()
-	r.channel = channel
-}
-
-func (r *flowRun) Context() flows.Context             { return r.context }
-func (r *flowRun) Environment() flows.FlowEnvironment { return r.environment }
-func (r *flowRun) Results() *flows.Results            { return r.results }
-
-func (r *flowRun) Session() flows.Session { return r.session }
-func (r *flowRun) SetSession(session flows.Session) {
-	r.session = session
-	r.session.AddRun(r)
-}
-func (r *flowRun) ResetSession() {
-	r.SetSession(newSession())
-}
+func (r *flowRun) Context() flows.Context                { return r.context }
+func (r *flowRun) Environment() flows.SessionEnvironment { return r.environment }
+func (r *flowRun) Results() *flows.Results               { return r.results }
+func (r *flowRun) Session() flows.Session                { return r.session }
 
 func (r *flowRun) IsComplete() bool {
 	return r.status != flows.StatusActive
@@ -263,46 +194,36 @@ func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []s
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
-func NewRun(env flows.FlowEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
+func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
 	now := time.Now().UTC()
 
 	r := &flowRun{
-		uuid:        flows.RunUUID(uuid.NewV4().String()),
-		flowUUID:    flow.UUID(),
-		contactUUID: contact.UUID(),
-		results:     flows.NewResults(),
-		contact:     contact,
-		flow:        flow,
-		status:      flows.StatusActive,
-		createdOn:   now,
-		modifiedOn:  now,
+		uuid:       flows.RunUUID(uuid.NewV4().String()),
+		session:    session,
+		flow:       flow,
+		contact:    contact,
+		results:    flows.NewResults(),
+		status:     flows.StatusActive,
+		createdOn:  now,
+		modifiedOn: now,
 	}
 
-	r.environment = newRunEnvironment(env, r)
+	r.environment = newRunEnvironment(session.Environment(), r)
 
 	// build our context
 	r.context = NewContextForContact(contact, r)
 
-	// set our session
 	if parent != nil {
 		parentRun := parent.(*flowRun)
 		r.parent = newReferenceFromRun(parentRun)
 		parentRun.child = newReferenceFromRun(r)
-
-		r.session = parent.Session()
-	} else {
-		r.session = newSession()
 	}
-	r.session.AddRun(r)
 
 	return r
 }
 
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
-
-	case "channel":
-		return r.Channel()
 
 	case "contact":
 		return r.Contact()
@@ -312,6 +233,9 @@ func (r *flowRun) Resolve(key string) interface{} {
 
 	case "flow":
 		return r.Flow()
+
+	case "input":
+		return r.Input()
 
 	case "status":
 		return r.Status()
@@ -352,14 +276,14 @@ type runReference struct {
 func (r *runReference) Resolve(key string) interface{} {
 	switch key {
 
-	case "channel_uuid":
-		return r.ChannelUUID()
+	case "contact":
+		return r.Contact()
 
-	case "contact_uuid":
-		return r.ContactUUID()
+	case "flow":
+		return r.Flow()
 
-	case "flow_uuid":
-		return r.FlowUUID()
+	case "input":
+		return r.Input()
 
 	case "status":
 		return r.Status()
@@ -388,10 +312,10 @@ func (r *runReference) String() string {
 	return string(r.Status())
 }
 
-func (r *runReference) UUID() flows.RunUUID            { return r.uuid }
-func (r *runReference) FlowUUID() flows.FlowUUID       { return r.run.flowUUID }
-func (r *runReference) ContactUUID() flows.ContactUUID { return r.run.contactUUID }
-func (r *runReference) ChannelUUID() flows.ChannelUUID { return r.run.channelUUID }
+func (r *runReference) UUID() flows.RunUUID     { return r.uuid }
+func (r *runReference) Flow() flows.Flow        { return r.run.flow }
+func (r *runReference) Contact() *flows.Contact { return r.run.contact }
+func (r *runReference) Input() flows.Input      { return r.run.input }
 
 func (r *runReference) Results() *flows.Results { return r.run.results }
 func (r *runReference) Status() flows.RunStatus { return r.run.status }
@@ -413,22 +337,11 @@ func newReferenceFromRun(r *flowRun) *runReference {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadRun decodes a run from the passed in JSON
-func ReadRun(data json.RawMessage) (flows.FlowRun, error) {
-	run := &flowRun{}
-	err := json.Unmarshal(data, run)
-	if err == nil {
-		// err = run.Validate()
-	}
-	return run, err
-}
-
 type runEnvelope struct {
-	UUID    flows.RunUUID     `json:"uuid"`
-	Flow    flows.FlowUUID    `json:"flow_uuid"`
-	Channel flows.ChannelUUID `json:"channel_uuid"`
-	Contact flows.ContactUUID `json:"contact_uuid"`
-	Path    []*step           `json:"path"`
+	UUID        flows.RunUUID     `json:"uuid"`
+	FlowUUID    flows.FlowUUID    `json:"flow_uuid"`
+	ContactUUID flows.ContactUUID `json:"contact_uuid"`
+	Path        []*step           `json:"path"`
 
 	Status flows.RunStatus `json:"status"`
 
@@ -449,19 +362,19 @@ type runEnvelope struct {
 	ExitedOn   *time.Time `json:"exited_on"`
 }
 
-func (r *flowRun) UnmarshalJSON(data []byte) error {
+// ReadRun decodes a run from the passed in JSON
+func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error) {
+	r := &flowRun{}
 	var envelope runEnvelope
 	var err error
 
 	err = json.Unmarshal(data, &envelope)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	r.session = session
 	r.uuid = envelope.UUID
-	r.contactUUID = envelope.Contact
-	r.flowUUID = envelope.Flow
-	r.channelUUID = envelope.Channel
 	r.status = envelope.Status
 	r.createdOn = envelope.CreatedOn
 	r.modifiedOn = envelope.ModifiedOn
@@ -469,6 +382,15 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
 	r.extra = envelope.Extra
+
+	r.flow, err = session.Environment().GetFlow(envelope.FlowUUID)
+	if err != nil {
+		return nil, err
+	}
+	r.contact, err = session.Environment().GetContact(envelope.ContactUUID)
+	if err != nil {
+		return nil, err
+	}
 
 	if envelope.Parent != "" {
 		r.parent = &runReference{uuid: envelope.Parent}
@@ -478,16 +400,16 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 	}
 
 	if envelope.Input != nil {
-		r.input, err = inputs.InputFromEnvelope(envelope.Input)
+		r.input, err = inputs.ReadInput(session.Environment(), envelope.Input)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	if envelope.Wait != nil {
 		r.wait, err = waits.WaitFromEnvelope(envelope.Wait)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
@@ -507,7 +429,32 @@ func (r *flowRun) UnmarshalJSON(data []byte) error {
 		r.path[i] = step
 	}
 
-	return err
+	// create a run specific environment and context
+	r.environment = newRunEnvironment(session.Environment(), r)
+	r.context = NewContextForContact(r.contact, r)
+
+	return r, nil
+}
+
+// resolves parent/child run references for unmarshaled runs
+func (r *flowRun) resolveReferences(session flows.Session) error {
+	if r.parent != nil {
+		parent, err := session.GetRun(r.parent.UUID())
+		if err != nil {
+			return err
+		}
+		r.parent = newReferenceFromRun(parent.(*flowRun))
+	}
+
+	if r.child != nil {
+		child, err := session.GetRun(r.child.UUID())
+		if err != nil {
+			return err
+		}
+		r.child = newReferenceFromRun(child.(*flowRun))
+	}
+
+	return nil
 }
 
 func (r *flowRun) MarshalJSON() ([]byte, error) {
@@ -515,9 +462,8 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	var err error
 
 	re.UUID = r.uuid
-	re.Flow = r.FlowUUID()
-	re.Contact = r.ContactUUID()
-	re.Channel = r.ChannelUUID()
+	re.FlowUUID = r.flow.UUID()
+	re.ContactUUID = r.contact.UUID()
 
 	re.Status = r.status
 	re.CreatedOn = r.createdOn

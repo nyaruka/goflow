@@ -7,16 +7,16 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// NewFlowEnvironment creates and returns a new FlowEnvironment given the passed in environment and flow map
-func NewFlowEnvironment(env utils.Environment, flowList []flows.Flow, runList []flows.FlowRun, contactList []*flows.Contact) flows.FlowEnvironment {
+// NewSessionEnvironment creates and returns a new NewSessionEnvironment given the passed in environment and flow map
+func NewSessionEnvironment(env utils.Environment, flowList []flows.Flow, channelList []flows.Channel, contactList []*flows.Contact) flows.SessionEnvironment {
 	flowMap := make(map[flows.FlowUUID]flows.Flow, len(flowList))
 	for _, f := range flowList {
 		flowMap[f.UUID()] = f
 	}
 
-	runMap := make(map[flows.RunUUID]flows.FlowRun, len(runList))
-	for _, r := range runList {
-		runMap[r.UUID()] = r
+	channelMap := make(map[flows.ChannelUUID]flows.Channel, len(channelList))
+	for _, c := range channelList {
+		channelMap[c.UUID()] = c
 	}
 
 	contactMap := make(map[flows.ContactUUID]*flows.Contact, len(contactList))
@@ -24,17 +24,17 @@ func NewFlowEnvironment(env utils.Environment, flowList []flows.Flow, runList []
 		contactMap[c.UUID()] = c
 	}
 
-	return &flowEnvironment{env, flowMap, runMap, contactMap}
+	return &sessionEnvironment{env, flowMap, channelMap, contactMap}
 }
 
-type flowEnvironment struct {
+type sessionEnvironment struct {
 	utils.Environment
 	flows    map[flows.FlowUUID]flows.Flow
-	runs     map[flows.RunUUID]flows.FlowRun
+	channels map[flows.ChannelUUID]flows.Channel
 	contacts map[flows.ContactUUID]*flows.Contact
 }
 
-func (e *flowEnvironment) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
+func (e *sessionEnvironment) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	flow, exists := e.flows[uuid]
 	if exists {
 		return flow, nil
@@ -42,15 +42,15 @@ func (e *flowEnvironment) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	return nil, fmt.Errorf("unable to find flow with UUID: %s", uuid)
 }
 
-func (e *flowEnvironment) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
-	run, exists := e.runs[uuid]
+func (e *sessionEnvironment) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
+	channel, exists := e.channels[uuid]
 	if exists {
-		return run, nil
+		return channel, nil
 	}
-	return nil, fmt.Errorf("unable to find run with UUID: %s", uuid)
+	return nil, fmt.Errorf("unable to find channel with UUID: %s %d", uuid)
 }
 
-func (e *flowEnvironment) GetContact(uuid flows.ContactUUID) (*flows.Contact, error) {
+func (e *sessionEnvironment) GetContact(uuid flows.ContactUUID) (*flows.Contact, error) {
 	contact, exists := e.contacts[uuid]
 	if exists {
 		return contact, nil

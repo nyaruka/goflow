@@ -190,7 +190,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading channel file: ", err)
 	}
-	_, err = flows.ReadChannel(json.RawMessage(channelJSON))
+	channel, err := flows.ReadChannel(json.RawMessage(channelJSON))
 	if err != nil {
 		log.Fatal("Error unmarshalling channel: ", err)
 	}
@@ -199,7 +199,7 @@ func main() {
 	baseEnv := utils.NewDefaultEnvironment()
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	baseEnv.SetTimezone(la)
-	env := engine.NewFlowEnvironment(baseEnv, runnerFlows, []flows.FlowRun{}, []*flows.Contact{contact})
+	env := engine.NewSessionEnvironment(baseEnv, runnerFlows, []flows.Channel{channel}, []*flows.Contact{contact})
 
 	// and start our flow
 	session, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
@@ -239,21 +239,14 @@ func main() {
 		inputs = append(inputs, event)
 
 		// rebuild our session
-		session, err = runs.ReadSession(outJSON)
+		session, err = runs.ReadSession(session.Environment(), outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
 		baseEnv := utils.NewDefaultEnvironment()
 		la, _ := time.LoadLocation("America/Los_Angeles")
 		baseEnv.SetTimezone(la)
-		env = engine.NewFlowEnvironment(baseEnv, runnerFlows, session.Runs(), []*flows.Contact{contact})
 
-		for _, run := range session.Runs() {
-			err = run.Hydrate(env)
-			if err != nil {
-				log.Fatalf("Error hydrating run: %s", err)
-			}
-		}
 		run = session.ActiveRun()
 
 		session, err = engine.ResumeFlow(env, run, []flows.Event{event})

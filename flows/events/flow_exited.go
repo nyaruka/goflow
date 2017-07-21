@@ -37,9 +37,9 @@ type FlowExitedEvent struct {
 func NewFlowExitedEvent(run flows.FlowRunReference) *FlowExitedEvent {
 	return &FlowExitedEvent{
 		BaseEvent:   NewBaseEvent(),
-		FlowUUID:    run.FlowUUID(),
+		FlowUUID:    run.Flow().UUID(),
 		Status:      run.Status(),
-		ContactUUID: run.ContactUUID(),
+		ContactUUID: run.Contact().UUID(),
 		ExitedOn:    run.ExitedOn(),
 	}
 }

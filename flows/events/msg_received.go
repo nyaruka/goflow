@@ -1,9 +1,8 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/inputs"
 )
 
 // TypeMsgReceived is a constant for incoming messages
@@ -27,9 +26,9 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"required,uuid4"`
-	URN         flows.URN         `json:"urn"              validate:"required"`
-	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
+	ChannelUUID flows.ChannelUUID `json:"channel_uuid" validate:"uuid4"`
+	URN         flows.URN         `json:"urn"          validate:"required"`
+	ContactUUID flows.ContactUUID `json:"contact_uuid" validate:"required,uuid4"`
 	Text        string            `json:"text"`
 }
 
@@ -47,43 +46,10 @@ func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, u
 // Type returns the type of this event
 func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 
-// Resolve resolves the passed in key to a value, returning an error if the key is unknown
-func (e *MsgReceivedEvent) Resolve(key string) interface{} {
-	switch key {
-
-	case "direction":
-		return flows.MsgIn
-
-	case "channel_uuid":
-		return e.ChannelUUID
-
-	case "contact_uuid":
-		return e.ContactUUID
-
-	case "urn":
-		return e.URN
-
-	case "text":
-		return e.Text
-
-	case "created_on":
-		return e.CreatedOn
-
-	}
-	return fmt.Errorf("No such field '%s' on Msg event", key)
-}
-
-// Default returns our default value if evaluated in a context, our text in our case
-func (e *MsgReceivedEvent) Default() interface{} {
-	return e.Text
-}
-
-// String returns our default value if evaluated in a context, our text in our case
-func (e *MsgReceivedEvent) String() string {
-	return e.Text
-}
-
 // Apply applies this event to the given run
 func (e *MsgReceivedEvent) Apply(run flows.FlowRun) {
-	run.SetInput(e)
+	channel, _ := run.Environment().GetChannel(e.ChannelUUID)
+
+	// update this run's input
+	run.SetInput(inputs.NewMsgInput(channel, e.CreatedOn(), e.URN, e.Text))
 }

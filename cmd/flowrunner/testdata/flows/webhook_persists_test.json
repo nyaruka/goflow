@@ -58,7 +58,6 @@
       "session": {
         "runs": [
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -162,7 +161,6 @@
       "session": {
         "runs": [
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -170,10 +168,9 @@
             "flow_uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "Something!",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
             "modified_on": "2000-01-01T00:00:00.000000000-00:00",
