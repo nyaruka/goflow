@@ -81,7 +81,7 @@ func createExampleSession(flowDef string) (flows.Session, error) {
 
 	// start our flow
 	env := engine.NewSessionEnvironment(utils.NewDefaultEnvironment(), []flows.Flow{subflow}, []flows.Channel{}, []*flows.Contact{})
-	return engine.StartFlow(env, flow, contact, nil, nil, nil)
+	return engine.StartFlow(env, flow, contact, nil, nil, nil, nil)
 }
 
 func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
