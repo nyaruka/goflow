@@ -76,7 +76,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read our contact
-	contact, err := flows.ReadContact(start.Contact)
+	contact, err := flows.ReadContact(assets, start.Contact)
 	if err != nil {
 		return nil, err
 	}

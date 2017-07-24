@@ -182,7 +182,7 @@ func ReadSession(env utils.Environment, assets flows.Assets, data json.RawMessag
 	}
 
 	// read our contact
-	s.contact, err = flows.ReadContact(envelope.Contact)
+	s.contact, err = flows.ReadContact(assets, envelope.Contact)
 	if err != nil {
 		return nil, err
 	}

@@ -175,6 +175,12 @@ func newVars() vars {
 				vars:    contactVars,
 			},
 		},
+		"channel": vars{
+			"__default__": "contact.channel.address",
+			"name":        "contact.channel.name",
+			"tel":         "contact.channel.address",
+			"tel_e164":    "contact.channel.address",
+		},
 		"date": vars{
 			"now":         "now()",
 			"today":       "today()",
