@@ -1,87 +1,11 @@
 package engine
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/runs"
 )
-
-// StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func StartFlow(env flows.SessionEnvironment, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, error) {
-	// if we have a parent run, then we belong to that session
-	var session flows.Session
-	if parent != nil {
-		session = parent.Session()
-	} else {
-		session = runs.NewSession(env)
-	}
-
-	// create our new run
-	run := session.CreateRun(flow, contact, parent)
-
-	// if we got extra, set it
-	if extra != nil {
-		run.SetExtra(extra)
-	}
-
-	// no first node, nothing to do (valid but weird)
-	if len(flow.Nodes()) == 0 {
-		run.Exit(flows.StatusCompleted)
-		return session, nil
-	}
-
-	// off to the races
-	err := continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, callerEvents)
-	return session, err
-}
-
-// ResumeFlow resumes our flow from the last step
-func ResumeFlow(env flows.SessionEnvironment, run flows.FlowRun, callerEvents []flows.Event) (flows.Session, error) {
-	// no steps to resume from, nothing to do, return
-	if len(run.Path()) == 0 {
-		return run.Session(), nil
-	}
-
-	// grab the last step
-	step := run.Path()[len(run.Path())-1]
-
-	// and the last node
-	node := run.Flow().GetNode(step.NodeUUID())
-	if node == nil {
-		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.NodeUUID())
-		run.AddError(step, err)
-		run.Exit(flows.StatusErrored)
-		return run.Session(), nil
-	}
-
-	// the first event resumes the wait
-	destination, step, err := resumeNode(run, node, step, callerEvents)
-	if err != nil {
-		return run.Session(), err
-	}
-
-	err = continueRunUntilWait(run, destination, step, nil)
-	if err != nil {
-		return run.Session(), err
-	}
-
-	// if we ran to completion and have a parent, resume that flow
-	if run.Parent() != nil && run.IsComplete() {
-		event := events.NewFlowExitedEvent(run)
-		parentRun, err := run.Session().GetRun(run.Parent().UUID())
-		if err != nil {
-			run.AddError(step, err)
-			run.Exit(flows.StatusErrored)
-			return run.Session(), nil
-		}
-		return ResumeFlow(env, parentRun, []flows.Event{event})
-	}
-
-	return run.Session(), nil
-}
 
 // Continues the flow entering the passed in flow
 func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {

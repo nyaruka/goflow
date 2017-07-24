@@ -13,11 +13,11 @@ type baseInputEnvelope struct {
 	CreatedOn   time.Time         `json:"created_on"   validate:"required"`
 }
 
-func ReadInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (flows.Input, error) {
+func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Input, error) {
 	switch envelope.Type {
 
 	case TypeMsg:
-		return ReadMsgInput(env, envelope)
+		return ReadMsgInput(session, envelope)
 
 	default:
 		return nil, fmt.Errorf("Unknown input type: %s", envelope.Type)

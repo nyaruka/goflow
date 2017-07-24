@@ -61,7 +61,7 @@ type msgInputEnvelope struct {
 	Text string    `json:"text" validate:"required"`
 }
 
-func ReadMsgInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (*MsgInput, error) {
+func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInput, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
 	err := json.Unmarshal(envelope.Data, &i)
@@ -75,7 +75,7 @@ func ReadMsgInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (
 	}
 
 	// lookup the channel
-	channel, err := env.GetChannel(i.ChannelUUID)
+	channel, err := session.Assets().GetChannel(i.ChannelUUID)
 	if err != nil {
 		return nil, err
 	}

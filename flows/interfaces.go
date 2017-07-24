@@ -87,11 +87,9 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
-type SessionEnvironment interface {
+type Assets interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetChannel(ChannelUUID) (Channel, error)
-	GetContact(ContactUUID) (*Contact, error)
-	utils.Environment
 }
 
 type Node interface {
@@ -206,9 +204,14 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Environment() SessionEnvironment
+	Environment() utils.Environment
+	Assets() Assets
+	Contact() *Contact
 
-	CreateRun(Flow, *Contact, FlowRun) FlowRun
+	StartFlow(FlowUUID, FlowRun, []Event, json.RawMessage) error
+	Resume([]Event) error
+
+	CreateRun(Flow, FlowRun) FlowRun
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	ActiveRun() FlowRun
@@ -222,7 +225,7 @@ type Session interface {
 type FlowRun interface {
 	UUID() RunUUID
 
-	Environment() SessionEnvironment
+	Environment() utils.Environment
 	Session() Session
 	Context() Context
 

@@ -15,14 +15,14 @@ import (
 
 // a run specific environment which allows values to be overridden by the contact
 type runEnvironment struct {
-	flows.SessionEnvironment
+	utils.Environment
 	run *flowRun
 
 	cachedLanguages utils.LanguageList
 }
 
 // creates a run environment based on the given run
-func newRunEnvironment(base flows.SessionEnvironment, run *flowRun) *runEnvironment {
+func newRunEnvironment(base utils.Environment, run *flowRun) *runEnvironment {
 	env := &runEnvironment{base, run, nil}
 	env.refreshLanguagesCache()
 	return env
@@ -35,7 +35,7 @@ func (e *runEnvironment) Timezone() *time.Location {
 	if contact != nil && contact.Timezone() != nil {
 		return contact.Timezone()
 	}
-	return e.SessionEnvironment.Timezone()
+	return e.run.Session().Environment().Timezone()
 }
 
 func (e *runEnvironment) Languages() utils.LanguageList {
@@ -57,7 +57,7 @@ func (e *runEnvironment) refreshLanguagesCache() {
 	}
 
 	// next we include any environment languages
-	languages = append(languages, e.SessionEnvironment.Languages()...)
+	languages = append(languages, e.run.Session().Environment().Languages()...)
 
 	// finally we include the flow native language
 	languages = append(languages, e.run.flow.Language())
@@ -82,10 +82,10 @@ type flowRun struct {
 	parent flows.FlowRunReference
 	child  flows.FlowRunReference
 
-	session flows.Session
+	session     flows.Session
+	environment *runEnvironment
 
-	path        []flows.Step
-	environment flows.SessionEnvironment
+	path []flows.Step
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -98,10 +98,10 @@ func (r *flowRun) UUID() flows.RunUUID     { return r.uuid }
 func (r *flowRun) Flow() flows.Flow        { return r.flow }
 func (r *flowRun) Contact() *flows.Contact { return r.contact }
 
-func (r *flowRun) Context() flows.Context                { return r.context }
-func (r *flowRun) Environment() flows.SessionEnvironment { return r.environment }
-func (r *flowRun) Results() *flows.Results               { return r.results }
-func (r *flowRun) Session() flows.Session                { return r.session }
+func (r *flowRun) Context() flows.Context         { return r.context }
+func (r *flowRun) Environment() utils.Environment { return r.environment }
+func (r *flowRun) Results() *flows.Results        { return r.results }
+func (r *flowRun) Session() flows.Session         { return r.session }
 
 func (r *flowRun) IsComplete() bool {
 	return r.status != flows.StatusActive
@@ -383,11 +383,10 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.exitedOn = envelope.ExitedOn
 	r.extra = envelope.Extra
 
-	r.flow, err = session.Environment().GetFlow(envelope.FlowUUID)
-	if err != nil {
-		return nil, err
-	}
-	r.contact, err = session.Environment().GetContact(envelope.ContactUUID)
+	// TODO runs with different contact to the session?
+	r.contact = session.Contact()
+
+	r.flow, err = session.Assets().GetFlow(envelope.FlowUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -400,7 +399,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	}
 
 	if envelope.Input != nil {
-		r.input, err = inputs.ReadInput(session.Environment(), envelope.Input)
+		r.input, err = inputs.ReadInput(session, envelope.Input)
 		if err != nil {
 			return nil, err
 		}
@@ -437,21 +436,25 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 }
 
 // resolves parent/child run references for unmarshaled runs
-func (r *flowRun) resolveReferences(session flows.Session) error {
-	if r.parent != nil {
-		parent, err := session.GetRun(r.parent.UUID())
-		if err != nil {
-			return err
-		}
-		r.parent = newReferenceFromRun(parent.(*flowRun))
-	}
+func ResolveReferences(session flows.Session, runs []flows.FlowRun) error {
+	for _, run := range runs {
+		r := run.(*flowRun)
 
-	if r.child != nil {
-		child, err := session.GetRun(r.child.UUID())
-		if err != nil {
-			return err
+		if r.parent != nil {
+			parent, err := session.GetRun(r.parent.UUID())
+			if err != nil {
+				return err
+			}
+			r.parent = newReferenceFromRun(parent.(*flowRun))
 		}
-		r.child = newReferenceFromRun(child.(*flowRun))
+
+		if r.child != nil {
+			child, err := session.GetRun(r.child.UUID())
+			if err != nil {
+				return err
+			}
+			r.child = newReferenceFromRun(child.(*flowRun))
+		}
 	}
 
 	return nil
