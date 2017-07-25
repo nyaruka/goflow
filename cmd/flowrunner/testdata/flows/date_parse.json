@@ -21,7 +21,7 @@
                     "type": "switch",
                     "result_name": "Birth Date",
                     "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                    "operand": "@input",
+                    "operand": "@run.input",
                     "cases": [
                         {
                             "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",

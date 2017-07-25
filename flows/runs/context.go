@@ -30,9 +30,6 @@ func (c *runContext) Resolve(key string) interface{} {
 	case "child":
 		return c.run.Child()
 
-	case "input":
-		return c.run.Input()
-
 	case "parent":
 		return c.run.Parent()
 
@@ -41,9 +38,6 @@ func (c *runContext) Resolve(key string) interface{} {
 
 	case "run":
 		return c.run
-
-	case "webhook":
-		return c.run.Webhook()
 
 	}
 

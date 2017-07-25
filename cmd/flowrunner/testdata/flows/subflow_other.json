@@ -133,7 +133,7 @@
                             "exit_uuid": "3f6401ba-4144-4f29-8b48-9e8a3a11ff26"
                         }
                     ],
-                    "operand": "@input",
+                    "operand": "@run.input",
                     "default_exit_uuid": "3e3a8051-da19-495a-b0ad-69b11e2158f7"
                 }
             },
@@ -220,7 +220,7 @@
                             "exit_uuid": "9cf9216c-d001-4052-85db-c499c26a0ea1"
                         }
                     ],
-                    "operand": "@input",
+                    "operand": "@run.input",
                     "default_exit_uuid": "47f7e70f-f7a5-4a24-a6cd-4853ef07487d"
                 }
             },

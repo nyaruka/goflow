@@ -5,6 +5,8 @@ import (
 
 	"time"
 
+	"strings"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -14,12 +16,13 @@ const TypeMsg string = "msg"
 
 type MsgInput struct {
 	baseInput
-	urn  flows.URN
-	text string
+	urn         flows.URN
+	text        string
+	attachments []string
 }
 
-// NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgInput(channel flows.Channel, createdOn time.Time, urn flows.URN, text string) *MsgInput {
+// NewMsgInput creates a new user input based on a message
+func NewMsgInput(channel flows.Channel, createdOn time.Time, urn flows.URN, text string, attachments []string) *MsgInput {
 	return &MsgInput{baseInput: baseInput{channel: channel, createdOn: createdOn}, urn: urn, text: text}
 }
 
@@ -35,13 +38,23 @@ func (i *MsgInput) Resolve(key string) interface{} {
 
 	case "text":
 		return i.text
+
+	case "attachments":
+		return i.attachments
 	}
 	return i.baseInput.Resolve(key)
 }
 
-// Default returns our default value if evaluated in a context, our text in our case
+// Default returns our default value if evaluated in a context, which in this case is the text and attachments combined
 func (i *MsgInput) Default() interface{} {
-	return i.text
+	var parts []string
+	if i.text != "" {
+		parts = append(parts, i.text)
+	}
+	for _, attachment := range i.attachments {
+		parts = append(parts, attachment)
+	}
+	return strings.Join(parts, "\n")
 }
 
 // String returns our default value if evaluated in a context, our text in our case
@@ -57,8 +70,9 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN  flows.URN `json:"urn"  validate:"required"`
-	Text string    `json:"text" validate:"required"`
+	URN         flows.URN `json:"urn"  validate:"required"`
+	Text        string    `json:"text" validate:"required"`
+	Attachments []string  `json:"attachments,omitempty"`
 }
 
 func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInput, error) {
@@ -84,6 +98,7 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 	input.baseInput.createdOn = i.CreatedOn
 	input.urn = i.URN
 	input.text = i.Text
+	input.attachments = i.Attachments
 	return &input, nil
 }
 
@@ -96,6 +111,7 @@ func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
 	envelope.URN = i.urn
 	envelope.Text = i.text
+	envelope.Attachments = i.attachments
 
 	return json.Marshal(envelope)
 }

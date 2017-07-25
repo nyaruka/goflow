@@ -14,7 +14,7 @@ import (
 // TypeCallWebhook is the type for our webhook action
 const TypeCallWebhook string = "call_webhook"
 
-// WebhookAction can be used to call an external service and insert the results in the @webhook
+// WebhookAction can be used to call an external service and insert the results in @run.webhook
 // context variable. The body, header and url fields may be templates and will be evaluated at runtime.
 //
 // A `webhook_called` event will be created based on the results of the HTTP call.

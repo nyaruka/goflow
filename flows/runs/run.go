@@ -234,6 +234,9 @@ func (r *flowRun) Resolve(key string) interface{} {
 	case "input":
 		return r.Input()
 
+	case "webhook":
+		return r.Webhook()
+
 	case "status":
 		return r.Status()
 
