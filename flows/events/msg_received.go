@@ -8,8 +8,8 @@ import (
 // TypeMsgReceived is a constant for incoming messages
 const TypeMsgReceived string = "msg_received"
 
-// MsgReceivedEvent events are used for resuming flows or starting flows. They represent an MO
-// message for a contact.
+// MsgReceivedEvent events are used for starting flows or resuming flows which are waiting for a message.
+// They represent an MO message for a contact.
 //
 // ```
 //   {
@@ -26,7 +26,7 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	ChannelUUID flows.ChannelUUID `json:"channel_uuid"`
+	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"omitempty,uuid4"`
 	URN         flows.URN         `json:"urn"              validate:"required"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
 	Text        string            `json:"text"`
