@@ -73,7 +73,7 @@ type flowRun struct {
 	extra   utils.JSONFragment
 
 	results *flows.Results
-	context flows.Context
+	context utils.VariableResolver
 	status  flows.RunStatus
 	wait    flows.Wait
 	webhook *utils.RequestResponse
@@ -99,10 +99,10 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() flows.Context         { return r.context }
-func (r *flowRun) Environment() utils.Environment { return r.environment }
-func (r *flowRun) Results() *flows.Results        { return r.results }
-func (r *flowRun) Session() flows.Session         { return r.session }
+func (r *flowRun) Context() utils.VariableResolver { return r.context }
+func (r *flowRun) Environment() utils.Environment  { return r.environment }
+func (r *flowRun) Results() *flows.Results         { return r.results }
+func (r *flowRun) Session() flows.Session          { return r.session }
 
 func (r *flowRun) IsComplete() bool {
 	return r.status != flows.StatusActive
@@ -208,9 +208,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
-
-	// build our context
-	r.context = NewContextForContact(contact, r)
+	r.context = newRunContext(r)
 
 	if parent != nil {
 		parentRun := parent.(*flowRun)
@@ -429,7 +427,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
-	r.context = NewContextForContact(r.contact, r)
+	r.context = newRunContext(r)
 
 	return r, nil
 }

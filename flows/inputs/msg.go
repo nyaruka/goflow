@@ -87,12 +87,15 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 	return &input, nil
 }
 
-func (r *MsgInput) MarshalJSON() ([]byte, error) {
-	envelope := msgInputEnvelope{
-		baseInputEnvelope: baseInputEnvelope{ChannelUUID: r.Channel().UUID(), CreatedOn: r.CreatedOn()},
-		URN:               r.urn,
-		Text:              r.text,
+func (i *MsgInput) MarshalJSON() ([]byte, error) {
+	var envelope msgInputEnvelope
+
+	if i.Channel() != nil {
+		envelope.baseInputEnvelope.ChannelUUID = i.Channel().UUID()
 	}
+	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
+	envelope.URN = i.urn
+	envelope.Text = i.text
 
 	return json.Marshal(envelope)
 }

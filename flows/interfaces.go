@@ -152,12 +152,6 @@ type Translations interface {
 	GetTextArray(uuid UUID, key string) []string
 }
 
-type Context interface {
-	utils.VariableResolver
-	Contact() *Contact
-	Run() FlowRun
-}
-
 type Event interface {
 	CreatedOn() time.Time
 	SetCreatedOn(time.Time)
@@ -229,7 +223,7 @@ type FlowRun interface {
 
 	Environment() utils.Environment
 	Session() Session
-	Context() Context
+	Context() utils.VariableResolver
 
 	Flow() Flow
 	Results() *Results
