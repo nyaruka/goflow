@@ -11,10 +11,9 @@ const TypeMsgWait string = "msg_wait"
 //
 // ```
 //   {
-//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "created_on": "2006-01-02T15:04:05Z",
-//    "type": "msg_wait",
-//    "timeout": 300
+//     "type": "msg_wait",
+//     "created_on": "2006-01-02T15:04:05Z",
+//     "timeout": 300
 //   }
 // ```
 //

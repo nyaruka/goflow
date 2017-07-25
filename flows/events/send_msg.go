@@ -11,7 +11,6 @@ const TypeSendMsg string = "send_msg"
 // ```
 //   {
 //     "type": "send_msg",
-//     "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "urn": "tel:%2B12065551212",
 //     "contact_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",

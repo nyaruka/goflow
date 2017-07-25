@@ -10,17 +10,16 @@ const TypeError string = "error"
 //
 // ```
 //   {
-//    "type": "error",
-//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "created_on": "2006-01-02T15:04:05Z",
-//    "text": "invalid date format: '12th of October'"
+//     "type": "error",
+//     "created_on": "2006-01-02T15:04:05Z",
+//     "text": "invalid date format: '12th of October'"
 //   }
 // ```
 //
 // @event error
 type ErrorEvent struct {
 	BaseEvent
-	Text string `json:"text"     validate:"required"`
+	Text string `json:"text" validate:"required"`
 }
 
 // NewErrorEvent returns a new error event for the passed in error
