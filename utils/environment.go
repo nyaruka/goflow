@@ -68,13 +68,13 @@ type envEnvelope struct {
 	Languages  LanguageList `json:"languages"`
 }
 
-func ReadEnvironment(data *json.RawMessage) (*environment, error) {
+func ReadEnvironment(data json.RawMessage) (*environment, error) {
 	env := NewDefaultEnvironment().(*environment)
 
 	var envelope envEnvelope
 	var err error
 
-	err = json.Unmarshal(*data, &envelope)
+	err = json.Unmarshal(data, &envelope)
 	if err != nil {
 		return nil, err
 	}

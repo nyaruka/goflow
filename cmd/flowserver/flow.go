@@ -31,11 +31,10 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Environment *json.RawMessage       `json:"environment"`
-	Assets      json.RawMessage        `json:"assets"           validate:"required"`
-	Flow        flows.FlowUUID         `json:"flow_uuid"        validate:"required"`
-	Extra       json.RawMessage        `json:"extra,omitempty"`
-	Events      []*utils.TypedEnvelope `json:"events"`
+	Assets json.RawMessage        `json:"assets"           validate:"required"`
+	Flow   flows.FlowUUID         `json:"flow_uuid"        validate:"required"`
+	Extra  json.RawMessage        `json:"extra,omitempty"`
+	Events []*utils.TypedEnvelope `json:"events"`
 }
 
 func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -57,17 +56,6 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our environment
-	var env utils.Environment
-	if start.Environment != nil {
-		env, err = utils.ReadEnvironment(start.Environment)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		env = utils.NewDefaultEnvironment()
-	}
-
 	// read our assets
 	assets, err := engine.ReadAssets(start.Assets)
 	if err != nil {
@@ -75,7 +63,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// build our session
-	session := engine.NewSession(env, assets)
+	session := engine.NewSession(assets)
 
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
@@ -93,10 +81,9 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 type resumeRequest struct {
-	Environment *json.RawMessage       `json:"environment"`
-	Assets      json.RawMessage        `json:"assets"`
-	Session     json.RawMessage        `json:"session"      validate:"required"`
-	Events      []*utils.TypedEnvelope `json:"events"       validate:"required,min=1"`
+	Assets  json.RawMessage        `json:"assets"`
+	Session json.RawMessage        `json:"session" validate:"required"`
+	Events  []*utils.TypedEnvelope `json:"events"  validate:"required,min=1"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -118,17 +105,6 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our environment
-	var env utils.Environment
-	if resume.Environment != nil {
-		env, err = utils.ReadEnvironment(resume.Environment)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		env = utils.NewDefaultEnvironment()
-	}
-
 	// read our assets
 	assets, err := engine.ReadAssets(resume.Assets)
 	if err != nil {
@@ -136,7 +112,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read our session
-	session, err := engine.ReadSession(env, assets, resume.Session)
+	session, err := engine.ReadSession(assets, resume.Session)
 	if err != nil {
 		return nil, err
 	}

@@ -84,6 +84,11 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		err := json.Unmarshal(envelope.Data, &event)
 		return &event, utils.ValidateAllUnlessErr(err, &event)
 
+	case TypeSetEnvironment:
+		event := SetEnvironmentEvent{}
+		err := json.Unmarshal(envelope.Data, &event)
+		return &event, utils.ValidateAllUnlessErr(err, &event)
+
 	case TypeSetContact:
 		event := SetContactEvent{}
 		err := json.Unmarshal(envelope.Data, &event)

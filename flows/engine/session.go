@@ -11,8 +11,8 @@ import (
 )
 
 type session struct {
-	env     utils.Environment
 	assets  flows.Assets
+	env     utils.Environment
 	contact *flows.Contact
 
 	runs       []flows.FlowRun
@@ -21,15 +21,19 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(env utils.Environment, assets flows.Assets) *session {
-	runsByUUID := make(map[flows.RunUUID]flows.FlowRun)
-	return &session{env: env, assets: assets, runsByUUID: runsByUUID}
+func NewSession(assets flows.Assets) *session {
+	return &session{
+		env:        utils.NewDefaultEnvironment(),
+		assets:     assets,
+		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
+	}
 }
 
-func (s *session) Environment() utils.Environment    { return s.env }
-func (s *session) Assets() flows.Assets              { return s.assets }
-func (s *session) Contact() *flows.Contact           { return s.contact }
-func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
+func (s *session) Assets() flows.Assets                 { return s.assets }
+func (s *session) Environment() utils.Environment       { return s.env }
+func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
+func (s *session) Contact() *flows.Contact              { return s.contact }
+func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
 
 func (s *session) CreateRun(flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
 	run := runs.NewRun(s, flow, s.contact, parent)
@@ -167,17 +171,24 @@ func (s *session) resumeRun(run flows.FlowRun, callerEvents []flows.Event) error
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
-	Runs    []json.RawMessage `json:"runs"`
-	Contact json.RawMessage   `json:"contact"`
+	Environment json.RawMessage   `json:"environment"`
+	Contact     json.RawMessage   `json:"contact"`
+	Runs        []json.RawMessage `json:"runs"`
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(env utils.Environment, assets flows.Assets, data json.RawMessage) (flows.Session, error) {
-	s := NewSession(env, assets)
+func ReadSession(assets flows.Assets, data json.RawMessage) (flows.Session, error) {
+	s := NewSession(assets)
 	var envelope sessionEnvelope
 	var err error
 
 	err = json.Unmarshal(data, &envelope)
+	if err != nil {
+		return nil, err
+	}
+
+	// read our environment
+	s.env, err = utils.ReadEnvironment(envelope.Environment)
 	if err != nil {
 		return nil, err
 	}
@@ -210,6 +221,11 @@ func ReadSession(env utils.Environment, assets flows.Assets, data json.RawMessag
 func (s *session) MarshalJSON() ([]byte, error) {
 	var envelope sessionEnvelope
 	var err error
+
+	envelope.Environment, err = json.Marshal(s.env)
+	if err != nil {
+		return nil, err
+	}
 
 	envelope.Contact, err = json.Marshal(s.contact)
 	if err != nil {

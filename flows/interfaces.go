@@ -204,8 +204,10 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Environment() utils.Environment
 	Assets() Assets
+
+	Environment() utils.Environment
+	SetEnvironment(utils.Environment)
 
 	Contact() *Contact
 	SetContact(*Contact)
