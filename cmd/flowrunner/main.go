@@ -25,9 +25,8 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Extra        json.RawMessage        `json:"extra,omitempty"`
-	CallerEvents []*utils.TypedEnvelope `json:"caller_events"`
-	Outputs      []json.RawMessage      `json:"outputs"`
+	CallerEvents [][]*utils.TypedEnvelope `json:"caller_events"`
+	Outputs      []json.RawMessage        `json:"outputs"`
 }
 
 func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {
@@ -206,13 +205,16 @@ func main() {
 	session.SetContact(contact)
 
 	// and start our flow
-	err = session.StartFlow(runnerFlows[0].UUID(), nil, nil, nil)
+	err = session.StartFlow(runnerFlows[0].UUID(), nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
-	inputs := make([]flows.Event, 0)
+
+	callerEvents := make([][]flows.Event, 0)
+	callerEvents = append(callerEvents, []flows.Event{})
+
 	outputs := make([]*Output, 0)
 
 	channelUUID := flows.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d")
@@ -240,7 +242,7 @@ func main() {
 		// create our event to resume with
 		event := events.NewMsgReceivedEvent(channelUUID, contact.UUID(), contact.URNs()[0], scanner.Text())
 		event.SetFromCaller(true)
-		inputs = append(inputs, event)
+		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
 		session, err = engine.ReadSession(assets, outJSON)
@@ -270,7 +272,11 @@ func main() {
 		// name of the test file is the same as our flow file, just with _test.json intead of .json
 		testFilename := strings.Replace(flowFilename, ".json", "_test.json", 1)
 
-		envelopes := envelopesForEvents(inputs)
+		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
+		for i := range callerEvents {
+			callerEventEnvelopes[i] = envelopesForEvents(callerEvents[i])
+		}
+
 		rawOutputs := make([]json.RawMessage, len(outputs))
 		for i := range outputs {
 			rawOutputs[i], err = json.Marshal(outputs[i])
@@ -279,7 +285,7 @@ func main() {
 			}
 		}
 
-		flowTest := FlowTest{nil, envelopes, rawOutputs}
+		flowTest := FlowTest{CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
 		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)

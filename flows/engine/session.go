@@ -87,7 +87,7 @@ func (s *session) Log() []flows.LogEntry { return s.log }
 func (s *session) ClearLog()             { s.log = nil }
 
 // StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func (s *session) StartFlow(flowUUID flows.FlowUUID, parent flows.FlowRun, callerEvents []flows.Event, extra json.RawMessage) error {
+func (s *session) StartFlow(flowUUID flows.FlowUUID, parent flows.FlowRun, callerEvents []flows.Event) error {
 	flow, err := s.assets.GetFlow(flowUUID)
 	if err != nil {
 		return err
@@ -95,11 +95,6 @@ func (s *session) StartFlow(flowUUID flows.FlowUUID, parent flows.FlowRun, calle
 
 	// create our new run
 	run := s.CreateRun(flow, parent)
-
-	// if we got extra, set it
-	if extra != nil {
-		run.SetExtra(extra)
-	}
 
 	// no first node, nothing to do (valid but weird)
 	if len(flow.Nodes()) == 0 {

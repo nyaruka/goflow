@@ -84,7 +84,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	session.SetContact(contact)
 
 	// and start the example flow
-	err = session.StartFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), nil, nil, nil)
+	err = session.StartFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), nil, nil)
 	return session, err
 }
 

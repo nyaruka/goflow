@@ -70,8 +70,8 @@ type flowRun struct {
 
 	flow    flows.Flow
 	contact *flows.Contact
+	extra   utils.JSONFragment
 
-	extra   json.RawMessage
 	results *flows.Results
 	context flows.Context
 	status  flows.RunStatus
@@ -160,10 +160,8 @@ func (r *flowRun) SetWebhook(rr *utils.RequestResponse) {
 	r.setModifiedOn(time.Now().UTC())
 }
 
-func (r *flowRun) Extra() utils.JSONFragment {
-	return utils.NewJSONFragment([]byte(r.extra))
-}
-func (r *flowRun) SetExtra(extra json.RawMessage) { r.extra = extra }
+func (r *flowRun) Extra() utils.JSONFragment         { return r.extra }
+func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
 
 func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time       { return r.modifiedOn }
@@ -382,7 +380,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
-	r.extra = envelope.Extra
+	r.extra = utils.NewJSONFragment(envelope.Extra)
 
 	// TODO runs with different contact to the session?
 	r.contact = session.Contact()
@@ -468,6 +466,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.UUID = r.uuid
 	re.FlowUUID = r.flow.UUID()
 	re.ContactUUID = r.contact.UUID()
+	re.Extra, _ = json.Marshal(r.extra)
 
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
@@ -476,7 +475,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.TimesOutOn = r.timesOutOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
-	re.Extra = r.extra
 	re.Webhook = r.webhook
 
 	if r.parent != nil {

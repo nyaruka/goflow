@@ -3,8 +3,6 @@ package flows
 import (
 	"time"
 
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -212,7 +210,7 @@ type Session interface {
 	Contact() *Contact
 	SetContact(*Contact)
 
-	StartFlow(FlowUUID, FlowRun, []Event, json.RawMessage) error
+	StartFlow(FlowUUID, FlowRun, []Event) error
 	Resume([]Event) error
 
 	CreateRun(Flow, FlowRun) FlowRun
@@ -239,7 +237,7 @@ type FlowRun interface {
 	Contact() *Contact
 	SetContact(*Contact)
 
-	SetExtra(json.RawMessage)
+	SetExtra(utils.JSONFragment)
 	Extra() utils.JSONFragment
 
 	Status() RunStatus

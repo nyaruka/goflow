@@ -33,7 +33,6 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 type startRequest struct {
 	Assets json.RawMessage        `json:"assets"           validate:"required"`
 	Flow   flows.FlowUUID         `json:"flow_uuid"        validate:"required"`
-	Extra  json.RawMessage        `json:"extra,omitempty"`
 	Events []*utils.TypedEnvelope `json:"events"`
 }
 
@@ -72,7 +71,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// start our flow
-	err = session.StartFlow(start.Flow, nil, callerEvents, start.Extra)
+	err = session.StartFlow(start.Flow, nil, callerEvents)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}

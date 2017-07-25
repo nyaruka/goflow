@@ -74,7 +74,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	run.ApplyEvent(step, a, events.NewFlowEnterEvent(a.FlowUUID, run.Contact().UUID()))
 
 	// start it for our current contact
-	err = run.Session().StartFlow(flow.UUID(), run, nil, nil)
+	err = run.Session().StartFlow(flow.UUID(), run, nil)
 
 	// if we received an error, shortcut out, this session is horked
 	if err != nil {

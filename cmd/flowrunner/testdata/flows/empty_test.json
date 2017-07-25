@@ -1,5 +1,7 @@
 {
-  "caller_events": [],
+  "caller_events": [
+    []
+  ],
   "outputs": [
     {
       "log": [],
