@@ -106,6 +106,32 @@
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
             "child_uuid": "",

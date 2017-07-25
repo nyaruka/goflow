@@ -13,6 +13,20 @@ type assets struct {
 	channels map[flows.ChannelUUID]flows.Channel
 }
 
+func NewAssets(flowList []flows.Flow, channelList []flows.Channel) flows.Assets {
+	flowMap := make(map[flows.FlowUUID]flows.Flow, len(channelList))
+	for _, flow := range flowList {
+		flowMap[flow.UUID()] = flow
+	}
+
+	channelMap := make(map[flows.ChannelUUID]flows.Channel, len(channelList))
+	for _, channel := range channelList {
+		channelMap[channel.UUID()] = channel
+	}
+
+	return &assets{flows: flowMap, channels: channelMap}
+}
+
 func (e *assets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	flow, exists := e.flows[uuid]
 	if exists {
@@ -34,7 +48,7 @@ func (e *assets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 //------------------------------------------------------------------------------------------
 
 type assetsEnvelope struct {
-	Flows    []json.RawMessage `json:"flows"                validate:"required"`
+	Flows    []json.RawMessage `json:"flows"               validate:"required"`
 	Channels []json.RawMessage `json:"channels,omitempty"`
 }
 
@@ -44,23 +58,23 @@ func ReadAssets(data json.RawMessage) (flows.Assets, error) {
 		return nil, err
 	}
 
-	flowMap := make(map[flows.FlowUUID]flows.Flow, len(envelope.Flows))
+	flowList := make([]flows.Flow, len(envelope.Flows))
+	channelList := make([]flows.Channel, len(envelope.Channels))
+
 	for f := range envelope.Flows {
 		flow, err := definition.ReadFlow(envelope.Flows[f])
 		if err != nil {
 			return nil, err
 		}
-		flowMap[flow.UUID()] = flow
+		flowList[f] = flow
 	}
-
-	channelMap := make(map[flows.ChannelUUID]flows.Channel, len(envelope.Channels))
 	for c := range envelope.Channels {
 		channel, err := flows.ReadChannel(envelope.Channels[c])
 		if err != nil {
 			return nil, err
 		}
-		channelMap[channel.UUID()] = channel
+		channelList[c] = channel
 	}
 
-	return &assets{flowMap, channelMap}, nil
+	return NewAssets(flowList, channelList), nil
 }

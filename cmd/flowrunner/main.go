@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -177,15 +176,6 @@ func main() {
 		log.Fatal("Error reading flows: ", err)
 	}
 
-	contactJSON, err := ioutil.ReadFile(*contactFile)
-	if err != nil {
-		log.Fatal("Error reading contact file: ", err)
-	}
-	contact, err := flows.ReadContact(json.RawMessage(contactJSON))
-	if err != nil {
-		log.Fatal("Error unmarshalling contact: ", err)
-	}
-
 	channelJSON, err := ioutil.ReadFile(*channelFile)
 	if err != nil {
 		log.Fatal("Error reading channel file: ", err)
@@ -195,14 +185,28 @@ func main() {
 		log.Fatal("Error unmarshalling channel: ", err)
 	}
 
-	// create our flow environment
-	baseEnv := utils.NewDefaultEnvironment()
+	// create our environment
+	env := utils.NewDefaultEnvironment()
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	baseEnv.SetTimezone(la)
-	env := engine.NewSessionEnvironment(baseEnv, runnerFlows, []flows.Channel{channel}, []*flows.Contact{contact})
+	env.SetTimezone(la)
+
+	assets := engine.NewAssets(runnerFlows, []flows.Channel{channel})
+	session := engine.NewSession(assets)
+
+	contactJSON, err := ioutil.ReadFile(*contactFile)
+	if err != nil {
+		log.Fatal("Error reading contact file: ", err)
+	}
+	contact, err := flows.ReadContact(assets, json.RawMessage(contactJSON))
+	if err != nil {
+		log.Fatal("Error unmarshalling contact: ", err)
+	}
+
+	session.SetEnvironment(env)
+	session.SetContact(contact)
 
 	// and start our flow
-	session, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
+	err = session.StartFlow(runnerFlows[0].UUID(), nil, nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
@@ -239,17 +243,12 @@ func main() {
 		inputs = append(inputs, event)
 
 		// rebuild our session
-		session, err = runs.ReadSession(session.Environment(), outJSON)
+		session, err = engine.ReadSession(assets, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
-		baseEnv := utils.NewDefaultEnvironment()
-		la, _ := time.LoadLocation("America/Los_Angeles")
-		baseEnv.SetTimezone(la)
 
-		run = session.ActiveRun()
-
-		session, err = engine.ResumeFlow(env, run, []flows.Event{event})
+		err = session.Resume([]flows.Event{event})
 		if err != nil {
 			log.Print("Error resuming flow: ", err)
 			break

@@ -33,6 +33,32 @@
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
@@ -110,6 +136,37 @@
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "birth_date": {
+              "field_name": "Birth Date",
+              "field_uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
+              "value": "1977-06-23T15:34:00.000000-05:00"
+            },
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",

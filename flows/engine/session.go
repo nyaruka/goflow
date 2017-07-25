@@ -21,7 +21,7 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assets flows.Assets) *session {
+func NewSession(assets flows.Assets) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets,
@@ -178,7 +178,7 @@ type sessionEnvelope struct {
 
 // ReadSession decodes a session from the passed in JSON
 func ReadSession(assets flows.Assets, data json.RawMessage) (flows.Session, error) {
-	s := NewSession(assets)
+	s := NewSession(assets).(*session)
 	var envelope sessionEnvelope
 	var err error
 
