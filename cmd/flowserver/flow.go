@@ -34,7 +34,6 @@ type startRequest struct {
 	Environment *json.RawMessage       `json:"environment"`
 	Assets      json.RawMessage        `json:"assets"           validate:"required"`
 	Flow        flows.FlowUUID         `json:"flow_uuid"        validate:"required"`
-	Contact     json.RawMessage        `json:"contact"          validate:"required"`
 	Extra       json.RawMessage        `json:"extra,omitempty"`
 	Events      []*utils.TypedEnvelope `json:"events"`
 }
@@ -75,14 +74,8 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our contact
-	contact, err := flows.ReadContact(assets, start.Contact)
-	if err != nil {
-		return nil, err
-	}
-
 	// build our session
-	session := engine.NewSession(env, assets, contact)
+	session := engine.NewSession(env, assets)
 
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)

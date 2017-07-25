@@ -94,9 +94,10 @@ type flowRun struct {
 	exitedOn   *time.Time
 }
 
-func (r *flowRun) UUID() flows.RunUUID     { return r.uuid }
-func (r *flowRun) Flow() flows.Flow        { return r.flow }
-func (r *flowRun) Contact() *flows.Contact { return r.contact }
+func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
+func (r *flowRun) Flow() flows.Flow                  { return r.flow }
+func (r *flowRun) Contact() *flows.Contact           { return r.contact }
+func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
 func (r *flowRun) Context() flows.Context         { return r.context }
 func (r *flowRun) Environment() utils.Environment { return r.environment }

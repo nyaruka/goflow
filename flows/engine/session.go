@@ -21,14 +21,15 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(env utils.Environment, assets flows.Assets, contact *flows.Contact) *session {
+func NewSession(env utils.Environment, assets flows.Assets) *session {
 	runsByUUID := make(map[flows.RunUUID]flows.FlowRun)
-	return &session{env: env, assets: assets, contact: contact, runsByUUID: runsByUUID}
+	return &session{env: env, assets: assets, runsByUUID: runsByUUID}
 }
 
-func (s *session) Environment() utils.Environment { return s.env }
-func (s *session) Assets() flows.Assets           { return s.assets }
-func (s *session) Contact() *flows.Contact        { return s.contact }
+func (s *session) Environment() utils.Environment    { return s.env }
+func (s *session) Assets() flows.Assets              { return s.assets }
+func (s *session) Contact() *flows.Contact           { return s.contact }
+func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
 
 func (s *session) CreateRun(flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
 	run := runs.NewRun(s, flow, s.contact, parent)
@@ -172,7 +173,7 @@ type sessionEnvelope struct {
 
 // ReadSession decodes a session from the passed in JSON
 func ReadSession(env utils.Environment, assets flows.Assets, data json.RawMessage) (flows.Session, error) {
-	s := NewSession(env, assets, nil)
+	s := NewSession(env, assets)
 	var envelope sessionEnvelope
 	var err error
 

@@ -206,7 +206,9 @@ type LogEntry interface {
 type Session interface {
 	Environment() utils.Environment
 	Assets() Assets
+
 	Contact() *Contact
+	SetContact(*Contact)
 
 	StartFlow(FlowUUID, FlowRun, []Event, json.RawMessage) error
 	Resume([]Event) error
@@ -230,8 +232,10 @@ type FlowRun interface {
 	Context() Context
 
 	Flow() Flow
-	Contact() *Contact
 	Results() *Results
+
+	Contact() *Contact
+	SetContact(*Contact)
 
 	SetExtra(json.RawMessage)
 	Extra() utils.JSONFragment
