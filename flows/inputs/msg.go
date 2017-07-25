@@ -61,7 +61,7 @@ type msgInputEnvelope struct {
 	Text string    `json:"text" validate:"required"`
 }
 
-func ReadMsgInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (*MsgInput, error) {
+func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInput, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
 	err := json.Unmarshal(envelope.Data, &i)
@@ -75,7 +75,7 @@ func ReadMsgInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (
 	}
 
 	// lookup the channel
-	channel, err := env.GetChannel(i.ChannelUUID)
+	channel, err := session.Assets().GetChannel(i.ChannelUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -87,12 +87,15 @@ func ReadMsgInput(env flows.SessionEnvironment, envelope *utils.TypedEnvelope) (
 	return &input, nil
 }
 
-func (r *MsgInput) MarshalJSON() ([]byte, error) {
-	envelope := msgInputEnvelope{
-		baseInputEnvelope: baseInputEnvelope{ChannelUUID: r.Channel().UUID(), CreatedOn: r.CreatedOn()},
-		URN:               r.urn,
-		Text:              r.text,
+func (i *MsgInput) MarshalJSON() ([]byte, error) {
+	var envelope msgInputEnvelope
+
+	if i.Channel() != nil {
+		envelope.baseInputEnvelope.ChannelUUID = i.Channel().UUID()
 	}
+	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
+	envelope.URN = i.urn
+	envelope.Text = i.text
 
 	return json.Marshal(envelope)
 }

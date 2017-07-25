@@ -18,6 +18,7 @@ type Contact struct {
 	urns     URNList
 	groups   GroupList
 	fields   *Fields
+	channel  Channel
 }
 
 // SetLanguage sets the language for this contact
@@ -60,7 +61,8 @@ func (c *Contact) InGroup(group *Group) bool {
 	return false
 }
 
-func (c *Contact) Fields() *Fields { return c.fields }
+func (c *Contact) Fields() *Fields  { return c.fields }
+func (c *Contact) Channel() Channel { return c.channel }
 
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
@@ -88,6 +90,9 @@ func (c *Contact) Resolve(key string) interface{} {
 
 	case "urn":
 		return c.urns
+
+	case "channel":
+		return c.channel
 	}
 
 	return fmt.Errorf("No field '%s' on contact", key)
@@ -114,61 +119,68 @@ type ContactReference struct {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadContact decodes a contact from the passed in JSON
-func ReadContact(data json.RawMessage) (*Contact, error) {
-	contact := &Contact{}
-	err := json.Unmarshal(data, contact)
-	err = utils.ValidateAllUnlessErr(err, contact)
-	return contact, err
-}
-
 type contactEnvelope struct {
-	UUID     ContactUUID    `json:"uuid"`
-	Name     string         `json:"name"`
-	Language utils.Language `json:"language"`
-	Timezone string         `json:"timezone"`
-	URNs     URNList        `json:"urns"`
-	Groups   GroupList      `json:"groups"`
-	Fields   *Fields        `json:"fields,omitempty"`
+	UUID        ContactUUID    `json:"uuid" validate:"uuid4"`
+	Name        string         `json:"name"`
+	Language    utils.Language `json:"language"`
+	Timezone    string         `json:"timezone"`
+	URNs        URNList        `json:"urns"`
+	Groups      GroupList      `json:"groups"`
+	Fields      *Fields        `json:"fields,omitempty"`
+	ChannelUUID ChannelUUID    `json:"channel_uuid" validate:"omitempty,uuid4"`
 }
 
-func (c *Contact) UnmarshalJSON(data []byte) error {
-	var ce contactEnvelope
+// ReadContact decodes a contact from the passed in JSON
+func ReadContact(assets Assets, data json.RawMessage) (*Contact, error) {
+	var envelope contactEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &ce)
+	err = json.Unmarshal(data, &envelope)
 	if err != nil {
-		return err
+		return nil, err
+	}
+	err = utils.ValidateAll(envelope)
+	if err != nil {
+		return nil, err
 	}
 
-	c.name = ce.Name
-	c.uuid = ce.UUID
-	c.language = ce.Language
-	tz, err := time.LoadLocation(ce.Timezone)
+	c := &Contact{}
+	c.uuid = envelope.UUID
+	c.name = envelope.Name
+	c.language = envelope.Language
+
+	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	c.timezone = tz
 
-	if ce.URNs == nil {
+	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		c.urns = ce.URNs
+		c.urns = envelope.URNs
 	}
 
-	if ce.Groups == nil {
+	if envelope.Groups == nil {
 		c.groups = make(GroupList, 0)
 	} else {
-		c.groups = ce.Groups
+		c.groups = envelope.Groups
 	}
 
-	if ce.Fields == nil {
+	if envelope.Fields == nil {
 		c.fields = NewFields()
 	} else {
-		c.fields = ce.Fields
+		c.fields = envelope.Fields
 	}
 
-	return err
+	if envelope.ChannelUUID != "" {
+		c.channel, err = assets.GetChannel(envelope.ChannelUUID)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return c, nil
 }
 
 func (c *Contact) MarshalJSON() ([]byte, error) {

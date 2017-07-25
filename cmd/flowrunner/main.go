@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -26,9 +25,8 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Extra        json.RawMessage        `json:"extra,omitempty"`
-	CallerEvents []*utils.TypedEnvelope `json:"caller_events"`
-	Outputs      []json.RawMessage      `json:"outputs"`
+	CallerEvents [][]*utils.TypedEnvelope `json:"caller_events"`
+	Outputs      []json.RawMessage        `json:"outputs"`
 }
 
 func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {
@@ -177,15 +175,6 @@ func main() {
 		log.Fatal("Error reading flows: ", err)
 	}
 
-	contactJSON, err := ioutil.ReadFile(*contactFile)
-	if err != nil {
-		log.Fatal("Error reading contact file: ", err)
-	}
-	contact, err := flows.ReadContact(json.RawMessage(contactJSON))
-	if err != nil {
-		log.Fatal("Error unmarshalling contact: ", err)
-	}
-
 	channelJSON, err := ioutil.ReadFile(*channelFile)
 	if err != nil {
 		log.Fatal("Error reading channel file: ", err)
@@ -195,20 +184,37 @@ func main() {
 		log.Fatal("Error unmarshalling channel: ", err)
 	}
 
-	// create our flow environment
-	baseEnv := utils.NewDefaultEnvironment()
+	// create our environment
+	env := utils.NewDefaultEnvironment()
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	baseEnv.SetTimezone(la)
-	env := engine.NewSessionEnvironment(baseEnv, runnerFlows, []flows.Channel{channel}, []*flows.Contact{contact})
+	env.SetTimezone(la)
+
+	assets := engine.NewAssets(runnerFlows, []flows.Channel{channel})
+	session := engine.NewSession(assets)
+
+	contactJSON, err := ioutil.ReadFile(*contactFile)
+	if err != nil {
+		log.Fatal("Error reading contact file: ", err)
+	}
+	contact, err := flows.ReadContact(assets, json.RawMessage(contactJSON))
+	if err != nil {
+		log.Fatal("Error unmarshalling contact: ", err)
+	}
+
+	session.SetEnvironment(env)
+	session.SetContact(contact)
 
 	// and start our flow
-	session, err := engine.StartFlow(env, runnerFlows[0], contact, nil, nil, nil)
+	err = session.StartFlow(runnerFlows[0].UUID(), nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
-	inputs := make([]flows.Event, 0)
+
+	callerEvents := make([][]flows.Event, 0)
+	callerEvents = append(callerEvents, []flows.Event{})
+
 	outputs := make([]*Output, 0)
 
 	channelUUID := flows.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d")
@@ -236,20 +242,15 @@ func main() {
 		// create our event to resume with
 		event := events.NewMsgReceivedEvent(channelUUID, contact.UUID(), contact.URNs()[0], scanner.Text())
 		event.SetFromCaller(true)
-		inputs = append(inputs, event)
+		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = runs.ReadSession(session.Environment(), outJSON)
+		session, err = engine.ReadSession(assets, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
-		baseEnv := utils.NewDefaultEnvironment()
-		la, _ := time.LoadLocation("America/Los_Angeles")
-		baseEnv.SetTimezone(la)
 
-		run = session.ActiveRun()
-
-		session, err = engine.ResumeFlow(env, run, []flows.Event{event})
+		err = session.Resume([]flows.Event{event})
 		if err != nil {
 			log.Print("Error resuming flow: ", err)
 			break
@@ -271,7 +272,11 @@ func main() {
 		// name of the test file is the same as our flow file, just with _test.json intead of .json
 		testFilename := strings.Replace(flowFilename, ".json", "_test.json", 1)
 
-		envelopes := envelopesForEvents(inputs)
+		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
+		for i := range callerEvents {
+			callerEventEnvelopes[i] = envelopesForEvents(callerEvents[i])
+		}
+
 		rawOutputs := make([]json.RawMessage, len(outputs))
 		for i := range outputs {
 			rawOutputs[i], err = json.Marshal(outputs[i])
@@ -280,7 +285,7 @@ func main() {
 			}
 		}
 
-		flowTest := FlowTest{nil, envelopes, rawOutputs}
+		flowTest := FlowTest{CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
 		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)

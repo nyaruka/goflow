@@ -18,7 +18,6 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -67,7 +66,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 	return bytes, err
 }
 
-func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, callerEvents []flows.Event, extra json.RawMessage) (flows.Session, []*Output, error) {
+func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, callerEvents [][]flows.Event) (flows.Session, []*Output, error) {
 	flowJSON, err := readFile("flows/", flowFilename)
 	if err != nil {
 		return nil, nil, err
@@ -89,16 +88,6 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		}
 	}
 
-	contactJSON, err := readFile("contacts/", contactFilename)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	contact, err := flows.ReadContact(json.RawMessage(contactJSON))
-	if err != nil {
-		return nil, nil, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
-	}
-
 	channelJSON, err := readFile("channels/", channelFilename)
 	if err != nil {
 		return nil, nil, err
@@ -109,24 +98,40 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 		return nil, nil, fmt.Errorf("Error unmarshalling channel '%s': %s", channelFilename, err)
 	}
 
+	assets := engine.NewAssets(runnerFlows, []flows.Channel{channel})
+
+	contactJSON, err := readFile("contacts/", contactFilename)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	contact, err := flows.ReadContact(assets, json.RawMessage(contactJSON))
+	if err != nil {
+		return nil, nil, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
+	}
+
 	// start our contact down this flow
-	sessionEnv := engine.NewSessionEnvironment(env, runnerFlows, []flows.Channel{channel}, []*flows.Contact{contact})
-	session, err := engine.StartFlow(sessionEnv, runnerFlows[0], contact, nil, nil, extra)
+	session := engine.NewSession(assets)
+	session.SetEnvironment(env)
+	session.SetContact(contact)
+
+	err = session.StartFlow(runnerFlows[0].UUID(), nil, callerEvents[0])
 	if err != nil {
 		return nil, nil, err
 	}
 
 	outputs := make([]*Output, 0)
 
-	// for each of our caller events
-	for i := range callerEvents {
+	// for each of our remaining caller events
+	resumeEvents := callerEvents[1:]
+	for i := range resumeEvents {
 		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
 			return nil, nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		session, err = runs.ReadSession(sessionEnv, outJSON)
+		session, err = engine.ReadSession(assets, outJSON)
 		if err != nil {
 			return nil, nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -135,9 +140,9 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 
 		// if we aren't at a wait, that's an error
 		if activeRun == nil {
-			return nil, nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", callerEvents[i:])
+			return nil, nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
 		}
-		session, err = engine.ResumeFlow(sessionEnv, activeRun, []flows.Event{callerEvents[i]})
+		err = session.Resume(resumeEvents[i])
 		if err != nil {
 			return nil, nil, err
 		}
@@ -207,18 +212,24 @@ func TestFlows(t *testing.T) {
 		}
 
 		// unmarshal our caller events
-		callerEvents := make([]flows.Event, len(flowTest.CallerEvents))
+		callerEvents := make([][]flows.Event, len(flowTest.CallerEvents))
+
 		for i := range flowTest.CallerEvents {
-			callerEvents[i], err = events.EventFromEnvelope(flowTest.CallerEvents[i])
-			callerEvents[i].SetFromCaller(true)
-			if err != nil {
-				t.Errorf("Error unmarshalling resume events for flow '%s' and output '%s': %s", test.flow, test.output, err)
-				continue
+			callerEvents[i] = make([]flows.Event, len(flowTest.CallerEvents[i]))
+
+			for e := range flowTest.CallerEvents[i] {
+				event, err := events.EventFromEnvelope(flowTest.CallerEvents[i][e])
+				if err != nil {
+					t.Errorf("Error unmarshalling caller events for flow '%s' and output '%s': %s", test.flow, test.output, err)
+					continue
+				}
+				event.SetFromCaller(true)
+				callerEvents[i][e] = event
 			}
 		}
 
 		// run our flow
-		session, outputs, err := runFlow(env, test.flow, test.contact, test.channel, callerEvents, flowTest.Extra)
+		session, outputs, err := runFlow(env, test.flow, test.contact, test.channel, callerEvents)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.flow, test.output, err)
 			continue
@@ -226,7 +237,6 @@ func TestFlows(t *testing.T) {
 
 		if writeOutput {
 			// we are writing new outputs, we write new files but don't test anything
-			envelopes := envelopesForEvents(callerEvents)
 			rawOutputs := make([]json.RawMessage, len(outputs))
 			for i := range outputs {
 				rawOutputs[i], err = json.Marshal(outputs[i])
@@ -234,7 +244,7 @@ func TestFlows(t *testing.T) {
 					log.Fatal(err)
 				}
 			}
-			flowTest := FlowTest{Extra: flowTest.Extra, CallerEvents: envelopes, Outputs: rawOutputs}
+			flowTest := FlowTest{CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
 			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 			if err != nil {
 				log.Fatal("Error marshalling test definition: ", err)
@@ -268,11 +278,11 @@ func TestFlows(t *testing.T) {
 				actualOutput := outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := runs.ReadSession(session.Environment(), actualOutput.Session)
+				actualSession, err := engine.ReadSession(session.Assets(), actualOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.flow, err)
 				}
-				expectedSession, err := runs.ReadSession(session.Environment(), expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(session.Assets(), expectedOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.flow, err)
 				}

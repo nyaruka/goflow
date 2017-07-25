@@ -15,14 +15,14 @@ import (
 
 // a run specific environment which allows values to be overridden by the contact
 type runEnvironment struct {
-	flows.SessionEnvironment
+	utils.Environment
 	run *flowRun
 
 	cachedLanguages utils.LanguageList
 }
 
 // creates a run environment based on the given run
-func newRunEnvironment(base flows.SessionEnvironment, run *flowRun) *runEnvironment {
+func newRunEnvironment(base utils.Environment, run *flowRun) *runEnvironment {
 	env := &runEnvironment{base, run, nil}
 	env.refreshLanguagesCache()
 	return env
@@ -35,7 +35,7 @@ func (e *runEnvironment) Timezone() *time.Location {
 	if contact != nil && contact.Timezone() != nil {
 		return contact.Timezone()
 	}
-	return e.SessionEnvironment.Timezone()
+	return e.run.Session().Environment().Timezone()
 }
 
 func (e *runEnvironment) Languages() utils.LanguageList {
@@ -57,7 +57,7 @@ func (e *runEnvironment) refreshLanguagesCache() {
 	}
 
 	// next we include any environment languages
-	languages = append(languages, e.SessionEnvironment.Languages()...)
+	languages = append(languages, e.run.Session().Environment().Languages()...)
 
 	// finally we include the flow native language
 	languages = append(languages, e.run.flow.Language())
@@ -70,10 +70,10 @@ type flowRun struct {
 
 	flow    flows.Flow
 	contact *flows.Contact
+	extra   utils.JSONFragment
 
-	extra   json.RawMessage
 	results *flows.Results
-	context flows.Context
+	context utils.VariableResolver
 	status  flows.RunStatus
 	wait    flows.Wait
 	webhook *utils.RequestResponse
@@ -82,10 +82,10 @@ type flowRun struct {
 	parent flows.FlowRunReference
 	child  flows.FlowRunReference
 
-	session flows.Session
+	session     flows.Session
+	environment *runEnvironment
 
-	path        []flows.Step
-	environment flows.SessionEnvironment
+	path []flows.Step
 
 	createdOn  time.Time
 	modifiedOn time.Time
@@ -94,14 +94,15 @@ type flowRun struct {
 	exitedOn   *time.Time
 }
 
-func (r *flowRun) UUID() flows.RunUUID     { return r.uuid }
-func (r *flowRun) Flow() flows.Flow        { return r.flow }
-func (r *flowRun) Contact() *flows.Contact { return r.contact }
+func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
+func (r *flowRun) Flow() flows.Flow                  { return r.flow }
+func (r *flowRun) Contact() *flows.Contact           { return r.contact }
+func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() flows.Context                { return r.context }
-func (r *flowRun) Environment() flows.SessionEnvironment { return r.environment }
-func (r *flowRun) Results() *flows.Results               { return r.results }
-func (r *flowRun) Session() flows.Session                { return r.session }
+func (r *flowRun) Context() utils.VariableResolver { return r.context }
+func (r *flowRun) Environment() utils.Environment  { return r.environment }
+func (r *flowRun) Results() *flows.Results         { return r.results }
+func (r *flowRun) Session() flows.Session          { return r.session }
 
 func (r *flowRun) IsComplete() bool {
 	return r.status != flows.StatusActive
@@ -159,10 +160,8 @@ func (r *flowRun) SetWebhook(rr *utils.RequestResponse) {
 	r.setModifiedOn(time.Now().UTC())
 }
 
-func (r *flowRun) Extra() utils.JSONFragment {
-	return utils.NewJSONFragment([]byte(r.extra))
-}
-func (r *flowRun) SetExtra(extra json.RawMessage) { r.extra = extra }
+func (r *flowRun) Extra() utils.JSONFragment         { return r.extra }
+func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
 
 func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time       { return r.modifiedOn }
@@ -209,9 +208,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
-
-	// build our context
-	r.context = NewContextForContact(contact, r)
+	r.context = newRunContext(r)
 
 	if parent != nil {
 		parentRun := parent.(*flowRun)
@@ -381,13 +378,12 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
-	r.extra = envelope.Extra
+	r.extra = utils.NewJSONFragment(envelope.Extra)
 
-	r.flow, err = session.Environment().GetFlow(envelope.FlowUUID)
-	if err != nil {
-		return nil, err
-	}
-	r.contact, err = session.Environment().GetContact(envelope.ContactUUID)
+	// TODO runs with different contact to the session?
+	r.contact = session.Contact()
+
+	r.flow, err = session.Assets().GetFlow(envelope.FlowUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -400,7 +396,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	}
 
 	if envelope.Input != nil {
-		r.input, err = inputs.ReadInput(session.Environment(), envelope.Input)
+		r.input, err = inputs.ReadInput(session, envelope.Input)
 		if err != nil {
 			return nil, err
 		}
@@ -431,27 +427,31 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
-	r.context = NewContextForContact(r.contact, r)
+	r.context = newRunContext(r)
 
 	return r, nil
 }
 
 // resolves parent/child run references for unmarshaled runs
-func (r *flowRun) resolveReferences(session flows.Session) error {
-	if r.parent != nil {
-		parent, err := session.GetRun(r.parent.UUID())
-		if err != nil {
-			return err
-		}
-		r.parent = newReferenceFromRun(parent.(*flowRun))
-	}
+func ResolveReferences(session flows.Session, runs []flows.FlowRun) error {
+	for _, run := range runs {
+		r := run.(*flowRun)
 
-	if r.child != nil {
-		child, err := session.GetRun(r.child.UUID())
-		if err != nil {
-			return err
+		if r.parent != nil {
+			parent, err := session.GetRun(r.parent.UUID())
+			if err != nil {
+				return err
+			}
+			r.parent = newReferenceFromRun(parent.(*flowRun))
 		}
-		r.child = newReferenceFromRun(child.(*flowRun))
+
+		if r.child != nil {
+			child, err := session.GetRun(r.child.UUID())
+			if err != nil {
+				return err
+			}
+			r.child = newReferenceFromRun(child.(*flowRun))
+		}
 	}
 
 	return nil
@@ -464,6 +464,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.UUID = r.uuid
 	re.FlowUUID = r.flow.UUID()
 	re.ContactUUID = r.contact.UUID()
+	re.Extra, _ = json.Marshal(r.extra)
 
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
@@ -472,7 +473,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.TimesOutOn = r.timesOutOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
-	re.Extra = r.extra
 	re.Webhook = r.webhook
 
 	if r.parent != nil {

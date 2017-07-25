@@ -3,8 +3,6 @@ package flows
 import (
 	"time"
 
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -87,11 +85,9 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
-type SessionEnvironment interface {
+type Assets interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetChannel(ChannelUUID) (Channel, error)
-	GetContact(ContactUUID) (*Contact, error)
-	utils.Environment
 }
 
 type Node interface {
@@ -156,12 +152,6 @@ type Translations interface {
 	GetTextArray(uuid UUID, key string) []string
 }
 
-type Context interface {
-	utils.VariableResolver
-	Contact() *Contact
-	Run() FlowRun
-}
-
 type Event interface {
 	CreatedOn() time.Time
 	SetCreatedOn(time.Time)
@@ -206,9 +196,18 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Environment() SessionEnvironment
+	Assets() Assets
 
-	CreateRun(Flow, *Contact, FlowRun) FlowRun
+	Environment() utils.Environment
+	SetEnvironment(utils.Environment)
+
+	Contact() *Contact
+	SetContact(*Contact)
+
+	StartFlow(FlowUUID, FlowRun, []Event) error
+	Resume([]Event) error
+
+	CreateRun(Flow, FlowRun) FlowRun
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	ActiveRun() FlowRun
@@ -222,15 +221,17 @@ type Session interface {
 type FlowRun interface {
 	UUID() RunUUID
 
-	Environment() SessionEnvironment
+	Environment() utils.Environment
 	Session() Session
-	Context() Context
+	Context() utils.VariableResolver
 
 	Flow() Flow
-	Contact() *Contact
 	Results() *Results
 
-	SetExtra(json.RawMessage)
+	Contact() *Contact
+	SetContact(*Contact)
+
+	SetExtra(utils.JSONFragment)
 	Extra() utils.JSONFragment
 
 	Status() RunStatus

@@ -5,38 +5,44 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/utils"
 )
 
-var flowDef = `
+var assetsDef = `
 {
-	"name": "ActionFlow",
-	"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-	"nodes": [{
-		"uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-		"actions": [%s]
-	}]
+	"flows": [
+		{
+			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+			"name": "ActionFlow",
+			"nodes": [{
+				"uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+				"actions": [%s]
+			}]
+		},
+		{
+			"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+			"name": "Subflow",
+			"nodes": [{
+				"uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+				"actions": []
+			}]
+		}
+	],
+	"channels": []
 }
 `
 
 var emptyDef = `
 {
-	"name": "EmptyFlow",
-	"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-	"nodes": []
-}
-`
-
-var subflowDef = `
-{
-	"name": "Subflow",
-	"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-	"nodes": [{
-		"uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
-		"actions": []
-	}]
+	"flows": [
+		{
+			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+			"name": "EmptyFlow",
+			"nodes": []
+		}
+	],
+	"channels": []
 }
 `
 
@@ -60,33 +66,31 @@ var contactDef = `
 }
 `
 
-func createExampleSession(flowDef string) (flows.Session, error) {
-	// read our flow
-	flow, err := definition.ReadFlow(json.RawMessage(flowDef))
-	if err != nil {
-		return nil, err
-	}
-
-	// and our subflow
-	subflow, err := definition.ReadFlow(json.RawMessage(subflowDef))
+func createExampleSession(assetsDef string) (flows.Session, error) {
+	// read our assets
+	assets, err := engine.ReadAssets(json.RawMessage(assetsDef))
 	if err != nil {
 		return nil, err
 	}
 
 	// create our contact
-	contact, err := flows.ReadContact(json.RawMessage(contactDef))
+	contact, err := flows.ReadContact(assets, json.RawMessage(contactDef))
 	if err != nil {
 		return nil, err
 	}
 
-	// start our flow
-	env := engine.NewSessionEnvironment(utils.NewDefaultEnvironment(), []flows.Flow{subflow}, []flows.Channel{}, []*flows.Contact{})
-	return engine.StartFlow(env, flow, contact, nil, nil, nil)
+	// create our engine session
+	session := engine.NewSession(assets)
+	session.SetContact(contact)
+
+	// and start the example flow
+	err = session.StartFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), nil, nil)
+	return session, err
 }
 
 func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
-	flowDef := fmt.Sprintf(flowDef, actionJSON)
-	session, err := createExampleSession(flowDef)
+	assetsDef := fmt.Sprintf(assetsDef, actionJSON)
+	session, err := createExampleSession(assetsDef)
 	if err != nil {
 		return nil, err
 	}

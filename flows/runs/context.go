@@ -1,38 +1,31 @@
 package runs
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
 
-// NewContextForContact creates a new context for the passed in contact
-func NewContextForContact(contact *flows.Contact, run flows.FlowRun) flows.Context {
-	context := context{contact: contact, run: run}
-	return &context
+type runContext struct {
+	run flows.FlowRun
 }
 
-type context struct {
-	contact *flows.Contact
-	run     flows.FlowRun
+// creates a new evaluation context for the passed in run
+func newRunContext(run flows.FlowRun) utils.VariableResolver {
+	return &runContext{run: run}
 }
 
-func (c *context) Run() flows.FlowRun { return c.run }
-
-func (c *context) Contact() *flows.Contact { return c.contact }
-
-func (c *context) Validate() error {
+func (c *runContext) Validate() error {
 	// TODO: do some validation here
 	return nil
 }
 
-func (c *context) Resolve(key string) interface{} {
+func (c *runContext) Resolve(key string) interface{} {
 	switch key {
 
 	case "contact":
-		return c.Contact()
+		return c.run.Contact()
 
 	case "child":
 		return c.run.Child()
@@ -57,53 +50,12 @@ func (c *context) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on context", key)
 }
 
-func (c *context) Default() interface{} {
+func (c *runContext) Default() interface{} {
 	return c
 }
 
-func (c *context) String() string {
+func (c *runContext) String() string {
 	return c.run.UUID().String()
 }
 
-var _ utils.VariableResolver = (*context)(nil)
-
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-// ReadContext decodes a context from the passed in JSON
-func ReadContext(data json.RawMessage) (flows.Context, error) {
-	context := &context{}
-	err := json.Unmarshal(data, context)
-	if err == nil {
-		err = context.Validate()
-	}
-	return context, err
-}
-
-type contextEnvelope struct {
-	Contact *flows.Contact
-	Run     *flowRun
-}
-
-func (c *context) UnmarshalJSON(data []byte) error {
-	var ce contextEnvelope
-	var err error
-
-	err = json.Unmarshal(data, &ce)
-	if err != nil {
-		return err
-	}
-
-	c.contact = ce.Contact
-	c.run = ce.Run
-	return err
-}
-
-func (c *context) MarshalJSON() ([]byte, error) {
-	var ce contextEnvelope
-
-	ce.Contact = c.contact
-	ce.Run = c.run.(*flowRun)
-	return json.Marshal(ce)
-}
+var _ utils.VariableResolver = (*runContext)(nil)

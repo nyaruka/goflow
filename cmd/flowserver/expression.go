@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -39,11 +38,7 @@ func handleExpression(w http.ResponseWriter, r *http.Request) (interface{}, erro
 		return nil, fmt.Errorf("missing context or expression element")
 	}
 
-	// build up our context
-	context, err := runs.ReadContext(expression.Context)
-	if err != nil {
-		return nil, err
-	}
+	context := utils.NewJSONFragment(expression.Context)
 
 	// evaluate it
 	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression)

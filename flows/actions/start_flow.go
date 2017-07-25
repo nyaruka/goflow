@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -43,7 +42,7 @@ func (a *StartFlowAction) Validate() error {
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// lookup our flow
-	flow, err := run.Environment().GetFlow(a.FlowUUID)
+	flow, err := run.Session().Assets().GetFlow(a.FlowUUID)
 	if err != nil {
 		run.AddError(step, err)
 		return err
@@ -75,7 +74,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	run.ApplyEvent(step, a, events.NewFlowEnterEvent(a.FlowUUID, run.Contact().UUID()))
 
 	// start it for our current contact
-	_, err = engine.StartFlow(run.Environment(), flow, run.Contact(), run, nil, nil)
+	err = run.Session().StartFlow(flow.UUID(), run, nil)
 
 	// if we received an error, shortcut out, this session is horked
 	if err != nil {
