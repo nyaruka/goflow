@@ -61,8 +61,9 @@ func (c *Contact) InGroup(group *Group) bool {
 	return false
 }
 
-func (c *Contact) Fields() *Fields  { return c.fields }
-func (c *Contact) Channel() Channel { return c.channel }
+func (c *Contact) Fields() *Fields            { return c.fields }
+func (c *Contact) Channel() Channel           { return c.channel }
+func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
 
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {

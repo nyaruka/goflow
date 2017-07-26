@@ -65,7 +65,7 @@ func TestActionMigration(t *testing.T) {
 		migratedActionJSON := formatJSON(migratedActionRaw)
 		expectedActionJSON := formatJSON(test.ExpectedAction)
 
-		if migratedActionJSON != expectedActionJSON {
+		if !wildcardEquals(migratedActionJSON, expectedActionJSON) {
 			t.Errorf("Got action:\n%s\n\nwhen expecting:\n%s\n\n", migratedActionJSON, expectedActionJSON)
 		}
 
@@ -79,4 +79,19 @@ func TestActionMigration(t *testing.T) {
 		}
 
 	}
+}
+
+// checks if two strings are, ignoring any � characters
+func wildcardEquals(actual string, expected string) bool {
+	actualRunes := []rune(actual)
+	expectedRunes := []rune(expected)
+	substituted := make([]rune, len(expectedRunes))
+	for c, ch := range expectedRunes {
+		if ch == '�' && c < len(actualRunes) {
+			substituted[c] = actualRunes[c]
+		} else {
+			substituted[c] = expectedRunes[c]
+		}
+	}
+	return string(actualRunes) == string(substituted)
 }

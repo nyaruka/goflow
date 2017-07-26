@@ -225,12 +225,12 @@ func isDate(operand string) bool {
 	return false
 }
 
-// TranslateTemplate will take an old expression and translate it to the new format
-func TranslateTemplate(template string) (string, error) {
-	return translateTemplateAsString(newVars(), template)
+// MigrateTemplate will take a legacy expression and translate it to the new syntax
+func MigrateTemplate(template string) (string, error) {
+	return migrateLegacyTemplateAsString(newVars(), template)
 }
 
-func translateTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
+func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
 	scanner := newXScanner(strings.NewReader(template))
