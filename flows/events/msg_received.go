@@ -26,15 +26,15 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	ChannelUUID flows.ChannelUUID `json:"channel_uuid"     validate:"omitempty,uuid4"`
-	URN         flows.URN         `json:"urn"              validate:"required"`
-	ContactUUID flows.ContactUUID `json:"contact_uuid"     validate:"required,uuid4"`
-	Text        string            `json:"text"`
-	Attachments []string          `json:"attachments,omitempty"`
+	ChannelUUID flows.ChannelUUID  `json:"channel_uuid"     validate:"omitempty,uuid4"`
+	URN         flows.URN          `json:"urn"              validate:"required"`
+	ContactUUID flows.ContactUUID  `json:"contact_uuid"     validate:"required,uuid4"`
+	Text        string             `json:"text"`
+	Attachments []flows.Attachment `json:"attachments,omitempty"`
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, urn flows.URN, text string, attachments []string) *MsgReceivedEvent {
+func NewMsgReceivedEvent(channel flows.ChannelUUID, contact flows.ContactUUID, urn flows.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
 		BaseEvent:   NewBaseEvent(),
 		ChannelUUID: channel,

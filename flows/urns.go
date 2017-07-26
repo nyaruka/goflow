@@ -49,7 +49,7 @@ func (u URN) Path() URNPath {
 	if offset >= 0 {
 		return URNPath(u[offset+1:])
 	}
-	return URNPath(offset)
+	return URNPath(u)
 }
 
 func (u URN) Scheme() URNScheme {

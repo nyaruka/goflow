@@ -18,12 +18,17 @@ type MsgInput struct {
 	baseInput
 	urn         flows.URN
 	text        string
-	attachments []string
+	attachments []flows.Attachment
 }
 
 // NewMsgInput creates a new user input based on a message
-func NewMsgInput(channel flows.Channel, createdOn time.Time, urn flows.URN, text string, attachments []string) *MsgInput {
-	return &MsgInput{baseInput: baseInput{channel: channel, createdOn: createdOn}, urn: urn, text: text}
+func NewMsgInput(channel flows.Channel, createdOn time.Time, urn flows.URN, text string, attachments []flows.Attachment) *MsgInput {
+	return &MsgInput{
+		baseInput:   baseInput{channel: channel, createdOn: createdOn},
+		urn:         urn,
+		text:        text,
+		attachments: attachments,
+	}
 }
 
 // Type returns the type of this event
@@ -52,7 +57,7 @@ func (i *MsgInput) Default() interface{} {
 		parts = append(parts, i.text)
 	}
 	for _, attachment := range i.attachments {
-		parts = append(parts, attachment)
+		parts = append(parts, attachment.URL())
 	}
 	return strings.Join(parts, "\n")
 }
@@ -70,9 +75,9 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN         flows.URN `json:"urn"  validate:"required"`
-	Text        string    `json:"text" validate:"required"`
-	Attachments []string  `json:"attachments,omitempty"`
+	URN         flows.URN          `json:"urn"  validate:"required"`
+	Text        string             `json:"text" validate:"required"`
+	Attachments []flows.Attachment `json:"attachments,omitempty"`
 }
 
 func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInput, error) {
