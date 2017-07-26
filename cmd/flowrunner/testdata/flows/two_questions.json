@@ -37,7 +37,7 @@
         },
         "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
           "text": [
-            "@(TITLE(input.text))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
+            "@(TITLE(run.input.text))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
           ]
         },
         "e27c3bce-1095-4d08-9164-dc4530a0688a": {
@@ -90,7 +90,7 @@
           "type": "switch",
           "result_name": "favorite_color",
           "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-          "operand": "@input",
+          "operand": "@run.input",
           "cases": [
             {
               "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
@@ -140,7 +140,7 @@
           {
             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
             "type": "reply",
-            "text": "@(TITLE(input.text)) it is! What is your favorite soda? (pepsi/coke)"
+            "text": "@(TITLE(run.input.text)) it is! What is your favorite soda? (pepsi/coke)"
           }
         ],
         "wait": {
@@ -151,7 +151,7 @@
           "type": "switch",
           "default_exit_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
           "result_name": "soda",
-          "operand": "@input",
+          "operand": "@run.input",
           "cases": [
             {
               "uuid": "e27c3bce-1095-4d08-9164-dc4530a0688a",
@@ -202,7 +202,7 @@
           {
             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
             "type": "reply",
-            "text": "Great, you are done and like @run.results.soda! Webhook status was @webhook.status_code"
+            "text": "Great, you are done and like @run.results.soda! Webhook status was @run.webhook.status_code"
           }
         ]
       }

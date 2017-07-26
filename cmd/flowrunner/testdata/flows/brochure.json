@@ -30,7 +30,7 @@
           "type": "switch",
           "default_exit_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
           "result_name": "name",
-          "operand": "@input",
+          "operand": "@run.input",
           "cases": [
             {
               "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
@@ -65,7 +65,7 @@
             "uuid": "455ba297-f6d2-45e6-bf3e-c1ef028b55ae",
             "type": "update_contact",
             "field_name": "name",
-            "value": "@input.text"
+            "value": "@run.input.text"
           },
           {
             "uuid": "b3fa763e-474b-49df-b4d6-15e86507668f",

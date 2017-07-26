@@ -9,12 +9,11 @@ const TypeSaveContactField string = "save_contact_field"
 //
 // ```
 //   {
-//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "type": "save_contact_field",
-//    "created_on": "2006-01-02T15:04:05Z",
-//    "field_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//    "field_name": "Gender",
-//    "value": "Male"
+//     "type": "save_contact_field",
+//     "created_on": "2006-01-02T15:04:05Z",
+//     "field_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//     "field_name": "Gender",
+//     "value": "Male"
 //   }
 // ```
 //

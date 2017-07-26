@@ -44,7 +44,7 @@
                     }
                 ],
                 "router": {
-                    "operand": "@webhook",
+                    "operand": "@run.webhook",
                     "cases": [
                         {
                             "arguments": [
@@ -71,7 +71,7 @@
                 "actions": [
                     {
                         "uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
-                        "text": "The status is @webhook.json.ok. Send something",
+                        "text": "The status is @run.webhook.json.ok. Send something",
                         "type": "reply"
                     }
                 ]
@@ -89,7 +89,7 @@
                     }
                 ],
                 "router": {
-                    "operand": "@input",
+                    "operand": "@run.input",
                     "cases": [],
                     "default_exit_uuid": "dd0d800b-97ce-418f-9eb7-f0985df89f08",
                     "type": "switch"
@@ -107,7 +107,7 @@
                 "actions": [
                     {
                         "uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
-                        "text": "The status is now @webhook.json.ok",
+                        "text": "The status is now @run.webhook.json.ok",
                         "type": "reply"
                     }
                 ]

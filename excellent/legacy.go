@@ -168,7 +168,11 @@ func newVars() vars {
 			},
 		},
 		"step": vars{
-			"value": "input.text",
+			"__default__": "run.input",
+			"value":       "run.input",
+			"text":        "run.input.text",
+			"attachments": "run.input.attachments",
+			"time":        "run.input.created_on",
 			"contact": arbitraryVars{
 				base:    "step.contact",
 				nesting: "fields",
@@ -189,7 +193,7 @@ func newVars() vars {
 			"__default__": "now()",
 		},
 		"extra": arbitraryVars{
-			base:    "webhook",
+			base:    "run.webhook",
 			nesting: "json",
 		},
 	})

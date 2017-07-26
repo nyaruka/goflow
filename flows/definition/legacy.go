@@ -510,7 +510,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		// subflow rulesets operate on the child flow status
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
-			Operand: "@webhook",
+			Operand: "@run.webhook",
 			Cases:   cases,
 		}
 
@@ -546,7 +546,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		operand, _ := excellent.TranslateTemplate(r.Operand)
 
 		if operand == "" {
-			operand = "@input.text"
+			operand = "@run.input"
 		}
 
 		node.router = &routers.SwitchRouter{

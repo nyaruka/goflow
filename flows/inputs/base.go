@@ -19,7 +19,7 @@ func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 func (i *baseInput) Resolve(key string) interface{} {
 	switch key {
 
-	case "time":
+	case "created_on":
 		return i.createdOn
 
 	case "channel":

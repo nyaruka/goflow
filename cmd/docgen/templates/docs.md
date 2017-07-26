@@ -92,7 +92,7 @@ Each case consists of:
     "uuid":"ee0bee3f-34b3-4275-af78-f9ff52c82e6a",
     "router": {
         "type":"switch",
-        "operand": "@input",
+        "operand": "@run.input",
         "default_exit_uuid": "9574fbfd-510f-4dfc-b989-97d2aecf50b9",
         "cases": [{
             "uuid": "6f78d564-029b-4715-b8d4-b28daeae4f24",
@@ -171,11 +171,10 @@ The flow context contains the following variables:
  * `run.parent.results.[snaked_result_name]` the value of a specific value of the run that started this run
  * `run.parent.results.[snaked_result_name].category` the category (if any) of a specific value of the run that started this run
 
- * `input` values of the last input from the contact, shorthand for input.text
- * `input.text` the text of the last input from the contact
- * `input.urn` the urn that was used to send the last input
- * `input.contact_uuid` the uuid of the contact that sent the last input
- * `input.channel_uuid` the uuid of the channel that was used to send the last input
+ * `run.input` values of the last input from the contact
+ * `run.input.text` the text of the last input from the contact
+ * `run.input.urn` the urn that was used to send the last input
+ * `run.input.channel` the channel that was used to send the last input
 
  * `webhook` values associated with the last webhook called, shorthand for `webhook.json`
  * `webhook.status` the status of the last webhook called one of "S" for success, "E" for error or "F" for failure

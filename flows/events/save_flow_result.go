@@ -11,13 +11,12 @@ const TypeSaveFlowResult string = "save_flow_result"
 //
 // ```
 //   {
-//    "step_uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//    "created_on": "2006-01-02T15:04:05Z",
-//    "type": "save_flow_result",
-//    "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//    "result_name": "Gender",
-//    "value": "m",
-//    "category": "Make"
+//     "type": "save_flow_result",
+//     "created_on": "2006-01-02T15:04:05Z",
+//     "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//     "result_name": "Gender",
+//     "value": "m",
+//     "category": "Make"
 //   }
 // ```
 //
