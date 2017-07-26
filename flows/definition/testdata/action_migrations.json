@@ -1,0 +1,50 @@
+[
+    {
+        "legacy_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "What is your favorite color?"
+            },
+            "media": {}, 
+            "send_all": false
+        },
+        "expected_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
+            "text": "What is your favorite color?", 
+            "attachments": []
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "What is your favorite color?",
+                "fra": "Quelle est votre couleur préférée?"
+            }, 
+            "media": {
+                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg",
+                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"
+            }, 
+            "send_all": true
+        },
+        "expected_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
+            "text": "What is your favorite color?", 
+            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg"],
+            "all_urns": true
+        },
+        "expected_localization": {
+            "fra": {
+                "5a4d00aa-807e-44af-9693-64b9fdedd352": {
+                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"],
+                    "text": ["Quelle est votre couleur préférée?"]
+                }
+            }
+        }
+    }
+]

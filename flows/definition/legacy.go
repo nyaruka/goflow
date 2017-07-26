@@ -147,23 +147,29 @@ type translationMap map[utils.Language]string
 
 func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
 	for language, translation := range mapped {
-		items := itemTranslations{}
 		expression, _ := excellent.TranslateTemplate(translation)
-		items[key] = []string{expression}
 		if language != baseLanguage {
-			addTranslation(baseLanguage, translations, language, uuid, items)
+			addTranslation(translations, language, uuid, key, []string{expression})
 		}
 	}
 }
 
-func addTranslation(baseLanguage utils.Language, translations *flowTranslations, lang utils.Language, uuid flows.UUID, items itemTranslations) {
-	langTranslations, ok := (*translations)[lang]
-	if !ok {
+func addTranslation(translations *flowTranslations, lang utils.Language, itemUUID flows.UUID, propKey string, translation []string) {
+	// ensure we have a translation set for this language
+	langTranslations, found := (*translations)[lang]
+	if !found {
 		langTranslations = &languageTranslations{}
+		(*translations)[lang] = langTranslations
 	}
 
-	(*langTranslations)[uuid] = items
-	(*translations)[lang] = langTranslations
+	// ensure we have a translation set for this item
+	itemTrans, found := (*langTranslations)[itemUUID]
+	if !found {
+		itemTrans = itemTranslations{}
+		(*langTranslations)[itemUUID] = itemTrans
+	}
+
+	itemTrans[propKey] = translation
 }
 
 var testTranslations = map[string]string{
@@ -253,8 +259,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}
 
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
+		addTranslationMap(baseLanguage, translations, media, flows.UUID(a.UUID), "attachments")
 
-		// TODO translations for each attachment?
 		textExpression, _ := excellent.TranslateTemplate(msg[baseLanguage])
 		attachmentExpression, _ := excellent.TranslateTemplate(media[baseLanguage])
 
@@ -602,6 +608,9 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	}
 
 	fieldMap := make(map[string]flows.FieldUUID)
+
+	//fmt.Printf("==== LegacyFlow.UnmarshalJSON: %s\n", string(data))
+	//fmt.Printf("==== LegacyFlow.UnmarshalJSON: %s\n", string(data))
 
 	f.language = envelope.BaseLanguage
 	f.name = envelope.Metadata.Name
