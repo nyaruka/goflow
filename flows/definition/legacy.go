@@ -614,9 +614,6 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 
 	fieldMap := make(map[string]flows.FieldUUID)
 
-	//fmt.Printf("==== LegacyFlow.UnmarshalJSON: %s\n", string(data))
-	//fmt.Printf("==== LegacyFlow.UnmarshalJSON: %s\n", string(data))
-
 	f.language = envelope.BaseLanguage
 	f.name = envelope.Metadata.Name
 	f.uuid = envelope.Metadata.UUID
