@@ -2,6 +2,7 @@ package actions
 
 import (
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -9,8 +10,8 @@ const TypeSetPreferredChannel string = "set_preferred_channel"
 
 type PreferredChannelAction struct {
 	BaseAction
-	Name        string            `json:"name"`
 	ChannelUUID flows.ChannelUUID `json:"channel_uuid"`
+	ChannelName string            `json:"channel_name"`
 }
 
 func (a *PreferredChannelAction) Type() string { return TypeSetPreferredChannel }
@@ -20,5 +21,10 @@ func (a *PreferredChannelAction) Validate() error {
 }
 
 func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step) error {
+	if run.Contact() == nil {
+		return nil
+	}
+
+	run.ApplyEvent(step, a, events.NewPreferredChannel(a.ChannelUUID, a.ChannelName))
 	return nil
 }

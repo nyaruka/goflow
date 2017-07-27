@@ -147,23 +147,29 @@ type translationMap map[utils.Language]string
 
 func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
 	for language, translation := range mapped {
-		items := itemTranslations{}
-		expression, _ := excellent.TranslateTemplate(translation)
-		items[key] = []string{expression}
+		expression, _ := excellent.MigrateTemplate(translation)
 		if language != baseLanguage {
-			addTranslation(baseLanguage, translations, language, uuid, items)
+			addTranslation(translations, language, uuid, key, []string{expression})
 		}
 	}
 }
 
-func addTranslation(baseLanguage utils.Language, translations *flowTranslations, lang utils.Language, uuid flows.UUID, items itemTranslations) {
-	langTranslations, ok := (*translations)[lang]
-	if !ok {
+func addTranslation(translations *flowTranslations, lang utils.Language, itemUUID flows.UUID, propKey string, translation []string) {
+	// ensure we have a translation set for this language
+	langTranslations, found := (*translations)[lang]
+	if !found {
 		langTranslations = &languageTranslations{}
+		(*translations)[lang] = langTranslations
 	}
 
-	(*langTranslations)[uuid] = items
-	(*translations)[lang] = langTranslations
+	// ensure we have a translation set for this item
+	itemTrans, found := (*langTranslations)[itemUUID]
+	if !found {
+		itemTrans = itemTranslations{}
+		(*langTranslations)[itemUUID] = itemTrans
+	}
+
+	itemTrans[propKey] = translation
 }
 
 var testTranslations = map[string]string{
@@ -210,24 +216,30 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 			return nil, err
 		}
 
+		migratedSubject, _ := excellent.MigrateTemplate(a.Subject)
+		migratedBody, _ := excellent.MigrateTemplate(msg)
+		migratedEmails := make([]string, len(a.Emails))
+		for e, email := range a.Emails {
+			migratedEmails[e], _ = excellent.MigrateTemplate(email)
+		}
+
 		return &actions.EmailAction{
-			Subject:    a.Subject,
-			Body:       msg,
-			Emails:     a.Emails,
+			Subject:    migratedSubject,
+			Body:       migratedBody,
+			Emails:     migratedEmails,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 
 	case "lang":
-		return &actions.SaveContactField{
-			FieldUUID:  "language",
-			FieldName:  "Language",
+		return &actions.UpdateContactAction{
+			FieldName:  "language",
 			Value:      string(a.Language),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "channel":
 		return &actions.PreferredChannelAction{
 			ChannelUUID: a.Channel,
-			Name:        a.Name,
+			ChannelName: a.Name,
 			BaseAction:  actions.NewBaseAction(a.UUID),
 		}, nil
 	case "flow":
@@ -253,18 +265,18 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}
 
 		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
+		addTranslationMap(baseLanguage, translations, media, flows.UUID(a.UUID), "attachments")
 
-		// TODO translations for each attachment?
-		textExpression, _ := excellent.TranslateTemplate(msg[baseLanguage])
-		attachmentExpression, _ := excellent.TranslateTemplate(media[baseLanguage])
+		migratedText, _ := excellent.MigrateTemplate(msg[baseLanguage])
+		migratedMedia, _ := excellent.MigrateTemplate(media[baseLanguage])
 
 		attachments := []string{}
-		if attachmentExpression != "" {
-			attachments = append(attachments, attachmentExpression)
+		if migratedMedia != "" {
+			attachments = append(attachments, migratedMedia)
 		}
 
 		return &actions.ReplyAction{
-			Text:        textExpression,
+			Text:        migratedText,
 			Attachments: attachments,
 			BaseAction:  actions.NewBaseAction(a.UUID),
 			AllURNs:     a.SendAll,
@@ -296,34 +308,33 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 			fieldMap[a.Value] = fieldUUID
 		}
 
-		translated, _ := excellent.TranslateTemplate(a.Value)
+		migratedValue, _ := excellent.MigrateTemplate(a.Value)
 
-		if a.Field == "name" || a.Field == "language" {
+		// flows now have different action for name changing
+		if a.Field == "name" || a.Field == "first_name" {
+			// we can emulate setting only the first name with an expression
+			if a.Field == "first_name" {
+				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 2, -1))", migratedValue)
+			}
+
 			return &actions.UpdateContactAction{
-				FieldName:  a.Field,
-				Value:      translated,
+				FieldName:  "name",
+				Value:      migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil
 		}
 
 		return &actions.SaveContactField{
 			FieldName:  a.Label,
-			Value:      translated,
+			Value:      migratedValue,
 			FieldUUID:  fieldUUID,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
-	case "set_language":
-		return &actions.SaveContactField{
-			FieldUUID:  "language",
-			FieldName:  "Language",
-			Value:      string(a.Value),
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
 	case "api":
-		translated, _ := excellent.TranslateTemplate(a.Webhook)
+		migratedURL, _ := excellent.MigrateTemplate(a.Webhook)
 		return &actions.WebhookAction{
 			Method:     a.Action,
-			URL:        translated,
+			URL:        migratedURL,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	default:
@@ -519,7 +530,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		var config fieldConfig
 		json.Unmarshal(r.Config, &config)
 
-		operand, _ := excellent.TranslateTemplate(r.Operand)
+		operand, _ := excellent.MigrateTemplate(r.Operand)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		node.router = &routers.SwitchRouter{
 			Default: defaultExit,
@@ -543,7 +554,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	case "contact_field":
 		fallthrough
 	case "expression":
-		operand, _ := excellent.TranslateTemplate(r.Operand)
+		operand, _ := excellent.MigrateTemplate(r.Operand)
 
 		if operand == "" {
 			operand = "@run.input"

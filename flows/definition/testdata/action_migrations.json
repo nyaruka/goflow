@@ -1,0 +1,197 @@
+[
+    {
+        "legacy_action": {
+            "type": "add_group",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "groups": [
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+            ]
+        },
+        "expected_action": {
+            "type": "add_to_group",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "groups": [
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+            ]
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "add_label",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "labels": [
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"}
+            ]
+        },
+        "expected_action": {
+            "type": "add_label",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "labels": [
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"}
+            ]
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "channel",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "channel": "3eca24b7-6313-4f30-870f-f7b948e54b1e",
+            "name": "Twilio"
+        },
+        "expected_action": {
+            "type": "set_preferred_channel",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "channel_uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e",
+            "channel_name": "Twilio"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "del_group",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "groups": [
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+            ]
+        },
+        "expected_action": {
+            "type": "remove_from_group",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "groups": [
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+            ]
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "email",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "emails": ["bob@nyaruka.com", "@contact.supervisor"],
+            "subject": "Subject @step.value",
+            "msg": "Body @step.value"
+        },
+        "expected_action": {
+            "type": "send_email",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "emails": ["bob@nyaruka.com", "@contact.fields.supervisor"],
+            "subject": "Subject @run.input",
+            "body": "Body @run.input"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "lang",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "lang": "fra",
+            "name": "French"
+        },
+        "expected_action": {
+            "type": "update_contact",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field_name": "language",
+            "value": "fra"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "Do you still live in @contact.city?"
+            },
+            "media": {}, 
+            "send_all": false
+        },
+        "expected_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
+            "text": "Do you still live in @contact.fields.city?", 
+            "attachments": []
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "Do you still live in @contact.city?",
+                "fra": "Vous habitez toujours à @contact.city"
+            }, 
+            "media": {
+                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg",
+                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"
+            }, 
+            "send_all": true
+        },
+        "expected_action": {
+            "type": "reply",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
+            "text": "Do you still live in @contact.fields.city?", 
+            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg"],
+            "all_urns": true
+        },
+        "expected_localization": {
+            "fra": {
+                "5a4d00aa-807e-44af-9693-64b9fdedd352": {
+                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"],
+                    "text": ["Vous habitez toujours à @contact.fields.city"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_action": {
+            "type": "save",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field": "name",
+            "label": "Name",
+            "value": "Bob @step.value"
+        },
+        "expected_action": {
+            "type": "update_contact",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field_name": "name",
+            "value": "Bob @run.input"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "save",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field": "first_name",
+            "label": "First Name",
+            "value": "@step.value"
+        },
+        "expected_action": {
+            "type": "update_contact",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field_name": "name",
+            "value": "@run.input @(word_slice(contact.name, 2, -1))"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "save",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field": "gender",
+            "label": "Gender",
+            "value": "@step.value"
+        },
+        "expected_action": {
+            "type": "save_contact_field",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "field_uuid": "������������������������������������",
+            "field_name": "Gender",
+            "value": "@run.input"
+        },
+        "expected_localization": {}
+    }
+]

@@ -160,7 +160,7 @@ func TestTranslate(t *testing.T) {
 	for _, test := range tests {
 
 		for i := 0; i < 1; i++ {
-			translation, err := TranslateTemplate(test.old)
+			translation, err := MigrateTemplate(test.old)
 
 			if err != nil {
 				t.Errorf("Parse Error: %v", err)
