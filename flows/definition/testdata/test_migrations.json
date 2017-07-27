@@ -316,5 +316,57 @@
                 }
             }
         }
+    },
+    {
+        "legacy_test": {
+            "type": "subflow",
+            "exit_type": "completed"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_any_word",
+            "arguments": ["completed"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "subflow",
+            "exit_type": "expired"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_any_word",
+            "arguments": ["expired"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "webhook_status",
+            "status": "success"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_webhook_status",
+            "arguments": ["success"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "webhook_status",
+            "status": "failure"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_webhook_status",
+            "arguments": ["response_error"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
     }
 ]

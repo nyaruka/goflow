@@ -227,6 +227,7 @@ var testTypeMappings = map[string]string{
 	"phone":                "has_phone",
 	"regex":                "has_pattern",
 	"starts":               "has_beginning",
+	"webhook_status":       "has_webhook_status",
 }
 
 func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
@@ -419,18 +420,22 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	caseUUID := flows.UUID(uuid.NewV4().String())
 
 	switch r.Test.Type {
+
 	// tests that take no arguments
 	case "date", "email", "not_empty", "number", "phone":
 		arguments = []string{}
+
 	// tests against a single numeric value
 	case "eq", "gt", "gte", "lt", "lte":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Test}
+
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Min, test.Max}
+
 	// tests against a single localized string
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
@@ -438,37 +443,43 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		arguments = []string{test.Test[baseLanguage]}
 
 		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
+
 	// tests against a single date value
 	case "date_equal", "date_after", "date_before":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Test}
+
 	// tests against a single group value
 	case "in_group":
 		test := groupTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{string(test.Test.UUID)}
+
 	case "subflow":
 		newType = "has_any_word"
 		test := subflowTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		if test.ExitType == "completed" {
-			arguments = []string{"completed"}
-		} else {
-			arguments = []string{"errored"}
-		}
+		arguments = []string{test.ExitType}
+
 	case "webhook_status":
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			newType = "has_webhook_status"
 			arguments = []string{"success"}
 		} else {
-			return routers.Case{}, fmt.Errorf("No failure test")
+			arguments = []string{"response_error"}
 		}
+
 	default:
-		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported yet", r.Test.Type)
+		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported", r.Test.Type)
 	}
+
+	// TODO
+	// airtime_status
+	// ward / district / state
+	// interrupted_status
+	// timeout
 
 	return routers.Case{
 		UUID:      caseUUID,
