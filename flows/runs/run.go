@@ -381,7 +381,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
-	r.extra = utils.NewJSONFragment(envelope.Extra)
+	r.extra = utils.JSONFragment(envelope.Extra)
 
 	// TODO runs with different contact to the session?
 	r.contact = session.Contact()
@@ -468,7 +468,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.FlowUUID = r.flow.UUID()
 	re.ContactUUID = r.contact.UUID()
 	re.Extra, _ = json.Marshal(r.extra)
-
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
 	re.ModifiedOn = r.modifiedOn

@@ -66,7 +66,7 @@ func (r *RequestResponse) StatusCode() int               { return r.statusCode }
 func (r *RequestResponse) Request() string               { return r.request }
 func (r *RequestResponse) Response() string              { return r.response }
 func (r *RequestResponse) Body() string                  { return r.body }
-func (r *RequestResponse) JSON() JSONFragment            { return JSONFragment{[]byte(r.body)} }
+func (r *RequestResponse) JSON() JSONFragment            { return JSONFragment([]byte(r.body)) }
 
 func (r *RequestResponse) Resolve(key string) interface{} {
 	switch key {

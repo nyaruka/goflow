@@ -24,7 +24,7 @@ func TestJSON(t *testing.T) {
 
 	env := NewDefaultEnvironment()
 	for _, test := range jsonTests {
-		fragment := NewJSONFragment(test.JSON)
+		fragment := JSONFragment(test.JSON)
 		value := ResolveVariable(env, fragment, test.lookup)
 
 		valueStr, _ := ToString(env, value)
