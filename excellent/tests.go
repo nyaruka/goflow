@@ -394,8 +394,7 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 
 // HasPattern tests whether `string` matches the regex `pattern`
 //
-// Both strings are trimmed of surrounding whitespace, but otherwise matching is strict
-// without any tokenization.
+// Both strings are trimmed of surrounding whitespace and matching is case-insensitive.
 //
 //   @(has_pattern("This is my Kazoo", "^kazoo")) -> false
 //   @(has_pattern("Kazoos are great", "^kazoo")) -> true
