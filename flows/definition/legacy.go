@@ -163,6 +163,10 @@ type betweenTest struct {
 	Max string `json:"max"`
 }
 
+type groupTest struct {
+	Test legacyGroupReference `json:"test"`
+}
+
 type localizations map[utils.Language]flows.Action
 
 // ReadLegacyFlows reads in legacy formatted flows
@@ -201,22 +205,29 @@ func addTranslation(translations *flowTranslations, lang utils.Language, itemUUI
 	itemTrans[propKey] = translation
 }
 
-var testTranslations = map[string]string{
+var testTypeMappings = map[string]string{
+	"between":              "has_number_between",
 	"contains":             "has_all_words",
 	"contains_any":         "has_any_word",
-	"contains_phrase":      "has_phrase",
 	"contains_only_phrase": "has_only_phrase",
+	"contains_phrase":      "has_phrase",
+	"date":                 "has_date",
+	"date_after":           "has_date_gt",
+	"date_before":          "has_date_lt",
+	"date_equal":           "has_date_eq",
+	"email":                "has_email",
+	"eq":                   "has_number_eq",
+	"gt":                   "has_number_gt",
+	"gte":                  "has_number_gte",
+	"in_group":             "has_group",
+	"lt":                   "has_number_lt",
+	"lte":                  "has_number_lte",
 	"not_empty":            "has_text",
 	"number":               "has_number",
-	"between":              "has_number_between",
-}
-
-func translateTest(test string) string {
-	translated, ok := testTranslations[test]
-	if ok {
-		return translated
-	}
-	return test
+	"phone":                "has_phone",
+	"regex":                "has_pattern",
+	"starts":               "has_beginning",
+	"webhook_status":       "has_webhook_status",
 }
 
 func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
@@ -401,56 +412,78 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 
 func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
 	category := r.Category[baseLanguage]
-	testType := r.Test.Type
+
+	newType, _ := testTypeMappings[r.Test.Type]
 	var arguments []string
 	var err error
 
 	caseUUID := flows.UUID(uuid.NewV4().String())
 
 	switch r.Test.Type {
+
+	// tests that take no arguments
+	case "date", "email", "not_empty", "number", "phone":
+		arguments = []string{}
+
+	// tests against a single numeric value
+	case "eq", "gt", "gte", "lt", "lte":
+		test := stringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test}
+
+	case "between":
+		test := betweenTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Min, test.Max}
+
+	// tests against a single localized string
+	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
+		test := localizedStringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test[baseLanguage]}
+
+		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
+
+	// tests against a single date value
+	case "date_equal", "date_after", "date_before":
+		test := stringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test}
+
+	// tests against a single group value
+	case "in_group":
+		test := groupTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{string(test.Test.UUID)}
+
 	case "subflow":
-		testType = "has_any_word"
+		newType = "has_any_word"
 		test := subflowTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		if test.ExitType == "completed" {
-			arguments = []string{"completed"}
-		} else {
-			arguments = []string{"errored"}
-		}
+		arguments = []string{test.ExitType}
+
 	case "webhook_status":
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			testType = "has_webhook_status"
 			arguments = []string{"success"}
 		} else {
-			return routers.Case{}, fmt.Errorf("No failure test")
+			arguments = []string{"response_error"}
 		}
-	case "eq":
-		test := stringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test}
-	case "between":
-		test := betweenTest{}
-		testType = translateTest(testType)
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Min, test.Max}
-	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex":
-		test := localizedStringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
 
-		testType = translateTest(testType)
-
-		// TODO: arguments should be an array
-		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
-		arguments = []string{test.Test[baseLanguage]}
 	default:
-		testType = translateTest(testType)
+		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported", r.Test.Type)
 	}
+
+	// TODO
+	// airtime_status
+	// ward / district / state
+	// interrupted_status
+	// timeout
 
 	return routers.Case{
 		UUID:      caseUUID,
-		Type:      testType,
+		Type:      newType,
 		ExitUUID:  exitMap[category].UUID(),
 		Arguments: arguments,
 	}, err
