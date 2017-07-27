@@ -35,7 +35,7 @@ func SliceLength(v interface{}) (int, error) {
 	json, isJSON := v.(JSONFragment)
 	if isJSON {
 		count := 0
-		_, err := jsonparser.ArrayEach(json.json, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+		_, err := jsonparser.ArrayEach(json, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
 			count++
 		})
 		if err == nil {
@@ -179,7 +179,7 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 		if bytes == nil {
 			return EmptyJSONFragment, err
 		}
-		return NewJSONFragment(bytes), err
+		return JSONFragment(bytes), err
 	}
 
 	// null is null

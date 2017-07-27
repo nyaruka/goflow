@@ -37,7 +37,7 @@ func (e *SetExtraEvent) Type() string { return TypeSetExtra }
 
 // Apply applies this event to the given run
 func (e *SetExtraEvent) Apply(run flows.FlowRun) {
-	extra := utils.NewJSONFragment(e.Extra)
+	extra := utils.JSONFragment(e.Extra)
 
 	run.SetExtra(extra)
 }

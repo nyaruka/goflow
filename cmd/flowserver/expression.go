@@ -38,7 +38,7 @@ func handleExpression(w http.ResponseWriter, r *http.Request) (interface{}, erro
 		return nil, fmt.Errorf("missing context or expression element")
 	}
 
-	context := utils.NewJSONFragment(expression.Context)
+	context := utils.JSONFragment(expression.Context)
 
 	// evaluate it
 	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression)

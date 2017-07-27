@@ -7,19 +7,12 @@ import (
 	"github.com/buger/jsonparser"
 )
 
-// NewJSONFragment creates a new json fragment for the passed in byte array
-func NewJSONFragment(json []byte) JSONFragment {
-	return JSONFragment{json: json}
-}
-
 // EmptyJSONFragment is a fragment which has no values
-var EmptyJSONFragment = JSONFragment{nil}
+var EmptyJSONFragment = JSONFragment{}
 
 // JSONFragment is a thin wrapper around a byte array that takes care of allow key lookups
 // into the json in that byte array
-type JSONFragment struct {
-	json []byte
-}
+type JSONFragment []byte
 
 // Default returns the default value for this JSON, which is the JSON itself
 func (j JSONFragment) Default() interface{} {
@@ -34,7 +27,7 @@ func (j JSONFragment) Resolve(key string) interface{} {
 	// this is a numerical index, convert to jsonparser format
 	if err == nil {
 		jIdx := "[" + key + "]"
-		val, valType, _, err := jsonparser.Get(j.json, jIdx)
+		val, valType, _, err := jsonparser.Get(j, jIdx)
 		if err == nil {
 			if err == nil {
 				if valType == jsonparser.String {
@@ -43,11 +36,11 @@ func (j JSONFragment) Resolve(key string) interface{} {
 						return strVal
 					}
 				}
-				return JSONFragment{val}
+				return JSONFragment(val)
 			}
 		}
 	}
-	val, valType, _, err := jsonparser.Get(j.json, key)
+	val, valType, _, err := jsonparser.Get(j, key)
 	if err != nil {
 		return err
 	}
@@ -58,14 +51,14 @@ func (j JSONFragment) Resolve(key string) interface{} {
 			return strVal
 		}
 	}
-	return JSONFragment{val}
+	return JSONFragment(val)
 }
 
 var _ VariableResolver = EmptyJSONFragment
 
 // String returns the string representation of this JSON, which is just the JSON itself
 func (j JSONFragment) String() string {
-	return string(j.json)
+	return string(j)
 }
 
 //------------------------------------------------------------------------------------------
@@ -81,11 +74,11 @@ func (j *JSONFragment) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	j.json = data
+	*j = data
 	return nil
 }
 
 // MarshalJSON returns the JSON representation of our fragment, which is just our internal byte array
-func (j *JSONFragment) MarshalJSON() ([]byte, error) {
-	return j.json, nil
+func (j JSONFragment) MarshalJSON() ([]byte, error) {
+	return j, nil
 }

@@ -211,7 +211,7 @@ func FromJSON(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// unmarshal our string into a JSON fragment
-	fragment := utils.JSONFragment{}
+	var fragment utils.JSONFragment
 	err = json.Unmarshal([]byte(arg), &fragment)
 	if err != nil {
 		return err
