@@ -35,6 +35,27 @@
     },
     {
         "legacy_action": {
+            "type": "api",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "action": "POST",
+            "webhook": "http://example.com?contact=@contact.tel",
+            "webhook_headers": [
+                {"name": "User-Agent", "value": "rapidpro"}
+            ]
+        },
+        "expected_action": {
+            "type": "call_webhook",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "method": "POST",
+            "url": "http://example.com?contact=@contact.urns.tel",
+            "headers": {
+                "User-Agent": "rapidpro"
+            }
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
             "type": "channel",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "channel": "3eca24b7-6313-4f30-870f-f7b948e54b1e",
@@ -191,6 +212,68 @@
             "field_uuid": "������������������������������������",
             "field_name": "Gender",
             "value": "@run.input"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "send",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "Do you still live in @contact.city?",
+                "fra": "Vous habitez toujours à @contact.city"
+            }, 
+            "media": {
+                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg",
+                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"
+            },
+            "contacts": [
+                {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f"},
+                {"uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42"}
+            ],
+            "groups": [
+                {"uuid": "1a8c1313-4126-41ad-80ac-f9a2d0b708ec", "name": "Testers"},
+                {"uuid": "c746a9c9-8b31-49d2-aa55-a515d2c02968", "name": "Spammers"}
+            ],
+            "variables": [
+                {"id": "@contact.support_group"},
+                {"id": "+12223334444"}
+            ]
+        },
+        "expected_action": {
+            "type": "send_msg",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "text": "Do you still live in @contact.fields.city?", 
+            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg"],
+            "contacts": [
+                {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": ""},
+                {"uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42", "name": ""}
+            ],
+            "groups": [
+                {"uuid": "1a8c1313-4126-41ad-80ac-f9a2d0b708ec", "name": "Testers"},
+                {"uuid": "c746a9c9-8b31-49d2-aa55-a515d2c02968", "name": "Spammers"}
+            ]
+        },
+        "expected_localization": {
+            "fra": {
+                "5a4d00aa-807e-44af-9693-64b9fdedd352": {
+                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"],
+                    "text": ["Vous habitez toujours à @contact.fields.city"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_action": {
+            "type": "flow",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"}
+        },
+        "expected_action": {
+            "type": "start_flow",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "flow_uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f",
+            "flow_name": "Registration"
         },
         "expected_localization": {}
     }

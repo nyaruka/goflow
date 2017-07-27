@@ -19,16 +19,16 @@ const TypeStartFlow string = "start_flow"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "start_flow",
-//     "flow_name": "Collect Language",
-//     "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+//     "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//     "flow_name": "Collect Language"
 //   }
 // ```
 //
 // @action start_flow
 type StartFlowAction struct {
 	BaseAction
-	FlowName string         `json:"flow_name"    validate:"required"`
 	FlowUUID flows.FlowUUID `json:"flow_uuid"    validate:"required,uuid4"`
+	FlowName string         `json:"flow_name"    validate:"required"`
 }
 
 // Type returns the type of this action

@@ -116,6 +116,10 @@ type ContactReference struct {
 	Name string      `json:"name"`
 }
 
+func NewContactReference(uuid ContactUUID, name string) *ContactReference {
+	return &ContactReference{UUID: uuid, Name: name}
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

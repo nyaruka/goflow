@@ -60,14 +60,44 @@ type legacyActionSet struct {
 	Actions     []legacyAction `json:"actions"`
 }
 
-type legacyLabel struct {
-	Name string          `json:"name"`
+type legacyLabelReference struct {
 	UUID flows.LabelUUID `json:"uuid"`
+	Name string          `json:"name"`
 }
 
-type legacyGroup struct {
-	Name string          `json:"name"`
+func (l *legacyLabelReference) Migrate() *flows.Label {
+	return flows.NewLabel(l.UUID, l.Name)
+}
+
+type legacyContactReference struct {
+	UUID flows.ContactUUID `json:"uuid"`
+}
+
+func (c *legacyContactReference) Migrate() *flows.ContactReference {
+	return flows.NewContactReference(c.UUID, "")
+}
+
+type legacyGroupReference struct {
 	UUID flows.GroupUUID `json:"uuid"`
+	Name string          `json:"name"`
+}
+
+func (g *legacyGroupReference) Migrate() *flows.Group {
+	return flows.NewGroup(g.UUID, g.Name)
+}
+
+type legacyVariable struct {
+	ID string `json:"id"`
+}
+
+type legacyFlowReference struct {
+	UUID flows.FlowUUID `json:"uuid"`
+	Name string         `json:"name"`
+}
+
+type legacyWebhookHeader struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
 }
 
 type legacyAction struct {
@@ -75,13 +105,15 @@ type legacyAction struct {
 	UUID flows.ActionUUID `json:"uuid"`
 	Name string           `json:"name"`
 
-	// message  and email
+	// message and email
 	Msg     json.RawMessage `json:"msg"`
 	Media   json.RawMessage `json:"media"`
 	SendAll bool            `json:"send_all"`
 
-	// groups
-	Groups []legacyGroup `json:"groups"`
+	// variable contact actions
+	Contacts  []legacyContactReference `json:"contacts"`
+	Groups    []legacyGroupReference   `json:"groups"`
+	Variables []legacyVariable         `json:"variables"`
 
 	// save actions
 	Field string `json:"field"`
@@ -92,13 +124,14 @@ type legacyAction struct {
 	Language utils.Language `json:"lang"`
 
 	// webhook
-	Action  string `json:"action"`
-	Webhook string `json:"webhook"`
+	Action         string                `json:"action"`
+	Webhook        string                `json:"webhook"`
+	WebhookHeaders []legacyWebhookHeader `json:"webhook_headers"`
 
 	// add lable action
-	Labels []legacyLabel `json:"labels"`
+	Labels []legacyLabelReference `json:"labels"`
 
-	// Trigger flow
+	// Start/Trigger flow
 	Flow legacyFlowReference `json:"flow"`
 
 	// channel
@@ -107,10 +140,6 @@ type legacyAction struct {
 	//email
 	Emails  []string `json:"emails"`
 	Subject string   `json:"subject"`
-}
-
-type legacyFlowReference struct {
-	UUID flows.FlowUUID `json:"uuid"`
 }
 
 type subflowTest struct {
@@ -200,8 +229,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 	case "add_label":
 
 		labels := make([]*flows.Label, len(a.Labels))
-		for i := range labels {
-			labels[i] = flows.NewLabel(a.Labels[i].UUID, a.Labels[i].Name)
+		for i, label := range a.Labels {
+			labels[i] = label.Migrate()
 		}
 
 		return &actions.AddLabelAction{
@@ -245,10 +274,10 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 	case "flow":
 		return &actions.StartFlowAction{
 			FlowUUID:   a.Flow.UUID,
-			FlowName:   a.Name,
+			FlowName:   a.Flow.Name,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
-	case "reply":
+	case "reply", "send":
 		msg := make(map[utils.Language]string)
 		media := make(map[utils.Language]string)
 
@@ -275,16 +304,37 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 			attachments = append(attachments, migratedMedia)
 		}
 
-		return &actions.ReplyAction{
+		if a.Type == "reply" {
+			return &actions.ReplyAction{
+				Text:        migratedText,
+				Attachments: attachments,
+				BaseAction:  actions.NewBaseAction(a.UUID),
+				AllURNs:     a.SendAll,
+			}, nil
+		}
+
+		contacts := make([]*flows.ContactReference, len(a.Contacts))
+		for i, contact := range a.Contacts {
+			contacts[i] = contact.Migrate()
+		}
+		groups := make([]*flows.Group, len(a.Groups))
+		for i, group := range a.Groups {
+			groups[i] = group.Migrate()
+		}
+
+		return &actions.SendMsgAction{
 			Text:        migratedText,
 			Attachments: attachments,
 			BaseAction:  actions.NewBaseAction(a.UUID),
-			AllURNs:     a.SendAll,
+			URNs:        []flows.URN{},
+			Contacts:    contacts,
+			Groups:      groups,
 		}, nil
+
 	case "add_group":
 		groups := make([]*flows.Group, len(a.Groups))
 		for i, group := range a.Groups {
-			groups[i] = flows.NewGroup(group.UUID, group.Name)
+			groups[i] = group.Migrate()
 		}
 
 		return &actions.AddToGroupAction{
@@ -294,7 +344,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 	case "del_group":
 		groups := make([]*flows.Group, len(a.Groups))
 		for i, group := range a.Groups {
-			groups[i] = flows.NewGroup(group.UUID, group.Name)
+			groups[i] = group.Migrate()
 		}
 
 		return &actions.RemoveFromGroupAction{
@@ -332,9 +382,16 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		}, nil
 	case "api":
 		migratedURL, _ := excellent.MigrateTemplate(a.Webhook)
+
+		headers := make(map[string]string, len(a.WebhookHeaders))
+		for _, header := range a.WebhookHeaders {
+			headers[header.Name] = header.Value
+		}
+
 		return &actions.WebhookAction{
 			Method:     a.Action,
 			URL:        migratedURL,
+			Headers:    headers,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	default:

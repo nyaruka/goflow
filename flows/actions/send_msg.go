@@ -30,11 +30,11 @@ const TypeSendMsg string = "send_msg"
 // @action send_msg
 type SendMsgAction struct {
 	BaseAction
-	URNs        []flows.URN               `json:"urns"`
-	Contacts    []*flows.ContactReference `json:"contacts"     validate:"dive"`
-	Groups      []*flows.Group            `json:"groups"       validate:"dive"`
 	Text        string                    `json:"text"`
 	Attachments []string                  `json:"attachments"`
+	URNs        []flows.URN               `json:"urns,omitempty"`
+	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups      []*flows.Group            `json:"groups,omitempty"   validate:"dive"`
 }
 
 // Type returns the type of this action
