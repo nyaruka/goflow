@@ -207,6 +207,10 @@ var testTypeMappings = map[string]string{
 	"contains_any":         "has_any_word",
 	"contains_only_phrase": "has_only_phrase",
 	"contains_phrase":      "has_phrase",
+	"date":                 "has_date",
+	"date_after":           "has_date_gt",
+	"date_before":          "has_date_lt",
+	"date_equal":           "has_date_eq",
 	"email":                "has_email",
 	"eq":                   "has_number_eq",
 	"gt":                   "has_number_gt",
@@ -411,7 +415,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 
 	switch r.Test.Type {
 	// tests that take no arguments
-	case "email", "not_empty", "number", "phone":
+	case "date", "email", "not_empty", "number", "phone":
 		arguments = []string{}
 	// tests against a single numeric value
 	case "eq", "gt", "gte", "lt", "lte":
@@ -429,6 +433,11 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		arguments = []string{test.Test[baseLanguage]}
 
 		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
+	// tests against a single date value
+	case "date_equal", "date_after", "date_before":
+		test := stringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test}
 	case "subflow":
 		newType = "has_any_word"
 		test := subflowTest{}
