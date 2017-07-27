@@ -163,6 +163,10 @@ type betweenTest struct {
 	Max string `json:"max"`
 }
 
+type groupTest struct {
+	Test legacyGroupReference `json:"test"`
+}
+
 type localizations map[utils.Language]flows.Action
 
 // ReadLegacyFlows reads in legacy formatted flows
@@ -215,6 +219,7 @@ var testTypeMappings = map[string]string{
 	"eq":                   "has_number_eq",
 	"gt":                   "has_number_gt",
 	"gte":                  "has_number_gte",
+	"in_group":             "has_group",
 	"lt":                   "has_number_lt",
 	"lte":                  "has_number_lte",
 	"not_empty":            "has_text",
@@ -438,6 +443,11 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Test}
+	// tests against a single group value
+	case "in_group":
+		test := groupTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{string(test.Test.UUID)}
 	case "subflow":
 		newType = "has_any_word"
 		test := subflowTest{}

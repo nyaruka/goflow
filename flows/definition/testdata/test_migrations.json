@@ -203,6 +203,19 @@
     },
     {
         "legacy_test": {
+            "type": "in_group",
+            "test": {"uuid": "e9963476-1751-4078-9cc8-32a01283751a", "name": "Beta"}
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_group",
+            "arguments": ["e9963476-1751-4078-9cc8-32a01283751a"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
             "type": "lt",
             "test": "12"
         },
