@@ -14,7 +14,6 @@ import (
 )
 
 // TODO:
-// RegexTest
 // HasWardTest
 // HasDistrictTest
 // HasStateTest
@@ -40,6 +39,7 @@ var XTESTS = map[string]XFunction{
 	"has_all_words":   HasAllWords,
 	"has_beginning":   HasBeginning,
 	"has_text":        HasText,
+	"has_pattern":     HasPattern,
 
 	"has_number":         HasNumber,
 	"has_number_between": HasNumberBetween,
@@ -387,6 +387,44 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 	segment := hayStack[:len(pinCushion)]
 	if strings.ToLower(segment) == strings.ToLower(pinCushion) {
 		return XTestResult{true, segment}
+	}
+
+	return XFalseResult
+}
+
+// HasPattern tests whether `string` matches the regex `pattern`
+//
+// Both strings are trimmed of surrounding whitespace, but otherwise matching is strict
+// without any tokenization.
+//
+//   @(has_pattern("This is my Kazoo", "^kazoo")) -> false
+//   @(has_pattern("Kazoos are great", "^kazoo")) -> true
+//   @(has_pattern("Kazoos are great", "^kazoo").match) -> "Kazoo"
+//
+// @test has_pattern(string, pattern)
+func HasPattern(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 2 {
+		return fmt.Errorf("HAS_PATTERN takes exactly two arguments, got %d", len(args))
+	}
+
+	hayStack, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	pattern, err := utils.ToString(env, args[1])
+	if err != nil {
+		return err
+	}
+
+	regex, err := regexp.Compile("(?i)" + strings.TrimSpace(pattern))
+	if err != nil {
+		return fmt.Errorf("HAS_PATTERN must be called with a valid regular expression")
+	}
+
+	matches := regex.FindStringSubmatch(strings.TrimSpace(hayStack))
+	if matches != nil {
+		return XTestResult{true, matches[0]}
 	}
 
 	return XFalseResult

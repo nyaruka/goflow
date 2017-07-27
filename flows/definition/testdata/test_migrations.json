@@ -1,0 +1,170 @@
+[
+    {
+        "legacy_test": {
+            "type": "between",
+            "min": "12",
+            "max": "34"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_number_between",
+            "arguments": ["12", "34"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "contains",
+            "test": {
+                "eng": "yes yeah",
+                "fra": "oui"
+            }
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_all_words",
+            "arguments": ["yes yeah"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {
+            "fra": {
+                "������������������������������������": {
+                    "arguments": ["oui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_test": {
+            "type": "contains_any",
+            "test": {
+                "eng": "yes yeah",
+                "fra": "oui"
+            }
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_any_word",
+            "arguments": ["yes yeah"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {
+            "fra": {
+                "������������������������������������": {
+                    "arguments": ["oui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_test": {
+            "type": "contains_only_phrase",
+            "test": {
+                "eng": "yes yeah",
+                "fra": "oui"
+            }
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_only_phrase",
+            "arguments": ["yes yeah"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {
+            "fra": {
+                "������������������������������������": {
+                    "arguments": ["oui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_test": {
+            "type": "contains_phrase",
+            "test": {
+                "eng": "yes yeah",
+                "fra": "oui"
+            }
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_phrase",
+            "arguments": ["yes yeah"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {
+            "fra": {
+                "������������������������������������": {
+                    "arguments": ["oui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_test": {
+            "type": "not_empty"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_text",
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "number"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_number",
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "regex",
+            "test": {
+                "eng": "[Yy]eah?",
+                "fra": "[Oo]ui"
+            }
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_pattern",
+            "arguments": ["[Yy]eah?"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {
+            "fra": {
+                "������������������������������������": {
+                    "arguments": ["[Oo]ui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_test": {
+            "type": "starts",
+            "test": {
+                "eng": "yes",
+                "fra": "oui"
+            }
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_beginning",
+            "arguments": ["yes"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {
+            "fra": {
+                "������������������������������������": {
+                    "arguments": ["oui"]
+                }
+            }
+        }
+    }
+]

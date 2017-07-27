@@ -202,13 +202,15 @@ func addTranslation(translations *flowTranslations, lang utils.Language, itemUUI
 }
 
 var testTranslations = map[string]string{
+	"between":              "has_number_between",
 	"contains":             "has_all_words",
 	"contains_any":         "has_any_word",
-	"contains_phrase":      "has_phrase",
 	"contains_only_phrase": "has_only_phrase",
+	"contains_phrase":      "has_phrase",
 	"not_empty":            "has_text",
 	"number":               "has_number",
-	"between":              "has_number_between",
+	"regex":                "has_pattern",
+	"starts":               "has_beginning",
 }
 
 func translateTest(test string) string {
@@ -435,15 +437,13 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		testType = translateTest(testType)
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Min, test.Max}
-	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex":
+	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-
 		testType = translateTest(testType)
-
-		// TODO: arguments should be an array
-		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
 		arguments = []string{test.Test[baseLanguage]}
+
+		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
 	default:
 		testType = translateTest(testType)
 	}

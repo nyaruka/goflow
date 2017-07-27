@@ -14,10 +14,10 @@ const TypeSwitch string = "switch"
 
 // Case represents a single case and test in our switch
 type Case struct {
-	UUID      flows.UUID     `json:"uuid"              validate:"required"`
-	Type      string         `json:"type"              validate:"required"`
-	Arguments []string       `json:"arguments"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid"         validate:"required"`
+	UUID      flows.UUID     `json:"uuid"                 validate:"required"`
+	Type      string         `json:"type"                 validate:"required"`
+	Arguments []string       `json:"arguments,omitempty"`
+	ExitUUID  flows.ExitUUID `json:"exit_uuid"            validate:"required"`
 }
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
