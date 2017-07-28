@@ -55,12 +55,7 @@ type assetsEnvelope struct {
 
 func ReadAssets(data json.RawMessage) (flows.Assets, error) {
 	var envelope assetsEnvelope
-	err := json.Unmarshal(data, &envelope)
-	if err != nil {
-		return nil, err
-	}
-
-	err = utils.ValidateAs(&envelope, "assets")
+	err := utils.UnmarshalAndValidate(data, &envelope, "assets")
 	if err != nil {
 		return nil, err
 	}

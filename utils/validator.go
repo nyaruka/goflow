@@ -32,6 +32,25 @@ func ValidateAs(obj interface{}, objName string) error {
 	return validate(obj, objName)
 }
 
+type ValidationErrors []error
+
+func NewValidationErrors(messages ...string) ValidationErrors {
+	errs := make([]error, len(messages))
+	for m, msg := range messages {
+		errs[m] = errors.New(msg)
+	}
+	return ValidationErrors(errs)
+}
+
+// Error returns a string representation of these validation errors
+func (e ValidationErrors) Error() string {
+	errs := make([]string, len(e))
+	for i := range e {
+		errs[i] = e[i].Error()
+	}
+	return strings.Join(errs, ", ")
+}
+
 func validate(obj interface{}, objName string) error {
 	err := Validator.Struct(obj)
 	if err == nil {
@@ -68,33 +87,6 @@ func validate(obj interface{}, objName string) error {
 		newErrors[v] = fmt.Errorf("field %s %s", location, problem)
 	}
 	return ValidationErrors(newErrors)
-}
-
-// ValidateUnlessErr is convenience function to validate only if there isn't a preceding err
-func ValidateUnlessErr(err error, obj interface{} /*, objName string*/) error {
-	if err != nil {
-		return err
-	}
-	return Validate(obj /*, onContainer*/)
-}
-
-type ValidationErrors []error
-
-func NewValidationErrors(messages ...string) ValidationErrors {
-	errs := make([]error, len(messages))
-	for m, msg := range messages {
-		errs[m] = errors.New(msg)
-	}
-	return ValidationErrors(errs)
-}
-
-// Error returns a string representation of these validation errors
-func (e ValidationErrors) Error() string {
-	errs := make([]string, len(e))
-	for i := range e {
-		errs[i] = e[i].Error()
-	}
-	return strings.Join(errs, ", ")
 }
 
 // utilty to get the name used when marshaling a field to JSON. Returns an empty string if field has no json tag

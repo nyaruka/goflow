@@ -147,10 +147,7 @@ type flowEnvelope struct {
 
 func (f *flow) UnmarshalJSON(data []byte) error {
 	var envelope flowEnvelope
-	var err error
-
-	err = json.Unmarshal(data, &envelope)
-	err = utils.ValidateUnlessErr(err, &envelope)
+	err := utils.UnmarshalAndValidate(data, &envelope, "flow")
 	if err != nil {
 		return err
 	}
