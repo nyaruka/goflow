@@ -23,7 +23,7 @@ func (r *RandomOnceRouter) Type() string { return TypeRandomOnce }
 
 // Validate validates the parameters on this router
 func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
-	err := utils.ValidateAll(r)
+	err := utils.Validate(r)
 	if err != nil {
 		// check that our exit is valid
 		found := false

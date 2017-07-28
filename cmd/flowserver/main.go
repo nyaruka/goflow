@@ -114,7 +114,7 @@ func writeError(w http.ResponseWriter, r *http.Request, status int, err error) e
 	lg.Log(r.Context()).WithError(err).Error()
 	errors := []string{err.Error()}
 
-	vErrs, isValidation := err.(utils.ValidationError)
+	vErrs, isValidation := err.(utils.ValidationErrors)
 	if isValidation {
 		status = http.StatusBadRequest
 		errors = []string{}

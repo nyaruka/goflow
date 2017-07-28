@@ -27,92 +27,92 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	case TypeAddToGroup:
 		event := AddToGroupEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSendEmail:
 		event := SendEmailEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeError:
 		event := ErrorEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeFlowEntered:
 		event := FlowEnteredEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeFlowExited:
 		event := FlowExitedEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeFlowWait:
 		event := FlowWaitEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeMsgReceived:
 		event := MsgReceivedEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSendMsg:
 		event := SendMsgEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeMsgWait:
 		event := MsgWaitEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeRemoveFromGroup:
 		event := RemoveFromGroupEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSaveFlowResult:
 		event := SaveFlowResultEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSaveContactField:
 		event := SaveContactFieldEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypePreferredChannel:
 		event := PreferredChannelEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSetEnvironment:
 		event := SetEnvironmentEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSetExtra:
 		event := SetExtraEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeSetContact:
 		event := SetContactEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeUpdateContact:
 		event := UpdateContactEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	case TypeWebhookCalled:
 		event := WebhookCalledEvent{}
 		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
+		return &event, utils.ValidateUnlessErr(err, &event)
 
 	default:
 		return nil, fmt.Errorf("Unknown event type: %s", envelope.Type)

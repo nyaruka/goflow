@@ -65,7 +65,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	envelope := nodeEnvelope{}
 
 	err := json.Unmarshal(data, &envelope)
-	err = utils.ValidateAllUnlessErr(err, &envelope)
+	err = utils.ValidateUnlessErr(err, &envelope)
 	if err != nil {
 		return err
 	}
@@ -149,7 +149,7 @@ func (e *exit) UnmarshalJSON(data []byte) error {
 	envelope := exitEnvelope{}
 
 	err := json.Unmarshal(data, &envelope)
-	err = utils.ValidateAllUnlessErr(err, &envelope)
+	err = utils.ValidateUnlessErr(err, &envelope)
 	if err != nil {
 		return err
 	}

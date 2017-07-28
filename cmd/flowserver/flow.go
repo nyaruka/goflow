@@ -50,7 +50,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// validate our input
-	err = utils.ValidateAll(start)
+	err = utils.Validate(start)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// validate our input
-	err = utils.ValidateAll(resume)
+	err = utils.Validate(resume)
 	if err != nil {
 		return nil, err
 	}
