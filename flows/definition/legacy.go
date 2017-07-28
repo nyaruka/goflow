@@ -95,6 +95,12 @@ type legacyFlowReference struct {
 	Name string         `json:"name"`
 }
 
+type legacyWebhookConfig struct {
+	Webhook string                `json:"webhook"`
+	Action  string                `json:"webhook_action"`
+	Headers []legacyWebhookHeader `json:"webhook_headers"`
+}
+
 type legacyWebhookHeader struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
@@ -595,16 +601,23 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 	case "webhook":
-		config := make(map[string]string)
+		var config legacyWebhookConfig
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
 			return nil, err
 		}
 
+		migratedHeaders := make(map[string]string, len(config.Headers))
+		for _, header := range config.Headers {
+			migratedHeaders[header.Name] = header.Value
+		}
+
 		node.actions = []flows.Action{
 			&actions.WebhookAction{
-				URL:    config["webhook"],
-				Method: config["webhook_action"],
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				URL:        config.Webhook,
+				Method:     config.Action,
+				Headers:    migratedHeaders,
 			},
 		}
 
@@ -717,7 +730,11 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	}
 
 	for i := range envelope.RuleSets {
-		f.nodes[len(envelope.ActionSets)+i], err = createRuleNode(f.language, envelope.RuleSets[i], translations)
+		node, err := createRuleNode(f.language, envelope.RuleSets[i], translations)
+		if err != nil {
+			return err
+		}
+		f.nodes[len(envelope.ActionSets)+i] = node
 	}
 
 	// make sure our entry node is first

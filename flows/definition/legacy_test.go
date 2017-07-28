@@ -10,18 +10,39 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-var legacyFlowDef = `
+var legacyActionHolderDef = `
 [
 	{
 		"base_language": "eng",
+		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+		"action_sets": [{
+			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+			"y": 100, 
+            "x": 100, 
+            "destination": null, 
+			"actions": [%s]
+		}],
+		"metadata": {
+			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+			"name": "TestFlow"
+		}
+	}
+]
+`
+
+var legacyTestHolderDef = `
+[
+	{
+		"base_language": "eng",
+		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
 		"rule_sets": [{
-			"uuid": "2bff5c33-9d29-4cfc-8bb7-0a1b9f97d830",
+			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
 			"rules": [{
 				"test": %s, 
 				"category": {"eng": "All Responses"}, 
-				"destination": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+				"destination": null, 
 				"uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783", 
-				"destination_type": "A"
+				"destination_type": null
 			}],
 			"ruleset_type": "wait_message", 
 			"label": "Name", 
@@ -32,13 +53,20 @@ var legacyFlowDef = `
 			"x": 100, 
 			"config": {}
 		}],
-		"action_sets": [{
-			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-			"y": 100, 
-            "x": 100, 
-            "destination": null, 
-			"actions": [%s]
-		}],
+		"metadata": {
+			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+			"name": "TestFlow"
+		}
+	}
+]
+`
+
+var legacyRuleSetHolderDef = `
+[
+	{
+		"base_language": "eng",
+		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+		"rule_sets": [%s],
 		"metadata": {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "TestFlow"
@@ -59,6 +87,12 @@ type TestMigrationTest struct {
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
 }
 
+type RuleSetMigrationTest struct {
+	LegacyRuleSet        json.RawMessage `json:"legacy_ruleset"`
+	ExpectedNode         json.RawMessage `json:"expected_node"`
+	ExpectedLocalization json.RawMessage `json:"expected_localization"`
+}
+
 func TestActionMigration(t *testing.T) {
 	data, err := ioutil.ReadFile("testdata/action_migrations.json")
 	if err != nil {
@@ -72,7 +106,7 @@ func TestActionMigration(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		legacyFlowsJSON := fmt.Sprintf(legacyFlowDef, `{"type": "true"}`, string(test.LegacyAction))
+		legacyFlowsJSON := fmt.Sprintf(legacyActionHolderDef, string(test.LegacyAction))
 		legacyFlows, err := ReadLegacyFlows(json.RawMessage(legacyFlowsJSON))
 		if err != nil {
 			t.Fatal(err)
@@ -106,14 +140,14 @@ func TestTestMigration(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		legacyFlowsJSON := fmt.Sprintf(legacyFlowDef, string(test.LegacyTest), "")
+		legacyFlowsJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
 		legacyFlows, err := ReadLegacyFlows(json.RawMessage(legacyFlowsJSON))
 		if err != nil {
 			t.Fatal(err)
 		}
 
 		migratedFlow := legacyFlows[0]
-		migratedRouter := migratedFlow.Nodes()[1].Router().(*routers.SwitchRouter)
+		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
 
 		if len(migratedRouter.Cases) == 0 {
 			t.Errorf("Got no migrated case from legacy test:\n%s\n\n", string(test.LegacyTest))
@@ -125,6 +159,44 @@ func TestTestMigration(t *testing.T) {
 
 			if !wildcardEquals(migratedCaseJSON, expectedCaseJSON) {
 				t.Errorf("Got case:\n%s\n\nwhen expecting:\n%s\n\n", migratedCaseJSON, expectedCaseJSON)
+			}
+
+			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization)
+		}
+	}
+}
+
+func TestRuleSetMigration(t *testing.T) {
+	data, err := ioutil.ReadFile("testdata/ruleset_migrations.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var tests []RuleSetMigrationTest
+	err = json.Unmarshal(data, &tests)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, test := range tests {
+		legacyFlowsJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
+		legacyFlows, err := ReadLegacyFlows(json.RawMessage(legacyFlowsJSON))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		migratedFlow := legacyFlows[0]
+
+		if len(migratedFlow.Nodes()) == 0 {
+			t.Errorf("Got no migrated nodes from legacy ruleset:\n%s\n\n", string(test.LegacyRuleSet))
+		} else {
+			migratedNode := migratedFlow.Nodes()[0]
+			migratedNodeRaw, _ := json.Marshal(migratedNode)
+			migratedNodeJSON := formatJSON(migratedNodeRaw)
+			expectedNodeJSON := formatJSON(test.ExpectedNode)
+
+			if !wildcardEquals(migratedNodeJSON, expectedNodeJSON) {
+				t.Errorf("Got node:\n%s\n\nwhen expecting:\n%s\n\n", migratedNodeJSON, expectedNodeJSON)
 			}
 
 			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization)
@@ -144,7 +216,7 @@ func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalization 
 }
 
 func formatJSON(data json.RawMessage) string {
-	out, _ := json.MarshalIndent(data, "", "  ")
+	out, _ := json.MarshalIndent(data, "", "    ")
 	return string(out)
 }
 

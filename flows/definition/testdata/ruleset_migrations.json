@@ -1,0 +1,176 @@
+[
+    {
+        "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "test": {
+                        "test": {
+                            "eng": "yeah yes",
+                            "fra": "oui"
+                        }, 
+                        "type": "contains_any"
+                    }, 
+                    "category": {
+                        "eng": "Yes",
+                        "fra": "Oui"
+                    }, 
+                    "destination": "89c5624e-3320-4668-a066-308865133080", 
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2", 
+                    "destination_type": "A"
+                },
+                {
+                    "test": {
+                        "test": "true", 
+                        "type": "true"
+                    }, 
+                    "category": {
+                        "eng": "Other",
+                        "fra": "Autre"
+                    }, 
+                    "destination": "a269683d-8229-4870-8585-be8320b9d8ca", 
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8", 
+                    "destination_type": "A"
+                }
+            ], 
+            "ruleset_type": "wait_message", 
+            "label": "Beer", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 0, 
+            "x": 100, 
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "router": {
+                "type": "switch",
+                "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                "operand": "@run.input",
+                "cases": [
+                    {
+                        "uuid": "������������������������������������",
+                        "type": "has_any_word",
+                        "arguments": ["yeah yes"],
+                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                    }
+                ],
+                "result_name": "Beer"
+            },
+            "exits": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
+                    "destination_node_uuid": "89c5624e-3320-4668-a066-308865133080",
+                    "name": "Yes"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                    "destination_node_uuid": "a269683d-8229-4870-8585-be8320b9d8ca",
+                    "name": "Other"
+                }
+            ],
+            "wait": {
+                "type": "msg"
+            }
+		},
+        "expected_localization": {
+            "fra": {
+                "1fc4c133-d038-4f75-a69e-6e7e3190e5d8": {
+                    "name": ["Autre"]
+                },
+                "������������������������������������": {
+                    "arguments": ["oui"]
+                },
+                "ea304225-332e-49d4-9768-1e804cd0b6c2": {
+                    "name": ["Oui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "test": {
+                        "status": "success", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Success"
+                    }, 
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+                }, 
+                {
+                    "test": {
+                        "status": "failure", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Failure"
+                    }, 
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+                }
+            ],
+            "ruleset_type": "webhook", 
+            "label": "Response 1", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 100, 
+            "x": 1,
+            "config": {
+                "webhook": "http://example.com", 
+                "webhook_action": "GET", 
+                "webhook_headers": [
+                    {"name": "User-Agent", "value": "RapidPro"}
+                ]
+            }
+        },
+        "expected_node": {
+		    "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+		    "actions": [
+		        {
+		            "type": "call_webhook",
+		            "uuid": "������������������������������������",
+		            "method": "GET",
+                    "url": "http://example.com",
+                    "headers": {
+		                "User-Agent": "RapidPro"
+		            }
+		        }
+		    ],
+		    "router": {
+		        "type": "switch",
+		        "default_exit_uuid": "",
+		        "operand": "@run.webhook",
+		        "cases": [
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_webhook_status",
+		                "arguments": ["success"],
+		                "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_webhook_status",
+		                "arguments": ["response_error"],
+		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+		            }
+		        ]
+		    },
+		    "exits": [
+		        {
+		            "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+		            "name": "Success"
+		        },
+		        {
+		            "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+		            "name": "Failure"
+		        }
+		    ]
+		},
+        "expected_localization": {}
+    }
+]
