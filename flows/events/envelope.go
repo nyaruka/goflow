@@ -21,81 +21,48 @@ func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
 }
 
 func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
+	var event flows.Event
+
 	switch envelope.Type {
-
 	case TypeAddToGroup:
-		event := AddToGroupEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &AddToGroupEvent{}
 	case TypeSendEmail:
-		event := SendEmailEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SendEmailEvent{}
 	case TypeError:
-		event := ErrorEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &ErrorEvent{}
 	case TypeFlowEntered:
-		event := FlowEnteredEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &FlowEnteredEvent{}
 	case TypeFlowExited:
-		event := FlowExitedEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &FlowExitedEvent{}
 	case TypeFlowWait:
-		event := FlowWaitEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &FlowWaitEvent{}
 	case TypeMsgReceived:
-		event := MsgReceivedEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &MsgReceivedEvent{}
 	case TypeSendMsg:
-		event := SendMsgEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SendMsgEvent{}
 	case TypeMsgWait:
-		event := MsgWaitEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &MsgWaitEvent{}
 	case TypeRemoveFromGroup:
-		event := RemoveFromGroupEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &RemoveFromGroupEvent{}
 	case TypeSaveFlowResult:
-		event := SaveFlowResultEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SaveFlowResultEvent{}
 	case TypeSaveContactField:
-		event := SaveContactFieldEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SaveContactFieldEvent{}
 	case TypePreferredChannel:
-		event := PreferredChannelEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &PreferredChannelEvent{}
 	case TypeSetEnvironment:
-		event := SetEnvironmentEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SetEnvironmentEvent{}
 	case TypeSetExtra:
-		event := SetExtraEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SetExtraEvent{}
 	case TypeSetContact:
-		event := SetContactEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &SetContactEvent{}
 	case TypeUpdateContact:
-		event := UpdateContactEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &UpdateContactEvent{}
 	case TypeWebhookCalled:
-		event := WebhookCalledEvent{}
-		return &event, utils.UnmarshalAndValidate(envelope.Data, &event, "event")
-
+		event = &WebhookCalledEvent{}
 	default:
 		return nil, fmt.Errorf("Unknown event type: %s", envelope.Type)
 	}
+
+	return event, utils.UnmarshalAndValidate(envelope.Data, event, fmt.Sprintf("event[type=%s]", envelope.Type))
 }

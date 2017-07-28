@@ -8,57 +8,36 @@ import (
 )
 
 func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
+	var action flows.Action
+
 	switch envelope.Type {
-
 	case TypeAddLabel:
-		action := AddLabelAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &AddLabelAction{}
 	case TypeAddToGroup:
-		action := AddToGroupAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &AddToGroupAction{}
 	case TypeSendEmail:
-		action := EmailAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &EmailAction{}
 	case TypeStartFlow:
-		action := StartFlowAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &StartFlowAction{}
 	case TypeSendMsg:
-		action := SendMsgAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &SendMsgAction{}
 	case TypeRemoveFromGroup:
-		action := RemoveFromGroupAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &RemoveFromGroupAction{}
 	case TypeReply:
-		action := ReplyAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &ReplyAction{}
 	case TypeSaveFlowResult:
-		action := SaveFlowResultAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &SaveFlowResultAction{}
 	case TypeSaveContactField:
-		action := SaveContactField{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &SaveContactField{}
 	case TypeSetPreferredChannel:
-		action := PreferredChannelAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &PreferredChannelAction{}
 	case TypeUpdateContact:
-		action := UpdateContactAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &UpdateContactAction{}
 	case TypeCallWebhook:
-		action := WebhookAction{}
-		return &action, utils.UnmarshalAndValidate(envelope.Data, &action, "action")
-
+		action = &WebhookAction{}
 	default:
 		return nil, fmt.Errorf("Unknown action type: %s", envelope.Type)
 	}
+
+	return action, utils.UnmarshalAndValidate(envelope.Data, action, fmt.Sprintf("action[type=%s]", envelope.Type))
 }
