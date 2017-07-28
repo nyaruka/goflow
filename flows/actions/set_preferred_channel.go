@@ -17,7 +17,7 @@ type PreferredChannelAction struct {
 func (a *PreferredChannelAction) Type() string { return TypeSetPreferredChannel }
 
 func (a *PreferredChannelAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step) error {

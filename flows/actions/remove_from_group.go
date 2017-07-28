@@ -35,7 +35,7 @@ func (a *RemoveFromGroupAction) Type() string { return TypeRemoveFromGroup }
 
 // Validate validates the fields on this action
 func (a *RemoveFromGroupAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs the action

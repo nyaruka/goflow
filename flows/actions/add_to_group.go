@@ -34,7 +34,7 @@ func (a *AddToGroupAction) Type() string { return TypeAddToGroup }
 
 // Validate validates that this action is valid
 func (a *AddToGroupAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute adds our contact to the specified groups

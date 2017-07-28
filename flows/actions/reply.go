@@ -39,7 +39,7 @@ func (a *ReplyAction) Type() string { return TypeReply }
 
 // Validate validates whether this struct is correct
 func (a *ReplyAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs this action

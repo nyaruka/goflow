@@ -37,7 +37,7 @@ func (a *AddLabelAction) Type() string { return TypeAddLabel }
 
 // Validate validates the fields for this label
 func (a *AddLabelAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs the labeling action

@@ -36,7 +36,7 @@ func (a *UpdateContactAction) Type() string { return TypeUpdateContact }
 
 // Validate validates this action
 func (a *UpdateContactAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs this action

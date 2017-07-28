@@ -15,10 +15,24 @@ import (
 var Validator = validator.New()
 
 // Validate will run validation on the given object and return a set of field specific errors in the format:
-// field <fieldname> [on container] <tag specific message>
+// field <fieldname> <tag specific message>
+//
+// For example: "field 'flows' is required"
+//
+func Validate(obj interface{}) error {
+	return validate(obj, "")
+}
+
+// ValidateAs will run validation on the given object and return a set of field specific errors in the format:
+// field <fieldname> [on <objName>] <tag specific message>
 //
 // For example: "field 'flows' on 'assets' is required"
-func Validate(obj interface{} /*, onContainer string*/) error {
+//
+func ValidateAs(obj interface{}, objName string) error {
+	return validate(obj, objName)
+}
+
+func validate(obj interface{}, objName string) error {
 	err := Validator.Struct(obj)
 	if err == nil {
 		return nil
@@ -36,11 +50,11 @@ func Validate(obj interface{} /*, onContainer string*/) error {
 		var problem string
 
 		location = fmt.Sprintf("'%s'", fieldName)
-		/*if onContainer != "" {
-			location = fmt.Sprintf("'%s' on '%s'", fieldName, onContainer)
+		if objName != "" {
+			location = fmt.Sprintf("'%s' on '%s'", fieldName, objName)
 		} else {
 			location = fmt.Sprintf("'%s'", fieldName)
-		}*/
+		}
 
 		switch fieldErr.Tag() {
 		case "required":
@@ -57,7 +71,7 @@ func Validate(obj interface{} /*, onContainer string*/) error {
 }
 
 // ValidateUnlessErr is convenience function to validate only if there isn't a preceding err
-func ValidateUnlessErr(err error, obj interface{} /*, onContainer string*/) error {
+func ValidateUnlessErr(err error, obj interface{} /*, objName string*/) error {
 	if err != nil {
 		return err
 	}
