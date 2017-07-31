@@ -6,6 +6,11 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"regexp"
+
+	"strings"
+
+	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -123,7 +128,7 @@ func TestActionMigration(t *testing.T) {
 			t.Errorf("Got action:\n%s\n\nwhen expecting:\n%s\n\n", migratedActionJSON, expectedActionJSON)
 		}
 
-		checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization)
+		checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization, migratedActionRaw)
 	}
 }
 
@@ -161,7 +166,7 @@ func TestTestMigration(t *testing.T) {
 				t.Errorf("Got case:\n%s\n\nwhen expecting:\n%s\n\n", migratedCaseJSON, expectedCaseJSON)
 			}
 
-			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization)
+			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization, migratedCaseRaw)
 		}
 	}
 }
@@ -199,16 +204,34 @@ func TestRuleSetMigration(t *testing.T) {
 				t.Errorf("Got node:\n%s\n\nwhen expecting:\n%s\n\n", migratedNodeJSON, expectedNodeJSON)
 			}
 
-			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization)
+			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization, migratedNodeRaw)
 		}
 	}
 }
 
-func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalization json.RawMessage) {
+func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
 	actualLocalization := *flow.translations.(*flowTranslations)
 	actualLocalizationRaw, _ := json.Marshal(actualLocalization)
 	actualLocalizationJSON := formatJSON(actualLocalizationRaw)
-	expectedLocalizationJSON := formatJSON(expectedLocalization)
+
+	// perfrom substitutions on expected localization
+	regex := regexp.MustCompile(`{{[^}]+}}`)
+	expectedLocalizationStr := regex.ReplaceAllStringFunc(string(expectedLocalizationRaw), func(match string) string {
+		queryKeys := strings.Split(strings.TrimSpace(match[2:len(match)-2]), ".")
+
+		subValue, err := jsonparser.GetString(substitutionSource, queryKeys...)
+		if err != nil {
+			t.Fatalf("Couldn't find: '%s' in\n\n%s\n", strings.Join(queryKeys, "."), string(substitutionSource))
+		}
+
+		return subValue
+	})
+
+	// unmarshal and re-marchal expected JSON to get ordering correct after substitutions
+	expectedLocalization := &flowTranslations{}
+	json.Unmarshal(json.RawMessage(expectedLocalizationStr), expectedLocalization)
+	expectedLocalizationRaw, _ = json.Marshal(expectedLocalization)
+	expectedLocalizationJSON := formatJSON(expectedLocalizationRaw)
 
 	if !wildcardEquals(actualLocalizationJSON, expectedLocalizationJSON) {
 		t.Errorf("Got localization:\n%s\n\nwhen expecting:\n%s\n\n", actualLocalizationJSON, expectedLocalizationJSON)

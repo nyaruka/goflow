@@ -79,11 +79,11 @@
                 "1fc4c133-d038-4f75-a69e-6e7e3190e5d8": {
                     "name": ["Autre"]
                 },
-                "������������������������������������": {
-                    "arguments": ["oui"]
-                },
                 "ea304225-332e-49d4-9768-1e804cd0b6c2": {
                     "name": ["Oui"]
+                },
+                "{{ router.cases.[0].uuid }}": {
+                    "arguments": ["oui"]
                 }
             }
         }
