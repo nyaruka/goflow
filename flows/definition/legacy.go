@@ -591,8 +591,9 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		node.actions = []flows.Action{
 			&actions.StartFlowAction{
-				FlowUUID: flowUUID,
-				FlowName: flowName,
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				FlowUUID:   flowUUID,
+				FlowName:   flowName,
 			},
 		}
 
