@@ -569,15 +569,18 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	node := &node{}
 	node.uuid = r.UUID
 
+	baseRouter := routers.BaseRouter{ResultName_: r.Label}
+
 	exits, cases, defaultExit := parseRules(lang, r, translations)
 
 	switch r.Type {
 	case "subflow":
 		// subflow rulesets operate on the child flow status
 		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: "@child.status",
-			Cases:   cases,
+			BaseRouter: baseRouter,
+			Default:    defaultExit,
+			Operand:    "@child.status",
+			Cases:      cases,
 		}
 
 		config := make(map[string]map[string]string)
@@ -624,9 +627,10 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		// subflow rulesets operate on the child flow status
 		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: "@run.webhook",
-			Cases:   cases,
+			BaseRouter: baseRouter,
+			Default:    defaultExit,
+			Operand:    "@run.webhook",
+			Cases:      cases,
 		}
 
 	case "form_field":
@@ -637,12 +641,10 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		operand, _ := excellent.MigrateTemplate(r.Operand)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: operand,
-			Cases:   cases,
-			BaseRouter: routers.BaseRouter{
-				ResultName_: r.Label,
-			},
+			BaseRouter: baseRouter,
+			Default:    defaultExit,
+			Operand:    operand,
+			Cases:      cases,
 		}
 
 	case "wait_message":
@@ -665,15 +667,13 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: operand,
-			Cases:   cases,
-			BaseRouter: routers.BaseRouter{
-				ResultName_: r.Label,
-			},
+			BaseRouter: baseRouter,
+			Default:    defaultExit,
+			Operand:    operand,
+			Cases:      cases,
 		}
 	case "random":
-		node.router = &routers.RandomRouter{}
+		node.router = &routers.RandomRouter{BaseRouter: baseRouter}
 	default:
 		fmt.Printf("No router for %s\n", r.Type)
 	}

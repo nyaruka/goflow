@@ -285,7 +285,8 @@
 		                "arguments": ["response_error"],
 		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
 		            }
-		        ]
+		        ],
+		        "result_name": "Response 1"
 		    },
 		    "exits": [
 		        {
@@ -374,7 +375,8 @@
 		                "arguments": ["expired"],
 		                "exit_uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42"
 		            }
-		        ]
+		        ],
+		        "result_name": "Response 1"
 		    },
 		    "exits": [
 		        {
