@@ -29,8 +29,9 @@ type legacyFlowEnvelope struct {
 }
 
 type legacyMetadataEnvelope struct {
-	UUID flows.FlowUUID `json:"uuid"`
-	Name string         `json:"name"`
+	UUID    flows.FlowUUID `json:"uuid"`
+	Name    string         `json:"name"`
+	Expires *int           `json:"expires"`
 }
 
 type legacyRule struct {
@@ -706,9 +707,10 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 
 	fieldMap := make(map[string]flows.FieldUUID)
 
-	f.language = envelope.BaseLanguage
-	f.name = envelope.Metadata.Name
 	f.uuid = envelope.Metadata.UUID
+	f.name = envelope.Metadata.Name
+	f.language = envelope.BaseLanguage
+	f.expireAfterMinutes = envelope.Metadata.Expires
 
 	translations := &flowTranslations{}
 
@@ -738,10 +740,6 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	f.translations = translations
 	f.envelope = envelope
 
-	//for i := range f.nodes {
-	//	fmt.Println("Node:", f.nodes[i])
-	//}
-
 	return err
 }
 
@@ -749,9 +747,10 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 func (f *LegacyFlow) MarshalJSON() ([]byte, error) {
 
 	var fe = flowEnvelope{}
+	fe.UUID = f.uuid
 	fe.Name = f.name
 	fe.Language = f.language
-	fe.UUID = f.uuid
+	fe.ExpireAfterMinutes = f.expireAfterMinutes
 
 	if f.translations != nil {
 		fe.Localization = *f.translations.(*flowTranslations)
