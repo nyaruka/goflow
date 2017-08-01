@@ -1,10 +1,12 @@
 package utils
 
 import (
-	"errors"
-	"fmt"
-	"regexp"
+	"reflect"
 	"strings"
+
+	"fmt"
+
+	"errors"
 
 	validator "gopkg.in/go-playground/validator.v9"
 )
@@ -12,62 +14,36 @@ import (
 // Validator is our system validator, it can be shared across threads
 var Validator = validator.New()
 
-// ValidateAllUnlessErr validates all the passed in arguments, failing fast on any error including the passed in one
-func ValidateAllUnlessErr(err error, args ...interface{}) error {
-	if err != nil {
-		return err
+// Validate will run validation on the given object and return a set of field specific errors in the format:
+// field <fieldname> <tag specific message>
+//
+// For example: "field 'flows' is required"
+//
+func Validate(obj interface{}) error {
+	return validate(obj, "")
+}
+
+// ValidateAs will run validation on the given object and return a set of field specific errors in the format:
+// field <fieldname> [on <objName>] <tag specific message>
+//
+// For example: "field 'flows' on 'assets' is required"
+//
+func ValidateAs(obj interface{}, objName string) error {
+	return validate(obj, objName)
+}
+
+type ValidationErrors []error
+
+func NewValidationErrors(messages ...string) ValidationErrors {
+	errs := make([]error, len(messages))
+	for m, msg := range messages {
+		errs[m] = errors.New(msg)
 	}
-	return ValidateAll(args...)
+	return ValidationErrors(errs)
 }
-
-// ValidateAll validates all the passed in arguments, failing fast on an error
-func ValidateAll(args ...interface{}) (err error) {
-	for _, arg := range args {
-		if arg == nil {
-			continue
-		}
-
-		err = Validator.Struct(arg)
-		if err != nil {
-			errFormat := "%s field '%s' %s"
-
-			// see if we are a typed envelope, if so can provide better errors
-			typeDesc := ""
-			typed, isTyped := arg.(Typed)
-			if isTyped {
-				errFormat = "%s: field '%s' %s"
-				typeDesc = typed.Type()
-			}
-
-			// if we got a validation error, rewrite our fields to be snake-case (underscores)
-			// as our client is always JSON
-			vErrs, isValidation := err.(validator.ValidationErrors)
-			if isValidation {
-				snakeErr := ValidationError(make([]error, len(vErrs)))
-
-				for i := range vErrs {
-					fieldname := strings.TrimRight(underscore(vErrs[i].Field()), "_")
-					snakeErr[i] = fmt.Errorf(errFormat, typeDesc, fieldname, vErrs[i].Tag())
-				}
-
-				err = snakeErr
-			}
-			return err
-		}
-	}
-	return nil
-}
-
-// NewValidationError creates a new ValidationError with the single passed in error messages
-func NewValidationError(err string) ValidationError {
-	return ValidationError([]error{errors.New(err)})
-}
-
-// ValidationError is our error type for validation errors
-type ValidationError []error
 
 // Error returns a string representation of these validation errors
-func (e ValidationError) Error() string {
+func (e ValidationErrors) Error() string {
 	errs := make([]string, len(e))
 	for i := range e {
 		errs[i] = e[i].Error()
@@ -75,19 +51,57 @@ func (e ValidationError) Error() string {
 	return strings.Join(errs, ", ")
 }
 
-// Utility function to convert CamelCase to snake_case for our field names in validation errors
-
-var camel = regexp.MustCompile("(^[^A-Z]*|[A-Z]*)([A-Z][^A-Z]+|$)")
-
-func underscore(s string) string {
-	var a []string
-	for _, sub := range camel.FindAllStringSubmatch(s, -1) {
-		if sub[1] != "" {
-			a = append(a, sub[1])
-		}
-		if sub[2] != "" {
-			a = append(a, sub[2])
-		}
+func validate(obj interface{}, objName string) error {
+	err := Validator.Struct(obj)
+	if err == nil {
+		return nil
 	}
-	return strings.ToLower(strings.Join(a, "_"))
+	validationErrs, isValidationErr := err.(validator.ValidationErrors)
+	if !isValidationErr {
+		return err
+	}
+
+	newErrors := make([]error, len(validationErrs))
+
+	for v, fieldErr := range validationErrs {
+		fieldName := getFieldName(obj, fieldErr.Field())
+		var location string
+		var problem string
+
+		location = fmt.Sprintf("'%s'", fieldName)
+		if objName != "" {
+			location = fmt.Sprintf("'%s' on '%s'", fieldName, objName)
+		} else {
+			location = fmt.Sprintf("'%s'", fieldName)
+		}
+
+		switch fieldErr.Tag() {
+		case "required":
+			problem = "is required"
+		case "uui4":
+			problem = "must be a valid UUID4"
+		default:
+			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
+		}
+
+		newErrors[v] = fmt.Errorf("field %s %s", location, problem)
+	}
+	return ValidationErrors(newErrors)
+}
+
+// utilty to get the name used when marshaling a field to JSON. Returns an empty string if field has no json tag
+func getFieldName(obj interface{}, fieldName string) string {
+	objType := reflect.TypeOf(obj)
+	if objType.Kind() == reflect.Ptr {
+		objType = objType.Elem()
+	}
+
+	field, _ := objType.FieldByName(fieldName)
+	jsonTag, found := field.Tag.Lookup("json")
+	if !found {
+		return fieldName
+	}
+
+	tagParts := strings.Split(jsonTag, ",")
+	return tagParts[0]
 }

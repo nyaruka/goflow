@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type assets struct {
@@ -54,7 +55,8 @@ type assetsEnvelope struct {
 
 func ReadAssets(data json.RawMessage) (flows.Assets, error) {
 	var envelope assetsEnvelope
-	if err := json.Unmarshal(data, &envelope); err != nil {
+	err := utils.UnmarshalAndValidate(data, &envelope, "assets")
+	if err != nil {
 		return nil, err
 	}
 

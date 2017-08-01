@@ -88,7 +88,7 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 		return nil, err
 	}
 
-	err = utils.ValidateAll(i)
+	err = utils.Validate(i)
 	if err != nil {
 		return nil, err
 	}

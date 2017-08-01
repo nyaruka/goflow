@@ -45,7 +45,7 @@ func (a *WebhookAction) Type() string { return TypeCallWebhook }
 
 // Validate validates the fields on this action
 func (a *WebhookAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs this action

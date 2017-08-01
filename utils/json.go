@@ -7,6 +7,21 @@ import (
 	"github.com/buger/jsonparser"
 )
 
+// Convenience function to unmarshal an object and validate it
+func UnmarshalAndValidate(data []byte, obj interface{}, objName string) error {
+	err := json.Unmarshal(data, obj)
+	if err != nil {
+		return err
+	}
+
+	err = ValidateAs(obj, objName)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // EmptyJSONFragment is a fragment which has no values
 var EmptyJSONFragment = JSONFragment{}
 

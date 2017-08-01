@@ -49,7 +49,7 @@ func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docStr
 	}
 
 	// validate it
-	err = utils.ValidateAll(event)
+	err = utils.Validate(event)
 	if err != nil {
 		log.Fatalf("unable to validate example: %s\nHad err: %s", exampleJSON, err)
 	}

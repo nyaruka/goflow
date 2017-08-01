@@ -34,9 +34,9 @@ func (r *SwitchRouter) Type() string { return TypeSwitch }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
-	err := utils.ValidateAll(r)
+	err := utils.Validate(r)
 	for _, c := range r.Cases {
-		err = utils.ValidateAll(c)
+		err = utils.Validate(c)
 		if err != nil {
 			return err
 		}

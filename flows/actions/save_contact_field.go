@@ -36,7 +36,7 @@ func (a *SaveContactField) Type() string { return TypeSaveContactField }
 
 // Validate validates this action
 func (a *SaveContactField) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs this action

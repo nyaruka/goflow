@@ -39,7 +39,7 @@ func (a *EmailAction) Type() string { return TypeSendEmail }
 
 // Validate validates the fields on this action
 func (a *EmailAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute creates the email events

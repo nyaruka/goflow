@@ -1,7 +1,6 @@
 package events
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -22,99 +21,48 @@ func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
 }
 
 func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
+	var event flows.Event
+
 	switch envelope.Type {
-
 	case TypeAddToGroup:
-		event := AddToGroupEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &AddToGroupEvent{}
 	case TypeSendEmail:
-		event := SendEmailEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SendEmailEvent{}
 	case TypeError:
-		event := ErrorEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &ErrorEvent{}
 	case TypeFlowEntered:
-		event := FlowEnteredEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &FlowEnteredEvent{}
 	case TypeFlowExited:
-		event := FlowExitedEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &FlowExitedEvent{}
 	case TypeFlowWait:
-		event := FlowWaitEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &FlowWaitEvent{}
 	case TypeMsgReceived:
-		event := MsgReceivedEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &MsgReceivedEvent{}
 	case TypeSendMsg:
-		event := SendMsgEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SendMsgEvent{}
 	case TypeMsgWait:
-		event := MsgWaitEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &MsgWaitEvent{}
 	case TypeRemoveFromGroup:
-		event := RemoveFromGroupEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &RemoveFromGroupEvent{}
 	case TypeSaveFlowResult:
-		event := SaveFlowResultEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SaveFlowResultEvent{}
 	case TypeSaveContactField:
-		event := SaveContactFieldEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SaveContactFieldEvent{}
 	case TypePreferredChannel:
-		event := PreferredChannelEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &PreferredChannelEvent{}
 	case TypeSetEnvironment:
-		event := SetEnvironmentEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SetEnvironmentEvent{}
 	case TypeSetExtra:
-		event := SetExtraEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SetExtraEvent{}
 	case TypeSetContact:
-		event := SetContactEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &SetContactEvent{}
 	case TypeUpdateContact:
-		event := UpdateContactEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &UpdateContactEvent{}
 	case TypeWebhookCalled:
-		event := WebhookCalledEvent{}
-		err := json.Unmarshal(envelope.Data, &event)
-		return &event, utils.ValidateAllUnlessErr(err, &event)
-
+		event = &WebhookCalledEvent{}
 	default:
 		return nil, fmt.Errorf("Unknown event type: %s", envelope.Type)
 	}
+
+	return event, utils.UnmarshalAndValidate(envelope.Data, event, fmt.Sprintf("event[type=%s]", envelope.Type))
 }

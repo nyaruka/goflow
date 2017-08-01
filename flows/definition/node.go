@@ -62,10 +62,8 @@ type nodeEnvelope struct {
 }
 
 func (n *node) UnmarshalJSON(data []byte) error {
-	envelope := nodeEnvelope{}
-
-	err := json.Unmarshal(data, &envelope)
-	err = utils.ValidateAllUnlessErr(err, &envelope)
+	var envelope nodeEnvelope
+	err := utils.UnmarshalAndValidate(data, &envelope, "node")
 	if err != nil {
 		return err
 	}
@@ -146,10 +144,8 @@ type exitEnvelope struct {
 }
 
 func (e *exit) UnmarshalJSON(data []byte) error {
-	envelope := exitEnvelope{}
-
-	err := json.Unmarshal(data, &envelope)
-	err = utils.ValidateAllUnlessErr(err, &envelope)
+	var envelope exitEnvelope
+	err := utils.UnmarshalAndValidate(data, &envelope, "exit")
 	if err != nil {
 		return err
 	}

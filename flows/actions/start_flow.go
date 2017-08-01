@@ -36,7 +36,7 @@ func (a *StartFlowAction) Type() string { return TypeStartFlow }
 
 // Validate validates our action is valid
 func (a *StartFlowAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs our action
