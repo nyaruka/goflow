@@ -569,19 +569,13 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	node := &node{}
 	node.uuid = r.UUID
 
-	baseRouter := routers.BaseRouter{ResultName_: r.Label}
-
 	exits, cases, defaultExit := parseRules(lang, r, translations)
+	resultName := r.Label
 
 	switch r.Type {
 	case "subflow":
 		// subflow rulesets operate on the child flow status
-		node.router = &routers.SwitchRouter{
-			BaseRouter: baseRouter,
-			Default:    defaultExit,
-			Operand:    "@child.status",
-			Cases:      cases,
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
 
 		config := make(map[string]map[string]string)
 		err := json.Unmarshal(r.Config, &config)
@@ -626,29 +620,17 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 		// subflow rulesets operate on the child flow status
-		node.router = &routers.SwitchRouter{
-			BaseRouter: baseRouter,
-			Default:    defaultExit,
-			Operand:    "@run.webhook",
-			Cases:      cases,
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
 
 	case "form_field":
-
 		var config fieldConfig
 		json.Unmarshal(r.Config, &config)
 
 		operand, _ := excellent.MigrateTemplate(r.Operand)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
-		node.router = &routers.SwitchRouter{
-			BaseRouter: baseRouter,
-			Default:    defaultExit,
-			Operand:    operand,
-			Cases:      cases,
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
 	case "wait_message":
-
 		// TODO: add in timeout
 		node.wait = &waits.MsgWait{}
 
@@ -661,21 +643,15 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		fallthrough
 	case "expression":
 		operand, _ := excellent.MigrateTemplate(r.Operand)
-
 		if operand == "" {
 			operand = "@run.input"
 		}
 
-		node.router = &routers.SwitchRouter{
-			BaseRouter: baseRouter,
-			Default:    defaultExit,
-			Operand:    operand,
-			Cases:      cases,
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 	case "random":
-		node.router = &routers.RandomRouter{BaseRouter: baseRouter}
+		node.router = routers.NewRandomRouter(resultName)
 	default:
-		fmt.Printf("No router for %s\n", r.Type)
+		fmt.Printf("Unable to migrate unrecognized ruleset type: '%s'\n", r.Type)
 	}
 
 	node.exits = exits

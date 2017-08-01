@@ -14,8 +14,15 @@ const TypeRandomOnce string = "random_once"
 
 // RandomOnceRouter exits of our exits once (randomly) before taking exit
 type RandomOnceRouter struct {
-	Exit flows.ExitUUID `json:"exit"     validate:"required"`
 	BaseRouter
+	Exit flows.ExitUUID `json:"exit"     validate:"required"`
+}
+
+func NewRandomOnceRouter(exit flows.ExitUUID, resultName string) *RandomOnceRouter {
+	return &RandomOnceRouter{
+		BaseRouter: BaseRouter{ResultName_: resultName},
+		Exit:       exit,
+	}
 }
 
 // Type returns the type of our router
