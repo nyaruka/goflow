@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSendEmail is our type for the email action
@@ -38,8 +37,8 @@ type EmailAction struct {
 func (a *EmailAction) Type() string { return TypeSendEmail }
 
 // Validate validates the fields on this action
-func (a *EmailAction) Validate() error {
-	return utils.Validate(a)
+func (a *EmailAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute creates the email events

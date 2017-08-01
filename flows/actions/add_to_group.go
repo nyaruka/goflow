@@ -3,7 +3,6 @@ package actions
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeAddToGroup is our type for the add to group action
@@ -33,8 +32,8 @@ type AddToGroupAction struct {
 func (a *AddToGroupAction) Type() string { return TypeAddToGroup }
 
 // Validate validates that this action is valid
-func (a *AddToGroupAction) Validate() error {
-	return utils.Validate(a)
+func (a *AddToGroupAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute adds our contact to the specified groups

@@ -29,7 +29,7 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 
 // Validates that structurally we are sane. IE, all required fields are present and
 // all exits with destinations point to valid endpoints.
-func (f *flow) Validate() error {
+func (f *flow) Validate(assets flows.Assets) error {
 	var err error
 	f.nodeMap = make(map[flows.NodeUUID]flows.Node)
 
@@ -45,7 +45,7 @@ func (f *flow) Validate() error {
 	for _, node := range f.nodes {
 		// validate all our actions
 		for _, action := range node.Actions() {
-			err = action.Validate()
+			err = action.Validate(assets)
 			if err != nil {
 				asJSON, jerr := json.MarshalIndent(action, "", "  ")
 				if jerr != nil {
@@ -111,27 +111,7 @@ var _ utils.VariableResolver = (*flow)(nil)
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	flow := &flow{}
 	err := json.Unmarshal(data, flow)
-	if err == nil {
-		err = flow.Validate()
-	}
 	return flow, err
-}
-
-// ReadFlows reads a slice of flow definitions from the passed in byte array
-func ReadFlows(data json.RawMessage) ([]flows.Flow, error) {
-	var container []*flow
-	err := json.Unmarshal(data, &container)
-	if err != nil {
-		return nil, err
-	}
-
-	flows := make([]flows.Flow, len(container))
-	for i := range container {
-		flows[i] = container[i]
-		flows[i].Validate()
-	}
-
-	return flows, err
 }
 
 type flowEnvelope struct {

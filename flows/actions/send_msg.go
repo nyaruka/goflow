@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSendMsg is the type for msg actions
@@ -41,8 +40,8 @@ type SendMsgAction struct {
 func (a *SendMsgAction) Type() string { return TypeSendMsg }
 
 // Validate validates whether this struct is correct
-func (a *SendMsgAction) Validate() error {
-	return utils.Validate(a)
+func (a *SendMsgAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs this action

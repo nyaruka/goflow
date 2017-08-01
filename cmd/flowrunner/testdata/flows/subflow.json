@@ -1,135 +1,145 @@
-[
-    {
-        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-        "name": "Parent Flow",
-        "language": "eng",
-        "nodes": [
-            {
-                "uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                "actions": [
-                    {
-                        "uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
-                        "type": "reply",
-                        "text": "This is the parent flow"
-                    },
-                    {
-                        "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
-                        "type": "start_flow",
-                        "flow_name": "Child Flow",
-                        "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
-                    }
-                ],
-                "wait": {
-                    "type": "flow",
-                    "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
-                },
-                "router": {
-                    "type": "switch",
-                    "operand": "@child",
-                    "cases": [
+{
+    "flows": [
+        {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Parent Flow",
+            "language": "eng",
+            "nodes": [
+                {
+                    "uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
+                    "actions": [
                         {
-                            "uuid": "19a95efc-ac69-4b6a-a90b-f84a60b49e4f",
-                            "type": "has_run_status",
-                            "arguments": [
-                                "completed"
-                            ],
-                            "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef"
+                            "uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
+                            "type": "reply",
+                            "text": "This is the parent flow"
                         },
                         {
-                            "uuid": "8b4def38-17ca-4207-8b6f-d81fb64a2dc6",
-                            "type": "true",
-                            "exit_uuid": " 9f7632ee-6e35-4247-9235-c4c7663fd601"
+                            "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
+                            "type": "start_flow",
+                            "flow_name": "Child Flow",
+                            "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         }
-                    ]
-                },
-                "exits": [
-                    {
-                        "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
-                        "name": "Completed",
-                        "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                    ],
+                    "wait": {
+                        "type": "flow",
+                        "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                     },
-                    {
-                        "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                        "name": "Other",
-                        "destination_node_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081"
-                    }
-                ]
-            },
-            {
-                "uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
-                "actions": [
-                    {
-                        "uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
-                        "type": "reply",
-                        "text": "Flow succeeded, they said @child.results.name"
-                    }
-                ]
-            },
-            {
-                "uuid": "805d3b99-9e45-4c88-b667-c1557b44c081",
-                "actions": [
-                    {
-                        "uuid": "d80b2a5c-3b5c-47cd-b6ea-2f59bf2bb477",
-                        "type": "reply",
-                        "text": "Flow failed"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
-        "name": "Child flow",
-        "language": "eng",
-        "nodes": [
-            {
-                "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                "actions": [
-                    {
-                        "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
-                        "type": "reply",
-                        "text": "What is your name?"
-                    }
-                ],
-                "wait": {
-                    "type": "msg"
-                },
-                "router": {
-                    "result_name": "name",
-                    "type": "switch",
-                    "default": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
-                    "operand": "@run.input.text",
-                    "cases": [
+                    "router": {
+                        "type": "switch",
+                        "operand": "@child",
+                        "cases": [
+                            {
+                                "uuid": "19a95efc-ac69-4b6a-a90b-f84a60b49e4f",
+                                "type": "has_run_status",
+                                "arguments": [
+                                    "completed"
+                                ],
+                                "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef"
+                            },
+                            {
+                                "uuid": "8b4def38-17ca-4207-8b6f-d81fb64a2dc6",
+                                "type": "true",
+                                "exit_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
+                            }
+                        ]
+                    },
+                    "exits": [
                         {
-                            "uuid": "a134dfb7-c9ed-4802-a4b2-6eaa694a23e2",
-                            "type": "has_text",
-                            "exit_uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b"
+                            "uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
+                            "name": "Completed",
+                            "destination_node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70"
+                        },
+                        {
+                            "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
+                            "name": "Other",
+                            "destination_node_uuid": "805d3b99-9e45-4c88-b667-c1557b44c081"
                         }
                     ]
                 },
-                "exits": [
-                    {
-                        "uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b",
-                        "name": "Name",
-                        "destination_node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
+                {
+                    "uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
+                    "actions": [
+                        {
+                            "uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
+                            "type": "reply",
+                            "text": "Flow succeeded, they said @child.results.name"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "805d3b99-9e45-4c88-b667-c1557b44c081",
+                    "actions": [
+                        {
+                            "uuid": "d80b2a5c-3b5c-47cd-b6ea-2f59bf2bb477",
+                            "type": "reply",
+                            "text": "Flow failed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
+            "name": "Child flow",
+            "language": "eng",
+            "nodes": [
+                {
+                    "uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
+                    "actions": [
+                        {
+                            "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
+                            "type": "reply",
+                            "text": "What is your name?"
+                        }
+                    ],
+                    "wait": {
+                        "type": "msg"
                     },
-                    {
-                        "uuid": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
-                        "name": "Other",
-                        "destination_node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
-                    }
-                ]
-            },
-            {
-                "uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
-                "actions": [
-                    {
-                        "uuid": "d63929fe-e999-42ef-abf1-4b281f58891e",
-                        "type": "reply",
-                        "text": "Got it!"
-                    }
-                ]
-            }
-        ]
-    }
-]
+                    "router": {
+                        "result_name": "name",
+                        "type": "switch",
+                        "default": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
+                        "operand": "@run.input.text",
+                        "cases": [
+                            {
+                                "uuid": "a134dfb7-c9ed-4802-a4b2-6eaa694a23e2",
+                                "type": "has_text",
+                                "exit_uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b",
+                            "name": "Name",
+                            "destination_node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43"
+                        },
+                        {
+                            "uuid": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
+                            "name": "Other",
+                            "destination_node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
+                    "actions": [
+                        {
+                            "uuid": "d63929fe-e999-42ef-abf1-4b281f58891e",
+                            "type": "reply",
+                            "text": "Got it!"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Twilio Channel",
+            "address": "+12345671111",
+            "type": "T"
+        }
+    ]
+}

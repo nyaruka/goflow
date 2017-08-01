@@ -44,8 +44,8 @@ type WebhookAction struct {
 func (a *WebhookAction) Type() string { return TypeCallWebhook }
 
 // Validate validates the fields on this action
-func (a *WebhookAction) Validate() error {
-	return utils.Validate(a)
+func (a *WebhookAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs this action

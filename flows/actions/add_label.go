@@ -2,7 +2,6 @@ package actions
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeAddLabel is our type for add label actions
@@ -36,8 +35,8 @@ func foo() {
 func (a *AddLabelAction) Type() string { return TypeAddLabel }
 
 // Validate validates the fields for this label
-func (a *AddLabelAction) Validate() error {
-	return utils.Validate(a)
+func (a *AddLabelAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs the labeling action

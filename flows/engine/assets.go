@@ -28,16 +28,25 @@ func NewAssets(flowList []flows.Flow, channelList []flows.Channel) flows.Assets 
 	return &assets{flows: flowMap, channels: channelMap}
 }
 
-func (e *assets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	flow, exists := e.flows[uuid]
+func (a *assets) Validate() error {
+	for _, flow := range a.flows {
+		if err := flow.Validate(a); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (a *assets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
+	flow, exists := a.flows[uuid]
 	if exists {
 		return flow, nil
 	}
 	return nil, fmt.Errorf("unable to find flow with UUID: %s", uuid)
 }
 
-func (e *assets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	channel, exists := e.channels[uuid]
+func (a *assets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
+	channel, exists := a.channels[uuid]
 	if exists {
 		return channel, nil
 	}
@@ -60,8 +69,16 @@ func ReadAssets(data json.RawMessage) (flows.Assets, error) {
 		return nil, err
 	}
 
-	flowList := make([]flows.Flow, len(envelope.Flows))
 	channelList := make([]flows.Channel, len(envelope.Channels))
+	flowList := make([]flows.Flow, len(envelope.Flows))
+
+	for c := range envelope.Channels {
+		channel, err := flows.ReadChannel(envelope.Channels[c])
+		if err != nil {
+			return nil, err
+		}
+		channelList[c] = channel
+	}
 
 	for f := range envelope.Flows {
 		flow, err := definition.ReadFlow(envelope.Flows[f])
@@ -69,13 +86,6 @@ func ReadAssets(data json.RawMessage) (flows.Assets, error) {
 			return nil, err
 		}
 		flowList[f] = flow
-	}
-	for c := range envelope.Channels {
-		channel, err := flows.ReadChannel(envelope.Channels[c])
-		if err != nil {
-			return nil, err
-		}
-		channelList[c] = channel
 	}
 
 	return NewAssets(flowList, channelList), nil

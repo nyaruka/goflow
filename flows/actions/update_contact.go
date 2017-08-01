@@ -35,8 +35,8 @@ type UpdateContactAction struct {
 func (a *UpdateContactAction) Type() string { return TypeUpdateContact }
 
 // Validate validates this action
-func (a *UpdateContactAction) Validate() error {
-	return utils.Validate(a)
+func (a *UpdateContactAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs this action

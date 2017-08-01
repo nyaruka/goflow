@@ -4,7 +4,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSaveContactField is the type for our save to contact action
@@ -35,8 +34,8 @@ type SaveContactField struct {
 func (a *SaveContactField) Type() string { return TypeSaveContactField }
 
 // Validate validates this action
-func (a *SaveContactField) Validate() error {
-	return utils.Validate(a)
+func (a *SaveContactField) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs this action
