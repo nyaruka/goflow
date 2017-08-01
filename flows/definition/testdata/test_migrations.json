@@ -2,13 +2,13 @@
     {
         "legacy_test": {
             "type": "between",
-            "min": "12",
+            "min": "@contact.age",
             "max": "34"
         },
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_number_between",
-            "arguments": ["12", "34"],
+            "arguments": ["@contact.fields.age", "34"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -165,12 +165,12 @@
     {
         "legacy_test": {
             "type": "eq",
-            "test": "12"
+            "test": "@contact.age"
         },
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_number_eq",
-            "arguments": ["12"],
+            "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -178,12 +178,12 @@
     {
         "legacy_test": {
             "type": "gt",
-            "test": "12"
+            "test": "@contact.age"
         },
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_number_gt",
-            "arguments": ["12"],
+            "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -191,12 +191,12 @@
     {
         "legacy_test": {
             "type": "gte",
-            "test": "12"
+            "test": "@contact.age"
         },
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_number_gte",
-            "arguments": ["12"],
+            "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -217,12 +217,12 @@
     {
         "legacy_test": {
             "type": "lt",
-            "test": "12"
+            "test": "@contact.age"
         },
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_number_lt",
-            "arguments": ["12"],
+            "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -230,12 +230,12 @@
     {
         "legacy_test": {
             "type": "lte",
-            "test": "12"
+            "test": "@contact.age"
         },
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_number_lte",
-            "arguments": ["12"],
+            "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}

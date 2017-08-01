@@ -404,10 +404,14 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 
 	case string:
 		// common SMS foibles
-		val = strings.ToLower(val)
-		val = strings.Replace(val, "o", "0", -1)
-		val = strings.Replace(val, "l", "1", -1)
-		return decimal.NewFromString(val)
+		subbed := strings.ToLower(val)
+		subbed = strings.Replace(subbed, "o", "0", -1)
+		subbed = strings.Replace(subbed, "l", "1", -1)
+		parsed, err := decimal.NewFromString(subbed)
+		if err != nil {
+			return decimal.Zero, fmt.Errorf("Cannot convert '%s' to a decimal", val)
+		}
+		return parsed, nil
 	}
 
 	asString, err := ToString(env, val)

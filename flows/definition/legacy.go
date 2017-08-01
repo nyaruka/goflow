@@ -435,12 +435,24 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	case "eq", "gt", "gte", "lt", "lte":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test}
+		migratedTest, err := excellent.MigrateTemplate(test.Test)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedTest}
 
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Min, test.Max}
+		migratedMin, err := excellent.MigrateTemplate(test.Min)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		migratedMax, err := excellent.MigrateTemplate(test.Max)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedMin, migratedMax}
 
 	// tests against a single localized string
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
