@@ -16,6 +16,10 @@ type RandomRouter struct {
 	BaseRouter
 }
 
+func NewRandomRouter(resultName string) *RandomRouter {
+	return &RandomRouter{BaseRouter: BaseRouter{ResultName_: resultName}}
+}
+
 // Type returns the type of this router
 func (r *RandomRouter) Type() string { return TypeRandom }
 

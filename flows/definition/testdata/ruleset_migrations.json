@@ -1,0 +1,413 @@
+[
+    {
+        "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2", 
+                    "test": {
+                        "test": {
+                            "eng": "yeah yes",
+                            "fra": "oui"
+                        }, 
+                        "type": "contains_any"
+                    }, 
+                    "category": {
+                        "eng": "Yes",
+                        "fra": "Oui"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8", 
+                    "test": {
+                        "test": "true", 
+                        "type": "true"
+                    }, 
+                    "category": {
+                        "eng": "Other",
+                        "fra": "Autre"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }
+            ], 
+            "ruleset_type": "wait_message", 
+            "label": "Beer", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 0, 
+            "x": 100, 
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "router": {
+                "type": "switch",
+                "result_name": "Beer",
+                "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                "operand": "@run.input",
+                "cases": [
+                    {
+                        "uuid": "������������������������������������",
+                        "type": "has_any_word",
+                        "arguments": ["yeah yes"],
+                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "name": "Yes"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "name": "Other"
+                }
+            ],
+            "wait": {
+                "type": "msg"
+            }
+		},
+        "expected_localization": {
+            "fra": {
+                "1fc4c133-d038-4f75-a69e-6e7e3190e5d8": {
+                    "name": ["Autre"]
+                },
+                "ea304225-332e-49d4-9768-1e804cd0b6c2": {
+                    "name": ["Oui"]
+                },
+                "{{ router.cases.[0].uuid }}": {
+                    "arguments": ["oui"]
+                }
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "d3cf1b16-9f1e-46b4-a0c1-a57d29eb99b9", 
+            "rules": [
+                {
+                    "uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075",
+                    "test": {
+                        "test": {
+                            "eng": "male",
+                            "fra": "homme"
+                        }, 
+                        "type": "contains_any"
+                    }, 
+                    "category": {
+                        "eng": "Male",
+                        "fra": "Homme"
+                    }, 
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                },
+                {
+                    "uuid": "f966c0ac-1c17-4876-8c88-32495490a987",
+                    "test": {
+                        "test": {
+                            "eng": "female",
+                            "fra": "femme"
+                        }, 
+                        "type": "contains_any"
+                    }, 
+                    "category": {
+                        "eng": "Female",
+                        "fra": "Femme"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }, 
+                {
+                    "uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
+                    "test": {
+                        "test": "true", 
+                        "type": "true"
+                    }, 
+                    "category": {
+                        "eng": "Other",
+                        "fra": "Autre"
+                    }, 
+                    "destination": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd", 
+                    "destination_type": "A"
+                }
+            ], 
+            "ruleset_type": "expression", 
+            "label": "Response 1", 
+            "operand": "@contact.gender",
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 84, 
+            "x": 323, 
+            "config": {}
+        },
+        "expected_node": {
+		    "uuid": "d3cf1b16-9f1e-46b4-a0c1-a57d29eb99b9",
+		    "router": {
+		        "type": "switch",
+		        "result_name": "Response 1",
+		        "default_exit_uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
+		        "operand": "@contact.fields.gender",
+		        "cases": [
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_any_word",
+		                "arguments": [
+		                    "male"
+		                ],
+		                "exit_uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_any_word",
+		                "arguments": [
+		                    "female"
+		                ],
+		                "exit_uuid": "f966c0ac-1c17-4876-8c88-32495490a987"
+		            }
+		        ]
+		    },
+		    "exits": [
+		        {
+                    "uuid": "2b8a87c9-3262-4dd7-ab57-b099f362b075",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+		            "name": "Male"
+		        },
+		        {
+                    "uuid": "f966c0ac-1c17-4876-8c88-32495490a987",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+		            "name": "Female"
+		        },
+		        {
+                    "uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
+                    "destination_node_uuid": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd",
+		            "name": "Other"
+		        }
+		    ]
+		},
+        "expected_localization": {
+		    "fra": {
+		        "2b8a87c9-3262-4dd7-ab57-b099f362b075": {
+		            "name": ["Homme"]
+		        },
+		        "{{ router.cases.[0].uuid }}": {
+		            "arguments": ["homme"]
+		        },
+		        "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035": {
+		            "name": ["Autre"]
+		        },
+		        "{{ router.cases.[1].uuid }}": {
+		            "arguments": ["femme"]
+		        },
+		        "f966c0ac-1c17-4876-8c88-32495490a987": {
+		            "name": ["Femme"]
+		        }
+		    }
+		}
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16", 
+                    "test": {
+                        "status": "success", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Success"
+                    }, 
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                }, 
+                {
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                    "test": {
+                        "status": "failure", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Failure"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }
+            ],
+            "ruleset_type": "webhook", 
+            "label": "Response 1", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 100, 
+            "x": 1,
+            "config": {
+                "webhook": "http://example.com", 
+                "webhook_action": "GET", 
+                "webhook_headers": [
+                    {"name": "User-Agent", "value": "RapidPro"}
+                ]
+            }
+        },
+        "expected_node": {
+		    "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+		    "actions": [
+		        {
+		            "type": "call_webhook",
+		            "uuid": "������������������������������������",
+		            "method": "GET",
+                    "url": "http://example.com",
+                    "headers": {
+		                "User-Agent": "RapidPro"
+		            }
+		        }
+		    ],
+		    "router": {
+		        "type": "switch",
+		        "result_name": "Response 1",
+		        "default_exit_uuid": "",
+		        "operand": "@run.webhook",
+		        "cases": [
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_webhook_status",
+		                "arguments": ["success"],
+		                "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_webhook_status",
+		                "arguments": ["response_error"],
+		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+		            }
+		        ]
+		    },
+		    "exits": [
+		        {
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+		            "name": "Success"
+		        },
+		        {
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+		            "name": "Failure"
+		        }
+		    ]
+		},
+        "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "a040f89e-534e-4e5d-9e94-a8b639c426c8", 
+            "rules": [
+                {
+                    "uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2", 
+                    "test": {
+                        "type": "subflow", 
+                        "exit_type": "completed"
+                    }, 
+                    "category": {
+                        "eng": "Completed",
+                        "fra": "Terminé"
+                    }, 
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                }, 
+                {
+                    "uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42", 
+                    "test": {
+                        "type": "subflow", 
+                        "exit_type": "expired"
+                    }, 
+                    "category": {
+                        "eng": "Expired",
+                        "fra": "Expiré"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }
+            ], 
+            "ruleset_type": "subflow", 
+            "label": "Response 1", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 0, 
+            "x": 100, 
+            "config": {
+                "flow": {
+                    "name": "My Subflow", 
+                    "uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534"
+                }
+            }
+        },
+        "expected_node": {
+		    "uuid": "a040f89e-534e-4e5d-9e94-a8b639c426c8",
+		    "actions": [
+		        {
+		            "type": "start_flow",
+		            "uuid": "������������������������������������",
+		            "flow_uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534",
+		            "flow_name": "My Subflow"
+		        }
+		    ],
+		    "router": {
+		        "type": "switch",
+		        "result_name": "Response 1",
+		        "default_exit_uuid": "",
+		        "operand": "@child.status",
+		        "cases": [
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_any_word",
+		                "arguments": ["completed"],
+		                "exit_uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_any_word",
+		                "arguments": ["expired"],
+		                "exit_uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42"
+		            }
+		        ]
+		    },
+		    "exits": [
+		        {
+                    "uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+		            "name": "Completed"
+		        },
+		        {
+                    "uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+		            "name": "Expired"
+		        }
+		    ],
+		    "wait": {
+		        "type": "flow",
+		        "flow_uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534"
+		    }
+		},
+        "expected_localization": {
+            "fra": {
+		        "279a7adf-4681-4efb-a65f-34369a7a4f42": {
+		            "name": [
+		                "Expiré"
+		            ]
+		        },
+		        "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2": {
+		            "name": [
+		                "Terminé"
+		            ]
+		        }
+		    }
+        }
+    }
+]

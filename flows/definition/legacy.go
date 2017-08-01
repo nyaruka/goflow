@@ -95,6 +95,12 @@ type legacyFlowReference struct {
 	Name string         `json:"name"`
 }
 
+type legacyWebhookConfig struct {
+	Webhook string                `json:"webhook"`
+	Action  string                `json:"webhook_action"`
+	Headers []legacyWebhookHeader `json:"webhook_headers"`
+}
+
 type legacyWebhookHeader struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
@@ -564,15 +570,12 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	node.uuid = r.UUID
 
 	exits, cases, defaultExit := parseRules(lang, r, translations)
+	resultName := r.Label
 
 	switch r.Type {
 	case "subflow":
 		// subflow rulesets operate on the child flow status
-		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: "@child.status",
-			Cases:   cases,
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
 
 		config := make(map[string]map[string]string)
 		err := json.Unmarshal(r.Config, &config)
@@ -585,8 +588,9 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		node.actions = []flows.Action{
 			&actions.StartFlowAction{
-				FlowUUID: flowUUID,
-				FlowName: flowName,
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				FlowUUID:   flowUUID,
+				FlowName:   flowName,
 			},
 		}
 
@@ -595,44 +599,38 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 	case "webhook":
-		config := make(map[string]string)
+		var config legacyWebhookConfig
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
 			return nil, err
 		}
 
+		migratedHeaders := make(map[string]string, len(config.Headers))
+		for _, header := range config.Headers {
+			migratedHeaders[header.Name] = header.Value
+		}
+
 		node.actions = []flows.Action{
 			&actions.WebhookAction{
-				URL:    config["webhook"],
-				Method: config["webhook_action"],
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				URL:        config.Webhook,
+				Method:     config.Action,
+				Headers:    migratedHeaders,
 			},
 		}
 
 		// subflow rulesets operate on the child flow status
-		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: "@run.webhook",
-			Cases:   cases,
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
 
 	case "form_field":
-
 		var config fieldConfig
 		json.Unmarshal(r.Config, &config)
 
 		operand, _ := excellent.MigrateTemplate(r.Operand)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
-		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: operand,
-			Cases:   cases,
-			BaseRouter: routers.BaseRouter{
-				ResultName_: r.Label,
-			},
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
 	case "wait_message":
-
 		// TODO: add in timeout
 		node.wait = &waits.MsgWait{}
 
@@ -645,23 +643,15 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		fallthrough
 	case "expression":
 		operand, _ := excellent.MigrateTemplate(r.Operand)
-
 		if operand == "" {
 			operand = "@run.input"
 		}
 
-		node.router = &routers.SwitchRouter{
-			Default: defaultExit,
-			Operand: operand,
-			Cases:   cases,
-			BaseRouter: routers.BaseRouter{
-				ResultName_: r.Label,
-			},
-		}
+		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 	case "random":
-		node.router = &routers.RandomRouter{}
+		node.router = routers.NewRandomRouter(resultName)
 	default:
-		fmt.Printf("No router for %s\n", r.Type)
+		fmt.Printf("Unable to migrate unrecognized ruleset type: '%s'\n", r.Type)
 	}
 
 	node.exits = exits
@@ -717,7 +707,11 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	}
 
 	for i := range envelope.RuleSets {
-		f.nodes[len(envelope.ActionSets)+i], err = createRuleNode(f.language, envelope.RuleSets[i], translations)
+		node, err := createRuleNode(f.language, envelope.RuleSets[i], translations)
+		if err != nil {
+			return err
+		}
+		f.nodes[len(envelope.ActionSets)+i] = node
 	}
 
 	// make sure our entry node is first

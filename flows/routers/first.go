@@ -13,6 +13,10 @@ type FirstRouter struct {
 	BaseRouter
 }
 
+func NewFirstRouter(resultName string) *FirstRouter {
+	return &FirstRouter{BaseRouter: BaseRouter{ResultName_: resultName}}
+}
+
 // Type returns the type of this router
 func (r *FirstRouter) Type() string { return TypeFirst }
 
