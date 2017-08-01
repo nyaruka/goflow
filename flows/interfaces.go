@@ -60,7 +60,7 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 
-	Validate() error
+	Validate(Assets) error
 }
 
 // RunStatus represents the current status of the flow run
@@ -86,8 +86,10 @@ const (
 func (r RunStatus) String() string { return string(r) }
 
 type Assets interface {
-	GetFlow(FlowUUID) (Flow, error)
+	Validate() error
+
 	GetChannel(ChannelUUID) (Channel, error)
+	GetFlow(FlowUUID) (Flow, error)
 }
 
 type Node interface {
@@ -103,7 +105,7 @@ type Action interface {
 	UUID() ActionUUID
 
 	Execute(FlowRun, Step) error
-	Validate() error
+	Validate(Assets) error
 	utils.Typed
 }
 

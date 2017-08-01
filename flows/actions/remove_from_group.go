@@ -3,7 +3,6 @@ package actions
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeRemoveFromGroup is our type for our remove from group action
@@ -34,8 +33,8 @@ type RemoveFromGroupAction struct {
 func (a *RemoveFromGroupAction) Type() string { return TypeRemoveFromGroup }
 
 // Validate validates the fields on this action
-func (a *RemoveFromGroupAction) Validate() error {
-	return utils.Validate(a)
+func (a *RemoveFromGroupAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs the action

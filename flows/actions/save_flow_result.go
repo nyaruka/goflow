@@ -4,7 +4,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSaveFlowResult is our type for the save result action
@@ -39,8 +38,8 @@ type SaveFlowResultAction struct {
 func (a *SaveFlowResultAction) Type() string { return TypeSaveFlowResult }
 
 // Validate validates the fields on this action
-func (a *SaveFlowResultAction) Validate() error {
-	return utils.Validate(a)
+func (a *SaveFlowResultAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs this action

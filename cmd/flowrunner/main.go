@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -25,6 +24,7 @@ type Output struct {
 }
 
 type FlowTest struct {
+	FlowUUID     flows.FlowUUID           `json:"flow_uuid"`
 	CallerEvents [][]*utils.TypedEnvelope `json:"caller_events"`
 	Outputs      []json.RawMessage        `json:"outputs"`
 }
@@ -154,34 +154,25 @@ func main() {
 
 	writePtr := flag.Bool("write", false, "Whether to write a _test.json file for this flow")
 	contactFile := flag.String("contact", filepath.Join(testdata, "contacts/default.json"), "The location of the JSON file defining the contact to use, defaulting to test/contacts/default.json")
-	channelFile := flag.String("channel", filepath.Join(testdata, "channels/default.json"), "The location of the JSON file defining the channel to use, defaulting to test/channels/default.json")
 
 	flag.Parse()
 
-	if len(flag.Args()) != 1 {
-		fmt.Printf("\nUsage: runner [-write] <flow.json>\n\n")
+	if len(flag.Args()) != 2 {
+		fmt.Printf("\nUsage: runner [-write] <assets.json> flow_uuid\n\n")
 		os.Exit(1)
 	}
 
-	flowFilename := flag.Args()[0]
+	assetsFilename := flag.Args()[0]
+	startFlowUUID := flows.FlowUUID(flag.Args()[1])
 
-	fmt.Printf("Parsing: %s\n", flowFilename)
-	flowJSON, err := ioutil.ReadFile(flowFilename)
+	fmt.Printf("Parsing: %s\n", assetsFilename)
+	assetsJSON, err := ioutil.ReadFile(assetsFilename)
 	if err != nil {
-		log.Fatal("Error reading flow file: ", err)
+		log.Fatal("Error reading assets file: ", err)
 	}
-	runnerFlows, err := definition.ReadFlows(json.RawMessage(flowJSON))
+	assets, err := engine.ReadAssets(json.RawMessage(assetsJSON))
 	if err != nil {
-		log.Fatal("Error reading flows: ", err)
-	}
-
-	channelJSON, err := ioutil.ReadFile(*channelFile)
-	if err != nil {
-		log.Fatal("Error reading channel file: ", err)
-	}
-	channel, err := flows.ReadChannel(json.RawMessage(channelJSON))
-	if err != nil {
-		log.Fatal("Error unmarshalling channel: ", err)
+		log.Fatal("Error reading assets: ", err)
 	}
 
 	// create our environment
@@ -189,7 +180,6 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
-	assets := engine.NewAssets(runnerFlows, []flows.Channel{channel})
 	session := engine.NewSession(assets)
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
@@ -205,7 +195,7 @@ func main() {
 	session.SetContact(contact)
 
 	// and start our flow
-	err = session.StartFlow(runnerFlows[0].UUID(), nil, nil)
+	err = session.StartFlow(startFlowUUID, nil, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
@@ -269,8 +259,8 @@ func main() {
 
 	// write out our test file
 	if *writePtr {
-		// name of the test file is the same as our flow file, just with _test.json intead of .json
-		testFilename := strings.Replace(flowFilename, ".json", "_test.json", 1)
+		// name of the test file is the same as our assets file, just with _test.json intead of .json
+		testFilename := strings.Replace(assetsFilename, ".json", "_test.json", 1)
 
 		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
 		for i := range callerEvents {
@@ -285,7 +275,7 @@ func main() {
 			}
 		}
 
-		flowTest := FlowTest{CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
+		flowTest := FlowTest{FlowUUID: startFlowUUID, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
 		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)

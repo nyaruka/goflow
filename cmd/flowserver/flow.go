@@ -55,9 +55,12 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our assets
+	// read and validate our assets
 	assets, err := engine.ReadAssets(start.Assets)
 	if err != nil {
+		return nil, err
+	}
+	if err = assets.Validate(); err != nil {
 		return nil, err
 	}
 
@@ -104,9 +107,12 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read our assets
+	// read and validate our assets
 	assets, err := engine.ReadAssets(resume.Assets)
 	if err != nil {
+		return nil, err
+	}
+	if err = assets.Validate(); err != nil {
 		return nil, err
 	}
 

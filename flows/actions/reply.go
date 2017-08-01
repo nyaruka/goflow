@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeReply is the type for reply actions
@@ -38,8 +37,8 @@ type ReplyAction struct {
 func (a *ReplyAction) Type() string { return TypeReply }
 
 // Validate validates whether this struct is correct
-func (a *ReplyAction) Validate() error {
-	return utils.Validate(a)
+func (a *ReplyAction) Validate(assets flows.Assets) error {
+	return nil
 }
 
 // Execute runs this action

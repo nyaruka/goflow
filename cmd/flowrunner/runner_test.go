@@ -14,29 +14,26 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/actions"
-	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
 var flowTests = []struct {
-	flow    string
+	assets  string
 	contact string
-	channel string
 	output  string
 }{
-	{"two_questions.json", "", "", "two_questions_test.json"},
-	{"subflow.json", "", "", "subflow_test.json"},
-	{"brochure.json", "", "", "brochure_test.json"},
-	{"all_actions.json", "", "", "all_actions_test.json"},
-	{"default_result.json", "", "", "default_result_test.json"},
-	{"empty.json", "", "", "empty_test.json"},
-	{"node_loop.json", "", "", "node_loop_test.json"},
-	{"subflow_loop.json", "", "", "subflow_loop_test.json"},
-	{"date_parse.json", "", "", "date_parse_test.json"},
-	{"webhook_persists.json", "", "", "webhook_persists_test.json"},
+	{"two_questions.json", "", "two_questions_test.json"},
+	{"subflow.json", "", "subflow_test.json"},
+	{"brochure.json", "", "brochure_test.json"},
+	{"all_actions.json", "", "all_actions_test.json"},
+	{"default_result.json", "", "default_result_test.json"},
+	{"empty.json", "", "empty_test.json"},
+	{"node_loop.json", "", "node_loop_test.json"},
+	{"subflow_loop.json", "", "subflow_loop_test.json"},
+	{"date_parse.json", "", "date_parse_test.json"},
+	{"webhook_persists.json", "", "webhook_persists_test.json"},
 }
 
 var writeOutput bool
@@ -66,39 +63,22 @@ func readFile(prefix string, filename string) ([]byte, error) {
 	return bytes, err
 }
 
-func runFlow(env utils.Environment, flowFilename string, contactFilename string, channelFilename string, callerEvents [][]flows.Event) (flows.Session, []*Output, error) {
-	flowJSON, err := readFile("flows/", flowFilename)
+func runFlow(env utils.Environment, assetsFilename string, contactFilename string, flowUUID flows.FlowUUID, callerEvents [][]flows.Event) (flows.Session, []*Output, error) {
+	assetsJSON, err := readFile("flows/", assetsFilename)
 	if err != nil {
 		return nil, nil, err
-	}
-	runnerFlows, err := definition.ReadFlows(json.RawMessage(flowJSON))
-	if err != nil {
-		return nil, nil, fmt.Errorf("Error unmarshalling flows '%s': %s", flowFilename, err)
 	}
 
 	// rewrite the URL on any webhook actions
-	for _, flow := range runnerFlows {
-		for _, n := range flow.Nodes() {
-			for _, a := range n.Actions() {
-				webhook, isWebhook := a.(*actions.WebhookAction)
-				if isWebhook {
-					webhook.URL = strings.Replace(webhook.URL, "http://localhost", serverURL, 1)
-				}
-			}
-		}
-	}
+	assetsJSONStr := strings.Replace(string(assetsJSON), "http://localhost", serverURL, -1)
 
-	channelJSON, err := readFile("channels/", channelFilename)
+	assets, err := engine.ReadAssets(json.RawMessage(assetsJSONStr))
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("Error unmarshalling assets '%s': %s", assetsFilename, err)
 	}
-
-	channel, err := flows.ReadChannel(json.RawMessage(channelJSON))
-	if err != nil {
-		return nil, nil, fmt.Errorf("Error unmarshalling channel '%s': %s", channelFilename, err)
+	if err = assets.Validate(); err != nil {
+		return nil, nil, fmt.Errorf("Error validiating assets '%s': %s", assetsFilename, err)
 	}
-
-	assets := engine.NewAssets(runnerFlows, []flows.Channel{channel})
 
 	contactJSON, err := readFile("contacts/", contactFilename)
 	if err != nil {
@@ -115,7 +95,7 @@ func runFlow(env utils.Environment, flowFilename string, contactFilename string,
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 
-	err = session.StartFlow(runnerFlows[0].UUID(), nil, callerEvents[0])
+	err = session.StartFlow(flowUUID, nil, callerEvents[0])
 	if err != nil {
 		return nil, nil, err
 	}
@@ -200,14 +180,14 @@ func TestFlows(t *testing.T) {
 	for _, test := range flowTests {
 		testJSON, err := readFile("flows/", test.output)
 		if err != nil {
-			t.Errorf("Error reading output file for flow '%s' and output '%s': %s", test.flow, test.output, err)
+			t.Errorf("Error reading output file for flow '%s' and output '%s': %s", test.assets, test.output, err)
 			continue
 		}
 
 		flowTest := FlowTest{}
 		err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
 		if err != nil {
-			t.Errorf("Error unmarshalling output for flow '%s' and output '%s': %s", test.flow, test.output, err)
+			t.Errorf("Error unmarshalling output for flow '%s' and output '%s': %s", test.assets, test.output, err)
 			continue
 		}
 
@@ -220,7 +200,7 @@ func TestFlows(t *testing.T) {
 			for e := range flowTest.CallerEvents[i] {
 				event, err := events.EventFromEnvelope(flowTest.CallerEvents[i][e])
 				if err != nil {
-					t.Errorf("Error unmarshalling caller events for flow '%s' and output '%s': %s", test.flow, test.output, err)
+					t.Errorf("Error unmarshalling caller events for flow '%s' and output '%s': %s", test.assets, test.output, err)
 					continue
 				}
 				event.SetFromCaller(true)
@@ -229,9 +209,9 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		session, outputs, err := runFlow(env, test.flow, test.contact, test.channel, callerEvents)
+		session, outputs, err := runFlow(env, test.assets, test.contact, flowTest.FlowUUID, callerEvents)
 		if err != nil {
-			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.flow, test.output, err)
+			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.assets, test.output, err)
 			continue
 		}
 
@@ -270,7 +250,7 @@ func TestFlows(t *testing.T) {
 
 			// read our output and test that we are the same
 			if len(outputs) != len(expectedOutputs) {
-				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", outputs, expectedOutputs, test.flow)
+				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", outputs, expectedOutputs, test.assets)
 				continue
 			}
 
@@ -280,16 +260,16 @@ func TestFlows(t *testing.T) {
 
 				actualSession, err := engine.ReadSession(session.Assets(), actualOutput.Session)
 				if err != nil {
-					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.flow, err)
+					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.assets, err)
 				}
 				expectedSession, err := engine.ReadSession(session.Assets(), expectedOutput.Session)
 				if err != nil {
-					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.flow, err)
+					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 				}
 
 				// number of runs should be the same
 				if len(actualSession.Runs()) != len(expectedSession.Runs()) {
-					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), test.flow)
+					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), test.assets)
 				}
 
 				// runs should have same status and flows
@@ -298,16 +278,16 @@ func TestFlows(t *testing.T) {
 					expected := expectedSession.Runs()[i]
 
 					if run.Flow() != expected.Flow() {
-						t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'", run.Flow().UUID(), expected.Flow().UUID(), test.flow)
+						t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'", run.Flow().UUID(), expected.Flow().UUID(), test.assets)
 					}
 
 					if run.Status() != expected.Status() {
-						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), test.flow)
+						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), test.assets)
 					}
 				}
 
 				if len(actualOutput.Log) != len(expectedOutput.Log) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Log, expectedOutput.Log, test.flow)
+					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Log, expectedOutput.Log, test.assets)
 				}
 
 				for j := range actualOutput.Log {
@@ -317,15 +297,15 @@ func TestFlows(t *testing.T) {
 					// write our events as json
 					eventJSON, err := rawMessageAsJSON(event)
 					if err != nil {
-						t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
+						t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
 					}
 					expectedJSON, err := rawMessageAsJSON(expected)
 					if err != nil {
-						t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.flow, test.output, err)
+						t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
 					}
 
 					if eventJSON != expectedJSON {
-						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, test.flow, test.output)
+						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, test.assets, test.output)
 						break
 					}
 				}

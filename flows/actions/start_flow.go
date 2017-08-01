@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeStartFlow is the type of our flow action
@@ -35,8 +34,9 @@ type StartFlowAction struct {
 func (a *StartFlowAction) Type() string { return TypeStartFlow }
 
 // Validate validates our action is valid
-func (a *StartFlowAction) Validate() error {
-	return utils.Validate(a)
+func (a *StartFlowAction) Validate(assets flows.Assets) error {
+	_, err := assets.GetFlow(a.FlowUUID)
+	return err
 }
 
 // Execute runs our action
