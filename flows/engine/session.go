@@ -111,7 +111,7 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 	// find the active run
 	run := s.ActiveRun()
 	if run == nil {
-		return utils.NewValidationError("session: no active run to resume")
+		return utils.NewValidationErrors("session: no active run to resume")
 	}
 
 	return s.resumeRun(run, callerEvents)
@@ -206,10 +206,10 @@ func ReadSession(assets flows.Assets, data json.RawMessage) (flows.Session, erro
 	// once all runs are read, we can resolve references between runs
 	err = runs.ResolveReferences(s, s.Runs())
 	if err != nil {
-		return nil, utils.NewValidationError(err.Error())
+		return nil, utils.NewValidationErrors(err.Error())
 	}
 
-	err = utils.ValidateAll(s)
+	err = utils.Validate(s)
 	return s, err
 }
 

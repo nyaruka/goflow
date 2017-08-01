@@ -40,7 +40,7 @@ func (a *SaveFlowResultAction) Type() string { return TypeSaveFlowResult }
 
 // Validate validates the fields on this action
 func (a *SaveFlowResultAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs this action

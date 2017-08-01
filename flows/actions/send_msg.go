@@ -42,7 +42,7 @@ func (a *SendMsgAction) Type() string { return TypeSendMsg }
 
 // Validate validates whether this struct is correct
 func (a *SendMsgAction) Validate() error {
-	return utils.ValidateAll(a)
+	return utils.Validate(a)
 }
 
 // Execute runs this action

@@ -40,7 +40,7 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 	}
 
 	// validate it
-	err = utils.ValidateAll(action)
+	err = utils.Validate(action)
 	if err != nil {
 		log.Fatalf("unable to validate example: %s\nHad err: %s", exampleJSON, err)
 	}

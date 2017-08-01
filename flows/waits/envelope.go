@@ -1,7 +1,6 @@
 package waits
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -9,19 +8,16 @@ import (
 )
 
 func WaitFromEnvelope(envelope *utils.TypedEnvelope) (flows.Wait, error) {
+	var wait flows.Wait
+
 	switch envelope.Type {
-
 	case TypeMsg:
-		wait := MsgWait{}
-		err := json.Unmarshal(envelope.Data, &wait)
-		return &wait, err
-
+		wait = &MsgWait{}
 	case TypeFlow:
-		wait := FlowWait{}
-		err := json.Unmarshal(envelope.Data, &wait)
-		return &wait, err
-
+		wait = &FlowWait{}
 	default:
 		return nil, fmt.Errorf("Unknown wait type: %s", envelope.Type)
 	}
+
+	return wait, utils.UnmarshalAndValidate(envelope.Data, wait, fmt.Sprintf("wait[type=%s]", envelope.Type))
 }

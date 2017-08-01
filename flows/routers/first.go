@@ -18,7 +18,7 @@ func (r *FirstRouter) Type() string { return TypeFirst }
 
 // Validate validates the arguments on this router
 func (r *FirstRouter) Validate(exits []flows.Exit) error {
-	return utils.ValidateAll(r)
+	return utils.Validate(r)
 }
 
 // PickRoute always picks the first exit if available for this router

@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -10,27 +9,20 @@ import (
 
 // RouterFromEnvelope attempts to build a router given the passed in TypedEnvelope
 func RouterFromEnvelope(envelope *utils.TypedEnvelope) (flows.Router, error) {
+	var router flows.Router
+
 	switch envelope.Type {
-
 	case TypeFirst:
-		router := FirstRouter{}
-		return &router, nil
-
+		router = &FirstRouter{}
 	case TypeSwitch:
-		router := SwitchRouter{}
-		err := json.Unmarshal(envelope.Data, &router)
-		return &router, utils.ValidateAll(err, &router)
-
+		router = &SwitchRouter{}
 	case TypeRandom:
-		router := RandomRouter{}
-		return &router, nil
-
+		router = &RandomRouter{}
 	case TypeRandomOnce:
-		router := RandomOnceRouter{}
-		err := json.Unmarshal(envelope.Data, &router)
-		return &router, utils.ValidateAll(err, &router)
-
+		router = &RandomOnceRouter{}
 	default:
 		return nil, fmt.Errorf("Unknown router type: %s", envelope.Type)
 	}
+
+	return router, utils.UnmarshalAndValidate(envelope.Data, router, fmt.Sprintf("router[type=%s]", envelope.Type))
 }

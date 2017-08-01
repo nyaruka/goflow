@@ -21,7 +21,7 @@ func (r *RandomRouter) Type() string { return TypeRandom }
 
 // Validate validates that the fields on this router are valid
 func (r *RandomRouter) Validate(exits []flows.Exit) error {
-	return utils.ValidateAll(r)
+	return utils.Validate(r)
 }
 
 // PickRoute picks a route randomly from our available exits

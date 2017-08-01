@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
@@ -9,69 +8,36 @@ import (
 )
 
 func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
+	var action flows.Action
+
 	switch envelope.Type {
-
 	case TypeAddLabel:
-		action := AddLabelAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &AddLabelAction{}
 	case TypeAddToGroup:
-		action := AddToGroupAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &AddToGroupAction{}
 	case TypeSendEmail:
-		action := EmailAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &EmailAction{}
 	case TypeStartFlow:
-		action := StartFlowAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &StartFlowAction{}
 	case TypeSendMsg:
-		action := SendMsgAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &SendMsgAction{}
 	case TypeRemoveFromGroup:
-		action := RemoveFromGroupAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &RemoveFromGroupAction{}
 	case TypeReply:
-		action := ReplyAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &ReplyAction{}
 	case TypeSaveFlowResult:
-		action := SaveFlowResultAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &SaveFlowResultAction{}
 	case TypeSaveContactField:
-		action := SaveContactField{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &SaveContactField{}
 	case TypeSetPreferredChannel:
-		action := PreferredChannelAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &PreferredChannelAction{}
 	case TypeUpdateContact:
-		action := UpdateContactAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &UpdateContactAction{}
 	case TypeCallWebhook:
-		action := WebhookAction{}
-		err := json.Unmarshal(envelope.Data, &action)
-		return &action, utils.ValidateAllUnlessErr(err, &action)
-
+		action = &WebhookAction{}
 	default:
 		return nil, fmt.Errorf("Unknown action type: %s", envelope.Type)
 	}
+
+	return action, utils.UnmarshalAndValidate(envelope.Data, action, fmt.Sprintf("action[type=%s]", envelope.Type))
 }
