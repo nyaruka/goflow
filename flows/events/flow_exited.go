@@ -1,8 +1,6 @@
 package events
 
 import (
-	"time"
-
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -29,7 +27,6 @@ type FlowExitedEvent struct {
 	FlowUUID    flows.FlowUUID    `json:"flow_uuid"       validate:"required"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid"    validate:"required"`
 	Status      flows.RunStatus   `json:"status"          validate:"required"`
-	ExitedOn    *time.Time        `json:"exited_on"       validate:"required"`
 }
 
 // NewFlowExitedEvent returns a new flow exit event
@@ -39,7 +36,6 @@ func NewFlowExitedEvent(run flows.FlowRunReference) *FlowExitedEvent {
 		FlowUUID:    run.Flow().UUID(),
 		Status:      run.Status(),
 		ContactUUID: run.Contact().UUID(),
-		ExitedOn:    run.ExitedOn(),
 	}
 }
 
