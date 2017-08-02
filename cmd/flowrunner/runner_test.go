@@ -224,7 +224,7 @@ func TestFlows(t *testing.T) {
 					log.Fatal(err)
 				}
 			}
-			flowTest := FlowTest{CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
+			flowTest := FlowTest{FlowUUID: flowTest.FlowUUID, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
 			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 			if err != nil {
 				log.Fatal("Error marshalling test definition: ", err)
