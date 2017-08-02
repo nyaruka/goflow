@@ -142,7 +142,6 @@ type Wait interface {
 	GetEndEvent(FlowRun, Step) (Event, error)
 	End(FlowRun, Step, Event) error
 	utils.Typed
-	utils.VariableResolver
 }
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language

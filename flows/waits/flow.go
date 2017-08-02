@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 const TypeFlow string = "flow"
@@ -13,25 +12,6 @@ const TypeFlow string = "flow"
 type FlowWait struct {
 	FlowUUID flows.FlowUUID `json:"flow_uuid"   validate:"required,uuid4"`
 }
-
-func (w *FlowWait) Resolve(key string) interface{} {
-	switch key {
-	case "flow_uuid":
-		return w.FlowUUID
-	}
-
-	return nil
-}
-
-func (w *FlowWait) Default() interface{} {
-	return TypeFlow
-}
-
-func (w *FlowWait) String() string {
-	return TypeFlow
-}
-
-var _ utils.VariableResolver = (*FlowWait)(nil)
 
 func (w *FlowWait) Type() string { return TypeFlow }
 

@@ -5,7 +5,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 const TypeMsg string = "msg"
@@ -13,25 +12,6 @@ const TypeMsg string = "msg"
 type MsgWait struct {
 	Timeout int `json:"timeout,omitempty"`
 }
-
-func (w *MsgWait) Resolve(key string) interface{} {
-	switch key {
-	case "timeout":
-		return w.Timeout
-	}
-
-	return nil
-}
-
-func (w *MsgWait) Default() interface{} {
-	return TypeMsg
-}
-
-func (w *MsgWait) String() string {
-	return TypeMsg
-}
-
-var _ utils.VariableResolver = (*MsgWait)(nil)
 
 func (w *MsgWait) Type() string { return TypeMsg }
 
