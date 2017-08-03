@@ -74,6 +74,9 @@ const (
 	// StatusCompleted represents a flow run that has run to completion
 	StatusCompleted RunStatus = "completed"
 
+	// StatusWaiting represents a flow run which is waiting for something from the caller
+	StatusWaiting RunStatus = "waiting"
+
 	// StatusErrored represents a flow run that encountered an error
 	StatusErrored RunStatus = "errored"
 
@@ -138,10 +141,10 @@ type Exit interface {
 }
 
 type Wait interface {
-	Begin(FlowRun, Step) error
-	GetEndEvent(FlowRun, Step) (Event, error)
-	End(FlowRun, Step, Event) error
 	utils.Typed
+
+	Apply(FlowRun, Step)
+	CanResume(FlowRun, Step) bool
 }
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
@@ -212,7 +215,9 @@ type Session interface {
 	CreateRun(Flow, FlowRun) FlowRun
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
-	ActiveRun() FlowRun
+
+	Wait() Wait
+	SetWait(Wait)
 
 	Log() []LogEntry
 	LogEvent(Step, Action, Event)
@@ -237,11 +242,9 @@ type FlowRun interface {
 	Extra() utils.JSONFragment
 
 	Status() RunStatus
+	SetStatus(RunStatus)
 	Exit(RunStatus)
 	IsComplete() bool
-
-	Wait() Wait
-	SetWait(Wait)
 
 	Input() Input
 	SetInput(Input)
@@ -251,6 +254,7 @@ type FlowRun interface {
 
 	CreateStep(Node) Step
 	Path() []Step
+	PathLocation() (Step, Node, error)
 
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string

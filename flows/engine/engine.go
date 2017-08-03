@@ -47,40 +47,11 @@ func continueRunUntilWait(run flows.FlowRun, destination flows.NodeUUID, step fl
 	}
 
 	// mark ourselves as complete if our run is active and we have no wait
-	if run.Wait() == nil && run.Status() == flows.StatusActive {
+	if run.Session().Wait() == nil && run.Status() == flows.StatusActive {
 		run.Exit(flows.StatusCompleted)
 	}
 
 	return nil
-}
-
-// Resumes the node that the run is currently waiting on using the provided caller events
-func resumeNode(run flows.FlowRun, node flows.Node, step flows.Step, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
-	wait := node.Wait()
-
-	// it's an error to resume a flow at a wait that no longer exists, error
-	if wait == nil {
-		err := fmt.Errorf("cannot resume flow at node '%s' which no longer contains wait", node.UUID())
-		run.AddError(step, err)
-		run.Exit(flows.StatusErrored)
-		return noDestination, step, nil
-	}
-
-	// try to resume our wait with the first caller event
-	err := wait.End(run, step, callerEvents[0])
-	if err != nil {
-		run.AddError(step, err)
-		run.Exit(flows.StatusErrored)
-		return noDestination, step, nil
-	}
-
-	// if we are allowed to proceed then we can apply the caller events
-	for _, event := range callerEvents {
-		run.ApplyEvent(step, nil, event)
-	}
-
-	// determine our exit
-	return pickNodeExit(run, node, step)
 }
 
 func enterNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (flows.NodeUUID, flows.Step, error) {
@@ -104,36 +75,15 @@ func enterNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (
 		}
 	}
 
-	// if we have a wait, execute that
+	// if we have a wait, apply that
 	wait := node.Wait()
 	if wait != nil {
-		err := wait.Begin(run, step)
-		if err != nil {
-			run.AddError(step, err)
-			run.Exit(flows.StatusErrored)
-			return noDestination, step, nil
-		}
+		wait.Apply(run, step)
 
-		// can we end immediately?
-		event, err := wait.GetEndEvent(run, step)
-		if err != nil {
-			run.AddError(step, err)
-			run.Exit(flows.StatusErrored)
-			return noDestination, step, nil
-		}
+		run.SetStatus(flows.StatusWaiting)
+		run.Session().SetWait(wait)
 
-		// we have to really wait, return out
-		if event == nil {
-			return noDestination, step, nil
-		}
-
-		// end our wait and continue onwards
-		err = wait.End(run, step, event)
-		if err != nil {
-			run.AddError(step, err)
-			run.Exit(flows.StatusErrored)
-			return noDestination, step, nil
-		}
+		return noDestination, step, nil
 	}
 
 	return pickNodeExit(run, node, step)

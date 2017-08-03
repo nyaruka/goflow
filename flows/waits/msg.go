@@ -1,8 +1,6 @@
 package waits
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -15,24 +13,18 @@ type MsgWait struct {
 
 func (w *MsgWait) Type() string { return TypeMsg }
 
-func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) error {
+func (w *MsgWait) Apply(run flows.FlowRun, step flows.Step) {
 	run.ApplyEvent(step, nil, &events.MsgWaitEvent{Timeout: w.Timeout})
-	run.SetWait(w)
-	return nil
 }
 
-func (w *MsgWait) GetEndEvent(run flows.FlowRun, step flows.Step) (flows.Event, error) {
-	return nil, nil
-}
-
-func (w *MsgWait) End(run flows.FlowRun, step flows.Step, event flows.Event) error {
-	_, isMsg := event.(*events.MsgReceivedEvent)
-	if !isMsg {
-		return fmt.Errorf("Must end MsgWait with MsgReceivedEvent, got: %#v", event)
+// CanResume returns true for a message wait if a message has now been received on this step
+func (w *MsgWait) CanResume(run flows.FlowRun, step flows.Step) bool {
+	for _, event := range step.Events() {
+		_, isMsg := event.(*events.MsgReceivedEvent)
+		if isMsg {
+			return true
+		}
 	}
 
-	// and clear our wait
-	run.SetWait(nil)
-
-	return nil
+	return false
 }

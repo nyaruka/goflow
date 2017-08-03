@@ -587,9 +587,6 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 	switch r.Type {
 	case "subflow":
-		// subflow rulesets operate on the child flow status
-		node.router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
-
 		config := make(map[string]map[string]string)
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
@@ -607,9 +604,8 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 			},
 		}
 
-		node.wait = &waits.FlowWait{
-			FlowUUID: flowUUID,
-		}
+		// subflow rulesets operate on the child flow status
+		node.router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
 
 	case "webhook":
 		var config legacyWebhookConfig
