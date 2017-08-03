@@ -55,7 +55,7 @@ type Flow interface {
 	UUID() FlowUUID
 	Name() string
 	Language() utils.Language
-	ExpireAfterMinutes() *int
+	ExpireAfterMinutes() int
 	Translations() FlowTranslations
 
 	Nodes() []Node

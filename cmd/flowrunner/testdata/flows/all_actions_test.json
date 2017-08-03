@@ -70,7 +70,6 @@
           "event": {
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "status": "completed",
             "type": "flow_exited"
@@ -291,7 +290,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
                     "status": "completed",
                     "type": "flow_exited"

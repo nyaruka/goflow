@@ -31,7 +31,7 @@ type legacyFlowEnvelope struct {
 type legacyMetadataEnvelope struct {
 	UUID    flows.FlowUUID `json:"uuid"`
 	Name    string         `json:"name"`
-	Expires *int           `json:"expires"`
+	Expires int            `json:"expires"`
 }
 
 type legacyRule struct {

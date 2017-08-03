@@ -12,7 +12,7 @@ type flow struct {
 	uuid               flows.FlowUUID
 	name               string
 	language           utils.Language
-	expireAfterMinutes *int
+	expireAfterMinutes int
 
 	translations flows.FlowTranslations
 
@@ -23,7 +23,7 @@ type flow struct {
 func (f *flow) UUID() flows.FlowUUID                   { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
 func (f *flow) Language() utils.Language               { return f.language }
-func (f *flow) ExpireAfterMinutes() *int               { return f.expireAfterMinutes }
+func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Translations() flows.FlowTranslations   { return f.translations }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
@@ -119,7 +119,7 @@ type flowEnvelope struct {
 	UUID               flows.FlowUUID   `json:"uuid"               validate:"required,uuid4"`
 	Name               string           `json:"name"               validate:"required"`
 	Language           utils.Language   `json:"language"`
-	ExpireAfterMinutes *int             `json:"expire_after_minutes"`
+	ExpireAfterMinutes int              `json:"expire_after_minutes"`
 	Localization       flowTranslations `json:"localization"`
 	Nodes              []*node          `json:"nodes"`
 

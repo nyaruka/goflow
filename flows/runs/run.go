@@ -165,13 +165,13 @@ func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
 
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
-	if r.Flow().ExpireAfterMinutes() != nil {
+	if r.Flow().ExpireAfterMinutes() >= 0 {
 		if from == nil {
 			now := time.Now().UTC()
 			from = &now
 		}
 
-		expiresAfterMinutes := time.Duration(*r.Flow().ExpireAfterMinutes())
+		expiresAfterMinutes := time.Duration(r.Flow().ExpireAfterMinutes())
 		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
 
 		r.expiresOn = &expiresOn
