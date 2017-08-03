@@ -209,8 +209,7 @@ func main() {
 
 	channelUUID := flows.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
-	run := session.ActiveRun()
-	for run != nil && run.Wait() != nil {
+	for session.Wait() != nil {
 		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling output: ", err)
@@ -245,8 +244,6 @@ func main() {
 			log.Print("Error resuming flow: ", err)
 			break
 		}
-
-		run = session.ActiveRun()
 	}
 
 	// print out our context

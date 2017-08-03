@@ -100,9 +100,6 @@ func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 func (r *flowRun) Context() utils.VariableResolver { return r.context }
 func (r *flowRun) Results() *flows.Results         { return r.results }
 
-func (r *flowRun) IsComplete() bool {
-	return r.status != flows.StatusActive
-}
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
 	now := time.Now().UTC()
@@ -218,7 +215,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 		flow:    flow,
 		contact: contact,
 		results: flows.NewResults(),
-		status:  flows.StatusActive,
+		status:  flows.RunStatusActive,
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
