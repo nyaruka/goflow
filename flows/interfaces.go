@@ -216,6 +216,7 @@ type Session interface {
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 
+	Trigger(Event)
 	Wait() Wait
 	SetWait(Wait)
 

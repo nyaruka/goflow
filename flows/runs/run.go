@@ -128,6 +128,8 @@ func (r *flowRun) ApplyEvent(s flows.Step, a flows.Action, e flows.Event) {
 	if !e.FromCaller() {
 		r.Session().LogEvent(s, a, e)
 	}
+
+	// fmt.Printf("⚡︎ %s in run %s of flow '%s'\n", e.Type(), r.UUID(), r.Flow().Name())
 }
 
 func (r *flowRun) AddError(step flows.Step, err error) {

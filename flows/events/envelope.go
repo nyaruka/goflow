@@ -30,8 +30,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &SendEmailEvent{}
 	case TypeError:
 		event = &ErrorEvent{}
-	case TypeFlowEntered:
-		event = &FlowEnteredEvent{}
+	case TypeFlowTriggered:
+		event = &FlowTriggeredEvent{}
 	case TypeFlowExited:
 		event = &FlowExitedEvent{}
 	case TypeFlowWait:

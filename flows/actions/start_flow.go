@@ -41,18 +41,11 @@ func (a *StartFlowAction) Validate(assets flows.Assets) error {
 
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
-	// lookup our flow
-	flow, err := run.Session().Assets().GetFlow(a.FlowUUID)
-	if err != nil {
-		run.AddError(step, err)
-		return err
-	}
-
 	// how many times have we started this flow in this session without exiting?
 	startCount := 0
 	for _, logEntry := range run.Session().Log() {
 		evt := logEntry.Event()
-		enter, isEnter := evt.(*events.FlowEnteredEvent)
+		enter, isEnter := evt.(*events.FlowTriggeredEvent)
 		if isEnter && enter.FlowUUID == a.FlowUUID {
 			startCount++
 			continue
@@ -70,28 +63,6 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 		return fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID)
 	}
 
-	// log our event
-	run.ApplyEvent(step, a, events.NewFlowEnterEvent(a.FlowUUID, run.Contact().UUID()))
-
-	// start it for our current contact
-	err = run.Session().StartFlow(flow.UUID(), run, nil)
-
-	// if we received an error, shortcut out, this session is horked
-	if err != nil {
-		return err
-	}
-
-	// same thing if our child ended as an error, session is horked
-	if run.Child().Status() == flows.StatusErrored {
-		run.ApplyEvent(step, a, events.NewFlowExitedEvent(run.Child()))
-		return fmt.Errorf("child run for flow '%s' ended in error, ending execution", a.FlowUUID)
-	}
-
-	// did we complete?
-	if run.Child().Status() != flows.StatusActive {
-		// add our exit event
-		run.ApplyEvent(step, a, events.NewFlowExitedEvent(run.Child()))
-	}
-
+	run.ApplyEvent(step, a, events.NewFlowTriggeredEvent(a.FlowUUID, run.UUID()))
 	return nil
 }
