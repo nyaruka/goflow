@@ -9,20 +9,21 @@ import (
 )
 
 type flow struct {
-	name     string
-	language utils.Language
-	uuid     flows.FlowUUID
+	uuid               flows.FlowUUID
+	name               string
+	language           utils.Language
+	expireAfterMinutes int
 
 	translations flows.FlowTranslations
 
-	nodes []flows.Node
-
+	nodes   []flows.Node
 	nodeMap map[flows.NodeUUID]flows.Node
 }
 
+func (f *flow) UUID() flows.FlowUUID                   { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
 func (f *flow) Language() utils.Language               { return f.language }
-func (f *flow) UUID() flows.FlowUUID                   { return f.uuid }
+func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Translations() flows.FlowTranslations   { return f.translations }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
@@ -115,11 +116,12 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 }
 
 type flowEnvelope struct {
-	Name         string           `json:"name"               validate:"required"`
-	Language     utils.Language   `json:"language"`
-	UUID         flows.FlowUUID   `json:"uuid"               validate:"required,uuid4"`
-	Localization flowTranslations `json:"localization"`
-	Nodes        []*node          `json:"nodes"`
+	UUID               flows.FlowUUID   `json:"uuid"               validate:"required,uuid4"`
+	Name               string           `json:"name"               validate:"required"`
+	Language           utils.Language   `json:"language"`
+	ExpireAfterMinutes int              `json:"expire_after_minutes"`
+	Localization       flowTranslations `json:"localization"`
+	Nodes              []*node          `json:"nodes"`
 
 	// only for writing out, optional
 	Metadata map[string]interface{} `json:"_ui,omitempty"`
@@ -132,9 +134,10 @@ func (f *flow) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	f.uuid = envelope.UUID
 	f.name = envelope.Name
 	f.language = envelope.Language
-	f.uuid = envelope.UUID
+	f.expireAfterMinutes = envelope.ExpireAfterMinutes
 
 	f.translations = &envelope.Localization
 
@@ -150,9 +153,10 @@ func (f *flow) UnmarshalJSON(data []byte) error {
 func (f *flow) MarshalJSON() ([]byte, error) {
 
 	var fe = flowEnvelope{}
+	fe.UUID = f.uuid
 	fe.Name = f.name
 	fe.Language = f.language
-	fe.UUID = f.uuid
+	fe.ExpireAfterMinutes = f.expireAfterMinutes
 
 	if f.translations != nil {
 		fe.Localization = *f.translations.(*flowTranslations)

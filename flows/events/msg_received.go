@@ -54,4 +54,6 @@ func (e *MsgReceivedEvent) Apply(run flows.FlowRun) {
 
 	// update this run's input
 	run.SetInput(inputs.NewMsgInput(channel, e.CreatedOn(), e.URN, e.Text, e.Attachments))
+
+	run.ResetExpiration(nil)
 }

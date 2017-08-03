@@ -52,9 +52,10 @@ type GroupUUID UUID
 func (u GroupUUID) String() string { return string(u) }
 
 type Flow interface {
+	UUID() FlowUUID
 	Name() string
 	Language() utils.Language
-	UUID() FlowUUID
+	ExpireAfterMinutes() int
 	Translations() FlowTranslations
 
 	Nodes() []Node
@@ -141,7 +142,6 @@ type Wait interface {
 	GetEndEvent(FlowRun, Step) (Event, error)
 	End(FlowRun, Step, Event) error
 	utils.Typed
-	utils.VariableResolver
 }
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
@@ -261,9 +261,11 @@ type FlowRun interface {
 	Child() FlowRunReference
 	Parent() FlowRunReference
 
+	ExpiresOn() *time.Time
+	ResetExpiration(*time.Time)
+
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
-	ExpiresOn() *time.Time
 	TimesOutOn() *time.Time
 	ExitedOn() *time.Time
 }
@@ -277,9 +279,11 @@ type FlowRunReference interface {
 	Results() *Results
 	Status() RunStatus
 
+	ExpiresOn() *time.Time
+	ResetExpiration(*time.Time)
+
 	CreatedOn() time.Time
 	ModifiedOn() time.Time
-	ExpiresOn() *time.Time
 	TimesOutOn() *time.Time
 	ExitedOn() *time.Time
 }

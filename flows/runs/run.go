@@ -163,10 +163,29 @@ func (r *flowRun) SetWebhook(rr *utils.RequestResponse) {
 func (r *flowRun) Extra() utils.JSONFragment         { return r.extra }
 func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
 
+func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
+func (r *flowRun) ResetExpiration(from *time.Time) {
+	if r.Flow().ExpireAfterMinutes() >= 0 {
+		if from == nil {
+			now := time.Now().UTC()
+			from = &now
+		}
+
+		expiresAfterMinutes := time.Duration(r.Flow().ExpireAfterMinutes())
+		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
+
+		r.expiresOn = &expiresOn
+		r.setModifiedOn(time.Now().UTC())
+	}
+
+	if r.Parent() != nil {
+		r.Parent().ResetExpiration(r.expiresOn)
+	}
+}
+
 func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }
 func (r *flowRun) ModifiedOn() time.Time       { return r.modifiedOn }
 func (r *flowRun) setModifiedOn(now time.Time) { r.modifiedOn = now }
-func (r *flowRun) ExpiresOn() *time.Time       { return r.expiresOn }
 func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
 func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
 
@@ -215,6 +234,8 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 		r.parent = newReferenceFromRun(parentRun)
 		parentRun.child = newReferenceFromRun(r)
 	}
+
+	r.ResetExpiration(nil)
 
 	return r
 }
@@ -320,10 +341,12 @@ func (r *runReference) Input() flows.Input      { return r.run.input }
 func (r *runReference) Results() *flows.Results { return r.run.results }
 func (r *runReference) Status() flows.RunStatus { return r.run.status }
 
+func (r *runReference) ExpiresOn() *time.Time           { return r.run.expiresOn }
+func (r *runReference) ResetExpiration(from *time.Time) { r.run.ResetExpiration(from) }
+
 func (r *runReference) CreatedOn() time.Time   { return r.run.createdOn }
 func (r *runReference) ModifiedOn() time.Time  { return r.run.modifiedOn }
 func (r *runReference) ExitedOn() *time.Time   { return r.run.exitedOn }
-func (r *runReference) ExpiresOn() *time.Time  { return r.run.expiresOn }
 func (r *runReference) TimesOutOn() *time.Time { return r.run.timesOutOn }
 
 func newReferenceFromRun(r *flowRun) *runReference {
