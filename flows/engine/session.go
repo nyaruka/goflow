@@ -52,9 +52,6 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 }
 
 func (s *session) ActiveRun() flows.FlowRun {
-	var active flows.FlowRun
-	mostRecent := utils.ZeroTime
-
 	for _, run := range s.runs {
 		// We are complete, therefore can't be active
 		if run.IsComplete() {
@@ -66,13 +63,9 @@ func (s *session) ActiveRun() flows.FlowRun {
 			continue
 		}
 
-		// this is more recent than our most recent flow
-		if run.ModifiedOn().After(mostRecent) {
-			active = run
-			mostRecent = run.ModifiedOn()
-		}
+		return run
 	}
-	return active
+	return nil
 }
 
 func (s *session) addRun(run flows.FlowRun) {

@@ -263,9 +263,6 @@ type FlowRun interface {
 
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
-
-	CreatedOn() time.Time
-	ModifiedOn() time.Time
 	TimesOutOn() *time.Time
 	ExitedOn() *time.Time
 }
@@ -281,9 +278,6 @@ type FlowRunReference interface {
 
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
-
-	CreatedOn() time.Time
-	ModifiedOn() time.Time
 	TimesOutOn() *time.Time
 	ExitedOn() *time.Time
 }

@@ -66,54 +66,52 @@ func (e *runEnvironment) refreshLanguagesCache() {
 }
 
 type flowRun struct {
-	uuid flows.RunUUID
+	uuid        flows.RunUUID
+	session     flows.Session
+	environment *runEnvironment
 
 	flow    flows.Flow
 	contact *flows.Contact
 	extra   utils.JSONFragment
 
-	results *flows.Results
 	context utils.VariableResolver
-	status  flows.RunStatus
-	wait    flows.Wait
 	webhook *utils.RequestResponse
 	input   flows.Input
 
 	parent flows.FlowRunReference
 	child  flows.FlowRunReference
 
-	session     flows.Session
-	environment *runEnvironment
+	results *flows.Results
+	path    []flows.Step
+	status  flows.RunStatus
+	wait    flows.Wait
 
-	path []flows.Step
-
-	createdOn  time.Time
-	modifiedOn time.Time
 	expiresOn  *time.Time
 	timesOutOn *time.Time
 	exitedOn   *time.Time
 }
 
-func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
+func (r *flowRun) UUID() flows.RunUUID            { return r.uuid }
+func (r *flowRun) Session() flows.Session         { return r.session }
+func (r *flowRun) Environment() utils.Environment { return r.environment }
+
 func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
 func (r *flowRun) Context() utils.VariableResolver { return r.context }
-func (r *flowRun) Environment() utils.Environment  { return r.environment }
 func (r *flowRun) Results() *flows.Results         { return r.results }
-func (r *flowRun) Session() flows.Session          { return r.session }
 
 func (r *flowRun) IsComplete() bool {
 	return r.status != flows.StatusActive
 }
 func (r *flowRun) setStatus(status flows.RunStatus) {
 	r.status = status
-	r.setModifiedOn(time.Now().UTC())
 }
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.setStatus(status)
-	r.exitedOn = &r.modifiedOn
+	now := time.Now().UTC()
+	r.exitedOn = &now
 }
 func (r *flowRun) Status() flows.RunStatus { return r.status }
 
@@ -134,7 +132,6 @@ func (r *flowRun) ApplyEvent(s flows.Step, a flows.Action, e flows.Event) {
 
 	if !e.FromCaller() {
 		r.Session().LogEvent(s, a, e)
-		r.setModifiedOn(time.Now().UTC())
 	}
 }
 
@@ -147,18 +144,14 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := time.Now().UTC()
 	step := &step{stepUUID: flows.StepUUID(uuid.NewV4().String()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
-	r.setModifiedOn(now)
 	return step
 }
 func (r *flowRun) ClearPath() {
 	r.path = nil
 }
 
-func (r *flowRun) Webhook() *utils.RequestResponse { return r.webhook }
-func (r *flowRun) SetWebhook(rr *utils.RequestResponse) {
-	r.webhook = rr
-	r.setModifiedOn(time.Now().UTC())
-}
+func (r *flowRun) Webhook() *utils.RequestResponse      { return r.webhook }
+func (r *flowRun) SetWebhook(rr *utils.RequestResponse) { r.webhook = rr }
 
 func (r *flowRun) Extra() utils.JSONFragment         { return r.extra }
 func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
@@ -175,7 +168,6 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
 
 		r.expiresOn = &expiresOn
-		r.setModifiedOn(time.Now().UTC())
 	}
 
 	if r.Parent() != nil {
@@ -183,11 +175,8 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 	}
 }
 
-func (r *flowRun) CreatedOn() time.Time        { return r.createdOn }
-func (r *flowRun) ModifiedOn() time.Time       { return r.modifiedOn }
-func (r *flowRun) setModifiedOn(now time.Time) { r.modifiedOn = now }
-func (r *flowRun) TimesOutOn() *time.Time      { return r.timesOutOn }
-func (r *flowRun) ExitedOn() *time.Time        { return r.exitedOn }
+func (r *flowRun) TimesOutOn() *time.Time { return r.timesOutOn }
+func (r *flowRun) ExitedOn() *time.Time   { return r.exitedOn }
 
 func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
@@ -213,17 +202,13 @@ func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []s
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
-	now := time.Now().UTC()
-
 	r := &flowRun{
-		uuid:       flows.RunUUID(uuid.NewV4().String()),
-		session:    session,
-		flow:       flow,
-		contact:    contact,
-		results:    flows.NewResults(),
-		status:     flows.StatusActive,
-		createdOn:  now,
-		modifiedOn: now,
+		uuid:    flows.RunUUID(uuid.NewV4().String()),
+		session: session,
+		flow:    flow,
+		contact: contact,
+		results: flows.NewResults(),
+		status:  flows.StatusActive,
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
@@ -263,9 +248,6 @@ func (r *flowRun) Resolve(key string) interface{} {
 
 	case "results":
 		return r.Results()
-
-	case "created_on":
-		return r.CreatedOn()
 
 	case "exited_on":
 		return r.ExitedOn()
@@ -312,9 +294,6 @@ func (r *runReference) Resolve(key string) interface{} {
 	case "results":
 		return r.Results()
 
-	case "created_on":
-		return r.CreatedOn()
-
 	case "exited_on":
 		return r.ExitedOn()
 
@@ -343,11 +322,8 @@ func (r *runReference) Status() flows.RunStatus { return r.run.status }
 
 func (r *runReference) ExpiresOn() *time.Time           { return r.run.expiresOn }
 func (r *runReference) ResetExpiration(from *time.Time) { r.run.ResetExpiration(from) }
-
-func (r *runReference) CreatedOn() time.Time   { return r.run.createdOn }
-func (r *runReference) ModifiedOn() time.Time  { return r.run.modifiedOn }
-func (r *runReference) ExitedOn() *time.Time   { return r.run.exitedOn }
-func (r *runReference) TimesOutOn() *time.Time { return r.run.timesOutOn }
+func (r *runReference) ExitedOn() *time.Time            { return r.run.exitedOn }
+func (r *runReference) TimesOutOn() *time.Time          { return r.run.timesOutOn }
 
 func newReferenceFromRun(r *flowRun) *runReference {
 	return &runReference{
@@ -378,8 +354,6 @@ type runEnvelope struct {
 	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
 	Extra   json.RawMessage        `json:"extra,omitempty"`
 
-	CreatedOn  time.Time  `json:"created_on"`
-	ModifiedOn time.Time  `json:"modified_on"`
 	ExpiresOn  *time.Time `json:"expires_on"`
 	TimesOutOn *time.Time `json:"timesout_on"`
 	ExitedOn   *time.Time `json:"exited_on"`
@@ -399,8 +373,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.session = session
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
-	r.createdOn = envelope.CreatedOn
-	r.modifiedOn = envelope.ModifiedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
@@ -492,8 +464,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.ContactUUID = r.contact.UUID()
 	re.Extra, _ = json.Marshal(r.extra)
 	re.Status = r.status
-	re.CreatedOn = r.createdOn
-	re.ModifiedOn = r.modifiedOn
 	re.ExpiresOn = r.expiresOn
 	re.TimesOutOn = r.timesOutOn
 	re.ExitedOn = r.exitedOn
