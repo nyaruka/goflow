@@ -389,11 +389,7 @@
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
 		            "name": "Expired"
 		        }
-		    ],
-		    "wait": {
-		        "type": "flow",
-		        "flow_uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534"
-		    }
+		    ]
 		},
         "expected_localization": {
             "fra": {

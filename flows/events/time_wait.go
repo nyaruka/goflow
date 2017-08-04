@@ -29,7 +29,7 @@ func NewTimeWait(timeout int) *TimeWaitEvent {
 }
 
 // Type returns the type of this event
-func (e *TimeWaitEvent) Type() string { return TypeMsgWait }
+func (e *TimeWaitEvent) Type() string { return TypeTimeWait }
 
 // Apply applies this event to the given run
 func (e *TimeWaitEvent) Apply(run flows.FlowRun) {}

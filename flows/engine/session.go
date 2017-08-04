@@ -194,7 +194,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					currentRun.AddFatalError(step, fmt.Errorf("child run '%s' ended in error, ending execution", childRun.UUID()))
+					currentRun.AddFatalError(step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
