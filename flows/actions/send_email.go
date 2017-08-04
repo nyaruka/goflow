@@ -46,25 +46,25 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	for _, email := range a.Emails {
 		email, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), email)
 		if err != nil {
-			run.AddError(step, err)
+			run.AddError(step, a, err)
 		}
 		if email == "" {
-			run.AddError(step, fmt.Errorf("send_email email evaluated to empty string, skipping"))
+			run.AddError(step, a, fmt.Errorf("send_email email evaluated to empty string, skipping"))
 			continue
 		}
 
 		subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject)
 		if err != nil {
-			run.AddError(step, err)
+			run.AddError(step, a, err)
 		}
 		if subject == "" {
-			run.AddError(step, fmt.Errorf("send_email subject evaluated to empty string, skipping"))
+			run.AddError(step, a, fmt.Errorf("send_email subject evaluated to empty string, skipping"))
 			continue
 		}
 
 		body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body)
 		if err != nil {
-			run.AddError(step, err)
+			run.AddError(step, a, err)
 		}
 		run.ApplyEvent(step, a, events.NewSendEmailEvent(email, subject, body))
 	}

@@ -194,7 +194,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					currentRun.AddFatalError(step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					currentRun.AddFatalError(step, nil, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
@@ -235,7 +235,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				callerEvents = nil
 			} else {
 				// this is a loop, we log it and stop execution
-				currentRun.AddFatalError(step, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				currentRun.AddFatalError(step, nil, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			}
 		}

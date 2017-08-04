@@ -60,7 +60,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// we don't allow recursion, you can't call back into yourself
 	if startCount > 0 {
-		run.AddFatalError(step, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
+		run.AddFatalError(step, a, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
 	} else {
 		run.ApplyEvent(step, a, events.NewFlowTriggeredEvent(a.FlowUUID, run.UUID()))
 	}

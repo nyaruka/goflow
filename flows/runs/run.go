@@ -116,27 +116,27 @@ func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) ApplyEvent(s flows.Step, a flows.Action, e flows.Event) {
-	e.Apply(r)
+func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) {
+	event.Apply(r)
 
 	fs := s.(*step)
-	fs.addEvent(e)
+	fs.addEvent(event)
 
-	if !e.FromCaller() {
-		r.Session().LogEvent(s, a, e)
+	if !event.FromCaller() {
+		r.Session().LogEvent(s, action, event)
 	}
 
-	// eventEnvelope, _ := utils.EnvelopeFromTyped(e)
+	// eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 	// eventJSON, _ := json.Marshal(eventEnvelope)
 	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
 }
 
-func (r *flowRun) AddError(step flows.Step, err error) {
-	r.ApplyEvent(step, nil, &events.ErrorEvent{Text: err.Error(), Fatal: false})
+func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
+	r.ApplyEvent(step, action, &events.ErrorEvent{Text: err.Error(), Fatal: false})
 }
 
-func (r *flowRun) AddFatalError(step flows.Step, err error) {
-	r.ApplyEvent(step, nil, &events.ErrorEvent{Text: err.Error(), Fatal: true})
+func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
+	r.ApplyEvent(step, action, &events.ErrorEvent{Text: err.Error(), Fatal: true})
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

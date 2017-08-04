@@ -46,10 +46,10 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 	if text == "" {
-		run.AddError(step, fmt.Errorf("reply text evaluated to empty string, skipping"))
+		run.AddError(step, a, fmt.Errorf("reply text evaluated to empty string, skipping"))
 		return nil
 	}
 

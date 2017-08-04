@@ -53,10 +53,10 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// substitute any variables in our url
 	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL)
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 	if url == "" {
-		run.AddError(step, fmt.Errorf("call_webhook URL evaluated to empty string, skipping"))
+		run.AddError(step, a, fmt.Errorf("call_webhook URL evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -65,14 +65,14 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if body != "" {
 		body, err = excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body)
 		if err != nil {
-			run.AddError(step, err)
+			run.AddError(step, a, err)
 		}
 	}
 
 	// build our request
 	req, err := http.NewRequest(strings.ToUpper(a.Method), url, strings.NewReader(body))
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 		return nil
 	}
 
@@ -80,7 +80,7 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	for key, value := range a.Headers {
 		headerValue, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), value)
 		if err != nil {
-			run.AddError(step, err)
+			run.AddError(step, a, err)
 		}
 
 		req.Header.Add(key, headerValue)
@@ -88,7 +88,7 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	rr, err := utils.MakeHTTPRequest(req)
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 	run.SetWebhook(rr)
 

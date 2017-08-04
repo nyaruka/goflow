@@ -267,8 +267,8 @@ type FlowRun interface {
 	SetInput(Input)
 
 	ApplyEvent(Step, Action, Event)
-	AddError(Step, error)
-	AddFatalError(Step, error)
+	AddError(Step, Action, error)
+	AddFatalError(Step, Action, error)
 
 	CreateStep(Node) Step
 	Path() []Step
