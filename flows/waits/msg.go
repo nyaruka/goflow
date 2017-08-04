@@ -28,3 +28,5 @@ func (w *MsgWait) CanResume(run flows.FlowRun, step flows.Step) bool {
 
 	return false
 }
+
+var _ flows.Wait = (*MsgWait)(nil)

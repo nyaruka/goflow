@@ -195,7 +195,7 @@ func main() {
 	session.SetContact(contact)
 
 	// and start our flow
-	err = session.StartFlow(startFlowUUID, nil, nil)
+	err = session.StartFlow(startFlowUUID, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}

@@ -34,14 +34,14 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &FlowTriggeredEvent{}
 	case TypeFlowExited:
 		event = &FlowExitedEvent{}
-	case TypeFlowWait:
-		event = &FlowWaitEvent{}
 	case TypeMsgReceived:
 		event = &MsgReceivedEvent{}
 	case TypeSendMsg:
 		event = &SendMsgEvent{}
 	case TypeMsgWait:
 		event = &MsgWaitEvent{}
+	case TypeTimeWait:
+		event = &TimeWaitEvent{}
 	case TypeRemoveFromGroup:
 		event = &RemoveFromGroupEvent{}
 	case TypeSaveFlowResult:

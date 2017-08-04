@@ -11,6 +11,20 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+const (
+	// SessionStatusActive represents a session that is still active
+	SessionStatusActive flows.SessionStatus = "active"
+
+	// SessionStatusCompleted represents a session that has run to completion
+	SessionStatusCompleted flows.SessionStatus = "completed"
+
+	// SessionStatusWaiting represents a session which is waiting for something from the caller
+	SessionStatusWaiting flows.SessionStatus = "waiting"
+
+	// SessionStatusErrored represents a session that encountered an error
+	SessionStatusErrored flows.SessionStatus = "errored"
+)
+
 // used to trigger a new flow run in the event loop
 type flowTrigger struct {
 	flow      flows.Flow
@@ -36,7 +50,7 @@ func NewSession(assets flows.Assets) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets,
-		status:     flows.SessionStatusActive,
+		status:     SessionStatusActive,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 	}
 }
@@ -71,7 +85,7 @@ func (s *session) Wait() flows.Wait            { return s.wait }
 // looks through this session's run for the one that is waiting
 func (s *session) waitingRun() flows.FlowRun {
 	for _, run := range s.runs {
-		if run.Status() == flows.RunStatusWaiting {
+		if run.Status() == runs.RunStatusWaiting {
 			return run
 		}
 	}
@@ -100,7 +114,7 @@ func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event)
 
 // Resume resumes a waiting session
 func (s *session) Resume(callerEvents []flows.Event) error {
-	if s.status != flows.SessionStatusWaiting {
+	if s.status != SessionStatusWaiting {
 		return utils.NewValidationErrors("only waiting sessions can be resumed")
 	}
 
@@ -118,8 +132,8 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 
 	// see if the wait is now satisfied and will let us resume
 	if s.wait.CanResume(waitingRun, step) {
-		s.status = flows.SessionStatusActive
-		waitingRun.SetStatus(flows.RunStatusActive)
+		s.status = SessionStatusActive
+		waitingRun.SetStatus(runs.RunStatusActive)
 
 		destination, err := s.resumeRun(waitingRun)
 		if err != nil {
@@ -177,7 +191,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 		// if we have no destination but we do have a parent, switch back to that
 		if destination == noDestination {
-			currentRun.Exit(flows.RunStatusCompleted)
+			currentRun.Exit(runs.RunStatusCompleted)
 
 			// if we have a parent run, try to resume it
 			if currentRun.Parent() != nil {
@@ -187,7 +201,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				}
 			} else {
 				// if we have no destination and no parent, then we are truly finished here
-				s.status = flows.SessionStatusCompleted
+				s.status = SessionStatusCompleted
 				return nil
 			}
 		}
@@ -210,13 +224,13 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			}
 
 			// if our current run has errored, mark the session as errored and return to caller
-			if currentRun.Status() == flows.RunStatusErrored {
+			if currentRun.Status() == runs.RunStatusErrored {
 				s.setErrored()
 				return nil
 			}
 
 			// if we hit a wait, also return to the caller
-			if s.status == flows.SessionStatusWaiting {
+			if s.status == SessionStatusWaiting {
 				return nil
 			}
 
@@ -243,7 +257,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 		for _, action := range node.Actions() {
 			err := action.Execute(run, step)
 
-			if err != nil || run.Status() == flows.RunStatusErrored {
+			if err != nil || run.Status() == runs.RunStatusErrored {
 				return noDestination, step, err
 			}
 		}
@@ -261,8 +275,8 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 		wait.Apply(run, step)
 
 		s.wait = wait
-		s.status = flows.SessionStatusWaiting
-		run.SetStatus(flows.RunStatusWaiting)
+		s.status = SessionStatusWaiting
+		run.SetStatus(runs.RunStatusWaiting)
 
 		return noDestination, step, nil
 	}
@@ -327,15 +341,16 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 	return exit.DestinationNodeUUID(), step, nil
 }
 
+// sets the session as errored
 func (s *session) setErrored() {
 	// mark any active or waiting runs as errored
 	for _, run := range s.runs {
-		if run.Status() == flows.RunStatusActive || run.Status() == flows.RunStatusWaiting {
-			run.SetStatus(flows.RunStatusErrored)
+		if run.Status() == runs.RunStatusActive || run.Status() == runs.RunStatusWaiting {
+			run.SetStatus(runs.RunStatusErrored)
 		}
 	}
 
-	s.status = flows.SessionStatusErrored
+	s.status = SessionStatusErrored
 	s.wait = nil
 	s.flowTrigger = nil
 }

@@ -54,44 +54,10 @@ func (u GroupUUID) String() string { return string(u) }
 // RunStatus represents the current status of the engine session
 type SessionStatus string
 
-const (
-	// SessionStatusActive represents a session that is still active
-	SessionStatusActive SessionStatus = "active"
-
-	// SessionStatusCompleted represents a session that has run to completion
-	SessionStatusCompleted SessionStatus = "completed"
-
-	// SessionStatusWaiting represents a session which is waiting for something from the caller
-	SessionStatusWaiting SessionStatus = "waiting"
-
-	// SessionStatusErrored represents a session that encountered an error
-	SessionStatusErrored SessionStatus = "errored"
-)
-
 func (r SessionStatus) String() string { return string(r) }
 
 // RunStatus represents the current status of the flow run
 type RunStatus string
-
-const (
-	// RunStatusActive represents a run that is still active
-	RunStatusActive RunStatus = "active"
-
-	// RunStatusCompleted represents a run that has run to completion
-	RunStatusCompleted RunStatus = "completed"
-
-	// RunStatusWaiting represents a run which is waiting for something from the caller
-	RunStatusWaiting RunStatus = "waiting"
-
-	// RunStatusErrored represents a run that encountered an error
-	RunStatusErrored RunStatus = "errored"
-
-	// RunStatusExpired represents a run that expired due to inactivity
-	RunStatusExpired RunStatus = "expired"
-
-	// RunStatusInterrupted represents a run that was interrupted by another flow
-	RunStatusInterrupted RunStatus = "interrupted"
-)
 
 func (r RunStatus) String() string { return string(r) }
 

@@ -95,7 +95,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 
-	err = session.StartFlow(flowUUID, nil, callerEvents[0])
+	err = session.StartFlow(flowUUID, callerEvents[0])
 	if err != nil {
 		return nil, nil, err
 	}
