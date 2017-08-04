@@ -1,8 +1,6 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -41,29 +39,6 @@ func (a *StartFlowAction) Validate(assets flows.Assets) error {
 
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
-	// how many times have we started this flow in this session without exiting?
-	startCount := 0
-	for _, logEntry := range run.Session().Log() {
-		evt := logEntry.Event()
-		enter, isEnter := evt.(*events.FlowTriggeredEvent)
-		if isEnter && enter.FlowUUID == a.FlowUUID {
-			startCount++
-			continue
-		}
-
-		exit, isExit := evt.(*events.FlowExitedEvent)
-		if isExit && exit.FlowUUID == a.FlowUUID {
-			startCount--
-			continue
-		}
-	}
-
-	// we don't allow recursion, you can't call back into yourself
-	if startCount > 0 {
-		run.AddFatalError(step, a, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
-	} else {
-		run.ApplyEvent(step, a, events.NewFlowTriggeredEvent(a.FlowUUID, run.UUID()))
-	}
-
+	run.ApplyEvent(step, a, events.NewFlowTriggeredEvent(a.FlowUUID, run.UUID()))
 	return nil
 }
