@@ -19,7 +19,8 @@ const TypeError string = "error"
 // @event error
 type ErrorEvent struct {
 	BaseEvent
-	Text string `json:"text" validate:"required"`
+	Text  string `json:"text" validate:"required"`
+	Fatal bool   `json:"fatal"`
 }
 
 // NewErrorEvent returns a new error event for the passed in error
@@ -34,4 +35,8 @@ func NewErrorEvent(err error) *ErrorEvent {
 func (e *ErrorEvent) Type() string { return TypeError }
 
 // Apply applies this event to the given run
-func (e *ErrorEvent) Apply(run flows.FlowRun) {}
+func (e *ErrorEvent) Apply(run flows.FlowRun) {
+	if e.Fatal {
+		run.Exit(flows.RunStatusErrored)
+	}
+}

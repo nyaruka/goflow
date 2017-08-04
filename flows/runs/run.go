@@ -12,26 +12,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-const (
-	// RunStatusActive represents a run that is still active
-	RunStatusActive flows.RunStatus = "active"
-
-	// RunStatusCompleted represents a run that has run to completion
-	RunStatusCompleted flows.RunStatus = "completed"
-
-	// RunStatusWaiting represents a run which is waiting for something from the caller
-	RunStatusWaiting flows.RunStatus = "waiting"
-
-	// RunStatusErrored represents a run that encountered an error
-	RunStatusErrored flows.RunStatus = "errored"
-
-	// RunStatusExpired represents a run that expired due to inactivity
-	RunStatusExpired flows.RunStatus = "expired"
-
-	// RunStatusInterrupted represents a run that was interrupted by another flow
-	RunStatusInterrupted flows.RunStatus = "interrupted"
-)
-
 // a run specific environment which allows values to be overridden by the contact
 type runEnvironment struct {
 	utils.Environment
@@ -146,11 +126,17 @@ func (r *flowRun) ApplyEvent(s flows.Step, a flows.Action, e flows.Event) {
 		r.Session().LogEvent(s, a, e)
 	}
 
-	// fmt.Printf("⚡︎ %s in run %s of flow '%s'\n", e.Type(), r.UUID(), r.Flow().Name())
+	// eventEnvelope, _ := utils.EnvelopeFromTyped(e)
+	// eventJSON, _ := json.Marshal(eventEnvelope)
+	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
 }
 
 func (r *flowRun) AddError(step flows.Step, err error) {
-	r.ApplyEvent(step, nil, &events.ErrorEvent{Text: err.Error()})
+	r.ApplyEvent(step, nil, &events.ErrorEvent{Text: err.Error(), Fatal: false})
+}
+
+func (r *flowRun) AddFatalError(step flows.Step, err error) {
+	r.ApplyEvent(step, nil, &events.ErrorEvent{Text: err.Error(), Fatal: true})
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -235,7 +221,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 		flow:    flow,
 		contact: contact,
 		results: flows.NewResults(),
-		status:  RunStatusActive,
+		status:  flows.RunStatusActive,
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)

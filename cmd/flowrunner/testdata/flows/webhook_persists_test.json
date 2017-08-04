@@ -155,12 +155,9 @@
               }
             ],
             "results": {},
-            "status": "active",
+            "status": "waiting",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
-            "wait": {
-              "type": "msg"
-            },
             "webhook": {
               "body": "{ \"ok\": \"true\" }",
               "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -170,7 +167,11 @@
               "url": "http://127.0.0.1:49999/?cmd=success"
             }
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "type": "msg"
+        }
       }
     },
     {
@@ -326,7 +327,11 @@
               "url": "http://127.0.0.1:49999/?cmd=success"
             }
           }
-        ]
+        ],
+        "status": "completed",
+        "wait": {
+          "type": "msg"
+        }
       }
     }
   ]

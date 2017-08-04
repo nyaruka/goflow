@@ -58,21 +58,10 @@
         {
           "action_uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "type": "flow_entered"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
-          "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "status": "completed",
-            "type": "flow_exited"
+            "parent_run_uuid": "9525af07-730e-45c9-9a50-4eb295941fa0",
+            "type": "flow_triggered"
           },
           "step_uuid": ""
         },
@@ -280,17 +269,10 @@
                     "type": "send_email"
                   },
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "type": "flow_entered"
-                  },
-                  {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "status": "completed",
-                    "type": "flow_exited"
+                    "parent_run_uuid": "9525af07-730e-45c9-9a50-4eb295941fa0",
+                    "type": "flow_triggered"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -401,7 +383,8 @@
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
-        ]
+        ],
+        "status": "completed"
       }
     }
   ]
