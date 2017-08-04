@@ -39,5 +39,8 @@ func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
 
 // Apply applies this event to the given run
 func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) {
-	run.Session().Trigger(e)
+	flow, _ := run.Session().Assets().GetFlow(e.FlowUUID)
+	parentRun, _ := run.Session().GetRun(e.ParentRunUUID)
+
+	run.Session().Trigger(flow, parentRun)
 }

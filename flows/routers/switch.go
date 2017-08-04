@@ -85,8 +85,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// try to look up our function
 		xtest := excellent.XTESTS[test]
 		if xtest == nil {
-			run.AddError(step, fmt.Errorf("Unknown test '%s', taking no exit", c.Type))
-			return flows.NoRoute, nil
+			return flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
 		}
 
 		// build our argument list

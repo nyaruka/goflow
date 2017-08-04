@@ -22,10 +22,6 @@
                 },
                 {
                     "uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
-                    "wait": {
-                        "type": "flow",
-                        "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
-                    },
                     "exits": [
                         {
                             "name": "Complete",

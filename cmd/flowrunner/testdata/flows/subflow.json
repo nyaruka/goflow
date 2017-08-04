@@ -20,10 +20,6 @@
                             "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         }
                     ],
-                    "wait": {
-                        "type": "flow",
-                        "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
-                    },
                     "router": {
                         "type": "switch",
                         "operand": "@child",

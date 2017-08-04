@@ -229,10 +229,10 @@ type Session interface {
 	SetContact(*Contact)
 
 	Status() SessionStatus
-	Trigger(Event)
+	Trigger(Flow, FlowRun)
 	Wait() Wait
 
-	StartFlow(FlowUUID, FlowRun, []Event) error
+	StartFlow(FlowUUID, []Event) error
 	Resume([]Event) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
