@@ -283,6 +283,7 @@ type FlowRun interface {
 	Child() FlowRunReference
 	Parent() FlowRunReference
 
+	CreatedOn() time.Time
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
 	TimesOutOn() *time.Time
