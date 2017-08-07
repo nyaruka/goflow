@@ -229,7 +229,7 @@ type Session interface {
 	SetContact(*Contact)
 
 	Status() SessionStatus
-	Trigger(Flow, FlowRun)
+	SetTrigger(Flow, FlowRun)
 	Wait() Wait
 
 	StartFlow(FlowUUID, []Event) error
