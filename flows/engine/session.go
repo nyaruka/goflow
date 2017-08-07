@@ -37,6 +37,7 @@ func NewSession(assets flows.Assets) flows.Session {
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets,
 		status:     flows.SessionStatusActive,
+		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 	}
 }
