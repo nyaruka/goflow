@@ -11,10 +11,10 @@ func WaitFromEnvelope(envelope *utils.TypedEnvelope) (flows.Wait, error) {
 	var wait flows.Wait
 
 	switch envelope.Type {
+	case TypeNothing:
+		wait = &NothingWait{}
 	case TypeMsg:
 		wait = &MsgWait{}
-	case TypeFlow:
-		wait = &FlowWait{}
 	default:
 		return nil, fmt.Errorf("Unknown wait type: %s", envelope.Type)
 	}

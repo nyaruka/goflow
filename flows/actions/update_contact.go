@@ -52,7 +52,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 
 	// if we received an error, log it
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 
 	// if this is either name or language, we save directly to the contact
@@ -65,7 +65,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 
 		// if this doesn't look valid, log an error and don't set our language
 		if err != nil {
-			run.AddError(step, err)
+			run.AddError(step, a, err)
 		} else {
 			run.Contact().SetLanguage(lang)
 			value = string(lang)

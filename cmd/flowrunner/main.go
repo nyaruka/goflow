@@ -117,19 +117,20 @@ func replaceMapFields(replacements map[string]interface{}, parent string, mapFie
 
 func replaceFields(input []byte) []byte {
 	replacements := map[string]interface{}{
-		"arrived_on":  "2000-01-01T00:00:00.000000000-00:00",
-		"left_on":     "2000-01-01T00:00:00.000000000-00:00",
-		"exited_on":   "2000-01-01T00:00:00.000000000-00:00",
-		"created_on":  "2000-01-01T00:00:00.000000000-00:00",
-		"modified_on": "2000-01-01T00:00:00.000000000-00:00",
-		"expires_on":  "2000-01-01T00:00:00.000000000-00:00",
-		"timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-		"event.uuid":  "",
-		"path.uuid":   "",
-		"runs.uuid":   "",
-		"step_uuid":   "",
-		"parent_uuid": "",
-		"child_uuid":  "",
+		"arrived_on":      "2000-01-01T00:00:00.000000000-00:00",
+		"left_on":         "2000-01-01T00:00:00.000000000-00:00",
+		"exited_on":       "2000-01-01T00:00:00.000000000-00:00",
+		"created_on":      "2000-01-01T00:00:00.000000000-00:00",
+		"modified_on":     "2000-01-01T00:00:00.000000000-00:00",
+		"expires_on":      "2000-01-01T00:00:00.000000000-00:00",
+		"timesout_on":     "2000-01-01T00:00:00.000000000-00:00",
+		"event.uuid":      "",
+		"path.uuid":       "",
+		"runs.uuid":       "",
+		"step_uuid":       "",
+		"parent_uuid":     "",
+		"parent_run_uuid": "",
+		"child_uuid":      "",
 	}
 
 	// unmarshal to arbitrary json
@@ -195,7 +196,7 @@ func main() {
 	session.SetContact(contact)
 
 	// and start our flow
-	err = session.StartFlow(startFlowUUID, nil, nil)
+	err = session.StartFlow(startFlowUUID, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
@@ -209,8 +210,7 @@ func main() {
 
 	channelUUID := flows.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d")
 
-	run := session.ActiveRun()
-	for run != nil && run.Wait() != nil {
+	for session.Wait() != nil {
 		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling output: ", err)
@@ -245,8 +245,6 @@ func main() {
 			log.Print("Error resuming flow: ", err)
 			break
 		}
-
-		run = session.ActiveRun()
 	}
 
 	// print out our context

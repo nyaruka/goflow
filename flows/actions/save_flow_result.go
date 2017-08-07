@@ -50,13 +50,13 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error
 
 	// log any error received
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 
 	template = run.GetText(flows.UUID(a.UUID()), "category", a.Category)
 	categoryLocalized, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 
 	if a.Category == categoryLocalized {

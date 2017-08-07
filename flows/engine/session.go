@@ -7,8 +7,15 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 )
+
+// used to trigger a new flow run in the event loop
+type flowTrigger struct {
+	flow      flows.Flow
+	parentRun flows.FlowRun
+}
 
 type session struct {
 	assets  flows.Assets
@@ -17,7 +24,11 @@ type session struct {
 
 	runs       []flows.FlowRun
 	runsByUUID map[flows.RunUUID]flows.FlowRun
+	status     flows.SessionStatus
+	wait       flows.Wait
 	log        []flows.LogEntry
+
+	flowTrigger *flowTrigger
 }
 
 // NewSession creates a new session
@@ -25,6 +36,7 @@ func NewSession(assets flows.Assets) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets,
+		status:     flows.SessionStatusActive,
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 	}
 }
@@ -35,14 +47,11 @@ func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
 func (s *session) Contact() *flows.Contact              { return s.contact }
 func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
 
-func (s *session) CreateRun(flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
-	run := runs.NewRun(s, flow, s.contact, parent)
-	s.addRun(run)
-	return run
+func (s *session) SetTrigger(flow flows.Flow, parentRun flows.FlowRun) {
+	s.flowTrigger = &flowTrigger{flow: flow, parentRun: parentRun}
 }
 
 func (s *session) Runs() []flows.FlowRun { return s.runs }
-
 func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 	run, exists := s.runsByUUID[uuid]
 	if exists {
@@ -51,26 +60,22 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 	return nil, fmt.Errorf("unable to find run with UUID: %s", uuid)
 }
 
-func (s *session) ActiveRun() flows.FlowRun {
-	for _, run := range s.runs {
-		// We are complete, therefore can't be active
-		if run.IsComplete() {
-			continue
-		}
-
-		// We have a child, and it isn't complete, we can't be active
-		if run.Child() != nil && run.Child().Status() == flows.StatusActive {
-			continue
-		}
-
-		return run
-	}
-	return nil
-}
-
 func (s *session) addRun(run flows.FlowRun) {
 	s.runs = append(s.runs, run)
 	s.runsByUUID[run.UUID()] = run
+}
+
+func (s *session) Status() flows.SessionStatus { return s.status }
+func (s *session) Wait() flows.Wait            { return s.wait }
+
+// looks through this session's run for the one that is waiting
+func (s *session) waitingRun() flows.FlowRun {
+	for _, run := range s.runs {
+		if run.Status() == flows.RunStatusWaiting {
+			return run
+		}
+	}
+	return nil
 }
 
 func (s *session) LogEvent(step flows.Step, action flows.Action, event flows.Event) {
@@ -79,89 +84,281 @@ func (s *session) LogEvent(step flows.Step, action flows.Action, event flows.Eve
 func (s *session) Log() []flows.LogEntry { return s.log }
 func (s *session) ClearLog()             { s.log = nil }
 
-// StartFlow starts the flow for the passed in contact, returning the created FlowRun
-func (s *session) StartFlow(flowUUID flows.FlowUUID, parent flows.FlowRun, callerEvents []flows.Event) error {
-	flow, err := s.assets.GetFlow(flowUUID)
+//------------------------------------------------------------------------------------------
+// Flow execution
+//------------------------------------------------------------------------------------------
+
+// StartFlow beings execution of the given flow in this session
+func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event) error {
+	flow, err := s.Assets().GetFlow(flowUUID)
 	if err != nil {
 		return err
 	}
 
-	// create our new run
-	run := s.CreateRun(flow, parent)
+	s.SetTrigger(flow, nil)
 
-	// no first node, nothing to do (valid but weird)
-	if len(flow.Nodes()) == 0 {
-		run.Exit(flows.StatusCompleted)
-		return nil
-	}
-
-	// off to the races
-	return continueRunUntilWait(run, flow.Nodes()[0].UUID(), nil, callerEvents)
+	// off to the races...
+	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
 }
 
-// ResumeFlow resumes our session from the last step
+// Resume resumes a waiting session
 func (s *session) Resume(callerEvents []flows.Event) error {
-	// find the active run
-	run := s.ActiveRun()
-	if run == nil {
-		return utils.NewValidationErrors("session: no active run to resume")
+	if s.status != flows.SessionStatusWaiting {
+		return utils.NewValidationErrors("only waiting sessions can be resumed")
 	}
 
-	return s.resumeRun(run, callerEvents)
-}
-
-func (s *session) resumeRun(run flows.FlowRun, callerEvents []flows.Event) error {
-	// no steps to resume from, nothing to do, return
-	if len(run.Path()) == 0 {
-		return nil
-	}
-
-	// grab the last step
-	step := run.Path()[len(run.Path())-1]
-
-	// and the last node
-	node := run.Flow().GetNode(step.NodeUUID())
-	if node == nil {
-		err := fmt.Errorf("cannot resume at node '%s' that no longer exists", step.NodeUUID())
-		run.AddError(step, err)
-		run.Exit(flows.StatusErrored)
-		return nil
-	}
-
-	// the first event resumes the wait
-	destination, step, err := resumeNode(run, node, step, callerEvents)
+	// figure out where (i.e. run and step) we began waiting on
+	waitingRun := s.waitingRun()
+	step, _, err := waitingRun.PathLocation()
 	if err != nil {
 		return err
 	}
 
-	err = continueRunUntilWait(run, destination, step, nil)
-	if err != nil {
-		return err
+	// apply our caller events to this step
+	for _, event := range callerEvents {
+		waitingRun.ApplyEvent(step, nil, event)
 	}
 
-	// if we ran to completion and have a parent, resume that flow
-	if run.Parent() != nil && run.IsComplete() {
-		event := events.NewFlowExitedEvent(run)
-		parentRun, err := run.Session().GetRun(run.Parent().UUID())
+	// see if the wait is now satisfied and will let us resume
+	if s.wait.CanResume(waitingRun, step) {
+		s.status = flows.SessionStatusActive
+		waitingRun.SetStatus(flows.RunStatusActive)
+
+		destination, err := s.findResumeDestination(waitingRun)
 		if err != nil {
-			run.AddError(step, err)
-			run.Exit(flows.StatusErrored)
-			return nil
+			return err
 		}
-		return s.resumeRun(parentRun, []flows.Event{event})
+
+		// off to the races again...
+		if err = s.continueUntilWait(waitingRun, destination, step, []flows.Event{}); err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
+
+// finds the next destination in a run that may have been waiting or a parent paused for a child subflow
+func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, error) {
+	step, node, err := run.PathLocation()
+	if err != nil {
+		return noDestination, err
+	}
+
+	// see if this node can now pick a destination
+	step, destination, err := s.pickNodeExit(run, node, step)
+	if err != nil {
+		return noDestination, err
+	}
+
+	return destination, nil
+}
+
+// the main flow execution loop
+func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
+	// track the node UUIDs we've visited so we can watch out for loops
+	visited := make(visitedMap)
+
+	for {
+		// if we have a flow trigger handle that first to find our destination in the new flow
+		if s.flowTrigger != nil {
+			// create a new run for it
+			flow := s.flowTrigger.flow
+			currentRun = runs.NewRun(s, s.flowTrigger.flow, s.contact, currentRun)
+			s.addRun(currentRun)
+
+			// our destination is the first node in that flow... if such a node exists
+			if len(flow.Nodes()) > 0 {
+				destination = flow.Nodes()[0].UUID()
+			} else {
+				destination = noDestination
+			}
+
+			// clear the trigger
+			s.flowTrigger = nil
+		}
+
+		// if we have no destination then we're done with the current run which may have completed, expired or errored
+		if destination == noDestination {
+			if currentRun.ExitedOn() == nil {
+				currentRun.Exit(flows.RunStatusCompleted)
+			}
+
+			// switch back our parent run
+			if currentRun.Parent() != nil {
+				childRun := currentRun
+				currentRun, err = s.GetRun(currentRun.Parent().UUID())
+
+				// as long as we didn't error, we can try to resume it
+				if childRun.Status() != flows.RunStatusErrored {
+					if destination, err = s.findResumeDestination(currentRun); err != nil {
+						return err
+					}
+				} else {
+					// if we did error then that needs to bubble back up through the run hierarchy
+					step, _, _ := currentRun.PathLocation()
+					currentRun.AddFatalError(step, nil, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+				}
+
+			} else {
+				// If we have no destination and no parent, then the whole session is done. A run error bubbles up the session status.
+				if currentRun.Status() == flows.RunStatusErrored {
+					s.status = flows.SessionStatusErrored
+				} else {
+					s.status = flows.SessionStatusCompleted
+				}
+
+				// return to caller
+				return nil
+			}
+		}
+
+		// if we now have a destination, go there
+		if destination != noDestination {
+			if !visited[destination] {
+				node := currentRun.Flow().GetNode(destination)
+				if node == nil {
+					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
+				}
+
+				step, destination, err = s.visitNode(currentRun, node, callerEvents)
+				if err != nil {
+					return err
+				}
+
+				// if we hit a wait, also return to the caller
+				if s.status == flows.SessionStatusWaiting {
+					return nil
+				}
+
+				// mark this node as visited to prevent loops
+				visited[node.UUID()] = true
+
+				// only pass our caller events to the first node as it is responsible for handling them
+				callerEvents = nil
+			} else {
+				// this is a loop, we log it and stop execution
+				currentRun.AddFatalError(step, nil, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				destination = noDestination
+			}
+		}
+	}
+}
+
+// visits the given node, creating a step in our current run path
+func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (flows.Step, flows.NodeUUID, error) {
+	step := run.CreateStep(node)
+
+	// apply any caller events
+	for _, event := range callerEvents {
+		run.ApplyEvent(step, nil, event)
+	}
+
+	// execute our node's actions
+	if node.Actions() != nil {
+		for _, action := range node.Actions() {
+			if err := action.Execute(run, step); err != nil {
+				return nil, noDestination, err
+			}
+
+			if run.Status() == flows.RunStatusErrored {
+				return step, noDestination, nil
+			}
+		}
+	}
+
+	// a start flow action may have triggered a subflow in which case we're done on this node for now
+	// and it will be resumed when the subflow finishes
+	if s.flowTrigger != nil {
+		return step, noDestination, nil
+	}
+
+	// if our node has a wait before its router, we hand back to the caller
+	wait := node.Wait()
+	if wait != nil {
+		wait.Apply(run, step)
+
+		s.wait = wait
+		s.status = flows.SessionStatusWaiting
+		run.SetStatus(flows.RunStatusWaiting)
+
+		return step, noDestination, nil
+	}
+
+	// use our node's router to determine where to go next
+	return s.pickNodeExit(run, node, step)
+}
+
+// picks the exit to use on the given node
+func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.Step, flows.NodeUUID, error) {
+	var err error
+
+	route := flows.NoRoute
+	router := node.Router()
+
+	// we have a router, have it determine our exit
+	var exitUUID flows.ExitUUID
+	if router != nil {
+		if route, err = router.PickRoute(run, node.Exits(), step); err != nil {
+			return nil, noDestination, err
+		}
+		exitUUID = route.Exit()
+	} else if len(node.Exits()) > 0 {
+		// no router, pick our first exit if we have one
+		exitUUID = node.Exits()[0].UUID()
+	}
+
+	step.Leave(exitUUID)
+
+	// look up our actual exit and localized name
+	var exit flows.Exit
+	var exitName string
+
+	if exitUUID != "" {
+		// find our exit
+		for _, e := range node.Exits() {
+			if e.UUID() == exitUUID {
+				localizedName := run.GetText(flows.UUID(exitUUID), "name", e.Name())
+				if localizedName != e.Name() {
+					exitName = localizedName
+				}
+				exit = e
+				break
+			}
+		}
+		if exit == nil {
+			return nil, noDestination, fmt.Errorf("unable to find exit with uuid '%s'", exitUUID)
+		}
+	}
+
+	// save our results if appropriate
+	if router != nil && router.ResultName() != "" {
+		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
+		run.ApplyEvent(step, nil, event)
+	}
+
+	// no exit? return no destination
+	if exit == nil {
+		return step, noDestination, nil
+	}
+
+	return step, exit.DestinationNodeUUID(), nil
+}
+
+type visitedMap map[flows.NodeUUID]bool
+
+const noDestination = flows.NodeUUID("")
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
-	Environment json.RawMessage   `json:"environment"`
-	Contact     json.RawMessage   `json:"contact"`
-	Runs        []json.RawMessage `json:"runs"`
+	Environment json.RawMessage      `json:"environment"`
+	Contact     json.RawMessage      `json:"contact"`
+	Runs        []json.RawMessage    `json:"runs"`
+	Status      flows.SessionStatus  `json:"status"`
+	Wait        *utils.TypedEnvelope `json:"wait,omitempty"`
 }
 
 // ReadSession decodes a session from the passed in JSON
@@ -170,10 +367,14 @@ func ReadSession(assets flows.Assets, data json.RawMessage) (flows.Session, erro
 	var envelope sessionEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &envelope)
-	if err != nil {
+	if err = json.Unmarshal(data, &envelope); err != nil {
 		return nil, err
 	}
+	if err = utils.Validate(s); err != nil {
+		return nil, err
+	}
+
+	s.status = envelope.Status
 
 	// read our environment
 	s.env, err = utils.ReadEnvironment(envelope.Environment)
@@ -202,14 +403,22 @@ func ReadSession(assets flows.Assets, data json.RawMessage) (flows.Session, erro
 		return nil, utils.NewValidationErrors(err.Error())
 	}
 
-	err = utils.Validate(s)
-	return s, err
+	// and our wait
+	if envelope.Wait != nil {
+		s.wait, err = waits.WaitFromEnvelope(envelope.Wait)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return s, nil
 }
 
 func (s *session) MarshalJSON() ([]byte, error) {
 	var envelope sessionEnvelope
 	var err error
 
+	envelope.Status = s.status
 	envelope.Environment, err = json.Marshal(s.env)
 	if err != nil {
 		return nil, err
@@ -224,6 +433,12 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	for i := range s.runs {
 		envelope.Runs[i], err = json.Marshal(s.runs[i])
 		if err != nil {
+			return nil, err
+		}
+	}
+
+	if s.wait != nil {
+		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
 			return nil, err
 		}
 	}

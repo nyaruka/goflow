@@ -8,7 +8,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
-	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 	uuid "github.com/satori/go.uuid"
 )
@@ -84,7 +83,6 @@ type flowRun struct {
 	results *flows.Results
 	path    []flows.Step
 	status  flows.RunStatus
-	wait    flows.Wait
 
 	expiresOn  *time.Time
 	timesOutOn *time.Time
@@ -102,41 +100,43 @@ func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 func (r *flowRun) Context() utils.VariableResolver { return r.context }
 func (r *flowRun) Results() *flows.Results         { return r.results }
 
-func (r *flowRun) IsComplete() bool {
-	return r.status != flows.StatusActive
-}
-func (r *flowRun) setStatus(status flows.RunStatus) {
-	r.status = status
-}
 func (r *flowRun) Exit(status flows.RunStatus) {
-	r.setStatus(status)
+	r.SetStatus(status)
 	now := time.Now().UTC()
 	r.exitedOn = &now
 }
 func (r *flowRun) Status() flows.RunStatus { return r.status }
+func (r *flowRun) SetStatus(status flows.RunStatus) {
+	r.status = status
+}
 
 func (r *flowRun) Parent() flows.FlowRunReference { return r.parent }
 func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
 
-func (r *flowRun) Wait() flows.Wait        { return r.wait }
-func (r *flowRun) SetWait(wait flows.Wait) { r.wait = wait }
-
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) ApplyEvent(s flows.Step, a flows.Action, e flows.Event) {
-	e.Apply(r)
+func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) {
+	event.Apply(r)
 
 	fs := s.(*step)
-	fs.addEvent(e)
+	fs.addEvent(event)
 
-	if !e.FromCaller() {
-		r.Session().LogEvent(s, a, e)
+	if !event.FromCaller() {
+		r.Session().LogEvent(s, action, event)
 	}
+
+	// eventEnvelope, _ := utils.EnvelopeFromTyped(event)
+	// eventJSON, _ := json.Marshal(eventEnvelope)
+	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
 }
 
-func (r *flowRun) AddError(step flows.Step, err error) {
-	r.ApplyEvent(step, nil, &events.ErrorEvent{Text: err.Error()})
+func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
+	r.ApplyEvent(step, action, &events.ErrorEvent{Text: err.Error(), Fatal: false})
+}
+
+func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
+	r.ApplyEvent(step, action, &events.ErrorEvent{Text: err.Error(), Fatal: true})
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -146,8 +146,21 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	r.path = append(r.path, step)
 	return step
 }
-func (r *flowRun) ClearPath() {
-	r.path = nil
+
+func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
+	if r.Path() == nil {
+		return nil, nil, fmt.Errorf("run has no location as path is empty")
+	}
+
+	step := r.Path()[len(r.Path())-1]
+
+	// check that we still have a node for this step
+	node := r.Flow().GetNode(step.NodeUUID())
+	if node == nil {
+		return nil, nil, fmt.Errorf("run is located at a flow node that no longer exists")
+	}
+
+	return step, node, nil
 }
 
 func (r *flowRun) Webhook() *utils.RequestResponse      { return r.webhook }
@@ -208,7 +221,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 		flow:    flow,
 		contact: contact,
 		results: flows.NewResults(),
-		status:  flows.StatusActive,
+		status:  flows.RunStatusActive,
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
@@ -343,14 +356,11 @@ type runEnvelope struct {
 	Path        []*step           `json:"path"`
 
 	Status flows.RunStatus `json:"status"`
-
-	Input *utils.TypedEnvelope `json:"input,omitempty"`
-	Wait  *utils.TypedEnvelope `json:"wait,omitempty"`
-
-	Parent flows.RunUUID `json:"parent_uuid,omitempty"`
-	Child  flows.RunUUID `json:"child_uuid,omitempty"`
+	Parent flows.RunUUID   `json:"parent_uuid,omitempty"`
+	Child  flows.RunUUID   `json:"child_uuid,omitempty"`
 
 	Results *flows.Results         `json:"results,omitempty"`
+	Input   *utils.TypedEnvelope   `json:"input,omitempty"`
 	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
 	Extra   json.RawMessage        `json:"extra,omitempty"`
 
@@ -395,13 +405,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	if envelope.Input != nil {
 		r.input, err = inputs.ReadInput(session, envelope.Input)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	if envelope.Wait != nil {
-		r.wait, err = waits.WaitFromEnvelope(envelope.Wait)
 		if err != nil {
 			return nil, err
 		}
@@ -478,11 +481,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	}
 
 	re.Input, err = utils.EnvelopeFromTyped(r.input)
-	if err != nil {
-		return nil, err
-	}
-
-	re.Wait, err = utils.EnvelopeFromTyped(r.wait)
 	if err != nil {
 		return nil, err
 	}

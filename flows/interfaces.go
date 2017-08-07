@@ -51,6 +51,57 @@ type GroupUUID UUID
 
 func (u GroupUUID) String() string { return string(u) }
 
+// RunStatus represents the current status of the engine session
+type SessionStatus string
+
+const (
+	// SessionStatusActive represents a session that is still active
+	SessionStatusActive SessionStatus = "active"
+
+	// SessionStatusCompleted represents a session that has run to completion
+	SessionStatusCompleted SessionStatus = "completed"
+
+	// SessionStatusWaiting represents a session which is waiting for something from the caller
+	SessionStatusWaiting SessionStatus = "waiting"
+
+	// SessionStatusErrored represents a session that encountered an error
+	SessionStatusErrored SessionStatus = "errored"
+)
+
+func (r SessionStatus) String() string { return string(r) }
+
+// RunStatus represents the current status of the flow run
+type RunStatus string
+
+const (
+	// RunStatusActive represents a run that is still active
+	RunStatusActive RunStatus = "active"
+
+	// RunStatusCompleted represents a run that has run to completion
+	RunStatusCompleted RunStatus = "completed"
+
+	// RunStatusWaiting represents a run which is waiting for something from the caller
+	RunStatusWaiting RunStatus = "waiting"
+
+	// RunStatusErrored represents a run that encountered an error
+	RunStatusErrored RunStatus = "errored"
+
+	// RunStatusExpired represents a run that expired due to inactivity
+	RunStatusExpired RunStatus = "expired"
+
+	// RunStatusInterrupted represents a run that was interrupted by another flow
+	RunStatusInterrupted RunStatus = "interrupted"
+)
+
+func (r RunStatus) String() string { return string(r) }
+
+type Assets interface {
+	Validate() error
+
+	GetChannel(ChannelUUID) (Channel, error)
+	GetFlow(FlowUUID) (Flow, error)
+}
+
 type Flow interface {
 	UUID() FlowUUID
 	Name() string
@@ -62,35 +113,6 @@ type Flow interface {
 	GetNode(uuid NodeUUID) Node
 
 	Validate(Assets) error
-}
-
-// RunStatus represents the current status of the flow run
-type RunStatus string
-
-const (
-	// StatusActive represents an active flow run that is awaiting input
-	StatusActive RunStatus = "active"
-
-	// StatusCompleted represents a flow run that has run to completion
-	StatusCompleted RunStatus = "completed"
-
-	// StatusErrored represents a flow run that encountered an error
-	StatusErrored RunStatus = "errored"
-
-	// StatusExpired represents a flow run that expired due to inactivity
-	StatusExpired RunStatus = "expired"
-
-	// StatusInterrupted represents a flow run that was interrupted by another flow
-	StatusInterrupted RunStatus = "interrupted"
-)
-
-func (r RunStatus) String() string { return string(r) }
-
-type Assets interface {
-	Validate() error
-
-	GetChannel(ChannelUUID) (Channel, error)
-	GetFlow(FlowUUID) (Flow, error)
 }
 
 type Node interface {
@@ -138,10 +160,10 @@ type Exit interface {
 }
 
 type Wait interface {
-	Begin(FlowRun, Step) error
-	GetEndEvent(FlowRun, Step) (Event, error)
-	End(FlowRun, Step, Event) error
 	utils.Typed
+
+	Apply(FlowRun, Step)
+	CanResume(FlowRun, Step) bool
 }
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
@@ -206,13 +228,14 @@ type Session interface {
 	Contact() *Contact
 	SetContact(*Contact)
 
-	StartFlow(FlowUUID, FlowRun, []Event) error
-	Resume([]Event) error
+	Status() SessionStatus
+	SetTrigger(Flow, FlowRun)
+	Wait() Wait
 
-	CreateRun(Flow, FlowRun) FlowRun
+	StartFlow(FlowUUID, []Event) error
+	Resume([]Event) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
-	ActiveRun() FlowRun
 
 	Log() []LogEntry
 	LogEvent(Step, Action, Event)
@@ -237,20 +260,19 @@ type FlowRun interface {
 	Extra() utils.JSONFragment
 
 	Status() RunStatus
+	SetStatus(RunStatus)
 	Exit(RunStatus)
-	IsComplete() bool
-
-	Wait() Wait
-	SetWait(Wait)
 
 	Input() Input
 	SetInput(Input)
 
 	ApplyEvent(Step, Action, Event)
-	AddError(Step, error)
+	AddError(Step, Action, error)
+	AddFatalError(Step, Action, error)
 
 	CreateStep(Node) Step
 	Path() []Step
+	PathLocation() (Step, Node, error)
 
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string

@@ -49,10 +49,10 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// TODO: customize this for receiving contacts instead of one global replace
 	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
 	if err != nil {
-		run.AddError(step, err)
+		run.AddError(step, a, err)
 	}
 	if text == "" {
-		run.AddError(step, fmt.Errorf("send_msg text evaluated to empty string, skipping"))
+		run.AddError(step, a, fmt.Errorf("send_msg text evaluated to empty string, skipping"))
 		return nil
 	}
 

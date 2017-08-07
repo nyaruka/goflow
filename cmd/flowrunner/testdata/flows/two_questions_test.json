@@ -100,15 +100,16 @@
               }
             ],
             "results": {},
-            "status": "active",
+            "status": "waiting",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "timeout": 600,
-              "type": "msg"
-            }
+            "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "timeout": 600,
+          "type": "msg"
+        }
       }
     },
     {
@@ -266,15 +267,16 @@
                 "value": "Blue"
               }
             },
-            "status": "active",
+            "status": "waiting",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "timeout": 600,
-              "type": "msg"
-            }
+            "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "timeout": 600,
+          "type": "msg"
+        }
       }
     },
     {
@@ -486,7 +488,12 @@
               "url": "http://127.0.0.1:49999/?cmd=success"
             }
           }
-        ]
+        ],
+        "status": "completed",
+        "wait": {
+          "timeout": 600,
+          "type": "msg"
+        }
       }
     }
   ]

@@ -90,15 +90,16 @@
               }
             ],
             "results": {},
-            "status": "active",
+            "status": "waiting",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "timeout": 600,
-              "type": "msg"
-            }
+            "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "timeout": 600,
+          "type": "msg"
+        }
       }
     },
     {
@@ -254,7 +255,12 @@
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
-        ]
+        ],
+        "status": "completed",
+        "wait": {
+          "timeout": 600,
+          "type": "msg"
+        }
       }
     }
   ]

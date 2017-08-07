@@ -95,7 +95,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 
-	err = session.StartFlow(flowUUID, nil, callerEvents[0])
+	err = session.StartFlow(flowUUID, callerEvents[0])
 	if err != nil {
 		return nil, nil, err
 	}
@@ -116,10 +116,8 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 			return nil, nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
 
-		activeRun := session.ActiveRun()
-
 		// if we aren't at a wait, that's an error
-		if activeRun == nil {
+		if session.Wait() == nil {
 			return nil, nil, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
 		}
 		err = session.Resume(resumeEvents[i])
