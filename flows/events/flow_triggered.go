@@ -42,5 +42,5 @@ func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) {
 	flow, _ := run.Session().Assets().GetFlow(e.FlowUUID)
 	parentRun, _ := run.Session().GetRun(e.ParentRunUUID)
 
-	run.Session().Trigger(flow, parentRun)
+	run.Session().SetTrigger(flow, parentRun)
 }

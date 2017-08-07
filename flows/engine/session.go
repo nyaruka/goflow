@@ -47,7 +47,7 @@ func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
 func (s *session) Contact() *flows.Contact              { return s.contact }
 func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
 
-func (s *session) Trigger(flow flows.Flow, parentRun flows.FlowRun) {
+func (s *session) SetTrigger(flow flows.Flow, parentRun flows.FlowRun) {
 	s.flowTrigger = &flowTrigger{flow: flow, parentRun: parentRun}
 }
 
@@ -90,9 +90,12 @@ func (s *session) ClearLog()             { s.log = nil }
 
 // StartFlow beings execution of the given flow in this session
 func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event) error {
-	flow, _ := s.Assets().GetFlow(flowUUID)
+	flow, err := s.Assets().GetFlow(flowUUID)
+	if err != nil {
+		return err
+	}
 
-	s.Trigger(flow, nil)
+	s.SetTrigger(flow, nil)
 
 	// off to the races...
 	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
@@ -122,7 +125,7 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 	if waitingRun.Status() == flows.RunStatusWaiting {
 		if s.wait.CanResume(waitingRun, step) {
 			waitingRun.SetStatus(flows.RunStatusActive)
-			destination, err = s.resumeRun(waitingRun)
+			destination, err = s.findResumeDestination(waitingRun)
 			if err != nil {
 				return err
 			}
@@ -142,8 +145,8 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 	return nil
 }
 
-// resumes a run that may have been waiting or a parent paused for a child subflow
-func (s *session) resumeRun(run flows.FlowRun) (flows.NodeUUID, error) {
+// finds the next destination in a run that may have been waiting or a parent paused for a child subflow
+func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, error) {
 	step, node, err := run.PathLocation()
 	if err != nil {
 		return noDestination, err
@@ -195,7 +198,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
-					if destination, err = s.resumeRun(currentRun); err != nil {
+					if destination, err = s.findResumeDestination(currentRun); err != nil {
 						return err
 					}
 				} else {
