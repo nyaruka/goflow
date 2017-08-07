@@ -40,28 +40,8 @@
           "action_uuid": "a25014c5-aaa5-47d7-9376-429f317360f1",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-            "parent_run_uuid": "",
-            "type": "flow_triggered"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": null,
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "fatal": true,
-            "text": "flow loop detected, stopping execution before entering 'e97a43c1-a15b-4566-bb6d-dfd2b18408e1'",
-            "type": "error"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": null,
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "fatal": true,
-            "text": "child run for flow '76f0a02f-3b75-4b86-9064-e9195e1b3a02' ended in error, ending execution",
+            "text": "flow loop detected, stopping execution before starting flow: 76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "type": "error"
           },
           "step_uuid": ""
@@ -144,7 +124,6 @@
             "uuid": ""
           },
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -162,20 +141,8 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-                    "parent_run_uuid": "",
-                    "type": "flow_triggered"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "fatal": true,
-                    "text": "flow loop detected, stopping execution before entering 'e97a43c1-a15b-4566-bb6d-dfd2b18408e1'",
-                    "type": "error"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "fatal": true,
-                    "text": "child run for flow '76f0a02f-3b75-4b86-9064-e9195e1b3a02' ended in error, ending execution",
+                    "text": "flow loop detected, stopping execution before starting flow: 76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                     "type": "error"
                   }
                 ],
@@ -183,18 +150,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
-            "status": "errored",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": ""
-          },
-          {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-            "parent_uuid": "",
-            "path": [],
             "results": {},
             "status": "errored",
             "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
