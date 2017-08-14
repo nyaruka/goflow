@@ -1,6 +1,8 @@
 package events
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -27,8 +29,11 @@ type RunExpiredEvent struct {
 func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
 
 // Apply applies this event to the given run
-func (e *RunExpiredEvent) Apply(run flows.FlowRun) {
-	// TODO check this is correct run
+func (e *RunExpiredEvent) Apply(run flows.FlowRun) error {
+	if run.UUID() != e.RunUUID {
+		return fmt.Errorf("only the current run can be expired")
+	}
 
 	run.Exit(flows.RunStatusExpired)
+	return nil
 }

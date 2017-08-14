@@ -39,4 +39,4 @@ func NewSaveToContact(field flows.FieldUUID, name string, value string) *SaveCon
 func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
 
 // Apply applies this event to the given run
-func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) {}
+func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) error { return nil }

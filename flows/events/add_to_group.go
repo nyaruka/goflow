@@ -36,8 +36,9 @@ func NewGroupEvent(groups []*flows.Group) *AddToGroupEvent {
 func (e *AddToGroupEvent) Type() string { return TypeAddToGroup }
 
 // Apply applies this event to the given run
-func (e *AddToGroupEvent) Apply(run flows.FlowRun) {
+func (e *AddToGroupEvent) Apply(run flows.FlowRun) error {
 	for _, group := range e.Groups {
 		run.Contact().AddGroup(group.UUID(), group.Name())
 	}
+	return nil
 }

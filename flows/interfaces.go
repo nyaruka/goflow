@@ -183,7 +183,7 @@ type Event interface {
 	FromCaller() bool
 	SetFromCaller(bool)
 
-	Apply(FlowRun)
+	Apply(FlowRun) error
 
 	utils.Typed
 }
@@ -266,7 +266,7 @@ type FlowRun interface {
 	Input() Input
 	SetInput(Input)
 
-	ApplyEvent(Step, Action, Event)
+	ApplyEvent(Step, Action, Event) error
 	AddError(Step, Action, error)
 	AddFatalError(Step, Action, error)
 

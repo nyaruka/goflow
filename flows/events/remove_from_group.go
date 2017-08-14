@@ -37,8 +37,9 @@ func NewRemoveFromGroup(groups []*flows.Group) *RemoveFromGroupEvent {
 func (e *RemoveFromGroupEvent) Type() string { return TypeRemoveFromGroup }
 
 // Apply applies this event to the given run
-func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun) {
+func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun) error {
 	for _, group := range e.Groups {
 		run.Contact().RemoveGroup(group.UUID())
 	}
+	return nil
 }

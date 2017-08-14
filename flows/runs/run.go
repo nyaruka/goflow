@@ -143,8 +143,10 @@ func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) {
-	event.Apply(r)
+func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
+	if err := event.Apply(r); err != nil {
+		return err
+	}
 
 	fs := s.(*step)
 	fs.addEvent(event)
@@ -156,6 +158,8 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 	// eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 	// eventJSON, _ := json.Marshal(eventEnvelope)
 	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
+
+	return nil
 }
 
 func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {

@@ -35,4 +35,4 @@ func NewMsgWait(timeout int) *MsgWaitEvent {
 func (e *MsgWaitEvent) Type() string { return TypeMsgWait }
 
 // Apply applies this event to the given run
-func (e *MsgWaitEvent) Apply(run flows.FlowRun) {}
+func (e *MsgWaitEvent) Apply(run flows.FlowRun) error { return nil }

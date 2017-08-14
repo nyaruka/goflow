@@ -119,7 +119,9 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 
 	// apply our caller events to this step
 	for _, event := range callerEvents {
-		waitingRun.ApplyEvent(step, nil, event)
+		if err := waitingRun.ApplyEvent(step, nil, event); err != nil {
+			return err
+		}
 	}
 
 	// events can change run status so only proceed to the wait if we're still waiting
@@ -259,7 +261,9 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 
 	// apply any caller events
 	for _, event := range callerEvents {
-		run.ApplyEvent(step, nil, event)
+		if err := run.ApplyEvent(step, nil, event); err != nil {
+			return nil, noDestination, err
+		}
 	}
 
 	// execute our node's actions

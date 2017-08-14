@@ -36,11 +36,12 @@ func NewPreferredChannel(channelUUID flows.ChannelUUID, channelName string) *Pre
 func (e *PreferredChannelEvent) Type() string { return TypePreferredChannel }
 
 // Apply applies this event to the given run
-func (e *PreferredChannelEvent) Apply(run flows.FlowRun) {
+func (e *PreferredChannelEvent) Apply(run flows.FlowRun) error {
 	channel, err := run.Session().Assets().GetChannel(e.ChannelUUID)
 	if err != nil {
-		return
+		return err
 	}
 
 	run.Contact().SetChannel(channel)
+	return nil
 }
