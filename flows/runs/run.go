@@ -84,9 +84,36 @@ type flowRun struct {
 	path    []flows.Step
 	status  flows.RunStatus
 
+	createdOn  time.Time
 	expiresOn  *time.Time
 	timesOutOn *time.Time
 	exitedOn   *time.Time
+}
+
+// NewRun initializes a new context and flow run for the passed in flow and contact
+func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
+	r := &flowRun{
+		uuid:      flows.RunUUID(uuid.NewV4().String()),
+		session:   session,
+		flow:      flow,
+		contact:   contact,
+		results:   flows.NewResults(),
+		status:    flows.RunStatusActive,
+		createdOn: time.Now().UTC(),
+	}
+
+	r.environment = newRunEnvironment(session.Environment(), r)
+	r.context = newRunContext(r)
+
+	if parent != nil {
+		parentRun := parent.(*flowRun)
+		r.parent = newReferenceFromRun(parentRun)
+		parentRun.child = newReferenceFromRun(r)
+	}
+
+	r.ResetExpiration(nil)
+
+	return r
 }
 
 func (r *flowRun) UUID() flows.RunUUID            { return r.uuid }
@@ -116,8 +143,10 @@ func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) {
-	event.Apply(r)
+func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
+	if err := event.Apply(r); err != nil {
+		return err
+	}
 
 	fs := s.(*step)
 	fs.addEvent(event)
@@ -129,6 +158,8 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 	// eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 	// eventJSON, _ := json.Marshal(eventEnvelope)
 	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
+
+	return nil
 }
 
 func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
@@ -169,6 +200,7 @@ func (r *flowRun) SetWebhook(rr *utils.RequestResponse) { r.webhook = rr }
 func (r *flowRun) Extra() utils.JSONFragment         { return r.extra }
 func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
 
+func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
 	if r.Flow().ExpireAfterMinutes() >= 0 {
@@ -213,31 +245,6 @@ func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []s
 	return native
 }
 
-// NewRun initializes a new context and flow run for the passed in flow and contact
-func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
-	r := &flowRun{
-		uuid:    flows.RunUUID(uuid.NewV4().String()),
-		session: session,
-		flow:    flow,
-		contact: contact,
-		results: flows.NewResults(),
-		status:  flows.RunStatusActive,
-	}
-
-	r.environment = newRunEnvironment(session.Environment(), r)
-	r.context = newRunContext(r)
-
-	if parent != nil {
-		parentRun := parent.(*flowRun)
-		r.parent = newReferenceFromRun(parentRun)
-		parentRun.child = newReferenceFromRun(r)
-	}
-
-	r.ResetExpiration(nil)
-
-	return r
-}
-
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
 
@@ -261,6 +268,9 @@ func (r *flowRun) Resolve(key string) interface{} {
 
 	case "results":
 		return r.Results()
+
+	case "created_on":
+		return r.CreatedOn()
 
 	case "exited_on":
 		return r.ExitedOn()
@@ -307,9 +317,11 @@ func (r *runReference) Resolve(key string) interface{} {
 	case "results":
 		return r.Results()
 
+	case "created_on":
+		return r.CreatedOn()
+
 	case "exited_on":
 		return r.ExitedOn()
-
 	}
 
 	return fmt.Errorf("No field '%s' on run reference", key)
@@ -333,6 +345,7 @@ func (r *runReference) Input() flows.Input      { return r.run.input }
 func (r *runReference) Results() *flows.Results { return r.run.results }
 func (r *runReference) Status() flows.RunStatus { return r.run.status }
 
+func (r *runReference) CreatedOn() time.Time            { return r.run.createdOn }
 func (r *runReference) ExpiresOn() *time.Time           { return r.run.expiresOn }
 func (r *runReference) ResetExpiration(from *time.Time) { r.run.ResetExpiration(from) }
 func (r *runReference) ExitedOn() *time.Time            { return r.run.exitedOn }
@@ -364,6 +377,7 @@ type runEnvelope struct {
 	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
 	Extra   json.RawMessage        `json:"extra,omitempty"`
 
+	CreatedOn  time.Time  `json:"created_on"`
 	ExpiresOn  *time.Time `json:"expires_on"`
 	TimesOutOn *time.Time `json:"timesout_on"`
 	ExitedOn   *time.Time `json:"exited_on"`
@@ -383,6 +397,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.session = session
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
+	r.createdOn = envelope.CreatedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
@@ -467,6 +482,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.ContactUUID = r.contact.UUID()
 	re.Extra, _ = json.Marshal(r.extra)
 	re.Status = r.status
+	re.CreatedOn = r.createdOn
 	re.ExpiresOn = r.expiresOn
 	re.TimesOutOn = r.timesOutOn
 	re.ExitedOn = r.exitedOn

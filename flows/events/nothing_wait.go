@@ -28,4 +28,4 @@ func NewNothingWait(timeout int) *NothingWaitEvent {
 func (e *NothingWaitEvent) Type() string { return TypeNothingWait }
 
 // Apply applies this event to the given run
-func (e *NothingWaitEvent) Apply(run flows.FlowRun) {}
+func (e *NothingWaitEvent) Apply(run flows.FlowRun) error { return nil }

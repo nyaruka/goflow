@@ -37,6 +37,7 @@ func NewSession(assets flows.Assets) flows.Session {
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets,
 		status:     flows.SessionStatusActive,
+		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 	}
 }
@@ -107,6 +108,8 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 		return utils.NewValidationErrors("only waiting sessions can be resumed")
 	}
 
+	var destination flows.NodeUUID
+
 	// figure out where (i.e. run and step) we began waiting on
 	waitingRun := s.waitingRun()
 	step, _, err := waitingRun.PathLocation()
@@ -116,23 +119,30 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 
 	// apply our caller events to this step
 	for _, event := range callerEvents {
-		waitingRun.ApplyEvent(step, nil, event)
+		if err := waitingRun.ApplyEvent(step, nil, event); err != nil {
+			return err
+		}
 	}
 
-	// see if the wait is now satisfied and will let us resume
-	if s.wait.CanResume(waitingRun, step) {
-		s.status = flows.SessionStatusActive
-		waitingRun.SetStatus(flows.RunStatusActive)
-
-		destination, err := s.findResumeDestination(waitingRun)
-		if err != nil {
-			return err
+	// events can change run status so only proceed to the wait if we're still waiting
+	if waitingRun.Status() == flows.RunStatusWaiting {
+		if s.wait.CanResume(waitingRun, step) {
+			waitingRun.SetStatus(flows.RunStatusActive)
+			destination, err = s.findResumeDestination(waitingRun)
+			if err != nil {
+				return err
+			}
+		} else {
+			// if our wait isn't satisfied, return immediately to the caller
+			return nil
 		}
+	}
 
-		// off to the races again...
-		if err = s.continueUntilWait(waitingRun, destination, step, []flows.Event{}); err != nil {
-			return err
-		}
+	s.status = flows.SessionStatusActive
+
+	// off to the races again...
+	if err = s.continueUntilWait(waitingRun, destination, step, []flows.Event{}); err != nil {
+		return err
 	}
 
 	return nil
@@ -251,7 +261,9 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 
 	// apply any caller events
 	for _, event := range callerEvents {
-		run.ApplyEvent(step, nil, event)
+		if err := run.ApplyEvent(step, nil, event); err != nil {
+			return nil, noDestination, err
+		}
 	}
 
 	// execute our node's actions
@@ -331,15 +343,15 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		}
 	}
 
+	// no exit? return no destination
+	if exit == nil {
+		return step, noDestination, nil
+	}
+
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" {
 		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
 		run.ApplyEvent(step, nil, event)
-	}
-
-	// no exit? return no destination
-	if exit == nil {
-		return step, noDestination, nil
 	}
 
 	return step, exit.DestinationNodeUUID(), nil

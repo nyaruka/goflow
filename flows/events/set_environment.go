@@ -36,9 +36,14 @@ type SetEnvironmentEvent struct {
 func (e *SetEnvironmentEvent) Type() string { return TypeSetEnvironment }
 
 // Apply applies this event to the given run
-func (e *SetEnvironmentEvent) Apply(run flows.FlowRun) {
-	tz, _ := time.LoadLocation(e.Timezone)
+func (e *SetEnvironmentEvent) Apply(run flows.FlowRun) error {
+	tz, err := time.LoadLocation(e.Timezone)
+	if err != nil {
+		return err
+	}
+
 	env := utils.NewEnvironment(e.DateFormat, e.TimeFormat, tz, e.Languages)
 
 	run.Session().SetEnvironment(env)
+	return nil
 }

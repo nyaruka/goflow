@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -39,6 +41,23 @@ func (a *StartFlowAction) Validate(assets flows.Assets) error {
 
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
+
+	// get the set of active flows in the current run stack
+	activeFlows := make(map[flows.FlowUUID]bool)
+	for r := run; ; {
+		activeFlows[r.Flow().UUID()] = true
+		if r.Parent() != nil {
+			r, _ = r.Session().GetRun(r.Parent().UUID())
+		} else {
+			break
+		}
+	}
+
+	if activeFlows[a.FlowUUID] {
+		run.AddFatalError(step, a, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
+		return nil
+	}
+
 	run.ApplyEvent(step, a, events.NewFlowTriggeredEvent(a.FlowUUID, run.UUID()))
 	return nil
 }
