@@ -213,6 +213,86 @@
     },
     {
         "legacy_ruleset": {
+            "uuid": "bd531ace-911e-4722-8e53-6730d6122fe1", 
+            "rules": [
+                {
+                    "category": {"eng": "< 10"}, 
+                    "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6", 
+                    "destination": "7d40faea-723b-473d-8999-59fb7d3c3ca2", 
+                    "label": null, 
+                    "destination_type": "A", 
+                    "test": {
+                        "test": 10, 
+                        "type": "lt"
+                    }
+                },
+                {
+                    "category": {"eng": "> 10"}, 
+                    "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa", 
+                    "destination": "c12f37e2-8e6c-4c81-ba6d-941bb3caf93f", 
+                    "label": null, 
+                    "destination_type": "A", 
+                    "test": {
+                        "test": 10, 
+                        "type": "gte"
+                    }
+                }
+            ], 
+            "ruleset_type": "wait_message", 
+            "label": "age", 
+            "operand": null, 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 5, 
+            "x": 5, 
+            "config": {}
+        },
+        "expected_node": {
+		    "uuid": "bd531ace-911e-4722-8e53-6730d6122fe1",
+		    "router": {
+		        "type": "switch",
+		        "result_name": "age",
+		        "default_exit_uuid": "",
+		        "operand": "@run.input",
+		        "cases": [
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_number_lt",
+		                "arguments": [
+		                    "10"
+		                ],
+		                "exit_uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_number_gte",
+		                "arguments": [
+		                    "10"
+		                ],
+		                "exit_uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa"
+		            }
+		        ]
+		    },
+		    "exits": [
+		        {
+		            "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
+		            "destination_node_uuid": "7d40faea-723b-473d-8999-59fb7d3c3ca2",
+		            "name": "\u003c 10"
+		        },
+		        {
+		            "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
+		            "destination_node_uuid": "c12f37e2-8e6c-4c81-ba6d-941bb3caf93f",
+		            "name": "\u003e 10"
+		        }
+		    ],
+		    "wait": {
+		        "type": "msg"
+		    }
+		},
+        "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
             "rules": [
                 {

@@ -14,6 +14,20 @@ import (
 	"github.com/satori/go.uuid"
 )
 
+// represents a decimal value which may be provided as a string or floating point value
+type decimalString string
+
+func (s *decimalString) UnmarshalJSON(data []byte) error {
+	if data[0] == '"' {
+		// data is a quoted string
+		*s = decimalString(data[1 : len(data)-1])
+	} else {
+		// data is JSON float
+		*s = decimalString(data)
+	}
+	return nil
+}
+
 // LegacyFlow imports an old-world flow so it can be exported anew
 type LegacyFlow struct {
 	flow
@@ -163,6 +177,10 @@ type localizedStringTest struct {
 
 type stringTest struct {
 	Test string `json:"test"`
+}
+
+type numericTest struct {
+	Test decimalString `json:"test"`
 }
 
 type betweenTest struct {
@@ -434,9 +452,9 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 
 	// tests against a single numeric value
 	case "eq", "gt", "gte", "lt", "lte":
-		test := stringTest{}
+		test := numericTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := excellent.MigrateTemplate(test.Test)
+		migratedTest, err := excellent.MigrateTemplate(string(test.Test))
 		if err != nil {
 			return routers.Case{}, err
 		}
