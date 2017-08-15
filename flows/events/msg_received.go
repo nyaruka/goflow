@@ -50,9 +50,14 @@ func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 
 // Apply applies this event to the given run
 func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
-	channel, err := run.Session().Assets().GetChannel(e.ChannelUUID)
-	if err != nil {
-		return err
+	var channel flows.Channel
+	var err error
+
+	if e.ChannelUUID != "" {
+		channel, err = run.Session().Assets().GetChannel(e.ChannelUUID)
+		if err != nil {
+			return err
+		}
 	}
 
 	// update this run's input

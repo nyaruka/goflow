@@ -50,7 +50,7 @@ func (a *assets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 	if exists {
 		return channel, nil
 	}
-	return nil, fmt.Errorf("unable to find channel with UUID: %s %d", uuid)
+	return nil, fmt.Errorf("unable to find channel with UUID: %s", uuid)
 }
 
 //------------------------------------------------------------------------------------------
