@@ -42,7 +42,7 @@ func (a *StartFlowAction) Validate(assets flows.Assets) error {
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 
-	if run.Session().Stack().HasFlow(a.FlowUUID) {
+	if run.Session().FlowOnStack(a.FlowUUID) {
 		run.AddFatalError(step, a, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))
 		return nil
 	}

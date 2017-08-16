@@ -46,12 +46,12 @@ func NewSession(assets flows.Assets) flows.Session {
 	}
 }
 
-func (s *session) Assets() flows.Assets                 { return s.assets }
-func (s *session) Environment() utils.Environment       { return s.env }
-func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
-func (s *session) Contact() *flows.Contact              { return s.contact }
-func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
-func (s *session) Stack() flows.FlowStack               { return s.flowStack }
+func (s *session) Assets() flows.Assets                     { return s.assets }
+func (s *session) Environment() utils.Environment           { return s.env }
+func (s *session) SetEnvironment(env utils.Environment)     { s.env = env }
+func (s *session) Contact() *flows.Contact                  { return s.contact }
+func (s *session) SetContact(contact *flows.Contact)        { s.contact = contact }
+func (s *session) FlowOnStack(flowUUID flows.FlowUUID) bool { return s.flowStack.hasFlow(flowUUID) }
 
 func (s *session) SetTrigger(flow flows.Flow, parentRun flows.FlowRun) {
 	s.flowTrigger = &flowTrigger{flow: flow, parentRun: parentRun}
@@ -232,7 +232,11 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 		// if we now have a destination, go there
 		if destination != noDestination {
-			if !s.flowStack.hasVisited(destination) {
+			if s.flowStack.hasVisited(destination) {
+				// this is a loop, we log it and stop execution
+				currentRun.AddFatalError(step, nil, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				destination = noDestination
+			} else {
 				node := currentRun.Flow().GetNode(destination)
 				if node == nil {
 					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
@@ -253,10 +257,6 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 				// only pass our caller events to the first node as it is responsible for handling them
 				callerEvents = nil
-			} else {
-				// this is a loop, we log it and stop execution
-				currentRun.AddFatalError(step, nil, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
-				destination = noDestination
 			}
 		}
 	}

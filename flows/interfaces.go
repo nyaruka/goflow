@@ -218,10 +218,6 @@ type LogEntry interface {
 	Event() Event
 }
 
-type FlowStack interface {
-	HasFlow(FlowUUID) bool
-}
-
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Assets() Assets
@@ -235,7 +231,7 @@ type Session interface {
 	Status() SessionStatus
 	SetTrigger(Flow, FlowRun)
 	Wait() Wait
-	Stack() FlowStack
+	FlowOnStack(FlowUUID) bool
 
 	StartFlow(FlowUUID, []Event) error
 	Resume([]Event) error
