@@ -140,6 +140,25 @@ func (r *flowRun) SetStatus(status flows.RunStatus) {
 func (r *flowRun) Parent() flows.FlowRunReference { return r.parent }
 func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
 
+func (r *flowRun) Ancestors() []flows.FlowRunReference {
+	ancestors := make([]flows.FlowRunReference, 0)
+	if r.parent != nil {
+		runRef := r.parent.(*runReference)
+		ancestors = append(ancestors, runRef)
+
+		for {
+			if runRef.run.parent != nil {
+				runRef := runRef.run.parent.(*runReference)
+				ancestors = append(ancestors, runRef)
+			} else {
+				break
+			}
+		}
+	}
+
+	return ancestors
+}
+
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 

@@ -231,6 +231,7 @@ type Session interface {
 	Status() SessionStatus
 	SetTrigger(Flow, FlowRun)
 	Wait() Wait
+	FlowOnStack(FlowUUID) bool
 
 	StartFlow(FlowUUID, []Event) error
 	Resume([]Event) error
@@ -282,6 +283,7 @@ type FlowRun interface {
 
 	Child() FlowRunReference
 	Parent() FlowRunReference
+	Ancestors() []FlowRunReference
 
 	CreatedOn() time.Time
 	ExpiresOn() *time.Time
