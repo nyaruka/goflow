@@ -18,17 +18,20 @@ type flowTrigger struct {
 }
 
 type session struct {
-	assets  flows.Assets
+	assets flows.Assets
+
+	// state which is maintained between engine calls
 	env     utils.Environment
 	contact *flows.Contact
+	runs    []flows.FlowRun
+	status  flows.SessionStatus
+	wait    flows.Wait
+	log     []flows.LogEntry
 
-	runs       []flows.FlowRun
-	runsByUUID map[flows.RunUUID]flows.FlowRun
-	status     flows.SessionStatus
-	wait       flows.Wait
-	log        []flows.LogEntry
-
+	// state which is temporary to each call
+	runsByUUID  map[flows.RunUUID]flows.FlowRun
 	flowTrigger *flowTrigger
+	flowStack   *flowStack
 }
 
 // NewSession creates a new session
@@ -39,6 +42,7 @@ func NewSession(assets flows.Assets) flows.Session {
 		status:     flows.SessionStatusActive,
 		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
+		flowStack:  newFlowStack(),
 	}
 }
 
@@ -47,6 +51,7 @@ func (s *session) Environment() utils.Environment       { return s.env }
 func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
 func (s *session) Contact() *flows.Contact              { return s.contact }
 func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
+func (s *session) Stack() flows.FlowStack               { return s.flowStack }
 
 func (s *session) SetTrigger(flow flows.Flow, parentRun flows.FlowRun) {
 	s.flowTrigger = &flowTrigger{flow: flow, parentRun: parentRun}
@@ -117,6 +122,9 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 		return err
 	}
 
+	// set up our flow stack based on the current run hierarchy
+	s.flowStack = flowStackFromRun(waitingRun)
+
 	// apply our caller events to this step
 	for _, event := range callerEvents {
 		if err := waitingRun.ApplyEvent(step, nil, event); err != nil {
@@ -166,9 +174,6 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 
 // the main flow execution loop
 func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
-	// track the node UUIDs we've visited so we can watch out for loops
-	visited := make(visitedMap)
-
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.flowTrigger != nil {
@@ -176,6 +181,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			flow := s.flowTrigger.flow
 			currentRun = runs.NewRun(s, s.flowTrigger.flow, s.contact, currentRun)
 			s.addRun(currentRun)
+			s.flowStack.push(flow)
 
 			// our destination is the first node in that flow... if such a node exists
 			if len(flow.Nodes()) > 0 {
@@ -198,6 +204,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			if currentRun.Parent() != nil {
 				childRun := currentRun
 				currentRun, err = s.GetRun(currentRun.Parent().UUID())
+				s.flowStack.pop()
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
@@ -225,7 +232,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 		// if we now have a destination, go there
 		if destination != noDestination {
-			if !visited[destination] {
+			if !s.flowStack.hasVisited(destination) {
 				node := currentRun.Flow().GetNode(destination)
 				if node == nil {
 					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
@@ -242,7 +249,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				}
 
 				// mark this node as visited to prevent loops
-				visited[node.UUID()] = true
+				s.flowStack.visit(node.UUID())
 
 				// only pass our caller events to the first node as it is responsible for handling them
 				callerEvents = nil
@@ -356,8 +363,6 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	return step, exit.DestinationNodeUUID(), nil
 }
-
-type visitedMap map[flows.NodeUUID]bool
 
 const noDestination = flows.NodeUUID("")
 
