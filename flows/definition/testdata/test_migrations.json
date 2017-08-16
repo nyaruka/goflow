@@ -350,7 +350,7 @@
         },
         "expected_case": {
             "uuid": "������������������������������������",
-            "type": "has_webhook_status",
+            "type": "has_legacy_webhook_status",
             "arguments": ["success"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -363,8 +363,8 @@
         },
         "expected_case": {
             "uuid": "������������������������������������",
-            "type": "has_webhook_status",
-            "arguments": ["response_error"],
+            "type": "has_legacy_webhook_status",
+            "arguments": ["failure"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
