@@ -201,8 +201,8 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 // HasWebhookStatus returns whether the passed in webhook response, `response`, has the passed in status
 //
 // Valid webhook statuses are "success", "connection_error" for a connection error, and "response_error" for
-// a non-2xx response code. Additional this test can be called with "error" which will match either
-// "connection_error" or "response_error".
+// a non-2xx response code. Additionally this test can be called with "error" which will match either the
+// "connection_error" or "response_error" statuses.
 //
 //  @(has_webhook_status(webhook, "success")) -> true
 //  @(has_webhook_status(webhook, "connection_error")) -> false
