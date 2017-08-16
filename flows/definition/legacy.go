@@ -505,7 +505,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		if test.Status == "success" {
 			arguments = []string{"success"}
 		} else {
-			arguments = []string{"response_error"}
+			arguments = []string{"error"}
 		}
 
 	default:

@@ -364,7 +364,7 @@
         "expected_case": {
             "uuid": "������������������������������������",
             "type": "has_webhook_status",
-            "arguments": ["response_error"],
+            "arguments": ["error"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}

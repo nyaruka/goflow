@@ -363,7 +363,7 @@
 		            {
 		                "uuid": "������������������������������������",
 		                "type": "has_webhook_status",
-		                "arguments": ["response_error"],
+		                "arguments": ["error"],
 		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
 		            }
 		        ]
