@@ -503,9 +503,9 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			arguments = []string{"success"}
+			arguments = []string{string(utils.RRSuccess)}
 		} else {
-			arguments = []string{"response_error"}
+			arguments = []string{string(utils.RRResponseError)}
 		}
 
 	default:
@@ -645,6 +645,14 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 				Headers:    migratedHeaders,
 			},
 		}
+
+		// add additional case for "connection_error" and map to same exit as "response_error"
+		cases = append(cases, routers.Case{
+			UUID:      flows.UUID(uuid.NewV4().String()),
+			Type:      "has_webhook_status",
+			Arguments: []string{"connection_error"},
+			ExitUUID:  exits[1].UUID(),
+		})
 
 		// subflow rulesets operate on the child flow status
 		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
