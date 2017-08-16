@@ -148,7 +148,7 @@ func (r *flowRun) Ancestors() []flows.FlowRunReference {
 
 		for {
 			if runRef.run.parent != nil {
-				runRef := runRef.run.parent.(*runReference)
+				runRef = runRef.run.parent.(*runReference)
 				ancestors = append(ancestors, runRef)
 			} else {
 				break
