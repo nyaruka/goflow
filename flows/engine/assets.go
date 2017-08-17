@@ -31,7 +31,7 @@ func NewAssets(flowList []flows.Flow, channelList []flows.Channel) flows.Assets 
 func (a *assets) Validate() error {
 	for _, flow := range a.flows {
 		if err := flow.Validate(a); err != nil {
-			return err
+			return utils.NewValidationErrors(err.Error())
 		}
 	}
 	return nil

@@ -72,7 +72,7 @@ func (f *flow) Validate(assets flows.Assets) error {
 		// make sure all our exits have valid destinations
 		for _, exit := range node.Exits() {
 			if exit.DestinationNodeUUID() != "" && f.nodeMap[exit.DestinationNodeUUID()] == nil {
-				return fmt.Errorf("invalid destination node uuid:'%s'", exit.DestinationNodeUUID())
+				return fmt.Errorf("exit '%s' on node '%s' has invalid destination '%s'", exit.UUID(), node.UUID(), exit.DestinationNodeUUID())
 			}
 		}
 	}
