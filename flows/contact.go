@@ -78,7 +78,7 @@ func (c *Contact) Resolve(key string) interface{} {
 		return c.urns
 
 	case "language":
-		return c.language
+		return string(c.language)
 
 	case "groups":
 		return GroupList(c.groups)

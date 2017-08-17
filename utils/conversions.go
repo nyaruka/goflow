@@ -259,7 +259,7 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
-	return EmptyJSONFragment, fmt.Errorf("ToString unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+	return EmptyJSONFragment, fmt.Errorf("ToJSON unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
 }
 
 // ToString tries to turn the passed in interface to a string
