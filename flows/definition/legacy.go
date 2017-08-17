@@ -194,13 +194,6 @@ type groupTest struct {
 
 type localizations map[utils.Language]flows.Action
 
-// ReadLegacyFlows reads in legacy formatted flows
-func ReadLegacyFlows(data json.RawMessage) ([]LegacyFlow, error) {
-	var flows []LegacyFlow
-	err := json.Unmarshal(data, &flows)
-	return flows, err
-}
-
 type translationMap map[utils.Language]string
 
 func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
@@ -388,10 +381,9 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":
-		fieldUUID, ok := fieldMap[a.Value]
+		fieldUUID, ok := fieldMap[a.Field]
 		if !ok {
-			fieldUUID = flows.FieldUUID(uuid.NewV4().String())
-			fieldMap[a.Value] = fieldUUID
+			return nil, fmt.Errorf("no mapping provided for field with key '%s'", a.Field)
 		}
 
 		migratedValue, _ := excellent.MigrateTemplate(a.Value)
@@ -705,18 +697,30 @@ func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[strin
 
 }
 
-// UnmarshalJSON imports our JSON into a LegacyFlow object
-func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
+// ReadLegacyFlows reads in legacy formatted flows
+func ReadLegacyFlows(data []json.RawMessage, fieldMap map[string]flows.FieldUUID) ([]*LegacyFlow, error) {
+	var err error
+	flows := make([]*LegacyFlow, len(data))
+	for f := range data {
+		flows[f], err = ReadLegacyFlow(data[f], fieldMap)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return flows, nil
+}
+
+func ReadLegacyFlow(data json.RawMessage, fieldMap map[string]flows.FieldUUID) (*LegacyFlow, error) {
 	var envelope legacyFlowEnvelope
 	var err error
 
 	err = json.Unmarshal(data, &envelope)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fieldMap := make(map[string]flows.FieldUUID)
-
+	f := &LegacyFlow{}
 	f.uuid = envelope.Metadata.UUID
 	f.name = envelope.Metadata.Name
 	f.language = envelope.BaseLanguage
@@ -733,7 +737,7 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	for i := range envelope.RuleSets {
 		node, err := createRuleNode(f.language, envelope.RuleSets[i], translations)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		f.nodes[len(envelope.ActionSets)+i] = node
 	}
@@ -750,7 +754,7 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	f.translations = translations
 	f.envelope = envelope
 
-	return err
+	return f, err
 }
 
 // MarshalJSON sends turns our legacy flow into bytes
