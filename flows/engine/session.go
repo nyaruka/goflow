@@ -209,7 +209,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
-						return err
+						currentRun.AddFatalError(step, nil, fmt.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy

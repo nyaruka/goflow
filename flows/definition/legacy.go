@@ -641,14 +641,16 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
+	case "group":
+		// in legacy flows these rulesets have their operand as @step.value but it's not used
+		node.router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
+
 	case "wait_message":
 		// TODO: add in timeout
 		node.wait = &waits.MsgWait{}
 
 		fallthrough
 	case "flow_field":
-		fallthrough
-	case "group":
 		fallthrough
 	case "contact_field":
 		fallthrough

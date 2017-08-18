@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -37,5 +38,5 @@ func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	// pick a random exit
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	exitN := random.Intn(len(exits))
-	return flows.NewRoute(exits[exitN].UUID(), string(exitN)), nil
+	return flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
 }
