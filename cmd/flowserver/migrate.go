@@ -7,14 +7,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/nyaruka/goflow/flows"
-
 	"github.com/nyaruka/goflow/flows/definition"
 )
 
 type migrateRequest struct {
-	Flows        []json.RawMessage          `json:"flows"`
-	FieldMapping map[string]flows.FieldUUID `json:"field_mapping"`
+	Flows []json.RawMessage `json:"flows"`
 }
 
 func handleMigrate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -36,7 +33,7 @@ func handleMigrate(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 		return nil, fmt.Errorf("missing flows element")
 	}
 
-	flows, err := definition.ReadLegacyFlows(migrate.Flows, migrate.FieldMapping)
+	flows, err := definition.ReadLegacyFlows(migrate.Flows)
 	if err != nil {
 		return nil, err
 	}
