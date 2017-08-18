@@ -674,18 +674,17 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	return node, nil
 }
 
-func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) *node {
+func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (*node, error) {
 	node := &node{}
 
 	node.uuid = a.UUID
 	node.actions = make([]flows.Action, len(a.Actions))
 	for i := range a.Actions {
 		action, err := createAction(lang, a.Actions[i], fieldMap, translations)
-		if err == nil {
-			node.actions[i] = action
-		} else {
-			fmt.Println(err)
+		if err != nil {
+			return nil, err
 		}
+		node.actions[i] = action
 	}
 
 	node.exits = make([]flows.Exit, 1)
@@ -693,7 +692,7 @@ func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[strin
 		destination: a.Destination,
 		uuid:        flows.ExitUUID(uuid.NewV4().String()),
 	}
-	return node
+	return node, nil
 
 }
 
@@ -730,7 +729,10 @@ func ReadLegacyFlow(data json.RawMessage, fieldMap map[string]flows.FieldUUID) (
 
 	f.nodes = make([]flows.Node, len(envelope.ActionSets)+len(envelope.RuleSets))
 	for i := range envelope.ActionSets {
-		node := createActionNode(f.language, envelope.ActionSets[i], fieldMap, translations)
+		node, err := createActionNode(f.language, envelope.ActionSets[i], fieldMap, translations)
+		if err != nil {
+			return nil, err
+		}
 		f.nodes[i] = node
 	}
 
