@@ -133,7 +133,7 @@ func TestActionMigration(t *testing.T) {
 
 	for _, test := range tests {
 		legacyFlowsJSON := fmt.Sprintf(legacyActionHolderDef, string(test.LegacyAction))
-		legacyFlows, err := ReadLegacyFlows(json.RawMessage(legacyFlowsJSON))
+		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -149,7 +149,7 @@ func TestActionMigration(t *testing.T) {
 			t.Errorf("Got action:\n%s\n\nwhen expecting:\n%s\n\n", migratedActionJSON, expectedActionJSON)
 		}
 
-		checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization, migratedActionRaw)
+		checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization, migratedActionRaw)
 	}
 }
 
@@ -167,7 +167,7 @@ func TestTestMigration(t *testing.T) {
 
 	for _, test := range tests {
 		legacyFlowsJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
-		legacyFlows, err := ReadLegacyFlows(json.RawMessage(legacyFlowsJSON))
+		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -187,7 +187,7 @@ func TestTestMigration(t *testing.T) {
 				t.Errorf("Got case:\n%s\n\nwhen expecting:\n%s\n\n", migratedCaseJSON, expectedCaseJSON)
 			}
 
-			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization, migratedCaseRaw)
+			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization, migratedCaseRaw)
 		}
 	}
 }
@@ -206,7 +206,7 @@ func TestRuleSetMigration(t *testing.T) {
 
 	for _, test := range tests {
 		legacyFlowsJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
-		legacyFlows, err := ReadLegacyFlows(json.RawMessage(legacyFlowsJSON))
+		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -233,9 +233,15 @@ func TestRuleSetMigration(t *testing.T) {
 				t.Errorf("Got node:\n%s\n\nwhen expecting:\n%s\n\n", migratedNodeJSON, expectedNodeJSON)
 			}
 
-			checkFlowLocalization(t, &migratedFlow, test.ExpectedLocalization, migratedNodeRaw)
+			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization, migratedNodeRaw)
 		}
 	}
+}
+
+func readLegacyTestFlows(flowsJSON string) ([]*LegacyFlow, error) {
+	var legacyFlows []json.RawMessage
+	json.Unmarshal(json.RawMessage(flowsJSON), &legacyFlows)
+	return ReadLegacyFlows(legacyFlows)
 }
 
 func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
