@@ -10,7 +10,7 @@ const TypeNothingWait string = "nothing_wait"
 // ```
 //   {
 //     "type": "nothing_wait",
-//     "created_on": "2006-01-02T15:04:05Z"
+//     "created_on": "2006-01-02T15:04:05.234532Z"
 //   }
 // ```
 //
@@ -20,7 +20,7 @@ type NothingWaitEvent struct {
 }
 
 // NewNothingWait returns a new nothing wait
-func NewNothingWait(timeout int) *NothingWaitEvent {
+func NewNothingWait() *NothingWaitEvent {
 	return &NothingWaitEvent{BaseEvent: NewBaseEvent()}
 }
 

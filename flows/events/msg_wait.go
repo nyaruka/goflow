@@ -1,6 +1,10 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"time"
+
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeMsgWait is the type of our msg wait event
 const TypeMsgWait string = "msg_wait"
@@ -19,15 +23,15 @@ const TypeMsgWait string = "msg_wait"
 //
 // @event msg_wait
 type MsgWaitEvent struct {
-	Timeout int `json:"timeout"`
 	BaseEvent
+	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
 }
 
 // NewMsgWait returns a new msg wait with the passed in timeout
-func NewMsgWait(timeout int) *MsgWaitEvent {
+func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
 	return &MsgWaitEvent{
 		BaseEvent: NewBaseEvent(),
-		Timeout:   timeout,
+		TimeoutOn: timeoutOn,
 	}
 }
 

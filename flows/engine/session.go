@@ -295,11 +295,10 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	// if our node has a wait before its router, we hand back to the caller
 	wait := node.Wait()
 	if wait != nil {
-		wait.Apply(run, step)
+		wait.Begin(run, step)
 
 		s.wait = wait
 		s.status = flows.SessionStatusWaiting
-		run.SetStatus(flows.RunStatusWaiting)
 
 		return step, noDestination, nil
 	}
@@ -356,7 +355,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 	}
 
 	// save our results if appropriate
-	if router != nil && router.ResultName() != "" {
+	if router != nil && router.ResultName() != "" && route.Match() != "" {
 		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
 		run.ApplyEvent(step, nil, event)
 	}

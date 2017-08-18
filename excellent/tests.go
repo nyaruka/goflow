@@ -33,6 +33,7 @@ var XTESTS = map[string]XFunction{
 	"has_run_status":            HasRunStatus,
 	"has_webhook_status":        HasWebhookStatus,
 	"has_legacy_webhook_status": HasLegacyWebhookStatus,
+	"has_wait_timed_out":        HasWaitTimedOut,
 
 	"has_phrase":      HasPhrase,
 	"has_only_phrase": HasOnlyPhrase,
@@ -259,6 +260,29 @@ func HasLegacyWebhookStatus(env utils.Environment, args ...interface{}) interfac
 
 	if (status == "success" && rr.Status() == utils.RRSuccess) || (status == "failure" && (rr.Status() == utils.RRResponseError || rr.Status() == utils.RRConnectionError)) {
 		return XTestResult{true, rr.Body()}
+	}
+
+	return XFalseResult
+}
+
+// HasWaitTimedOut returns whether the last wait timed out.
+//
+//  @(has_wait_timed_out(run)) -> false
+//
+// @test has_wait_timed_out(run)
+func HasWaitTimedOut(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("HAS_WAIT_TIMED_OUT takes exactly one argument, got %d", len(args))
+	}
+
+	// first parameter needs to be a flow run
+	run, isRun := args[0].(flows.FlowRun)
+	if !isRun {
+		return fmt.Errorf("HAS_WAIT_TIMED_OUT must be called with a run as first argument")
+	}
+
+	if run.Session().Wait() != nil && run.Session().Wait().HasTimedOut() {
+		return XTestResult{true, nil}
 	}
 
 	return XFalseResult

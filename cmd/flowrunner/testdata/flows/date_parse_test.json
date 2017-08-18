@@ -30,7 +30,7 @@
           "action_uuid": null,
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "timeout": 600,
+            "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "msg_wait"
           },
           "step_uuid": ""
@@ -82,7 +82,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout": 600,
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                     "type": "msg_wait"
                   }
                 ],
@@ -92,13 +92,12 @@
             ],
             "results": {},
             "status": "waiting",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
         ],
         "status": "waiting",
         "wait": {
-          "timeout": 600,
+          "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
           "type": "msg"
         }
       }
@@ -197,7 +196,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout": 600,
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                     "type": "msg_wait"
                   },
                   {
@@ -254,13 +253,12 @@
               }
             },
             "status": "completed",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
         ],
         "status": "completed",
         "wait": {
-          "timeout": 600,
+          "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
           "type": "msg"
         }
       }
