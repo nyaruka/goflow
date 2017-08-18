@@ -275,7 +275,7 @@ func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// is the first argument a contact?
-	contact, isContact := args[0].(flows.Contact)
+	contact, isContact := args[0].(*flows.Contact)
 	if !isContact {
 		return fmt.Errorf("HAS_GROUP must have a contact as its first argument")
 	}
