@@ -137,9 +137,10 @@ type legacyAction struct {
 	Variables []legacyVariable         `json:"variables"`
 
 	// save actions
-	Field string `json:"field"`
-	Value string `json:"value"`
-	Label string `json:"label"`
+	Field     string          `json:"field"`
+	FieldUUID flows.FieldUUID `json:"field_uuid"`
+	Value     string          `json:"value"`
+	Label     string          `json:"label"`
 
 	// set language
 	Language utils.Language `json:"lang"`
@@ -193,13 +194,6 @@ type groupTest struct {
 }
 
 type localizations map[utils.Language]flows.Action
-
-// ReadLegacyFlows reads in legacy formatted flows
-func ReadLegacyFlows(data json.RawMessage) ([]LegacyFlow, error) {
-	var flows []LegacyFlow
-	err := json.Unmarshal(data, &flows)
-	return flows, err
-}
 
 type translationMap map[utils.Language]string
 
@@ -255,7 +249,7 @@ var testTypeMappings = map[string]string{
 	"webhook_status":       "has_legacy_webhook_status",
 }
 
-func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) (flows.Action, error) {
+func createAction(baseLanguage utils.Language, a legacyAction, translations *flowTranslations) (flows.Action, error) {
 
 	if a.UUID == "" {
 		a.UUID = flows.ActionUUID(uuid.NewV4().String())
@@ -388,12 +382,6 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":
-		fieldUUID, ok := fieldMap[a.Value]
-		if !ok {
-			fieldUUID = flows.FieldUUID(uuid.NewV4().String())
-			fieldMap[a.Value] = fieldUUID
-		}
-
 		migratedValue, _ := excellent.MigrateTemplate(a.Value)
 
 		// flows now have different action for name changing
@@ -413,7 +401,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, fieldMap map[stri
 		return &actions.SaveContactField{
 			FieldName:  a.Label,
 			Value:      migratedValue,
-			FieldUUID:  fieldUUID,
+			FieldUUID:  a.FieldUUID,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":
@@ -682,18 +670,17 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	return node, nil
 }
 
-func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[string]flows.FieldUUID, translations *flowTranslations) *node {
+func createActionNode(lang utils.Language, a legacyActionSet, translations *flowTranslations) (*node, error) {
 	node := &node{}
 
 	node.uuid = a.UUID
 	node.actions = make([]flows.Action, len(a.Actions))
 	for i := range a.Actions {
-		action, err := createAction(lang, a.Actions[i], fieldMap, translations)
-		if err == nil {
-			node.actions[i] = action
-		} else {
-			fmt.Println(err)
+		action, err := createAction(lang, a.Actions[i], translations)
+		if err != nil {
+			return nil, err
 		}
+		node.actions[i] = action
 	}
 
 	node.exits = make([]flows.Exit, 1)
@@ -701,22 +688,34 @@ func createActionNode(lang utils.Language, a legacyActionSet, fieldMap map[strin
 		destination: a.Destination,
 		uuid:        flows.ExitUUID(uuid.NewV4().String()),
 	}
-	return node
+	return node, nil
 
 }
 
-// UnmarshalJSON imports our JSON into a LegacyFlow object
-func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
+// ReadLegacyFlows reads in legacy formatted flows
+func ReadLegacyFlows(data []json.RawMessage) ([]*LegacyFlow, error) {
+	var err error
+	flows := make([]*LegacyFlow, len(data))
+	for f := range data {
+		flows[f], err = ReadLegacyFlow(data[f])
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return flows, nil
+}
+
+func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 	var envelope legacyFlowEnvelope
 	var err error
 
 	err = json.Unmarshal(data, &envelope)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fieldMap := make(map[string]flows.FieldUUID)
-
+	f := &LegacyFlow{}
 	f.uuid = envelope.Metadata.UUID
 	f.name = envelope.Metadata.Name
 	f.language = envelope.BaseLanguage
@@ -726,14 +725,17 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 
 	f.nodes = make([]flows.Node, len(envelope.ActionSets)+len(envelope.RuleSets))
 	for i := range envelope.ActionSets {
-		node := createActionNode(f.language, envelope.ActionSets[i], fieldMap, translations)
+		node, err := createActionNode(f.language, envelope.ActionSets[i], translations)
+		if err != nil {
+			return nil, err
+		}
 		f.nodes[i] = node
 	}
 
 	for i := range envelope.RuleSets {
 		node, err := createRuleNode(f.language, envelope.RuleSets[i], translations)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		f.nodes[len(envelope.ActionSets)+i] = node
 	}
@@ -750,7 +752,7 @@ func (f *LegacyFlow) UnmarshalJSON(data []byte) error {
 	f.translations = translations
 	f.envelope = envelope
 
-	return err
+	return f, err
 }
 
 // MarshalJSON sends turns our legacy flow into bytes

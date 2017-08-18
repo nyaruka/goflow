@@ -11,7 +11,7 @@ import (
 )
 
 type migrateRequest struct {
-	Flows json.RawMessage `json:"flows"`
+	Flows []json.RawMessage `json:"flows"`
 }
 
 func handleMigrate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
