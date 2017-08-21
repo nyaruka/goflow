@@ -30,7 +30,6 @@
           "action_uuid": null,
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "timeout": 0,
             "type": "msg_wait"
           },
           "step_uuid": ""
@@ -91,7 +90,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout": 0,
                     "type": "msg_wait"
                   }
                 ],
@@ -101,7 +99,6 @@
             ],
             "results": {},
             "status": "waiting",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
         ],
@@ -219,7 +216,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
@@ -282,7 +278,6 @@
               }
             },
             "status": "completed",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
         ],

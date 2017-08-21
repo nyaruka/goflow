@@ -8,13 +8,19 @@ import (
 const TypeMsg string = "msg"
 
 type MsgWait struct {
-	Timeout int `json:"timeout,omitempty"`
+	TimeoutWait
+}
+
+func NewMsgWait(timeout *int) *MsgWait {
+	return &MsgWait{TimeoutWait{Timeout: timeout}}
 }
 
 func (w *MsgWait) Type() string { return TypeMsg }
 
-func (w *MsgWait) Apply(run flows.FlowRun, step flows.Step) {
-	run.ApplyEvent(step, nil, &events.MsgWaitEvent{Timeout: w.Timeout})
+func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
+	w.TimeoutWait.begin(run)
+
+	run.ApplyEvent(step, nil, events.NewMsgWait(w.TimeoutOn))
 }
 
 // CanResume returns true for a message wait if a message has now been received on this step

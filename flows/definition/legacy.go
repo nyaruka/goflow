@@ -189,6 +189,10 @@ type betweenTest struct {
 	Max string `json:"max"`
 }
 
+type timeoutTest struct {
+	Minutes int `json:"minutes"`
+}
+
 type groupTest struct {
 	Test legacyGroupReference `json:"test"`
 }
@@ -246,6 +250,7 @@ var testTypeMappings = map[string]string{
 	"phone":                "has_phone",
 	"regex":                "has_pattern",
 	"starts":               "has_beginning",
+	"timeout":              "has_wait_timed_out",
 	"webhook_status":       "has_legacy_webhook_status",
 }
 
@@ -427,6 +432,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	category := r.Category[baseLanguage]
 
 	newType, _ := testTypeMappings[r.Test.Type]
+	var omitOperand bool
 	var arguments []string
 	var err error
 
@@ -492,6 +498,10 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Status}
 
+	case "timeout":
+		omitOperand = true
+		arguments = []string{"@run"}
+
 	default:
 		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported", r.Test.Type)
 	}
@@ -500,13 +510,13 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	// airtime_status
 	// ward / district / state
 	// interrupted_status
-	// timeout
 
 	return routers.Case{
-		UUID:      caseUUID,
-		Type:      newType,
-		ExitUUID:  exitMap[category].UUID(),
-		Arguments: arguments,
+		UUID:        caseUUID,
+		Type:        newType,
+		Arguments:   arguments,
+		OmitOperand: omitOperand,
+		ExitUUID:    exitMap[category].UUID(),
 	}, err
 }
 
@@ -646,8 +656,21 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		node.router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
 
 	case "wait_message":
-		// TODO: add in timeout
-		node.wait = &waits.MsgWait{}
+		// look for timeout test on the legacy ruleset
+		var timeout *int
+		for _, rule := range r.Rules {
+			if rule.Test.Type == "timeout" {
+				test := timeoutTest{}
+				if err := json.Unmarshal(rule.Test.Data, &test); err != nil {
+					return nil, err
+				}
+				t := 60 * test.Minutes
+				timeout = &t
+				break
+			}
+		}
+
+		node.wait = waits.NewMsgWait(timeout)
 
 		fallthrough
 	case "flow_field":

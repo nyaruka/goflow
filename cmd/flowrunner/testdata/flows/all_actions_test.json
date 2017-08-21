@@ -361,7 +361,6 @@
               }
             },
             "status": "completed",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": "",
             "webhook": {
               "body": "{ \"ok\": \"true\" }",
@@ -382,7 +381,6 @@
             "path": [],
             "results": {},
             "status": "completed",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
             "uuid": ""
           }
         ],

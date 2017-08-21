@@ -162,8 +162,9 @@ type Exit interface {
 type Wait interface {
 	utils.Typed
 
-	Apply(FlowRun, Step)
+	Begin(FlowRun, Step)
 	CanResume(FlowRun, Step) bool
+	HasTimedOut() bool
 }
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
@@ -288,7 +289,6 @@ type FlowRun interface {
 	CreatedOn() time.Time
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
-	TimesOutOn() *time.Time
 	ExitedOn() *time.Time
 }
 
@@ -303,7 +303,6 @@ type FlowRunReference interface {
 
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
-	TimesOutOn() *time.Time
 	ExitedOn() *time.Time
 }
 

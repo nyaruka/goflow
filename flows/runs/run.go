@@ -84,10 +84,9 @@ type flowRun struct {
 	path    []flows.Step
 	status  flows.RunStatus
 
-	createdOn  time.Time
-	expiresOn  *time.Time
-	timesOutOn *time.Time
-	exitedOn   *time.Time
+	createdOn time.Time
+	expiresOn *time.Time
+	exitedOn  *time.Time
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
@@ -239,8 +238,7 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 	}
 }
 
-func (r *flowRun) TimesOutOn() *time.Time { return r.timesOutOn }
-func (r *flowRun) ExitedOn() *time.Time   { return r.exitedOn }
+func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
@@ -368,7 +366,6 @@ func (r *runReference) CreatedOn() time.Time            { return r.run.createdOn
 func (r *runReference) ExpiresOn() *time.Time           { return r.run.expiresOn }
 func (r *runReference) ResetExpiration(from *time.Time) { r.run.ResetExpiration(from) }
 func (r *runReference) ExitedOn() *time.Time            { return r.run.exitedOn }
-func (r *runReference) TimesOutOn() *time.Time          { return r.run.timesOutOn }
 
 func newReferenceFromRun(r *flowRun) *runReference {
 	return &runReference{
@@ -396,10 +393,9 @@ type runEnvelope struct {
 	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
 	Extra   json.RawMessage        `json:"extra,omitempty"`
 
-	CreatedOn  time.Time  `json:"created_on"`
-	ExpiresOn  *time.Time `json:"expires_on"`
-	TimesOutOn *time.Time `json:"timesout_on"`
-	ExitedOn   *time.Time `json:"exited_on"`
+	CreatedOn time.Time  `json:"created_on"`
+	ExpiresOn *time.Time `json:"expires_on"`
+	ExitedOn  *time.Time `json:"exited_on"`
 }
 
 // ReadRun decodes a run from the passed in JSON
@@ -418,7 +414,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.status = envelope.Status
 	r.createdOn = envelope.CreatedOn
 	r.expiresOn = envelope.ExpiresOn
-	r.timesOutOn = envelope.TimesOutOn
 	r.exitedOn = envelope.ExitedOn
 	r.extra = utils.JSONFragment(envelope.Extra)
 
@@ -503,7 +498,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
 	re.ExpiresOn = r.expiresOn
-	re.TimesOutOn = r.timesOutOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
 	re.Webhook = r.webhook

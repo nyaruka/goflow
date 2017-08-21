@@ -14,10 +14,11 @@ const TypeSwitch string = "switch"
 
 // Case represents a single case and test in our switch
 type Case struct {
-	UUID      flows.UUID     `json:"uuid"                 validate:"required"`
-	Type      string         `json:"type"                 validate:"required"`
-	Arguments []string       `json:"arguments,omitempty"`
-	ExitUUID  flows.ExitUUID `json:"exit_uuid"            validate:"required"`
+	UUID        flows.UUID     `json:"uuid"                 validate:"required"`
+	Type        string         `json:"type"                 validate:"required"`
+	Arguments   []string       `json:"arguments,omitempty"`
+	OmitOperand bool           `json:"omit_operand,omitempty"`
+	ExitUUID    flows.ExitUUID `json:"exit_uuid"            validate:"required"`
 }
 
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
@@ -89,16 +90,19 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		}
 
 		// build our argument list
-		args := make([]interface{}, len(c.Arguments)+1)
-		args[0] = operand
+		args := make([]interface{}, 0, 1)
+		if !c.OmitOperand {
+			args = append(args, operand)
+		}
 
 		localizedArgs := run.GetTextArray(c.UUID, "arguments", c.Arguments)
 		for i := range c.Arguments {
 			test := localizedArgs[i]
-			args[i+1], err = excellent.EvaluateTemplate(env, run.Context(), test)
+			arg, err := excellent.EvaluateTemplate(env, run.Context(), test)
 			if err != nil {
 				run.AddError(step, nil, err)
 			}
+			args = append(args, arg)
 		}
 
 		// call our function
