@@ -1,6 +1,7 @@
-{
-  "flows": [
-    {
+[
+  {
+    "type": "flow",
+    "content": {
       "name": "Another Flow",
       "uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
       "nodes": [
@@ -66,13 +67,14 @@
         }
       ]
     }
-  ],
-  "channels": [
-      {
-        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+  },
+  {
+    "type": "channel",
+    "content": {
+      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
         "name": "Twilio Channel",
         "address": "+12345671111",
         "type": "T"
-      }
-  ]
-}
+    }
+  }
+]

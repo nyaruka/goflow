@@ -37,7 +37,7 @@ type ReplyAction struct {
 func (a *ReplyAction) Type() string { return TypeReply }
 
 // Validate validates whether this struct is correct
-func (a *ReplyAction) Validate(assets flows.Assets) error {
+func (a *ReplyAction) Validate(assets flows.AssetManager) error {
 	return nil
 }
 

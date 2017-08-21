@@ -40,7 +40,7 @@ type SendMsgAction struct {
 func (a *SendMsgAction) Type() string { return TypeSendMsg }
 
 // Validate validates whether this struct is correct
-func (a *SendMsgAction) Validate(assets flows.Assets) error {
+func (a *SendMsgAction) Validate(assets flows.AssetManager) error {
 	return nil
 }
 

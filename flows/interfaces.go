@@ -1,12 +1,16 @@
 package flows
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
 )
 
 type UUID string
+
+type AssetUUID UUID
+
 type NodeUUID UUID
 
 func (u NodeUUID) String() string { return string(u) }
@@ -95,14 +99,28 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
-type Assets interface {
-	Validate() error
+type AssetType string
 
+const (
+	AssetTypeFlow    AssetType = "flow"
+	AssetTypeChannel AssetType = "channel"
+)
+
+type Asset interface {
+	AssetType() AssetType
+	AssetUUID() AssetUUID
+	Validate(AssetManager) error
+}
+
+type AssetManager interface {
+	IncludeAssets(json.RawMessage) error
 	GetChannel(ChannelUUID) (Channel, error)
 	GetFlow(FlowUUID) (Flow, error)
 }
 
 type Flow interface {
+	Asset
+
 	UUID() FlowUUID
 	Name() string
 	Language() utils.Language
@@ -111,8 +129,6 @@ type Flow interface {
 
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
-
-	Validate(Assets) error
 }
 
 type Node interface {
@@ -128,7 +144,7 @@ type Action interface {
 	UUID() ActionUUID
 
 	Execute(FlowRun, Step) error
-	Validate(Assets) error
+	Validate(AssetManager) error
 	utils.Typed
 }
 
@@ -221,7 +237,7 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Assets() Assets
+	Assets() AssetManager
 
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)
@@ -313,6 +329,8 @@ func (ct ChannelType) String() string { return string(ct) }
 
 // Channel represents a channel for sending and receiving messages
 type Channel interface {
+	Asset
+
 	UUID() ChannelUUID
 	Name() string
 	Address() string

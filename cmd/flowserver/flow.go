@@ -56,11 +56,8 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read and validate our assets
-	assets, err := engine.ReadAssets(start.Assets)
-	if err != nil {
-		return nil, err
-	}
-	if err = assets.Validate(); err != nil {
+	assets := engine.NewAssetManager()
+	if err = assets.IncludeAssets(start.Assets); err != nil {
 		return nil, err
 	}
 
@@ -108,11 +105,8 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read and validate our assets
-	assets, err := engine.ReadAssets(resume.Assets)
-	if err != nil {
-		return nil, err
-	}
-	if err = assets.Validate(); err != nil {
+	assets := engine.NewAssetManager()
+	if err = assets.IncludeAssets(resume.Assets); err != nil {
 		return nil, err
 	}
 

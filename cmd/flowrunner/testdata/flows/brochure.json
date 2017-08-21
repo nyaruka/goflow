@@ -1,6 +1,7 @@
-{
-  "flows": [
-    {
+[
+  {
+    "type": "flow",
+    "content": {
       "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
       "name": "Registration Flow",
       "language": "eng",
@@ -87,13 +88,14 @@
         }
       ]
     }
-  ],
-  "channels": [
-      {
-        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+  },
+  {
+    "type": "channel",
+    "content": {
+      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
         "name": "Twilio Channel",
         "address": "+12345671111",
         "type": "T"
-      }
-  ]
-}
+    }
+  }
+]

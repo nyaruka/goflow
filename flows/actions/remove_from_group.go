@@ -33,7 +33,7 @@ type RemoveFromGroupAction struct {
 func (a *RemoveFromGroupAction) Type() string { return TypeRemoveFromGroup }
 
 // Validate validates the fields on this action
-func (a *RemoveFromGroupAction) Validate(assets flows.Assets) error {
+func (a *RemoveFromGroupAction) Validate(assets flows.AssetManager) error {
 	return nil
 }
 

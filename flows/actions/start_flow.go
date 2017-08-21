@@ -34,7 +34,7 @@ type StartFlowAction struct {
 func (a *StartFlowAction) Type() string { return TypeStartFlow }
 
 // Validate validates our action is valid
-func (a *StartFlowAction) Validate(assets flows.Assets) error {
+func (a *StartFlowAction) Validate(assets flows.AssetManager) error {
 	_, err := assets.GetFlow(a.FlowUUID)
 	return err
 }
