@@ -3,6 +3,7 @@ package engine
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
@@ -19,15 +20,19 @@ type assetContainer struct {
 }
 
 type assetManager struct {
-	assets map[flows.AssetUUID]assetContainer
+	cache      map[flows.AssetUUID]assetContainer
+	cacheMutex sync.Mutex
 }
 
 func NewAssetManager() flows.AssetManager {
-	return &assetManager{assets: make(map[flows.AssetUUID]assetContainer)}
+	return &assetManager{cache: make(map[flows.AssetUUID]assetContainer)}
 }
 
 func (m *assetManager) requestAsset(uuid flows.AssetUUID, assetType string) (flows.Asset, error) {
-	container, found := m.assets[uuid]
+	m.cacheMutex.Lock()
+	defer m.cacheMutex.Unlock()
+
+	container, found := m.cache[uuid]
 	if !found {
 		return nil, fmt.Errorf("no such asset of type '%s' with UUID '%s'", assetType, uuid)
 	}
@@ -43,7 +48,7 @@ func (m *assetManager) requestAsset(uuid flows.AssetUUID, assetType string) (flo
 }
 
 func (m *assetManager) AddAsset(asset flows.Asset, fetchURL string) {
-	m.assets[asset.AssetUUID()] = assetContainer{
+	m.cache[asset.AssetUUID()] = assetContainer{
 		assetType: asset.AssetType(),
 		asset:     asset,
 		expiresOn: time.Now().Add(5 * time.Minute),
@@ -52,11 +57,11 @@ func (m *assetManager) AddAsset(asset flows.Asset, fetchURL string) {
 }
 
 func (m *assetManager) AddLazyAsset(assetType flows.AssetType, assetUUID flows.AssetUUID, fetchURL string) {
-	m.assets[assetUUID] = assetContainer{assetType: assetType, fetchURL: fetchURL}
+	m.cache[assetUUID] = assetContainer{assetType: assetType, fetchURL: fetchURL}
 }
 
-func (m *assetManager) ClearAssets(asset flows.Asset, expiresOn *time.Time, fetchURL string) {
-	m.assets = make(map[flows.AssetUUID]assetContainer)
+func (m *assetManager) ClearCache(asset flows.Asset, expiresOn *time.Time, fetchURL string) {
+	m.cache = make(map[flows.AssetUUID]assetContainer)
 }
 
 func (m *assetManager) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
