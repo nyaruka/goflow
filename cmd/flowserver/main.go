@@ -13,6 +13,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/nyaruka/goflow/flows/engine"
+
+	"github.com/nyaruka/goflow/flows"
+
 	"errors"
 
 	"github.com/koding/multiconfig"
@@ -33,6 +37,7 @@ import (
 )
 
 var version = "dev"
+var assetManager flows.AssetManager
 
 func main() {
 	m := multiconfig.New()
@@ -80,6 +85,8 @@ func main() {
 
 	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
 	r.MethodNotAllowed(errorHandler(http.StatusMethodNotAllowed, "method not allowed"))
+
+	assetManager = engine.NewAssetManager()
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%d", config.Port),
