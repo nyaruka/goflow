@@ -32,7 +32,7 @@ type AddToGroupAction struct {
 func (a *AddToGroupAction) Type() string { return TypeAddToGroup }
 
 // Validate validates that this action is valid
-func (a *AddToGroupAction) Validate(assets flows.AssetManager) error {
+func (a *AddToGroupAction) Validate(assets flows.AssetStore) error {
 	return nil
 }
 

@@ -71,7 +71,7 @@ var contactDef = `
 
 func createExampleSession(assetsDef string) (flows.Session, error) {
 	// read our assets
-	assets := engine.NewAssetManager()
+	assets := engine.NewAssetStore()
 	if err := assets.IncludeAssets(json.RawMessage(assetsDef)); err != nil {
 		return nil, err
 	}

@@ -33,7 +33,7 @@ func (f *flow) AssetUUID() flows.AssetUUID { return flows.AssetUUID(f.uuid) }
 
 // Validates that structurally we are sane. IE, all required fields are present and
 // all exits with destinations point to valid endpoints.
-func (f *flow) Validate(assets flows.AssetManager) error {
+func (f *flow) Validate(assets flows.AssetStore) error {
 	var err error
 
 	for _, node := range f.nodes {

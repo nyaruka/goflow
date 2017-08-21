@@ -109,10 +109,10 @@ const (
 type Asset interface {
 	AssetType() AssetType
 	AssetUUID() AssetUUID
-	Validate(AssetManager) error
+	Validate(AssetStore) error
 }
 
-type AssetManager interface {
+type AssetStore interface {
 	IncludeAssets(json.RawMessage) error
 	GetChannel(ChannelUUID) (Channel, error)
 	GetFlow(FlowUUID) (Flow, error)
@@ -144,7 +144,7 @@ type Action interface {
 	UUID() ActionUUID
 
 	Execute(FlowRun, Step) error
-	Validate(AssetManager) error
+	Validate(AssetStore) error
 	utils.Typed
 }
 
@@ -237,7 +237,7 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Assets() AssetManager
+	Assets() AssetStore
 
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)

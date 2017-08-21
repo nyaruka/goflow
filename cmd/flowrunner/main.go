@@ -171,7 +171,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading assets file: ", err)
 	}
-	assets := engine.NewAssetManager()
+	assets := engine.NewAssetStore()
 	if err := assets.IncludeAssets(json.RawMessage(assetsJSON)); err != nil {
 		log.Fatal("Error reading assets: ", err)
 	}

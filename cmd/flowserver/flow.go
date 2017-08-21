@@ -56,12 +56,12 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read and validate our assets
-	if err = assetManager.IncludeAssets(start.Assets); err != nil {
+	if err = assetStore.IncludeAssets(start.Assets); err != nil {
 		return nil, err
 	}
 
 	// build our session
-	session := engine.NewSession(assetManager)
+	session := engine.NewSession(assetStore)
 
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
@@ -104,12 +104,12 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read and validate our assets
-	if err = assetManager.IncludeAssets(resume.Assets); err != nil {
+	if err = assetStore.IncludeAssets(resume.Assets); err != nil {
 		return nil, err
 	}
 
 	// read our session
-	session, err := engine.ReadSession(assetManager, resume.Session)
+	session, err := engine.ReadSession(assetStore, resume.Session)
 	if err != nil {
 		return nil, err
 	}

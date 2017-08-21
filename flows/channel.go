@@ -29,7 +29,7 @@ func (c *channel) Type() ChannelType { return c.channelType }
 func (c *channel) AssetType() AssetType { return AssetTypeChannel }
 func (c *channel) AssetUUID() AssetUUID { return AssetUUID(c.uuid) }
 
-func (c *channel) Validate(AssetManager) error { return nil }
+func (c *channel) Validate(AssetStore) error { return nil }
 
 // Resolve satisfies our resolver interface
 func (c *channel) Resolve(key string) interface{} {

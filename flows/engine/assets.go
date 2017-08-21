@@ -19,16 +19,16 @@ type assetContainer struct {
 	fetchURL   string
 }
 
-type assetManager struct {
+type assetStore struct {
 	cache      map[flows.AssetUUID]assetContainer
 	cacheMutex sync.Mutex
 }
 
-func NewAssetManager() flows.AssetManager {
-	return &assetManager{cache: make(map[flows.AssetUUID]assetContainer)}
+func NewAssetStore() flows.AssetStore {
+	return &assetStore{cache: make(map[flows.AssetUUID]assetContainer)}
 }
 
-func (m *assetManager) requestAsset(uuid flows.AssetUUID, assetType flows.AssetType) (flows.Asset, error) {
+func (m *assetStore) requestAsset(uuid flows.AssetUUID, assetType flows.AssetType) (flows.Asset, error) {
 	m.cacheMutex.Lock()
 	defer m.cacheMutex.Unlock()
 
@@ -47,7 +47,7 @@ func (m *assetManager) requestAsset(uuid flows.AssetUUID, assetType flows.AssetT
 	return container.asset, nil
 }
 
-func (m *assetManager) AddAsset(asset flows.Asset, fetchURL string) {
+func (m *assetStore) AddAsset(asset flows.Asset, fetchURL string) {
 	m.cache[asset.AssetUUID()] = assetContainer{
 		assetType: asset.AssetType(),
 		asset:     asset,
@@ -56,15 +56,15 @@ func (m *assetManager) AddAsset(asset flows.Asset, fetchURL string) {
 	}
 }
 
-func (m *assetManager) AddLazyAsset(assetType flows.AssetType, assetUUID flows.AssetUUID, fetchURL string) {
+func (m *assetStore) AddLazyAsset(assetType flows.AssetType, assetUUID flows.AssetUUID, fetchURL string) {
 	m.cache[assetUUID] = assetContainer{assetType: assetType, fetchURL: fetchURL}
 }
 
-func (m *assetManager) ClearCache(asset flows.Asset, expiresOn *time.Time, fetchURL string) {
+func (m *assetStore) ClearCache(asset flows.Asset, expiresOn *time.Time, fetchURL string) {
 	m.cache = make(map[flows.AssetUUID]assetContainer)
 }
 
-func (m *assetManager) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
+func (m *assetStore) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	asset, err := m.requestAsset(flows.AssetUUID(uuid), flows.AssetTypeFlow)
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (m *assetManager) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	return flow, nil
 }
 
-func (m *assetManager) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
+func (m *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 	asset, err := m.requestAsset(flows.AssetUUID(uuid), flows.AssetTypeChannel)
 	if err != nil {
 		return nil, err
@@ -99,7 +99,7 @@ type assetEnvelope struct {
 	URL     string           `json:"url"     validate:"omitempty,url"`
 }
 
-func (m *assetManager) IncludeAssets(data json.RawMessage) error {
+func (m *assetStore) IncludeAssets(data json.RawMessage) error {
 	var raw []json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err

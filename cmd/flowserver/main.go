@@ -37,7 +37,7 @@ import (
 )
 
 var version = "dev"
-var assetManager flows.AssetManager
+var assetStore flows.AssetStore
 
 func main() {
 	m := multiconfig.New()
@@ -86,7 +86,7 @@ func main() {
 	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
 	r.MethodNotAllowed(errorHandler(http.StatusMethodNotAllowed, "method not allowed"))
 
-	assetManager = engine.NewAssetManager()
+	assetStore = engine.NewAssetStore()
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%d", config.Port),
