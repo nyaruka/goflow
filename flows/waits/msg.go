@@ -8,17 +8,17 @@ import (
 const TypeMsg string = "msg"
 
 type MsgWait struct {
-	BaseWait
+	TimeoutWait
 }
 
 func NewMsgWait(timeout *int) *MsgWait {
-	return &MsgWait{BaseWait{Timeout: timeout}}
+	return &MsgWait{TimeoutWait{Timeout: timeout}}
 }
 
 func (w *MsgWait) Type() string { return TypeMsg }
 
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
-	w.BaseWait.begin(run)
+	w.TimeoutWait.begin(run)
 
 	run.ApplyEvent(step, nil, events.NewMsgWait(w.TimeoutOn))
 }
