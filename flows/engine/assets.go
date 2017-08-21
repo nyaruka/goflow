@@ -28,7 +28,7 @@ func NewAssetManager() flows.AssetManager {
 	return &assetManager{cache: make(map[flows.AssetUUID]assetContainer)}
 }
 
-func (m *assetManager) requestAsset(uuid flows.AssetUUID, assetType string) (flows.Asset, error) {
+func (m *assetManager) requestAsset(uuid flows.AssetUUID, assetType flows.AssetType) (flows.Asset, error) {
 	m.cacheMutex.Lock()
 	defer m.cacheMutex.Unlock()
 
@@ -65,7 +65,7 @@ func (m *assetManager) ClearCache(asset flows.Asset, expiresOn *time.Time, fetch
 }
 
 func (m *assetManager) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	asset, err := m.requestAsset(flows.AssetUUID(uuid), "flow")
+	asset, err := m.requestAsset(flows.AssetUUID(uuid), flows.AssetTypeFlow)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (m *assetManager) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 }
 
 func (m *assetManager) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	asset, err := m.requestAsset(flows.AssetUUID(uuid), "channel")
+	asset, err := m.requestAsset(flows.AssetUUID(uuid), flows.AssetTypeChannel)
 	if err != nil {
 		return nil, err
 	}
