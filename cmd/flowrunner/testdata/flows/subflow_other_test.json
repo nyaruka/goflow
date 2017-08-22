@@ -1,53 +1,125 @@
 {
+  "caller_events": [
+    [],
+    [
+      {
+        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "text": "neither",
+        "type": "msg_received",
+        "urn": "tel:+12065551212"
+      }
+    ],
+    [
+      {
+        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "text": "yes",
+        "type": "msg_received",
+        "urn": "tel:+12065551212"
+      }
+    ],
+    [
+      {
+        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "text": "never",
+        "type": "msg_received",
+        "urn": "tel:+12065551212"
+      }
+    ],
+    [
+      {
+        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "text": "no",
+        "type": "msg_received",
+        "urn": "tel:+12065551212"
+      }
+    ]
+  ],
   "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
   "outputs": [
     {
-      "events": [
+      "log": [
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "Hi there, let's go to the child.",
-          "type": "send_msg"
+          "action_uuid": "ac403443-4e93-4127-8b03-469598cd7ae2",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "Hi there, let's go to the child.",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-          "step_uuid": "",
-          "type": "flow_entered"
+          "action_uuid": "87635c69-61e0-4a06-b967-6f8f7b930806",
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+            "parent_run_uuid": "",
+            "type": "flow_triggered"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "Welcome to the child, say yes or no!",
-          "type": "send_msg"
+          "action_uuid": "9b3d32d4-aa6c-44e0-95cd-92117c67738f",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "Welcome to the child, say yes or no!",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "timeout": 0,
-          "type": "msg_wait"
-        },
-        {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-          "step_uuid": "",
-          "type": "flow_wait"
+          "action_uuid": null,
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "msg_wait"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
-            "channel_uuid": "",
             "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "path": [
               {
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -55,7 +127,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
                   }
@@ -69,17 +140,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_entered"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_wait"
+                    "parent_run_uuid": "",
+                    "type": "flow_triggered"
                   }
                 ],
                 "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
@@ -87,22 +151,15 @@
               }
             ],
             "results": {},
-            "status": "A",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-              "type": "flow"
-            }
+            "status": "active",
+            "uuid": ""
           },
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "parent_uuid": "",
             "path": [
               {
@@ -111,7 +168,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
                   }
@@ -126,8 +182,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   }
                 ],
@@ -136,52 +190,84 @@
               }
             ],
             "results": {},
-            "status": "A",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "type": "msg"
-            }
+            "status": "waiting",
+            "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "type": "msg"
+        }
       }
     },
     {
-      "events": [
+      "log": [
         {
-          "category": "Other",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-          "result_name": "answer",
-          "step_uuid": "",
-          "type": "save_flow_result",
-          "value": "neither"
+          "action_uuid": null,
+          "event": {
+            "category": "Other",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
+            "result_name": "answer",
+            "type": "save_flow_result",
+            "value": "neither"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "Nope, that's neither.",
-          "type": "send_msg"
+          "action_uuid": "ef6b42af-9751-4120-972c-e60771904dd2",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "Nope, that's neither.",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "timeout": 0,
-          "type": "msg_wait"
+          "action_uuid": null,
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "msg_wait"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
-            "channel_uuid": "",
             "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "path": [
               {
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -189,7 +275,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
                   }
@@ -203,17 +288,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_entered"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_wait"
+                    "parent_run_uuid": "",
+                    "type": "flow_triggered"
                   }
                 ],
                 "node_uuid": "bf7accaf-70ce-4b87-9c23-c7bc02e3c06f",
@@ -221,16 +299,10 @@
               }
             ],
             "results": {},
-            "status": "A",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-              "type": "flow"
-            }
+            "status": "active",
+            "uuid": ""
           },
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -238,14 +310,11 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "neither",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "parent_uuid": "",
             "path": [
               {
@@ -254,7 +323,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
                   }
@@ -269,15 +337,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -287,7 +352,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -303,7 +367,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
                   }
@@ -318,8 +381,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   }
                 ],
@@ -336,68 +397,94 @@
                 "value": "neither"
               }
             },
-            "status": "A",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "type": "msg"
-            }
+            "status": "waiting",
+            "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "type": "msg"
+        }
       }
     },
     {
-      "events": [
+      "log": [
         {
-          "category": "Yes",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-          "result_name": "answer",
-          "step_uuid": "",
-          "type": "save_flow_result",
-          "value": "yes"
+          "action_uuid": null,
+          "event": {
+            "category": "Yes",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
+            "result_name": "answer",
+            "type": "save_flow_result",
+            "value": "yes"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "You said yes",
-          "type": "send_msg"
+          "action_uuid": "7d17e71a-2967-4dbb-86a4-eda028aca38a",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "You said yes",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-          "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-          "status": "C",
-          "step_uuid": "",
-          "type": "flow_exited"
+          "action_uuid": "54b10283-9863-4edf-abfa-705cf24a64fc",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "Hooray, you did it and said yes. Say yes or no!",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "Hooray, you did it and said yes. Say yes or no!",
-          "type": "send_msg"
-        },
-        {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "timeout": 0,
-          "type": "msg_wait"
+          "action_uuid": null,
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "msg_wait"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
-            "channel_uuid": "",
             "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "path": [
               {
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -405,7 +492,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
                   }
@@ -419,26 +505,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_entered"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_wait"
-                  },
-                  {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "status": "C",
-                    "step_uuid": "",
-                    "type": "flow_exited"
+                    "parent_run_uuid": "",
+                    "type": "flow_triggered"
                   }
                 ],
                 "exit_uuid": "f68d80e5-651c-404a-bbc0-efa6966254a6",
@@ -452,7 +522,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
                   }
@@ -467,8 +536,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   }
                 ],
@@ -477,15 +544,10 @@
               }
             ],
             "results": {},
-            "status": "A",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "type": "msg"
-            }
+            "status": "waiting",
+            "uuid": ""
           },
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -493,14 +555,11 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "yes",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "parent_uuid": "",
             "path": [
               {
@@ -509,7 +568,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
                   }
@@ -524,15 +582,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -542,7 +597,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -558,7 +612,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
                   }
@@ -573,15 +626,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "yes",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -591,7 +641,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "yes"
                   }
@@ -607,7 +656,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "You said yes",
                     "type": "send_msg"
                   }
@@ -627,42 +675,78 @@
                 "value": "yes"
               }
             },
-            "status": "C",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+            "status": "completed",
             "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "type": "msg"
+        }
       }
     },
     {
-      "events": [
+      "log": [
         {
-          "category": "Other",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-          "result_name": "answer",
-          "step_uuid": "",
-          "type": "save_flow_result",
-          "value": "never"
+          "action_uuid": null,
+          "event": {
+            "category": "Other",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
+            "result_name": "answer",
+            "type": "save_flow_result",
+            "value": "never"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "Nope, that's neither",
-          "type": "send_msg"
+          "action_uuid": "27442755-3d94-499f-97d5-a9409ab83b67",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "Nope, that's neither",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         },
         {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "timeout": 0,
-          "type": "msg_wait"
+          "action_uuid": null,
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "msg_wait"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
-            "channel_uuid": "",
             "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -671,14 +755,11 @@
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "never",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "path": [
               {
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -686,7 +767,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
                   }
@@ -700,26 +780,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_entered"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_wait"
-                  },
-                  {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "status": "C",
-                    "step_uuid": "",
-                    "type": "flow_exited"
+                    "parent_run_uuid": "",
+                    "type": "flow_triggered"
                   }
                 ],
                 "exit_uuid": "f68d80e5-651c-404a-bbc0-efa6966254a6",
@@ -733,7 +797,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
                   }
@@ -748,15 +811,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "never",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -766,7 +826,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "never"
                   }
@@ -782,7 +841,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Nope, that's neither",
                     "type": "send_msg"
                   }
@@ -797,8 +855,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   }
                 ],
@@ -815,15 +871,10 @@
                 "value": "never"
               }
             },
-            "status": "A",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "uuid": "",
-            "wait": {
-              "type": "msg"
-            }
+            "status": "waiting",
+            "uuid": ""
           },
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -831,14 +882,11 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "yes",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "parent_uuid": "",
             "path": [
               {
@@ -847,7 +895,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
                   }
@@ -862,15 +909,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -880,7 +924,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -896,7 +939,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
                   }
@@ -911,15 +953,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "yes",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -929,7 +968,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "yes"
                   }
@@ -945,7 +983,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "You said yes",
                     "type": "send_msg"
                   }
@@ -965,36 +1002,70 @@
                 "value": "yes"
               }
             },
-            "status": "C",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+            "status": "completed",
             "uuid": ""
           }
-        ]
+        ],
+        "status": "waiting",
+        "wait": {
+          "type": "msg"
+        }
       }
     },
     {
-      "events": [
+      "log": [
         {
-          "category": "No",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-          "result_name": "answer",
-          "step_uuid": "",
-          "type": "save_flow_result",
-          "value": "no"
+          "action_uuid": null,
+          "event": {
+            "category": "No",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
+            "result_name": "answer",
+            "type": "save_flow_result",
+            "value": "no"
+          },
+          "step_uuid": ""
         },
         {
-          "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "step_uuid": "",
-          "text": "All Done! You said yes in the child and no here.",
-          "type": "send_msg"
+          "action_uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0",
+          "event": {
+            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "All Done! You said yes in the child and no here.",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
         }
       ],
       "session": {
+        "contact": {
+          "channel_uuid": "",
+          "fields": {
+            "first_name": {
+              "field_name": "First Name",
+              "field_uuid": "",
+              "value": "Ben"
+            }
+          },
+          "groups": [],
+          "language": "eng",
+          "name": "Ben Haggerty",
+          "timezone": "America/Guayaquil",
+          "urns": [
+            "tel:+12065551212",
+            "facebook:macklemore",
+            "email:ben@macklemore"
+          ],
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+          "date_format": "yyyy-MM-dd",
+          "languages": [],
+          "time_format": "hh:mm",
+          "timezone": "America/Los_Angeles"
+        },
         "runs": [
           {
-            "channel_uuid": "",
             "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1003,14 +1074,11 @@
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "no",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "path": [
               {
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1018,7 +1086,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
                   }
@@ -1032,26 +1099,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_entered"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "step_uuid": "",
-                    "type": "flow_wait"
-                  },
-                  {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-                    "status": "C",
-                    "step_uuid": "",
-                    "type": "flow_exited"
+                    "parent_run_uuid": "",
+                    "type": "flow_triggered"
                   }
                 ],
                 "exit_uuid": "f68d80e5-651c-404a-bbc0-efa6966254a6",
@@ -1065,7 +1116,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
                   }
@@ -1080,15 +1130,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "never",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -1098,7 +1145,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "never"
                   }
@@ -1114,7 +1160,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Nope, that's neither",
                     "type": "send_msg"
                   }
@@ -1129,15 +1174,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "no",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -1147,7 +1189,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "no"
                   }
@@ -1163,7 +1204,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "All Done! You said yes in the child and no here.",
                     "type": "send_msg"
                   }
@@ -1183,12 +1223,10 @@
                 "value": "no"
               }
             },
-            "status": "C",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+            "status": "completed",
             "uuid": ""
           },
           {
-            "channel_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1196,14 +1234,11 @@
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "step_uuid": "",
               "text": "yes",
-              "type": "msg_received",
+              "type": "msg",
               "urn": "tel:+12065551212"
             },
-            "modified_on": "2000-01-01T00:00:00.000000000-00:00",
             "parent_uuid": "",
             "path": [
               {
@@ -1212,7 +1247,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
                   }
@@ -1227,15 +1261,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "neither",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -1245,7 +1276,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -1261,7 +1291,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
                   }
@@ -1276,15 +1305,12 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
-                    "timeout": 0,
                     "type": "msg_wait"
                   },
                   {
                     "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "yes",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
@@ -1294,7 +1320,6 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "result_name": "answer",
-                    "step_uuid": "",
                     "type": "save_flow_result",
                     "value": "yes"
                   }
@@ -1310,7 +1335,6 @@
                   {
                     "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "",
                     "text": "You said yes",
                     "type": "send_msg"
                   }
@@ -1330,59 +1354,15 @@
                 "value": "yes"
               }
             },
-            "status": "C",
-            "timesout_on": "2000-01-01T00:00:00.000000000-00:00",
+            "status": "completed",
             "uuid": ""
           }
-        ]
+        ],
+        "status": "completed",
+        "wait": {
+          "type": "msg"
+        }
       }
     }
-  ],
-  "caller_events": [
-    [],
-    [
-      {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "step_uuid": "",
-        "text": "neither",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
-      }
-    ],
-    [
-      {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "step_uuid": "",
-        "text": "yes",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
-      }
-    ],
-    [
-      {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "step_uuid": "",
-        "text": "never",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
-      }
-    ],
-    [
-      {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "step_uuid": "",
-        "text": "no",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
-      }
-    ]
   ]
 }
