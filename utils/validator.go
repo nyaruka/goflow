@@ -78,7 +78,7 @@ func validate(obj interface{}, objName string) error {
 		switch fieldErr.Tag() {
 		case "required":
 			problem = "is required"
-		case "uui4":
+		case "uuid4":
 			problem = "must be a valid UUID4"
 		default:
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
