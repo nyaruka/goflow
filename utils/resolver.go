@@ -47,7 +47,7 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 	}
 
 	rest := key
-	for rest != "" && variable != nil {
+	for rest != "" && !IsNil(variable) {
 		key, rest = popNextVariable(rest)
 
 		resolver, isResolver := variable.(VariableResolver)
