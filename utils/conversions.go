@@ -65,6 +65,22 @@ func IsMap(v interface{}) bool {
 	return val.Kind() == reflect.Map
 }
 
+func IsNil(v interface{}) bool {
+	// if v doesn't have a type or value then v == nil
+	if v == nil {
+		return true
+	}
+
+	val := reflect.ValueOf(v)
+
+	// if v is a typed nil pointer then v != nil but the value is nil
+	if val.Kind() == reflect.Ptr {
+		return val.IsNil()
+	}
+
+	return false
+}
+
 // LookupIndex tries to look up the interface at the passed in index for the passed in slice
 func LookupIndex(v interface{}, idx int) (interface{}, error) {
 	if v == nil {
@@ -111,7 +127,7 @@ func attemptMapLookup(valMap reflect.Value, key interface{}) (value interface{},
 	return value, nil
 }
 
-// LookupKey tries to look up the interface at the passed in key for the passed in slice
+// LookupKey tries to look up the interface at the passed in key for the passed in map
 func LookupKey(v interface{}, key string) (value interface{}, err error) {
 	if v == nil {
 		return nil, fmt.Errorf("Cannot convert nil to interface map")
@@ -145,7 +161,7 @@ func LookupKey(v interface{}, key string) (value interface{}, err error) {
 
 // ToStringArray tries to turn the passed in interface (which must be an underlying slice) to a string array
 func ToStringArray(env Environment, v interface{}) ([]string, error) {
-	if v == nil {
+	if IsNil(v) {
 		return nil, fmt.Errorf("Cannot convert nil to string array")
 	}
 
@@ -183,7 +199,7 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	}
 
 	// null is null
-	if val == nil {
+	if IsNil(val) {
 		return ToFragment(json.Marshal(nil))
 	}
 
@@ -265,7 +281,7 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 // ToString tries to turn the passed in interface to a string
 func ToString(env Environment, val interface{}) (string, error) {
 	// Strings are always defined, just empty
-	if val == nil {
+	if IsNil(val) {
 		return "", nil
 	}
 
@@ -378,7 +394,7 @@ func ToInt(env Environment, val interface{}) (int, error) {
 
 // ToDecimal tries to convert the passed in interface{} to a Decimal value, returning an error if that isn't possible
 func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
-	if val == nil {
+	if IsNil(val) {
 		return decimal.Zero, nil
 	}
 
@@ -424,7 +440,7 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
 func ToDate(env Environment, val interface{}) (time.Time, error) {
-	if val == nil {
+	if IsNil(val) {
 		return time.Time{}, fmt.Errorf("Cannot convert nil to date")
 	}
 
