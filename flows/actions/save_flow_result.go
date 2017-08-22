@@ -38,7 +38,7 @@ type SaveFlowResultAction struct {
 func (a *SaveFlowResultAction) Type() string { return TypeSaveFlowResult }
 
 // Validate validates the fields on this action
-func (a *SaveFlowResultAction) Validate(assets flows.Assets) error {
+func (a *SaveFlowResultAction) Validate(assets flows.AssetStore) error {
 	return nil
 }
 

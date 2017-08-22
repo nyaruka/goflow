@@ -1,6 +1,7 @@
-{
-    "flows": [
-        {
+[
+    {
+        "type": "flow",
+        "content": {
             "name": "Parent Flow",
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "nodes": [
@@ -153,8 +154,11 @@
                 }
             ],
             "language": "eng"
-        },
-        {
+        }
+    },
+    {
+        "type": "flow",
+        "content": {
             "name": "Rules",
             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "nodes": [
@@ -275,13 +279,14 @@
             ],
             "language": "eng"
         }
-    ],
-    "channels": [
-        {
+    },
+    {
+        "type": "channel",
+        "content": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Twilio Channel",
             "address": "+12345671111",
             "type": "T"
         }
-    ]
-}
+    }
+]

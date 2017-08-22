@@ -18,7 +18,7 @@ type flowTrigger struct {
 }
 
 type session struct {
-	assets flows.Assets
+	assets flows.AssetStore
 
 	// state which is maintained between engine calls
 	env     utils.Environment
@@ -35,7 +35,7 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assets flows.Assets) flows.Session {
+func NewSession(assets flows.AssetStore) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets,
@@ -46,7 +46,7 @@ func NewSession(assets flows.Assets) flows.Session {
 	}
 }
 
-func (s *session) Assets() flows.Assets                     { return s.assets }
+func (s *session) Assets() flows.AssetStore                 { return s.assets }
 func (s *session) Environment() utils.Environment           { return s.env }
 func (s *session) SetEnvironment(env utils.Environment)     { s.env = env }
 func (s *session) Contact() *flows.Contact                  { return s.contact }
@@ -378,7 +378,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assets flows.Assets, data json.RawMessage) (flows.Session, error) {
+func ReadSession(assets flows.AssetStore, data json.RawMessage) (flows.Session, error) {
 	s := NewSession(assets).(*session)
 	var envelope sessionEnvelope
 	var err error

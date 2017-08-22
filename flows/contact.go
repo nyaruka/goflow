@@ -136,7 +136,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets Assets, data json.RawMessage) (*Contact, error) {
+func ReadContact(assets AssetStore, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 

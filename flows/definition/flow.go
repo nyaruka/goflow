@@ -28,20 +28,13 @@ func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Translations() flows.FlowTranslations   { return f.translations }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
+func (f *flow) AssetType() flows.AssetType { return flows.AssetTypeFlow }
+func (f *flow) AssetUUID() flows.AssetUUID { return flows.AssetUUID(f.uuid) }
+
 // Validates that structurally we are sane. IE, all required fields are present and
 // all exits with destinations point to valid endpoints.
-func (f *flow) Validate(assets flows.Assets) error {
+func (f *flow) Validate(assets flows.AssetStore) error {
 	var err error
-	f.nodeMap = make(map[flows.NodeUUID]flows.Node)
-
-	// build up a list of all our node ids
-	for i, node := range f.nodes {
-		// make sure we haven't seen this node before
-		if f.nodeMap[node.UUID()] != nil {
-			return fmt.Errorf("duplicate node uuid: '%s'", node.UUID())
-		}
-		f.nodeMap[node.UUID()] = f.nodes[i]
-	}
 
 	for _, node := range f.nodes {
 		// validate all our actions
@@ -145,6 +138,17 @@ func (f *flow) UnmarshalJSON(data []byte) error {
 	f.nodes = make([]flows.Node, len(envelope.Nodes))
 	for i := range envelope.Nodes {
 		f.nodes[i] = envelope.Nodes[i]
+	}
+
+	f.nodeMap = make(map[flows.NodeUUID]flows.Node)
+
+	// build up a list of all our node ids
+	for i, node := range f.nodes {
+		// make sure we haven't seen this node before
+		if f.nodeMap[node.UUID()] != nil {
+			return fmt.Errorf("duplicate node uuid: '%s'", node.UUID())
+		}
+		f.nodeMap[node.UUID()] = f.nodes[i]
 	}
 
 	return err

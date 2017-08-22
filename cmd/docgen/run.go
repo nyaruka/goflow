@@ -10,17 +10,21 @@ import (
 )
 
 var assetsDef = `
-{
-	"flows": [
-		{
+[
+	{
+		"type": "flow",
+		"content": {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "ActionFlow",
 			"nodes": [{
 				"uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
 				"actions": [%s]
 			}]
-		},
-		{
+		}
+	},
+	{
+		"type": "flow",
+		"content": {
 			"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 			"name": "Subflow",
 			"nodes": [{
@@ -28,22 +32,21 @@ var assetsDef = `
 				"actions": []
 			}]
 		}
-	],
-	"channels": []
-}
+	]
+]
 `
 
 var emptyDef = `
-{
-	"flows": [
-		{
+[
+	{
+		"type": "flow",
+		"content": {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "EmptyFlow",
 			"nodes": []
 		}
-	],
-	"channels": []
-}
+	}
+]
 `
 
 var contactDef = `
@@ -68,8 +71,8 @@ var contactDef = `
 
 func createExampleSession(assetsDef string) (flows.Session, error) {
 	// read our assets
-	assets, err := engine.ReadAssets(json.RawMessage(assetsDef))
-	if err != nil {
+	assets := engine.NewAssetStore()
+	if err := assets.IncludeAssets(json.RawMessage(assetsDef)); err != nil {
 		return nil, err
 	}
 

@@ -15,7 +15,7 @@ type PreferredChannelAction struct {
 
 func (a *PreferredChannelAction) Type() string { return TypeSetPreferredChannel }
 
-func (a *PreferredChannelAction) Validate(assets flows.Assets) error {
+func (a *PreferredChannelAction) Validate(assets flows.AssetStore) error {
 	_, err := assets.GetChannel(a.ChannelUUID)
 	return err
 }
