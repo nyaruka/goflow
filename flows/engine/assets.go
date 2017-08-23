@@ -141,7 +141,7 @@ func (m *assetStore) IncludeAssets(data json.RawMessage) error {
 	// any non-lazy assets can be validated now
 	for _, asset := range nonLazy {
 		if err := asset.Validate(m); err != nil {
-			return err
+			return utils.NewValidationErrors(err.Error())
 		}
 	}
 
