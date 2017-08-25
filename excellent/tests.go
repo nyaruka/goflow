@@ -450,13 +450,37 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
+// Returned by the has_pattern test as its match value
+type patternMatch []string
+
+// Resolve satisfies the utils.VariableResolver interface, users can look up a numbered matching group
+func (m patternMatch) Resolve(key string) interface{} {
+	switch key {
+	case "groups":
+		return []string(m)
+	}
+
+	return fmt.Errorf("no such key '%s' on pattern match", key)
+}
+
+// Default satisfies the utils.VariableResolver interface, and returns the group 0 match as the default value
+func (m patternMatch) Default() interface{} {
+	return m[0]
+}
+
+func (m patternMatch) String() string {
+	return m[0]
+}
+
 // HasPattern tests whether `string` matches the regex `pattern`
 //
 // Both strings are trimmed of surrounding whitespace and matching is case-insensitive.
 //
-//   @(has_pattern("This is my Kazoo", "^kazoo")) -> false
-//   @(has_pattern("Kazoos are great", "^kazoo")) -> true
-//   @(has_pattern("Kazoos are great", "^kazoo").match) -> "Kazoo"
+//   @(has_pattern("Sell cheese please", "buy (\w+)")) -> false
+//   @(has_pattern("Buy cheese please", "buy (\w+)")) -> true
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> "Buy cheese"
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) -> "Buy cheese"
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> "cheese"
 //
 // @test has_pattern(string, pattern)
 func HasPattern(env utils.Environment, args ...interface{}) interface{} {
@@ -481,7 +505,7 @@ func HasPattern(env utils.Environment, args ...interface{}) interface{} {
 
 	matches := regex.FindStringSubmatch(strings.TrimSpace(hayStack))
 	if matches != nil {
-		return XTestResult{true, matches[0]}
+		return XTestResult{true, patternMatch(matches)}
 	}
 
 	return XFalseResult
