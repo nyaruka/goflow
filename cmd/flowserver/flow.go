@@ -31,9 +31,10 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Assets json.RawMessage        `json:"assets"           validate:"required"`
-	Flow   flows.FlowUUID         `json:"flow_uuid"        validate:"required"`
-	Events []*utils.TypedEnvelope `json:"events"`
+	Assets    *json.RawMessage       `json:"assets"`
+	AssetsURL string                 `json:"assets_url" validate:"required,url"`
+	Flow      flows.FlowUUID         `json:"flow_uuid"  validate:"required"`
+	Events    []*utils.TypedEnvelope `json:"events"`
 }
 
 func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -55,13 +56,15 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	// read and validate our assets
-	if err = assetStore.IncludeAssets(start.Assets); err != nil {
-		return nil, err
+	// include any embedded assets
+	if start.Assets != nil {
+		if err = assetCache.Include(*start.Assets); err != nil {
+			return nil, err
+		}
 	}
 
 	// build our session
-	session := engine.NewSession(assetStore)
+	session := engine.NewSession(assetCache, start.AssetsURL)
 
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
@@ -104,12 +107,12 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read and validate our assets
-	if err = assetStore.IncludeAssets(resume.Assets); err != nil {
+	if err = assetCache.Include(resume.Assets); err != nil {
 		return nil, err
 	}
 
 	// read our session
-	session, err := engine.ReadSession(assetStore, resume.Session)
+	session, err := engine.ReadSession(assetCache, resume.Session)
 	if err != nil {
 		return nil, err
 	}

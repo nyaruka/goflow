@@ -13,6 +13,7 @@ var assetsDef = `
 [
 	{
 		"type": "flow",
+		"url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
 		"content": {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "ActionFlow",
@@ -21,9 +22,10 @@ var assetsDef = `
 				"actions": [%s]
 			}]
 		}
-	},
+	},ł
 	{
 		"type": "flow",
+		"url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 		"content": {
 			"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 			"name": "Subflow",
@@ -40,6 +42,7 @@ var emptyDef = `
 [
 	{
 		"type": "flow",
+		"url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
 		"content": {
 			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
 			"name": "EmptyFlow",
@@ -71,19 +74,20 @@ var contactDef = `
 
 func createExampleSession(assetsDef string) (flows.Session, error) {
 	// read our assets
-	assets := engine.NewAssetStore()
-	if err := assets.IncludeAssets(json.RawMessage(assetsDef)); err != nil {
-		return nil, err
-	}
-
-	// create our contact
-	contact, err := flows.ReadContact(assets, json.RawMessage(contactDef))
-	if err != nil {
+	assetCache := engine.NewAssetCache()
+	if err := assetCache.Include(json.RawMessage(assetsDef)); err != nil {
 		return nil, err
 	}
 
 	// create our engine session
-	session := engine.NewSession(assets)
+	session := engine.NewSession(assetCache, "http://testserver/assets")
+
+	// create our contact
+	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactDef))
+	if err != nil {
+		return nil, err
+	}
+
 	session.SetContact(contact)
 
 	// and start the example flow

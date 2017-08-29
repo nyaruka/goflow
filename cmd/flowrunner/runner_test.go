@@ -73,23 +73,24 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 	// rewrite the URL on any webhook actions
 	assetsJSONStr := strings.Replace(string(assetsJSON), "http://localhost", serverURL, -1)
 
-	assets := engine.NewAssetStore()
-	if err := assets.IncludeAssets(json.RawMessage(assetsJSONStr)); err != nil {
+	assetCache := engine.NewAssetCache()
+	if err := assetCache.Include(json.RawMessage(assetsJSONStr)); err != nil {
 		return nil, nil, fmt.Errorf("Error reading assets '%s': %s", assetsFilename, err)
 	}
+
+	session := engine.NewSession(assetCache, "")
 
 	contactJSON, err := readFile("contacts/", contactFilename)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	contact, err := flows.ReadContact(assets, json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON))
 	if err != nil {
 		return nil, nil, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
 	}
 
 	// start our contact down this flow
-	session := engine.NewSession(assets)
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 
@@ -109,7 +110,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		session, err = engine.ReadSession(assets, outJSON)
+		session, err = engine.ReadSession(assetCache, outJSON)
 		if err != nil {
 			return nil, nil, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -254,11 +255,11 @@ func TestFlows(t *testing.T) {
 				actualOutput := outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(session.Assets(), actualOutput.Session)
+				actualSession, err := engine.ReadSession(assetCache, actualOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.assets, err)
 				}
-				expectedSession, err := engine.ReadSession(session.Assets(), expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(assetCache, expectedOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 				}

@@ -35,10 +35,10 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assets flows.AssetStore) flows.Session {
+func NewSession(assetCache *AssetCache, assetsURL string) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
-		assets:     assets,
+		assets:     NewAssetStore(assetCache, assetsURL),
 		status:     flows.SessionStatusActive,
 		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -371,6 +371,7 @@ const noDestination = flows.NodeUUID("")
 
 type sessionEnvelope struct {
 	Environment json.RawMessage      `json:"environment"`
+	AssetsURL   string               `json:"assets_url"`
 	Contact     json.RawMessage      `json:"contact"`
 	Runs        []json.RawMessage    `json:"runs"`
 	Status      flows.SessionStatus  `json:"status"`
@@ -378,18 +379,15 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assets flows.AssetStore, data json.RawMessage) (flows.Session, error) {
-	s := NewSession(assets).(*session)
+func ReadSession(assetCache *AssetCache, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
-	if err = json.Unmarshal(data, &envelope); err != nil {
-		return nil, err
-	}
-	if err = utils.Validate(s); err != nil {
+	if err = utils.UnmarshalAndValidate(data, &envelope, "session"); err != nil {
 		return nil, err
 	}
 
+	s := NewSession(assetCache, envelope.AssetsURL).(*session)
 	s.status = envelope.Status
 
 	// read our environment
@@ -399,7 +397,7 @@ func ReadSession(assets flows.AssetStore, data json.RawMessage) (flows.Session, 
 	}
 
 	// read our contact
-	s.contact, err = flows.ReadContact(assets, envelope.Contact)
+	s.contact, err = flows.ReadContact(s.assets, envelope.Contact)
 	if err != nil {
 		return nil, err
 	}
@@ -434,6 +432,7 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	var envelope sessionEnvelope
 	var err error
 
+	envelope.AssetsURL = s.assets.ServerBaseURL()
 	envelope.Status = s.status
 	envelope.Environment, err = json.Marshal(s.env)
 	if err != nil {

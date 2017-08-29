@@ -1,15 +1,12 @@
 package flows
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
 )
 
 type UUID string
-
-type AssetUUID UUID
 
 type NodeUUID UUID
 
@@ -99,28 +96,15 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
-type AssetType string
-
-const (
-	AssetTypeFlow    AssetType = "flow"
-	AssetTypeChannel AssetType = "channel"
-)
-
-type Asset interface {
-	AssetType() AssetType
-	AssetUUID() AssetUUID
-	Validate(AssetStore) error
-}
-
 type AssetStore interface {
-	IncludeAssets(json.RawMessage) error
+	ServerBaseURL() string
+
 	GetChannel(ChannelUUID) (Channel, error)
 	GetFlow(FlowUUID) (Flow, error)
+	GetGroups() ([]Group, error)
 }
 
 type Flow interface {
-	Asset
-
 	UUID() FlowUUID
 	Name() string
 	Language() utils.Language
@@ -329,8 +313,6 @@ func (ct ChannelType) String() string { return string(ct) }
 
 // Channel represents a channel for sending and receiving messages
 type Channel interface {
-	Asset
-
 	UUID() ChannelUUID
 	Name() string
 	Address() string

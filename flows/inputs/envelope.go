@@ -9,8 +9,8 @@ import (
 )
 
 type baseInputEnvelope struct {
-	ChannelUUID flows.ChannelUUID `json:"channel_uuid" validate:"uuid4"`
-	CreatedOn   time.Time         `json:"created_on"   validate:"required"`
+	ChannelUUID flows.ChannelUUID `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
+	CreatedOn   time.Time         `json:"created_on"             validate:"required"`
 }
 
 func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Input, error) {
