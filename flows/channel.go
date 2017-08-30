@@ -26,8 +26,6 @@ func (c *channel) Address() string { return c.address }
 // Type returns the type of this channel
 func (c *channel) Type() ChannelType { return c.channelType }
 
-func (c *channel) Validate(SessionAssets) error { return nil }
-
 // Resolve satisfies our resolver interface
 func (c *channel) Resolve(key string) interface{} {
 	switch key {

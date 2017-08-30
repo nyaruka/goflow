@@ -72,6 +72,8 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
+	
+
 	// start our flow
 	err = session.StartFlow(start.Flow, callerEvents)
 	if err != nil {

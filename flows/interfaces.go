@@ -111,6 +111,7 @@ type Flow interface {
 	ExpireAfterMinutes() int
 	Translations() FlowTranslations
 
+	Validate(SessionAssets) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 }

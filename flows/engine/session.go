@@ -101,6 +101,11 @@ func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event)
 		return err
 	}
 
+	// check flow is valid and has everything it needs to run
+	if err := flow.Validate(s.Assets()); err != nil {
+		return err
+	}
+
 	s.SetTrigger(flow, nil)
 
 	// off to the races...
@@ -113,10 +118,14 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 		return utils.NewValidationErrors("only waiting sessions can be resumed")
 	}
 
-	var destination flows.NodeUUID
-
-	// figure out where (i.e. run and step) we began waiting on
 	waitingRun := s.waitingRun()
+
+	// check flow is valid and has everything it needs to run
+	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
+		return err
+	}
+
+	// figure out where in the flow we began waiting on
 	step, _, err := waitingRun.PathLocation()
 	if err != nil {
 		return err
@@ -131,6 +140,8 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 			return err
 		}
 	}
+
+	var destination flows.NodeUUID
 
 	// events can change run status so only proceed to the wait if we're still waiting
 	if waitingRun.Status() == flows.RunStatusWaiting {

@@ -29,8 +29,8 @@ const (
 )
 
 type cachedAsset struct {
-	asset     interface{}
-	expiresOn time.Time
+	asset      interface{}
+	accessedOn time.Time
 }
 
 // AssetCache fetches and caches assets for the engine
@@ -44,7 +44,7 @@ func NewAssetCache() *AssetCache {
 }
 
 func (c *AssetCache) putAsset(url assetURL, asset interface{}) {
-	c.cache[url] = cachedAsset{asset: asset, expiresOn: time.Now().Add(10 * time.Minute)}
+	c.cache[url] = cachedAsset{asset: asset, accessedOn: time.Now().UTC()}
 }
 
 func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
@@ -59,7 +59,7 @@ func (c *AssetCache) getAsset(url assetURL, itemType AssetItemType, allOfType bo
 	defer c.mutex.Unlock()
 
 	cached, found := c.cache[url]
-	if !found || time.Now().After(cached.expiresOn) {
+	if !found {
 		asset, err := c.fetchAsset(url, itemType, allOfType)
 		if err != nil {
 			return nil, err
@@ -68,6 +68,8 @@ func (c *AssetCache) getAsset(url assetURL, itemType AssetItemType, allOfType bo
 		c.putAsset(url, asset)
 		return asset, nil
 	}
+
+	cached.accessedOn = time.Now().UTC()
 
 	return cached.asset, nil
 }
@@ -155,6 +157,7 @@ type assetEnvelope struct {
 	IsSet   bool            `json:"is_set"`
 }
 
+// Include loads assets from the given raw JSON into the cache
 func (s *AssetCache) Include(data json.RawMessage) error {
 	var raw []json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
@@ -173,16 +176,8 @@ func (s *AssetCache) Include(data json.RawMessage) error {
 		if err != nil {
 			return err
 		}
-
 		s.addAsset(envelope.URL, asset)
 	}
-
-	// any non-lazy assets can be validated now
-	//for _, asset := range nonLazy {
-	//	if err := asset.Validate(s); err != nil {
-	//		return utils.NewValidationErrors(err.Error())
-	//	}
-	//}
 
 	return nil
 }
