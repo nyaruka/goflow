@@ -16,18 +16,19 @@ import (
 type assetURL string
 type itemUUID string
 
-// AssetAllItems is used in place of an asset identifier to signify that an asset is the set of all items of a type
-var AssetAllItems itemUUID = ""
+// used in place of an asset identifier to signify that an asset is the set of all items of a type
+var assetAllItems itemUUID
 
-// AssetItemType is the asset item type, e.g. flow
-type AssetItemType string
+// the asset item type, e.g. flow
+type assetItemType string
 
 const (
-	AssetItemTypeChannel AssetItemType = "channel"
-	AssetItemTypeFlow    AssetItemType = "flow"
-	AssetItemTypeGroup   AssetItemType = "group"
+	assetItemTypeChannel assetItemType = "channel"
+	assetItemTypeFlow    assetItemType = "flow"
+	assetItemTypeGroup   assetItemType = "group"
 )
 
+// container for an asset in the cache which also includes the last time it was accessed
 type cachedAsset struct {
 	asset      interface{}
 	accessedOn time.Time
@@ -39,6 +40,7 @@ type AssetCache struct {
 	mutex sync.Mutex
 }
 
+// NewAssetCache creates a new asset cache
 func NewAssetCache() *AssetCache {
 	return &AssetCache{cache: make(map[assetURL]cachedAsset)}
 }
@@ -54,7 +56,8 @@ func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
 	c.putAsset(url, asset)
 }
 
-func (c *AssetCache) getAsset(url assetURL, itemType AssetItemType, allOfType bool) (interface{}, error) {
+// gets an asset from the cache if it's there or from the asset server
+func (c *AssetCache) getAsset(url assetURL, itemType assetItemType, allOfType bool) (interface{}, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
@@ -74,7 +77,8 @@ func (c *AssetCache) getAsset(url assetURL, itemType AssetItemType, allOfType bo
 	return cached.asset, nil
 }
 
-func (c *AssetCache) fetchAsset(url assetURL, itemType AssetItemType, allOfType bool) (interface{}, error) {
+// fetches an asset by its URL and parses it as the provided item type
+func (c *AssetCache) fetchAsset(url assetURL, itemType assetItemType, allOfType bool) (interface{}, error) {
 	response, err := http.Get(string(url))
 	if err != nil {
 		return nil, err
@@ -82,8 +86,11 @@ func (c *AssetCache) fetchAsset(url assetURL, itemType AssetItemType, allOfType 
 	if response.StatusCode != 200 {
 		return nil, fmt.Errorf("asset request returned non-200 response")
 	}
+	buf, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
 
-	buf, _ := ioutil.ReadAll(response.Body)
 	return readAsset(buf, itemType, allOfType)
 }
 
@@ -101,8 +108,8 @@ func (s *sessionAssets) ServerBaseURL() string {
 }
 
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	url := s.getURLForAsset(AssetItemTypeChannel, itemUUID(uuid))
-	asset, err := s.cache.getAsset(url, AssetItemTypeChannel, false)
+	url := s.getURLForAsset(assetItemTypeChannel, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, assetItemTypeChannel, false)
 	if err != nil {
 		return nil, err
 	}
@@ -114,8 +121,8 @@ func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error
 }
 
 func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	url := s.getURLForAsset(AssetItemTypeFlow, itemUUID(uuid))
-	asset, err := s.cache.getAsset(url, AssetItemTypeFlow, false)
+	url := s.getURLForAsset(assetItemTypeFlow, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, assetItemTypeFlow, false)
 	if err != nil {
 		return nil, err
 	}
@@ -127,8 +134,8 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 }
 
 func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
-	url := s.getURLForAsset(AssetItemTypeGroup, AssetAllItems)
-	asset, err := s.cache.getAsset(url, AssetItemTypeGroup, true)
+	url := s.getURLForAsset(assetItemTypeGroup, assetAllItems)
+	asset, err := s.cache.getAsset(url, assetItemTypeGroup, true)
 	if err != nil {
 		return nil, err
 	}
@@ -139,8 +146,8 @@ func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
 	return groups, nil
 }
 
-func (s *sessionAssets) getURLForAsset(itemType AssetItemType, uuid itemUUID) assetURL {
-	if uuid == AssetAllItems {
+func (s *sessionAssets) getURLForAsset(itemType assetItemType, uuid itemUUID) assetURL {
+	if uuid == assetAllItems {
 		return assetURL(fmt.Sprintf("%s/%s", s.serverBaseURL, itemType))
 	}
 	return assetURL(fmt.Sprintf("%s/%s/%s", s.serverBaseURL, itemType, uuid))
@@ -152,13 +159,13 @@ func (s *sessionAssets) getURLForAsset(itemType AssetItemType, uuid itemUUID) as
 
 type assetEnvelope struct {
 	URL     assetURL        `json:"url"     validate:"required,url"`
-	Type    AssetItemType   `json:"type"    validate:"required"`
+	Type    assetItemType   `json:"type"    validate:"required"`
 	Content json.RawMessage `json:"content" validate:"required"`
 	IsSet   bool            `json:"is_set"`
 }
 
 // Include loads assets from the given raw JSON into the cache
-func (s *AssetCache) Include(data json.RawMessage) error {
+func (c *AssetCache) Include(data json.RawMessage) error {
 	var raw []json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -176,21 +183,23 @@ func (s *AssetCache) Include(data json.RawMessage) error {
 		if err != nil {
 			return err
 		}
-		s.addAsset(envelope.URL, asset)
+		c.addAsset(envelope.URL, asset)
 	}
 
 	return nil
 }
 
 // reads an asset from the given raw JSON data
-func readAsset(data json.RawMessage, itemType AssetItemType, isSet bool) (interface{}, error) {
+func readAsset(data json.RawMessage, itemType assetItemType, isSet bool) (interface{}, error) {
 	var itemReader func(data json.RawMessage) (interface{}, error)
 
 	switch itemType {
-	case AssetItemTypeFlow:
-		itemReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
-	case AssetItemTypeChannel:
+	case assetItemTypeChannel:
 		itemReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
+	case assetItemTypeFlow:
+		itemReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
+	case assetItemTypeGroup:
+		// TODO: need to separate groups from group refs in flows
 	default:
 		return nil, fmt.Errorf("unknown asset type: %s", itemType)
 	}
