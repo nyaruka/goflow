@@ -56,13 +56,13 @@ func (c *AssetCache) addAsset(url string, asset interface{}) {
 	c.putAsset(url, asset)
 }
 
-func (c *AssetCache) getAsset(url string, assetType AssetType) (interface{}, error) {
+func (c *AssetCache) getAsset(url string, assetType AssetType, allOfType bool) (interface{}, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	cached, found := c.cache[url]
 	if !found || time.Now().After(cached.expiresOn) {
-		asset, err := c.fetchAsset(url, assetType)
+		asset, err := c.fetchAsset(url, assetType, allOfType)
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +74,7 @@ func (c *AssetCache) getAsset(url string, assetType AssetType) (interface{}, err
 	return cached.asset, nil
 }
 
-func (c *AssetCache) fetchAsset(url string, assetType AssetType) (interface{}, error) {
+func (c *AssetCache) fetchAsset(url string, assetType AssetType, allOfType bool) (interface{}, error) {
 	response, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (c *AssetCache) fetchAsset(url string, assetType AssetType) (interface{}, e
 	}
 
 	buf, _ := ioutil.ReadAll(response.Body)
-	return readAsset(buf, assetType)
+	return readAsset(buf, assetType, allOfType)
 }
 
 func NewAssetStore(cache *AssetCache, serverBaseURL string) flows.AssetStore {
@@ -97,7 +97,7 @@ func (s *assetStore) ServerBaseURL() string {
 
 func (s *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 	url := s.getURLForAsset(AssetTypeChannel, string(uuid))
-	asset, err := s.cache.getAsset(url, AssetTypeChannel)
+	asset, err := s.cache.getAsset(url, AssetTypeChannel, false)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +110,7 @@ func (s *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 
 func (s *assetStore) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	url := s.getURLForAsset(AssetTypeFlow, string(uuid))
-	asset, err := s.cache.getAsset(url, AssetTypeFlow)
+	asset, err := s.cache.getAsset(url, AssetTypeFlow, false)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +123,7 @@ func (s *assetStore) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 
 func (s *assetStore) GetGroups() ([]flows.Group, error) {
 	url := s.getURLForAsset(AssetTypeGroup, AssetAllOfType)
-	asset, err := s.cache.getAsset(url, AssetTypeGroup)
+	asset, err := s.cache.getAsset(url, AssetTypeGroup, true)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		asset, err := readAsset(envelope.Content, envelope.Type)
+		asset, err := readAsset(envelope.Content, envelope.Type, false)
 		if err != nil {
 			return err
 		}
@@ -183,20 +183,34 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	return nil
 }
 
-func readAsset(data json.RawMessage, assetType AssetType) (interface{}, error) {
-	var asset interface{}
-	var err error
+func readAsset(data json.RawMessage, assetType AssetType, isArray bool) (interface{}, error) {
+	var reader func(data json.RawMessage) (interface{}, error)
+
 	switch assetType {
 	case AssetTypeFlow:
-		asset, err = definition.ReadFlow(data)
+		reader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
 	case AssetTypeChannel:
-		asset, err = flows.ReadChannel(data)
+		reader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
 	default:
-		err = fmt.Errorf("unknown asset type: %s", assetType)
+		return nil, fmt.Errorf("unknown asset type: %s", assetType)
 	}
 
-	if err != nil {
-		return nil, err
+	if isArray {
+		var envelopes []json.RawMessage
+		if err := json.Unmarshal(data, &envelopes); err != nil {
+			return nil, err
+		}
+
+		assets := make([]interface{}, len(envelopes))
+		var err error
+		for e := range envelopes {
+			if assets[e], err = reader(data); err != nil {
+				return nil, err
+			}
+		}
+
+		return assets, nil
 	}
-	return asset, nil
+
+	return reader(data)
 }

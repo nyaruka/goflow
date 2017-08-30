@@ -181,7 +181,7 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
-	session := engine.NewSession(assetCache, "")
+	session := engine.NewSession(assetCache, "http://testserver/assets")
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {

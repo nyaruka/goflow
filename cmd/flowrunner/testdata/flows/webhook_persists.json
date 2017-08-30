@@ -1,8 +1,10 @@
 [
     {
         "type": "flow",
+        "url": "http://testserver/assets/flow/08d8a831-ca01-4a33-a26d-40f83aa4b625",
         "content": {
             "name": "Webhook Test",
+            "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
             "nodes": [
                 {
                     "exits": [
@@ -116,7 +118,6 @@
                 }
             ],
             "language": "eng",
-            "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
             "_ui": {
                 "nodes": {
                     "e7cd9720-9f37-4862-9e9e-007414a04762": {
@@ -157,6 +158,7 @@
     },
     {
         "type": "channel",
+        "url": "http://testserver/assets/channel/57f1078f-88aa-46f4-a59a-948a5739c03d",
         "content": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Twilio Channel",

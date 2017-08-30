@@ -47,8 +47,8 @@
         }
       ],
       "session": {
+        "assets_url": "http://testserver/assets",
         "contact": {
-          "channel_uuid": "",
           "fields": {
             "first_name": {
               "field_name": "First Name",
@@ -157,8 +157,8 @@
         }
       ],
       "session": {
+        "assets_url": "http://testserver/assets",
         "contact": {
-          "channel_uuid": "",
           "fields": {
             "first_name": {
               "field_name": "First Name",
@@ -318,8 +318,8 @@
         }
       ],
       "session": {
+        "assets_url": "http://testserver/assets",
         "contact": {
-          "channel_uuid": "",
           "fields": {
             "first_name": {
               "field_name": "First Name",
