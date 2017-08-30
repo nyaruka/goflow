@@ -13,6 +13,21 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+type assetURL string
+type itemUUID string
+
+// AssetAllItems is used in place of an asset identifier to signify that an asset is the set of all items of a type
+var AssetAllItems itemUUID = ""
+
+// AssetItemType is the asset item type, e.g. flow
+type AssetItemType string
+
+const (
+	AssetItemTypeChannel AssetItemType = "channel"
+	AssetItemTypeFlow    AssetItemType = "flow"
+	AssetItemTypeGroup   AssetItemType = "group"
+)
+
 type cachedAsset struct {
 	asset     interface{}
 	expiresOn time.Time
@@ -20,49 +35,32 @@ type cachedAsset struct {
 
 // AssetCache fetches and caches assets for the engine
 type AssetCache struct {
-	cache map[string]cachedAsset
+	cache map[assetURL]cachedAsset
 	mutex sync.Mutex
 }
 
-type assetStore struct {
-	cache         *AssetCache
-	serverBaseURL string
-}
-
-// AssetAllOfType is used in place of an asset identifier to signify that an asset is the set of all of a type
-var AssetAllOfType = ""
-
-// AssetType is the asset type, e.g. flow
-type AssetType string
-
-const (
-	AssetTypeChannel AssetType = "channel"
-	AssetTypeFlow    AssetType = "flow"
-	AssetTypeGroup   AssetType = "group"
-)
-
 func NewAssetCache() *AssetCache {
-	return &AssetCache{cache: make(map[string]cachedAsset)}
+	return &AssetCache{cache: make(map[assetURL]cachedAsset)}
 }
 
-func (c *AssetCache) putAsset(url string, asset interface{}) {
-	c.cache[url] = cachedAsset{asset: asset, expiresOn: time.Now().Add(5 * time.Minute)}
+func (c *AssetCache) putAsset(url assetURL, asset interface{}) {
+	c.cache[url] = cachedAsset{asset: asset, expiresOn: time.Now().Add(10 * time.Minute)}
 }
 
-func (c *AssetCache) addAsset(url string, asset interface{}) {
+func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	c.putAsset(url, asset)
 }
 
-func (c *AssetCache) getAsset(url string, assetType AssetType, allOfType bool) (interface{}, error) {
+func (c *AssetCache) getAsset(url assetURL, itemType AssetItemType, allOfType bool) (interface{}, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	cached, found := c.cache[url]
 	if !found || time.Now().After(cached.expiresOn) {
-		asset, err := c.fetchAsset(url, assetType, allOfType)
+		asset, err := c.fetchAsset(url, itemType, allOfType)
 		if err != nil {
 			return nil, err
 		}
@@ -74,8 +72,8 @@ func (c *AssetCache) getAsset(url string, assetType AssetType, allOfType bool) (
 	return cached.asset, nil
 }
 
-func (c *AssetCache) fetchAsset(url string, assetType AssetType, allOfType bool) (interface{}, error) {
-	response, err := http.Get(url)
+func (c *AssetCache) fetchAsset(url assetURL, itemType AssetItemType, allOfType bool) (interface{}, error) {
+	response, err := http.Get(string(url))
 	if err != nil {
 		return nil, err
 	}
@@ -84,20 +82,25 @@ func (c *AssetCache) fetchAsset(url string, assetType AssetType, allOfType bool)
 	}
 
 	buf, _ := ioutil.ReadAll(response.Body)
-	return readAsset(buf, assetType, allOfType)
+	return readAsset(buf, itemType, allOfType)
 }
 
-func NewAssetStore(cache *AssetCache, serverBaseURL string) flows.AssetStore {
-	return &assetStore{cache: cache, serverBaseURL: serverBaseURL}
+type sessionAssets struct {
+	cache         *AssetCache
+	serverBaseURL string
 }
 
-func (s *assetStore) ServerBaseURL() string {
+func NewSessionAssets(cache *AssetCache, serverBaseURL string) flows.SessionAssets {
+	return &sessionAssets{cache: cache, serverBaseURL: serverBaseURL}
+}
+
+func (s *sessionAssets) ServerBaseURL() string {
 	return s.serverBaseURL
 }
 
-func (s *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	url := s.getURLForAsset(AssetTypeChannel, string(uuid))
-	asset, err := s.cache.getAsset(url, AssetTypeChannel, false)
+func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
+	url := s.getURLForAsset(AssetItemTypeChannel, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, AssetItemTypeChannel, false)
 	if err != nil {
 		return nil, err
 	}
@@ -108,9 +111,9 @@ func (s *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 	return channel, nil
 }
 
-func (s *assetStore) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	url := s.getURLForAsset(AssetTypeFlow, string(uuid))
-	asset, err := s.cache.getAsset(url, AssetTypeFlow, false)
+func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
+	url := s.getURLForAsset(AssetItemTypeFlow, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, AssetItemTypeFlow, false)
 	if err != nil {
 		return nil, err
 	}
@@ -121,9 +124,9 @@ func (s *assetStore) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	return flow, nil
 }
 
-func (s *assetStore) GetGroups() ([]flows.Group, error) {
-	url := s.getURLForAsset(AssetTypeGroup, AssetAllOfType)
-	asset, err := s.cache.getAsset(url, AssetTypeGroup, true)
+func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
+	url := s.getURLForAsset(AssetItemTypeGroup, AssetAllItems)
+	asset, err := s.cache.getAsset(url, AssetItemTypeGroup, true)
 	if err != nil {
 		return nil, err
 	}
@@ -134,11 +137,11 @@ func (s *assetStore) GetGroups() ([]flows.Group, error) {
 	return groups, nil
 }
 
-func (s *assetStore) getURLForAsset(assetType AssetType, assetUUID string) string {
-	if assetUUID == AssetAllOfType {
-		return fmt.Sprintf("%s/%s", s.serverBaseURL, assetType)
+func (s *sessionAssets) getURLForAsset(itemType AssetItemType, uuid itemUUID) assetURL {
+	if uuid == AssetAllItems {
+		return assetURL(fmt.Sprintf("%s/%s", s.serverBaseURL, itemType))
 	}
-	return fmt.Sprintf("%s/%s/%s", s.serverBaseURL, assetType, assetUUID)
+	return assetURL(fmt.Sprintf("%s/%s/%s", s.serverBaseURL, itemType, uuid))
 }
 
 //------------------------------------------------------------------------------------------
@@ -146,12 +149,13 @@ func (s *assetStore) getURLForAsset(assetType AssetType, assetUUID string) strin
 //------------------------------------------------------------------------------------------
 
 type assetEnvelope struct {
-	URL     string          `json:"url"     validate:"required,url"`
-	Type    AssetType       `json:"type"    validate:"required"`
+	URL     assetURL        `json:"url"     validate:"required,url"`
+	Type    AssetItemType   `json:"type"    validate:"required"`
 	Content json.RawMessage `json:"content" validate:"required"`
+	IsSet   bool            `json:"is_set"`
 }
 
-func (c *AssetCache) Include(data json.RawMessage) error {
+func (s *AssetCache) Include(data json.RawMessage) error {
 	var raw []json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -165,12 +169,12 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		asset, err := readAsset(envelope.Content, envelope.Type, false)
+		asset, err := readAsset(envelope.Content, envelope.Type, envelope.IsSet)
 		if err != nil {
 			return err
 		}
 
-		c.addAsset(envelope.URL, asset)
+		s.addAsset(envelope.URL, asset)
 	}
 
 	// any non-lazy assets can be validated now
@@ -183,19 +187,20 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	return nil
 }
 
-func readAsset(data json.RawMessage, assetType AssetType, isArray bool) (interface{}, error) {
-	var reader func(data json.RawMessage) (interface{}, error)
+// reads an asset from the given raw JSON data
+func readAsset(data json.RawMessage, itemType AssetItemType, isSet bool) (interface{}, error) {
+	var itemReader func(data json.RawMessage) (interface{}, error)
 
-	switch assetType {
-	case AssetTypeFlow:
-		reader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
-	case AssetTypeChannel:
-		reader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
+	switch itemType {
+	case AssetItemTypeFlow:
+		itemReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
+	case AssetItemTypeChannel:
+		itemReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
 	default:
-		return nil, fmt.Errorf("unknown asset type: %s", assetType)
+		return nil, fmt.Errorf("unknown asset type: %s", itemType)
 	}
 
-	if isArray {
+	if isSet {
 		var envelopes []json.RawMessage
 		if err := json.Unmarshal(data, &envelopes); err != nil {
 			return nil, err
@@ -204,7 +209,7 @@ func readAsset(data json.RawMessage, assetType AssetType, isArray bool) (interfa
 		assets := make([]interface{}, len(envelopes))
 		var err error
 		for e := range envelopes {
-			if assets[e], err = reader(data); err != nil {
+			if assets[e], err = itemReader(data); err != nil {
 				return nil, err
 			}
 		}
@@ -212,5 +217,6 @@ func readAsset(data json.RawMessage, assetType AssetType, isArray bool) (interfa
 		return assets, nil
 	}
 
-	return reader(data)
+	// asset is a single item
+	return itemReader(data)
 }

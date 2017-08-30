@@ -96,7 +96,7 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
-type AssetStore interface {
+type SessionAssets interface {
 	ServerBaseURL() string
 
 	GetChannel(ChannelUUID) (Channel, error)
@@ -128,7 +128,7 @@ type Action interface {
 	UUID() ActionUUID
 
 	Execute(FlowRun, Step) error
-	Validate(AssetStore) error
+	Validate(SessionAssets) error
 	utils.Typed
 }
 
@@ -221,7 +221,7 @@ type LogEntry interface {
 
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
-	Assets() AssetStore
+	Assets() SessionAssets
 
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)

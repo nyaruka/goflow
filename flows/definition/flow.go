@@ -30,7 +30,7 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 
 // Validates that structurally we are sane. IE, all required fields are present and
 // all exits with destinations point to valid endpoints.
-func (f *flow) Validate(assets flows.AssetStore) error {
+func (f *flow) Validate(assets flows.SessionAssets) error {
 	var err error
 
 	for _, node := range f.nodes {

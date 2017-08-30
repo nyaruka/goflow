@@ -18,7 +18,7 @@ type flowTrigger struct {
 }
 
 type session struct {
-	assets flows.AssetStore
+	assets flows.SessionAssets
 
 	// state which is maintained between engine calls
 	env     utils.Environment
@@ -38,7 +38,7 @@ type session struct {
 func NewSession(assetCache *AssetCache, assetsURL string) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
-		assets:     NewAssetStore(assetCache, assetsURL),
+		assets:     NewSessionAssets(assetCache, assetsURL),
 		status:     flows.SessionStatusActive,
 		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -46,7 +46,7 @@ func NewSession(assetCache *AssetCache, assetsURL string) flows.Session {
 	}
 }
 
-func (s *session) Assets() flows.AssetStore                 { return s.assets }
+func (s *session) Assets() flows.SessionAssets              { return s.assets }
 func (s *session) Environment() utils.Environment           { return s.env }
 func (s *session) SetEnvironment(env utils.Environment)     { s.env = env }
 func (s *session) Contact() *flows.Contact                  { return s.contact }
