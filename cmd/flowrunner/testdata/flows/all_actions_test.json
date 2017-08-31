@@ -177,7 +177,6 @@
         }
       ],
       "session": {
-        "assets_url": "",
         "contact": {
           "fields": {
             "activation_token": {

@@ -37,7 +37,6 @@
         }
       ],
       "session": {
-        "assets_url": "",
         "contact": {
           "fields": {
             "first_name": {
@@ -161,7 +160,6 @@
         }
       ],
       "session": {
-        "assets_url": "",
         "contact": {
           "fields": {
             "first_name": {

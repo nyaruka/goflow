@@ -382,7 +382,6 @@ const noDestination = flows.NodeUUID("")
 
 type sessionEnvelope struct {
 	Environment json.RawMessage      `json:"environment"`
-	AssetsURL   string               `json:"assets_url"`
 	Contact     json.RawMessage      `json:"contact"`
 	Runs        []json.RawMessage    `json:"runs"`
 	Status      flows.SessionStatus  `json:"status"`
