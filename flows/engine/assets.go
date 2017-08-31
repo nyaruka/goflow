@@ -16,10 +16,13 @@ import (
 type assetURL string
 type itemUUID string
 
-// used in place of an asset identifier to signify that an asset is the set of all items of a type
-var assetAllItems itemUUID
+type assetType string
 
-// the asset item type, e.g. flow
+const (
+	assetTypeObject assetType = "object"
+	assetTypeSet    assetType = "set"
+)
+
 type assetItemType string
 
 const (
@@ -28,9 +31,10 @@ const (
 	assetItemTypeGroup   assetItemType = "group"
 )
 
-// container for an asset in the cache which also includes the last time it was accessed
+// container for any asset in the cache
 type cachedAsset struct {
 	asset      interface{}
+	addedOn    time.Time
 	accessedOn time.Time
 }
 
@@ -46,7 +50,7 @@ func NewAssetCache() *AssetCache {
 }
 
 func (c *AssetCache) putAsset(url assetURL, asset interface{}) {
-	c.cache[url] = cachedAsset{asset: asset, accessedOn: time.Now().UTC()}
+	c.cache[url] = cachedAsset{asset: asset, addedOn: time.Now().UTC()}
 }
 
 func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
@@ -57,13 +61,13 @@ func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
 }
 
 // gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) getAsset(url assetURL, itemType assetItemType, allOfType bool) (interface{}, error) {
+func (c *AssetCache) getAsset(url assetURL, aType assetType, itemType assetItemType) (interface{}, error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	cached, found := c.cache[url]
 	if !found {
-		asset, err := c.fetchAsset(url, itemType, allOfType)
+		asset, err := c.fetchAsset(url, aType, itemType)
 		if err != nil {
 			return nil, err
 		}
@@ -72,13 +76,14 @@ func (c *AssetCache) getAsset(url assetURL, itemType assetItemType, allOfType bo
 		return asset, nil
 	}
 
+	// update the accessed on time
 	cached.accessedOn = time.Now().UTC()
 
 	return cached.asset, nil
 }
 
-// fetches an asset by its URL and parses it as the provided item type
-func (c *AssetCache) fetchAsset(url assetURL, itemType assetItemType, allOfType bool) (interface{}, error) {
+// fetches an asset by its URL and parses it as the provided type
+func (c *AssetCache) fetchAsset(url assetURL, aType assetType, itemType assetItemType) (interface{}, error) {
 	response, err := http.Get(string(url))
 	if err != nil {
 		return nil, err
@@ -91,7 +96,7 @@ func (c *AssetCache) fetchAsset(url assetURL, itemType assetItemType, allOfType 
 		return nil, err
 	}
 
-	return readAsset(buf, itemType, allOfType)
+	return readAsset(buf, aType, itemType)
 }
 
 type sessionAssets struct {
@@ -108,8 +113,8 @@ func (s *sessionAssets) ServerBaseURL() string {
 }
 
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	url := s.getURLForAsset(assetItemTypeChannel, itemUUID(uuid))
-	asset, err := s.cache.getAsset(url, assetItemTypeChannel, false)
+	url := s.getAssetItemURL(assetItemTypeChannel, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeChannel)
 	if err != nil {
 		return nil, err
 	}
@@ -121,8 +126,8 @@ func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error
 }
 
 func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	url := s.getURLForAsset(assetItemTypeFlow, itemUUID(uuid))
-	asset, err := s.cache.getAsset(url, assetItemTypeFlow, false)
+	url := s.getAssetItemURL(assetItemTypeFlow, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeFlow)
 	if err != nil {
 		return nil, err
 	}
@@ -134,8 +139,8 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 }
 
 func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
-	url := s.getURLForAsset(assetItemTypeGroup, assetAllItems)
-	asset, err := s.cache.getAsset(url, assetItemTypeGroup, true)
+	url := s.getAssetSetURL(assetItemTypeGroup)
+	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeGroup)
 	if err != nil {
 		return nil, err
 	}
@@ -146,10 +151,11 @@ func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
 	return groups, nil
 }
 
-func (s *sessionAssets) getURLForAsset(itemType assetItemType, uuid itemUUID) assetURL {
-	if uuid == assetAllItems {
-		return assetURL(fmt.Sprintf("%s/%s", s.serverBaseURL, itemType))
-	}
+func (s *sessionAssets) getAssetSetURL(itemType assetItemType) assetURL {
+	return assetURL(fmt.Sprintf("%s/%s", s.serverBaseURL, itemType))
+}
+
+func (s *sessionAssets) getAssetItemURL(itemType assetItemType, uuid itemUUID) assetURL {
 	return assetURL(fmt.Sprintf("%s/%s/%s", s.serverBaseURL, itemType, uuid))
 }
 
@@ -158,10 +164,10 @@ func (s *sessionAssets) getURLForAsset(itemType assetItemType, uuid itemUUID) as
 //------------------------------------------------------------------------------------------
 
 type assetEnvelope struct {
-	URL     assetURL        `json:"url"     validate:"required,url"`
-	Type    assetItemType   `json:"type"    validate:"required"`
-	Content json.RawMessage `json:"content" validate:"required"`
-	IsSet   bool            `json:"is_set"`
+	URL      assetURL        `json:"url"     validate:"required,url"`
+	ItemType assetItemType   `json:"type"    validate:"required"`
+	Content  json.RawMessage `json:"content" validate:"required"`
+	IsSet    bool            `json:"is_set"`
 }
 
 // Include loads assets from the given raw JSON into the cache
@@ -179,7 +185,14 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		asset, err := readAsset(envelope.Content, envelope.Type, envelope.IsSet)
+		var aType assetType
+		if envelope.IsSet {
+			aType = assetTypeSet
+		} else {
+			aType = assetTypeObject
+		}
+
+		asset, err := readAsset(envelope.Content, aType, envelope.ItemType)
 		if err != nil {
 			return err
 		}
@@ -190,7 +203,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 }
 
 // reads an asset from the given raw JSON data
-func readAsset(data json.RawMessage, itemType assetItemType, isSet bool) (interface{}, error) {
+func readAsset(data json.RawMessage, aType assetType, itemType assetItemType) (interface{}, error) {
 	var itemReader func(data json.RawMessage) (interface{}, error)
 
 	switch itemType {
@@ -204,7 +217,7 @@ func readAsset(data json.RawMessage, itemType assetItemType, isSet bool) (interf
 		return nil, fmt.Errorf("unknown asset type: %s", itemType)
 	}
 
-	if isSet {
+	if aType == assetTypeSet {
 		var envelopes []json.RawMessage
 		if err := json.Unmarshal(data, &envelopes); err != nil {
 			return nil, err
@@ -221,6 +234,6 @@ func readAsset(data json.RawMessage, itemType assetItemType, isSet bool) (interf
 		return assets, nil
 	}
 
-	// asset is a single item
+	// asset is a single object
 	return itemReader(data)
 }
