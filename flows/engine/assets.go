@@ -164,8 +164,8 @@ func (s *sessionAssets) getAssetItemURL(itemType assetItemType, uuid itemUUID) a
 //------------------------------------------------------------------------------------------
 
 type assetEnvelope struct {
-	URL      assetURL        `json:"url"     validate:"required,url"`
-	ItemType assetItemType   `json:"type"    validate:"required"`
+	URL      assetURL        `json:"url" validate:"required,url"`
+	ItemType assetItemType   `json:"type" validate:"required"`
 	Content  json.RawMessage `json:"content" validate:"required"`
 	IsSet    bool            `json:"is_set"`
 }
