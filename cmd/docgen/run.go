@@ -80,7 +80,8 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	}
 
 	// create our engine session
-	session := engine.NewSession(assetCache, "http://testserver/assets")
+	assetURLs := map[engine.AssetItemType]string{"flow": "http://testserver/assets/flow"}
+	session := engine.NewSession(assetCache, assetURLs)
 
 	// create our contact
 	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactDef))

@@ -94,9 +94,12 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 	}
 
 	// lookup the channel
-	channel, err := session.Assets().GetChannel(i.ChannelUUID)
-	if err != nil {
-		return nil, err
+	var channel flows.Channel
+	if i.ChannelUUID != "" {
+		channel, err = session.Assets().GetChannel(i.ChannelUUID)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	input.baseInput.channel = channel

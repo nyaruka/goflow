@@ -40,6 +40,11 @@ var flowTests = []struct {
 var writeOutput bool
 var serverURL = ""
 
+var assetURLs = map[engine.AssetItemType]string{
+	"channel": "http://testserver/assets/channel",
+	"flow":    "http://testserver/assets/flow",
+}
+
 func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite TestFlow output")
 }
@@ -85,7 +90,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		return runResult{}, fmt.Errorf("Error reading assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, "http://testserver/assets")
+	session := engine.NewSession(assetCache, assetURLs)
 
 	contactJSON, err := readFile("contacts/", contactFilename)
 	if err != nil {
@@ -117,7 +122,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		session, err = engine.ReadSession(assetCache, outJSON)
+		session, err = engine.ReadSession(assetCache, assetURLs, outJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -262,11 +267,11 @@ func TestFlows(t *testing.T) {
 				actualOutput := runResult.outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(runResult.assetCache, actualOutput.Session)
+				actualSession, err := engine.ReadSession(runResult.assetCache, assetURLs, actualOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.assets, err)
 				}
-				expectedSession, err := engine.ReadSession(runResult.assetCache, expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(runResult.assetCache, assetURLs, expectedOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 				}

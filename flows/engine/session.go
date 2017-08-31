@@ -35,10 +35,10 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assetCache *AssetCache, assetsURL string) flows.Session {
+func NewSession(cache *AssetCache, assetURLs map[AssetItemType]string) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
-		assets:     NewSessionAssets(assetCache, assetsURL),
+		assets:     NewSessionAssets(cache, assetURLs),
 		status:     flows.SessionStatusActive,
 		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -390,7 +390,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assetCache *AssetCache, data json.RawMessage) (flows.Session, error) {
+func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
@@ -398,7 +398,7 @@ func ReadSession(assetCache *AssetCache, data json.RawMessage) (flows.Session, e
 		return nil, err
 	}
 
-	s := NewSession(assetCache, envelope.AssetsURL).(*session)
+	s := NewSession(cache, assetURLs).(*session)
 	s.status = envelope.Status
 
 	// read our environment
@@ -443,7 +443,6 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	var envelope sessionEnvelope
 	var err error
 
-	envelope.AssetsURL = s.assets.ServerBaseURL()
 	envelope.Status = s.status
 	envelope.Environment, err = json.Marshal(s.env)
 	if err != nil {

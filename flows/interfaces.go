@@ -97,8 +97,6 @@ const (
 func (r RunStatus) String() string { return string(r) }
 
 type SessionAssets interface {
-	ServerBaseURL() string
-
 	GetChannel(ChannelUUID) (Channel, error)
 	GetFlow(FlowUUID) (Flow, error)
 	GetGroups() ([]Group, error)

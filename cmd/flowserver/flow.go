@@ -31,10 +31,10 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Assets    *json.RawMessage       `json:"assets"`
-	AssetsURL string                 `json:"assets_url" validate:"required,url"`
-	Flow      flows.FlowUUID         `json:"flow_uuid"  validate:"required"`
-	Events    []*utils.TypedEnvelope `json:"events"`
+	Assets    *json.RawMessage                `json:"assets"`
+	AssetURLs map[engine.AssetItemType]string `json:"asset_urls" validate:"required"`
+	Flow      flows.FlowUUID                  `json:"flow_uuid"  validate:"required"`
+	Events    []*utils.TypedEnvelope          `json:"events"`
 }
 
 func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -64,15 +64,13 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// build our session
-	session := engine.NewSession(assetCache, start.AssetsURL)
+	session := engine.NewSession(assetCache, start.AssetURLs)
 
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
 	if err != nil {
 		return nil, err
 	}
-
-	
 
 	// start our flow
 	err = session.StartFlow(start.Flow, callerEvents)
@@ -84,9 +82,10 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 type resumeRequest struct {
-	Assets  json.RawMessage        `json:"assets"`
-	Session json.RawMessage        `json:"session" validate:"required"`
-	Events  []*utils.TypedEnvelope `json:"events"  validate:"required,min=1"`
+	Assets    json.RawMessage                 `json:"assets"`
+	AssetURLs map[engine.AssetItemType]string `json:"asset_urls" validate:"required"`
+	Session   json.RawMessage                 `json:"session" validate:"required"`
+	Events    []*utils.TypedEnvelope          `json:"events" validate:"required,min=1"`
 }
 
 func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -114,7 +113,7 @@ func handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// read our session
-	session, err := engine.ReadSession(assetCache, resume.Session)
+	session, err := engine.ReadSession(assetCache, resume.AssetURLs, resume.Session)
 	if err != nil {
 		return nil, err
 	}

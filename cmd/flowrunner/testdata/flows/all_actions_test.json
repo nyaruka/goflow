@@ -177,7 +177,7 @@
         }
       ],
       "session": {
-        "assets_url": "http://testserver/assets",
+        "assets_url": "",
         "contact": {
           "fields": {
             "activation_token": {
