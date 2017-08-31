@@ -22,7 +22,7 @@ var assetsDef = `
 				"actions": [%s]
 			}]
 		}
-	},ł
+	},
 	{
 		"type": "flow",
 		"url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
