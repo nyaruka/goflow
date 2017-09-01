@@ -22,6 +22,12 @@ func UnmarshalAndValidate(data []byte, obj interface{}, objName string) error {
 	return nil
 }
 
+func UnmarshalArray(data json.RawMessage) ([]json.RawMessage, error) {
+	var items []json.RawMessage
+	err := json.Unmarshal(data, &items)
+	return items, err
+}
+
 // EmptyJSONFragment is a fragment which has no values
 var EmptyJSONFragment = JSONFragment{}
 

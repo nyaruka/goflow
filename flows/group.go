@@ -3,54 +3,53 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/utils"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
-func init() {
-	utils.Validator.RegisterStructValidation(ValidateGroup, Group{})
+// GroupReference is a reference to group used in a flow action or event
+type GroupReference struct {
+	UUID GroupUUID `json:"uuid" validate:"omitempty,uuid4"`
+	Name string    `json:"name"`
 }
 
-// Group represents a grouping of contacts. From an engine perspective the only piece that matter is
-// the UUID of the group and its name
+func NewGroupReference(uuid GroupUUID, name string) *GroupReference {
+	return &GroupReference{UUID: uuid, Name: name}
+}
+
+// Group represents a grouping of contacts
 type Group struct {
-	uuid GroupUUID
-	name string
-}
-
-// ValidateGroup is our global validator for our group struct
-func ValidateGroup(sl validator.StructLevel) {
-	group := sl.Current().Interface().(Group)
-	if len(group.uuid) == 0 {
-		sl.ReportError(group.uuid, "uuid", "uuid", "uuid4", "")
-	}
-	if len(group.name) == 0 {
-		sl.ReportError(group.uuid, "name", "name", "required", "")
-	}
+	uuid  GroupUUID
+	name  string
+	query string
 }
 
 // NewGroup returns a new group object with the passed in uuid and name
-func NewGroup(uuid GroupUUID, name string) *Group {
-	return &Group{uuid, name}
+func NewGroup(uuid GroupUUID, name string, query string) *Group {
+	return &Group{uuid: uuid, name: name, query: query}
 }
-
-// Name returns the name of the group
-func (g *Group) Name() string { return g.name }
 
 // UUID returns the UUID of the group
 func (g *Group) UUID() GroupUUID { return g.uuid }
 
+// Name returns the name of the group
+func (g *Group) Name() string { return g.name }
+
+// Query returns the query of a dynamic group
+func (g *Group) Query() string { return g.query }
+
+// IsDynamic returns whether this group is dynamic
+func (g *Group) IsDynamic() bool { return g.query != "" }
+
 // Resolve resolves the passed in key to a value
 func (g *Group) Resolve(key string) interface{} {
 	switch key {
-
-	case "name":
-		return g.name
-
 	case "uuid":
 		return g.uuid
+	case "name":
+		return g.name
 	}
 
 	return fmt.Errorf("no field '%s' on group", key)
@@ -64,11 +63,11 @@ func (g *Group) String() string { return g.name }
 
 var _ utils.VariableResolver = (*Group)(nil)
 
-// GroupList defines a list of groups
+// GroupList defines a contact's list of groups
 type GroupList []*Group
 
 // FindGroup returns the group with the passed in UUID or nil if not found
-func (l GroupList) FindGroup(uuid GroupUUID) *Group {
+func (l GroupList) FindByUUID(uuid GroupUUID) *Group {
 	for i := range l {
 		if l[i].uuid == uuid {
 			return l[i]
@@ -77,11 +76,21 @@ func (l GroupList) FindGroup(uuid GroupUUID) *Group {
 	return nil
 }
 
-// Resolve looks up the passed in key for the group list, we attempt to find the group with the uuid
-// of the passed in key, which can be used for testing whether a contact is part of a group
+// Resolve looks up the passed in key for the group list, which must be either "count" or a numerical index
 func (l GroupList) Resolve(key string) interface{} {
-	uuid := GroupUUID(key)
-	return l.FindGroup(uuid)
+	if key == "count" {
+		return len(l)
+	}
+
+	// key must be a numerical index
+	i, err := strconv.Atoi(key)
+	if err != nil {
+		return fmt.Errorf("not a valid integer '%s'", key)
+	}
+	if i < len(l) {
+		return l[i]
+	}
+	return nil
 }
 
 // Default returns the default value for this group, which is our entire list
@@ -100,33 +109,66 @@ func (l GroupList) String() string {
 
 var _ utils.VariableResolver = (GroupList)(nil)
 
+// GroupSet defines the unordered set of all groups for a session
+type GroupSet struct {
+	groups       []*Group
+	groupsByUUID map[GroupUUID]*Group
+}
+
+func NewGroupSet(groups []*Group) *GroupSet {
+	s := &GroupSet{groups: groups, groupsByUUID: make(map[GroupUUID]*Group, len(groups))}
+	for _, group := range s.groups {
+		s.groupsByUUID[group.uuid] = group
+	}
+	return s
+}
+
+func (s *GroupSet) FindByUUID(uuid GroupUUID) *Group {
+	return s.groupsByUUID[uuid]
+}
+
+// FindByName looks for a group with the given name (case-insensitive)
+func (s *GroupSet) FindByName(name string) *Group {
+	name = strings.ToLower(name)
+	for _, group := range s.groups {
+		if strings.ToLower(group.name) == name {
+			return group
+		}
+	}
+	return nil
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type groupEnvelope struct {
-	UUID GroupUUID `json:"uuid"`
-	Name string    `json:"name"`
+	UUID  GroupUUID `json:"uuid" validate:"required,uuid4"`
+	Name  string    `json:"name"`
+	Query string    `json:"query,omitempty"`
 }
 
-// UnmarshalJSON unmarshals the group from the passed in json
-func (g *Group) UnmarshalJSON(data []byte) error {
+func ReadGroup(data json.RawMessage) (*Group, error) {
 	var ge groupEnvelope
-	var err error
+	if err := utils.UnmarshalAndValidate(data, &ge, "group"); err != nil {
+		return nil, err
+	}
 
-	err = json.Unmarshal(data, &ge)
-	g.uuid = ge.UUID
-	g.name = ge.Name
-
-	return err
+	return NewGroup(ge.UUID, ge.Name, ge.Query), nil
 }
 
-// MarshalJSON marshals the Group into json
-func (g *Group) MarshalJSON() ([]byte, error) {
-	var ge groupEnvelope
+func ReadGroupSet(data json.RawMessage) (*GroupSet, error) {
+	items, err := utils.UnmarshalArray(data)
+	if err != nil {
+		return nil, err
+	}
 
-	ge.Name = g.name
-	ge.UUID = g.uuid
+	groups := make([]*Group, len(items))
+	for d := range items {
+		if groups[d], err = ReadGroup(items[d]); err != nil {
+			return nil, err
+		}
+	}
 
-	return json.Marshal(ge)
+	return NewGroupSet(groups), nil
 }

@@ -97,8 +97,8 @@ type legacyGroupReference struct {
 	Name string          `json:"name"`
 }
 
-func (g *legacyGroupReference) Migrate() *flows.Group {
-	return flows.NewGroup(g.UUID, g.Name)
+func (g *legacyGroupReference) Migrate() *flows.GroupReference {
+	return flows.NewGroupReference(g.UUID, g.Name)
 }
 
 type legacyVariable struct {
@@ -352,7 +352,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		for i, contact := range a.Contacts {
 			contacts[i] = contact.Migrate()
 		}
-		groups := make([]*flows.Group, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -367,7 +367,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}, nil
 
 	case "add_group":
-		groups := make([]*flows.Group, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -377,7 +377,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "del_group":
-		groups := make([]*flows.Group, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}

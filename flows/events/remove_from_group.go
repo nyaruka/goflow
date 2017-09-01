@@ -12,24 +12,21 @@ const TypeRemoveFromGroup string = "remove_from_group"
 //   {
 //     "type": "remove_from_group",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "groups": [{
-//	      "name": "Survey Audience",
-//	      "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
-//	   }]
+//     "group_uuids": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"]
 //   }
 // ```
 //
 // @event remove_from_group
 type RemoveFromGroupEvent struct {
-	Groups []*flows.Group `json:"groups"  validate:"required,min=1"`
+	GroupUUIDs []flows.GroupUUID `json:"group_uuids" validate:"required,min=1,dive,uuid4"`
 	BaseEvent
 }
 
-// NewRemoveFromGroup returns a new remove from group event
-func NewRemoveFromGroup(groups []*flows.Group) *RemoveFromGroupEvent {
+// NewRemoveFromGroupEvent returns a new remove from group event
+func NewRemoveFromGroupEvent(groups []flows.GroupUUID) *RemoveFromGroupEvent {
 	return &RemoveFromGroupEvent{
-		BaseEvent: NewBaseEvent(),
-		Groups:    groups,
+		BaseEvent:  NewBaseEvent(),
+		GroupUUIDs: groups,
 	}
 }
 
@@ -38,8 +35,16 @@ func (e *RemoveFromGroupEvent) Type() string { return TypeRemoveFromGroup }
 
 // Apply applies this event to the given run
 func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun) error {
-	for _, group := range e.Groups {
-		run.Contact().RemoveGroup(group.UUID())
+	groupSet, err := run.Session().Assets().GetGroupSet()
+	if err != nil {
+		return err
+	}
+
+	for _, groupUUID := range e.GroupUUIDs {
+		group := groupSet.FindByUUID(groupUUID)
+		if group != nil {
+			run.Contact().RemoveGroup(group)
+		}
 	}
 	return nil
 }

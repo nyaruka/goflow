@@ -26,7 +26,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // @action remove_from_group
 type RemoveFromGroupAction struct {
 	BaseAction
-	Groups []*flows.Group `json:"groups"     validate:"dive"`
+	Groups []*flows.GroupReference `json:"groups" validate:"dive"`
 }
 
 // Type returns the type of this action
@@ -42,26 +42,23 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) erro
 	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact != nil {
-		groups := make([]*flows.Group, 0)
+		groupUUIDs := make([]flows.GroupUUID, 0)
 
 		// no groups in our action means remove all
 		if len(a.Groups) == 0 {
 			for _, group := range contact.Groups() {
-				if contact.InGroup(group) {
-					groups = append(groups, group)
-				}
+				groupUUIDs = append(groupUUIDs, group.UUID())
 			}
-
 		} else {
 			for _, group := range a.Groups {
-				if contact.InGroup(group) {
-					groups = append(groups, group)
+				if contact.Groups().FindByUUID(group.UUID) != nil {
+					groupUUIDs = append(groupUUIDs, group.UUID)
 				}
 			}
 		}
 
-		if len(groups) > 0 {
-			run.ApplyEvent(step, a, events.NewRemoveFromGroup(groups))
+		if len(groupUUIDs) > 0 {
+			run.ApplyEvent(step, a, events.NewRemoveFromGroupEvent(groupUUIDs))
 		}
 	}
 

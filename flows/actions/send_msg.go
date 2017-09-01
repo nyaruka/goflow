@@ -33,7 +33,7 @@ type SendMsgAction struct {
 	Attachments []string                  `json:"attachments"`
 	URNs        []flows.URN               `json:"urns,omitempty"`
 	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups      []*flows.Group            `json:"groups,omitempty"   validate:"dive"`
+	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
 // Type returns the type of this action
@@ -71,7 +71,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	for _, group := range a.Groups {
-		run.ApplyEvent(step, a, events.NewSendMsgToGroup(group.UUID(), text, attachments))
+		run.ApplyEvent(step, a, events.NewSendMsgToGroup(group.UUID, text, attachments))
 	}
 	return nil
 }

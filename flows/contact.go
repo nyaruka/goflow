@@ -39,22 +39,13 @@ func (c *Contact) URNs() URNList     { return c.urns }
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 
 func (c *Contact) Groups() GroupList { return GroupList(c.groups) }
-func (c *Contact) AddGroup(uuid GroupUUID, name string) {
-	c.groups = append(c.groups, &Group{uuid, name})
+func (c *Contact) AddGroup(group *Group) {
+	c.groups = append(c.groups, group)
 }
-func (c *Contact) RemoveGroup(uuid GroupUUID) bool {
+func (c *Contact) RemoveGroup(group *Group) bool {
 	for i := range c.groups {
-		if c.groups[i].uuid == uuid {
+		if c.groups[i].uuid == group.uuid {
 			c.groups = append(c.groups[:i], c.groups[i+1:]...)
-			return true
-		}
-	}
-	return false
-}
-
-func (c *Contact) InGroup(group *Group) bool {
-	for i := range c.groups {
-		if c.groups[i].uuid == group.UUID() {
 			return true
 		}
 	}
@@ -130,7 +121,7 @@ type contactEnvelope struct {
 	Language    utils.Language `json:"language"`
 	Timezone    string         `json:"timezone"`
 	URNs        URNList        `json:"urns"`
-	Groups      GroupList      `json:"groups"`
+	GroupUUIDs  []GroupUUID    `json:"group_uuids,omitempty" validate:"dive,uuid4"`
 	Fields      *Fields        `json:"fields,omitempty"`
 	ChannelUUID ChannelUUID    `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
 }
@@ -166,10 +157,15 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 		c.urns = envelope.URNs
 	}
 
-	if envelope.Groups == nil {
+	if envelope.GroupUUIDs == nil {
 		c.groups = make(GroupList, 0)
 	} else {
-		c.groups = envelope.Groups
+		c.groups = make(GroupList, len(envelope.GroupUUIDs))
+		for g := range envelope.GroupUUIDs {
+			if c.groups[g], err = assets.GetGroup(envelope.GroupUUIDs[g]); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	if envelope.Fields == nil {
@@ -195,10 +191,14 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.UUID = c.uuid
 	ce.Language = c.language
 	ce.URNs = c.urns
-	ce.Groups = c.groups
 	ce.Fields = c.fields
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
+	}
+
+	ce.GroupUUIDs = make([]GroupUUID, len(c.groups))
+	for g := range c.groups {
+		ce.GroupUUIDs[g] = c.groups[g].UUID()
 	}
 
 	return json.Marshal(ce)

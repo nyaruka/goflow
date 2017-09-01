@@ -310,7 +310,7 @@ func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// iterate through the groups looking for one with the same UUID as passed in
-	group := contact.Groups().FindGroup(flows.GroupUUID(groupUUID))
+	group := contact.Groups().FindByUUID(flows.GroupUUID(groupUUID))
 	if group != nil {
 		return XTestResult{true, group}
 	}

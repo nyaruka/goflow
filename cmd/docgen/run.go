@@ -34,7 +34,16 @@ var assetsDef = `
 				"actions": []
 			}]
 		}
-	]
+	},
+	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": [
+			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+			{"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
+		],
+		"is_set": true
+	}
 ]
 `
 
@@ -48,6 +57,12 @@ var emptyDef = `
 			"name": "EmptyFlow",
 			"nodes": []
 		}
+	},
+	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": [],
+		"is_set": true
 	}
 ]
 `
@@ -57,10 +72,7 @@ var contactDef = `
 	"name": "Ryan Lewis",
 	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 	"urns": ["tel:%2B12065551212", "email:foo@bar.com"],
-	"groups": [{
-		"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-		"name": "Registered Users"
-	}],
+	"groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"],
 	"fields": {
 		"activation_token": {
 			"field_uuid": "ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1",
@@ -80,7 +92,11 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	}
 
 	// create our engine session
-	assetURLs := map[engine.AssetItemType]string{"flow": "http://testserver/assets/flow"}
+	assetURLs := map[engine.AssetItemType]string{
+		"channel": "http://testserver/assets/channel",
+		"flow":    "http://testserver/assets/flow",
+		"group":   "http://testserver/assets/group",
+	}
 	session := engine.NewSession(assetCache, assetURLs)
 
 	// create our contact
