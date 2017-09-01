@@ -35,7 +35,7 @@ func foo() {
 func (a *AddLabelAction) Type() string { return TypeAddLabel }
 
 // Validate validates the fields for this label
-func (a *AddLabelAction) Validate(assets flows.AssetStore) error {
+func (a *AddLabelAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }
 

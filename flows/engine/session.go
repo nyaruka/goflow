@@ -18,7 +18,7 @@ type flowTrigger struct {
 }
 
 type session struct {
-	assets flows.AssetStore
+	assets flows.SessionAssets
 
 	// state which is maintained between engine calls
 	env     utils.Environment
@@ -35,10 +35,10 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assets flows.AssetStore) flows.Session {
+func NewSession(cache *AssetCache, assetURLs map[AssetItemType]string) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
-		assets:     assets,
+		assets:     NewSessionAssets(cache, assetURLs),
 		status:     flows.SessionStatusActive,
 		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -46,7 +46,7 @@ func NewSession(assets flows.AssetStore) flows.Session {
 	}
 }
 
-func (s *session) Assets() flows.AssetStore                 { return s.assets }
+func (s *session) Assets() flows.SessionAssets              { return s.assets }
 func (s *session) Environment() utils.Environment           { return s.env }
 func (s *session) SetEnvironment(env utils.Environment)     { s.env = env }
 func (s *session) Contact() *flows.Contact                  { return s.contact }
@@ -101,6 +101,11 @@ func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event)
 		return err
 	}
 
+	// check flow is valid and has everything it needs to run
+	if err := flow.Validate(s.Assets()); err != nil {
+		return err
+	}
+
 	s.SetTrigger(flow, nil)
 
 	// off to the races...
@@ -113,10 +118,14 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 		return utils.NewValidationErrors("only waiting sessions can be resumed")
 	}
 
-	var destination flows.NodeUUID
-
-	// figure out where (i.e. run and step) we began waiting on
 	waitingRun := s.waitingRun()
+
+	// check flow is valid and has everything it needs to run
+	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
+		return err
+	}
+
+	// figure out where in the flow we began waiting on
 	step, _, err := waitingRun.PathLocation()
 	if err != nil {
 		return err
@@ -131,6 +140,8 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 			return err
 		}
 	}
+
+	var destination flows.NodeUUID
 
 	// events can change run status so only proceed to the wait if we're still waiting
 	if waitingRun.Status() == flows.RunStatusWaiting {
@@ -378,18 +389,15 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assets flows.AssetStore, data json.RawMessage) (flows.Session, error) {
-	s := NewSession(assets).(*session)
+func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
-	if err = json.Unmarshal(data, &envelope); err != nil {
-		return nil, err
-	}
-	if err = utils.Validate(s); err != nil {
+	if err = utils.UnmarshalAndValidate(data, &envelope, "session"); err != nil {
 		return nil, err
 	}
 
+	s := NewSession(cache, assetURLs).(*session)
 	s.status = envelope.Status
 
 	// read our environment
@@ -399,7 +407,7 @@ func ReadSession(assets flows.AssetStore, data json.RawMessage) (flows.Session, 
 	}
 
 	// read our contact
-	s.contact, err = flows.ReadContact(assets, envelope.Contact)
+	s.contact, err = flows.ReadContact(s.assets, envelope.Contact)
 	if err != nil {
 		return nil, err
 	}

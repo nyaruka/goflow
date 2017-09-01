@@ -15,8 +15,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows/engine"
 
-	"github.com/nyaruka/goflow/flows"
-
 	"errors"
 
 	"github.com/koding/multiconfig"
@@ -37,7 +35,7 @@ import (
 )
 
 var version = "dev"
-var assetStore flows.AssetStore
+var assetCache *engine.AssetCache
 
 func main() {
 	m := multiconfig.New()
@@ -86,7 +84,7 @@ func main() {
 	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
 	r.MethodNotAllowed(errorHandler(http.StatusMethodNotAllowed, "method not allowed"))
 
-	assetStore = engine.NewAssetStore()
+	assetCache = engine.NewAssetCache()
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%d", config.Port),

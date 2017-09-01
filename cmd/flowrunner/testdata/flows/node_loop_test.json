@@ -29,7 +29,6 @@
       ],
       "session": {
         "contact": {
-          "channel_uuid": "",
           "fields": {
             "first_name": {
               "field_name": "First Name",

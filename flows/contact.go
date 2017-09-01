@@ -125,18 +125,18 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 //------------------------------------------------------------------------------------------
 
 type contactEnvelope struct {
-	UUID        ContactUUID    `json:"uuid"              validate:"required,uuid4"`
+	UUID        ContactUUID    `json:"uuid" validate:"required,uuid4"`
 	Name        string         `json:"name"`
 	Language    utils.Language `json:"language"`
 	Timezone    string         `json:"timezone"`
 	URNs        URNList        `json:"urns"`
 	Groups      GroupList      `json:"groups"`
 	Fields      *Fields        `json:"fields,omitempty"`
-	ChannelUUID ChannelUUID    `json:"channel_uuid"      validate:"omitempty,uuid4"`
+	ChannelUUID ChannelUUID    `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets AssetStore, data json.RawMessage) (*Contact, error) {
+func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 

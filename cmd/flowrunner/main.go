@@ -171,8 +171,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading assets file: ", err)
 	}
-	assets := engine.NewAssetStore()
-	if err := assets.IncludeAssets(json.RawMessage(assetsJSON)); err != nil {
+	assetCache := engine.NewAssetCache()
+	if err := assetCache.Include(json.RawMessage(assetsJSON)); err != nil {
 		log.Fatal("Error reading assets: ", err)
 	}
 
@@ -181,13 +181,17 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
-	session := engine.NewSession(assets)
+	assetURLs := map[engine.AssetItemType]string{
+		"channel": "http://testserver/assets/channel",
+		"flow":    "http://testserver/assets/flow",
+	}
+	session := engine.NewSession(assetCache, assetURLs)
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
 		log.Fatal("Error reading contact file: ", err)
 	}
-	contact, err := flows.ReadContact(assets, json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON))
 	if err != nil {
 		log.Fatal("Error unmarshalling contact: ", err)
 	}
@@ -235,7 +239,7 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = engine.ReadSession(assets, outJSON)
+		session, err = engine.ReadSession(assetCache, assetURLs, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}

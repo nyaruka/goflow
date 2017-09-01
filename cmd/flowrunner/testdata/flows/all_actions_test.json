@@ -178,7 +178,6 @@
       ],
       "session": {
         "contact": {
-          "channel_uuid": "",
           "fields": {
             "activation_token": {
               "field_name": "Activation Token",

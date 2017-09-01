@@ -34,7 +34,7 @@ type SaveContactField struct {
 func (a *SaveContactField) Type() string { return TypeSaveContactField }
 
 // Validate validates this action
-func (a *SaveContactField) Validate(assets flows.AssetStore) error {
+func (a *SaveContactField) Validate(assets flows.SessionAssets) error {
 	return nil
 }
 

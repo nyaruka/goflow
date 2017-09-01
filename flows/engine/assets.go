@@ -3,6 +3,8 @@ package engine
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"sync"
 	"time"
 
@@ -11,81 +13,146 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type assetContainer struct {
-	assetType  flows.AssetType
-	asset      flows.Asset
-	accessedOn *time.Time
-	expiresOn  time.Time
-	fetchURL   string
+type assetURL string
+type itemUUID string
+
+type assetType string
+
+const (
+	assetTypeObject assetType = "object"
+	assetTypeSet    assetType = "set"
+)
+
+type AssetItemType string
+
+const (
+	assetItemTypeChannel AssetItemType = "channel"
+	assetItemTypeFlow    AssetItemType = "flow"
+	assetItemTypeGroup   AssetItemType = "group"
+)
+
+// container for any asset in the cache
+type cachedAsset struct {
+	asset      interface{}
+	addedOn    time.Time
+	accessedOn time.Time
 }
 
-type assetStore struct {
-	cache      map[flows.AssetUUID]assetContainer
-	cacheMutex sync.Mutex
+// AssetCache fetches and caches assets for the engine
+type AssetCache struct {
+	cache map[assetURL]cachedAsset
+	mutex sync.Mutex
 }
 
-func NewAssetStore() flows.AssetStore {
-	return &assetStore{cache: make(map[flows.AssetUUID]assetContainer)}
+// NewAssetCache creates a new asset cache
+func NewAssetCache() *AssetCache {
+	return &AssetCache{cache: make(map[assetURL]cachedAsset)}
 }
 
-func (m *assetStore) requestAsset(uuid flows.AssetUUID, assetType flows.AssetType) (flows.Asset, error) {
-	m.cacheMutex.Lock()
-	defer m.cacheMutex.Unlock()
+func (c *AssetCache) putAsset(url assetURL, asset interface{}) {
+	c.cache[url] = cachedAsset{asset: asset, addedOn: time.Now().UTC()}
+}
 
-	container, found := m.cache[uuid]
+func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	c.putAsset(url, asset)
+}
+
+// gets an asset from the cache if it's there or from the asset server
+func (c *AssetCache) getAsset(url assetURL, aType assetType, itemType AssetItemType) (interface{}, error) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	cached, found := c.cache[url]
 	if !found {
-		return nil, fmt.Errorf("no such asset of type '%s' with UUID '%s'", assetType, uuid)
+		asset, err := c.fetchAsset(url, aType, itemType)
+		if err != nil {
+			return nil, err
+		}
+
+		c.putAsset(url, asset)
+		return asset, nil
 	}
 
-	if container.asset == nil || time.Now().After(container.expiresOn) {
-		// TODO try to (re)fetch from URL, and validate
-	}
+	// update the accessed on time
+	cached.accessedOn = time.Now().UTC()
 
-	accessedOn := time.Now().UTC()
-	container.accessedOn = &accessedOn
-
-	return container.asset, nil
+	return cached.asset, nil
 }
 
-func (m *assetStore) AddAsset(asset flows.Asset, fetchURL string) {
-	m.cache[asset.AssetUUID()] = assetContainer{
-		assetType: asset.AssetType(),
-		asset:     asset,
-		expiresOn: time.Now().Add(5 * time.Minute),
-		fetchURL:  fetchURL,
-	}
-}
-
-func (m *assetStore) AddLazyAsset(assetType flows.AssetType, assetUUID flows.AssetUUID, fetchURL string) {
-	m.cache[assetUUID] = assetContainer{assetType: assetType, fetchURL: fetchURL}
-}
-
-func (m *assetStore) ClearCache(asset flows.Asset, expiresOn *time.Time, fetchURL string) {
-	m.cache = make(map[flows.AssetUUID]assetContainer)
-}
-
-func (m *assetStore) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	asset, err := m.requestAsset(flows.AssetUUID(uuid), flows.AssetTypeFlow)
+// fetches an asset by its URL and parses it as the provided type
+func (c *AssetCache) fetchAsset(url assetURL, aType assetType, itemType AssetItemType) (interface{}, error) {
+	response, err := http.Get(string(url))
 	if err != nil {
 		return nil, err
 	}
-	flow, isType := asset.(flows.Flow)
-	if !isType {
-		return nil, fmt.Errorf("unable to find flow with UUID '%s'", uuid)
+	if response.StatusCode != 200 {
+		return nil, fmt.Errorf("asset request returned non-200 response")
 	}
-	return flow, nil
+	buf, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return readAsset(buf, aType, itemType)
 }
 
-func (m *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	asset, err := m.requestAsset(flows.AssetUUID(uuid), flows.AssetTypeChannel)
+type sessionAssets struct {
+	cache     *AssetCache
+	assetURLs map[AssetItemType]string
+}
+
+func NewSessionAssets(cache *AssetCache, assetURLs map[AssetItemType]string) flows.SessionAssets {
+	return &sessionAssets{cache: cache, assetURLs: assetURLs}
+}
+
+func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
+	url := s.getAssetItemURL(assetItemTypeChannel, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeChannel)
 	if err != nil {
 		return nil, err
 	}
 	channel, isType := asset.(flows.Channel)
 	if !isType {
-		return nil, fmt.Errorf("unable to find channel with UUID '%s'", uuid)
+		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
 	}
 	return channel, nil
+}
+
+func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
+	url := s.getAssetItemURL(assetItemTypeFlow, itemUUID(uuid))
+	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeFlow)
+	if err != nil {
+		return nil, err
+	}
+	flow, isType := asset.(flows.Flow)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
+	}
+	return flow, nil
+}
+
+func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
+	url := s.getAssetSetURL(assetItemTypeGroup)
+	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeGroup)
+	if err != nil {
+		return nil, err
+	}
+	groups, isType := asset.([]flows.Group)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return groups, nil
+}
+
+func (s *sessionAssets) getAssetSetURL(itemType AssetItemType) assetURL {
+	return assetURL(s.assetURLs[itemType])
+}
+
+func (s *sessionAssets) getAssetItemURL(itemType AssetItemType, uuid itemUUID) assetURL {
+	return assetURL(fmt.Sprintf("%s/%s", s.assetURLs[itemType], uuid))
 }
 
 //------------------------------------------------------------------------------------------
@@ -93,13 +160,14 @@ func (m *assetStore) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
 //------------------------------------------------------------------------------------------
 
 type assetEnvelope struct {
-	Type    flows.AssetType  `json:"type"    validate:"required"`
-	UUID    *flows.AssetUUID `json:"uuid"    validate:"omitempty,uuid"`
-	Content *json.RawMessage `json:"content" validate:"omitempty"`
-	URL     string           `json:"url"     validate:"omitempty,url"`
+	URL      assetURL        `json:"url" validate:"required,url"`
+	ItemType AssetItemType   `json:"type" validate:"required"`
+	Content  json.RawMessage `json:"content" validate:"required"`
+	IsSet    bool            `json:"is_set"`
 }
 
-func (m *assetStore) IncludeAssets(data json.RawMessage) error {
+// Include loads assets from the given raw JSON into the cache
+func (c *AssetCache) Include(data json.RawMessage) error {
 	var raw []json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -112,38 +180,56 @@ func (m *assetStore) IncludeAssets(data json.RawMessage) error {
 		}
 	}
 
-	nonLazy := make([]flows.Asset, 0)
-
 	for _, envelope := range envelopes {
-		var asset flows.Asset
-
-		if envelope.Content != nil {
-			var err error
-			switch envelope.Type {
-			case flows.AssetTypeFlow:
-				asset, err = definition.ReadFlow(*envelope.Content)
-			case flows.AssetTypeChannel:
-				asset, err = flows.ReadChannel(*envelope.Content)
-			default:
-				err = fmt.Errorf("Invalid asset type: %s", envelope.Type)
-			}
-			if err != nil {
-				return err
-			}
-
-			nonLazy = append(nonLazy, asset)
-			m.AddAsset(asset, envelope.URL)
+		var aType assetType
+		if envelope.IsSet {
+			aType = assetTypeSet
 		} else {
-			m.AddLazyAsset(envelope.Type, *envelope.UUID, envelope.URL)
+			aType = assetTypeObject
 		}
-	}
 
-	// any non-lazy assets can be validated now
-	for _, asset := range nonLazy {
-		if err := asset.Validate(m); err != nil {
-			return utils.NewValidationErrors(err.Error())
+		asset, err := readAsset(envelope.Content, aType, envelope.ItemType)
+		if err != nil {
+			return err
 		}
+		c.addAsset(envelope.URL, asset)
 	}
 
 	return nil
+}
+
+// reads an asset from the given raw JSON data
+func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (interface{}, error) {
+	var itemReader func(data json.RawMessage) (interface{}, error)
+
+	switch itemType {
+	case assetItemTypeChannel:
+		itemReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
+	case assetItemTypeFlow:
+		itemReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
+	case assetItemTypeGroup:
+		// TODO: need to separate groups from group refs in flows
+	default:
+		return nil, fmt.Errorf("unknown asset type: %s", itemType)
+	}
+
+	if aType == assetTypeSet {
+		var envelopes []json.RawMessage
+		if err := json.Unmarshal(data, &envelopes); err != nil {
+			return nil, err
+		}
+
+		assets := make([]interface{}, len(envelopes))
+		var err error
+		for e := range envelopes {
+			if assets[e], err = itemReader(data); err != nil {
+				return nil, err
+			}
+		}
+
+		return assets, nil
+	}
+
+	// asset is a single object
+	return itemReader(data)
 }
