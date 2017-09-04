@@ -4,14 +4,16 @@
             "type": "add_group",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
-                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
+                "@contact.district"
             ]
         },
         "expected_action": {
             "type": "add_to_group",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
-                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
+                {"name": "@contact.fields.district"}
             ]
         },
         "expected_localization": {}
@@ -74,14 +76,16 @@
             "type": "del_group",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
-                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
+                "@contact.district"
             ]
         },
         "expected_action": {
             "type": "remove_from_group",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
-                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"}
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
+                {"name": "@contact.fields.district"}
             ]
         },
         "expected_localization": {}

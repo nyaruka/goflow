@@ -11,7 +11,7 @@ import (
 
 // GroupReference is a reference to group used in a flow action or event
 type GroupReference struct {
-	UUID GroupUUID `json:"uuid" validate:"omitempty,uuid4"`
+	UUID GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
 	Name string    `json:"name"`
 }
 
