@@ -42,8 +42,6 @@ func (e *AddToGroupEvent) Apply(run flows.FlowRun) error {
 	for _, groupUUID := range e.GroupUUIDs {
 		group := groupSet.FindByUUID(groupUUID)
 
-		// TODO groups which evaluate to a name match
-
 		if group != nil {
 			run.Contact().AddGroup(group)
 		}
