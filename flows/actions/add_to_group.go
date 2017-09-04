@@ -1,6 +1,9 @@
 package actions
 
 import (
+	"fmt"
+
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -43,8 +46,29 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if contact != nil {
 		groupUUIDs := make([]flows.GroupUUID, 0, len(a.Groups))
 		for _, group := range a.Groups {
-			if contact.Groups().FindByUUID(group.UUID) == nil {
+			if group.UUID != "" && contact.Groups().FindByUUID(group.UUID) == nil {
+				// group is a fixed group with a UUID, and contact doesn't already belong to it
 				groupUUIDs = append(groupUUIDs, group.UUID)
+			} else {
+				// group is an expression that evaluates to an existing group's name
+				allGroups, err := run.Session().Assets().GetGroupSet()
+				if err != nil {
+					return err
+				}
+
+				// evaluate the expression to get the group name
+				evaluatedGroupName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), group.Name)
+				if err != nil {
+					run.AddError(step, a, err)
+				} else {
+					// look up the set of all groups to see if such a group exists
+					addGroup := allGroups.FindByName(evaluatedGroupName)
+					if addGroup == nil {
+						run.AddError(step, a, fmt.Errorf("no such group with name '%s'", evaluatedGroupName))
+					} else if contact.Groups().FindByUUID(addGroup.UUID()) == nil {
+						groupUUIDs = append(groupUUIDs, addGroup.UUID())
+					}
+				}
 			}
 		}
 		if len(groupUUIDs) > 0 {
