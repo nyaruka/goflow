@@ -140,7 +140,7 @@ func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
 		return nil, err
 	}
 	group := groups.FindByUUID(uuid)
-	if group != nil {
+	if group == nil {
 		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
 	}
 	return group, nil

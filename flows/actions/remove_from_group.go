@@ -3,7 +3,6 @@ package actions
 import (
 	"fmt"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -29,7 +28,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // @action remove_from_group
 type RemoveFromGroupAction struct {
 	BaseAction
-	Groups []*flows.GroupReference `json:"groups" validate:"dive"`
+	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1"`
 }
 
 // Type returns the type of this action
@@ -44,46 +43,33 @@ func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
 func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// only generate event if contact's groups change
 	contact := run.Contact()
-	if contact != nil {
-		groupUUIDs := make([]flows.GroupUUID, 0)
+	if contact == nil {
+		return nil
+	}
 
-		// no groups in our action means remove all
-		if len(a.Groups) == 0 {
-			for _, group := range contact.Groups() {
-				groupUUIDs = append(groupUUIDs, group.UUID())
-			}
-		} else {
-			for _, group := range a.Groups {
-				if group.UUID != "" && contact.Groups().FindByUUID(group.UUID) != nil {
-					// group is a fixed group with a UUID, and contact does belong to it
-					groupUUIDs = append(groupUUIDs, group.UUID)
-				} else {
-					// group is an expression that evaluates to an existing group's name
-					allGroups, err := run.Session().Assets().GetGroupSet()
-					if err != nil {
-						return err
-					}
+	groups, err := resolveGroups(run, step, a, a.Groups)
+	if err != nil {
+		return err
+	}
 
-					// evaluate the expression to get the group name
-					evaluatedGroupName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), group.Name)
-					if err != nil {
-						run.AddError(step, a, err)
-					} else {
-						// look up the set of all groups to see if such a group exists
-						addGroup := allGroups.FindByName(evaluatedGroupName)
-						if addGroup == nil {
-							run.AddError(step, a, fmt.Errorf("no such group with name '%s'", evaluatedGroupName))
-						} else if contact.Groups().FindByUUID(addGroup.UUID()) != nil {
-							groupUUIDs = append(groupUUIDs, addGroup.UUID())
-						}
-					}
-				}
-			}
+	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
+	for _, group := range groups {
+		// ignore group if contact isn't actually in it
+		if contact.Groups().FindByUUID(group.UUID()) == nil {
+			continue
 		}
 
-		if len(groupUUIDs) > 0 {
-			run.ApplyEvent(step, a, events.NewRemoveFromGroupEvent(groupUUIDs))
+		// error if group is dynamic
+		if group.IsDynamic() {
+			run.AddError(step, a, fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			continue
 		}
+
+		groupUUIDs = append(groupUUIDs, group.UUID())
+	}
+
+	if len(groupUUIDs) > 0 {
+		run.ApplyEvent(step, a, events.NewRemoveFromGroupEvent(groupUUIDs))
 	}
 
 	return nil
