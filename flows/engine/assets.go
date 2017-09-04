@@ -134,13 +134,25 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	return flow, nil
 }
 
-func (s *sessionAssets) GetGroups() ([]flows.Group, error) {
+func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
+	groups, err := s.GetGroupSet()
+	if err != nil {
+		return nil, err
+	}
+	group := groups.FindByUUID(uuid)
+	if group == nil {
+		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
+	}
+	return group, nil
+}
+
+func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
 	url := s.getAssetSetURL(assetItemTypeGroup)
 	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeGroup)
 	if err != nil {
 		return nil, err
 	}
-	groups, isType := asset.([]flows.Group)
+	groups, isType := asset.(*flows.GroupSet)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
@@ -200,36 +212,19 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 
 // reads an asset from the given raw JSON data
 func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (interface{}, error) {
-	var itemReader func(data json.RawMessage) (interface{}, error)
+	var assetReader func(data json.RawMessage) (interface{}, error)
 
-	switch itemType {
-	case assetItemTypeChannel:
-		itemReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
-	case assetItemTypeFlow:
-		itemReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
-	case assetItemTypeGroup:
-		// TODO: need to separate groups from group refs in flows
-	default:
-		return nil, fmt.Errorf("unknown asset type: %s", itemType)
+	if aType == assetTypeObject && itemType == assetItemTypeChannel {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
+	} else if aType == assetTypeObject && itemType == assetItemTypeFlow {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
+	} else if aType == assetTypeObject && itemType == assetItemTypeGroup {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroup(data) }
+	} else if aType == assetTypeSet && itemType == assetItemTypeGroup {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) }
+	} else {
+		return nil, fmt.Errorf("unsupported asset type: %s of %s", aType, itemType)
 	}
 
-	if aType == assetTypeSet {
-		var envelopes []json.RawMessage
-		if err := json.Unmarshal(data, &envelopes); err != nil {
-			return nil, err
-		}
-
-		assets := make([]interface{}, len(envelopes))
-		var err error
-		for e := range envelopes {
-			if assets[e], err = itemReader(data); err != nil {
-				return nil, err
-			}
-		}
-
-		return assets, nil
-	}
-
-	// asset is a single object
-	return itemReader(data)
+	return assetReader(data)
 }

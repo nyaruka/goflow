@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -26,7 +28,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // @action remove_from_group
 type RemoveFromGroupAction struct {
 	BaseAction
-	Groups []*flows.Group `json:"groups"     validate:"dive"`
+	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1"`
 }
 
 // Type returns the type of this action
@@ -41,28 +43,33 @@ func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
 func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// only generate event if contact's groups change
 	contact := run.Contact()
-	if contact != nil {
-		groups := make([]*flows.Group, 0)
+	if contact == nil {
+		return nil
+	}
 
-		// no groups in our action means remove all
-		if len(a.Groups) == 0 {
-			for _, group := range contact.Groups() {
-				if contact.InGroup(group) {
-					groups = append(groups, group)
-				}
-			}
+	groups, err := resolveGroups(run, step, a, a.Groups)
+	if err != nil {
+		return err
+	}
 
-		} else {
-			for _, group := range a.Groups {
-				if contact.InGroup(group) {
-					groups = append(groups, group)
-				}
-			}
+	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
+	for _, group := range groups {
+		// ignore group if contact isn't actually in it
+		if contact.Groups().FindByUUID(group.UUID()) == nil {
+			continue
 		}
 
-		if len(groups) > 0 {
-			run.ApplyEvent(step, a, events.NewRemoveFromGroup(groups))
+		// error if group is dynamic
+		if group.IsDynamic() {
+			run.AddError(step, a, fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			continue
 		}
+
+		groupUUIDs = append(groupUUIDs, group.UUID())
+	}
+
+	if len(groupUUIDs) > 0 {
+		run.ApplyEvent(step, a, events.NewRemoveFromGroupEvent(groupUUIDs))
 	}
 
 	return nil

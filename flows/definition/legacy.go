@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
@@ -93,12 +94,40 @@ func (c *legacyContactReference) Migrate() *flows.ContactReference {
 }
 
 type legacyGroupReference struct {
-	UUID flows.GroupUUID `json:"uuid"`
-	Name string          `json:"name"`
+	UUID flows.GroupUUID
+	Name string
 }
 
-func (g *legacyGroupReference) Migrate() *flows.Group {
-	return flows.NewGroup(g.UUID, g.Name)
+func (g *legacyGroupReference) Migrate() *flows.GroupReference {
+	return flows.NewGroupReference(g.UUID, g.Name)
+}
+
+func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
+	// group reference may be a string
+	if data[0] == '"' {
+		var groupNameExpression string
+		if err := json.Unmarshal(data, &groupNameExpression); err != nil {
+			return err
+		}
+
+		// if it starts with @ then it's an expression
+		if strings.HasPrefix(groupNameExpression, "@") {
+			groupNameExpression, _ = excellent.MigrateTemplate(groupNameExpression)
+		}
+
+		g.Name = groupNameExpression
+		return nil
+	}
+
+	// or a JSON object with UUID/Name properties
+	var raw map[string]interface{}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	g.UUID = flows.GroupUUID(raw["uuid"].(string))
+	g.Name = raw["name"].(string)
+	return nil
 }
 
 type legacyVariable struct {
@@ -352,7 +381,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		for i, contact := range a.Contacts {
 			contacts[i] = contact.Migrate()
 		}
-		groups := make([]*flows.Group, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -367,7 +396,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}, nil
 
 	case "add_group":
-		groups := make([]*flows.Group, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -377,7 +406,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "del_group":
-		groups := make([]*flows.Group, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}

@@ -23,11 +23,8 @@
           "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "groups": [
-              {
-                "name": "Survey Audience",
-                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-              }
+            "group_uuids": [
+              "2aad21f6-30b7-42c5-bd7f-1b720c154817"
             ],
             "type": "add_to_group"
           },
@@ -79,11 +76,8 @@
           "action_uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "groups": [
-              {
-                "name": "Survey Audience",
-                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-              }
+            "group_uuids": [
+              "2aad21f6-30b7-42c5-bd7f-1b720c154817"
             ],
             "type": "remove_from_group"
           },
@@ -195,7 +189,6 @@
               "value": "Male"
             }
           },
-          "groups": [],
           "language": "eng",
           "name": "Ben Haggerty",
           "timezone": "America/Guayaquil",
@@ -246,11 +239,8 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "groups": [
-                      {
-                        "name": "Survey Audience",
-                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-                      }
+                    "group_uuids": [
+                      "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                     ],
                     "type": "add_to_group"
                   },
@@ -282,11 +272,8 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "groups": [
-                      {
-                        "name": "Survey Audience",
-                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-                      }
+                    "group_uuids": [
+                      "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                     ],
                     "type": "remove_from_group"
                   },

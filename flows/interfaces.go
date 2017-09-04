@@ -99,7 +99,8 @@ func (r RunStatus) String() string { return string(r) }
 type SessionAssets interface {
 	GetChannel(ChannelUUID) (Channel, error)
 	GetFlow(FlowUUID) (Flow, error)
-	GetGroups() ([]Group, error)
+	GetGroup(GroupUUID) (*Group, error)
+	GetGroupSet() (*GroupSet, error)
 }
 
 type Flow interface {

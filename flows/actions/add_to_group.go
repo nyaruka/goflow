@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -25,7 +27,7 @@ const TypeAddToGroup string = "add_to_group"
 // @action add_to_group
 type AddToGroupAction struct {
 	BaseAction
-	Groups []*flows.Group `json:"groups"    validate:"required,min=1"`
+	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1"`
 }
 
 // Type returns the type of this action
@@ -40,17 +42,33 @@ func (a *AddToGroupAction) Validate(assets flows.SessionAssets) error {
 func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// only generate event if contact's groups change
 	contact := run.Contact()
-	if contact != nil {
-		groups := make([]*flows.Group, 0, len(a.Groups))
-		for _, group := range a.Groups {
-			if !contact.InGroup(group) {
-				groups = append(groups, group)
-			}
+	if contact == nil {
+		return nil
+	}
 
+	groups, err := resolveGroups(run, step, a, a.Groups)
+	if err != nil {
+		return err
+	}
+
+	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
+	for _, group := range groups {
+		// ignore group if contact is already in it
+		if contact.Groups().FindByUUID(group.UUID()) != nil {
+			continue
 		}
-		if len(groups) > 0 {
-			run.ApplyEvent(step, a, events.NewGroupEvent(groups))
+
+		// error if group is dynamic
+		if group.IsDynamic() {
+			run.AddError(step, a, fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			continue
 		}
+
+		groupUUIDs = append(groupUUIDs, group.UUID())
+	}
+
+	if len(groupUUIDs) > 0 {
+		run.ApplyEvent(step, a, events.NewAddToGroupEvent(groupUUIDs))
 	}
 
 	return nil
