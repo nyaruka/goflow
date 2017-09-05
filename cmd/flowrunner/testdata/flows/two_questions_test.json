@@ -53,6 +53,11 @@
               "field_name": "First Name",
               "field_uuid": "",
               "value": "Ben"
+            },
+            "state": {
+              "field_name": "State",
+              "field_uuid": "",
+              "value": "Azuay"
             }
           },
           "language": "eng",
@@ -161,6 +166,11 @@
               "field_name": "First Name",
               "field_uuid": "",
               "value": "Ben"
+            },
+            "state": {
+              "field_name": "State",
+              "field_uuid": "",
+              "value": "Azuay"
             }
           },
           "language": "fra",
@@ -320,6 +330,11 @@
               "field_name": "First Name",
               "field_uuid": "",
               "value": "Ben"
+            },
+            "state": {
+              "field_name": "State",
+              "field_uuid": "",
+              "value": "Azuay"
             }
           },
           "language": "fra",

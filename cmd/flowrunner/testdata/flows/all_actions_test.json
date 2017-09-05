@@ -24,7 +24,8 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "group_uuids": [
-              "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+              "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+              "d7ff4872-9238-452f-9d38-2f558fea89e0"
             ],
             "type": "add_to_group"
           },
@@ -187,8 +188,16 @@
               "field_name": "Gender",
               "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
               "value": "Male"
+            },
+            "state": {
+              "field_name": "State",
+              "field_uuid": "",
+              "value": "Azuay"
             }
           },
+          "group_uuids": [
+            "d7ff4872-9238-452f-9d38-2f558fea89e0"
+          ],
           "language": "eng",
           "name": "Ben Haggerty",
           "timezone": "America/Guayaquil",
@@ -240,7 +249,8 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "group_uuids": [
-                      "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                      "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                      "d7ff4872-9238-452f-9d38-2f558fea89e0"
                     ],
                     "type": "add_to_group"
                   },

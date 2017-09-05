@@ -42,6 +42,11 @@
               "field_name": "First Name",
               "field_uuid": "",
               "value": "Ben"
+            },
+            "state": {
+              "field_name": "State",
+              "field_uuid": "",
+              "value": "Azuay"
             }
           },
           "language": "eng",
@@ -159,6 +164,11 @@
               "field_name": "First Name",
               "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
               "value": "Ryan"
+            },
+            "state": {
+              "field_name": "State",
+              "field_uuid": "",
+              "value": "Azuay"
             }
           },
           "language": "eng",
