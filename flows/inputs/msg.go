@@ -22,9 +22,9 @@ type MsgInput struct {
 }
 
 // NewMsgInput creates a new user input based on a message
-func NewMsgInput(channel flows.Channel, createdOn time.Time, urn flows.URN, text string, attachments []flows.Attachment) *MsgInput {
+func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Time, urn flows.URN, text string, attachments []flows.Attachment) *MsgInput {
 	return &MsgInput{
-		baseInput:   baseInput{channel: channel, createdOn: createdOn},
+		baseInput:   baseInput{uuid: uuid, channel: channel, createdOn: createdOn},
 		urn:         urn,
 		text:        text,
 		attachments: attachments,
@@ -102,6 +102,7 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 		}
 	}
 
+	input.baseInput.uuid = i.UUID
 	input.baseInput.channel = channel
 	input.baseInput.createdOn = i.CreatedOn
 	input.urn = i.URN
@@ -116,6 +117,7 @@ func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	if i.Channel() != nil {
 		envelope.baseInputEnvelope.ChannelUUID = i.Channel().UUID()
 	}
+	envelope.baseInputEnvelope.UUID = i.UUID()
 	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
 	envelope.URN = i.urn
 	envelope.Text = i.text

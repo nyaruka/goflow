@@ -44,6 +44,7 @@ var assetURLs = map[engine.AssetItemType]string{
 	"channel": "http://testserver/assets/channel",
 	"flow":    "http://testserver/assets/flow",
 	"group":   "http://testserver/assets/group",
+	"label":   "http://testserver/assets/label",
 }
 
 func init() {

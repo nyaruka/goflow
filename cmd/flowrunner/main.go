@@ -16,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Output struct {
@@ -234,7 +235,7 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		event := events.NewMsgReceivedEvent(channelUUID, contact.UUID(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		event := events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), channelUUID, contact.UUID(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
 

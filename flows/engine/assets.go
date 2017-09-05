@@ -29,6 +29,7 @@ const (
 	assetItemTypeChannel AssetItemType = "channel"
 	assetItemTypeFlow    AssetItemType = "flow"
 	assetItemTypeGroup   AssetItemType = "group"
+	assetItemTypeLabel   AssetItemType = "label"
 )
 
 // container for any asset in the cache
@@ -159,6 +160,31 @@ func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
 	return groups, nil
 }
 
+func (s *sessionAssets) GetLabel(uuid flows.LabelUUID) (*flows.Label, error) {
+	labels, err := s.GetLabelSet()
+	if err != nil {
+		return nil, err
+	}
+	label := labels.FindByUUID(uuid)
+	if label == nil {
+		return nil, fmt.Errorf("no such label with uuid '%s'", uuid)
+	}
+	return label, nil
+}
+
+func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
+	url := s.getAssetSetURL(assetItemTypeLabel)
+	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeLabel)
+	if err != nil {
+		return nil, err
+	}
+	labels, isType := asset.(*flows.LabelSet)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return labels, nil
+}
+
 func (s *sessionAssets) getAssetSetURL(itemType AssetItemType) assetURL {
 	return assetURL(s.assetURLs[itemType])
 }
@@ -222,6 +248,10 @@ func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (i
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroup(data) }
 	} else if aType == assetTypeSet && itemType == assetItemTypeGroup {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) }
+	} else if aType == assetTypeObject && itemType == assetItemTypeLabel {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabel(data) }
+	} else if aType == assetTypeSet && itemType == assetItemTypeLabel {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabelSet(data) }
 	} else {
 		return nil, fmt.Errorf("unsupported asset type: %s of %s", aType, itemType)
 	}

@@ -38,7 +38,6 @@ func resolveGroups(run flows.FlowRun, step flows.Step, action flows.Action, refe
 			}
 		} else {
 			// group is an expression that evaluates to an existing group's name
-			// evaluate the expression to get the group name
 			evaluatedGroupName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), ref.Name)
 			if err != nil {
 				run.AddError(step, action, err)
@@ -57,4 +56,44 @@ func resolveGroups(run flows.FlowRun, step flows.Step, action flows.Action, refe
 	}
 
 	return groups, nil
+}
+
+// helper function for actions that have a set of label references that must be resolved to actual labels
+func resolveLabels(run flows.FlowRun, step flows.Step, action flows.Action, references []*flows.LabelReference) ([]*flows.Label, error) {
+	labelSet, err := run.Session().Assets().GetLabelSet()
+	if err != nil {
+		return nil, err
+	}
+
+	labels := make([]*flows.Label, 0, len(references))
+
+	for _, ref := range references {
+		var label *flows.Label
+
+		if ref.UUID != "" {
+			// label is a fixed label with a UUID
+			label = labelSet.FindByUUID(ref.UUID)
+			if label == nil {
+				return nil, fmt.Errorf("no such label with UUID '%s'", ref.UUID)
+			}
+		} else {
+			// label is an expression that evaluates to an existing label's name
+			evaluatedLabelName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), ref.Name)
+			if err != nil {
+				run.AddError(step, action, err)
+			} else {
+				// look up the set of all labels to see if such a label exists
+				label = labelSet.FindByName(evaluatedLabelName)
+				if label == nil {
+					run.AddError(step, action, fmt.Errorf("no such label with name '%s'", evaluatedLabelName))
+				}
+			}
+		}
+
+		if label != nil {
+			labels = append(labels, label)
+		}
+	}
+
+	return labels, nil
 }
