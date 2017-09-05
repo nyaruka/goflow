@@ -2,12 +2,30 @@ package flows
 
 import (
 	"encoding/json"
+	"strings"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
-// Label represents a msg label
+// LabelReference is a reference to message label used in a flow action or event
+type LabelReference struct {
+	UUID LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	Name string    `json:"name"`
+}
+
+func NewLabelReference(uuid LabelUUID, name string) *LabelReference {
+	return &LabelReference{UUID: uuid, Name: name}
+}
+
+// Label represents a message label
 type Label struct {
-	uuid LabelUUID `validate:"required,uuid"`
-	name string    `validate:"required"`
+	uuid LabelUUID
+	name string
+}
+
+// NewLabel creates a new label given the passed in uuid and name
+func NewLabel(uuid LabelUUID, name string) *Label {
+	return &Label{uuid, name}
 }
 
 // UUID returns the UUID of this label
@@ -16,9 +34,33 @@ func (l *Label) UUID() LabelUUID { return l.uuid }
 // Name returns the name of this label
 func (l *Label) Name() string { return l.name }
 
-// NewLabel creates a new label given the passed in uuid and name
-func NewLabel(uuid LabelUUID, name string) *Label {
-	return &Label{uuid, name}
+// LabelSet defines the unordered set of all labels for a session
+type LabelSet struct {
+	labels       []*Label
+	labelsByUUID map[LabelUUID]*Label
+}
+
+func NewLabelSet(labels []*Label) *LabelSet {
+	s := &LabelSet{labels: labels, labelsByUUID: make(map[LabelUUID]*Label, len(labels))}
+	for _, label := range s.labels {
+		s.labelsByUUID[label.uuid] = label
+	}
+	return s
+}
+
+func (s *LabelSet) FindByUUID(uuid LabelUUID) *Label {
+	return s.labelsByUUID[uuid]
+}
+
+// FindByName looks for a label with the given name (case-insensitive)
+func (s *LabelSet) FindByName(name string) *Label {
+	name = strings.ToLower(name)
+	for _, label := range s.labels {
+		if strings.ToLower(label.name) == name {
+			return label
+		}
+	}
+	return nil
 }
 
 //------------------------------------------------------------------------------------------
@@ -26,26 +68,31 @@ func NewLabel(uuid LabelUUID, name string) *Label {
 //------------------------------------------------------------------------------------------
 
 type labelEnvelope struct {
-	UUID LabelUUID `json:"uuid"`
+	UUID LabelUUID `json:"uuid" validate:"required,uuid4"`
 	Name string    `json:"name"`
 }
 
-func (l *Label) UnmarshalJSON(data []byte) error {
+func ReadLabel(data json.RawMessage) (*Label, error) {
 	var le labelEnvelope
-	var err error
+	if err := utils.UnmarshalAndValidate(data, &le, "label"); err != nil {
+		return nil, err
+	}
 
-	err = json.Unmarshal(data, &le)
-	l.uuid = le.UUID
-	l.name = le.Name
-
-	return err
+	return NewLabel(le.UUID, le.Name), nil
 }
 
-func (l *Label) MarshalJSON() ([]byte, error) {
-	var le labelEnvelope
+func ReadLabelSet(data json.RawMessage) (*LabelSet, error) {
+	items, err := utils.UnmarshalArray(data)
+	if err != nil {
+		return nil, err
+	}
 
-	le.Name = l.name
-	le.UUID = l.uuid
+	labels := make([]*Label, len(items))
+	for d := range items {
+		if labels[d], err = ReadLabel(items[d]); err != nil {
+			return nil, err
+		}
+	}
 
-	return json.Marshal(le)
+	return NewLabelSet(labels), nil
 }

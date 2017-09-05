@@ -52,6 +52,10 @@ type GroupUUID UUID
 
 func (u GroupUUID) String() string { return string(u) }
 
+type InputUUID UUID
+
+func (u InputUUID) String() string { return string(u) }
+
 // RunStatus represents the current status of the engine session
 type SessionStatus string
 
@@ -101,6 +105,8 @@ type SessionAssets interface {
 	GetFlow(FlowUUID) (Flow, error)
 	GetGroup(GroupUUID) (*Group, error)
 	GetGroupSet() (*GroupSet, error)
+	GetLabel(LabelUUID) (*Label, error)
+	GetLabelSet() (*LabelSet, error)
 }
 
 type Flow interface {
@@ -193,6 +199,7 @@ type Input interface {
 	utils.VariableResolver
 	utils.Typed
 
+	UUID() InputUUID
 	CreatedOn() time.Time
 	Channel() Channel
 }

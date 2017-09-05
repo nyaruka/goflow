@@ -2,14 +2,15 @@ package actions
 
 import (
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 // TypeAddLabel is our type for add label actions
 const TypeAddLabel string = "add_label"
 
-// AddLabelAction can be used to add a label to the last incoming message on a flow. An `add_label`
-// event will be created with the msg id and label id when this action is encountered. If there is
-// no incoming msg at that point an error will be output.
+// AddLabelAction can be used to add a label to the last user input on a flow. An `add_label` event
+// will be created with the input UUID and label UUIDs when this action is encountered. If there is
+// no user input at that point then this action will be ignored.
 //
 // ```
 //   {
@@ -25,7 +26,7 @@ const TypeAddLabel string = "add_label"
 // @disabled_action add_label
 type AddLabelAction struct {
 	BaseAction
-	Labels []*flows.Label `json:"labels"     validate:"dive,min=1"`
+	Labels []*flows.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
 func foo() {
@@ -41,5 +42,25 @@ func (a *AddLabelAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs the labeling action
 func (a *AddLabelAction) Execute(run flows.FlowRun, step flows.Step) error {
+	// only generate event if run has input
+	input := run.Input()
+	if input == nil {
+		return nil
+	}
+
+	labels, err := resolveLabels(run, step, a, a.Labels)
+	if err != nil {
+		return err
+	}
+
+	labelUUIDs := make([]flows.LabelUUID, 0, len(labels))
+	for _, label := range labels {
+		labelUUIDs = append(labelUUIDs, label.UUID())
+	}
+
+	if len(labelUUIDs) > 0 {
+		run.ApplyEvent(step, a, events.NewAddLabelEvent(input.UUID(), labelUUIDs))
+	}
+
 	return nil
 }

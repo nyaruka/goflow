@@ -77,12 +77,40 @@ type legacyActionSet struct {
 }
 
 type legacyLabelReference struct {
-	UUID flows.LabelUUID `json:"uuid"`
-	Name string          `json:"name"`
+	UUID flows.LabelUUID
+	Name string
 }
 
-func (l *legacyLabelReference) Migrate() *flows.Label {
-	return flows.NewLabel(l.UUID, l.Name)
+func (l *legacyLabelReference) Migrate() *flows.LabelReference {
+	return flows.NewLabelReference(l.UUID, l.Name)
+}
+
+func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
+	// label reference may be a string
+	if data[0] == '"' {
+		var nameExpression string
+		if err := json.Unmarshal(data, &nameExpression); err != nil {
+			return err
+		}
+
+		// if it starts with @ then it's an expression
+		if strings.HasPrefix(nameExpression, "@") {
+			nameExpression, _ = excellent.MigrateTemplate(nameExpression)
+		}
+
+		l.Name = nameExpression
+		return nil
+	}
+
+	// or a JSON object with UUID/Name properties
+	var raw map[string]interface{}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	l.UUID = flows.LabelUUID(raw["uuid"].(string))
+	l.Name = raw["name"].(string)
+	return nil
 }
 
 type legacyContactReference struct {
@@ -105,17 +133,17 @@ func (g *legacyGroupReference) Migrate() *flows.GroupReference {
 func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
 	// group reference may be a string
 	if data[0] == '"' {
-		var groupNameExpression string
-		if err := json.Unmarshal(data, &groupNameExpression); err != nil {
+		var nameExpression string
+		if err := json.Unmarshal(data, &nameExpression); err != nil {
 			return err
 		}
 
 		// if it starts with @ then it's an expression
-		if strings.HasPrefix(groupNameExpression, "@") {
-			groupNameExpression, _ = excellent.MigrateTemplate(groupNameExpression)
+		if strings.HasPrefix(nameExpression, "@") {
+			nameExpression, _ = excellent.MigrateTemplate(nameExpression)
 		}
 
-		g.Name = groupNameExpression
+		g.Name = nameExpression
 		return nil
 	}
 
@@ -292,7 +320,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 	switch a.Type {
 	case "add_label":
 
-		labels := make([]*flows.Label, len(a.Labels))
+		labels := make([]*flows.LabelReference, len(a.Labels))
 		for i, label := range a.Labels {
 			labels[i] = label.Migrate()
 		}

@@ -9,6 +9,7 @@ import (
 )
 
 type baseInputEnvelope struct {
+	UUID        flows.InputUUID   `json:"uuid,uuid4" validate:"uuid4"`
 	ChannelUUID flows.ChannelUUID `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
 	CreatedOn   time.Time         `json:"created_on" validate:"required"`
 }

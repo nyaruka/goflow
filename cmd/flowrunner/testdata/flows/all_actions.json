@@ -12,6 +12,19 @@
                     "actions": [
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_label",
+                            "labels": [
+                                {
+                                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                                    "name": "Spam"
+                                },
+                                {
+                                    "name": "@contact.fields.state Messages"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
                             "type": "add_to_group",
                             "groups": [
                                 {
@@ -129,7 +142,7 @@
           }
         ],
         "is_set": true
-      },
+    },
     {
         "type": "channel",
         "url": "http://testserver/assets/channel/57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -139,5 +152,20 @@
             "address": "+12345671111",
             "type": "T"
         }
+    },
+    {
+        "type": "label",
+        "url": "http://testserver/assets/label",
+        "content": [
+          {
+            "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+            "name": "Spam"
+          },
+          {
+            "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168",
+            "name": "Azuay Messages"
+          }
+        ],
+        "is_set": true
     }
 ]
