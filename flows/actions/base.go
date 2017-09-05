@@ -58,7 +58,7 @@ func resolveGroups(run flows.FlowRun, step flows.Step, action flows.Action, refe
 	return groups, nil
 }
 
-// helper function for actions that have a set of group references that must be resolved to actual groups
+// helper function for actions that have a set of label references that must be resolved to actual labels
 func resolveLabels(run flows.FlowRun, step flows.Step, action flows.Action, references []*flows.LabelReference) ([]*flows.Label, error) {
 	labelSet, err := run.Session().Assets().GetLabelSet()
 	if err != nil {
