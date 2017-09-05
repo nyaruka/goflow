@@ -1,6 +1,11 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"strings"
+
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
+)
 
 // TypeUpdateContact is the type of our update contact event
 const TypeUpdateContact string = "update_contact"
@@ -36,4 +41,23 @@ func NewUpdateContact(name string, value string) *UpdateContactEvent {
 func (e *UpdateContactEvent) Type() string { return TypeUpdateContact }
 
 // Apply applies this event to the given run
-func (e *UpdateContactEvent) Apply(run flows.FlowRun) error { return nil }
+func (e *UpdateContactEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+	// if this is either name or language, we save directly to the contact
+	if strings.ToLower(e.FieldName) == "name" {
+		run.Contact().SetName(e.Value)
+	} else if strings.ToLower(e.FieldName) == "language" {
+		// try to parse our language
+		lang, err := utils.ParseLanguage(e.Value)
+
+		// if this doesn't look valid, log an error and don't set our language
+		if err != nil {
+			run.AddError(step, action, err)
+		} else {
+			run.Contact().SetLanguage(lang)
+		}
+	}
+
+	// TODO revaluate dynamic groups
+
+	return nil
+}

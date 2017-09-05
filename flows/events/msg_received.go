@@ -52,7 +52,7 @@ func NewMsgReceivedEvent(uuid flows.InputUUID, channel flows.ChannelUUID, contac
 func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 
 // Apply applies this event to the given run
-func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
+func (e *MsgReceivedEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
 	var channel flows.Channel
 	var err error
 

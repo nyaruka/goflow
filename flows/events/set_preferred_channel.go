@@ -36,7 +36,7 @@ func NewPreferredChannel(channelUUID flows.ChannelUUID, channelName string) *Pre
 func (e *PreferredChannelEvent) Type() string { return TypePreferredChannel }
 
 // Apply applies this event to the given run
-func (e *PreferredChannelEvent) Apply(run flows.FlowRun) error {
+func (e *PreferredChannelEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
 	channel, err := run.Session().Assets().GetChannel(e.ChannelUUID)
 	if err != nil {
 		return err

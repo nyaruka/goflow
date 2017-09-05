@@ -6,7 +6,6 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeUpdateContact is the type for our update contact action
@@ -53,27 +52,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 	// if we received an error, log it
 	if err != nil {
 		run.AddError(step, a, err)
-	}
-
-	// if this is either name or language, we save directly to the contact
-	if strings.ToLower(a.FieldName) == "name" {
-		run.Contact().SetName(value)
-	} else if strings.ToLower(a.FieldName) == "language" {
-		// try to parse our language
-		lang := utils.NilLanguage
-		lang, err = utils.ParseLanguage(value)
-
-		// if this doesn't look valid, log an error and don't set our language
-		if err != nil {
-			run.AddError(step, a, err)
-		} else {
-			run.Contact().SetLanguage(lang)
-			value = string(lang)
-		}
-	}
-
-	// log our event
-	if err == nil {
+	} else {
 		run.ApplyEvent(step, a, events.NewUpdateContact(strings.ToLower(a.FieldName), value))
 	}
 

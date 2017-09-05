@@ -190,7 +190,7 @@ type Event interface {
 	FromCaller() bool
 	SetFromCaller(bool)
 
-	Apply(FlowRun) error
+	Apply(FlowRun, Step, Action) error
 
 	utils.Typed
 }

@@ -36,7 +36,7 @@ type SetExtraEvent struct {
 func (e *SetExtraEvent) Type() string { return TypeSetExtra }
 
 // Apply applies this event to the given run
-func (e *SetExtraEvent) Apply(run flows.FlowRun) error {
+func (e *SetExtraEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
 	extra := utils.JSONFragment(e.Extra)
 
 	run.SetExtra(extra)
