@@ -162,7 +162,7 @@ func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
 func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
-	if err := event.Apply(r, s, action); err != nil {
+	if err := event.Apply(r, s); err != nil {
 		return err
 	}
 

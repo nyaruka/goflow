@@ -30,7 +30,7 @@ type SetContactEvent struct {
 func (e *SetContactEvent) Type() string { return TypeSetContact }
 
 // Apply applies this event to the given run
-func (e *SetContactEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+func (e *SetContactEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	contact, err := flows.ReadContact(run.Session().Assets(), e.Contact)
 	if err != nil {
 		return err

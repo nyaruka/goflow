@@ -41,7 +41,7 @@ func NewUpdateContact(name string, value string) *UpdateContactEvent {
 func (e *UpdateContactEvent) Type() string { return TypeUpdateContact }
 
 // Apply applies this event to the given run
-func (e *UpdateContactEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+func (e *UpdateContactEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	// if this is either name or language, we save directly to the contact
 	if strings.ToLower(e.FieldName) == "name" {
 		run.Contact().SetName(e.Value)
@@ -51,7 +51,7 @@ func (e *UpdateContactEvent) Apply(run flows.FlowRun, step flows.Step, action fl
 
 		// if this doesn't look valid, log an error and don't set our language
 		if err != nil {
-			run.AddError(step, action, err)
+			run.AddError(step, nil, err)
 		} else {
 			run.Contact().SetLanguage(lang)
 		}

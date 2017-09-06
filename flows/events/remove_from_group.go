@@ -34,7 +34,7 @@ func NewRemoveFromGroupEvent(groups []flows.GroupUUID) *RemoveFromGroupEvent {
 func (e *RemoveFromGroupEvent) Type() string { return TypeRemoveFromGroup }
 
 // Apply applies this event to the given run
-func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	groupSet, err := run.Session().Assets().GetGroupSet()
 	if err != nil {
 		return err

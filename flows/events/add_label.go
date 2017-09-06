@@ -36,6 +36,6 @@ func NewAddLabelEvent(inputUUID flows.InputUUID, labelUUIDs []flows.LabelUUID) *
 func (e *AddLabelEvent) Type() string { return TypeAddLabel }
 
 // Apply applies this event to the given run
-func (e *AddLabelEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+func (e *AddLabelEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	return nil
 }

@@ -29,7 +29,7 @@ type RunExpiredEvent struct {
 func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
 
 // Apply applies this event to the given run
-func (e *RunExpiredEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+func (e *RunExpiredEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	if run.UUID() != e.RunUUID {
 		return fmt.Errorf("only the current run can be expired")
 	}

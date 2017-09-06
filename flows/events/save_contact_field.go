@@ -39,7 +39,7 @@ func NewSaveToContact(field flows.FieldUUID, name string, value string) *SaveCon
 func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
 
 // Apply applies this event to the given run
-func (e *SaveContactFieldEvent) Apply(run flows.FlowRun, step flows.Step, action flows.Action) error {
+func (e *SaveContactFieldEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	run.Contact().Fields().Save(e.FieldUUID, e.FieldName, e.Value)
 
 	// TODO revaluate dynamic groups
