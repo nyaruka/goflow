@@ -52,7 +52,7 @@ func (a *AddLabelAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Ev
 
 	labels, err := resolveLabels(run, step, a, a.Labels, log)
 	if err != nil {
-		return nil, err
+		return log, err
 	}
 
 	labelUUIDs := make([]flows.LabelUUID, 0, len(labels))

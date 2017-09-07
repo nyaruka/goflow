@@ -51,7 +51,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 
 	groups, err := resolveGroups(run, step, a, a.Groups, log)
 	if err != nil {
-		return nil, err
+		return log, err
 	}
 
 	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
