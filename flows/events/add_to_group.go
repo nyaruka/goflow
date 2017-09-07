@@ -33,7 +33,7 @@ func NewAddToGroupEvent(groups []flows.GroupUUID) *AddToGroupEvent {
 func (e *AddToGroupEvent) Type() string { return TypeAddToGroup }
 
 // Apply applies this event to the given run
-func (e *AddToGroupEvent) Apply(run flows.FlowRun, step flows.Step) error {
+func (e *AddToGroupEvent) Apply(run flows.FlowRun) error {
 	groupSet, err := run.Session().Assets().GetGroupSet()
 	if err != nil {
 		return err
