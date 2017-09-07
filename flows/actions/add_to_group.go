@@ -39,16 +39,18 @@ func (a *AddToGroupAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
 	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact == nil {
-		return nil
+		return nil, nil
 	}
 
-	groups, err := resolveGroups(run, step, a, a.Groups)
+	log := make([]flows.Event, 0)
+
+	groups, err := resolveGroups(run, step, a, a.Groups, log)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
@@ -60,7 +62,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			run.AddError(step, a, fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			log = append(log, events.NewErrorEvent(fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID())))
 			continue
 		}
 
@@ -68,8 +70,8 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	if len(groupUUIDs) > 0 {
-		run.ApplyEvent(step, a, events.NewAddToGroupEvent(groupUUIDs))
+		log = append(log, events.NewAddToGroupEvent(groupUUIDs))
 	}
 
-	return nil
+	return log, nil
 }

@@ -42,26 +42,27 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+	log := make([]flows.Event, 0)
 
 	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
 	if err != nil {
-		run.AddError(step, a, err)
+		log = append(log, events.NewErrorEvent(err))
 	}
 	if text == "" {
-		run.AddError(step, a, fmt.Errorf("reply text evaluated to empty string, skipping"))
-		return nil
+		log = append(log, events.NewErrorEvent(fmt.Errorf("reply text evaluated to empty string, skipping")))
+		return log, nil
 	}
 
 	urns := run.Contact().URNs()
 	if a.AllURNs && len(urns) > 0 {
 		for _, urn := range urns {
-			run.ApplyEvent(step, a, events.NewSendMsgToURN(urn, text, a.Attachments))
+			log = append(log, events.NewSendMsgToURN(urn, text, a.Attachments))
 		}
 	} else {
-		run.ApplyEvent(step, a, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
+		log = append(log, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
 	}
 
-	return nil
+	return log, nil
 
 }

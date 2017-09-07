@@ -45,33 +45,29 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
-	// TODO: customize this for receiving contacts instead of one global replace
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+	log := make([]flows.Event, 0)
+
 	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
 	if err != nil {
-		run.AddError(step, a, err)
+		log = append(log, events.NewErrorEvent(err))
 	}
 	if text == "" {
-		run.AddError(step, a, fmt.Errorf("send_msg text evaluated to empty string, skipping"))
-		return nil
-	}
-
-	attachments := a.Attachments
-	if attachments == nil {
-		attachments = []string{}
+		log = append(log, events.NewErrorEvent(fmt.Errorf("send_msg text evaluated to empty string, skipping")))
+		return log, nil
 	}
 
 	// create events for each URN
 	for _, urn := range a.URNs {
-		run.ApplyEvent(step, a, events.NewSendMsgToURN(urn, text, attachments))
+		log = append(log, events.NewSendMsgToURN(urn, text, a.Attachments))
 	}
 
 	for _, contact := range a.Contacts {
-		run.ApplyEvent(step, a, events.NewSendMsgToContact(contact.UUID, text, attachments))
+		log = append(log, events.NewSendMsgToContact(contact.UUID, text, a.Attachments))
 	}
 
 	for _, group := range a.Groups {
-		run.ApplyEvent(step, a, events.NewSendMsgToGroup(group.UUID, text, attachments))
+		log = append(log, events.NewSendMsgToGroup(group.UUID, text, a.Attachments))
 	}
-	return nil
+	return log, nil
 }

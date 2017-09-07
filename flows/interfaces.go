@@ -133,7 +133,7 @@ type Node interface {
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step) error
+	Execute(FlowRun, Step) ([]Event, error)
 	Validate(SessionAssets) error
 	utils.Typed
 }

@@ -43,27 +43,28 @@ func (a *SaveFlowResultAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
 	// get our localized value if any
 	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 
+	log := make([]flows.Event, 0)
+
 	// log any error received
 	if err != nil {
-		run.AddError(step, a, err)
+		log = append(log, events.NewErrorEvent(err))
 	}
 
 	template = run.GetText(flows.UUID(a.UUID()), "category", a.Category)
 	categoryLocalized, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
 	if err != nil {
-		run.AddError(step, a, err)
+		log = append(log, events.NewErrorEvent(err))
 	}
 
 	if a.Category == categoryLocalized {
 		categoryLocalized = ""
 	}
 
-	run.ApplyEvent(step, a, events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized))
-
-	return nil
+	log = append(log, events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized))
+	return log, nil
 }

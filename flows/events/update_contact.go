@@ -1,8 +1,6 @@
 package events
 
 import (
-	"strings"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -16,7 +14,7 @@ const TypeUpdateContact string = "update_contact"
 //   {
 //     "type": "update_contact",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "field_name": "Language",
+//     "field_name": "language",
 //     "value": "eng"
 //   }
 // ```
@@ -24,7 +22,7 @@ const TypeUpdateContact string = "update_contact"
 // @event update_contact
 type UpdateContactEvent struct {
 	BaseEvent
-	FieldName string `json:"field_name"  validate:"required"`
+	FieldName string `json:"field_name" validate:"required,eq=name|eq=language"`
 	Value     string `json:"value"`
 }
 
@@ -43,10 +41,9 @@ func (e *UpdateContactEvent) Type() string { return TypeUpdateContact }
 // Apply applies this event to the given run
 func (e *UpdateContactEvent) Apply(run flows.FlowRun, step flows.Step) error {
 	// if this is either name or language, we save directly to the contact
-	if strings.ToLower(e.FieldName) == "name" {
+	if e.FieldName == "name" {
 		run.Contact().SetName(e.Value)
-	} else if strings.ToLower(e.FieldName) == "language" {
-		// try to parse our language
+	} else {
 		lang, err := utils.ParseLanguage(e.Value)
 
 		// if this doesn't look valid, log an error and don't set our language
