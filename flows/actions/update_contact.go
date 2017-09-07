@@ -1,8 +1,6 @@
 package actions
 
 import (
-	"strings"
-
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -27,7 +25,7 @@ const TypeUpdateContact string = "update_contact"
 // @action update_contact
 type UpdateContactAction struct {
 	BaseAction
-	FieldName string `json:"field_name"    validate:"required,eq=language|eq=name"`
+	FieldName string `json:"field_name"    validate:"required,eq=name|eq=language"`
 	Value     string `json:"value"         validate:"required"`
 }
 
@@ -36,14 +34,20 @@ func (a *UpdateContactAction) Type() string { return TypeUpdateContact }
 
 // Validate validates this action
 func (a *UpdateContactAction) Validate(assets flows.SessionAssets) error {
+	// check language is valid
+	if a.FieldName == "language" {
+		if _, err := utils.ParseLanguage(a.Value); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
 // Execute runs this action
-func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
 	// this is a no-op if we have no contact
 	if run.Contact() == nil {
-		return nil
+		return nil, nil
 	}
 
 	// get our localized value if any
@@ -52,30 +56,8 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step) error 
 
 	// if we received an error, log it
 	if err != nil {
-		run.AddError(step, a, err)
+		return []flows.Event{events.NewErrorEvent(err)}, nil
 	}
 
-	// if this is either name or language, we save directly to the contact
-	if strings.ToLower(a.FieldName) == "name" {
-		run.Contact().SetName(value)
-	} else if strings.ToLower(a.FieldName) == "language" {
-		// try to parse our language
-		lang := utils.NilLanguage
-		lang, err = utils.ParseLanguage(value)
-
-		// if this doesn't look valid, log an error and don't set our language
-		if err != nil {
-			run.AddError(step, a, err)
-		} else {
-			run.Contact().SetLanguage(lang)
-			value = string(lang)
-		}
-	}
-
-	// log our event
-	if err == nil {
-		run.ApplyEvent(step, a, events.NewUpdateContact(strings.ToLower(a.FieldName), value))
-	}
-
-	return nil
+	return []flows.Event{events.NewUpdateContact(a.FieldName, value)}, nil
 }

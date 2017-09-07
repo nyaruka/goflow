@@ -31,6 +31,14 @@ func NewErrorEvent(err error) *ErrorEvent {
 	}
 }
 
+func NewFatalErrorEvent(err error) *ErrorEvent {
+	return &ErrorEvent{
+		BaseEvent: NewBaseEvent(),
+		Text:      err.Error(),
+		Fatal:     true,
+	}
+}
+
 // Type returns the type of this event
 func (e *ErrorEvent) Type() string { return TypeError }
 

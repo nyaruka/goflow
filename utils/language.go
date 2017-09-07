@@ -15,12 +15,12 @@ var NilLanguage = Language("")
 // ParseLanguage returns a new Language for the passed in language string, or an error if not found
 func ParseLanguage(lang string) (Language, error) {
 	if len(lang) != 3 {
-		return "", fmt.Errorf("iso-639-3 codes must be 3 characters, got: %s", lang)
+		return NilLanguage, fmt.Errorf("iso-639-3 codes must be 3 characters, got: %s", lang)
 	}
 
 	base, err := language.ParseBase(lang)
 	if err != nil {
-		return "", err
+		return NilLanguage, err
 	}
 
 	return Language(base.ISO3()), nil

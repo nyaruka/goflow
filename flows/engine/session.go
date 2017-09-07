@@ -287,12 +287,20 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			if err := action.Execute(run, step); err != nil {
+			actionEvents, err := action.Execute(run, step)
+			if err != nil {
 				return nil, noDestination, err
 			}
 
-			if run.Status() == flows.RunStatusErrored {
-				return step, noDestination, nil
+			// apply any events that the action generated
+			for _, event := range actionEvents {
+				if err = run.ApplyEvent(step, action, event); err != nil {
+					return nil, noDestination, err
+				}
+
+				if run.Status() == flows.RunStatusErrored {
+					return step, noDestination, nil
+				}
 			}
 		}
 	}
