@@ -214,9 +214,9 @@ func EvaluateExpression(env utils.Environment, resolver utils.VariableResolver, 
 	errors := newErrorListener()
 
 	input := antlr.NewInputStream(template)
-	lexer := gen.NewExcellentLexer(input)
+	lexer := gen.NewExcellent2Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewExcellentParser(stream)
+	p := gen.NewExcellent2Parser(stream)
 	p.AddErrorListener(errors)
 	tree := p.Parse()
 

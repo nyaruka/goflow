@@ -1,10 +1,10 @@
-// Generated from excellent/gen/Excellent.g4 by ANTLR 4.7.
+// Generated from Excellent2.g4 by ANTLR 4.7.
 
-package gen // Excellent
+package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
 
-// ExcellentListener is a complete listener for a parse tree produced by ExcellentParser.
-type ExcellentListener interface {
+// Excellent2Listener is a complete listener for a parse tree produced by Excellent2Parser.
+type Excellent2Listener interface {
 	antlr.ParseTreeListener
 
 	// EnterParse is called when entering the parse production.

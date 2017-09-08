@@ -1,6 +1,6 @@
-grammar Excellent;
+grammar Excellent2;
 
-// rebuild with % antlr4 -Dlanguage=Go excellent/gen/Excellent.g4 -visitor -package gen
+// rebuild with % antlr4 -Dlanguage=Go Excellent2.g4 -o ../excellent/gen -package gen -visitor
 
 import LexUnicode;
 

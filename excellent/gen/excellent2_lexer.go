@@ -1,4 +1,4 @@
-// Generated from excellent/gen/Excellent.g4 by ANTLR 4.7.
+// Generated from Excellent2.g4 by ANTLR 4.7.
 
 package gen
 
@@ -207,7 +207,7 @@ var lexerRuleNames = []string{
 	"UnicodeClass_LO", "UnicodeDigit",
 }
 
-type ExcellentLexer struct {
+type Excellent2Lexer struct {
 	*antlr.BaseLexer
 	channelNames []string
 	modeNames    []string
@@ -222,9 +222,9 @@ func init() {
 	}
 }
 
-func NewExcellentLexer(input antlr.CharStream) *ExcellentLexer {
+func NewExcellent2Lexer(input antlr.CharStream) *Excellent2Lexer {
 
-	l := new(ExcellentLexer)
+	l := new(Excellent2Lexer)
 
 	l.BaseLexer = antlr.NewBaseLexer(input)
 	l.Interpreter = antlr.NewLexerATNSimulator(l, lexerAtn, lexerDecisionToDFA, antlr.NewPredictionContextCache())
@@ -234,37 +234,37 @@ func NewExcellentLexer(input antlr.CharStream) *ExcellentLexer {
 	l.RuleNames = lexerRuleNames
 	l.LiteralNames = lexerLiteralNames
 	l.SymbolicNames = lexerSymbolicNames
-	l.GrammarFileName = "Excellent.g4"
+	l.GrammarFileName = "Excellent2.g4"
 	// TODO: l.EOF = antlr.TokenEOF
 
 	return l
 }
 
-// ExcellentLexer tokens.
+// Excellent2Lexer tokens.
 const (
-	ExcellentLexerCOMMA     = 1
-	ExcellentLexerLPAREN    = 2
-	ExcellentLexerRPAREN    = 3
-	ExcellentLexerLBRACK    = 4
-	ExcellentLexerRBRACK    = 5
-	ExcellentLexerDOT       = 6
-	ExcellentLexerPLUS      = 7
-	ExcellentLexerMINUS     = 8
-	ExcellentLexerTIMES     = 9
-	ExcellentLexerDIVIDE    = 10
-	ExcellentLexerEXPONENT  = 11
-	ExcellentLexerEQ        = 12
-	ExcellentLexerNEQ       = 13
-	ExcellentLexerLTE       = 14
-	ExcellentLexerLT        = 15
-	ExcellentLexerGTE       = 16
-	ExcellentLexerGT        = 17
-	ExcellentLexerAMPERSAND = 18
-	ExcellentLexerDECIMAL   = 19
-	ExcellentLexerSTRING    = 20
-	ExcellentLexerTRUE      = 21
-	ExcellentLexerFALSE     = 22
-	ExcellentLexerNAME      = 23
-	ExcellentLexerWS        = 24
-	ExcellentLexerERROR     = 25
+	Excellent2LexerCOMMA     = 1
+	Excellent2LexerLPAREN    = 2
+	Excellent2LexerRPAREN    = 3
+	Excellent2LexerLBRACK    = 4
+	Excellent2LexerRBRACK    = 5
+	Excellent2LexerDOT       = 6
+	Excellent2LexerPLUS      = 7
+	Excellent2LexerMINUS     = 8
+	Excellent2LexerTIMES     = 9
+	Excellent2LexerDIVIDE    = 10
+	Excellent2LexerEXPONENT  = 11
+	Excellent2LexerEQ        = 12
+	Excellent2LexerNEQ       = 13
+	Excellent2LexerLTE       = 14
+	Excellent2LexerLT        = 15
+	Excellent2LexerGTE       = 16
+	Excellent2LexerGT        = 17
+	Excellent2LexerAMPERSAND = 18
+	Excellent2LexerDECIMAL   = 19
+	Excellent2LexerSTRING    = 20
+	Excellent2LexerTRUE      = 21
+	Excellent2LexerFALSE     = 22
+	Excellent2LexerNAME      = 23
+	Excellent2LexerWS        = 24
+	Excellent2LexerERROR     = 25
 )
