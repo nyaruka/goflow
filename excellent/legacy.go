@@ -297,9 +297,9 @@ func translateExpression(env utils.Environment, resolver utils.VariableResolver,
 	errors := newErrorListener()
 
 	input := antlr.NewInputStream(template)
-	lexer := gen.NewExcellentLexer(input)
+	lexer := gen.NewExcellent2Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewExcellentParser(stream)
+	p := gen.NewExcellent2Parser(stream)
 	p.AddErrorListener(errors)
 
 	// speed up parsing
@@ -336,7 +336,7 @@ func translateExpression(env utils.Environment, resolver utils.VariableResolver,
 // ---------------------------------------------------------------
 
 type legacyVisitor struct {
-	gen.BaseExcellentVisitor
+	gen.BaseExcellent2Visitor
 	env      utils.Environment
 	resolver utils.VariableResolver
 }

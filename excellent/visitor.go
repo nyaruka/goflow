@@ -14,7 +14,7 @@ import (
 )
 
 type Visitor struct {
-	gen.BaseExcellentVisitor
+	gen.BaseExcellent2Visitor
 	env      utils.Environment
 	resolver utils.VariableResolver
 }
