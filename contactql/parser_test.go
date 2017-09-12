@@ -47,24 +47,24 @@ func TestParseQuery(t *testing.T) {
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryKey(key string) (interface{}, KeyType) {
+func (t *TestQueryable) ResolveQueryKey(key string) interface{} {
 	switch key {
 	case "*":
-		return []string{"Bob Smith", "+59313145145", "bob_smith"}, KeyTypeImplicit
+		return []string{"Bob Smith", "+59313145145", "bob_smith"}
 	case "name":
-		return "Bob Smith", KeyTypeAttr
+		return "Bob Smith"
 	case "tel":
-		return "+59313145145", KeyTypeURN
+		return "+59313145145"
 	case "twitter":
-		return "bob_smith", KeyTypeURN
+		return "bob_smith"
 	case "gender":
-		return "male", KeyTypeTextField
+		return "male"
 	case "age":
-		return decimal.NewFromFloat(36), KeyTypeDecimalField
+		return decimal.NewFromFloat(36)
 	case "dob":
-		return time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC), KeyTypeDatetimeField
+		return time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)
 	}
-	return nil, KeyTypeUnknown
+	return nil
 }
 
 func TestEvaluateQuery(t *testing.T) {
@@ -125,6 +125,13 @@ func TestEvaluateQuery(t *testing.T) {
 		{`dob < 1981/05/29`, true},
 		{`dob <= 1981/05/28`, true},
 		{`dob <= 1981/05/27`, false},
+
+		// boolean combinations
+		{`name = "Bob Smith" AND gender = male`, true},
+		{`(name = "Bob Smith") AND (gender = male)`, true},
+		{`name = "Bob Smith" AND gender = female`, false},
+		{`name = "Bob Smith" OR gender = female`, true},
+		{`(name = "Bob Smith" OR gender = female) AND age > 35`, true},
 	}
 
 	for _, test := range tests {

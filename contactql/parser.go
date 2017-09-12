@@ -32,57 +32,36 @@ type QueryNode interface {
 type Condition struct {
 	key        string
 	comparator string
-	value      interface{}
+	value      string
 }
 
 func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
-	val, keyType := queryable.ResolveQueryKey(c.key)
+	val := queryable.ResolveQueryKey(c.key)
 
-	switch keyType {
-	case KeyTypeImplicit:
-		asString, err := utils.ToString(env, c.value)
-		if err != nil {
-			return false, err
-		}
-		return implicitComparison(val.([]string), asString), nil
+	if c.key == implicitKey {
+		return implicitComparison(val.([]string), c.value), nil
+	}
 
-	case KeyTypeAttr:
-		asString, err := utils.ToString(env, c.value)
-		if err != nil {
-			return false, err
-		}
-		return attrComparison(val.(string), c.comparator, asString)
-	case KeyTypeURN:
-		asString, err := utils.ToString(env, c.value)
-		if err != nil {
-			return false, err
-		}
-		return urnComparison(val.(string), c.comparator, asString)
+	switch val.(type) {
+	case string:
+		return stringComparison(val.(string), c.comparator, c.value)
 
-	case KeyTypeTextField:
-		asString, err := utils.ToString(env, c.value)
-		if err != nil {
-			return false, err
-		}
-		return textFieldComparison(val.(string), c.comparator, asString)
-
-	case KeyTypeDecimalField:
+	case decimal.Decimal:
 		asDecimal, err := utils.ToDecimal(env, c.value)
 		if err != nil {
 			return false, err
 		}
-		return decimalFieldComparison(val.(decimal.Decimal), c.comparator, asDecimal)
+		return decimalComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
-	case KeyTypeDatetimeField:
+	case time.Time:
 		asDate, err := utils.ToDate(env, c.value)
 		if err != nil {
 			return false, err
 		}
 		return dateComparison(val.(time.Time), c.comparator, asDate)
-
-	case KeyTypeLocationField:
-		// TODO
 	}
+
+	// TODO locations
 
 	return false, fmt.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
 }
@@ -97,17 +76,8 @@ type IsSetCondition struct {
 }
 
 func (c *IsSetCondition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
-	val, keyType := queryable.ResolveQueryKey(c.key)
+	val := queryable.ResolveQueryKey(c.key)
 
-	switch keyType {
-	case KeyTypeTextField, KeyTypeDecimalField, KeyTypeDatetimeField, KeyTypeLocationField:
-		if c.comparator == "=" {
-			return val == nil, nil
-		} else {
-			return val != nil, nil
-		}
-
-	}
 	if c.comparator == "=" {
 		return val == nil || val == "", nil
 	} else if c.comparator == "!=" {

@@ -9,21 +9,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type KeyType int
-
-const (
-	KeyTypeImplicit KeyType = iota
-	KeyTypeAttr
-	KeyTypeURN
-	KeyTypeTextField
-	KeyTypeDecimalField
-	KeyTypeDatetimeField
-	KeyTypeLocationField
-	KeyTypeUnknown
-)
-
 type Queryable interface {
-	ResolveQueryKey(string) (interface{}, KeyType)
+	ResolveQueryKey(string) interface{}
 }
 
 func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
@@ -43,37 +30,23 @@ func implicitComparison(objectVals []string, queryVal string) bool {
 	return false
 }
 
-func attrComparison(objectVal string, comparator string, queryVal string) (bool, error) {
+func stringComparison(objectVal string, comparator string, queryVal string) (bool, error) {
 	switch comparator {
 	case "=":
 		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil
+	case "!=":
+		return strings.ToLower(objectVal) != strings.ToLower(queryVal), nil
 	case "~":
 		return icontains(objectVal, queryVal), nil
-	}
-	return false, fmt.Errorf("can't query contact properties with %s", comparator)
-}
-
-func urnComparison(objectVal string, comparator string, queryVal string) (bool, error) {
-	switch comparator {
-	case "=":
-		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil
-	case "~":
-		return icontains(objectVal, queryVal), nil
-	}
-	return false, fmt.Errorf("can't query contact URNs with %s", comparator)
-}
-
-func textFieldComparison(objectVal string, comparator string, queryVal string) (bool, error) {
-	switch comparator {
-	case "=":
-		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil
 	}
 	return false, fmt.Errorf("can't query text fields with %s", comparator)
 }
 
-func decimalFieldComparison(objectVal decimal.Decimal, comparator string, queryVal decimal.Decimal) (bool, error) {
+func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal decimal.Decimal) (bool, error) {
 	switch comparator {
 	case "=":
+		return objectVal.Equal(queryVal), nil
+	case "!=":
 		return objectVal.Equal(queryVal), nil
 	case ">":
 		return objectVal.GreaterThan(queryVal), nil
