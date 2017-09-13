@@ -12,7 +12,6 @@ const TypeSaveContactField string = "save_contact_field"
 //     "type": "save_contact_field",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "field_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//     "field_name": "Gender",
 //     "value": "Male"
 //   }
 // ```
@@ -21,16 +20,14 @@ const TypeSaveContactField string = "save_contact_field"
 type SaveContactFieldEvent struct {
 	BaseEvent
 	FieldUUID flows.FieldUUID `json:"field_uuid"  validate:"required"`
-	FieldName string          `json:"field_name"  validate:"required"`
 	Value     string          `json:"value"`
 }
 
 // NewSaveToContact returns a new save to contact event
-func NewSaveToContact(field flows.FieldUUID, name string, value string) *SaveContactFieldEvent {
+func NewSaveToContactEvent(field flows.FieldUUID, value string) *SaveContactFieldEvent {
 	return &SaveContactFieldEvent{
 		BaseEvent: NewBaseEvent(),
 		FieldUUID: field,
-		FieldName: name,
 		Value:     value,
 	}
 }
@@ -40,7 +37,12 @@ func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
 
 // Apply applies this event to the given run
 func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) error {
-	run.Contact().Fields().Save(e.FieldUUID, e.FieldName, e.Value)
+	field, err := run.Session().Assets().GetField(e.FieldUUID)
+	if err != nil {
+		return err
+	}
+
+	run.Contact().Fields().Save(field, e.Value)
 
 	// TODO revaluate dynamic groups
 

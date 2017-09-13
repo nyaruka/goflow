@@ -42,6 +42,7 @@ var serverURL = ""
 
 var assetURLs = map[engine.AssetItemType]string{
 	"channel": "http://testserver/assets/channel",
+	"field":   "http://testserver/assets/field",
 	"flow":    "http://testserver/assets/flow",
 	"group":   "http://testserver/assets/group",
 	"label":   "http://testserver/assets/label",
@@ -78,18 +79,25 @@ type runResult struct {
 }
 
 func runFlow(env utils.Environment, assetsFilename string, contactFilename string, flowUUID flows.FlowUUID, callerEvents [][]flows.Event) (runResult, error) {
-	assetsJSON, err := readFile("flows/", assetsFilename)
-
+	// load both the test specific assets and default assets
+	defaultAssetsJSON, err := readFile("", "default.json")
+	if err != nil {
+		return runResult{}, err
+	}
+	testAssetsJSON, err := readFile("flows/", assetsFilename)
 	if err != nil {
 		return runResult{}, err
 	}
 
 	// rewrite the URL on any webhook actions
-	assetsJSONStr := strings.Replace(string(assetsJSON), "http://localhost", serverURL, -1)
+	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
 	assetCache := engine.NewAssetCache()
-	if err := assetCache.Include(json.RawMessage(assetsJSONStr)); err != nil {
-		return runResult{}, fmt.Errorf("Error reading assets '%s': %s", assetsFilename, err)
+	if err := assetCache.Include(defaultAssetsJSON); err != nil {
+		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
+	}
+	if err := assetCache.Include(json.RawMessage(testAssetsJSONStr)); err != nil {
+		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
 	session := engine.NewSession(assetCache, assetURLs)

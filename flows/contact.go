@@ -17,7 +17,7 @@ type Contact struct {
 	timezone *time.Location
 	urns     URNList
 	groups   GroupList
-	fields   *Fields
+	fields   FieldValues
 	channel  Channel
 }
 
@@ -49,10 +49,12 @@ func (c *Contact) RemoveGroup(group *Group) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
-func (c *Contact) Fields() *Fields            { return c.fields }
+func (c *Contact) Fields() FieldValues { return c.fields }
+
 func (c *Contact) Channel() Channel           { return c.channel }
 func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
 
@@ -115,15 +117,20 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type fieldValueEnvelope struct {
+	Value     string    `json:"value"`
+	CreatedOn time.Time `json:"created_on"`
+}
+
 type contactEnvelope struct {
-	UUID        ContactUUID    `json:"uuid" validate:"required,uuid4"`
-	Name        string         `json:"name"`
-	Language    utils.Language `json:"language"`
-	Timezone    string         `json:"timezone"`
-	URNs        URNList        `json:"urns"`
-	GroupUUIDs  []GroupUUID    `json:"group_uuids,omitempty" validate:"dive,uuid4"`
-	Fields      *Fields        `json:"fields,omitempty"`
-	ChannelUUID ChannelUUID    `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID        ContactUUID                      `json:"uuid" validate:"required,uuid4"`
+	Name        string                           `json:"name"`
+	Language    utils.Language                   `json:"language"`
+	Timezone    string                           `json:"timezone"`
+	URNs        URNList                          `json:"urns"`
+	GroupUUIDs  []GroupUUID                      `json:"group_uuids,omitempty" validate:"dive,uuid4"`
+	Fields      map[FieldUUID]fieldValueEnvelope `json:"fields,omitempty"`
+	ChannelUUID ChannelUUID                      `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -169,9 +176,17 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	}
 
 	if envelope.Fields == nil {
-		c.fields = NewFields()
+		c.fields = make(FieldValues)
 	} else {
-		c.fields = envelope.Fields
+		c.fields = make(FieldValues, len(envelope.Fields))
+		for fieldUUID, valueEnvelope := range envelope.Fields {
+			field, err := assets.GetField(fieldUUID)
+			if err != nil {
+				return nil, err
+			}
+			// TODO deserialize non-string values
+			c.fields[field.key] = &FieldValue{field, valueEnvelope.Value, valueEnvelope.CreatedOn}
+		}
 	}
 
 	if envelope.ChannelUUID != "" {
@@ -191,7 +206,6 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.UUID = c.uuid
 	ce.Language = c.language
 	ce.URNs = c.urns
-	ce.Fields = c.fields
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}
@@ -199,6 +213,14 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.GroupUUIDs = make([]GroupUUID, len(c.groups))
 	for g := range c.groups {
 		ce.GroupUUIDs[g] = c.groups[g].UUID()
+	}
+
+	ce.Fields = make(map[FieldUUID]fieldValueEnvelope, len(c.fields))
+	for _, v := range c.fields {
+		// TODO properly serialize non-string values
+		valAsString := fmt.Sprintf("%v", v.value)
+
+		ce.Fields[v.field.UUID()] = fieldValueEnvelope{Value: valAsString, CreatedOn: v.createdOn}
 	}
 
 	return json.Marshal(ce)

@@ -4,147 +4,165 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/goflow/utils"
 )
 
-// NewFields returns a new empty field
-func NewFields() *Fields {
-	return &Fields{make(map[string]*Field)}
+// FieldReference is a reference to field used in a flow
+type FieldReference struct {
+	UUID FieldUUID `json:"uuid" validate:"uuid4"`
+	Key  string    `json:"key"`
 }
 
-// Fields represents a set of fields keyed by snakified field names
-type Fields struct {
-	fields map[string]*Field
+func NewFieldReference(uuid FieldUUID, key string) *FieldReference {
+	return &FieldReference{UUID: uuid, Key: key}
 }
 
-// Save saves a new field to our map
-func (f *Fields) Save(uuid FieldUUID, name string, value string) {
-	field := Field{uuid, name, value}
-	f.fields[utils.Snakify(name)] = &field
+type FieldValueType string
+
+const (
+	FieldValueTypeText     FieldValueType = "text"
+	FieldValueTypeDecimal  FieldValueType = "decimal"
+	FieldValueTypeDatetime FieldValueType = "datetime"
+	FieldValueTypeWard     FieldValueType = "ward"
+	FieldValueTypeDistrict FieldValueType = "district"
+	FieldValueTypeState    FieldValueType = "state"
+)
+
+// Field represents a contact field
+type Field struct {
+	uuid      FieldUUID
+	key       string
+	valueType FieldValueType
 }
 
-// Resolve resolves the field for the passed in key which will be snakified
-func (f *Fields) Resolve(key string) interface{} {
-	key = utils.Snakify(key)
-	value, ok := f.fields[key]
-	if !ok {
-		return nil
+// NewField returns a new field object with the passed in uuid, key and value type
+func NewField(uuid FieldUUID, key string, valueType FieldValueType) *Field {
+	return &Field{uuid: uuid, key: key, valueType: valueType}
+}
+
+// UUID returns the UUID of the field
+func (f *Field) UUID() FieldUUID { return f.uuid }
+
+// Key returns the key of the field
+func (f *Field) Key() string { return f.key }
+
+// FieldValue represents a contact's value for a specific field
+type FieldValue struct {
+	field     *Field
+	value     interface{}
+	createdOn time.Time
+}
+
+func (v *FieldValue) Resolve(key string) interface{} {
+	switch key {
+	case "value":
+		return v.value
+	case "created_on":
+		return v.createdOn
 	}
-
-	return value
+	return fmt.Errorf("no field '%s' on field value", key)
 }
 
-// Default returns the default value for Fields, which is ourselves
-func (f *Fields) Default() interface{} {
+// Default returns the default value for FieldValue, which is the value
+func (v *FieldValue) Default() interface{} {
+	return v.value
+}
+
+// String returns the string representation of this field value
+func (v *FieldValue) String() string {
+	// TODO serilalize field value according to type
+	return fmt.Sprintf("%s", v.value)
+}
+
+type FieldValues map[string]*FieldValue
+
+func (f FieldValues) Save(field *Field, value string) {
+	// TODO deserialize non-string values
+	f[field.key] = &FieldValue{field: field, value: value, createdOn: time.Now().UTC()}
+}
+
+func (f FieldValues) Resolve(key string) interface{} {
+	return f[key]
+}
+
+// Default returns the default value for FieldValues, which is ourselves
+func (f FieldValues) Default() interface{} {
 	return f
 }
 
 // String returns the string representation of these Fields, which is our JSON representation
-func (f *Fields) String() string {
-	fields := make([]string, 0, len(f.fields))
-	for _, v := range f.fields {
-		fields = append(fields, fmt.Sprintf("%s: %s", v.name, v.value))
+func (f FieldValues) String() string {
+	fields := make([]string, 0, len(f))
+	for k, v := range f {
+		// TODO serilalize field value according to type
+		fields = append(fields, fmt.Sprintf("%s: %s", k, v.value))
 	}
 	return strings.Join(fields, ", ")
 }
 
-var _ utils.VariableResolver = (*Fields)(nil)
+var _ utils.VariableResolver = (FieldValues)(nil)
 
-// Field represents a contact field and value for a contact
-type Field struct {
-	field FieldUUID
-	name  string
-	value string
+// FieldSet defines the unordered set of all fields for a session
+type FieldSet struct {
+	fields       []*Field
+	fieldsByUUID map[FieldUUID]*Field
 }
 
-// Resolve resolves one of the fields on a Field
-func (f *Field) Resolve(key string) interface{} {
-	switch key {
-
-	case "field_uuid":
-		return f.field
-
-	case "field_name":
-		return f.name
-
-	case "value":
-		return f.value
+func NewFieldSet(fields []*Field) *FieldSet {
+	s := &FieldSet{fields: fields, fieldsByUUID: make(map[FieldUUID]*Field, len(fields))}
+	for _, field := range s.fields {
+		s.fieldsByUUID[field.uuid] = field
 	}
-
-	return fmt.Errorf("No field '%s' on contact field", key)
+	return s
 }
 
-// Default returns the default value for a Field, which is the field itself
-func (f *Field) Default() interface{} {
-	return f
+func (s *FieldSet) FindByUUID(uuid FieldUUID) *Field {
+	return s.fieldsByUUID[uuid]
 }
 
-// String returns the string value for a field, which is our value
-func (f *Field) String() string {
-	return f.value
+// FindByKey looks for a field with the given key
+func (s *FieldSet) FindByKey(key string) *Field {
+	for _, field := range s.fields {
+		if strings.ToLower(field.key) == key {
+			return field
+		}
+	}
+	return nil
 }
-
-var _ utils.VariableResolver = (*Field)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// UnmarshalJSON is our custom unmarshalling of a Fields object, we validate our keys against snaked names
-func (f *Fields) UnmarshalJSON(data []byte) error {
-	f.fields = make(map[string]*Field)
-	incoming := make(map[string]*Field)
-	err := json.Unmarshal(data, &incoming)
-	if err != nil {
-		return nil
-	}
-
-	// populate ourselves with the fields, but keyed with snakified values
-	for k, v := range incoming {
-		// validate name and key are the same
-		snaked := utils.Snakify(v.name)
-		if k != snaked {
-			return fmt.Errorf("invalid fields map, key: '%s' does not match snaked field name: '%s'", k, v.name)
-		}
-
-		f.fields[k] = v
-	}
-	return nil
-}
-
-// MarshalJSON is our custom marshalling of a Fields object, we build a map with
-// the full names and then marshal that with snakified keys
-func (f *Fields) MarshalJSON() ([]byte, error) {
-	return json.Marshal(f.fields)
-}
-
 type fieldEnvelope struct {
-	Field FieldUUID `json:"field_uuid"`
-	Name  string    `json:"field_name"`
-	Value string    `json:"value"`
+	UUID      FieldUUID      `json:"uuid" validate:"required,uuid4"`
+	Key       string         `json:"key"`
+	ValueType FieldValueType `json:"value_type,omitempty"`
 }
 
-// UnmarshalJSON is our custom unmarshalling for Field
-func (f *Field) UnmarshalJSON(data []byte) error {
+func ReadField(data json.RawMessage) (*Field, error) {
 	var fe fieldEnvelope
-	var err error
+	if err := utils.UnmarshalAndValidate(data, &fe, "field"); err != nil {
+		return nil, err
+	}
 
-	err = json.Unmarshal(data, &fe)
-	f.field = fe.Field
-	f.name = fe.Name
-	f.value = fe.Value
-
-	return err
+	return NewField(fe.UUID, fe.Key, fe.ValueType), nil
 }
 
-// MarshalJSON is our custom unmarshalling for Field
-func (f *Field) MarshalJSON() ([]byte, error) {
-	var fe fieldEnvelope
+func ReadFieldSet(data json.RawMessage) (*FieldSet, error) {
+	items, err := utils.UnmarshalArray(data)
+	if err != nil {
+		return nil, err
+	}
 
-	fe.Field = f.field
-	fe.Name = f.name
-	fe.Value = f.value
+	fields := make([]*Field, len(items))
+	for d := range items {
+		if fields[d], err = ReadField(items[d]); err != nil {
+			return nil, err
+		}
+	}
 
-	return json.Marshal(fe)
+	return NewFieldSet(fields), nil
 }

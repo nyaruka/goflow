@@ -461,9 +461,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}
 
 		return &actions.SaveContactField{
-			FieldName:  a.Label,
+			Field:      flows.NewFieldReference(a.FieldUUID, a.Field),
 			Value:      migratedValue,
-			FieldUUID:  a.FieldUUID,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":
