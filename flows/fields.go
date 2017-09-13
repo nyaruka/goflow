@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/shopspring/decimal"
+
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -15,10 +17,12 @@ type FieldReference struct {
 	Key  string    `json:"key"`
 }
 
+// NewFieldReference creates a new field reference with the given UUID and key
 func NewFieldReference(uuid FieldUUID, key string) *FieldReference {
 	return &FieldReference{UUID: uuid, Key: key}
 }
 
+// FieldValueType is the data type of values for each field
 type FieldValueType string
 
 const (
@@ -48,11 +52,30 @@ func (f *Field) UUID() FieldUUID { return f.uuid }
 // Key returns the key of the field
 func (f *Field) Key() string { return f.key }
 
+func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, error) {
+	switch f.valueType {
+	case FieldValueTypeText:
+		return value, nil
+	case FieldValueTypeDecimal:
+		return decimal.NewFromString(value)
+	case FieldValueTypeDatetime:
+		return utils.DateFromString(env, value)
+	}
+
+	// TODO location field values
+
+	return nil, fmt.Errorf("field %s has invalid value type: '%s'", f.key, f.valueType)
+}
+
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field     *Field
 	value     interface{}
 	createdOn time.Time
+}
+
+func NewFieldValue(field *Field, value interface{}, createdOn time.Time) *FieldValue {
+	return &FieldValue{field: field, value: value, createdOn: createdOn}
 }
 
 func (v *FieldValue) Resolve(key string) interface{} {
@@ -72,18 +95,40 @@ func (v *FieldValue) Default() interface{} {
 
 // String returns the string representation of this field value
 func (v *FieldValue) String() string {
-	// TODO serilalize field value according to type
+	// TODO serialize field value according to type
 	return fmt.Sprintf("%s", v.value)
+}
+
+// String returns the string representation of this field value
+func (v *FieldValue) JSON() string {
+	switch v.field.valueType {
+	case FieldValueTypeText:
+		return v.value.(string)
+	case FieldValueTypeDecimal:
+		return v.value.(decimal.Decimal).String()
+	case FieldValueTypeDatetime:
+		return utils.DateToISO(v.value.(time.Time))
+	}
+
+	// TODO location field values
+
+	return fmt.Sprintf("%v", v.value)
 }
 
 type FieldValues map[string]*FieldValue
 
-func (f FieldValues) Save(field *Field, value string) {
-	// TODO deserialize non-string values
-	f[field.key] = &FieldValue{field: field, value: value, createdOn: time.Now().UTC()}
+func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) error {
+	value, err := field.ParseValue(env, rawValue)
+	if err != nil {
+		return err
+	}
+
+	f[field.key] = NewFieldValue(field, value, time.Now().UTC())
+	return nil
 }
 
 func (f FieldValues) Resolve(key string) interface{} {
+	fmt.Printf("FieldValues.Resolve(%s) -> %v\n", key, f[key])
 	return f[key]
 }
 
@@ -120,16 +165,6 @@ func NewFieldSet(fields []*Field) *FieldSet {
 
 func (s *FieldSet) FindByUUID(uuid FieldUUID) *Field {
 	return s.fieldsByUUID[uuid]
-}
-
-// FindByKey looks for a field with the given key
-func (s *FieldSet) FindByKey(key string) *Field {
-	for _, field := range s.fields {
-		if strings.ToLower(field.key) == key {
-			return field
-		}
-	}
-	return nil
 }
 
 //------------------------------------------------------------------------------------------

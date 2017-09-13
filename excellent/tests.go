@@ -156,7 +156,7 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// nil is not a value
-	if args[0] == nil {
+	if utils.IsNil(args[0]) {
 		return XFalseResult
 	}
 

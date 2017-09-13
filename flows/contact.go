@@ -184,8 +184,13 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 			if err != nil {
 				return nil, err
 			}
-			// TODO deserialize non-string values
-			c.fields[field.key] = &FieldValue{field, valueEnvelope.Value, valueEnvelope.CreatedOn}
+			// TODO environment?
+			value, err := field.ParseValue(nil, valueEnvelope.Value)
+			if err != nil {
+				return nil, err
+			}
+
+			c.fields[field.key] = NewFieldValue(field, value, valueEnvelope.CreatedOn)
 		}
 	}
 
@@ -217,10 +222,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 
 	ce.Fields = make(map[FieldUUID]fieldValueEnvelope, len(c.fields))
 	for _, v := range c.fields {
-		// TODO properly serialize non-string values
-		valAsString := fmt.Sprintf("%v", v.value)
-
-		ce.Fields[v.field.UUID()] = fieldValueEnvelope{Value: valAsString, CreatedOn: v.createdOn}
+		ce.Fields[v.field.UUID()] = fieldValueEnvelope{Value: v.JSON(), CreatedOn: v.createdOn}
 	}
 
 	return json.Marshal(ce)
