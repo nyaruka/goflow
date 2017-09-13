@@ -134,7 +134,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
+func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -169,7 +169,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	} else {
 		c.groups = make(GroupList, len(envelope.GroupUUIDs))
 		for g := range envelope.GroupUUIDs {
-			if c.groups[g], err = assets.GetGroup(envelope.GroupUUIDs[g]); err != nil {
+			if c.groups[g], err = session.Assets().GetGroup(envelope.GroupUUIDs[g]); err != nil {
 				return nil, err
 			}
 		}
@@ -180,12 +180,12 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	} else {
 		c.fields = make(FieldValues, len(envelope.Fields))
 		for fieldUUID, valueEnvelope := range envelope.Fields {
-			field, err := assets.GetField(fieldUUID)
+			field, err := session.Assets().GetField(fieldUUID)
 			if err != nil {
 				return nil, err
 			}
-			// TODO environment?
-			value, err := field.ParseValue(nil, valueEnvelope.Value)
+
+			value, err := field.ParseValue(session.Environment(), valueEnvelope.Value)
 			if err != nil {
 				return nil, err
 			}
@@ -195,7 +195,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	}
 
 	if envelope.ChannelUUID != "" {
-		c.channel, err = assets.GetChannel(envelope.ChannelUUID)
+		c.channel, err = session.Assets().GetChannel(envelope.ChannelUUID)
 		if err != nil {
 			return nil, err
 		}
@@ -222,7 +222,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 
 	ce.Fields = make(map[FieldUUID]fieldValueEnvelope, len(c.fields))
 	for _, v := range c.fields {
-		ce.Fields[v.field.UUID()] = fieldValueEnvelope{Value: v.JSON(), CreatedOn: v.createdOn}
+		ce.Fields[v.field.UUID()] = fieldValueEnvelope{Value: v.SerializeValue(), CreatedOn: v.createdOn}
 	}
 
 	return json.Marshal(ce)

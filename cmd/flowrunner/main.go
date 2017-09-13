@@ -192,7 +192,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading contact file: ", err)
 	}
-	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(session, json.RawMessage(contactJSON))
 	if err != nil {
 		log.Fatal("Error unmarshalling contact: ", err)
 	}

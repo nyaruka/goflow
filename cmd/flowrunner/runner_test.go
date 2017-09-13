@@ -107,7 +107,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		return runResult{}, err
 	}
 
-	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(session, json.RawMessage(contactJSON))
 	if err != nil {
 		return runResult{}, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
 	}

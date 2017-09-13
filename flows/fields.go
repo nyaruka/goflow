@@ -95,12 +95,11 @@ func (v *FieldValue) Default() interface{} {
 
 // String returns the string representation of this field value
 func (v *FieldValue) String() string {
-	// TODO serialize field value according to type
-	return fmt.Sprintf("%s", v.value)
+	return fmt.Sprintf("%v", v.value)
 }
 
-// String returns the string representation of this field value
-func (v *FieldValue) JSON() string {
+// SerializeValue returns the string representation of this field value for serialization
+func (v *FieldValue) SerializeValue() string {
 	switch v.field.valueType {
 	case FieldValueTypeText:
 		return v.value.(string)
@@ -128,7 +127,6 @@ func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) 
 }
 
 func (f FieldValues) Resolve(key string) interface{} {
-	fmt.Printf("FieldValues.Resolve(%s) -> %v\n", key, f[key])
 	return f[key]
 }
 
@@ -142,7 +140,7 @@ func (f FieldValues) String() string {
 	fields := make([]string, 0, len(f))
 	for k, v := range f {
 		// TODO serilalize field value according to type
-		fields = append(fields, fmt.Sprintf("%s: %s", k, v.value))
+		fields = append(fields, fmt.Sprintf("%s: %s", k, v.String()))
 	}
 	return strings.Join(fields, ", ")
 }

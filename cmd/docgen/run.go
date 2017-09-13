@@ -115,7 +115,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	session := engine.NewSession(assetCache, assetURLs)
 
 	// create our contact
-	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactDef))
+	contact, err := flows.ReadContact(session, json.RawMessage(contactDef))
 	if err != nil {
 		return nil, err
 	}
