@@ -40,15 +40,13 @@
       "session": {
         "contact": {
           "fields": {
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
-              "value": "Ben"
-            },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
+            },
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Ben"
             }
           },
           "language": "eng",
@@ -124,7 +122,6 @@
           "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "Birth Date",
             "field_uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
             "type": "save_contact_field",
             "value": "1977-06-23T15:34:00.000000-05:00"
@@ -145,20 +142,17 @@
       "session": {
         "contact": {
           "fields": {
-            "birth_date": {
-              "field_name": "Birth Date",
-              "field_uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
-              "value": "1977-06-23T15:34:00.000000-05:00"
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Azuay"
             },
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
             },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
-              "value": "Azuay"
+            "ef9e1c66-295b-4328-8c6f-5eb41b473d10": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "1977-06-23T15:34:00.000000-05:00"
             }
           },
           "language": "eng",
@@ -235,7 +229,6 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "Birth Date",
                     "field_uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
                     "type": "save_contact_field",
                     "value": "1977-06-23T15:34:00.000000-05:00"
