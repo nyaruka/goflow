@@ -13,14 +13,17 @@ import (
 
 // FieldReference is a reference to field used in a flow
 type FieldReference struct {
-	UUID FieldUUID `json:"uuid" validate:"uuid4"`
-	Key  string    `json:"key"`
+	Key   FieldKey `json:"key" validate:"required"`
+	Label string   `json:"label"`
 }
 
 // NewFieldReference creates a new field reference with the given UUID and key
-func NewFieldReference(uuid FieldUUID, key string) *FieldReference {
-	return &FieldReference{UUID: uuid, Key: key}
+func NewFieldReference(key FieldKey, label string) *FieldReference {
+	return &FieldReference{Key: key, Label: label}
 }
+
+// FieldKey is the unique key for this field
+type FieldKey string
 
 // FieldValueType is the data type of values for each field
 type FieldValueType string
@@ -36,21 +39,18 @@ const (
 
 // Field represents a contact field
 type Field struct {
-	uuid      FieldUUID
-	key       string
+	key       FieldKey
+	label     string
 	valueType FieldValueType
 }
 
 // NewField returns a new field object with the passed in uuid, key and value type
-func NewField(uuid FieldUUID, key string, valueType FieldValueType) *Field {
-	return &Field{uuid: uuid, key: key, valueType: valueType}
+func NewField(key FieldKey, label string, valueType FieldValueType) *Field {
+	return &Field{key: key, label: label, valueType: valueType}
 }
 
-// UUID returns the UUID of the field
-func (f *Field) UUID() FieldUUID { return f.uuid }
-
 // Key returns the key of the field
-func (f *Field) Key() string { return f.key }
+func (f *Field) Key() FieldKey { return f.key }
 
 func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, error) {
 	switch f.valueType {
@@ -114,7 +114,7 @@ func (v *FieldValue) SerializeValue() string {
 	return fmt.Sprintf("%v", v.value)
 }
 
-type FieldValues map[string]*FieldValue
+type FieldValues map[FieldKey]*FieldValue
 
 func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) error {
 	value, err := field.ParseValue(env, rawValue)
@@ -127,7 +127,7 @@ func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) 
 }
 
 func (f FieldValues) Resolve(key string) interface{} {
-	return f[key]
+	return f[FieldKey(key)]
 }
 
 // Default returns the default value for FieldValues, which is ourselves
@@ -149,20 +149,20 @@ var _ utils.VariableResolver = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {
-	fields       []*Field
-	fieldsByUUID map[FieldUUID]*Field
+	fields      []*Field
+	fieldsByKey map[FieldKey]*Field
 }
 
 func NewFieldSet(fields []*Field) *FieldSet {
-	s := &FieldSet{fields: fields, fieldsByUUID: make(map[FieldUUID]*Field, len(fields))}
+	s := &FieldSet{fields: fields, fieldsByKey: make(map[FieldKey]*Field, len(fields))}
 	for _, field := range s.fields {
-		s.fieldsByUUID[field.uuid] = field
+		s.fieldsByKey[field.key] = field
 	}
 	return s
 }
 
-func (s *FieldSet) FindByUUID(uuid FieldUUID) *Field {
-	return s.fieldsByUUID[uuid]
+func (s *FieldSet) FindByKey(key FieldKey) *Field {
+	return s.fieldsByKey[key]
 }
 
 //------------------------------------------------------------------------------------------
@@ -170,8 +170,8 @@ func (s *FieldSet) FindByUUID(uuid FieldUUID) *Field {
 //------------------------------------------------------------------------------------------
 
 type fieldEnvelope struct {
-	UUID      FieldUUID      `json:"uuid" validate:"required,uuid4"`
-	Key       string         `json:"key"`
+	Key       FieldKey       `json:"key"`
+	Label     string         `json:"label"`
 	ValueType FieldValueType `json:"value_type,omitempty"`
 }
 
@@ -181,7 +181,7 @@ func ReadField(data json.RawMessage) (*Field, error) {
 		return nil, err
 	}
 
-	return NewField(fe.UUID, fe.Key, fe.ValueType), nil
+	return NewField(fe.Key, fe.Label, fe.ValueType), nil
 }
 
 func ReadFieldSet(data json.RawMessage) (*FieldSet, error) {

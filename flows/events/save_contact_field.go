@@ -11,7 +11,7 @@ const TypeSaveContactField string = "save_contact_field"
 //   {
 //     "type": "save_contact_field",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "field_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//     "field_key": "gender",
 //     "value": "Male"
 //   }
 // ```
@@ -19,15 +19,15 @@ const TypeSaveContactField string = "save_contact_field"
 // @event save_contact_field
 type SaveContactFieldEvent struct {
 	BaseEvent
-	FieldUUID flows.FieldUUID `json:"field_uuid"  validate:"required"`
-	Value     string          `json:"value"`
+	FieldKey flows.FieldKey `json:"field_key" validate:"required"`
+	Value    string         `json:"value" validate:"required"`
 }
 
 // NewSaveToContact returns a new save to contact event
-func NewSaveToContactEvent(field flows.FieldUUID, value string) *SaveContactFieldEvent {
+func NewSaveToContactEvent(fieldKey flows.FieldKey, value string) *SaveContactFieldEvent {
 	return &SaveContactFieldEvent{
 		BaseEvent: NewBaseEvent(),
-		FieldUUID: field,
+		FieldKey:  fieldKey,
 		Value:     value,
 	}
 }
@@ -37,7 +37,7 @@ func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
 
 // Apply applies this event to the given run
 func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) error {
-	field, err := run.Session().Assets().GetField(e.FieldUUID)
+	field, err := run.Session().Assets().GetField(e.FieldKey)
 	if err != nil {
 		return err
 	}

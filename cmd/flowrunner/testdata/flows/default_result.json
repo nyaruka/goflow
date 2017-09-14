@@ -54,7 +54,7 @@
             {
               "type": "save_contact_field",
               "uuid": "aafb505c-603d-4025-864d-471345ed237d",
-              "field": {"uuid": "e239f37a-2519-4312-a10f-4f0021bbbec8", "key": "first_name"},
+              "field": {"key": "first_name", "label": "First Name"},
               "value": "@(WORD(run.results.contact_name, 1))"
             },
             {

@@ -40,8 +40,8 @@
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                             "type": "save_contact_field",
                             "field": {
-                                "uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
-                                "key": "activation_token"
+                                "key": "activation_token",
+                                "label": "Activation Token"
                             },
                             "value": "XXX-YYY-ZZZ"
                         },
@@ -106,8 +106,8 @@
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                             "type": "save_contact_field",
                             "field": {
-                                "uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
-                                "key": "gender"
+                                "key": "gender",
+                                "label": "Gender"
                             },
                             "value": "@run.results.gender.category"
                         },

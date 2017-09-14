@@ -123,14 +123,14 @@ func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error
 	return channel, nil
 }
 
-func (s *sessionAssets) GetField(uuid flows.FieldUUID) (*flows.Field, error) {
+func (s *sessionAssets) GetField(key flows.FieldKey) (*flows.Field, error) {
 	fields, err := s.GetFieldSet()
 	if err != nil {
 		return nil, err
 	}
-	field := fields.FindByUUID(uuid)
+	field := fields.FindByKey(key)
 	if field == nil {
-		return nil, fmt.Errorf("no such field with uuid '%s'", uuid)
+		return nil, fmt.Errorf("no such field with key '%s'", key)
 	}
 	return field, nil
 }

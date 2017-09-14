@@ -160,14 +160,14 @@ type fieldValueEnvelope struct {
 }
 
 type contactEnvelope struct {
-	UUID        ContactUUID                      `json:"uuid" validate:"required,uuid4"`
-	Name        string                           `json:"name"`
-	Language    utils.Language                   `json:"language"`
-	Timezone    string                           `json:"timezone"`
-	URNs        URNList                          `json:"urns"`
-	GroupUUIDs  []GroupUUID                      `json:"group_uuids,omitempty" validate:"dive,uuid4"`
-	Fields      map[FieldUUID]fieldValueEnvelope `json:"fields,omitempty"`
-	ChannelUUID ChannelUUID                      `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID        ContactUUID                     `json:"uuid" validate:"required,uuid4"`
+	Name        string                          `json:"name"`
+	Language    utils.Language                  `json:"language"`
+	Timezone    string                          `json:"timezone"`
+	URNs        URNList                         `json:"urns"`
+	GroupUUIDs  []GroupUUID                     `json:"group_uuids,omitempty" validate:"dive,uuid4"`
+	Fields      map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
+	ChannelUUID ChannelUUID                     `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -217,8 +217,8 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		c.fields = make(FieldValues)
 	} else {
 		c.fields = make(FieldValues, len(envelope.Fields))
-		for fieldUUID, valueEnvelope := range envelope.Fields {
-			field, err := session.Assets().GetField(fieldUUID)
+		for fieldKey, valueEnvelope := range envelope.Fields {
+			field, err := session.Assets().GetField(fieldKey)
 			if err != nil {
 				return nil, err
 			}
@@ -258,9 +258,9 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.GroupUUIDs[g] = group.UUID()
 	}
 
-	ce.Fields = make(map[FieldUUID]fieldValueEnvelope, len(c.fields))
+	ce.Fields = make(map[FieldKey]fieldValueEnvelope, len(c.fields))
 	for _, v := range c.fields {
-		ce.Fields[v.field.UUID()] = fieldValueEnvelope{Value: v.SerializeValue(), CreatedOn: v.createdOn}
+		ce.Fields[v.field.Key()] = fieldValueEnvelope{Value: v.SerializeValue(), CreatedOn: v.createdOn}
 	}
 
 	return json.Marshal(ce)

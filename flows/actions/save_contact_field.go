@@ -16,7 +16,7 @@ const TypeSaveContactField string = "save_contact_field"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "save_contact_field",
-//     "field": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "key": "gender"},
+//     "field": {"key": "gender", "label": "Gender"},
 //     "value": "Male"
 //   }
 // ```
@@ -52,5 +52,5 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 		return []flows.Event{events.NewErrorEvent(err)}, nil
 	}
 
-	return []flows.Event{events.NewSaveToContactEvent(a.Field.UUID, value)}, nil
+	return []flows.Event{events.NewSaveToContactEvent(a.Field.Key, value)}, nil
 }
