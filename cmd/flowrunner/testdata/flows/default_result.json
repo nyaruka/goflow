@@ -52,11 +52,9 @@
               "value": "@run.results.contact_name"
             },
             {
-              "name": "First Name",
               "type": "save_contact_field",
               "uuid": "aafb505c-603d-4025-864d-471345ed237d",
-              "field_name": "First Name",
-              "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+              "field": {"uuid": "e239f37a-2519-4312-a10f-4f0021bbbec8", "key": "first_name"},
               "value": "@(WORD(run.results.contact_name, 1))"
             },
             {
@@ -67,16 +65,6 @@
           ]
         }
       ]
-    }
-  },
-  {
-    "type": "channel",
-    "url": "http://testserver/assets/channel/57f1078f-88aa-46f4-a59a-948a5739c03d",
-    "content": {
-      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "name": "Twilio Channel",
-        "address": "+12345671111",
-        "type": "T"
     }
   }
 ]

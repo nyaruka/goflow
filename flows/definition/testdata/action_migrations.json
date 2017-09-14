@@ -214,8 +214,7 @@
         "expected_action": {
             "type": "save_contact_field",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "field_uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f",
-            "field_name": "Gender",
+            "field": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "key": "gender"},
             "value": "@run.input"
         },
         "expected_localization": {}

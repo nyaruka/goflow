@@ -9,13 +9,11 @@
         "email:ben@macklemore"
     ],
     "fields": {
-        "first_name": {
-            "field_name": "First Name",
+        "e239f37a-2519-4312-a10f-4f0021bbbec8" : {
             "value": "Ben",
             "created_on": "2000-01-01T00:00:00.000000000-00:00"
         },
-        "state": {
-            "field_name": "State",
+        "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
             "value": "Azuay",
             "created_on": "2000-01-01T00:00:00.000000000-00:00"
         }

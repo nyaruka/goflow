@@ -39,8 +39,10 @@
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                             "type": "save_contact_field",
-                            "field_uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
-                            "field_name": "Activation Token",
+                            "field": {
+                                "uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+                                "key": "activation_token"
+                            },
                             "value": "XXX-YYY-ZZZ"
                         },
                         {
@@ -103,8 +105,10 @@
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                             "type": "save_contact_field",
-                            "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
-                            "field_name": "Gender",
+                            "field": {
+                                "uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+                                "key": "gender"
+                            },
                             "value": "@run.results.gender.category"
                         },
                         {
@@ -127,45 +131,5 @@
             "language": "eng",
             "nodes": []
         }
-    },
-    {
-        "type": "group",
-        "url": "http://testserver/assets/group",
-        "content": [
-          {
-            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
-            "name": "Survey Audience"
-          },
-          {
-            "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
-            "name": "Azuay State"
-          }
-        ],
-        "is_set": true
-    },
-    {
-        "type": "channel",
-        "url": "http://testserver/assets/channel/57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "content": {
-            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "Twilio Channel",
-            "address": "+12345671111",
-            "type": "T"
-        }
-    },
-    {
-        "type": "label",
-        "url": "http://testserver/assets/label",
-        "content": [
-          {
-            "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-            "name": "Spam"
-          },
-          {
-            "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168",
-            "name": "Azuay Messages"
-          }
-        ],
-        "is_set": true
     }
 ]

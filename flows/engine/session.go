@@ -415,7 +415,7 @@ func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data jso
 	}
 
 	// read our contact
-	s.contact, err = flows.ReadContact(s.assets, envelope.Contact)
+	s.contact, err = flows.ReadContact(s, envelope.Contact)
 	if err != nil {
 		return nil, err
 	}

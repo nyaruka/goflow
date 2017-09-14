@@ -92,15 +92,13 @@
       "session": {
         "contact": {
           "fields": {
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
-              "value": "Ben"
-            },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
+            },
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Ben"
             }
           },
           "language": "eng",
@@ -243,15 +241,13 @@
       "session": {
         "contact": {
           "fields": {
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
-              "value": "Ben"
-            },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
+            },
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Ben"
             }
           },
           "language": "eng",
@@ -465,15 +461,13 @@
       "session": {
         "contact": {
           "fields": {
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
-              "value": "Ben"
-            },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
+            },
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Ben"
             }
           },
           "language": "eng",
@@ -739,15 +733,13 @@
       "session": {
         "contact": {
           "fields": {
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
-              "value": "Ben"
-            },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
+            },
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Ben"
             }
           },
           "language": "eng",
@@ -1066,15 +1058,13 @@
       "session": {
         "contact": {
           "fields": {
-            "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
-              "value": "Ben"
-            },
-            "state": {
-              "field_name": "State",
-              "field_uuid": "",
+            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
+            },
+            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Ben"
             }
           },
           "language": "eng",
