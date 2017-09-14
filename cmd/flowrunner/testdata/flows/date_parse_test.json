@@ -40,13 +40,13 @@
       "session": {
         "contact": {
           "fields": {
-            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            },
-            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+            "first_name": {
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
+            },
+            "state": {
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
+              "value": "Azuay"
             }
           },
           "language": "eng",
@@ -122,7 +122,7 @@
           "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
+            "field_key": "birth_date",
             "type": "save_contact_field",
             "value": "1977-06-23T15:34:00.000000-05:00"
           },
@@ -142,17 +142,17 @@
       "session": {
         "contact": {
           "fields": {
-            "64a45ae5-3cc9-4c6e-8083-002c7b55711a": {
+            "birth_date": {
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
+              "value": "1977-06-23T15:34:00.000000-05:00"
             },
-            "e239f37a-2519-4312-a10f-4f0021bbbec8": {
+            "first_name": {
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
             },
-            "ef9e1c66-295b-4328-8c6f-5eb41b473d10": {
+            "state": {
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "1977-06-23T15:34:00.000000-05:00"
+              "value": "Azuay"
             }
           },
           "language": "eng",
@@ -229,7 +229,7 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
+                    "field_key": "birth_date",
                     "type": "save_contact_field",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                   },

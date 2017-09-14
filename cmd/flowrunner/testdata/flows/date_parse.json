@@ -52,7 +52,7 @@
                         {
                             "uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
                             "type": "save_contact_field",
-                            "field": {"uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10", "key": "birth_date"},
+                            "field": {"key": "birth_date", "label": "Birth Date"},
                             "value": "@run.results.birth_date"
                         },
                         {

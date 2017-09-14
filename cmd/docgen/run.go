@@ -39,7 +39,7 @@ var assetsDef = `
 		"type": "field",
 		"url": "http://testserver/assets/field",
 		"content": [
-			{"uuid": "ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1", "key": "activation_token", "value_type": "text"}
+			{"key": "gender", "label": "Gender", "value_type": "text"}
 		],
 		"is_set": true
 	},
@@ -70,7 +70,7 @@ var emptyDef = `
 		"type": "field",
 		"url": "http://testserver/assets/field",
 		"content": [
-			{"uuid": "ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1", "key": "activation_token", "value_type": "text"}
+			{"key": "gender", "label": "Gender", "value_type": "text"}
 		],
 		"is_set": true
 	},
@@ -90,8 +90,8 @@ var contactDef = `
 	"urns": ["tel:%2B12065551212", "email:foo@bar.com"],
 	"groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"],
 	"fields": {
-		"ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1": {
-			"value": "XFW-JEV-9QE",
+		"gender": {
+			"value": "Male",
 			"created_on": "2017-05-24T11:31:15.035757258-05:00"
 		}
 	}

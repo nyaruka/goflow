@@ -4,28 +4,28 @@
         "url": "http://testserver/assets/field",
         "content": [
             {
-                "uuid": "e239f37a-2519-4312-a10f-4f0021bbbec8",
                 "key": "first_name",
+                "label": "First Name",
                 "value_type": "text"
             },
             {
-                "uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
                 "key": "activation_token",
+                "label": "Activation Token",
                 "value_type": "text"
             },
             {
-                "uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
                 "key": "gender",
+                "label": "Gender",
                 "value_type": "text"
             },
             {
-                "uuid": "64a45ae5-3cc9-4c6e-8083-002c7b55711a",
                 "key": "state",
+                "label": "State",
                 "value_type": "text"
             },
             {
-                "uuid": "ef9e1c66-295b-4328-8c6f-5eb41b473d10",
                 "key": "birth_date",
+                "label": "birth Date",
                 "value_type": "text"
             }
         ],
