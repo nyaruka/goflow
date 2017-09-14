@@ -19,26 +19,41 @@ type boolOp string
 const (
 	boolOpAnd boolOp = "and"
 	boolOpOr  boolOp = "or"
-
-	implicitKey string = "*"
 )
 
+// QueryNode is the base for nodes in our query parse tree
 type QueryNode interface {
 	fmt.Stringer
 
 	Evaluate(utils.Environment, Queryable) (bool, error)
 }
 
+// Condition represents a comparison between a keywed value on the contact and a provided value
 type Condition struct {
 	key        string
 	comparator string
 	value      string
 }
 
+// Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
 	val := queryable.ResolveQueryKey(c.key)
 
-	if c.key == implicitKey {
+	// is this an existence check?
+	if c.value == "" {
+		if c.comparator == "=" {
+			return utils.IsNil(val), nil // x = "" is true if x doesn't exist
+		} else if c.comparator == "!=" {
+			return !utils.IsNil(val), nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
+		}
+	}
+
+	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
+	if utils.IsNil(val) {
+		return false, nil
+	}
+
+	if c.key == ImplicitKey {
 		return implicitComparison(val.([]string), c.value), nil
 	}
 
@@ -67,28 +82,13 @@ func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, 
 }
 
 func (c *Condition) String() string {
-	return fmt.Sprintf("%s%s%s", c.key, c.comparator, c.value)
-}
-
-type IsSetCondition struct {
-	key        string
-	comparator string
-}
-
-func (c *IsSetCondition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
-	val := queryable.ResolveQueryKey(c.key)
-
-	if c.comparator == "=" {
-		return val == nil || val == "", nil
-	} else if c.comparator == "!=" {
-		return val != nil && val != "", nil
+	var value string
+	if c.value == "" {
+		value = `""`
 	} else {
-		return false, fmt.Errorf("invalid operator for empty string comparison")
+		value = c.value
 	}
-}
-
-func (c *IsSetCondition) String() string {
-	return fmt.Sprintf("%s%s\"\"", c.key, c.comparator)
+	return fmt.Sprintf("%s%s%s", c.key, c.comparator, value)
 }
 
 type BoolCombination struct {

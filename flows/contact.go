@@ -6,6 +6,7 @@ import (
 
 	"time"
 
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -114,7 +115,10 @@ func (c *Contact) UpdateDynamicGroups(session Session) error {
 }
 
 func (c *Contact) ResolveQueryKey(key string) interface{} {
-	if key == "name" {
+	if key == contactql.ImplicitKey {
+		// TODO add urns
+		return []string{c.name}
+	} else if key == "name" {
 		return c.name
 	}
 
@@ -134,6 +138,8 @@ func (c *Contact) ResolveQueryKey(key string) interface{} {
 
 	return nil
 }
+
+var _ contactql.Queryable = (*Contact)(nil)
 
 type ContactReference struct {
 	UUID ContactUUID `json:"uuid"    validate:"required,uuid4"`

@@ -9,6 +9,10 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+const (
+	ImplicitKey string = "*"
+)
+
 type Queryable interface {
 	ResolveQueryKey(string) interface{}
 }
@@ -34,8 +38,6 @@ func stringComparison(objectVal string, comparator string, queryVal string) (boo
 	switch comparator {
 	case "=":
 		return strings.ToLower(objectVal) == strings.ToLower(queryVal), nil
-	case "!=":
-		return strings.ToLower(objectVal) != strings.ToLower(queryVal), nil
 	case "~":
 		return icontains(objectVal, queryVal), nil
 	}
@@ -45,8 +47,6 @@ func stringComparison(objectVal string, comparator string, queryVal string) (boo
 func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal decimal.Decimal) (bool, error) {
 	switch comparator {
 	case "=":
-		return objectVal.Equal(queryVal), nil
-	case "!=":
 		return objectVal.Equal(queryVal), nil
 	case ">":
 		return objectVal.GreaterThan(queryVal), nil

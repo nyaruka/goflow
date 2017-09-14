@@ -126,6 +126,14 @@ func TestEvaluateQuery(t *testing.T) {
 		{`dob <= 1981/05/28`, true},
 		{`dob <= 1981/05/27`, false},
 
+		// existence
+		{`name = ""`, false},
+		{`name != ""`, true},
+		{`age = ""`, false},
+		{`age != ""`, true},
+		{`xyz = ""`, true},
+		{`xyz != ""`, false},
+
 		// boolean combinations
 		{`name = "Bob Smith" AND gender = male`, true},
 		{`(name = "Bob Smith") AND (gender = male)`, true},

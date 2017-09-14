@@ -26,14 +26,14 @@ func (v *Visitor) Visit(tree antlr.ParseTree) interface{} {
 	return tree.Accept(v)
 }
 
-// VisitParse handles our top level parser
+// parse: expression
 func (v *Visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 	return v.Visit(ctx.Expression())
 }
 
 // expression : TEXT
 func (v *Visitor) VisitImplicitCondition(ctx *gen.ImplicitConditionContext) interface{} {
-	return &Condition{key: implicitKey, comparator: "=", value: ctx.TEXT().GetText()}
+	return &Condition{key: ImplicitKey, comparator: "=", value: ctx.TEXT().GetText()}
 }
 
 // expression : TEXT COMPARATOR literal
@@ -47,9 +47,6 @@ func (v *Visitor) VisitCondition(ctx *gen.ConditionContext) interface{} {
 		comparator = resolvedAlias
 	}
 
-	if value == "" {
-		return &IsSetCondition{key: key, comparator: comparator}
-	}
 	return &Condition{key: key, comparator: comparator, value: value}
 }
 
