@@ -43,7 +43,7 @@ func (e *AddToGroupEvent) Apply(run flows.FlowRun) error {
 		group := groupSet.FindByUUID(groupUUID)
 
 		if group != nil {
-			run.Contact().AddGroup(group)
+			run.Contact().Groups().Add(group)
 		}
 	}
 	return nil
