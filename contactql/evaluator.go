@@ -61,7 +61,6 @@ func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal de
 }
 
 func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) (bool, error) {
-	// TODO what timezone are fields going to be sent in?
 	utcDayStart, utcDayEnd := utils.DateToUTCRange(queryVal, queryVal.Location())
 
 	switch comparator {

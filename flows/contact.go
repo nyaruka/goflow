@@ -116,8 +116,15 @@ func (c *Contact) UpdateDynamicGroups(session Session) error {
 
 func (c *Contact) ResolveQueryKey(key string) interface{} {
 	if key == contactql.ImplicitKey {
-		// TODO add urns
-		return []string{c.name}
+		values := make([]string, 0)
+		if c.name != "" {
+			values = append(values, c.name)
+		}
+		for _, urn := range c.urns {
+			values = append(values, string(urn.Path()))
+		}
+		return values
+
 	} else if key == "name" {
 		return c.name
 	}
@@ -131,7 +138,7 @@ func (c *Contact) ResolveQueryKey(key string) interface{} {
 
 	// try as a contact field
 	for k, value := range c.fields {
-		if key == k {
+		if key == string(k) {
 			return value.value
 		}
 	}
