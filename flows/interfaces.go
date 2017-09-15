@@ -28,10 +28,6 @@ type ContactUUID UUID
 
 func (u ContactUUID) String() string { return string(u) }
 
-type FieldUUID UUID
-
-func (u FieldUUID) String() string { return string(u) }
-
 type ChannelUUID UUID
 
 func (u ChannelUUID) String() string { return string(u) }
@@ -102,6 +98,8 @@ func (r RunStatus) String() string { return string(r) }
 
 type SessionAssets interface {
 	GetChannel(ChannelUUID) (Channel, error)
+	GetField(FieldKey) (*Field, error)
+	GetFieldSet() (*FieldSet, error)
 	GetFlow(FlowUUID) (Flow, error)
 	GetGroup(GroupUUID) (*Group, error)
 	GetGroupSet() (*GroupSet, error)

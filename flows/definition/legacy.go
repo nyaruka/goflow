@@ -194,10 +194,9 @@ type legacyAction struct {
 	Variables []legacyVariable         `json:"variables"`
 
 	// save actions
-	Field     string          `json:"field"`
-	FieldUUID flows.FieldUUID `json:"field_uuid"`
-	Value     string          `json:"value"`
-	Label     string          `json:"label"`
+	Field flows.FieldKey `json:"field"`
+	Value string         `json:"value"`
+	Label string         `json:"label"`
 
 	// set language
 	Language utils.Language `json:"lang"`
@@ -461,9 +460,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}
 
 		return &actions.SaveContactField{
-			FieldName:  a.Label,
+			Field:      flows.NewFieldReference(a.Field, a.Label),
 			Value:      migratedValue,
-			FieldUUID:  a.FieldUUID,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":

@@ -27,6 +27,7 @@ type AssetItemType string
 
 const (
 	assetItemTypeChannel AssetItemType = "channel"
+	assetItemTypeField   AssetItemType = "field"
 	assetItemTypeFlow    AssetItemType = "flow"
 	assetItemTypeGroup   AssetItemType = "group"
 	assetItemTypeLabel   AssetItemType = "label"
@@ -120,6 +121,31 @@ func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error
 		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
 	}
 	return channel, nil
+}
+
+func (s *sessionAssets) GetField(key flows.FieldKey) (*flows.Field, error) {
+	fields, err := s.GetFieldSet()
+	if err != nil {
+		return nil, err
+	}
+	field := fields.FindByKey(key)
+	if field == nil {
+		return nil, fmt.Errorf("no such field with key '%s'", key)
+	}
+	return field, nil
+}
+
+func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
+	url := s.getAssetSetURL(assetItemTypeField)
+	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeField)
+	if err != nil {
+		return nil, err
+	}
+	fields, isType := asset.(*flows.FieldSet)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return fields, nil
 }
 
 func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
@@ -242,6 +268,10 @@ func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (i
 
 	if aType == assetTypeObject && itemType == assetItemTypeChannel {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
+	} else if aType == assetTypeObject && itemType == assetItemTypeField {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadField(data) }
+	} else if aType == assetTypeSet && itemType == assetItemTypeField {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) }
 	} else if aType == assetTypeObject && itemType == assetItemTypeFlow {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
 	} else if aType == assetTypeObject && itemType == assetItemTypeGroup {

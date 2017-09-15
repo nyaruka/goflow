@@ -16,8 +16,7 @@ const TypeSaveContactField string = "save_contact_field"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "save_contact_field",
-//     "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
-//     "field_name": "Gender",
+//     "field": {"key": "gender", "label": "Gender"},
 //     "value": "Male"
 //   }
 // ```
@@ -25,9 +24,8 @@ const TypeSaveContactField string = "save_contact_field"
 // @action save_contact_field
 type SaveContactField struct {
 	BaseAction
-	FieldUUID flows.FieldUUID `json:"field_uuid"    validate:"required,uuid4"`
-	FieldName string          `json:"field_name"    validate:"required"`
-	Value     string          `json:"value"`
+	Field *flows.FieldReference `json:"field" validate:"required"`
+	Value string                `json:"value"`
 }
 
 // Type returns the type of this action
@@ -54,5 +52,5 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 		return []flows.Event{events.NewErrorEvent(err)}, nil
 	}
 
-	return []flows.Event{events.NewSaveToContact(a.FieldUUID, a.FieldName, value)}, nil
+	return []flows.Event{events.NewSaveToContactEvent(a.Field.Key, value)}, nil
 }

@@ -1,0 +1,74 @@
+[
+    {
+        "type": "field",
+        "url": "http://testserver/assets/field",
+        "content": [
+            {
+                "key": "first_name",
+                "label": "First Name",
+                "value_type": "text"
+            },
+            {
+                "key": "activation_token",
+                "label": "Activation Token",
+                "value_type": "text"
+            },
+            {
+                "key": "gender",
+                "label": "Gender",
+                "value_type": "text"
+            },
+            {
+                "key": "state",
+                "label": "State",
+                "value_type": "text"
+            },
+            {
+                "key": "birth_date",
+                "label": "birth Date",
+                "value_type": "text"
+            }
+        ],
+        "is_set": true
+    },
+    {
+        "type": "group",
+        "url": "http://testserver/assets/group",
+        "content": [
+            {
+                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                "name": "Survey Audience"
+            },
+            {
+                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
+                "name": "Azuay State"
+            }
+        ],
+        "is_set": true
+    },
+    {
+        "type": "channel",
+        "url": "http://testserver/assets/channel/57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "content": {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Twilio Channel",
+            "address": "+12345671111",
+            "type": "T"
+        }
+    },
+    {
+        "type": "label",
+        "url": "http://testserver/assets/label",
+        "content": [
+            {
+                "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                "name": "Spam"
+            },
+            {
+                "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168",
+                "name": "Azuay Messages"
+            }
+        ],
+        "is_set": true
+    }
+]

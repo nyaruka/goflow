@@ -57,8 +57,7 @@
           "action_uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "Activation Token",
-            "field_uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+            "field_key": "activation_token",
             "type": "save_contact_field",
             "value": "XXX-YYY-ZZZ"
           },
@@ -172,8 +171,7 @@
           "action_uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "Gender",
-            "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+            "field_key": "gender",
             "type": "save_contact_field",
             "value": "Male"
           },
@@ -197,23 +195,19 @@
         "contact": {
           "fields": {
             "activation_token": {
-              "field_name": "Activation Token",
-              "field_uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "XXX-YYY-ZZZ"
             },
             "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
             },
             "gender": {
-              "field_name": "Gender",
-              "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Male"
             },
             "state": {
-              "field_name": "State",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
             }
           },
@@ -304,8 +298,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "Activation Token",
-                    "field_uuid": "f06c5b73-eb0d-4417-b7e0-4f650ed30dc8",
+                    "field_key": "activation_token",
                     "type": "save_contact_field",
                     "value": "XXX-YYY-ZZZ"
                   },
@@ -375,8 +368,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "Gender",
-                    "field_uuid": "0cb17b2a-3bfe-4a19-8c99-98ab9561045d",
+                    "field_key": "gender",
                     "type": "save_contact_field",
                     "value": "Male"
                   },

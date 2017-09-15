@@ -17,7 +17,7 @@ type Contact struct {
 	timezone *time.Location
 	urns     URNList
 	groups   GroupList
-	fields   *Fields
+	fields   FieldValues
 	channel  Channel
 }
 
@@ -49,10 +49,12 @@ func (c *Contact) RemoveGroup(group *Group) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
-func (c *Contact) Fields() *Fields            { return c.fields }
+func (c *Contact) Fields() FieldValues { return c.fields }
+
 func (c *Contact) Channel() Channel           { return c.channel }
 func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
 
@@ -115,19 +117,24 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+type fieldValueEnvelope struct {
+	Value     string    `json:"value"`
+	CreatedOn time.Time `json:"created_on"`
+}
+
 type contactEnvelope struct {
-	UUID        ContactUUID    `json:"uuid" validate:"required,uuid4"`
-	Name        string         `json:"name"`
-	Language    utils.Language `json:"language"`
-	Timezone    string         `json:"timezone"`
-	URNs        URNList        `json:"urns"`
-	GroupUUIDs  []GroupUUID    `json:"group_uuids,omitempty" validate:"dive,uuid4"`
-	Fields      *Fields        `json:"fields,omitempty"`
-	ChannelUUID ChannelUUID    `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID        ContactUUID                     `json:"uuid" validate:"required,uuid4"`
+	Name        string                          `json:"name"`
+	Language    utils.Language                  `json:"language"`
+	Timezone    string                          `json:"timezone"`
+	URNs        URNList                         `json:"urns"`
+	GroupUUIDs  []GroupUUID                     `json:"group_uuids,omitempty" validate:"dive,uuid4"`
+	Fields      map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
+	ChannelUUID ChannelUUID                     `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
+func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -162,20 +169,33 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	} else {
 		c.groups = make(GroupList, len(envelope.GroupUUIDs))
 		for g := range envelope.GroupUUIDs {
-			if c.groups[g], err = assets.GetGroup(envelope.GroupUUIDs[g]); err != nil {
+			if c.groups[g], err = session.Assets().GetGroup(envelope.GroupUUIDs[g]); err != nil {
 				return nil, err
 			}
 		}
 	}
 
 	if envelope.Fields == nil {
-		c.fields = NewFields()
+		c.fields = make(FieldValues)
 	} else {
-		c.fields = envelope.Fields
+		c.fields = make(FieldValues, len(envelope.Fields))
+		for fieldKey, valueEnvelope := range envelope.Fields {
+			field, err := session.Assets().GetField(fieldKey)
+			if err != nil {
+				return nil, err
+			}
+
+			value, err := field.ParseValue(session.Environment(), valueEnvelope.Value)
+			if err != nil {
+				return nil, err
+			}
+
+			c.fields[field.key] = NewFieldValue(field, value, valueEnvelope.CreatedOn)
+		}
 	}
 
 	if envelope.ChannelUUID != "" {
-		c.channel, err = assets.GetChannel(envelope.ChannelUUID)
+		c.channel, err = session.Assets().GetChannel(envelope.ChannelUUID)
 		if err != nil {
 			return nil, err
 		}
@@ -191,7 +211,6 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.UUID = c.uuid
 	ce.Language = c.language
 	ce.URNs = c.urns
-	ce.Fields = c.fields
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}
@@ -199,6 +218,11 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.GroupUUIDs = make([]GroupUUID, len(c.groups))
 	for g := range c.groups {
 		ce.GroupUUIDs[g] = c.groups[g].UUID()
+	}
+
+	ce.Fields = make(map[FieldKey]fieldValueEnvelope, len(c.fields))
+	for _, v := range c.fields {
+		ce.Fields[v.field.Key()] = fieldValueEnvelope{Value: v.SerializeValue(), CreatedOn: v.createdOn}
 	}
 
 	return json.Marshal(ce)

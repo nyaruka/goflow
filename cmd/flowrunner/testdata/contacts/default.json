@@ -9,13 +9,11 @@
         "email:ben@macklemore"
     ],
     "fields": {
-        "first_name": {
-            "field_name": "First Name",
+        "first_name" : {
             "value": "Ben",
             "created_on": "2000-01-01T00:00:00.000000000-00:00"
         },
         "state": {
-            "field_name": "State",
             "value": "Azuay",
             "created_on": "2000-01-01T00:00:00.000000000-00:00"
         }

@@ -36,6 +36,14 @@ var assetsDef = `
 		}
 	},
 	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
+		"content": [
+			{"key": "gender", "label": "Gender", "value_type": "text"}
+		],
+		"is_set": true
+	},
+	{
 		"type": "group",
 		"url": "http://testserver/assets/group",
 		"content": [
@@ -59,6 +67,14 @@ var emptyDef = `
 		}
 	},
 	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
+		"content": [
+			{"key": "gender", "label": "Gender", "value_type": "text"}
+		],
+		"is_set": true
+	},
+	{
 		"type": "group",
 		"url": "http://testserver/assets/group",
 		"content": [],
@@ -74,10 +90,8 @@ var contactDef = `
 	"urns": ["tel:%2B12065551212", "email:foo@bar.com"],
 	"groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"],
 	"fields": {
-		"activation_token": {
-			"field_uuid": "ee46f9c4-b094-4e1b-ab0d-d4e65b4a99f1",
-			"field_name": "Activation Token",
-			"value": "XFW-JEV-9QE",
+		"gender": {
+			"value": "Male",
 			"created_on": "2017-05-24T11:31:15.035757258-05:00"
 		}
 	}
@@ -94,13 +108,14 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	// create our engine session
 	assetURLs := map[engine.AssetItemType]string{
 		"channel": "http://testserver/assets/channel",
+		"field":   "http://testserver/assets/field",
 		"flow":    "http://testserver/assets/flow",
 		"group":   "http://testserver/assets/group",
 	}
 	session := engine.NewSession(assetCache, assetURLs)
 
 	// create our contact
-	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactDef))
+	contact, err := flows.ReadContact(session, json.RawMessage(contactDef))
 	if err != nil {
 		return nil, err
 	}

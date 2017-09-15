@@ -40,13 +40,11 @@
         "contact": {
           "fields": {
             "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
             },
             "state": {
-              "field_name": "State",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
             }
           },
@@ -140,8 +138,7 @@
           "action_uuid": "aafb505c-603d-4025-864d-471345ed237d",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "First Name",
-            "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+            "field_key": "first_name",
             "type": "save_contact_field",
             "value": "Ryan"
           },
@@ -162,13 +159,11 @@
         "contact": {
           "fields": {
             "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ryan"
             },
             "state": {
-              "field_name": "State",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
             }
           },
@@ -260,8 +255,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "First Name",
-                    "field_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+                    "field_key": "first_name",
                     "type": "save_contact_field",
                     "value": "Ryan"
                   },

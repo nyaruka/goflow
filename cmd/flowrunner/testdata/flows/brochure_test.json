@@ -41,13 +41,11 @@
         "contact": {
           "fields": {
             "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
             },
             "state": {
-              "field_name": "State",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
             }
           },
@@ -165,13 +163,11 @@
         "contact": {
           "fields": {
             "first_name": {
-              "field_name": "First Name",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Ben"
             },
             "state": {
-              "field_name": "State",
-              "field_uuid": "",
+              "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "value": "Azuay"
             }
           },
