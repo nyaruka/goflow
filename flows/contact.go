@@ -37,6 +37,8 @@ func (c *Contact) Name() string        { return c.name }
 
 func (c *Contact) URNs() URNList { return c.urns }
 func (c *Contact) AddURN(urn URN) {
+	// TODO normalize and check we're not adding duplicates
+
 	c.urns = append(c.urns, urn)
 }
 
