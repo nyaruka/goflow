@@ -37,6 +37,12 @@
                             ]
                         },
                         {
+                            "uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
+                            "type": "add_urn",
+                            "scheme": "twitter",
+                            "path": "@(replace(lower(contact.name), \" \", \"_\"))"
+                        },
+                        {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                             "type": "save_contact_field",
                             "field": {

@@ -54,6 +54,15 @@
           "step_uuid": ""
         },
         {
+          "action_uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "add_urn",
+            "urn": "twitter:ben_haggerty"
+          },
+          "step_uuid": ""
+        },
+        {
           "action_uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -146,6 +155,16 @@
           "step_uuid": ""
         },
         {
+          "action_uuid": "d98c1e02-69df-4f95-8b89-8587a57ae0c3",
+          "event": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "This is a message to each of Ben Haggerty's urns.",
+            "type": "send_msg",
+            "urn": "twitter:ben_haggerty"
+          },
+          "step_uuid": ""
+        },
+        {
           "action_uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
           "event": {
             "category": "Male",
@@ -220,7 +239,8 @@
           "urns": [
             "tel:+12065551212",
             "facebook:macklemore",
-            "email:ben@macklemore"
+            "email:ben@macklemore",
+            "twitter:ben_haggerty"
           ],
           "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
@@ -298,6 +318,11 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "add_urn",
+                    "urn": "twitter:ben_haggerty"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field_key": "activation_token",
                     "type": "save_contact_field",
                     "value": "XXX-YYY-ZZZ"
@@ -351,6 +376,12 @@
                     "text": "This is a message to each of Ben Haggerty's urns.",
                     "type": "send_msg",
                     "urn": "email:ben@macklemore"
+                  },
+                  {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "text": "This is a message to each of Ben Haggerty's urns.",
+                    "type": "send_msg",
+                    "urn": "twitter:ben_haggerty"
                   },
                   {
                     "category": "Male",

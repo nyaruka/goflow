@@ -35,7 +35,11 @@ func (c *Contact) Timezone() *time.Location { return c.timezone }
 func (c *Contact) SetName(name string) { c.name = name }
 func (c *Contact) Name() string        { return c.name }
 
-func (c *Contact) URNs() URNList     { return c.urns }
+func (c *Contact) URNs() URNList { return c.urns }
+func (c *Contact) AddURN(urn URN) {
+	c.urns = append(c.urns, urn)
+}
+
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 
 func (c *Contact) Groups() GroupList { return GroupList(c.groups) }

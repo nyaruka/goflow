@@ -11,8 +11,6 @@ type URN string
 type URNScheme string
 type URNPath string
 
-type URNList []URN
-
 // List of schemes we support for URNs
 const (
 	TelScheme      = "tel"
@@ -42,6 +40,10 @@ func GetScheme(scheme string) URNScheme {
 		return URNScheme(lowered)
 	}
 	return ""
+}
+
+func NewURNFromParts(scheme URNScheme, path URNPath) URN {
+	return URN(fmt.Sprintf("%s:%s", scheme, path))
 }
 
 func (u URN) Path() URNPath {
@@ -80,6 +82,9 @@ func (u URN) Default() interface{} { return u }
 func (u URN) String() string       { return string(u.Path()) }
 
 var _ utils.VariableResolver = (URN)("")
+
+// URNList is a list of URNs on a contact
+type URNList []URN
 
 func (l URNList) Resolve(key string) interface{} {
 	// If this isn't a valid scheme, bail
