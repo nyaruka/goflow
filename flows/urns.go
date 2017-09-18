@@ -4,8 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"gopkg.in/go-playground/validator.v9"
+
 	"github.com/nyaruka/goflow/utils"
 )
+
+func init() {
+	utils.Validator.RegisterValidation("urnscheme", ValidateURNScheme)
+}
 
 type URN string
 type URNScheme string
@@ -33,6 +39,11 @@ var schemes = map[string]bool{
 
 func (u URNScheme) String() string { return string(u) }
 func (u URNPath) String() string   { return string(u) }
+
+func ValidateURNScheme(fl validator.FieldLevel) bool {
+	_, valid := schemes[fl.Field().String()]
+	return valid
+}
 
 func GetScheme(scheme string) URNScheme {
 	lowered := strings.ToLower(scheme)

@@ -25,12 +25,12 @@ const TypeAddURN string = "add_urn"
 // @action add_urn
 type AddURNAction struct {
 	BaseAction
-	Scheme flows.URNScheme `json:"scheme" validate:"required"`
+	Scheme flows.URNScheme `json:"scheme" validate:"urnscheme"`
 	Path   string          `json:"path" validate:"required"`
 }
 
 // Type returns the type of this action
-func (a *AddURNAction) Type() string { return TypeAddLabel }
+func (a *AddURNAction) Type() string { return TypeAddURN }
 
 // Validate validates the fields for this label
 func (a *AddURNAction) Validate(assets flows.SessionAssets) error {
