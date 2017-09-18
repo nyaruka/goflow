@@ -107,7 +107,9 @@ func main() {
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	logrus.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
+
 	httpServer.Shutdown(context.Background())
+	assetCache.Shutdown()
 }
 
 type errorResponse struct {

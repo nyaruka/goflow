@@ -1,0 +1,25 @@
+{
+	"comment": "",
+	"ignore": "",
+	"package": [
+		{
+			"checksumSHA1": "lmuZye1O3qQzjZgaitPxFUex/ek=",
+			"path": "github.com/karlseguin/ccache",
+			"revision": "b425c9ca005a2050ebe723f6a0cddcb907354ab7",
+			"revisionTime": "2017-09-04T06:47:32Z"
+		},
+		{
+			"checksumSHA1": "Mb/ADrZow/2N0dh8NN1En3+68p8=",
+			"path": "github.com/karlseguin/expect",
+			"revision": "ecc6aa3406d03d381160d52b8a76268abdb14321",
+			"revisionTime": "2017-09-04T06:48:01Z"
+		},
+		{
+			"checksumSHA1": "+rzgIJjNYs8Nk+6+KADO1LlJnIg=",
+			"path": "github.com/wsxiaoys/terminal/color",
+			"revision": "0940f3fc43a0ed42d04916b1c04578462c650b09",
+			"revisionTime": "2016-05-13T16:08:01Z"
+		}
+	],
+	"rootPath": "github.com/nyaruka/goflow"
+}
