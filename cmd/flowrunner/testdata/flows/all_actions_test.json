@@ -141,7 +141,7 @@
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is a message to each of Ben Haggerty's urns.",
             "type": "send_msg",
-            "urn": "email:ben@macklemore"
+            "urn": "mailto:ben@macklemore"
           },
           "step_uuid": ""
         },
@@ -220,7 +220,7 @@
           "urns": [
             "tel:+12065551212",
             "facebook:macklemore",
-            "email:ben@macklemore"
+            "mailto:ben@macklemore"
           ],
           "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
@@ -350,7 +350,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is a message to each of Ben Haggerty's urns.",
                     "type": "send_msg",
-                    "urn": "email:ben@macklemore"
+                    "urn": "mailto:ben@macklemore"
                   },
                   {
                     "category": "Male",

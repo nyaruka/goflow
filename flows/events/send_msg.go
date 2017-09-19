@@ -1,6 +1,9 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeSendMsg is a constant for incoming messages
 const TypeSendMsg string = "send_msg"
@@ -22,7 +25,7 @@ const TypeSendMsg string = "send_msg"
 // @event send_msg
 type SendMsgEvent struct {
 	BaseEvent
-	URN         flows.URN         `json:"urn,omitempty"`
+	URN         urns.URN          `json:"urn,omitempty" validate:"omitempty,urn"`
 	ContactUUID flows.ContactUUID `json:"contact_uuid,omitempty"`
 	GroupUUID   flows.GroupUUID   `json:"group_uuid,omitempty"`
 	Text        string            `json:"text"                      validate:"required"`
@@ -36,7 +39,7 @@ func NewSendMsgToContact(contact flows.ContactUUID, text string, attachments []s
 }
 
 // NewSendMsgToURN creates a new outgoing msg event for the passed in channel, urn and string
-func NewSendMsgToURN(urn flows.URN, text string, attachments []string) *SendMsgEvent {
+func NewSendMsgToURN(urn urns.URN, text string, attachments []string) *SendMsgEvent {
 	event := SendMsgEvent{BaseEvent: NewBaseEvent(), URN: urn, Text: text, Attachments: attachments}
 	return &event
 }
