@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -25,8 +27,8 @@ const TypeAddURN string = "add_urn"
 // @action add_urn
 type AddURNAction struct {
 	BaseAction
-	Scheme flows.URNScheme `json:"scheme" validate:"urnscheme"`
-	Path   string          `json:"path" validate:"required"`
+	Scheme string `json:"scheme" validate:"urnscheme"`
+	Path   string `json:"path" validate:"required"`
 }
 
 // Type returns the type of this action
@@ -52,7 +54,12 @@ func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Even
 		return []flows.Event{events.NewErrorEvent(err)}, nil
 	}
 
-	urn := flows.NewURNFromParts(flows.URNScheme(a.Scheme), flows.URNPath(evaluatedPath))
+	urn := urns.NewURNFromParts(a.Scheme, evaluatedPath, "").Normalize("")
+
+	// if we don't have a valid URN, log error
+	if !urn.Validate("") {
+		return []flows.Event{events.NewErrorEvent(fmt.Errorf("invalid URN: '%s'", string(urn)))}, nil
+	}
 
 	return []flows.Event{events.NewAddURNEvent(urn)}, nil
 }

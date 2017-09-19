@@ -6,6 +6,7 @@ import (
 
 	"time"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -36,7 +37,7 @@ func (c *Contact) SetName(name string) { c.name = name }
 func (c *Contact) Name() string        { return c.name }
 
 func (c *Contact) URNs() URNList { return c.urns }
-func (c *Contact) AddURN(urn URN) {
+func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
 	c.urns = append(c.urns, urn)

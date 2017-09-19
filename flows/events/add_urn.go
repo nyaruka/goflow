@@ -1,6 +1,9 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeAddURN is the type of our add URN event
 const TypeAddURN string = "add_urn"
@@ -18,11 +21,11 @@ const TypeAddURN string = "add_urn"
 // @event add_urn
 type AddURNEvent struct {
 	BaseEvent
-	URN flows.URN `json:"urn" validate:"required"`
+	URN urns.URN `json:"urn" validate:"urn"`
 }
 
 // NewAddURNEvent returns a new add URN event
-func NewAddURNEvent(urn flows.URN) *AddURNEvent {
+func NewAddURNEvent(urn urns.URN) *AddURNEvent {
 	return &AddURNEvent{URN: urn}
 }
 

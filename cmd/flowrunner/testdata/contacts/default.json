@@ -6,7 +6,7 @@
     "urns": [
         "tel:+12065551212",
         "facebook:macklemore",
-        "email:ben@macklemore"
+        "mailto:ben@macklemore"
     ],
     "fields": {
         "first_name" : {

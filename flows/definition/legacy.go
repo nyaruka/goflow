@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 
@@ -417,7 +418,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			Text:        migratedText,
 			Attachments: attachments,
 			BaseAction:  actions.NewBaseAction(a.UUID),
-			URNs:        []flows.URN{},
+			URNs:        []urns.URN{},
 			Contacts:    contacts,
 			Groups:      groups,
 		}, nil
@@ -460,10 +461,9 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}
 
 		// and another new action for adding a URN
-		scheme := flows.GetScheme(a.Field)
-		if scheme != "" {
+		if urns.IsValidScheme(a.Field) {
 			return &actions.AddURNAction{
-				Scheme:     scheme,
+				Scheme:     a.Field,
 				Path:       migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil

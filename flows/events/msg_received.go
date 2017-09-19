@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inputs"
 )
@@ -29,14 +30,14 @@ type MsgReceivedEvent struct {
 	BaseEvent
 	MsgUUID     flows.InputUUID    `json:"msg_uuid" validate:"required,uuid4"`
 	ChannelUUID flows.ChannelUUID  `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
-	URN         flows.URN          `json:"urn" validate:"required"`
+	URN         urns.URN           `json:"urn" validate:"urn"`
 	ContactUUID flows.ContactUUID  `json:"contact_uuid" validate:"required,uuid4"`
 	Text        string             `json:"text"`
 	Attachments []flows.Attachment `json:"attachments,omitempty"`
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgReceivedEvent(uuid flows.InputUUID, channel flows.ChannelUUID, contact flows.ContactUUID, urn flows.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
+func NewMsgReceivedEvent(uuid flows.InputUUID, channel flows.ChannelUUID, contact flows.ContactUUID, urn urns.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
 		BaseEvent:   NewBaseEvent(),
 		MsgUUID:     uuid,

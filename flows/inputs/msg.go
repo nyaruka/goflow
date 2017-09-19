@@ -7,6 +7,7 @@ import (
 
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -16,13 +17,13 @@ const TypeMsg string = "msg"
 
 type MsgInput struct {
 	baseInput
-	urn         flows.URN
+	urn         urns.URN
 	text        string
 	attachments []flows.Attachment
 }
 
 // NewMsgInput creates a new user input based on a message
-func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Time, urn flows.URN, text string, attachments []flows.Attachment) *MsgInput {
+func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Time, urn urns.URN, text string, attachments []flows.Attachment) *MsgInput {
 	return &MsgInput{
 		baseInput:   baseInput{uuid: uuid, channel: channel, createdOn: createdOn},
 		urn:         urn,
@@ -75,7 +76,7 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN         flows.URN          `json:"urn" validate:"required"`
+	URN         urns.URN           `json:"urn" validate:"urn"`
 	Text        string             `json:"text" validate:"required"`
 	Attachments []flows.Attachment `json:"attachments,omitempty"`
 }
