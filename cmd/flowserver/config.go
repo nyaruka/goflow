@@ -14,8 +14,8 @@ type FlowServer struct {
 	AssetCachePrune uint32 `default:"100"`
 }
 
-// NewWithPath returns a new instance of Loader to read from the given configuration file using our config options
-func NewWithPath(path string) *multiconfig.DefaultLoader {
+// NewConfigWithPath returns a new instance of Loader to read from the given configuration file using our config options
+func NewConfigWithPath(path string) *multiconfig.DefaultLoader {
 	loaders := []multiconfig.Loader{}
 
 	loaders = append(loaders, &multiconfig.TagLoader{})

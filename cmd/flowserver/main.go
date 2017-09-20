@@ -1,3 +1,4 @@
+//go:generate statik -src=./static
 package main
 
 import (
@@ -36,8 +37,8 @@ var version = "dev"
 var assetCache *engine.AssetCache
 
 func main() {
-	m := NewWithPath("flowserver.toml")
-	config := &FlowServer{}
+	m := NewConfigWithPath("flowserver.toml")
+	config := new(FlowServer)
 	m.MustLoad(config)
 
 	logger := logrus.New()
