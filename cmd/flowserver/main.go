@@ -1,4 +1,3 @@
-//go:generate statik -src=./static
 package main
 
 import (
@@ -17,7 +16,6 @@ import (
 
 	"errors"
 
-	"github.com/koding/multiconfig"
 	"github.com/pressly/chi"
 	"github.com/pressly/chi/middleware"
 	"github.com/pressly/lg"
@@ -38,8 +36,8 @@ var version = "dev"
 var assetCache *engine.AssetCache
 
 func main() {
-	m := multiconfig.New()
-	config := new(Server)
+	m := NewWithPath("flowserver.toml")
+	config := &FlowServer{}
 	m.MustLoad(config)
 
 	logger := logrus.New()
@@ -84,7 +82,7 @@ func main() {
 	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
 	r.MethodNotAllowed(errorHandler(http.StatusMethodNotAllowed, "method not allowed"))
 
-	assetCache = engine.NewAssetCache()
+	assetCache = engine.NewAssetCache(config.AssetCacheSize, config.AssetCachePrune)
 
 	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%d", config.Port),
