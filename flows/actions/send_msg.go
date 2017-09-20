@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -31,7 +32,7 @@ type SendMsgAction struct {
 	BaseAction
 	Text        string                    `json:"text"`
 	Attachments []string                  `json:"attachments"`
-	URNs        []flows.URN               `json:"urns,omitempty"`
+	URNs        []urns.URN                `json:"urns,omitempty"`
 	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }

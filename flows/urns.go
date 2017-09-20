@@ -4,88 +4,39 @@ import (
 	"fmt"
 	"strings"
 
+	validator "gopkg.in/go-playground/validator.v9"
+
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
 )
 
-type URN string
-type URNScheme string
-type URNPath string
-
-type URNList []URN
-
-// List of schemes we support for URNs
-const (
-	TelScheme      = "tel"
-	FacebookScheme = "facebook"
-	TwitterScheme  = "twitter"
-	ViberScheme    = "viber"
-	TelegramScheme = "telegram"
-	EmailScheme    = "email"
-)
-
-// Used as a lookup for faster checks whether a Scheme is supported
-var schemes = map[string]bool{
-	TelScheme:      true,
-	FacebookScheme: true,
-	TwitterScheme:  true,
-	ViberScheme:    true,
-	TelegramScheme: true,
-	EmailScheme:    true,
+func init() {
+	utils.Validator.RegisterValidation("urn", ValidateURN)
+	utils.Validator.RegisterValidation("urnscheme", ValidateURNScheme)
 }
 
-func (u URNScheme) String() string { return string(u) }
-func (u URNPath) String() string   { return string(u) }
-
-func GetScheme(scheme string) URNScheme {
-	lowered := strings.ToLower(scheme)
-	if schemes[lowered] {
-		return URNScheme(lowered)
-	}
-	return ""
+// ValidateURN validates whether the field value is a valid URN
+func ValidateURN(fl validator.FieldLevel) bool {
+	// TODO
+	return true
 }
 
-func (u URN) Path() URNPath {
-	offset := strings.Index(string(u), ":")
-	if offset >= 0 {
-		return URNPath(u[offset+1:])
-	}
-	return URNPath(u)
+// ValidateURNScheme validates whether the field value is a valid URN scheme
+func ValidateURNScheme(fl validator.FieldLevel) bool {
+	return urns.IsValidScheme(fl.Field().String())
 }
 
-func (u URN) Scheme() URNScheme {
-	offset := strings.Index(string(u), ":")
-	if offset >= 0 {
-		return URNScheme(strings.ToLower(string(u[:offset])))
-	}
-	return URNScheme("")
-}
+// URNList is the list of a contact's URNs
+type URNList []urns.URN
 
-func (u URN) Resolve(key string) interface{} {
-	switch key {
-
-	case "path":
-		return u.Path()
-
-	case "scheme":
-		return u.Scheme()
-
-	case "urn":
-		return string(u)
-	}
-
-	return fmt.Errorf("No field '%s' on URN", key)
-}
-
-func (u URN) Default() interface{} { return u }
-func (u URN) String() string       { return string(u.Path()) }
-
-var _ utils.VariableResolver = (URN)("")
+var _ utils.VariableResolver = (urns.URN)("")
 
 func (l URNList) Resolve(key string) interface{} {
-	// If this isn't a valid scheme, bail
-	scheme := GetScheme(key)
-	if scheme == "" {
-		return fmt.Errorf("Unknown URN scheme: %s", key)
+	scheme := strings.ToLower(key)
+
+	// if this isn't a valid scheme, bail
+	if !urns.IsValidScheme(scheme) {
+		return fmt.Errorf("unknown URN scheme: %s", key)
 	}
 
 	// This is a specific scheme, look up all matches

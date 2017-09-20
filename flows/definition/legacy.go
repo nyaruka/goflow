@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 
@@ -417,7 +418,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			Text:        migratedText,
 			Attachments: attachments,
 			BaseAction:  actions.NewBaseAction(a.UUID),
-			URNs:        []flows.URN{},
+			URNs:        []urns.URN{},
 			Contacts:    contacts,
 			Groups:      groups,
 		}, nil
