@@ -52,7 +52,5 @@ func (e *UpdateContactEvent) Apply(run flows.FlowRun) error {
 		run.Contact().SetLanguage(lang)
 	}
 
-	// TODO revaluate dynamic groups
-
-	return nil
+	return run.Contact().UpdateDynamicGroups(run.Session())
 }

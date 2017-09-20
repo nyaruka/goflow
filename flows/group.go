@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -21,9 +22,10 @@ func NewGroupReference(uuid GroupUUID, name string) *GroupReference {
 
 // Group represents a grouping of contacts
 type Group struct {
-	uuid  GroupUUID
-	name  string
-	query string
+	uuid        GroupUUID
+	name        string
+	query       string
+	parsedQuery *contactql.ContactQuery
 }
 
 // NewGroup returns a new group object with the passed in uuid and name
@@ -40,8 +42,31 @@ func (g *Group) Name() string { return g.name }
 // Query returns the query of a dynamic group
 func (g *Group) Query() string { return g.query }
 
+// ParsedQuery returns the parsed query of a dynamic group (cached)
+func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
+	if g.query != "" && g.parsedQuery == nil {
+		var err error
+		if g.parsedQuery, err = contactql.ParseQuery(g.query); err != nil {
+			return nil, err
+		}
+	}
+	return g.parsedQuery, nil
+}
+
 // IsDynamic returns whether this group is dynamic
 func (g *Group) IsDynamic() bool { return g.query != "" }
+
+func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool, error) {
+	if !g.IsDynamic() {
+		return false, fmt.Errorf("can't check membership on a non-dynamic group")
+	}
+	parsedQuery, err := g.ParsedQuery()
+	if err != nil {
+		return false, err
+	}
+
+	return contactql.EvaluateQuery(session.Environment(), parsedQuery, contact)
+}
 
 // Resolve resolves the passed in key to a value
 func (g *Group) Resolve(key string) interface{} {
@@ -64,22 +89,54 @@ func (g *Group) String() string { return g.name }
 var _ utils.VariableResolver = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
-type GroupList []*Group
+type GroupList struct {
+	groups []*Group
+}
+
+func NewGroupList(groups []*Group) *GroupList {
+	return &GroupList{groups: groups}
+}
 
 // FindGroup returns the group with the passed in UUID or nil if not found
-func (l GroupList) FindByUUID(uuid GroupUUID) *Group {
-	for i := range l {
-		if l[i].uuid == uuid {
-			return l[i]
+func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
+	for _, group := range l.groups {
+		if group.uuid == uuid {
+			return group
 		}
 	}
 	return nil
 }
 
+func (l *GroupList) Add(group *Group) bool {
+	if l.FindByUUID(group.uuid) == nil {
+		l.groups = append(l.groups, group)
+		return true
+	}
+	return false
+}
+
+func (l *GroupList) Remove(group *Group) bool {
+	for g := range l.groups {
+		if l.groups[g].uuid == group.uuid {
+			l.groups = append(l.groups[:g], l.groups[g+1:]...)
+			return true
+		}
+	}
+	return false
+}
+
+func (l *GroupList) All() []*Group {
+	return l.groups
+}
+
+func (l *GroupList) Count() int {
+	return len(l.groups)
+}
+
 // Resolve looks up the passed in key for the group list, which must be either "count" or a numerical index
-func (l GroupList) Resolve(key string) interface{} {
+func (l *GroupList) Resolve(key string) interface{} {
 	if key == "count" {
-		return len(l)
+		return l.Count()
 	}
 
 	// key must be a numerical index
@@ -87,8 +144,8 @@ func (l GroupList) Resolve(key string) interface{} {
 	if err != nil {
 		return fmt.Errorf("not a valid integer '%s'", key)
 	}
-	if i < len(l) {
-		return l[i]
+	if i < l.Count() {
+		return l.groups[i]
 	}
 	return nil
 }
@@ -100,14 +157,14 @@ func (l GroupList) Default() interface{} {
 
 // String stringifies the group list, joining our names with a comma
 func (l GroupList) String() string {
-	names := make([]string, len(l))
-	for i := range l {
-		names[i] = l[i].name
+	names := make([]string, len(l.groups))
+	for g := range l.groups {
+		names[g] = l.groups[g].name
 	}
 	return strings.Join(names, ", ")
 }
 
-var _ utils.VariableResolver = (GroupList)(nil)
+var _ utils.VariableResolver = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {
@@ -121,6 +178,10 @@ func NewGroupSet(groups []*Group) *GroupSet {
 		s.groupsByUUID[group.uuid] = group
 	}
 	return s
+}
+
+func (s *GroupSet) All() []*Group {
+	return s.groups
 }
 
 func (s *GroupSet) FindByUUID(uuid GroupUUID) *Group {

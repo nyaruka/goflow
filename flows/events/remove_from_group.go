@@ -44,7 +44,7 @@ func (e *RemoveFromGroupEvent) Apply(run flows.FlowRun) error {
 		group := groupSet.FindByUUID(groupUUID)
 
 		if group != nil {
-			run.Contact().RemoveGroup(group)
+			run.Contact().Groups().Remove(group)
 		}
 	}
 	return nil

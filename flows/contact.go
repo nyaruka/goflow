@@ -6,6 +6,7 @@ import (
 
 	"time"
 
+	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -16,7 +17,7 @@ type Contact struct {
 	language utils.Language
 	timezone *time.Location
 	urns     URNList
-	groups   GroupList
+	groups   *GroupList
 	fields   FieldValues
 	channel  Channel
 }
@@ -38,21 +39,7 @@ func (c *Contact) Name() string        { return c.name }
 func (c *Contact) URNs() URNList     { return c.urns }
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 
-func (c *Contact) Groups() GroupList { return GroupList(c.groups) }
-func (c *Contact) AddGroup(group *Group) {
-	c.groups = append(c.groups, group)
-}
-func (c *Contact) RemoveGroup(group *Group) bool {
-	for i := range c.groups {
-		if c.groups[i].uuid == group.uuid {
-			c.groups = append(c.groups[:i], c.groups[i+1:]...)
-			return true
-		}
-	}
-
-	return false
-}
-
+func (c *Contact) Groups() *GroupList  { return c.groups }
 func (c *Contact) Fields() FieldValues { return c.fields }
 
 func (c *Contact) Channel() Channel           { return c.channel }
@@ -74,7 +61,7 @@ func (c *Contact) Resolve(key string) interface{} {
 		return string(c.language)
 
 	case "groups":
-		return GroupList(c.groups)
+		return c.groups
 
 	case "fields":
 		return c.fields
@@ -103,6 +90,63 @@ func (c *Contact) String() string {
 }
 
 var _ utils.VariableResolver = (*Contact)(nil)
+
+func (c *Contact) UpdateDynamicGroups(session Session) error {
+	groups, err := session.Assets().GetGroupSet()
+	if err != nil {
+		return err
+	}
+
+	for _, group := range groups.All() {
+		if group.IsDynamic() {
+			qualifies, err := group.CheckDynamicMembership(session, c)
+			if err != nil {
+				return err
+			}
+			if qualifies {
+				c.groups.Add(group)
+			} else {
+				c.groups.Remove(group)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (c *Contact) ResolveQueryKey(key string) interface{} {
+	if key == contactql.ImplicitKey {
+		values := make([]string, 0)
+		if c.name != "" {
+			values = append(values, c.name)
+		}
+		for _, urn := range c.urns {
+			values = append(values, string(urn.Path()))
+		}
+		return values
+
+	} else if key == "name" {
+		return c.name
+	}
+
+	// try as a URN scheme
+	for _, urn := range c.urns {
+		if key == string(urn.Scheme()) {
+			return urn.Path()
+		}
+	}
+
+	// try as a contact field
+	for k, value := range c.fields {
+		if key == string(k) {
+			return value.value
+		}
+	}
+
+	return nil
+}
+
+var _ contactql.Queryable = (*Contact)(nil)
 
 type ContactReference struct {
 	UUID ContactUUID `json:"uuid"    validate:"required,uuid4"`
@@ -165,14 +209,15 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	}
 
 	if envelope.GroupUUIDs == nil {
-		c.groups = make(GroupList, 0)
+		c.groups = NewGroupList([]*Group{})
 	} else {
-		c.groups = make(GroupList, len(envelope.GroupUUIDs))
+		groups := make([]*Group, len(envelope.GroupUUIDs))
 		for g := range envelope.GroupUUIDs {
-			if c.groups[g], err = session.Assets().GetGroup(envelope.GroupUUIDs[g]); err != nil {
+			if groups[g], err = session.Assets().GetGroup(envelope.GroupUUIDs[g]); err != nil {
 				return nil, err
 			}
 		}
+		c.groups = NewGroupList(groups)
 	}
 
 	if envelope.Fields == nil {
@@ -215,9 +260,9 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Timezone = c.timezone.String()
 	}
 
-	ce.GroupUUIDs = make([]GroupUUID, len(c.groups))
-	for g := range c.groups {
-		ce.GroupUUIDs[g] = c.groups[g].UUID()
+	ce.GroupUUIDs = make([]GroupUUID, c.groups.Count())
+	for g, group := range c.groups.All() {
+		ce.GroupUUIDs[g] = group.UUID()
 	}
 
 	ce.Fields = make(map[FieldKey]fieldValueEnvelope, len(c.fields))
