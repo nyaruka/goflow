@@ -14,7 +14,7 @@ before_script:
  - psql -U postgres -c "ALTER ROLE goflow WITH SUPERUSER;"
  - psql -U postgres -c "CREATE DATABASE goflow_test;"
  - psql -U postgres -d goflow_test -f schema.sql
- - go get github.com/nyaruka/gocommon
+ - go get github.com/nyaruka/gocommon/...
  - go get github.com/mattn/goveralls
 
 script:
