@@ -15,6 +15,8 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &AddLabelAction{}
 	case TypeAddToGroup:
 		action = &AddToGroupAction{}
+	case TypeAddURN:
+		action = &AddURNAction{}
 	case TypeSendEmail:
 		action = &EmailAction{}
 	case TypeStartFlow:
@@ -36,7 +38,7 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	case TypeCallWebhook:
 		action = &WebhookAction{}
 	default:
-		return nil, fmt.Errorf("Unknown action type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown action type: %s", envelope.Type)
 	}
 
 	return action, utils.UnmarshalAndValidate(envelope.Data, action, fmt.Sprintf("action[type=%s]", envelope.Type))

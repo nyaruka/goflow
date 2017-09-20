@@ -195,9 +195,9 @@ type legacyAction struct {
 	Variables []legacyVariable         `json:"variables"`
 
 	// save actions
-	Field flows.FieldKey `json:"field"`
-	Value string         `json:"value"`
-	Label string         `json:"label"`
+	Field string `json:"field"`
+	Value string `json:"value"`
+	Label string `json:"label"`
 
 	// set language
 	Language utils.Language `json:"lang"`
@@ -460,8 +460,17 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			}, nil
 		}
 
+		// and another new action for adding a URN
+		if urns.IsValidScheme(a.Field) {
+			return &actions.AddURNAction{
+				Scheme:     a.Field,
+				Path:       migratedValue,
+				BaseAction: actions.NewBaseAction(a.UUID),
+			}, nil
+		}
+
 		return &actions.SaveContactField{
-			Field:      flows.NewFieldReference(a.Field, a.Label),
+			Field:      flows.NewFieldReference(flows.FieldKey(a.Field), a.Label),
 			Value:      migratedValue,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil

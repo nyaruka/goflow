@@ -45,7 +45,7 @@ func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docStr
 
 	// make sure types match
 	if name != event.Type() {
-		log.Fatalf("Mismatched types for example of %s", name)
+		log.Fatalf("mismatched event types for example of %s", name)
 	}
 
 	// validate it

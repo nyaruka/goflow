@@ -23,13 +23,10 @@ const TypeAddLabel string = "add_label"
 //   }
 // ```
 //
-// @disabled_action add_label
+// @action add_label
 type AddLabelAction struct {
 	BaseAction
 	Labels []*flows.LabelReference `json:"labels" validate:"required,min=1,dive"`
-}
-
-func foo() {
 }
 
 // Type returns the type of this action

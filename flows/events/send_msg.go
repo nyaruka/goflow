@@ -15,7 +15,7 @@ const TypeSendMsg string = "send_msg"
 //   {
 //     "type": "send_msg",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "urn": "tel:%2B12065551212",
+//     "urn": "tel:+12065551212",
 //     "contact_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
 //     "text": "hi, what's up",
 //     "attachments": []

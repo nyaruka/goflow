@@ -17,8 +17,7 @@ func init() {
 
 // ValidateURN validates whether the field value is a valid URN
 func ValidateURN(fl validator.FieldLevel) bool {
-	// TODO
-	return true
+	return urns.URN(fl.Field().String()).Validate()
 }
 
 // ValidateURNScheme validates whether the field value is a valid URN scheme
@@ -28,8 +27,6 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 
 // URNList is the list of a contact's URNs
 type URNList []urns.URN
-
-var _ utils.VariableResolver = (urns.URN)("")
 
 func (l URNList) Resolve(key string) interface{} {
 	scheme := strings.ToLower(key)
@@ -64,4 +61,5 @@ func (l URNList) String() string {
 	return ""
 }
 
+var _ utils.VariableResolver = (urns.URN)("")
 var _ utils.VariableResolver = (URNList)(nil)

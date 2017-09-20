@@ -28,6 +28,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &AddLabelEvent{}
 	case TypeAddToGroup:
 		event = &AddToGroupEvent{}
+	case TypeAddURN:
+		event = &AddURNEvent{}
 	case TypeSendEmail:
 		event = &SendEmailEvent{}
 	case TypeError:

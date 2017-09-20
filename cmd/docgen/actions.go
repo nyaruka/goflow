@@ -47,7 +47,7 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 
 	// make sure types match
 	if name != action.Type() {
-		log.Fatalf("Mismatched types for example of %s", name)
+		log.Fatalf("mismatched action types for example of %s", name)
 	}
 
 	typed, err = utils.EnvelopeFromTyped(action)
