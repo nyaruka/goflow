@@ -44,7 +44,5 @@ func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) error {
 
 	run.Contact().Fields().Save(run.Environment(), field, e.Value)
 
-	// TODO revaluate dynamic groups
-
-	return nil
+	return run.Contact().UpdateDynamicGroups(run.Session())
 }

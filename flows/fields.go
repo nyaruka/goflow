@@ -30,7 +30,7 @@ type FieldValueType string
 
 const (
 	FieldValueTypeText     FieldValueType = "text"
-	FieldValueTypeDecimal  FieldValueType = "decimal"
+	FieldValueTypeNumeric  FieldValueType = "numeric"
 	FieldValueTypeDatetime FieldValueType = "datetime"
 	FieldValueTypeWard     FieldValueType = "ward"
 	FieldValueTypeDistrict FieldValueType = "district"
@@ -56,7 +56,7 @@ func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, er
 	switch f.valueType {
 	case FieldValueTypeText:
 		return value, nil
-	case FieldValueTypeDecimal:
+	case FieldValueTypeNumeric:
 		return decimal.NewFromString(value)
 	case FieldValueTypeDatetime:
 		return utils.DateFromString(env, value)
@@ -103,7 +103,7 @@ func (v *FieldValue) SerializeValue() string {
 	switch v.field.valueType {
 	case FieldValueTypeText:
 		return v.value.(string)
-	case FieldValueTypeDecimal:
+	case FieldValueTypeNumeric:
 		return v.value.(decimal.Decimal).String()
 	case FieldValueTypeDatetime:
 		return utils.DateToISO(v.value.(time.Time))

@@ -376,3 +376,9 @@ func ToGoDateFormat(format string) (string, error) {
 
 	return goFormat.String(), nil
 }
+
+func DateToUTCRange(d time.Time, tz *time.Location) (time.Time, time.Time) {
+	localMidnight := time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, d.Location())
+	utcMidnight := localMidnight.In(tz)
+	return utcMidnight, utcMidnight.Add(24 * time.Hour)
+}
