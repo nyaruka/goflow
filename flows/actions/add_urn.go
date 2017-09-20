@@ -57,7 +57,7 @@ func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Even
 	urn := urns.NewURNFromParts(a.Scheme, evaluatedPath, "").Normalize("")
 
 	// if we don't have a valid URN, log error
-	if !urn.Validate("") {
+	if !urn.Validate() {
 		return []flows.Event{events.NewErrorEvent(fmt.Errorf("invalid URN: '%s'", string(urn)))}, nil
 	}
 

@@ -2,7 +2,6 @@ package flows
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	validator "gopkg.in/go-playground/validator.v9"
@@ -18,8 +17,7 @@ func init() {
 
 // ValidateURN validates whether the field value is a valid URN
 func ValidateURN(fl validator.FieldLevel) bool {
-	fmt.Printf("ValidateURN(%s) -> %s\n", fl.Field().String(), strconv.FormatBool(urns.URN(fl.Field().String()).Validate("")))
-	return urns.URN(fl.Field().String()).Validate("")
+	return urns.URN(fl.Field().String()).Validate()
 }
 
 // ValidateURNScheme validates whether the field value is a valid URN scheme
