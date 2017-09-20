@@ -8,6 +8,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/karlseguin/ccache"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/utils"
@@ -33,55 +35,56 @@ const (
 	assetItemTypeLabel   AssetItemType = "label"
 )
 
-// container for any asset in the cache
-type cachedAsset struct {
-	asset      interface{}
-	addedOn    time.Time
-	accessedOn time.Time
-}
-
 // AssetCache fetches and caches assets for the engine
 type AssetCache struct {
-	cache map[assetURL]cachedAsset
-	mutex sync.Mutex
+	cache      *ccache.Cache
+	fetchMutex sync.Mutex
 }
 
 // NewAssetCache creates a new asset cache
 func NewAssetCache() *AssetCache {
-	return &AssetCache{cache: make(map[assetURL]cachedAsset)}
+	return &AssetCache{
+		cache: ccache.New(ccache.Configure().MaxSize(1000).ItemsToPrune(100)),
+	}
 }
 
-func (c *AssetCache) putAsset(url assetURL, asset interface{}) {
-	c.cache[url] = cachedAsset{asset: asset, addedOn: time.Now().UTC()}
+// Shutdown shuts down this asset cache
+func (c *AssetCache) Shutdown() {
+	c.cache.Stop()
 }
 
+// adds an asset to the cache identified by the given URL
 func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-
-	c.putAsset(url, asset)
+	c.cache.Set(string(url), asset, time.Hour*24)
 }
 
 // gets an asset from the cache if it's there or from the asset server
 func (c *AssetCache) getAsset(url assetURL, aType assetType, itemType AssetItemType) (interface{}, error) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	item := c.cache.Get(string(url))
 
-	cached, found := c.cache[url]
-	if !found {
-		asset, err := c.fetchAsset(url, aType, itemType)
-		if err != nil {
-			return nil, err
-		}
-
-		c.putAsset(url, asset)
-		return asset, nil
+	// asset was in cache, so just return it
+	if item != nil {
+		return item.Value(), nil
 	}
 
-	// update the accessed on time
-	cached.accessedOn = time.Now().UTC()
+	// multiple threads might get but we don't want to perform multiple fetches
+	c.fetchMutex.Lock()
+	defer c.fetchMutex.Unlock()
 
-	return cached.asset, nil
+	// check again in case we weren't the first thread to reach the fetch mutex
+	item = c.cache.Get(string(url))
+	if item != nil {
+		return item.Value(), nil
+	}
+
+	// actually fetch the asset from it's URL
+	fetched, err := c.fetchAsset(url, aType, itemType)
+	if err != nil {
+		return nil, err
+	}
+
+	c.addAsset(url, fetched)
+	return fetched, nil
 }
 
 // fetches an asset by its URL and parses it as the provided type
@@ -101,13 +104,15 @@ func (c *AssetCache) fetchAsset(url assetURL, aType assetType, itemType AssetIte
 	return readAsset(buf, aType, itemType)
 }
 
+// a higher level wrapper for the cache
 type sessionAssets struct {
-	cache     *AssetCache
-	assetURLs map[AssetItemType]string
+	cache    *AssetCache
+	typeURLs map[AssetItemType]string
 }
 
-func NewSessionAssets(cache *AssetCache, assetURLs map[AssetItemType]string) flows.SessionAssets {
-	return &sessionAssets{cache: cache, assetURLs: assetURLs}
+// NewSessionAssets creates a new session assets instance with the provided base URLs
+func NewSessionAssets(cache *AssetCache, typeURLs map[AssetItemType]string) flows.SessionAssets {
+	return &sessionAssets{cache: cache, typeURLs: typeURLs}
 }
 
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
@@ -212,11 +217,11 @@ func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
 }
 
 func (s *sessionAssets) getAssetSetURL(itemType AssetItemType) assetURL {
-	return assetURL(s.assetURLs[itemType])
+	return assetURL(s.typeURLs[itemType])
 }
 
 func (s *sessionAssets) getAssetItemURL(itemType AssetItemType, uuid itemUUID) assetURL {
-	return assetURL(fmt.Sprintf("%s/%s", s.assetURLs[itemType], uuid))
+	return assetURL(fmt.Sprintf("%s/%s", s.typeURLs[itemType], uuid))
 }
 
 //------------------------------------------------------------------------------------------
