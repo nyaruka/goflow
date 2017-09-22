@@ -116,13 +116,13 @@ func NewSessionAssets(cache *AssetCache, typeURLs map[AssetItemType]string) flow
 	return &sessionAssets{cache: cache, typeURLs: typeURLs}
 }
 
-func (s *sessionAssets) GetLocationHierarchy() (*flows.LocationHierarchy, error) {
+func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error) {
 	url := s.getAssetSetURL(assetItemTypeLocationHierarchy)
 	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeLocationHierarchy)
 	if err != nil {
 		return nil, err
 	}
-	hierarchy, isType := asset.(*flows.LocationHierarchy)
+	hierarchy, isType := asset.(*utils.LocationHierarchy)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
@@ -286,7 +286,7 @@ func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (i
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
 	if aType == assetTypeObject && itemType == assetItemTypeLocationHierarchy {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchy(data) }
+		assetReader = func(data json.RawMessage) (interface{}, error) { return utils.ReadLocationHierarchy(data) }
 	} else if aType == assetTypeObject && itemType == assetItemTypeChannel {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
 	} else if aType == assetTypeObject && itemType == assetItemTypeField {

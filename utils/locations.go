@@ -1,10 +1,8 @@
-package flows
+package utils
 
 import (
 	"encoding/json"
 	"strings"
-
-	"github.com/nyaruka/goflow/utils"
 )
 
 // LocationID is the unique identifier for each location, e.g. an OSM ID
@@ -139,7 +137,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
 func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
 	var le locationEnvelope
-	if err := utils.UnmarshalAndValidate(data, &le, "location"); err != nil {
+	if err := UnmarshalAndValidate(data, &le, "location"); err != nil {
 		return nil, err
 	}
 
