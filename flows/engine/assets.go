@@ -28,11 +28,12 @@ const (
 type AssetItemType string
 
 const (
-	assetItemTypeChannel AssetItemType = "channel"
-	assetItemTypeField   AssetItemType = "field"
-	assetItemTypeFlow    AssetItemType = "flow"
-	assetItemTypeGroup   AssetItemType = "group"
-	assetItemTypeLabel   AssetItemType = "label"
+	assetItemTypeChannel           AssetItemType = "channel"
+	assetItemTypeField             AssetItemType = "field"
+	assetItemTypeFlow              AssetItemType = "flow"
+	assetItemTypeGroup             AssetItemType = "group"
+	assetItemTypeLabel             AssetItemType = "label"
+	assetItemTypeLocationHierarchy AssetItemType = "location_hierarchy"
 )
 
 // AssetCache fetches and caches assets for the engine
@@ -113,6 +114,19 @@ type sessionAssets struct {
 // NewSessionAssets creates a new session assets instance with the provided base URLs
 func NewSessionAssets(cache *AssetCache, typeURLs map[AssetItemType]string) flows.SessionAssets {
 	return &sessionAssets{cache: cache, typeURLs: typeURLs}
+}
+
+func (s *sessionAssets) GetLocationHierarchy() (*flows.LocationHierarchy, error) {
+	url := s.getAssetSetURL(assetItemTypeLocationHierarchy)
+	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeLocationHierarchy)
+	if err != nil {
+		return nil, err
+	}
+	hierarchy, isType := asset.(*flows.LocationHierarchy)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return hierarchy, nil
 }
 
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
@@ -271,7 +285,9 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (interface{}, error) {
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
-	if aType == assetTypeObject && itemType == assetItemTypeChannel {
+	if aType == assetTypeObject && itemType == assetItemTypeLocationHierarchy {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchy(data) }
+	} else if aType == assetTypeObject && itemType == assetItemTypeChannel {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
 	} else if aType == assetTypeObject && itemType == assetItemTypeField {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadField(data) }
