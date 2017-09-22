@@ -51,34 +51,13 @@ var assetsDef = `
 			{"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
 		],
 		"is_set": true
-	}
-]
-`
-
-var emptyDef = `
-[
+	},
 	{
-		"type": "flow",
-		"url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
 		"content": {
-			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-			"name": "EmptyFlow",
-			"nodes": []
+			
 		}
-	},
-	{
-		"type": "field",
-		"url": "http://testserver/assets/field",
-		"content": [
-			{"key": "gender", "label": "Gender", "value_type": "text"}
-		],
-		"is_set": true
-	},
-	{
-		"type": "group",
-		"url": "http://testserver/assets/group",
-		"content": [],
-		"is_set": true
 	}
 ]
 `
@@ -107,10 +86,11 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 
 	// create our engine session
 	assetURLs := map[engine.AssetItemType]string{
-		"channel": "http://testserver/assets/channel",
-		"field":   "http://testserver/assets/field",
-		"flow":    "http://testserver/assets/flow",
-		"group":   "http://testserver/assets/group",
+		"channel":            "http://testserver/assets/channel",
+		"field":              "http://testserver/assets/field",
+		"flow":               "http://testserver/assets/flow",
+		"group":              "http://testserver/assets/group",
+		"location_hierarchy": "http://testserver/assets/location_hierarchy",
 	}
 	session := engine.NewSession(assetCache, assetURLs)
 

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -18,6 +19,7 @@ type Environment interface {
 	SetTimezone(*time.Location)
 
 	Languages() LanguageList
+	LookupLocations(string, LocationLevel, *Location) ([]*Location, error)
 }
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
@@ -56,6 +58,11 @@ func (e *environment) SetTimezone(timezone *time.Location) {
 }
 
 func (e *environment) Languages() LanguageList { return e.languages }
+
+func (e *environment) LookupLocations(name string, level LocationLevel, parent *Location) ([]*Location, error) {
+	// this base implementation of environment doesn't have any locations
+	return nil, fmt.Errorf("location lookup not supported")
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

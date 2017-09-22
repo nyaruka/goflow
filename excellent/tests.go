@@ -14,9 +14,6 @@ import (
 )
 
 // TODO:
-// HasWardTest
-// HasDistrictTest
-// HasStateTest
 // InterruptTest
 // TimeoutTest
 // AirtimeStatusTest
@@ -58,6 +55,10 @@ var XTESTS = map[string]XFunction{
 
 	"has_phone": HasPhone,
 	"has_email": HasEmail,
+
+	"has_state": HasState,
+	//"has_district": HasDistrict,
+	//"has_ward":     HasWard,
 }
 
 //------------------------------------------------------------------------------------------
@@ -765,6 +766,35 @@ func HasPhone(env utils.Environment, args ...interface{}) interface{} {
 	return XTestResult{true, formatted}
 }
 
+// HasState tests whether a state name is contained in the `string`
+//
+//   @(has_state("Kigali")) -> true
+//   @(has_state("Boston")) -> false
+//   @(has_state("I live in Kigali")) -> true
+//
+// @test has_state(string)
+func HasState(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("HAS_STATE takes exactly one arguments, got %d", len(args))
+	}
+
+	// grab the text we will search
+	text, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	state, err := hasStateTest(env, text)
+	if err != nil {
+		return err
+	}
+	if state != nil {
+		return XTestResult{true, state}
+	}
+
+	return XFalseResult
+}
+
 //------------------------------------------------------------------------------------------
 // String Test Functions
 //------------------------------------------------------------------------------------------
@@ -1005,4 +1035,19 @@ func isDateEQTest(value time.Time, test time.Time) bool {
 
 func isDateGTTest(value time.Time, test time.Time) bool {
 	return value.After(test)
+}
+
+//------------------------------------------------------------------------------------------
+// Location Test Functions
+//------------------------------------------------------------------------------------------
+
+func hasStateTest(env utils.Environment, text string) (*utils.Location, error) {
+	states, err := env.LookupLocations(text, utils.LocationLevel(1), nil)
+	if err != nil {
+		return nil, err
+	}
+	if len(states) > 0 {
+		return states[0], nil
+	}
+	return nil, nil
 }

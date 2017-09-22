@@ -80,17 +80,20 @@ func TestLocationHierarchy(t *testing.T) {
 	assert.Equal(t, gasabo, ndera.Parent())
 	assert.Equal(t, 0, len(ndera.Children()))
 
-	assert.Equal(t, kigali, hierarchy.FindByID(LocationLevel(1), LocationID("234521")))
-	assert.Equal(t, gasabo, hierarchy.FindByID(LocationLevel(2), LocationID("57735322")))
+	assert.Equal(t, kigali, hierarchy.FindByID(LocationID("234521"), LocationLevel(1)))
+	assert.Equal(t, gasabo, hierarchy.FindByID(LocationID("57735322"), LocationLevel(2)))
 
-	assert.Nil(t, hierarchy.FindByID(LocationLevel(1), LocationID("xxxxx")))  // no such ID
-	assert.Nil(t, hierarchy.FindByID(LocationLevel(8), LocationID("234521"))) // no such level
-	assert.Nil(t, hierarchy.FindByID(LocationLevel(2), LocationID("234521"))) // wrong level
+	assert.Nil(t, hierarchy.FindByID(LocationID("xxxxx"), LocationLevel(1)))  // no such ID
+	assert.Nil(t, hierarchy.FindByID(LocationID("234521"), LocationLevel(8))) // no such level
+	assert.Nil(t, hierarchy.FindByID(LocationID("234521"), LocationLevel(2))) // wrong level
 
-	assert.Equal(t, []*Location{kigali}, hierarchy.FindByName(LocationLevel(1), "kigari"))
-	assert.Equal(t, []*Location{gasabo}, hierarchy.FindByName(LocationLevel(2), "GASABO"))
+	assert.Equal(t, []*Location{kigali}, hierarchy.FindByName("kigari", LocationLevel(1), nil))
+	assert.Equal(t, []*Location{kigali}, hierarchy.FindByName("kigari", LocationLevel(1), rwanda))
+	assert.Equal(t, []*Location{gasabo}, hierarchy.FindByName("GASABO", LocationLevel(2), nil))
+	assert.Equal(t, []*Location{gasabo}, hierarchy.FindByName("GASABO", LocationLevel(2), kigali))
 
-	assert.Equal(t, []*Location{}, hierarchy.FindByName(LocationLevel(1), "boston")) // no such name
-	assert.Equal(t, []*Location{}, hierarchy.FindByName(LocationLevel(8), "kigari")) // no such level
-	assert.Equal(t, []*Location{}, hierarchy.FindByName(LocationLevel(2), "kigari")) // wrong level
+	assert.Equal(t, []*Location{}, hierarchy.FindByName("boston", LocationLevel(1), nil))    // no such name
+	assert.Equal(t, []*Location{}, hierarchy.FindByName("kigari", LocationLevel(8), nil))    // no such level
+	assert.Equal(t, []*Location{}, hierarchy.FindByName("kigari", LocationLevel(2), nil))    // wrong level
+	assert.Equal(t, []*Location{}, hierarchy.FindByName("kigari", LocationLevel(2), gasabo)) // wrong parent
 }

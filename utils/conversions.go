@@ -326,6 +326,9 @@ func ToString(env Environment, val interface{}) (string, error) {
 		}
 		return ToString(env, valDefault)
 
+	case Location:
+		return val.Name(), nil
+
 	case []string:
 		return strings.Join(val, ", "), nil
 
@@ -551,6 +554,7 @@ const ( // primitive types we convert to
 	STRING
 	DECIMAL
 	TIME
+	LOCATION
 	BOOLEAN
 	ERROR
 	STRING_SLICE
@@ -582,6 +586,9 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 
 	case time.Time:
 		return val, TIME, nil
+
+	case Location:
+		return val, LOCATION, nil
 
 	case string:
 		return val, STRING, nil

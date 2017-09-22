@@ -105,6 +105,7 @@ type SessionAssets interface {
 	GetGroupSet() (*GroupSet, error)
 	GetLabel(LabelUUID) (*Label, error)
 	GetLabelSet() (*LabelSet, error)
+	GetLocationHierarchy() (*utils.LocationHierarchy, error)
 }
 
 type Flow interface {

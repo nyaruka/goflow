@@ -88,7 +88,7 @@ func (s *LocationHierarchy) addLookups(location *Location) {
 }
 
 // FindByID looks for a location in the hierarchy with the given level and ID
-func (s *LocationHierarchy) FindByID(level LocationLevel, id LocationID) *Location {
+func (s *LocationHierarchy) FindByID(id LocationID, level LocationLevel) *Location {
 	if int(level) < len(s.levelLookups) {
 		return s.levelLookups[int(level)].byID[id]
 	}
@@ -96,10 +96,21 @@ func (s *LocationHierarchy) FindByID(level LocationLevel, id LocationID) *Locati
 }
 
 // FindByName looks for all locations in the hierarchy with the given level and name or alias
-func (s *LocationHierarchy) FindByName(level LocationLevel, name string) []*Location {
+func (s *LocationHierarchy) FindByName(name string, level LocationLevel, parent *Location) []*Location {
 	if int(level) < len(s.levelLookups) {
 		matches, found := s.levelLookups[int(level)].byName[strings.ToLower(name)]
 		if found {
+			// if a parent is specified, filter the matches by it
+			if parent != nil {
+				withParent := make([]*Location, 0)
+				for m := range matches {
+					if matches[m].parent == parent {
+						withParent = append(withParent, matches[m])
+					}
+				}
+				return withParent
+			}
+
 			return matches
 		}
 	}
