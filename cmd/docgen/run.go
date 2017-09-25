@@ -79,7 +79,7 @@ var contactDef = `
 
 func createExampleSession(assetsDef string) (flows.Session, error) {
 	// read our assets
-	assetCache := engine.NewAssetCache()
+	assetCache := engine.NewAssetCache(100, 5)
 	if err := assetCache.Include(json.RawMessage(assetsDef)); err != nil {
 		return nil, err
 	}
