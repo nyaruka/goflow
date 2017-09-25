@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"regexp"
 	"strings"
 )
 
@@ -115,6 +116,37 @@ func (s *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 		}
 	}
 	return []*Location{}
+}
+
+func FindLocations(env Environment, text string, level LocationLevel, parent *Location) ([]*Location, error) {
+	// try matching name exactly
+	if locations, err := env.LookupLocations(text, level, parent); len(locations) > 0 || err != nil {
+		return locations, err
+	}
+
+	// try with punctuation removed
+	stripped := strings.TrimSpace(regexp.MustCompile(`\W+`).ReplaceAllString(text, ""))
+	if locations, err := env.LookupLocations(stripped, level, parent); len(locations) > 0 || err != nil {
+		return locations, err
+	}
+
+	// try on each tokenized word
+	words := regexp.MustCompile(`\W+`).Split(text, -1)
+	for _, word := range words {
+		if locations, err := env.LookupLocations(word, level, parent); len(locations) > 0 || err != nil {
+			return locations, err
+		}
+	}
+
+	// try with each pair of words
+	for w := 0; w < len(words)-1; w++ {
+		wordPair := strings.Join(words[w:w+2], " ")
+		if locations, err := env.LookupLocations(wordPair, level, parent); len(locations) > 0 || err != nil {
+			return locations, err
+		}
+	}
+
+	return []*Location{}, nil
 }
 
 //------------------------------------------------------------------------------------------

@@ -54,7 +54,28 @@ var functionsTestAssets = `
 				{
 					"id": "234521",
 					"name": "Kigali City",
-					"aliases": ["Kigali", "Kigari"]
+					"aliases": ["Kigali", "Kigari"],
+					"children": [
+						{
+							"id": "57735322",
+							"name": "Gasabo",
+							"children": [
+								{
+									"id": "575743222",
+									"name": "Gisozi"
+								},
+								{
+									"id": "457378732",
+									"name": "Ndera"
+								}
+							]
+						},
+						{
+							"id": "46547322",
+							"name": "Nyarugenge",
+							"children": []
+						}
+					]
 				}
 			]
 		}
