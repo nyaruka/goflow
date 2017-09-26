@@ -42,9 +42,9 @@ type AssetCache struct {
 }
 
 // NewAssetCache creates a new asset cache
-func NewAssetCache(maxSize int64, pruneItems uint32) *AssetCache {
+func NewAssetCache(maxSize int64, pruneItems int) *AssetCache {
 	return &AssetCache{
-		cache: ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(pruneItems)),
+		cache: ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
 	}
 }
 

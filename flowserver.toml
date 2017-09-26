@@ -1,0 +1,20 @@
+#-------------------------------------------------------------------------------------
+# Flowserver settings can be set in four different ways, in order of preference, last
+# being highest priority:
+#
+# 1) Flowserver defaults
+# 2) Config file options as defined below
+# 3) Env variable, which are prefixed with FLOWSERVER_, ex: export FLOWSERVER_PORT=8000
+# 4) Command line options, ex: flowserver -port 8000
+#
+#-------------------------------------------------------------------------------------
+
+# Which port to listen on
+port = 8080
+
+# Directory where static content is served from
+static = ""
+
+# Asset cache settings - how many items it can hold and how many to prune when it reaches that size
+asset_cache_size = 1000
+asset_cache_prune = 100
