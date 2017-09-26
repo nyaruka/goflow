@@ -10,8 +10,8 @@ type FlowServer struct {
 
 	Static string `default:""`
 
-	AssetCacheSize  int64  `default:"1000"`
-	AssetCachePrune uint32 `default:"100"`
+	AssetCacheSize  int64 `default:"1000"`
+	AssetCachePrune int   `default:"100"`
 }
 
 // NewConfigWithPath returns a new instance of Loader to read from the given configuration file using our config options
