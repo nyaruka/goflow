@@ -37,6 +37,12 @@ const (
 	FieldValueTypeState    FieldValueType = "state"
 )
 
+var fieldLocationLevels = map[FieldValueType]utils.LocationLevel{
+	FieldValueTypeState:    utils.LocationLevel(1),
+	FieldValueTypeDistrict: utils.LocationLevel(2),
+	FieldValueTypeWard:     utils.LocationLevel(3),
+}
+
 // Field represents a contact field
 type Field struct {
 	key       FieldKey
@@ -60,9 +66,18 @@ func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, er
 		return decimal.NewFromString(value)
 	case FieldValueTypeDatetime:
 		return utils.DateFromString(env, value)
+	case FieldValueTypeState, FieldValueTypeDistrict, FieldValueTypeWard:
+		locationID := utils.LocationID(value)
+		locationLevel := fieldLocationLevels[f.valueType]
+		locations, err := env.Locations()
+		if err != nil {
+			return nil, err
+		}
+		if locations == nil {
+			return nil, fmt.Errorf("can't parse field '%s' (type %s) in enviroment which is not location enabled", f.key, f.valueType)
+		}
+		return locations.FindByID(locationID, locationLevel), nil
 	}
-
-	// TODO location field values
 
 	return nil, fmt.Errorf("field %s has invalid value type: '%s'", f.key, f.valueType)
 }
@@ -107,9 +122,9 @@ func (v *FieldValue) SerializeValue() string {
 		return v.value.(decimal.Decimal).String()
 	case FieldValueTypeDatetime:
 		return utils.DateToISO(v.value.(time.Time))
+	case FieldValueTypeState, FieldValueTypeDistrict, FieldValueTypeWard:
+		return string(v.value.(*utils.Location).ID())
 	}
-
-	// TODO location field values
 
 	return fmt.Sprintf("%v", v.value)
 }

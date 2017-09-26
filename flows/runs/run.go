@@ -46,13 +46,13 @@ func (e *runEnvironment) Languages() utils.LanguageList {
 	return e.cachedLanguages
 }
 
-func (e *runEnvironment) LookupLocations(name string, level utils.LocationLevel, parent *utils.Location) ([]*utils.Location, error) {
-	hierarchy, err := e.run.Session().Assets().GetLocationHierarchy()
-	if err != nil {
-		return nil, err
+func (e *runEnvironment) Locations() (*utils.LocationHierarchy, error) {
+	sessionAssets := e.run.Session().Assets()
+	if sessionAssets.HasLocations() {
+		return sessionAssets.GetLocationHierarchy()
 	}
 
-	return hierarchy.FindByName(name, level, parent), nil
+	return nil, nil
 }
 
 func (e *runEnvironment) refreshLanguagesCache() {

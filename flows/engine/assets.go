@@ -116,6 +116,17 @@ func NewSessionAssets(cache *AssetCache, typeURLs map[AssetItemType]string) flow
 	return &sessionAssets{cache: cache, typeURLs: typeURLs}
 }
 
+// isTypeSupported returns whether the given asset item type is supported
+func (s *sessionAssets) isTypeSupported(itemType AssetItemType) bool {
+	_, hasTypeURL := s.typeURLs[itemType]
+	return hasTypeURL
+}
+
+// HasLocations returns whether locations are supported as an asset item type
+func (s *sessionAssets) HasLocations() bool {
+	return s.isTypeSupported(assetItemTypeLocationHierarchy)
+}
+
 func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error) {
 	url := s.getAssetSetURL(assetItemTypeLocationHierarchy)
 	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeLocationHierarchy)
@@ -245,7 +256,7 @@ func (s *sessionAssets) getAssetItemURL(itemType AssetItemType, uuid itemUUID) a
 type assetEnvelope struct {
 	URL      assetURL        `json:"url" validate:"required,url"`
 	ItemType AssetItemType   `json:"type" validate:"required"`
-	Content  json.RawMessage `json:"content" validate:"required"`
+	Content  json.RawMessage `json:"content"`
 	IsSet    bool            `json:"is_set"`
 }
 

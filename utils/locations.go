@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -120,20 +121,20 @@ func (s *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 
 func FindLocations(env Environment, text string, level LocationLevel, parent *Location) ([]*Location, error) {
 	// try matching name exactly
-	if locations, err := env.LookupLocations(text, level, parent); len(locations) > 0 || err != nil {
+	if locations, err := findLocationsByName(env, text, level, parent); len(locations) > 0 || err != nil {
 		return locations, err
 	}
 
 	// try with punctuation removed
 	stripped := strings.TrimSpace(regexp.MustCompile(`\W+`).ReplaceAllString(text, ""))
-	if locations, err := env.LookupLocations(stripped, level, parent); len(locations) > 0 || err != nil {
+	if locations, err := findLocationsByName(env, stripped, level, parent); len(locations) > 0 || err != nil {
 		return locations, err
 	}
 
 	// try on each tokenized word
 	words := regexp.MustCompile(`\W+`).Split(text, -1)
 	for _, word := range words {
-		if locations, err := env.LookupLocations(word, level, parent); len(locations) > 0 || err != nil {
+		if locations, err := findLocationsByName(env, word, level, parent); len(locations) > 0 || err != nil {
 			return locations, err
 		}
 	}
@@ -141,12 +142,24 @@ func FindLocations(env Environment, text string, level LocationLevel, parent *Lo
 	// try with each pair of words
 	for w := 0; w < len(words)-1; w++ {
 		wordPair := strings.Join(words[w:w+2], " ")
-		if locations, err := env.LookupLocations(wordPair, level, parent); len(locations) > 0 || err != nil {
+		if locations, err := findLocationsByName(env, wordPair, level, parent); len(locations) > 0 || err != nil {
 			return locations, err
 		}
 	}
 
 	return []*Location{}, nil
+}
+
+func findLocationsByName(env Environment, name string, level LocationLevel, parent *Location) ([]*Location, error) {
+	locations, err := env.Locations()
+	if err != nil {
+		return nil, err
+	}
+	if locations == nil {
+		return nil, fmt.Errorf("can't parse location name in enviroment which is not location enabled")
+	}
+
+	return locations.FindByName(name, level, parent), nil
 }
 
 //------------------------------------------------------------------------------------------

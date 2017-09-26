@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -19,12 +18,17 @@ type Environment interface {
 	SetTimezone(*time.Location)
 
 	Languages() LanguageList
-	LookupLocations(string, LocationLevel, *Location) ([]*Location, error)
+	Locations() (*LocationHierarchy, error)
 }
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
 func NewDefaultEnvironment() Environment {
-	return &environment{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, time.UTC, LanguageList{}}
+	return &environment{
+		dateFormat: DateFormat_yyyy_MM_dd,
+		timeFormat: TimeFormat_HH_mm,
+		timezone:   time.UTC,
+		languages:  LanguageList{},
+	}
 }
 
 // NewEnvironment creates a new Environment with the passed in date and time formats and timezone
@@ -32,7 +36,12 @@ func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time
 	if timezone == nil {
 		timezone = time.UTC
 	}
-	return &environment{dateFormat, timeFormat, timezone, languages}
+	return &environment{
+		dateFormat: dateFormat,
+		timeFormat: timeFormat,
+		timezone:   timezone,
+		languages:  languages,
+	}
 }
 
 type environment struct {
@@ -57,24 +66,22 @@ func (e *environment) SetTimezone(timezone *time.Location) {
 	}
 }
 
-func (e *environment) Languages() LanguageList { return e.languages }
-
-func (e *environment) LookupLocations(name string, level LocationLevel, parent *Location) ([]*Location, error) {
-	// this base implementation of environment doesn't have any locations
-	return nil, fmt.Errorf("location lookup not supported")
-}
+func (e *environment) Languages() LanguageList                { return e.languages }
+func (e *environment) Locations() (*LocationHierarchy, error) { return nil, nil }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat DateFormat   `json:"date_format"`
-	TimeFormat TimeFormat   `json:"time_format"`
-	Timezone   string       `json:"timezone"`
-	Languages  LanguageList `json:"languages"`
+	DateFormat      DateFormat   `json:"date_format"`
+	TimeFormat      TimeFormat   `json:"time_format"`
+	Timezone        string       `json:"timezone"`
+	Languages       LanguageList `json:"languages"`
+	LocationEnabled bool         `json:"location_enabled"`
 }
 
+// ReadEnvironment reads an environment from the given JSON
 func ReadEnvironment(data json.RawMessage) (*environment, error) {
 	env := NewDefaultEnvironment().(*environment)
 
@@ -98,6 +105,11 @@ func ReadEnvironment(data json.RawMessage) (*environment, error) {
 }
 
 func (e *environment) MarshalJSON() ([]byte, error) {
-	ee := envEnvelope{e.dateFormat, e.timeFormat, e.timezone.String(), e.languages}
+	ee := envEnvelope{
+		DateFormat: e.dateFormat,
+		TimeFormat: e.timeFormat,
+		Timezone:   e.timezone.String(),
+		Languages:  e.languages,
+	}
 	return json.Marshal(ee)
 }
