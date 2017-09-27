@@ -74,9 +74,11 @@ func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, 
 			return false, err
 		}
 		return dateComparison(val.(time.Time), c.comparator, asDate)
-	}
 
-	// TODO locations
+	case *utils.Location:
+		// location field conditions are string comparisons on the location name
+		return stringComparison(val.(*utils.Location).Name(), c.comparator, c.value)
+	}
 
 	return false, fmt.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
 }
@@ -91,15 +93,18 @@ func (c *Condition) String() string {
 	return fmt.Sprintf("%s%s%s", c.key, c.comparator, value)
 }
 
+// BoolCombination is a AND or OR combination of multiple conditions
 type BoolCombination struct {
 	op       boolOp
 	children []QueryNode
 }
 
+// NewBoolCombination creates a new boolean combination
 func NewBoolCombination(op boolOp, children ...QueryNode) *BoolCombination {
 	return &BoolCombination{op: op, children: children}
 }
 
+// Evaluate returns whether this combination evaluates to true or false
 func (b *BoolCombination) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
 	var childRes bool
 	var err error
