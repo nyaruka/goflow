@@ -74,11 +74,10 @@ func (e *environment) Locations() (*LocationHierarchy, error) { return nil, nil 
 //------------------------------------------------------------------------------------------
 
 type envEnvelope struct {
-	DateFormat      DateFormat   `json:"date_format"`
-	TimeFormat      TimeFormat   `json:"time_format"`
-	Timezone        string       `json:"timezone"`
-	Languages       LanguageList `json:"languages"`
-	LocationEnabled bool         `json:"location_enabled"`
+	DateFormat DateFormat   `json:"date_format"`
+	TimeFormat TimeFormat   `json:"time_format"`
+	Timezone   string       `json:"timezone"`
+	Languages  LanguageList `json:"languages"`
 }
 
 // ReadEnvironment reads an environment from the given JSON

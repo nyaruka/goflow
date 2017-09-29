@@ -254,6 +254,11 @@ type groupTest struct {
 	Test legacyGroupReference `json:"test"`
 }
 
+type wardTest struct {
+	State    string `json:"state"`
+	District string `json:"district"`
+}
+
 type localizations map[utils.Language]flows.Action
 
 type translationMap map[utils.Language]string
@@ -295,6 +300,7 @@ var testTypeMappings = map[string]string{
 	"date_after":           "has_date_gt",
 	"date_before":          "has_date_lt",
 	"date_equal":           "has_date_eq",
+	"district":             "has_district",
 	"email":                "has_email",
 	"eq":                   "has_number_eq",
 	"gt":                   "has_number_gt",
@@ -307,7 +313,9 @@ var testTypeMappings = map[string]string{
 	"phone":                "has_phone",
 	"regex":                "has_pattern",
 	"starts":               "has_beginning",
+	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
+	"ward":                 "has_ward",
 	"webhook_status":       "has_legacy_webhook_status",
 }
 
@@ -506,7 +514,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	switch r.Test.Type {
 
 	// tests that take no arguments
-	case "date", "email", "not_empty", "number", "phone":
+	case "date", "email", "not_empty", "number", "phone", "state":
 		arguments = []string{}
 
 	// tests against a single numeric value
@@ -566,6 +574,16 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 	case "timeout":
 		omitOperand = true
 		arguments = []string{"@run"}
+
+	case "district":
+		test := stringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test}
+
+	case "ward":
+		test := wardTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.District, test.State}
 
 	default:
 		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported", r.Test.Type)
