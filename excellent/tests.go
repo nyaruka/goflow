@@ -14,9 +14,6 @@ import (
 )
 
 // TODO:
-// HasWardTest
-// HasDistrictTest
-// HasStateTest
 // InterruptTest
 // TimeoutTest
 // AirtimeStatusTest
@@ -58,6 +55,10 @@ var XTESTS = map[string]XFunction{
 
 	"has_phone": HasPhone,
 	"has_email": HasEmail,
+
+	"has_state":    HasState,
+	"has_district": HasDistrict,
+	"has_ward":     HasWard,
 }
 
 //------------------------------------------------------------------------------------------
@@ -763,6 +764,156 @@ func HasPhone(env utils.Environment, args ...interface{}) interface{} {
 	// format as E164 number
 	formatted := phonenumbers.Format(phone, phonenumbers.E164)
 	return XTestResult{true, formatted}
+}
+
+// HasState tests whether a state name is contained in the `string`
+//
+//   @(has_state("Kigali")) -> true
+//   @(has_state("Boston")) -> false
+//   @(has_state("¡Kigali!")) -> true
+//   @(has_state("I live in Kigali")) -> true
+//
+// @test has_state(string)
+func HasState(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("HAS_STATE takes exactly one arguments, got %d", len(args))
+	}
+
+	// grab the text we will search
+	text, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	states, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(1), nil)
+	if err != nil {
+		return err
+	}
+	if len(states) > 0 {
+		return XTestResult{true, states[0]}
+	}
+	return XFalseResult
+}
+
+// HasDistrict tests whether a district name is contained in the `string`. If `state` is also provided
+// then the returned district must be within that state.
+//
+//   @(has_district("Gasabo", "Kigali")) -> true
+//   @(has_district("I live in Gasabo", "Kigali")) -> true
+//   @(has_district("Gasabo", "Boston")) -> false
+//   @(has_district("Gasabo")) -> true
+//
+// @test has_district(string, state)
+func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 && len(args) != 2 {
+		return fmt.Errorf("HAS_DISTRICT takes one or two arguments, got %d", len(args))
+	}
+
+	var text, stateText string
+	var err error
+
+	// grab the text we will search and the parent state name
+	if text, err = utils.ToString(env, args[0]); err != nil {
+		return err
+	}
+	if len(args) == 2 {
+		if stateText, err = utils.ToString(env, args[1]); err != nil {
+			return err
+		}
+	}
+
+	states, err := utils.FindLocationsFuzzy(env, stateText, utils.LocationLevel(1), nil)
+	if err != nil {
+		return err
+	}
+	if len(states) > 0 {
+		districts, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(2), states[0])
+		if err != nil {
+			return err
+		}
+		if len(districts) > 0 {
+			return XTestResult{true, districts[0]}
+		}
+	}
+
+	// try without a parent state - it's ok as long as we get a single match
+	if stateText == "" {
+		districts, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(2), nil)
+		if err != nil {
+			return err
+		}
+		if len(districts) == 1 {
+			return XTestResult{true, districts[0]}
+		}
+	}
+
+	return XFalseResult
+}
+
+// HasWard tests whether a ward name is contained in the `string`
+//
+//   @(has_ward("Gisozi", "Gasabo", "Kigali")) -> true
+//   @(has_ward("I live in Gisozi", "Gasabo", "Kigali")) -> true
+//   @(has_ward("Gisozi", "Gasabo", "Brooklyn")) -> false
+//   @(has_ward("Gisozi", "Brooklyn", "Kigali")) -> false
+//   @(has_ward("Brooklyn", "Gasabo", "Kigali")) -> false
+//   @(has_ward("Gasabo")) -> false
+//   @(has_ward("Gisozi")) -> true
+//
+// @test has_ward(string, district, state)
+func HasWard(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 && len(args) != 3 {
+		return fmt.Errorf("HAS_WARD takes one or three arguments, got %d", len(args))
+	}
+
+	var text, districtText, stateText string
+	var err error
+
+	// grab the text we will search, as well as the parent district and state names
+	if text, err = utils.ToString(env, args[0]); err != nil {
+		return err
+	}
+	if len(args) == 3 {
+		if districtText, err = utils.ToString(env, args[1]); err != nil {
+			return err
+		}
+		if stateText, err = utils.ToString(env, args[2]); err != nil {
+			return err
+		}
+	}
+
+	states, err := utils.FindLocationsFuzzy(env, stateText, utils.LocationLevel(1), nil)
+	if err != nil {
+		return err
+	}
+	if len(states) > 0 {
+		districts, err := utils.FindLocationsFuzzy(env, districtText, utils.LocationLevel(2), states[0])
+		if err != nil {
+			return err
+		}
+		if len(districts) > 0 {
+			wards, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(3), districts[0])
+			if err != nil {
+				return err
+			}
+			if len(wards) > 0 {
+				return XTestResult{true, wards[0]}
+			}
+		}
+	}
+
+	// try without a parent district - it's ok as long as we get a single match
+	if districtText == "" {
+		wards, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(3), nil)
+		if err != nil {
+			return err
+		}
+		if len(wards) == 1 {
+			return XTestResult{true, wards[0]}
+		}
+	}
+
+	return XFalseResult
 }
 
 //------------------------------------------------------------------------------------------

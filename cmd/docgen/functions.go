@@ -11,16 +11,90 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// the set of assets loaded into the session that function examples are evaluated against
+var functionsTestAssets = `
+[
+	{
+		"type": "flow",
+		"url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
+		"content": {
+			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+			"name": "EmptyFlow",
+			"nodes": []
+		}
+	},
+	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
+		"content": [
+			{"key": "gender", "label": "Gender", "value_type": "text"}
+		],
+		"is_set": true
+	},
+	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": [],
+		"is_set": true
+	},
+	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": [],
+		"is_set": true
+	},
+	{
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
+		"content": {
+			"id": "2342",
+			"name": "Rwanda",
+			"aliases": ["Ruanda"],		
+			"children": [
+				{
+					"id": "234521",
+					"name": "Kigali City",
+					"aliases": ["Kigali", "Kigari"],
+					"children": [
+						{
+							"id": "57735322",
+							"name": "Gasabo",
+							"children": [
+								{
+									"id": "575743222",
+									"name": "Gisozi"
+								},
+								{
+									"id": "457378732",
+									"name": "Ndera"
+								}
+							]
+						},
+						{
+							"id": "46547322",
+							"name": "Nyarugenge",
+							"children": []
+						}
+					]
+				}
+			]
+		}
+	}
+]
+`
+
 func newFuncVisitor(funcType string, output *bytes.Buffer) ast.Visitor {
-	session, err := createExampleSession(emptyDef)
+	session, err := createExampleSession(functionsTestAssets)
 	if err != nil {
 		log.Fatalf("Error creating example session: %s", err)
 	}
 
+	run := session.Runs()[0]
+
 	return &funcVisitor{
 		prefix:   "@" + funcType,
-		env:      utils.NewDefaultEnvironment(),
-		resolver: session.Runs()[0].Context(),
+		env:      run.Environment(),
+		resolver: run.Context(),
 		output:   output,
 	}
 }

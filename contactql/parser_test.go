@@ -63,6 +63,12 @@ func (t *TestQueryable) ResolveQueryKey(key string) interface{} {
 		return decimal.NewFromFloat(36)
 	case "dob":
 		return time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)
+	case "state":
+		return utils.NewLocation(utils.LocationID("1123"), utils.LocationLevel(1), "Kigali")
+	case "district":
+		return utils.NewLocation(utils.LocationID("2345"), utils.LocationLevel(1), "Gasabo")
+	case "ward":
+		return utils.NewLocation(utils.LocationID("34567"), utils.LocationLevel(1), "Ndera")
 	}
 	return nil
 }
@@ -125,6 +131,20 @@ func TestEvaluateQuery(t *testing.T) {
 		{`dob < 1981/05/29`, true},
 		{`dob <= 1981/05/28`, true},
 		{`dob <= 1981/05/27`, false},
+
+		// location field condition
+		{`state = kigali`, true},
+		{`state = "kigali"`, true},
+		{`state = "NY"`, false},
+		{`state ~ KIG`, true},
+		{`state ~ NY`, false},
+		{`district = "GASABO"`, true},
+		{`district = "Brooklyn"`, false},
+		{`district ~ SAB`, true},
+		{`district ~ BRO`, false},
+		{`ward = ndera`, true},
+		{`ward = solano`, false},
+		{`ward ~ era`, true},
 
 		// existence
 		{`name = ""`, false},

@@ -34,7 +34,7 @@
                 }
             }
         }
-    },
+    }, 
     {
         "legacy_test": {
             "type": "contains_any",
@@ -147,6 +147,19 @@
             "uuid": "������������������������������������",
             "type": "has_date_eq",
             "arguments": ["27-7-2017"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "district",
+            "test": "Kigali"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_district",
+            "arguments": ["Kigali"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -319,6 +332,17 @@
     },
     {
         "legacy_test": {
+            "type": "state"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_state",
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
             "type": "subflow",
             "exit_type": "completed"
         },
@@ -339,6 +363,20 @@
             "uuid": "������������������������������������",
             "type": "has_any_word",
             "arguments": ["expired"],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
+            "type": "ward",
+            "state": "Kigali",
+            "district": "Gasabo"
+        },
+        "expected_case": {
+            "uuid": "������������������������������������",
+            "type": "has_ward",
+            "arguments": ["Gasabo", "Kigali"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}

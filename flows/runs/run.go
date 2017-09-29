@@ -46,6 +46,15 @@ func (e *runEnvironment) Languages() utils.LanguageList {
 	return e.cachedLanguages
 }
 
+func (e *runEnvironment) Locations() (*utils.LocationHierarchy, error) {
+	sessionAssets := e.run.Session().Assets()
+	if sessionAssets.HasLocations() {
+		return sessionAssets.GetLocationHierarchy()
+	}
+
+	return nil, nil
+}
+
 func (e *runEnvironment) refreshLanguagesCache() {
 	contact := e.run.contact
 	var languages utils.LanguageList
