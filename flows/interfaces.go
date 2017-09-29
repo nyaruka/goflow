@@ -250,15 +250,23 @@ type Session interface {
 	Resume([]Event) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
+	GetCurrentChild(FlowRun) FlowRun
 
 	Log() []LogEntry
 	LogEvent(Step, Action, Event)
 	ClearLog()
 }
 
-// FlowRun represents a single run on a flow by a single contact
-type FlowRun interface {
+// FlowRunReference represents a reference to a run which may be the current run, a related run
+// in the same session, or a reference to a run from a different session.
+type FlowRunReference interface {
 	UUID() RunUUID
+	Status() RunStatus
+}
+
+// FlowRun represents a run in the current session
+type FlowRun interface {
+	FlowRunReference
 
 	Environment() utils.Environment
 	Session() Session
@@ -272,8 +280,6 @@ type FlowRun interface {
 
 	SetExtra(utils.JSONFragment)
 	Extra() utils.JSONFragment
-
-	Status() RunStatus
 	SetStatus(RunStatus)
 	Exit(RunStatus)
 
@@ -294,25 +300,10 @@ type FlowRun interface {
 	Webhook() *utils.RequestResponse
 	SetWebhook(*utils.RequestResponse)
 
-	Child() FlowRunReference
-	Parent() FlowRunReference
-	Ancestors() []FlowRunReference
+	Parent() FlowRun
+	Ancestors() []FlowRun
 
 	CreatedOn() time.Time
-	ExpiresOn() *time.Time
-	ResetExpiration(*time.Time)
-	ExitedOn() *time.Time
-}
-
-// FlowRunReference represents a flow run reference within a flow
-type FlowRunReference interface {
-	UUID() RunUUID
-	Flow() Flow
-	Contact() *Contact
-
-	Results() *Results
-	Status() RunStatus
-
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time

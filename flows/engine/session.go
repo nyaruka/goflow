@@ -71,6 +71,16 @@ func (s *session) addRun(run flows.FlowRun) {
 	s.runsByUUID[run.UUID()] = run
 }
 
+func (s *session) GetCurrentChild(run flows.FlowRun) flows.FlowRun {
+	// the current child of a run, is the last added run which has that run as its parent
+	for r := len(s.runs) - 1; r >= 0; r-- {
+		if s.runs[r].Parent() == run {
+			return s.runs[r]
+		}
+	}
+	return nil
+}
+
 func (s *session) Status() flows.SessionStatus { return s.status }
 func (s *session) Wait() flows.Wait            { return s.wait }
 
@@ -214,12 +224,13 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			// switch back our parent run
 			if currentRun.Parent() != nil {
 				childRun := currentRun
-				currentRun, err = s.GetRun(currentRun.Parent().UUID())
+				currentRun = currentRun.Parent()
 				s.flowStack.pop()
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
+						fmt.Printf("====%s\n", err.Error())
 						currentRun.AddFatalError(step, nil, fmt.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
@@ -427,12 +438,6 @@ func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data jso
 			return nil, err
 		}
 		s.addRun(run)
-	}
-
-	// once all runs are read, we can resolve references between runs
-	err = runs.ResolveReferences(s, s.Runs())
-	if err != nil {
-		return nil, utils.NewValidationErrors(err.Error())
 	}
 
 	// and our wait

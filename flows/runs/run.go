@@ -85,9 +85,7 @@ type flowRun struct {
 	context utils.VariableResolver
 	webhook *utils.RequestResponse
 	input   flows.Input
-
-	parent flows.FlowRunReference
-	child  flows.FlowRunReference
+	parent  flows.FlowRun
 
 	results *flows.Results
 	path    []flows.Step
@@ -112,12 +110,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 
 	r.environment = newRunEnvironment(session.Environment(), r)
 	r.context = newRunContext(r)
-
-	if parent != nil {
-		parentRun := parent.(*flowRun)
-		r.parent = newReferenceFromRun(parentRun)
-		parentRun.child = newReferenceFromRun(r)
-	}
+	r.parent = parent
 
 	r.ResetExpiration(nil)
 
@@ -145,19 +138,18 @@ func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
 }
 
-func (r *flowRun) Parent() flows.FlowRunReference { return r.parent }
-func (r *flowRun) Child() flows.FlowRunReference  { return r.child }
+func (r *flowRun) Parent() flows.FlowRun { return r.parent }
 
-func (r *flowRun) Ancestors() []flows.FlowRunReference {
-	ancestors := make([]flows.FlowRunReference, 0)
+func (r *flowRun) Ancestors() []flows.FlowRun {
+	ancestors := make([]flows.FlowRun, 0)
 	if r.parent != nil {
-		runRef := r.parent.(*runReference)
-		ancestors = append(ancestors, runRef)
+		run := r.parent.(*flowRun)
+		ancestors = append(ancestors, run)
 
 		for {
-			if runRef.run.parent != nil {
-				runRef = runRef.run.parent.(*runReference)
-				ancestors = append(ancestors, runRef)
+			if run.parent != nil {
+				run = run.parent.(*flowRun)
+				ancestors = append(ancestors, run)
 			} else {
 				break
 			}
@@ -273,37 +265,29 @@ func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []s
 
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
-
 	case "contact":
 		return r.Contact()
-
 	case "extra":
 		return r.Extra()
-
 	case "flow":
 		return r.Flow()
-
 	case "input":
 		return r.Input()
-
 	case "webhook":
 		return r.Webhook()
-
 	case "status":
 		return r.Status()
-
+	case "path":
+		return r.Path()
 	case "results":
 		return r.Results()
-
 	case "created_on":
 		return r.CreatedOn()
-
 	case "exited_on":
 		return r.ExitedOn()
-
 	}
 
-	return fmt.Errorf("No field '%s' on run", key)
+	return fmt.Errorf("no field '%s' on run", key)
 }
 
 func (r *flowRun) Default() interface{} {
@@ -312,75 +296,9 @@ func (r *flowRun) Default() interface{} {
 
 var _ utils.VariableResolver = (*flowRun)(nil)
 
-// String returns the default string value for this run, which is just our status
+// String returns the default string value for this run, which is just our UUID
 func (r *flowRun) String() string {
-	return string(r.status)
-}
-
-// runReference provides a standalone and serializable version of a run reference. When a run is written
-// this is what is written and what will be read (and needed) when resuming that run
-type runReference struct {
-	uuid flows.RunUUID
-	run  *flowRun
-}
-
-// Resolve provides a more limited set of results for parent and child references
-func (r *runReference) Resolve(key string) interface{} {
-	switch key {
-
-	case "contact":
-		return r.Contact()
-
-	case "flow":
-		return r.Flow()
-
-	case "input":
-		return r.Input()
-
-	case "status":
-		return r.Status()
-
-	case "results":
-		return r.Results()
-
-	case "created_on":
-		return r.CreatedOn()
-
-	case "exited_on":
-		return r.ExitedOn()
-	}
-
-	return fmt.Errorf("No field '%s' on run reference", key)
-}
-
-func (r *runReference) Default() interface{} {
-	return r
-}
-
-var _ utils.VariableResolver = (*runReference)(nil)
-
-func (r *runReference) String() string {
-	return string(r.Status())
-}
-
-func (r *runReference) UUID() flows.RunUUID     { return r.uuid }
-func (r *runReference) Flow() flows.Flow        { return r.run.flow }
-func (r *runReference) Contact() *flows.Contact { return r.run.contact }
-func (r *runReference) Input() flows.Input      { return r.run.input }
-
-func (r *runReference) Results() *flows.Results { return r.run.results }
-func (r *runReference) Status() flows.RunStatus { return r.run.status }
-
-func (r *runReference) CreatedOn() time.Time            { return r.run.createdOn }
-func (r *runReference) ExpiresOn() *time.Time           { return r.run.expiresOn }
-func (r *runReference) ResetExpiration(from *time.Time) { r.run.ResetExpiration(from) }
-func (r *runReference) ExitedOn() *time.Time            { return r.run.exitedOn }
-
-func newReferenceFromRun(r *flowRun) *runReference {
-	return &runReference{
-		uuid: r.UUID(),
-		run:  r,
-	}
+	return string(r.uuid)
 }
 
 //------------------------------------------------------------------------------------------
@@ -393,9 +311,8 @@ type runEnvelope struct {
 	ContactUUID flows.ContactUUID `json:"contact_uuid"`
 	Path        []*step           `json:"path"`
 
-	Status flows.RunStatus `json:"status"`
-	Parent flows.RunUUID   `json:"parent_uuid,omitempty"`
-	Child  flows.RunUUID   `json:"child_uuid,omitempty"`
+	Status     flows.RunStatus `json:"status"`
+	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty"`
 
 	Results *flows.Results         `json:"results,omitempty"`
 	Input   *utils.TypedEnvelope   `json:"input,omitempty"`
@@ -407,43 +324,42 @@ type runEnvelope struct {
 	ExitedOn  *time.Time `json:"exited_on"`
 }
 
-// ReadRun decodes a run from the passed in JSON
+// ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
+// run in question might be loaded yet from the session.
 func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error) {
 	r := &flowRun{}
 	var envelope runEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &envelope)
-	if err != nil {
+	if err = utils.UnmarshalAndValidate(data, &envelope, "run"); err != nil {
 		return nil, err
 	}
+
+	r.contact = session.Contact()
 
 	r.session = session
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
+	r.webhook = envelope.Webhook
 	r.createdOn = envelope.CreatedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.exitedOn = envelope.ExitedOn
 	r.extra = utils.JSONFragment(envelope.Extra)
 
-	// TODO runs with different contact to the session?
-	r.contact = session.Contact()
-
-	r.flow, err = session.Assets().GetFlow(envelope.FlowUUID)
-	if err != nil {
+	// lookup flow
+	if r.flow, err = session.Assets().GetFlow(envelope.FlowUUID); err != nil {
 		return nil, err
 	}
 
-	if envelope.Parent != "" {
-		r.parent = &runReference{uuid: envelope.Parent}
-	}
-	if envelope.Child != "" {
-		r.child = &runReference{uuid: envelope.Child}
+	// lookup parent run
+	if envelope.ParentUUID != "" {
+		if r.parent, err = session.GetRun(envelope.ParentUUID); err != nil {
+			return nil, err
+		}
 	}
 
 	if envelope.Input != nil {
-		r.input, err = inputs.ReadInput(session, envelope.Input)
-		if err != nil {
+		if r.input, err = inputs.ReadInput(session, envelope.Input); err != nil {
 			return nil, err
 		}
 	}
@@ -452,10 +368,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		r.results = envelope.Results
 	} else {
 		r.results = flows.NewResults()
-	}
-
-	if envelope.Webhook != nil {
-		r.webhook = envelope.Webhook
 	}
 
 	// read in our path
@@ -469,31 +381,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.context = newRunContext(r)
 
 	return r, nil
-}
-
-// resolves parent/child run references for unmarshaled runs
-func ResolveReferences(session flows.Session, runs []flows.FlowRun) error {
-	for _, run := range runs {
-		r := run.(*flowRun)
-
-		if r.parent != nil {
-			parent, err := session.GetRun(r.parent.UUID())
-			if err != nil {
-				return err
-			}
-			r.parent = newReferenceFromRun(parent.(*flowRun))
-		}
-
-		if r.child != nil {
-			child, err := session.GetRun(r.child.UUID())
-			if err != nil {
-				return err
-			}
-			r.child = newReferenceFromRun(child.(*flowRun))
-		}
-	}
-
-	return nil
 }
 
 func (r *flowRun) MarshalJSON() ([]byte, error) {
@@ -512,10 +399,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.Webhook = r.webhook
 
 	if r.parent != nil {
-		re.Parent = r.parent.UUID()
-	}
-	if r.child != nil {
-		re.Child = r.child.UUID()
+		re.ParentUUID = r.parent.UUID()
 	}
 
 	re.Input, err = utils.EnvelopeFromTyped(r.input)
