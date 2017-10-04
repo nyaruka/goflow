@@ -257,34 +257,32 @@ type Session interface {
 	ClearLog()
 }
 
-// FlowRunReference represents a reference to a run which may be the current run, a related run
-// in the same session, or a reference to a run from a different session.
-type FlowRunReference interface {
+// FlowRunInfo represents the minimum information available about all runs (current or related) and is the
+// representation of runs made accessible to router tests.
+type FlowRunInfo interface {
 	UUID() RunUUID
+	Contact() *Contact
+	Flow() Flow
 	Status() RunStatus
+	Results() *Results
 }
 
 // FlowRun represents a run in the current session
 type FlowRun interface {
-	FlowRunReference
+	FlowRunInfo
 
 	Environment() utils.Environment
 	Session() Session
 	Context() utils.VariableResolver
-
-	Flow() Flow
-	Results() *Results
-
-	Contact() *Contact
-	SetContact(*Contact)
-
-	SetExtra(utils.JSONFragment)
-	Extra() utils.JSONFragment
-	SetStatus(RunStatus)
-	Exit(RunStatus)
-
 	Input() Input
+	Extra() utils.JSONFragment
+	Webhook() *utils.RequestResponse
+
+	SetContact(*Contact)
 	SetInput(Input)
+	SetStatus(RunStatus)
+	SetWebhook(*utils.RequestResponse)
+	SetExtra(utils.JSONFragment)
 
 	ApplyEvent(Step, Action, Event) error
 	AddError(Step, Action, error)
@@ -297,9 +295,6 @@ type FlowRun interface {
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string
 
-	Webhook() *utils.RequestResponse
-	SetWebhook(*utils.RequestResponse)
-
 	Parent() FlowRun
 	Ancestors() []FlowRun
 
@@ -307,6 +302,7 @@ type FlowRun interface {
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time
+	Exit(RunStatus)
 }
 
 // ChannelType represents the type of a Channel

@@ -41,11 +41,11 @@ func (c *runContext) String() string {
 
 // wraps parent/child runs and provides a reduced set of keys in the context
 type relatedRunContext struct {
-	run flows.FlowRun
+	run flows.FlowRunInfo
 }
 
 // creates a new context for related runs
-func newRelatedRunContext(run flows.FlowRun) *relatedRunContext {
+func newRelatedRunContext(run flows.FlowRunInfo) *relatedRunContext {
 	if run != nil {
 		return &relatedRunContext{run: run}
 	}
@@ -53,25 +53,24 @@ func newRelatedRunContext(run flows.FlowRun) *relatedRunContext {
 }
 
 func (c *relatedRunContext) UUID() flows.RunUUID     { return c.run.UUID() }
+func (c *relatedRunContext) Contact() *flows.Contact { return c.run.Contact() }
+func (c *relatedRunContext) Flow() flows.Flow        { return c.run.Flow() }
 func (c *relatedRunContext) Status() flows.RunStatus { return c.run.Status() }
+func (c *relatedRunContext) Results() *flows.Results { return c.run.Results() }
 
 // Resolve provides a more limited set of results for parent and child runs
 func (c *relatedRunContext) Resolve(key string) interface{} {
 	switch key {
+	case "uuid":
+		return c.UUID()
 	case "contact":
-		return c.run.Contact()
+		return c.Contact()
 	case "flow":
-		return c.run.Flow()
-	case "input":
-		return c.run.Input()
+		return c.Flow()
 	case "status":
-		return c.run.Status()
+		return c.Status()
 	case "results":
-		return c.run.Results()
-	case "created_on":
-		return c.run.CreatedOn()
-	case "exited_on":
-		return c.run.ExitedOn()
+		return c.Results()
 	}
 
 	return fmt.Errorf("no field '%s' on related run", key)
@@ -87,4 +86,4 @@ func (c *relatedRunContext) String() string {
 
 var _ utils.VariableResolver = (*runContext)(nil)
 var _ utils.VariableResolver = (*relatedRunContext)(nil)
-var _ flows.FlowRunReference = (*relatedRunContext)(nil)
+var _ flows.FlowRunInfo = (*relatedRunContext)(nil)
