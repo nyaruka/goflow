@@ -18,8 +18,7 @@
                         {
                             "uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
                             "type": "start_flow",
-                            "flow_name": "Child Flow",
-                            "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
+                            "flow": {"uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195", "name": "Child Flow"}
                         }
                     ],
                     "router": {

@@ -10,16 +10,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// GroupReference is a reference to group used in a flow action or event
-type GroupReference struct {
-	UUID GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name string    `json:"name"`
-}
-
-func NewGroupReference(uuid GroupUUID, name string) *GroupReference {
-	return &GroupReference{UUID: uuid, Name: name}
-}
-
 // Group represents a grouping of contacts
 type Group struct {
 	uuid        GroupUUID

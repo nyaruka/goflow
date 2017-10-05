@@ -28,7 +28,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // @action remove_from_group
 type RemoveFromGroupAction struct {
 	BaseAction
-	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups []*GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // Type returns the type of this action

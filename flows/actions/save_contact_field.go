@@ -24,8 +24,8 @@ const TypeSaveContactField string = "save_contact_field"
 // @action save_contact_field
 type SaveContactField struct {
 	BaseAction
-	Field *flows.FieldReference `json:"field" validate:"required"`
-	Value string                `json:"value"`
+	Field *FieldReference `json:"field" validate:"required"`
+	Value string          `json:"value"`
 }
 
 // Type returns the type of this action

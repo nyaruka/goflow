@@ -26,7 +26,7 @@ const TypeAddLabel string = "add_label"
 // @action add_label
 type AddLabelAction struct {
 	BaseAction
-	Labels []*flows.LabelReference `json:"labels" validate:"required,min=1,dive"`
+	Labels []*LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
 // Type returns the type of this action
