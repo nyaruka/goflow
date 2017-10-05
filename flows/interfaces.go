@@ -209,6 +209,12 @@ type Input interface {
 	Channel() Channel
 }
 
+type Trigger interface {
+	utils.Typed
+
+	TriggeredOn() time.Time
+}
+
 type Step interface {
 	utils.VariableResolver
 
@@ -242,7 +248,8 @@ type Session interface {
 	SetContact(*Contact)
 
 	Status() SessionStatus
-	SetTrigger(Flow, FlowRun)
+	Trigger() Trigger
+	PushFlow(Flow, FlowRun)
 	Wait() Wait
 	FlowOnStack(FlowUUID) bool
 
@@ -295,7 +302,8 @@ type FlowRun interface {
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string
 
-	Parent() FlowRun
+	Parent() FlowRunInfo
+	SessionParent() FlowRun
 	Ancestors() []FlowRun
 
 	CreatedOn() time.Time
