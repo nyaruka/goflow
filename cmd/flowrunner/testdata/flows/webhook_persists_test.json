@@ -13,7 +13,6 @@
       }
     ]
   ],
-  "flow_uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
   "outputs": [
     {
       "log": [
@@ -169,6 +168,11 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow_uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "user"
+        },
         "wait": {
           "type": "msg"
         }
@@ -331,10 +335,20 @@
           }
         ],
         "status": "completed",
+        "trigger": {
+          "flow_uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "user"
+        },
         "wait": {
           "type": "msg"
         }
       }
     }
-  ]
+  ],
+  "trigger": {
+    "flow_uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+    "type": "user"
+  }
 }

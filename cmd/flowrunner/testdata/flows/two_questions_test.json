@@ -24,7 +24,6 @@
       }
     ]
   ],
-  "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
   "outputs": [
     {
       "log": [
@@ -109,6 +108,11 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "user"
+        },
         "wait": {
           "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
           "type": "msg"
@@ -279,6 +283,11 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "user"
+        },
         "wait": {
           "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
           "type": "msg"
@@ -500,11 +509,21 @@
           }
         ],
         "status": "completed",
+        "trigger": {
+          "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "user"
+        },
         "wait": {
           "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
           "type": "msg"
         }
       }
     }
-  ]
+  ],
+  "trigger": {
+    "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+    "type": "user"
+  }
 }

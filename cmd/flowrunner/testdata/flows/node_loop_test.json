@@ -2,7 +2,6 @@
   "caller_events": [
     []
   ],
-  "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
   "outputs": [
     {
       "log": [
@@ -90,8 +89,18 @@
             "uuid": ""
           }
         ],
-        "status": "errored"
+        "status": "errored",
+        "trigger": {
+          "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "user"
+        }
       }
     }
-  ]
+  ],
+  "trigger": {
+    "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+    "type": "user"
+  }
 }
