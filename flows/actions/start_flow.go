@@ -18,16 +18,14 @@ const TypeStartFlow string = "start_flow"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "start_flow",
-//     "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//     "flow_name": "Collect Language"
+//     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"}
 //   }
 // ```
 //
 // @action start_flow
 type StartFlowAction struct {
 	BaseAction
-	FlowUUID flows.FlowUUID `json:"flow_uuid"    validate:"required,uuid4"`
-	FlowName string         `json:"flow_name"    validate:"required"`
+	Flow *FlowReference `json:"flow" validate:"required"`
 }
 
 // Type returns the type of this action
@@ -35,16 +33,16 @@ func (a *StartFlowAction) Type() string { return TypeStartFlow }
 
 // Validate validates our action is valid
 func (a *StartFlowAction) Validate(assets flows.SessionAssets) error {
-	_, err := assets.GetFlow(a.FlowUUID)
+	_, err := assets.GetFlow(a.Flow.UUID)
 	return err
 }
 
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
 
-	if run.Session().FlowOnStack(a.FlowUUID) {
-		return []flows.Event{events.NewFatalErrorEvent(fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.FlowUUID))}, nil
+	if run.Session().FlowOnStack(a.Flow.UUID) {
+		return []flows.Event{events.NewFatalErrorEvent(fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))}, nil
 	}
 
-	return []flows.Event{events.NewFlowTriggeredEvent(a.FlowUUID, run.UUID())}, nil
+	return []flows.Event{events.NewFlowTriggeredEvent(a.Flow.UUID, run.UUID())}, nil
 }

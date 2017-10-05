@@ -434,8 +434,7 @@
 		        {
 		            "type": "start_flow",
 		            "uuid": "������������������������������������",
-		            "flow_uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534",
-		            "flow_name": "My Subflow"
+		            "flow": {"uuid": "52baf55c-c16b-4a98-ac7d-e3667e940534", "name": "My Subflow"}
 		        }
 		    ],
 		    "router": {

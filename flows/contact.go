@@ -155,15 +155,6 @@ func (c *Contact) ResolveQueryKey(key string) interface{} {
 
 var _ contactql.Queryable = (*Contact)(nil)
 
-type ContactReference struct {
-	UUID ContactUUID `json:"uuid"    validate:"required,uuid4"`
-	Name string      `json:"name"`
-}
-
-func NewContactReference(uuid ContactUUID, name string) *ContactReference {
-	return &ContactReference{UUID: uuid, Name: name}
-}
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

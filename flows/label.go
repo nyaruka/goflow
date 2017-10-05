@@ -7,16 +7,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// LabelReference is a reference to message label used in a flow action or event
-type LabelReference struct {
-	UUID LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name string    `json:"name"`
-}
-
-func NewLabelReference(uuid LabelUUID, name string) *LabelReference {
-	return &LabelReference{UUID: uuid, Name: name}
-}
-
 // Label represents a message label
 type Label struct {
 	uuid LabelUUID

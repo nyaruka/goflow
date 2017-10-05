@@ -27,7 +27,7 @@ const TypeAddToGroup string = "add_to_group"
 // @action add_to_group
 type AddToGroupAction struct {
 	BaseAction
-	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups []*GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // Type returns the type of this action
