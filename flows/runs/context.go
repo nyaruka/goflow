@@ -23,7 +23,7 @@ func (c *runContext) Resolve(key string) interface{} {
 	case "child":
 		return newRelatedRunContext(c.run.Session().GetCurrentChild(c.run))
 	case "parent":
-		return newRelatedRunContext(c.run.SessionParent())
+		return newRelatedRunContext(c.run.Parent())
 	case "run":
 		return c.run
 	}
