@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 	uuid "github.com/satori/go.uuid"
 )
@@ -25,7 +26,7 @@ type Output struct {
 }
 
 type FlowTest struct {
-	FlowUUID     flows.FlowUUID           `json:"flow_uuid"`
+	Trigger      *utils.TypedEnvelope     `json:"trigger"`
 	CallerEvents [][]*utils.TypedEnvelope `json:"caller_events"`
 	Outputs      []json.RawMessage        `json:"outputs"`
 }
@@ -190,18 +191,23 @@ func main() {
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
-		log.Fatal("Error reading contact file: ", err)
+		log.Fatal("error reading contact file: ", err)
 	}
 	contact, err := flows.ReadContact(session, json.RawMessage(contactJSON))
 	if err != nil {
-		log.Fatal("Error unmarshalling contact: ", err)
+		log.Fatal("error unmarshalling contact: ", err)
+	}
+	flow, err := session.Assets().GetFlow(startFlowUUID)
+	if err != nil {
+		log.Fatal("error accessing flow: ", err)
 	}
 
+	trigger := triggers.NewUserTrigger(flow, time.Now())
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 
 	// and start our flow
-	err = session.StartFlow(startFlowUUID, nil)
+	err = session.Start(trigger, nil)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
@@ -278,7 +284,12 @@ func main() {
 			}
 		}
 
-		flowTest := FlowTest{FlowUUID: startFlowUUID, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
+		triggerEnvelope, err := utils.EnvelopeFromTyped(trigger)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		flowTest := FlowTest{Trigger: triggerEnvelope, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
 		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)

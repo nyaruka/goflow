@@ -1,9 +1,15 @@
 package triggers
 
-import "time"
+import (
+	"time"
+
+	"github.com/nyaruka/goflow/flows"
+)
 
 type baseTrigger struct {
+	flow        flows.Flow
 	triggeredOn time.Time
 }
 
-func (t *RunTrigger) TriggeredOn() time.Time { return t.triggeredOn }
+func (t *baseTrigger) Flow() flows.Flow       { return t.flow }
+func (t *baseTrigger) TriggeredOn() time.Time { return t.triggeredOn }

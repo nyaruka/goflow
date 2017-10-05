@@ -3,9 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -99,11 +101,18 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	session.SetContact(contact)
 
+	// fetch our flow
+	flow, err := session.Assets().GetFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
+	if err != nil {
+		return nil, err
+	}
+
+	trigger := triggers.NewUserTrigger(flow, time.Now())
+
 	// and start the example flow
-	err = session.StartFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"), nil)
+	err = session.Start(trigger, nil)
 	return session, err
 }
 

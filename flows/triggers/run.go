@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -16,6 +15,7 @@ const TypeRun string = "run"
 // ```
 //   {
 //     "type": "run",
+//     "flow_uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721",
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
 //     "run": {
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -39,19 +39,6 @@ const TypeRun string = "run"
 type RunTrigger struct {
 	baseTrigger
 	run runInfo
-}
-
-// NewRunTrigger creates a new user input based on a message
-func NewRunTrigger(triggeredOn time.Time, runUUID flows.RunUUID, flow flows.Flow, contact *flows.Contact, results *flows.Results) *RunTrigger {
-	return &RunTrigger{
-		baseTrigger: baseTrigger{triggeredOn: triggeredOn},
-		run: runInfo{
-			uuid:    runUUID,
-			flow:    flow,
-			contact: contact,
-			results: results,
-		},
-	}
 }
 
 // Type returns the type of this trigger
@@ -99,17 +86,19 @@ func ReadRunTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows
 		return nil, err
 	}
 
-	trigger.baseTrigger.triggeredOn = e.TriggeredOn
+	if err := readBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
+		return nil, err
+	}
+
 	trigger.run = runInfo{uuid: e.Run.UUID, results: e.Run.Results}
 
-	// lookup the flow
+	// lookup the run flow
 	if e.Run.FlowUUID != "" {
 		if trigger.run.flow, err = session.Assets().GetFlow(e.Run.FlowUUID); err != nil {
 			return nil, err
 		}
 	}
-
-	// read the contact
+	// read the run contact
 	if trigger.run.contact, err = flows.ReadContact(session, e.Run.Contact); err != nil {
 		return nil, err
 	}
@@ -122,6 +111,7 @@ func (t *RunTrigger) MarshalJSON() ([]byte, error) {
 	var err error
 
 	envelope.TriggeredOn = t.triggeredOn
+	envelope.FlowUUID = t.flow.UUID()
 	envelope.Run.UUID = t.run.UUID()
 	envelope.Run.FlowUUID = t.run.flow.UUID()
 	envelope.Run.Results = t.run.results

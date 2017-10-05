@@ -108,19 +108,16 @@ func (s *session) ClearLog()             { s.log = nil }
 // Flow execution
 //------------------------------------------------------------------------------------------
 
-// StartFlow beings execution of the given flow in this session
-func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event) error {
-	flow, err := s.Assets().GetFlow(flowUUID)
-	if err != nil {
-		return err
-	}
+// Start beings processing of this session from a trigger and a set of initial caller events
+func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error {
 
 	// check flow is valid and has everything it needs to run
-	if err := flow.Validate(s.Assets()); err != nil {
+	if err := trigger.Flow().Validate(s.Assets()); err != nil {
 		return err
 	}
 
-	s.PushFlow(flow, nil)
+	s.trigger = trigger
+	s.PushFlow(trigger.Flow(), nil)
 
 	// off to the races...
 	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
@@ -469,8 +466,11 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	var err error
 
 	envelope.Status = s.status
-	envelope.Environment, err = json.Marshal(s.env)
-	if err != nil {
+
+	if envelope.Environment, err = json.Marshal(s.env); err != nil {
+		return nil, err
+	}
+	if envelope.Contact, err = json.Marshal(s.contact); err != nil {
 		return nil, err
 	}
 	if s.trigger != nil {
@@ -478,21 +478,15 @@ func (s *session) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 	}
-	envelope.Contact, err = json.Marshal(s.contact)
-	if err != nil {
-		return nil, err
+	if s.wait != nil {
+		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
+			return nil, err
+		}
 	}
-
 	envelope.Runs = make([]json.RawMessage, len(s.runs))
 	for i := range s.runs {
 		envelope.Runs[i], err = json.Marshal(s.runs[i])
 		if err != nil {
-			return nil, err
-		}
-	}
-
-	if s.wait != nil {
-		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
 			return nil, err
 		}
 	}

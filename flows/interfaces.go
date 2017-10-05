@@ -188,6 +188,13 @@ type Translations interface {
 	GetTextArray(uuid UUID, key string) []string
 }
 
+type Trigger interface {
+	utils.Typed
+
+	TriggeredOn() time.Time
+	Flow() Flow
+}
+
 type Event interface {
 	CreatedOn() time.Time
 	SetCreatedOn(time.Time)
@@ -207,12 +214,6 @@ type Input interface {
 	UUID() InputUUID
 	CreatedOn() time.Time
 	Channel() Channel
-}
-
-type Trigger interface {
-	utils.Typed
-
-	TriggeredOn() time.Time
 }
 
 type Step interface {
@@ -253,7 +254,7 @@ type Session interface {
 	Wait() Wait
 	FlowOnStack(FlowUUID) bool
 
-	StartFlow(FlowUUID, []Event) error
+	Start(Trigger, []Event) error
 	Resume([]Event) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
