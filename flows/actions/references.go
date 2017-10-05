@@ -10,16 +10,18 @@ type GroupReference struct {
 	Name string          `json:"name"`
 }
 
+// NewGroupReference creates a new flow reference with the given UUID and name
 func NewGroupReference(uuid flows.GroupUUID, name string) *GroupReference {
 	return &GroupReference{UUID: uuid, Name: name}
 }
 
-// GroupReference is used to reference a contact
+// ContactReference is used to reference a contact
 type ContactReference struct {
 	UUID flows.ContactUUID `json:"uuid" validate:"required,uuid4"`
 	Name string            `json:"name"`
 }
 
+// NewContactReference creates a new flow reference with the given UUID and name
 func NewContactReference(uuid flows.ContactUUID, name string) *ContactReference {
 	return &ContactReference{UUID: uuid, Name: name}
 }
@@ -30,6 +32,7 @@ type LabelReference struct {
 	Name string          `json:"name"`
 }
 
+// NewLabelReference creates a new flow reference with the given UUID and name
 func NewLabelReference(uuid flows.LabelUUID, name string) *LabelReference {
 	return &LabelReference{UUID: uuid, Name: name}
 }
@@ -40,6 +43,7 @@ type FlowReference struct {
 	Name string         `json:"name"`
 }
 
+// NewFlowReference creates a new flow reference with the given UUID and name
 func NewFlowReference(uuid flows.FlowUUID, name string) *FlowReference {
 	return &FlowReference{UUID: uuid, Name: name}
 }
@@ -50,7 +54,7 @@ type FieldReference struct {
 	Label string         `json:"label"`
 }
 
-// NewFieldReference creates a new field reference with the given UUID and key
+// NewFieldReference creates a new field reference with the given key and label
 func NewFieldReference(key flows.FieldKey, label string) *FieldReference {
 	return &FieldReference{Key: key, Label: label}
 }
