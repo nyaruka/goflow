@@ -83,7 +83,10 @@ type legacyLabelReference struct {
 }
 
 func (l *legacyLabelReference) Migrate() *flows.LabelReference {
-	return flows.NewLabelReference(l.UUID, l.Name)
+	if len(l.UUID) > 0 {
+		return flows.NewLabelReference(l.UUID, l.Name)
+	}
+	return flows.NewVariableLabelReference(l.Name)
 }
 
 func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
@@ -128,7 +131,10 @@ type legacyGroupReference struct {
 }
 
 func (g *legacyGroupReference) Migrate() *flows.GroupReference {
-	return flows.NewGroupReference(g.UUID, g.Name)
+	if len(g.UUID) > 0 {
+		return flows.NewGroupReference(g.UUID, g.Name)
+	}
+	return flows.NewVariableGroupReference(g.Name)
 }
 
 func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
