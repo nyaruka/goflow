@@ -67,7 +67,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 			continue
 		}
 
-		groupRefs = append(groupRefs, flows.NewGroupReference(group.UUID(), group.Name()))
+		groupRefs = append(groupRefs, group.Reference())
 	}
 
 	if len(groupRefs) > 0 {

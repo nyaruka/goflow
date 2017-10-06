@@ -66,7 +66,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 			continue
 		}
 
-		groupRefs = append(groupRefs, flows.NewGroupReference(group.UUID(), group.Name()))
+		groupRefs = append(groupRefs, group.Reference())
 	}
 
 	if len(groupRefs) > 0 {

@@ -58,6 +58,8 @@ func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool,
 	return contactql.EvaluateQuery(session.Environment(), parsedQuery, contact)
 }
 
+func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
+
 // Resolve resolves the passed in key to a value
 func (g *Group) Resolve(key string) interface{} {
 	switch key {

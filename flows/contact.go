@@ -52,6 +52,8 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 func (c *Contact) Channel() Channel           { return c.channel }
 func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
 
+func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
+
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
 

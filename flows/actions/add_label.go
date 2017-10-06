@@ -54,7 +54,7 @@ func (a *AddLabelAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Ev
 
 	labelRefs := make([]*flows.LabelReference, 0, len(labels))
 	for _, label := range labels {
-		labelRefs = append(labelRefs, flows.NewLabelReference(label.UUID(), label.Name()))
+		labelRefs = append(labelRefs, label.Reference())
 	}
 
 	if len(labelRefs) > 0 {
