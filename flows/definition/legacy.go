@@ -82,8 +82,8 @@ type legacyLabelReference struct {
 	Name string
 }
 
-func (l *legacyLabelReference) Migrate() *actions.LabelReference {
-	return actions.NewLabelReference(l.UUID, l.Name)
+func (l *legacyLabelReference) Migrate() *flows.LabelReference {
+	return flows.NewLabelReference(l.UUID, l.Name)
 }
 
 func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
@@ -118,8 +118,8 @@ type legacyContactReference struct {
 	UUID flows.ContactUUID `json:"uuid"`
 }
 
-func (c *legacyContactReference) Migrate() *actions.ContactReference {
-	return actions.NewContactReference(c.UUID, "")
+func (c *legacyContactReference) Migrate() *flows.ContactReference {
+	return flows.NewContactReference(c.UUID, "")
 }
 
 type legacyGroupReference struct {
@@ -127,8 +127,8 @@ type legacyGroupReference struct {
 	Name string
 }
 
-func (g *legacyGroupReference) Migrate() *actions.GroupReference {
-	return actions.NewGroupReference(g.UUID, g.Name)
+func (g *legacyGroupReference) Migrate() *flows.GroupReference {
+	return flows.NewGroupReference(g.UUID, g.Name)
 }
 
 func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
@@ -168,8 +168,8 @@ type legacyFlowReference struct {
 	Name string         `json:"name"`
 }
 
-func (f *legacyFlowReference) Migrate() *actions.FlowReference {
-	return actions.NewFlowReference(f.UUID, f.Name)
+func (f *legacyFlowReference) Migrate() *flows.FlowReference {
+	return flows.NewFlowReference(f.UUID, f.Name)
 }
 
 type legacyWebhookConfig struct {
@@ -332,7 +332,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 	switch a.Type {
 	case "add_label":
 
-		labels := make([]*actions.LabelReference, len(a.Labels))
+		labels := make([]*flows.LabelReference, len(a.Labels))
 		for i, label := range a.Labels {
 			labels[i] = label.Migrate()
 		}
@@ -371,9 +371,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}, nil
 	case "channel":
 		return &actions.PreferredChannelAction{
-			ChannelUUID: a.Channel,
-			ChannelName: a.Name,
-			BaseAction:  actions.NewBaseAction(a.UUID),
+			Channel:    flows.NewChannelReference(a.Channel, a.Name),
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "flow":
 		return &actions.StartFlowAction{
@@ -416,11 +415,11 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			}, nil
 		}
 
-		contacts := make([]*actions.ContactReference, len(a.Contacts))
+		contacts := make([]*flows.ContactReference, len(a.Contacts))
 		for i, contact := range a.Contacts {
 			contacts[i] = contact.Migrate()
 		}
-		groups := make([]*actions.GroupReference, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -435,7 +434,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}, nil
 
 	case "add_group":
-		groups := make([]*actions.GroupReference, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -445,7 +444,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "del_group":
-		groups := make([]*actions.GroupReference, len(a.Groups))
+		groups := make([]*flows.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -481,7 +480,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}
 
 		return &actions.SaveContactField{
-			Field:      actions.NewFieldReference(flows.FieldKey(a.Field), a.Label),
+			Field:      flows.NewFieldReference(flows.FieldKey(a.Field), a.Label),
 			Value:      migratedValue,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
@@ -697,7 +696,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		node.actions = []flows.Action{
 			&actions.StartFlowAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
-				Flow:       actions.NewFlowReference(flowUUID, flowName),
+				Flow:       flows.NewFlowReference(flowUUID, flowName),
 			},
 		}
 

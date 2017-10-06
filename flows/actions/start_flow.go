@@ -25,7 +25,7 @@ const TypeStartFlow string = "start_flow"
 // @action start_flow
 type StartFlowAction struct {
 	BaseAction
-	Flow *FlowReference `json:"flow" validate:"required"`
+	Flow *flows.FlowReference `json:"flow" validate:"required"`
 }
 
 // Type returns the type of this action

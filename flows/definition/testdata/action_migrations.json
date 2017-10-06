@@ -66,8 +66,7 @@
         "expected_action": {
             "type": "set_preferred_channel",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "channel_uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e",
-            "channel_name": "Twilio"
+            "channel": {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Twilio"}
         },
         "expected_localization": {}
     },
