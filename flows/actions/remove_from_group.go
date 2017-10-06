@@ -54,7 +54,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 		return log, err
 	}
 
-	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
+	groupRefs := make([]*flows.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact isn't actually in it
 		if contact.Groups().FindByUUID(group.UUID()) == nil {
@@ -67,11 +67,11 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 			continue
 		}
 
-		groupUUIDs = append(groupUUIDs, group.UUID())
+		groupRefs = append(groupRefs, flows.NewGroupReference(group.UUID(), group.Name()))
 	}
 
-	if len(groupUUIDs) > 0 {
-		log = append(log, events.NewRemoveFromGroupEvent(groupUUIDs))
+	if len(groupRefs) > 0 {
+		log = append(log, events.NewRemoveFromGroupEvent(groupRefs))
 	}
 
 	return log, nil

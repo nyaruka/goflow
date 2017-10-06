@@ -60,7 +60,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event
 			log = append(log, events.NewSendMsgToURN(urn, text, a.Attachments))
 		}
 	} else {
-		log = append(log, events.NewSendMsgToContact(run.Contact().UUID(), text, a.Attachments))
+		log = append(log, events.NewSendMsgToContact(flows.NewContactReference(run.Contact().UUID(), run.Contact().Name()), text, a.Attachments))
 	}
 
 	return log, nil

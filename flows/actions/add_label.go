@@ -52,13 +52,13 @@ func (a *AddLabelAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Ev
 		return log, err
 	}
 
-	labelUUIDs := make([]flows.LabelUUID, 0, len(labels))
+	labelRefs := make([]*flows.LabelReference, 0, len(labels))
 	for _, label := range labels {
-		labelUUIDs = append(labelUUIDs, label.UUID())
+		labelRefs = append(labelRefs, flows.NewLabelReference(label.UUID(), label.Name()))
 	}
 
-	if len(labelUUIDs) > 0 {
-		log = append(log, events.NewAddLabelEvent(input.UUID(), labelUUIDs))
+	if len(labelRefs) > 0 {
+		log = append(log, events.NewAddLabelEvent(input.UUID(), labelRefs))
 	}
 
 	return log, nil

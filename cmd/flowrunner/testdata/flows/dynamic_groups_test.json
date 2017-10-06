@@ -10,7 +10,10 @@
           "action_uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_key": "gender",
+            "field": {
+              "key": "gender",
+              "label": "Gender"
+            },
             "type": "save_contact_field",
             "value": "MALE"
           },
@@ -20,7 +23,10 @@
           "action_uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_key": "age",
+            "field": {
+              "key": "age",
+              "label": "Age"
+            },
             "type": "save_contact_field",
             "value": "64"
           },
@@ -29,7 +35,10 @@
         {
           "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Current groups: Males, Old Men",
             "type": "send_msg"
@@ -49,7 +58,10 @@
         {
           "action_uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Jim Smith",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Current groups: Males, Old Men, People called Jim",
             "type": "send_msg"
@@ -60,7 +72,10 @@
           "action_uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_key": "age",
+            "field": {
+              "key": "age",
+              "label": "Age"
+            },
             "type": "save_contact_field",
             "value": "17"
           },
@@ -69,7 +84,10 @@
         {
           "action_uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Jim Smith",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Current groups: Males, People called Jim, Youth",
             "type": "send_msg"
@@ -131,18 +149,27 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_key": "gender",
+                    "field": {
+                      "key": "gender",
+                      "label": "Gender"
+                    },
                     "type": "save_contact_field",
                     "value": "MALE"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_key": "age",
+                    "field": {
+                      "key": "age",
+                      "label": "Age"
+                    },
                     "type": "save_contact_field",
                     "value": "64"
                   },
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Current groups: Males, Old Men",
                     "type": "send_msg"
@@ -154,19 +181,28 @@
                     "value": "Jim Smith"
                   },
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Jim Smith",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Current groups: Males, Old Men, People called Jim",
                     "type": "send_msg"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_key": "age",
+                    "field": {
+                      "key": "age",
+                      "label": "Age"
+                    },
                     "type": "save_contact_field",
                     "value": "17"
                   },
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Jim Smith",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Current groups: Males, People called Jim, Youth",
                     "type": "send_msg"

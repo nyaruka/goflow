@@ -25,5 +25,5 @@ func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step) ([]
 		return nil, nil
 	}
 
-	return []flows.Event{events.NewPreferredChannel(a.Channel.UUID, a.Channel.Name)}, nil
+	return []flows.Event{events.NewPreferredChannel(a.Channel)}, nil
 }

@@ -44,5 +44,5 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.E
 		return []flows.Event{events.NewFatalErrorEvent(fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))}, nil
 	}
 
-	return []flows.Event{events.NewFlowTriggeredEvent(a.Flow.UUID, run.UUID())}, nil
+	return []flows.Event{events.NewFlowTriggeredEvent(a.Flow, run.UUID())}, nil
 }
