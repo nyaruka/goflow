@@ -28,7 +28,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // @action remove_from_group
 type RemoveFromGroupAction struct {
 	BaseAction
-	Groups []*GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // Type returns the type of this action
@@ -54,7 +54,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 		return log, err
 	}
 
-	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
+	groupRefs := make([]*flows.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact isn't actually in it
 		if contact.Groups().FindByUUID(group.UUID()) == nil {
@@ -67,11 +67,11 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 			continue
 		}
 
-		groupUUIDs = append(groupUUIDs, group.UUID())
+		groupRefs = append(groupRefs, group.Reference())
 	}
 
-	if len(groupUUIDs) > 0 {
-		log = append(log, events.NewRemoveFromGroupEvent(groupUUIDs))
+	if len(groupRefs) > 0 {
+		log = append(log, events.NewRemoveFromGroupEvent(groupRefs))
 	}
 
 	return log, nil

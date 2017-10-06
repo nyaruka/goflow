@@ -3,8 +3,14 @@
     [],
     [
       {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "channel": {
+          "name": "Nexmo",
+          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+        },
+        "contact": {
+          "name": "Ben Haggerty",
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "neither",
@@ -14,8 +20,14 @@
     ],
     [
       {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "channel": {
+          "name": "Nexmo",
+          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+        },
+        "contact": {
+          "name": "Ben Haggerty",
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "yes",
@@ -25,8 +37,14 @@
     ],
     [
       {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "channel": {
+          "name": "Nexmo",
+          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+        },
+        "contact": {
+          "name": "Ben Haggerty",
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "never",
@@ -36,8 +54,14 @@
     ],
     [
       {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "channel": {
+          "name": "Nexmo",
+          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+        },
+        "contact": {
+          "name": "Ben Haggerty",
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "no",
@@ -52,7 +76,10 @@
         {
           "action_uuid": "ac403443-4e93-4127-8b03-469598cd7ae2",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi there, let's go to the child.",
             "type": "send_msg"
@@ -63,7 +90,10 @@
           "action_uuid": "87635c69-61e0-4a06-b967-6f8f7b930806",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+            "flow": {
+              "name": "Rules",
+              "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+            },
             "parent_run_uuid": "",
             "type": "flow_triggered"
           },
@@ -72,7 +102,10 @@
         {
           "action_uuid": "9b3d32d4-aa6c-44e0-95cd-92117c67738f",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Welcome to the child, say yes or no!",
             "type": "send_msg"
@@ -128,7 +161,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -144,7 +180,10 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                    "flow": {
+                      "name": "Rules",
+                      "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
                     "parent_run_uuid": "",
                     "type": "flow_triggered"
                   }
@@ -169,7 +208,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -225,7 +267,10 @@
         {
           "action_uuid": "ef6b42af-9751-4120-972c-e60771904dd2",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither.",
             "type": "send_msg"
@@ -281,7 +326,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -297,7 +345,10 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                    "flow": {
+                      "name": "Rules",
+                      "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
                     "parent_run_uuid": "",
                     "type": "flow_triggered"
                   }
@@ -330,7 +381,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -349,8 +403,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -375,7 +435,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -439,7 +502,10 @@
         {
           "action_uuid": "7d17e71a-2967-4dbb-86a4-eda028aca38a",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "You said yes",
             "type": "send_msg"
@@ -449,7 +515,10 @@
         {
           "action_uuid": "54b10283-9863-4edf-abfa-705cf24a64fc",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hooray, you did it and said yes. Say yes or no!",
             "type": "send_msg"
@@ -505,7 +574,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -521,7 +593,10 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                    "flow": {
+                      "name": "Rules",
+                      "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
                     "parent_run_uuid": "",
                     "type": "flow_triggered"
                   }
@@ -535,7 +610,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
@@ -582,7 +660,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -601,8 +682,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -627,7 +714,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -646,8 +736,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "yes",
@@ -672,7 +768,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
                     "type": "send_msg"
@@ -725,7 +824,10 @@
         {
           "action_uuid": "27442755-3d94-499f-97d5-a9409ab83b67",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither",
             "type": "send_msg"
@@ -789,7 +891,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -805,7 +910,10 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                    "flow": {
+                      "name": "Rules",
+                      "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
                     "parent_run_uuid": "",
                     "type": "flow_triggered"
                   }
@@ -819,7 +927,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
@@ -838,8 +949,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "never",
@@ -864,7 +981,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
                     "type": "send_msg"
@@ -919,7 +1039,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -938,8 +1061,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -964,7 +1093,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -983,8 +1115,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "yes",
@@ -1009,7 +1147,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
                     "type": "send_msg"
@@ -1062,7 +1203,10 @@
         {
           "action_uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "All Done! You said yes in the child and no here.",
             "type": "send_msg"
@@ -1118,7 +1262,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -1134,7 +1281,10 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                    "flow": {
+                      "name": "Rules",
+                      "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
                     "parent_run_uuid": "",
                     "type": "flow_triggered"
                   }
@@ -1148,7 +1298,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
@@ -1167,8 +1320,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "never",
@@ -1193,7 +1352,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
                     "type": "send_msg"
@@ -1212,8 +1374,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "no",
@@ -1238,7 +1406,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "All Done! You said yes in the child and no here.",
                     "type": "send_msg"
@@ -1282,7 +1453,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -1301,8 +1475,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -1327,7 +1507,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -1346,8 +1529,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "yes",
@@ -1372,7 +1561,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
                     "type": "send_msg"

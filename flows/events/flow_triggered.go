@@ -13,7 +13,7 @@ const TypeFlowTriggered string = "flow_triggered"
 //   {
 //     "type": "flow_triggered",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "flow_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+//     "flow": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Registration"},
 //     "parent_run_uuid": "95eb96df-461b-4668-b168-727f8ceb13dd"
 //   }
 // ```
@@ -21,15 +21,15 @@ const TypeFlowTriggered string = "flow_triggered"
 // @event flow_triggered
 type FlowTriggeredEvent struct {
 	BaseEvent
-	FlowUUID      flows.FlowUUID `json:"flow_uuid"    validate:"required,uuid4"`
-	ParentRunUUID flows.RunUUID  `json:"parent_run_uuid" validate:"omitempty,uuid4"`
+	Flow          *flows.FlowReference `json:"flow" validate:"required"`
+	ParentRunUUID flows.RunUUID        `json:"parent_run_uuid" validate:"omitempty,uuid4"`
 }
 
 // NewFlowTriggeredEvent returns a new flow triggered event for the passed in flow and parent run
-func NewFlowTriggeredEvent(flowUUID flows.FlowUUID, parentRunUUID flows.RunUUID) *FlowTriggeredEvent {
+func NewFlowTriggeredEvent(flow *flows.FlowReference, parentRunUUID flows.RunUUID) *FlowTriggeredEvent {
 	return &FlowTriggeredEvent{
 		BaseEvent:     NewBaseEvent(),
-		FlowUUID:      flowUUID,
+		Flow:          flow,
 		ParentRunUUID: parentRunUUID,
 	}
 }
@@ -39,7 +39,7 @@ func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
 
 // Apply applies this event to the given run
 func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) error {
-	flow, err := run.Session().Assets().GetFlow(e.FlowUUID)
+	flow, err := run.Session().Assets().GetFlow(e.Flow.UUID)
 	if err != nil {
 		return err
 	}

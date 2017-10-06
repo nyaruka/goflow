@@ -24,6 +24,8 @@ func (l *Label) UUID() LabelUUID { return l.uuid }
 // Name returns the name of this label
 func (l *Label) Name() string { return l.name }
 
+func (l *Label) Reference() *LabelReference { return NewLabelReference(l.uuid, l.name) }
+
 // LabelSet defines the unordered set of all labels for a session
 type LabelSet struct {
 	labels       []*Label

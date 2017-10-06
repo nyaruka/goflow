@@ -3,8 +3,14 @@
     [],
     [
       {
-        "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+        "channel": {
+          "name": "Nexmo",
+          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+        },
+        "contact": {
+          "name": "Ben Haggerty",
+          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "Something!",
@@ -19,7 +25,10 @@
         {
           "action_uuid": "59cee8f1-ed9e-453e-bc17-6f1996e959d0",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is the first message.",
             "type": "send_msg"
@@ -42,7 +51,10 @@
         {
           "action_uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "The status is true. Send something",
             "type": "send_msg"
@@ -98,7 +110,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the first message.",
                     "type": "send_msg"
@@ -131,7 +146,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "The status is true. Send something",
                     "type": "send_msg"
@@ -183,7 +201,10 @@
         {
           "action_uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "The status is now true",
             "type": "send_msg"
@@ -239,7 +260,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the first message.",
                     "type": "send_msg"
@@ -272,7 +296,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "The status is true. Send something",
                     "type": "send_msg"
@@ -291,8 +318,14 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "channel": {
+                      "name": "Nexmo",
+                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "Something!",
@@ -309,7 +342,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "The status is now true",
                     "type": "send_msg"

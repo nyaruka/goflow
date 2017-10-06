@@ -11,21 +11,21 @@ const TypeAddToGroup string = "add_to_group"
 //   {
 //     "type": "add_to_group",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "group_uuids": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"]
+//     "groups": [{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Reporters"}]
 //   }
 // ```
 //
 // @event add_to_group
 type AddToGroupEvent struct {
 	BaseEvent
-	GroupUUIDs []flows.GroupUUID `json:"group_uuids" validate:"required,min=1,dive,uuid4"`
+	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // NewAddToGroupEvent returns a new add to group event
-func NewAddToGroupEvent(groups []flows.GroupUUID) *AddToGroupEvent {
+func NewAddToGroupEvent(groups []*flows.GroupReference) *AddToGroupEvent {
 	return &AddToGroupEvent{
-		BaseEvent:  NewBaseEvent(),
-		GroupUUIDs: groups,
+		BaseEvent: NewBaseEvent(),
+		Groups:    groups,
 	}
 }
 
@@ -39,8 +39,8 @@ func (e *AddToGroupEvent) Apply(run flows.FlowRun) error {
 		return err
 	}
 
-	for _, groupUUID := range e.GroupUUIDs {
-		group := groupSet.FindByUUID(groupUUID)
+	for _, groupRef := range e.Groups {
+		group := groupSet.FindByUUID(groupRef.UUID)
 
 		if group != nil {
 			run.Contact().Groups().Add(group)

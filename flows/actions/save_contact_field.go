@@ -24,8 +24,8 @@ const TypeSaveContactField string = "save_contact_field"
 // @action save_contact_field
 type SaveContactField struct {
 	BaseAction
-	Field *FieldReference `json:"field" validate:"required"`
-	Value string          `json:"value"`
+	Field *flows.FieldReference `json:"field" validate:"required"`
+	Value string                `json:"value"`
 }
 
 // Type returns the type of this action
@@ -52,5 +52,5 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 		return []flows.Event{events.NewErrorEvent(err)}, nil
 	}
 
-	return []flows.Event{events.NewSaveToContactEvent(a.Field.Key, value)}, nil
+	return []flows.Event{events.NewSaveToContactEvent(a.Field, value)}, nil
 }

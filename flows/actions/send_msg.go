@@ -30,11 +30,11 @@ const TypeSendMsg string = "send_msg"
 // @action send_msg
 type SendMsgAction struct {
 	BaseAction
-	Text        string              `json:"text"`
-	Attachments []string            `json:"attachments"`
-	URNs        []urns.URN          `json:"urns,omitempty"`
-	Contacts    []*ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups      []*GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Text        string                    `json:"text"`
+	Attachments []string                  `json:"attachments"`
+	URNs        []urns.URN                `json:"urns,omitempty"`
+	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
 // Type returns the type of this action
@@ -64,11 +64,11 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Eve
 	}
 
 	for _, contact := range a.Contacts {
-		log = append(log, events.NewSendMsgToContact(contact.UUID, text, a.Attachments))
+		log = append(log, events.NewSendMsgToContact(contact, text, a.Attachments))
 	}
 
 	for _, group := range a.Groups {
-		log = append(log, events.NewSendMsgToGroup(group.UUID, text, a.Attachments))
+		log = append(log, events.NewSendMsgToGroup(group, text, a.Attachments))
 	}
 	return log, nil
 }
