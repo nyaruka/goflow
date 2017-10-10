@@ -83,7 +83,10 @@ type legacyLabelReference struct {
 }
 
 func (l *legacyLabelReference) Migrate() *flows.LabelReference {
-	return flows.NewLabelReference(l.UUID, l.Name)
+	if len(l.UUID) > 0 {
+		return flows.NewLabelReference(l.UUID, l.Name)
+	}
+	return flows.NewVariableLabelReference(l.Name)
 }
 
 func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
@@ -128,7 +131,10 @@ type legacyGroupReference struct {
 }
 
 func (g *legacyGroupReference) Migrate() *flows.GroupReference {
-	return flows.NewGroupReference(g.UUID, g.Name)
+	if len(g.UUID) > 0 {
+		return flows.NewGroupReference(g.UUID, g.Name)
+	}
+	return flows.NewVariableGroupReference(g.Name)
 }
 
 func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
@@ -166,6 +172,10 @@ type legacyVariable struct {
 type legacyFlowReference struct {
 	UUID flows.FlowUUID `json:"uuid"`
 	Name string         `json:"name"`
+}
+
+func (f *legacyFlowReference) Migrate() *flows.FlowReference {
+	return flows.NewFlowReference(f.UUID, f.Name)
 }
 
 type legacyWebhookConfig struct {
@@ -367,14 +377,12 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}, nil
 	case "channel":
 		return &actions.PreferredChannelAction{
-			ChannelUUID: a.Channel,
-			ChannelName: a.Name,
-			BaseAction:  actions.NewBaseAction(a.UUID),
+			Channel:    flows.NewChannelReference(a.Channel, a.Name),
+			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "flow":
 		return &actions.StartFlowAction{
-			FlowUUID:   a.Flow.UUID,
-			FlowName:   a.Flow.Name,
+			Flow:       a.Flow.Migrate(),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "reply", "send":
@@ -694,8 +702,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		node.actions = []flows.Action{
 			&actions.StartFlowAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
-				FlowUUID:   flowUUID,
-				FlowName:   flowName,
+				Flow:       flows.NewFlowReference(flowUUID, flowName),
 			},
 		}
 

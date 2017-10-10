@@ -53,7 +53,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 		return log, err
 	}
 
-	groupUUIDs := make([]flows.GroupUUID, 0, len(groups))
+	groupRefs := make([]*flows.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact is already in it
 		if contact.Groups().FindByUUID(group.UUID()) != nil {
@@ -66,11 +66,11 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 			continue
 		}
 
-		groupUUIDs = append(groupUUIDs, group.UUID())
+		groupRefs = append(groupRefs, group.Reference())
 	}
 
-	if len(groupUUIDs) > 0 {
-		log = append(log, events.NewAddToGroupEvent(groupUUIDs))
+	if len(groupRefs) > 0 {
+		log = append(log, events.NewAddToGroupEvent(groupRefs))
 	}
 
 	return log, nil

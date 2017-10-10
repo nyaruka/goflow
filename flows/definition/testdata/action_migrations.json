@@ -13,7 +13,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
                 {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
-                {"name": "@contact.fields.district"}
+                {"name_match": "@contact.fields.district"}
             ]
         },
         "expected_localization": {}
@@ -23,14 +23,16 @@
             "type": "add_label",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "labels": [
-                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"}
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"},
+                "@contact.district"
             ]
         },
         "expected_action": {
             "type": "add_label",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "labels": [
-                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"}
+                {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"},
+                {"name_match": "@contact.fields.district"}
             ]
         },
         "expected_localization": {}
@@ -66,8 +68,7 @@
         "expected_action": {
             "type": "set_preferred_channel",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "channel_uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e",
-            "channel_name": "Twilio"
+            "channel": {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Twilio"}
         },
         "expected_localization": {}
     },
@@ -85,7 +86,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
                 {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
-                {"name": "@contact.fields.district"}
+                {"name_match": "@contact.fields.district"}
             ]
         },
         "expected_localization": {}
@@ -275,8 +276,7 @@
         "expected_action": {
             "type": "start_flow",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "flow_uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f",
-            "flow_name": "Registration"
+            "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"}
         },
         "expected_localization": {}
     }

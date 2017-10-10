@@ -25,16 +25,16 @@ const TypeSendMsg string = "send_msg"
 // @event send_msg
 type SendMsgEvent struct {
 	BaseEvent
-	URN         urns.URN          `json:"urn,omitempty" validate:"omitempty,urn"`
-	ContactUUID flows.ContactUUID `json:"contact_uuid,omitempty"`
-	GroupUUID   flows.GroupUUID   `json:"group_uuid,omitempty"`
-	Text        string            `json:"text"                      validate:"required"`
-	Attachments []string          `json:"attachments,omitempty"`
+	URN         urns.URN                `json:"urn,omitempty" validate:"omitempty,urn"`
+	Contact     *flows.ContactReference `json:"contact,omitempty"`
+	Group       *flows.GroupReference   `json:"group,omitempty"`
+	Text        string                  `json:"text"                      validate:"required"`
+	Attachments []string                `json:"attachments,omitempty"`
 }
 
 // NewSendMsgToContact creates a new outgoing msg event for the passed in channel, contact and string
-func NewSendMsgToContact(contact flows.ContactUUID, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{BaseEvent: NewBaseEvent(), ContactUUID: contact, Text: text, Attachments: attachments}
+func NewSendMsgToContact(contact *flows.ContactReference, text string, attachments []string) *SendMsgEvent {
+	event := SendMsgEvent{BaseEvent: NewBaseEvent(), Contact: contact, Text: text, Attachments: attachments}
 	return &event
 }
 
@@ -45,8 +45,8 @@ func NewSendMsgToURN(urn urns.URN, text string, attachments []string) *SendMsgEv
 }
 
 // NewSendMsgToGroup creates a new outgoing msg event for the passed in channel, group and string
-func NewSendMsgToGroup(group flows.GroupUUID, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{BaseEvent: NewBaseEvent(), GroupUUID: group, Text: text, Attachments: attachments}
+func NewSendMsgToGroup(group *flows.GroupReference, text string, attachments []string) *SendMsgEvent {
+	event := SendMsgEvent{BaseEvent: NewBaseEvent(), Group: group, Text: text, Attachments: attachments}
 	return &event
 }
 

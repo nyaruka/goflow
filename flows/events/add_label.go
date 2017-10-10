@@ -12,23 +12,23 @@ const TypeAddLabel string = "add_label"
 //     "type": "add_label",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "input_uuid": "4aef4050-1895-4c80-999a-70368317a4f5",
-//     "label_uuids": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"]
+//     "labels": [{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Spam"}]
 //   }
 // ```
 //
 // @event add_label
 type AddLabelEvent struct {
 	BaseEvent
-	InputUUID  flows.InputUUID   `json:"input_uuid" validate:"required,uuid4"`
-	LabelUUIDs []flows.LabelUUID `json:"label_uuids" validate:"required,min=1,dive,uuid4"`
+	InputUUID flows.InputUUID         `json:"input_uuid" validate:"required,uuid4"`
+	Labels    []*flows.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
 // NewAddLabelEvent returns a new add to group event
-func NewAddLabelEvent(inputUUID flows.InputUUID, labelUUIDs []flows.LabelUUID) *AddLabelEvent {
+func NewAddLabelEvent(inputUUID flows.InputUUID, labels []*flows.LabelReference) *AddLabelEvent {
 	return &AddLabelEvent{
-		BaseEvent:  NewBaseEvent(),
-		InputUUID:  inputUUID,
-		LabelUUIDs: labelUUIDs,
+		BaseEvent: NewBaseEvent(),
+		InputUUID: inputUUID,
+		Labels:    labels,
 	}
 }
 

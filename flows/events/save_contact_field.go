@@ -11,7 +11,7 @@ const TypeSaveContactField string = "save_contact_field"
 //   {
 //     "type": "save_contact_field",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "field_key": "gender",
+//     "field": {"key": "gender", "label": "Gender"},
 //     "value": "Male"
 //   }
 // ```
@@ -19,15 +19,15 @@ const TypeSaveContactField string = "save_contact_field"
 // @event save_contact_field
 type SaveContactFieldEvent struct {
 	BaseEvent
-	FieldKey flows.FieldKey `json:"field_key" validate:"required"`
-	Value    string         `json:"value" validate:"required"`
+	Field *flows.FieldReference `json:"field" validate:"required"`
+	Value string                `json:"value" validate:"required"`
 }
 
-// NewSaveToContact returns a new save to contact event
-func NewSaveToContactEvent(fieldKey flows.FieldKey, value string) *SaveContactFieldEvent {
+// NewSaveToContactEvent returns a new save to contact event
+func NewSaveToContactEvent(field *flows.FieldReference, value string) *SaveContactFieldEvent {
 	return &SaveContactFieldEvent{
 		BaseEvent: NewBaseEvent(),
-		FieldKey:  fieldKey,
+		Field:     field,
 		Value:     value,
 	}
 }
@@ -37,7 +37,7 @@ func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
 
 // Apply applies this event to the given run
 func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) error {
-	field, err := run.Session().Assets().GetField(e.FieldKey)
+	field, err := run.Session().Assets().GetField(e.Field.Key)
 	if err != nil {
 		return err
 	}

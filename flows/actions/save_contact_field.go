@@ -52,5 +52,5 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 		return []flows.Event{events.NewErrorEvent(err)}, nil
 	}
 
-	return []flows.Event{events.NewSaveToContactEvent(a.Field.Key, value)}, nil
+	return []flows.Event{events.NewSaveToContactEvent(a.Field, value)}, nil
 }

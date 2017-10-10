@@ -11,17 +11,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// FieldReference is a reference to field used in a flow
-type FieldReference struct {
-	Key   FieldKey `json:"key" validate:"required"`
-	Label string   `json:"label"`
-}
-
-// NewFieldReference creates a new field reference with the given UUID and key
-func NewFieldReference(key FieldKey, label string) *FieldReference {
-	return &FieldReference{Key: key, Label: label}
-}
-
 // FieldKey is the unique key for this field
 type FieldKey string
 

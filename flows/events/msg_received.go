@@ -18,8 +18,8 @@ const TypeMsgReceived string = "msg_received"
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "msg_uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
 //     "urn": "tel:+12065551212",
-//     "channel_uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
-//     "contact_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+//     "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
+//     "contact": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"},
 //     "text": "hi there",
 //     "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //   }
@@ -28,21 +28,21 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	MsgUUID     flows.InputUUID    `json:"msg_uuid" validate:"required,uuid4"`
-	ChannelUUID flows.ChannelUUID  `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
-	URN         urns.URN           `json:"urn" validate:"urn"`
-	ContactUUID flows.ContactUUID  `json:"contact_uuid" validate:"required,uuid4"`
-	Text        string             `json:"text"`
-	Attachments []flows.Attachment `json:"attachments,omitempty"`
+	MsgUUID     flows.InputUUID         `json:"msg_uuid" validate:"required,uuid4"`
+	Channel     *flows.ChannelReference `json:"channel,omitempty"`
+	URN         urns.URN                `json:"urn" validate:"urn"`
+	Contact     *flows.ContactReference `json:"contact"`
+	Text        string                  `json:"text"`
+	Attachments []flows.Attachment      `json:"attachments,omitempty"`
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgReceivedEvent(uuid flows.InputUUID, channel flows.ChannelUUID, contact flows.ContactUUID, urn urns.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
+func NewMsgReceivedEvent(uuid flows.InputUUID, channel *flows.ChannelReference, contact *flows.ContactReference, urn urns.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
 		BaseEvent:   NewBaseEvent(),
 		MsgUUID:     uuid,
-		ChannelUUID: channel,
-		ContactUUID: contact,
+		Channel:     channel,
+		Contact:     contact,
 		URN:         urn,
 		Text:        text,
 		Attachments: attachments,
@@ -57,8 +57,8 @@ func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
 	var channel flows.Channel
 	var err error
 
-	if e.ChannelUUID != "" {
-		channel, err = run.Session().Assets().GetChannel(e.ChannelUUID)
+	if e.Channel != nil {
+		channel, err = run.Session().Assets().GetChannel(e.Channel.UUID)
 		if err != nil {
 			return err
 		}

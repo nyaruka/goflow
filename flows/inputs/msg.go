@@ -2,10 +2,8 @@ package inputs
 
 import (
 	"encoding/json"
-
-	"time"
-
 	"strings"
+	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"

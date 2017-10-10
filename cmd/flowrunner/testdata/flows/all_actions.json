@@ -19,7 +19,7 @@
                                     "name": "Spam"
                                 },
                                 {
-                                    "name": "@contact.fields.state Messages"
+                                    "name_match": "@contact.fields.state Messages"
                                 }
                             ]
                         },
@@ -32,7 +32,7 @@
                                     "name": "Survey Audience"
                                 },
                                 {
-                                    "name": "@contact.fields.state State"
+                                    "name_match": "@contact.fields.state State"
                                 }
                             ]
                         },
@@ -63,8 +63,7 @@
                         {
                             "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
                             "type": "start_flow",
-                            "flow_name": "Collect Language",
-                            "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                            "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"}
                         },
                         {
                             "uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",

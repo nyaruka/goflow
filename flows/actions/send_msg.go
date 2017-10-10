@@ -64,11 +64,11 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Eve
 	}
 
 	for _, contact := range a.Contacts {
-		log = append(log, events.NewSendMsgToContact(contact.UUID, text, a.Attachments))
+		log = append(log, events.NewSendMsgToContact(contact, text, a.Attachments))
 	}
 
 	for _, group := range a.Groups {
-		log = append(log, events.NewSendMsgToGroup(group.UUID, text, a.Attachments))
+		log = append(log, events.NewSendMsgToGroup(group, text, a.Attachments))
 	}
 	return log, nil
 }

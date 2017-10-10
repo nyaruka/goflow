@@ -9,7 +9,10 @@
         {
           "action_uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi! What is your name?",
             "type": "send_msg"
@@ -67,7 +70,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi! What is your name?",
                     "type": "send_msg"

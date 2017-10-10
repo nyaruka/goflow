@@ -40,7 +40,7 @@ func resolveGroups(run flows.FlowRun, step flows.Step, action flows.Action, refe
 			}
 		} else {
 			// group is an expression that evaluates to an existing group's name
-			evaluatedGroupName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), ref.Name)
+			evaluatedGroupName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), ref.NameMatch)
 			if err != nil {
 				log = append(log, events.NewErrorEvent(err))
 			} else {
@@ -80,7 +80,7 @@ func resolveLabels(run flows.FlowRun, step flows.Step, action flows.Action, refe
 			}
 		} else {
 			// label is an expression that evaluates to an existing label's name
-			evaluatedLabelName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), ref.Name)
+			evaluatedLabelName, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), ref.NameMatch)
 			if err != nil {
 				log = append(log, events.NewErrorEvent(err))
 			} else {
