@@ -92,6 +92,10 @@ func (f *flow) String() string {
 	return f.name
 }
 
+func (f *flow) Reference() *flows.FlowReference {
+	return flows.NewFlowReference(f.uuid, f.name)
+}
+
 var _ utils.VariableResolver = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------

@@ -20,6 +20,16 @@ func (r *runSummary) Contact() *Contact { return r.contact }
 func (r *runSummary) Status() RunStatus { return r.status }
 func (r *runSummary) Results() *Results { return r.results }
 
+func NewRunSummaryFromRun(run FlowRun) RunSummary {
+	return &runSummary{
+		uuid:    run.UUID(),
+		flow:    run.Flow(),
+		contact: run.Contact().Clone(),
+		status:  run.Status(),
+		results: run.Results().Clone(),
+	}
+}
+
 var _ RunSummary = (*runSummary)(nil)
 
 //------------------------------------------------------------------------------------------
@@ -30,7 +40,7 @@ type runSummaryEnvelope struct {
 	UUID     RunUUID         `json:"uuid" validate:"uuid4"`
 	FlowUUID FlowUUID        `json:"flow_uuid" validate:"uuid4"`
 	Contact  json.RawMessage `json:"contact" validate:"required"`
-	Status   RunStatus       `json:"status"`
+	Status   RunStatus       `json:"status" validate:"required"`
 	Results  *Results        `json:"results"`
 }
 
@@ -48,11 +58,10 @@ func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
 	}
 
 	// lookup the flow
-	if e.FlowUUID != "" {
-		if run.flow, err = session.Assets().GetFlow(e.FlowUUID); err != nil {
-			return nil, err
-		}
+	if run.flow, err = session.Assets().GetFlow(e.FlowUUID); err != nil {
+		return nil, err
 	}
+
 	// read the contact
 	if run.contact, err = ReadContact(session, e.Contact); err != nil {
 		return nil, err

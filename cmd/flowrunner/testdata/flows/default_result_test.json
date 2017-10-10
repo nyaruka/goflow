@@ -117,7 +117,10 @@
         ],
         "status": "waiting",
         "trigger": {
-          "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+          "flow": {
+            "name": "Another Flow",
+            "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+          },
           "triggered_on": "2000-01-01T00:00:00Z",
           "type": "user"
         },
@@ -323,7 +326,10 @@
         ],
         "status": "completed",
         "trigger": {
-          "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+          "flow": {
+            "name": "Another Flow",
+            "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+          },
           "triggered_on": "2000-01-01T00:00:00Z",
           "type": "user"
         },
@@ -334,7 +340,10 @@
     }
   ],
   "trigger": {
-    "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+    "flow": {
+      "name": "Registration",
+      "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+    },
     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
     "type": "user"
   }

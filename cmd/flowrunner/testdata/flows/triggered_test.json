@@ -80,7 +80,10 @@
         ],
         "status": "completed",
         "trigger": {
-          "flow_uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
+          "flow": {
+            "name": "Triggered Flow",
+            "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
+          },
           "run": {
             "contact": {
               "fields": {
@@ -104,16 +107,20 @@
                 "value": "33"
               }
             },
+            "status": "active",
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
           },
           "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "run"
+          "type": "flow_action"
         }
       }
     }
   ],
   "trigger": {
-    "flow_uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
+    "flow": {
+      "name": "Registration",
+      "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
+    },
     "run": {
       "contact": {
         "fields": {
@@ -134,9 +141,10 @@
           "value": "33"
         }
       },
+      "status": "active",
       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
     },
     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-    "type": "run"
+    "type": "flow_action"
   }
 }

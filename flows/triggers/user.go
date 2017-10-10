@@ -56,7 +56,7 @@ func (t *UserTrigger) MarshalJSON() ([]byte, error) {
 	var envelope baseTriggerEnvelope
 
 	envelope.TriggeredOn = t.triggeredOn
-	envelope.FlowUUID = t.flow.UUID()
+	envelope.Flow = t.flow.Reference()
 
 	return json.Marshal(envelope)
 }

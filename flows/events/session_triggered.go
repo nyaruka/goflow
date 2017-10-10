@@ -1,6 +1,8 @@
 package events
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -43,15 +45,17 @@ type SessionTriggeredEvent struct {
 	Flow     *flows.FlowReference      `json:"flow" validate:"required"`
 	Contacts []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups   []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Run      json.RawMessage           `json:"run"`
 }
 
 // NewSessionTriggeredEvent returns a new session triggered event
-func NewSessionTriggeredEvent(flow *flows.FlowReference, contacts []*flows.ContactReference, groups []*flows.GroupReference) *SessionTriggeredEvent {
+func NewSessionTriggeredEvent(flow *flows.FlowReference, contacts []*flows.ContactReference, groups []*flows.GroupReference, runSnapshot json.RawMessage) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		BaseEvent: NewBaseEvent(),
 		Flow:      flow,
 		Contacts:  contacts,
 		Groups:    groups,
+		Run:       runSnapshot,
 	}
 }
 

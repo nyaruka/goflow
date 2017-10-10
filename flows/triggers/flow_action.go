@@ -7,15 +7,15 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeRun is a constant for incoming messages
-const TypeRun string = "run"
+// TypeFlowAction is a constant for sessions triggered by flow actions in other sessions
+const TypeFlowAction string = "flow_action"
 
-// RunTrigger is used when another session triggered this run using a trigger_flow action.
+// FlowActionTrigger is used when another session triggered this run using a trigger_flow action.
 //
 // ```
 //   {
-//     "type": "run",
-//     "flow_uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721",
+//     "type": "flow_action",
+//     "flow": {"uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721", "name": "Registration"},
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
 //     "run": {
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -37,32 +37,32 @@ const TypeRun string = "run"
 //     }
 //   }
 // ```
-type RunTrigger struct {
+type FlowActionTrigger struct {
 	baseTrigger
 	run flows.RunSummary
 }
 
 // Type returns the type of this trigger
-func (t *RunTrigger) Type() string { return TypeRun }
+func (t *FlowActionTrigger) Type() string { return TypeFlowAction }
 
-func (t *RunTrigger) Run() flows.RunSummary { return t.run }
+func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
 
-var _ flows.Trigger = (*RunTrigger)(nil)
+var _ flows.Trigger = (*FlowActionTrigger)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type runTriggerEnvelope struct {
+type flowActionTriggerEnvelope struct {
 	baseTriggerEnvelope
 	Run json.RawMessage `json:"run"`
 }
 
-func ReadRunTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
+func ReadFlowActionTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
 	var err error
-	trigger := &RunTrigger{}
-	e := runTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(envelope.Data, &e, "trigger[type=run]"); err != nil {
+	trigger := &FlowActionTrigger{}
+	e := flowActionTriggerEnvelope{}
+	if err := utils.UnmarshalAndValidate(envelope.Data, &e, "trigger[type=flow_action]"); err != nil {
 		return nil, err
 	}
 
@@ -77,12 +77,12 @@ func ReadRunTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows
 	return trigger, nil
 }
 
-func (t *RunTrigger) MarshalJSON() ([]byte, error) {
-	var envelope runTriggerEnvelope
+func (t *FlowActionTrigger) MarshalJSON() ([]byte, error) {
+	var envelope flowActionTriggerEnvelope
 	var err error
 
 	envelope.TriggeredOn = t.triggeredOn
-	envelope.FlowUUID = t.flow.UUID()
+	envelope.Flow = t.flow.Reference()
 
 	if envelope.Run, err = json.Marshal(t.run); err != nil {
 		return nil, err

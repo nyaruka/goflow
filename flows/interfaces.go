@@ -124,6 +124,8 @@ type Flow interface {
 	Validate(SessionAssets) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
+
+	Reference() *FlowReference
 }
 
 type Node interface {
@@ -303,6 +305,7 @@ type FlowRun interface {
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string
 
+	Snapshot() RunSummary
 	Parent() RunSummary
 	SessionParent() FlowRun
 	Ancestors() []FlowRun

@@ -147,8 +147,8 @@ func (r *flowRun) SessionParent() flows.FlowRun { return r.parent }
 func (r *flowRun) Parent() flows.RunSummary {
 	fmt.Printf("flowRun.Parent() run=%s\n", r.uuid)
 
-	if r.parent == nil && r.session.Trigger() != nil && r.session.Trigger().Type() == triggers.TypeRun {
-		runTrigger := r.session.Trigger().(*triggers.RunTrigger)
+	if r.parent == nil && r.session.Trigger() != nil && r.session.Trigger().Type() == triggers.TypeFlowAction {
+		runTrigger := r.session.Trigger().(*triggers.FlowActionTrigger)
 
 		fmt.Printf("flowRun.Parent() returning %s\n", runTrigger.Run().UUID())
 		return runTrigger.Run()
@@ -310,14 +310,18 @@ func (r *flowRun) Default() interface{} {
 	return r
 }
 
-var _ utils.VariableResolver = (*flowRun)(nil)
-var _ flows.FlowRun = (*flowRun)(nil)
-var _ flows.RunSummary = (*flowRun)(nil)
-
 // String returns the default string value for this run, which is just our UUID
 func (r *flowRun) String() string {
 	return string(r.uuid)
 }
+
+func (r *flowRun) Snapshot() flows.RunSummary {
+	return flows.NewRunSummaryFromRun(r)
+}
+
+var _ utils.VariableResolver = (*flowRun)(nil)
+var _ flows.FlowRun = (*flowRun)(nil)
+var _ flows.RunSummary = (*flowRun)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
