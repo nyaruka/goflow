@@ -184,8 +184,8 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// first parameter needs to be a variable resolver
-	run, isRun := args[0].(utils.VariableResolver)
-	if !isRun {
+	varResolver, isVarResolver := utils.ResolveDefault(args[0]).(utils.VariableResolver)
+	if !isVarResolver {
 		return fmt.Errorf("HAS_RUN_STATUS must be called with a variable resolver as first argument")
 	}
 
@@ -194,7 +194,7 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_RUN_STATUS must be called with a string as second argument")
 	}
 
-	return hasStatusTest(env, run, status)
+	return hasStatusTest(env, varResolver, status)
 }
 
 // HasWebhookStatus returns whether the passed in webhook response, `response`, has the passed in status
@@ -212,8 +212,8 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// first parameter needs to be a request response
-	rr, isRR := args[0].(utils.VariableResolver)
-	if !isRR {
+	varResolver, isVarResolver := utils.ResolveDefault(args[0]).(utils.VariableResolver)
+	if !isVarResolver {
 		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with variable resolver as first argument")
 	}
 
@@ -222,7 +222,7 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with a string as second argument")
 	}
 
-	return hasStatusTest(env, rr, status)
+	return hasStatusTest(env, varResolver, status)
 }
 
 // HasLegacyWebhookStatus returns whether the passed in webhook response, `response`, has the passed in legacy status.
