@@ -145,12 +145,9 @@ func (r *flowRun) SessionParent() flows.FlowRun { return r.parent }
 // Parent returns either the same session parent or if this session was triggered from a trigger_flow action
 // in another session, that run
 func (r *flowRun) Parent() flows.RunSummary {
-	fmt.Printf("flowRun.Parent() run=%s\n", r.uuid)
-
 	if r.parent == nil && r.session.Trigger() != nil && r.session.Trigger().Type() == triggers.TypeFlowAction {
 		runTrigger := r.session.Trigger().(*triggers.FlowActionTrigger)
 
-		fmt.Printf("flowRun.Parent() returning %s\n", runTrigger.Run().UUID())
 		return runTrigger.Run()
 	}
 	return r.SessionParent()
