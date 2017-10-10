@@ -128,6 +128,7 @@ func replaceFields(input []byte) []byte {
 		"timeout_on":      "2000-01-01T00:00:00.000000000-00:00",
 		"event.uuid":      "",
 		"path.uuid":       "",
+		"run.uuid":        "4213ac47-93fd-48c4-af12-7da8218ef09d",
 		"runs.uuid":       "",
 		"step_uuid":       "",
 		"parent_uuid":     "",
