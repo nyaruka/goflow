@@ -8,7 +8,10 @@
         {
           "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
           "event": {
-            "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
             "type": "send_msg"
@@ -56,7 +59,10 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                     "type": "send_msg"

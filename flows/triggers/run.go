@@ -25,6 +25,7 @@ const TypeRun string = "run"
 //         "name": "Bob",
 //         "fields": {"state": {"value": "Azuay", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}
 //       },
+//       "status": "active",
 //       "results": {
 //         "age": {
 //           "result_name": "Age",
@@ -38,49 +39,28 @@ const TypeRun string = "run"
 // ```
 type RunTrigger struct {
 	baseTrigger
-	run runInfo
+	run flows.RunSummary
 }
 
 // Type returns the type of this trigger
 func (t *RunTrigger) Type() string { return TypeRun }
 
-func (t *RunTrigger) Run() flows.FlowRunInfo { return &t.run }
-
-type runInfo struct {
-	uuid    flows.RunUUID
-	flow    flows.Flow
-	contact *flows.Contact
-	results *flows.Results
-}
-
-func (r *runInfo) UUID() flows.RunUUID     { return r.uuid }
-func (r *runInfo) Flow() flows.Flow        { return r.flow }
-func (r *runInfo) Contact() *flows.Contact { return r.contact }
-func (r *runInfo) Status() flows.RunStatus { return flows.RunStatusActive }
-func (r *runInfo) Results() *flows.Results { return r.results }
+func (t *RunTrigger) Run() flows.RunSummary { return t.run }
 
 var _ flows.Trigger = (*RunTrigger)(nil)
-var _ flows.FlowRunInfo = (*runInfo)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type runInfoEnvelope struct {
-	UUID     flows.RunUUID   `json:"uuid" validate:"uuid4"`
-	FlowUUID flows.FlowUUID  `json:"flow_uuid" validate:"uuid4"`
-	Contact  json.RawMessage `json:"contact" validate:"required"`
-	Results  *flows.Results  `json:"results"`
-}
-
 type runTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Run runInfoEnvelope `json:"run"`
+	Run json.RawMessage `json:"run"`
 }
 
 func ReadRunTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
 	var err error
-	trigger := RunTrigger{}
+	trigger := &RunTrigger{}
 	e := runTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(envelope.Data, &e, "trigger[type=run]"); err != nil {
 		return nil, err
@@ -90,20 +70,11 @@ func ReadRunTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows
 		return nil, err
 	}
 
-	trigger.run = runInfo{uuid: e.Run.UUID, results: e.Run.Results}
-
-	// lookup the run flow
-	if e.Run.FlowUUID != "" {
-		if trigger.run.flow, err = session.Assets().GetFlow(e.Run.FlowUUID); err != nil {
-			return nil, err
-		}
-	}
-	// read the run contact
-	if trigger.run.contact, err = flows.ReadContact(session, e.Run.Contact); err != nil {
+	if trigger.run, err = flows.ReadRunSummary(session, e.Run); err != nil {
 		return nil, err
 	}
 
-	return &trigger, nil
+	return trigger, nil
 }
 
 func (t *RunTrigger) MarshalJSON() ([]byte, error) {
@@ -112,11 +83,8 @@ func (t *RunTrigger) MarshalJSON() ([]byte, error) {
 
 	envelope.TriggeredOn = t.triggeredOn
 	envelope.FlowUUID = t.flow.UUID()
-	envelope.Run.UUID = t.run.UUID()
-	envelope.Run.FlowUUID = t.run.flow.UUID()
-	envelope.Run.Results = t.run.results
 
-	if envelope.Run.Contact, err = t.run.contact.MarshalJSON(); err != nil {
+	if envelope.Run, err = json.Marshal(t.run); err != nil {
 		return nil, err
 	}
 

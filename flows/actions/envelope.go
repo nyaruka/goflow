@@ -21,6 +21,8 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &EmailAction{}
 	case TypeStartFlow:
 		action = &StartFlowAction{}
+	case TypeStartSession:
+		action = &StartSessionAction{}
 	case TypeSendMsg:
 		action = &SendMsgAction{}
 	case TypeRemoveFromGroup:

@@ -41,11 +41,11 @@ func (c *runContext) String() string {
 
 // wraps parent/child runs and provides a reduced set of keys in the context
 type relatedRunContext struct {
-	run flows.FlowRunInfo
+	run flows.RunSummary
 }
 
 // creates a new context for related runs
-func newRelatedRunContext(run flows.FlowRunInfo) *relatedRunContext {
+func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 	if run != nil {
 		return &relatedRunContext{run: run}
 	}
@@ -86,4 +86,4 @@ func (c *relatedRunContext) String() string {
 
 var _ utils.VariableResolver = (*runContext)(nil)
 var _ utils.VariableResolver = (*relatedRunContext)(nil)
-var _ flows.FlowRunInfo = (*relatedRunContext)(nil)
+var _ flows.RunSummary = (*relatedRunContext)(nil)

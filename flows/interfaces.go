@@ -265,9 +265,9 @@ type Session interface {
 	ClearLog()
 }
 
-// FlowRunInfo represents the minimum information available about all runs (current or related) and is the
+// RunSummary represents the minimum information available about all runs (current or related) and is the
 // representation of runs made accessible to router tests.
-type FlowRunInfo interface {
+type RunSummary interface {
 	UUID() RunUUID
 	Contact() *Contact
 	Flow() Flow
@@ -277,7 +277,7 @@ type FlowRunInfo interface {
 
 // FlowRun represents a run in the current session
 type FlowRun interface {
-	FlowRunInfo
+	RunSummary
 
 	Environment() utils.Environment
 	Session() Session
@@ -303,7 +303,7 @@ type FlowRun interface {
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string
 
-	Parent() FlowRunInfo
+	Parent() RunSummary
 	SessionParent() FlowRun
 	Ancestors() []FlowRun
 

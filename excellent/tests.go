@@ -184,7 +184,7 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// first parameter needs to be a flow run
-	run, isRun := args[0].(flows.FlowRunInfo)
+	run, isRun := args[0].(flows.RunSummary)
 	if !isRun {
 		return fmt.Errorf("HAS_RUN_STATUS must be called with a run as first argument")
 	}

@@ -144,7 +144,7 @@ func (r *flowRun) SessionParent() flows.FlowRun { return r.parent }
 
 // Parent returns either the same session parent or if this session was triggered from a trigger_flow action
 // in another session, that run
-func (r *flowRun) Parent() flows.FlowRunInfo {
+func (r *flowRun) Parent() flows.RunSummary {
 	fmt.Printf("flowRun.Parent() run=%s\n", r.uuid)
 
 	if r.parent == nil && r.session.Trigger() != nil && r.session.Trigger().Type() == triggers.TypeRun {
@@ -311,6 +311,8 @@ func (r *flowRun) Default() interface{} {
 }
 
 var _ utils.VariableResolver = (*flowRun)(nil)
+var _ flows.FlowRun = (*flowRun)(nil)
+var _ flows.RunSummary = (*flowRun)(nil)
 
 // String returns the default string value for this run, which is just our UUID
 func (r *flowRun) String() string {
