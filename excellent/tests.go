@@ -183,10 +183,10 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_RUN_STATUS takes exactly two arguments, got %d", len(args))
 	}
 
-	// first parameter needs to be a flow run
-	run, isRun := args[0].(flows.FlowRunReference)
+	// first parameter needs to be a variable resolver
+	run, isRun := args[0].(utils.VariableResolver)
 	if !isRun {
-		return fmt.Errorf("HAS_RUN_STATUS must be called with a run as first argument")
+		return fmt.Errorf("HAS_RUN_STATUS must be called with a variable resolver as first argument")
 	}
 
 	status, err := utils.ToString(env, args[1])
@@ -194,11 +194,7 @@ func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_RUN_STATUS must be called with a string as second argument")
 	}
 
-	if flows.RunStatus(strings.ToLower(status)) == run.Status() {
-		return XTestResult{true, run.Status()}
-	}
-
-	return XFalseResult
+	return hasStatusTest(env, run, status)
 }
 
 // HasWebhookStatus returns whether the passed in webhook response, `response`, has the passed in status
@@ -216,9 +212,9 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// first parameter needs to be a request response
-	rr, isRR := args[0].(*utils.RequestResponse)
+	rr, isRR := args[0].(utils.VariableResolver)
 	if !isRR {
-		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with webhook as first argument")
+		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with variable resolver as first argument")
 	}
 
 	status, err := utils.ToString(env, args[1])
@@ -226,11 +222,7 @@ func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with a string as second argument")
 	}
 
-	if utils.RequestResponseStatus(strings.ToLower(status)) == rr.Status() {
-		return XTestResult{true, rr.Status()}
-	}
-
-	return XFalseResult
+	return hasStatusTest(env, rr, status)
 }
 
 // HasLegacyWebhookStatus returns whether the passed in webhook response, `response`, has the passed in legacy status.
@@ -1156,4 +1148,22 @@ func isDateEQTest(value time.Time, test time.Time) bool {
 
 func isDateGTTest(value time.Time, test time.Time) bool {
 	return value.After(test)
+}
+
+//------------------------------------------------------------------------------------------
+// Misc Test Functions
+//------------------------------------------------------------------------------------------
+
+func hasStatusTest(env utils.Environment, item utils.VariableResolver, status string) interface{} {
+	actualStatus := item.Resolve("status")
+	if err, isErr := actualStatus.(error); isErr {
+		return err
+	}
+
+	actualStatusStr, err := utils.ToString(env, actualStatus)
+	if err == nil && strings.ToLower(actualStatusStr) == strings.ToLower(status) {
+		return XTestResult{true, actualStatus}
+	}
+
+	return XFalseResult
 }
