@@ -66,6 +66,14 @@
                             "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"}
                         },
                         {
+                            "uuid": "3d8030d6-9ddd-472d-baed-d0393f592524",
+                            "type": "start_session",
+                            "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"},
+                            "contacts": [
+                                {"uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8", "name": "Bob"}
+                            ]
+                        },
+                        {
                             "uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
                             "type": "send_msg",
                             "urns": [
