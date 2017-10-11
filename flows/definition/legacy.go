@@ -326,7 +326,6 @@ var testTypeMappings = map[string]string{
 	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
-	"webhook_status":       "has_legacy_webhook_status",
 }
 
 func createAction(baseLanguage utils.Language, a legacyAction, translations *flowTranslations) (flows.Action, error) {
@@ -569,15 +568,20 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		arguments = []string{string(test.Test.UUID)}
 
 	case "subflow":
-		newType = "has_any_word"
+		newType = "is_string_eq"
 		test := subflowTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
+		newType = "is_string_eq"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Status}
+		if test.Status == "success" {
+			arguments = []string{"success"}
+		} else {
+			arguments = []string{"response_error"}
+		}
 
 	case "timeout":
 		omitOperand = true
@@ -594,7 +598,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		arguments = []string{test.District, test.State}
 
 	default:
-		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported", r.Test.Type)
+		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
 	// TODO
@@ -618,7 +622,7 @@ type categoryName struct {
 	order        int
 }
 
-func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID) {
+func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
 
 	// find our discrete categories
 	categoryMap := make(map[string]categoryName)
@@ -656,24 +660,49 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	// create any cases to map to our new exits
 	var cases []routers.Case
 	for i := range r.Rules {
-		if r.Rules[i].Test.Type != "true" {
-
-			c, err := createCase(baseLanguage, exitMap, r.Rules[i], translations)
-			if err == nil {
-				cases = append(cases, c)
-			} else if r.Rules[i].Test.Type == "webhook_status" {
-				// webhook failures don't have a case, instead they are the default
-				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
-			}
-		} else {
+		if r.Rules[i].Test.Type == "true" {
 			// take the first true rule as our default exit
 			if defaultExit == "" {
 				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
 			}
+			continue
+		}
+
+		c, err := createCase(baseLanguage, exitMap, r.Rules[i], translations)
+		if err != nil {
+			return nil, nil, "", err
+		}
+
+		cases = append(cases, c)
+
+		if r.Rules[i].Test.Type == "webhook_status" {
+			// webhook failures don't have a case, instead they are the default
+			defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
 		}
 	}
 
-	return exits, cases, defaultExit
+	// for webhook rulesets we need to map 2 rules (success/failure) to 3 cases and exits (success/response_error/connection_error)
+	if r.Type == "webhook" {
+		connectionErrorCategory := "Connection Error"
+		connectionErrorExitUUID := flows.ExitUUID(uuid.NewV4().String())
+		connectionErrorExit := &exit{
+			name:        connectionErrorCategory,
+			uuid:        connectionErrorExitUUID,
+			destination: exits[1].(*exit).destination,
+		}
+
+		exits = append(exits, connectionErrorExit)
+
+		cases = append(cases, routers.Case{
+			UUID:        flows.UUID(uuid.NewV4().String()),
+			Type:        "is_string_eq",
+			Arguments:   []string{"connection_error"},
+			OmitOperand: false,
+			ExitUUID:    connectionErrorExitUUID,
+		})
+	}
+
+	return exits, cases, defaultExit, nil
 }
 
 type fieldConfig struct {
@@ -685,7 +714,11 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	node := &node{}
 	node.uuid = r.UUID
 
-	exits, cases, defaultExit := parseRules(lang, r, translations)
+	exits, cases, defaultExit, err := parseRules(lang, r, translations)
+	if err != nil {
+		return nil, err
+	}
+
 	resultName := r.Label
 
 	switch r.Type {
@@ -731,7 +764,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 		// subflow rulesets operate on the child flow status
-		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook.status", cases, resultName)
 
 	case "form_field":
 		var config fieldConfig

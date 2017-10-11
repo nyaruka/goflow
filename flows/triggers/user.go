@@ -16,7 +16,7 @@ const TypeUser string = "user"
 // ```
 //   {
 //     "type": "user",
-//     "flow_uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721",
+//     "flow": {"uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721", "name": "Registration"},
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 // ```

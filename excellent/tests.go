@@ -24,14 +24,12 @@ import (
 
 // XTESTS is our mapping of the excellent test names to their actual functions
 var XTESTS = map[string]XFunction{
-	"has_error":                 HasError,
-	"has_value":                 HasValue,
-	"has_group":                 HasGroup,
-	"has_run_status":            HasRunStatus,
-	"has_webhook_status":        HasWebhookStatus,
-	"has_legacy_webhook_status": HasLegacyWebhookStatus,
-	"has_wait_timed_out":        HasWaitTimedOut,
+	"has_error":          HasError,
+	"has_value":          HasValue,
+	"has_group":          HasGroup,
+	"has_wait_timed_out": HasWaitTimedOut,
 
+	"is_string_eq":    IsStringEQ,
 	"has_phrase":      HasPhrase,
 	"has_only_phrase": HasOnlyPhrase,
 	"has_any_word":    HasAnyWord,
@@ -109,6 +107,38 @@ var _ utils.VariableResolver = XTestResult{}
 // Tests
 //------------------------------------------------------------------------------------------
 
+// IsStringEQ returns whether two strings are equal (case sensitive). In the case that they
+// are, it will return the string as the match.
+//
+//  @(is_string_eq("foo", "foo")) -> true
+//  @(is_string_eq("foo", "FOO")) -> false
+//  @(is_string_eq("foo", "bar")) -> false
+//  @(is_string_eq("foo", " foo ")) -> false
+//  @(is_string_eq(run.status, "completed")) -> true
+//  @(is_string_eq(child.status, "expired")) -> false
+//  @(is_string_eq(webhook.status, "success")) -> true
+//  @(is_string_eq(webhook.status, "connection_error")) -> false
+//
+// @test is_string_eq(run)
+func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 2 {
+		return fmt.Errorf("IS_STRING_EQ takes exactly two arguments, got %d", len(args))
+	}
+
+	// both parameters needs to be strings
+	string1, err1 := utils.ToString(env, args[0])
+	string2, err2 := utils.ToString(env, args[1])
+	if err1 != nil || err2 != nil {
+		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments")
+	}
+
+	if string1 == string2 {
+		return XTestResult{true, string1}
+	}
+
+	return XFalseResult
+}
+
 // HasError returns whether `value` is an error
 //
 // Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
@@ -168,102 +198,6 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return XTestResult{true, args[0]}
-}
-
-// HasRunStatus returns whether `run` has the passed in status
-//
-// Valid run statuses are "active", "completed", "expired" and "interrupted"
-//
-//  @(has_run_status(run, "completed")) -> true
-//  @(has_run_status(child, "expired")) -> false
-//
-// @test has_run_status(run)
-func HasRunStatus(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) != 2 {
-		return fmt.Errorf("HAS_RUN_STATUS takes exactly two arguments, got %d", len(args))
-	}
-
-	// first parameter needs to be a flow run
-	run, isRun := args[0].(flows.RunSummary)
-	if !isRun {
-		return fmt.Errorf("HAS_RUN_STATUS must be called with a run as first argument")
-	}
-
-	status, err := utils.ToString(env, args[1])
-	if err != nil {
-		return fmt.Errorf("HAS_RUN_STATUS must be called with a string as second argument")
-	}
-
-	if flows.RunStatus(strings.ToLower(status)) == run.Status() {
-		return XTestResult{true, run.Status()}
-	}
-
-	return XFalseResult
-}
-
-// HasWebhookStatus returns whether the passed in webhook response, `response`, has the passed in status
-//
-// Valid webhook statuses are "success", "connection_error" for a connection error, and "response_error" for
-// a non-2xx response code.
-//
-//  @(has_webhook_status(webhook, "success")) -> true
-//  @(has_webhook_status(webhook, "connection_error")) -> false
-//
-// @test has_webhook_status(response)
-func HasWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) != 2 {
-		return fmt.Errorf("HAS_WEBHOOK_STATUS takes exactly two arguments, got %d", len(args))
-	}
-
-	// first parameter needs to be a request response
-	rr, isRR := args[0].(*utils.RequestResponse)
-	if !isRR {
-		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with webhook as first argument")
-	}
-
-	status, err := utils.ToString(env, args[1])
-	if err != nil {
-		return fmt.Errorf("HAS_WEBHOOK_STATUS must be called with a string as second argument")
-	}
-
-	if utils.RequestResponseStatus(strings.ToLower(status)) == rr.Status() {
-		return XTestResult{true, rr.Status()}
-	}
-
-	return XFalseResult
-}
-
-// HasLegacyWebhookStatus returns whether the passed in webhook response, `response`, has the passed in legacy status.
-// Unlike HasWebhookStatus the returned match from this test is the response body.
-//
-// Valid legacy webhook statuses are "success" and "failure".
-//
-//  @(has_legacy_webhook_status(webhook, "success")) -> true
-//  @(has_legacy_webhook_status(webhook, "failure")) -> false
-//
-// @test has_legacy_webhook_status(response)
-func HasLegacyWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) != 2 {
-		return fmt.Errorf("HAS_LEGACY_WEBHOOK_STATUS takes exactly two arguments, got %d", len(args))
-	}
-
-	// first parameter needs to be a request response
-	rr, isRR := args[0].(*utils.RequestResponse)
-	if !isRR {
-		return fmt.Errorf("HAS_LEGACY_WEBHOOK_STATUS must be called with webhook as first argument")
-	}
-
-	status, err := utils.ToString(env, args[1])
-	if err != nil {
-		return fmt.Errorf("HAS_LEGACY_WEBHOOK_STATUS must be called with a string as second argument")
-	}
-	status = strings.ToLower(status)
-
-	if (status == "success" && rr.Status() == utils.RRSuccess) || (status == "failure" && (rr.Status() == utils.RRResponseError || rr.Status() == utils.RRConnectionError)) {
-		return XTestResult{true, rr.Body()}
-	}
-
-	return XFalseResult
 }
 
 // HasWaitTimedOut returns whether the last wait timed out.

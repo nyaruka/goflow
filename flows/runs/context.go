@@ -52,25 +52,19 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 	return nil
 }
 
-func (c *relatedRunContext) UUID() flows.RunUUID     { return c.run.UUID() }
-func (c *relatedRunContext) Contact() *flows.Contact { return c.run.Contact() }
-func (c *relatedRunContext) Flow() flows.Flow        { return c.run.Flow() }
-func (c *relatedRunContext) Status() flows.RunStatus { return c.run.Status() }
-func (c *relatedRunContext) Results() *flows.Results { return c.run.Results() }
-
 // Resolve provides a more limited set of results for parent and child runs
 func (c *relatedRunContext) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return c.UUID()
+		return c.run.UUID()
 	case "contact":
-		return c.Contact()
+		return c.run.Contact()
 	case "flow":
-		return c.Flow()
+		return c.run.Flow()
 	case "status":
-		return c.Status()
+		return c.run.Status()
 	case "results":
-		return c.Results()
+		return c.run.Results()
 	}
 
 	return fmt.Errorf("no field '%s' on related run", key)
@@ -86,4 +80,3 @@ func (c *relatedRunContext) String() string {
 
 var _ utils.VariableResolver = (*runContext)(nil)
 var _ utils.VariableResolver = (*relatedRunContext)(nil)
-var _ flows.RunSummary = (*relatedRunContext)(nil)
