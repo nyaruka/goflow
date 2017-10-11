@@ -27,7 +27,7 @@
                         "cases": [
                             {
                                 "uuid": "19a95efc-ac69-4b6a-a90b-f84a60b49e4f",
-                                "type": "has_run_status",
+                                "type": "has_status",
                                 "arguments": [
                                     "completed"
                                 ],

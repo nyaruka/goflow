@@ -594,7 +594,7 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		arguments = []string{test.District, test.State}
 
 	default:
-		return routers.Case{}, fmt.Errorf("Migration of '%s' tests no supported", r.Test.Type)
+		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
 	// TODO

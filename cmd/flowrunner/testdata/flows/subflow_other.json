@@ -35,7 +35,7 @@
                         "type": "switch",
                         "cases": [
                             {
-                                "type": "has_run_status",
+                                "type": "has_status",
                                 "uuid": "57eda3da-817b-4942-a5fc-e1ea5d12c82d",
                                 "arguments": [
                                     "completed"
