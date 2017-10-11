@@ -27,9 +27,9 @@ var XTESTS = map[string]XFunction{
 	"has_error":          HasError,
 	"has_value":          HasValue,
 	"has_group":          HasGroup,
-	"has_status":         HasStatus,
 	"has_wait_timed_out": HasWaitTimedOut,
 
+	"is_string_eq":    IsStringEQ,
 	"has_phrase":      HasPhrase,
 	"has_only_phrase": HasOnlyPhrase,
 	"has_any_word":    HasAnyWord,
@@ -107,6 +107,37 @@ var _ utils.VariableResolver = XTestResult{}
 // Tests
 //------------------------------------------------------------------------------------------
 
+// IsStringEQ returns whether two strings are equal (case senstive).
+//
+//  @(is_string_eq("foo", "foo")) -> true
+//  @(is_string_eq("foo", "foo")) -> true
+//  @(is_string_eq("foo", "bar")) -> false
+//  @(is_string_eq("foo", " foo ")) -> false
+//  @(is_string_eq(run.status, "completed")) -> true
+//  @(is_string_eq(child.status, "expired")) -> false
+//  @(is_string_eq(webhook.status, "success")) -> true
+//  @(is_string_eq(webhook.status, "connection_error")) -> false
+//
+// @test is_string_eq(run)
+func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 2 {
+		return fmt.Errorf("IS_STRING_EQ takes exactly two arguments, got %d", len(args))
+	}
+
+	// both parameters needs to be strings
+	string1, err1 := utils.ToString(env, args[0])
+	string2, err2 := utils.ToString(env, args[1])
+	if err1 != nil || err2 != nil {
+		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments")
+	}
+
+	if string1 == string2 {
+		return XTestResult{true, string1}
+	}
+
+	return XFalseResult
+}
+
 // HasError returns whether `value` is an error
 //
 // Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
@@ -166,54 +197,6 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return XTestResult{true, args[0]}
-}
-
-// HasStatus returns whether the passed in item (e.g. run or webhook) has the given status.
-//
-// Valid run statuses are:
-//  * "active"
-//  * "completed"
-//  * "expired"
-//  * "interrupted"
-//
-// Valid webhook statuses are:
-//  * "success"
-//  * "connection_error"
-//  * "response_error"
-//
-//  @(has_status(run, "completed")) -> true
-//  @(has_status(child, "expired")) -> false
-//  @(has_status(webhook, "success")) -> true
-//  @(has_status(webhook, "connection_error")) -> false
-//
-// @test has_status(run)
-func HasStatus(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) != 2 {
-		return fmt.Errorf("HAS_STATUS takes exactly two arguments, got %d", len(args))
-	}
-
-	// first parameter needs to be a variable resolver
-	item, isVarResolver := utils.ResolveDefault(args[0]).(utils.VariableResolver)
-	if !isVarResolver {
-		return fmt.Errorf("HAS_STATUS must be called with a variable resolver as first argument")
-	}
-
-	status, err := utils.ToString(env, args[1])
-	if err != nil {
-		return fmt.Errorf("HAS_STATUS must be called with a string as second argument")
-	}
-
-	actualStatus := item.Resolve("status")
-	if err, isErr := actualStatus.(error); isErr {
-		return err
-	}
-
-	actualStatusStr, err := utils.ToString(env, actualStatus)
-	if err == nil && strings.ToLower(actualStatusStr) == strings.ToLower(status) {
-		return XTestResult{true, actualStatus}
-	}
-
-	return XFalseResult
 }
 
 // HasWaitTimedOut returns whether the last wait timed out.

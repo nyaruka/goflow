@@ -568,13 +568,13 @@ func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r le
 		arguments = []string{string(test.Test.UUID)}
 
 	case "subflow":
-		newType = "has_any_word"
+		newType = "is_string_eq"
 		test := subflowTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
-		newType = "has_status"
+		newType = "is_string_eq"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
@@ -695,7 +695,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 
 		cases = append(cases, routers.Case{
 			UUID:        flows.UUID(uuid.NewV4().String()),
-			Type:        "has_status",
+			Type:        "is_string_eq",
 			Arguments:   []string{"connection_error"},
 			OmitOperand: false,
 			ExitUUID:    connectionErrorExitUUID,
@@ -764,7 +764,7 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 		// subflow rulesets operate on the child flow status
-		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook.status", cases, resultName)
 
 	case "form_field":
 		var config fieldConfig
