@@ -107,10 +107,11 @@ var _ utils.VariableResolver = XTestResult{}
 // Tests
 //------------------------------------------------------------------------------------------
 
-// IsStringEQ returns whether two strings are equal (case sensitive).
+// IsStringEQ returns whether two strings are equal (case sensitive). In the case that they
+// are, it will return the string as the match.
 //
 //  @(is_string_eq("foo", "foo")) -> true
-//  @(is_string_eq("foo", "foo")) -> true
+//  @(is_string_eq("foo", "FOO")) -> false
 //  @(is_string_eq("foo", "bar")) -> false
 //  @(is_string_eq("foo", " foo ")) -> false
 //  @(is_string_eq(run.status, "completed")) -> true
