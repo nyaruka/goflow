@@ -97,7 +97,7 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 }
 
 func (r *RequestResponse) Default() interface{} {
-	return r.JSON()
+	return r
 }
 
 func (r *RequestResponse) String() string {

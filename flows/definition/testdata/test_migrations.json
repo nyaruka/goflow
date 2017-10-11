@@ -348,7 +348,7 @@
         },
         "expected_case": {
             "uuid": "������������������������������������",
-            "type": "has_any_word",
+            "type": "is_string_eq",
             "arguments": ["completed"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -361,7 +361,7 @@
         },
         "expected_case": {
             "uuid": "������������������������������������",
-            "type": "has_any_word",
+            "type": "is_string_eq",
             "arguments": ["expired"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -388,7 +388,7 @@
         },
         "expected_case": {
             "uuid": "������������������������������������",
-            "type": "has_legacy_webhook_status",
+            "type": "is_string_eq",
             "arguments": ["success"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -401,8 +401,8 @@
         },
         "expected_case": {
             "uuid": "������������������������������������",
-            "type": "has_legacy_webhook_status",
-            "arguments": ["failure"],
+            "type": "is_string_eq",
+            "arguments": ["response_error"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
