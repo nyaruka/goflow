@@ -198,9 +198,6 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 		return JSONFragment(bytes), err
 	}
 
-	// if value is a variable resolver, then use it's default
-	val = ResolveDefault(val)
-
 	// null is null
 	if IsNil(val) {
 		return ToFragment(json.Marshal(nil))
@@ -235,6 +232,15 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 
 	case fmt.Stringer:
 		return ToFragment(json.Marshal(val.String()))
+
+	case VariableResolver:
+		// this checks that we aren't getting into an infinite loop
+		valDefault := val.Default()
+		valResolver, isResolver := valDefault.(VariableResolver)
+		if isResolver && reflect.DeepEqual(valResolver, val) {
+			return EmptyJSONFragment, fmt.Errorf("Loop found in ToJSON of '%s' with value '%+v'", reflect.TypeOf(val), val)
+		}
+		return ToJSON(env, valDefault)
 
 	case []string:
 		return ToFragment(json.Marshal(val))
@@ -279,9 +285,6 @@ func ToString(env Environment, val interface{}) (string, error) {
 		return "", nil
 	}
 
-	// if value is a variable resolver, then use it's default
-	val = ResolveDefault(val)
-
 	switch val := val.(type) {
 
 	case error:
@@ -313,6 +316,15 @@ func ToString(env Environment, val interface{}) (string, error) {
 
 	case fmt.Stringer:
 		return val.String(), nil
+
+	case VariableResolver:
+		// this checks that we aren't getting into an infinite loop
+		valDefault := val.Default()
+		valResolver, isResolver := valDefault.(VariableResolver)
+		if isResolver && reflect.DeepEqual(valResolver, val) {
+			return "", fmt.Errorf("Loop found in ToString of '%s' with value '%+v'", reflect.TypeOf(val), val)
+		}
+		return ToString(env, valDefault)
 
 	case Location:
 		return val.Name(), nil
@@ -385,9 +397,6 @@ func ToInt(env Environment, val interface{}) (int, error) {
 
 // ToDecimal tries to convert the passed in interface{} to a Decimal value, returning an error if that isn't possible
 func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
-	// if value is a variable resolver, then use it's default
-	val = ResolveDefault(val)
-
 	if IsNil(val) {
 		return decimal.Zero, nil
 	}
@@ -434,9 +443,6 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
 func ToDate(env Environment, val interface{}) (time.Time, error) {
-	// if value is a variable resolver, then use it's default
-	val = ResolveDefault(val)
-
 	if IsNil(val) {
 		return time.Time{}, fmt.Errorf("Cannot convert nil to date")
 	}
@@ -473,9 +479,6 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 // ToBool tests whether the passed in item should be considered True
 // false, 0, "" and nil are false, everything else is true
 func ToBool(env Environment, test interface{}) (bool, error) {
-	// if value is a variable resolver, then use it's default
-	test = ResolveDefault(test)
-
 	if test == nil {
 		return false, nil
 	}

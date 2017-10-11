@@ -132,15 +132,6 @@ func popNextVariable(input string) (string, string) {
 	return key, rest
 }
 
-// ResolveDefault checks if the passed in value is a variable resolver and if so returns its default
-func ResolveDefault(val interface{}) interface{} {
-	varResolver, isResolver := val.(VariableResolver)
-	if isResolver {
-		return varResolver.Default()
-	}
-	return val
-}
-
 type mapResolver struct {
 	values map[string]interface{}
 }
