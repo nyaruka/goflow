@@ -290,8 +290,6 @@ func (r *flowRun) Resolve(key string) interface{} {
 		return r.Webhook()
 	case "status":
 		return r.Status()
-	case "path":
-		return r.Path()
 	case "results":
 		return r.Results()
 	case "created_on":
