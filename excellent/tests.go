@@ -107,7 +107,7 @@ var _ utils.VariableResolver = XTestResult{}
 // Tests
 //------------------------------------------------------------------------------------------
 
-// IsStringEQ returns whether two strings are equal (case senstive).
+// IsStringEQ returns whether two strings are equal (case sensitive).
 //
 //  @(is_string_eq("foo", "foo")) -> true
 //  @(is_string_eq("foo", "foo")) -> true

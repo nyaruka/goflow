@@ -43,7 +43,7 @@
                                 "exit_uuid": "f68d80e5-651c-404a-bbc0-efa6966254a6"
                             }
                         ],
-                        "operand": "@child",
+                        "operand": "@child.status",
                         "default_exit_uuid": null
                     },
                     "actions": [
