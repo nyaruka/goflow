@@ -351,20 +351,26 @@
 		    "router": {
 		        "type": "switch",
 		        "result_name": "Response 1",
-		        "default_exit_uuid": "",
+		        "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
 		        "operand": "@run.webhook",
 		        "cases": [
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "has_legacy_webhook_status",
+		                "type": "has_status",
 		                "arguments": ["success"],
 		                "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
 		            },
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "has_legacy_webhook_status",
-		                "arguments": ["failure"],
+		                "type": "has_status",
+		                "arguments": ["response_error"],
 		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "has_status",
+		                "arguments": ["connection_error"],
+		                "exit_uuid": "������������������������������������"
 		            }
 		        ]
 		    },
@@ -378,6 +384,11 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
 		            "name": "Failure"
+                },
+		        {
+                    "uuid": "������������������������������������",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+		            "name": "Connection Error"
 		        }
 		    ]
 		},

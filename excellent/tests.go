@@ -24,12 +24,11 @@ import (
 
 // XTESTS is our mapping of the excellent test names to their actual functions
 var XTESTS = map[string]XFunction{
-	"has_error":                 HasError,
-	"has_value":                 HasValue,
-	"has_group":                 HasGroup,
-	"has_status":                HasStatus,
-	"has_legacy_webhook_status": HasLegacyWebhookStatus,
-	"has_wait_timed_out":        HasWaitTimedOut,
+	"has_error":          HasError,
+	"has_value":          HasValue,
+	"has_group":          HasGroup,
+	"has_status":         HasStatus,
+	"has_wait_timed_out": HasWaitTimedOut,
 
 	"has_phrase":      HasPhrase,
 	"has_only_phrase": HasOnlyPhrase,
@@ -212,39 +211,6 @@ func HasStatus(env utils.Environment, args ...interface{}) interface{} {
 	actualStatusStr, err := utils.ToString(env, actualStatus)
 	if err == nil && strings.ToLower(actualStatusStr) == strings.ToLower(status) {
 		return XTestResult{true, actualStatus}
-	}
-
-	return XFalseResult
-}
-
-// HasLegacyWebhookStatus returns whether the passed in webhook response, `response`, has the passed in legacy status.
-// Unlike HasWebhookStatus the returned match from this test is the response body.
-//
-// Valid legacy webhook statuses are "success" and "failure".
-//
-//  @(has_legacy_webhook_status(webhook, "success")) -> true
-//  @(has_legacy_webhook_status(webhook, "failure")) -> false
-//
-// @test has_legacy_webhook_status(response)
-func HasLegacyWebhookStatus(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) != 2 {
-		return fmt.Errorf("HAS_LEGACY_WEBHOOK_STATUS takes exactly two arguments, got %d", len(args))
-	}
-
-	// first parameter needs to be a request response
-	rr, isRR := args[0].(*utils.RequestResponse)
-	if !isRR {
-		return fmt.Errorf("HAS_LEGACY_WEBHOOK_STATUS must be called with webhook as first argument")
-	}
-
-	status, err := utils.ToString(env, args[1])
-	if err != nil {
-		return fmt.Errorf("HAS_LEGACY_WEBHOOK_STATUS must be called with a string as second argument")
-	}
-	status = strings.ToLower(status)
-
-	if (status == "success" && rr.Status() == utils.RRSuccess) || (status == "failure" && (rr.Status() == utils.RRResponseError || rr.Status() == utils.RRConnectionError)) {
-		return XTestResult{true, rr.Body()}
 	}
 
 	return XFalseResult
