@@ -70,7 +70,6 @@
       }
     ]
   ],
-  "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
   "outputs": [
     {
       "log": [
@@ -152,7 +151,6 @@
         },
         "runs": [
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -242,6 +240,14 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow": {
+            "name": "Parent Flow",
+            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+          },
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "manual"
+        },
         "wait": {
           "type": "msg"
         }
@@ -313,7 +319,6 @@
         },
         "runs": [
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -473,6 +478,14 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow": {
+            "name": "Parent Flow",
+            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+          },
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "manual"
+        },
         "wait": {
           "type": "msg"
         }
@@ -557,7 +570,6 @@
         },
         "runs": [
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -791,6 +803,14 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow": {
+            "name": "Parent Flow",
+            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+          },
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "manual"
+        },
         "wait": {
           "type": "msg"
         }
@@ -862,7 +882,6 @@
         },
         "runs": [
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1166,6 +1185,14 @@
           }
         ],
         "status": "waiting",
+        "trigger": {
+          "flow": {
+            "name": "Parent Flow",
+            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+          },
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "manual"
+        },
         "wait": {
           "type": "msg"
         }
@@ -1229,7 +1256,6 @@
         },
         "runs": [
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1576,10 +1602,26 @@
           }
         ],
         "status": "completed",
+        "trigger": {
+          "flow": {
+            "name": "Parent Flow",
+            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+          },
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "manual"
+        },
         "wait": {
           "type": "msg"
         }
       }
     }
-  ]
+  ],
+  "trigger": {
+    "flow": {
+      "name": "Registration",
+      "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+    },
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+    "type": "manual"
+  }
 }

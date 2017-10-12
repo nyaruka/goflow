@@ -49,6 +49,6 @@ func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) error {
 		return err
 	}
 
-	run.Session().SetTrigger(flow, parentRun)
+	run.Session().PushFlow(flow, parentRun)
 	return nil
 }

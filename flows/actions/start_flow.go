@@ -7,7 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeStartFlow is the type of our flow action
+// TypeStartFlow is the type for the start flow action
 const TypeStartFlow string = "start_flow"
 
 // StartFlowAction can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.

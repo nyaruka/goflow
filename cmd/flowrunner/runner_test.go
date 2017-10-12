@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"io/ioutil"
 	"log"
 	"net"
@@ -36,6 +37,7 @@ var flowTests = []struct {
 	{"date_parse.json", "", "date_parse_test.json"},
 	{"webhook_persists.json", "", "webhook_persists_test.json"},
 	{"dynamic_groups.json", "", "dynamic_groups_test.json"},
+	{"triggered.json", "", "triggered_test.json"},
 }
 
 var writeOutput bool
@@ -79,7 +81,7 @@ type runResult struct {
 	outputs    []*Output
 }
 
-func runFlow(env utils.Environment, assetsFilename string, contactFilename string, flowUUID flows.FlowUUID, callerEvents [][]flows.Event) (runResult, error) {
+func runFlow(env utils.Environment, assetsFilename string, contactFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.Event) (runResult, error) {
 	// load both the test specific assets and default assets
 	defaultAssetsJSON, err := readFile("", "default.json")
 	if err != nil {
@@ -117,7 +119,12 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 
-	err = session.StartFlow(flowUUID, callerEvents[0])
+	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
+	if err != nil {
+		return runResult{}, fmt.Errorf("error unmarshalling trigger: %s", err)
+	}
+
+	err = session.Start(trigger, callerEvents[0])
 	if err != nil {
 		return runResult{}, err
 	}
@@ -229,7 +236,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		runResult, err := runFlow(env, test.assets, test.contact, flowTest.FlowUUID, callerEvents)
+		runResult, err := runFlow(env, test.assets, test.contact, flowTest.Trigger, callerEvents)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.assets, test.output, err)
 			continue
@@ -244,7 +251,7 @@ func TestFlows(t *testing.T) {
 					log.Fatal(err)
 				}
 			}
-			flowTest := FlowTest{FlowUUID: flowTest.FlowUUID, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
+			flowTest := FlowTest{Trigger: flowTest.Trigger, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
 			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
 			if err != nil {
 				log.Fatal("Error marshalling test definition: ", err)

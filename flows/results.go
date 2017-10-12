@@ -19,6 +19,14 @@ type Results struct {
 	results map[string]*Result
 }
 
+func (r *Results) Clone() *Results {
+	clone := make(map[string]*Result, len(r.results))
+	for k, v := range r.results {
+		clone[k] = v
+	}
+	return &Results{results: clone}
+}
+
 // Save saves a new result in our map. The key is saved in a snakified format
 func (r *Results) Save(node NodeUUID, name string, value string, category string, categoryLocalized string, createdOn time.Time) {
 	result := Result{node, name, value, category, categoryLocalized, createdOn}
