@@ -413,10 +413,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 
 		if a.Type == "reply" {
 			return &actions.ReplyAction{
-				Text:        migratedText,
-				Attachments: attachments,
-				BaseAction:  actions.NewBaseAction(a.UUID),
-				AllURNs:     a.SendAll,
+				BaseMsgAction: actions.NewBaseMsgAction(a.UUID, migratedText, attachments),
+				AllURNs:       a.SendAll,
 			}, nil
 		}
 
@@ -430,12 +428,10 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}
 
 		return &actions.SendMsgAction{
-			Text:        migratedText,
-			Attachments: attachments,
-			BaseAction:  actions.NewBaseAction(a.UUID),
-			URNs:        []urns.URN{},
-			Contacts:    contacts,
-			Groups:      groups,
+			BaseMsgAction: actions.NewBaseMsgAction(a.UUID, migratedText, attachments),
+			URNs:          []urns.URN{},
+			Contacts:      contacts,
+			Groups:        groups,
 		}, nil
 
 	case "add_group":

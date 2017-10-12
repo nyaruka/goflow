@@ -47,7 +47,7 @@ func (a *AddLabelAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Ev
 
 	log := make([]flows.Event, 0)
 
-	labels, err := resolveLabels(run, step, a, a.Labels, log)
+	labels, err := a.resolveLabels(run, step, a.Labels, &log)
 	if err != nil {
 		return log, err
 	}

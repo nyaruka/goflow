@@ -49,7 +49,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 
 	log := make([]flows.Event, 0)
 
-	groups, err := resolveGroups(run, step, a, a.Groups, log)
+	groups, err := a.resolveGroups(run, step, a.Groups, &log)
 	if err != nil {
 		return log, err
 	}
