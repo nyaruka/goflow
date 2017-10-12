@@ -109,7 +109,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 		return nil, err
 	}
 
-	trigger := triggers.NewUserTrigger(flow, time.Now())
+	trigger := triggers.NewManualTrigger(flow, time.Now())
 
 	// and start the example flow
 	err = session.Start(trigger, nil)

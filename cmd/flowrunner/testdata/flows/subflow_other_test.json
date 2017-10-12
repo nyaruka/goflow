@@ -246,7 +246,7 @@
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
           },
           "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "user"
+          "type": "manual"
         },
         "wait": {
           "type": "msg"
@@ -484,7 +484,7 @@
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
           },
           "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "user"
+          "type": "manual"
         },
         "wait": {
           "type": "msg"
@@ -809,7 +809,7 @@
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
           },
           "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "user"
+          "type": "manual"
         },
         "wait": {
           "type": "msg"
@@ -1191,7 +1191,7 @@
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
           },
           "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "user"
+          "type": "manual"
         },
         "wait": {
           "type": "msg"
@@ -1608,7 +1608,7 @@
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
           },
           "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "user"
+          "type": "manual"
         },
         "wait": {
           "type": "msg"
@@ -1622,6 +1622,6 @@
       "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
     },
     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-    "type": "user"
+    "type": "manual"
   }
 }

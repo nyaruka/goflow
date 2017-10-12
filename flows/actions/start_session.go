@@ -6,7 +6,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeStartSession is the type of our flow action
+// TypeStartSession is the type for the start session action
 const TypeStartSession string = "start_session"
 
 // StartSessionAction can be used to trigger sessions for other contacts and groups

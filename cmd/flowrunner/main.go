@@ -203,7 +203,7 @@ func main() {
 		log.Fatal("error accessing flow: ", err)
 	}
 
-	trigger := triggers.NewUserTrigger(flow, time.Now())
+	trigger := triggers.NewManualTrigger(flow, time.Now())
 	session.SetEnvironment(env)
 	session.SetContact(contact)
 

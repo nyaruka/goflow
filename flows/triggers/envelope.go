@@ -16,8 +16,8 @@ type baseTriggerEnvelope struct {
 func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
 	switch envelope.Type {
 
-	case TypeUser:
-		return ReadUserTrigger(session, envelope)
+	case TypeManual:
+		return ReadManualTrigger(session, envelope)
 	case TypeFlowAction:
 		return ReadFlowActionTrigger(session, envelope)
 
