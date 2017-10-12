@@ -124,6 +124,8 @@ type Flow interface {
 	Validate(SessionAssets) error
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
+
+	Reference() *FlowReference
 }
 
 type Node interface {
@@ -188,6 +190,13 @@ type Translations interface {
 	GetTextArray(uuid UUID, key string) []string
 }
 
+type Trigger interface {
+	utils.Typed
+
+	TriggeredOn() time.Time
+	Flow() Flow
+}
+
 type Event interface {
 	CreatedOn() time.Time
 	SetCreatedOn(time.Time)
@@ -242,43 +251,48 @@ type Session interface {
 	SetContact(*Contact)
 
 	Status() SessionStatus
-	SetTrigger(Flow, FlowRun)
+	Trigger() Trigger
+	PushFlow(Flow, FlowRun)
 	Wait() Wait
 	FlowOnStack(FlowUUID) bool
 
-	StartFlow(FlowUUID, []Event) error
+	Start(Trigger, []Event) error
 	Resume([]Event) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
+	GetCurrentChild(FlowRun) FlowRun
 
 	Log() []LogEntry
 	LogEvent(Step, Action, Event)
 	ClearLog()
 }
 
-// FlowRun represents a single run on a flow by a single contact
-type FlowRun interface {
+// RunSummary represents the minimum information available about all runs (current or related) and is the
+// representation of runs made accessible to router tests.
+type RunSummary interface {
 	UUID() RunUUID
+	Contact() *Contact
+	Flow() Flow
+	Status() RunStatus
+	Results() *Results
+}
+
+// FlowRun represents a run in the current session
+type FlowRun interface {
+	RunSummary
 
 	Environment() utils.Environment
 	Session() Session
 	Context() utils.VariableResolver
-
-	Flow() Flow
-	Results() *Results
-
-	Contact() *Contact
-	SetContact(*Contact)
-
-	SetExtra(utils.JSONFragment)
-	Extra() utils.JSONFragment
-
-	Status() RunStatus
-	SetStatus(RunStatus)
-	Exit(RunStatus)
-
 	Input() Input
+	Extra() utils.JSONFragment
+	Webhook() *utils.RequestResponse
+
+	SetContact(*Contact)
 	SetInput(Input)
+	SetStatus(RunStatus)
+	SetWebhook(*utils.RequestResponse)
+	SetExtra(utils.JSONFragment)
 
 	ApplyEvent(Step, Action, Event) error
 	AddError(Step, Action, error)
@@ -291,31 +305,16 @@ type FlowRun interface {
 	GetText(uuid UUID, key string, native string) string
 	GetTextArray(uuid UUID, key string, native []string) []string
 
-	Webhook() *utils.RequestResponse
-	SetWebhook(*utils.RequestResponse)
-
-	Child() FlowRunReference
-	Parent() FlowRunReference
-	Ancestors() []FlowRunReference
+	Snapshot() RunSummary
+	Parent() RunSummary
+	SessionParent() FlowRun
+	Ancestors() []FlowRun
 
 	CreatedOn() time.Time
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time
-}
-
-// FlowRunReference represents a flow run reference within a flow
-type FlowRunReference interface {
-	UUID() RunUUID
-	Flow() Flow
-	Contact() *Contact
-
-	Results() *Results
-	Status() RunStatus
-
-	ExpiresOn() *time.Time
-	ResetExpiration(*time.Time)
-	ExitedOn() *time.Time
+	Exit(RunStatus)
 }
 
 // ChannelType represents the type of a Channel

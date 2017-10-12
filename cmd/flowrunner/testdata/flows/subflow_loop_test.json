@@ -2,7 +2,6 @@
   "caller_events": [
     []
   ],
-  "flow_uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
   "outputs": [
     {
       "log": [
@@ -96,7 +95,6 @@
         },
         "runs": [
           {
-            "child_uuid": "",
             "contact_uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "exited_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -175,8 +173,24 @@
             "uuid": ""
           }
         ],
-        "status": "errored"
+        "status": "errored",
+        "trigger": {
+          "flow": {
+            "name": "Parent Flow",
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+          },
+          "triggered_on": "2000-01-01T00:00:00Z",
+          "type": "manual"
+        }
       }
     }
-  ]
+  ],
+  "trigger": {
+    "flow": {
+      "name": "Registration",
+      "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+    },
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+    "type": "manual"
+  }
 }

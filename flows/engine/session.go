@@ -7,12 +7,13 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 )
 
-// used to trigger a new flow run in the event loop
-type flowTrigger struct {
+// used to spawn a new run or sub-flow in the event loop
+type pushedFlow struct {
 	flow      flows.Flow
 	parentRun flows.FlowRun
 }
@@ -22,6 +23,7 @@ type session struct {
 
 	// state which is maintained between engine calls
 	env     utils.Environment
+	trigger flows.Trigger
 	contact *flows.Contact
 	runs    []flows.FlowRun
 	status  flows.SessionStatus
@@ -29,9 +31,9 @@ type session struct {
 	log     []flows.LogEntry
 
 	// state which is temporary to each call
-	runsByUUID  map[flows.RunUUID]flows.FlowRun
-	flowTrigger *flowTrigger
-	flowStack   *flowStack
+	runsByUUID map[flows.RunUUID]flows.FlowRun
+	pushedFlow *pushedFlow
+	flowStack  *flowStack
 }
 
 // NewSession creates a new session
@@ -46,15 +48,17 @@ func NewSession(cache *AssetCache, assetURLs map[AssetItemType]string) flows.Ses
 	}
 }
 
-func (s *session) Assets() flows.SessionAssets              { return s.assets }
-func (s *session) Environment() utils.Environment           { return s.env }
-func (s *session) SetEnvironment(env utils.Environment)     { s.env = env }
-func (s *session) Contact() *flows.Contact                  { return s.contact }
-func (s *session) SetContact(contact *flows.Contact)        { s.contact = contact }
+func (s *session) Assets() flows.SessionAssets          { return s.assets }
+func (s *session) Environment() utils.Environment       { return s.env }
+func (s *session) SetEnvironment(env utils.Environment) { s.env = env }
+func (s *session) Trigger() flows.Trigger               { return s.trigger }
+func (s *session) Contact() *flows.Contact              { return s.contact }
+func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
+
 func (s *session) FlowOnStack(flowUUID flows.FlowUUID) bool { return s.flowStack.hasFlow(flowUUID) }
 
-func (s *session) SetTrigger(flow flows.Flow, parentRun flows.FlowRun) {
-	s.flowTrigger = &flowTrigger{flow: flow, parentRun: parentRun}
+func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun) {
+	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun}
 }
 
 func (s *session) Runs() []flows.FlowRun { return s.runs }
@@ -69,6 +73,16 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 func (s *session) addRun(run flows.FlowRun) {
 	s.runs = append(s.runs, run)
 	s.runsByUUID[run.UUID()] = run
+}
+
+func (s *session) GetCurrentChild(run flows.FlowRun) flows.FlowRun {
+	// the current child of a run, is the last added run which has that run as its parent
+	for r := len(s.runs) - 1; r >= 0; r-- {
+		if s.runs[r].SessionParent() == run {
+			return s.runs[r]
+		}
+	}
+	return nil
 }
 
 func (s *session) Status() flows.SessionStatus { return s.status }
@@ -94,19 +108,16 @@ func (s *session) ClearLog()             { s.log = nil }
 // Flow execution
 //------------------------------------------------------------------------------------------
 
-// StartFlow beings execution of the given flow in this session
-func (s *session) StartFlow(flowUUID flows.FlowUUID, callerEvents []flows.Event) error {
-	flow, err := s.Assets().GetFlow(flowUUID)
-	if err != nil {
-		return err
-	}
+// Start beings processing of this session from a trigger and a set of initial caller events
+func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error {
 
 	// check flow is valid and has everything it needs to run
-	if err := flow.Validate(s.Assets()); err != nil {
+	if err := trigger.Flow().Validate(s.Assets()); err != nil {
 		return err
 	}
 
-	s.SetTrigger(flow, nil)
+	s.trigger = trigger
+	s.PushFlow(trigger.Flow(), nil)
 
 	// off to the races...
 	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
@@ -187,10 +198,10 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
-		if s.flowTrigger != nil {
+		if s.pushedFlow != nil {
 			// create a new run for it
-			flow := s.flowTrigger.flow
-			currentRun = runs.NewRun(s, s.flowTrigger.flow, s.contact, currentRun)
+			flow := s.pushedFlow.flow
+			currentRun = runs.NewRun(s, s.pushedFlow.flow, s.contact, currentRun)
 			s.addRun(currentRun)
 			s.flowStack.push(flow)
 
@@ -202,7 +213,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			}
 
 			// clear the trigger
-			s.flowTrigger = nil
+			s.pushedFlow = nil
 		}
 
 		// if we have no destination then we're done with the current run which may have completed, expired or errored
@@ -212,14 +223,15 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			}
 
 			// switch back our parent run
-			if currentRun.Parent() != nil {
+			if currentRun.SessionParent() != nil {
 				childRun := currentRun
-				currentRun, err = s.GetRun(currentRun.Parent().UUID())
+				currentRun = currentRun.SessionParent()
 				s.flowStack.pop()
 
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
+						fmt.Printf("====%s\n", err.Error())
 						currentRun.AddFatalError(step, nil, fmt.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
@@ -307,7 +319,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 
 	// a start flow action may have triggered a subflow in which case we're done on this node for now
 	// and it will be resumed when the subflow finishes
-	if s.flowTrigger != nil {
+	if s.pushedFlow != nil {
 		return step, noDestination, nil
 	}
 
@@ -390,6 +402,7 @@ const noDestination = flows.NodeUUID("")
 
 type sessionEnvelope struct {
 	Environment json.RawMessage      `json:"environment"`
+	Trigger     *utils.TypedEnvelope `json:"trigger"`
 	Contact     json.RawMessage      `json:"contact"`
 	Runs        []json.RawMessage    `json:"runs"`
 	Status      flows.SessionStatus  `json:"status"`
@@ -414,6 +427,14 @@ func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data jso
 		return nil, err
 	}
 
+	// read our trigger
+	if envelope.Trigger != nil {
+		s.trigger, err = triggers.ReadTrigger(s, envelope.Trigger)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	// read our contact
 	s.contact, err = flows.ReadContact(s, envelope.Contact)
 	if err != nil {
@@ -427,12 +448,6 @@ func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data jso
 			return nil, err
 		}
 		s.addRun(run)
-	}
-
-	// once all runs are read, we can resolve references between runs
-	err = runs.ResolveReferences(s, s.Runs())
-	if err != nil {
-		return nil, utils.NewValidationErrors(err.Error())
 	}
 
 	// and our wait
@@ -451,26 +466,27 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	var err error
 
 	envelope.Status = s.status
-	envelope.Environment, err = json.Marshal(s.env)
-	if err != nil {
+
+	if envelope.Environment, err = json.Marshal(s.env); err != nil {
 		return nil, err
 	}
-
-	envelope.Contact, err = json.Marshal(s.contact)
-	if err != nil {
+	if envelope.Contact, err = json.Marshal(s.contact); err != nil {
 		return nil, err
 	}
-
+	if s.trigger != nil {
+		if envelope.Trigger, err = utils.EnvelopeFromTyped(s.trigger); err != nil {
+			return nil, err
+		}
+	}
+	if s.wait != nil {
+		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
+			return nil, err
+		}
+	}
 	envelope.Runs = make([]json.RawMessage, len(s.runs))
 	for i := range s.runs {
 		envelope.Runs[i], err = json.Marshal(s.runs[i])
 		if err != nil {
-			return nil, err
-		}
-	}
-
-	if s.wait != nil {
-		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
 			return nil, err
 		}
 	}

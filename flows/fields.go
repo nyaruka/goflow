@@ -120,6 +120,14 @@ func (v *FieldValue) SerializeValue() string {
 
 type FieldValues map[FieldKey]*FieldValue
 
+func (f FieldValues) Clone() FieldValues {
+	clone := make(FieldValues, len(f))
+	for k, v := range f {
+		clone[k] = v
+	}
+	return clone
+}
+
 func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) error {
 	value, err := field.ParseValue(env, rawValue)
 	if err != nil {

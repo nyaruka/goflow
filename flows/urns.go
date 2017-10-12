@@ -28,6 +28,12 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 // URNList is the list of a contact's URNs
 type URNList []urns.URN
 
+func (l URNList) Clone() URNList {
+	urns := make(URNList, len(l))
+	copy(urns, l)
+	return urns
+}
+
 func (l URNList) Resolve(key string) interface{} {
 	scheme := strings.ToLower(key)
 

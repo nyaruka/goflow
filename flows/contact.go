@@ -23,6 +23,19 @@ type Contact struct {
 	channel  Channel
 }
 
+func (c *Contact) Clone() *Contact {
+	return &Contact{
+		uuid:     c.uuid,
+		name:     c.name,
+		language: c.language,
+		timezone: c.timezone,
+		urns:     c.urns.Clone(),
+		groups:   c.groups.Clone(),
+		fields:   c.fields.Clone(),
+		channel:  c.channel,
+	}
+}
+
 // SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
 

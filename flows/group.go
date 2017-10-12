@@ -89,6 +89,12 @@ func NewGroupList(groups []*Group) *GroupList {
 	return &GroupList{groups: groups}
 }
 
+func (l *GroupList) Clone() *GroupList {
+	groups := make([]*Group, len(l.groups))
+	copy(groups, l.groups)
+	return NewGroupList(groups)
+}
+
 // FindGroup returns the group with the passed in UUID or nil if not found
 func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
 	for _, group := range l.groups {

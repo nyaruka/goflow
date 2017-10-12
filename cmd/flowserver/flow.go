@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -33,7 +34,7 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 type startRequest struct {
 	Assets    *json.RawMessage                `json:"assets"`
 	AssetURLs map[engine.AssetItemType]string `json:"asset_urls" validate:"required"`
-	Flow      flows.FlowUUID                  `json:"flow_uuid"  validate:"required"`
+	Trigger   *utils.TypedEnvelope            `json:"trigger" validate:"required"`
 	Events    []*utils.TypedEnvelope          `json:"events"`
 }
 
@@ -66,6 +67,12 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	// build our session
 	session := engine.NewSession(assetCache, start.AssetURLs)
 
+	// read our trigger
+	trigger, err := triggers.ReadTrigger(session, start.Trigger)
+	if err != nil {
+		return nil, err
+	}
+
 	// read our caller events
 	callerEvents, err := events.ReadEvents(start.Events)
 	if err != nil {
@@ -73,7 +80,7 @@ func handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	// start our flow
-	err = session.StartFlow(start.Flow, callerEvents)
+	err = session.Start(trigger, callerEvents)
 	if err != nil {
 		return nil, fmt.Errorf("error starting flow: %s", err)
 	}
