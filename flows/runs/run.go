@@ -182,9 +182,9 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 		r.Session().LogEvent(s, action, event)
 	}
 
-	// eventEnvelope, _ := utils.EnvelopeFromTyped(event)
-	// eventJSON, _ := json.Marshal(eventEnvelope)
-	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
+	eventEnvelope, _ := utils.EnvelopeFromTyped(event)
+	eventJSON, _ := json.Marshal(eventEnvelope)
+	fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
 
 	return nil
 }

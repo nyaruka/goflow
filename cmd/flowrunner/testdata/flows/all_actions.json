@@ -95,6 +95,12 @@
                             "all_urns": true
                         },
                         {
+                            "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
+                            "type": "reply",
+                            "text": "This is a reply with attachments",
+                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"]
+                        },
+                        {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
                             "type": "save_flow_result",
                             "result_name": "gender",

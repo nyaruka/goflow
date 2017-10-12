@@ -54,13 +54,26 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event
 		return log, nil
 	}
 
+	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", a.Attachments)
+	evaluatedAttachments := make([]string, 0, len(a.Attachments))
+	for n := range translatedAttachments {
+		evaluatedAttachment, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedAttachments[n])
+		if err != nil {
+			log = append(log, events.NewErrorEvent(err))
+		} else if evaluatedAttachment == "" {
+			log = append(log, events.NewErrorEvent(fmt.Errorf("attachment text evaluated to empty string, skipping")))
+			return log, nil
+		}
+		evaluatedAttachments = append(evaluatedAttachments, evaluatedAttachment)
+	}
+
 	urns := run.Contact().URNs()
 	if a.AllURNs && len(urns) > 0 {
 		for _, urn := range urns {
-			log = append(log, events.NewSendMsgToURN(urn, text, a.Attachments))
+			log = append(log, events.NewSendMsgToURN(urn, text, evaluatedAttachments))
 		}
 	} else {
-		log = append(log, events.NewSendMsgToContact(run.Contact().Reference(), text, a.Attachments))
+		log = append(log, events.NewSendMsgToContact(run.Contact().Reference(), text, evaluatedAttachments))
 	}
 
 	return log, nil
