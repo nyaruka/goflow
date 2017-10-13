@@ -82,6 +82,18 @@
                             "text": "Hi @contact.name, are you ready?"
                         },
                         {
+                            "uuid": "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
+                            "type": "send_msg",
+                            "groups": [
+                                {
+                                    "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                                    "name": "Survey Audience"
+                                }
+                            ],
+                            "text": "Hi @contact.name, are you ready for these attachments?",
+                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"]
+                        },
+                        {
                             "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
                             "type": "remove_from_group",
                             "groups": [
@@ -101,6 +113,12 @@
                             "type": "reply",
                             "text": "This is a message to each of @contact.name's urns.",
                             "all_urns": true
+                        },
+                        {
+                            "uuid": "62a30ab4-d73c-447d-a989-39c49115153e",
+                            "type": "reply",
+                            "text": "This is a reply with attachments",
+                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"]
                         },
                         {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",

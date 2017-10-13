@@ -1,10 +1,7 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -29,12 +26,10 @@ const TypeSendMsg string = "send_msg"
 //
 // @action send_msg
 type SendMsgAction struct {
-	BaseAction
-	Text        string                    `json:"text"`
-	Attachments []string                  `json:"attachments"`
-	URNs        []urns.URN                `json:"urns,omitempty"`
-	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	BaseMsgAction
+	URNs     []urns.URN                `json:"urns,omitempty"`
+	Contacts []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups   []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
 // Type returns the type of this action
@@ -46,29 +41,20 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
-	log := make([]flows.Event, 0)
-
-	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
-	if err != nil {
-		log = append(log, events.NewErrorEvent(err))
-	}
-	if text == "" {
-		log = append(log, events.NewErrorEvent(fmt.Errorf("send_msg text evaluated to empty string, skipping")))
-		return log, nil
-	}
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
 	// create events for each URN
 	for _, urn := range a.URNs {
-		log = append(log, events.NewSendMsgToURN(urn, text, a.Attachments))
+		log.Add(events.NewSendMsgToURN(urn, evaluatedText, evaluatedAttachments))
 	}
 
 	for _, contact := range a.Contacts {
-		log = append(log, events.NewSendMsgToContact(contact, text, a.Attachments))
+		log.Add(events.NewSendMsgToContact(contact, evaluatedText, evaluatedAttachments))
 	}
 
 	for _, group := range a.Groups {
-		log = append(log, events.NewSendMsgToGroup(group, text, a.Attachments))
+		log.Add(events.NewSendMsgToGroup(group, evaluatedText, evaluatedAttachments))
 	}
-	return log, nil
+	return nil
 }
