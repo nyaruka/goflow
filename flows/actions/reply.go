@@ -31,7 +31,7 @@ type ReplyAction struct {
 // Type returns the type of this action
 func (a *ReplyAction) Type() string { return TypeReply }
 
-// Validate validates whether this struct is correct
+// Validate validates our action is valid and has all the assets it needs
 func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }

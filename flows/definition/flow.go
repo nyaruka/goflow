@@ -34,35 +34,25 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 	var err error
 
 	for _, node := range f.nodes {
-		// validate all our actions
+		// validate all the node's actions
 		for _, action := range node.Actions() {
-			err = action.Validate(assets)
-			if err != nil {
-				asJSON, jerr := json.MarshalIndent(action, "", "  ")
-				if jerr != nil {
-					return fmt.Errorf("%+v: %v", action, err)
-				}
-				return fmt.Errorf("%s: %v", asJSON, err)
+			if err := action.Validate(assets); err != nil {
+				return fmt.Errorf("validation failed for action[uuid=%s, type=%s]: %v", action.UUID(), action.Type(), err)
 			}
 		}
 
-		// and our router if we have one
+		// and the router if there is one
 		router := node.Router()
 		if router != nil {
-			err = router.Validate(node.Exits())
-			if err != nil {
-				asJSON, jerr := json.MarshalIndent(node.Router(), "", "  ")
-				if jerr != nil {
-					return fmt.Errorf("%+v: %v", node.Router(), err)
-				}
-				return fmt.Errorf("%s: %v", asJSON, err)
+			if err := router.Validate(node.Exits()); err != nil {
+				return fmt.Errorf("validation of router failed for node[uuid=%s]: %v", node.UUID(), err)
 			}
 		}
 
 		// make sure all our exits have valid destinations
 		for _, exit := range node.Exits() {
 			if exit.DestinationNodeUUID() != "" && f.nodeMap[exit.DestinationNodeUUID()] == nil {
-				return fmt.Errorf("exit '%s' on node '%s' has invalid destination '%s'", exit.UUID(), node.UUID(), exit.DestinationNodeUUID())
+				return fmt.Errorf("validation failed for exit[uuid=%s]: no such destination %s", exit.UUID(), exit.DestinationNodeUUID())
 			}
 		}
 	}
@@ -105,7 +95,7 @@ var _ utils.VariableResolver = (*flow)(nil)
 // ReadFlow reads a single flow definition from the passed in byte array
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	flow := &flow{}
-	err := json.Unmarshal(data, flow)
+	err := utils.UnmarshalAndValidate(data, flow, "flow")
 	return flow, err
 }
 

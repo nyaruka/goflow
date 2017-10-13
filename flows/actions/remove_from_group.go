@@ -34,9 +34,10 @@ type RemoveFromGroupAction struct {
 // Type returns the type of this action
 func (a *RemoveFromGroupAction) Type() string { return TypeRemoveFromGroup }
 
-// Validate validates the fields on this action
+// Validate validates our action is valid and has all the assets it needs
 func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
-	return nil
+	// check we have all groups
+	return a.validateGroups(assets, a.Groups)
 }
 
 // Execute runs the action

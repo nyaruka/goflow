@@ -32,7 +32,32 @@ func NewBaseAction(uuid flows.ActionUUID) BaseAction {
 	return BaseAction{UUID_: uuid}
 }
 
+// UUID returns the UUID of the action
 func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
+
+// helper function for actions that have a set of group references that must be validated
+func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*flows.GroupReference) error {
+	for _, ref := range references {
+		if ref.UUID != "" {
+			if _, err := assets.GetGroup(ref.UUID); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+// helper function for actions that have a set of label references that must be validated
+func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*flows.LabelReference) error {
+	for _, ref := range references {
+		if ref.UUID != "" {
+			if _, err := assets.GetLabel(ref.UUID); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*flows.GroupReference, log flows.EventLog) ([]*flows.Group, error) {

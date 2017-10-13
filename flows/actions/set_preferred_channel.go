@@ -12,8 +12,10 @@ type PreferredChannelAction struct {
 	Channel *flows.ChannelReference `json:"channel"`
 }
 
+// Type returns the type of this action
 func (a *PreferredChannelAction) Type() string { return TypeSetPreferredChannel }
 
+// Validate validates our action is valid and has all the assets it needs
 func (a *PreferredChannelAction) Validate(assets flows.SessionAssets) error {
 	_, err := assets.GetChannel(a.Channel.UUID)
 	return err

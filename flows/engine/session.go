@@ -114,7 +114,7 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 
 	// check flow is valid and has everything it needs to run
 	if err := trigger.Flow().Validate(s.Assets()); err != nil {
-		return err
+		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", trigger.Flow().UUID(), err)
 	}
 
 	s.trigger = trigger
@@ -232,7 +232,6 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
-						fmt.Printf("====%s\n", err.Error())
 						currentRun.AddFatalError(step, nil, fmt.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
