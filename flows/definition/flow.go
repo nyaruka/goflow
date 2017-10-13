@@ -112,7 +112,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 
 		// make sure we haven't seen this node before
 		if f.nodeMap[node.UUID()] != nil {
-			return nil, utils.NewValidationErrors(fmt.Sprintf("duplicate node uuid: %s", node.UUID()))
+			return nil, fmt.Errorf("duplicate node uuid: %s", node.UUID())
 		}
 		f.nodeMap[node.UUID()] = node
 	}
