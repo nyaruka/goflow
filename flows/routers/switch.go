@@ -44,18 +44,25 @@ func (r *SwitchRouter) Type() string { return TypeSwitch }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
-	for _, c := range r.Cases {
-		// find the matching exit
+	// helper to look for the given exit UUID
+	hasExit := func(exitUUID flows.ExitUUID) bool {
 		found := false
 		for _, e := range exits {
-			if e.UUID() == c.ExitUUID {
+			if e.UUID() == exitUUID {
 				found = true
 				break
 			}
 		}
+		return found
+	}
 
-		if !found {
-			return fmt.Errorf("exit '%s' missing from node", c.ExitUUID)
+	if r.Default != "" && !hasExit(r.Default) {
+		return fmt.Errorf("default exit %s is not a valid exit", r.Default)
+	}
+
+	for _, c := range r.Cases {
+		if !hasExit(c.ExitUUID) {
+			return fmt.Errorf("case exit %s is not a valid exit", c.ExitUUID)
 		}
 	}
 

@@ -40,21 +40,6 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 				return fmt.Errorf("validation failed for action[uuid=%s, type=%s]: %v", action.UUID(), action.Type(), err)
 			}
 		}
-
-		// and the router if there is one
-		router := node.Router()
-		if router != nil {
-			if err := router.Validate(node.Exits()); err != nil {
-				return fmt.Errorf("validation of router failed for node[uuid=%s]: %v", node.UUID(), err)
-			}
-		}
-
-		// make sure all our exits have valid destinations
-		for _, exit := range node.Exits() {
-			if exit.DestinationNodeUUID() != "" && f.nodeMap[exit.DestinationNodeUUID()] == nil {
-				return fmt.Errorf("validation failed for exit[uuid=%s]: no such destination %s", exit.UUID(), exit.DestinationNodeUUID())
-			}
-		}
 	}
 	return err
 }
@@ -92,13 +77,6 @@ var _ utils.VariableResolver = (*flow)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadFlow reads a single flow definition from the passed in byte array
-func ReadFlow(data json.RawMessage) (flows.Flow, error) {
-	flow := &flow{}
-	err := utils.UnmarshalAndValidate(data, flow, "flow")
-	return flow, err
-}
-
 type flowEnvelope struct {
 	UUID               flows.FlowUUID   `json:"uuid"               validate:"required,uuid4"`
 	Name               string           `json:"name"               validate:"required"`
@@ -111,38 +89,53 @@ type flowEnvelope struct {
 	Metadata map[string]interface{} `json:"_ui,omitempty"`
 }
 
-func (f *flow) UnmarshalJSON(data []byte) error {
-	var envelope flowEnvelope
-	err := utils.UnmarshalAndValidate(data, &envelope, "flow")
-	if err != nil {
-		return err
+// ReadFlow reads a single flow definition from the passed in byte array
+func ReadFlow(data json.RawMessage) (flows.Flow, error) {
+	envelope := flowEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, &envelope, "flow"); err != nil {
+		return nil, err
 	}
 
+	f := &flow{}
 	f.uuid = envelope.UUID
 	f.name = envelope.Name
 	f.language = envelope.Language
 	f.expireAfterMinutes = envelope.ExpireAfterMinutes
-
 	f.translations = &envelope.Localization
 
-	// for each node
 	f.nodes = make([]flows.Node, len(envelope.Nodes))
-	for i := range envelope.Nodes {
-		f.nodes[i] = envelope.Nodes[i]
-	}
-
 	f.nodeMap = make(map[flows.NodeUUID]flows.Node)
 
-	// build up a list of all our node ids
-	for i, node := range f.nodes {
+	// for each node...
+	for n, node := range envelope.Nodes {
+		f.nodes[n] = node
+
 		// make sure we haven't seen this node before
 		if f.nodeMap[node.UUID()] != nil {
-			return fmt.Errorf("duplicate node uuid: '%s'", node.UUID())
+			return nil, utils.NewValidationErrors(fmt.Sprintf("duplicate node uuid: %s", node.UUID()))
 		}
-		f.nodeMap[node.UUID()] = f.nodes[i]
+		f.nodeMap[node.UUID()] = node
 	}
 
-	return err
+	// go back through nodes and perform basic structural validation
+	for _, node := range f.nodes {
+
+		// check every exit has a valid destination
+		for _, exit := range node.Exits() {
+			if exit.DestinationNodeUUID() != "" && f.nodeMap[exit.DestinationNodeUUID()] == nil {
+				return nil, fmt.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationNodeUUID(), exit.UUID())
+			}
+		}
+
+		// and the router if there is one
+		if node.Router() != nil {
+			if err := node.Router().Validate(node.Exits()); err != nil {
+				return nil, fmt.Errorf("router is invalid on node[uuid=%s]: %v", node.UUID(), err)
+			}
+		}
+	}
+
+	return f, nil
 }
 
 func (f *flow) MarshalJSON() ([]byte, error) {
