@@ -180,6 +180,22 @@
           "step_uuid": ""
         },
         {
+          "action_uuid": "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
+          "event": {
+            "attachments": [
+              "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+            ],
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "group": {
+              "name": "Survey Audience",
+              "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+            },
+            "text": "Hi Ben Haggerty, are you ready for these attachments?",
+            "type": "send_msg"
+          },
+          "step_uuid": ""
+        },
+        {
           "action_uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -243,6 +259,22 @@
             "text": "This is a message to each of Ben Haggerty's urns.",
             "type": "send_msg",
             "urn": "twitter:ben_haggerty"
+          },
+          "step_uuid": ""
+        },
+        {
+          "action_uuid": "62a30ab4-d73c-447d-a989-39c49115153e",
+          "event": {
+            "attachments": [
+              "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+            ],
+            "contact": {
+              "name": "Ben Haggerty",
+              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "text": "This is a reply with attachments",
+            "type": "send_msg"
           },
           "step_uuid": ""
         },
@@ -504,6 +536,18 @@
                     "urn": "tel:+12065551212"
                   },
                   {
+                    "attachments": [
+                      "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                    ],
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "group": {
+                      "name": "Survey Audience",
+                      "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                    },
+                    "text": "Hi Ben Haggerty, are you ready for these attachments?",
+                    "type": "send_msg"
+                  },
+                  {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "groups": [
                       {
@@ -545,6 +589,18 @@
                     "text": "This is a message to each of Ben Haggerty's urns.",
                     "type": "send_msg",
                     "urn": "twitter:ben_haggerty"
+                  },
+                  {
+                    "attachments": [
+                      "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                    ],
+                    "contact": {
+                      "name": "Ben Haggerty",
+                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "text": "This is a reply with attachments",
+                    "type": "send_msg"
                   },
                   {
                     "category": "Male",

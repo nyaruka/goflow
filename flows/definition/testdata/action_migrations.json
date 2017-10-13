@@ -150,8 +150,8 @@
                 "fra": "Vous habitez toujours à @contact.city"
             }, 
             "media": {
-                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg",
-                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"
+                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.age",
+                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.age"
             }, 
             "send_all": true
         },
@@ -159,13 +159,13 @@
             "type": "reply",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
             "text": "Do you still live in @contact.fields.city?", 
-            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg"],
+            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],
             "all_urns": true
         },
         "expected_localization": {
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
-                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"],
+                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.fields.age"],
                     "text": ["Vous habitez toujours à @contact.fields.city"]
                 }
             }
@@ -228,8 +228,8 @@
                 "fra": "Vous habitez toujours à @contact.city"
             }, 
             "media": {
-                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg",
-                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"
+                "eng": "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.age",
+                "fra": "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.age"
             },
             "contacts": [
                 {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f"},
@@ -248,7 +248,7 @@
             "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @contact.fields.city?", 
-            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg"],
+            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],
             "contacts": [
                 {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": ""},
                 {"uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42", "name": ""}
@@ -261,7 +261,7 @@
         "expected_localization": {
             "fra": {
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
-                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg"],
+                    "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.fields.age"],
                     "text": ["Vous habitez toujours à @contact.fields.city"]
                 }
             }

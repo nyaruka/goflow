@@ -1,9 +1,6 @@
 package actions
 
 import (
-	"fmt"
-
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -27,10 +24,8 @@ const TypeReply string = "reply"
 //
 // @action reply
 type ReplyAction struct {
-	BaseAction
-	Text        string   `json:"text"         validate:"required"`
-	Attachments []string `json:"attachments"`
-	AllURNs     bool     `json:"all_urns,omitempty"`
+	BaseMsgAction
+	AllURNs bool `json:"all_urns,omitempty"`
 }
 
 // Type returns the type of this action
@@ -42,27 +37,17 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
-	log := make([]flows.Event, 0)
-
-	text, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), run.GetText(flows.UUID(a.UUID()), "text", a.Text))
-	if err != nil {
-		log = append(log, events.NewErrorEvent(err))
-	}
-	if text == "" {
-		log = append(log, events.NewErrorEvent(fmt.Errorf("reply text evaluated to empty string, skipping")))
-		return log, nil
-	}
+func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
 	urns := run.Contact().URNs()
 	if a.AllURNs && len(urns) > 0 {
 		for _, urn := range urns {
-			log = append(log, events.NewSendMsgToURN(urn, text, a.Attachments))
+			log.Add(events.NewSendMsgToURN(urn, evaluatedText, evaluatedAttachments))
 		}
 	} else {
-		log = append(log, events.NewSendMsgToContact(run.Contact().Reference(), text, a.Attachments))
+		log.Add(events.NewSendMsgToContact(run.Contact().Reference(), evaluatedText, evaluatedAttachments))
 	}
 
-	return log, nil
-
+	return nil
 }

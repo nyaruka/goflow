@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -299,14 +300,15 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			actionEvents, err := action.Execute(run, step)
-			if err != nil {
+			log := actions.NewEventLog()
+
+			if err := action.Execute(run, step, log); err != nil {
 				return nil, noDestination, err
 			}
 
 			// apply any events that the action generated
-			for _, event := range actionEvents {
-				if err = run.ApplyEvent(step, action, event); err != nil {
+			for _, event := range log.Events() {
+				if err := run.ApplyEvent(step, action, event); err != nil {
 					return nil, noDestination, err
 				}
 
