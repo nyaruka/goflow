@@ -41,21 +41,20 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
-	log := make([]flows.Event, 0)
-	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, &log)
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
 	// create events for each URN
 	for _, urn := range a.URNs {
-		log = append(log, events.NewSendMsgToURN(urn, evaluatedText, evaluatedAttachments))
+		log.Add(events.NewSendMsgToURN(urn, evaluatedText, evaluatedAttachments))
 	}
 
 	for _, contact := range a.Contacts {
-		log = append(log, events.NewSendMsgToContact(contact, evaluatedText, evaluatedAttachments))
+		log.Add(events.NewSendMsgToContact(contact, evaluatedText, evaluatedAttachments))
 	}
 
 	for _, group := range a.Groups {
-		log = append(log, events.NewSendMsgToGroup(group, evaluatedText, evaluatedAttachments))
+		log.Add(events.NewSendMsgToGroup(group, evaluatedText, evaluatedAttachments))
 	}
-	return log, nil
+	return nil
 }

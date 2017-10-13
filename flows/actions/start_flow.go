@@ -38,11 +38,13 @@ func (a *StartFlowAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs our action
-func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 
 	if run.Session().FlowOnStack(a.Flow.UUID) {
-		return []flows.Event{events.NewFatalErrorEvent(fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))}, nil
+		log.Add(events.NewFatalErrorEvent(fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID)))
+		return nil
 	}
 
-	return []flows.Event{events.NewFlowTriggeredEvent(a.Flow, run.UUID())}, nil
+	log.Add(events.NewFlowTriggeredEvent(a.Flow, run.UUID()))
+	return nil
 }

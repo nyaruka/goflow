@@ -37,10 +37,10 @@ func (a *SaveContactField) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 	// this is a no-op if we have no contact
 	if run.Contact() == nil {
-		return nil, nil
+		return nil
 	}
 
 	// get our localized value if any
@@ -49,8 +49,10 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step) ([]flows.
 
 	// if we received an error, log it
 	if err != nil {
-		return []flows.Event{events.NewErrorEvent(err)}, nil
+		log.Add(events.NewErrorEvent(err))
+		return nil
 	}
 
-	return []flows.Event{events.NewSaveToContactEvent(a.Field, value)}, nil
+	log.Add(events.NewSaveToContactEvent(a.Field, value))
+	return nil
 }

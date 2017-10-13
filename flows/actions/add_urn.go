@@ -40,26 +40,29 @@ func (a *AddURNAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs the labeling action
-func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
-		return nil, nil
+		return nil
 	}
 
 	evaluatedPath, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Path)
 
 	// if we received an error, log it
 	if err != nil {
-		return []flows.Event{events.NewErrorEvent(err)}, nil
+		log.Add(events.NewErrorEvent(err))
+		return nil
 	}
 
 	urn := urns.NewURNFromParts(a.Scheme, evaluatedPath, "").Normalize("")
 
 	// if we don't have a valid URN, log error
 	if !urn.Validate() {
-		return []flows.Event{events.NewErrorEvent(fmt.Errorf("invalid URN: '%s'", string(urn)))}, nil
+		log.Add(events.NewErrorEvent(fmt.Errorf("invalid URN: '%s'", string(urn))))
+		return nil
 	}
 
-	return []flows.Event{events.NewAddURNEvent(urn)}, nil
+	log.Add(events.NewAddURNEvent(urn))
+	return nil
 }

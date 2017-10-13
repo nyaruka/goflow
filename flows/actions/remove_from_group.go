@@ -40,18 +40,16 @@ func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs the action
-func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact == nil {
-		return nil, nil
+		return nil
 	}
 
-	log := make([]flows.Event, 0)
-
-	groups, err := a.resolveGroups(run, step, a.Groups, &log)
+	groups, err := a.resolveGroups(run, step, a.Groups, log)
 	if err != nil {
-		return log, err
+		return err
 	}
 
 	groupRefs := make([]*flows.GroupReference, 0, len(groups))
@@ -63,7 +61,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			log = append(log, events.NewErrorEvent(fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID())))
+			log.Add(events.NewErrorEvent(fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID())))
 			continue
 		}
 
@@ -71,8 +69,8 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step) ([]f
 	}
 
 	if len(groupRefs) > 0 {
-		log = append(log, events.NewRemoveFromGroupEvent(groupRefs))
+		log.Add(events.NewRemoveFromGroupEvent(groupRefs))
 	}
 
-	return log, nil
+	return nil
 }

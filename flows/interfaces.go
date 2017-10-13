@@ -137,10 +137,15 @@ type Node interface {
 	Wait() Wait
 }
 
+type ActionLog interface {
+	Add(Event)
+	Events() []Event
+}
+
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step) ([]Event, error)
+	Execute(FlowRun, Step, ActionLog) error
 	Validate(SessionAssets) error
 	utils.Typed
 }

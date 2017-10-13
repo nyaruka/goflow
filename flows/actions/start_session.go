@@ -47,11 +47,12 @@ func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs our action
-func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 	runSnapshot, err := json.Marshal(run.Snapshot())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return []flows.Event{events.NewSessionTriggeredEvent(a.Flow, a.Contacts, a.Groups, runSnapshot)}, nil
+	log.Add(events.NewSessionTriggeredEvent(a.Flow, a.Contacts, a.Groups, runSnapshot))
+	return nil
 }

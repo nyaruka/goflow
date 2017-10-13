@@ -42,33 +42,31 @@ func (a *EmailAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute creates the email events
-func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
-	log := make([]flows.Event, 0)
-
+func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 	for _, email := range a.Emails {
 		email, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), email)
 		if err != nil {
-			log = append(log, events.NewErrorEvent(err))
+			log.Add(events.NewErrorEvent(err))
 		}
 		if email == "" {
-			log = append(log, events.NewErrorEvent(fmt.Errorf("send_email email evaluated to empty string, skipping")))
+			log.Add(events.NewErrorEvent(fmt.Errorf("send_email email evaluated to empty string, skipping")))
 			continue
 		}
 
 		subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject)
 		if err != nil {
-			log = append(log, events.NewErrorEvent(err))
+			log.Add(events.NewErrorEvent(err))
 		}
 		if subject == "" {
-			log = append(log, events.NewErrorEvent(fmt.Errorf("send_email subject evaluated to empty string, skipping")))
+			log.Add(events.NewErrorEvent(fmt.Errorf("send_email subject evaluated to empty string, skipping")))
 			continue
 		}
 
 		body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body)
 		if err != nil {
-			log = append(log, events.NewErrorEvent(err))
+			log.Add(events.NewErrorEvent(err))
 		}
-		log = append(log, events.NewSendEmailEvent(email, subject, body))
+		log.Add(events.NewSendEmailEvent(email, subject, body))
 	}
-	return log, nil
+	return nil
 }

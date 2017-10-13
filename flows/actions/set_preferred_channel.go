@@ -19,11 +19,12 @@ func (a *PreferredChannelAction) Validate(assets flows.SessionAssets) error {
 	return err
 }
 
-func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step) ([]flows.Event, error) {
+func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
 	// this is a no-op if we have no contact
 	if run.Contact() == nil {
-		return nil, nil
+		return nil
 	}
 
-	return []flows.Event{events.NewPreferredChannel(a.Channel)}, nil
+	log.Add(events.NewPreferredChannel(a.Channel))
+	return nil
 }
