@@ -47,7 +47,7 @@ func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs our action
-func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	runSnapshot, err := json.Marshal(run.Snapshot())
 	if err != nil {
 		return err

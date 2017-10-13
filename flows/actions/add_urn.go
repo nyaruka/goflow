@@ -40,7 +40,7 @@ func (a *AddURNAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs the labeling action
-func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {

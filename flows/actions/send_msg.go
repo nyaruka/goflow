@@ -41,7 +41,7 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
 	// create events for each URN

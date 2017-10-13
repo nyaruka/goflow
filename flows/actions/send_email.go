@@ -42,7 +42,7 @@ func (a *EmailAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute creates the email events
-func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	for _, email := range a.Emails {
 		email, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), email)
 		if err != nil {

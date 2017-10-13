@@ -40,7 +40,7 @@ func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs the action
-func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact == nil {

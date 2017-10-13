@@ -49,7 +49,7 @@ func (a *WebhookAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// substitute any variables in our url
 	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL)
 	if err != nil {

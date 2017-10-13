@@ -37,7 +37,7 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
 	urns := run.Contact().URNs()

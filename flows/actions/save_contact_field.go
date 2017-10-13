@@ -37,7 +37,7 @@ func (a *SaveContactField) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// this is a no-op if we have no contact
 	if run.Contact() == nil {
 		return nil

@@ -39,7 +39,7 @@ func (a *AddToGroupAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute adds our contact to the specified groups
-func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact == nil {

@@ -9,17 +9,17 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-type actionLog struct {
+type eventLog struct {
 	events []flows.Event
 }
 
-func NewActionLog() flows.ActionLog {
-	return &actionLog{events: make([]flows.Event, 0)}
+func NewEventLog() flows.EventLog {
+	return &eventLog{events: make([]flows.Event, 0)}
 }
 
-func (l *actionLog) Events() []flows.Event { return l.events }
+func (l *eventLog) Events() []flows.Event { return l.events }
 
-func (l *actionLog) Add(event flows.Event) {
+func (l *eventLog) Add(event flows.Event) {
 	l.events = append(l.events, event)
 }
 
@@ -35,7 +35,7 @@ func NewBaseAction(uuid flows.ActionUUID) BaseAction {
 func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*flows.GroupReference, log flows.ActionLog) ([]*flows.Group, error) {
+func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*flows.GroupReference, log flows.EventLog) ([]*flows.Group, error) {
 	groupSet, err := run.Session().Assets().GetGroupSet()
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*flows.LabelReference, log flows.ActionLog) ([]*flows.Label, error) {
+func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*flows.LabelReference, log flows.EventLog) ([]*flows.Label, error) {
 	labelSet, err := run.Session().Assets().GetLabelSet()
 	if err != nil {
 		return nil, err
@@ -129,7 +129,7 @@ func NewBaseMsgAction(uuid flows.ActionUUID, text string, attachments []string) 
 	}
 }
 
-func (a *BaseMsgAction) evaluateMessage(run flows.FlowRun, step flows.Step, log flows.ActionLog) (string, []string) {
+func (a *BaseMsgAction) evaluateMessage(run flows.FlowRun, step flows.Step, log flows.EventLog) (string, []string) {
 
 	localizedText := run.GetText(flows.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText)

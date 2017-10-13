@@ -300,7 +300,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			log := actions.NewActionLog()
+			log := actions.NewEventLog()
 
 			if err := action.Execute(run, step, log); err != nil {
 				return nil, noDestination, err

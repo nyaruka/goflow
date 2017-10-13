@@ -43,7 +43,7 @@ func (a *SaveFlowResultAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step, log flows.ActionLog) error {
+func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// get our localized value if any
 	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
