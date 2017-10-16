@@ -284,7 +284,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 
 		asset, err := readAsset(envelope.Content, aType, envelope.ItemType)
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
 		}
 		c.addAsset(envelope.URL, asset)
 	}

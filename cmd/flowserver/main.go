@@ -5,110 +5,46 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
+	"errors"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
 
-	"github.com/nyaruka/goflow/flows/engine"
-
-	"errors"
-
-	"github.com/pressly/chi"
 	"github.com/pressly/chi/middleware"
 	"github.com/pressly/lg"
-	"github.com/rakyll/statik/fs"
 	"github.com/sirupsen/logrus"
-
-	"strconv"
-
-	"io"
-
-	"io/ioutil"
 
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
 	"github.com/nyaruka/goflow/utils"
 )
 
 var version = "dev"
-var assetCache *engine.AssetCache
 
 func main() {
 	m := NewConfigWithPath("flowserver.toml")
-	config := new(FlowServer)
+	config := new(FlowServerConfig)
 	m.MustLoad(config)
 
 	logger := logrus.New()
-
 	lg.RedirectStdlogOutput(logger)
 	lg.DefaultLogger = logger
 
-	r := chi.NewRouter()
+	flowServer := NewFlowServer(config, logger)
+	flowServer.Start()
 
-	r.Use(middleware.DefaultCompress)
-	r.Use(middleware.StripSlashes)
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(traceErrors(logger))
-	r.Use(lg.RequestLogger(logger))
-	r.Use(middleware.Timeout(60 * time.Second))
-
-	// no static dir passed in? serve from statik
-	var staticDir http.FileSystem
-	var err error
-
-	if config.Static == "" {
-		staticDir, err = fs.New()
-		if err != nil {
-			lg.Fatal(err)
-		}
-		logrus.WithField("comp", "server").Info("using compiled statik assets")
-	} else {
-		staticDir = http.Dir(config.Static)
-		logrus.WithField("comp", "server").Info("using asset dir: ", config.Static)
-	}
-
-	// root page just serves our example and "postman"" interface
-	r.Get("/", templateHandler(staticDir, indexHandler))
-	r.Get("/version", jsonHandler(handleVersion))
-
-	r.Post("/flow/start", jsonHandler(handleStart))
-	r.Post("/flow/resume", jsonHandler(handleResume))
-	r.Post("/flow/migrate", jsonHandler(handleMigrate))
-	r.Post("/expression", jsonHandler(handleExpression))
-
-	r.NotFound(errorHandler(http.StatusNotFound, "not found"))
-	r.MethodNotAllowed(errorHandler(http.StatusMethodNotAllowed, "method not allowed"))
-
-	assetCache = engine.NewAssetCache(config.AssetCacheSize, config.AssetCachePrune)
-
-	httpServer := &http.Server{
-		Addr:         fmt.Sprintf(":%d", config.Port),
-		Handler:      r,
-		ReadTimeout:  60 * time.Second,
-		WriteTimeout: 60 * time.Second,
-	}
-
-	go func() {
-		err := httpServer.ListenAndServe()
-		if err != nil && err != http.ErrServerClosed {
-			logrus.WithFields(logrus.Fields{
-				"comp": "server",
-				"err":  err,
-			}).Error()
-		}
-	}()
 	logrus.WithField("comp", "server").WithField("port", "8080").WithField("version", version).Info("listening")
 
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	logrus.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
 
-	httpServer.Shutdown(context.Background())
-	assetCache.Shutdown()
+	flowServer.Stop()
 }
 
 type errorResponse struct {
@@ -118,16 +54,18 @@ type errorResponse struct {
 // writeError writes a JSON response for the passed in error
 func writeError(w http.ResponseWriter, r *http.Request, status int, err error) error {
 	lg.Log(r.Context()).WithError(err).Error()
-	errors := []string{err.Error()}
+	var errors []string
 
 	vErrs, isValidation := err.(utils.ValidationErrors)
 	if isValidation {
-		status = http.StatusBadRequest
 		errors = []string{}
 		for i := range vErrs {
 			errors = append(errors, vErrs[i].Error())
 		}
+	} else {
+		errors = []string{err.Error()}
 	}
+
 	return writeJSONResponse(w, r, status, &errorResponse{errors})
 }
 
@@ -157,7 +95,7 @@ func jsonHandler(handler jsonHandlerFunc) http.HandlerFunc {
 		r = r.WithContext(context.WithValue(r.Context(), contextStart, time.Now()))
 		value, err := handler(w, r)
 		if err != nil {
-			writeError(w, r, http.StatusInternalServerError, err)
+			writeError(w, r, http.StatusBadRequest, err)
 		} else {
 			err := writeJSONResponse(w, r, http.StatusOK, value)
 			if err != nil {
@@ -182,13 +120,6 @@ func templateHandler(fs http.FileSystem, handler templateHandlerFunc) http.Handl
 			writeError(w, r, http.StatusInternalServerError, err)
 		}
 	}
-}
-
-func handleVersion(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	response := map[string]string{
-		"version": version,
-	}
-	return response, nil
 }
 
 func traceErrors(logger *logrus.Logger) func(next http.Handler) http.Handler {

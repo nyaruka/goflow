@@ -124,13 +124,31 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
 }
 
-// Resume resumes a waiting session
+// Resume tries to resume a waiting session
 func (s *session) Resume(callerEvents []flows.Event) error {
 	if s.status != flows.SessionStatusWaiting {
 		return utils.NewValidationErrors("only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
+	if waitingRun == nil {
+		return utils.NewValidationErrors("session doesn't contain any runs which are waiting")
+	}
+
+	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
+		// if we got an error, add it to the log and shut everything down
+		for _, run := range s.runs {
+			run.Exit(flows.RunStatusErrored)
+		}
+		s.status = flows.SessionStatusErrored
+		s.LogEvent(nil, nil, events.NewFatalErrorEvent(err))
+	}
+
+	return nil
+}
+
+// Resume resumes a waiting session
+func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Event) error {
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
