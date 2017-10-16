@@ -36,7 +36,7 @@ type EmailAction struct {
 // Type returns the type of this action
 func (a *EmailAction) Type() string { return TypeSendEmail }
 
-// Validate validates the fields on this action
+// Validate validates our action is valid and has all the assets it needs
 func (a *EmailAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }

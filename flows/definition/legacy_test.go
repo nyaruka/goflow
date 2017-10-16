@@ -120,7 +120,7 @@ type RuleSetMigrationTest struct {
 }
 
 func TestActionMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/action_migrations.json")
+	data, err := ioutil.ReadFile("testdata/migrations/actions.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -154,7 +154,7 @@ func TestActionMigration(t *testing.T) {
 }
 
 func TestTestMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/test_migrations.json")
+	data, err := ioutil.ReadFile("testdata/migrations/tests.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -193,7 +193,7 @@ func TestTestMigration(t *testing.T) {
 }
 
 func TestRuleSetMigration(t *testing.T) {
-	data, err := ioutil.ReadFile("testdata/ruleset_migrations.json")
+	data, err := ioutil.ReadFile("testdata/migrations/rulesets.json")
 	if err != nil {
 		t.Fatal(err)
 	}

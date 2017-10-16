@@ -31,8 +31,9 @@ type StartFlowAction struct {
 // Type returns the type of this action
 func (a *StartFlowAction) Type() string { return TypeStartFlow }
 
-// Validate validates our action is valid
+// Validate validates our action is valid and has all the assets it needs
 func (a *StartFlowAction) Validate(assets flows.SessionAssets) error {
+	// check we have the flow
 	_, err := assets.GetFlow(a.Flow.UUID)
 	return err
 }

@@ -27,18 +27,19 @@ func (s *logEntry) Event() flows.Event   { return s.event }
 //------------------------------------------------------------------------------------------
 
 type logEntryEnvelope struct {
-	StepUUID   flows.StepUUID       `json:"step_uuid"   validate:"required"`
-	ActionUUID *flows.ActionUUID    `json:"action_uuid"`
-	Event      *utils.TypedEnvelope `json:"event"       validate:"required"`
+	StepUUID   flows.StepUUID       `json:"step_uuid,omitempty"`
+	ActionUUID flows.ActionUUID     `json:"action_uuid,omitempty"`
+	Event      *utils.TypedEnvelope `json:"event" validate:"required"`
 }
 
 func (s *logEntry) MarshalJSON() ([]byte, error) {
 	var se logEntryEnvelope
 
-	se.StepUUID = s.step.UUID()
+	if s.step != nil {
+		se.StepUUID = s.step.UUID()
+	}
 	if s.action != nil {
-		actionUUID := s.action.UUID()
-		se.ActionUUID = &actionUUID
+		se.ActionUUID = s.action.UUID()
 	}
 
 	eventData, err := json.Marshal(s.event)

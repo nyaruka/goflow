@@ -113,7 +113,6 @@
           "step_uuid": ""
         },
         {
-          "action_uuid": null,
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "msg_wait"
@@ -256,7 +255,6 @@
     {
       "log": [
         {
-          "action_uuid": null,
           "event": {
             "category": "Other",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -281,7 +279,6 @@
           "step_uuid": ""
         },
         {
-          "action_uuid": null,
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "msg_wait"
@@ -494,7 +491,6 @@
     {
       "log": [
         {
-          "action_uuid": null,
           "event": {
             "category": "Yes",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -532,7 +528,6 @@
           "step_uuid": ""
         },
         {
-          "action_uuid": null,
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "msg_wait"
@@ -819,7 +814,6 @@
     {
       "log": [
         {
-          "action_uuid": null,
           "event": {
             "category": "Other",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -844,7 +838,6 @@
           "step_uuid": ""
         },
         {
-          "action_uuid": null,
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "type": "msg_wait"
@@ -1201,7 +1194,6 @@
     {
       "log": [
         {
-          "action_uuid": null,
           "event": {
             "category": "No",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",

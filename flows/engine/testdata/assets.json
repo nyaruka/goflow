@@ -1,0 +1,99 @@
+[
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+        "content": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Test Flow",
+            "language": "eng",
+            "nodes": [
+                {
+                    "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                    "actions": [
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_label",
+                            "labels": [
+                                {
+                                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                                    "name": "Spam"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "type": "add_to_group",
+                            "groups": [
+                                {
+                                    "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                                    "name": "Survey Audience"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
+                            "type": "save_contact_field",
+                            "field": {
+                                "key": "first_name",
+                                "label": "First Name"
+                            },
+                            "value": "Bob"
+                        },
+                        {
+                            "uuid": "3248a064-bc42-4dff-aa0f-93d85de2f600",
+                            "type": "set_preferred_channel",
+                            "channel": {
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                                "name": "Twilio Channel"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "type": "channel",
+        "url": "http://testserver/assets/channel/57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "content": {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Twilio Channel",
+            "address": "+12345671111",
+            "type": "T"
+        }
+    },
+    {
+        "type": "group",
+        "url": "http://testserver/assets/group",
+        "content": [
+            {
+                "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                "name": "Survey Audience"
+            }
+        ],
+        "is_set": true
+    },
+    {
+        "type": "field",
+        "url": "http://testserver/assets/field",
+        "content": [
+            {
+                "key": "first_name",
+                "label": "First Name",
+                "value_type": "text"
+            }
+        ],
+        "is_set": true
+    },
+    {
+        "type": "label",
+        "url": "http://testserver/assets/label",
+        "content": [
+            {
+                "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                "name": "Spam"
+            }
+        ],
+        "is_set": true
+    }
+]

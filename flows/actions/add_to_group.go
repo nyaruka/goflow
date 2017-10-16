@@ -33,9 +33,10 @@ type AddToGroupAction struct {
 // Type returns the type of this action
 func (a *AddToGroupAction) Type() string { return TypeAddToGroup }
 
-// Validate validates that this action is valid
+// Validate validates our action is valid and has all the assets it needs
 func (a *AddToGroupAction) Validate(assets flows.SessionAssets) error {
-	return nil
+	// check we have all groups
+	return a.validateGroups(assets, a.Groups)
 }
 
 // Execute adds our contact to the specified groups

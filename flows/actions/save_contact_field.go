@@ -31,9 +31,10 @@ type SaveContactField struct {
 // Type returns the type of this action
 func (a *SaveContactField) Type() string { return TypeSaveContactField }
 
-// Validate validates this action
+// Validate validates our action is valid and has all the assets it needs
 func (a *SaveContactField) Validate(assets flows.SessionAssets) error {
-	return nil
+	_, err := assets.GetField(a.Field.Key)
+	return err
 }
 
 // Execute runs this action

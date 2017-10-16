@@ -180,8 +180,10 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 		return err
 	}
 
-	fs := s.(*step)
-	fs.addEvent(event)
+	if s != nil {
+		fs := s.(*step)
+		fs.addEvent(event)
+	}
 
 	if !event.FromCaller() {
 		r.Session().LogEvent(s, action, event)

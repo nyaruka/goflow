@@ -33,17 +33,14 @@ type StartSessionAction struct {
 // Type returns the type of this action
 func (a *StartSessionAction) Type() string { return TypeStartSession }
 
-// Validate validates our action is valid
+// Validate validates our action is valid and has all the assets it needs
 func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {
+	// check we have the flow
 	if _, err := assets.GetFlow(a.Flow.UUID); err != nil {
 		return err
 	}
-	for _, g := range a.Groups {
-		if _, err := assets.GetGroup(g.UUID); err != nil {
-			return err
-		}
-	}
-	return nil
+	// check we have all groups
+	return a.validateGroups(assets, a.Groups)
 }
 
 // Execute runs our action

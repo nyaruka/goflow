@@ -17,6 +17,11 @@ type exit struct {
 	name        string
 }
 
+// NewExit creates a new exit
+func NewExit(uuid flows.ExitUUID, destination flows.NodeUUID, name string) flows.Exit {
+	return &exit{uuid: uuid, destination: destination, name: name}
+}
+
 func (e *exit) UUID() flows.ExitUUID                { return e.uuid }
 func (e *exit) DestinationNodeUUID() flows.NodeUUID { return e.destination }
 func (e *exit) Name() string                        { return e.name }

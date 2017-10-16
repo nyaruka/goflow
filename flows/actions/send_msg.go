@@ -35,9 +35,9 @@ type SendMsgAction struct {
 // Type returns the type of this action
 func (a *SendMsgAction) Type() string { return TypeSendMsg }
 
-// Validate validates whether this struct is correct
+// Validate validates our action is valid and has all the assets it needs
 func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
-	return nil
+	return a.validateGroups(assets, a.Groups)
 }
 
 // Execute runs this action

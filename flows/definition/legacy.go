@@ -643,11 +643,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	for k, category := range categoryMap {
 		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(category.uuid), "name")
 
-		exits[category.order] = &exit{
-			name:        k,
-			uuid:        category.uuid,
-			destination: category.destination,
-		}
+		exits[category.order] = NewExit(category.uuid, category.destination, k)
 		exitMap[k] = exits[category.order]
 	}
 
@@ -681,14 +677,9 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	if r.Type == "webhook" {
 		connectionErrorCategory := "Connection Error"
 		connectionErrorExitUUID := flows.ExitUUID(uuid.NewV4().String())
-		connectionErrorExit := &exit{
-			name:        connectionErrorCategory,
-			uuid:        connectionErrorExitUUID,
-			destination: exits[1].(*exit).destination,
-		}
+		connectionErrorExit := NewExit(connectionErrorExitUUID, exits[1].(*exit).destination, connectionErrorCategory)
 
 		exits = append(exits, connectionErrorExit)
-
 		cases = append(cases, routers.Case{
 			UUID:        flows.UUID(uuid.NewV4().String()),
 			Type:        "is_string_eq",
@@ -828,10 +819,7 @@ func createActionNode(lang utils.Language, a legacyActionSet, translations *flow
 	}
 
 	node.exits = make([]flows.Exit, 1)
-	node.exits[0] = &exit{
-		destination: a.Destination,
-		uuid:        flows.ExitUUID(uuid.NewV4().String()),
-	}
+	node.exits[0] = NewExit(flows.ExitUUID(uuid.NewV4().String()), a.Destination, "")
 	return node, nil
 
 }

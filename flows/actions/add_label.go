@@ -32,9 +32,10 @@ type AddLabelAction struct {
 // Type returns the type of this action
 func (a *AddLabelAction) Type() string { return TypeAddLabel }
 
-// Validate validates the fields for this label
+// Validate validates our action is valid and has all the assets it needs
 func (a *AddLabelAction) Validate(assets flows.SessionAssets) error {
-	return nil
+	// check we have all labels
+	return a.validateLabels(assets, a.Labels)
 }
 
 // Execute runs the labeling action

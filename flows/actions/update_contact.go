@@ -32,7 +32,7 @@ type UpdateContactAction struct {
 // Type returns the type of this action
 func (a *UpdateContactAction) Type() string { return TypeUpdateContact }
 
-// Validate validates this action
+// Validate validates our action is valid and has all the assets it needs
 func (a *UpdateContactAction) Validate(assets flows.SessionAssets) error {
 	// check language is valid
 	if a.FieldName == "language" {

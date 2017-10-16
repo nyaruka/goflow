@@ -34,7 +34,7 @@ type AddURNAction struct {
 // Type returns the type of this action
 func (a *AddURNAction) Type() string { return TypeAddURN }
 
-// Validate validates the fields for this label
+// Validate validates our action is valid and has all the assets it needs
 func (a *AddURNAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }

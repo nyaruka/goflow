@@ -44,28 +44,29 @@ func (r *SwitchRouter) Type() string { return TypeSwitch }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {
-	err := utils.Validate(r)
-	for _, c := range r.Cases {
-		err = utils.Validate(c)
-		if err != nil {
-			return err
-		}
-
-		// find the matching exit
+	// helper to look for the given exit UUID
+	hasExit := func(exitUUID flows.ExitUUID) bool {
 		found := false
 		for _, e := range exits {
-			if e.UUID() == c.ExitUUID {
+			if e.UUID() == exitUUID {
 				found = true
 				break
 			}
 		}
+		return found
+	}
 
-		if !found {
-			return fmt.Errorf("Exit '%s' missing from node", c.ExitUUID)
+	if r.Default != "" && !hasExit(r.Default) {
+		return fmt.Errorf("default exit %s is not a valid exit", r.Default)
+	}
+
+	for _, c := range r.Cases {
+		if !hasExit(c.ExitUUID) {
+			return fmt.Errorf("case exit %s is not a valid exit", c.ExitUUID)
 		}
 	}
 
-	return err
+	return nil
 }
 
 // PickRoute evaluates each of the tests on our cases in order, returning the exit for the first case which

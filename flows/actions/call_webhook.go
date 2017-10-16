@@ -43,7 +43,7 @@ type WebhookAction struct {
 // Type returns the type of this action
 func (a *WebhookAction) Type() string { return TypeCallWebhook }
 
-// Validate validates the fields on this action
+// Validate validates our action is valid and has all the assets it needs
 func (a *WebhookAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }
