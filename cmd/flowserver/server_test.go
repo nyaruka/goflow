@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -12,6 +13,36 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
+
+var startRequestTemplate = `{
+	"assets": [
+		{
+			"type": "flow",
+			"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"content": %s
+		},
+		{
+			"type": "group",
+			"url": "http://testserver/assets/group",
+			"content": [
+				{
+					"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+					"name": "Survey Audience"
+				}
+			],
+			"is_set": true
+		}
+	],
+	"asset_urls": {
+		"flow": "http://testserver/assets/flow",
+		"group": "http://testserver/assets/group"
+	},
+	"trigger": {
+		"type": "manual",
+		"flow": {"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02", "name": "Test Flow"},
+		"triggered_on": "2000-01-01T00:00:00.000000000-00:00"
+	}
+}`
 
 func testHTTPRequest(t *testing.T, method string, url string, data string) (int, []byte) {
 	var reqBody io.Reader
@@ -93,40 +124,59 @@ func TestFlowServer(t *testing.T) {
 	assert.Equal(t, 400, status)
 	assertErrorResponse(t, body, []string{"field 'flow' on 'trigger[type=manual]' is required", "field 'triggered_on' on 'trigger[type=manual]' is required"})
 
-	// try POSTing a trigger with an invalid flow asset
-	status, body = testHTTPRequest(t, "POST", "http://localhost:8080/flow/start", `{
-		"assets": [
-			{ 
-				"type": "flow",
-				"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-				"content": {
-					"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-					"name": "Test Flow",
-					"language": "eng",
-					"nodes": [
-						{
-							"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-							"exits": [
-								{
-									"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-									"label": "Default",
-									"destination_node_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
-								}
-							]
-						}
-					]
-				}
+	// try POSTing to the start endpoint a structurally invalid flow asset
+	requestBody := fmt.Sprintf(startRequestTemplate, `{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Test Flow",
+		"language": "eng",
+		"nodes": [
+			{
+				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+				"exits": [
+					{
+						"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+						"label": "Default",
+						"destination_node_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
+					}
+				]
 			}
-		],
-		"asset_urls": {
-			"flow": "http://testserver/assets/flow"
-		},
-		"trigger": {
-			"type": "manual",
-			"flow": {"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02", "name": "Test Flow"},
-			"triggered_on": "2000-01-01T00:00:00.000000000-00:00"
-		}
+		]
 	}`)
+	status, body = testHTTPRequest(t, "POST", "http://localhost:8080/flow/start", requestBody)
 	assert.Equal(t, 400, status)
 	assertErrorResponse(t, body, []string{"unable to read asset[url=http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
+
+	// try POSTing to the start endpoint a flow asset that references a non-existent group asset
+	requestBody = fmt.Sprintf(startRequestTemplate, `{
+		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"name": "Test Flow",
+		"language": "eng",
+		"nodes": [
+			{
+				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+				"actions": [
+					{
+						"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+						"type": "add_to_group",
+						"groups": [
+							{
+								"uuid": "77a1bb5c-92f7-42bc-8a54-d21c1536ebc0",
+								"name": "Testers"
+							}
+						]
+					}
+				],
+				"exits": [
+					{
+						"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+						"label": "Default",
+						"destination_node_uuid": null
+					}
+				]
+			}
+		]
+	}`)
+	status, body = testHTTPRequest(t, "POST", "http://localhost:8080/flow/start", requestBody)
+	assert.Equal(t, 400, status)
+	assertErrorResponse(t, body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 }

@@ -176,7 +176,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	// start our flow
 	err = session.Start(trigger, callerEvents)
 	if err != nil {
-		return nil, fmt.Errorf("error starting flow: %s", err)
+		return nil, err
 	}
 
 	return &flowResponse{Session: session, Log: session.Log()}, nil
@@ -228,7 +228,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	// resume our flow
 	err = session.Resume(callerEvents)
 	if err != nil {
-		return nil, fmt.Errorf("error resuming flow: %s", err)
+		return nil, err
 	}
 
 	return &flowResponse{Session: session, Log: session.Log()}, nil
