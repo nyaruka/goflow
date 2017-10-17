@@ -87,7 +87,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	}
 
 	// create our engine session
-	assetURLs := map[engine.AssetItemType]string{
+	assetURLs := engine.AssetTypeURLs{
 		"channel":            "http://testserver/assets/channel",
 		"field":              "http://testserver/assets/field",
 		"flow":               "http://testserver/assets/flow",

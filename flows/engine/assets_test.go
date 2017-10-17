@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var testAssetURLs = map[AssetItemType]string{
+var testAssetURLs = AssetTypeURLs{
 	"channel": "http://testserver/assets/channel",
 	"field":   "http://testserver/assets/field",
 	"flow":    "http://testserver/assets/flow",

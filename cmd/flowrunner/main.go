@@ -184,7 +184,7 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
-	assetURLs := map[engine.AssetItemType]string{
+	assetURLs := engine.AssetTypeURLs{
 		"channel": "http://testserver/assets/channel",
 		"flow":    "http://testserver/assets/flow",
 	}

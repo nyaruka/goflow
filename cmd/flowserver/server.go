@@ -108,16 +108,13 @@ func (s *FlowServer) handleVersion(w http.ResponseWriter, r *http.Request) (inte
 	return response, nil
 }
 
-type flowResponse struct {
+type sessionResponse struct {
 	Session flows.Session    `json:"session"`
 	Log     []flows.LogEntry `json:"log"`
 }
 
-func (r *flowResponse) MarshalJSON() ([]byte, error) {
-	envelope := struct {
-		Session flows.Session    `json:"session"`
-		Log     []flows.LogEntry `json:"log"`
-	}{
+func (r *sessionResponse) MarshalJSON() ([]byte, error) {
+	envelope := sessionResponse{
 		Session: r.Session,
 		Log:     r.Session.Log(),
 	}
@@ -126,10 +123,10 @@ func (r *flowResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Assets    *json.RawMessage                `json:"assets"`
-	AssetURLs map[engine.AssetItemType]string `json:"asset_urls" validate:"required"`
-	Trigger   *utils.TypedEnvelope            `json:"trigger" validate:"required"`
-	Events    []*utils.TypedEnvelope          `json:"events"`
+	Assets    *json.RawMessage       `json:"assets"`
+	AssetURLs engine.AssetTypeURLs   `json:"asset_urls" validate:"required"`
+	Trigger   *utils.TypedEnvelope   `json:"trigger" validate:"required"`
+	Events    []*utils.TypedEnvelope `json:"events"`
 }
 
 func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -179,14 +176,14 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 		return nil, err
 	}
 
-	return &flowResponse{Session: session, Log: session.Log()}, nil
+	return &sessionResponse{Session: session, Log: session.Log()}, nil
 }
 
 type resumeRequest struct {
-	Assets    json.RawMessage                 `json:"assets"`
-	AssetURLs map[engine.AssetItemType]string `json:"asset_urls" validate:"required"`
-	Session   json.RawMessage                 `json:"session" validate:"required"`
-	Events    []*utils.TypedEnvelope          `json:"events" validate:"required,min=1"`
+	Assets    json.RawMessage        `json:"assets"`
+	AssetURLs engine.AssetTypeURLs   `json:"asset_urls" validate:"required"`
+	Session   json.RawMessage        `json:"session" validate:"required"`
+	Events    []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
 }
 
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -231,7 +228,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 		return nil, err
 	}
 
-	return &flowResponse{Session: session, Log: session.Log()}, nil
+	return &sessionResponse{Session: session, Log: session.Log()}, nil
 }
 
 type migrateRequest struct {

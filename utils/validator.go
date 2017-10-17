@@ -80,6 +80,10 @@ func validate(obj interface{}, objName string) error {
 			problem = "is required"
 		case "uuid4":
 			problem = "must be a valid UUID4"
+		case "min":
+			problem = fmt.Sprintf("must have a minimum of %s items", fieldErr.Param())
+		case "max":
+			problem = fmt.Sprintf("must have a maximum of %s items", fieldErr.Param())
 		default:
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
