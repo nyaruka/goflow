@@ -29,25 +29,150 @@ var testAssetURLs = engine.AssetTypeURLs{
 	"label":   "http://testserver/assets/label",
 }
 
-var startRequestTemplate = `{
-	"assets": [
-		{
-			"type": "flow",
-			"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-			"content": %s
-		},
-		{
-			"type": "group",
-			"url": "http://testserver/assets/group",
-			"content": [
+var testStructurallyInvalidFlowAssets = `[
+	{
+		"type": "flow",
+		"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"content": {
+			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"name": "Test Flow",
+			"language": "eng",
+			"nodes": [
 				{
-					"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
-					"name": "Survey Audience"
+					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+					"exits": [
+						{
+							"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+							"label": "Default",
+							"destination_node_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
+						}
+					]
 				}
-			],
-			"is_set": true
+			]
 		}
-	],
+	}
+]`
+
+var testFlowMissingGroupAssets = `[
+	{
+		"type": "flow",
+		"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"content": {
+			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"name": "Test Flow",
+			"language": "eng",
+			"nodes": [
+				{
+					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+					"actions": [
+						{
+							"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+							"type": "add_to_group",
+							"groups": [
+								{
+									"uuid": "77a1bb5c-92f7-42bc-8a54-d21c1536ebc0",
+									"name": "Testers"
+								}
+							]
+						}
+					],
+					"exits": [
+						{
+							"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+							"label": "Default",
+							"destination_node_uuid": null
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": [
+			{
+				"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+				"name": "Survey Audience"
+			}
+		],
+		"is_set": true
+	}
+]`
+
+var testValidFlowWithNoWaitAssets = `[
+	{
+		"type": "flow",
+		"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"content": {
+			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"name": "Test Flow",
+			"language": "eng",
+			"nodes": [
+				{
+					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+					"actions": [],
+					"exits": [
+						{
+							"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+							"label": "Default",
+							"destination_node_uuid": null
+						}
+					]
+				}
+			]
+		}
+	}
+]`
+
+var testValidFlowWithWaitAssets = `[
+	{
+		"type": "flow",
+		"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"content": {
+			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"name": "Test Flow",
+			"language": "eng",
+			"nodes": [
+				{
+					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+					"wait": {
+						"type": "msg",
+						"timeout": 600
+					},
+					"router": {
+						"type": "switch",
+						"default_exit_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+						"result_name": "name",
+						"operand": "@run.input",
+						"cases": [
+							{
+								"uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
+								"type": "has_text",
+								"exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
+							}
+						]
+					},
+					"exits": [
+						{
+							"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+							"label": "Not Empty",
+							"destination_node_uuid": null
+						},
+						{
+							"uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
+							"label": "Other",
+							"destination_node_uuid": null
+						}
+					]
+				}
+			]
+		}
+	}
+]`
+
+var startRequestTemplate = `{
+	"assets": %s,
 	"asset_urls": {
 		"flow": "http://testserver/assets/flow",
 		"group": "http://testserver/assets/group"
@@ -108,10 +233,10 @@ func (ts *ServerTestSuite) assertExpressionResponse(body []byte, expectedResult 
 	ts.Equal(expectedErrors, expResp.Errors)
 }
 
-func (ts *ServerTestSuite) parseSessionResponse(assetCache *engine.AssetCache, assetURLs engine.AssetTypeURLs, body []byte) (flows.Session, []flows.LogEntry) {
+func (ts *ServerTestSuite) parseSessionResponse(assetCache *engine.AssetCache, assetURLs engine.AssetTypeURLs, body []byte) (flows.Session, []map[string]interface{}) {
 	envelope := struct {
 		Session json.RawMessage
-		Log     []flows.LogEntry
+		Log     []map[string]interface{}
 	}{}
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
@@ -122,7 +247,7 @@ func (ts *ServerTestSuite) parseSessionResponse(assetCache *engine.AssetCache, a
 	return session, envelope.Log
 }
 
-func (ts *ServerTestSuite) buildResumeRequest(assetURLs engine.AssetTypeURLs, session flows.Session, events []flows.Event) string {
+func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, assetURLs engine.AssetTypeURLs, session flows.Session, events []flows.Event) string {
 	sessionJSON, err := json.Marshal(session)
 	ts.Require().NoError(err)
 
@@ -133,6 +258,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetURLs engine.AssetTypeURLs, se
 	}
 
 	request := &resumeRequest{
+		Assets:    json.RawMessage(assetsJSON),
 		AssetURLs: assetURLs,
 		Session:   sessionJSON,
 		Events:    eventEnvelopes,
@@ -194,91 +320,19 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"field 'flow' on 'trigger[type=manual]' is required", "field 'triggered_on' on 'trigger[type=manual]' is required"})
 
 	// try POSTing to the start endpoint a structurally invalid flow asset
-	requestBody := fmt.Sprintf(startRequestTemplate, `{
-		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"name": "Test Flow",
-		"language": "eng",
-		"nodes": [
-			{
-				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-				"exits": [
-					{
-						"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-						"label": "Default",
-						"destination_node_uuid": "714f1409-486e-4e8e-bb08-23e2943ef9f6"
-					}
-				]
-			}
-		]
-	}`)
+	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/start", requestBody)
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"unable to read asset[url=http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try POSTing to the start endpoint a flow asset that references a non-existent group asset
-	requestBody = fmt.Sprintf(startRequestTemplate, `{
-		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"name": "Test Flow",
-		"language": "eng",
-		"nodes": [
-			{
-				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-				"actions": [
-					{
-						"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-						"type": "add_to_group",
-						"groups": [
-							{
-								"uuid": "77a1bb5c-92f7-42bc-8a54-d21c1536ebc0",
-								"name": "Nonexistent group"
-							}
-						]
-					}
-				],
-				"exits": [
-					{
-						"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-						"label": "Default",
-						"destination_node_uuid": null
-					}
-				]
-			}
-		]
-	}`)
+	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/start", requestBody)
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// POST to the start endpoint with a valid flow with no wait (it should complete)
-	requestBody = fmt.Sprintf(startRequestTemplate, `{
-		"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-		"name": "Test Flow",
-		"language": "eng",
-		"nodes": [
-			{
-				"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-				"actions": [
-					{
-						"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-						"type": "add_to_group",
-						"groups": [
-							{
-								"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
-								"name": "Survey Audience"
-							}
-						]
-					}
-				],
-				"exits": [
-					{
-						"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
-						"label": "Default",
-						"destination_node_uuid": null
-					}
-				]
-			}
-		]
-	}`)
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/start", requestBody)
 	ts.Equal(200, status)
 
@@ -286,16 +340,62 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.Equal(flows.SessionStatus("completed"), session.Status())
 
 	// try to resume this completed session but with no caller events
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(testAssetURLs, session, []flows.Event{}))
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(`[]`, testAssetURLs, session, []flows.Event{}))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"field 'events' must have a minimum of 1 items"})
 
 	// try to resume this completed session
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(testAssetURLs, session, []flows.Event{
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(`[]`, testAssetURLs, session, []flows.Event{
 		events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), nil, nil, urns.NewTelegramURN(1234567, "bob"), "hello", nil),
 	}))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"only waiting sessions can be resumed"})
+
+	// start another session on a flow that will wait for input
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWaitAssets)
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/start", requestBody)
+	ts.Equal(200, status)
+
+	waitingSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, testAssetURLs, body)
+	ts.Equal(flows.SessionStatus("waiting"), waitingSession.Status())
+
+	// try to resume this session with a structurally invalid version of the flow passed as an asset
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(testStructurallyInvalidFlowAssets, testAssetURLs, waitingSession, []flows.Event{
+		events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), nil, nil, urns.NewTelegramURN(1234567, "bob"), "hello", nil),
+	}))
+	ts.Equal(400, status)
+	ts.assertErrorResponse(body, []string{"unable to read asset[url=http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
+
+	// try to resume this session with a invalid version of the flow which is missing a group
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(testFlowMissingGroupAssets, testAssetURLs, waitingSession, []flows.Event{
+		events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), nil, nil, urns.NewTelegramURN(1234567, "bob"), "hello", nil),
+	}))
+	ts.Equal(400, status)
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
+
+	// check we can resume if we include a fixed version of the flow as an asset
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", ts.buildResumeRequest(testValidFlowWithWaitAssets, testAssetURLs, waitingSession, []flows.Event{
+		events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), nil, nil, urns.NewTelegramURN(1234567, "bob"), "hello", nil),
+	}))
+	ts.Equal(200, status)
+
+	// check we got back a completed session
+	completedSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, testAssetURLs, body)
+	ts.Equal(flows.SessionStatus("completed"), completedSession.Status())
+
+	// mess with our waiting session JSON so we appear to be waiting on a node that doesn't exist in the flow
+	sessionJSON := ts.buildResumeRequest(`[]`, testAssetURLs, waitingSession, []flows.Event{
+		events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), nil, nil, urns.NewTelegramURN(1234567, "bob"), "hello", nil),
+	})
+	sessionJSON = strings.Replace(sessionJSON, "a58be63b-907d-4a1a-856b-0bb5579d7507", "626daa56-2fac-48eb-825d-af9a7ab23a2c", -1)
+
+	// and try to resume that
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/resume", sessionJSON)
+	ts.Equal(200, status)
+
+	// check we got back an errored session
+	erroredSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, testAssetURLs, body)
+	ts.Equal(flows.SessionStatus("errored"), erroredSession.Status())
 }
 
 func TestServerSuite(t *testing.T) {
