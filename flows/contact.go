@@ -69,36 +69,33 @@ func (c *Contact) Reference() *ContactReference { return NewContactReference(c.u
 
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
-
 	case "name":
 		return c.name
-
+	case "first_name":
+		names := utils.TokenizeString(c.name)
+		if len(names) >= 1 {
+			return names[0]
+		}
+		return ""
 	case "uuid":
 		return c.uuid
-
 	case "urns":
 		return c.urns
-
 	case "language":
 		return string(c.language)
-
 	case "groups":
 		return c.groups
-
 	case "fields":
 		return c.fields
-
 	case "timezone":
 		return c.timezone
-
 	case "urn":
 		return c.urns
-
 	case "channel":
 		return c.channel
 	}
 
-	return fmt.Errorf("No field '%s' on contact", key)
+	return fmt.Errorf("no field '%s' on contact", key)
 }
 
 // Default returns our default value in the context
