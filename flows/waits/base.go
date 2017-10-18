@@ -14,8 +14,16 @@ func (w *BaseWait) HasTimedOut() bool {
 	return false
 }
 
-func (w *BaseWait) begin(run flows.FlowRun) {
+func (w *BaseWait) Begin(run flows.FlowRun) {
 	run.SetStatus(flows.RunStatusWaiting)
+}
+
+func (w *BaseWait) Resume(run flows.FlowRun) {
+	run.SetStatus(flows.RunStatusActive)
+}
+
+func (w *BaseWait) ResumeByTimeOut(run flows.FlowRun) {
+	w.Resume(run)
 }
 
 // Base of all wait types than can timeout
@@ -26,7 +34,7 @@ type TimeoutWait struct {
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
 }
 
-func (w *TimeoutWait) begin(run flows.FlowRun) {
+func (w *TimeoutWait) Begin(run flows.FlowRun) {
 	if w.Timeout != nil {
 		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout))
 
@@ -34,7 +42,7 @@ func (w *TimeoutWait) begin(run flows.FlowRun) {
 		w.Timeout = nil
 	}
 
-	w.BaseWait.begin(run)
+	w.BaseWait.Begin(run)
 }
 
 func (w *TimeoutWait) HasTimedOut() bool {
