@@ -174,7 +174,7 @@ func newVars() vars {
 			"attachments": "run.input.attachments",
 			"time":        "run.input.created_on",
 			"contact": arbitraryVars{
-				base:    "step.contact",
+				base:    "contact",
 				nesting: "fields",
 				vars:    contactVars,
 			},
