@@ -183,6 +183,9 @@ type Wait interface {
 	Begin(FlowRun, Step)
 	CanResume(FlowRun, Step) bool
 	HasTimedOut() bool
+
+	Resume(FlowRun)
+	ResumeByTimeOut(FlowRun)
 }
 
 // FlowTranslations provide a way to get the Translations for a flow for a specific language

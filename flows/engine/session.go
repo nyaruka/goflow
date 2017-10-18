@@ -174,8 +174,16 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 
 	// events can change run status so only proceed to the wait if we're still waiting
 	if waitingRun.Status() == flows.RunStatusWaiting {
-		if s.wait.CanResume(waitingRun, step) {
-			waitingRun.SetStatus(flows.RunStatusActive)
+		waitCanResume := s.wait.CanResume(waitingRun, step)
+		waitHasTimedOut := s.wait.HasTimedOut()
+
+		if waitCanResume || waitHasTimedOut {
+			if waitCanResume {
+				s.wait.Resume(waitingRun)
+			} else {
+				s.wait.ResumeByTimeOut(waitingRun)
+			}
+
 			destination, err = s.findResumeDestination(waitingRun)
 			if err != nil {
 				return err
@@ -474,6 +482,11 @@ func ReadSession(cache *AssetCache, assetURLs AssetTypeURLs, data json.RawMessag
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	// perform some structural validation
+	if s.status == flows.SessionStatusWaiting && s.wait == nil {
+		return nil, fmt.Errorf("session has status of \"waiting\" but no wait object")
 	}
 
 	return s, nil

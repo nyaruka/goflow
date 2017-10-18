@@ -14,7 +14,7 @@ type NothingWait struct {
 func (w *NothingWait) Type() string { return TypeNothing }
 
 func (w *NothingWait) Begin(run flows.FlowRun, step flows.Step) {
-	w.BaseWait.begin(run)
+	w.BaseWait.Begin(run)
 
 	run.ApplyEvent(step, nil, events.NewNothingWait())
 }
