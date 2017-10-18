@@ -43,7 +43,7 @@ var flowTests = []struct {
 var writeOutput bool
 var serverURL = ""
 
-var assetURLs = map[engine.AssetItemType]string{
+var assetURLs = engine.AssetTypeURLs{
 	"channel": "http://testserver/assets/channel",
 	"field":   "http://testserver/assets/field",
 	"flow":    "http://testserver/assets/flow",

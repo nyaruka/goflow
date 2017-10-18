@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/buger/jsonparser"
@@ -63,7 +64,7 @@ func (j JSONFragment) Resolve(key string) interface{} {
 	}
 	val, valType, _, err := jsonparser.Get(j, key)
 	if err != nil {
-		return err
+		return fmt.Errorf("no such variable: %s", key)
 	}
 
 	if valType == jsonparser.String {

@@ -105,14 +105,16 @@ func (c *AssetCache) fetchAsset(url assetURL, aType assetType, itemType AssetIte
 	return readAsset(buf, aType, itemType)
 }
 
+type AssetTypeURLs map[AssetItemType]string
+
 // a higher level wrapper for the cache
 type sessionAssets struct {
 	cache    *AssetCache
-	typeURLs map[AssetItemType]string
+	typeURLs AssetTypeURLs
 }
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(cache *AssetCache, typeURLs map[AssetItemType]string) flows.SessionAssets {
+func NewSessionAssets(cache *AssetCache, typeURLs AssetTypeURLs) flows.SessionAssets {
 	return &sessionAssets{cache: cache, typeURLs: typeURLs}
 }
 
@@ -284,7 +286,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 
 		asset, err := readAsset(envelope.Content, aType, envelope.ItemType)
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
 		}
 		c.addAsset(envelope.URL, asset)
 	}

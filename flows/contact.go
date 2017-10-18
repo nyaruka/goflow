@@ -193,14 +193,8 @@ type contactEnvelope struct {
 // ReadContact decodes a contact from the passed in JSON
 func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
-	var err error
 
-	err = json.Unmarshal(data, &envelope)
-	if err != nil {
-		return nil, err
-	}
-	err = utils.Validate(envelope)
-	if err != nil {
+	if err := utils.UnmarshalAndValidate(data, &envelope, "contact"); err != nil {
 		return nil, err
 	}
 

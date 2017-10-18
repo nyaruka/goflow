@@ -325,10 +325,9 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID        flows.RunUUID     `json:"uuid"`
-	FlowUUID    flows.FlowUUID    `json:"flow_uuid"`
-	ContactUUID flows.ContactUUID `json:"contact_uuid"`
-	Path        []*step           `json:"path"`
+	UUID     flows.RunUUID  `json:"uuid"`
+	FlowUUID flows.FlowUUID `json:"flow_uuid"`
+	Path     []*step        `json:"path"`
 
 	Status     flows.RunStatus `json:"status"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty"`
@@ -354,9 +353,8 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		return nil, err
 	}
 
-	r.contact = session.Contact()
-
 	r.session = session
+	r.contact = session.Contact()
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
 	r.webhook = envelope.Webhook
@@ -408,7 +406,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 
 	re.UUID = r.uuid
 	re.FlowUUID = r.flow.UUID()
-	re.ContactUUID = r.contact.UUID()
 	re.Extra, _ = json.Marshal(r.extra)
 	re.Status = r.status
 	re.CreatedOn = r.createdOn

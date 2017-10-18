@@ -38,7 +38,7 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(cache *AssetCache, assetURLs map[AssetItemType]string) flows.Session {
+func NewSession(cache *AssetCache, assetURLs AssetTypeURLs) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     NewSessionAssets(cache, assetURLs),
@@ -124,19 +124,36 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
 }
 
-// Resume resumes a waiting session
+// Resume tries to resume a waiting session
 func (s *session) Resume(callerEvents []flows.Event) error {
 	if s.status != flows.SessionStatusWaiting {
-		return utils.NewValidationErrors("only waiting sessions can be resumed")
+		return fmt.Errorf("only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
+	if waitingRun == nil {
+		return fmt.Errorf("session doesn't contain any runs which are waiting")
+	}
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
-		return err
+		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", waitingRun.Flow().UUID(), err)
 	}
 
+	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
+		// if we got an error, add it to the log and shut everything down
+		for _, run := range s.runs {
+			run.Exit(flows.RunStatusErrored)
+		}
+		s.status = flows.SessionStatusErrored
+		s.LogEvent(nil, nil, events.NewFatalErrorEvent(err))
+	}
+
+	return nil
+}
+
+// Resume resumes a waiting session
+func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Event) error {
 	// figure out where in the flow we began waiting on
 	step, _, err := waitingRun.PathLocation()
 	if err != nil {
@@ -412,14 +429,14 @@ const noDestination = flows.NodeUUID("")
 type sessionEnvelope struct {
 	Environment json.RawMessage      `json:"environment"`
 	Trigger     *utils.TypedEnvelope `json:"trigger"`
-	Contact     json.RawMessage      `json:"contact"`
+	Contact     *json.RawMessage     `json:"contact,omitempty"`
 	Runs        []json.RawMessage    `json:"runs"`
 	Status      flows.SessionStatus  `json:"status"`
 	Wait        *utils.TypedEnvelope `json:"wait,omitempty"`
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data json.RawMessage) (flows.Session, error) {
+func ReadSession(cache *AssetCache, assetURLs AssetTypeURLs, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
@@ -438,16 +455,16 @@ func ReadSession(cache *AssetCache, assetURLs map[AssetItemType]string, data jso
 
 	// read our trigger
 	if envelope.Trigger != nil {
-		s.trigger, err = triggers.ReadTrigger(s, envelope.Trigger)
-		if err != nil {
+		if s.trigger, err = triggers.ReadTrigger(s, envelope.Trigger); err != nil {
 			return nil, err
 		}
 	}
 
 	// read our contact
-	s.contact, err = flows.ReadContact(s, envelope.Contact)
-	if err != nil {
-		return nil, err
+	if envelope.Contact != nil {
+		if s.contact, err = flows.ReadContact(s, *envelope.Contact); err != nil {
+			return nil, err
+		}
 	}
 
 	// read each of our runs
@@ -484,8 +501,13 @@ func (s *session) MarshalJSON() ([]byte, error) {
 	if envelope.Environment, err = json.Marshal(s.env); err != nil {
 		return nil, err
 	}
-	if envelope.Contact, err = json.Marshal(s.contact); err != nil {
-		return nil, err
+	if s.contact != nil {
+		var contactJSON json.RawMessage
+		contactJSON, err = json.Marshal(s.contact)
+		if err != nil {
+			return nil, err
+		}
+		envelope.Contact = &contactJSON
 	}
 	if s.trigger != nil {
 		if envelope.Trigger, err = utils.EnvelopeFromTyped(s.trigger); err != nil {
