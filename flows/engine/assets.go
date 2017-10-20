@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -47,9 +48,16 @@ func (c *AssetCache) Shutdown() {
 	c.cache.Stop()
 }
 
+func (c *AssetCache) normalizeURL(url string) string {
+	if !strings.HasSuffix(url, "/") {
+		url += "/"
+	}
+	return url
+}
+
 // adds an asset to the cache identified by the given URL
 func (c *AssetCache) addAsset(url string, asset interface{}) {
-	c.cache.Set(url, asset, time.Hour*24)
+	c.cache.Set(c.normalizeURL(url), asset, time.Hour*24)
 }
 
 // gets an item asset from the cache if it's there or from the asset server
@@ -74,7 +82,7 @@ func (c *AssetCache) getSetAsset(server AssetServer, itemType assetType) (interf
 
 // gets an asset from the cache if it's there or from the asset server
 func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType, isSet bool) (interface{}, error) {
-	item := c.cache.Get(url)
+	item := c.cache.Get(c.normalizeURL(url))
 
 	// asset was in cache, so just return it
 	if item != nil {
@@ -157,7 +165,11 @@ func (s *assetServer) getItemAssetURL(itemType assetType, uuid string) (string, 
 		return "", err
 	}
 
-	return fmt.Sprintf("%s/%s", setURL, uuid), nil
+	if !strings.HasSuffix(setURL, "/") {
+		setURL += "/"
+	}
+
+	return fmt.Sprintf("%s%s/", setURL, uuid), nil
 }
 
 // fetches an asset by its URL and parses it as the provided type
@@ -204,12 +216,12 @@ func NewMockAssetServer() AssetServer {
 	return &mockAssetServer{
 		assetServer: assetServer{
 			typeURLs: map[assetType]string{
-				assetTypeChannel:           "http://testserver/assets/channel",
-				assetTypeField:             "http://testserver/assets/field",
-				assetTypeFlow:              "http://testserver/assets/flow",
-				assetTypeGroup:             "http://testserver/assets/group",
-				assetTypeLabel:             "http://testserver/assets/label",
-				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy",
+				assetTypeChannel:           "http://testserver/assets/channel/",
+				assetTypeField:             "http://testserver/assets/field/",
+				assetTypeFlow:              "http://testserver/assets/flow/",
+				assetTypeGroup:             "http://testserver/assets/group/",
+				assetTypeLabel:             "http://testserver/assets/label/",
+				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy/",
 			},
 		},
 		mockResponses:  map[string]json.RawMessage{},
