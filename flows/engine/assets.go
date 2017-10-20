@@ -108,13 +108,13 @@ type AssetServer interface {
 }
 
 type assetServer struct {
-	requestHeaders map[string]string
-	typeURLs       map[assetType]string
+	authHeader string
+	typeURLs   map[assetType]string
 }
 
 type assetServerEnvelope struct {
-	RequestHeaders map[string]string    `json:"request_headers"`
-	TypeURLs       map[assetType]string `json:"type_urls"`
+	AuthHeader string               `json:"auth_header"`
+	TypeURLs   map[assetType]string `json:"type_urls"`
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
@@ -124,12 +124,12 @@ func ReadAssetServer(data json.RawMessage) (AssetServer, error) {
 		return nil, err
 	}
 
-	return NewAssetServer(envelope.RequestHeaders, envelope.TypeURLs), nil
+	return NewAssetServer(envelope.AuthHeader, envelope.TypeURLs), nil
 }
 
 // NewAssetServer creates a new asset server
-func NewAssetServer(requestHeaders map[string]string, typeURLs map[assetType]string) AssetServer {
-	return &assetServer{requestHeaders: requestHeaders, typeURLs: typeURLs}
+func NewAssetServer(authHeader string, typeURLs map[assetType]string) AssetServer {
+	return &assetServer{authHeader: authHeader, typeURLs: typeURLs}
 }
 
 // isTypeSupported returns whether the given asset item type is supported
@@ -166,8 +166,9 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool) (in
 	}
 
 	// set request headers
-	for header, value := range s.requestHeaders {
-		request.Header.Set(header, value)
+	request.Header.Set("User-Agent", "flowserver/1.0")
+	if s.authHeader != "" {
+		request.Header.Set("Authentication", s.authHeader)
 	}
 
 	// make the actual request
@@ -200,9 +201,6 @@ type mockAssetServer struct {
 func NewMockAssetServer() AssetServer {
 	return &mockAssetServer{
 		assetServer: assetServer{
-			requestHeaders: map[string]string{
-				"User-Agent": "FlowServerTest/1.0",
-			},
 			typeURLs: map[assetType]string{
 				assetTypeChannel:           "http://testserver/assets/channel",
 				assetTypeField:             "http://testserver/assets/field",
@@ -229,7 +227,7 @@ func (s *mockAssetServer) fetchAsset(url string, itemType assetType, isSet bool)
 
 func (s *mockAssetServer) MarshalJSON() ([]byte, error) {
 	envelope := &assetServerEnvelope{}
-	envelope.RequestHeaders = s.requestHeaders
+	envelope.AuthHeader = s.authHeader
 	envelope.TypeURLs = s.typeURLs
 	return json.Marshal(envelope)
 }
