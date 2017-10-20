@@ -114,7 +114,9 @@ func NewAssetServer(requestHeaders map[string]string, typeURLs map[assetType]str
 // NewTestAssetServer creates a new asset server for testing
 func NewTestAssetServer() *AssetServer {
 	return &AssetServer{
-		RequestHeaders: map[string]string{},
+		RequestHeaders: map[string]string{
+			"User-Agent": "FlowServerTest/1.0",
+		},
 		TypeURLs: map[assetType]string{
 			assetTypeChannel:           "http://testserver/assets/channel",
 			assetTypeField:             "http://testserver/assets/field",
@@ -154,13 +156,28 @@ func (s *AssetServer) getItemAssetURL(itemType assetType, uuid string) (assetURL
 
 // fetches an asset by its URL and parses it as the provided type
 func (s *AssetServer) fetchAsset(url assetURL, itemType assetType, isSet bool) (interface{}, error) {
-	response, err := http.Get(string(url))
+	request, err := http.NewRequest("GET", string(url), nil)
 	if err != nil {
 		return nil, err
 	}
+
+	// set request headers
+	for header, value := range s.RequestHeaders {
+		request.Header.Set(header, value)
+	}
+
+	// make the actual request
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
 	if response.StatusCode != 200 {
 		return nil, fmt.Errorf("asset request returned non-200 response")
 	}
+
 	buf, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
