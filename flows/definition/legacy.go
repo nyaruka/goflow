@@ -364,7 +364,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		return &actions.EmailAction{
 			Subject:    migratedSubject,
 			Body:       migratedBody,
-			Emails:     migratedEmails,
+			Addresses:  migratedEmails,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 
