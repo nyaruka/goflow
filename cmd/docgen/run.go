@@ -81,20 +81,13 @@ var contactDef = `
 
 func createExampleSession(assetsDef string) (flows.Session, error) {
 	// read our assets
-	assetCache := engine.NewAssetCache(100, 5)
+	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(assetsDef)); err != nil {
 		return nil, err
 	}
 
 	// create our engine session
-	assetURLs := engine.AssetTypeURLs{
-		"channel":            "http://testserver/assets/channel",
-		"field":              "http://testserver/assets/field",
-		"flow":               "http://testserver/assets/flow",
-		"group":              "http://testserver/assets/group",
-		"location_hierarchy": "http://testserver/assets/location_hierarchy",
-	}
-	session := engine.NewSession(assetCache, assetURLs)
+	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
 
 	// create our contact
 	contact, err := flows.ReadContact(session, json.RawMessage(contactDef))

@@ -82,7 +82,8 @@ func NewFlowServer(config *FlowServerConfig, logger *logrus.Logger) *FlowServer 
 
 // Start starts the flow server
 func (s *FlowServer) Start() {
-	s.assetCache = engine.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
+	fetchUserAgent := fmt.Sprintf("flowserver/%s", s.config.Version)
+	s.assetCache = engine.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune, fetchUserAgent)
 
 	go func() {
 		err := s.httpServer.ListenAndServe()
@@ -123,10 +124,10 @@ func (r *sessionResponse) MarshalJSON() ([]byte, error) {
 }
 
 type startRequest struct {
-	Assets    *json.RawMessage       `json:"assets"`
-	AssetURLs engine.AssetTypeURLs   `json:"asset_urls" validate:"required"`
-	Trigger   *utils.TypedEnvelope   `json:"trigger" validate:"required"`
-	Events    []*utils.TypedEnvelope `json:"events"`
+	Assets      *json.RawMessage       `json:"assets"`
+	AssetServer json.RawMessage        `json:"asset_server" validate:"required"`
+	Trigger     *utils.TypedEnvelope   `json:"trigger" validate:"required"`
+	Events      []*utils.TypedEnvelope `json:"events"`
 }
 
 func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -155,8 +156,14 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 		}
 	}
 
+	// read and validate our asset server
+	assetServer, err := engine.ReadAssetServer(start.AssetServer)
+	if err != nil {
+		return nil, err
+	}
+
 	// build our session
-	session := engine.NewSession(s.assetCache, start.AssetURLs)
+	session := engine.NewSession(s.assetCache, assetServer)
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
@@ -180,10 +187,10 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 }
 
 type resumeRequest struct {
-	Assets    json.RawMessage        `json:"assets"`
-	AssetURLs engine.AssetTypeURLs   `json:"asset_urls" validate:"required"`
-	Session   json.RawMessage        `json:"session" validate:"required"`
-	Events    []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
+	Assets      *json.RawMessage       `json:"assets"`
+	AssetServer json.RawMessage        `json:"asset_server" validate:"required"`
+	Session     json.RawMessage        `json:"session" validate:"required"`
+	Events      []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
 }
 
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -205,13 +212,21 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 		return nil, err
 	}
 
-	// read and validate our assets
-	if err = s.assetCache.Include(resume.Assets); err != nil {
+	// include any embedded assets
+	if resume.Assets != nil {
+		if err = s.assetCache.Include(*resume.Assets); err != nil {
+			return nil, err
+		}
+	}
+
+	// read and validate our asset server
+	assetServer, err := engine.ReadAssetServer(resume.AssetServer)
+	if err != nil {
 		return nil, err
 	}
 
 	// read our session
-	session, err := engine.ReadSession(s.assetCache, resume.AssetURLs, resume.Session)
+	session, err := engine.ReadSession(s.assetCache, assetServer, resume.Session)
 	if err != nil {
 		return nil, err
 	}
