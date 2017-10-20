@@ -29,14 +29,16 @@ const (
 
 // AssetCache fetches and caches assets for the engine
 type AssetCache struct {
-	cache      *ccache.Cache
-	fetchMutex sync.Mutex
+	cache          *ccache.Cache
+	fetchUserAgent string
+	fetchMutex     sync.Mutex
 }
 
 // NewAssetCache creates a new asset cache
-func NewAssetCache(maxSize int64, pruneItems int) *AssetCache {
+func NewAssetCache(maxSize int64, pruneItems int, fetchUserAgent string) *AssetCache {
 	return &AssetCache{
-		cache: ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
+		cache:          ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
+		fetchUserAgent: fetchUserAgent,
 	}
 }
 
@@ -90,7 +92,7 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType
 	}
 
 	// actually fetch the asset from it's URL
-	fetched, err := server.fetchAsset(url, itemType, isSet)
+	fetched, err := server.fetchAsset(url, itemType, isSet, c.fetchUserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +106,7 @@ type AssetServer interface {
 	isTypeSupported(assetType) bool
 	getSetAssetURL(assetType) (string, error)
 	getItemAssetURL(assetType, string) (string, error)
-	fetchAsset(string, assetType, bool) (interface{}, error)
+	fetchAsset(string, assetType, bool, string) (interface{}, error)
 }
 
 type assetServer struct {
@@ -159,14 +161,14 @@ func (s *assetServer) getItemAssetURL(itemType assetType, uuid string) (string, 
 }
 
 // fetches an asset by its URL and parses it as the provided type
-func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool) (interface{}, error) {
+func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, userAgent string) (interface{}, error) {
 	request, err := http.NewRequest("GET", string(url), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// set request headers
-	request.Header.Set("User-Agent", "flowserver/1.0")
+	request.Header.Set("User-Agent", userAgent)
 	if s.authHeader != "" {
 		request.Header.Set("Authentication", s.authHeader)
 	}
@@ -215,7 +217,7 @@ func NewMockAssetServer() AssetServer {
 	}
 }
 
-func (s *mockAssetServer) fetchAsset(url string, itemType assetType, isSet bool) (interface{}, error) {
+func (s *mockAssetServer) fetchAsset(url string, itemType assetType, isSet bool, userAgent string) (interface{}, error) {
 	s.mockedRequests = append(s.mockedRequests, url)
 
 	assetBuf, found := s.mockResponses[url]

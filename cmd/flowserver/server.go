@@ -82,7 +82,8 @@ func NewFlowServer(config *FlowServerConfig, logger *logrus.Logger) *FlowServer 
 
 // Start starts the flow server
 func (s *FlowServer) Start() {
-	s.assetCache = engine.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
+	fetchUserAgent := fmt.Sprintf("flowserver/%s", s.config.Version)
+	s.assetCache = engine.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune, fetchUserAgent)
 
 	go func() {
 		err := s.httpServer.ListenAndServe()

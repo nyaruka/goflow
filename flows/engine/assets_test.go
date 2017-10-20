@@ -17,7 +17,7 @@ func TestAssetCache(t *testing.T) {
 		"uuid": "f2a3e00c-e86a-4282-a9e8-bb2275e1b9a4",
 		"name": "Spam"
 	}`)
-	cache := NewAssetCache(100, 10)
+	cache := NewAssetCache(100, 10, "testing/1.0")
 
 	asset, err := cache.getSetAsset(server, assetType("pizza"))
 	assert.EqualError(t, err, "asset type 'pizza' not supported by asset server")
@@ -55,7 +55,7 @@ func TestAssetServer(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "http://testserver/assets/group/2aad21f6-30b7-42c5-bd7f-1b720c154817", url)
 
-	asset, err := server.fetchAsset(url, assetTypeGroup, false)
+	asset, err := server.fetchAsset(url, assetTypeGroup, false, "testing/1.0")
 	assert.NoError(t, err)
 	assert.Equal(t, server.mockedRequests, []string{"http://testserver/assets/group/2aad21f6-30b7-42c5-bd7f-1b720c154817"})
 
@@ -73,7 +73,7 @@ func TestSessionAssets(t *testing.T) {
 			"name": "Survey Audience"
 		}
 	]`)
-	cache := NewAssetCache(100, 10)
+	cache := NewAssetCache(100, 10, "testing/1.0")
 	sessionAssets := NewSessionAssets(cache, server)
 
 	group, err := sessionAssets.GetGroup(flows.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
@@ -90,7 +90,7 @@ func TestFlowValidation(t *testing.T) {
 	assert.NoError(t, err)
 
 	// build our session
-	assetCache := NewAssetCache(100, 5)
+	assetCache := NewAssetCache(100, 5, "testing/1.0")
 	err = assetCache.Include(assetsJSON)
 	assert.NoError(t, err)
 

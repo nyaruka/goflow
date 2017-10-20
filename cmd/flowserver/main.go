@@ -24,12 +24,17 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-var version = "dev"
+var version = "Dev"
 
 func main() {
 	m := NewConfigWithPath("flowserver.toml")
 	config := new(FlowServerConfig)
 	m.MustLoad(config)
+
+	// if we have a custom version, use it
+	if version != "Dev" {
+		config.Version = version
+	}
 
 	logger := logrus.New()
 	lg.RedirectStdlogOutput(logger)

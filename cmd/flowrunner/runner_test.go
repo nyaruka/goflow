@@ -87,7 +87,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	assetCache := engine.NewAssetCache(100, 5)
+	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(defaultAssetsJSON); err != nil {
 		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
 	}
