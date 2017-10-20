@@ -129,7 +129,6 @@ func newVars() vars {
 
 	contactVars := map[string]interface{}{
 		"first_name":  "first_name",
-		"last_name":   "last_name",
 		"language":    "language",
 		"name":        "name",
 		"groups":      "groups",

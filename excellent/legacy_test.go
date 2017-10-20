@@ -136,7 +136,7 @@ func TestTranslate(t *testing.T) {
 		{old: "@(CHAR(10))", new: "@(char(10))"},
 		{old: "@(CLEAN(contact.blerg))", new: "@(clean(contact.fields.blerg))"},
 		{old: "@(CODE(\"A\"))", new: "@(code(\"A\"))"},
-		{old: "@(CONCATENATE(contact.first_name, \" \", contact.last_name))", new: "@(contact.first_name & \" \" & contact.last_name)"},
+		{old: "@(CONCATENATE(contact.first_name, \" \", contact.language))", new: "@(contact.first_name & \" \" & contact.language)"},
 
 		{old: "@(FIXED(contact.balance))", new: "@(format_num(contact.fields.balance))"},
 		{old: "@(FIXED(contact.balance, 2))", new: "@(format_num(contact.fields.balance, 2))"},
