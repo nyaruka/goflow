@@ -43,14 +43,6 @@ var flowTests = []struct {
 var writeOutput bool
 var serverURL = ""
 
-var assetURLs = engine.AssetTypeURLs{
-	"channel": "http://testserver/assets/channel",
-	"field":   "http://testserver/assets/field",
-	"flow":    "http://testserver/assets/flow",
-	"group":   "http://testserver/assets/group",
-	"label":   "http://testserver/assets/label",
-}
-
 func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite TestFlow output")
 }
@@ -103,7 +95,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, assetURLs)
+	session := engine.NewSession(assetCache, engine.NewTestAssetServer())
 
 	contactJSON, err := readFile("contacts/", contactFilename)
 	if err != nil {
@@ -140,7 +132,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		session, err = engine.ReadSession(assetCache, assetURLs, outJSON)
+		session, err = engine.ReadSession(assetCache, engine.NewTestAssetServer(), outJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -285,11 +277,11 @@ func TestFlows(t *testing.T) {
 				actualOutput := runResult.outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(runResult.assetCache, assetURLs, actualOutput.Session)
+				actualSession, err := engine.ReadSession(runResult.assetCache, engine.NewTestAssetServer(), actualOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.assets, err)
 				}
-				expectedSession, err := engine.ReadSession(runResult.assetCache, assetURLs, expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(runResult.assetCache, engine.NewTestAssetServer(), expectedOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 				}

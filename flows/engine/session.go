@@ -38,10 +38,10 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(cache *AssetCache, assetURLs AssetTypeURLs) flows.Session {
+func NewSession(assetCache *AssetCache, assetServer *AssetServer) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
-		assets:     NewSessionAssets(cache, assetURLs),
+		assets:     NewSessionAssets(assetCache, assetServer),
 		status:     flows.SessionStatusActive,
 		log:        []flows.LogEntry{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -436,7 +436,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(cache *AssetCache, assetURLs AssetTypeURLs, data json.RawMessage) (flows.Session, error) {
+func ReadSession(assetCache *AssetCache, assetServer *AssetServer, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
@@ -444,7 +444,7 @@ func ReadSession(cache *AssetCache, assetURLs AssetTypeURLs, data json.RawMessag
 		return nil, err
 	}
 
-	s := NewSession(cache, assetURLs).(*session)
+	s := NewSession(assetCache, assetServer).(*session)
 	s.status = envelope.Status
 
 	// read our environment

@@ -8,14 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var testAssetURLs = AssetTypeURLs{
-	"channel": "http://testserver/assets/channel",
-	"field":   "http://testserver/assets/field",
-	"flow":    "http://testserver/assets/flow",
-	"group":   "http://testserver/assets/group",
-	"label":   "http://testserver/assets/label",
-}
-
 func TestFlowValidation(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/assets.json")
 	assert.NoError(t, err)
@@ -25,7 +17,7 @@ func TestFlowValidation(t *testing.T) {
 	err = assetCache.Include(assetsJSON)
 	assert.NoError(t, err)
 
-	session := NewSession(assetCache, testAssetURLs)
+	session := NewSession(assetCache, NewTestAssetServer())
 	flow, err := session.Assets().GetFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	assert.NoError(t, err)
 

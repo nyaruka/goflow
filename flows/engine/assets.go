@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"sync"
 	"time"
 
@@ -16,24 +17,15 @@ import (
 )
 
 type assetURL string
-type itemUUID string
-
 type assetType string
 
 const (
-	assetTypeObject assetType = "object"
-	assetTypeSet    assetType = "set"
-)
-
-type AssetItemType string
-
-const (
-	assetItemTypeChannel           AssetItemType = "channel"
-	assetItemTypeField             AssetItemType = "field"
-	assetItemTypeFlow              AssetItemType = "flow"
-	assetItemTypeGroup             AssetItemType = "group"
-	assetItemTypeLabel             AssetItemType = "label"
-	assetItemTypeLocationHierarchy AssetItemType = "location_hierarchy"
+	assetTypeChannel           assetType = "channel"
+	assetTypeField             assetType = "field"
+	assetTypeFlow              assetType = "flow"
+	assetTypeGroup             assetType = "group"
+	assetTypeLabel             assetType = "label"
+	assetTypeLocationHierarchy assetType = "location_hierarchy"
 )
 
 // AssetCache fetches and caches assets for the engine
@@ -59,8 +51,28 @@ func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
 	c.cache.Set(string(url), asset, time.Hour*24)
 }
 
+// gets an item asset from the cache if it's there or from the asset server
+func (c *AssetCache) getItemAsset(server *AssetServer, itemType assetType, uuid string) (interface{}, error) {
+	url, err := server.getItemAssetURL(itemType, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.getAsset(url, server, itemType, false)
+}
+
+// gets an set asset from the cache if it's there or from the asset server
+func (c *AssetCache) getSetAsset(server *AssetServer, itemType assetType) (interface{}, error) {
+	url, err := server.getSetAssetURL(itemType)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.getAsset(url, server, itemType, true)
+}
+
 // gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) getAsset(url assetURL, aType assetType, itemType AssetItemType) (interface{}, error) {
+func (c *AssetCache) getAsset(url assetURL, server *AssetServer, itemType assetType, isSet bool) (interface{}, error) {
 	item := c.cache.Get(string(url))
 
 	// asset was in cache, so just return it
@@ -79,7 +91,7 @@ func (c *AssetCache) getAsset(url assetURL, aType assetType, itemType AssetItemT
 	}
 
 	// actually fetch the asset from it's URL
-	fetched, err := c.fetchAsset(url, aType, itemType)
+	fetched, err := server.fetchAsset(url, itemType, isSet)
 	if err != nil {
 		return nil, err
 	}
@@ -88,8 +100,60 @@ func (c *AssetCache) getAsset(url assetURL, aType assetType, itemType AssetItemT
 	return fetched, nil
 }
 
+// AssetServer describes the asset server we'll fetch missing assets from
+type AssetServer struct {
+	RequestHeaders map[string]string    `json:"request_headers"`
+	TypeURLs       map[assetType]string `json:"type_urls"`
+}
+
+// NewAssetServer creates a new asset server
+func NewAssetServer(requestHeaders map[string]string, typeURLs map[assetType]string) *AssetServer {
+	return &AssetServer{RequestHeaders: requestHeaders, TypeURLs: typeURLs}
+}
+
+// NewTestAssetServer creates a new asset server for testing
+func NewTestAssetServer() *AssetServer {
+	return &AssetServer{
+		RequestHeaders: map[string]string{},
+		TypeURLs: map[assetType]string{
+			assetTypeChannel:           "http://testserver/assets/channel",
+			assetTypeField:             "http://testserver/assets/field",
+			assetTypeFlow:              "http://testserver/assets/flow",
+			assetTypeGroup:             "http://testserver/assets/group",
+			assetTypeLabel:             "http://testserver/assets/label",
+			assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy",
+		},
+	}
+}
+
+// isTypeSupported returns whether the given asset item type is supported
+func (s *AssetServer) isTypeSupported(itemType assetType) bool {
+	_, hasTypeURL := s.TypeURLs[itemType]
+	return hasTypeURL
+}
+
+// getSetAssetURL gets the URL for a set of the given asset type
+func (s *AssetServer) getSetAssetURL(itemType assetType) (assetURL, error) {
+	typeURL, typeFound := s.TypeURLs[itemType]
+	if !typeFound {
+		return "", fmt.Errorf("asset type '%s' not supported by asset server", itemType)
+	}
+
+	return assetURL(typeURL), nil
+}
+
+// getItemAssetURL gets the URL for an item of the given asset type
+func (s *AssetServer) getItemAssetURL(itemType assetType, uuid string) (assetURL, error) {
+	setURL, err := s.getSetAssetURL(itemType)
+	if err != nil {
+		return "", err
+	}
+
+	return assetURL(fmt.Sprintf("%s/%s", setURL, uuid)), nil
+}
+
 // fetches an asset by its URL and parses it as the provided type
-func (c *AssetCache) fetchAsset(url assetURL, aType assetType, itemType AssetItemType) (interface{}, error) {
+func (s *AssetServer) fetchAsset(url assetURL, itemType assetType, isSet bool) (interface{}, error) {
 	response, err := http.Get(string(url))
 	if err != nil {
 		return nil, err
@@ -102,36 +166,28 @@ func (c *AssetCache) fetchAsset(url assetURL, aType assetType, itemType AssetIte
 		return nil, err
 	}
 
-	return readAsset(buf, aType, itemType)
+	return readAsset(buf, itemType, isSet)
 }
-
-type AssetTypeURLs map[AssetItemType]string
 
 // a higher level wrapper for the cache
 type sessionAssets struct {
-	cache    *AssetCache
-	typeURLs AssetTypeURLs
+	cache  *AssetCache
+	server *AssetServer
 }
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(cache *AssetCache, typeURLs AssetTypeURLs) flows.SessionAssets {
-	return &sessionAssets{cache: cache, typeURLs: typeURLs}
-}
-
-// isTypeSupported returns whether the given asset item type is supported
-func (s *sessionAssets) isTypeSupported(itemType AssetItemType) bool {
-	_, hasTypeURL := s.typeURLs[itemType]
-	return hasTypeURL
+func NewSessionAssets(cache *AssetCache, server *AssetServer) flows.SessionAssets {
+	return &sessionAssets{cache: cache, server: server}
 }
 
 // HasLocations returns whether locations are supported as an asset item type
 func (s *sessionAssets) HasLocations() bool {
-	return s.isTypeSupported(assetItemTypeLocationHierarchy)
+	return s.server.isTypeSupported(assetTypeLocationHierarchy)
 }
 
+// GetLocationHierarchy gets the location hierarchy asset for the session
 func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error) {
-	url := s.getAssetSetURL(assetItemTypeLocationHierarchy)
-	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeLocationHierarchy)
+	asset, err := s.cache.getSetAsset(s.server, assetTypeLocationHierarchy)
 	if err != nil {
 		return nil, err
 	}
@@ -142,9 +198,9 @@ func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error)
 	return hierarchy, nil
 }
 
+// GetChannel gets a channel asset for the session
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	url := s.getAssetItemURL(assetItemTypeChannel, itemUUID(uuid))
-	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeChannel)
+	asset, err := s.cache.getItemAsset(s.server, assetTypeChannel, string(uuid))
 	if err != nil {
 		return nil, err
 	}
@@ -155,6 +211,7 @@ func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error
 	return channel, nil
 }
 
+// GetField gets a contact field asset for the session
 func (s *sessionAssets) GetField(key flows.FieldKey) (*flows.Field, error) {
 	fields, err := s.GetFieldSet()
 	if err != nil {
@@ -167,9 +224,9 @@ func (s *sessionAssets) GetField(key flows.FieldKey) (*flows.Field, error) {
 	return field, nil
 }
 
+// GetFieldSet gets the set of all fields asset for the session
 func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
-	url := s.getAssetSetURL(assetItemTypeField)
-	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeField)
+	asset, err := s.cache.getSetAsset(s.server, assetTypeField)
 	if err != nil {
 		return nil, err
 	}
@@ -180,9 +237,9 @@ func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
 	return fields, nil
 }
 
+// GetFlow gets a flow asset for the session
 func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	url := s.getAssetItemURL(assetItemTypeFlow, itemUUID(uuid))
-	asset, err := s.cache.getAsset(url, assetTypeObject, assetItemTypeFlow)
+	asset, err := s.cache.getItemAsset(s.server, assetTypeFlow, string(uuid))
 	if err != nil {
 		return nil, err
 	}
@@ -193,6 +250,7 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	return flow, nil
 }
 
+// GetGroup gets a contact group asset for the session
 func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
 	groups, err := s.GetGroupSet()
 	if err != nil {
@@ -205,9 +263,9 @@ func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
 	return group, nil
 }
 
+// GetGroupSet gets the set of all groups asset for the session
 func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
-	url := s.getAssetSetURL(assetItemTypeGroup)
-	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeGroup)
+	asset, err := s.cache.getSetAsset(s.server, assetTypeGroup)
 	if err != nil {
 		return nil, err
 	}
@@ -218,6 +276,7 @@ func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
 	return groups, nil
 }
 
+// GetLabel gets a message label asset for the session
 func (s *sessionAssets) GetLabel(uuid flows.LabelUUID) (*flows.Label, error) {
 	labels, err := s.GetLabelSet()
 	if err != nil {
@@ -231,8 +290,7 @@ func (s *sessionAssets) GetLabel(uuid flows.LabelUUID) (*flows.Label, error) {
 }
 
 func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
-	url := s.getAssetSetURL(assetItemTypeLabel)
-	asset, err := s.cache.getAsset(url, assetTypeSet, assetItemTypeLabel)
+	asset, err := s.cache.getSetAsset(s.server, assetTypeLabel)
 	if err != nil {
 		return nil, err
 	}
@@ -243,21 +301,13 @@ func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
 	return labels, nil
 }
 
-func (s *sessionAssets) getAssetSetURL(itemType AssetItemType) assetURL {
-	return assetURL(s.typeURLs[itemType])
-}
-
-func (s *sessionAssets) getAssetItemURL(itemType AssetItemType, uuid itemUUID) assetURL {
-	return assetURL(fmt.Sprintf("%s/%s", s.typeURLs[itemType], uuid))
-}
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type assetEnvelope struct {
 	URL      assetURL        `json:"url" validate:"required,url"`
-	ItemType AssetItemType   `json:"type" validate:"required"`
+	ItemType assetType       `json:"type" validate:"required"`
 	Content  json.RawMessage `json:"content"`
 	IsSet    bool            `json:"is_set"`
 }
@@ -277,14 +327,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		var aType assetType
-		if envelope.IsSet {
-			aType = assetTypeSet
-		} else {
-			aType = assetTypeObject
-		}
-
-		asset, err := readAsset(envelope.Content, aType, envelope.ItemType)
+		asset, err := readAsset(envelope.Content, envelope.ItemType, envelope.IsSet)
 		if err != nil {
 			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
 		}
@@ -295,29 +338,29 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 }
 
 // reads an asset from the given raw JSON data
-func readAsset(data json.RawMessage, aType assetType, itemType AssetItemType) (interface{}, error) {
+func readAsset(data json.RawMessage, itemType assetType, isSet bool) (interface{}, error) {
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
-	if aType == assetTypeObject && itemType == assetItemTypeLocationHierarchy {
+	if itemType == assetTypeLocationHierarchy && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return utils.ReadLocationHierarchy(data) }
-	} else if aType == assetTypeObject && itemType == assetItemTypeChannel {
+	} else if itemType == assetTypeChannel && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
-	} else if aType == assetTypeObject && itemType == assetItemTypeField {
+	} else if itemType == assetTypeField && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadField(data) }
-	} else if aType == assetTypeSet && itemType == assetItemTypeField {
+	} else if itemType == assetTypeField && isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) }
-	} else if aType == assetTypeObject && itemType == assetItemTypeFlow {
+	} else if itemType == assetTypeFlow && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
-	} else if aType == assetTypeObject && itemType == assetItemTypeGroup {
+	} else if itemType == assetTypeGroup && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroup(data) }
-	} else if aType == assetTypeSet && itemType == assetItemTypeGroup {
+	} else if itemType == assetTypeGroup && isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) }
-	} else if aType == assetTypeObject && itemType == assetItemTypeLabel {
+	} else if itemType == assetTypeLabel && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabel(data) }
-	} else if aType == assetTypeSet && itemType == assetItemTypeLabel {
+	} else if itemType == assetTypeLabel && isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabelSet(data) }
 	} else {
-		return nil, fmt.Errorf("unsupported asset type: %s of %s", aType, itemType)
+		return nil, fmt.Errorf("unsupported asset type: %s (set=%s)", itemType, strconv.FormatBool(isSet))
 	}
 
 	return assetReader(data)
