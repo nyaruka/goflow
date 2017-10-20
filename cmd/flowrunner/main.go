@@ -184,7 +184,7 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
-	session := engine.NewSession(assetCache, engine.NewTestAssetServer())
+	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
@@ -244,7 +244,7 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = engine.ReadSession(assetCache, engine.NewTestAssetServer(), outJSON)
+		session, err = engine.ReadSession(assetCache, engine.NewMockAssetServer(), outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}

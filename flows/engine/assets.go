@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type assetURL string
 type assetType string
 
 const (
@@ -47,12 +46,12 @@ func (c *AssetCache) Shutdown() {
 }
 
 // adds an asset to the cache identified by the given URL
-func (c *AssetCache) addAsset(url assetURL, asset interface{}) {
-	c.cache.Set(string(url), asset, time.Hour*24)
+func (c *AssetCache) addAsset(url string, asset interface{}) {
+	c.cache.Set(url, asset, time.Hour*24)
 }
 
 // gets an item asset from the cache if it's there or from the asset server
-func (c *AssetCache) getItemAsset(server *AssetServer, itemType assetType, uuid string) (interface{}, error) {
+func (c *AssetCache) getItemAsset(server AssetServer, itemType assetType, uuid string) (interface{}, error) {
 	url, err := server.getItemAssetURL(itemType, uuid)
 	if err != nil {
 		return nil, err
@@ -62,7 +61,7 @@ func (c *AssetCache) getItemAsset(server *AssetServer, itemType assetType, uuid 
 }
 
 // gets an set asset from the cache if it's there or from the asset server
-func (c *AssetCache) getSetAsset(server *AssetServer, itemType assetType) (interface{}, error) {
+func (c *AssetCache) getSetAsset(server AssetServer, itemType assetType) (interface{}, error) {
 	url, err := server.getSetAssetURL(itemType)
 	if err != nil {
 		return nil, err
@@ -72,8 +71,8 @@ func (c *AssetCache) getSetAsset(server *AssetServer, itemType assetType) (inter
 }
 
 // gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) getAsset(url assetURL, server *AssetServer, itemType assetType, isSet bool) (interface{}, error) {
-	item := c.cache.Get(string(url))
+func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType, isSet bool) (interface{}, error) {
+	item := c.cache.Get(url)
 
 	// asset was in cache, so just return it
 	if item != nil {
@@ -101,68 +100,73 @@ func (c *AssetCache) getAsset(url assetURL, server *AssetServer, itemType assetT
 }
 
 // AssetServer describes the asset server we'll fetch missing assets from
-type AssetServer struct {
+type AssetServer interface {
+	isTypeSupported(assetType) bool
+	getSetAssetURL(assetType) (string, error)
+	getItemAssetURL(assetType, string) (string, error)
+	fetchAsset(string, assetType, bool) (interface{}, error)
+}
+
+type assetServer struct {
+	requestHeaders map[string]string
+	typeURLs       map[assetType]string
+}
+
+type assetServerEnvelope struct {
 	RequestHeaders map[string]string    `json:"request_headers"`
 	TypeURLs       map[assetType]string `json:"type_urls"`
 }
 
-// NewAssetServer creates a new asset server
-func NewAssetServer(requestHeaders map[string]string, typeURLs map[assetType]string) *AssetServer {
-	return &AssetServer{RequestHeaders: requestHeaders, TypeURLs: typeURLs}
+// ReadAssetServer reads an asset server fronm the given JSON
+func ReadAssetServer(data json.RawMessage) (AssetServer, error) {
+	envelope := &assetServerEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, envelope, "asset_server"); err != nil {
+		return nil, err
+	}
+
+	return NewAssetServer(envelope.RequestHeaders, envelope.TypeURLs), nil
 }
 
-// NewTestAssetServer creates a new asset server for testing
-func NewTestAssetServer() *AssetServer {
-	return &AssetServer{
-		RequestHeaders: map[string]string{
-			"User-Agent": "FlowServerTest/1.0",
-		},
-		TypeURLs: map[assetType]string{
-			assetTypeChannel:           "http://testserver/assets/channel",
-			assetTypeField:             "http://testserver/assets/field",
-			assetTypeFlow:              "http://testserver/assets/flow",
-			assetTypeGroup:             "http://testserver/assets/group",
-			assetTypeLabel:             "http://testserver/assets/label",
-			assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy",
-		},
-	}
+// NewAssetServer creates a new asset server
+func NewAssetServer(requestHeaders map[string]string, typeURLs map[assetType]string) AssetServer {
+	return &assetServer{requestHeaders: requestHeaders, typeURLs: typeURLs}
 }
 
 // isTypeSupported returns whether the given asset item type is supported
-func (s *AssetServer) isTypeSupported(itemType assetType) bool {
-	_, hasTypeURL := s.TypeURLs[itemType]
+func (s *assetServer) isTypeSupported(itemType assetType) bool {
+	_, hasTypeURL := s.typeURLs[itemType]
 	return hasTypeURL
 }
 
 // getSetAssetURL gets the URL for a set of the given asset type
-func (s *AssetServer) getSetAssetURL(itemType assetType) (assetURL, error) {
-	typeURL, typeFound := s.TypeURLs[itemType]
+func (s *assetServer) getSetAssetURL(itemType assetType) (string, error) {
+	typeURL, typeFound := s.typeURLs[itemType]
 	if !typeFound {
 		return "", fmt.Errorf("asset type '%s' not supported by asset server", itemType)
 	}
 
-	return assetURL(typeURL), nil
+	return typeURL, nil
 }
 
 // getItemAssetURL gets the URL for an item of the given asset type
-func (s *AssetServer) getItemAssetURL(itemType assetType, uuid string) (assetURL, error) {
+func (s *assetServer) getItemAssetURL(itemType assetType, uuid string) (string, error) {
 	setURL, err := s.getSetAssetURL(itemType)
 	if err != nil {
 		return "", err
 	}
 
-	return assetURL(fmt.Sprintf("%s/%s", setURL, uuid)), nil
+	return fmt.Sprintf("%s/%s", setURL, uuid), nil
 }
 
 // fetches an asset by its URL and parses it as the provided type
-func (s *AssetServer) fetchAsset(url assetURL, itemType assetType, isSet bool) (interface{}, error) {
+func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool) (interface{}, error) {
 	request, err := http.NewRequest("GET", string(url), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// set request headers
-	for header, value := range s.RequestHeaders {
+	for header, value := range s.requestHeaders {
 		request.Header.Set(header, value)
 	}
 
@@ -186,14 +190,58 @@ func (s *AssetServer) fetchAsset(url assetURL, itemType assetType, isSet bool) (
 	return readAsset(buf, itemType, isSet)
 }
 
+type mockAssetServer struct {
+	assetServer
+	mockResponses  map[string]json.RawMessage
+	mockedRequests []string
+}
+
+// NewMockAssetServer creates a new mocked asset server for testing
+func NewMockAssetServer() AssetServer {
+	return &mockAssetServer{
+		assetServer: assetServer{
+			requestHeaders: map[string]string{
+				"User-Agent": "FlowServerTest/1.0",
+			},
+			typeURLs: map[assetType]string{
+				assetTypeChannel:           "http://testserver/assets/channel",
+				assetTypeField:             "http://testserver/assets/field",
+				assetTypeFlow:              "http://testserver/assets/flow",
+				assetTypeGroup:             "http://testserver/assets/group",
+				assetTypeLabel:             "http://testserver/assets/label",
+				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy",
+			},
+		},
+		mockResponses:  map[string]json.RawMessage{},
+		mockedRequests: []string{},
+	}
+}
+
+func (s *mockAssetServer) fetchAsset(url string, itemType assetType, isSet bool) (interface{}, error) {
+	s.mockedRequests = append(s.mockedRequests, url)
+
+	assetBuf, found := s.mockResponses[url]
+	if !found {
+		return nil, fmt.Errorf("mock asset server has no mocked response for URL: %s", url)
+	}
+	return readAsset(assetBuf, itemType, isSet)
+}
+
+func (s *mockAssetServer) MarshalJSON() ([]byte, error) {
+	envelope := &assetServerEnvelope{}
+	envelope.RequestHeaders = s.requestHeaders
+	envelope.TypeURLs = s.typeURLs
+	return json.Marshal(envelope)
+}
+
 // a higher level wrapper for the cache
 type sessionAssets struct {
 	cache  *AssetCache
-	server *AssetServer
+	server AssetServer
 }
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(cache *AssetCache, server *AssetServer) flows.SessionAssets {
+func NewSessionAssets(cache *AssetCache, server AssetServer) flows.SessionAssets {
 	return &sessionAssets{cache: cache, server: server}
 }
 
@@ -323,7 +371,7 @@ func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
 //------------------------------------------------------------------------------------------
 
 type assetEnvelope struct {
-	URL      assetURL        `json:"url" validate:"required,url"`
+	URL      string          `json:"url" validate:"required,url"`
 	ItemType assetType       `json:"type" validate:"required"`
 	Content  json.RawMessage `json:"content"`
 	IsSet    bool            `json:"is_set"`

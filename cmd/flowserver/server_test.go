@@ -181,11 +181,11 @@ var startRequestTemplate = `{
 type ServerTestSuite struct {
 	suite.Suite
 	flowServer  *FlowServer
-	assetServer *engine.AssetServer
+	assetServer engine.AssetServer
 }
 
 func (ts *ServerTestSuite) SetupSuite() {
-	ts.assetServer = engine.NewTestAssetServer()
+	ts.assetServer = engine.NewMockAssetServer()
 
 	ts.flowServer = NewFlowServer(NewTestConfig(), logrus.New())
 	ts.flowServer.Start()
@@ -254,9 +254,14 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 		ts.Require().NoError(err)
 	}
 
+	assets := json.RawMessage(assetsJSON)
+	assetServer, _ := json.Marshal(engine.NewMockAssetServer())
+
+	fmt.Printf("===================================================\n%s\n", string(assetServer))
+
 	request := &resumeRequest{
-		Assets:      json.RawMessage(assetsJSON),
-		AssetServer: engine.NewTestAssetServer(),
+		Assets:      &assets,
+		AssetServer: assetServer,
 		Session:     sessionJSON,
 		Events:      eventEnvelopes,
 	}

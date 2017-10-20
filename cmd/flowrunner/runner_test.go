@@ -95,7 +95,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, engine.NewTestAssetServer())
+	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
 
 	contactJSON, err := readFile("contacts/", contactFilename)
 	if err != nil {
@@ -132,7 +132,7 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		session, err = engine.ReadSession(assetCache, engine.NewTestAssetServer(), outJSON)
+		session, err = engine.ReadSession(assetCache, engine.NewMockAssetServer(), outJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -277,11 +277,11 @@ func TestFlows(t *testing.T) {
 				actualOutput := runResult.outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(runResult.assetCache, engine.NewTestAssetServer(), actualOutput.Session)
+				actualSession, err := engine.ReadSession(runResult.assetCache, engine.NewMockAssetServer(), actualOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.assets, err)
 				}
-				expectedSession, err := engine.ReadSession(runResult.assetCache, engine.NewTestAssetServer(), expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(runResult.assetCache, engine.NewMockAssetServer(), expectedOutput.Session)
 				if err != nil {
 					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 				}

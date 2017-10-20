@@ -87,7 +87,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	}
 
 	// create our engine session
-	session := engine.NewSession(assetCache, engine.NewTestAssetServer())
+	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
 
 	// create our contact
 	contact, err := flows.ReadContact(session, json.RawMessage(contactDef))

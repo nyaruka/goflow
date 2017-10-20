@@ -38,7 +38,7 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assetCache *AssetCache, assetServer *AssetServer) flows.Session {
+func NewSession(assetCache *AssetCache, assetServer AssetServer) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     NewSessionAssets(assetCache, assetServer),
@@ -436,7 +436,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assetCache *AssetCache, assetServer *AssetServer, data json.RawMessage) (flows.Session, error) {
+func ReadSession(assetCache *AssetCache, assetServer AssetServer, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
