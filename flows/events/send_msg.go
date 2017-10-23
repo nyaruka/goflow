@@ -8,45 +8,50 @@ import (
 // TypeSendMsg is a constant for incoming messages
 const TypeSendMsg string = "send_msg"
 
-// SendMsgEvent events are created for each outgoing message. They represent an MT message to a
-// contact, urn or group.
+// SendMsgEvent events are created for outgoing messages.
 //
 // ```
 //   {
 //     "type": "send_msg",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "urn": "tel:+12065551212",
-//     "contact_uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
 //     "text": "hi, what's up",
-//     "attachments": []
+//     "attachments": [],
+//     "urns": ["tel:+12065551212"],
+//     "contacts": [{"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"}]
 //   }
 // ```
 //
 // @event send_msg
 type SendMsgEvent struct {
 	BaseEvent
-	URN         urns.URN                `json:"urn,omitempty" validate:"omitempty,urn"`
-	Contact     *flows.ContactReference `json:"contact,omitempty"`
-	Group       *flows.GroupReference   `json:"group,omitempty"`
-	Text        string                  `json:"text"                      validate:"required"`
-	Attachments []string                `json:"attachments,omitempty"`
+	Text        string                    `json:"text"`
+	Attachments []string                  `json:"attachments,omitempty"`
+	URNs        []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
+	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
-// NewSendMsgToContact creates a new outgoing msg event for the passed in channel, contact and string
-func NewSendMsgToContact(contact *flows.ContactReference, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{BaseEvent: NewBaseEvent(), Contact: contact, Text: text, Attachments: attachments}
+// NewSendMsgToContactEvent creates a new outgoing msg event to a single contact
+func NewSendMsgToContactEvent(text string, attachments []string, contact *flows.ContactReference) *SendMsgEvent {
+	event := SendMsgEvent{
+		BaseEvent:   NewBaseEvent(),
+		Text:        text,
+		Attachments: attachments,
+		Contacts:    []*flows.ContactReference{contact},
+	}
 	return &event
 }
 
-// NewSendMsgToURN creates a new outgoing msg event for the passed in channel, urn and string
-func NewSendMsgToURN(urn urns.URN, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{BaseEvent: NewBaseEvent(), URN: urn, Text: text, Attachments: attachments}
-	return &event
-}
-
-// NewSendMsgToGroup creates a new outgoing msg event for the passed in channel, group and string
-func NewSendMsgToGroup(group *flows.GroupReference, text string, attachments []string) *SendMsgEvent {
-	event := SendMsgEvent{BaseEvent: NewBaseEvent(), Group: group, Text: text, Attachments: attachments}
+// NewSendMsgEvent creates a new outgoing msg event for the given recipients
+func NewSendMsgEvent(text string, attachments []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *SendMsgEvent {
+	event := SendMsgEvent{
+		BaseEvent:   NewBaseEvent(),
+		Text:        text,
+		Attachments: attachments,
+		URNs:        urns,
+		Contacts:    contacts,
+		Groups:      groups,
+	}
 	return &event
 }
 
