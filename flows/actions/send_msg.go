@@ -44,17 +44,7 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
-	// create events for each URN
-	for _, urn := range a.URNs {
-		log.Add(events.NewSendMsgToURN(urn, evaluatedText, evaluatedAttachments))
-	}
+	log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, a.URNs, a.Contacts, a.Groups))
 
-	for _, contact := range a.Contacts {
-		log.Add(events.NewSendMsgToContact(contact, evaluatedText, evaluatedAttachments))
-	}
-
-	for _, group := range a.Groups {
-		log.Add(events.NewSendMsgToGroup(group, evaluatedText, evaluatedAttachments))
-	}
 	return nil
 }

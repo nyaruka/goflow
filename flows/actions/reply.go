@@ -41,12 +41,11 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
 
 	urns := run.Contact().URNs()
+
 	if a.AllURNs && len(urns) > 0 {
-		for _, urn := range urns {
-			log.Add(events.NewSendMsgToURN(urn, evaluatedText, evaluatedAttachments))
-		}
+		log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, urns, nil, nil))
 	} else {
-		log.Add(events.NewSendMsgToContact(run.Contact().Reference(), evaluatedText, evaluatedAttachments))
+		log.Add(events.NewSendMsgToContactEvent(evaluatedText, evaluatedAttachments, run.Contact().Reference()))
 	}
 
 	return nil

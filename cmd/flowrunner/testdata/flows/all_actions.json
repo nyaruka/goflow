@@ -56,7 +56,7 @@
                             "type": "send_email",
                             "subject": "Here is your activation token",
                             "body": "Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @run.extra.coupons.0.code",
-                            "emails": [
+                            "addresses": [
                                 "@contact.urns.mailto"
                             ]
                         },

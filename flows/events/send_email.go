@@ -11,7 +11,7 @@ const TypeSendEmail string = "send_email"
 //   {
 //     "type": "send_email",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "email": "foo@bar.com",
+//     "addresses": ["foo@bar.com"],
 //     "subject": "Your activation token",
 //     "body": "Your activation token is AAFFKKEE"
 //   }
@@ -20,18 +20,18 @@ const TypeSendEmail string = "send_email"
 // @event send_email
 type SendEmailEvent struct {
 	BaseEvent
-	Email   string `json:"email"   validate:"required"`
-	Subject string `json:"subject" validate:"required"`
-	Body    string `json:"body"`
+	Addresses []string `json:"addresses" validate:"required,min=1"`
+	Subject   string   `json:"subject" validate:"required"`
+	Body      string   `json:"body"`
 }
 
 // NewSendEmailEvent returns a new email event with the passed in subject, body and emails
-func NewSendEmailEvent(email string, subject string, body string) *SendEmailEvent {
+func NewSendEmailEvent(addresses []string, subject string, body string) *SendEmailEvent {
 	return &SendEmailEvent{
 		BaseEvent: NewBaseEvent(),
+		Addresses: addresses,
 		Subject:   subject,
 		Body:      body,
-		Email:     email,
 	}
 }
 

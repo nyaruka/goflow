@@ -102,7 +102,7 @@
         "expected_action": {
             "type": "send_email",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "emails": ["bob@nyaruka.com", "@contact.fields.supervisor"],
+            "addresses": ["bob@nyaruka.com", "@contact.fields.supervisor"],
             "subject": "Subject @run.input",
             "body": "Body @run.input"
         },

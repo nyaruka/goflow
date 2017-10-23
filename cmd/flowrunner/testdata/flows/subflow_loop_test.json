@@ -8,10 +8,12 @@
         {
           "action_uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is the parent flow",
             "type": "send_msg"
@@ -34,10 +36,12 @@
         {
           "action_uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is the child flow",
             "type": "send_msg"
@@ -103,10 +107,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the parent flow",
                     "type": "send_msg"
@@ -146,10 +152,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the child flow",
                     "type": "send_msg"

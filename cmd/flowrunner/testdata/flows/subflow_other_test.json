@@ -76,10 +76,12 @@
         {
           "action_uuid": "ac403443-4e93-4127-8b03-469598cd7ae2",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi there, let's go to the child.",
             "type": "send_msg"
@@ -102,10 +104,12 @@
         {
           "action_uuid": "9b3d32d4-aa6c-44e0-95cd-92117c67738f",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Welcome to the child, say yes or no!",
             "type": "send_msg"
@@ -159,10 +163,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -205,10 +211,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -266,10 +274,12 @@
         {
           "action_uuid": "ef6b42af-9751-4120-972c-e60771904dd2",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither.",
             "type": "send_msg"
@@ -323,10 +333,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -377,10 +389,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -431,10 +445,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -500,10 +516,12 @@
         {
           "action_uuid": "7d17e71a-2967-4dbb-86a4-eda028aca38a",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "You said yes",
             "type": "send_msg"
@@ -513,10 +531,12 @@
         {
           "action_uuid": "54b10283-9863-4edf-abfa-705cf24a64fc",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hooray, you did it and said yes. Say yes or no!",
             "type": "send_msg"
@@ -570,10 +590,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -606,10 +628,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
@@ -655,10 +679,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -709,10 +735,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -763,10 +791,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
                     "type": "send_msg"
@@ -821,10 +851,12 @@
         {
           "action_uuid": "27442755-3d94-499f-97d5-a9409ab83b67",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither",
             "type": "send_msg"
@@ -886,10 +918,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -922,10 +956,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
@@ -976,10 +1012,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
                     "type": "send_msg"
@@ -1033,10 +1071,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -1087,10 +1127,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -1141,10 +1183,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
                     "type": "send_msg"
@@ -1199,10 +1243,12 @@
         {
           "action_uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0",
           "event": {
-            "contact": {
-              "name": "Ben Haggerty",
-              "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-            },
+            "contacts": [
+              {
+                "name": "Ben Haggerty",
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+              }
+            ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "All Done! You said yes in the child and no here.",
             "type": "send_msg"
@@ -1257,10 +1303,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
                     "type": "send_msg"
@@ -1293,10 +1341,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
                     "type": "send_msg"
@@ -1347,10 +1397,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
                     "type": "send_msg"
@@ -1401,10 +1453,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "All Done! You said yes in the child and no here.",
                     "type": "send_msg"
@@ -1447,10 +1501,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
                     "type": "send_msg"
@@ -1501,10 +1557,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
                     "type": "send_msg"
@@ -1555,10 +1613,12 @@
                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                 "events": [
                   {
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
+                    "contacts": [
+                      {
+                        "name": "Ben Haggerty",
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                      }
+                    ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
                     "type": "send_msg"
