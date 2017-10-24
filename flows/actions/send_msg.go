@@ -1,13 +1,16 @@
 package actions
 
 import (
-	"github.com/nyaruka/gocommon/urns"
+	"regexp"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
 
 // TypeSendMsg is the type for msg actions
 const TypeSendMsg string = "send_msg"
+
+var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
 
 // SendMsgAction can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 // and a list of contacts.
@@ -26,10 +29,9 @@ const TypeSendMsg string = "send_msg"
 //
 // @action send_msg
 type SendMsgAction struct {
-	BaseMsgAction
-	URNs     []urns.URN                `json:"urns,omitempty"`
-	Contacts []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups   []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	BaseAction
+	MsgAction
+	ContactsAndGroupsAction
 }
 
 // Type returns the type of this action
@@ -42,9 +44,14 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(&a.BaseAction, run, step, log)
 
-	log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, a.URNs, a.Contacts, a.Groups))
+	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(&a.BaseAction, run, step, log)
+	if err != nil {
+		return err
+	}
+
+	log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, urnList, contactRefs, groupRefs))
 
 	return nil
 }

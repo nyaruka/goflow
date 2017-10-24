@@ -93,18 +93,26 @@ func NewVariableLabelReference(nameMatch string) *LabelReference {
 // Validation
 //------------------------------------------------------------------------------------------
 
+// GroupReferenceValidation validates that the given group reference is either a concrete
+// reference or a name matcher
 func GroupReferenceValidation(sl validator.StructLevel) {
 	ref := sl.Current().Interface().(GroupReference)
-	if len(ref.UUID) != 0 && len(ref.NameMatch) != 0 {
-		sl.ReportError(ref.UUID, "UUID", "uuid", "uuidornamematch", "")
-		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "uuidornamematch", "")
+	if !xor(string(ref.UUID), ref.NameMatch) {
+		sl.ReportError(ref.UUID, "UUID", "uuid", "mutually_exclusive", "name_match")
+		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "mutually_exclusive", "uuid")
 	}
 }
 
+// LabelReferenceValidation validates that the given label reference is either a concrete
+// reference or a name matcher
 func LabelReferenceValidation(sl validator.StructLevel) {
 	ref := sl.Current().Interface().(LabelReference)
-	if len(ref.UUID) != 0 && len(ref.NameMatch) != 0 {
-		sl.ReportError(ref.UUID, "UUID", "uuid", "uuidornamematch", "")
-		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "uuidornamematch", "")
+	if !xor(string(ref.UUID), ref.NameMatch) {
+		sl.ReportError(ref.UUID, "UUID", "uuid", "mutually_exclusive", "name_match")
+		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "mutually_exclusive", "uuid")
 	}
+}
+
+func xor(s1 string, s2 string) bool {
+	return (len(s1) > 0) != (len(s2) > 0)
 }
