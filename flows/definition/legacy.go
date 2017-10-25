@@ -405,14 +405,12 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}
 
 		return &actions.StartSessionAction{
-			BaseAction: actions.NewBaseAction(a.UUID),
-			Flow:       a.Flow.Migrate(),
-			ContactsAndGroupsAction: actions.ContactsAndGroupsAction{
-				URNs:       []urns.URN{},
-				Contacts:   contacts,
-				Groups:     groups,
-				LegacyVars: variables,
-			},
+			BaseAction:    actions.NewBaseAction(a.UUID),
+			Flow:          a.Flow.Migrate(),
+			URNs:          []urns.URN{},
+			Contacts:      contacts,
+			Groups:        groups,
+			LegacyVars:    variables,
 			CreateContact: createContact,
 		}, nil
 	case "reply", "send":
@@ -469,12 +467,10 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 			BaseAction:  actions.NewBaseAction(a.UUID),
 			Text:        migratedText,
 			Attachments: attachments,
-			ContactsAndGroupsAction: actions.ContactsAndGroupsAction{
-				URNs:       []urns.URN{},
-				Contacts:   contacts,
-				Groups:     groups,
-				LegacyVars: variables,
-			},
+			URNs:        []urns.URN{},
+			Contacts:    contacts,
+			Groups:      groups,
+			LegacyVars:  variables,
 		}, nil
 
 	case "add_group":

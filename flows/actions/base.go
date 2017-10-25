@@ -143,17 +143,17 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, text string, attachments []string, log flows.EventLog) (string, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, log flows.EventLog) (string, []string) {
 	// localize and evaluate the message text
-	localizedText := run.GetText(flows.UUID(a.UUID()), "text", text)
+	localizedText := run.GetText(flows.UUID(a.UUID()), "text", actionText)
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
 
 	// localize and evaluate the message attachments
-	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", attachments)
-	evaluatedAttachments := make([]string, 0, len(attachments))
+	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", actionAttachments)
+	evaluatedAttachments := make([]string, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedAttachments[n])
 		if err != nil {
@@ -168,29 +168,21 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, text st
 	return evaluatedText, evaluatedAttachments
 }
 
-// ContactsAndGroupsAction is our mixin for an action that operates on other contacts and groups
-type ContactsAndGroupsAction struct {
-	URNs       []urns.URN                `json:"urns,omitempty"`
-	Contacts   []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups     []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
-	LegacyVars []string                  `json:"legacy_vars,omitempty"`
-}
-
-func (a *ContactsAndGroupsAction) resolveContactsAndGroups(b *BaseAction, run flows.FlowRun, step flows.Step, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*flows.GroupReference, error) {
+func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*flows.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*flows.GroupReference, error) {
 	// copy URNs
-	urnList := make([]urns.URN, 0, len(a.URNs))
-	for _, urn := range a.URNs {
+	urnList := make([]urns.URN, 0, len(actionURNs))
+	for _, urn := range actionURNs {
 		urnList = append(urnList, urn)
 	}
 
 	// copy contact references
-	contactRefs := make([]*flows.ContactReference, 0, len(a.Contacts))
-	for _, contactRef := range a.Contacts {
+	contactRefs := make([]*flows.ContactReference, 0, len(actionContacts))
+	for _, contactRef := range actionContacts {
 		contactRefs = append(contactRefs, contactRef)
 	}
 
 	// resolve group references
-	groups, err := b.resolveGroups(run, step, a.Groups, log)
+	groups, err := a.resolveGroups(run, step, actionGroups, log)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -206,7 +198,7 @@ func (a *ContactsAndGroupsAction) resolveContactsAndGroups(b *BaseAction, run fl
 	}
 
 	// evaluate the legacy variables
-	for _, legacyVar := range a.LegacyVars {
+	for _, legacyVar := range actionLegacyVars {
 		evaluatedLegacyVar, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), legacyVar)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))

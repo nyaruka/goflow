@@ -3,6 +3,7 @@ package actions
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -26,9 +27,12 @@ const TypeStartSession string = "start_session"
 // @action start_session
 type StartSessionAction struct {
 	BaseAction
-	ContactsAndGroupsAction
-	Flow          *flows.FlowReference `json:"flow" validate:"required"`
-	CreateContact bool                 `json:"create_contact,omitempty"`
+	URNs          []urns.URN                `json:"urns,omitempty"`
+	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups        []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	LegacyVars    []string                  `json:"legacy_vars,omitempty"`
+	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
+	CreateContact bool                      `json:"create_contact,omitempty"`
 }
 
 // Type returns the type of this action
@@ -46,7 +50,7 @@ func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs our action
 func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(&a.BaseAction, run, step, log)
+	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, step, a.URNs, a.Contacts, a.Groups, a.LegacyVars, log)
 	if err != nil {
 		return err
 	}
