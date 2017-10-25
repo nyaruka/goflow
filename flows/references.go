@@ -97,7 +97,7 @@ func NewVariableLabelReference(nameMatch string) *LabelReference {
 // reference or a name matcher
 func GroupReferenceValidation(sl validator.StructLevel) {
 	ref := sl.Current().Interface().(GroupReference)
-	if !xor(string(ref.UUID), ref.NameMatch) {
+	if neitherOrBoth(string(ref.UUID), ref.NameMatch) {
 		sl.ReportError(ref.UUID, "UUID", "uuid", "mutually_exclusive", "name_match")
 		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "mutually_exclusive", "uuid")
 	}
@@ -107,12 +107,13 @@ func GroupReferenceValidation(sl validator.StructLevel) {
 // reference or a name matcher
 func LabelReferenceValidation(sl validator.StructLevel) {
 	ref := sl.Current().Interface().(LabelReference)
-	if !xor(string(ref.UUID), ref.NameMatch) {
+	if neitherOrBoth(string(ref.UUID), ref.NameMatch) {
 		sl.ReportError(ref.UUID, "UUID", "uuid", "mutually_exclusive", "name_match")
 		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "mutually_exclusive", "uuid")
 	}
 }
 
-func xor(s1 string, s2 string) bool {
-	return (len(s1) > 0) != (len(s2) > 0)
+// utility method which returns true if both string values or neither string values is defined
+func neitherOrBoth(s1 string, s2 string) bool {
+	return (len(s1) > 0) == (len(s2) > 0)
 }
