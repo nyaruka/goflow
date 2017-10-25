@@ -24,8 +24,10 @@ const TypeReply string = "reply"
 //
 // @action reply
 type ReplyAction struct {
-	BaseMsgAction
-	AllURNs bool `json:"all_urns,omitempty"`
+	BaseAction
+	Text        string   `json:"text"`
+	Attachments []string `json:"attachments"`
+	AllURNs     bool     `json:"all_urns,omitempty"`
 }
 
 // Type returns the type of this action
@@ -38,7 +40,7 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, a.Text, a.Attachments, log)
 
 	urns := run.Contact().URNs()
 

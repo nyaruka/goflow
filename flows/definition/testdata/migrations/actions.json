@@ -256,6 +256,10 @@
             "groups": [
                 {"uuid": "1a8c1313-4126-41ad-80ac-f9a2d0b708ec", "name": "Testers"},
                 {"uuid": "c746a9c9-8b31-49d2-aa55-a515d2c02968", "name": "Spammers"}
+            ],
+            "legacy_vars": [
+                "@contact.fields.support_group",
+                "+12223334444"
             ]
         },
         "expected_localization": {
@@ -277,6 +281,64 @@
             "type": "start_flow",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"}
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "trigger-flow",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"},
+            "variables": [
+                {"id": "+12223334444"}
+            ]
+        },
+        "expected_action": {
+            "type": "start_session",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "legacy_vars": [
+                "+12223334444"
+            ],
+            "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"}
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "trigger-flow",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"},
+            "contacts": [
+                {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f"},
+                {"uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42"}
+            ],
+            "groups": [
+                {"uuid": "1a8c1313-4126-41ad-80ac-f9a2d0b708ec", "name": "Testers"},
+                {"uuid": "c746a9c9-8b31-49d2-aa55-a515d2c02968", "name": "Spammers"}
+            ],
+            "variables": [
+                {"id": "@contact.support_group"},
+                {"id": "+12223334444"},
+                {"id": "@new_contact"}
+            ]
+        },
+        "expected_action": {
+            "type": "start_session",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "contacts": [
+                {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": ""},
+                {"uuid": "cd0d8605-5abc-428c-b34b-c6f6e7a3ef42", "name": ""}
+            ],
+            "groups": [
+                {"uuid": "1a8c1313-4126-41ad-80ac-f9a2d0b708ec", "name": "Testers"},
+                {"uuid": "c746a9c9-8b31-49d2-aa55-a515d2c02968", "name": "Spammers"}
+            ],
+            "legacy_vars": [
+                "@contact.fields.support_group",
+                "+12223334444"
+            ],
+            "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"},
+            "create_contact": true
         },
         "expected_localization": {}
     }

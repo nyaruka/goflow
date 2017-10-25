@@ -381,8 +381,37 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		}, nil
 	case "flow":
 		return &actions.StartFlowAction{
-			Flow:       a.Flow.Migrate(),
 			BaseAction: actions.NewBaseAction(a.UUID),
+			Flow:       a.Flow.Migrate(),
+		}, nil
+	case "trigger-flow":
+		contacts := make([]*flows.ContactReference, len(a.Contacts))
+		for i, contact := range a.Contacts {
+			contacts[i] = contact.Migrate()
+		}
+		groups := make([]*flows.GroupReference, len(a.Groups))
+		for i, group := range a.Groups {
+			groups[i] = group.Migrate()
+		}
+		var createContact bool
+		variables := make([]string, 0, len(a.Variables))
+		for _, variable := range a.Variables {
+			if variable.ID == "@new_contact" {
+				createContact = true
+			} else {
+				migratedVar, _ := excellent.MigrateTemplate(variable.ID)
+				variables = append(variables, migratedVar)
+			}
+		}
+
+		return &actions.StartSessionAction{
+			BaseAction:    actions.NewBaseAction(a.UUID),
+			Flow:          a.Flow.Migrate(),
+			URNs:          []urns.URN{},
+			Contacts:      contacts,
+			Groups:        groups,
+			LegacyVars:    variables,
+			CreateContact: createContact,
 		}, nil
 	case "reply", "send":
 		msg := make(map[utils.Language]string)
@@ -413,8 +442,10 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 
 		if a.Type == "reply" {
 			return &actions.ReplyAction{
-				BaseMsgAction: actions.NewBaseMsgAction(a.UUID, migratedText, attachments),
-				AllURNs:       a.SendAll,
+				BaseAction:  actions.NewBaseAction(a.UUID),
+				Text:        migratedText,
+				Attachments: attachments,
+				AllURNs:     a.SendAll,
 			}, nil
 		}
 
@@ -426,12 +457,20 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
+		variables := make([]string, 0, len(a.Variables))
+		for _, variable := range a.Variables {
+			migratedVar, _ := excellent.MigrateTemplate(variable.ID)
+			variables = append(variables, migratedVar)
+		}
 
 		return &actions.SendMsgAction{
-			BaseMsgAction: actions.NewBaseMsgAction(a.UUID, migratedText, attachments),
-			URNs:          []urns.URN{},
-			Contacts:      contacts,
-			Groups:        groups,
+			BaseAction:  actions.NewBaseAction(a.UUID),
+			Text:        migratedText,
+			Attachments: attachments,
+			URNs:        []urns.URN{},
+			Contacts:    contacts,
+			Groups:      groups,
+			LegacyVars:  variables,
 		}, nil
 
 	case "add_group":

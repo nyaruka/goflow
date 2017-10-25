@@ -26,10 +26,13 @@ const TypeSendMsg string = "send_msg"
 //
 // @action send_msg
 type SendMsgAction struct {
-	BaseMsgAction
-	URNs     []urns.URN                `json:"urns,omitempty"`
-	Contacts []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups   []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	BaseAction
+	Text        string                    `json:"text"`
+	Attachments []string                  `json:"attachments"`
+	URNs        []urns.URN                `json:"urns,omitempty"`
+	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	LegacyVars  []string                  `json:"legacy_vars,omitempty"`
 }
 
 // Type returns the type of this action
@@ -42,9 +45,14 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, log)
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, a.Text, a.Attachments, log)
 
-	log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, a.URNs, a.Contacts, a.Groups))
+	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, step, a.URNs, a.Contacts, a.Groups, a.LegacyVars, log)
+	if err != nil {
+		return err
+	}
+
+	log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, urnList, contactRefs, groupRefs))
 
 	return nil
 }

@@ -2,12 +2,15 @@ package actions
 
 import (
 	"fmt"
+	"regexp"
 
-	"github.com/nyaruka/goflow/flows/events"
-
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 )
+
+var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
 
 type eventLog struct {
 	events []flows.Event
@@ -139,31 +142,18 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 	return labels, nil
 }
 
-// BaseMsgAction is our base action for message that generate message events
-type BaseMsgAction struct {
-	BaseAction
-	Text        string   `json:"text"`
-	Attachments []string `json:"attachments"`
-}
-
-func NewBaseMsgAction(uuid flows.ActionUUID, text string, attachments []string) BaseMsgAction {
-	return BaseMsgAction{
-		BaseAction:  BaseAction{UUID_: uuid},
-		Text:        text,
-		Attachments: attachments,
-	}
-}
-
-func (a *BaseMsgAction) evaluateMessage(run flows.FlowRun, step flows.Step, log flows.EventLog) (string, []string) {
-
-	localizedText := run.GetText(flows.UUID(a.UUID()), "text", a.Text)
+// helper function for actions that send a message (text + attachments) that must be localized and evalulated
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, log flows.EventLog) (string, []string) {
+	// localize and evaluate the message text
+	localizedText := run.GetText(flows.UUID(a.UUID()), "text", actionText)
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
 
-	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", a.Attachments)
-	evaluatedAttachments := make([]string, 0, len(a.Attachments))
+	// localize and evaluate the message attachments
+	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", actionAttachments)
+	evaluatedAttachments := make([]string, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedAttachments[n])
 		if err != nil {
@@ -176,4 +166,56 @@ func (a *BaseMsgAction) evaluateMessage(run flows.FlowRun, step flows.Step, log 
 	}
 
 	return evaluatedText, evaluatedAttachments
+}
+
+func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*flows.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*flows.GroupReference, error) {
+	// copy URNs
+	urnList := make([]urns.URN, 0, len(actionURNs))
+	for _, urn := range actionURNs {
+		urnList = append(urnList, urn)
+	}
+
+	// copy contact references
+	contactRefs := make([]*flows.ContactReference, 0, len(actionContacts))
+	for _, contactRef := range actionContacts {
+		contactRefs = append(contactRefs, contactRef)
+	}
+
+	// resolve group references
+	groups, err := a.resolveGroups(run, step, actionGroups, log)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	groupRefs := make([]*flows.GroupReference, 0, len(groups))
+	for _, group := range groups {
+		groupRefs = append(groupRefs, group.Reference())
+	}
+
+	// get the list of all groups
+	groupSet, err := run.Session().Assets().GetGroupSet()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	// evaluate the legacy variables
+	for _, legacyVar := range actionLegacyVars {
+		evaluatedLegacyVar, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), legacyVar)
+		if err != nil {
+			log.Add(events.NewErrorEvent(err))
+		}
+
+		if uuidRegex.MatchString(evaluatedLegacyVar) {
+			// if variable evaluates to a UUID, we assume it's a contact UUID
+			contactRefs = append(contactRefs, flows.NewContactReference(flows.ContactUUID(evaluatedLegacyVar), ""))
+
+		} else if groupByName := groupSet.FindByName(evaluatedLegacyVar); groupByName != nil {
+			// next up we look for a group with a matching name
+			groupRefs = append(groupRefs, groupByName.Reference())
+		} else {
+			// if that fails, assume this is a phone number, and let the caller worry about validation
+			urnList = append(urnList, urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, ""))
+		}
+	}
+
+	return urnList, contactRefs, groupRefs, nil
 }
