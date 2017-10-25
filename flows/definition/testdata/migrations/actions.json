@@ -338,7 +338,7 @@
                 "+12223334444"
             ],
             "flow": {"uuid": "879ace1b-740b-45f1-9198-c2f2f08a825f", "name": "Registration"},
-            "empty_contact": true
+            "create_contact": true
         },
         "expected_localization": {}
     }

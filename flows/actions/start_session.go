@@ -27,8 +27,8 @@ const TypeStartSession string = "start_session"
 type StartSessionAction struct {
 	BaseAction
 	ContactsAndGroupsAction
-	Flow         *flows.FlowReference `json:"flow" validate:"required"`
-	EmptyContact bool                 `json:"empty_contact,omitempty"`
+	Flow          *flows.FlowReference `json:"flow" validate:"required"`
+	CreateContact bool                 `json:"create_contact,omitempty"`
 }
 
 // Type returns the type of this action
@@ -56,6 +56,6 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		return err
 	}
 
-	log.Add(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.EmptyContact, runSnapshot))
+	log.Add(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
 	return nil
 }

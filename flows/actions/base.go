@@ -2,12 +2,15 @@ package actions
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
+
+var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
 
 type eventLog struct {
 	events []flows.Event

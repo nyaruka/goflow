@@ -43,24 +43,24 @@ const TypeSessionTriggered string = "session_triggered"
 // @event session_triggered
 type SessionTriggeredEvent struct {
 	BaseEvent
-	Flow         *flows.FlowReference      `json:"flow" validate:"required"`
-	URNs         []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
-	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups       []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
-	EmptyContact bool                      `json:"empty_contact,omitempty"`
-	Run          json.RawMessage           `json:"run"`
+	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
+	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
+	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups        []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	CreateContact bool                      `json:"create_contact,omitempty"`
+	Run           json.RawMessage           `json:"run"`
 }
 
 // NewSessionTriggeredEvent returns a new session triggered event
-func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference, emptyContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
+func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference, createContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
-		BaseEvent:    NewBaseEvent(),
-		Flow:         flow,
-		URNs:         urns,
-		Contacts:     contacts,
-		Groups:       groups,
-		EmptyContact: emptyContact,
-		Run:          runSnapshot,
+		BaseEvent:     NewBaseEvent(),
+		Flow:          flow,
+		URNs:          urns,
+		Contacts:      contacts,
+		Groups:        groups,
+		CreateContact: createContact,
+		Run:           runSnapshot,
 	}
 }
 

@@ -1,16 +1,12 @@
 package actions
 
 import (
-	"regexp"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
 
 // TypeSendMsg is the type for msg actions
 const TypeSendMsg string = "send_msg"
-
-var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
 
 // SendMsgAction can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 // and a list of contacts.

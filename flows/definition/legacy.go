@@ -393,11 +393,11 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
-		var emptyContact bool
+		var createContact bool
 		variables := make([]string, 0, len(a.Variables))
 		for _, variable := range a.Variables {
 			if variable.ID == "@new_contact" {
-				emptyContact = true
+				createContact = true
 			} else {
 				migratedVar, _ := excellent.MigrateTemplate(variable.ID)
 				variables = append(variables, migratedVar)
@@ -413,7 +413,7 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 				Groups:     groups,
 				LegacyVars: variables,
 			},
-			EmptyContact: emptyContact,
+			CreateContact: createContact,
 		}, nil
 	case "reply", "send":
 		msg := make(map[utils.Language]string)
