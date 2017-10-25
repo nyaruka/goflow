@@ -142,23 +142,18 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 	return labels, nil
 }
 
-// MsgAction is our mixin for an action that generates message events
-type MsgAction struct {
-	Text        string   `json:"text"`
-	Attachments []string `json:"attachments"`
-}
-
-func (a *MsgAction) evaluateMessage(b *BaseAction, run flows.FlowRun, step flows.Step, log flows.EventLog) (string, []string) {
+// helper function for actions that send a message (text + attachments) that must be localized and evalulated
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, text string, attachments []string, log flows.EventLog) (string, []string) {
 	// localize and evaluate the message text
-	localizedText := run.GetText(flows.UUID(b.UUID()), "text", a.Text)
+	localizedText := run.GetText(flows.UUID(a.UUID()), "text", text)
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
 
 	// localize and evaluate the message attachments
-	translatedAttachments := run.GetTextArray(flows.UUID(b.UUID()), "attachments", a.Attachments)
-	evaluatedAttachments := make([]string, 0, len(a.Attachments))
+	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", attachments)
+	evaluatedAttachments := make([]string, 0, len(attachments))
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedAttachments[n])
 		if err != nil {

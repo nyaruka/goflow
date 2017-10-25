@@ -26,7 +26,8 @@ const TypeSendMsg string = "send_msg"
 // @action send_msg
 type SendMsgAction struct {
 	BaseAction
-	MsgAction
+	Text        string   `json:"text"`
+	Attachments []string `json:"attachments"`
 	ContactsAndGroupsAction
 }
 
@@ -40,7 +41,7 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	evaluatedText, evaluatedAttachments := a.evaluateMessage(&a.BaseAction, run, step, log)
+	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, a.Text, a.Attachments, log)
 
 	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(&a.BaseAction, run, step, log)
 	if err != nil {
