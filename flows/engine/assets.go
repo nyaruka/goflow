@@ -118,28 +118,27 @@ type AssetServer interface {
 }
 
 type assetServer struct {
-	authHeader string
-	typeURLs   map[assetType]string
+	authtoken string
+	typeURLs  map[assetType]string
 }
 
 type assetServerEnvelope struct {
-	AuthHeader string               `json:"auth_header"`
-	TypeURLs   map[assetType]string `json:"type_urls"`
+	TypeURLs map[assetType]string `json:"type_urls"`
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(data json.RawMessage) (AssetServer, error) {
+func ReadAssetServer(authtoken string, data json.RawMessage) (AssetServer, error) {
 	envelope := &assetServerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope, "asset_server"); err != nil {
 		return nil, err
 	}
 
-	return NewAssetServer(envelope.AuthHeader, envelope.TypeURLs), nil
+	return NewAssetServer(authtoken, envelope.TypeURLs), nil
 }
 
 // NewAssetServer creates a new asset server
-func NewAssetServer(authHeader string, typeURLs map[assetType]string) AssetServer {
-	return &assetServer{authHeader: authHeader, typeURLs: typeURLs}
+func NewAssetServer(authtoken string, typeURLs map[assetType]string) AssetServer {
+	return &assetServer{authtoken: authtoken, typeURLs: typeURLs}
 }
 
 // isTypeSupported returns whether the given asset item type is supported
@@ -181,9 +180,7 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	// set request headers
 	request.Header.Set("User-Agent", userAgent)
-	if s.authHeader != "" {
-		request.Header.Set("Authentication", s.authHeader)
-	}
+	request.Header.Set("Authentication", fmt.Sprintf("Token %s", s.authtoken))
 
 	// make the actual request
 	response, err := http.DefaultClient.Do(request)
@@ -241,7 +238,6 @@ func (s *mockAssetServer) fetchAsset(url string, itemType assetType, isSet bool,
 
 func (s *mockAssetServer) MarshalJSON() ([]byte, error) {
 	envelope := &assetServerEnvelope{}
-	envelope.AuthHeader = s.authHeader
 	envelope.TypeURLs = s.typeURLs
 	return json.Marshal(envelope)
 }
