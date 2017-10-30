@@ -97,7 +97,7 @@
                         "type": "msg"
                     },
                     "router": {
-                        "result_name": "name",
+                        "result_name": "Name",
                         "type": "switch",
                         "default": "910521f5-d709-437e-b7b7-5aab3d83ffb5",
                         "operand": "@run.input.text",

@@ -151,7 +151,7 @@ type Action interface {
 }
 
 type Router interface {
-	PickRoute(FlowRun, []Exit, Step) (Route, error)
+	PickRoute(FlowRun, []Exit, Step) (interface{}, Route, error)
 	Validate([]Exit) error
 	ResultName() string
 	utils.Typed
@@ -282,7 +282,7 @@ type RunSummary interface {
 	Contact() *Contact
 	Flow() Flow
 	Status() RunStatus
-	Results() *Results
+	Results() Results
 }
 
 // FlowRun represents a run in the current session

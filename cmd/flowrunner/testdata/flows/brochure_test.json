@@ -114,7 +114,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "waiting",
             "uuid": ""
           }
@@ -140,8 +139,9 @@
           "event": {
             "category": "",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "input": "Ryan Lewis",
+            "name": "Name",
             "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-            "result_name": "name",
             "type": "save_flow_result",
             "value": "Ryan Lewis"
           },
@@ -279,8 +279,9 @@
                   {
                     "category": "",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "Ryan Lewis",
+                    "name": "Name",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                    "result_name": "name",
                     "type": "save_flow_result",
                     "value": "Ryan Lewis"
                   }
@@ -330,8 +331,9 @@
             "results": {
               "name": {
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "Ryan Lewis",
+                "name": "Name",
                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                "result_name": "name",
                 "value": "Ryan Lewis"
               }
             },

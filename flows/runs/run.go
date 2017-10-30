@@ -88,7 +88,7 @@ type flowRun struct {
 	input   flows.Input
 	parent  flows.FlowRun
 
-	results *flows.Results
+	results flows.Results
 	path    []flows.Step
 	status  flows.RunStatus
 
@@ -127,7 +127,7 @@ func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
 func (r *flowRun) Context() utils.VariableResolver { return r.context }
-func (r *flowRun) Results() *flows.Results         { return r.results }
+func (r *flowRun) Results() flows.Results          { return r.results }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -332,7 +332,7 @@ type runEnvelope struct {
 	Status     flows.RunStatus `json:"status"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty"`
 
-	Results *flows.Results         `json:"results,omitempty"`
+	Results flows.Results          `json:"results,omitempty"`
 	Input   *utils.TypedEnvelope   `json:"input,omitempty"`
 	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
 	Extra   json.RawMessage        `json:"extra,omitempty"`

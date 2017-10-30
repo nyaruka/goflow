@@ -178,7 +178,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "waiting",
             "uuid": "",
             "webhook": {
@@ -373,7 +372,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "completed",
             "uuid": "",
             "webhook": {

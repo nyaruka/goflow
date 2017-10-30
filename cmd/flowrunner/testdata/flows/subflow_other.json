@@ -112,7 +112,7 @@
                     ],
                     "router": {
                         "type": "switch",
-                        "result_name": "answer",
+                        "result_name": "Answer",
                         "cases": [
                             {
                                 "type": "has_any_word",
@@ -203,7 +203,7 @@
                     ],
                     "router": {
                         "type": "switch",
-                        "result_name": "answer",
+                        "result_name": "Answer",
                         "cases": [
                             {
                                 "type": "has_any_word",

@@ -123,7 +123,7 @@
                         {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
                             "type": "save_flow_result",
-                            "result_name": "gender",
+                            "name": "gender",
                             "value": "m",
                             "category": "Male"
                         },

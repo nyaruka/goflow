@@ -11,14 +11,14 @@ type runSummary struct {
 	flow    Flow
 	contact *Contact
 	status  RunStatus
-	results *Results
+	results Results
 }
 
 func (r *runSummary) UUID() RunUUID     { return r.uuid }
 func (r *runSummary) Flow() Flow        { return r.flow }
 func (r *runSummary) Contact() *Contact { return r.contact }
 func (r *runSummary) Status() RunStatus { return r.status }
-func (r *runSummary) Results() *Results { return r.results }
+func (r *runSummary) Results() Results  { return r.results }
 
 func NewRunSummaryFromRun(run FlowRun) RunSummary {
 	return &runSummary{
@@ -41,7 +41,7 @@ type runSummaryEnvelope struct {
 	FlowUUID FlowUUID        `json:"flow_uuid" validate:"uuid4"`
 	Contact  json.RawMessage `json:"contact" validate:"required"`
 	Status   RunStatus       `json:"status" validate:"required"`
-	Results  *Results        `json:"results"`
+	Results  Results         `json:"results"`
 }
 
 func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
