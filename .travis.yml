@@ -1,7 +1,7 @@
 language: go
 
 go:
- - 1.8
+ - 1.9
 
 services:
  - redis-server
@@ -22,4 +22,4 @@ script:
  - go test $(go list ./... | grep -v /vendor/) -cover -bench=. -benchmem
 
 after_success:
-  test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser
+ - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
