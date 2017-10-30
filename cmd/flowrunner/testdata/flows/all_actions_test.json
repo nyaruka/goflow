@@ -268,7 +268,7 @@
           "event": {
             "category": "Male",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "name": "gender",
+            "name": "Gender",
             "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
             "type": "save_flow_result",
             "value": "m"
@@ -586,7 +586,7 @@
                   {
                     "category": "Male",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "name": "gender",
+                    "name": "Gender",
                     "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                     "type": "save_flow_result",
                     "value": "m"
@@ -626,7 +626,7 @@
                 "category": "Male",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                 "input": "",
-                "name": "gender",
+                "name": "Gender",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                 "value": "m"
               }
