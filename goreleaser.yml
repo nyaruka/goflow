@@ -1,5 +1,5 @@
 build:
-  main: ./cmd/flowserver/
+  main: ./cmd/flowserver/main.go
   binary: flowserver
   goos:
     - windows
@@ -10,4 +10,6 @@ build:
 
 archive:
   files:
+    - LICENSE
     - README.md
+    - flowserver.toml
