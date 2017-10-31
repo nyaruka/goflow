@@ -20,7 +20,7 @@ const TypeSaveFlowResult string = "save_flow_result"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "save_flow_result",
-//     "result_name": "gender",
+//     "name": "Gender",
 //     "value": "m",
 //     "category": "Male"
 //   }
@@ -29,9 +29,9 @@ const TypeSaveFlowResult string = "save_flow_result"
 // @action save_flow_result
 type SaveFlowResultAction struct {
 	BaseAction
-	ResultName string `json:"result_name"        validate:"required"`
-	Value      string `json:"value"`
-	Category   string `json:"category"`
+	Name     string `json:"name" validate:"required"`
+	Value    string `json:"value" validate:"required"`
+	Category string `json:"category"`
 }
 
 // Type returns the type of this action
@@ -53,16 +53,11 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step, log f
 		log.Add(events.NewErrorEvent(err))
 	}
 
-	template = run.GetText(flows.UUID(a.UUID()), "category", a.Category)
-	categoryLocalized, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template)
-	if err != nil {
-		log.Add(events.NewErrorEvent(err))
-	}
-
+	categoryLocalized := run.GetText(flows.UUID(a.UUID()), "category", a.Category)
 	if a.Category == categoryLocalized {
 		categoryLocalized = ""
 	}
 
-	log.Add(events.NewSaveFlowResult(step.NodeUUID(), a.ResultName, value, a.Category, categoryLocalized))
+	log.Add(events.NewSaveFlowResult(a.Name, value, a.Category, categoryLocalized, step.NodeUUID(), ""))
 	return nil
 }

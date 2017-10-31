@@ -71,7 +71,7 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 
 // PickRoute evaluates each of the tests on our cases in order, returning the exit for the first case which
 // evaluates to a true. If no cases evaluate to true, then the default exit (if specified) is returned
-func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (flows.Route, error) {
+func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (interface{}, flows.Route, error) {
 	env := run.Environment()
 
 	// first evaluate our operand
@@ -87,7 +87,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// try to look up our function
 		xtest := excellent.XTESTS[test]
 		if xtest == nil {
-			return flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
+			return operand, flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
 		}
 
 		// build our argument list
@@ -110,23 +110,23 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		rawResult := xtest(env, args...)
 		err, isErr := rawResult.(error)
 		if isErr {
-			return flows.NoRoute, err
+			return operand, flows.NoRoute, err
 		}
 
 		// ok, not an error, must be an XTestResult
 		result, isResult := rawResult.(excellent.XTestResult)
 		if !isResult {
-			return flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
+			return operand, flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
 		}
 
 		// looks truthy, lets return this exit
 		if result.Matched() {
 			asStr, err := utils.ToString(env, result.Match())
 			if err != nil {
-				return flows.NoRoute, err
+				return operand, flows.NoRoute, err
 			}
 
-			return flows.NewRoute(c.ExitUUID, asStr), nil
+			return operand, flows.NewRoute(c.ExitUUID, asStr), nil
 		}
 	}
 
@@ -138,9 +138,9 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 			run.AddError(step, nil, err)
 		}
 
-		return flows.NewRoute(r.Default, value), nil
+		return operand, flows.NewRoute(r.Default, value), nil
 	}
 
 	// no matches, no defaults, no route
-	return flows.NoRoute, nil
+	return operand, flows.NoRoute, nil
 }

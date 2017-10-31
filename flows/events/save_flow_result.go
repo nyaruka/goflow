@@ -13,31 +13,36 @@ const TypeSaveFlowResult string = "save_flow_result"
 //   {
 //     "type": "save_flow_result",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//     "result_name": "Gender",
+//     "name": "Gender",
 //     "value": "m",
-//     "category": "Make"
+//     "category": "Male",
+//     "category_localized": "Homme",
+//     "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+//     "input": "M"
 //   }
 // ```
 //
 // @event save_flow_result
 type SaveFlowResultEvent struct {
 	BaseEvent
-	NodeUUID          flows.NodeUUID `json:"node_uuid"        validate:"required"`
-	ResultName        string         `json:"result_name"      validate:"required"`
+	Name              string         `json:"name" validate:"required"`
 	Value             string         `json:"value"`
 	Category          string         `json:"category"`
 	CategoryLocalized string         `json:"category_localized,omitempty"`
+	NodeUUID          flows.NodeUUID `json:"node_uuid" validate:"required,uuid4"`
+	Input             string         `json:"input,omitempty"`
 }
 
 // NewSaveFlowResult returns a new save result event for the passed in values
-func NewSaveFlowResult(node flows.NodeUUID, name string, value string, categoryName string, categoryLocalized string) *SaveFlowResultEvent {
+func NewSaveFlowResult(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input string) *SaveFlowResultEvent {
 	return &SaveFlowResultEvent{
-		BaseEvent:  NewBaseEvent(),
-		NodeUUID:   node,
-		ResultName: name,
-		Value:      value, Category: categoryName,
+		BaseEvent:         NewBaseEvent(),
+		Name:              name,
+		Value:             value,
+		Category:          categoryName,
 		CategoryLocalized: categoryLocalized,
+		NodeUUID:          node,
+		Input:             input,
 	}
 }
 
@@ -46,6 +51,6 @@ func (e *SaveFlowResultEvent) Type() string { return TypeSaveFlowResult }
 
 // Apply applies this event to the given run
 func (e *SaveFlowResultEvent) Apply(run flows.FlowRun) error {
-	run.Results().Save(e.NodeUUID, e.ResultName, e.Value, e.Category, e.CategoryLocalized, e.BaseEvent.CreatedOn())
+	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, e.BaseEvent.CreatedOn())
 	return nil
 }

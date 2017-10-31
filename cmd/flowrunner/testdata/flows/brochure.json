@@ -32,7 +32,7 @@
           "router": {
             "type": "switch",
             "default_exit_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
-            "result_name": "name",
+            "result_name": "Name",
             "operand": "@run.input",
             "cases": [
               {

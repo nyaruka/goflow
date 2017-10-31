@@ -368,13 +368,14 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.Step, flows.NodeUUID, error) {
 	var err error
 
+	var operand interface{}
 	route := flows.NoRoute
 	router := node.Router()
 
 	// we have a router, have it determine our exit
 	var exitUUID flows.ExitUUID
 	if router != nil {
-		if route, err = router.PickRoute(run, node.Exits(), step); err != nil {
+		if operand, route, err = router.PickRoute(run, node.Exits(), step); err != nil {
 			return nil, noDestination, err
 		}
 		exitUUID = route.Exit()
@@ -387,7 +388,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	// look up our actual exit and localized name
 	var exit flows.Exit
-	var exitName string
+	var localizedExitName string
 
 	if exitUUID != "" {
 		// find our exit
@@ -395,7 +396,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 			if e.UUID() == exitUUID {
 				localizedName := run.GetText(flows.UUID(exitUUID), "name", e.Name())
 				if localizedName != e.Name() {
-					exitName = localizedName
+					localizedExitName = localizedName
 				}
 				exit = e
 				break
@@ -413,7 +414,12 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" && route.Match() != "" {
-		event := events.NewSaveFlowResult(node.UUID(), router.ResultName(), route.Match(), exit.Name(), exitName)
+		resultInput, err := utils.ToString(run.Environment(), operand)
+		if err != nil {
+			return nil, noDestination, err
+		}
+
+		event := events.NewSaveFlowResult(router.ResultName(), route.Match(), exit.Name(), localizedExitName, node.UUID(), resultInput)
 		run.ApplyEvent(step, nil, event)
 	}
 

@@ -196,7 +196,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "active",
             "uuid": ""
           },
@@ -239,7 +238,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "waiting",
             "uuid": ""
           }
@@ -264,8 +262,9 @@
           "event": {
             "category": "Other",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "input": "neither",
+            "name": "Answer",
             "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-            "result_name": "answer",
             "type": "save_flow_result",
             "value": "neither"
           },
@@ -366,7 +365,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "active",
             "uuid": ""
           },
@@ -430,8 +428,9 @@
                   {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "neither",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -477,8 +476,9 @@
               "answer": {
                 "category": "Other",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "neither",
+                "name": "Answer",
                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                "result_name": "answer",
                 "value": "neither"
               }
             },
@@ -506,8 +506,9 @@
           "event": {
             "category": "Yes",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "input": "yes",
+            "name": "Answer",
             "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-            "result_name": "answer",
             "type": "save_flow_result",
             "value": "yes"
           },
@@ -656,7 +657,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "waiting",
             "uuid": ""
           },
@@ -720,8 +720,9 @@
                   {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "neither",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -776,8 +777,9 @@
                   {
                     "category": "Yes",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "yes",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "yes"
                   }
@@ -812,8 +814,9 @@
               "answer": {
                 "category": "Yes",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "yes",
+                "name": "Answer",
                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                "result_name": "answer",
                 "value": "yes"
               }
             },
@@ -841,8 +844,9 @@
           "event": {
             "category": "Other",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "input": "never",
+            "name": "Answer",
             "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-            "result_name": "answer",
             "type": "save_flow_result",
             "value": "never"
           },
@@ -997,8 +1001,9 @@
                   {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "never",
+                    "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "never"
                   }
@@ -1044,8 +1049,9 @@
               "answer": {
                 "category": "Other",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "never",
+                "name": "Answer",
                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                "result_name": "answer",
                 "value": "never"
               }
             },
@@ -1112,8 +1118,9 @@
                   {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "neither",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -1168,8 +1175,9 @@
                   {
                     "category": "Yes",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "yes",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "yes"
                   }
@@ -1204,8 +1212,9 @@
               "answer": {
                 "category": "Yes",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "yes",
+                "name": "Answer",
                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                "result_name": "answer",
                 "value": "yes"
               }
             },
@@ -1233,8 +1242,9 @@
           "event": {
             "category": "No",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "input": "no",
+            "name": "Answer",
             "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-            "result_name": "answer",
             "type": "save_flow_result",
             "value": "no"
           },
@@ -1382,8 +1392,9 @@
                   {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "never",
+                    "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "never"
                   }
@@ -1438,8 +1449,9 @@
                   {
                     "category": "No",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "no",
+                    "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "no"
                   }
@@ -1474,8 +1486,9 @@
               "answer": {
                 "category": "No",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "no",
+                "name": "Answer",
                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                "result_name": "answer",
                 "value": "no"
               }
             },
@@ -1542,8 +1555,9 @@
                   {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "neither",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "neither"
                   }
@@ -1598,8 +1612,9 @@
                   {
                     "category": "Yes",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "yes",
+                    "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "result_name": "answer",
                     "type": "save_flow_result",
                     "value": "yes"
                   }
@@ -1634,8 +1649,9 @@
               "answer": {
                 "category": "Yes",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "yes",
+                "name": "Answer",
                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                "result_name": "answer",
                 "value": "yes"
               }
             },

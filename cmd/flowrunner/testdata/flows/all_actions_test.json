@@ -268,8 +268,8 @@
           "event": {
             "category": "Male",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "name": "Gender",
             "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-            "result_name": "gender",
             "type": "save_flow_result",
             "value": "m"
           },
@@ -586,8 +586,8 @@
                   {
                     "category": "Male",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "name": "Gender",
                     "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                    "result_name": "gender",
                     "type": "save_flow_result",
                     "value": "m"
                   },
@@ -625,8 +625,9 @@
               "gender": {
                 "category": "Male",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "",
+                "name": "Gender",
                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                "result_name": "gender",
                 "value": "m"
               }
             },
@@ -648,7 +649,6 @@
             "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "parent_uuid": "",
             "path": [],
-            "results": {},
             "status": "completed",
             "uuid": ""
           }

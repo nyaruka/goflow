@@ -136,7 +136,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "active",
             "uuid": ""
           },
@@ -170,7 +169,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "waiting",
             "uuid": ""
           }
@@ -195,8 +193,9 @@
           "event": {
             "category": "Name",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "input": "Ryan Lewis",
+            "name": "Name",
             "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-            "result_name": "name",
             "type": "save_flow_result",
             "value": "Ryan Lewis"
           },
@@ -317,7 +316,6 @@
                 "uuid": ""
               }
             ],
-            "results": {},
             "status": "completed",
             "uuid": ""
           },
@@ -372,8 +370,9 @@
                   {
                     "category": "Name",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "Ryan Lewis",
+                    "name": "Name",
                     "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                    "result_name": "name",
                     "type": "save_flow_result",
                     "value": "Ryan Lewis"
                   }
@@ -407,8 +406,9 @@
               "name": {
                 "category": "Name",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "Ryan Lewis",
+                "name": "Name",
                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                "result_name": "name",
                 "value": "Ryan Lewis"
               }
             },
