@@ -10,8 +10,9 @@ type FlowServerConfig struct {
 
 	Static string `default:""`
 
-	AssetCacheSize  int64 `default:"1000"`
-	AssetCachePrune int   `default:"100"`
+	AssetCacheSize   int64  `default:"1000"`
+	AssetCachePrune  int    `default:"100"`
+	AssetServerToken string `default:"missing_temba_token"`
 
 	Version string `default:"Dev"`
 }
