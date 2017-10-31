@@ -157,7 +157,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// read and validate our asset server
-	assetServer, err := engine.ReadAssetServer(start.AssetServer)
+	assetServer, err := engine.ReadAssetServer(s.config.AssetServerToken, start.AssetServer)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +220,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read and validate our asset server
-	assetServer, err := engine.ReadAssetServer(resume.AssetServer)
+	assetServer, err := engine.ReadAssetServer(s.config.AssetServerToken, resume.AssetServer)
 	if err != nil {
 		return nil, err
 	}
