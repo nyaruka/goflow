@@ -13,7 +13,7 @@
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "Blue",
+        "text": "I like blue!",
         "type": "msg_received",
         "urn": "tel:+12065551212"
       }
@@ -147,11 +147,11 @@
           "event": {
             "category": "Blue",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "input": "Blue",
+            "input": "I like blue!",
             "name": "Favorite Color",
             "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
             "type": "save_flow_result",
-            "value": "Blue"
+            "value": "blue"
           },
           "step_uuid": ""
         },
@@ -226,7 +226,7 @@
             "input": {
               "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "text": "Blue",
+              "text": "I like blue!",
               "type": "msg",
               "urn": "tel:+12065551212",
               "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -262,18 +262,18 @@
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "Blue",
+                    "text": "I like blue!",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
                   },
                   {
                     "category": "Blue",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "input": "Blue",
+                    "input": "I like blue!",
                     "name": "Favorite Color",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "type": "save_flow_result",
-                    "value": "Blue"
+                    "value": "blue"
                   }
                 ],
                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
@@ -315,10 +315,10 @@
               "favorite_color": {
                 "category": "Blue",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "Blue",
+                "input": "I like blue!",
                 "name": "Favorite Color",
                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "value": "Blue"
+                "value": "blue"
               }
             },
             "status": "waiting",
@@ -456,18 +456,18 @@
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "Blue",
+                    "text": "I like blue!",
                     "type": "msg_received",
                     "urn": "tel:+12065551212"
                   },
                   {
                     "category": "Blue",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "input": "Blue",
+                    "input": "I like blue!",
                     "name": "Favorite Color",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "type": "save_flow_result",
-                    "value": "Blue"
+                    "value": "blue"
                   }
                 ],
                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
@@ -563,10 +563,10 @@
               "favorite_color": {
                 "category": "Blue",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "Blue",
+                "input": "I like blue!",
                 "name": "Favorite Color",
                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "value": "Blue"
+                "value": "blue"
               },
               "soda": {
                 "category": "Coke",
