@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
@@ -73,6 +74,12 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 			log.Add(events.NewErrorEvent(fmt.Errorf("send_email address evaluated to empty string, skipping")))
 			continue
 		}
+
+		// strip mailto prefix if this is an email URN
+		if strings.HasPrefix(evaluatedAddress, "mailto:") {
+			evaluatedAddress = evaluatedAddress[7:]
+		}
+
 		evaluatedAddresses = append(evaluatedAddresses, evaluatedAddress)
 	}
 
