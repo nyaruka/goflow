@@ -39,29 +39,29 @@ type LegacyFlow struct {
 type legacyFlowEnvelope struct {
 	BaseLanguage utils.Language         `json:"base_language"`
 	Metadata     legacyMetadataEnvelope `json:"metadata"`
-	RuleSets     []legacyRuleSet        `json:"rule_sets"`
-	ActionSets   []legacyActionSet      `json:"action_sets"`
-	Entry        flows.NodeUUID         `json:"entry"`
+	RuleSets     []legacyRuleSet        `json:"rule_sets" validate:"dive"`
+	ActionSets   []legacyActionSet      `json:"action_sets" validate:"dive"`
+	Entry        flows.NodeUUID         `json:"entry" validate:"required,uuid4"`
 }
 
 type legacyMetadataEnvelope struct {
-	UUID    flows.FlowUUID `json:"uuid"`
+	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name    string         `json:"name"`
 	Expires int            `json:"expires"`
 }
 
 type legacyRule struct {
-	UUID        flows.ExitUUID            `json:"uuid"`
-	Destination flows.NodeUUID            `json:"destination"`
-	Test        utils.TypedEnvelope       `json:"test"`
-	Category    map[utils.Language]string `json:"category"`
-	ExitType    string                    `json:"exit_type"`
+	UUID            flows.ExitUUID            `json:"uuid" validate:"required,uuid4"`
+	Destination     flows.NodeUUID            `json:"destination" validate:"omitempty,uuid4"`
+	DestinationType string                    `json:"destination_type" validate:"eq=A|eq=R"`
+	Test            utils.TypedEnvelope       `json:"test"`
+	Category        map[utils.Language]string `json:"category"`
 }
 
 type legacyRuleSet struct {
 	Y       int             `json:"y"`
 	X       int             `json:"x"`
-	UUID    flows.NodeUUID  `json:"uuid"`
+	UUID    flows.NodeUUID  `json:"uuid" validate:"required,uuid4"`
 	Type    string          `json:"ruleset_type"`
 	Label   string          `json:"label"`
 	Operand string          `json:"operand"`
@@ -72,8 +72,9 @@ type legacyRuleSet struct {
 type legacyActionSet struct {
 	Y           int            `json:"y"`
 	X           int            `json:"x"`
-	Destination flows.NodeUUID `json:"destination"`
-	UUID        flows.NodeUUID `json:"uuid"`
+	Destination flows.NodeUUID `json:"destination" validate:"omitempty,uuid4"`
+	ExitUUID    flows.ExitUUID `json:"exit_uuid" validate:"required,uuid4"`
+	UUID        flows.NodeUUID `json:"uuid" validate:"required,uuid4"`
 	Actions     []legacyAction `json:"actions"`
 }
 
@@ -328,15 +329,10 @@ var testTypeMappings = map[string]string{
 	"ward":                 "has_ward",
 }
 
-func createAction(baseLanguage utils.Language, a legacyAction, translations *flowTranslations) (flows.Action, error) {
-
-	if a.UUID == "" {
-		a.UUID = flows.ActionUUID(uuid.NewV4().String())
-	}
-
+// migrates the given legacy action to a new action
+func migrateAction(baseLanguage utils.Language, a legacyAction, translations *flowTranslations) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
-
 		labels := make([]*flows.LabelReference, len(a.Labels))
 		for i, label := range a.Labels {
 			labels[i] = label.Migrate()
@@ -543,7 +539,8 @@ func createAction(baseLanguage utils.Language, a legacyAction, translations *flo
 	}
 }
 
-func createCase(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
+// migrates the given legacy rule to a router case
+func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
 	category := r.Category[baseLanguage]
 
 	newType, _ := testTypeMappings[r.Test.Type]
@@ -699,7 +696,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 			continue
 		}
 
-		c, err := createCase(baseLanguage, exitMap, r.Rules[i], translations)
+		c, err := migrateRule(baseLanguage, exitMap, r.Rules[i], translations)
 		if err != nil {
 			return nil, nil, "", err
 		}
@@ -736,7 +733,8 @@ type fieldConfig struct {
 	FieldIndex     int    `json:"field_index"`
 }
 
-func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
+// migrates the given legacy rulset to a node with a router
+func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
 	node := &node{}
 	node.uuid = r.UUID
 
@@ -844,23 +842,26 @@ func createRuleNode(lang utils.Language, r legacyRuleSet, translations *flowTran
 	return node, nil
 }
 
-func createActionNode(lang utils.Language, a legacyActionSet, translations *flowTranslations) (*node, error) {
-	node := &node{}
+// migrates the given legacy actionset to a node with a set of migrated actions and a single exit
+func migateActionSet(lang utils.Language, a legacyActionSet, translations *flowTranslations) (*node, error) {
+	node := &node{
+		uuid:    a.UUID,
+		actions: make([]flows.Action, len(a.Actions)),
+		exits: []flows.Exit{
+			NewExit(a.ExitUUID, a.Destination, ""),
+		},
+	}
 
-	node.uuid = a.UUID
-	node.actions = make([]flows.Action, len(a.Actions))
+	// migrate each action
 	for i := range a.Actions {
-		action, err := createAction(lang, a.Actions[i], translations)
+		action, err := migrateAction(lang, a.Actions[i], translations)
 		if err != nil {
 			return nil, err
 		}
 		node.actions[i] = action
 	}
 
-	node.exits = make([]flows.Exit, 1)
-	node.exits[0] = NewExit(flows.ExitUUID(uuid.NewV4().String()), a.Destination, "")
 	return node, nil
-
 }
 
 // ReadLegacyFlows reads in legacy formatted flows
@@ -881,8 +882,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 	var envelope legacyFlowEnvelope
 	var err error
 
-	err = json.Unmarshal(data, &envelope)
-	if err != nil {
+	if err := utils.UnmarshalAndValidate(data, &envelope, ""); err != nil {
 		return nil, err
 	}
 
@@ -896,7 +896,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 
 	f.nodes = make([]flows.Node, len(envelope.ActionSets)+len(envelope.RuleSets))
 	for i := range envelope.ActionSets {
-		node, err := createActionNode(f.language, envelope.ActionSets[i], translations)
+		node, err := migateActionSet(f.language, envelope.ActionSets[i], translations)
 		if err != nil {
 			return nil, err
 		}
@@ -904,7 +904,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 	}
 
 	for i := range envelope.RuleSets {
-		node, err := createRuleNode(f.language, envelope.RuleSets[i], translations)
+		node, err := migrateRuleSet(f.language, envelope.RuleSets[i], translations)
 		if err != nil {
 			return nil, err
 		}
