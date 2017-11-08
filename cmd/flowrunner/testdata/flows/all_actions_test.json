@@ -96,7 +96,8 @@
           "action_uuid": "4f452fb8-f0aa-442d-865b-a2b629c09c21",
           "event": {
             "addresses": [
-              "ben@macklemore"
+              "ben@macklemore",
+              "test@example.com"
             ],
             "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -450,7 +451,8 @@
                   },
                   {
                     "addresses": [
-                      "ben@macklemore"
+                      "ben@macklemore",
+                      "test@example.com"
                     ],
                     "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
