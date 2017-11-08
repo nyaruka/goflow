@@ -27,3 +27,4 @@ _testmain.go
 *.prof
 
 debug
+.DS_Store
