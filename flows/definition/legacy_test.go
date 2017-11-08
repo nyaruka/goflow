@@ -25,7 +25,8 @@ var legacyActionHolderDef = `
 			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
 			"y": 100, 
             "x": 100, 
-            "destination": null, 
+			"destination": null, 
+			"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
 			"actions": [%s]
 		}],
 		"metadata": {
@@ -78,18 +79,21 @@ var legacyRuleSetHolderDef = `
 				"uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
 				"x": 0, "y": 200, 
 				"destination": null, 
+				"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
 				"actions": []
 			},
 			{
 				"uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
 				"x": 0, "y": 400, 
 				"destination": null, 
+				"exit_uuid": "da3e7eaf-c087-4e80-97b5-0b2e217fcc93",
 				"actions": []
 			},
 			{
 				"uuid": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd",
 				"x": 0, "y": 600, 
 				"destination": null, 
+				"exit_uuid": "6a8cb81b-1b59-4cfb-b00e-575ccbafd3ba",
 				"actions": []
 			}
 		],
