@@ -47,28 +47,24 @@ func TestParseQuery(t *testing.T) {
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryKey(key string) interface{} {
+func (t *TestQueryable) ResolveQueryKey(key string) []interface{} {
 	switch key {
-	case "*":
-		return []string{"Bob Smith", "+59313145145", "bob_smith"}
-	case "name":
-		return "Bob Smith"
 	case "tel":
-		return "+59313145145"
+		return []interface{}{"+59313145145"}
 	case "twitter":
-		return "bob_smith"
+		return []interface{}{"bob_smith"}
 	case "gender":
-		return "male"
+		return []interface{}{"male"}
 	case "age":
-		return decimal.NewFromFloat(36)
+		return []interface{}{decimal.NewFromFloat(36)}
 	case "dob":
-		return time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)
+		return []interface{}{time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)}
 	case "state":
-		return utils.NewLocation(utils.LocationID("1123"), utils.LocationLevel(1), "Kigali")
+		return []interface{}{utils.NewLocation(utils.LocationID("1123"), utils.LocationLevel(1), "Kigali")}
 	case "district":
-		return utils.NewLocation(utils.LocationID("2345"), utils.LocationLevel(1), "Gasabo")
+		return []interface{}{utils.NewLocation(utils.LocationID("2345"), utils.LocationLevel(1), "Gasabo")}
 	case "ward":
-		return utils.NewLocation(utils.LocationID("34567"), utils.LocationLevel(1), "Ndera")
+		return []interface{}{utils.NewLocation(utils.LocationID("34567"), utils.LocationLevel(1), "Ndera")}
 	}
 	return nil
 }
@@ -81,23 +77,6 @@ func TestEvaluateQuery(t *testing.T) {
 		text   string
 		result bool
 	}{
-		// implicit key (i.e. name or URN) condition
-		{`Bob Smith`, true},
-		{`Smith`, true},
-		{`Jim`, false},
-		{`+59313145145`, true},
-		{`+593131`, true},
-		{`+5931317777777`, false},
-		{`bob_smith`, true},
-
-		// attribute condition
-		{`name = "Bob Smith"`, true},
-		{`name IS "Bob Smith"`, true},
-		{`name = "Jim Smith"`, false},
-		{`NAME HAS "Bob"`, true},
-		{`Name has Bob`, true},
-		{`name has Jim`, false},
-
 		// URN condition
 		{`tel = +59313145145`, true},
 		{`tel has 45145`, true},
@@ -147,19 +126,17 @@ func TestEvaluateQuery(t *testing.T) {
 		{`ward ~ era`, true},
 
 		// existence
-		{`name = ""`, false},
-		{`name != ""`, true},
 		{`age = ""`, false},
 		{`age != ""`, true},
 		{`xyz = ""`, true},
 		{`xyz != ""`, false},
 
 		// boolean combinations
-		{`name = "Bob Smith" AND gender = male`, true},
-		{`(name = "Bob Smith") AND (gender = male)`, true},
-		{`name = "Bob Smith" AND gender = female`, false},
-		{`name = "Bob Smith" OR gender = female`, true},
-		{`(name = "Bob Smith" OR gender = female) AND age > 35`, true},
+		{`age = 36 AND gender = male`, true},
+		{`(age = 36) AND (gender = male)`, true},
+		{`age = 36 AND gender = female`, false},
+		{`age = 36 OR gender = female`, true},
+		{`(age = 36 OR gender = female) AND age > 35`, true},
 	}
 
 	for _, test := range tests {

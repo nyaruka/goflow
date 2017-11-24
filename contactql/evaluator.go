@@ -14,7 +14,7 @@ const (
 )
 
 type Queryable interface {
-	ResolveQueryKey(string) interface{}
+	ResolveQueryKey(string) []interface{}
 }
 
 func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryable) (bool, error) {
@@ -23,15 +23,6 @@ func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryab
 
 func icontains(s string, substr string) bool {
 	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
-}
-
-func implicitComparison(objectVals []string, queryVal string) bool {
-	for _, objectVal := range objectVals {
-		if icontains(objectVal, queryVal) {
-			return true
-		}
-	}
-	return false
 }
 
 func stringComparison(objectVal string, comparator string, queryVal string) (bool, error) {

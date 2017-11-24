@@ -34,6 +34,16 @@ func (l URNList) Clone() URNList {
 	return urns
 }
 
+func (l URNList) WithScheme(scheme string) URNList {
+	var matching URNList
+	for _, u := range l {
+		if u.Scheme() == scheme {
+			matching = append(matching, u)
+		}
+	}
+	return matching
+}
+
 func (l URNList) Resolve(key string) interface{} {
 	scheme := strings.ToLower(key)
 
@@ -42,15 +52,8 @@ func (l URNList) Resolve(key string) interface{} {
 		return fmt.Errorf("unknown URN scheme: %s", key)
 	}
 
-	// This is a specific scheme, look up all matches
-	var found URNList
-	for _, u := range l {
-		if u.Scheme() == scheme {
-			found = append(found, u)
-		}
-	}
-
-	return found
+	// this is a specific scheme, return all matches
+	return l.WithScheme(scheme)
 }
 
 func (l URNList) Default() interface{} {
