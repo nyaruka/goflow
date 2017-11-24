@@ -37,26 +37,42 @@ type Condition struct {
 
 // Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
-	val := queryable.ResolveQueryKey(c.key)
+	if c.key == ImplicitKey {
+		return false, fmt.Errorf("dynamic group queries can't contain implicit conditions")
+	}
+
+	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
+	vals := queryable.ResolveQueryKey(c.key)
 
 	// is this an existence check?
 	if c.value == "" {
 		if c.comparator == "=" {
-			return utils.IsNil(val), nil // x = "" is true if x doesn't exist
+			return len(vals) == 0, nil // x = "" is true if x doesn't exist
 		} else if c.comparator == "!=" {
-			return !utils.IsNil(val), nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
+			return len(vals) > 0, nil // x != "" is false if x doesn't exist (i.e. true if x does exist)
 		}
 	}
 
 	// if keyed value doesn't exist on our contact then all other comparisons at this point are false
-	if utils.IsNil(val) {
+	if len(vals) == 0 {
 		return false, nil
 	}
 
-	if c.key == ImplicitKey {
-		return implicitComparison(val.([]string), c.value), nil
+	// check each resolved value
+	for _, val := range vals {
+		res, err := c.evaluateValue(env, val)
+		if err != nil {
+			return false, err
+		}
+		if res {
+			return true, nil
+		}
 	}
 
+	return false, nil
+}
+
+func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool, error) {
 	switch val.(type) {
 	case string:
 		return stringComparison(val.(string), c.comparator, c.value)
@@ -78,9 +94,10 @@ func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, 
 	case *utils.Location:
 		// location field conditions are string comparisons on the location name
 		return stringComparison(val.(*utils.Location).Name(), c.comparator, c.value)
-	}
 
-	return false, fmt.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
+	default:
+		return false, fmt.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
+	}
 }
 
 func (c *Condition) String() string {

@@ -133,32 +133,21 @@ func (c *Contact) UpdateDynamicGroups(session Session) error {
 	return nil
 }
 
-func (c *Contact) ResolveQueryKey(key string) interface{} {
-	if key == contactql.ImplicitKey {
-		values := make([]string, 0)
-		if c.name != "" {
-			values = append(values, c.name)
-		}
-		for _, urn := range c.urns {
-			values = append(values, string(urn.Path()))
-		}
-		return values
-
-	} else if key == "name" {
-		return c.name
-	}
-
+func (c *Contact) ResolveQueryKey(key string) []interface{} {
 	// try as a URN scheme
-	for _, urn := range c.urns {
-		if key == string(urn.Scheme()) {
-			return urn.Path()
+	if urns.IsValidScheme(key) {
+		urnsWithScheme := c.urns.WithScheme(key)
+		vals := make([]interface{}, len(urnsWithScheme))
+		for u := range urnsWithScheme {
+			vals[u] = string(urnsWithScheme[u])
 		}
+		return vals
 	}
 
 	// try as a contact field
 	for k, value := range c.fields {
 		if key == string(k) {
-			return value.value
+			return []interface{}{value.value}
 		}
 	}
 

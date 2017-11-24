@@ -29,9 +29,9 @@
                         },
                         {
                             "uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
-                            "type": "update_contact",
-                            "field_name": "name",
-                            "value": "Jim Smith"
+                            "type": "add_urn",
+                            "scheme": "tel",
+                            "path": "+250781234567"
                         },
                         {
                             "uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
@@ -107,8 +107,8 @@
             },
             {
                 "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba",
-                "name": "People called Jim",
-                "query": "Jim"
+                "name": "MTN Callers",
+                "query": "tel ~ \"25078\""
             }
         ],
         "is_set": true
