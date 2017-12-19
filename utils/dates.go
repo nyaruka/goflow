@@ -9,13 +9,11 @@ import (
 	"time"
 )
 
-var dd_mm_yyyy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4,5})`)
-var dd_mm_yy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{2,3})`)
-var mm_dd_yyyy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4,5})`)
-var mm_dd_yy = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{2,3})`)
-var yyyy_mm_dd = regexp.MustCompile(`([0-9]{4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,4})`)
-var yy_mm_dd = regexp.MustCompile(`([0-9]{1,4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,4})`)
-var hh_mm_ss = regexp.MustCompile(`([0-9]{1,4}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
+// patterns for date and time formats supported for human-entered data
+var dd_mm_yyyy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
+var mm_dd_yyyy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
+var yyyy_mm_dd = regexp.MustCompile(`([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
+var hh_mm_ss = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
 
 type DateFormat string
 type TimeFormat string
@@ -37,29 +35,9 @@ func (tf TimeFormat) String() string { return string(tf) }
 // ZeroTime is our uninitialized time value
 var ZeroTime = time.Time{}
 
-func dateFromFormats(env Environment, currentYear int, fourDigit *regexp.Regexp, twoDigit *regexp.Regexp,
-	d int, m int, y int, str string) (time.Time, error) {
+func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d int, m int, y int, str string) (time.Time, error) {
 
-	// four digit year comes first
-	matches := fourDigit.FindAllStringSubmatch(str, -1)
-	for _, match := range matches {
-		// does our day look believable?
-		day, _ := strconv.Atoi(match[d])
-		if day == 0 || day > 31 {
-			continue
-		}
-		month, _ := strconv.Atoi(match[m])
-		if month == 0 || month > 12 {
-			continue
-		}
-		year, _ := strconv.Atoi(match[y])
-
-		// looks believable, let's return it
-		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), nil
-	}
-
-	// then two digit
-	matches = twoDigit.FindAllStringSubmatch(str, -1)
+	matches := pattern.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		// does our day look believable?
 		day, _ := strconv.Atoi(match[d])
@@ -71,12 +49,15 @@ func dateFromFormats(env Environment, currentYear int, fourDigit *regexp.Regexp,
 			continue
 		}
 
-		// convert to four digit year
 		year, _ := strconv.Atoi(match[y])
-		if year > currentYear%1000 {
-			year += 1900
-		} else {
-			year += 2000
+
+		// convert to four digit year if necessary
+		if len(match[y]) == 2 {
+			if year > currentYear%1000 {
+				year += 1900
+			} else {
+				year += 2000
+			}
 		}
 
 		// looks believable, go for it
@@ -150,13 +131,13 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	switch env.DateFormat() {
 
 	case DateFormat_yyyy_MM_dd:
-		parsed, err = dateFromFormats(env, currentYear, yyyy_mm_dd, yy_mm_dd, 3, 2, 1, str)
+		parsed, err = dateFromFormats(env, currentYear, yyyy_mm_dd, 3, 2, 1, str)
 
 	case DateFormat_dd_MM_yyyy:
-		parsed, err = dateFromFormats(env, currentYear, dd_mm_yyyy, dd_mm_yy, 1, 2, 3, str)
+		parsed, err = dateFromFormats(env, currentYear, dd_mm_yyyy, 1, 2, 3, str)
 
 	case DateFormat_MM_dd_yyyy:
-		parsed, err = dateFromFormats(env, currentYear, mm_dd_yyyy, mm_dd_yy, 2, 1, 3, str)
+		parsed, err = dateFromFormats(env, currentYear, mm_dd_yyyy, 2, 1, 3, str)
 
 	default:
 		err = fmt.Errorf("unknown date format: %s", env.DateFormat())
@@ -211,6 +192,7 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 		}
 
 		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, seconds, ns, env.Timezone())
+		break
 	}
 
 	// set our timezone if we have one
