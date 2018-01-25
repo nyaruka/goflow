@@ -14,6 +14,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
+	"github.com/stretchr/testify/assert"
 )
 
 var legacyActionHolderDef = `
@@ -297,4 +298,15 @@ func wildcardEquals(actual string, expected string) bool {
 		}
 	}
 	return string(actualRunes) == string(substituted)
+}
+
+func TestTranslations(t *testing.T) {
+	translations := []map[utils.Language]string{
+		{"eng": "Yes", "fra": "Oui"},
+		{"eng": "No", "fra": "Non"},
+	}
+	assert.Equal(t, map[utils.Language][]string{
+		"eng": {"Yes", "No"},
+		"fra": {"Oui", "Non"},
+	}, transformTranslations(translations))
 }

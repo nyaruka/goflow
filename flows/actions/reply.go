@@ -25,9 +25,10 @@ const TypeReply string = "reply"
 // @action reply
 type ReplyAction struct {
 	BaseAction
-	Text        string   `json:"text"`
-	Attachments []string `json:"attachments"`
-	AllURNs     bool     `json:"all_urns,omitempty"`
+	Text         string   `json:"text"`
+	Attachments  []string `json:"attachments"`
+	QuickReplies []string `json:"quick_replies,omitempty"`
+	AllURNs      bool     `json:"all_urns,omitempty"`
 }
 
 // Type returns the type of this action

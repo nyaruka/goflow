@@ -24,11 +24,12 @@ const TypeSendMsg string = "send_msg"
 // @event send_msg
 type SendMsgEvent struct {
 	BaseEvent
-	Text        string                    `json:"text"`
-	Attachments []string                  `json:"attachments,omitempty"`
-	URNs        []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
-	Contacts    []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups      []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Text         string                    `json:"text"`
+	Attachments  []string                  `json:"attachments,omitempty"`
+	QuickReplies []string                  `json:"quick_replies,omitempty"`
+	URNs         []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
+	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
+	Groups       []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
 // NewSendMsgToContactEvent creates a new outgoing msg event to a single contact
