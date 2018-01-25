@@ -196,9 +196,10 @@ type legacyAction struct {
 	Name string           `json:"name"`
 
 	// message and email
-	Msg     json.RawMessage `json:"msg"`
-	Media   json.RawMessage `json:"media"`
-	SendAll bool            `json:"send_all"`
+	Msg          json.RawMessage `json:"msg"`
+	Media        json.RawMessage `json:"media"`
+	QuickReplies json.RawMessage `json:"quick_replies"`
+	SendAll      bool            `json:"send_all"`
 
 	// variable contact actions
 	Contacts  []legacyContactReference `json:"contacts"`
@@ -272,15 +273,35 @@ type wardTest struct {
 
 type localizations map[utils.Language]flows.Action
 
-type translationMap map[utils.Language]string
-
-func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped translationMap, uuid flows.UUID, key string) {
-	for language, translation := range mapped {
-		expression, _ := excellent.MigrateTemplate(translation)
+func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language]string, uuid flows.UUID, key string) string {
+	var inBaseLanguage string
+	for language, item := range mapped {
+		expression, _ := excellent.MigrateTemplate(item)
 		if language != baseLanguage {
 			addTranslation(translations, language, uuid, key, []string{expression})
+		} else {
+			inBaseLanguage = expression
 		}
 	}
+
+	return inBaseLanguage
+}
+
+func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language][]string, uuid flows.UUID, key string) []string {
+	var inBaseLanguage []string
+	for language, items := range mapped {
+		expressions := make([]string, len(items))
+		for i := range items {
+			expression, _ := excellent.MigrateTemplate(items[i])
+			expressions[i] = expression
+		}
+		if language != baseLanguage {
+			addTranslation(translations, language, uuid, key, expressions)
+		} else {
+			inBaseLanguage = expressions
+		}
+	}
+	return inBaseLanguage
 }
 
 func addTranslation(translations *flowTranslations, lang utils.Language, itemUUID flows.UUID, propKey string, translation []string) {
@@ -299,6 +320,27 @@ func addTranslation(translations *flowTranslations, lang utils.Language, itemUUI
 	}
 
 	itemTrans[propKey] = translation
+}
+
+// Transforms a list of single item translations into a map of multi-item translations, e.g.
+//
+// [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
+//
+func transformTranslations(items []map[utils.Language]string) map[utils.Language][]string {
+	// re-organize into a map of arrays
+	transformed := make(map[utils.Language][]string)
+
+	for i := range items {
+		for language, translation := range items[i] {
+			perLanguage, found := transformed[language]
+			if !found {
+				perLanguage = make([]string, len(items))
+				transformed[language] = perLanguage
+			}
+			perLanguage[i] = translation
+		}
+	}
+	return transformed
 }
 
 var testTypeMappings = map[string]string{
@@ -412,6 +454,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 	case "reply", "send":
 		msg := make(map[utils.Language]string)
 		media := make(map[utils.Language]string)
+		var quickReplies map[utils.Language][]string
 
 		err := json.Unmarshal(a.Msg, &msg)
 		if err != nil {
@@ -424,12 +467,20 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 				return nil, err
 			}
 		}
+		if a.QuickReplies != nil {
+			legacyQuickReplies := make([]map[utils.Language]string, 0)
 
-		addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
-		addTranslationMap(baseLanguage, translations, media, flows.UUID(a.UUID), "attachments")
+			err := json.Unmarshal(a.QuickReplies, &legacyQuickReplies)
+			if err != nil {
+				return nil, err
+			}
 
-		migratedText, _ := excellent.MigrateTemplate(msg[baseLanguage])
-		migratedMedia, _ := excellent.MigrateTemplate(media[baseLanguage])
+			quickReplies = transformTranslations(legacyQuickReplies)
+		}
+
+		migratedText := addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
+		migratedMedia := addTranslationMap(baseLanguage, translations, media, flows.UUID(a.UUID), "attachments")
+		migratedQuickReplies := addTranslationMultiMap(baseLanguage, translations, quickReplies, flows.UUID(a.UUID), "quick_replies")
 
 		attachments := []string{}
 		if migratedMedia != "" {
@@ -438,10 +489,11 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 
 		if a.Type == "reply" {
 			return &actions.ReplyAction{
-				BaseAction:  actions.NewBaseAction(a.UUID),
-				Text:        migratedText,
-				Attachments: attachments,
-				AllURNs:     a.SendAll,
+				BaseAction:   actions.NewBaseAction(a.UUID),
+				Text:         migratedText,
+				Attachments:  attachments,
+				QuickReplies: migratedQuickReplies,
+				AllURNs:      a.SendAll,
 			}, nil
 		}
 
@@ -650,7 +702,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 type categoryName struct {
 	uuid         flows.ExitUUID
 	destination  flows.NodeUUID
-	translations translationMap
+	translations map[utils.Language]string
 	order        int
 }
 
