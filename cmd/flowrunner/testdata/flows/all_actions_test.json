@@ -259,7 +259,11 @@
               }
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "This is a reply with attachments",
+            "quick_replies": [
+              "Yes",
+              "No"
+            ],
+            "text": "This is a reply with attachments and quick replies",
             "type": "send_msg"
           },
           "step_uuid": ""
@@ -582,7 +586,11 @@
                       }
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "This is a reply with attachments",
+                    "quick_replies": [
+                      "Yes",
+                      "No"
+                    ],
+                    "text": "This is a reply with attachments and quick replies",
                     "type": "send_msg"
                   },
                   {

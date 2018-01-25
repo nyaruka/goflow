@@ -143,7 +143,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, log flows.EventLog) (string, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []string, []string) {
 	// localize and evaluate the message text
 	localizedText := run.GetText(flows.UUID(a.UUID()), "text", actionText)
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText)
@@ -165,7 +165,21 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionT
 		evaluatedAttachments = append(evaluatedAttachments, evaluatedAttachment)
 	}
 
-	return evaluatedText, evaluatedAttachments
+	// localize and evaluate the quick replies
+	translatedQuickReplies := run.GetTextArray(flows.UUID(a.UUID()), "quick_replies", actionQuickReplies)
+	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
+	for n := range translatedQuickReplies {
+		evaluatedQuickReply, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedQuickReplies[n])
+		if err != nil {
+			log.Add(events.NewErrorEvent(err))
+		} else if evaluatedQuickReply == "" {
+			log.Add(events.NewErrorEvent(fmt.Errorf("quick reply text evaluated to empty string, skipping")))
+			continue
+		}
+		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
+	}
+
+	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
 }
 
 func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*flows.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*flows.GroupReference, error) {

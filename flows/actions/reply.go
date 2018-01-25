@@ -41,14 +41,14 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	evaluatedText, evaluatedAttachments := a.evaluateMessage(run, step, a.Text, a.Attachments, log)
+	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
 	urns := run.Contact().URNs()
 
 	if a.AllURNs && len(urns) > 0 {
-		log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, urns, nil, nil))
+		log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urns, nil, nil))
 	} else {
-		log.Add(events.NewSendMsgToContactEvent(evaluatedText, evaluatedAttachments, run.Contact().Reference()))
+		log.Add(events.NewSendMsgToContactEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, run.Contact().Reference()))
 	}
 
 	return nil

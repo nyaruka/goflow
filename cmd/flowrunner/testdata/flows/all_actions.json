@@ -118,8 +118,9 @@
                         {
                             "uuid": "62a30ab4-d73c-447d-a989-39c49115153e",
                             "type": "reply",
-                            "text": "This is a reply with attachments",
-                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"]
+                            "text": "This is a reply with attachments and quick replies",
+                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"],
+                            "quick_replies": ["Yes", "No"]
                         },
                         {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
