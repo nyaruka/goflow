@@ -304,9 +304,11 @@ func TestTranslations(t *testing.T) {
 	translations := []map[utils.Language]string{
 		{"eng": "Yes", "fra": "Oui"},
 		{"eng": "No", "fra": "Non"},
+		{"eng": "Maybe"},
+		{"eng": "Never", "fra": "Jamas"},
 	}
 	assert.Equal(t, map[utils.Language][]string{
-		"eng": {"Yes", "No"},
-		"fra": {"Oui", "Non"},
+		"eng": {"Yes", "No", "Maybe", "Never"},
+		"fra": {"Oui", "Non", "", "Jamas"},
 	}, transformTranslations(translations))
 }
