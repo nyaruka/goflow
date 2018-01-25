@@ -17,8 +17,8 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact", new: "@contact"},
 		{old: "@contact.first_name", new: "@contact.first_name"},
 		{old: "@contact.name", new: "@contact.name"},
-		{old: "@contact.tel", new: "@contact.urns.tel"},
-		{old: "@contact.tel_e164", new: "@contact.urns.tel_e164"},
+		{old: "@contact.tel", new: "@(format_tel(contact.urns.tel))"},
+		{old: "@contact.tel_e164", new: "@contact.urns.tel"},
 		{old: "@contact.telegram", new: "@contact.urns.telegram"},
 		{old: "@contact.twitter", new: "@contact.urns.twitter"},
 		{old: "@contact.facebook", new: "@contact.urns.facebook"},
@@ -44,7 +44,7 @@ func TestTranslate(t *testing.T) {
 		{old: "@date", new: "@(now())"},
 
 		// variables in parens
-		{old: "@(contact.tel)", new: "@(contact.urns.tel)"},
+		{old: "@(contact.tel)", new: "@(format_tel(contact.urns.tel))"},
 		{old: "@(contact.blerg)", new: "@(contact.fields.blerg)"},
 		{old: "@(flow.blerg)", new: "@(run.results.blerg)"},
 
