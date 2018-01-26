@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"net/url"
 	"strconv"
 	"strings"
 	"unicode"
@@ -255,7 +256,7 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 
 	// if we had one, then just return our string evaluation strategy
 	if nextTT != EOF {
-		return EvaluateTemplateAsString(env, resolver, template)
+		return EvaluateTemplateAsString(env, resolver, template, false)
 	}
 
 	switch tokenType {
@@ -289,11 +290,11 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 	}
 
 	// different type of token, return the string representation
-	return EvaluateTemplateAsString(env, resolver, template)
+	return EvaluateTemplateAsString(env, resolver, template, false)
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableResolver, template string) (string, error) {
+func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableResolver, template string, urlEncode bool) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
 	scanner := newXScanner(strings.NewReader(template))
@@ -317,6 +318,10 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableReso
 				buf.WriteString(token)
 			} else {
 				strValue, _ := utils.ToString(env, value)
+				if urlEncode {
+					strValue = url.QueryEscape(strValue)
+				}
+
 				buf.WriteString(strValue)
 			}
 		case EXPRESSION:
@@ -325,6 +330,10 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableReso
 				errors = append(errors, err)
 			} else {
 				strValue, _ := utils.ToString(env, value)
+				if urlEncode {
+					strValue = url.QueryEscape(strValue)
+				}
+
 				buf.WriteString(strValue)
 			}
 

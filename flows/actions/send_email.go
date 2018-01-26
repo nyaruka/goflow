@@ -45,7 +45,7 @@ func (a *EmailAction) Validate(assets flows.SessionAssets) error {
 
 // Execute creates the email events
 func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject)
+	subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -54,7 +54,7 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		return nil
 	}
 
-	body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body)
+	body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -66,7 +66,7 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	evaluatedAddresses := make([]string, 0)
 
 	for _, address := range a.Addresses {
-		evaluatedAddress, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), address)
+		evaluatedAddress, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), address, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}

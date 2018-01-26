@@ -9,10 +9,12 @@ import (
 	"time"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/utils"
 )
 
+var topLevelScopes = []string{"contact", "child", "parent", "run"}
 var times = map[string]time.Duration{}
 
 func timeTrack(start time.Time, name string) {
@@ -142,27 +144,26 @@ var functionTemplates = map[string]functionTemplate{
 
 func newVars() vars {
 
+	urnSubstitutions := make(map[string]string)
+	for scheme := range urns.ValidSchemes {
+		urnSubstitutions[scheme] = fmt.Sprintf("format_urn(contact.urns.%s.0)", scheme)
+	}
+
 	contact := varMapper{
-		substitutions: map[string]string{
-			"tel": "format_tel(contact.urns.tel)",
-		},
-		base: "contact",
+		substitutions: urnSubstitutions,
+		base:          "contact",
 		baseVars: map[string]interface{}{
+			"uuid":       "uuid",
+			"name":       "name",
 			"first_name": "first_name",
 			"language":   "language",
-			"name":       "name",
 			"groups":     "groups",
-			"tel_e164":   "urns.tel",
-			"telegram":   "urns.telegram",
-			"twitter":    "urns.twitter",
-			"facebook":   "urns.facebook",
-			"mailto":     "urns.mailto",
-			"uuid":       "uuid",
+			"tel_e164":   "urns.tel.0.path",
 		},
 		arbitraryNesting: "fields",
 	}
 
-	return vars(map[string]interface{}{
+	return vars{
 		"contact": contact,
 		"flow": varMapper{
 			base: "run.results",
@@ -207,7 +208,7 @@ func newVars() vars {
 			base:             "run.webhook",
 			arbitraryNesting: "json",
 		},
-	})
+	}
 }
 
 var datePrefixes = []string{
@@ -236,10 +237,8 @@ func isDate(operand string) bool {
 	return false
 }
 
-var validTopLevelScopes = []string{"contact", "child", "parent", "run"}
-
 func wrapRawExpression(raw string) string {
-	for _, topLevel := range validTopLevelScopes {
+	for _, topLevel := range topLevelScopes {
 		if strings.HasPrefix(raw, topLevel+".") || raw == topLevel {
 			return "@" + raw
 		}
@@ -269,8 +268,15 @@ func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template str
 				buf.WriteString(token)
 			} else {
 				strValue, _ := toString(value)
-				buf.WriteString(wrapRawExpression(strValue))
+
+				if strValue == token {
+					buf.WriteString("@" + token)
+				} else {
+					// if expression has been changed, then it might need to be wrapped in @(...)
+					buf.WriteString(wrapRawExpression(strValue))
+				}
 			}
+
 		case EXPRESSION:
 			value, err := translateExpression(nil, resolver, token)
 			buf.WriteString("@(")

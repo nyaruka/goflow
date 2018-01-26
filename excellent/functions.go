@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 
 	humanize "github.com/dustin/go-humanize"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"
 )
@@ -85,6 +86,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"now":             Now,
 	"from_epoch":      FromEpoch,
 	"to_epoch":        ToEpoch,
+
+	"format_urn": FormatURN,
 }
 
 //------------------------------------------------------------------------------------------
@@ -1608,6 +1611,34 @@ func Now(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return time.Now().In(env.Timezone())
+}
+
+//----------------------------------------------------------------------------------------
+// URN Functions
+//----------------------------------------------------------------------------------------
+
+// FormatURN turns `urn` into a human friendly string
+//
+//   @(format_urn("tel:+250781234567")) -> 0781 234 567
+//   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
+//   @(format_urn("NOT URN")) -> ERROR
+//
+// @function format_urn(urn)
+func FormatURN(env utils.Environment, args ...interface{}) interface{} {
+	if len(args) != 1 {
+		return fmt.Errorf("FORMAT_URN takes one argument, got %d", len(args))
+	}
+	urnString, err := utils.ToString(env, args[0])
+	if err != nil {
+		return err
+	}
+
+	urn := urns.URN(urnString)
+	if !urn.Validate() {
+		return fmt.Errorf("%s is not a valid URN", urnString)
+	}
+
+	return urn.Format()
 }
 
 //----------------------------------------------------------------------------------------
