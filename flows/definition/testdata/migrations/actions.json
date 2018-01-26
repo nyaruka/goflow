@@ -155,7 +155,8 @@
             }, 
             "quick_replies": [
                 {"eng": "Yes", "fra": "Oui"},
-                {"eng": "No", "fra": "Non"}
+                {"eng": "No", "fra": "Non"},
+                {"eng": "Maybe"}
             ],
             "send_all": true
         },
@@ -164,7 +165,7 @@
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],
-            "quick_replies": ["Yes", "No"],
+            "quick_replies": ["Yes", "No", "Maybe"],
             "all_urns": true
         },
         "expected_localization": {
@@ -172,7 +173,7 @@
                 "5a4d00aa-807e-44af-9693-64b9fdedd352": {
                     "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.fields.age"],
                     "text": ["Vous habitez toujours à @contact.fields.city"],
-                    "quick_replies": ["Oui", "Non"]
+                    "quick_replies": ["Oui", "Non", ""]
                 }
             }
         }

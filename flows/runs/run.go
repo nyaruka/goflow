@@ -270,9 +270,19 @@ func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []s
 		translations := r.Flow().Translations().GetLanguageTranslations(lang)
 		if translations != nil {
 			textArray := translations.GetTextArray(uuid, key)
-			if textArray != nil && len(textArray) == len(native) {
-				return textArray
+			if textArray == nil {
+				return native
 			}
+
+			merged := make([]string, len(native))
+			for s := range native {
+				if textArray[s] != "" {
+					merged[s] = textArray[s]
+				} else {
+					merged[s] = native[s]
+				}
+			}
+			return merged
 		}
 	}
 	return native
