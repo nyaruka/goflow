@@ -142,7 +142,7 @@ var functionTemplates = map[string]functionTemplate{
 	"time": {name: "time", params: "(%s %s %s)"},
 }
 
-func newVars() vars {
+func newRootVarMapper() vars {
 
 	urnSubstitutions := make(map[string]string)
 	for scheme := range urns.ValidSchemes {
@@ -211,6 +211,8 @@ func newVars() vars {
 	}
 }
 
+var rootVarMapper = newRootVarMapper()
+
 var datePrefixes = []string{
 	"today()",
 	"yesterday()",
@@ -248,7 +250,7 @@ func wrapRawExpression(raw string) string {
 
 // MigrateTemplate will take a legacy expression and translate it to the new syntax
 func MigrateTemplate(template string) (string, error) {
-	return migrateLegacyTemplateAsString(newVars(), template)
+	return migrateLegacyTemplateAsString(rootVarMapper, template)
 }
 
 func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
