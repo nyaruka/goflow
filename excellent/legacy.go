@@ -146,7 +146,7 @@ func newRootVarMapper() vars {
 
 	urnSubstitutions := make(map[string]string)
 	for scheme := range urns.ValidSchemes {
-		urnSubstitutions[scheme] = fmt.Sprintf("format_urn(contact.urns.%s.0)", scheme)
+		urnSubstitutions[scheme] = fmt.Sprintf("format_urn(contact.urns.%s)", scheme)
 	}
 
 	contact := varMapper{

@@ -17,12 +17,12 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact", new: "@contact"},
 		{old: "@contact.first_name", new: "@contact.first_name"},
 		{old: "@contact.name", new: "@contact.name"},
-		{old: "@contact.tel", new: "@(format_urn(contact.urns.tel.0))"},
+		{old: "@contact.tel", new: "@(format_urn(contact.urns.tel))"},
 		{old: "@contact.tel_e164", new: "@contact.urns.tel.0.path"},
-		{old: "@contact.telegram", new: "@(format_urn(contact.urns.telegram.0))"},
-		{old: "@contact.twitter", new: "@(format_urn(contact.urns.twitter.0))"},
-		{old: "@contact.facebook", new: "@(format_urn(contact.urns.facebook.0))"},
-		{old: "@contact.mailto", new: "@(format_urn(contact.urns.mailto.0))"},
+		{old: "@contact.telegram", new: "@(format_urn(contact.urns.telegram))"},
+		{old: "@contact.twitter", new: "@(format_urn(contact.urns.twitter))"},
+		{old: "@contact.facebook", new: "@(format_urn(contact.urns.facebook))"},
+		{old: "@contact.mailto", new: "@(format_urn(contact.urns.mailto))"},
 		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.blerg", new: "@contact.fields.blerg"},
 		{old: "@child.blerg", new: "@child.results.blerg"},
@@ -44,7 +44,7 @@ func TestTranslate(t *testing.T) {
 		{old: "@date", new: "@(now())"},
 
 		// variables in parens
-		{old: "@(contact.tel)", new: "@(format_urn(contact.urns.tel.0))"},
+		{old: "@(contact.tel)", new: "@(format_urn(contact.urns.tel))"},
 		{old: "@(contact.blerg)", new: "@(contact.fields.blerg)"},
 		{old: "@(flow.blerg)", new: "@(run.results.blerg)"},
 

@@ -68,7 +68,7 @@ var contactDef = `
 {
 	"name": "Ryan Lewis",
 	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-	"urns": ["tel:%2B12065551212", "email:foo@bar.com"],
+	"urns": ["tel:+12065551212", "mailto:foo@bar.com"],
 	"groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"],
 	"fields": {
 		"gender": {

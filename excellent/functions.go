@@ -1621,6 +1621,11 @@ func Now(env utils.Environment, args ...interface{}) interface{} {
 //
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
+//   @(format_urn(contact.urns)) -> (206) 555-1212
+//   @(format_urn(contact.urns.1)) -> foo@bar.com
+//   @(format_urn(contact.urns.mailto)) -> foo@bar.com
+//   @(format_urn(contact.urns.mailto.0)) -> foo@bar.com
+//   @(format_urn(contact.urns.6)) -> ERROR
 //   @(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)
@@ -1635,6 +1640,8 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 		sliceLen, _ := utils.SliceLength(urnArg)
 		if sliceLen >= 1 {
 			urnArg, _ = utils.LookupIndex(urnArg, 0)
+		} else {
+			return fmt.Errorf("FORMAT_URN was passed an empty list")
 		}
 	}
 
