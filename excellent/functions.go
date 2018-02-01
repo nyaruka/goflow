@@ -1628,7 +1628,17 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("FORMAT_URN takes one argument, got %d", len(args))
 	}
-	urnString, err := utils.ToString(env, args[0])
+
+	// if we've been passed a slice like a URNList, use first item
+	urnArg := args[0]
+	if utils.IsSlice(urnArg) {
+		sliceLen, _ := utils.SliceLength(urnArg)
+		if sliceLen >= 1 {
+			urnArg, _ = utils.LookupIndex(urnArg, 0)
+		}
+	}
+
+	urnString, err := utils.ToString(env, urnArg)
 	if err != nil {
 		return err
 	}
