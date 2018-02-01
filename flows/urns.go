@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	validator "gopkg.in/go-playground/validator.v9"
@@ -45,6 +46,16 @@ func (l URNList) WithScheme(scheme string) URNList {
 }
 
 func (l URNList) Resolve(key string) interface{} {
+	// first try as numeric index to a single URN
+	index, err := strconv.Atoi(key)
+	if err == nil {
+		if index < len(l) {
+			return l[index]
+		}
+		return fmt.Errorf("index out of range: %d", index)
+	}
+
+	// next try as a URN scheme
 	scheme := strings.ToLower(key)
 
 	// if this isn't a valid scheme, bail
@@ -52,15 +63,11 @@ func (l URNList) Resolve(key string) interface{} {
 		return fmt.Errorf("unknown URN scheme: %s", key)
 	}
 
-	// this is a specific scheme, return all matches
 	return l.WithScheme(scheme)
 }
 
 func (l URNList) Default() interface{} {
-	if len(l) > 0 {
-		return l[0]
-	}
-	return nil
+	return l
 }
 
 func (l URNList) String() string {

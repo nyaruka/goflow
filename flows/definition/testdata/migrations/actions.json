@@ -51,7 +51,7 @@
             "type": "call_webhook",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "method": "POST",
-            "url": "http://example.com?contact=@contact.urns.tel",
+            "url": "http://example.com?contact=@(format_urn(contact.urns.tel))",
             "headers": {
                 "User-Agent": "rapidpro"
             }

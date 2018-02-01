@@ -47,7 +47,7 @@ func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.Eve
 		return nil
 	}
 
-	evaluatedPath, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Path)
+	evaluatedPath, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Path, false)
 
 	// if we received an error, log it
 	if err != nil {

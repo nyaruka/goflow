@@ -9,10 +9,12 @@ import (
 	"time"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/utils"
 )
 
+var topLevelScopes = []string{"contact", "child", "parent", "run"}
 var times = map[string]time.Duration{}
 
 func timeTrack(start time.Time, name string) {
@@ -39,41 +41,56 @@ func (v vars) String() string {
 	return fmt.Sprintf("%s", v["__default__"])
 }
 
-type arbitraryVars struct {
-	vars       vars
-	base       string
-	nesting    string
-	nestedVars vars
+type varMapper struct {
+	substitutions    map[string]string
+	base             string
+	baseVars         vars
+	arbitraryNesting string
+	arbitraryVars    vars
 }
 
-func (v arbitraryVars) Resolve(key string) interface{} {
+func (v varMapper) Resolve(key string) interface{} {
+	// is this a complete substitution?
+	if substitute, ok := v.substitutions[key]; ok {
+		return substitute
+	}
 
-	value, ok := v.vars[key]
+	newPath := make([]string, 0, 1)
+
+	if v.base != "" {
+		newPath = append(newPath, v.base)
+	}
+
+	// is it a fixed base item?
+	value, ok := v.baseVars[key]
 	if ok {
-		return fmt.Sprintf("%s.%s", v.base, value)
+		newPath = append(newPath, value.(string))
+		return strings.Join(newPath, ".")
 	}
 
-	prefix := v.base
-	if v.nesting != "" {
-		prefix = fmt.Sprintf("%s.%s", v.base, v.nesting)
+	// then it must be an arbitrary item
+	if v.arbitraryNesting != "" {
+		newPath = append(newPath, v.arbitraryNesting)
 	}
 
-	if v.nestedVars != nil {
-		return &arbitraryVars{
-			base: fmt.Sprintf("%s.%s", prefix, key),
-			vars: v.nestedVars,
+	newPath = append(newPath, key)
+
+	if v.arbitraryVars != nil {
+		return &varMapper{
+			base:     strings.Join(newPath, "."),
+			baseVars: v.arbitraryVars,
 		}
 	}
 
-	return fmt.Sprintf("%s.%s", prefix, key)
+	return strings.Join(newPath, ".")
 
 }
 
-func (v arbitraryVars) Default() interface{} {
+func (v varMapper) Default() interface{} {
 	return v.base
 }
 
-func (v arbitraryVars) String() string {
+func (v varMapper) String() string {
 	return v.base
 }
 
@@ -125,44 +142,44 @@ var functionTemplates = map[string]functionTemplate{
 	"time": {name: "time", params: "(%s %s %s)"},
 }
 
-func newVars() vars {
+func newRootVarMapper() vars {
 
-	contactVars := map[string]interface{}{
-		"first_name":  "first_name",
-		"language":    "language",
-		"name":        "name",
-		"groups":      "groups",
-		"tel":         "urns.tel",
-		"tel_e164":    "urns.tel_e164",
-		"telegram":    "urns.telegram",
-		"twitter":     "urns.twitter",
-		"facebook":    "urns.facebook",
-		"mailto":      "urns.mailto",
-		"uuid":        "uuid",
-		"__default__": "contact",
+	urnSubstitutions := make(map[string]string)
+	for scheme := range urns.ValidSchemes {
+		urnSubstitutions[scheme] = fmt.Sprintf("format_urn(contact.urns.%s)", scheme)
 	}
 
-	return vars(map[string]interface{}{
-		"contact": arbitraryVars{
-			base:    "contact",
-			nesting: "fields",
-			vars:    contactVars,
+	contact := varMapper{
+		substitutions: urnSubstitutions,
+		base:          "contact",
+		baseVars: map[string]interface{}{
+			"uuid":       "uuid",
+			"name":       "name",
+			"first_name": "first_name",
+			"language":   "language",
+			"groups":     "groups",
+			"tel_e164":   "urns.tel.0.path",
 		},
-		"flow": arbitraryVars{
+		arbitraryNesting: "fields",
+	}
+
+	return vars{
+		"contact": contact,
+		"flow": varMapper{
 			base: "run.results",
-			nestedVars: map[string]interface{}{
+			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 			},
 		},
-		"parent": arbitraryVars{
+		"parent": varMapper{
 			base: "parent.results",
-			nestedVars: map[string]interface{}{
+			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 			},
 		},
-		"child": arbitraryVars{
+		"child": varMapper{
 			base: "child.results",
-			nestedVars: map[string]interface{}{
+			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 			},
 		},
@@ -172,11 +189,7 @@ func newVars() vars {
 			"text":        "run.input.text",
 			"attachments": "run.input.attachments",
 			"time":        "run.input.created_on",
-			"contact": arbitraryVars{
-				base:    "contact",
-				nesting: "fields",
-				vars:    contactVars,
-			},
+			"contact":     contact,
 		},
 		"channel": vars{
 			"__default__": "contact.channel.address",
@@ -191,12 +204,14 @@ func newVars() vars {
 			"yesterday":   "yesterday()",
 			"__default__": "now()",
 		},
-		"extra": arbitraryVars{
-			base:    "run.webhook",
-			nesting: "json",
+		"extra": varMapper{
+			base:             "run.webhook",
+			arbitraryNesting: "json",
 		},
-	})
+	}
 }
+
+var rootVarMapper = newRootVarMapper()
 
 var datePrefixes = []string{
 	"today()",
@@ -224,9 +239,18 @@ func isDate(operand string) bool {
 	return false
 }
 
+func wrapRawExpression(raw string) string {
+	for _, topLevel := range topLevelScopes {
+		if strings.HasPrefix(raw, topLevel+".") || raw == topLevel {
+			return "@" + raw
+		}
+	}
+	return fmt.Sprintf("@(%s)", raw)
+}
+
 // MigrateTemplate will take a legacy expression and translate it to the new syntax
 func MigrateTemplate(template string) (string, error) {
-	return migrateLegacyTemplateAsString(newVars(), template)
+	return migrateLegacyTemplateAsString(rootVarMapper, template)
 }
 
 func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
@@ -247,15 +271,15 @@ func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template str
 			} else {
 				strValue, _ := toString(value)
 
-				// date context references get rewritten as functions
-				template := "@%s"
-				if token[0:4] == "date" {
-					template = "@(%s)"
+				if strValue == token {
+					buf.WriteString("@" + token)
+				} else {
+					// if expression has been changed, then it might need to be wrapped in @(...)
+					buf.WriteString(wrapRawExpression(strValue))
 				}
-				buf.WriteString(fmt.Sprintf(template, strValue))
 			}
+
 		case EXPRESSION:
-			// defer timeTrack(time.Now(), token)
 			value, err := translateExpression(nil, resolver, token)
 			buf.WriteString("@(")
 			if err != nil {

@@ -17,12 +17,12 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact", new: "@contact"},
 		{old: "@contact.first_name", new: "@contact.first_name"},
 		{old: "@contact.name", new: "@contact.name"},
-		{old: "@contact.tel", new: "@contact.urns.tel"},
-		{old: "@contact.tel_e164", new: "@contact.urns.tel_e164"},
-		{old: "@contact.telegram", new: "@contact.urns.telegram"},
-		{old: "@contact.twitter", new: "@contact.urns.twitter"},
-		{old: "@contact.facebook", new: "@contact.urns.facebook"},
-		{old: "@contact.mailto", new: "@contact.urns.mailto"},
+		{old: "@contact.tel", new: "@(format_urn(contact.urns.tel))"},
+		{old: "@contact.tel_e164", new: "@contact.urns.tel.0.path"},
+		{old: "@contact.telegram", new: "@(format_urn(contact.urns.telegram))"},
+		{old: "@contact.twitter", new: "@(format_urn(contact.urns.twitter))"},
+		{old: "@contact.facebook", new: "@(format_urn(contact.urns.facebook))"},
+		{old: "@contact.mailto", new: "@(format_urn(contact.urns.mailto))"},
 		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.blerg", new: "@contact.fields.blerg"},
 		{old: "@child.blerg", new: "@child.results.blerg"},
@@ -44,7 +44,7 @@ func TestTranslate(t *testing.T) {
 		{old: "@date", new: "@(now())"},
 
 		// variables in parens
-		{old: "@(contact.tel)", new: "@(contact.urns.tel)"},
+		{old: "@(contact.tel)", new: "@(format_urn(contact.urns.tel))"},
 		{old: "@(contact.blerg)", new: "@(contact.fields.blerg)"},
 		{old: "@(flow.blerg)", new: "@(run.results.blerg)"},
 
@@ -152,6 +152,9 @@ func TestTranslate(t *testing.T) {
 		{old: "@(REPT(\"*\", 10))", new: "@(repeat(\"*\", 10))"},
 		{old: "@extra.blerg", new: "@run.webhook.json.blerg"},
 		// {old: "@((DATEDIF(DATEVALUE(\"01-01-1970\"), date.now, \"D\") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))", new: ""},
+
+		// non-expression
+		{old: "bob@nyaruka.com", new: "bob@nyaruka.com"},
 	}
 
 	for i := range tests {

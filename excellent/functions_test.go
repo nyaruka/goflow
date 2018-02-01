@@ -308,6 +308,11 @@ var funcTests = []struct {
 	{"legacy_add", []interface{}{struct{}{}, "10"}, nil, true},
 	{"legacy_add", []interface{}{"10", struct{}{}}, nil, true},
 	{"legacy_add", []interface{}{}, nil, true},
+
+	{"format_urn", []interface{}{"tel:+250781234567"}, "0781 234 567", false},
+	{"format_urn", []interface{}{[]string{"tel:+250781112222", "tel:+250781234567"}}, "0781 112 222", false},
+	{"format_urn", []interface{}{"twitter:134252511151#billy_bob"}, "billy_bob", false},
+	{"format_urn", []interface{}{"NOT URN"}, nil, true},
 }
 
 func TestFunctions(t *testing.T) {

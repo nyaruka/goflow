@@ -51,7 +51,7 @@ func (a *WebhookAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// substitute any variables in our url
-	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL)
+	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL, true)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -63,7 +63,7 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 	// substitute any body variables
 	body := a.Body
 	if body != "" {
-		body, err = excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body)
+		body, err = excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}
@@ -78,7 +78,7 @@ func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 
 	// add our headers, substituting any template vars
 	for key, value := range a.Headers {
-		headerValue, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), value)
+		headerValue, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), value, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}

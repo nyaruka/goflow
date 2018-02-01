@@ -825,6 +825,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 			return nil, err
 		}
 
+		migratedURL, _ := excellent.MigrateTemplate(config.Webhook)
 		migratedHeaders := make(map[string]string, len(config.Headers))
 		for _, header := range config.Headers {
 			migratedHeaders[header.Name] = header.Value
@@ -833,7 +834,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 		node.actions = []flows.Action{
 			&actions.WebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
-				URL:        config.Webhook,
+				URL:        migratedURL,
 				Method:     config.Action,
 				Headers:    migratedHeaders,
 			},

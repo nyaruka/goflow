@@ -80,7 +80,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evaluateAsStringTests {
-		eval, err := EvaluateTemplateAsString(env, vars, test.template)
+		eval, err := EvaluateTemplateAsString(env, vars, test.template, false)
 		if err != nil {
 			if !test.hasError {
 				t.Errorf("Received error evaluating '%s': %s", test.template, err)
