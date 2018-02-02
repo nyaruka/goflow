@@ -5,6 +5,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+	"strings"
 )
 
 // TypeUpdateContact is the type for our update contact action
@@ -53,6 +54,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	// get our localized value if any
 	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template, false)
+	value = strings.TrimSpace(value)
 
 	// if we received an error, log it
 	if err != nil {
