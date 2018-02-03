@@ -548,6 +548,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 		if a.Field == "name" || a.Field == "first_name" {
 			// we can emulate setting only the first name with an expression
 			if a.Field == "first_name" {
+				migratedValue = strings.TrimSpace(migratedValue)
 				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 2, -1))", migratedValue)
 			}
 
@@ -562,6 +563,12 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 		if urns.IsValidScheme(a.Field) {
 			return &actions.AddURNAction{
 				Scheme:     a.Field,
+				Path:       migratedValue,
+				BaseAction: actions.NewBaseAction(a.UUID),
+			}, nil
+		} else if a.Field == "tel_e164" {
+			return &actions.AddURNAction{
+				Scheme:     "tel",
 				Path:       migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil

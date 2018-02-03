@@ -44,12 +44,15 @@ func (e *UpdateContactEvent) Apply(run flows.FlowRun) error {
 	if e.FieldName == "name" {
 		run.Contact().SetName(e.Value)
 	} else {
-		lang, err := utils.ParseLanguage(e.Value)
-		if err != nil {
-			return err
+		if e.Value != "" {
+			lang, err := utils.ParseLanguage(e.Value)
+			if err != nil {
+				return err
+			}
+			run.Contact().SetLanguage(lang)
+		} else {
+			run.Contact().SetLanguage(utils.NilLanguage)
 		}
-
-		run.Contact().SetLanguage(lang)
 	}
 
 	return run.Contact().UpdateDynamicGroups(run.Session())

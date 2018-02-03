@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent"
@@ -53,6 +54,9 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		log.Add(events.NewErrorEvent(fmt.Errorf("send_email subject evaluated to empty string, skipping")))
 		return nil
 	}
+
+	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
+	subject = regexp.MustCompile(`\s+`).ReplaceAllString(subject, " ")
 
 	body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body, false)
 	if err != nil {
