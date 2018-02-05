@@ -64,6 +64,16 @@ func (v varMapper) Resolve(key string) interface{} {
 	// is it a fixed base item?
 	value, ok := v.baseVars[key]
 	if ok {
+		asVarMapper, isVarMapper := value.(varMapper)
+		if isVarMapper {
+			return &varMapper{
+				base:             fmt.Sprintf("%s.%s", strings.Join(newPath, "."), asVarMapper.base),
+				baseVars:         asVarMapper.baseVars,
+				arbitraryNesting: asVarMapper.arbitraryNesting,
+				arbitraryVars:    asVarMapper.arbitraryVars,
+			}
+		}
+
 		newPath = append(newPath, value.(string))
 		return strings.Join(newPath, ".")
 	}
@@ -172,13 +182,21 @@ func newRootVarMapper() vars {
 			},
 		},
 		"parent": varMapper{
-			base: "parent.results",
+			base: "parent",
+			baseVars: map[string]interface{}{
+				"contact": contact,
+			},
+			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 			},
 		},
 		"child": varMapper{
-			base: "child.results",
+			base: "child",
+			baseVars: map[string]interface{}{
+				"contact": contact,
+			},
+			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 			},

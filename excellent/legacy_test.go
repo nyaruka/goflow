@@ -13,7 +13,7 @@ type testTemplate struct {
 func TestTranslate(t *testing.T) {
 	var tests = []testTemplate{
 
-		// variables
+		// contact variables
 		{old: "@contact", new: "@contact"},
 		{old: "@contact.first_name", new: "@contact.first_name"},
 		{old: "@contact.name", new: "@contact.name"},
@@ -25,10 +25,19 @@ func TestTranslate(t *testing.T) {
 		{old: "@contact.mailto", new: "@(format_urn(contact.urns.mailto))"},
 		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.blerg", new: "@contact.fields.blerg"},
-		{old: "@child.blerg", new: "@child.results.blerg"},
-		{old: "@parent.blerg", new: "@parent.results.blerg"},
+
+		// run variables
 		{old: "@flow.blerg", new: "@run.results.blerg"},
 		{old: "@flow.blerg.category", new: "@run.results.blerg.category_localized"},
+		{old: "@child.blerg", new: "@child.results.blerg"},
+		{old: "@child.contact", new: "@child.contact"},
+		{old: "@child.contact.age", new: "@child.contact.fields.age"},
+		{old: "@parent.blerg", new: "@parent.results.blerg"},
+		{old: "@parent.blerg.category", new: "@parent.results.blerg.category_localized"},
+		{old: "@parent.contact", new: "@parent.contact"},
+		{old: "@parent.contact.name", new: "@parent.contact.name"},
+
+		// input
 		{old: "@step", new: "@run.input"},
 		{old: "@step.value", new: "@run.input"},
 		{old: "@step.text", new: "@run.input.text"},
@@ -37,6 +46,8 @@ func TestTranslate(t *testing.T) {
 		{old: "@step.contact", new: "@contact"},
 		{old: "@step.contact.name", new: "@contact.name"},
 		{old: "@step.contact.age", new: "@contact.fields.age"},
+
+		// dates
 		{old: "@date.now", new: "@(now())"},
 		{old: "@date.today", new: "@(today())"},
 		{old: "@date.tomorrow", new: "@(tomorrow())"},
