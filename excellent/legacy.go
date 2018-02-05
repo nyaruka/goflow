@@ -3,10 +3,8 @@ package excellent
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/gocommon/urns"
@@ -15,41 +13,43 @@ import (
 )
 
 var topLevelScopes = []string{"contact", "child", "parent", "run"}
-var times = map[string]time.Duration{}
-
-func timeTrack(start time.Time, name string) {
-	elapsed := time.Since(start)
-	times[name] += elapsed
-	log.Printf("%s took %s (%s)", name, elapsed, times[name])
-}
-
-type vars map[string]interface{}
-
-func (v vars) Resolve(key string) interface{} {
-	value, ok := v[key]
-	if ok {
-		return value
-	}
-	return key
-}
-
-func (v vars) Default() interface{} {
-	return v["__default__"]
-}
-
-func (v vars) String() string {
-	return fmt.Sprintf("%s", v["__default__"])
-}
 
 type varMapper struct {
-	substitutions    map[string]string
-	base             string
-	baseVars         vars
+	// subitems that should be replaced completely with the given strings
+	substitutions map[string]string
+
+	// base for fixed subitems, e.g. "contact"
+	base string
+
+	// recognized fixed subitems, e.g. "name" or "uuid"
+	baseVars map[string]interface{}
+
+	// nesting for arbitrary subitems, e.g. contact fields or run results
 	arbitraryNesting string
-	arbitraryVars    vars
+
+	// mapper for each arbitrary item
+	arbitraryVars map[string]interface{}
 }
 
-func (v varMapper) Resolve(key string) interface{} {
+// returns a copy of this mapper with a prefix applied to the previous base
+func (v *varMapper) rebase(prefix string) *varMapper {
+	var newBase string
+	if prefix != "" {
+		newBase = fmt.Sprintf("%s.%s", prefix, v.base)
+	} else {
+		newBase = v.base
+	}
+	return &varMapper{
+		substitutions:    v.substitutions,
+		base:             newBase,
+		baseVars:         v.baseVars,
+		arbitraryNesting: v.arbitraryNesting,
+		arbitraryVars:    v.arbitraryVars,
+	}
+}
+
+func (v *varMapper) Resolve(key string) interface{} {
+
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
 		return substitute
@@ -64,16 +64,16 @@ func (v varMapper) Resolve(key string) interface{} {
 	// is it a fixed base item?
 	value, ok := v.baseVars[key]
 	if ok {
-		asVarMapper, isVarMapper := value.(varMapper)
+		// subitem may be a mapper itself
+		asVarMapper, isVarMapper := value.(*varMapper)
 		if isVarMapper {
-			return &varMapper{
-				base:             fmt.Sprintf("%s.%s", strings.Join(newPath, "."), asVarMapper.base),
-				baseVars:         asVarMapper.baseVars,
-				arbitraryNesting: asVarMapper.arbitraryNesting,
-				arbitraryVars:    asVarMapper.arbitraryVars,
+			if len(newPath) > 0 {
+				return asVarMapper.rebase(strings.Join(newPath, "."))
 			}
+			return asVarMapper
 		}
 
+		// or a simple string in which case we add to the end of the path and return that
 		newPath = append(newPath, value.(string))
 		return strings.Join(newPath, ".")
 	}
@@ -93,14 +93,17 @@ func (v varMapper) Resolve(key string) interface{} {
 	}
 
 	return strings.Join(newPath, ".")
-
 }
 
-func (v varMapper) Default() interface{} {
+func (v *varMapper) Default() interface{} {
 	return v.base
 }
 
-func (v varMapper) String() string {
+func (v *varMapper) String() string {
+	sub, exists := v.substitutions["__default__"]
+	if exists {
+		return sub
+	}
 	return v.base
 }
 
@@ -152,16 +155,10 @@ var functionTemplates = map[string]functionTemplate{
 	"time": {name: "time", params: "(%s %s %s)"},
 }
 
-func newRootVarMapper() vars {
+func newRootVarMapper() *varMapper {
 
-	urnSubstitutions := make(map[string]string)
-	for scheme := range urns.ValidSchemes {
-		urnSubstitutions[scheme] = fmt.Sprintf("format_urn(contact.urns.%s)", scheme)
-	}
-
-	contact := varMapper{
-		substitutions: urnSubstitutions,
-		base:          "contact",
+	contact := &varMapper{
+		base: "contact",
 		baseVars: map[string]interface{}{
 			"uuid":       "uuid",
 			"name":       "name",
@@ -173,58 +170,81 @@ func newRootVarMapper() vars {
 		arbitraryNesting: "fields",
 	}
 
-	return vars{
-		"contact": contact,
-		"flow": varMapper{
-			base: "run.results",
-			arbitraryVars: map[string]interface{}{
-				"category": "category_localized",
+	for scheme := range urns.ValidSchemes {
+		contact.baseVars[scheme] = &varMapper{
+			substitutions: map[string]string{
+				"__default__": fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
+				"display":     fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
+				"scheme":      fmt.Sprintf("contact.urns.%s.0.scheme", scheme),
+				"path":        fmt.Sprintf("contact.urns.%s.0.path", scheme),
+				"urn":         fmt.Sprintf("contact.urns.%s.0", scheme),
 			},
-		},
-		"parent": varMapper{
-			base: "parent",
-			baseVars: map[string]interface{}{
-				"contact": contact,
+			base: fmt.Sprintf("urns.%s", scheme),
+		}
+	}
+
+	return &varMapper{
+		baseVars: map[string]interface{}{
+			"contact": contact,
+			"flow": &varMapper{
+				base: "run.results",
+				arbitraryVars: map[string]interface{}{
+					"category": "category_localized",
+				},
 			},
-			arbitraryNesting: "results",
-			arbitraryVars: map[string]interface{}{
-				"category": "category_localized",
+			"parent": &varMapper{
+				base: "parent",
+				baseVars: map[string]interface{}{
+					"contact": contact,
+				},
+				arbitraryNesting: "results",
+				arbitraryVars: map[string]interface{}{
+					"category": "category_localized",
+				},
 			},
-		},
-		"child": varMapper{
-			base: "child",
-			baseVars: map[string]interface{}{
-				"contact": contact,
+			"child": &varMapper{
+				base: "child",
+				baseVars: map[string]interface{}{
+					"contact": contact,
+				},
+				arbitraryNesting: "results",
+				arbitraryVars: map[string]interface{}{
+					"category": "category_localized",
+				},
 			},
-			arbitraryNesting: "results",
-			arbitraryVars: map[string]interface{}{
-				"category": "category_localized",
+			"step": &varMapper{
+				substitutions: map[string]string{
+					"__default__": "run.input",
+					"value":       "run.input",
+					"text":        "run.input.text",
+					"attachments": "run.input.attachments",
+					"time":        "run.input.created_on",
+				},
+				baseVars: map[string]interface{}{
+					"contact": contact,
+				},
 			},
-		},
-		"step": vars{
-			"__default__": "run.input",
-			"value":       "run.input",
-			"text":        "run.input.text",
-			"attachments": "run.input.attachments",
-			"time":        "run.input.created_on",
-			"contact":     contact,
-		},
-		"channel": vars{
-			"__default__": "contact.channel.address",
-			"name":        "contact.channel.name",
-			"tel":         "contact.channel.address",
-			"tel_e164":    "contact.channel.address",
-		},
-		"date": vars{
-			"now":         "now()",
-			"today":       "today()",
-			"tomorrow":    "tomorrow()",
-			"yesterday":   "yesterday()",
-			"__default__": "now()",
-		},
-		"extra": varMapper{
-			base:             "run.webhook",
-			arbitraryNesting: "json",
+			"channel": &varMapper{
+				substitutions: map[string]string{
+					"__default__": "contact.channel.address",
+					"name":        "contact.channel.name",
+					"tel":         "contact.channel.address",
+					"tel_e164":    "contact.channel.address",
+				},
+			},
+			"date": &varMapper{
+				substitutions: map[string]string{
+					"__default__": "now()",
+					"now":         "now()",
+					"today":       "today()",
+					"tomorrow":    "tomorrow()",
+					"yesterday":   "yesterday()",
+				},
+			},
+			"extra": &varMapper{
+				base:             "run.webhook",
+				arbitraryNesting: "json",
+			},
 		},
 	}
 }

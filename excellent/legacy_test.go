@@ -9,22 +9,27 @@ type testTemplate struct {
 	new string
 }
 
-// TestThis
 func TestTranslate(t *testing.T) {
 	var tests = []testTemplate{
 
 		// contact variables
 		{old: "@contact", new: "@contact"},
-		{old: "@contact.first_name", new: "@contact.first_name"},
+		{old: "@contact.uuid", new: "@contact.uuid"},
 		{old: "@contact.name", new: "@contact.name"},
+		{old: "@contact.first_name", new: "@contact.first_name"},
+		{old: "@contact.blerg", new: "@contact.fields.blerg"},
+
+		// contact URN variables
 		{old: "@contact.tel", new: "@(format_urn(contact.urns.tel))"},
+		{old: "@contact.tel.display", new: "@(format_urn(contact.urns.tel))"},
+		{old: "@contact.tel.scheme", new: "@contact.urns.tel.0.scheme"},
+		{old: "@contact.tel.path", new: "@contact.urns.tel.0.path"},
+		{old: "@contact.tel.urn", new: "@contact.urns.tel.0"},
 		{old: "@contact.tel_e164", new: "@contact.urns.tel.0.path"},
 		{old: "@contact.telegram", new: "@(format_urn(contact.urns.telegram))"},
 		{old: "@contact.twitter", new: "@(format_urn(contact.urns.twitter))"},
 		{old: "@contact.facebook", new: "@(format_urn(contact.urns.facebook))"},
 		{old: "@contact.mailto", new: "@(format_urn(contact.urns.mailto))"},
-		{old: "@contact.uuid", new: "@contact.uuid"},
-		{old: "@contact.blerg", new: "@contact.fields.blerg"},
 
 		// run variables
 		{old: "@flow.blerg", new: "@run.results.blerg"},
@@ -48,11 +53,11 @@ func TestTranslate(t *testing.T) {
 		{old: "@step.contact.age", new: "@contact.fields.age"},
 
 		// dates
+		{old: "@date", new: "@(now())"},
 		{old: "@date.now", new: "@(now())"},
 		{old: "@date.today", new: "@(today())"},
 		{old: "@date.tomorrow", new: "@(tomorrow())"},
 		{old: "@date.yesterday", new: "@(yesterday())"},
-		{old: "@date", new: "@(now())"},
 
 		// variables in parens
 		{old: "@(contact.tel)", new: "@(format_urn(contact.urns.tel))"},
