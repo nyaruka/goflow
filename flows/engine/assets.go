@@ -180,7 +180,7 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	// set request headers
 	request.Header.Set("User-Agent", userAgent)
-	request.Header.Set("Authentication", fmt.Sprintf("Token %s", s.authtoken))
+	request.Header.Set("Authorization", fmt.Sprintf("Token %s", s.authtoken))
 
 	// make the actual request
 	response, err := http.DefaultClient.Do(request)
