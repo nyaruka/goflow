@@ -50,7 +50,7 @@
           "action_uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "type": "add_urn",
+            "type": "urn_added",
             "urn": "tel:+250781234567"
           },
           "step_uuid": ""
@@ -182,7 +182,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "add_urn",
+                    "type": "urn_added",
                     "urn": "tel:+250781234567"
                   },
                   {
