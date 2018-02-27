@@ -56,8 +56,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &ContactFieldChangedEvent{}
 	case TypePreferredChannel:
 		event = &PreferredChannelEvent{}
-	case TypeSetEnvironment:
-		event = &SetEnvironmentEvent{}
+	case TypeEnvironmentChanged:
+		event = &EnvironmentChangedEvent{}
 	case TypeSetExtra:
 		event = &SetExtraEvent{}
 	case TypeContactChanged:
