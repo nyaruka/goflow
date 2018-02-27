@@ -26,8 +26,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	switch envelope.Type {
 	case TypeLabelAdded:
 		event = &LabelAddedEvent{}
-	case TypeAddToGroup:
-		event = &AddToGroupEvent{}
+	case TypeGroupAdded:
+		event = &GroupAddedEvent{}
 	case TypeURNAdded:
 		event = &URNAddedEvent{}
 	case TypeSendEmail:

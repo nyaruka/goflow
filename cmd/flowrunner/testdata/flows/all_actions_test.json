@@ -66,7 +66,7 @@
                 "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
               }
             ],
-            "type": "add_to_group"
+            "type": "group_added"
           },
           "step_uuid": ""
         },
@@ -437,7 +437,7 @@
                         "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
                       }
                     ],
-                    "type": "add_to_group"
+                    "type": "group_added"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
