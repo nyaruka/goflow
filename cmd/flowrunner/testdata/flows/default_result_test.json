@@ -148,8 +148,8 @@
           "action_uuid": "aafb505c-603d-4025-864d-471345ed236d",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "name",
-            "type": "contact_changed",
+            "property": "name",
+            "type": "contactproperty_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -288,8 +288,8 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "name",
-                    "type": "contact_changed",
+                    "property": "name",
+                    "type": "contactproperty_changed",
                     "value": "Ryan Lewis"
                   },
                   {

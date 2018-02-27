@@ -284,8 +284,8 @@
           "action_uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "language",
-            "type": "contact_changed",
+            "property": "language",
+            "type": "contactproperty_changed",
             "value": "eng"
           },
           "step_uuid": ""
@@ -603,8 +603,8 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "language",
-                    "type": "contact_changed",
+                    "property": "language",
+                    "type": "contactproperty_changed",
                     "value": "eng"
                   },
                   {

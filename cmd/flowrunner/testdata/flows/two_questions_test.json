@@ -159,8 +159,8 @@
           "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field_name": "language",
-            "type": "contact_changed",
+            "property": "language",
+            "type": "contactproperty_changed",
             "value": "fra"
           },
           "step_uuid": ""
@@ -286,8 +286,8 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "language",
-                    "type": "contact_changed",
+                    "property": "language",
+                    "type": "contactproperty_changed",
                     "value": "fra"
                   },
                   {
@@ -480,8 +480,8 @@
                 "events": [
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field_name": "language",
-                    "type": "contact_changed",
+                    "property": "language",
+                    "type": "contactproperty_changed",
                     "value": "fra"
                   },
                   {

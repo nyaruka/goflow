@@ -1,38 +1,29 @@
 package events
 
-import (
-	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
-)
+import "github.com/nyaruka/goflow/flows"
+import "encoding/json"
 
-// TypeContactChanged is the type of our update contact event
+// TypeContactChanged is the type of our set contact event
 const TypeContactChanged string = "contact_changed"
 
-// ContactChangedEvent events are created when a contact's built in field is updated.
+// ContactChangedEvent events are created to set a contact on a session
 //
 // ```
 //   {
 //     "type": "contact_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "field_name": "language",
-//     "value": "eng"
+//     "contact": {
+//       "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+//       "name": "Bob",
+//       "urns": ["tel:+11231234567"]
+//     }
 //   }
 // ```
 //
 // @event contact_changed
 type ContactChangedEvent struct {
 	BaseEvent
-	FieldName string `json:"field_name" validate:"required,eq=name|eq=language"`
-	Value     string `json:"value"`
-}
-
-// NewContactChangedEvent returns a new save to contact event
-func NewContactChangedEvent(name string, value string) *ContactChangedEvent {
-	return &ContactChangedEvent{
-		BaseEvent: NewBaseEvent(),
-		FieldName: name,
-		Value:     value,
-	}
+	Contact json.RawMessage `json:"contact"`
 }
 
 // Type returns the type of this event
@@ -40,20 +31,12 @@ func (e *ContactChangedEvent) Type() string { return TypeContactChanged }
 
 // Apply applies this event to the given run
 func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
-	// if this is either name or language, we save directly to the contact
-	if e.FieldName == "name" {
-		run.Contact().SetName(e.Value)
-	} else {
-		if e.Value != "" {
-			lang, err := utils.ParseLanguage(e.Value)
-			if err != nil {
-				return err
-			}
-			run.Contact().SetLanguage(lang)
-		} else {
-			run.Contact().SetLanguage(utils.NilLanguage)
-		}
+	contact, err := flows.ReadContact(run.Session(), e.Contact)
+	if err != nil {
+		return err
 	}
 
-	return run.Contact().UpdateDynamicGroups(run.Session())
+	run.SetContact(contact)
+	run.Session().SetContact(contact)
+	return nil
 }
