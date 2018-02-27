@@ -260,6 +260,7 @@ func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 //
 //   @(has_phrase("the quick brown fox", "brown fox")) -> true
 //   @(has_phrase("the Quick Brown fox", "quick fox")) -> false
+//   @(has_phrase("the Quick Brown fox", "")) -> true
 //   @(has_phrase("the.quick.brown.fox", "the quick").match) -> "the quick"
 //
 // @test has_phrase(string, phrase)
@@ -299,6 +300,8 @@ func HasAnyWord(env utils.Environment, args ...interface{}) interface{} {
 //
 //  @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
 //  @(has_only_phrase("Quick Brown", "quick brown")) -> true
+//  @(has_only_phrase("the Quick Brown fox", "")) -> false
+//  @(has_only_phrase("", "")) -> true
 //  @(has_only_phrase("Quick Brown", "quick brown").match) -> "Quick Brown"
 //  @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
@@ -634,12 +637,13 @@ func HasDateGT(env utils.Environment, args ...interface{}) interface{} {
 	return testDate(env, "HAS_DATE_GT", isDateGTTest, args)
 }
 
-var emailAddressRE = regexp.MustCompile(`([\pL][-_.\pL]*)@([\pL][-_\pL]*)(\.[\pL][-_\pL]*)+`)
+var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)
 
 // HasEmail tests whether an email is contained in `string`
 //
-//   @(has_email("my email is foo@bar.com, please respond")) -> true
-//   @(has_email("my email is foo@bar.com, please respond").match) -> "foo@bar.com"
+//   @(has_email("my email is foo1@bar.com, please respond")) -> true
+//   @(has_email("my email is foo1@bar.com, please respond").match) -> "foo1@bar.com"
+//   @(has_email("my email is <foo@bar2.com>")) -> true
 //   @(has_email("i'm not sharing my email")) -> false
 //
 // @test has_email(string)
@@ -655,11 +659,9 @@ func HasEmail(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// split by whitespace
-	for _, word := range strings.Fields(text) {
-		email := emailAddressRE.FindString(word)
-		if email != "" {
-			return XTestResult{true, email}
-		}
+	email := emailAddressRE.FindString(text)
+	if email != "" {
+		return XTestResult{true, email}
 	}
 
 	return XFalseResult
@@ -874,11 +876,6 @@ func testStringTokens(env utils.Environment, name string, test stringTokenTest, 
 	hayStack = strings.TrimSpace(hayStack)
 	pinCushion = strings.TrimSpace(pinCushion)
 
-	// either are empty, no match
-	if hayStack == "" || pinCushion == "" {
-		return XFalseResult
-	}
-
 	origHays := utils.TokenizeString(hayStack)
 	hays := utils.TokenizeString(strings.ToLower(hayStack))
 	pins := utils.TokenizeString(strings.ToLower(pinCushion))
@@ -887,6 +884,10 @@ func testStringTokens(env utils.Environment, name string, test stringTokenTest, 
 }
 
 func hasPhraseTest(origHays []string, hays []string, pins []string) interface{} {
+	if len(pins) == 0 {
+		return XTestResult{true, ""}
+	}
+
 	pinIdx := 0
 	matches := make([]string, len(pins))
 	for i, hay := range hays {

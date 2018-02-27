@@ -57,11 +57,14 @@ var testTests = []struct {
 
 	{"has_phrase", []interface{}{"you Must resist", "must resist"}, true, "Must resist", false},
 	{"has_phrase", []interface{}{"this world Too", "world too"}, true, "world Too", false},
+	{"has_phrase", []interface{}{"this world Too", ""}, true, "", false},
 	{"has_phrase", []interface{}{"this is not world", "this world"}, false, nil, false},
 	{"has_phrase", []interface{}{"one", "two", "three"}, false, nil, true},
 
 	{"has_only_phrase", []interface{}{"Must resist", "must resist"}, true, "Must resist", false},
 	{"has_only_phrase", []interface{}{" world Too ", "world too"}, true, "world Too", false},
+	{"has_only_phrase", []interface{}{"this world Too", ""}, false, nil, false},
+	{"has_only_phrase", []interface{}{"", ""}, true, "", false},
 	{"has_only_phrase", []interface{}{"this world is my world", "this world"}, false, nil, false},
 	{"has_only_phrase", []interface{}{"this world", "this mighty"}, false, nil, false},
 	{"has_only_phrase", []interface{}{"one", "two", "three"}, false, nil, true},
@@ -146,7 +149,8 @@ var testTests = []struct {
 	{"has_date_gt", []interface{}{"no date at all", "3.10.98"}, false, nil, false},
 	{"has_date_gt", []interface{}{"too", "many", "args"}, false, nil, true},
 
-	{"has_email", []interface{}{"my email is foo@bar.com"}, true, "foo@bar.com", false},
+	{"has_email", []interface{}{"my email is foo@bar.com."}, true, "foo@bar.com", false},
+	{"has_email", []interface{}{"my email is <foo1@bar-2.com>"}, true, "foo1@bar-2.com", false},
 	{"has_email", []interface{}{"FOO@bar.whatzit"}, true, "FOO@bar.whatzit", false},
 	{"has_email", []interface{}{"FOO@βήτα.whatzit"}, true, "FOO@βήτα.whatzit", false},
 	{"has_email", []interface{}{"email is foo @ bar . com"}, false, nil, false},
