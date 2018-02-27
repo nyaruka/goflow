@@ -48,7 +48,7 @@
                 "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168"
               }
             ],
-            "type": "label_added"
+            "type": "labels_added"
           },
           "step_uuid": ""
         },
@@ -66,7 +66,7 @@
                 "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
               }
             ],
-            "type": "group_added"
+            "type": "groups_added"
           },
           "step_uuid": ""
         },
@@ -423,7 +423,7 @@
                         "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168"
                       }
                     ],
-                    "type": "label_added"
+                    "type": "labels_added"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -437,7 +437,7 @@
                         "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
                       }
                     ],
-                    "type": "group_added"
+                    "type": "groups_added"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",

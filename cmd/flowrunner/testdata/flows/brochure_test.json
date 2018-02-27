@@ -167,7 +167,7 @@
                 "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
               }
             ],
-            "type": "group_added"
+            "type": "groups_added"
           },
           "step_uuid": ""
         },
@@ -308,7 +308,7 @@
                         "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                       }
                     ],
-                    "type": "group_added"
+                    "type": "groups_added"
                   },
                   {
                     "contacts": [

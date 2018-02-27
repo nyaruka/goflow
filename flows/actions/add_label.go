@@ -8,8 +8,8 @@ import (
 // TypeAddLabel is our type for add label actions
 const TypeAddLabel string = "add_label"
 
-// AddLabelAction can be used to add a label to the last user input on a flow. An `add_label` event
-// will be created with the input UUID and label UUIDs when this action is encountered. If there is
+// AddLabelAction can be used to add a label to the last user input on a flow. An `labels_added` event
+// will be created with the labels added when this action is encountered. If there is
 // no user input at that point then this action will be ignored.
 //
 // ```
@@ -57,7 +57,7 @@ func (a *AddLabelAction) Execute(run flows.FlowRun, step flows.Step, log flows.E
 	}
 
 	if len(labelRefs) > 0 {
-		log.Add(events.NewLabelAddedEvent(input.UUID(), labelRefs))
+		log.Add(events.NewLabelsAddedEvent(input.UUID(), labelRefs))
 	}
 
 	return nil
