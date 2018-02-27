@@ -84,7 +84,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi there, let's go to the child.",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -112,7 +112,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Welcome to the child, say yes or no!",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -171,7 +171,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -218,7 +218,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -281,7 +281,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither.",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -340,7 +340,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -395,7 +395,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -452,7 +452,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -525,7 +525,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "You said yes",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -540,7 +540,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hooray, you did it and said yes. Say yes or no!",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -599,7 +599,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -637,7 +637,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -687,7 +687,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -744,7 +744,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -801,7 +801,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
@@ -863,7 +863,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -930,7 +930,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -968,7 +968,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -1025,7 +1025,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
@@ -1085,7 +1085,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -1142,7 +1142,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -1199,7 +1199,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
@@ -1261,7 +1261,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "All Done! You said yes in the child and no here.",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         }
@@ -1321,7 +1321,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -1359,7 +1359,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -1416,7 +1416,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
@@ -1473,7 +1473,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "All Done! You said yes in the child and no here.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "801c349a-2c2e-4666-b7b2-1e6ed4945d8a",
@@ -1522,7 +1522,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -1579,7 +1579,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -1636,7 +1636,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",

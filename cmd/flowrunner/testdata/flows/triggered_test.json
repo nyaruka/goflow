@@ -16,7 +16,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         }
@@ -68,7 +68,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   }
                 ],
                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

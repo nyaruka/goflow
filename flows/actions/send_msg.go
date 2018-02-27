@@ -53,7 +53,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 		return err
 	}
 
-	log.Add(events.NewSendMsgEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urnList, contactRefs, groupRefs))
+	log.Add(events.NewMsgSentEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urnList, contactRefs, groupRefs))
 
 	return nil
 }

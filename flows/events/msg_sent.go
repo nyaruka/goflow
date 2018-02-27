@@ -5,14 +5,14 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// TypeSendMsg is a constant for incoming messages
-const TypeSendMsg string = "send_msg"
+// TypeMsgSent is a constant for outgoing message events
+const TypeMsgSent string = "msg_sent"
 
-// SendMsgEvent events are created for outgoing messages.
+// MsgSentEvent events are created for outgoing messages.
 //
 // ```
 //   {
-//     "type": "send_msg",
+//     "type": "msg_sent",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "text": "hi, what's up",
 //     "attachments": [],
@@ -22,8 +22,8 @@ const TypeSendMsg string = "send_msg"
 //   }
 // ```
 //
-// @event send_msg
-type SendMsgEvent struct {
+// @event msg_sent
+type MsgSentEvent struct {
 	BaseEvent
 	Text         string                    `json:"text"`
 	Attachments  []string                  `json:"attachments,omitempty"`
@@ -33,9 +33,9 @@ type SendMsgEvent struct {
 	Groups       []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
-// NewSendMsgToContactEvent creates a new outgoing msg event to a single contact
-func NewSendMsgToContactEvent(text string, attachments []string, quickReples []string, contact *flows.ContactReference) *SendMsgEvent {
-	event := SendMsgEvent{
+// NewMsgSentToContactEvent creates a new outgoing msg event to a single contact
+func NewMsgSentToContactEvent(text string, attachments []string, quickReples []string, contact *flows.ContactReference) *MsgSentEvent {
+	event := MsgSentEvent{
 		BaseEvent:    NewBaseEvent(),
 		Text:         text,
 		Attachments:  attachments,
@@ -45,9 +45,9 @@ func NewSendMsgToContactEvent(text string, attachments []string, quickReples []s
 	return &event
 }
 
-// NewSendMsgEvent creates a new outgoing msg event for the given recipients
-func NewSendMsgEvent(text string, attachments []string, quickReples []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *SendMsgEvent {
-	event := SendMsgEvent{
+// NewMsgSentEvent creates a new outgoing msg event for the given recipients
+func NewMsgSentEvent(text string, attachments []string, quickReples []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *MsgSentEvent {
+	event := MsgSentEvent{
 		BaseEvent:    NewBaseEvent(),
 		Text:         text,
 		Attachments:  attachments,
@@ -60,9 +60,9 @@ func NewSendMsgEvent(text string, attachments []string, quickReples []string, ur
 }
 
 // Type returns the type of this event
-func (e *SendMsgEvent) Type() string { return TypeSendMsg }
+func (e *MsgSentEvent) Type() string { return TypeMsgSent }
 
 // Apply applies this event to the given run
-func (e *SendMsgEvent) Apply(run flows.FlowRun) error {
+func (e *MsgSentEvent) Apply(run flows.FlowRun) error {
 	return nil
 }

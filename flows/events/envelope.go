@@ -42,8 +42,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &RunExpiredEvent{}
 	case TypeMsgReceived:
 		event = &MsgReceivedEvent{}
-	case TypeSendMsg:
-		event = &SendMsgEvent{}
+	case TypeMsgSent:
+		event = &MsgSentEvent{}
 	case TypeMsgWait:
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:

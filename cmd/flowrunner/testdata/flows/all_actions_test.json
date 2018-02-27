@@ -177,7 +177,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty, are you ready?",
-            "type": "send_msg",
+            "type": "msg_sent",
             "urns": [
               "tel:+12065551212"
             ]
@@ -198,7 +198,7 @@
               }
             ],
             "text": "Hi Ben Haggerty, are you ready for these attachments?",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -227,7 +227,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -236,7 +236,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is a message to each of Ben Haggerty's urns.",
-            "type": "send_msg",
+            "type": "msg_sent",
             "urns": [
               "tel:+12065551212",
               "facebook:1122334455667788",
@@ -264,7 +264,7 @@
               "No"
             ],
             "text": "This is a reply with attachments and quick replies",
-            "type": "send_msg"
+            "type": "msg_sent"
           },
           "step_uuid": ""
         },
@@ -524,7 +524,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty, are you ready?",
-                    "type": "send_msg",
+                    "type": "msg_sent",
                     "urns": [
                       "tel:+12065551212"
                     ]
@@ -541,7 +541,7 @@
                       }
                     ],
                     "text": "Hi Ben Haggerty, are you ready for these attachments?",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -562,12 +562,12 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is a message to each of Ben Haggerty's urns.",
-                    "type": "send_msg",
+                    "type": "msg_sent",
                     "urns": [
                       "tel:+12065551212",
                       "facebook:1122334455667788",
@@ -591,7 +591,7 @@
                       "No"
                     ],
                     "text": "This is a reply with attachments and quick replies",
-                    "type": "send_msg"
+                    "type": "msg_sent"
                   },
                   {
                     "category": "Male",
