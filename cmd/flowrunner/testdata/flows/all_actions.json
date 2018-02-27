@@ -55,7 +55,7 @@
                             "uuid": "4f452fb8-f0aa-442d-865b-a2b629c09c21",
                             "type": "send_email",
                             "subject": "Here is your activation token",
-                            "body": "Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @run.extra.coupons.0.code",
+                            "body": "Hi @contact.fields.first_name, Your activation token is @contact.fields.activation_token, your coupon is @trigger.params.coupons.0.code",
                             "addresses": [
                                 "@contact.urns.mailto",
                                 "test@example.com"

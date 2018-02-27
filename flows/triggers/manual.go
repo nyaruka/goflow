@@ -17,6 +17,10 @@ const TypeManual string = "manual"
 //   {
 //     "type": "manual",
 //     "flow": {"uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721", "name": "Registration"},
+//     "contact": {
+//       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+//       "name": "Bob"
+//     },
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 // ```

@@ -117,6 +117,10 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", trigger.Flow().UUID(), err)
 	}
 
+	if trigger.Contact() != nil {
+		s.contact = trigger.Contact()
+	}
+
 	s.trigger = trigger
 	s.PushFlow(trigger.Flow(), nil)
 
