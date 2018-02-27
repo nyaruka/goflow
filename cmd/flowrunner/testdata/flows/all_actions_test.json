@@ -102,7 +102,7 @@
             "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "subject": "Here is your activation token",
-            "type": "send_email"
+            "type": "email_sent"
           },
           "step_uuid": ""
         },
@@ -461,7 +461,7 @@
                     "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "subject": "Here is your activation token",
-                    "type": "send_email"
+                    "type": "email_sent"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",

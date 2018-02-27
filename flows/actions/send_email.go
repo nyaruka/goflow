@@ -16,7 +16,7 @@ const TypeSendEmail string = "send_email"
 // EmailAction can be used to send an email to one or more recipients. The subject, body and addresses
 // can all contain expressions.
 //
-// A `send_email` event will be created for each email address.
+// A `email_sent` event will be created for each email address.
 //
 // ```
 //   {
@@ -88,7 +88,7 @@ func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	}
 
 	if len(evaluatedAddresses) > 0 {
-		log.Add(events.NewSendEmailEvent(evaluatedAddresses, subject, body))
+		log.Add(events.NewEmailSentEvent(evaluatedAddresses, subject, body))
 	}
 
 	return nil

@@ -2,14 +2,14 @@ package events
 
 import "github.com/nyaruka/goflow/flows"
 
-// TypeSendEmail is our type for the email event
-const TypeSendEmail string = "send_email"
+// TypeEmailSent is our type for the email event
+const TypeEmailSent string = "email_sent"
 
-// SendEmailEvent events are created for each recipient which should receive an email.
+// EmailSentEvent events are created for each recipient which should receive an email.
 //
 // ```
 //   {
-//     "type": "send_email",
+//     "type": "email_sent",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "addresses": ["foo@bar.com"],
 //     "subject": "Your activation token",
@@ -17,17 +17,17 @@ const TypeSendEmail string = "send_email"
 //   }
 // ```
 //
-// @event send_email
-type SendEmailEvent struct {
+// @event email_sent
+type EmailSentEvent struct {
 	BaseEvent
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`
 	Body      string   `json:"body"`
 }
 
-// NewSendEmailEvent returns a new email event with the passed in subject, body and emails
-func NewSendEmailEvent(addresses []string, subject string, body string) *SendEmailEvent {
-	return &SendEmailEvent{
+// NewEmailSentEvent returns a new email event with the passed in subject, body and emails
+func NewEmailSentEvent(addresses []string, subject string, body string) *EmailSentEvent {
+	return &EmailSentEvent{
 		BaseEvent: NewBaseEvent(),
 		Addresses: addresses,
 		Subject:   subject,
@@ -36,9 +36,9 @@ func NewSendEmailEvent(addresses []string, subject string, body string) *SendEma
 }
 
 // Type returns the type of this event
-func (a *SendEmailEvent) Type() string { return TypeSendEmail }
+func (a *EmailSentEvent) Type() string { return TypeEmailSent }
 
 // Apply applies this event to the given run
-func (e *SendEmailEvent) Apply(run flows.FlowRun) error {
+func (e *EmailSentEvent) Apply(run flows.FlowRun) error {
 	return nil
 }
