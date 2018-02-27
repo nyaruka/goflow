@@ -10,7 +10,7 @@ import (
 const TypeSaveContactField string = "save_contact_field"
 
 // SaveContactField can be used to save a value to a contact. The value can be a template and will
-// be evaluated during the flow. A `save_contact_field` event will be created with the corresponding value.
+// be evaluated during the flow. A `contactfield_changed` event will be created with the corresponding value.
 //
 // ```
 //   {
@@ -54,6 +54,6 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step, log flows
 		return nil
 	}
 
-	log.Add(events.NewSaveToContactEvent(a.Field, value))
+	log.Add(events.NewContactFieldChangedEvent(a.Field, value))
 	return nil
 }

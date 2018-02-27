@@ -52,8 +52,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &GroupsRemovedEvent{}
 	case TypeSaveFlowResult:
 		event = &SaveFlowResultEvent{}
-	case TypeSaveContactField:
-		event = &SaveContactFieldEvent{}
+	case TypeContactFieldChanged:
+		event = &ContactFieldChangedEvent{}
 	case TypePreferredChannel:
 		event = &PreferredChannelEvent{}
 	case TypeSetEnvironment:

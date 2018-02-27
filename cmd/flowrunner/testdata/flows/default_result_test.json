@@ -162,7 +162,7 @@
               "key": "first_name",
               "label": "First Name"
             },
-            "type": "save_contact_field",
+            "type": "contactfield_changed",
             "value": "Ryan"
           },
           "step_uuid": ""
@@ -298,7 +298,7 @@
                       "key": "first_name",
                       "label": "First Name"
                     },
-                    "type": "save_contact_field",
+                    "type": "contactfield_changed",
                     "value": "Ryan"
                   },
                   {

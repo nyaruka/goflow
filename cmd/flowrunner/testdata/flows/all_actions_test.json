@@ -87,7 +87,7 @@
               "key": "activation_token",
               "label": "Activation Token"
             },
-            "type": "save_contact_field",
+            "type": "contactfield_changed",
             "value": "XXX-YYY-ZZZ"
           },
           "step_uuid": ""
@@ -298,7 +298,7 @@
               "key": "gender",
               "label": "Gender"
             },
-            "type": "save_contact_field",
+            "type": "contactfield_changed",
             "value": "Male"
           },
           "step_uuid": ""
@@ -450,7 +450,7 @@
                       "key": "activation_token",
                       "label": "Activation Token"
                     },
-                    "type": "save_contact_field",
+                    "type": "contactfield_changed",
                     "value": "XXX-YYY-ZZZ"
                   },
                   {
@@ -613,7 +613,7 @@
                       "key": "gender",
                       "label": "Gender"
                     },
-                    "type": "save_contact_field",
+                    "type": "contactfield_changed",
                     "value": "Male"
                   },
                   {

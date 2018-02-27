@@ -13,7 +13,7 @@
               "key": "gender",
               "label": "Gender"
             },
-            "type": "save_contact_field",
+            "type": "contactfield_changed",
             "value": "MALE"
           },
           "step_uuid": ""
@@ -26,7 +26,7 @@
               "key": "age",
               "label": "Age"
             },
-            "type": "save_contact_field",
+            "type": "contactfield_changed",
             "value": "64"
           },
           "step_uuid": ""
@@ -78,7 +78,7 @@
               "key": "age",
               "label": "Age"
             },
-            "type": "save_contact_field",
+            "type": "contactfield_changed",
             "value": "17"
           },
           "step_uuid": ""
@@ -157,7 +157,7 @@
                       "key": "gender",
                       "label": "Gender"
                     },
-                    "type": "save_contact_field",
+                    "type": "contactfield_changed",
                     "value": "MALE"
                   },
                   {
@@ -166,7 +166,7 @@
                       "key": "age",
                       "label": "Age"
                     },
-                    "type": "save_contact_field",
+                    "type": "contactfield_changed",
                     "value": "64"
                   },
                   {
@@ -202,7 +202,7 @@
                       "key": "age",
                       "label": "Age"
                     },
-                    "type": "save_contact_field",
+                    "type": "contactfield_changed",
                     "value": "17"
                   },
                   {
