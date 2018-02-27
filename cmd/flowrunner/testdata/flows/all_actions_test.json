@@ -285,7 +285,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "field_name": "language",
-            "type": "update_contact",
+            "type": "contact_changed",
             "value": "eng"
           },
           "step_uuid": ""
@@ -604,7 +604,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field_name": "language",
-                    "type": "update_contact",
+                    "type": "contact_changed",
                     "value": "eng"
                   },
                   {

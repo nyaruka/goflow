@@ -5,30 +5,30 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeUpdateContact is the type of our update contact event
-const TypeUpdateContact string = "update_contact"
+// TypeContactChanged is the type of our update contact event
+const TypeContactChanged string = "contact_changed"
 
-// UpdateContactEvent events are created when a contact's built in field is updated.
+// ContactChangedEvent events are created when a contact's built in field is updated.
 //
 // ```
 //   {
-//     "type": "update_contact",
+//     "type": "contact_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "field_name": "language",
 //     "value": "eng"
 //   }
 // ```
 //
-// @event update_contact
-type UpdateContactEvent struct {
+// @event contact_changed
+type ContactChangedEvent struct {
 	BaseEvent
 	FieldName string `json:"field_name" validate:"required,eq=name|eq=language"`
 	Value     string `json:"value"`
 }
 
-// NewUpdateContact returns a new save to contact event
-func NewUpdateContact(name string, value string) *UpdateContactEvent {
-	return &UpdateContactEvent{
+// NewContactChangedEvent returns a new save to contact event
+func NewContactChangedEvent(name string, value string) *ContactChangedEvent {
+	return &ContactChangedEvent{
 		BaseEvent: NewBaseEvent(),
 		FieldName: name,
 		Value:     value,
@@ -36,10 +36,10 @@ func NewUpdateContact(name string, value string) *UpdateContactEvent {
 }
 
 // Type returns the type of this event
-func (e *UpdateContactEvent) Type() string { return TypeUpdateContact }
+func (e *ContactChangedEvent) Type() string { return TypeContactChanged }
 
 // Apply applies this event to the given run
-func (e *UpdateContactEvent) Apply(run flows.FlowRun) error {
+func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
 	// if this is either name or language, we save directly to the contact
 	if e.FieldName == "name" {
 		run.Contact().SetName(e.Value)

@@ -62,8 +62,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &SetExtraEvent{}
 	case TypeSetContact:
 		event = &SetContactEvent{}
-	case TypeUpdateContact:
-		event = &UpdateContactEvent{}
+	case TypeContactChanged:
+		event = &ContactChangedEvent{}
 	case TypeWebhookCalled:
 		event = &WebhookCalledEvent{}
 	default:
