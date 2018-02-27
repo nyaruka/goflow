@@ -10,8 +10,8 @@ import (
 // TypeRemoveFromGroup is our type for our remove from group action
 const TypeRemoveFromGroup string = "remove_from_group"
 
-// RemoveFromGroupAction can be used to remove a contact from one or more groups. A `remove_from_group` event will be created
-// for each group which the contact is removed from. If no groups are specified, then the contact will be removed from
+// RemoveFromGroupAction can be used to remove a contact from one or more groups. A `groups_removed` event will be created
+// for the groups which the contact is removed from. If no groups are specified, then the contact will be removed from
 // all groups.
 //
 // ```
@@ -70,7 +70,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log 
 	}
 
 	if len(groupRefs) > 0 {
-		log.Add(events.NewRemoveFromGroupEvent(groupRefs))
+		log.Add(events.NewGroupsRemovedEvent(groupRefs))
 	}
 
 	return nil

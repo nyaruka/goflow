@@ -212,7 +212,7 @@
                 "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
               }
             ],
-            "type": "remove_from_group"
+            "type": "groups_removed"
           },
           "step_uuid": ""
         },
@@ -551,7 +551,7 @@
                         "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                       }
                     ],
-                    "type": "remove_from_group"
+                    "type": "groups_removed"
                   },
                   {
                     "contacts": [
