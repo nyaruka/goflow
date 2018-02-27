@@ -150,7 +150,7 @@
             "input": "I like blue!",
             "name": "Favorite Color",
             "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-            "type": "save_flow_result",
+            "type": "result_changed",
             "value": "blue"
           },
           "step_uuid": ""
@@ -272,7 +272,7 @@
                     "input": "I like blue!",
                     "name": "Favorite Color",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "type": "save_flow_result",
+                    "type": "result_changed",
                     "value": "blue"
                   }
                 ],
@@ -349,7 +349,7 @@
             "input": "Coke",
             "name": "Soda",
             "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-            "type": "save_flow_result",
+            "type": "result_changed",
             "value": "Coke"
           },
           "step_uuid": ""
@@ -466,7 +466,7 @@
                     "input": "I like blue!",
                     "name": "Favorite Color",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "type": "save_flow_result",
+                    "type": "result_changed",
                     "value": "blue"
                   }
                 ],
@@ -521,7 +521,7 @@
                     "input": "Coke",
                     "name": "Soda",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                    "type": "save_flow_result",
+                    "type": "result_changed",
                     "value": "Coke"
                   }
                 ],

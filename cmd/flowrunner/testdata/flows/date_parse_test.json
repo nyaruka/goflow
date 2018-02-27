@@ -133,7 +133,7 @@
             "input": "I was born on 1977.06.23 at 3:34 pm",
             "name": "Birth Date",
             "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-            "type": "save_flow_result",
+            "type": "result_changed",
             "value": "1977-06-23T15:34:00.000000-05:00"
           },
           "step_uuid": ""
@@ -254,7 +254,7 @@
                     "input": "I was born on 1977.06.23 at 3:34 pm",
                     "name": "Birth Date",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "type": "save_flow_result",
+                    "type": "result_changed",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                   }
                 ],

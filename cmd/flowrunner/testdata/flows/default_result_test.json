@@ -139,7 +139,7 @@
             "input": "Ryan Lewis",
             "name": "Contact Name",
             "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-            "type": "save_flow_result",
+            "type": "result_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -274,7 +274,7 @@
                     "input": "Ryan Lewis",
                     "name": "Contact Name",
                     "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                    "type": "save_flow_result",
+                    "type": "result_changed",
                     "value": "Ryan Lewis"
                   }
                 ],
