@@ -202,7 +202,7 @@ var functionTemplates = map[string]functionTemplate{
 	"time": {name: "time", params: "(%s %s %s)"},
 }
 
-func newRootVarMapper(extraAs ExtraVarsMapping) *varMapper {
+func newMigrationBaseVars() map[string]interface{} {
 	contact := &varMapper{
 		base: "contact",
 		baseVars: map[string]interface{}{
@@ -229,67 +229,80 @@ func newRootVarMapper(extraAs ExtraVarsMapping) *varMapper {
 		}
 	}
 
-	return &varMapper{
-		baseVars: map[string]interface{}{
-			"contact": contact,
-			"flow": &varMapper{
-				base: "run.results",
-				arbitraryVars: map[string]interface{}{
-					"category": "category_localized",
-				},
+	return map[string]interface{}{
+		"contact": contact,
+		"flow": &varMapper{
+			base: "run.results",
+			arbitraryVars: map[string]interface{}{
+				"category": "category_localized",
 			},
-			"parent": &varMapper{
-				base: "parent",
-				baseVars: map[string]interface{}{
-					"contact": contact,
-				},
-				arbitraryNesting: "results",
-				arbitraryVars: map[string]interface{}{
-					"category": "category_localized",
-				},
+		},
+		"parent": &varMapper{
+			base: "parent",
+			baseVars: map[string]interface{}{
+				"contact": contact,
 			},
-			"child": &varMapper{
-				base: "child",
-				baseVars: map[string]interface{}{
-					"contact": contact,
-				},
-				arbitraryNesting: "results",
-				arbitraryVars: map[string]interface{}{
-					"category": "category_localized",
-				},
+			arbitraryNesting: "results",
+			arbitraryVars: map[string]interface{}{
+				"category": "category_localized",
 			},
-			"step": &varMapper{
-				substitutions: map[string]string{
-					"__default__": "run.input",
-					"value":       "run.input",
-					"text":        "run.input.text",
-					"attachments": "run.input.attachments",
-					"time":        "run.input.created_on",
-				},
-				baseVars: map[string]interface{}{
-					"contact": contact,
-				},
+		},
+		"child": &varMapper{
+			base: "child",
+			baseVars: map[string]interface{}{
+				"contact": contact,
 			},
-			"channel": &varMapper{
-				substitutions: map[string]string{
-					"__default__": "contact.channel.address",
-					"name":        "contact.channel.name",
-					"tel":         "contact.channel.address",
-					"tel_e164":    "contact.channel.address",
-				},
+			arbitraryNesting: "results",
+			arbitraryVars: map[string]interface{}{
+				"category": "category_localized",
 			},
-			"date": &varMapper{
-				substitutions: map[string]string{
-					"__default__": "now()",
-					"now":         "now()",
-					"today":       "today()",
-					"tomorrow":    "tomorrow()",
-					"yesterday":   "yesterday()",
-				},
+		},
+		"step": &varMapper{
+			substitutions: map[string]string{
+				"__default__": "run.input",
+				"value":       "run.input",
+				"text":        "run.input.text",
+				"attachments": "run.input.attachments",
+				"time":        "run.input.created_on",
 			},
-			"extra": &extraMapper{extraAs: extraAs},
+			baseVars: map[string]interface{}{
+				"contact": contact,
+			},
+		},
+		"channel": &varMapper{
+			substitutions: map[string]string{
+				"__default__": "contact.channel.address",
+				"name":        "contact.channel.name",
+				"tel":         "contact.channel.address",
+				"tel_e164":    "contact.channel.address",
+			},
+		},
+		"date": &varMapper{
+			substitutions: map[string]string{
+				"__default__": "now()",
+				"now":         "now()",
+				"today":       "today()",
+				"tomorrow":    "tomorrow()",
+				"yesterday":   "yesterday()",
+			},
 		},
 	}
+}
+
+var migrationBaseVars = newMigrationBaseVars()
+
+// creates a new var mapper for migrating expressions
+func newMigrationVarMapper(extraAs ExtraVarsMapping) *varMapper {
+	// copy the base migration vars
+	baseVars := make(map[string]interface{})
+	for k, v := range migrationBaseVars {
+		baseVars[k] = v
+	}
+
+	// add a mapper for extra
+	baseVars["extra"] = &extraMapper{extraAs: extraAs}
+
+	return &varMapper{baseVars: baseVars}
 }
 
 var datePrefixes = []string{
@@ -329,9 +342,9 @@ func wrapRawExpression(raw string) string {
 
 // MigrateTemplate will take a legacy expression and translate it to the new syntax
 func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) {
-	rootVarMapper := newRootVarMapper(extraAs)
+	migrationVarMapper := newMigrationVarMapper(extraAs)
 
-	return migrateLegacyTemplateAsString(rootVarMapper, template)
+	return migrateLegacyTemplateAsString(migrationVarMapper, template)
 }
 
 func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
