@@ -2,30 +2,30 @@ package events
 
 import "github.com/nyaruka/goflow/flows"
 
-// TypeSaveContactField is the type of our save to contact event
-const TypeSaveContactField string = "save_contact_field"
+// TypeContactFieldChanged is the type of our save to contact event
+const TypeContactFieldChanged string = "contact_field_changed"
 
-// SaveContactFieldEvent events are created when a contact field is updated.
+// ContactFieldChangedEvent events are created when a contact field is updated.
 //
 // ```
 //   {
-//     "type": "save_contact_field",
+//     "type": "contact_field_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "field": {"key": "gender", "label": "Gender"},
 //     "value": "Male"
 //   }
 // ```
 //
-// @event save_contact_field
-type SaveContactFieldEvent struct {
+// @event contact_field_changed
+type ContactFieldChangedEvent struct {
 	BaseEvent
 	Field *flows.FieldReference `json:"field" validate:"required"`
 	Value string                `json:"value" validate:"required"`
 }
 
-// NewSaveToContactEvent returns a new save to contact event
-func NewSaveToContactEvent(field *flows.FieldReference, value string) *SaveContactFieldEvent {
-	return &SaveContactFieldEvent{
+// NewContactFieldChangedEvent returns a new save to contact event
+func NewContactFieldChangedEvent(field *flows.FieldReference, value string) *ContactFieldChangedEvent {
+	return &ContactFieldChangedEvent{
 		BaseEvent: NewBaseEvent(),
 		Field:     field,
 		Value:     value,
@@ -33,10 +33,10 @@ func NewSaveToContactEvent(field *flows.FieldReference, value string) *SaveConta
 }
 
 // Type returns the type of this event
-func (e *SaveContactFieldEvent) Type() string { return TypeSaveContactField }
+func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChanged }
 
 // Apply applies this event to the given run
-func (e *SaveContactFieldEvent) Apply(run flows.FlowRun) error {
+func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
 	field, err := run.Session().Assets().GetField(e.Field.Key)
 	if err != nil {
 		return err

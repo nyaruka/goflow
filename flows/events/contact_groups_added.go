@@ -2,38 +2,38 @@ package events
 
 import "github.com/nyaruka/goflow/flows"
 
-// TypeAddToGroup is the type of our add to group action
-const TypeAddToGroup string = "add_to_group"
+// TypeContactGroupsAdded is the type of our add to group action
+const TypeContactGroupsAdded string = "contact_groups_added"
 
-// AddToGroupEvent events will be created with the groups a contact should be added to.
+// ContactGroupsAddedEvent events will be created with the groups a contact was added to.
 //
 // ```
 //   {
-//     "type": "add_to_group",
+//     "type": "contact_groups_added",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "groups": [{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Reporters"}]
 //   }
 // ```
 //
-// @event add_to_group
-type AddToGroupEvent struct {
+// @event contact_groups_added
+type ContactGroupsAddedEvent struct {
 	BaseEvent
 	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
-// NewAddToGroupEvent returns a new add to group event
-func NewAddToGroupEvent(groups []*flows.GroupReference) *AddToGroupEvent {
-	return &AddToGroupEvent{
+// NewContactGroupsAddedEvent returns a new contact_groups_added event
+func NewContactGroupsAddedEvent(groups []*flows.GroupReference) *ContactGroupsAddedEvent {
+	return &ContactGroupsAddedEvent{
 		BaseEvent: NewBaseEvent(),
 		Groups:    groups,
 	}
 }
 
 // Type returns the type of this event
-func (e *AddToGroupEvent) Type() string { return TypeAddToGroup }
+func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded }
 
 // Apply applies this event to the given run
-func (e *AddToGroupEvent) Apply(run flows.FlowRun) error {
+func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
 	groupSet, err := run.Session().Assets().GetGroupSet()
 	if err != nil {
 		return err

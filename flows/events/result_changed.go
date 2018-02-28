@@ -2,16 +2,16 @@ package events
 
 import "github.com/nyaruka/goflow/flows"
 
-// TypeSaveFlowResult is the type of our save result event
-const TypeSaveFlowResult string = "save_flow_result"
+// TypeResultChanged is the type of our save result event
+const TypeResultChanged string = "result_changed"
 
-// SaveFlowResultEvent events are created when a result is saved. They contain not only
+// ResultChangedEvent events are created when a result is saved. They contain not only
 // the name, value and category of the result, but also the UUID of the node where
-// the result was saved.
+// the result was generated.
 //
 // ```
 //   {
-//     "type": "save_flow_result",
+//     "type": "result_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "name": "Gender",
 //     "value": "m",
@@ -22,8 +22,8 @@ const TypeSaveFlowResult string = "save_flow_result"
 //   }
 // ```
 //
-// @event save_flow_result
-type SaveFlowResultEvent struct {
+// @event result_changed
+type ResultChangedEvent struct {
 	BaseEvent
 	Name              string         `json:"name" validate:"required"`
 	Value             string         `json:"value"`
@@ -33,9 +33,9 @@ type SaveFlowResultEvent struct {
 	Input             string         `json:"input,omitempty"`
 }
 
-// NewSaveFlowResult returns a new save result event for the passed in values
-func NewSaveFlowResult(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input string) *SaveFlowResultEvent {
-	return &SaveFlowResultEvent{
+// NewResultChangedEvent returns a new save result event for the passed in values
+func NewResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input string) *ResultChangedEvent {
+	return &ResultChangedEvent{
 		BaseEvent:         NewBaseEvent(),
 		Name:              name,
 		Value:             value,
@@ -47,10 +47,10 @@ func NewSaveFlowResult(name string, value string, categoryName string, categoryL
 }
 
 // Type returns the type of this event
-func (e *SaveFlowResultEvent) Type() string { return TypeSaveFlowResult }
+func (e *ResultChangedEvent) Type() string { return TypeResultChanged }
 
 // Apply applies this event to the given run
-func (e *SaveFlowResultEvent) Apply(run flows.FlowRun) error {
+func (e *ResultChangedEvent) Apply(run flows.FlowRun) error {
 	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, e.BaseEvent.CreatedOn())
 	return nil
 }

@@ -24,14 +24,14 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	var event flows.Event
 
 	switch envelope.Type {
-	case TypeAddLabel:
-		event = &AddLabelEvent{}
-	case TypeAddToGroup:
-		event = &AddToGroupEvent{}
-	case TypeAddURN:
-		event = &AddURNEvent{}
-	case TypeSendEmail:
-		event = &SendEmailEvent{}
+	case TypeInputLabelsAdded:
+		event = &InputLabelsAddedEvent{}
+	case TypeContactGroupsAdded:
+		event = &ContactGroupsAddedEvent{}
+	case TypeContactURNAdded:
+		event = &ContactURNAddedEvent{}
+	case TypeEmailSent:
+		event = &EmailSentEvent{}
 	case TypeError:
 		event = &ErrorEvent{}
 	case TypeFlowTriggered:
@@ -42,28 +42,28 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &RunExpiredEvent{}
 	case TypeMsgReceived:
 		event = &MsgReceivedEvent{}
-	case TypeSendMsg:
-		event = &SendMsgEvent{}
+	case TypeBroadcastCreated:
+		event = &BroadcastCreatedEvent{}
 	case TypeMsgWait:
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:
 		event = &NothingWaitEvent{}
-	case TypeRemoveFromGroup:
-		event = &RemoveFromGroupEvent{}
-	case TypeSaveFlowResult:
-		event = &SaveFlowResultEvent{}
-	case TypeSaveContactField:
-		event = &SaveContactFieldEvent{}
-	case TypePreferredChannel:
-		event = &PreferredChannelEvent{}
-	case TypeSetEnvironment:
-		event = &SetEnvironmentEvent{}
+	case TypeContactGroupsRemoved:
+		event = &ContactGroupsRemovedEvent{}
+	case TypeResultChanged:
+		event = &ResultChangedEvent{}
+	case TypeContactFieldChanged:
+		event = &ContactFieldChangedEvent{}
+	case TypeContactChannelChanged:
+		event = &ContactChannelChangedEvent{}
+	case TypeEnvironmentChanged:
+		event = &EnvironmentChangedEvent{}
 	case TypeSetExtra:
 		event = &SetExtraEvent{}
-	case TypeSetContact:
-		event = &SetContactEvent{}
-	case TypeUpdateContact:
-		event = &UpdateContactEvent{}
+	case TypeContactChanged:
+		event = &ContactChangedEvent{}
+	case TypeContactPropertyChanged:
+		event = &ContactPropertyChangedEvent{}
 	case TypeWebhookCalled:
 		event = &WebhookCalledEvent{}
 	default:

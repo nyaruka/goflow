@@ -7,14 +7,14 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeSetEnvironment is the type of our set environment event
-const TypeSetEnvironment string = "set_environment"
+// TypeEnvironmentChanged is the type of our environment changed event
+const TypeEnvironmentChanged string = "environment_changed"
 
-// SetEnvironmentEvent events are created to set the environment on a session
+// EnvironmentChangedEvent events are created to set the environment on a session
 //
 // ```
 //   {
-//     "type": "set_environment",
+//     "type": "environment_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "date_format": "yyyy-MM-dd",
 //     "time_format": "hh:mm",
@@ -23,8 +23,8 @@ const TypeSetEnvironment string = "set_environment"
 //   }
 // ```
 //
-// @event set_environment
-type SetEnvironmentEvent struct {
+// @event environment_changed
+type EnvironmentChangedEvent struct {
 	BaseEvent
 	DateFormat utils.DateFormat   `json:"date_format"`
 	TimeFormat utils.TimeFormat   `json:"time_format"`
@@ -33,10 +33,10 @@ type SetEnvironmentEvent struct {
 }
 
 // Type returns the type of this event
-func (e *SetEnvironmentEvent) Type() string { return TypeSetEnvironment }
+func (e *EnvironmentChangedEvent) Type() string { return TypeEnvironmentChanged }
 
 // Apply applies this event to the given run
-func (e *SetEnvironmentEvent) Apply(run flows.FlowRun) error {
+func (e *EnvironmentChangedEvent) Apply(run flows.FlowRun) error {
 	tz, err := time.LoadLocation(e.Timezone)
 	if err != nil {
 		return err

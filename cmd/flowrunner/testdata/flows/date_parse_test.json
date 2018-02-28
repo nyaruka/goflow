@@ -7,10 +7,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "I was born on 1977.06.23 at 3:34 pm",
@@ -33,7 +29,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-            "type": "send_msg"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -93,7 +89,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                    "type": "send_msg"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -133,7 +129,7 @@
             "input": "I was born on 1977.06.23 at 3:34 pm",
             "name": "Birth Date",
             "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-            "type": "save_flow_result",
+            "type": "result_changed",
             "value": "1977-06-23T15:34:00.000000-05:00"
           },
           "step_uuid": ""
@@ -146,7 +142,7 @@
               "key": "birth_date",
               "label": "Birth Date"
             },
-            "type": "save_contact_field",
+            "type": "contact_field_changed",
             "value": "1977-06-23T15:34:00.000000-05:00"
           },
           "step_uuid": ""
@@ -162,7 +158,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Awesome, you were born on 06-23-1977 at 15:34",
-            "type": "send_msg"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -226,7 +222,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                    "type": "send_msg"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -237,10 +233,6 @@
                     "channel": {
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -254,7 +246,7 @@
                     "input": "I was born on 1977.06.23 at 3:34 pm",
                     "name": "Birth Date",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "type": "save_flow_result",
+                    "type": "result_changed",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                   }
                 ],
@@ -272,7 +264,7 @@
                       "key": "birth_date",
                       "label": "Birth Date"
                     },
-                    "type": "save_contact_field",
+                    "type": "contact_field_changed",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                   },
                   {
@@ -284,7 +276,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Awesome, you were born on 06-23-1977 at 15:34",
-                    "type": "send_msg"
+                    "type": "broadcast_created"
                   }
                 ],
                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
