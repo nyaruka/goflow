@@ -19,7 +19,6 @@ const TypeMsgReceived string = "msg_received"
 //     "msg_uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
 //     "urn": "tel:+12065551212",
 //     "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//     "contact": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"},
 //     "text": "hi there",
 //     "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //   }
@@ -31,18 +30,16 @@ type MsgReceivedEvent struct {
 	MsgUUID     flows.InputUUID         `json:"msg_uuid" validate:"required,uuid4"`
 	Channel     *flows.ChannelReference `json:"channel,omitempty"`
 	URN         urns.URN                `json:"urn" validate:"urn"`
-	Contact     *flows.ContactReference `json:"contact"`
 	Text        string                  `json:"text"`
 	Attachments []flows.Attachment      `json:"attachments,omitempty"`
 }
 
-// NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, contact and string
-func NewMsgReceivedEvent(uuid flows.InputUUID, channel *flows.ChannelReference, contact *flows.ContactReference, urn urns.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
+// NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, URN and text
+func NewMsgReceivedEvent(uuid flows.InputUUID, channel *flows.ChannelReference, urn urns.URN, text string, attachments []flows.Attachment) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
 		BaseEvent:   NewBaseEvent(),
 		MsgUUID:     uuid,
 		Channel:     channel,
-		Contact:     contact,
 		URN:         urn,
 		Text:        text,
 		Attachments: attachments,

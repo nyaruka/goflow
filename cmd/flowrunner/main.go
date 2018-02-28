@@ -239,7 +239,7 @@ func main() {
 
 		// create our event to resume with
 		channelRef := flows.NewChannelReference(channelUUID, "Test Channel")
-		event := events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), channelRef, contact.Reference(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		event := events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), channelRef, contact.URNs()[0], scanner.Text(), []flows.Attachment{})
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
 

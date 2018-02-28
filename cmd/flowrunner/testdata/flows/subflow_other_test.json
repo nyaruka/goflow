@@ -7,10 +7,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "neither",
@@ -23,10 +19,6 @@
         "channel": {
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -41,10 +33,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "never",
@@ -57,10 +45,6 @@
         "channel": {
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -415,10 +399,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -707,10 +687,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -763,10 +739,6 @@
                     "channel": {
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -988,10 +960,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "never",
@@ -1105,10 +1073,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -1161,10 +1125,6 @@
                     "channel": {
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -1379,10 +1339,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "never",
@@ -1435,10 +1391,6 @@
                     "channel": {
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -1542,10 +1494,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -1598,10 +1546,6 @@
                     "channel": {
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
