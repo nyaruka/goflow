@@ -30,8 +30,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &ContactGroupsAddedEvent{}
 	case TypeContactURNAdded:
 		event = &ContactURNAddedEvent{}
-	case TypeEmailSent:
-		event = &EmailSentEvent{}
+	case TypeEmailCreated:
+		event = &EmailCreatedEvent{}
 	case TypeError:
 		event = &ErrorEvent{}
 	case TypeFlowTriggered:
