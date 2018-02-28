@@ -10,7 +10,7 @@ import (
 // TypeAddToGroup is our type for the add to group action
 const TypeAddToGroup string = "add_to_group"
 
-// AddToGroupAction can be used to add a contact to one or more groups. An `groups_added` event will be created
+// AddToGroupAction can be used to add a contact to one or more groups. An `contact_groups_added` event will be created
 // for the groups which the contact has been added to.
 //
 // ```
@@ -69,7 +69,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows
 	}
 
 	if len(groupRefs) > 0 {
-		log.Add(events.NewGroupsAddedEvent(groupRefs))
+		log.Add(events.NewContactGroupsAddedEvent(groupRefs))
 	}
 
 	return nil

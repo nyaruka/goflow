@@ -160,7 +160,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "property": "language",
-            "type": "contactproperty_changed",
+            "type": "contact_property_changed",
             "value": "fra"
           },
           "step_uuid": ""
@@ -287,7 +287,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "property": "language",
-                    "type": "contactproperty_changed",
+                    "type": "contact_property_changed",
                     "value": "fra"
                   },
                   {
@@ -481,7 +481,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "property": "language",
-                    "type": "contactproperty_changed",
+                    "type": "contact_property_changed",
                     "value": "fra"
                   },
                   {

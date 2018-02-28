@@ -26,10 +26,10 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	switch envelope.Type {
 	case TypeLabelsAdded:
 		event = &LabelsAddedEvent{}
-	case TypeGroupsAdded:
-		event = &GroupsAddedEvent{}
-	case TypeURNAdded:
-		event = &URNAddedEvent{}
+	case TypeContactGroupsAdded:
+		event = &ContactGroupsAddedEvent{}
+	case TypeContactURNAdded:
+		event = &ContactURNAddedEvent{}
 	case TypeEmailSent:
 		event = &EmailSentEvent{}
 	case TypeError:
@@ -48,14 +48,14 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:
 		event = &NothingWaitEvent{}
-	case TypeGroupsRemoved:
-		event = &GroupsRemovedEvent{}
+	case TypeContactGroupsRemoved:
+		event = &ContactGroupsRemovedEvent{}
 	case TypeResultChanged:
 		event = &ResultChangedEvent{}
 	case TypeContactFieldChanged:
 		event = &ContactFieldChangedEvent{}
-	case TypePreferredChannel:
-		event = &PreferredChannelEvent{}
+	case TypeContactChannelChanged:
+		event = &ContactChannelChangedEvent{}
 	case TypeEnvironmentChanged:
 		event = &EnvironmentChangedEvent{}
 	case TypeSetExtra:

@@ -152,7 +152,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "property": "name",
-            "type": "contactproperty_changed",
+            "type": "contact_property_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -167,7 +167,7 @@
                 "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
               }
             ],
-            "type": "groups_added"
+            "type": "contact_groups_added"
           },
           "step_uuid": ""
         },
@@ -297,7 +297,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "property": "name",
-                    "type": "contactproperty_changed",
+                    "type": "contact_property_changed",
                     "value": "Ryan Lewis"
                   },
                   {
@@ -308,7 +308,7 @@
                         "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                       }
                     ],
-                    "type": "groups_added"
+                    "type": "contact_groups_added"
                   },
                   {
                     "contacts": [

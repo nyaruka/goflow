@@ -146,7 +146,7 @@
               "key": "birth_date",
               "label": "Birth Date"
             },
-            "type": "contactfield_changed",
+            "type": "contact_field_changed",
             "value": "1977-06-23T15:34:00.000000-05:00"
           },
           "step_uuid": ""
@@ -272,7 +272,7 @@
                       "key": "birth_date",
                       "label": "Birth Date"
                     },
-                    "type": "contactfield_changed",
+                    "type": "contact_field_changed",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                   },
                   {

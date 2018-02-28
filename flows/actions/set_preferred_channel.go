@@ -27,6 +27,6 @@ func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step, log
 		return nil
 	}
 
-	log.Add(events.NewPreferredChannel(a.Channel))
+	log.Add(events.NewContactChannelChangedEvent(a.Channel))
 	return nil
 }

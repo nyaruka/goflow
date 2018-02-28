@@ -149,7 +149,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "property": "name",
-            "type": "contactproperty_changed",
+            "type": "contact_property_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -162,7 +162,7 @@
               "key": "first_name",
               "label": "First Name"
             },
-            "type": "contactfield_changed",
+            "type": "contact_field_changed",
             "value": "Ryan"
           },
           "step_uuid": ""
@@ -289,7 +289,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "property": "name",
-                    "type": "contactproperty_changed",
+                    "type": "contact_property_changed",
                     "value": "Ryan Lewis"
                   },
                   {
@@ -298,7 +298,7 @@
                       "key": "first_name",
                       "label": "First Name"
                     },
-                    "type": "contactfield_changed",
+                    "type": "contact_field_changed",
                     "value": "Ryan"
                   },
                   {

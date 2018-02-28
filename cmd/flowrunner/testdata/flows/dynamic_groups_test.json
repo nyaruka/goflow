@@ -13,7 +13,7 @@
               "key": "gender",
               "label": "Gender"
             },
-            "type": "contactfield_changed",
+            "type": "contact_field_changed",
             "value": "MALE"
           },
           "step_uuid": ""
@@ -26,7 +26,7 @@
               "key": "age",
               "label": "Age"
             },
-            "type": "contactfield_changed",
+            "type": "contact_field_changed",
             "value": "64"
           },
           "step_uuid": ""
@@ -50,7 +50,7 @@
           "action_uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "type": "urn_added",
+            "type": "contact_urn_added",
             "urn": "tel:+250781234567"
           },
           "step_uuid": ""
@@ -78,7 +78,7 @@
               "key": "age",
               "label": "Age"
             },
-            "type": "contactfield_changed",
+            "type": "contact_field_changed",
             "value": "17"
           },
           "step_uuid": ""
@@ -157,7 +157,7 @@
                       "key": "gender",
                       "label": "Gender"
                     },
-                    "type": "contactfield_changed",
+                    "type": "contact_field_changed",
                     "value": "MALE"
                   },
                   {
@@ -166,7 +166,7 @@
                       "key": "age",
                       "label": "Age"
                     },
-                    "type": "contactfield_changed",
+                    "type": "contact_field_changed",
                     "value": "64"
                   },
                   {
@@ -182,7 +182,7 @@
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "urn_added",
+                    "type": "contact_urn_added",
                     "urn": "tel:+250781234567"
                   },
                   {
@@ -202,7 +202,7 @@
                       "key": "age",
                       "label": "Age"
                     },
-                    "type": "contactfield_changed",
+                    "type": "contact_field_changed",
                     "value": "17"
                   },
                   {
