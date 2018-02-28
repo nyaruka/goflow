@@ -226,10 +226,10 @@ func main() {
 		fmt.Printf("%s\n", outJSON)
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
 
-		// print any msg_sent events
+		// print any broadcast_created events
 		for _, e := range session.Log() {
-			if e.Event().Type() == events.TypeMsgSent {
-				fmt.Printf(">>> %s\n", e.Event().(*events.MsgSentEvent).Text)
+			if e.Event().Type() == events.TypeBroadcastCreated {
+				fmt.Printf(">>> %s\n", e.Event().(*events.BroadcastCreatedEvent).Text)
 			}
 		}
 

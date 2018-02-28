@@ -24,8 +24,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	var event flows.Event
 
 	switch envelope.Type {
-	case TypeLabelsAdded:
-		event = &LabelsAddedEvent{}
+	case TypeInputLabelsAdded:
+		event = &InputLabelsAddedEvent{}
 	case TypeContactGroupsAdded:
 		event = &ContactGroupsAddedEvent{}
 	case TypeContactURNAdded:
@@ -42,8 +42,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &RunExpiredEvent{}
 	case TypeMsgReceived:
 		event = &MsgReceivedEvent{}
-	case TypeMsgSent:
-		event = &MsgSentEvent{}
+	case TypeBroadcastCreated:
+		event = &BroadcastCreatedEvent{}
 	case TypeMsgWait:
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:

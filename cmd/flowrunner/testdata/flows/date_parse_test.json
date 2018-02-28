@@ -33,7 +33,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -93,7 +93,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -162,7 +162,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Awesome, you were born on 06-23-1977 at 15:34",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -226,7 +226,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -284,7 +284,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Awesome, you were born on 06-23-1977 at 15:34",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

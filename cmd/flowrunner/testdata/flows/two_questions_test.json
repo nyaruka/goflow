@@ -50,7 +50,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -110,7 +110,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -176,7 +176,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -244,7 +244,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -299,7 +299,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -378,7 +378,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Parfait, vous avez finis et tu aimes Coke",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -438,7 +438,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -493,7 +493,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -551,7 +551,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Parfait, vous avez finis et tu aimes Coke",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

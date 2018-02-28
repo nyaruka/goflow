@@ -5,14 +5,14 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// TypeMsgSent is a constant for outgoing message events
-const TypeMsgSent string = "msg_sent"
+// TypeBroadcastCreated is a constant for outgoing message events
+const TypeBroadcastCreated string = "broadcast_created"
 
-// MsgSentEvent events are created for outgoing messages.
+// BroadcastCreatedEvent events are created for outgoing messages.
 //
 // ```
 //   {
-//     "type": "msg_sent",
+//     "type": "broadcast_created",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "text": "hi, what's up",
 //     "attachments": [],
@@ -22,8 +22,8 @@ const TypeMsgSent string = "msg_sent"
 //   }
 // ```
 //
-// @event msg_sent
-type MsgSentEvent struct {
+// @event broadcast_created
+type BroadcastCreatedEvent struct {
 	BaseEvent
 	Text         string                    `json:"text"`
 	Attachments  []string                  `json:"attachments,omitempty"`
@@ -33,9 +33,9 @@ type MsgSentEvent struct {
 	Groups       []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
-// NewMsgSentToContactEvent creates a new outgoing msg event to a single contact
-func NewMsgSentToContactEvent(text string, attachments []string, quickReples []string, contact *flows.ContactReference) *MsgSentEvent {
-	event := MsgSentEvent{
+// NewMsgCreatedEvent creates a new outgoing msg event to a single contact
+func NewMsgCreatedEvent(text string, attachments []string, quickReples []string, contact *flows.ContactReference) *BroadcastCreatedEvent {
+	event := BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(),
 		Text:         text,
 		Attachments:  attachments,
@@ -45,9 +45,9 @@ func NewMsgSentToContactEvent(text string, attachments []string, quickReples []s
 	return &event
 }
 
-// NewMsgSentEvent creates a new outgoing msg event for the given recipients
-func NewMsgSentEvent(text string, attachments []string, quickReples []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *MsgSentEvent {
-	event := MsgSentEvent{
+// NewBroadcastCreatedEvent creates a new outgoing msg event for the given recipients
+func NewBroadcastCreatedEvent(text string, attachments []string, quickReples []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *BroadcastCreatedEvent {
+	event := BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(),
 		Text:         text,
 		Attachments:  attachments,
@@ -60,9 +60,9 @@ func NewMsgSentEvent(text string, attachments []string, quickReples []string, ur
 }
 
 // Type returns the type of this event
-func (e *MsgSentEvent) Type() string { return TypeMsgSent }
+func (e *BroadcastCreatedEvent) Type() string { return TypeBroadcastCreated }
 
 // Apply applies this event to the given run
-func (e *MsgSentEvent) Apply(run flows.FlowRun) error {
+func (e *BroadcastCreatedEvent) Apply(run flows.FlowRun) error {
 	return nil
 }

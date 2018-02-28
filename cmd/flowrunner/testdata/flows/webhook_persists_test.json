@@ -33,7 +33,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is the first message.",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -61,7 +61,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "The status is true. Send something",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -120,7 +120,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the first message.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
@@ -158,7 +158,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "The status is true. Send something",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
@@ -217,7 +217,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "The status is now true",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -277,7 +277,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the first message.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
@@ -315,7 +315,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "The status is true. Send something",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
@@ -363,7 +363,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "The status is now true",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "accf4276-f719-4664-b0b1-4f18c0184f56",
