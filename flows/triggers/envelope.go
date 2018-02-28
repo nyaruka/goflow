@@ -11,8 +11,8 @@ import (
 
 type baseTriggerEnvelope struct {
 	Flow        *flows.FlowReference `json:"flow" validate:"required"`
-	Contact     *json.RawMessage     `json:"contact"`
-	Params      *json.RawMessage     `json:"params"`
+	Contact     *json.RawMessage     `json:"contact,omitempty"`
+	Params      *json.RawMessage     `json:"params,omitempty"`
 	TriggeredOn time.Time            `json:"triggered_on" validate:"required"`
 }
 
@@ -29,7 +29,7 @@ func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Tr
 	}
 }
 
-func readBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTriggerEnvelope) error {
+func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTriggerEnvelope) error {
 	var err error
 
 	base.triggeredOn = envelope.TriggeredOn
@@ -43,10 +43,29 @@ func readBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTri
 		}
 	}
 	if envelope.Params != nil {
-		base.params = utils.JSONFragment(*envelope.Params)
-	} else {
-		base.params = utils.EmptyJSONFragment
+		params := utils.JSONFragment(*envelope.Params)
+		base.params = &params
 	}
 
+	return nil
+}
+
+func marshalBaseTrigger(t *baseTrigger, envelope *baseTriggerEnvelope) error {
+	envelope.Flow = t.flow.Reference()
+	envelope.TriggeredOn = t.triggeredOn
+
+	if t.contact != nil {
+		contactBytes, err := t.contact.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		contactRawMessage := json.RawMessage(contactBytes)
+		envelope.Contact = &contactRawMessage
+	}
+
+	if t.params != nil {
+		paramsRawMessage := json.RawMessage(*t.params)
+		envelope.Params = &paramsRawMessage
+	}
 	return nil
 }

@@ -11,14 +11,14 @@ import (
 type baseTrigger struct {
 	flow        flows.Flow
 	contact     *flows.Contact
-	params      utils.JSONFragment
+	params      *utils.JSONFragment
 	triggeredOn time.Time
 }
 
-func (t *baseTrigger) Flow() flows.Flow           { return t.flow }
-func (t *baseTrigger) Contact() *flows.Contact    { return t.contact }
-func (t *baseTrigger) Params() utils.JSONFragment { return t.params }
-func (t *baseTrigger) TriggeredOn() time.Time     { return t.triggeredOn }
+func (t *baseTrigger) Flow() flows.Flow            { return t.flow }
+func (t *baseTrigger) Contact() *flows.Contact     { return t.contact }
+func (t *baseTrigger) Params() *utils.JSONFragment { return t.params }
+func (t *baseTrigger) TriggeredOn() time.Time      { return t.triggeredOn }
 
 func (t *baseTrigger) Default() interface{} {
 	return t
@@ -28,7 +28,7 @@ func (t *baseTrigger) Default() interface{} {
 func (t *baseTrigger) Resolve(key string) interface{} {
 	switch key {
 	case "params":
-		return t.params
+		return *t.params
 	}
 
 	return fmt.Errorf("No such field '%s' on trigger", key)

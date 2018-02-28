@@ -49,7 +49,7 @@ func ReadManualTrigger(session flows.Session, envelope *utils.TypedEnvelope) (fl
 		return nil, err
 	}
 
-	if err := readBaseTrigger(session, &trigger.baseTrigger, &e); err != nil {
+	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e); err != nil {
 		return nil, err
 	}
 
@@ -59,8 +59,9 @@ func ReadManualTrigger(session flows.Session, envelope *utils.TypedEnvelope) (fl
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
 	var envelope baseTriggerEnvelope
 
-	envelope.TriggeredOn = t.triggeredOn
-	envelope.Flow = t.flow.Reference()
+	if err := marshalBaseTrigger(&t.baseTrigger, &envelope); err != nil {
+		return nil, err
+	}
 
 	return json.Marshal(envelope)
 }
