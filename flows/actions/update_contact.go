@@ -12,7 +12,7 @@ import (
 const TypeUpdateContact string = "update_contact"
 
 // UpdateContactAction can be used to update one of the built in fields for a contact of "name" or
-// "language". An `contactproperty_changed` event will be created with the corresponding values.
+// "language". An `contact_property_changed` event will be created with the corresponding values.
 //
 // ```
 //   {

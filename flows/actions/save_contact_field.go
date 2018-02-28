@@ -10,7 +10,7 @@ import (
 const TypeSaveContactField string = "save_contact_field"
 
 // SaveContactField can be used to save a value to a contact. The value can be a template and will
-// be evaluated during the flow. A `contactfield_changed` event will be created with the corresponding value.
+// be evaluated during the flow. A `contact_field_changed` event will be created with the corresponding value.
 //
 // ```
 //   {

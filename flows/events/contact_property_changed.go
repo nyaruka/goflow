@@ -6,20 +6,20 @@ import (
 )
 
 // TypeContactPropertyChanged is the type of our update contact event
-const TypeContactPropertyChanged string = "contactproperty_changed"
+const TypeContactPropertyChanged string = "contact_property_changed"
 
 // ContactPropertyChangedEvent events are created when a property of a contact has been changed
 //
 // ```
 //   {
-//     "type": "contactproperty_changed",
+//     "type": "contact_property_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "property": "language",
 //     "value": "eng"
 //   }
 // ```
 //
-// @event contactproperty_changed
+// @event contact_property_changed
 type ContactPropertyChangedEvent struct {
 	BaseEvent
 	Property string `json:"property" validate:"required,eq=name|eq=language"`

@@ -11,7 +11,7 @@ import (
 // TypeAddURN is our type for add URN actions
 const TypeAddURN string = "add_urn"
 
-// AddURNAction can be used to add a URN to the current contact. An `urn_added` event
+// AddURNAction can be used to add a URN to the current contact. An `contact_urn_added` event
 // will be created when this action is encountered. If there is no contact then this
 // action will be ignored.
 //

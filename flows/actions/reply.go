@@ -10,7 +10,7 @@ const TypeReply string = "reply"
 
 // ReplyAction can be used to reply to the current contact in a flow. The text field may contain templates.
 //
-// A `msg_sent` event will be created with the evaluated text.
+// A `broadcast_created` event will be created with the evaluated text.
 //
 // ```
 //   {
@@ -46,9 +46,9 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	urns := run.Contact().URNs()
 
 	if a.AllURNs && len(urns) > 0 {
-		log.Add(events.NewMsgSentEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urns, nil, nil))
+		log.Add(events.NewBroadcastCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urns, nil, nil))
 	} else {
-		log.Add(events.NewMsgSentToContactEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, run.Contact().Reference()))
+		log.Add(events.NewMsgCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, run.Contact().Reference()))
 	}
 
 	return nil

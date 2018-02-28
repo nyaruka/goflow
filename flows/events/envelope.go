@@ -24,14 +24,14 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	var event flows.Event
 
 	switch envelope.Type {
-	case TypeLabelsAdded:
-		event = &LabelsAddedEvent{}
-	case TypeGroupsAdded:
-		event = &GroupsAddedEvent{}
-	case TypeURNAdded:
-		event = &URNAddedEvent{}
-	case TypeEmailSent:
-		event = &EmailSentEvent{}
+	case TypeInputLabelsAdded:
+		event = &InputLabelsAddedEvent{}
+	case TypeContactGroupsAdded:
+		event = &ContactGroupsAddedEvent{}
+	case TypeContactURNAdded:
+		event = &ContactURNAddedEvent{}
+	case TypeEmailCreated:
+		event = &EmailCreatedEvent{}
 	case TypeError:
 		event = &ErrorEvent{}
 	case TypeFlowTriggered:
@@ -42,20 +42,20 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &RunExpiredEvent{}
 	case TypeMsgReceived:
 		event = &MsgReceivedEvent{}
-	case TypeMsgSent:
-		event = &MsgSentEvent{}
+	case TypeBroadcastCreated:
+		event = &BroadcastCreatedEvent{}
 	case TypeMsgWait:
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:
 		event = &NothingWaitEvent{}
-	case TypeGroupsRemoved:
-		event = &GroupsRemovedEvent{}
-	case TypeResultChanged:
-		event = &ResultChangedEvent{}
+	case TypeContactGroupsRemoved:
+		event = &ContactGroupsRemovedEvent{}
+	case TypeRunResultChanged:
+		event = &RunResultChangedEvent{}
 	case TypeContactFieldChanged:
 		event = &ContactFieldChangedEvent{}
-	case TypePreferredChannel:
-		event = &PreferredChannelEvent{}
+	case TypeContactChannelChanged:
+		event = &ContactChannelChangedEvent{}
 	case TypeEnvironmentChanged:
 		event = &EnvironmentChangedEvent{}
 	case TypeContactChanged:

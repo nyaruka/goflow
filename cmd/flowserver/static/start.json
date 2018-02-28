@@ -39,7 +39,6 @@
     "input": {
         "type": "msg_received",
         "channel_uuid": "8f3ddc92-d04f-4205-a312-bac0a6e311ef",
-        "contact_uuid": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
         "text": "Let's go thrifting!",
         "urn": "tel:+12065551212",
         "created_on": "2017-05-29T00:00:00.000000000-00:00"

@@ -7,10 +7,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "neither",
@@ -23,10 +19,6 @@
         "channel": {
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -41,10 +33,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "never",
@@ -57,10 +45,6 @@
         "channel": {
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
@@ -84,7 +68,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi there, let's go to the child.",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -112,7 +96,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Welcome to the child, say yes or no!",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -171,7 +155,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -218,7 +202,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -265,7 +249,7 @@
             "input": "neither",
             "name": "Answer",
             "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-            "type": "result_changed",
+            "type": "run_result_changed",
             "value": "neither"
           },
           "step_uuid": ""
@@ -281,7 +265,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither.",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -340,7 +324,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -395,7 +379,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -415,10 +399,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -431,7 +411,7 @@
                     "input": "neither",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "neither"
                   }
                 ],
@@ -452,7 +432,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -509,7 +489,7 @@
             "input": "yes",
             "name": "Answer",
             "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-            "type": "result_changed",
+            "type": "run_result_changed",
             "value": "yes"
           },
           "step_uuid": ""
@@ -525,7 +505,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "You said yes",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -540,7 +520,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hooray, you did it and said yes. Say yes or no!",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -599,7 +579,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -637,7 +617,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -687,7 +667,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -707,10 +687,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -723,7 +699,7 @@
                     "input": "neither",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "neither"
                   }
                 ],
@@ -744,7 +720,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -764,10 +740,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "yes",
@@ -780,7 +752,7 @@
                     "input": "yes",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "yes"
                   }
                 ],
@@ -801,7 +773,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
@@ -847,7 +819,7 @@
             "input": "never",
             "name": "Answer",
             "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-            "type": "result_changed",
+            "type": "run_result_changed",
             "value": "never"
           },
           "step_uuid": ""
@@ -863,7 +835,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Nope, that's neither",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -930,7 +902,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -968,7 +940,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -988,10 +960,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "never",
@@ -1004,7 +972,7 @@
                     "input": "never",
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "never"
                   }
                 ],
@@ -1025,7 +993,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
@@ -1085,7 +1053,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -1105,10 +1073,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -1121,7 +1085,7 @@
                     "input": "neither",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "neither"
                   }
                 ],
@@ -1142,7 +1106,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -1162,10 +1126,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "yes",
@@ -1178,7 +1138,7 @@
                     "input": "yes",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "yes"
                   }
                 ],
@@ -1199,7 +1159,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
@@ -1245,7 +1205,7 @@
             "input": "no",
             "name": "Answer",
             "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-            "type": "result_changed",
+            "type": "run_result_changed",
             "value": "no"
           },
           "step_uuid": ""
@@ -1261,7 +1221,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "All Done! You said yes in the child and no here.",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -1321,7 +1281,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi there, let's go to the child.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -1359,7 +1319,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hooray, you did it and said yes. Say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -1379,10 +1339,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "never",
@@ -1395,7 +1351,7 @@
                     "input": "never",
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "never"
                   }
                 ],
@@ -1416,7 +1372,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
@@ -1436,10 +1392,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "no",
@@ -1452,7 +1404,7 @@
                     "input": "no",
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "no"
                   }
                 ],
@@ -1473,7 +1425,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "All Done! You said yes in the child and no here.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "801c349a-2c2e-4666-b7b2-1e6ed4945d8a",
@@ -1522,7 +1474,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Welcome to the child, say yes or no!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -1542,10 +1494,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "neither",
@@ -1558,7 +1506,7 @@
                     "input": "neither",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "neither"
                   }
                 ],
@@ -1579,7 +1527,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Nope, that's neither.",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -1599,10 +1547,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "yes",
@@ -1615,7 +1559,7 @@
                     "input": "yes",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "yes"
                   }
                 ],
@@ -1636,7 +1580,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "You said yes",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",

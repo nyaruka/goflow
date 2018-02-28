@@ -7,10 +7,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "Ryan Lewis",
@@ -33,7 +29,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "What is your name?",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -92,7 +88,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "What is your name?",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
@@ -139,7 +135,7 @@
             "input": "Ryan Lewis",
             "name": "Contact Name",
             "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-            "type": "result_changed",
+            "type": "run_result_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -149,7 +145,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "property": "name",
-            "type": "contactproperty_changed",
+            "type": "contact_property_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -162,7 +158,7 @@
               "key": "first_name",
               "label": "First Name"
             },
-            "type": "contactfield_changed",
+            "type": "contact_field_changed",
             "value": "Ryan"
           },
           "step_uuid": ""
@@ -178,7 +174,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Great, pleased to meet you Ryan",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -238,7 +234,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "What is your name?",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
@@ -258,10 +254,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "Ryan Lewis",
@@ -274,7 +266,7 @@
                     "input": "Ryan Lewis",
                     "name": "Contact Name",
                     "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "Ryan Lewis"
                   }
                 ],
@@ -289,7 +281,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "property": "name",
-                    "type": "contactproperty_changed",
+                    "type": "contact_property_changed",
                     "value": "Ryan Lewis"
                   },
                   {
@@ -298,7 +290,7 @@
                       "key": "first_name",
                       "label": "First Name"
                     },
-                    "type": "contactfield_changed",
+                    "type": "contact_field_changed",
                     "value": "Ryan"
                   },
                   {
@@ -310,7 +302,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Great, pleased to meet you Ryan",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

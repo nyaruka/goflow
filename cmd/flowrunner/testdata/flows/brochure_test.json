@@ -7,10 +7,6 @@
           "name": "Nexmo",
           "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "contact": {
-          "name": "Ben Haggerty",
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
         "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
         "text": "Ryan Lewis",
@@ -33,7 +29,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Hi! What is your name?",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -93,7 +89,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi! What is your name?",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
@@ -142,7 +138,7 @@
             "input": "Ryan Lewis",
             "name": "Name",
             "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-            "type": "result_changed",
+            "type": "run_result_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -152,7 +148,7 @@
           "event": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "property": "name",
-            "type": "contactproperty_changed",
+            "type": "contact_property_changed",
             "value": "Ryan Lewis"
           },
           "step_uuid": ""
@@ -167,7 +163,7 @@
                 "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
               }
             ],
-            "type": "groups_added"
+            "type": "contact_groups_added"
           },
           "step_uuid": ""
         },
@@ -182,7 +178,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "Great, you are Ryan Lewis, thanks for joining!",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         }
@@ -245,7 +241,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Hi! What is your name?",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
@@ -266,10 +262,6 @@
                       "name": "Nexmo",
                       "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "contact": {
-                      "name": "Ben Haggerty",
-                      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "Ryan Lewis",
@@ -282,7 +274,7 @@
                     "input": "Ryan Lewis",
                     "name": "Name",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                    "type": "result_changed",
+                    "type": "run_result_changed",
                     "value": "Ryan Lewis"
                   }
                 ],
@@ -297,7 +289,7 @@
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "property": "name",
-                    "type": "contactproperty_changed",
+                    "type": "contact_property_changed",
                     "value": "Ryan Lewis"
                   },
                   {
@@ -308,7 +300,7 @@
                         "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
                       }
                     ],
-                    "type": "groups_added"
+                    "type": "contact_groups_added"
                   },
                   {
                     "contacts": [
@@ -319,7 +311,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Great, you are Ryan Lewis, thanks for joining!",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   }
                 ],
                 "exit_uuid": "388bbce3-8079-4573-922f-8dea469d93f3",

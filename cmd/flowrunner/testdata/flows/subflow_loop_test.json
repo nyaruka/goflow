@@ -16,7 +16,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is the parent flow",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -44,7 +44,7 @@
             ],
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "text": "This is the child flow",
-            "type": "msg_sent"
+            "type": "broadcast_created"
           },
           "step_uuid": ""
         },
@@ -115,7 +115,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the parent flow",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -159,7 +159,7 @@
                     ],
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "This is the child flow",
-                    "type": "msg_sent"
+                    "type": "broadcast_created"
                   },
                   {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
