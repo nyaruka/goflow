@@ -13,7 +13,7 @@ const TypeSaveFlowResult string = "save_flow_result"
 // for the run as @run.results.[name]. The optional category can be used as a way of categorizing results,
 // this can be useful for reporting or analytics.
 //
-// Both the value and category fields may be templates. A `result_changed` event will be created with the
+// Both the value and category fields may be templates. A `run_result_changed` event will be created with the
 // final values.
 //
 // ```
@@ -58,6 +58,6 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step, log f
 		categoryLocalized = ""
 	}
 
-	log.Add(events.NewResultChangedEvent(a.Name, value, a.Category, categoryLocalized, step.NodeUUID(), ""))
+	log.Add(events.NewRunResultChangedEvent(a.Name, value, a.Category, categoryLocalized, step.NodeUUID(), ""))
 	return nil
 }

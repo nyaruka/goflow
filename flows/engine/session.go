@@ -419,7 +419,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 			return nil, noDestination, err
 		}
 
-		event := events.NewResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, node.UUID(), resultInput)
+		event := events.NewRunResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, node.UUID(), resultInput)
 		run.ApplyEvent(step, nil, event)
 	}
 
