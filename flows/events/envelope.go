@@ -30,8 +30,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &ContactGroupsAddedEvent{}
 	case TypeContactURNAdded:
 		event = &ContactURNAddedEvent{}
-	case TypeEmailSent:
-		event = &EmailSentEvent{}
+	case TypeEmailCreated:
+		event = &EmailCreatedEvent{}
 	case TypeError:
 		event = &ErrorEvent{}
 	case TypeFlowTriggered:
@@ -50,8 +50,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &NothingWaitEvent{}
 	case TypeContactGroupsRemoved:
 		event = &ContactGroupsRemovedEvent{}
-	case TypeResultChanged:
-		event = &ResultChangedEvent{}
+	case TypeRunResultChanged:
+		event = &RunResultChangedEvent{}
 	case TypeContactFieldChanged:
 		event = &ContactFieldChangedEvent{}
 	case TypeContactChannelChanged:
