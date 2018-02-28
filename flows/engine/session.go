@@ -118,7 +118,7 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 	}
 
 	if trigger.Contact() != nil {
-		s.contact = trigger.Contact()
+		s.contact = trigger.Contact().Clone()
 	}
 
 	s.trigger = trigger

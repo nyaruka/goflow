@@ -230,36 +230,22 @@
         "trigger": {
           "contact": {
             "fields": {
-              "age": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "17"
-              },
               "first_name": {
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                 "value": "Ben"
-              },
-              "gender": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "MALE"
               },
               "state": {
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                 "value": "Azuay"
               }
             },
-            "group_uuids": [
-              "047de1c9-9189-4f4c-aa04-bff0a4c2efb6",
-              "4bb13eec-5344-4ab8-83b7-b5791c669c50",
-              "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
-            ],
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",
             "urns": [
               "tel:+12065551212",
               "facebook:1122334455667788",
-              "mailto:ben@macklemore",
-              "tel:+250781234567"
+              "mailto:ben@macklemore"
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
