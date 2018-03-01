@@ -338,6 +338,7 @@ type Channel interface {
 	Name() string
 	Address() string
 	Type() ChannelType
+	Reference() *ChannelReference
 }
 
 // MsgDirection is the direction of a Msg (either in or out)

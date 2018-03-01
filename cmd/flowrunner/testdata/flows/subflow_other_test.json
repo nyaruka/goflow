@@ -3,54 +3,66 @@
     [],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "neither",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "neither",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "yes",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "yes",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "never",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "never",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "no",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "no",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ]
   ],
@@ -385,7 +397,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "neither",
               "type": "msg",
@@ -422,15 +437,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "neither",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "neither",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Other",
@@ -700,7 +718,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "yes",
               "type": "msg",
@@ -737,15 +758,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "neither",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "neither",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Other",
@@ -790,15 +814,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "yes",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "yes",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Yes",
@@ -963,7 +990,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "never",
               "type": "msg",
@@ -1037,15 +1067,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "never",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "never",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Other",
@@ -1113,7 +1146,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "yes",
               "type": "msg",
@@ -1150,15 +1186,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "neither",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "neither",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Other",
@@ -1203,15 +1242,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "yes",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "yes",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Yes",
@@ -1369,7 +1411,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "no",
               "type": "msg",
@@ -1443,15 +1488,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "never",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "never",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Other",
@@ -1496,15 +1544,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "no",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "no",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "No",
@@ -1561,7 +1612,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "yes",
               "type": "msg",
@@ -1598,15 +1652,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "neither",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "neither",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Other",
@@ -1651,15 +1708,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "yes",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "yes",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Yes",

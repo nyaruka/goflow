@@ -3,15 +3,18 @@
     [],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "Ryan Lewis",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "Ryan Lewis",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ]
   ],
@@ -248,7 +251,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "Ryan Lewis",
               "type": "msg",
@@ -285,15 +291,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "Ryan Lewis",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "Ryan Lewis",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "",

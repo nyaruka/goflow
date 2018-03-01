@@ -1,7 +1,7 @@
 package events
 
 import (
-	"time"
+	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -16,20 +16,19 @@ const TypeEnvironmentChanged string = "environment_changed"
 //   {
 //     "type": "environment_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "date_format": "yyyy-MM-dd",
-//     "time_format": "hh:mm",
-//     "timezone": "Africa/Kigali",
-//     "languages": ["eng", "fra"]
+//     "environment": {
+//       "date_format": "yyyy-MM-dd",
+//       "time_format": "hh:mm",
+//       "timezone": "Africa/Kigali",
+//       "languages": ["eng", "fra"]
+//     }
 //   }
 // ```
 //
 // @event environment_changed
 type EnvironmentChangedEvent struct {
 	BaseEvent
-	DateFormat utils.DateFormat   `json:"date_format"`
-	TimeFormat utils.TimeFormat   `json:"time_format"`
-	Timezone   string             `json:"timezone"`
-	Languages  utils.LanguageList `json:"languages"`
+	Environment json.RawMessage `json:"environment"`
 }
 
 // Type returns the type of this event
@@ -37,12 +36,10 @@ func (e *EnvironmentChangedEvent) Type() string { return TypeEnvironmentChanged 
 
 // Apply applies this event to the given run
 func (e *EnvironmentChangedEvent) Apply(run flows.FlowRun) error {
-	tz, err := time.LoadLocation(e.Timezone)
+	env, err := utils.ReadEnvironment(e.Environment)
 	if err != nil {
 		return err
 	}
-
-	env := utils.NewEnvironment(e.DateFormat, e.TimeFormat, tz, e.Languages)
 
 	run.Session().SetEnvironment(env)
 	return nil
