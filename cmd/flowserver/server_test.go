@@ -258,8 +258,6 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	assets := json.RawMessage(assetsJSON)
 	assetServer, _ := json.Marshal(engine.NewMockAssetServer())
 
-	fmt.Printf("===================================================\n%s\n", string(assetServer))
-
 	request := &resumeRequest{
 		Assets:      &assets,
 		AssetServer: assetServer,
