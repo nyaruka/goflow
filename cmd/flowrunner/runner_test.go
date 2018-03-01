@@ -12,7 +12,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -21,23 +20,22 @@ import (
 )
 
 var flowTests = []struct {
-	assets  string
-	contact string
-	output  string
+	assets string
+	output string
 }{
-	{"two_questions.json", "", "two_questions_test.json"},
-	{"subflow.json", "", "subflow_test.json"},
-	{"subflow_other.json", "", "subflow_other_test.json"},
-	{"brochure.json", "", "brochure_test.json"},
-	{"all_actions.json", "", "all_actions_test.json"},
-	{"default_result.json", "", "default_result_test.json"},
-	{"empty.json", "", "empty_test.json"},
-	{"node_loop.json", "", "node_loop_test.json"},
-	{"subflow_loop.json", "", "subflow_loop_test.json"},
-	{"date_parse.json", "", "date_parse_test.json"},
-	{"webhook_persists.json", "", "webhook_persists_test.json"},
-	{"dynamic_groups.json", "", "dynamic_groups_test.json"},
-	{"triggered.json", "", "triggered_test.json"},
+	{"two_questions.json", "two_questions_test.json"},
+	{"subflow.json", "subflow_test.json"},
+	{"subflow_other.json", "subflow_other_test.json"},
+	{"brochure.json", "brochure_test.json"},
+	{"all_actions.json", "all_actions_test.json"},
+	{"default_result.json", "default_result_test.json"},
+	{"empty.json", "empty_test.json"},
+	{"node_loop.json", "node_loop_test.json"},
+	{"subflow_loop.json", "subflow_loop_test.json"},
+	{"date_parse.json", "date_parse_test.json"},
+	{"webhook_persists.json", "webhook_persists_test.json"},
+	{"dynamic_groups.json", "dynamic_groups_test.json"},
+	{"triggered.json", "triggered_test.json"},
 }
 
 var writeOutput bool
@@ -73,7 +71,7 @@ type runResult struct {
 	outputs    []*Output
 }
 
-func runFlow(env utils.Environment, assetsFilename string, contactFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.Event) (runResult, error) {
+func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.Event) (runResult, error) {
 	// load both the test specific assets and default assets
 	defaultAssetsJSON, err := readFile("", "default.json")
 	if err != nil {
@@ -96,20 +94,6 @@ func runFlow(env utils.Environment, assetsFilename string, contactFilename strin
 	}
 
 	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
-
-	contactJSON, err := readFile("contacts/", contactFilename)
-	if err != nil {
-		return runResult{}, err
-	}
-
-	contact, err := flows.ReadContact(session, json.RawMessage(contactJSON))
-	if err != nil {
-		return runResult{}, fmt.Errorf("Error unmarshalling contact '%s': %s", contactFilename, err)
-	}
-
-	// start our contact down this flow
-	session.SetEnvironment(env)
-	session.SetContact(contact)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -185,10 +169,6 @@ func newTestHTTPServer() *httptest.Server {
 }
 
 func TestFlows(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
-	la, _ := time.LoadLocation("America/Los_Angeles")
-	env.SetTimezone(la)
-
 	server := newTestHTTPServer()
 	server.Start()
 	defer server.Close()
@@ -228,7 +208,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		runResult, err := runFlow(env, test.assets, test.contact, flowTest.Trigger, callerEvents)
+		runResult, err := runFlow(test.assets, flowTest.Trigger, callerEvents)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.assets, test.output, err)
 			continue

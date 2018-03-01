@@ -231,9 +231,6 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 func (r *flowRun) Webhook() *utils.RequestResponse      { return r.webhook }
 func (r *flowRun) SetWebhook(rr *utils.RequestResponse) { r.webhook = rr }
 
-func (r *flowRun) Extra() utils.JSONFragment         { return r.extra }
-func (r *flowRun) SetExtra(extra utils.JSONFragment) { r.extra = extra }
-
 func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
@@ -292,8 +289,6 @@ func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
 	case "contact":
 		return r.Contact()
-	case "extra":
-		return r.Extra()
 	case "flow":
 		return r.Flow()
 	case "input":
@@ -345,7 +340,6 @@ type runEnvelope struct {
 	Results flows.Results          `json:"results,omitempty"`
 	Input   *utils.TypedEnvelope   `json:"input,omitempty"`
 	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
-	Extra   json.RawMessage        `json:"extra,omitempty"`
 
 	CreatedOn time.Time  `json:"created_on"`
 	ExpiresOn *time.Time `json:"expires_on"`
@@ -371,7 +365,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.createdOn = envelope.CreatedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.exitedOn = envelope.ExitedOn
-	r.extra = utils.JSONFragment(envelope.Extra)
 
 	// lookup flow
 	if r.flow, err = session.Assets().GetFlow(envelope.FlowUUID); err != nil {
@@ -416,7 +409,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 
 	re.UUID = r.uuid
 	re.FlowUUID = r.flow.UUID()
-	re.Extra, _ = json.Marshal(r.extra)
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
 	re.ExpiresOn = r.expiresOn

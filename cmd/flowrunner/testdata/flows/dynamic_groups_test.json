@@ -139,7 +139,7 @@
           "date_format": "yyyy-MM-dd",
           "languages": [],
           "time_format": "hh:mm",
-          "timezone": "America/Los_Angeles"
+          "timezone": "UTC"
         },
         "runs": [
           {
@@ -228,6 +228,27 @@
         ],
         "status": "completed",
         "trigger": {
+          "contact": {
+            "fields": {
+              "first_name": {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "value": "Ben"
+              },
+              "state": {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "value": "Azuay"
+              }
+            },
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "timezone": "America/Guayaquil",
+            "urns": [
+              "tel:+12065551212",
+              "facebook:1122334455667788",
+              "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+          },
           "flow": {
             "name": "Dynamic Groups",
             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
@@ -239,6 +260,27 @@
     }
   ],
   "trigger": {
+    "contact": {
+      "fields": {
+        "first_name": {
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "value": "Ben"
+        },
+        "state": {
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "value": "Azuay"
+        }
+      },
+      "language": "eng",
+      "name": "Ben Haggerty",
+      "timezone": "America/Guayaquil",
+      "urns": [
+        "tel:+12065551212",
+        "facebook:1122334455667788",
+        "mailto:ben@macklemore"
+      ],
+      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
     "flow": {
       "name": "Registration",
       "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"

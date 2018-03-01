@@ -58,8 +58,6 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &ContactChannelChangedEvent{}
 	case TypeEnvironmentChanged:
 		event = &EnvironmentChangedEvent{}
-	case TypeSetExtra:
-		event = &SetExtraEvent{}
 	case TypeContactChanged:
 		event = &ContactChangedEvent{}
 	case TypeContactPropertyChanged:

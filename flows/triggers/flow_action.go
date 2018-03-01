@@ -66,7 +66,7 @@ func ReadFlowActionTrigger(session flows.Session, envelope *utils.TypedEnvelope)
 		return nil, err
 	}
 
-	if err := readBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
+	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
@@ -81,8 +81,9 @@ func (t *FlowActionTrigger) MarshalJSON() ([]byte, error) {
 	var envelope flowActionTriggerEnvelope
 	var err error
 
-	envelope.TriggeredOn = t.triggeredOn
-	envelope.Flow = t.flow.Reference()
+	if err := marshalBaseTrigger(&t.baseTrigger, &envelope.baseTriggerEnvelope); err != nil {
+		return nil, err
+	}
 
 	if envelope.Run, err = json.Marshal(t.run); err != nil {
 		return nil, err

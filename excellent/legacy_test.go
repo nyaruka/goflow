@@ -7,6 +7,8 @@ import (
 type testTemplate struct {
 	old string
 	new string
+
+	extraAs ExtraVarsMapping
 }
 
 func TestTranslate(t *testing.T) {
@@ -166,22 +168,29 @@ func TestTranslate(t *testing.T) {
 
 		{old: "@(PROPER(contact))", new: "@(title(contact))"},
 		{old: "@(REPT(\"*\", 10))", new: "@(repeat(\"*\", 10))"},
-		{old: "@extra.blerg", new: "@run.webhook.json.blerg"},
 		// {old: "@((DATEDIF(DATEVALUE(\"01-01-1970\"), date.now, \"D\") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))", new: ""},
 
-		// non-expression
+		{old: "@extra.blerg.foo", new: "@run.webhook.json.blerg.foo", extraAs: ExtraAsWebhookJSON},
+		{old: "@extra.blerg.foo", new: "@trigger.params.blerg.foo", extraAs: ExtraAsTriggerParams},
+		{old: "@extra.blerg.foo", new: "@(if(has_error(run.webhook.json.blerg.foo), trigger.params.blerg.foo, run.webhook.json.blerg.foo))", extraAs: ExtraAsFunction},
+
+		// non-expressions
 		{old: "bob@nyaruka.com", new: "bob@nyaruka.com"},
+		{old: "@twitter_handle", new: "@twitter_handle"},
 	}
 
 	for i := range tests {
-		tests = append(tests, testTemplate{old: "Embedded " + tests[i].old + " text", new: "Embedded " + tests[i].new + " text"})
-		tests = append(tests, testTemplate{old: "Replace " + tests[i].old + " two " + tests[i].old + " times", new: "Replace " + tests[i].new + " two " + tests[i].new + " times"})
+		tests = append(tests, testTemplate{old: "Embedded " + tests[i].old + " text", new: "Embedded " + tests[i].new + " text", extraAs: tests[i].extraAs})
+		tests = append(tests, testTemplate{old: "Replace " + tests[i].old + " two " + tests[i].old + " times", new: "Replace " + tests[i].new + " two " + tests[i].new + " times", extraAs: tests[i].extraAs})
 	}
 
 	for _, test := range tests {
 
 		for i := 0; i < 1; i++ {
-			translation, err := MigrateTemplate(test.old)
+			if test.extraAs == "" {
+				test.extraAs = ExtraAsFunction
+			}
+			translation, err := MigrateTemplate(test.old, test.extraAs)
 
 			if err != nil {
 				t.Errorf("Parse Error: %v", err)

@@ -26,6 +26,8 @@ func (c *runContext) Resolve(key string) interface{} {
 		return newRelatedRunContext(c.run.Parent())
 	case "run":
 		return c.run
+	case "trigger":
+		return c.run.Session().Trigger()
 	}
 
 	return fmt.Errorf("no field '%s' on context", key)

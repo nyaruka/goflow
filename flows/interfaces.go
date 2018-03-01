@@ -199,10 +199,14 @@ type Translations interface {
 }
 
 type Trigger interface {
+	utils.VariableResolver
 	utils.Typed
 
-	TriggeredOn() time.Time
+	Environment() utils.Environment
 	Flow() Flow
+	Contact() *Contact
+	Params() *utils.JSONFragment
+	TriggeredOn() time.Time
 }
 
 type Event interface {
@@ -293,14 +297,12 @@ type FlowRun interface {
 	Session() Session
 	Context() utils.VariableResolver
 	Input() Input
-	Extra() utils.JSONFragment
 	Webhook() *utils.RequestResponse
 
 	SetContact(*Contact)
 	SetInput(Input)
 	SetStatus(RunStatus)
 	SetWebhook(*utils.RequestResponse)
-	SetExtra(utils.JSONFragment)
 
 	ApplyEvent(Step, Action, Event) error
 	AddError(Step, Action, error)

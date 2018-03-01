@@ -17,6 +17,10 @@ const TypeManual string = "manual"
 //   {
 //     "type": "manual",
 //     "flow": {"uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721", "name": "Registration"},
+//     "contact": {
+//       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+//       "name": "Bob"
+//     },
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 // ```
@@ -25,8 +29,8 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(flow flows.Flow, triggeredOn time.Time) flows.Trigger {
-	return &ManualTrigger{baseTrigger{flow: flow, triggeredOn: triggeredOn}}
+func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow flows.Flow, triggeredOn time.Time) flows.Trigger {
+	return &ManualTrigger{baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn}}
 }
 
 // Type returns the type of this trigger
@@ -45,7 +49,7 @@ func ReadManualTrigger(session flows.Session, envelope *utils.TypedEnvelope) (fl
 		return nil, err
 	}
 
-	if err := readBaseTrigger(session, &trigger.baseTrigger, &e); err != nil {
+	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e); err != nil {
 		return nil, err
 	}
 
@@ -55,8 +59,9 @@ func ReadManualTrigger(session flows.Session, envelope *utils.TypedEnvelope) (fl
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
 	var envelope baseTriggerEnvelope
 
-	envelope.TriggeredOn = t.triggeredOn
-	envelope.Flow = t.flow.Reference()
+	if err := marshalBaseTrigger(&t.baseTrigger, &envelope); err != nil {
+		return nil, err
+	}
 
 	return json.Marshal(envelope)
 }
