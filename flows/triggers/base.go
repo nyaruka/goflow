@@ -9,16 +9,18 @@ import (
 )
 
 type baseTrigger struct {
+	environment utils.Environment
 	flow        flows.Flow
 	contact     *flows.Contact
 	params      *utils.JSONFragment
 	triggeredOn time.Time
 }
 
-func (t *baseTrigger) Flow() flows.Flow            { return t.flow }
-func (t *baseTrigger) Contact() *flows.Contact     { return t.contact }
-func (t *baseTrigger) Params() *utils.JSONFragment { return t.params }
-func (t *baseTrigger) TriggeredOn() time.Time      { return t.triggeredOn }
+func (t *baseTrigger) Environment() utils.Environment { return t.environment }
+func (t *baseTrigger) Flow() flows.Flow               { return t.flow }
+func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
+func (t *baseTrigger) Params() *utils.JSONFragment    { return t.params }
+func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 func (t *baseTrigger) Default() interface{} {
 	return t

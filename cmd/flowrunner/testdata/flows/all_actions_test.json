@@ -646,6 +646,12 @@
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
+          "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+          },
           "flow": {
             "name": "Registration Flow",
             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
@@ -685,6 +691,12 @@
         "mailto:ben@macklemore"
       ],
       "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
+    "environment": {
+      "date_format": "yyyy-MM-dd",
+      "languages": [],
+      "time_format": "hh:mm",
+      "timezone": "America/Los_Angeles"
     },
     "flow": {
       "name": "Registration",

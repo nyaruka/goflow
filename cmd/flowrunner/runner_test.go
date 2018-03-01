@@ -12,7 +12,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -72,7 +71,7 @@ type runResult struct {
 	outputs    []*Output
 }
 
-func runFlow(env utils.Environment, assetsFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.Event) (runResult, error) {
+func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.Event) (runResult, error) {
 	// load both the test specific assets and default assets
 	defaultAssetsJSON, err := readFile("", "default.json")
 	if err != nil {
@@ -95,7 +94,6 @@ func runFlow(env utils.Environment, assetsFilename string, triggerEnvelope *util
 	}
 
 	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
-	session.SetEnvironment(env)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -171,10 +169,6 @@ func newTestHTTPServer() *httptest.Server {
 }
 
 func TestFlows(t *testing.T) {
-	env := utils.NewDefaultEnvironment()
-	la, _ := time.LoadLocation("America/Los_Angeles")
-	env.SetTimezone(la)
-
 	server := newTestHTTPServer()
 	server.Start()
 	defer server.Close()
@@ -214,7 +208,7 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		runResult, err := runFlow(env, test.assets, flowTest.Trigger, callerEvents)
+		runResult, err := runFlow(test.assets, flowTest.Trigger, callerEvents)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.assets, test.output, err)
 			continue

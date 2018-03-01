@@ -119,6 +119,12 @@
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
+          "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+          },
           "flow": {
             "name": "Node Loop",
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
@@ -150,6 +156,12 @@
         "mailto:ben@macklemore"
       ],
       "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
+    "environment": {
+      "date_format": "yyyy-MM-dd",
+      "languages": [],
+      "time_format": "hh:mm",
+      "timezone": "America/Los_Angeles"
     },
     "flow": {
       "name": "Registration",

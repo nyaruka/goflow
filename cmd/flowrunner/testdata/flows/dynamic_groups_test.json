@@ -139,7 +139,7 @@
           "date_format": "yyyy-MM-dd",
           "languages": [],
           "time_format": "hh:mm",
-          "timezone": "America/Los_Angeles"
+          "timezone": "UTC"
         },
         "runs": [
           {

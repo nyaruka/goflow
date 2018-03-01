@@ -10,6 +10,7 @@ import (
 )
 
 type baseTriggerEnvelope struct {
+	Environment json.RawMessage      `json:"environment,omitempty"`
 	Flow        *flows.FlowReference `json:"flow" validate:"required"`
 	Contact     json.RawMessage      `json:"contact,omitempty"`
 	Params      json.RawMessage      `json:"params,omitempty"`
@@ -37,6 +38,12 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 	if base.flow, err = session.Assets().GetFlow(envelope.Flow.UUID); err != nil {
 		return err
 	}
+
+	if envelope.Environment != nil {
+		if base.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
+			return err
+		}
+	}
 	if envelope.Contact != nil {
 		if base.contact, err = flows.ReadContact(session, envelope.Contact); err != nil {
 			return err
@@ -55,13 +62,18 @@ func marshalBaseTrigger(t *baseTrigger, envelope *baseTriggerEnvelope) error {
 	envelope.Flow = t.flow.Reference()
 	envelope.TriggeredOn = t.triggeredOn
 
+	if t.environment != nil {
+		envelope.Environment, err = json.Marshal(t.environment)
+		if err != nil {
+			return err
+		}
+	}
 	if t.contact != nil {
 		envelope.Contact, err = json.Marshal(t.contact)
 		if err != nil {
 			return err
 		}
 	}
-
 	if t.params != nil {
 		envelope.Params = json.RawMessage(*t.params)
 	}

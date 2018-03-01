@@ -202,10 +202,11 @@ type Trigger interface {
 	utils.VariableResolver
 	utils.Typed
 
-	TriggeredOn() time.Time
+	Environment() utils.Environment
 	Flow() Flow
 	Contact() *Contact
 	Params() *utils.JSONFragment
+	TriggeredOn() time.Time
 }
 
 type Event interface {

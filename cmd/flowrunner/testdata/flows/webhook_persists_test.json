@@ -209,6 +209,12 @@
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
+          "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+          },
           "flow": {
             "name": "Webhook Test",
             "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625"
@@ -420,6 +426,12 @@
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
+          "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+          },
           "flow": {
             "name": "Webhook Test",
             "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625"
@@ -454,6 +466,12 @@
         "mailto:ben@macklemore"
       ],
       "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
+    "environment": {
+      "date_format": "yyyy-MM-dd",
+      "languages": [],
+      "time_format": "hh:mm",
+      "timezone": "America/Los_Angeles"
     },
     "flow": {
       "name": "Registration",

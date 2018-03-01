@@ -128,6 +128,12 @@
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
+          "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+          },
           "flow": {
             "name": "Date Test",
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
@@ -342,6 +348,12 @@
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
           },
+          "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+          },
           "flow": {
             "name": "Date Test",
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
@@ -377,6 +389,12 @@
         "mailto:ben@macklemore"
       ],
       "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+    },
+    "environment": {
+      "date_format": "yyyy-MM-dd",
+      "languages": [],
+      "time_format": "hh:mm",
+      "timezone": "America/Los_Angeles"
     },
     "flow": {
       "name": "Registration",
