@@ -28,6 +28,9 @@ type RunExpiredEvent struct {
 // Type returns the type of this event
 func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
 
+// AllowedOrigin determines where this event type can originate
+func (e *RunExpiredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
+
 // Apply applies this event to the given run
 func (e *RunExpiredEvent) Apply(run flows.FlowRun) error {
 	if run.UUID() != e.RunUUID {

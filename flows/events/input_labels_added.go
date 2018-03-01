@@ -35,6 +35,9 @@ func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*flows.LabelRe
 // Type returns the type of this event
 func (e *InputLabelsAddedEvent) Type() string { return TypeInputLabelsAdded }
 
+// AllowedOrigin determines where this event type can originate
+func (e *InputLabelsAddedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
 // Apply applies this event to the given run
 func (e *InputLabelsAddedEvent) Apply(run flows.FlowRun) error {
 	return nil

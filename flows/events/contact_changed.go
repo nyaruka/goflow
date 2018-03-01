@@ -40,3 +40,6 @@ func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
 	run.Session().SetContact(contact)
 	return nil
 }
+
+// AllowedOrigin determines where this event type can originate
+func (e *ContactChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }

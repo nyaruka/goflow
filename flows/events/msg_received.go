@@ -49,6 +49,9 @@ func NewMsgReceivedEvent(uuid flows.InputUUID, channel *flows.ChannelReference, 
 // Type returns the type of this event
 func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 
+// AllowedOrigin determines where this event type can originate
+func (e *MsgReceivedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
+
 // Apply applies this event to the given run
 func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
 	var channel flows.Channel

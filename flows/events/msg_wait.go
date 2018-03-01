@@ -38,6 +38,9 @@ func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
 // Type returns the type of this event
 func (e *MsgWaitEvent) Type() string { return TypeMsgWait }
 
+// AllowedOrigin determines where this event type can originate
+func (e *MsgWaitEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
+
 // Apply applies this event to the given run
 func (e *MsgWaitEvent) Apply(run flows.FlowRun) error {
 	return nil

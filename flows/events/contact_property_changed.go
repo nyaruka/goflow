@@ -38,6 +38,11 @@ func NewContactPropertyChangedEvent(property string, value string) *ContactPrope
 // Type returns the type of this event
 func (e *ContactPropertyChangedEvent) Type() string { return TypeContactPropertyChanged }
 
+// AllowedOrigin determines where this event type can originate
+func (e *ContactPropertyChangedEvent) AllowedOrigin() flows.EventOrigin {
+	return flows.EventOriginEither
+}
+
 // Apply applies this event to the given run
 func (e *ContactPropertyChangedEvent) Apply(run flows.FlowRun) error {
 	// if this is either name or language, we save directly to the contact

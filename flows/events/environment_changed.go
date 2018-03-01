@@ -35,6 +35,9 @@ type EnvironmentChangedEvent struct {
 // Type returns the type of this event
 func (e *EnvironmentChangedEvent) Type() string { return TypeEnvironmentChanged }
 
+// AllowedOrigin determines where this event type can originate
+func (e *EnvironmentChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
+
 // Apply applies this event to the given run
 func (e *EnvironmentChangedEvent) Apply(run flows.FlowRun) error {
 	tz, err := time.LoadLocation(e.Timezone)

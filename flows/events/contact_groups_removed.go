@@ -33,6 +33,9 @@ func NewContactGroupsRemovedEvent(groups []*flows.GroupReference) *ContactGroups
 // Type returns the type of this event
 func (e *ContactGroupsRemovedEvent) Type() string { return TypeContactGroupsRemoved }
 
+// AllowedOrigin determines where this event type can originate
+func (e *ContactGroupsRemovedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
 // Apply applies this event to the given run
 func (e *ContactGroupsRemovedEvent) Apply(run flows.FlowRun) error {
 	groupSet, err := run.Session().Assets().GetGroupSet()

@@ -49,6 +49,9 @@ func NewWebhookCalledEvent(url string, status utils.RequestResponseStatus, statu
 // Type returns the type of this event
 func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
 
+// AllowedOrigin determines where this event type can originate
+func (e *WebhookCalledEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
+
 // Apply applies this event to the given run
 func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
 	return nil

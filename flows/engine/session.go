@@ -117,6 +117,13 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", trigger.Flow().UUID(), err)
 	}
 
+	// check caller events are valid
+	for _, event := range callerEvents {
+		if event.AllowedOrigin() == flows.EventOriginEngine {
+			return fmt.Errorf("event type %s can't be sent by callers", event.Type())
+		}
+	}
+
 	if trigger.Environment() != nil {
 		s.env = trigger.Environment()
 	}
@@ -145,6 +152,13 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", waitingRun.Flow().UUID(), err)
+	}
+
+	// check caller events are valid
+	for _, event := range callerEvents {
+		if event.AllowedOrigin() == flows.EventOriginEngine {
+			return fmt.Errorf("event type %s can't be sent by callers", event.Type())
+		}
 	}
 
 	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
@@ -204,11 +218,7 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 	s.status = flows.SessionStatusActive
 
 	// off to the races again...
-	if err = s.continueUntilWait(waitingRun, destination, step, []flows.Event{}); err != nil {
-		return err
-	}
-
-	return nil
+	return s.continueUntilWait(waitingRun, destination, step, []flows.Event{})
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow

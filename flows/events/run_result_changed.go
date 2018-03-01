@@ -49,6 +49,9 @@ func NewRunResultChangedEvent(name string, value string, categoryName string, ca
 // Type returns the type of this event
 func (e *RunResultChangedEvent) Type() string { return TypeRunResultChanged }
 
+// AllowedOrigin determines where this event type can originate
+func (e *RunResultChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
 // Apply applies this event to the given run
 func (e *RunResultChangedEvent) Apply(run flows.FlowRun) error {
 	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, e.BaseEvent.CreatedOn())

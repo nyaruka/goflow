@@ -42,6 +42,9 @@ func NewFatalErrorEvent(err error) *ErrorEvent {
 // Type returns the type of this event
 func (e *ErrorEvent) Type() string { return TypeError }
 
+// AllowedOrigin determines where this event type can originate
+func (e *ErrorEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
 // Apply applies this event to the given run
 func (e *ErrorEvent) Apply(run flows.FlowRun) error {
 	if e.Fatal {

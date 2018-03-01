@@ -35,6 +35,9 @@ func NewContactFieldChangedEvent(field *flows.FieldReference, value string) *Con
 // Type returns the type of this event
 func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChanged }
 
+// AllowedOrigin determines where this event type can originate
+func (e *ContactFieldChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
 // Apply applies this event to the given run
 func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
 	field, err := run.Session().Assets().GetField(e.Field.Key)

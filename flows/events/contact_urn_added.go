@@ -32,6 +32,9 @@ func NewURNAddedEvent(urn urns.URN) *ContactURNAddedEvent {
 // Type returns the type of this event
 func (e *ContactURNAddedEvent) Type() string { return TypeContactURNAdded }
 
+// AllowedOrigin determines where this event type can originate
+func (e *ContactURNAddedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
 // Apply applies this event to the given run
 func (e *ContactURNAddedEvent) Apply(run flows.FlowRun) error {
 	run.Contact().AddURN(e.URN)

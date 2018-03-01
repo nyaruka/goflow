@@ -67,6 +67,9 @@ func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contac
 // Type returns the type of this event
 func (e *SessionTriggeredEvent) Type() string { return TypeSessionTriggered }
 
+// AllowedOrigin determines where this event type can originate
+func (e *SessionTriggeredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
+
 // Apply applies this event to the given run
 func (e *SessionTriggeredEvent) Apply(run flows.FlowRun) error {
 	return nil

@@ -38,6 +38,9 @@ func NewEmailCreatedEvent(addresses []string, subject string, body string) *Emai
 // Type returns the type of this event
 func (a *EmailCreatedEvent) Type() string { return TypeEmailCreated }
 
+// AllowedOrigin determines where this event type can originate
+func (e *EmailCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
+
 // Apply applies this event to the given run
 func (e *EmailCreatedEvent) Apply(run flows.FlowRun) error {
 	return nil

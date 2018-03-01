@@ -66,3 +66,6 @@ func (e *BroadcastCreatedEvent) Type() string { return TypeBroadcastCreated }
 func (e *BroadcastCreatedEvent) Apply(run flows.FlowRun) error {
 	return nil
 }
+
+// AllowedOrigin determines where this event type can originate
+func (e *BroadcastCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }

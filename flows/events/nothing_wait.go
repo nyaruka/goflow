@@ -27,6 +27,9 @@ func NewNothingWait() *NothingWaitEvent {
 // Type returns the type of this event
 func (e *NothingWaitEvent) Type() string { return TypeNothingWait }
 
+// AllowedOrigin determines where this event type can originate
+func (e *NothingWaitEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
+
 // Apply applies this event to the given run
 func (e *NothingWaitEvent) Apply(run flows.FlowRun) error {
 	return nil
