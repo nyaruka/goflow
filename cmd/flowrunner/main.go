@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 	uuid "github.com/satori/go.uuid"
@@ -214,8 +215,6 @@ func main() {
 
 	outputs := make([]*Output, 0)
 
-	channelUUID := flows.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d")
-
 	for session.Wait() != nil {
 		outJSON, err := json.MarshalIndent(session, "", "  ")
 		if err != nil {
@@ -236,8 +235,8 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		channelRef := flows.NewChannelReference(channelUUID, "Test Channel")
-		event := events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), channelRef, contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
 

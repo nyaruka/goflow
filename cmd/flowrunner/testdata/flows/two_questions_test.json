@@ -3,28 +3,34 @@
     [],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "I like blue!",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "I like blue!",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ],
     [
       {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "Coke",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
+        "msg": {
+          "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+          },
+          "created_on": "2000-01-01T00:00:00.000000000-00:00",
+          "text": "Coke",
+          "urn": "tel:+12065551212",
+          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+        },
+        "type": "msg_received"
       }
     ]
   ],
@@ -243,7 +249,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "I like blue!",
               "type": "msg",
@@ -271,15 +280,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "I like blue!",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "I like blue!",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Blue",
@@ -460,7 +472,10 @@
             "expires_on": "2000-01-01T00:00:00.000000000-00:00",
             "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
             "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+              "channel": {
+                "name": "Twilio Channel",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+              },
               "created_on": "2000-01-01T00:00:00.000000000-00:00",
               "text": "Coke",
               "type": "msg",
@@ -488,15 +503,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "I like blue!",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "I like blue!",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Blue",
@@ -539,15 +557,18 @@
                     "type": "msg_wait"
                   },
                   {
-                    "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-                    "text": "Coke",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
+                    "msg": {
+                      "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                      },
+                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                      "text": "Coke",
+                      "urn": "tel:+12065551212",
+                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    },
+                    "type": "msg_received"
                   },
                   {
                     "category": "Coke",

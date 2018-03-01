@@ -79,10 +79,10 @@ type msgInputEnvelope struct {
 	Attachments []flows.Attachment `json:"attachments,omitempty"`
 }
 
-func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInput, error) {
+func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
-	err := json.Unmarshal(envelope.Data, &i)
+	err := json.Unmarshal(data, &i)
 	if err != nil {
 		return nil, err
 	}
@@ -94,8 +94,8 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 
 	// lookup the channel
 	var channel flows.Channel
-	if i.ChannelUUID != "" {
-		channel, err = session.Assets().GetChannel(i.ChannelUUID)
+	if i.Channel != nil {
+		channel, err = session.Assets().GetChannel(i.Channel.UUID)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +114,7 @@ func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	var envelope msgInputEnvelope
 
 	if i.Channel() != nil {
-		envelope.baseInputEnvelope.ChannelUUID = i.Channel().UUID()
+		envelope.baseInputEnvelope.Channel = i.Channel().Reference()
 	}
 	envelope.baseInputEnvelope.UUID = i.UUID()
 	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
