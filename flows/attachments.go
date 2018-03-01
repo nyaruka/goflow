@@ -7,8 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// Attachment is a media attachment on a message
 type Attachment string
 
+// ContentType returns the MIME type of this attachment
 func (a Attachment) ContentType() string {
 	offset := strings.Index(string(a), ":")
 	if offset >= 0 {
@@ -17,6 +19,7 @@ func (a Attachment) ContentType() string {
 	return ""
 }
 
+// URL returns the full URL of this attachment
 func (a Attachment) URL() string {
 	offset := strings.Index(string(a), ":")
 	if offset >= 0 {

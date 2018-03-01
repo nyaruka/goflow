@@ -23,6 +23,7 @@ type Contact struct {
 	channel  Channel
 }
 
+// Clone creates a copy of this contact
 func (c *Contact) Clone() *Contact {
 	return &Contact{
 		uuid:     c.uuid,
@@ -36,35 +37,52 @@ func (c *Contact) Clone() *Contact {
 	}
 }
 
+// UUID returns the UUID of this contact
+func (c *Contact) UUID() ContactUUID { return c.uuid }
+
 // SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
 
 // Language gets the language for this contact
 func (c *Contact) Language() utils.Language { return c.language }
 
+// SetTimezone sets the timezone of this contact
 func (c *Contact) SetTimezone(tz *time.Location) {
 	c.timezone = tz
 }
+
+// Timezone returns the timezone of this contact
 func (c *Contact) Timezone() *time.Location { return c.timezone }
 
+// SetName sets the name of this contact
 func (c *Contact) SetName(name string) { c.name = name }
-func (c *Contact) Name() string        { return c.name }
 
+// Name returns the name of this contact
+func (c *Contact) Name() string { return c.name }
+
+// URNs returns the URNs of this contact
 func (c *Contact) URNs() URNList { return c.urns }
+
+// AddURN adds a new URN to this contact
 func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
 	c.urns = append(c.urns, urn)
 }
 
-func (c *Contact) UUID() ContactUUID { return c.uuid }
+// Groups returns the groups that this contact belongs to
+func (c *Contact) Groups() *GroupList { return c.groups }
 
-func (c *Contact) Groups() *GroupList  { return c.groups }
+// Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
 
-func (c *Contact) Channel() Channel           { return c.channel }
+// Channel returns the preferred channel of this contact
+func (c *Contact) Channel() Channel { return c.channel }
+
+// SetChannel sets the preferred channel of this contact
 func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
 
+// Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 func (c *Contact) Resolve(key string) interface{} {
@@ -110,6 +128,7 @@ func (c *Contact) String() string {
 
 var _ utils.VariableResolver = (*Contact)(nil)
 
+// UpdateDynamicGroups reevaluates membership of all dynamic groups for this contact
 func (c *Contact) UpdateDynamicGroups(session Session) error {
 	groups, err := session.Assets().GetGroupSet()
 	if err != nil {
@@ -133,6 +152,7 @@ func (c *Contact) UpdateDynamicGroups(session Session) error {
 	return nil
 }
 
+// ResolveQueryKey resolves a contact query search key for this contact
 func (c *Contact) ResolveQueryKey(key string) []interface{} {
 	// try as a URN scheme
 	if urns.IsValidScheme(key) {
