@@ -276,6 +276,14 @@ func (ts *ServerTestSuite) TestHomePages() {
 	ts.Equal(200, status)
 	ts.Contains(string(body), "Echo Flow")
 
+	// test the example start request on the home page
+	startJSON, err := ioutil.ReadFile("static/start.json")
+	ts.Require().NoError(err)
+
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/start", string(startJSON))
+	ts.Equal(200, status)
+	ts.Contains(string(body), "You said 'Let's go thrifting!'")
+
 	// hit our version endpoint
 	status, body = ts.testHTTPRequest("GET", "http://localhost:8080/version", "")
 	ts.Equal(200, status)
