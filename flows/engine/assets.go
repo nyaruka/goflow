@@ -118,7 +118,7 @@ type AssetServer interface {
 }
 
 type assetServer struct {
-	authtoken string
+	authToken string
 	typeURLs  map[assetType]string
 }
 
@@ -127,18 +127,18 @@ type assetServerEnvelope struct {
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(authtoken string, data json.RawMessage) (AssetServer, error) {
+func ReadAssetServer(authToken string, data json.RawMessage) (AssetServer, error) {
 	envelope := &assetServerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope, "asset_server"); err != nil {
 		return nil, err
 	}
 
-	return NewAssetServer(authtoken, envelope.TypeURLs), nil
+	return NewAssetServer(authToken, envelope.TypeURLs), nil
 }
 
 // NewAssetServer creates a new asset server
-func NewAssetServer(authtoken string, typeURLs map[assetType]string) AssetServer {
-	return &assetServer{authtoken: authtoken, typeURLs: typeURLs}
+func NewAssetServer(authToken string, typeURLs map[assetType]string) AssetServer {
+	return &assetServer{authToken: authToken, typeURLs: typeURLs}
 }
 
 // isTypeSupported returns whether the given asset item type is supported
@@ -180,7 +180,7 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	// set request headers
 	request.Header.Set("User-Agent", userAgent)
-	request.Header.Set("Authorization", fmt.Sprintf("Token %s", s.authtoken))
+	request.Header.Set("Authorization", fmt.Sprintf("Token %s", s.authToken))
 
 	// make the actual request
 	response, err := http.DefaultClient.Do(request)
@@ -192,6 +192,10 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	if response.StatusCode != 200 {
 		return nil, fmt.Errorf("asset request returned non-200 response")
+	}
+
+	if response.Header.Get("Content-Type") != "application/json" {
+		return nil, fmt.Errorf("asset request returned non-JSON response")
 	}
 
 	buf, err := ioutil.ReadAll(response.Body)
