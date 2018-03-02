@@ -205,7 +205,7 @@ type Trigger interface {
 	Environment() utils.Environment
 	Flow() Flow
 	Contact() *Contact
-	Params() *utils.JSONFragment
+	Params() utils.JSONFragment
 	TriggeredOn() time.Time
 }
 
