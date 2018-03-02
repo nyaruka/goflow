@@ -1,0 +1,65 @@
+{
+    "events": [
+        {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "msg": {
+                "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
+                "channel": {
+                  "name": "Nexmo",
+                  "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                },
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "text": "Hi there",
+                "attachments": [
+                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                ],
+                "urn": "tel:+12065551212"
+            },
+            "type": "msg_received"
+          }
+    ],
+    "trigger": {
+        "type": "manual",
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "contact": {
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+            "name": "Ben Haggerty",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
+            "fields": {
+            "first_name": {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "value": "Ben"
+            },
+            "state": {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "value": "Azuay"
+            }
+            },
+            "group_uuids": ["d7ff4872-9238-452f-9d38-2f558fea89e0"],
+            "urns": [
+            "tel:+12065551212",
+            "facebook:1122334455667788",
+            "mailto:ben@macklemore"
+            ]
+        },
+        "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Test Flow",
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
+        },
+        "params": {
+            "coupons": [
+            {
+                "code": "AAA-BBB-CCC",
+                "expiration": "2000-01-01T00:00:00.000000000-00:00"
+            }
+            ]
+        }
+    }
+}
