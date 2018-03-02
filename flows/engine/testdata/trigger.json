@@ -5,8 +5,8 @@
             "msg": {
                 "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                 "channel": {
-                  "name": "Nexmo",
-                  "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    "name": "Nexmo",
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                 "text": "Hi there",
@@ -16,7 +16,7 @@
                 "urn": "tel:+12065551212"
             },
             "type": "msg_received"
-          }
+        }
     ],
     "trigger": {
         "type": "manual",
@@ -27,20 +27,22 @@
             "language": "eng",
             "timezone": "America/Guayaquil",
             "fields": {
-            "first_name": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
+                "first_name": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Ben"
+                },
+                "state": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Azuay"
+                }
             },
-            "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-            }
-            },
-            "group_uuids": ["d7ff4872-9238-452f-9d38-2f558fea89e0"],
+            "group_uuids": [
+                "d7ff4872-9238-452f-9d38-2f558fea89e0"
+            ],
             "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
             ]
         },
         "environment": {
@@ -55,10 +57,10 @@
         },
         "params": {
             "coupons": [
-            {
-                "code": "AAA-BBB-CCC",
-                "expiration": "2000-01-01T00:00:00.000000000-00:00"
-            }
+                {
+                    "code": "AAA-BBB-CCC",
+                    "expiration": "2000-01-01T00:00:00.000000000-00:00"
+                }
             ]
         }
     }

@@ -1,35 +1,35 @@
 [
-  {
-    "type": "flow",
-    "url": "http://testserver/assets/flow/ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
-    "content": {
-      "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
-      "name": "Triggered Flow",
-      "language": "eng",
-      "localization": {},
-      "nodes": [
-        {
-          "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-          "actions": [
-            {
-              "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
-              "type": "reply",
-              "text": "Hi @contact.name you were started in this flow by @parent.contact.name from the '@parent.flow' flow. He is from @parent.contact.fields.state and is aged @parent.results.age."
-            }
-          ]
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
+        "content": {
+            "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
+            "name": "Triggered Flow",
+            "language": "eng",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "actions": [
+                        {
+                            "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                            "type": "reply",
+                            "text": "Hi @contact.name you were started in this flow by @parent.contact.name from the '@parent.flow' flow. He is from @parent.contact.fields.state and is aged @parent.results.age."
+                        }
+                    ]
+                }
+            ]
         }
-      ]
+    },
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/93c554a1-b90d-4892-b029-a2a87dec9b87",
+        "content": {
+            "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+            "name": "Parent Flow",
+            "language": "eng",
+            "localization": {},
+            "nodes": []
+        }
     }
-  },
-  {
-    "type": "flow",
-    "url": "http://testserver/assets/flow/93c554a1-b90d-4892-b029-a2a87dec9b87",
-    "content": {
-      "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
-      "name": "Parent Flow",
-      "language": "eng",
-      "localization": {},
-      "nodes": []
-    }
-  }
 ]

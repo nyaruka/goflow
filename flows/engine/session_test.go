@@ -50,7 +50,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(has_error(run.results.favorite_icecream))", "false", false}, // TODO should be true
 		{"@run.exited_on", "", false},
 
-		{"@trigger.params", "{\n            \"coupons\": [\n            {\n                \"code\": \"AAA-BBB-CCC\",\n                \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n            }\n            ]\n        }", false},
+		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},
 		{"@trigger.params.coupons.0.code", "AAA-BBB-CCC", false},
 	}
 
