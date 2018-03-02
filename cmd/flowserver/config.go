@@ -6,7 +6,7 @@ import (
 
 // Config is our top level configuration object
 type Config struct {
-	Port int `default:"8080" toml:"port"`
+	Port int `default:"8800" toml:"port"`
 
 	Static string `default:""`
 
