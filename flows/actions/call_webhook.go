@@ -23,7 +23,7 @@ const TypeCallWebhook string = "call_webhook"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "call_webhook",
-//     "method": "get",
+//     "method": "GET",
 //     "url": "https://api.ipify.org?format=json",
 //     "headers": {
 //	      "Authorization": "Token AAFFZZHH"

@@ -281,7 +281,7 @@ func (ts *ServerTestSuite) TestHomePages() {
 	startJSON, err := ioutil.ReadFile("static/start.json")
 	ts.Require().NoError(err)
 
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8080/flow/start", string(startJSON))
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", string(startJSON))
 	ts.Equal(200, status)
 	ts.Contains(string(body), "You said 'Let's go thrifting!'")
 
