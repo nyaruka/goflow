@@ -10,8 +10,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // RequestResponseStatus represents the status of a WebhookRequeset
@@ -28,21 +26,8 @@ const (
 	RRResponseError RequestResponseStatus = "response_error"
 )
 
-var validHTTPMethods = map[string]bool{
-	http.MethodGet:    true,
-	http.MethodHead:   true,
-	http.MethodPost:   true,
-	http.MethodPut:    true,
-	http.MethodPatch:  true,
-	http.MethodDelete: true,
-}
-
-func validateHTTPMethod(fl validator.FieldLevel) bool {
-	return validHTTPMethods[fl.Field().String()]
-}
-
 func init() {
-	Validator.RegisterValidation("http_method", validateHTTPMethod)
+	Validator.RegisterAlias("http_method", "eq=GET|eq=HEAD|eq=POST|eq=PUT|eq=PATCH|eq=DELETE")
 }
 
 func (r RequestResponseStatus) String() string {
