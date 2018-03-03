@@ -199,7 +199,7 @@
                             "uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
                             "type": "call_webhook",
                             "url": "http://localhost/?cmd=success",
-                            "method": "post",
+                            "method": "POST",
                             "body": "{ \"contact\": @(to_json(contact.uuid)), \"soda\": @(to_json(run.results.soda)) }"
                         },
                         {
