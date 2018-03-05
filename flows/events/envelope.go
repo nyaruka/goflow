@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// ReadEvents reads the events from the given envelopes
 func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
 	events := make([]flows.Event, len(envelopes))
 	for e, envelope := range envelopes {
@@ -20,48 +21,51 @@ func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
 	return events, nil
 }
 
+// EventFromEnvelope reads a single event from the given envelope
 func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	var event flows.Event
 
 	switch envelope.Type {
-	case TypeInputLabelsAdded:
-		event = &InputLabelsAddedEvent{}
+	case TypeBroadcastCreated:
+		event = &BroadcastCreatedEvent{}
+	case TypeContactChanged:
+		event = &ContactChangedEvent{}
+	case TypeContactChannelChanged:
+		event = &ContactChannelChangedEvent{}
+	case TypeContactFieldChanged:
+		event = &ContactFieldChangedEvent{}
 	case TypeContactGroupsAdded:
 		event = &ContactGroupsAddedEvent{}
+	case TypeContactGroupsRemoved:
+		event = &ContactGroupsRemovedEvent{}
+	case TypeContactPropertyChanged:
+		event = &ContactPropertyChangedEvent{}
 	case TypeContactURNAdded:
 		event = &ContactURNAddedEvent{}
 	case TypeEmailCreated:
 		event = &EmailCreatedEvent{}
+	case TypeEnvironmentChanged:
+		event = &EnvironmentChangedEvent{}
 	case TypeError:
 		event = &ErrorEvent{}
 	case TypeFlowTriggered:
 		event = &FlowTriggeredEvent{}
-	case TypeSessionTriggered:
-		event = &SessionTriggeredEvent{}
-	case TypeRunExpired:
-		event = &RunExpiredEvent{}
+	case TypeInputLabelsAdded:
+		event = &InputLabelsAddedEvent{}
+	case TypeMsgCreated:
+		event = &MsgCreatedEvent{}
 	case TypeMsgReceived:
 		event = &MsgReceivedEvent{}
-	case TypeBroadcastCreated:
-		event = &BroadcastCreatedEvent{}
 	case TypeMsgWait:
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:
 		event = &NothingWaitEvent{}
-	case TypeContactGroupsRemoved:
-		event = &ContactGroupsRemovedEvent{}
+	case TypeRunExpired:
+		event = &RunExpiredEvent{}
 	case TypeRunResultChanged:
 		event = &RunResultChangedEvent{}
-	case TypeContactFieldChanged:
-		event = &ContactFieldChangedEvent{}
-	case TypeContactChannelChanged:
-		event = &ContactChannelChangedEvent{}
-	case TypeEnvironmentChanged:
-		event = &EnvironmentChangedEvent{}
-	case TypeContactChanged:
-		event = &ContactChangedEvent{}
-	case TypeContactPropertyChanged:
-		event = &ContactPropertyChangedEvent{}
+	case TypeSessionTriggered:
+		event = &SessionTriggeredEvent{}
 	case TypeWebhookCalled:
 		event = &WebhookCalledEvent{}
 	default:

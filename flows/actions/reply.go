@@ -43,12 +43,17 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
-	urns := run.Contact().URNs()
-
-	if a.AllURNs && len(urns) > 0 {
-		log.Add(events.NewBroadcastCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urns, nil, nil))
+	var sendToUrns flows.URNList
+	if a.AllURNs {
+		sendToUrns = run.Contact().URNs()
 	} else {
-		log.Add(events.NewMsgCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, run.Contact().Reference()))
+		// TODO choose URN and channel
+		sendToUrns = run.Contact().URNs()[0:1]
+	}
+
+	for _, urn := range sendToUrns {
+		msg := flows.NewMsgOut(urn, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+		log.Add(events.NewMsgCreatedEvent(msg))
 	}
 
 	return nil

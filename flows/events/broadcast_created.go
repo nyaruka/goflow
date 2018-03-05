@@ -26,27 +26,15 @@ const TypeBroadcastCreated string = "broadcast_created"
 type BroadcastCreatedEvent struct {
 	BaseEvent
 	Text         string                    `json:"text"`
-	Attachments  []string                  `json:"attachments,omitempty"`
+	Attachments  []flows.Attachment        `json:"attachments,omitempty"`
 	QuickReplies []string                  `json:"quick_replies,omitempty"`
 	URNs         []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
 	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups       []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
 }
 
-// NewMsgCreatedEvent creates a new outgoing msg event to a single contact
-func NewMsgCreatedEvent(text string, attachments []string, quickReples []string, contact *flows.ContactReference) *BroadcastCreatedEvent {
-	event := BroadcastCreatedEvent{
-		BaseEvent:    NewBaseEvent(),
-		Text:         text,
-		Attachments:  attachments,
-		QuickReplies: quickReples,
-		Contacts:     []*flows.ContactReference{contact},
-	}
-	return &event
-}
-
 // NewBroadcastCreatedEvent creates a new outgoing msg event for the given recipients
-func NewBroadcastCreatedEvent(text string, attachments []string, quickReples []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *BroadcastCreatedEvent {
+func NewBroadcastCreatedEvent(text string, attachments []flows.Attachment, quickReples []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *BroadcastCreatedEvent {
 	event := BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(),
 		Text:         text,

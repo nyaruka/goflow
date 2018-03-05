@@ -52,6 +52,10 @@ type InputUUID UUID
 
 func (u InputUUID) String() string { return string(u) }
 
+type MsgUUID UUID
+
+func (u MsgUUID) String() string { return string(u) }
+
 // RunStatus represents the current status of the engine session
 type SessionStatus string
 
@@ -340,14 +344,3 @@ type Channel interface {
 	Type() ChannelType
 	Reference() *ChannelReference
 }
-
-// MsgDirection is the direction of a Msg (either in or out)
-type MsgDirection string
-
-const (
-	// MsgOut represents an outgoing message
-	MsgOut MsgDirection = "O"
-
-	// MsgIn represents an incoming message
-	MsgIn MsgDirection = "I"
-)

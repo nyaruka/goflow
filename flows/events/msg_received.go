@@ -1,8 +1,6 @@
 package events
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/inputs"
 )
@@ -11,7 +9,7 @@ import (
 const TypeMsgReceived string = "msg_received"
 
 // MsgReceivedEvent events are used for starting flows or resuming flows which are waiting for a message.
-// They represent an MO message for a contact.
+// They represent an incoming message for a contact.
 //
 // ```
 //   {
@@ -20,7 +18,6 @@ const TypeMsgReceived string = "msg_received"
 //     "msg": {
 //       "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
 //       "channel": {"uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf", "name": "Twilio"},
-//       "created_on": "2006-01-02T15:04:04.454789Z",
 //       "urn": "tel:+12065551212",
 //       "text": "hi there",
 //       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
@@ -31,17 +28,14 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	Msg json.RawMessage `json:"msg" validate:"required"`
+	Msg flows.MsgIn `json:"msg" validate:"required,dive"`
 }
 
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, URN and text
-func NewMsgReceivedEvent(msg *inputs.MsgInput) *MsgReceivedEvent {
-	// these events are only generated in tests
-	msgBytes, _ := json.Marshal(msg)
-
+func NewMsgReceivedEvent(msg *flows.MsgIn) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
 		BaseEvent: NewBaseEvent(),
-		Msg:       msgBytes,
+		Msg:       *msg,
 	}
 }
 
@@ -50,13 +44,18 @@ func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 
 // Apply applies this event to the given run
 func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
-	msgInput, err := inputs.ReadMsgInput(run.Session(), e.Msg)
-	if err != nil {
-		return err
+	var channel flows.Channel
+	var err error
+	if e.Msg.Channel() != nil {
+		channel, err = run.Session().Assets().GetChannel(e.Msg.Channel().UUID)
+		if err != nil {
+			return err
+		}
 	}
 
 	// update this run's input
-	run.SetInput(msgInput)
+	input := inputs.NewMsgInput(flows.InputUUID(e.Msg.UUID()), channel, e.CreatedOn(), e.Msg.URN(), e.Msg.Text(), e.Msg.Attachments())
+	run.SetInput(input)
 	run.ResetExpiration(nil)
 	return nil
 }

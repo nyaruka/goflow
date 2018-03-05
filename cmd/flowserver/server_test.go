@@ -11,16 +11,14 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/suite"
-
-	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/utils"
 )
 
 var testStructurallyInvalidFlowAssets = `[
@@ -355,7 +353,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"field 'events' must have a minimum of 1 items"})
 
 	// try to resume this completed session
-	msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), urns.NewTelegramURN(1234567, "bob"), "hello", nil)
+	msg := flows.NewMsgIn(flows.MsgUUID(uuid.NewV4().String()), urns.NewTelegramURN(1234567, "bob"), nil, "hello", []flows.Attachment{})
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))
