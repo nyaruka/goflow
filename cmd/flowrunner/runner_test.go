@@ -170,26 +170,25 @@ func newTestHTTPServer() *httptest.Server {
 	return server
 }
 
-type FixedUUIDGenerator struct {
+type fixedUUIDGenerator struct {
 	uuids []string
 	index int
 }
 
-func FixedUUIDGeneratorFromFile(path string) (*FixedUUIDGenerator, error) {
+func fixedUUIDGeneratorFromFile(path string) (*fixedUUIDGenerator, error) {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
-
-	return &FixedUUIDGenerator{
+	return &fixedUUIDGenerator{
 		uuids: strings.Split(string(content), "\n"),
 		index: 0,
 	}, nil
 }
 
-func (g *FixedUUIDGenerator) Next() string {
+func (g *fixedUUIDGenerator) Next() string {
 	if g.index >= len(g.uuids) {
-		panic("Fixed UUID list for testing exhausted")
+		panic("Fixed UUID list for testing exhausted. Add more!")
 	}
 
 	u := g.uuids[g.index]
@@ -202,7 +201,7 @@ func TestFlows(t *testing.T) {
 	server.Start()
 	defer server.Close()
 
-	uuids, err := FixedUUIDGeneratorFromFile("testdata/uuids.list")
+	uuids, err := fixedUUIDGeneratorFromFile("testdata/uuids.list")
 	require.NoError(t, err)
 
 	utils.SetUUIDGenerator(uuids)

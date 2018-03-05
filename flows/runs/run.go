@@ -329,16 +329,16 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID     flows.RunUUID  `json:"uuid"`
-	FlowUUID flows.FlowUUID `json:"flow_uuid"`
-	Path     []*step        `json:"path"`
+	UUID     flows.RunUUID  `json:"uuid" validate:"required,uuid4"`
+	FlowUUID flows.FlowUUID `json:"flow_uuid" validate:"required,uuid4"`
+	Path     []*step        `json:"path" validate:"dive"`
 
 	Status     flows.RunStatus `json:"status"`
-	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty"`
+	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
 
-	Results flows.Results          `json:"results,omitempty"`
-	Input   *utils.TypedEnvelope   `json:"input,omitempty"`
-	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
+	Results flows.Results          `json:"results,omitempty" validate:"omitempty,dive"`
+	Input   *utils.TypedEnvelope   `json:"input,omitempty" validate:"omitempty,dive"`
+	Webhook *utils.RequestResponse `json:"webhook,omitempty" validate:"omitempty,dive"`
 
 	CreatedOn time.Time  `json:"created_on"`
 	ExpiresOn *time.Time `json:"expires_on"`
