@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
-	"github.com/shopspring/decimal"
 )
 
 // noStr is used to blow up our type conversions in the tests below
@@ -75,16 +74,16 @@ var testTests = []struct {
 	{"has_beginning", []interface{}{"but this world", "this world"}, false, nil, false},
 	{"has_beginning", []interface{}{"one", "two", "three"}, false, nil, true},
 
-	{"has_number", []interface{}{"the number 10"}, true, decimal.NewFromFloat(10), false},
-	{"has_number", []interface{}{"the number 1o"}, true, decimal.NewFromFloat(10), false},
-	{"has_number", []interface{}{"the number lo"}, true, decimal.NewFromFloat(10), false},
-	{"has_number", []interface{}{"another is -12.51"}, true, decimal.NewFromFloat(-12.51), false},
-	{"has_number", []interface{}{".51"}, true, decimal.NewFromFloat(.51), false},
+	{"has_number", []interface{}{"the number 10"}, true, newDecimal("10"), false},
+	{"has_number", []interface{}{"the number 1o"}, true, newDecimal("10"), false},
+	{"has_number", []interface{}{"the number lo"}, true, newDecimal("10"), false},
+	{"has_number", []interface{}{"another is -12.51"}, true, newDecimal("-12.51"), false},
+	{"has_number", []interface{}{".51"}, true, newDecimal(".51"), false},
 	{"has_number", []interface{}{"nothing here"}, false, nil, false},
 	{"has_number", []interface{}{"one", "two", "three"}, false, nil, true},
 
-	{"has_number_lt", []interface{}{"the number 10", "11"}, true, decimal.NewFromFloat(10), false},
-	{"has_number_lt", []interface{}{"another is -12.51", "12"}, true, decimal.NewFromFloat(-12.51), false},
+	{"has_number_lt", []interface{}{"the number 10", "11"}, true, newDecimal("10"), false},
+	{"has_number_lt", []interface{}{"another is -12.51", "12"}, true, newDecimal("-12.51"), false},
 	{"has_number_lt", []interface{}{"nothing here", "12"}, false, nil, false},
 	{"has_number_lt", []interface{}{"too big 15", "12"}, false, nil, false},
 	{"has_number_lt", []interface{}{"one", "two", "three"}, false, nil, true},
@@ -92,32 +91,32 @@ var testTests = []struct {
 	{"has_number_lt", []interface{}{"but foo", noStr{}}, false, nil, true},
 	{"has_number_lt", []interface{}{noStr{}, "but foo"}, false, nil, true},
 
-	{"has_number_lte", []interface{}{"the number 10", "11"}, true, decimal.NewFromFloat(10), false},
-	{"has_number_lte", []interface{}{"another is -12.51", "12"}, true, decimal.NewFromFloat(-12.51), false},
+	{"has_number_lte", []interface{}{"the number 10", "11"}, true, newDecimal("10"), false},
+	{"has_number_lte", []interface{}{"another is -12.51", "12"}, true, newDecimal("-12.51"), false},
 	{"has_number_lte", []interface{}{"nothing here", "12"}, false, nil, false},
 	{"has_number_lte", []interface{}{"too big 15", "12"}, false, nil, false},
 	{"has_number_lte", []interface{}{"one", "two", "three"}, false, nil, true},
 
-	{"has_number_eq", []interface{}{"the number 10", "10"}, true, decimal.NewFromFloat(10), false},
-	{"has_number_eq", []interface{}{"another is -12.51", "-12.51"}, true, decimal.NewFromFloat(-12.51), false},
+	{"has_number_eq", []interface{}{"the number 10", "10"}, true, newDecimal("10"), false},
+	{"has_number_eq", []interface{}{"another is -12.51", "-12.51"}, true, newDecimal("-12.51"), false},
 	{"has_number_eq", []interface{}{"nothing here", "12"}, false, nil, false},
 	{"has_number_eq", []interface{}{"wrong .51", ".61"}, false, nil, false},
 	{"has_number_eq", []interface{}{"one", "two", "three"}, false, nil, true},
 
-	{"has_number_gte", []interface{}{"the number 10", "9"}, true, decimal.NewFromFloat(10), false},
-	{"has_number_gte", []interface{}{"another is -12.51", "-13"}, true, decimal.NewFromFloat(-12.51), false},
+	{"has_number_gte", []interface{}{"the number 10", "9"}, true, newDecimal("10"), false},
+	{"has_number_gte", []interface{}{"another is -12.51", "-13"}, true, newDecimal("-12.51"), false},
 	{"has_number_gte", []interface{}{"nothing here", "12"}, false, nil, false},
 	{"has_number_gte", []interface{}{"too small -12", "-11"}, false, nil, false},
 	{"has_number_gte", []interface{}{"one", "two", "three"}, false, nil, true},
 
-	{"has_number_gt", []interface{}{"the number 10", "9"}, true, decimal.NewFromFloat(10), false},
-	{"has_number_gt", []interface{}{"another is -12.51", "-13"}, true, decimal.NewFromFloat(-12.51), false},
+	{"has_number_gt", []interface{}{"the number 10", "9"}, true, newDecimal("10"), false},
+	{"has_number_gt", []interface{}{"another is -12.51", "-13"}, true, newDecimal("-12.51"), false},
 	{"has_number_gt", []interface{}{"nothing here", "12"}, false, nil, false},
 	{"has_number_gt", []interface{}{"not great -12.51", "-12.51"}, false, nil, false},
 	{"has_number_gt", []interface{}{"one", "two", "three"}, false, nil, true},
 
-	{"has_number_between", []interface{}{"the number 10", "8", "12"}, true, decimal.NewFromFloat(10), false},
-	{"has_number_between", []interface{}{"another is -12.51", "-12.51", "-10"}, true, decimal.NewFromFloat(-12.51), false},
+	{"has_number_between", []interface{}{"the number 10", "8", "12"}, true, newDecimal("10"), false},
+	{"has_number_between", []interface{}{"another is -12.51", "-12.51", "-10"}, true, newDecimal("-12.51"), false},
 	{"has_number_between", []interface{}{"nothing here", "10", "15"}, false, nil, false},
 	{"has_number_between", []interface{}{"one", "two"}, false, nil, true},
 

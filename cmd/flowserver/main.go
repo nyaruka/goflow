@@ -16,7 +16,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/pressly/chi/middleware"
+	"github.com/go-chi/chi/middleware"
 	"github.com/pressly/lg"
 	"github.com/sirupsen/logrus"
 
@@ -27,9 +27,7 @@ import (
 var version = "Dev"
 
 func main() {
-	m := NewConfigWithPath("flowserver.toml")
-	config := new(Config)
-	m.MustLoad(config)
+	config := NewConfigWithPath("flowserver.toml")
 
 	// if we have a custom version, use it
 	if version != "Dev" {

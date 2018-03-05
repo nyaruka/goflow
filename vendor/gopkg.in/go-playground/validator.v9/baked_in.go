@@ -1,25 +1,41 @@
 package validator
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 )
 
-// Func accepts all values needed for file and cross field validation
-// fl            = FieldLevel validation helper
-// field         = field value for validation
-// fieldType     = fields
-// param         = parameter used in validation i.e. gt=0 param would be 0
+// Func accepts a FieldLevel interface for all validation needs. The return
+// value should be true when validation succeeds.
 type Func func(fl FieldLevel) bool
+
+// FuncCtx accepts a context.Context and FieldLevel interface for all
+// validation needs. The return value should be true when validation succeeds.
+type FuncCtx func(ctx context.Context, fl FieldLevel) bool
+
+// wrapFunc wraps noramal Func makes it compatible with FuncCtx
+func wrapFunc(fn Func) FuncCtx {
+	if fn == nil {
+		return nil // be sure not to wrap a bad function.
+	}
+	return func(ctx context.Context, fl FieldLevel) bool {
+		return fn(fl)
+	}
+}
 
 var (
 	restrictedTags = map[string]struct{}{
 		diveTag:           {},
+		keysTag:           {},
+		endKeysTag:        {},
 		structOnlyTag:     {},
 		omitempty:         {},
 		skipValidationTag: {},
@@ -27,6 +43,7 @@ var (
 		utf8Pipe:          {},
 		noStructLevelTag:  {},
 		requiredTag:       {},
+		isdefault:         {},
 	}
 
 	// BakedInAliasValidators is a default mapping of a single validation tag that
@@ -40,83 +57,148 @@ var (
 	// you can add, remove or even replace items to suite your needs,
 	// or even disregard and use your own map if so desired.
 	bakedInValidators = map[string]Func{
-		"required":        hasValue,
-		"len":             hasLengthOf,
-		"min":             hasMinOf,
-		"max":             hasMaxOf,
-		"eq":              isEq,
-		"ne":              isNe,
-		"lt":              isLt,
-		"lte":             isLte,
-		"gt":              isGt,
-		"gte":             isGte,
-		"eqfield":         isEqField,
-		"eqcsfield":       isEqCrossStructField,
-		"necsfield":       isNeCrossStructField,
-		"gtcsfield":       isGtCrossStructField,
-		"gtecsfield":      isGteCrossStructField,
-		"ltcsfield":       isLtCrossStructField,
-		"ltecsfield":      isLteCrossStructField,
-		"nefield":         isNeField,
-		"gtefield":        isGteField,
-		"gtfield":         isGtField,
-		"ltefield":        isLteField,
-		"ltfield":         isLtField,
-		"alpha":           isAlpha,
-		"alphanum":        isAlphanum,
-		"alphaunicode":    isAlphaUnicode,
-		"alphanumunicode": isAlphanumUnicode,
-		"numeric":         isNumeric,
-		"number":          isNumber,
-		"hexadecimal":     isHexadecimal,
-		"hexcolor":        isHEXColor,
-		"rgb":             isRGB,
-		"rgba":            isRGBA,
-		"hsl":             isHSL,
-		"hsla":            isHSLA,
-		"email":           isEmail,
-		"url":             isURL,
-		"uri":             isURI,
-		"base64":          isBase64,
-		"contains":        contains,
-		"containsany":     containsAny,
-		"containsrune":    containsRune,
-		"excludes":        excludes,
-		"excludesall":     excludesAll,
-		"excludesrune":    excludesRune,
-		"isbn":            isISBN,
-		"isbn10":          isISBN10,
-		"isbn13":          isISBN13,
-		"uuid":            isUUID,
-		"uuid3":           isUUID3,
-		"uuid4":           isUUID4,
-		"uuid5":           isUUID5,
-		"ascii":           isASCII,
-		"printascii":      isPrintableASCII,
-		"multibyte":       hasMultiByteCharacter,
-		"datauri":         isDataURI,
-		"latitude":        isLatitude,
-		"longitude":       isLongitude,
-		"ssn":             isSSN,
-		"ipv4":            isIPv4,
-		"ipv6":            isIPv6,
-		"ip":              isIP,
-		"cidrv4":          isCIDRv4,
-		"cidrv6":          isCIDRv6,
-		"cidr":            isCIDR,
-		"tcp4_addr":       isTCP4AddrResolvable,
-		"tcp6_addr":       isTCP6AddrResolvable,
-		"tcp_addr":        isTCPAddrResolvable,
-		"udp4_addr":       isUDP4AddrResolvable,
-		"udp6_addr":       isUDP6AddrResolvable,
-		"udp_addr":        isUDPAddrResolvable,
-		"ip4_addr":        isIP4AddrResolvable,
-		"ip6_addr":        isIP6AddrResolvable,
-		"ip_addr":         isIPAddrResolvable,
-		"unix_addr":       isUnixAddrResolvable,
-		"mac":             isMAC,
+		"required":         hasValue,
+		"isdefault":        isDefault,
+		"len":              hasLengthOf,
+		"min":              hasMinOf,
+		"max":              hasMaxOf,
+		"eq":               isEq,
+		"ne":               isNe,
+		"lt":               isLt,
+		"lte":              isLte,
+		"gt":               isGt,
+		"gte":              isGte,
+		"eqfield":          isEqField,
+		"eqcsfield":        isEqCrossStructField,
+		"necsfield":        isNeCrossStructField,
+		"gtcsfield":        isGtCrossStructField,
+		"gtecsfield":       isGteCrossStructField,
+		"ltcsfield":        isLtCrossStructField,
+		"ltecsfield":       isLteCrossStructField,
+		"nefield":          isNeField,
+		"gtefield":         isGteField,
+		"gtfield":          isGtField,
+		"ltefield":         isLteField,
+		"ltfield":          isLtField,
+		"alpha":            isAlpha,
+		"alphanum":         isAlphanum,
+		"alphaunicode":     isAlphaUnicode,
+		"alphanumunicode":  isAlphanumUnicode,
+		"numeric":          isNumeric,
+		"number":           isNumber,
+		"hexadecimal":      isHexadecimal,
+		"hexcolor":         isHEXColor,
+		"rgb":              isRGB,
+		"rgba":             isRGBA,
+		"hsl":              isHSL,
+		"hsla":             isHSLA,
+		"email":            isEmail,
+		"url":              isURL,
+		"uri":              isURI,
+		"base64":           isBase64,
+		"contains":         contains,
+		"containsany":      containsAny,
+		"containsrune":     containsRune,
+		"excludes":         excludes,
+		"excludesall":      excludesAll,
+		"excludesrune":     excludesRune,
+		"isbn":             isISBN,
+		"isbn10":           isISBN10,
+		"isbn13":           isISBN13,
+		"uuid":             isUUID,
+		"uuid3":            isUUID3,
+		"uuid4":            isUUID4,
+		"uuid5":            isUUID5,
+		"ascii":            isASCII,
+		"printascii":       isPrintableASCII,
+		"multibyte":        hasMultiByteCharacter,
+		"datauri":          isDataURI,
+		"latitude":         isLatitude,
+		"longitude":        isLongitude,
+		"ssn":              isSSN,
+		"ipv4":             isIPv4,
+		"ipv6":             isIPv6,
+		"ip":               isIP,
+		"cidrv4":           isCIDRv4,
+		"cidrv6":           isCIDRv6,
+		"cidr":             isCIDR,
+		"tcp4_addr":        isTCP4AddrResolvable,
+		"tcp6_addr":        isTCP6AddrResolvable,
+		"tcp_addr":         isTCPAddrResolvable,
+		"udp4_addr":        isUDP4AddrResolvable,
+		"udp6_addr":        isUDP6AddrResolvable,
+		"udp_addr":         isUDPAddrResolvable,
+		"ip4_addr":         isIP4AddrResolvable,
+		"ip6_addr":         isIP6AddrResolvable,
+		"ip_addr":          isIPAddrResolvable,
+		"unix_addr":        isUnixAddrResolvable,
+		"mac":              isMAC,
+		"hostname":         isHostnameRFC952,  // RFC 952
+		"hostname_rfc1123": isHostnameRFC1123, // RFC 1123
+		"fqdn":             isFQDN,
+		"unique":           isUnique,
+		"oneof":            isOneOf,
 	}
 )
+
+var oneofValsCache = map[string][]string{}
+var oneofValsCacheRWLock = sync.RWMutex{}
+
+func parseOneOfParam2(s string) []string {
+	oneofValsCacheRWLock.RLock()
+	vals, ok := oneofValsCache[s]
+	oneofValsCacheRWLock.RUnlock()
+	if !ok {
+		oneofValsCacheRWLock.Lock()
+		vals = strings.Fields(s)
+		oneofValsCache[s] = vals
+		oneofValsCacheRWLock.Unlock()
+	}
+	return vals
+}
+
+func isOneOf(fl FieldLevel) bool {
+	vals := parseOneOfParam2(fl.Param())
+
+	field := fl.Field()
+
+	var v string
+	switch field.Kind() {
+	case reflect.String:
+		v = field.String()
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		v = strconv.FormatInt(field.Int(), 10)
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		v = strconv.FormatUint(field.Uint(), 10)
+	default:
+		panic(fmt.Sprintf("Bad field type %T", field.Interface()))
+	}
+	for i := 0; i < len(vals); i++ {
+		if vals[i] == v {
+			return true
+		}
+	}
+	return false
+}
+
+// isUnique is the validation function for validating if each array|slice element is unique
+func isUnique(fl FieldLevel) bool {
+
+	field := fl.Field()
+	v := reflect.ValueOf(struct{}{})
+
+	switch field.Kind() {
+	case reflect.Slice, reflect.Array:
+		m := reflect.MakeMap(reflect.MapOf(fl.Field().Type().Elem(), v.Type()))
+
+		for i := 0; i < field.Len(); i++ {
+			m.SetMapIndex(field.Index(i), v)
+		}
+		return field.Len() == m.Len()
+	default:
+		panic(fmt.Sprintf("Bad field type %T", field.Interface()))
+	}
+}
 
 // IsMAC is the validation function for validating if the field's value is a valid MAC address.
 func isMAC(fl FieldLevel) bool {
@@ -891,6 +973,11 @@ func isAlphaUnicode(fl FieldLevel) bool {
 	return alphaUnicodeRegex.MatchString(fl.Field().String())
 }
 
+// isDefault is the opposite of required aka hasValue
+func isDefault(fl FieldLevel) bool {
+	return !hasValue(fl)
+}
+
 // HasValue is the validation function for validating if the current field's value is not the default static value.
 func hasValue(fl FieldLevel) bool {
 
@@ -1466,4 +1553,27 @@ func isIP6Addr(fl FieldLevel) bool {
 	ip := net.ParseIP(val)
 
 	return ip != nil && ip.To4() == nil
+}
+
+func isHostnameRFC952(fl FieldLevel) bool {
+	return hostnameRegexRFC952.MatchString(fl.Field().String())
+}
+
+func isHostnameRFC1123(fl FieldLevel) bool {
+	return hostnameRegexRFC1123.MatchString(fl.Field().String())
+}
+
+func isFQDN(fl FieldLevel) bool {
+	val := fl.Field().String()
+
+	if val == "" {
+		return false
+	}
+
+	if val[len(val)-1] == '.' {
+		val = val[0 : len(val)-1]
+	}
+
+	return strings.ContainsAny(val, ".") &&
+		hostnameRegexRFC952.MatchString(val)
 }

@@ -228,6 +228,14 @@ func (r *Row) Columns() ([]string, error) {
 	return r.rows.Columns()
 }
 
+// ColumnTypes returns the underlying sql.Rows.ColumnTypes(), or the deferred error
+func (r *Row) ColumnTypes() ([]*sql.ColumnType, error) {
+	if r.err != nil {
+		return []*sql.ColumnType{}, r.err
+	}
+	return r.rows.ColumnTypes()
+}
+
 // Err returns the error encountered while scanning.
 func (r *Row) Err() error {
 	return r.err
@@ -627,10 +635,14 @@ func (r *Rows) StructScan(dest interface{}) error {
 func Connect(driverName, dataSourceName string) (*DB, error) {
 	db, err := Open(driverName, dataSourceName)
 	if err != nil {
-		return db, err
+		return nil, err
 	}
 	err = db.Ping()
-	return db, err
+	if err != nil {
+		db.Close()
+		return nil, err
+	}
+	return db, nil
 }
 
 // MustConnect connects to a database and panics on error.
