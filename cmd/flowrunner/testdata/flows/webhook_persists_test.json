@@ -34,7 +34,7 @@
                         "text": "This is the first message.",
                         "type": "broadcast_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
                 },
                 {
                     "action_uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
@@ -47,7 +47,7 @@
                         "type": "webhook_called",
                         "url": "http://127.0.0.1:49999/?cmd=success"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
                 },
                 {
                     "action_uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
@@ -62,14 +62,14 @@
                         "text": "The status is true. Send something",
                         "type": "broadcast_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
                 },
                 {
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
                 }
             ],
             "session": {
@@ -125,7 +125,7 @@
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e7cd9720-9f37-4862-9e9e-007414a04762",
-                                "uuid": ""
+                                "uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -143,7 +143,7 @@
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "be37f70c-e02a-4a67-9ff2-07609e86bbeb",
-                                "uuid": ""
+                                "uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -163,7 +163,7 @@
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "186ff11c-61ec-456c-8e28-ec59fa2fb523",
-                                "uuid": ""
+                                "uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -174,11 +174,11 @@
                                     }
                                 ],
                                 "node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                                "uuid": ""
+                                "uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "",
+                        "uuid": "bdd9ec65-4d69-4812-9c6b-e0142579da71",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -245,7 +245,7 @@
                         "text": "The status is now true",
                         "type": "broadcast_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "7d54f4b2-db3e-4e68-a3c1-d4ec8466418f"
                 }
             ],
             "session": {
@@ -312,7 +312,7 @@
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e7cd9720-9f37-4862-9e9e-007414a04762",
-                                "uuid": ""
+                                "uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -330,7 +330,7 @@
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "be37f70c-e02a-4a67-9ff2-07609e86bbeb",
-                                "uuid": ""
+                                "uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -350,7 +350,7 @@
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "186ff11c-61ec-456c-8e28-ec59fa2fb523",
-                                "uuid": ""
+                                "uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -377,7 +377,7 @@
                                 "exit_uuid": "dd0d800b-97ce-418f-9eb7-f0985df89f08",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                                "uuid": ""
+                                "uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -397,11 +397,11 @@
                                 "exit_uuid": "accf4276-f719-4664-b0b1-4f18c0184f56",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "9bd027cd-ae88-4906-b3ea-c003f30d8db5",
-                                "uuid": ""
+                                "uuid": "7d54f4b2-db3e-4e68-a3c1-d4ec8466418f"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "",
+                        "uuid": "bdd9ec65-4d69-4812-9c6b-e0142579da71",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
