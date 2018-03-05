@@ -6,8 +6,8 @@ import "github.com/nyaruka/ezconf"
 type Config struct {
 	Port             int    `help:"the port we will run on"`
 	Static           string `help:""`
-	AssetCacheSize   int64  `help:"the size of our asset cache"`
-	AssetCachePrune  int    `help:"when to prune our asset cache"`
+	AssetCacheSize   int64  `help:"the maximum size of our asset cache"`
+	AssetCachePrune  int    `help:"the number of assets to prune when we reach our max size"`
 	AssetServerToken string `help:"the token to use when authentication to the asset server"`
 	Version          string `help:"the version to use in request and response headers"`
 }

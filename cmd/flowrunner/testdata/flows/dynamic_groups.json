@@ -13,13 +13,19 @@
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
                             "type": "save_contact_field",
-                            "field": {"key": "gender", "label": "Gender"},
+                            "field": {
+                                "key": "gender",
+                                "label": "Gender"
+                            },
                             "value": "MALE"
                         },
                         {
                             "uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
                             "type": "save_contact_field",
-                            "field": {"key": "age", "label": "Age"},
+                            "field": {
+                                "key": "age",
+                                "label": "Age"
+                            },
                             "value": "64"
                         },
                         {
@@ -41,7 +47,10 @@
                         {
                             "uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
                             "type": "save_contact_field",
-                            "field": {"key": "age", "label": "Age"},
+                            "field": {
+                                "key": "age",
+                                "label": "Age"
+                            },
                             "value": "17"
                         },
                         {

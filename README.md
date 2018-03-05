@@ -41,3 +41,9 @@ If you've made changes to the flow server response format, you should regenerate
 ```
 % go test github.com/nyaruka/goflow/cmd/flowrunner -write
 ```
+
+If you've made changes to the flow server static files, you should regenerate the statik module with:
+
+```
+% go generate github.com/nyaruka/goflow/cmd/flowserver
+```

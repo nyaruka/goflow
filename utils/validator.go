@@ -86,6 +86,8 @@ func validate(obj interface{}, objName string) error {
 			problem = fmt.Sprintf("must have a maximum of %s items", fieldErr.Param())
 		case "mutually_exclusive":
 			problem = fmt.Sprintf("is mutually exclusive with '%s'", fieldErr.Param())
+		case "http_method":
+			problem = "is not a valid HTTP method"
 		default:
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}

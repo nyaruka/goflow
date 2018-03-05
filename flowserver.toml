@@ -10,12 +10,12 @@
 #-------------------------------------------------------------------------------------
 
 # Which port to listen on
-Port = 8080
+port = 8800
 
-# Directory where static content is served from
-Static = ""
+# directory where static content is served from
+static = ""
 
-# Asset cache settings - how many items it can hold and how many to prune when it reaches that size
-AssetCacheSize = 1000
-AssetCachePrune = 100
-AssetServerToken = "missing_auth_token"
+# asset cache settings - how many items it can hold and how many to prune when it reaches that size
+asset_cache_size = 1000
+asset_cache_prune = 100
+asset_server_token = "missing_auth_token"

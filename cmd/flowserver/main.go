@@ -41,7 +41,7 @@ func main() {
 	flowServer := NewFlowServer(config, logger)
 	flowServer.Start()
 
-	logrus.WithField("comp", "server").WithField("port", "8080").WithField("version", version).Info("listening")
+	logrus.WithField("comp", "server").WithField("port", config.Port).WithField("version", version).Info("listening")
 
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)

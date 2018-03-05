@@ -29,7 +29,7 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow flows.Flow, triggeredOn time.Time) flows.Trigger {
+func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow flows.Flow, params utils.JSONFragment, triggeredOn time.Time) flows.Trigger {
 	return &ManualTrigger{baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn}}
 }
 

@@ -2,11 +2,11 @@ package engine
 
 import (
 	"encoding/json"
-	"github.com/nyaruka/goflow/flows"
 	"io/ioutil"
 	"reflect"
 	"testing"
 
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/stretchr/testify/assert"
 )

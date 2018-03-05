@@ -1,725 +1,725 @@
 {
-  "caller_events": [
-    [],
-    [
-      {
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg": {
-          "channel": {
-            "name": "Nexmo",
-            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-          },
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "text": "I like blue!",
-          "urn": "tel:+12065551212",
-          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-        },
-        "type": "msg_received"
-      }
+    "caller_events": [
+        [],
+        [
+            {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "msg": {
+                    "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "text": "I like blue!",
+                    "urn": "tel:+12065551212",
+                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                },
+                "type": "msg_received"
+            }
+        ],
+        [
+            {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "msg": {
+                    "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "text": "Coke",
+                    "urn": "tel:+12065551212",
+                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                },
+                "type": "msg_received"
+            }
+        ]
     ],
-    [
-      {
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg": {
-          "channel": {
-            "name": "Nexmo",
-            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-          },
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "text": "Coke",
-          "urn": "tel:+12065551212",
-          "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-        },
-        "type": "msg_received"
-      }
-    ]
-  ],
-  "outputs": [
-    {
-      "log": [
+    "outputs": [
         {
-          "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
-          "event": {
-            "contacts": [
-              {
-                "name": "Ben Haggerty",
-                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-              }
+            "log": [
+                {
+                    "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                    "event": {
+                        "contacts": [
+                            {
+                                "name": "Ben Haggerty",
+                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                            }
+                        ],
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                        "type": "broadcast_created"
+                    },
+                    "step_uuid": ""
+                },
+                {
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "type": "msg_wait"
+                    },
+                    "step_uuid": ""
+                }
             ],
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-            "type": "broadcast_created"
-          },
-          "step_uuid": ""
-        },
-        {
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "type": "msg_wait"
-          },
-          "step_uuid": ""
-        }
-      ],
-      "session": {
-        "contact": {
-          "fields": {
-            "first_name": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Ben"
-            },
-            "state": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            }
-          },
-          "language": "eng",
-          "name": "Ben Haggerty",
-          "timezone": "America/Guayaquil",
-          "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
-          ],
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
-        "environment": {
-          "date_format": "yyyy-MM-dd",
-          "languages": [],
-          "time_format": "hh:mm",
-          "timezone": "America/Los_Angeles"
-        },
-        "runs": [
-          {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-            "path": [
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Ben"
+                        },
+                        "state": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Azuay"
+                        }
+                    },
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
                     ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                    "type": "broadcast_created"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  }
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "contacts": [
+                                            {
+                                                "name": "Ben Haggerty",
+                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                            }
+                                        ],
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                        "type": "broadcast_created"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    }
+                                ],
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": ""
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": ""
+                    }
                 ],
-                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "uuid": ""
-              }
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Ben"
+                            },
+                            "state": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Azuay"
+                            }
+                        },
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "date_format": "yyyy-MM-dd",
+                        "languages": [],
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "U-Report Registration Flow",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                },
+                "wait": {
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "log": [
+                {
+                    "event": {
+                        "category": "Blue",
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "input": "I like blue!",
+                        "name": "Favorite Color",
+                        "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                        "type": "run_result_changed",
+                        "value": "blue"
+                    },
+                    "step_uuid": ""
+                },
+                {
+                    "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "property": "language",
+                        "type": "contact_property_changed",
+                        "value": "fra"
+                    },
+                    "step_uuid": ""
+                },
+                {
+                    "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
+                    "event": {
+                        "contacts": [
+                            {
+                                "name": "Ben Haggerty",
+                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                            }
+                        ],
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                        "type": "broadcast_created"
+                    },
+                    "step_uuid": ""
+                },
+                {
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "type": "msg_wait"
+                    },
+                    "step_uuid": ""
+                }
             ],
-            "status": "waiting",
-            "uuid": ""
-          }
-        ],
-        "status": "waiting",
-        "trigger": {
-          "contact": {
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Ben"
+                        },
+                        "state": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Azuay"
+                        }
+                    },
+                    "language": "fra",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                        "input": {
+                            "channel": {
+                                "name": "Twilio Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "text": "I like blue!",
+                            "type": "msg",
+                            "urn": "tel:+12065551212",
+                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                        },
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "contacts": [
+                                            {
+                                                "name": "Ben Haggerty",
+                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                            }
+                                        ],
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                        "type": "broadcast_created"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Nexmo",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                            "text": "I like blue!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                        },
+                                        "type": "msg_received"
+                                    },
+                                    {
+                                        "category": "Blue",
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "input": "I like blue!",
+                                        "name": "Favorite Color",
+                                        "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                        "type": "run_result_changed",
+                                        "value": "blue"
+                                    }
+                                ],
+                                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": ""
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "property": "language",
+                                        "type": "contact_property_changed",
+                                        "value": "fra"
+                                    },
+                                    {
+                                        "contacts": [
+                                            {
+                                                "name": "Ben Haggerty",
+                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                            }
+                                        ],
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                        "type": "broadcast_created"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    }
+                                ],
+                                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                "uuid": ""
+                            }
+                        ],
+                        "results": {
+                            "favorite_color": {
+                                "category": "Blue",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "I like blue!",
+                                "name": "Favorite Color",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "value": "blue"
+                            }
+                        },
+                        "status": "waiting",
+                        "uuid": ""
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Ben"
+                            },
+                            "state": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Azuay"
+                            }
+                        },
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "date_format": "yyyy-MM-dd",
+                        "languages": [],
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "U-Report Registration Flow",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                },
+                "wait": {
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "log": [
+                {
+                    "event": {
+                        "category": "Coke",
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "input": "Coke",
+                        "name": "Soda",
+                        "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                        "type": "run_result_changed",
+                        "value": "Coke"
+                    },
+                    "step_uuid": ""
+                },
+                {
+                    "action_uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
+                        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+                        "status": "success",
+                        "status_code": 200,
+                        "type": "webhook_called",
+                        "url": "http://127.0.0.1:49999/?cmd=success"
+                    },
+                    "step_uuid": ""
+                },
+                {
+                    "action_uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
+                    "event": {
+                        "contacts": [
+                            {
+                                "name": "Ben Haggerty",
+                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                            }
+                        ],
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "text": "Parfait, vous avez finis et tu aimes Coke",
+                        "type": "broadcast_created"
+                    },
+                    "step_uuid": ""
+                }
+            ],
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Ben"
+                        },
+                        "state": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Azuay"
+                        }
+                    },
+                    "language": "fra",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+                        "input": {
+                            "channel": {
+                                "name": "Twilio Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "text": "Coke",
+                            "type": "msg",
+                            "urn": "tel:+12065551212",
+                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                        },
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "contacts": [
+                                            {
+                                                "name": "Ben Haggerty",
+                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                            }
+                                        ],
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                        "type": "broadcast_created"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Nexmo",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                            "text": "I like blue!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                        },
+                                        "type": "msg_received"
+                                    },
+                                    {
+                                        "category": "Blue",
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "input": "I like blue!",
+                                        "name": "Favorite Color",
+                                        "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                        "type": "run_result_changed",
+                                        "value": "blue"
+                                    }
+                                ],
+                                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": ""
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "property": "language",
+                                        "type": "contact_property_changed",
+                                        "value": "fra"
+                                    },
+                                    {
+                                        "contacts": [
+                                            {
+                                                "name": "Ben Haggerty",
+                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                            }
+                                        ],
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                        "type": "broadcast_created"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Nexmo",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                            "text": "Coke",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                        },
+                                        "type": "msg_received"
+                                    },
+                                    {
+                                        "category": "Coke",
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "input": "Coke",
+                                        "name": "Soda",
+                                        "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                        "type": "run_result_changed",
+                                        "value": "Coke"
+                                    }
+                                ],
+                                "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                "uuid": ""
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
+                                        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+                                        "status": "success",
+                                        "status_code": 200,
+                                        "type": "webhook_called",
+                                        "url": "http://127.0.0.1:49999/?cmd=success"
+                                    },
+                                    {
+                                        "contacts": [
+                                            {
+                                                "name": "Ben Haggerty",
+                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                            }
+                                        ],
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "text": "Parfait, vous avez finis et tu aimes Coke",
+                                        "type": "broadcast_created"
+                                    }
+                                ],
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
+                                "uuid": ""
+                            }
+                        ],
+                        "results": {
+                            "favorite_color": {
+                                "category": "Blue",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "I like blue!",
+                                "name": "Favorite Color",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "value": "blue"
+                            },
+                            "soda": {
+                                "category": "Coke",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "Coke",
+                                "name": "Soda",
+                                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                "value": "Coke"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "",
+                        "webhook": {
+                            "body": "{ \"ok\": \"true\" }",
+                            "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
+                            "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+                            "status": "success",
+                            "status_code": 200,
+                            "url": "http://127.0.0.1:49999/?cmd=success"
+                        }
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Ben"
+                            },
+                            "state": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Azuay"
+                            }
+                        },
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "date_format": "yyyy-MM-dd",
+                        "languages": [],
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "U-Report Registration Flow",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                },
+                "wait": {
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "msg"
+                }
+            }
+        }
+    ],
+    "trigger": {
+        "contact": {
             "fields": {
-              "first_name": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
-              },
-              "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-              }
+                "first_name": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Ben"
+                },
+                "state": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Azuay"
+                }
             },
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",
             "urns": [
-              "tel:+12065551212",
-              "facebook:1122334455667788",
-              "mailto:ben@macklemore"
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-          },
-          "environment": {
-            "date_format": "yyyy-MM-dd",
-            "languages": [],
-            "time_format": "hh:mm",
-            "timezone": "America/Los_Angeles"
-          },
-          "flow": {
-            "name": "U-Report Registration Flow",
-            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
-          },
-          "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "manual"
-        },
-        "wait": {
-          "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "type": "msg"
-        }
-      }
-    },
-    {
-      "log": [
-        {
-          "event": {
-            "category": "Blue",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "input": "I like blue!",
-            "name": "Favorite Color",
-            "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-            "type": "run_result_changed",
-            "value": "blue"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "property": "language",
-            "type": "contact_property_changed",
-            "value": "fra"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
-          "event": {
-            "contacts": [
-              {
-                "name": "Ben Haggerty",
-                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-              }
-            ],
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-            "type": "broadcast_created"
-          },
-          "step_uuid": ""
-        },
-        {
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-            "type": "msg_wait"
-          },
-          "step_uuid": ""
-        }
-      ],
-      "session": {
-        "contact": {
-          "fields": {
-            "first_name": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Ben"
-            },
-            "state": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            }
-          },
-          "language": "fra",
-          "name": "Ben Haggerty",
-          "timezone": "America/Guayaquil",
-          "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
-          ],
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-          "date_format": "yyyy-MM-dd",
-          "languages": [],
-          "time_format": "hh:mm",
-          "timezone": "America/Los_Angeles"
-        },
-        "runs": [
-          {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-            "input": {
-              "channel": {
-                "name": "Twilio Channel",
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-              },
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "text": "I like blue!",
-              "type": "msg",
-              "urn": "tel:+12065551212",
-              "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-            },
-            "path": [
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                    "type": "broadcast_created"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg": {
-                      "channel": {
-                        "name": "Nexmo",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                      },
-                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                      "text": "I like blue!",
-                      "urn": "tel:+12065551212",
-                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-                    },
-                    "type": "msg_received"
-                  },
-                  {
-                    "category": "Blue",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "input": "I like blue!",
-                    "name": "Favorite Color",
-                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "type": "run_result_changed",
-                    "value": "blue"
-                  }
-                ],
-                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "uuid": ""
-              },
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "property": "language",
-                    "type": "contact_property_changed",
-                    "value": "fra"
-                  },
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                    "type": "broadcast_created"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  }
-                ],
-                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                "uuid": ""
-              }
-            ],
-            "results": {
-              "favorite_color": {
-                "category": "Blue",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "I like blue!",
-                "name": "Favorite Color",
-                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "value": "blue"
-              }
-            },
-            "status": "waiting",
-            "uuid": ""
-          }
-        ],
-        "status": "waiting",
-        "trigger": {
-          "contact": {
-            "fields": {
-              "first_name": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
-              },
-              "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-              }
-            },
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "timezone": "America/Guayaquil",
-            "urns": [
-              "tel:+12065551212",
-              "facebook:1122334455667788",
-              "mailto:ben@macklemore"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-          },
-          "environment": {
             "date_format": "yyyy-MM-dd",
             "languages": [],
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
-          },
-          "flow": {
-            "name": "U-Report Registration Flow",
+        },
+        "flow": {
+            "name": "Registration",
             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
-          },
-          "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "manual"
         },
-        "wait": {
-          "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "type": "msg"
-        }
-      }
-    },
-    {
-      "log": [
-        {
-          "event": {
-            "category": "Coke",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "input": "Coke",
-            "name": "Soda",
-            "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-            "type": "run_result_changed",
-            "value": "Coke"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
-            "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-            "status": "success",
-            "status_code": 200,
-            "type": "webhook_called",
-            "url": "http://127.0.0.1:49999/?cmd=success"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
-          "event": {
-            "contacts": [
-              {
-                "name": "Ben Haggerty",
-                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-              }
-            ],
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "Parfait, vous avez finis et tu aimes Coke",
-            "type": "broadcast_created"
-          },
-          "step_uuid": ""
-        }
-      ],
-      "session": {
-        "contact": {
-          "fields": {
-            "first_name": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Ben"
-            },
-            "state": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            }
-          },
-          "language": "fra",
-          "name": "Ben Haggerty",
-          "timezone": "America/Guayaquil",
-          "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
-          ],
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
-        "environment": {
-          "date_format": "yyyy-MM-dd",
-          "languages": [],
-          "time_format": "hh:mm",
-          "timezone": "America/Los_Angeles"
-        },
-        "runs": [
-          {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
-            "input": {
-              "channel": {
-                "name": "Twilio Channel",
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-              },
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "text": "Coke",
-              "type": "msg",
-              "urn": "tel:+12065551212",
-              "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-            },
-            "path": [
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                    "type": "broadcast_created"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg": {
-                      "channel": {
-                        "name": "Nexmo",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                      },
-                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                      "text": "I like blue!",
-                      "urn": "tel:+12065551212",
-                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-                    },
-                    "type": "msg_received"
-                  },
-                  {
-                    "category": "Blue",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "input": "I like blue!",
-                    "name": "Favorite Color",
-                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "type": "run_result_changed",
-                    "value": "blue"
-                  }
-                ],
-                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "uuid": ""
-              },
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "property": "language",
-                    "type": "contact_property_changed",
-                    "value": "fra"
-                  },
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                    "type": "broadcast_created"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg": {
-                      "channel": {
-                        "name": "Nexmo",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                      },
-                      "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                      "text": "Coke",
-                      "urn": "tel:+12065551212",
-                      "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-                    },
-                    "type": "msg_received"
-                  },
-                  {
-                    "category": "Coke",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "input": "Coke",
-                    "name": "Soda",
-                    "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                    "type": "run_result_changed",
-                    "value": "Coke"
-                  }
-                ],
-                "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                "uuid": ""
-              },
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
-                    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-                    "status": "success",
-                    "status_code": 200,
-                    "type": "webhook_called",
-                    "url": "http://127.0.0.1:49999/?cmd=success"
-                  },
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Parfait, vous avez finis et tu aimes Coke",
-                    "type": "broadcast_created"
-                  }
-                ],
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-                "uuid": ""
-              }
-            ],
-            "results": {
-              "favorite_color": {
-                "category": "Blue",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "I like blue!",
-                "name": "Favorite Color",
-                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "value": "blue"
-              },
-              "soda": {
-                "category": "Coke",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "Coke",
-                "name": "Soda",
-                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                "value": "Coke"
-              }
-            },
-            "status": "completed",
-            "uuid": "",
-            "webhook": {
-              "body": "{ \"ok\": \"true\" }",
-              "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
-              "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-              "status": "success",
-              "status_code": 200,
-              "url": "http://127.0.0.1:49999/?cmd=success"
-            }
-          }
-        ],
-        "status": "completed",
-        "trigger": {
-          "contact": {
-            "fields": {
-              "first_name": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
-              },
-              "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-              }
-            },
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "timezone": "America/Guayaquil",
-            "urns": [
-              "tel:+12065551212",
-              "facebook:1122334455667788",
-              "mailto:ben@macklemore"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-          },
-          "environment": {
-            "date_format": "yyyy-MM-dd",
-            "languages": [],
-            "time_format": "hh:mm",
-            "timezone": "America/Los_Angeles"
-          },
-          "flow": {
-            "name": "U-Report Registration Flow",
-            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
-          },
-          "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "manual"
-        },
-        "wait": {
-          "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-          "type": "msg"
-        }
-      }
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "type": "manual"
     }
-  ],
-  "trigger": {
-    "contact": {
-      "fields": {
-        "first_name": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "value": "Ben"
-        },
-        "state": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "value": "Azuay"
-        }
-      },
-      "language": "eng",
-      "name": "Ben Haggerty",
-      "timezone": "America/Guayaquil",
-      "urns": [
-        "tel:+12065551212",
-        "facebook:1122334455667788",
-        "mailto:ben@macklemore"
-      ],
-      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-    },
-    "environment": {
-      "date_format": "yyyy-MM-dd",
-      "languages": [],
-      "time_format": "hh:mm",
-      "timezone": "America/Los_Angeles"
-    },
-    "flow": {
-      "name": "Registration",
-      "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
-    },
-    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-    "type": "manual"
-  }
 }

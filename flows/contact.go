@@ -3,7 +3,6 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -21,6 +20,17 @@ type Contact struct {
 	groups   *GroupList
 	fields   FieldValues
 	channel  Channel
+}
+
+// NewContact returns a new contact
+func NewContact(uuid ContactUUID, name string, language utils.Language, timezone *time.Location) *Contact {
+	return &Contact{
+		uuid:     uuid,
+		name:     name,
+		language: language,
+		timezone: timezone,
+		groups:   NewGroupList([]*Group{}),
+	}
 }
 
 // Clone creates a copy of this contact
