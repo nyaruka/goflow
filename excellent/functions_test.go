@@ -234,6 +234,7 @@ var funcTests = []struct {
 	{"date", []interface{}{struct{}{}}, nil, true},
 	{"date", []interface{}{}, nil, true},
 
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z"}, "23-06-1977 15:34:00", false},
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffzzz", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffK", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
 	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "yyyy-MM-ddTHH:mm:ss.fffK", "UTC"}, "1977-06-23T15:34:00.000Z", false},
