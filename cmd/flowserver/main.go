@@ -27,9 +27,7 @@ import (
 var version = "Dev"
 
 func main() {
-	m := NewConfigWithPath("flowserver.toml")
-	config := new(FlowServerConfig)
-	m.MustLoad(config)
+	config := NewConfigWithPath("flowserver.toml")
 
 	// if we have a custom version, use it
 	if version != "Dev" {

@@ -3,15 +3,16 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inputs"
 
 	"github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
@@ -188,7 +189,7 @@ type ServerTestSuite struct {
 func (ts *ServerTestSuite) SetupSuite() {
 	ts.assetServer = engine.NewMockAssetServer()
 
-	ts.flowServer = NewFlowServer(NewTestConfig(), logrus.New())
+	ts.flowServer = NewFlowServer(NewDefaultConfig(), logrus.New())
 	ts.flowServer.Start()
 
 	// wait for server to come up
