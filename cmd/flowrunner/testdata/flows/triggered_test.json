@@ -16,7 +16,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "300a9c26-0dea-4a09-bf74-f315b15d4ebe"
                 }
             ],
             "session": {
@@ -69,11 +69,11 @@
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": ""
+                                "uuid": "300a9c26-0dea-4a09-bf74-f315b15d4ebe"
                             }
                         ],
                         "status": "completed",
-                        "uuid": ""
+                        "uuid": "e7e92ff8-4413-4672-a721-8b77a986b407"
                     }
                 ],
                 "status": "completed",

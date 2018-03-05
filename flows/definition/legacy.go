@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/satori/go.uuid"
 )
 
 // represents a decimal value which may be provided as a string or floating point value
@@ -607,7 +606,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 	var arguments []string
 	var err error
 
-	caseUUID := flows.UUID(uuid.NewV4().String())
+	caseUUID := flows.UUID(utils.UUID())
 
 	switch r.Test.Type {
 
@@ -771,12 +770,12 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	// for webhook rulesets we need to map 2 rules (success/failure) to 3 cases and exits (success/response_error/connection_error)
 	if r.Type == "webhook" {
 		connectionErrorCategory := "Connection Error"
-		connectionErrorExitUUID := flows.ExitUUID(uuid.NewV4().String())
+		connectionErrorExitUUID := flows.ExitUUID(utils.UUID())
 		connectionErrorExit := NewExit(connectionErrorExitUUID, exits[1].(*exit).destination, connectionErrorCategory)
 
 		exits = append(exits, connectionErrorExit)
 		cases = append(cases, routers.Case{
-			UUID:        flows.UUID(uuid.NewV4().String()),
+			UUID:        flows.UUID(utils.UUID()),
 			Type:        "is_string_eq",
 			Arguments:   []string{"connection_error"},
 			OmitOperand: false,
@@ -817,7 +816,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		node.actions = []flows.Action{
 			&actions.StartFlowAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.UUID())),
 				Flow:       flows.NewFlowReference(flowUUID, flowName),
 			},
 		}
@@ -840,7 +839,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		node.actions = []flows.Action{
 			&actions.WebhookAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.UUID())),
 				URL:        migratedURL,
 				Method:     config.Action,
 				Headers:    migratedHeaders,

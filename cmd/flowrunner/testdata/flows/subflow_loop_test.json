@@ -16,7 +16,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "3edf4dcf-1137-49db-a369-94961fd0fabb"
                 },
                 {
                     "action_uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
@@ -26,10 +26,10 @@
                             "name": "Child Flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "parent_run_uuid": "",
+                        "parent_run_uuid": "c9511081-7fd8-4d91-b859-f897fb14c3e4",
                         "type": "flow_triggered"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "3edf4dcf-1137-49db-a369-94961fd0fabb"
                 },
                 {
                     "action_uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
@@ -42,7 +42,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "ca69f663-b71a-40c3-952f-24fa56a39849"
                 },
                 {
                     "action_uuid": "a25014c5-aaa5-47d7-9376-429f317360f1",
@@ -52,7 +52,7 @@
                         "text": "flow loop detected, stopping execution before starting flow: 76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                         "type": "error"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "ca69f663-b71a-40c3-952f-24fa56a39849"
                 },
                 {
                     "event": {
@@ -61,7 +61,7 @@
                         "text": "child run for flow 'a8d27b94-d3d0-4a96-8074-0f162f342195' ended in error, ending execution",
                         "type": "error"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "3edf4dcf-1137-49db-a369-94961fd0fabb"
                 }
             ],
             "session": {
@@ -117,7 +117,7 @@
                                             "name": "Child Flow",
                                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                                         },
-                                        "parent_run_uuid": "",
+                                        "parent_run_uuid": "c9511081-7fd8-4d91-b859-f897fb14c3e4",
                                         "type": "flow_triggered"
                                     },
                                     {
@@ -128,18 +128,18 @@
                                     }
                                 ],
                                 "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                                "uuid": ""
+                                "uuid": "3edf4dcf-1137-49db-a369-94961fd0fabb"
                             }
                         ],
                         "status": "errored",
-                        "uuid": ""
+                        "uuid": "c9511081-7fd8-4d91-b859-f897fb14c3e4"
                     },
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
-                        "parent_uuid": "",
+                        "parent_uuid": "c9511081-7fd8-4d91-b859-f897fb14c3e4",
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -161,11 +161,11 @@
                                     }
                                 ],
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                                "uuid": ""
+                                "uuid": "ca69f663-b71a-40c3-952f-24fa56a39849"
                             }
                         ],
                         "status": "errored",
-                        "uuid": ""
+                        "uuid": "fb6f9b84-9659-4c34-aa83-559b6d93e1ac"
                     }
                 ],
                 "status": "errored",

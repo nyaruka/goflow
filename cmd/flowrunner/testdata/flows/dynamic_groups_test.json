@@ -16,7 +16,7 @@
                         "type": "contact_field_changed",
                         "value": "MALE"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 },
                 {
                     "action_uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
@@ -29,7 +29,7 @@
                         "type": "contact_field_changed",
                         "value": "64"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 },
                 {
                     "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
@@ -42,7 +42,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 },
                 {
                     "action_uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
@@ -51,7 +51,7 @@
                         "type": "contact_urn_added",
                         "urn": "tel:+250781234567"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 },
                 {
                     "action_uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
@@ -64,7 +64,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 },
                 {
                     "action_uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
@@ -77,7 +77,7 @@
                         "type": "contact_field_changed",
                         "value": "17"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 },
                 {
                     "action_uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
@@ -90,7 +90,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                 }
             ],
             "session": {
@@ -207,11 +207,11 @@
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": ""
+                                "uuid": "006bc475-9c67-4478-a82a-70a9cb823a83"
                             }
                         ],
                         "status": "completed",
-                        "uuid": ""
+                        "uuid": "6eee7f92-82e0-4cad-bd52-eea41b7fb2c3"
                     }
                 ],
                 "status": "completed",

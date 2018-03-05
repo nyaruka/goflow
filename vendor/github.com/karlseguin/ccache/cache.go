@@ -16,7 +16,6 @@ type Cache struct {
 	bucketMask  uint32
 	deletables  chan *Item
 	promotables chan *Item
-	donec       chan struct{}
 }
 
 // Create a new cache with the specified configuration
@@ -27,13 +26,15 @@ func New(config *Configuration) *Cache {
 		Configuration: config,
 		bucketMask:    uint32(config.buckets) - 1,
 		buckets:       make([]*bucket, config.buckets),
+		deletables:    make(chan *Item, config.deleteBuffer),
+		promotables:   make(chan *Item, config.promoteBuffer),
 	}
 	for i := 0; i < int(config.buckets); i++ {
 		c.buckets[i] = &bucket{
 			lookup: make(map[string]*Item),
 		}
 	}
-	c.restart()
+	go c.worker()
 	return c
 }
 
@@ -118,14 +119,6 @@ func (c *Cache) Clear() {
 // is called are likely to panic
 func (c *Cache) Stop() {
 	close(c.promotables)
-	<-c.donec
-}
-
-func (c *Cache) restart() {
-	c.deletables = make(chan *Item, c.deleteBuffer)
-	c.promotables = make(chan *Item, c.promoteBuffer)
-	c.donec = make(chan struct{})
-	go c.worker()
 }
 
 func (c *Cache) deleteItem(bucket *bucket, item *Item) {
@@ -153,8 +146,6 @@ func (c *Cache) promote(item *Item) {
 }
 
 func (c *Cache) worker() {
-	defer close(c.donec)
-
 	for {
 		select {
 		case item, ok := <-c.promotables:

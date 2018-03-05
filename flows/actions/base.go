@@ -227,7 +227,11 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 			groupRefs = append(groupRefs, groupByName.Reference())
 		} else {
 			// if that fails, assume this is a phone number, and let the caller worry about validation
-			urnList = append(urnList, urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, ""))
+			urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "")
+			if err != nil {
+				return nil, nil, nil, err
+			}
+			urnList = append(urnList, urn)
 		}
 	}
 

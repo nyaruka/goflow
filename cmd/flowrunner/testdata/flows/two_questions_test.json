@@ -46,7 +46,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "938642bc-762f-44c5-8459-3f32491fc543"
                 },
                 {
                     "event": {
@@ -54,7 +54,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "938642bc-762f-44c5-8459-3f32491fc543"
                 }
             ],
             "session": {
@@ -111,11 +111,11 @@
                                     }
                                 ],
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": ""
+                                "uuid": "938642bc-762f-44c5-8459-3f32491fc543"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": ""
+                        "uuid": "1c07cd06-e36a-4cb1-9fda-93b4d0d017e9"
                     }
                 ],
                 "status": "waiting",
@@ -172,7 +172,7 @@
                         "type": "run_result_changed",
                         "value": "blue"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "938642bc-762f-44c5-8459-3f32491fc543"
                 },
                 {
                     "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
@@ -182,7 +182,7 @@
                         "type": "contact_property_changed",
                         "value": "fra"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
                 },
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
@@ -195,7 +195,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
                 },
                 {
                     "event": {
@@ -203,7 +203,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
                 }
             ],
             "session": {
@@ -295,7 +295,7 @@
                                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": ""
+                                "uuid": "938642bc-762f-44c5-8459-3f32491fc543"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -322,7 +322,7 @@
                                     }
                                 ],
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": ""
+                                "uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
                             }
                         ],
                         "results": {
@@ -336,7 +336,7 @@
                             }
                         },
                         "status": "waiting",
-                        "uuid": ""
+                        "uuid": "1c07cd06-e36a-4cb1-9fda-93b4d0d017e9"
                     }
                 ],
                 "status": "waiting",
@@ -393,7 +393,7 @@
                         "type": "run_result_changed",
                         "value": "Coke"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
                 },
                 {
                     "action_uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
@@ -406,7 +406,7 @@
                         "type": "webhook_called",
                         "url": "http://127.0.0.1:49999/?cmd=success"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "b9353d8f-491c-4b06-a3d1-3bfa3d9000ce"
                 },
                 {
                     "action_uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
@@ -419,7 +419,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "b9353d8f-491c-4b06-a3d1-3bfa3d9000ce"
                 }
             ],
             "session": {
@@ -511,7 +511,7 @@
                                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": ""
+                                "uuid": "938642bc-762f-44c5-8459-3f32491fc543"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -562,7 +562,7 @@
                                 "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": ""
+                                "uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -588,7 +588,7 @@
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-                                "uuid": ""
+                                "uuid": "b9353d8f-491c-4b06-a3d1-3bfa3d9000ce"
                             }
                         ],
                         "results": {
@@ -610,7 +610,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "",
+                        "uuid": "1c07cd06-e36a-4cb1-9fda-93b4d0d017e9",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",

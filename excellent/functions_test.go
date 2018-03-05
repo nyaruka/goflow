@@ -13,6 +13,11 @@ import (
 var errorArg = fmt.Errorf("I am error")
 var la, _ = time.LoadLocation("America/Los_Angeles")
 
+func newDecimal(val string) decimal.Decimal {
+	dec, _ := decimal.NewFromString(val)
+	return dec
+}
+
 var funcTests = []struct {
 	name     string
 	args     []interface{}
@@ -42,47 +47,47 @@ var funcTests = []struct {
 	{"if", []interface{}{}, false, true},
 	{"if", []interface{}{struct{}{}, "10", "20"}, false, true},
 
-	{"round", []interface{}{"10.5", "0"}, decimal.NewFromFloat(11), false},
-	{"round", []interface{}{"10.5", "1"}, decimal.NewFromFloat(10.5), false},
+	{"round", []interface{}{"10.5", "0"}, newDecimal("11"), false},
+	{"round", []interface{}{"10.5", "1"}, newDecimal("10.5"), false},
 	{"round", []interface{}{"not_num", "1"}, nil, true},
 	{"round", []interface{}{"10.5", "not_num"}, nil, true},
 	{"round", []interface{}{"10.5", "-1"}, nil, true},
 	{"round", []interface{}{"10.5"}, nil, true},
 
-	{"round_up", []interface{}{"10.5"}, decimal.NewFromFloat(11), false},
-	{"round_up", []interface{}{"10.2"}, decimal.NewFromFloat(11), false},
+	{"round_up", []interface{}{"10.5"}, newDecimal("11"), false},
+	{"round_up", []interface{}{"10.2"}, newDecimal("11"), false},
 	{"round_up", []interface{}{"not_num"}, nil, true},
 	{"round_up", []interface{}{}, nil, true},
 
-	{"round_down", []interface{}{"10.5"}, decimal.NewFromFloat(10), false},
-	{"round_down", []interface{}{"10.7"}, decimal.NewFromFloat(10), false},
+	{"round_down", []interface{}{"10.5"}, newDecimal("10"), false},
+	{"round_down", []interface{}{"10.7"}, newDecimal("10"), false},
 	{"round_down", []interface{}{"not_num"}, nil, true},
 	{"round_down", []interface{}{}, nil, true},
 
-	{"int", []interface{}{"10.5"}, decimal.NewFromFloat(10), false},
-	{"int", []interface{}{"10.7"}, decimal.NewFromFloat(10), false},
+	{"int", []interface{}{"10.5"}, newDecimal("10"), false},
+	{"int", []interface{}{"10.7"}, newDecimal("10"), false},
 	{"int", []interface{}{"not_num"}, nil, true},
 	{"int", []interface{}{}, nil, true},
 
-	{"max", []interface{}{"10.5", "11"}, decimal.NewFromFloat(11), false},
-	{"max", []interface{}{"10.2", "9"}, decimal.NewFromFloat(10.2), false},
+	{"max", []interface{}{"10.5", "11"}, newDecimal("11"), false},
+	{"max", []interface{}{"10.2", "9"}, newDecimal("10.2"), false},
 	{"max", []interface{}{"not_num", "9"}, nil, true},
 	{"max", []interface{}{"9", "not_num"}, nil, true},
 	{"max", []interface{}{}, nil, true},
-	{"min", []interface{}{"10.5", "11"}, decimal.NewFromFloat(10.5), false},
-	{"min", []interface{}{"10.2", "9"}, decimal.NewFromFloat(9), false},
+	{"min", []interface{}{"10.5", "11"}, newDecimal("10.5"), false},
+	{"min", []interface{}{"10.2", "9"}, newDecimal("9"), false},
 	{"min", []interface{}{"not_num", "9"}, nil, true},
 	{"min", []interface{}{"9", "not_num"}, nil, true},
 	{"min", []interface{}{}, nil, true},
 
-	{"mean", []interface{}{"10", "11"}, decimal.NewFromFloat(10.5), false},
-	{"mean", []interface{}{"10.2"}, decimal.NewFromFloat(10.2), false},
+	{"mean", []interface{}{"10", "11"}, newDecimal("10.5"), false},
+	{"mean", []interface{}{"10.2"}, newDecimal("10.2"), false},
 	{"mean", []interface{}{"not_num"}, nil, true},
 	{"mean", []interface{}{"9", "not_num"}, nil, true},
 	{"mean", []interface{}{}, nil, true},
 
-	{"mod", []interface{}{"10", "3"}, decimal.NewFromFloat(1), false},
-	{"mod", []interface{}{"10", "5"}, decimal.NewFromFloat(0), false},
+	{"mod", []interface{}{"10", "3"}, newDecimal("1"), false},
+	{"mod", []interface{}{"10", "5"}, newDecimal("0"), false},
 	{"mod", []interface{}{"not_num", "3"}, nil, true},
 	{"mod", []interface{}{"9", "not_num"}, nil, true},
 	{"mod", []interface{}{}, nil, true},
@@ -234,6 +239,7 @@ var funcTests = []struct {
 	{"date", []interface{}{struct{}{}}, nil, true},
 	{"date", []interface{}{}, nil, true},
 
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z"}, "23-06-1977 15:34:00", false},
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffzzz", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffK", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
 	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "yyyy-MM-ddTHH:mm:ss.fffK", "UTC"}, "1977-06-23T15:34:00.000Z", false},

@@ -14,9 +14,12 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+<<<<<<< HEAD
+=======
+	"github.com/nyaruka/goflow/flows/inputs"
+>>>>>>> better_tests
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/suite"
 )
@@ -187,7 +190,7 @@ type ServerTestSuite struct {
 func (ts *ServerTestSuite) SetupSuite() {
 	ts.assetServer = engine.NewMockAssetServer()
 
-	ts.flowServer = NewFlowServer(NewTestConfig(), logrus.New())
+	ts.flowServer = NewFlowServer(NewDefaultConfig(), logrus.New())
 	ts.flowServer.Start()
 
 	// wait for server to come up
@@ -353,7 +356,12 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"field 'events' must have a minimum of 1 items"})
 
 	// try to resume this completed session
+<<<<<<< HEAD
 	msg := flows.NewMsgIn(flows.MsgUUID(uuid.NewV4().String()), urns.NewTelegramURN(1234567, "bob"), nil, "hello", []flows.Attachment{})
+=======
+	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
+	msg := inputs.NewMsgInput(flows.InputUUID(utils.UUID()), nil, time.Now(), tgURN, "hello", nil)
+>>>>>>> better_tests
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))

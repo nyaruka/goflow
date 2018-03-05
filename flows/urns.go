@@ -18,7 +18,8 @@ func init() {
 
 // ValidateURN validates whether the field value is a valid URN
 func ValidateURN(fl validator.FieldLevel) bool {
-	return urns.URN(fl.Field().String()).Validate()
+	err := urns.URN(fl.Field().String()).Validate()
+	return err == nil
 }
 
 // ValidateURNScheme validates whether the field value is a valid URN scheme

@@ -1,0 +1,118 @@
+# Gopkg.toml example
+#
+# Refer to https://github.com/golang/dep/blob/master/docs/Gopkg.toml.md
+# for detailed Gopkg.toml documentation.
+#
+# required = ["github.com/user/thing/cmd/thing"]
+# ignored = ["github.com/user/project/pkgX", "bitbucket.org/user/project/pkgA/pkgY"]
+#
+# [[constraint]]
+#   name = "github.com/user/project"
+#   version = "1.0.0"
+#
+# [[constraint]]
+#   name = "github.com/user/project2"
+#   branch = "dev"
+#   source = "github.com/myfork/project2"
+#
+# [[override]]
+#   name = "github.com/x/y"
+#   version = "2.4.0"
+#
+# [prune]
+#   non-go = false
+#   go-tests = true
+#   unused-packages = true
+
+
+[[constraint]]
+  name = "github.com/antlr/antlr4"
+  version = "4.7.1"
+
+[[constraint]]
+  name = "github.com/aws/aws-sdk-go"
+  version = "1.13.8"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/buger/jsonparser"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/dustin/go-humanize"
+
+[[constraint]]
+  name = "github.com/garyburd/redigo"
+  version = "1.6.0"
+
+[[constraint]]
+  name = "github.com/gorilla/mux"
+  version = "1.6.1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/jmoiron/sqlx"
+
+[[constraint]]
+  name = "github.com/karlseguin/ccache"
+  version = "2.0.2"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/koding/multiconfig"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/lib/pq"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/nyaruka/ezconf"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/nyaruka/gocommon"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/nyaruka/phonenumbers"
+
+[[constraint]]
+  name = "github.com/go-chi/chi"
+  version = "3.3.2"
+
+[[constraint]]
+  name = "github.com/pressly/lg"
+  version = "1.0.2"
+
+[[constraint]]
+  name = "github.com/rakyll/statik"
+  version = "0.1.1"
+
+[[constraint]]
+  name = "github.com/satori/go.uuid"
+  version = "1.2.0"
+
+[[constraint]]
+  name = "github.com/shopspring/decimal"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/sirupsen/logrus"
+  version = "1.0.4"
+
+[[constraint]]
+  name = "github.com/stretchr/testify"
+  version = "1.2.1"
+
+[[constraint]]
+  name = "golang.org/x/text"
+  version = "0.3.0"
+
+[[constraint]]
+  name = "gopkg.in/go-playground/validator.v9"
+  version = "9.12.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true

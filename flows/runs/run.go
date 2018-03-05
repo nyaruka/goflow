@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-	uuid "github.com/satori/go.uuid"
 )
 
 // a run specific environment which allows values to be overridden by the contact
@@ -100,7 +99,7 @@ type flowRun struct {
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
 	r := &flowRun{
-		uuid:      flows.RunUUID(uuid.NewV4().String()),
+		uuid:      flows.RunUUID(utils.UUID()),
 		session:   session,
 		flow:      flow,
 		contact:   contact,
@@ -207,7 +206,7 @@ func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error)
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := time.Now().UTC()
-	step := &step{stepUUID: flows.StepUUID(uuid.NewV4().String()), nodeUUID: node.UUID(), arrivedOn: now}
+	step := &step{stepUUID: flows.StepUUID(utils.UUID()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	return step
 }
@@ -330,16 +329,16 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID     flows.RunUUID  `json:"uuid"`
-	FlowUUID flows.FlowUUID `json:"flow_uuid"`
-	Path     []*step        `json:"path"`
+	UUID     flows.RunUUID  `json:"uuid" validate:"required,uuid4"`
+	FlowUUID flows.FlowUUID `json:"flow_uuid" validate:"required,uuid4"`
+	Path     []*step        `json:"path" validate:"dive"`
 
 	Status     flows.RunStatus `json:"status"`
-	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty"`
+	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
 
-	Results flows.Results          `json:"results,omitempty"`
-	Input   *utils.TypedEnvelope   `json:"input,omitempty"`
-	Webhook *utils.RequestResponse `json:"webhook,omitempty"`
+	Results flows.Results          `json:"results,omitempty" validate:"omitempty,dive"`
+	Input   *utils.TypedEnvelope   `json:"input,omitempty" validate:"omitempty,dive"`
+	Webhook *utils.RequestResponse `json:"webhook,omitempty" validate:"omitempty,dive"`
 
 	CreatedOn time.Time  `json:"created_on"`
 	ExpiresOn *time.Time `json:"expires_on"`

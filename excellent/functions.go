@@ -1271,6 +1271,7 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
 //
+//   @(format_date("1979-07-18T00:00:00.000000Z")) -> 1979-07-18 12:00
 //   @(format_date("1979-07-18T00:00:00.000000Z", "yyyy-MM-dd")) -> 1979-07-18
 //   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy M dd HH:mm")) -> 2010 5 10 19:50
 //   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
@@ -1278,17 +1279,20 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 //
 // @function format_date(date, format [,timezone])
 func FormatDate(env utils.Environment, args ...interface{}) interface{} {
-	if len(args) < 2 || len(args) > 3 {
-		return fmt.Errorf("FORMAT_DATE takes at least two arguments, got %d", len(args))
+	if len(args) < 1 || len(args) > 3 {
+		return fmt.Errorf("FORMAT_DATE takes one or two arguments, got %d", len(args))
 	}
 	date, err := utils.ToDate(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	format, err := utils.ToString(env, args[1])
-	if err != nil {
-		return err
+	format := fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String())
+	if len(args) >= 2 {
+		format, err = utils.ToString(env, args[1])
+		if err != nil {
+			return err
+		}
 	}
 
 	// try to turn it to a go format
@@ -1651,8 +1655,9 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	urn := urns.URN(urnString)
-	if !urn.Validate() {
-		return fmt.Errorf("%s is not a valid URN", urnString)
+	err = urn.Validate()
+	if err != nil {
+		return fmt.Errorf("%s is not a valid URN: %s", urnString, err)
 	}
 
 	return urn.Format()

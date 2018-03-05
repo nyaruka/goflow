@@ -28,19 +28,14 @@ func (s *step) Events() []flows.Event    { return s.events }
 
 func (s *step) Resolve(key string) interface{} {
 	switch key {
-
 	case "uuid":
 		return s.UUID
-
 	case "node_uuid":
 		return s.NodeUUID
-
 	case "exit_uuid":
 		return s.ExitUUID
-
 	case "arrived_on":
 		return s.ArrivedOn
-
 	case "left_on":
 		return s.LeftOn
 	}
@@ -78,12 +73,12 @@ func (s *step) addError(err error) {
 //------------------------------------------------------------------------------------------
 
 type stepEnvelope struct {
-	UUID      flows.StepUUID         `json:"uuid"`
-	NodeUUID  flows.NodeUUID         `json:"node_uuid"`
-	ExitUUID  flows.ExitUUID         `json:"exit_uuid,omitempty"`
+	UUID      flows.StepUUID         `json:"uuid" validate:"required,uuid4"`
+	NodeUUID  flows.NodeUUID         `json:"node_uuid" validate:"required,uuid4"`
+	ExitUUID  flows.ExitUUID         `json:"exit_uuid,omitempty" validate:"omitempty,uuid4"`
 	ArrivedOn time.Time              `json:"arrived_on"`
 	LeftOn    *time.Time             `json:"left_on,omitempty"`
-	Events    []*utils.TypedEnvelope `json:"events,omitempty"`
+	Events    []*utils.TypedEnvelope `json:"events,omitempty" validate:"omitempty,dive"`
 }
 
 func (s *step) UnmarshalJSON(data []byte) error {
