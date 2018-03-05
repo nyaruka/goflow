@@ -5,7 +5,7 @@ based on tags.
 It can also handle Cross-Field and Cross-Struct validation for nested structs
 and has the ability to dive into arrays and maps of any type.
 
-see more examples https://github.com/go-playground/validator/tree/v9/examples
+see more examples https://github.com/go-playground/validator/tree/v9/_examples
 
 Validation Functions Return Type error
 
@@ -31,7 +31,7 @@ Custom Validation Functions
 Custom Validation functions can be added. Example:
 
 	// Structure
-	func customFunc(fl FielddLevel) bool {
+	func customFunc(fl FieldLevel) bool {
 
 		if fl.Field().String() == "invalid" {
 			return false
@@ -56,7 +56,7 @@ Cross-Field Validation can be done via the following tags:
 	- eqcsfield
 	- necsfield
 	- gtcsfield
-	- ftecsfield
+	- gtecsfield
 	- ltcsfield
 	- ltecsfield
 
@@ -94,7 +94,7 @@ used "eqcsfield" it could be multiple levels down. Example:
 
 	// NOTE: when calling validate.Struct(val) topStruct will be the top level struct passed
 	//       into the function
-	//       when calling validate.FieldWithValue(val, field, tag) val will be
+	//       when calling validate.VarWithValue(val, field, tag) val will be
 	//       whatever you pass, struct, field...
 	//       when calling validate.Field(field, tag) val will be nil
 
@@ -132,7 +132,7 @@ so the above will become excludesall=0x2C.
 		Field `validate:"excludesall=0x2C"` // GOOD! Use the UTF-8 hex representation.
 	}
 
-Pipe ("|") is the default separator of validation tags. If you wish to
+Pipe ("|") is the 'or' validation tags deparator. If you wish to
 have a pipe included within the parameter i.e. excludesall=| you will need to
 use the UTF-8 hex representation 0x7C, which is replaced in the code as a pipe,
 so the above will become excludesall=0x7C
@@ -193,7 +193,8 @@ Dive
 This tells the validator to dive into a slice, array or map and validate that
 level of the slice, array or map with the validation tags that follow.
 Multidimensional nesting is also supported, each level you wish to dive will
-require another dive tag.
+require another dive tag. dive has some sub-tags, 'keys' & 'endkeys', please see
+the Keys & EndKeys section just below.
 
 	Usage: dive
 
@@ -211,6 +212,30 @@ Example #2
 	// []string will be spared validation
 	// required will be applied to string
 
+Keys & EndKeys
+
+These are to be used together directly after the dive tag and tells the validator
+that anything between 'keys' and 'endkeys' applies to the keys of a map and not the
+values; think of it like the 'dive' tag, but for map keys instead of values.
+Multidimensional nesting is also supported, each level you wish to validate will
+require another 'keys' and 'endkeys' tag. These tags are only valid for maps.
+
+	Usage: dive,keys,othertagvalidation(s),endkeys,valuevalidationtags
+
+Example #1
+
+	map[string]string with validation tag "gt=0,dive,keys,eg=1|eq=2,endkeys,required"
+	// gt=0 will be applied to the map itself
+	// eg=1|eq=2 will be applied to the map keys
+	// required will be applied to map values
+
+Example #2
+
+	map[[2]string]string with validation tag "gt=0,dive,keys,dive,eq=1|eq=2,endkeys,required"
+	// gt=0 will be applied to the map itself
+	// eg=1|eq=2 will be applied to each array element in the the map keys
+	// required will be applied to map values
+
 Required
 
 This validates that the value is not the data types default zero value.
@@ -219,6 +244,13 @@ not "". For slices, maps, pointers, interfaces, channels and functions
 ensures the value is not nil.
 
 	Usage: required
+
+Is Default
+
+This validates that the value is the default value and is almost the
+opposite of required.
+
+	Usage: isdefault
 
 Length
 
@@ -262,6 +294,16 @@ equal to the parameter given. For slices, arrays, and maps,
 validates the number of items.
 
 	Usage: ne=10
+
+One Of
+
+For strings, ints, and uints, oneof will ensure that the value
+is one of the values in the parameter.  The parameter should be
+a list of values separated by whitespace.  Values may be
+strings or numbers.
+
+    Usage: oneof=red green
+           oneof=5 7 9
 
 Greater Than
 
@@ -337,7 +379,7 @@ Example #1:
 Example #2:
 
 	// Validating by field:
-	validate.FieldWithValue(password, confirmpassword, "eqfield")
+	validate.VarWithValue(password, confirmpassword, "eqfield")
 
 Field Equals Another Field (relative)
 
@@ -359,7 +401,7 @@ Examples:
 	Usage: nefield=Color2
 
 	// Validating by field:
-	validate.FieldWithValue(color1, color2, "nefield")
+	validate.VarWithValue(color1, color2, "nefield")
 
 Field Does Not Equal Another Field (relative)
 
@@ -382,7 +424,7 @@ Example #1:
 Example #2:
 
 	// Validating by field:
-	validate.FieldWithValue(start, end, "gtfield")
+	validate.VarWithValue(start, end, "gtfield")
 
 
 Field Greater Than Another Relative Field
@@ -406,7 +448,7 @@ Example #1:
 Example #2:
 
 	// Validating by field:
-	validate.FieldWithValue(start, end, "gtefield")
+	validate.VarWithValue(start, end, "gtefield")
 
 Field Greater Than or Equal To Another Relative Field
 
@@ -429,7 +471,7 @@ Example #1:
 Example #2:
 
 	// Validating by field:
-	validate.FieldWithValue(start, end, "ltfield")
+	validate.VarWithValue(start, end, "ltfield")
 
 Less Than Another Relative Field
 
@@ -452,7 +494,7 @@ Example #1:
 Example #2:
 
 	// Validating by field:
-	validate.FieldWithValue(start, end, "ltefield")
+	validate.VarWithValue(start, end, "ltefield")
 
 Less Than or Equal To Another Relative Field
 
@@ -460,6 +502,12 @@ This does the same as ltefield except that it validates the field provided relat
 to the top level struct.
 
 	Usage: ltecsfield=InnerStructField.Field
+
+Unique
+
+For arrays & slices, unique will ensure that there are no duplicates.
+
+	Usage: unique
 
 Alpha Only
 
@@ -793,6 +841,24 @@ This validates that a string value contains a valid MAC Adress.
 Note: See Go's ParseMAC for accepted formats and types:
 
 	http://golang.org/src/net/mac.go?s=866:918#L29
+
+Hostname RFC 952
+
+This validates that a string value is a valid Hostname according to RFC 952 https://tools.ietf.org/html/rfc952
+
+	Usage: hostname
+
+Hostname RFC 1123
+
+This validates that a string value is a valid Hostname according to RFC 1123 https://tools.ietf.org/html/rfc1123
+
+	Usage: hostname_rfc1123 or if you want to continue to use 'hostname' in your tags, create an alias.
+
+Full Qualified Domain Name (FQDN)
+
+This validates that a string value contains a valid FQDN.
+
+	Usage: fqdn
 
 Alias Validators and Tags
 

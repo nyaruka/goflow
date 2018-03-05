@@ -189,7 +189,7 @@ type ServerTestSuite struct {
 func (ts *ServerTestSuite) SetupSuite() {
 	ts.assetServer = engine.NewMockAssetServer()
 
-	ts.flowServer = NewFlowServer(NewTestConfig(), logrus.New())
+	ts.flowServer = NewFlowServer(NewDefaultConfig(), logrus.New())
 	ts.flowServer.Start()
 
 	// wait for server to come up
@@ -355,7 +355,8 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"field 'events' must have a minimum of 1 items"})
 
 	// try to resume this completed session
-	msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), urns.NewTelegramURN(1234567, "bob"), "hello", nil)
+	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
+	msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), tgURN, "hello", nil)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))

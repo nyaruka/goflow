@@ -1655,8 +1655,9 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	urn := urns.URN(urnString)
-	if !urn.Validate() {
-		return fmt.Errorf("%s is not a valid URN", urnString)
+	err = urn.Validate()
+	if err != nil {
+		return fmt.Errorf("%s is not a valid URN: %s", urnString, err)
 	}
 
 	return urn.Format()
