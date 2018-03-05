@@ -21,6 +21,10 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+const (
+	outputIndent string = "    "
+)
+
 type Output struct {
 	Session json.RawMessage   `json:"session"`
 	Log     []json.RawMessage `json:"log"`
@@ -59,7 +63,7 @@ func marshalEventLog(eventLog []flows.LogEntry) []json.RawMessage {
 }
 
 func rawMessageAsJSON(msg json.RawMessage) (string, error) {
-	envJSON, err := json.MarshalIndent(msg, "", "  ")
+	envJSON, err := json.MarshalIndent(msg, "", outputIndent)
 	if err != nil {
 		return "", err
 	}
@@ -73,7 +77,7 @@ func eventAsJSON(event flows.Event) (string, error) {
 		return "", err
 	}
 
-	envJSON, err := json.MarshalIndent(env, "", "  ")
+	envJSON, err := json.MarshalIndent(env, "", outputIndent)
 	if err != nil {
 		return "", err
 	}
@@ -147,7 +151,7 @@ func replaceFields(input []byte) []byte {
 	replaceMapFields(replacements, "", inputJSON)
 
 	// return our marshalled result
-	outputJSON, err := json.MarshalIndent(inputJSON, "", "  ")
+	outputJSON, err := json.MarshalIndent(inputJSON, "", outputIndent)
 	if err != nil {
 		log.Fatalf("Error marshalling: %s", err)
 	}
@@ -216,7 +220,7 @@ func main() {
 	outputs := make([]*Output, 0)
 
 	for session.Wait() != nil {
-		outJSON, err := json.MarshalIndent(session, "", "  ")
+		outJSON, err := json.MarshalIndent(session, "", outputIndent)
 		if err != nil {
 			log.Fatal("Error marshalling output: ", err)
 		}
@@ -254,7 +258,7 @@ func main() {
 	}
 
 	// print out our context
-	outJSON, err := json.MarshalIndent(session, "", "  ")
+	outJSON, err := json.MarshalIndent(session, "", outputIndent)
 	if err != nil {
 		log.Fatal("Error marshalling output: ", err)
 	}
@@ -285,7 +289,7 @@ func main() {
 		}
 
 		flowTest := FlowTest{Trigger: triggerEnvelope, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
-		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
+		testJSON, err := json.MarshalIndent(flowTest, "", outputIndent)
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)
 		}

@@ -26,6 +26,10 @@ const (
 	RRResponseError RequestResponseStatus = "response_error"
 )
 
+func init() {
+	Validator.RegisterAlias("http_method", "eq=GET|eq=HEAD|eq=POST|eq=PUT|eq=PATCH|eq=DELETE")
+}
+
 func (r RequestResponseStatus) String() string {
 	return string(r)
 }
@@ -33,6 +37,7 @@ func (r RequestResponseStatus) String() string {
 // RequestResponse represents both the outgoing request and response for a particular URL/method/body
 type RequestResponse struct {
 	url        string
+	method     string
 	status     RequestResponseStatus
 	statusCode int
 	request    string
@@ -60,35 +65,41 @@ func MakeHTTPRequest(req *http.Request) (*RequestResponse, error) {
 	return rr, err
 }
 
-func (r *RequestResponse) URL() string                   { return r.url }
+// URL returns the full URL
+func (r *RequestResponse) URL() string { return r.url }
+
+// Status returns the response status message
 func (r *RequestResponse) Status() RequestResponseStatus { return r.status }
-func (r *RequestResponse) StatusCode() int               { return r.statusCode }
-func (r *RequestResponse) Request() string               { return r.request }
-func (r *RequestResponse) Response() string              { return r.response }
-func (r *RequestResponse) Body() string                  { return r.body }
-func (r *RequestResponse) JSON() JSONFragment            { return JSONFragment([]byte(r.body)) }
+
+// StatusCode returns the response status code
+func (r *RequestResponse) StatusCode() int { return r.statusCode }
+
+// Request returns the request trace
+func (r *RequestResponse) Request() string { return r.request }
+
+// Response returns the response trace
+func (r *RequestResponse) Response() string { return r.response }
+
+// Body returns the response body
+func (r *RequestResponse) Body() string { return r.body }
+
+// JSON returns the response as a JSON fragment
+func (r *RequestResponse) JSON() JSONFragment { return JSONFragment([]byte(r.body)) }
 
 func (r *RequestResponse) Resolve(key string) interface{} {
 	switch key {
-
 	case "body":
 		return r.Body()
-
 	case "json":
 		return r.JSON()
-
 	case "url":
 		return r.URL()
-
 	case "request":
 		return r.Request()
-
 	case "response":
 		return r.Response()
-
 	case "status":
 		return r.Status()
-
 	case "status_code":
 		return r.StatusCode()
 	}

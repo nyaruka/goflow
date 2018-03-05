@@ -163,7 +163,7 @@
                         {
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
-                            "method": "get",
+                            "method": "GET",
                             "url": "http://localhost/?cmd=success"
                         }
                     ]
