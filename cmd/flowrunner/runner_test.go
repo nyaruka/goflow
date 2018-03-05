@@ -253,7 +253,7 @@ func TestFlows(t *testing.T) {
 
 			// write our output
 			outputFilename := deriveFilename("flows/", test.output)
-			err = ioutil.WriteFile(outputFilename, replaceFields(testJSON), 0644)
+			err = ioutil.WriteFile(outputFilename, clearTimestamps(testJSON), 0644)
 			require.NoError(t, err, "Error writing test file to %s: %s", outputFilename, err)
 		} else {
 			// unmarshal our expected outputs
