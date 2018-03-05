@@ -11,7 +11,7 @@
                     },
                     "text": "Ryan Lewis",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -27,7 +27,7 @@
                         "msg": {
                             "text": "What is your name?",
                             "urn": "tel:+12065551212",
-                            "uuid": "e36fc151-a43e-4b5f-bbd2-298e2884d164"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -84,7 +84,7 @@
                                         "msg": {
                                             "text": "What is your name?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e36fc151-a43e-4b5f-bbd2-298e2884d164"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -189,7 +189,7 @@
                         "msg": {
                             "text": "Great, pleased to meet you Ryan",
                             "urn": "tel:+12065551212",
-                            "uuid": "61ca1d6d-247d-4d45-a63b-990a9edfa648"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -239,7 +239,7 @@
                             "text": "Ryan Lewis",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -250,7 +250,7 @@
                                         "msg": {
                                             "text": "What is your name?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e36fc151-a43e-4b5f-bbd2-298e2884d164"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -276,7 +276,7 @@
                                             },
                                             "text": "Ryan Lewis",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -318,7 +318,7 @@
                                         "msg": {
                                             "text": "Great, pleased to meet you Ryan",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "61ca1d6d-247d-4d45-a63b-990a9edfa648"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

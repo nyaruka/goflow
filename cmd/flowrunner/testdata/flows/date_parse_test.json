@@ -11,7 +11,7 @@
                     },
                     "text": "I was born on 1977.06.23 at 3:34 pm",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -27,7 +27,7 @@
                         "msg": {
                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                             "urn": "tel:+12065551212",
-                            "uuid": "7a0ed68e-c3f5-4ef2-9743-55bc5b0122c7"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -85,7 +85,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "7a0ed68e-c3f5-4ef2-9743-55bc5b0122c7"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -179,7 +179,7 @@
                         "msg": {
                             "text": "Awesome, you were born on 06-23-1977 at 15:34",
                             "urn": "tel:+12065551212",
-                            "uuid": "8e9f53ad-0047-43e1-9a3f-a8fc8efbd73c"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -233,7 +233,7 @@
                             "text": "I was born on 1977.06.23 at 3:34 pm",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -244,7 +244,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "7a0ed68e-c3f5-4ef2-9743-55bc5b0122c7"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -262,7 +262,7 @@
                                             },
                                             "text": "I was born on 1977.06.23 at 3:34 pm",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -298,7 +298,7 @@
                                         "msg": {
                                             "text": "Awesome, you were born on 06-23-1977 at 15:34",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "8e9f53ad-0047-43e1-9a3f-a8fc8efbd73c"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

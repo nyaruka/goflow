@@ -11,7 +11,7 @@
                     },
                     "text": "Something!",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -27,7 +27,7 @@
                         "msg": {
                             "text": "This is the first message.",
                             "urn": "tel:+12065551212",
-                            "uuid": "766683e9-94fa-4fd0-b7e3-39ccc83aa541"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -53,7 +53,7 @@
                         "msg": {
                             "text": "The status is true. Send something",
                             "urn": "tel:+12065551212",
-                            "uuid": "5cd32ad3-1c73-4767-a2ef-7c00d0816fd6"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -110,7 +110,7 @@
                                         "msg": {
                                             "text": "This is the first message.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "766683e9-94fa-4fd0-b7e3-39ccc83aa541"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -146,7 +146,7 @@
                                         "msg": {
                                             "text": "The status is true. Send something",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "5cd32ad3-1c73-4767-a2ef-7c00d0816fd6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -230,7 +230,7 @@
                         "msg": {
                             "text": "The status is now true",
                             "urn": "tel:+12065551212",
-                            "uuid": "b104b1bc-3e90-4755-b6cf-21cc6256ea30"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -280,7 +280,7 @@
                             "text": "Something!",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -291,7 +291,7 @@
                                         "msg": {
                                             "text": "This is the first message.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "766683e9-94fa-4fd0-b7e3-39ccc83aa541"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -327,7 +327,7 @@
                                         "msg": {
                                             "text": "The status is true. Send something",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "5cd32ad3-1c73-4767-a2ef-7c00d0816fd6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -353,7 +353,7 @@
                                             },
                                             "text": "Something!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     }
@@ -371,7 +371,7 @@
                                         "msg": {
                                             "text": "The status is now true",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "b104b1bc-3e90-4755-b6cf-21cc6256ea30"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

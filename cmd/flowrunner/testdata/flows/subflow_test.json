@@ -11,7 +11,7 @@
                     },
                     "text": "Ryan Lewis",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -27,7 +27,7 @@
                         "msg": {
                             "text": "This is the parent flow",
                             "urn": "tel:+12065551212",
-                            "uuid": "e626c88b-7e2c-496a-9874-4815f5c1737a"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -53,7 +53,7 @@
                         "msg": {
                             "text": "What is your name?",
                             "urn": "tel:+12065551212",
-                            "uuid": "54468612-4e19-468a-a855-8a5a7d819f55"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -110,7 +110,7 @@
                                         "msg": {
                                             "text": "This is the parent flow",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e626c88b-7e2c-496a-9874-4815f5c1737a"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -146,7 +146,7 @@
                                         "msg": {
                                             "text": "What is your name?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "54468612-4e19-468a-a855-8a5a7d819f55"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -225,7 +225,7 @@
                         "msg": {
                             "text": "Got it!",
                             "urn": "tel:+12065551212",
-                            "uuid": "c13285f3-5195-4fdf-a06a-7f73c547002a"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -238,7 +238,7 @@
                         "msg": {
                             "text": "Flow succeeded, they said Ryan Lewis",
                             "urn": "tel:+12065551212",
-                            "uuid": "51710c6e-657c-4627-b992-b2829421587e"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -288,7 +288,7 @@
                                         "msg": {
                                             "text": "This is the parent flow",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e626c88b-7e2c-496a-9874-4815f5c1737a"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -315,7 +315,7 @@
                                         "msg": {
                                             "text": "Flow succeeded, they said Ryan Lewis",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "51710c6e-657c-4627-b992-b2829421587e"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -342,7 +342,7 @@
                             "text": "Ryan Lewis",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "parent_uuid": "",
                         "path": [
@@ -354,7 +354,7 @@
                                         "msg": {
                                             "text": "What is your name?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "54468612-4e19-468a-a855-8a5a7d819f55"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -371,7 +371,7 @@
                                             },
                                             "text": "Ryan Lewis",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -398,7 +398,7 @@
                                         "msg": {
                                             "text": "Got it!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "c13285f3-5195-4fdf-a06a-7f73c547002a"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

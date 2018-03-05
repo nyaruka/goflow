@@ -12,7 +12,7 @@
                         "msg": {
                             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                             "urn": "tel:+12065551212",
-                            "uuid": "4fde87b7-2384-4a30-9907-f7eb15ce25fd"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -62,7 +62,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "4fde87b7-2384-4a30-9907-f7eb15ce25fd"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

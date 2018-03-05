@@ -10,7 +10,7 @@
                     },
                     "text": "Ryan Lewis",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -23,7 +23,7 @@
                     "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "input_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
+                        "input_uuid": "",
                         "labels": [
                             {
                                 "name": "Spam",
@@ -209,7 +209,7 @@
                         "msg": {
                             "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                             "urn": "tel:+12065551212",
-                            "uuid": "5a8c2f9f-ec88-4dd2-a47e-b02862bfb679"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -222,7 +222,7 @@
                         "msg": {
                             "text": "This is a message to each of Ben Haggerty's urns.",
                             "urn": "tel:+12065551212",
-                            "uuid": "85e32b99-ab04-4b30-8494-6a05de3eb76e"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -235,7 +235,7 @@
                         "msg": {
                             "text": "This is a message to each of Ben Haggerty's urns.",
                             "urn": "facebook:1122334455667788",
-                            "uuid": "fa8b5c3e-166a-41eb-a90a-12e900e5d4cc"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -248,7 +248,7 @@
                         "msg": {
                             "text": "This is a message to each of Ben Haggerty's urns.",
                             "urn": "mailto:ben@macklemore",
-                            "uuid": "f3063861-97a3-4522-8b79-d3b44f0a6bf6"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -261,7 +261,7 @@
                         "msg": {
                             "text": "This is a message to each of Ben Haggerty's urns.",
                             "urn": "twitter:ben_haggerty",
-                            "uuid": "79b21ca3-5df4-437c-9b85-379298c25f74"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -281,7 +281,7 @@
                             ],
                             "text": "This is a reply with attachments and quick replies",
                             "urn": "tel:+12065551212",
-                            "uuid": "737d07ce-7e4a-4740-a433-198b9a6c2d33"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -391,7 +391,7 @@
                             "text": "Ryan Lewis",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -406,13 +406,13 @@
                                             },
                                             "text": "Ryan Lewis",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "input_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
+                                        "input_uuid": "",
                                         "labels": [
                                             {
                                                 "name": "Spam",
@@ -558,7 +558,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "5a8c2f9f-ec88-4dd2-a47e-b02862bfb679"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -567,7 +567,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "85e32b99-ab04-4b30-8494-6a05de3eb76e"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -576,7 +576,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "facebook:1122334455667788",
-                                            "uuid": "fa8b5c3e-166a-41eb-a90a-12e900e5d4cc"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -585,7 +585,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "mailto:ben@macklemore",
-                                            "uuid": "f3063861-97a3-4522-8b79-d3b44f0a6bf6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -594,7 +594,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "twitter:ben_haggerty",
-                                            "uuid": "79b21ca3-5df4-437c-9b85-379298c25f74"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -610,7 +610,7 @@
                                             ],
                                             "text": "This is a reply with attachments and quick replies",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "737d07ce-7e4a-4740-a433-198b9a6c2d33"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },

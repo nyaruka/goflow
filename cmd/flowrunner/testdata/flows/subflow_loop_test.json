@@ -12,7 +12,7 @@
                         "msg": {
                             "text": "This is the parent flow",
                             "urn": "tel:+12065551212",
-                            "uuid": "c9de5445-dd00-42aa-aae8-c416ca5b15aa"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -38,7 +38,7 @@
                         "msg": {
                             "text": "This is the child flow",
                             "urn": "tel:+12065551212",
-                            "uuid": "a0c43796-3224-4d7a-bd19-70d5abfd455b"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -107,7 +107,7 @@
                                         "msg": {
                                             "text": "This is the parent flow",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "c9de5445-dd00-42aa-aae8-c416ca5b15aa"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -149,7 +149,7 @@
                                         "msg": {
                                             "text": "This is the child flow",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "a0c43796-3224-4d7a-bd19-70d5abfd455b"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },

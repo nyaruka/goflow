@@ -84,39 +84,41 @@ func eventAsJSON(event flows.Event) (string, error) {
 	return string(replaceFields(envJSON)), nil
 }
 
-func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
+func replaceArrayFields(replacements map[string]interface{}, path string, arrFields []interface{}) {
+	fmt.Printf("replaceArrayFields(path=%s)\n", path)
 	for _, e := range arrFields {
 		switch child := e.(type) {
 		case map[string]interface{}:
-			replaceMapFields(replacements, parent, child)
+			replaceMapFields(replacements, path, child)
 		case []interface{}:
-			replaceArrayFields(replacements, parent, child)
+			replaceArrayFields(replacements, path, child)
 		}
 	}
 }
 
-func replaceMapFields(replacements map[string]interface{}, parent string, mapFields map[string]interface{}) {
+func replaceMapFields(replacements map[string]interface{}, path string, mapFields map[string]interface{}) {
+	fmt.Printf("replaceMapFields(path=%s)\n", path)
 	for k, v := range mapFields {
-		replacement, found := replacements[k]
-		if found {
-			mapFields[k] = replacement
-			continue
+		var itemPath string
+		if path != "" {
+			itemPath = fmt.Sprintf("%s.%s", path, k)
+		} else {
+			itemPath = k
 		}
 
-		if parent != "" {
-			parentKey := parent + "." + k
-			replacement, found = replacements[parentKey]
-			if found {
-				mapFields[k] = replacement
-				continue
+		for replacePath, replaceValue := range replacements {
+			if strings.HasSuffix(itemPath, replacePath) {
+				fmt.Printf(" > itemPath %s matched replacement %s\n", itemPath, replacePath)
+				mapFields[k] = replaceValue
+				break
 			}
 		}
 
 		switch child := v.(type) {
 		case map[string]interface{}:
-			replaceMapFields(replacements, k, child)
+			replaceMapFields(replacements, itemPath, child)
 		case []interface{}:
-			replaceArrayFields(replacements, k, child)
+			replaceArrayFields(replacements, itemPath, child)
 		}
 	}
 }
@@ -138,6 +140,8 @@ func replaceFields(input []byte) []byte {
 		"parent_uuid":     "",
 		"parent_run_uuid": "",
 		"child_uuid":      "",
+		"event.msg.uuid":  "",
+		"events.msg.uuid": "",
 	}
 
 	// unmarshal to arbitrary json

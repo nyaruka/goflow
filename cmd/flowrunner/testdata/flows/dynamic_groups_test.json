@@ -38,7 +38,7 @@
                         "msg": {
                             "text": "Current groups: Males, Old Men",
                             "urn": "tel:+12065551212",
-                            "uuid": "a61c4ccd-acb6-4905-be1a-63c720777476"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -60,7 +60,7 @@
                         "msg": {
                             "text": "Current groups: Males, Old Men",
                             "urn": "tel:+12065551212",
-                            "uuid": "7c5744f1-6634-4c17-b36c-fa91c71a8840"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -86,7 +86,7 @@
                         "msg": {
                             "text": "Current groups: Males, Youth, MTN Callers",
                             "urn": "tel:+12065551212",
-                            "uuid": "f7541159-9f1e-4308-be1a-96121b84ad01"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -168,7 +168,7 @@
                                         "msg": {
                                             "text": "Current groups: Males, Old Men",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "a61c4ccd-acb6-4905-be1a-63c720777476"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -182,7 +182,7 @@
                                         "msg": {
                                             "text": "Current groups: Males, Old Men",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "7c5744f1-6634-4c17-b36c-fa91c71a8840"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -200,7 +200,7 @@
                                         "msg": {
                                             "text": "Current groups: Males, Youth, MTN Callers",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "f7541159-9f1e-4308-be1a-96121b84ad01"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

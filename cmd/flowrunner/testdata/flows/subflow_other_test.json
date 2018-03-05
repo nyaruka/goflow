@@ -11,7 +11,7 @@
                     },
                     "text": "neither",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -26,7 +26,7 @@
                     },
                     "text": "yes",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -41,7 +41,7 @@
                     },
                     "text": "never",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -56,7 +56,7 @@
                     },
                     "text": "no",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -72,7 +72,7 @@
                         "msg": {
                             "text": "Hi there, let's go to the child.",
                             "urn": "tel:+12065551212",
-                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -98,7 +98,7 @@
                         "msg": {
                             "text": "Welcome to the child, say yes or no!",
                             "urn": "tel:+12065551212",
-                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -155,7 +155,7 @@
                                         "msg": {
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -200,7 +200,7 @@
                                         "msg": {
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -288,7 +288,7 @@
                         "msg": {
                             "text": "Nope, that's neither.",
                             "urn": "tel:+12065551212",
-                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -345,7 +345,7 @@
                                         "msg": {
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -389,7 +389,7 @@
                             "text": "neither",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "parent_uuid": "",
                         "path": [
@@ -401,7 +401,7 @@
                                         "msg": {
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -427,7 +427,7 @@
                                             },
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -454,7 +454,7 @@
                                         "msg": {
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -552,7 +552,7 @@
                         "msg": {
                             "text": "You said yes",
                             "urn": "tel:+12065551212",
-                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -565,7 +565,7 @@
                         "msg": {
                             "text": "Hooray, you did it and said yes. Say yes or no!",
                             "urn": "tel:+12065551212",
-                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -622,7 +622,7 @@
                                         "msg": {
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -658,7 +658,7 @@
                                         "msg": {
                                             "text": "Hooray, you did it and said yes. Say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -697,7 +697,7 @@
                             "text": "yes",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "parent_uuid": "",
                         "path": [
@@ -709,7 +709,7 @@
                                         "msg": {
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -735,7 +735,7 @@
                                             },
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -762,7 +762,7 @@
                                         "msg": {
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -788,7 +788,7 @@
                                             },
                                             "text": "yes",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -815,7 +815,7 @@
                                         "msg": {
                                             "text": "You said yes",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -902,7 +902,7 @@
                         "msg": {
                             "text": "Nope, that's neither",
                             "urn": "tel:+12065551212",
-                            "uuid": "e710fdab-f3e3-4f7c-a6ca-7b65d0a57202"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -959,7 +959,7 @@
                             "text": "never",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -970,7 +970,7 @@
                                         "msg": {
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1006,7 +1006,7 @@
                                         "msg": {
                                             "text": "Hooray, you did it and said yes. Say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1032,7 +1032,7 @@
                                             },
                                             "text": "never",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1059,7 +1059,7 @@
                                         "msg": {
                                             "text": "Nope, that's neither",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e710fdab-f3e3-4f7c-a6ca-7b65d0a57202"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1108,7 +1108,7 @@
                             "text": "yes",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "parent_uuid": "",
                         "path": [
@@ -1120,7 +1120,7 @@
                                         "msg": {
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1146,7 +1146,7 @@
                                             },
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1173,7 +1173,7 @@
                                         "msg": {
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1199,7 +1199,7 @@
                                             },
                                             "text": "yes",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1226,7 +1226,7 @@
                                         "msg": {
                                             "text": "You said yes",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1313,7 +1313,7 @@
                         "msg": {
                             "text": "All Done! You said yes in the child and no here.",
                             "urn": "tel:+12065551212",
-                            "uuid": "4a029bb9-bfd8-4b56-8ccf-cca1fde3d765"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -1363,7 +1363,7 @@
                             "text": "no",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -1374,7 +1374,7 @@
                                         "msg": {
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1410,7 +1410,7 @@
                                         "msg": {
                                             "text": "Hooray, you did it and said yes. Say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1436,7 +1436,7 @@
                                             },
                                             "text": "never",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1463,7 +1463,7 @@
                                         "msg": {
                                             "text": "Nope, that's neither",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e710fdab-f3e3-4f7c-a6ca-7b65d0a57202"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1489,7 +1489,7 @@
                                             },
                                             "text": "no",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1516,7 +1516,7 @@
                                         "msg": {
                                             "text": "All Done! You said yes in the child and no here.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "4a029bb9-bfd8-4b56-8ccf-cca1fde3d765"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1554,7 +1554,7 @@
                             "text": "yes",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "parent_uuid": "",
                         "path": [
@@ -1566,7 +1566,7 @@
                                         "msg": {
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1592,7 +1592,7 @@
                                             },
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1619,7 +1619,7 @@
                                         "msg": {
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
@@ -1645,7 +1645,7 @@
                                             },
                                             "text": "yes",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -1672,7 +1672,7 @@
                                         "msg": {
                                             "text": "You said yes",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }

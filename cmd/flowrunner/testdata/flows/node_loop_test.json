@@ -12,7 +12,7 @@
                         "msg": {
                             "text": "Hi! What is your name?",
                             "urn": "tel:+12065551212",
-                            "uuid": "27311516-7976-46ec-b1d1-ed2738fe820f"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -71,7 +71,7 @@
                                         "msg": {
                                             "text": "Hi! What is your name?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "27311516-7976-46ec-b1d1-ed2738fe820f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },

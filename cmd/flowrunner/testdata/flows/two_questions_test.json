@@ -11,7 +11,7 @@
                     },
                     "text": "I like blue!",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -26,7 +26,7 @@
                     },
                     "text": "Coke",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": ""
                 },
                 "type": "msg_received"
             }
@@ -42,7 +42,7 @@
                         "msg": {
                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                             "urn": "tel:+12065551212",
-                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -100,7 +100,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -191,7 +191,7 @@
                         "msg": {
                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                             "urn": "tel:+12065551212",
-                            "uuid": "a6e45de6-7a39-48d9-95ca-a46833ed3d67"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -249,7 +249,7 @@
                             "text": "I like blue!",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -260,7 +260,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -278,7 +278,7 @@
                                             },
                                             "text": "I like blue!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -311,7 +311,7 @@
                                         "msg": {
                                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "a6e45de6-7a39-48d9-95ca-a46833ed3d67"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -415,7 +415,7 @@
                         "msg": {
                             "text": "Parfait, vous avez finis et tu aimes Coke",
                             "urn": "tel:+12065551212",
-                            "uuid": "2fc0ac25-74d8-47b9-9445-970790027600"
+                            "uuid": ""
                         },
                         "type": "msg_created"
                     },
@@ -465,7 +465,7 @@
                             "text": "Coke",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": ""
                         },
                         "path": [
                             {
@@ -476,7 +476,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -494,7 +494,7 @@
                                             },
                                             "text": "I like blue!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -527,7 +527,7 @@
                                         "msg": {
                                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "a6e45de6-7a39-48d9-95ca-a46833ed3d67"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     },
@@ -545,7 +545,7 @@
                                             },
                                             "text": "Coke",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": ""
                                         },
                                         "type": "msg_received"
                                     },
@@ -581,7 +581,7 @@
                                         "msg": {
                                             "text": "Parfait, vous avez finis et tu aimes Coke",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "2fc0ac25-74d8-47b9-9445-970790027600"
+                                            "uuid": ""
                                         },
                                         "type": "msg_created"
                                     }
