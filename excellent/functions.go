@@ -1271,7 +1271,7 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
 //
-//   @(format_date("1979-07-18T00:00:00.000000Z")) -> 1979-07-18
+//   @(format_date("1979-07-18T00:00:00.000000Z")) -> 1979-07-18 12:00
 //   @(format_date("1979-07-18T00:00:00.000000Z", "yyyy-MM-dd")) -> 1979-07-18
 //   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy M dd HH:mm")) -> 2010 5 10 19:50
 //   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
