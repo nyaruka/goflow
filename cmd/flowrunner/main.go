@@ -83,41 +83,39 @@ func eventAsJSON(event flows.Event) (string, error) {
 	return string(clearTimestamps(envJSON)), nil
 }
 
-func replaceArrayFields(replacements map[string]interface{}, path string, arrFields []interface{}) {
-	fmt.Printf("replaceArrayFields(path=%s)\n", path)
+func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
 	for _, e := range arrFields {
 		switch child := e.(type) {
 		case map[string]interface{}:
-			replaceMapFields(replacements, path, child)
+			replaceMapFields(replacements, parent, child)
 		case []interface{}:
-			replaceArrayFields(replacements, path, child)
+			replaceArrayFields(replacements, parent, child)
 		}
 	}
 }
 
-func replaceMapFields(replacements map[string]interface{}, path string, mapFields map[string]interface{}) {
-	fmt.Printf("replaceMapFields(path=%s)\n", path)
+func replaceMapFields(replacements map[string]interface{}, parent string, mapFields map[string]interface{}) {
 	for k, v := range mapFields {
-		var itemPath string
-		if path != "" {
-			itemPath = fmt.Sprintf("%s.%s", path, k)
-		} else {
-			itemPath = k
+		replacement, found := replacements[k]
+		if found {
+			mapFields[k] = replacement
+			continue
 		}
 
-		for replacePath, replaceValue := range replacements {
-			if strings.HasSuffix(itemPath, replacePath) {
-				fmt.Printf(" > itemPath %s matched replacement %s\n", itemPath, replacePath)
-				mapFields[k] = replaceValue
-				break
+		if parent != "" {
+			parentKey := parent + "." + k
+			replacement, found = replacements[parentKey]
+			if found {
+				mapFields[k] = replacement
+				continue
 			}
 		}
 
 		switch child := v.(type) {
 		case map[string]interface{}:
-			replaceMapFields(replacements, itemPath, child)
+			replaceMapFields(replacements, k, child)
 		case []interface{}:
-			replaceArrayFields(replacements, itemPath, child)
+			replaceArrayFields(replacements, k, child)
 		}
 	}
 }

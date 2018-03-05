@@ -2,7 +2,7 @@ package flows
 
 import (
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/satori/go.uuid"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact
@@ -52,7 +52,7 @@ func NewMsgOut(urn urns.URN, channel Channel, text string, attachments []Attachm
 
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(uuid.NewV4().String()),
+			UUID_:        MsgUUID(utils.UUID()),
 			URN_:         urn,
 			Channel_:     channelRef,
 			Text_:        text,

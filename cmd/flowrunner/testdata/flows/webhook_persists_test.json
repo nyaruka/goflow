@@ -11,7 +11,7 @@
                     },
                     "text": "Something!",
                     "urn": "tel:+12065551212",
-                    "uuid": ""
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                 },
                 "type": "msg_received"
             }
@@ -27,11 +27,11 @@
                         "msg": {
                             "text": "This is the first message.",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "bcfb19b6-a2a6-41f1-9f19-ef5778a44ad0"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
+                    "step_uuid": "5ce9e366-2999-4edd-8ce1-df538a02988e"
                 },
                 {
                     "action_uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
@@ -44,7 +44,7 @@
                         "type": "webhook_called",
                         "url": "http://127.0.0.1:49999/?cmd=success"
                     },
-                    "step_uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
+                    "step_uuid": "576742b2-e990-4ade-8caf-a951e4c2a896"
                 },
                 {
                     "action_uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
@@ -53,18 +53,18 @@
                         "msg": {
                             "text": "The status is true. Send something",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "b99c78ae-77f6-41b1-9c01-d4ca838f6828"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
+                    "step_uuid": "ec708a63-80ba-41d3-b186-26164b2fc3f0"
                 },
                 {
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
+                    "step_uuid": "5938d65e-aadd-4e62-b0ee-ec3987b252dd"
                 }
             ],
             "session": {
@@ -110,7 +110,7 @@
                                         "msg": {
                                             "text": "This is the first message.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "bcfb19b6-a2a6-41f1-9f19-ef5778a44ad0"
                                         },
                                         "type": "msg_created"
                                     }
@@ -118,7 +118,7 @@
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e7cd9720-9f37-4862-9e9e-007414a04762",
-                                "uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
+                                "uuid": "5ce9e366-2999-4edd-8ce1-df538a02988e"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -136,7 +136,7 @@
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "be37f70c-e02a-4a67-9ff2-07609e86bbeb",
-                                "uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
+                                "uuid": "576742b2-e990-4ade-8caf-a951e4c2a896"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -146,7 +146,7 @@
                                         "msg": {
                                             "text": "The status is true. Send something",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "b99c78ae-77f6-41b1-9c01-d4ca838f6828"
                                         },
                                         "type": "msg_created"
                                     }
@@ -154,7 +154,7 @@
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "186ff11c-61ec-456c-8e28-ec59fa2fb523",
-                                "uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
+                                "uuid": "ec708a63-80ba-41d3-b186-26164b2fc3f0"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -165,11 +165,11 @@
                                     }
                                 ],
                                 "node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                                "uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
+                                "uuid": "5938d65e-aadd-4e62-b0ee-ec3987b252dd"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "bdd9ec65-4d69-4812-9c6b-e0142579da71",
+                        "uuid": "ff26ebc4-aaa2-4e02-aa34-1d0940920c0e",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -230,11 +230,11 @@
                         "msg": {
                             "text": "The status is now true",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "ca829619-1095-43e1-9b9c-1552425c8398"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "7d54f4b2-db3e-4e68-a3c1-d4ec8466418f"
+                    "step_uuid": "c33e98b8-0a3a-41c2-be11-c74ec20c1ac7"
                 }
             ],
             "session": {
@@ -280,7 +280,7 @@
                             "text": "Something!",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda"
+                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "path": [
                             {
@@ -291,7 +291,7 @@
                                         "msg": {
                                             "text": "This is the first message.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "bcfb19b6-a2a6-41f1-9f19-ef5778a44ad0"
                                         },
                                         "type": "msg_created"
                                     }
@@ -299,7 +299,7 @@
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e7cd9720-9f37-4862-9e9e-007414a04762",
-                                "uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
+                                "uuid": "5ce9e366-2999-4edd-8ce1-df538a02988e"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -317,7 +317,7 @@
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "be37f70c-e02a-4a67-9ff2-07609e86bbeb",
-                                "uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
+                                "uuid": "576742b2-e990-4ade-8caf-a951e4c2a896"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -327,7 +327,7 @@
                                         "msg": {
                                             "text": "The status is true. Send something",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "b99c78ae-77f6-41b1-9c01-d4ca838f6828"
                                         },
                                         "type": "msg_created"
                                     }
@@ -335,7 +335,7 @@
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "186ff11c-61ec-456c-8e28-ec59fa2fb523",
-                                "uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
+                                "uuid": "ec708a63-80ba-41d3-b186-26164b2fc3f0"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -353,7 +353,7 @@
                                             },
                                             "text": "Something!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                         },
                                         "type": "msg_received"
                                     }
@@ -361,7 +361,7 @@
                                 "exit_uuid": "dd0d800b-97ce-418f-9eb7-f0985df89f08",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                                "uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
+                                "uuid": "5938d65e-aadd-4e62-b0ee-ec3987b252dd"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -371,7 +371,7 @@
                                         "msg": {
                                             "text": "The status is now true",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "ca829619-1095-43e1-9b9c-1552425c8398"
                                         },
                                         "type": "msg_created"
                                     }
@@ -379,11 +379,11 @@
                                 "exit_uuid": "accf4276-f719-4664-b0b1-4f18c0184f56",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "9bd027cd-ae88-4906-b3ea-c003f30d8db5",
-                                "uuid": "7d54f4b2-db3e-4e68-a3c1-d4ec8466418f"
+                                "uuid": "c33e98b8-0a3a-41c2-be11-c74ec20c1ac7"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "bdd9ec65-4d69-4812-9c6b-e0142579da71",
+                        "uuid": "ff26ebc4-aaa2-4e02-aa34-1d0940920c0e",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",

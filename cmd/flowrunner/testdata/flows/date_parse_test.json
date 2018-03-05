@@ -11,7 +11,7 @@
                     },
                     "text": "I was born on 1977.06.23 at 3:34 pm",
                     "urn": "tel:+12065551212",
-                    "uuid": ""
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                 },
                 "type": "msg_received"
             }
@@ -27,11 +27,11 @@
                         "msg": {
                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "5e71e880-07df-451a-b5ce-f2009d6de460"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "8e98bfb7-86e3-40d3-b4f1-fb32c440bfe3"
+                    "step_uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
                 },
                 {
                     "event": {
@@ -39,7 +39,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "8e98bfb7-86e3-40d3-b4f1-fb32c440bfe3"
+                    "step_uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
                 }
             ],
             "session": {
@@ -85,7 +85,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "5e71e880-07df-451a-b5ce-f2009d6de460"
                                         },
                                         "type": "msg_created"
                                     },
@@ -96,11 +96,11 @@
                                     }
                                 ],
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "8e98bfb7-86e3-40d3-b4f1-fb32c440bfe3"
+                                "uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "c14e6b7a-290f-41d8-ac58-a6b78eccea71"
+                        "uuid": "0b020cdb-9cc7-4afd-947b-012e59cabd4e"
                     }
                 ],
                 "status": "waiting",
@@ -157,7 +157,7 @@
                         "type": "run_result_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "8e98bfb7-86e3-40d3-b4f1-fb32c440bfe3"
+                    "step_uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
                 },
                 {
                     "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
@@ -170,7 +170,7 @@
                         "type": "contact_field_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "b1a58b02-99a0-4f67-a6aa-f49729db9f7c"
+                    "step_uuid": "bf826917-06bd-418d-becc-df5fb6ab7479"
                 },
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
@@ -179,11 +179,11 @@
                         "msg": {
                             "text": "Awesome, you were born on 06-23-1977 at 15:34",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "9fa3532e-e1e4-4900-aae1-6adc0c0db9c3"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "b1a58b02-99a0-4f67-a6aa-f49729db9f7c"
+                    "step_uuid": "bf826917-06bd-418d-becc-df5fb6ab7479"
                 }
             ],
             "session": {
@@ -233,7 +233,7 @@
                             "text": "I was born on 1977.06.23 at 3:34 pm",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda"
+                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "path": [
                             {
@@ -244,7 +244,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "5e71e880-07df-451a-b5ce-f2009d6de460"
                                         },
                                         "type": "msg_created"
                                     },
@@ -262,7 +262,7 @@
                                             },
                                             "text": "I was born on 1977.06.23 at 3:34 pm",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                         },
                                         "type": "msg_received"
                                     },
@@ -279,7 +279,7 @@
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "8e98bfb7-86e3-40d3-b4f1-fb32c440bfe3"
+                                "uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -298,14 +298,14 @@
                                         "msg": {
                                             "text": "Awesome, you were born on 06-23-1977 at 15:34",
                                             "urn": "tel:+12065551212",
-                                            "uuid": ""
+                                            "uuid": "9fa3532e-e1e4-4900-aae1-6adc0c0db9c3"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "b1a58b02-99a0-4f67-a6aa-f49729db9f7c"
+                                "uuid": "bf826917-06bd-418d-becc-df5fb6ab7479"
                             }
                         ],
                         "results": {
@@ -319,7 +319,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "c14e6b7a-290f-41d8-ac58-a6b78eccea71"
+                        "uuid": "0b020cdb-9cc7-4afd-947b-012e59cabd4e"
                     }
                 ],
                 "status": "completed",
