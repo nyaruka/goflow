@@ -18,7 +18,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -124,21 +123,13 @@ func replaceMapFields(replacements map[string]interface{}, parent string, mapFie
 
 func replaceFields(input []byte) []byte {
 	replacements := map[string]interface{}{
-		"arrived_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"left_on":         "2000-01-01T00:00:00.000000000-00:00",
-		"exited_on":       "2000-01-01T00:00:00.000000000-00:00",
-		"created_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"modified_on":     "2000-01-01T00:00:00.000000000-00:00",
-		"expires_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"timeout_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"event.uuid":      "",
-		"path.uuid":       "",
-		"run.uuid":        "4213ac47-93fd-48c4-af12-7da8218ef09d",
-		"runs.uuid":       "",
-		"step_uuid":       "",
-		"parent_uuid":     "",
-		"parent_run_uuid": "",
-		"child_uuid":      "",
+		"arrived_on":  "2000-01-01T00:00:00.000000000-00:00",
+		"left_on":     "2000-01-01T00:00:00.000000000-00:00",
+		"exited_on":   "2000-01-01T00:00:00.000000000-00:00",
+		"created_on":  "2000-01-01T00:00:00.000000000-00:00",
+		"modified_on": "2000-01-01T00:00:00.000000000-00:00",
+		"expires_on":  "2000-01-01T00:00:00.000000000-00:00",
+		"timeout_on":  "2000-01-01T00:00:00.000000000-00:00",
 	}
 
 	// unmarshal to arbitrary json
@@ -239,7 +230,7 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		msg := inputs.NewMsgInput(flows.InputUUID(utils.UUID()), nil, time.Now(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
 		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"io/ioutil"
 	"log"
 	"net"
@@ -16,7 +15,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/stretchr/testify/require"
 )
 
 var flowTests = []struct {
@@ -168,27 +170,54 @@ func newTestHTTPServer() *httptest.Server {
 	return server
 }
 
+type FixedUUIDGenerator struct {
+	uuids []string
+	index int
+}
+
+func FixedUUIDGeneratorFromFile(path string) (*FixedUUIDGenerator, error) {
+	content, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return &FixedUUIDGenerator{
+		uuids: strings.Split(string(content), "\n"),
+		index: 0,
+	}, nil
+}
+
+func (g *FixedUUIDGenerator) Next() string {
+	if g.index >= len(g.uuids) {
+		panic("Fixed UUID list for testing exhausted")
+	}
+
+	u := g.uuids[g.index]
+	g.index++
+	return u
+}
+
 func TestFlows(t *testing.T) {
 	server := newTestHTTPServer()
 	server.Start()
 	defer server.Close()
+
+	uuids, err := FixedUUIDGeneratorFromFile("testdata/uuids.list")
+	require.NoError(t, err)
+
+	utils.SetUUIDGenerator(uuids)
+	defer utils.SetUUIDGenerator(utils.RandomUUID4Generator{})
 
 	// save away our server URL so we can rewrite our URLs
 	serverURL = server.URL
 
 	for _, test := range flowTests {
 		testJSON, err := readFile("flows/", test.output)
-		if err != nil {
-			t.Errorf("Error reading output file for flow '%s' and output '%s': %s", test.assets, test.output, err)
-			continue
-		}
+		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", test.assets, test.output, err)
 
 		flowTest := FlowTest{}
 		err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
-		if err != nil {
-			t.Errorf("Error unmarshalling output for flow '%s' and output '%s': %s", test.assets, test.output, err)
-			continue
-		}
+		require.NoError(t, err, "Error unmarshalling output for flow '%s' and output '%s': %s", test.assets, test.output, err)
 
 		// unmarshal our caller events
 		callerEvents := make([][]flows.Event, len(flowTest.CallerEvents))
@@ -198,10 +227,8 @@ func TestFlows(t *testing.T) {
 
 			for e := range flowTest.CallerEvents[i] {
 				event, err := events.EventFromEnvelope(flowTest.CallerEvents[i][e])
-				if err != nil {
-					t.Errorf("Error unmarshalling caller events for flow '%s' and output '%s': %s", test.assets, test.output, err)
-					continue
-				}
+				require.NoError(t, err, "Error unmarshalling caller events for flow '%s' and output '%s': %s", test.assets, test.output, err)
+
 				event.SetFromCaller(true)
 				callerEvents[i][e] = event
 			}
@@ -219,31 +246,24 @@ func TestFlows(t *testing.T) {
 			rawOutputs := make([]json.RawMessage, len(runResult.outputs))
 			for i := range runResult.outputs {
 				rawOutputs[i], err = json.Marshal(runResult.outputs[i])
-				if err != nil {
-					log.Fatal(err)
-				}
+				require.NoError(t, err)
 			}
 			flowTest := FlowTest{Trigger: flowTest.Trigger, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
 			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
-			if err != nil {
-				log.Fatal("Error marshalling test definition: ", err)
-			}
+			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
 			// write our output
 			outputFilename := deriveFilename("flows/", test.output)
 			err = ioutil.WriteFile(outputFilename, replaceFields(testJSON), 0644)
-			if err != nil {
-				log.Fatalf("Error writing test file to %s: %s\n", outputFilename, err)
-			}
+			require.NoError(t, err, "Error writing test file to %s: %s", outputFilename, err)
 		} else {
 			// unmarshal our expected outputs
 			expectedOutputs := make([]*Output, len(flowTest.Outputs))
 			for i := range expectedOutputs {
 				output := &Output{}
 				err := json.Unmarshal(flowTest.Outputs[i], output)
-				if err != nil {
-					log.Fatalf("Error unmarshalling output: %s", err)
-				}
+				require.NoError(t, err, "Error unmarshalling output: %s", err)
+
 				expectedOutputs[i] = output
 			}
 
@@ -258,13 +278,10 @@ func TestFlows(t *testing.T) {
 				expectedOutput := expectedOutputs[i]
 
 				actualSession, err := engine.ReadSession(runResult.assetCache, engine.NewMockAssetServer(), actualOutput.Session)
-				if err != nil {
-					t.Errorf("Error unmarshalling session running flow '%s': %s\n", test.assets, err)
-				}
+				require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", test.assets, err)
+
 				expectedSession, err := engine.ReadSession(runResult.assetCache, engine.NewMockAssetServer(), expectedOutput.Session)
-				if err != nil {
-					t.Errorf("Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
-				}
+				require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 
 				// number of runs should be the same
 				if len(actualSession.Runs()) != len(expectedSession.Runs()) {
@@ -295,13 +312,10 @@ func TestFlows(t *testing.T) {
 
 					// write our events as json
 					eventJSON, err := rawMessageAsJSON(event)
-					if err != nil {
-						t.Errorf("Error marshalling event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
-					}
+					require.NoError(t, err, "Error marshalling event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
+
 					expectedJSON, err := rawMessageAsJSON(expected)
-					if err != nil {
-						t.Errorf("Error marshalling expected event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
-					}
+					require.NoError(t, err, "Error marshalling expected event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
 
 					if eventJSON != expectedJSON {
 						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, test.assets, test.output)
