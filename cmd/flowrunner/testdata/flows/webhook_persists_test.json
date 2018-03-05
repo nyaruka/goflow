@@ -9,7 +9,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Something!",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -24,15 +23,13 @@
                 {
                     "action_uuid": "59cee8f1-ed9e-453e-bc17-6f1996e959d0",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "This is the first message.",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "This is the first message.",
+                            "urn": "tel:+12065551212",
+                            "uuid": "766683e9-94fa-4fd0-b7e3-39ccc83aa541"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -52,15 +49,13 @@
                 {
                     "action_uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "The status is true. Send something",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "The status is true. Send something",
+                            "urn": "tel:+12065551212",
+                            "uuid": "5cd32ad3-1c73-4767-a2ef-7c00d0816fd6"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -111,15 +106,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "This is the first message.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "This is the first message.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "766683e9-94fa-4fd0-b7e3-39ccc83aa541"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
@@ -149,15 +142,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "The status is true. Send something",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "The status is true. Send something",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "5cd32ad3-1c73-4767-a2ef-7c00d0816fd6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
@@ -235,15 +226,13 @@
                 {
                     "action_uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "The status is now true",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "The status is now true",
+                            "urn": "tel:+12065551212",
+                            "uuid": "b104b1bc-3e90-4755-b6cf-21cc6256ea30"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -298,15 +287,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "This is the first message.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "This is the first message.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "766683e9-94fa-4fd0-b7e3-39ccc83aa541"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
@@ -336,15 +323,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "The status is true. Send something",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "The status is true. Send something",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "5cd32ad3-1c73-4767-a2ef-7c00d0816fd6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
@@ -366,7 +351,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "Something!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -383,15 +367,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "The status is now true",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "The status is now true",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "b104b1bc-3e90-4755-b6cf-21cc6256ea30"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "accf4276-f719-4664-b0b1-4f18c0184f56",

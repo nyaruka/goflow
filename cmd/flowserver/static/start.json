@@ -52,8 +52,7 @@
             "msg": {
                 "uuid": "77dc2aec-1a2f-4820-a878-52cc26f689de",
                 "text": "Let's go thrifting!",
-                "urn": "tel:+12065551212",
-                "created_on": "2017-05-29T00:00:00.000000000-00:00"
+                "urn": "tel:+12065551212"
             }
         }
     ]

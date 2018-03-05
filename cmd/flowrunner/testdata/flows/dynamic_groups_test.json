@@ -34,15 +34,13 @@
                 {
                     "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Current groups: Males, Old Men",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Current groups: Males, Old Men",
+                            "urn": "tel:+12065551212",
+                            "uuid": "a61c4ccd-acb6-4905-be1a-63c720777476"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -58,15 +56,13 @@
                 {
                     "action_uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Current groups: Males, Old Men",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Current groups: Males, Old Men",
+                            "urn": "tel:+12065551212",
+                            "uuid": "7c5744f1-6634-4c17-b36c-fa91c71a8840"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -86,15 +82,13 @@
                 {
                     "action_uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Current groups: Males, Youth, MTN Callers",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Current groups: Males, Youth, MTN Callers",
+                            "urn": "tel:+12065551212",
+                            "uuid": "f7541159-9f1e-4308-be1a-96121b84ad01"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -170,15 +164,13 @@
                                         "value": "64"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Current groups: Males, Old Men",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Current groups: Males, Old Men",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "a61c4ccd-acb6-4905-be1a-63c720777476"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -186,15 +178,13 @@
                                         "urn": "tel:+250781234567"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Current groups: Males, Old Men",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Current groups: Males, Old Men",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "7c5744f1-6634-4c17-b36c-fa91c71a8840"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -206,15 +196,13 @@
                                         "value": "17"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Current groups: Males, Youth, MTN Callers",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Current groups: Males, Youth, MTN Callers",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "f7541159-9f1e-4308-be1a-96121b84ad01"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

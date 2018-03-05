@@ -9,7 +9,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Ryan Lewis",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -24,15 +23,13 @@
                 {
                     "action_uuid": "d3cd8da7-55f2-4bd3-9a0c-efc93c99e498",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "What is your name?",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "What is your name?",
+                            "urn": "tel:+12065551212",
+                            "uuid": "e36fc151-a43e-4b5f-bbd2-298e2884d164"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -83,15 +80,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "What is your name?",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "e36fc151-a43e-4b5f-bbd2-298e2884d164"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
@@ -190,15 +185,13 @@
                 {
                     "action_uuid": "aafb505c-603d-4025-864d-471345ed237d",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ryan Lewis",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Great, pleased to meet you Ryan",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Great, pleased to meet you Ryan",
+                            "urn": "tel:+12065551212",
+                            "uuid": "61ca1d6d-247d-4d45-a63b-990a9edfa648"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -253,15 +246,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "What is your name?",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "e36fc151-a43e-4b5f-bbd2-298e2884d164"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
@@ -283,7 +274,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "Ryan Lewis",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -324,15 +314,13 @@
                                         "value": "Ryan"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ryan Lewis",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Great, pleased to meet you Ryan",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Great, pleased to meet you Ryan",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "61ca1d6d-247d-4d45-a63b-990a9edfa648"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

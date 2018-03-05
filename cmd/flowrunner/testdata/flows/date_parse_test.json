@@ -9,7 +9,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "I was born on 1977.06.23 at 3:34 pm",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -24,15 +23,13 @@
                 {
                     "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                            "urn": "tel:+12065551212",
+                            "uuid": "7a0ed68e-c3f5-4ef2-9743-55bc5b0122c7"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -84,15 +81,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "7a0ed68e-c3f5-4ef2-9743-55bc5b0122c7"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -180,15 +175,13 @@
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Awesome, you were born on 06-23-1977 at 15:34",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Awesome, you were born on 06-23-1977 at 15:34",
+                            "urn": "tel:+12065551212",
+                            "uuid": "8e9f53ad-0047-43e1-9a3f-a8fc8efbd73c"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -247,15 +240,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "7a0ed68e-c3f5-4ef2-9743-55bc5b0122c7"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -269,7 +260,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "I was born on 1977.06.23 at 3:34 pm",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -304,15 +294,13 @@
                                         "value": "1977-06-23T15:34:00.000000-05:00"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Awesome, you were born on 06-23-1977 at 15:34",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Awesome, you were born on 06-23-1977 at 15:34",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8e9f53ad-0047-43e1-9a3f-a8fc8efbd73c"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

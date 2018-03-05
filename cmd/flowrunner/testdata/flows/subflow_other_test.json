@@ -9,7 +9,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "neither",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -25,7 +24,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "yes",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -41,7 +39,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "never",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -57,7 +54,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "no",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -72,15 +68,13 @@
                 {
                     "action_uuid": "ac403443-4e93-4127-8b03-469598cd7ae2",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hi there, let's go to the child.",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Hi there, let's go to the child.",
+                            "urn": "tel:+12065551212",
+                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -100,15 +94,13 @@
                 {
                     "action_uuid": "9b3d32d4-aa6c-44e0-95cd-92117c67738f",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Welcome to the child, say yes or no!",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Welcome to the child, say yes or no!",
+                            "urn": "tel:+12065551212",
+                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -159,15 +151,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi there, let's go to the child.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi there, let's go to the child.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -206,15 +196,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Welcome to the child, say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Welcome to the child, say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -296,15 +284,13 @@
                 {
                     "action_uuid": "ef6b42af-9751-4120-972c-e60771904dd2",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Nope, that's neither.",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Nope, that's neither.",
+                            "urn": "tel:+12065551212",
+                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -355,15 +341,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi there, let's go to the child.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi there, let's go to the child.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -413,15 +397,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Welcome to the child, say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Welcome to the child, say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -443,7 +425,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -469,15 +450,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Nope, that's neither.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Nope, that's neither.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -569,30 +548,26 @@
                 {
                     "action_uuid": "7d17e71a-2967-4dbb-86a4-eda028aca38a",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "You said yes",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "You said yes",
+                            "urn": "tel:+12065551212",
+                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
                 {
                     "action_uuid": "54b10283-9863-4edf-abfa-705cf24a64fc",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hooray, you did it and said yes. Say yes or no!",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Hooray, you did it and said yes. Say yes or no!",
+                            "urn": "tel:+12065551212",
+                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -643,15 +618,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi there, let's go to the child.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi there, let's go to the child.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -681,15 +654,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hooray, you did it and said yes. Say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hooray, you did it and said yes. Say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -734,15 +705,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Welcome to the child, say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Welcome to the child, say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -764,7 +733,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -790,15 +758,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Nope, that's neither.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Nope, that's neither.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -820,7 +786,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "yes",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -846,15 +811,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "You said yes",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "You said yes",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
@@ -935,15 +898,13 @@
                 {
                     "action_uuid": "27442755-3d94-499f-97d5-a9409ab83b67",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Nope, that's neither",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Nope, that's neither",
+                            "urn": "tel:+12065551212",
+                            "uuid": "e710fdab-f3e3-4f7c-a6ca-7b65d0a57202"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -1005,15 +966,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi there, let's go to the child.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi there, let's go to the child.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -1043,15 +1002,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hooray, you did it and said yes. Say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hooray, you did it and said yes. Say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -1073,7 +1030,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "never",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1099,15 +1055,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Nope, that's neither",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Nope, that's neither",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "e710fdab-f3e3-4f7c-a6ca-7b65d0a57202"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
@@ -1162,15 +1116,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Welcome to the child, say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Welcome to the child, say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -1192,7 +1144,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1218,15 +1169,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Nope, that's neither.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Nope, that's neither.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -1248,7 +1197,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "yes",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1274,15 +1222,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "You said yes",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "You said yes",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",
@@ -1363,15 +1309,13 @@
                 {
                     "action_uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "All Done! You said yes in the child and no here.",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "All Done! You said yes in the child and no here.",
+                            "urn": "tel:+12065551212",
+                            "uuid": "4a029bb9-bfd8-4b56-8ccf-cca1fde3d765"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -1426,15 +1370,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi there, let's go to the child.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi there, let's go to the child.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "df679a21-515f-414a-a406-ef32ead7feb6"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "e0db9dfe-28b1-4be0-9042-9cfcf651e8c9",
@@ -1464,15 +1406,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hooray, you did it and said yes. Say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hooray, you did it and said yes. Say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "781295b6-290f-430f-b7af-b36a4534b076"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "2a67e061-c7da-42f7-91e5-32c8a9591020",
@@ -1494,7 +1434,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "never",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1520,15 +1459,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Nope, that's neither",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Nope, that's neither",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "e710fdab-f3e3-4f7c-a6ca-7b65d0a57202"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "4ff58def-89e7-4c52-bda7-ebea0ee5176e",
@@ -1550,7 +1487,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "no",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1576,15 +1512,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "All Done! You said yes in the child and no here.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "All Done! You said yes in the child and no here.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "4a029bb9-bfd8-4b56-8ccf-cca1fde3d765"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "801c349a-2c2e-4666-b7b2-1e6ed4945d8a",
@@ -1628,15 +1562,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Welcome to the child, say yes or no!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Welcome to the child, say yes or no!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9b1c4516-f057-4177-ac10-0d97a49945a8"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "f84a4e1c-a1ba-4059-9218-52987ebd979a",
@@ -1658,7 +1590,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "neither",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1684,15 +1615,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Nope, that's neither.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Nope, that's neither.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "bf8f1bf2-2b82-4620-b618-4094c4fc1d1d"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "6a4cbb55-7936-4c98-958b-eba1866a596e",
@@ -1714,7 +1643,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "yes",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -1740,15 +1668,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "You said yes",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "You said yes",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "7ed11e2d-e711-40c1-b572-685252fbabeb"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "8df047e3-465e-4d3c-a332-25b62aacdefb",

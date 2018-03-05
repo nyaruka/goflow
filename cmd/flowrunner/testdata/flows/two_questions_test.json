@@ -9,7 +9,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "I like blue!",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -25,7 +24,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Coke",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -40,15 +38,13 @@
                 {
                     "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                            "urn": "tel:+12065551212",
+                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -100,15 +96,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -193,15 +187,13 @@
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                            "urn": "tel:+12065551212",
+                            "uuid": "a6e45de6-7a39-48d9-95ca-a46833ed3d67"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -264,15 +256,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -286,7 +276,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "I like blue!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -318,15 +307,13 @@
                                         "value": "fra"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "a6e45de6-7a39-48d9-95ca-a46833ed3d67"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -424,15 +411,13 @@
                 {
                     "action_uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Parfait, vous avez finis et tu aimes Coke",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Parfait, vous avez finis et tu aimes Coke",
+                            "urn": "tel:+12065551212",
+                            "uuid": "2fc0ac25-74d8-47b9-9445-970790027600"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -487,15 +472,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "f3c19c75-e231-4093-8967-0322ae5e2bb6"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -509,7 +492,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "I like blue!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -541,15 +523,13 @@
                                         "value": "fra"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "a6e45de6-7a39-48d9-95ca-a46833ed3d67"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -563,7 +543,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "Coke",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -598,15 +577,13 @@
                                         "url": "http://127.0.0.1:49999/?cmd=success"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Parfait, vous avez finis et tu aimes Coke",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Parfait, vous avez finis et tu aimes Coke",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "2fc0ac25-74d8-47b9-9445-970790027600"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",

@@ -9,7 +9,6 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Ryan Lewis",
                     "urn": "tel:+12065551212",
                     "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -24,15 +23,13 @@
                 {
                     "action_uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "This is the parent flow",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "This is the parent flow",
+                            "urn": "tel:+12065551212",
+                            "uuid": "e626c88b-7e2c-496a-9874-4815f5c1737a"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -52,15 +49,13 @@
                 {
                     "action_uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "What is your name?",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "What is your name?",
+                            "urn": "tel:+12065551212",
+                            "uuid": "54468612-4e19-468a-a855-8a5a7d819f55"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
@@ -111,15 +106,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "This is the parent flow",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "This is the parent flow",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "e626c88b-7e2c-496a-9874-4815f5c1737a"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -149,15 +142,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "What is your name?",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "54468612-4e19-468a-a855-8a5a7d819f55"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -230,30 +221,26 @@
                 {
                     "action_uuid": "d63929fe-e999-42ef-abf1-4b281f58891e",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Got it!",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Got it!",
+                            "urn": "tel:+12065551212",
+                            "uuid": "c13285f3-5195-4fdf-a06a-7f73c547002a"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 },
                 {
                     "action_uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Flow succeeded, they said Ryan Lewis",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "text": "Flow succeeded, they said Ryan Lewis",
+                            "urn": "tel:+12065551212",
+                            "uuid": "51710c6e-657c-4627-b992-b2829421587e"
+                        },
+                        "type": "msg_created"
                     },
                     "step_uuid": ""
                 }
@@ -297,15 +284,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "This is the parent flow",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "This is the parent flow",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "e626c88b-7e2c-496a-9874-4815f5c1737a"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -326,15 +311,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Flow succeeded, they said Ryan Lewis",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Flow succeeded, they said Ryan Lewis",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "51710c6e-657c-4627-b992-b2829421587e"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -367,15 +350,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "What is your name?",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "54468612-4e19-468a-a855-8a5a7d819f55"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -388,7 +369,6 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "Ryan Lewis",
                                             "urn": "tel:+12065551212",
                                             "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
@@ -414,15 +394,13 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Got it!",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "text": "Got it!",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "c13285f3-5195-4fdf-a06a-7f73c547002a"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
