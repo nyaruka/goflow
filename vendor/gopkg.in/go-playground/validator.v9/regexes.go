@@ -30,6 +30,8 @@ const (
 	latitudeRegexString            = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?)$"
 	longitudeRegexString           = "^[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$"
 	sSNRegexString                 = `^\d{3}[- ]?\d{2}[- ]?\d{4}$`
+	hostnameRegexStringRFC952      = `^[a-zA-Z][a-zA-Z0-9\-\.]+[a-z-Az0-9]$`    // https://tools.ietf.org/html/rfc952
+	hostnameRegexStringRFC1123     = `^[a-zA-Z0-9][a-zA-Z0-9\-\.]+[a-z-Az0-9]$` // accepts hostname starting with a digit https://tools.ietf.org/html/rfc1123
 )
 
 var (
@@ -60,4 +62,6 @@ var (
 	latitudeRegex            = regexp.MustCompile(latitudeRegexString)
 	longitudeRegex           = regexp.MustCompile(longitudeRegexString)
 	sSNRegex                 = regexp.MustCompile(sSNRegexString)
+	hostnameRegexRFC952      = regexp.MustCompile(hostnameRegexStringRFC952)
+	hostnameRegexRFC1123     = regexp.MustCompile(hostnameRegexStringRFC1123)
 )

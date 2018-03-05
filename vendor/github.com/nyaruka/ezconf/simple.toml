@@ -1,0 +1,10 @@
+# these fields can be set via command line or env
+my_int = 32
+my_bool = true
+
+# arrays cannot
+my_ints = [10, 20, 30]
+
+# neither can nested fields
+[nested]
+nested_int = 64
