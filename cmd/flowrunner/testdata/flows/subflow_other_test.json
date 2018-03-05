@@ -389,7 +389,7 @@
                             "text": "neither",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda"
                         },
                         "parent_uuid": "",
                         "path": [
@@ -697,7 +697,7 @@
                             "text": "yes",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "f3993f5e-5d71-4abd-a37e-a00b5dbf2fd8"
                         },
                         "parent_uuid": "",
                         "path": [
@@ -959,7 +959,7 @@
                             "text": "never",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "fcd1b08f-d635-4cb3-99be-52d3e5f2403b"
                         },
                         "path": [
                             {
@@ -1108,7 +1108,7 @@
                             "text": "yes",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "f3993f5e-5d71-4abd-a37e-a00b5dbf2fd8"
                         },
                         "parent_uuid": "",
                         "path": [
@@ -1363,7 +1363,7 @@
                             "text": "no",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "9c26905d-9f0b-4ada-8d56-e8cf32cbafcc"
                         },
                         "path": [
                             {
@@ -1554,7 +1554,7 @@
                             "text": "yes",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "f3993f5e-5d71-4abd-a37e-a00b5dbf2fd8"
                         },
                         "parent_uuid": "",
                         "path": [

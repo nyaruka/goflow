@@ -249,7 +249,7 @@
                             "text": "I like blue!",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda"
                         },
                         "path": [
                             {
@@ -465,7 +465,7 @@
                             "text": "Coke",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "f3993f5e-5d71-4abd-a37e-a00b5dbf2fd8"
                         },
                         "path": [
                             {

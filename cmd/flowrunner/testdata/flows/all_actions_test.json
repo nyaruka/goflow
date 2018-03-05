@@ -23,7 +23,7 @@
                     "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "input_uuid": "",
+                        "input_uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda",
                         "labels": [
                             {
                                 "name": "Spam",
@@ -391,7 +391,7 @@
                             "text": "Ryan Lewis",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": ""
+                            "uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda"
                         },
                         "path": [
                             {
@@ -412,7 +412,7 @@
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "input_uuid": "",
+                                        "input_uuid": "6a16dc4c-09e3-48bb-a883-203092ea6dda",
                                         "labels": [
                                             {
                                                 "name": "Spam",
