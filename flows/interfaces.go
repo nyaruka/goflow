@@ -6,53 +6,51 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type UUID string
-
-type NodeUUID UUID
+type NodeUUID utils.UUID
 
 func (u NodeUUID) String() string { return string(u) }
 
-type ExitUUID UUID
+type ExitUUID utils.UUID
 
 func (u ExitUUID) String() string { return string(u) }
 
-type FlowUUID UUID
+type FlowUUID utils.UUID
 
 func (u FlowUUID) String() string { return string(u) }
 
-type ActionUUID UUID
+type ActionUUID utils.UUID
 
 func (u ActionUUID) String() string { return string(u) }
 
-type ContactUUID UUID
+type ContactUUID utils.UUID
 
 func (u ContactUUID) String() string { return string(u) }
 
-type ChannelUUID UUID
+type ChannelUUID utils.UUID
 
 func (u ChannelUUID) String() string { return string(u) }
 
-type RunUUID UUID
+type RunUUID utils.UUID
 
 func (u RunUUID) String() string { return string(u) }
 
-type StepUUID UUID
+type StepUUID utils.UUID
 
 func (u StepUUID) String() string { return string(u) }
 
-type LabelUUID UUID
+type LabelUUID utils.UUID
 
 func (u LabelUUID) String() string { return string(u) }
 
-type GroupUUID UUID
+type GroupUUID utils.UUID
 
 func (u GroupUUID) String() string { return string(u) }
 
-type InputUUID UUID
+type InputUUID utils.UUID
 
 func (u InputUUID) String() string { return string(u) }
 
-type MsgUUID UUID
+type MsgUUID utils.UUID
 
 func (u MsgUUID) String() string { return string(u) }
 
@@ -199,7 +197,7 @@ type FlowTranslations interface {
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
-	GetTextArray(uuid UUID, key string) []string
+	GetTextArray(uuid utils.UUID, key string) []string
 }
 
 type Trigger interface {
@@ -316,8 +314,8 @@ type FlowRun interface {
 	Path() []Step
 	PathLocation() (Step, Node, error)
 
-	GetText(uuid UUID, key string, native string) string
-	GetTextArray(uuid UUID, key string, native []string) []string
+	GetText(uuid utils.UUID, key string, native string) string
+	GetTextArray(uuid utils.UUID, key string, native []string) []string
 
 	Snapshot() RunSummary
 	Parent() RunSummary

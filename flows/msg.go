@@ -52,7 +52,7 @@ func NewMsgOut(urn urns.URN, channel Channel, text string, attachments []Attachm
 
 	return &MsgOut{
 		BaseMsg: BaseMsg{
-			UUID_:        MsgUUID(utils.UUID()),
+			UUID_:        MsgUUID(utils.NewUUID()),
 			URN_:         urn,
 			Channel_:     channelRef,
 			Text_:        text,
