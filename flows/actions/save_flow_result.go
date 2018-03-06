@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSaveFlowResult is our type for the save result action
@@ -45,7 +46,7 @@ func (a *SaveFlowResultAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// get our localized value if any
-	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
+	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template, false)
 
 	// log any error received
@@ -53,7 +54,7 @@ func (a *SaveFlowResultAction) Execute(run flows.FlowRun, step flows.Step, log f
 		log.Add(events.NewErrorEvent(err))
 	}
 
-	categoryLocalized := run.GetText(flows.UUID(a.UUID()), "category", a.Category)
+	categoryLocalized := run.GetText(utils.UUID(a.UUID()), "category", a.Category)
 	if a.Category == categoryLocalized {
 		categoryLocalized = ""
 	}

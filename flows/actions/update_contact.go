@@ -52,7 +52,7 @@ func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	}
 
 	// get our localized value if any
-	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
+	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template, false)
 	value = strings.TrimSpace(value)
 

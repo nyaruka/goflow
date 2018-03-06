@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSaveContactField is the type for our save to contact action
@@ -45,7 +46,7 @@ func (a *SaveContactField) Execute(run flows.FlowRun, step flows.Step, log flows
 	}
 
 	// get our localized value if any
-	template := run.GetText(flows.UUID(a.UUID()), "value", a.Value)
+	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
 	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template, false)
 
 	// if we received an error, log it

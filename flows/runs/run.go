@@ -99,7 +99,7 @@ type flowRun struct {
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
 	r := &flowRun{
-		uuid:      flows.RunUUID(utils.UUID()),
+		uuid:      flows.RunUUID(utils.NewUUID()),
 		session:   session,
 		flow:      flow,
 		contact:   contact,
@@ -206,7 +206,7 @@ func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error)
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := time.Now().UTC()
-	step := &step{stepUUID: flows.StepUUID(utils.UUID()), nodeUUID: node.UUID(), arrivedOn: now}
+	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	return step
 }
@@ -252,12 +252,12 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
-func (r *flowRun) GetText(uuid flows.UUID, key string, native string) string {
+func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
 	return textArray[0]
 }
 
-func (r *flowRun) GetTextArray(uuid flows.UUID, key string, native []string) []string {
+func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []string {
 	for _, lang := range r.environment.Languages() {
 		if lang == r.Flow().Language() {
 			return native

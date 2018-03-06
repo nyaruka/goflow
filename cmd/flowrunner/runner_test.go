@@ -186,12 +186,12 @@ func fixedUUIDGeneratorFromFile(path string) (*fixedUUIDGenerator, error) {
 	}, nil
 }
 
-func (g *fixedUUIDGenerator) Next() string {
+func (g *fixedUUIDGenerator) Next() utils.UUID {
 	if g.index >= len(g.uuids) {
 		panic("Fixed UUID list for testing exhausted. Add more!")
 	}
 
-	u := g.uuids[g.index]
+	u := utils.UUID(g.uuids[g.index])
 	g.index++
 	return u
 }
