@@ -329,16 +329,13 @@ type FlowRun interface {
 	Exit(RunStatus)
 }
 
-// ChannelType represents the type of a Channel
-type ChannelType string
-
-func (ct ChannelType) String() string { return string(ct) }
-
 // Channel represents a channel for sending and receiving messages
 type Channel interface {
 	UUID() ChannelUUID
 	Name() string
 	Address() string
-	Type() ChannelType
+	Schemes() []string
+	Roles() []ChannelRole
 	Reference() *ChannelReference
+	Parent() *ChannelReference
 }

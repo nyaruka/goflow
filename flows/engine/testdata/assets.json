@@ -115,7 +115,8 @@
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "Nexmo",
             "address": "+12345671111",
-            "type": "NX"
+            "schemes": ["tel"],
+            "roles": ["send", "receive"]
         }
     },
     {
