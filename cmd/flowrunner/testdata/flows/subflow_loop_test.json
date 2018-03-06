@@ -16,7 +16,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "2f9af6d6-3000-4b1f-90f3-eb33bb5fbd0d"
+                    "step_uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
                 },
                 {
                     "action_uuid": "300f02ba-e0b5-4991-bed6-4c240cdb8743",
@@ -26,10 +26,10 @@
                             "name": "Child Flow",
                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                         },
-                        "parent_run_uuid": "498eba35-19df-4e5c-a1cd-a3d938ec1dc0",
+                        "parent_run_uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554",
                         "type": "flow_triggered"
                     },
-                    "step_uuid": "2f9af6d6-3000-4b1f-90f3-eb33bb5fbd0d"
+                    "step_uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
                 },
                 {
                     "action_uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
@@ -42,7 +42,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "9b6e6176-ba55-413f-bd31-c6c899840607"
+                    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a"
                 },
                 {
                     "action_uuid": "a25014c5-aaa5-47d7-9376-429f317360f1",
@@ -52,7 +52,7 @@
                         "text": "flow loop detected, stopping execution before starting flow: 76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                         "type": "error"
                     },
-                    "step_uuid": "9b6e6176-ba55-413f-bd31-c6c899840607"
+                    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a"
                 },
                 {
                     "event": {
@@ -61,7 +61,7 @@
                         "text": "child run for flow 'a8d27b94-d3d0-4a96-8074-0f162f342195' ended in error, ending execution",
                         "type": "error"
                     },
-                    "step_uuid": "2f9af6d6-3000-4b1f-90f3-eb33bb5fbd0d"
+                    "step_uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
                 }
             ],
             "session": {
@@ -117,7 +117,7 @@
                                             "name": "Child Flow",
                                             "uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195"
                                         },
-                                        "parent_run_uuid": "498eba35-19df-4e5c-a1cd-a3d938ec1dc0",
+                                        "parent_run_uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554",
                                         "type": "flow_triggered"
                                     },
                                     {
@@ -128,18 +128,18 @@
                                     }
                                 ],
                                 "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
-                                "uuid": "2f9af6d6-3000-4b1f-90f3-eb33bb5fbd0d"
+                                "uuid": "8707af30-d50f-440b-9803-f4a851d20f2b"
                             }
                         ],
                         "status": "errored",
-                        "uuid": "498eba35-19df-4e5c-a1cd-a3d938ec1dc0"
+                        "uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554"
                     },
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "a8d27b94-d3d0-4a96-8074-0f162f342195",
-                        "parent_uuid": "498eba35-19df-4e5c-a1cd-a3d938ec1dc0",
+                        "parent_uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554",
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -161,11 +161,11 @@
                                     }
                                 ],
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                                "uuid": "9b6e6176-ba55-413f-bd31-c6c899840607"
+                                "uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a"
                             }
                         ],
                         "status": "errored",
-                        "uuid": "47e6a0f1-e474-4b88-9bf6-967e2ff31b9e"
+                        "uuid": "6bbfa705-894a-4651-8b56-5e92bbfe0e3f"
                     }
                 ],
                 "status": "errored",

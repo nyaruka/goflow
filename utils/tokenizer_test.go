@@ -1,8 +1,10 @@
-package utils
+package utils_test
 
 import (
 	"reflect"
 	"testing"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 var tokenizerTests = []struct {
@@ -19,7 +21,7 @@ var tokenizerTests = []struct {
 
 func TestTokenizer(t *testing.T) {
 	for _, test := range tokenizerTests {
-		result := TokenizeString(test.text)
+		result := utils.TokenizeString(test.text)
 		if !reflect.DeepEqual(result, test.result) {
 			t.Errorf("Unexpected result tokenizing '%s', got: %s expected: %v", test.text, result, test.result)
 		}

@@ -31,7 +31,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
+                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
                 },
                 {
                     "event": {
@@ -39,7 +39,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
+                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
                 }
             ],
             "session": {
@@ -96,11 +96,11 @@
                                     }
                                 ],
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
+                                "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "0b020cdb-9cc7-4afd-947b-012e59cabd4e"
+                        "uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07"
                     }
                 ],
                 "status": "waiting",
@@ -157,7 +157,7 @@
                         "type": "run_result_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
+                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
                 },
                 {
                     "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
@@ -170,7 +170,7 @@
                         "type": "contact_field_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "bf826917-06bd-418d-becc-df5fb6ab7479"
+                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
                 },
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
@@ -183,7 +183,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "bf826917-06bd-418d-becc-df5fb6ab7479"
+                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
                 }
             ],
             "session": {
@@ -279,7 +279,7 @@
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "4892b561-9f84-4f40-a1e1-55158c3294bd"
+                                "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -305,7 +305,7 @@
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "bf826917-06bd-418d-becc-df5fb6ab7479"
+                                "uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
                             }
                         ],
                         "results": {
@@ -319,7 +319,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "0b020cdb-9cc7-4afd-947b-012e59cabd4e"
+                        "uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07"
                     }
                 ],
                 "status": "completed",

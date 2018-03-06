@@ -16,7 +16,7 @@
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "f3c83ed1-d623-40c9-aba3-055bff480b74"
+                    "step_uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14"
                 }
             ],
             "session": {
@@ -69,11 +69,11 @@
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "f3c83ed1-d623-40c9-aba3-055bff480b74"
+                                "uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "34a7ba43-eacb-4ef7-bf82-a026dafa8de5"
+                        "uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d"
                     }
                 ],
                 "status": "completed",
