@@ -196,14 +196,14 @@ type fieldValueEnvelope struct {
 }
 
 type contactEnvelope struct {
-	UUID        ContactUUID                     `json:"uuid" validate:"required,uuid4"`
-	Name        string                          `json:"name"`
-	Language    utils.Language                  `json:"language"`
-	Timezone    string                          `json:"timezone"`
-	URNs        URNList                         `json:"urns"`
-	GroupUUIDs  []GroupUUID                     `json:"group_uuids,omitempty" validate:"dive,uuid4"`
-	Fields      map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
-	ChannelUUID ChannelUUID                     `json:"channel_uuid,omitempty" validate:"omitempty,uuid4"`
+	UUID     ContactUUID                     `json:"uuid" validate:"required,uuid4"`
+	Name     string                          `json:"name"`
+	Language utils.Language                  `json:"language"`
+	Timezone string                          `json:"timezone"`
+	URNs     URNList                         `json:"urns"`
+	Groups   []*GroupReference               `json:"groups,omitempty" validate:"dive"`
+	Fields   map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
+	Channel  *ChannelReference               `json:"channel,omitempty" validate:"omitempty,dive"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -231,12 +231,12 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		c.urns = envelope.URNs
 	}
 
-	if envelope.GroupUUIDs == nil {
+	if envelope.Groups == nil {
 		c.groups = NewGroupList([]*Group{})
 	} else {
-		groups := make([]*Group, len(envelope.GroupUUIDs))
-		for g := range envelope.GroupUUIDs {
-			if groups[g], err = session.Assets().GetGroup(envelope.GroupUUIDs[g]); err != nil {
+		groups := make([]*Group, len(envelope.Groups))
+		for g := range envelope.Groups {
+			if groups[g], err = session.Assets().GetGroup(envelope.Groups[g].UUID); err != nil {
 				return nil, err
 			}
 		}
@@ -262,8 +262,8 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		}
 	}
 
-	if envelope.ChannelUUID != "" {
-		c.channel, err = session.Assets().GetChannel(envelope.ChannelUUID)
+	if envelope.Channel != nil {
+		c.channel, err = session.Assets().GetChannel(envelope.Channel.UUID)
 		if err != nil {
 			return nil, err
 		}
@@ -283,9 +283,9 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Timezone = c.timezone.String()
 	}
 
-	ce.GroupUUIDs = make([]GroupUUID, c.groups.Count())
+	ce.Groups = make([]*GroupReference, c.groups.Count())
 	for g, group := range c.groups.All() {
-		ce.GroupUUIDs[g] = group.UUID()
+		ce.Groups[g] = group.Reference()
 	}
 
 	ce.Fields = make(map[FieldKey]fieldValueEnvelope, len(c.fields))
