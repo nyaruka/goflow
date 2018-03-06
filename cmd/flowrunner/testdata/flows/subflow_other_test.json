@@ -70,6 +70,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Hi there, let's go to the child.",
                             "urn": "tel:+12065551212",
                             "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -96,6 +100,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Welcome to the child, say yes or no!",
                             "urn": "tel:+12065551212",
                             "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -153,6 +161,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -198,6 +210,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -286,6 +302,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Nope, that's neither.",
                             "urn": "tel:+12065551212",
                             "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
@@ -343,6 +363,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -382,7 +406,7 @@
                         "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -399,6 +423,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -452,6 +480,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
@@ -550,6 +582,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "You said yes",
                             "urn": "tel:+12065551212",
                             "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
@@ -563,6 +599,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Hooray, you did it and said yes. Say yes or no!",
                             "urn": "tel:+12065551212",
                             "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
@@ -620,6 +660,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -656,6 +700,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hooray, you did it and said yes. Say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
@@ -690,7 +738,7 @@
                         "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -707,6 +755,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -760,6 +812,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
@@ -813,6 +869,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "You said yes",
                                             "urn": "tel:+12065551212",
                                             "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
@@ -900,6 +960,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Nope, that's neither",
                             "urn": "tel:+12065551212",
                             "uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6"
@@ -952,7 +1016,7 @@
                         "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -968,6 +1032,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -1004,6 +1072,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hooray, you did it and said yes. Say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
@@ -1057,6 +1129,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Nope, that's neither",
                                             "urn": "tel:+12065551212",
                                             "uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6"
@@ -1101,7 +1177,7 @@
                         "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1118,6 +1194,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -1171,6 +1251,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
@@ -1224,6 +1308,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "You said yes",
                                             "urn": "tel:+12065551212",
                                             "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
@@ -1311,6 +1399,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "All Done! You said yes in the child and no here.",
                             "urn": "tel:+12065551212",
                             "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
@@ -1356,7 +1448,7 @@
                         "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1372,6 +1464,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hi there, let's go to the child.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
@@ -1408,6 +1504,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hooray, you did it and said yes. Say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f54bbb16-3fba-491d-8768-7d0ba4d4f3e8"
@@ -1461,6 +1561,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Nope, that's neither",
                                             "urn": "tel:+12065551212",
                                             "uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6"
@@ -1514,6 +1618,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "All Done! You said yes in the child and no here.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
@@ -1547,7 +1655,7 @@
                         "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -1564,6 +1672,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Welcome to the child, say yes or no!",
                                             "urn": "tel:+12065551212",
                                             "uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f"
@@ -1617,6 +1729,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Nope, that's neither.",
                                             "urn": "tel:+12065551212",
                                             "uuid": "6bce5330-ed5e-418c-a13f-9238de2a0b76"
@@ -1670,6 +1786,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "You said yes",
                                             "urn": "tel:+12065551212",
                                             "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"

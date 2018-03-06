@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -43,23 +44,61 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
-	//channels, err := run.Session().Assets().GetChannelSet()
-	//if err != nil {
-	//	return err
-	//}
-
-	var sendToUrns flows.URNList
-	if a.AllURNs {
-		sendToUrns = run.Contact().URNs()
-	} else {
-		// TODO choose URN and channel
-		sendToUrns = run.Contact().URNs()[0:1]
+	channelSet, err := run.Session().Assets().GetChannelSet()
+	if err != nil {
+		return err
 	}
 
-	for _, urn := range sendToUrns {
-		msg := flows.NewMsgOut(urn, nil, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+	preferredChannel := run.Contact().Channel()
+	sendChannels := channelSet.WithRole(flows.ChannelRoleSend)
+
+	// if contact has a preferred channel which can send, it takes priority
+	if preferredChannel != nil && preferredChannel.HasRole(flows.ChannelRoleSend) {
+		sendChannels = append([]flows.Channel{preferredChannel}, sendChannels...)
+	}
+
+	destinations := []msgDestination{}
+
+	if a.AllURNs {
+		// send to any URN which has a corresponding channel (i.e. is sendable)
+		for _, u := range run.Contact().URNs() {
+			channel := getBestChannelForURN(sendChannels, u)
+			if channel != nil {
+				destinations = append(destinations, msgDestination{urn: u, channel: channel})
+			}
+		}
+	} else {
+		// send to first URN which has a corresponding channel (i.e. is sendable)
+		for _, u := range run.Contact().URNs() {
+			channel := getBestChannelForURN(sendChannels, u)
+			if channel != nil {
+				destinations = append(destinations, msgDestination{urn: u, channel: channel})
+				break
+			}
+		}
+	}
+
+	// create a new message for each URN+channel destination
+	for _, dest := range destinations {
+		msg := flows.NewMsgOut(dest.urn, dest.channel, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
 		log.Add(events.NewMsgCreatedEvent(msg))
 	}
 
+	return nil
+}
+
+type msgDestination struct {
+	urn     urns.URN
+	channel flows.Channel
+}
+
+func getBestChannelForURN(channels []flows.Channel, urn urns.URN) flows.Channel {
+	// TODO be smarter than first channel with that scheme
+	scheme := urn.Scheme()
+	for _, channel := range channels {
+		if channel.SupportsScheme(scheme) {
+			return channel
+		}
+	}
 	return nil
 }

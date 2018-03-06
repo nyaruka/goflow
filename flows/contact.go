@@ -117,8 +117,6 @@ func (c *Contact) Resolve(key string) interface{} {
 		return c.fields
 	case "timezone":
 		return c.timezone
-	case "urn":
-		return c.urns
 	case "channel":
 		return c.channel
 	}

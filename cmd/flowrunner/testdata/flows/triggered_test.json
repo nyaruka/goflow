@@ -10,13 +10,17 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                             "urn": "tel:+12065551212",
-                            "uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d"
+                            "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
+                    "step_uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f"
                 }
             ],
             "session": {
@@ -60,20 +64,24 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d"
+                                            "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
+                                "uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f"
+                        "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
                     }
                 ],
                 "status": "completed",

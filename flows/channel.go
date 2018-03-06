@@ -47,6 +47,15 @@ func (c *channel) Parent() *ChannelReference { return c.parent }
 // Reference returns a reference to this channel
 func (c *channel) Reference() *ChannelReference { return NewChannelReference(c.uuid, c.name) }
 
+func (c *channel) SupportsScheme(scheme string) bool {
+	for _, s := range c.schemes {
+		if s == scheme {
+			return true
+		}
+	}
+	return false
+}
+
 func (c *channel) HasRole(role ChannelRole) bool {
 	for _, r := range c.roles {
 		if r == role {
@@ -94,6 +103,16 @@ func NewChannelSet(channels []Channel) *ChannelSet {
 		s.channelsByUUID[channel.UUID()] = channel
 	}
 	return s
+}
+
+func (s *ChannelSet) WithRole(role ChannelRole) []Channel {
+	channels := make([]Channel, 0)
+	for _, ch := range s.channels {
+		if ch.HasRole(role) {
+			channels = append(channels, ch)
+		}
+	}
+	return channels
 }
 
 func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {

@@ -336,7 +336,9 @@ type Channel interface {
 	Name() string
 	Address() string
 	Schemes() []string
+	SupportsScheme(string) bool
 	Roles() []ChannelRole
+	HasRole(ChannelRole) bool
 	Reference() *ChannelReference
 	Parent() *ChannelReference
 }

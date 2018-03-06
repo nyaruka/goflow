@@ -16,7 +16,7 @@
                         "type": "contact_field_changed",
                         "value": "MALE"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 },
                 {
                     "action_uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
@@ -29,20 +29,24 @@
                         "type": "contact_field_changed",
                         "value": "64"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 },
                 {
                     "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Current groups: Males, Old Men",
                             "urn": "tel:+12065551212",
-                            "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
+                            "uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 },
                 {
                     "action_uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
@@ -51,20 +55,24 @@
                         "type": "contact_urn_added",
                         "urn": "tel:+250781234567"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 },
                 {
                     "action_uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Current groups: Males, Old Men",
                             "urn": "tel:+12065551212",
-                            "uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92"
+                            "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 },
                 {
                     "action_uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
@@ -77,20 +85,24 @@
                         "type": "contact_field_changed",
                         "value": "17"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 },
                 {
                     "action_uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Current groups: Males, Youth, MTN Callers",
                             "urn": "tel:+12065551212",
-                            "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
+                            "uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                    "step_uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                 }
             ],
             "session": {
@@ -175,9 +187,13 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Current groups: Males, Old Men",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
+                                            "uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                                         },
                                         "type": "msg_created"
                                     },
@@ -189,9 +205,13 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Current groups: Males, Old Men",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92"
+                                            "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
                                         },
                                         "type": "msg_created"
                                     },
@@ -207,20 +227,24 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Current groups: Males, Youth, MTN Callers",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
+                                            "uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
+                                "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
+                        "uuid": "8ffec076-3c61-4142-9741-d46beab654c1"
                     }
                 ],
                 "status": "completed",

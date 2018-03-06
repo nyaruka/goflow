@@ -40,7 +40,11 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
-                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is @contact.urn",
                             "urn": "tel:+12065551212",
                             "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                         },
@@ -98,7 +102,11 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
-                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is @contact.urn",
                                             "urn": "tel:+12065551212",
                                             "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
@@ -189,6 +197,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                             "urn": "tel:+12065551212",
                             "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -242,7 +254,7 @@
                         "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -258,7 +270,11 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
-                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is @contact.urn",
                                             "urn": "tel:+12065551212",
                                             "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
@@ -309,6 +325,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                             "urn": "tel:+12065551212",
                                             "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -413,6 +433,10 @@
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
                             "text": "Parfait, vous avez finis et tu aimes Coke",
                             "urn": "tel:+12065551212",
                             "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
@@ -458,7 +482,7 @@
                         "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -474,7 +498,11 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
-                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is @contact.urn",
                                             "urn": "tel:+12065551212",
                                             "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
@@ -525,6 +553,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                             "urn": "tel:+12065551212",
                                             "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
@@ -579,6 +611,10 @@
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
                                             "text": "Parfait, vous avez finis et tu aimes Coke",
                                             "urn": "tel:+12065551212",
                                             "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"

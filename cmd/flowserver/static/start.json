@@ -20,11 +20,26 @@
                     }
                 ]
             }
+        },
+        {
+            "type": "channel",
+            "url": "http://testserver/assets/channel",
+            "content": [
+                {
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "name": "Android Channel",
+                    "address": "+12345671111",
+                    "schemes": ["tel"],
+                    "roles": ["send", "receive"]
+                }
+            ],
+            "is_set": true
         }
     ],
     "asset_server": {
 		"type_urls": {
-			"flow": "http://testserver/assets/flow"
+            "channel": "http://testserver/assets/channel",
+            "flow": "http://testserver/assets/flow"
 		}
 	},
     "trigger": {
