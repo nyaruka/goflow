@@ -135,8 +135,11 @@
                                         "value": "Azuay"
                                     }
                                 },
-                                "group_uuids": [
-                                    "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                                "groups": [
+                                    {
+                                        "name": "Survey Audience",
+                                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                                    }
                                 ],
                                 "language": "eng",
                                 "name": "Ben Haggerty",
@@ -356,8 +359,11 @@
                             "value": "Azuay"
                         }
                     },
-                    "group_uuids": [
-                        "d7ff4872-9238-452f-9d38-2f558fea89e0"
+                    "groups": [
+                        {
+                            "name": "Males",
+                            "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
+                        }
                     ],
                     "language": "eng",
                     "name": "Ben Haggerty",
@@ -500,8 +506,11 @@
                                                         "value": "Azuay"
                                                     }
                                                 },
-                                                "group_uuids": [
-                                                    "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                                                "groups": [
+                                                    {
+                                                        "name": "Survey Audience",
+                                                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                                                    }
                                                 ],
                                                 "language": "eng",
                                                 "name": "Ben Haggerty",

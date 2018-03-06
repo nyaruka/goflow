@@ -218,8 +218,11 @@
                             "value": "Azuay"
                         }
                     },
-                    "group_uuids": [
-                        "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+                    "groups": [
+                        {
+                            "name": "Registered Users",
+                            "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8"
+                        }
                     ],
                     "language": "eng",
                     "name": "Ryan Lewis",
