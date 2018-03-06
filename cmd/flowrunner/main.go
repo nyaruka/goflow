@@ -18,7 +18,6 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -68,7 +67,7 @@ func rawMessageAsJSON(msg json.RawMessage) (string, error) {
 		return "", err
 	}
 
-	return string(replaceFields(envJSON)), nil
+	return string(clearTimestamps(envJSON)), nil
 }
 
 func eventAsJSON(event flows.Event) (string, error) {
@@ -82,7 +81,7 @@ func eventAsJSON(event flows.Event) (string, error) {
 		return "", err
 	}
 
-	return string(replaceFields(envJSON)), nil
+	return string(clearTimestamps(envJSON)), nil
 }
 
 func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
@@ -122,23 +121,17 @@ func replaceMapFields(replacements map[string]interface{}, parent string, mapFie
 	}
 }
 
-func replaceFields(input []byte) []byte {
+func clearTimestamps(input []byte) []byte {
+	placeholder := "2000-01-01T00:00:00.000000000-00:00"
+
 	replacements := map[string]interface{}{
-		"arrived_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"left_on":         "2000-01-01T00:00:00.000000000-00:00",
-		"exited_on":       "2000-01-01T00:00:00.000000000-00:00",
-		"created_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"modified_on":     "2000-01-01T00:00:00.000000000-00:00",
-		"expires_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"timeout_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"event.uuid":      "",
-		"path.uuid":       "",
-		"run.uuid":        "4213ac47-93fd-48c4-af12-7da8218ef09d",
-		"runs.uuid":       "",
-		"step_uuid":       "",
-		"parent_uuid":     "",
-		"parent_run_uuid": "",
-		"child_uuid":      "",
+		"arrived_on":  placeholder,
+		"left_on":     placeholder,
+		"exited_on":   placeholder,
+		"created_on":  placeholder,
+		"modified_on": placeholder,
+		"expires_on":  placeholder,
+		"timeout_on":  placeholder,
 	}
 
 	// unmarshal to arbitrary json
@@ -239,7 +232,7 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		msg := inputs.NewMsgInput(flows.InputUUID(utils.NewUUID()), nil, time.Now(), contact.URNs()[0], scanner.Text(), []flows.Attachment{})
 		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
@@ -267,7 +260,7 @@ func main() {
 
 	// write out our test file
 	if *writePtr {
-		// name of the test file is the same as our assets file, just with _test.json intead of .json
+		// name of the test file is the same as our assets file, just with _test.json instead of .json
 		testFilename := strings.Replace(assetsFilename, ".json", "_test.json", 1)
 
 		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
@@ -295,7 +288,7 @@ func main() {
 		}
 
 		// write our output
-		err = ioutil.WriteFile(testFilename, replaceFields(testJSON), 0644)
+		err = ioutil.WriteFile(testFilename, clearTimestamps(testJSON), 0644)
 		if err != nil {
 			log.Fatalf("Error writing test file to %s: %s\n", testFilename, err)
 		}

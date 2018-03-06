@@ -1,7 +1,9 @@
-package utils
+package utils_test
 
 import (
 	"testing"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 func TestJSON(t *testing.T) {
@@ -22,12 +24,12 @@ func TestJSON(t *testing.T) {
 		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, "val2"},
 	}
 
-	env := NewDefaultEnvironment()
+	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
-		fragment := JSONFragment(test.JSON)
-		value := ResolveVariable(env, fragment, test.lookup)
+		fragment := utils.JSONFragment(test.JSON)
+		value := utils.ResolveVariable(env, fragment, test.lookup)
 
-		valueStr, _ := ToString(env, value)
+		valueStr, _ := utils.ToString(env, value)
 		if valueStr != test.expected {
 			t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and JSON fragment:\n%s", test.expected, valueStr, test.lookup, test.JSON)
 		}

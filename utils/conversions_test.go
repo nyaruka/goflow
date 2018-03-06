@@ -1,9 +1,11 @@
-package utils
+package utils_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 )
@@ -66,10 +68,10 @@ func TestToString(t *testing.T) {
 		{struct{}{}, "", true},
 	}
 
-	env := NewDefaultEnvironment()
+	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := ToString(env, test.input)
+		result, err := utils.ToString(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToString on '%v': %s", test.input, err)
@@ -107,10 +109,10 @@ func TestToDecimal(t *testing.T) {
 		{struct{}{}, decimal.NewFromFloat(0), true},
 	}
 
-	env := NewDefaultEnvironment()
+	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := ToDecimal(env, test.input)
+		result, err := utils.ToDecimal(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToDecimal on '%v': %s", test.input, err)
@@ -147,21 +149,21 @@ func TestToBool(t *testing.T) {
 		{"lO.5", true, false},
 		{"", false, false},
 		{testResolver, true, false},
-		{JSONFragment([]byte(`false`)), false, false},
-		{JSONFragment([]byte(`true`)), true, false},
-		{JSONFragment([]byte(`[]`)), false, false},
-		{JSONFragment([]byte(`15.5`)), true, false},
-		{JSONFragment([]byte(`0`)), false, false},
-		{JSONFragment([]byte(`[5]`)), true, false},
-		{JSONFragment([]byte("{\n}")), false, false},
-		{JSONFragment([]byte(`{"one": "two"}`)), true, false},
+		{utils.JSONFragment([]byte(`false`)), false, false},
+		{utils.JSONFragment([]byte(`true`)), true, false},
+		{utils.JSONFragment([]byte(`[]`)), false, false},
+		{utils.JSONFragment([]byte(`15.5`)), true, false},
+		{utils.JSONFragment([]byte(`0`)), false, false},
+		{utils.JSONFragment([]byte(`[5]`)), true, false},
+		{utils.JSONFragment([]byte("{\n}")), false, false},
+		{utils.JSONFragment([]byte(`{"one": "two"}`)), true, false},
 		{struct{}{}, false, true},
 	}
 
-	env := NewDefaultEnvironment()
+	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := ToBool(env, test.input)
+		result, err := utils.ToBool(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToBool on '%v': %s", test.input, err)
@@ -219,10 +221,10 @@ func TestToJSON(t *testing.T) {
 		{struct{}{}, "", true},
 	}
 
-	env := NewDefaultEnvironment()
+	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		fragment, err := ToJSON(env, test.input)
+		fragment, err := utils.ToJSON(env, test.input)
 		result := fragment.String()
 
 		if err != nil && !test.hasError {

@@ -94,6 +94,10 @@ func (s *LocationHierarchy) addLookups(location *Location) {
 	}
 }
 
+func (s *LocationHierarchy) Root() *Location {
+	return s.root
+}
+
 // FindByID looks for a location in the hierarchy with the given level and ID
 func (s *LocationHierarchy) FindByID(id LocationID, level LocationLevel) *Location {
 	if int(level) < len(s.levelLookups) {

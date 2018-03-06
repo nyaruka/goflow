@@ -18,7 +18,7 @@
                         "text": "Hi! What is your name?",
                         "type": "broadcast_created"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
                 },
                 {
                     "event": {
@@ -27,7 +27,7 @@
                         "text": "flow loop detected, stopping execution before entering '32bc60ad-5c86-465e-a6b8-049c44ecce49'",
                         "type": "error"
                     },
-                    "step_uuid": ""
+                    "step_uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
                 }
             ],
             "session": {
@@ -89,11 +89,11 @@
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                                "uuid": ""
+                                "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
                             }
                         ],
                         "status": "errored",
-                        "uuid": ""
+                        "uuid": "4ea2415a-21de-432f-977d-88574316827e"
                     }
                 ],
                 "status": "errored",

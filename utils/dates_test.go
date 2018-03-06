@@ -1,63 +1,65 @@
-package utils
+package utils_test
 
 import (
 	"testing"
 	"time"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 var timeTests = []struct {
-	DateFormat DateFormat
-	TimeFormat TimeFormat
+	DateFormat utils.DateFormat
+	TimeFormat utils.TimeFormat
 	Timezone   string
 	Value      string
 	Expected   string
 	Error      bool
 }{
 	// valid cases, varying formats
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-02-2001", "01-02-2001 00:00:00 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "date is 01.02.2001 yes", "01-02-2001 00:00:00 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "01-02-2001", "01-02-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "date is 01.02.2001 yes", "01-02-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
 	// month first
-	{DateFormat_MM_dd_yyyy, TimeFormat_HH_mm, "UTC", "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_MM_dd_yyyy, utils.TimeFormat_HH_mm, "UTC", "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
 
 	// year first
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
 
 	// specific timezone
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "America/Los_Angeles", "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "America/Los_Angeles", "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
 
 	// illegal day
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "33-01-2001", "01-01-0001 00:00:00 +0000 UTC", true},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "33-01-2001", "01-01-0001 00:00:00 +0000 UTC", true},
 
 	// illegal month
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-13-2001", "01-01-0001 00:00:00 +0000 UTC", true},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "01-13-2001", "01-01-0001 00:00:00 +0000 UTC", true},
 
 	// valid two digit cases
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
 
 	// iso dates
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000-07:00", "23-06-1977 15:34:00.000 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250-07:00", "23-06-1977 15:34:00.000250 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250500-07:00", "23-06-1977 15:34:00.000250500 +0000 UTC", false},
-	{DateFormat_dd_MM_yyyy, TimeFormat_HH_mm, "UTC", "2017-06-10T17:34-06:00", "10-06-2017 23:34:00.000000 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15Z", "01-05-2016 18:30:15 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "2016-05-01T18:30:15.250Z", "01-05-2016 18:30:15.250 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000-07:00", "23-06-1977 15:34:00.000 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250-07:00", "23-06-1977 15:34:00.000250 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "1977-06-23T08:34:00.000250500-07:00", "23-06-1977 15:34:00.000250500 +0000 UTC", false},
+	{utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm, "UTC", "2017-06-10T17:34-06:00", "10-06-2017 23:34:00.000000 +0000 UTC", false},
 
 	// with time
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15pm", "01-02-2001 15:15:00 +0000 UTC", false},
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15 AM", "01-02-2001 03:15:00 +0000 UTC", false},
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
-	{DateFormat_yyyy_MM_dd, TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01 03:15", "01-02-2001 03:15:00 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01 03:15pm", "01-02-2001 15:15:00 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01 03:15 AM", "01-02-2001 03:15:00 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34", "01-02-2001 03:15:34 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34.123", "01-02-2001 03:15:34.123 +0000 UTC", false},
+	{utils.DateFormat_yyyy_MM_dd, utils.TimeFormat_HH_mm, "UTC", "2001-02-01 03:15:34.123456", "01-02-2001 03:15:34.123456 +0000 UTC", false},
 }
 
 func TestDateFromString(t *testing.T) {
-	env := NewEnvironment(DateFormat_dd_MM_yyyy, TimeFormat_HH_mm_ss, time.UTC, LanguageList{})
+	env := utils.NewEnvironment(utils.DateFormat_dd_MM_yyyy, utils.TimeFormat_HH_mm_ss, time.UTC, utils.LanguageList{})
 
 	for _, test := range timeTests {
 		env.SetDateFormat(test.DateFormat)
@@ -76,7 +78,7 @@ func TestDateFromString(t *testing.T) {
 			continue
 		}
 
-		value, err := DateFromString(env, test.Value)
+		value, err := utils.DateFromString(env, test.Value)
 		if err != nil && !test.Error {
 			t.Errorf("Error parsing date: %s", err)
 			continue
@@ -103,7 +105,7 @@ var daysBetweenTests = []struct {
 
 func TestDaysBetween(t *testing.T) {
 	for _, test := range daysBetweenTests {
-		actual := DaysBetween(test.d1, test.d2)
+		actual := utils.DaysBetween(test.d1, test.d2)
 		if actual != test.expected {
 			t.Errorf("Days between: %d did not match expected: %d for %s - %s", actual, test.expected, test.d1, test.d2)
 		}
@@ -123,7 +125,7 @@ var monthsBetweenTests = []struct {
 
 func TestMonthsBetween(t *testing.T) {
 	for _, test := range daysBetweenTests {
-		actual := DaysBetween(test.d1, test.d2)
+		actual := utils.DaysBetween(test.d1, test.d2)
 		if actual != test.expected {
 			t.Errorf("Months between: %d did not match expected: %d for %s - %s", actual, test.expected, test.d1, test.d2)
 		}
@@ -149,7 +151,7 @@ func TestDateFormat(t *testing.T) {
 	}
 
 	for _, test := range formatTests {
-		actual, err := ToGoDateFormat(test.input)
+		actual, err := utils.ToGoDateFormat(test.input)
 		if actual != test.expected {
 			t.Errorf("Date format invalid for '%s'  Expected: '%s' Got: '%s'", test.input, test.expected, actual)
 		}

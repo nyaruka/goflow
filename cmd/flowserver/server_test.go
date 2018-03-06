@@ -11,16 +11,14 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
-
-	"github.com/satori/go.uuid"
-	"github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/suite"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/suite"
 )
 
 var testStructurallyInvalidFlowAssets = `[
@@ -356,7 +354,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 
 	// try to resume this completed session
 	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
-	msg := inputs.NewMsgInput(flows.InputUUID(uuid.NewV4().String()), nil, time.Now(), tgURN, "hello", nil)
+	msg := inputs.NewMsgInput(flows.InputUUID(utils.NewUUID()), nil, time.Now(), tgURN, "hello", nil)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))
