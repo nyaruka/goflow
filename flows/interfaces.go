@@ -100,6 +100,7 @@ func (r RunStatus) String() string { return string(r) }
 
 type SessionAssets interface {
 	GetChannel(ChannelUUID) (Channel, error)
+	GetChannelSet() (*ChannelSet, error)
 
 	GetField(FieldKey) (*Field, error)
 	GetFieldSet() (*FieldSet, error)

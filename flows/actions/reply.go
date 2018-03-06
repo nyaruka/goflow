@@ -43,6 +43,11 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
+	//channels, err := run.Session().Assets().GetChannelSet()
+	//if err != nil {
+	//	return err
+	//}
+
 	var sendToUrns flows.URNList
 	if a.AllURNs {
 		sendToUrns = run.Contact().URNs()

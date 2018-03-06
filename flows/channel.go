@@ -47,6 +47,15 @@ func (c *channel) Parent() *ChannelReference { return c.parent }
 // Reference returns a reference to this channel
 func (c *channel) Reference() *ChannelReference { return NewChannelReference(c.uuid, c.name) }
 
+func (c *channel) HasRole(role ChannelRole) bool {
+	for _, r := range c.roles {
+		if r == role {
+			return true
+		}
+	}
+	return false
+}
+
 // Resolve satisfies our resolver interface
 func (c *channel) Resolve(key string) interface{} {
 	switch key {
@@ -73,6 +82,24 @@ func (c *channel) String() string {
 
 var _ utils.VariableResolver = (*channel)(nil)
 
+// ChannelSet defines the unordered set of all channels for a session
+type ChannelSet struct {
+	channels       []Channel
+	channelsByUUID map[ChannelUUID]Channel
+}
+
+func NewChannelSet(channels []Channel) *ChannelSet {
+	s := &ChannelSet{channels: channels, channelsByUUID: make(map[ChannelUUID]Channel, len(channels))}
+	for _, channel := range s.channels {
+		s.channelsByUUID[channel.UUID()] = channel
+	}
+	return s
+}
+
+func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {
+	return s.channelsByUUID[uuid]
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -84,19 +111,6 @@ type channelEnvelope struct {
 	Schemes []string          `json:"schemes" validate:"min=1"`
 	Roles   []ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
 	Parent  *ChannelReference `json:"parent" validate:"omitempty,dive"`
-}
-
-// ReadChannels decodes channels from the passed in JSON
-func ReadChannels(data []json.RawMessage) ([]Channel, error) {
-	channels := make([]Channel, len(data))
-	var err error
-	for c := range data {
-		channels[c], err = ReadChannel(data[c])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return channels, nil
 }
 
 // ReadChannel decodes a channel from the passed in JSON
@@ -116,16 +130,19 @@ func ReadChannel(data json.RawMessage) (Channel, error) {
 	}, nil
 }
 
-// MarshalJSON is our custom marshalling of a channel
-func (c *channel) MarshalJSON() ([]byte, error) {
-	ce := channelEnvelope{
-		UUID:    c.uuid,
-		Name:    c.name,
-		Address: c.address,
-		Schemes: c.schemes,
-		Roles:   c.roles,
-		Parent:  c.parent,
+// ReadChannelSet decodes channels from the passed in JSON
+func ReadChannelSet(data json.RawMessage) (*ChannelSet, error) {
+	items, err := utils.UnmarshalArray(data)
+	if err != nil {
+		return nil, err
 	}
 
-	return json.Marshal(ce)
+	channels := make([]Channel, len(items))
+	for c := range items {
+		channels[c], err = ReadChannel(items[c])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return NewChannelSet(channels), nil
 }
