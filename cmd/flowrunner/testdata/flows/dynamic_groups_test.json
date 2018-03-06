@@ -119,10 +119,19 @@
                             "value": "Azuay"
                         }
                     },
-                    "group_uuids": [
-                        "047de1c9-9189-4f4c-aa04-bff0a4c2efb6",
-                        "4bb13eec-5344-4ab8-83b7-b5791c669c50",
-                        "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
+                    "groups": [
+                        {
+                            "name": "Males",
+                            "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6"
+                        },
+                        {
+                            "name": "Youth",
+                            "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
+                        },
+                        {
+                            "name": "MTN Callers",
+                            "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
+                        }
                     ],
                     "language": "eng",
                     "name": "Ben Haggerty",

@@ -34,13 +34,10 @@ var functionsTestAssets = `
 	{
 		"type": "group",
 		"url": "http://testserver/assets/group",
-		"content": [],
-		"is_set": true
-	},
-	{
-		"type": "group",
-		"url": "http://testserver/assets/group",
-		"content": [],
+		"content": [
+			{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+			{"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
+		],
 		"is_set": true
 	},
 	{
