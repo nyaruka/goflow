@@ -27,11 +27,11 @@
                         "msg": {
                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                             "urn": "tel:+12065551212",
-                            "uuid": "5e71e880-07df-451a-b5ce-f2009d6de460"
+                            "uuid": "126a745b-b2f6-4dd2-88da-b2056ae679d2"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                    "step_uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6"
                 },
                 {
                     "event": {
@@ -39,7 +39,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                    "step_uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6"
                 }
             ],
             "session": {
@@ -85,7 +85,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "5e71e880-07df-451a-b5ce-f2009d6de460"
+                                            "uuid": "126a745b-b2f6-4dd2-88da-b2056ae679d2"
                                         },
                                         "type": "msg_created"
                                     },
@@ -96,11 +96,11 @@
                                     }
                                 ],
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                                "uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07"
+                        "uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa"
                     }
                 ],
                 "status": "waiting",
@@ -157,7 +157,7 @@
                         "type": "run_result_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                    "step_uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6"
                 },
                 {
                     "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
@@ -170,7 +170,7 @@
                         "type": "contact_field_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
+                    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264"
                 },
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
@@ -179,11 +179,11 @@
                         "msg": {
                             "text": "Awesome, you were born on 06-23-1977 at 15:34",
                             "urn": "tel:+12065551212",
-                            "uuid": "9fa3532e-e1e4-4900-aae1-6adc0c0db9c3"
+                            "uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
+                    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264"
                 }
             ],
             "session": {
@@ -244,7 +244,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "5e71e880-07df-451a-b5ce-f2009d6de460"
+                                            "uuid": "126a745b-b2f6-4dd2-88da-b2056ae679d2"
                                         },
                                         "type": "msg_created"
                                     },
@@ -279,7 +279,7 @@
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                                "uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -298,14 +298,14 @@
                                         "msg": {
                                             "text": "Awesome, you were born on 06-23-1977 at 15:34",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9fa3532e-e1e4-4900-aae1-6adc0c0db9c3"
+                                            "uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
+                                "uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264"
                             }
                         ],
                         "results": {
@@ -319,7 +319,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07"
+                        "uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa"
                     }
                 ],
                 "status": "completed",

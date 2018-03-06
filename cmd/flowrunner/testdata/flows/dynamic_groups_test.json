@@ -16,7 +16,7 @@
                         "type": "contact_field_changed",
                         "value": "MALE"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 },
                 {
                     "action_uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
@@ -29,7 +29,7 @@
                         "type": "contact_field_changed",
                         "value": "64"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 },
                 {
                     "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
@@ -38,11 +38,11 @@
                         "msg": {
                             "text": "Current groups: Males, Old Men",
                             "urn": "tel:+12065551212",
-                            "uuid": "98ac0217-5ace-4570-8e70-d9a11d08aa97"
+                            "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 },
                 {
                     "action_uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
@@ -51,7 +51,7 @@
                         "type": "contact_urn_added",
                         "urn": "tel:+250781234567"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 },
                 {
                     "action_uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
@@ -60,11 +60,11 @@
                         "msg": {
                             "text": "Current groups: Males, Old Men",
                             "urn": "tel:+12065551212",
-                            "uuid": "cd9ac3df-bbc5-4429-8dfc-47b24ec2fbe1"
+                            "uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 },
                 {
                     "action_uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
@@ -77,7 +77,7 @@
                         "type": "contact_field_changed",
                         "value": "17"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 },
                 {
                     "action_uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
@@ -86,11 +86,11 @@
                         "msg": {
                             "text": "Current groups: Males, Youth, MTN Callers",
                             "urn": "tel:+12065551212",
-                            "uuid": "a2800d5b-9024-4dd9-b1b8-fed7dc511337"
+                            "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                 }
             ],
             "session": {
@@ -168,7 +168,7 @@
                                         "msg": {
                                             "text": "Current groups: Males, Old Men",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "98ac0217-5ace-4570-8e70-d9a11d08aa97"
+                                            "uuid": "e55c0ebf-57cf-4b82-9b19-ce8a2dca70df"
                                         },
                                         "type": "msg_created"
                                     },
@@ -182,7 +182,7 @@
                                         "msg": {
                                             "text": "Current groups: Males, Old Men",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "cd9ac3df-bbc5-4429-8dfc-47b24ec2fbe1"
+                                            "uuid": "a7b8e2b2-c1ae-4459-a96d-a81d71a57f92"
                                         },
                                         "type": "msg_created"
                                     },
@@ -200,18 +200,18 @@
                                         "msg": {
                                             "text": "Current groups: Males, Youth, MTN Callers",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "a2800d5b-9024-4dd9-b1b8-fed7dc511337"
+                                            "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
+                                "uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "cd712d62-8c56-4900-87bc-209e78511534"
+                        "uuid": "8ee615d1-6892-46d6-8e75-1c4d799cd67a"
                     }
                 ],
                 "status": "completed",

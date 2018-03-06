@@ -42,7 +42,7 @@
                         "msg": {
                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                             "urn": "tel:+12065551212",
-                            "uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                         },
                         "type": "msg_created"
                     },
@@ -100,7 +100,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
                                         "type": "msg_created"
                                     },
@@ -182,7 +182,7 @@
                         "type": "contact_property_changed",
                         "value": "fra"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
@@ -191,11 +191,11 @@
                         "msg": {
                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                             "urn": "tel:+12065551212",
-                            "uuid": "08e33209-eaf3-48cc-bb8e-66473fdd26a4"
+                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "event": {
@@ -203,7 +203,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 }
             ],
             "session": {
@@ -260,7 +260,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
                                         "type": "msg_created"
                                     },
@@ -311,7 +311,7 @@
                                         "msg": {
                                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "08e33209-eaf3-48cc-bb8e-66473fdd26a4"
+                                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                         },
                                         "type": "msg_created"
                                     },
@@ -322,7 +322,7 @@
                                     }
                                 ],
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "results": {
@@ -393,7 +393,7 @@
                         "type": "run_result_changed",
                         "value": "Coke"
                     },
-                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "action_uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
@@ -406,7 +406,7 @@
                         "type": "webhook_called",
                         "url": "http://127.0.0.1:49999/?cmd=success"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                 },
                 {
                     "action_uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
@@ -415,11 +415,11 @@
                         "msg": {
                             "text": "Parfait, vous avez finis et tu aimes Coke",
                             "urn": "tel:+12065551212",
-                            "uuid": "ad44bf8c-b002-45b3-bab6-a5df6f7a3b44"
+                            "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                 }
             ],
             "session": {
@@ -476,7 +476,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is tel:+12065551212",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "b25de1d5-cd85-42f5-af22-f3410078dcd1"
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
                                         "type": "msg_created"
                                     },
@@ -527,7 +527,7 @@
                                         "msg": {
                                             "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "08e33209-eaf3-48cc-bb8e-66473fdd26a4"
+                                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                         },
                                         "type": "msg_created"
                                     },
@@ -562,7 +562,7 @@
                                 "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -581,14 +581,14 @@
                                         "msg": {
                                             "text": "Parfait, vous avez finis et tu aimes Coke",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "ad44bf8c-b002-45b3-bab6-a5df6f7a3b44"
+                                            "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
-                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
                         ],
                         "results": {

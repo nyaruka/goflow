@@ -36,7 +36,7 @@
                         ],
                         "type": "input_labels_added"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -54,7 +54,7 @@
                         ],
                         "type": "contact_groups_added"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
@@ -63,7 +63,7 @@
                         "type": "contact_urn_added",
                         "urn": "twitter:ben_haggerty"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
@@ -76,7 +76,7 @@
                         "type": "contact_field_changed",
                         "value": "XXX-YYY-ZZZ"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "4f452fb8-f0aa-442d-865b-a2b629c09c21",
@@ -90,7 +90,7 @@
                         "subject": "Here is your activation token",
                         "type": "email_created"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
@@ -100,10 +100,10 @@
                             "name": "Collect Language",
                             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                         },
-                        "parent_run_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
+                        "parent_run_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8",
                         "type": "flow_triggered"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "3d8030d6-9ddd-472d-baed-d0393f592524",
@@ -152,11 +152,11 @@
                             "flow_uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
                             "results": {},
                             "status": "active",
-                            "uuid": "da339edd-083b-48cb-bef6-3979f99a96f9"
+                            "uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
                         },
                         "type": "session_triggered"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
@@ -168,7 +168,7 @@
                             "tel:+12065551212"
                         ]
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
@@ -186,7 +186,7 @@
                         "text": "Hi Ben Haggerty, are you ready for these attachments?",
                         "type": "broadcast_created"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
@@ -200,7 +200,7 @@
                         ],
                         "type": "contact_groups_removed"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
@@ -209,11 +209,11 @@
                         "msg": {
                             "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                             "urn": "tel:+12065551212",
-                            "uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
+                            "uuid": "19ebde80-3969-47d3-a09e-6806aab9f510"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "d98c1e02-69df-4f95-8b89-8587a57ae0c3",
@@ -222,11 +222,11 @@
                         "msg": {
                             "text": "This is a message to each of Ben Haggerty's urns.",
                             "urn": "tel:+12065551212",
-                            "uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
+                            "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "bdd9ec65-4d69-4812-9c6b-e0142579da71"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "d98c1e02-69df-4f95-8b89-8587a57ae0c3",
@@ -235,11 +235,37 @@
                         "msg": {
                             "text": "This is a message to each of Ben Haggerty's urns.",
                             "urn": "facebook:1122334455667788",
-                            "uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
+                            "uuid": "530379ca-3fa7-4959-8ceb-17799a976525"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
+                },
+                {
+                    "action_uuid": "d98c1e02-69df-4f95-8b89-8587a57ae0c3",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "msg": {
+                            "text": "This is a message to each of Ben Haggerty's urns.",
+                            "urn": "mailto:ben@macklemore",
+                            "uuid": "4a910999-828a-4886-9504-776e7d151101"
+                        },
+                        "type": "msg_created"
+                    },
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
+                },
+                {
+                    "action_uuid": "d98c1e02-69df-4f95-8b89-8587a57ae0c3",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "msg": {
+                            "text": "This is a message to each of Ben Haggerty's urns.",
+                            "urn": "twitter:ben_haggerty",
+                            "uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a"
+                        },
+                        "type": "msg_created"
+                    },
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "62a30ab4-d73c-447d-a989-39c49115153e",
@@ -255,11 +281,11 @@
                             ],
                             "text": "This is a reply with attachments and quick replies",
                             "urn": "tel:+12065551212",
-                            "uuid": "6eee7f92-82e0-4cad-bd52-eea41b7fb2c3"
+                            "uuid": "cd712d62-8c56-4900-87bc-209e78511534"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
@@ -271,7 +297,7 @@
                         "type": "run_result_changed",
                         "value": "m"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
@@ -281,7 +307,7 @@
                         "type": "contact_property_changed",
                         "value": "eng"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
@@ -294,7 +320,7 @@
                         "type": "contact_field_changed",
                         "value": "Male"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 },
                 {
                     "action_uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
@@ -307,7 +333,7 @@
                         "type": "webhook_called",
                         "url": "http://127.0.0.1:49999/?cmd=success"
                     },
-                    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                    "step_uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                 }
             ],
             "session": {
@@ -443,7 +469,7 @@
                                             "name": "Collect Language",
                                             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                                         },
-                                        "parent_run_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
+                                        "parent_run_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8",
                                         "type": "flow_triggered"
                                     },
                                     {
@@ -491,7 +517,7 @@
                                             "flow_uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
                                             "results": {},
                                             "status": "active",
-                                            "uuid": "da339edd-083b-48cb-bef6-3979f99a96f9"
+                                            "uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
                                         },
                                         "type": "session_triggered"
                                     },
@@ -532,7 +558,7 @@
                                         "msg": {
                                             "text": "Hi Ben Haggerty, are you ready to complete today's survey?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "9af1bf81-76d7-4b34-bc5e-a92d6115d6e3"
+                                            "uuid": "19ebde80-3969-47d3-a09e-6806aab9f510"
                                         },
                                         "type": "msg_created"
                                     },
@@ -541,7 +567,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "6198c740-f84a-4394-bd22-5da8b559e181"
+                                            "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
                                         },
                                         "type": "msg_created"
                                     },
@@ -550,7 +576,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "facebook:1122334455667788",
-                                            "uuid": "c6fe717f-639b-4a3a-808d-ff28b70369dd"
+                                            "uuid": "530379ca-3fa7-4959-8ceb-17799a976525"
                                         },
                                         "type": "msg_created"
                                     },
@@ -559,7 +585,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "mailto:ben@macklemore",
-                                            "uuid": "20a7c123-6499-438b-a38d-b59820c3dbe7"
+                                            "uuid": "4a910999-828a-4886-9504-776e7d151101"
                                         },
                                         "type": "msg_created"
                                     },
@@ -568,7 +594,7 @@
                                         "msg": {
                                             "text": "This is a message to each of Ben Haggerty's urns.",
                                             "urn": "twitter:ben_haggerty",
-                                            "uuid": "7d54f4b2-db3e-4e68-a3c1-d4ec8466418f"
+                                            "uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a"
                                         },
                                         "type": "msg_created"
                                     },
@@ -584,7 +610,7 @@
                                             ],
                                             "text": "This is a reply with attachments and quick replies",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "6eee7f92-82e0-4cad-bd52-eea41b7fb2c3"
+                                            "uuid": "cd712d62-8c56-4900-87bc-209e78511534"
                                         },
                                         "type": "msg_created"
                                     },
@@ -623,7 +649,7 @@
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
-                                "uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b"
+                                "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc"
                             }
                         ],
                         "results": {
@@ -637,7 +663,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
+                        "uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -652,10 +678,10 @@
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                        "parent_uuid": "da339edd-083b-48cb-bef6-3979f99a96f9",
+                        "parent_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8",
                         "path": [],
                         "status": "completed",
-                        "uuid": "d659b893-76c5-4e9c-be24-6164105d48f2"
+                        "uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772"
                     }
                 ],
                 "status": "completed",
