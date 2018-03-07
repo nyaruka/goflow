@@ -32,6 +32,11 @@ type ReplyAction struct {
 	AllURNs      bool     `json:"all_urns,omitempty"`
 }
 
+type msgDestination struct {
+	urn     urns.URN
+	channel flows.Channel
+}
+
 // Type returns the type of this action
 func (a *ReplyAction) Type() string { return TypeReply }
 
@@ -62,7 +67,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	if a.AllURNs {
 		// send to any URN which has a corresponding channel (i.e. is sendable)
 		for _, u := range run.Contact().URNs() {
-			channel := getBestChannelForURN(sendChannels, u)
+			channel := flows.GetChannelForURN(sendChannels, u)
 			if channel != nil {
 				destinations = append(destinations, msgDestination{urn: u, channel: channel})
 			}
@@ -70,7 +75,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	} else {
 		// send to first URN which has a corresponding channel (i.e. is sendable)
 		for _, u := range run.Contact().URNs() {
-			channel := getBestChannelForURN(sendChannels, u)
+			channel := flows.GetChannelForURN(sendChannels, u)
 			if channel != nil {
 				destinations = append(destinations, msgDestination{urn: u, channel: channel})
 				break
@@ -84,21 +89,5 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		log.Add(events.NewMsgCreatedEvent(msg))
 	}
 
-	return nil
-}
-
-type msgDestination struct {
-	urn     urns.URN
-	channel flows.Channel
-}
-
-func getBestChannelForURN(channels []flows.Channel, urn urns.URN) flows.Channel {
-	// TODO be smarter than first channel with that scheme
-	scheme := urn.Scheme()
-	for _, channel := range channels {
-		if channel.SupportsScheme(scheme) {
-			return channel
-		}
-	}
 	return nil
 }

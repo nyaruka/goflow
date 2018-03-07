@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -24,6 +25,17 @@ type channel struct {
 	schemes []string
 	roles   []ChannelRole
 	parent  *ChannelReference
+}
+
+func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole, parent *ChannelReference) Channel {
+	return &channel{
+		uuid:    uuid,
+		name:    name,
+		address: address,
+		schemes: schemes,
+		roles:   roles,
+		parent:  parent,
+	}
 }
 
 // UUID returns the UUID of this channel
@@ -90,6 +102,18 @@ func (c *channel) String() string {
 }
 
 var _ utils.VariableResolver = (*channel)(nil)
+
+// GetChannelForURN returns the best channel for the given URN
+func GetChannelForURN(channels []Channel, urn urns.URN) Channel {
+	// TODO be smarter than first channel with that scheme
+	scheme := urn.Scheme()
+	for _, channel := range channels {
+		if channel.SupportsScheme(scheme) {
+			return channel
+		}
+	}
+	return nil
+}
 
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {
