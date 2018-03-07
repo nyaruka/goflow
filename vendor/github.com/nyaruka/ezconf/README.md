@@ -1,4 +1,4 @@
-# EZConf
+# EZConf [![Build Status](https://travis-ci.org/nyaruka/ezconf.svg?branch=master)](https://travis-ci.org/nyaruka/ezconf) [![codecov](https://codecov.io/gh/nyaruka/ezconf/branch/master/graph/badge.svg)](https://codecov.io/gh/nyaruka/ezconf) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/ezconf)](https://goreportcard.com/report/github.com/nyaruka/ezconf)
 
 EZConf provides a simple way of reading configuration settings from four sources, in order of priority (each level is higher priority than the previous ones):
  
@@ -12,7 +12,7 @@ with the defaults for your app. You can then pass that struct to EZConf and read
 the sources above.
 
 EZConf will automatically parse command line parameters and environment variables for all top level fields
-in your struct of the types:
+in your struct of the following types:
 
  * int, int8, int16, int32, int64
  * uint, uint8, uint16, uint32, uint64
