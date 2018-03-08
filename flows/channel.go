@@ -102,18 +102,6 @@ func (c *channel) String() string {
 
 var _ utils.VariableResolver = (*channel)(nil)
 
-// GetChannelForURN returns the best channel for the given URN
-func GetChannelForURN(channels []Channel, urn *ContactURN) Channel {
-	// TODO be smarter than first channel with that scheme
-	scheme := urn.Scheme()
-	for _, channel := range channels {
-		if channel.SupportsScheme(scheme) {
-			return channel
-		}
-	}
-	return nil
-}
-
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {
 	channels       []Channel

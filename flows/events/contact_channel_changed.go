@@ -1,6 +1,9 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeContactChannelChanged is the type of our set preferred channel event
 const TypeContactChannelChanged string = "contact_channel_changed"
@@ -39,6 +42,40 @@ func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
 		return err
 	}
 
-	run.Contact().SetChannel(channel)
+	contactURNs := run.Contact().URNs()
+
+	// change any tel URNs this contact has to use this channel (other URN types may be channel specific)
+	if channel.SupportsScheme(urns.TelScheme) {
+		for _, urn := range contactURNs {
+			if urn.URN.Scheme() == urns.TelScheme {
+				urn.SetChannel(channel)
+			}
+		}
+	}
+
+	// if our scheme isn't the highest priority
+	if len(contactURNs) > 0 && !channel.SupportsScheme(contactURNs[0].Scheme()) {
+
+		// find the highest priority supported by this channel
+		var newPreferredURN *flows.ContactURN
+		for _, urn := range contactURNs {
+			if channel.SupportsScheme(urn.Scheme()) {
+				newPreferredURN = urn
+			}
+		}
+
+		// update the highest URN of the right scheme to be highest priority
+		if newPreferredURN != nil {
+			newURNs := make(flows.URNList, 1)
+			newURNs[0] = newPreferredURN
+
+			for _, urn := range contactURNs {
+				if urn.URN != newPreferredURN.URN {
+					newURNs = append(newURNs, urn)
+				}
+			}
+		}
+	}
+
 	return nil
 }

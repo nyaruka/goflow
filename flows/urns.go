@@ -33,7 +33,8 @@ type ContactURN struct {
 	channel Channel
 }
 
-func (u *ContactURN) Channel() Channel { return u.channel }
+func (u *ContactURN) Channel() Channel           { return u.channel }
+func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
 
 // Resolve is called when a URN is part of an excellent expression
 func (u *ContactURN) Resolve(key string) interface{} {

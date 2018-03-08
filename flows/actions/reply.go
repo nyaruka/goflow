@@ -54,20 +54,13 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		return err
 	}
 
-	preferredChannel := run.Contact().Channel()
-	sendChannels := channelSet.WithRole(flows.ChannelRoleSend)
-
-	// if contact has a preferred channel which can send, it takes priority
-	if preferredChannel != nil && preferredChannel.HasRole(flows.ChannelRoleSend) {
-		sendChannels = append([]flows.Channel{preferredChannel}, sendChannels...)
-	}
-
+	channels := channelSet.WithRole(flows.ChannelRoleSend)
 	destinations := []msgDestination{}
 
 	if a.AllURNs {
 		// send to any URN which has a corresponding channel (i.e. is sendable)
 		for _, u := range run.Contact().URNs() {
-			channel := flows.GetChannelForURN(sendChannels, u)
+			channel := getChannelForURN(channels, u)
 			if channel != nil {
 				destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
 			}
@@ -75,7 +68,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	} else {
 		// send to first URN which has a corresponding channel (i.e. is sendable)
 		for _, u := range run.Contact().URNs() {
-			channel := flows.GetChannelForURN(sendChannels, u)
+			channel := getChannelForURN(channels, u)
 			if channel != nil {
 				destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
 				break
@@ -90,4 +83,28 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	}
 
 	return nil
+}
+
+// returns the best channel for the given URN
+func getChannelForURN(channels []flows.Channel, urn *flows.ContactURN) flows.Channel {
+	var channel flows.Channel
+	scheme := urn.Scheme()
+	for _, ch := range channels {
+		if ch.HasRole(flows.ChannelRoleSend) && ch.SupportsScheme(scheme) {
+			channel = ch
+			break
+		}
+	}
+
+	// look for a delegate sender for this channel
+	if channel != nil {
+		for _, ch := range channels {
+			if ch.Parent() != nil && ch.Parent().UUID == channel.UUID() {
+				channel = ch
+				break
+			}
+		}
+	}
+
+	return channel
 }
