@@ -200,7 +200,7 @@ type contactEnvelope struct {
 	Name     string                          `json:"name"`
 	Language utils.Language                  `json:"language"`
 	Timezone string                          `json:"timezone"`
-	URNs     []urns.URN                      `json:"urns"`
+	URNs     []urns.URN                      `json:"urns" validate:"dive,urn"`
 	Groups   []*GroupReference               `json:"groups,omitempty" validate:"dive"`
 	Fields   map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
 	Channel  *ChannelReference               `json:"channel,omitempty" validate:"omitempty,dive"`
