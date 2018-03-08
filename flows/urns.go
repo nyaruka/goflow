@@ -87,12 +87,12 @@ func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
 	return l, nil
 }
 
-func (l URNList) RawURNs() []urns.URN {
+func (l URNList) RawURNs(includeChannels bool) []urns.URN {
 	raw := make([]urns.URN, len(l))
 	for u := range l {
 		scheme, path, query, display := l[u].URN.ToParts()
 
-		if l[u].channel != nil {
+		if includeChannels && l[u].channel != nil {
 			query = fmt.Sprintf("channel=%s", l[u].channel.UUID())
 		}
 

@@ -280,7 +280,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.Name = c.name
 	ce.UUID = c.uuid
 	ce.Language = c.language
-	ce.URNs = c.urns.RawURNs()
+	ce.URNs = c.urns.RawURNs(true)
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}
