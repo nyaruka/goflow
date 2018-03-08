@@ -2,13 +2,14 @@ package flows
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 	"strings"
 
-	validator "gopkg.in/go-playground/validator.v9"
-
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
+
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 func init() {
@@ -27,8 +28,78 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 	return urns.IsValidScheme(fl.Field().String())
 }
 
+type ContactURN struct {
+	urns.URN
+	channel Channel
+}
+
+func (u *ContactURN) Channel() Channel { return u.channel }
+
+// Resolve is called when a URN is part of an excellent expression
+func (u *ContactURN) Resolve(key string) interface{} {
+	switch key {
+	case "scheme":
+		return u.URN.Scheme()
+	case "path":
+		return u.URN.Path()
+	case "display":
+		return u.URN.Display()
+	case "channel":
+		return u.Channel()
+	}
+	return fmt.Errorf("no field '%s' on URN", key)
+}
+
+func (u *ContactURN) Default() interface{} { return u }
+
+func (u *ContactURN) String() string { return string(u.URN) }
+
 // URNList is the list of a contact's URNs
-type URNList []urns.URN
+type URNList []*ContactURN
+
+func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
+	l := make(URNList, len(rawURNs))
+
+	for u := range rawURNs {
+		scheme, path, query, display := rawURNs[u].ToParts()
+
+		// re-create the URN without the query component
+		queryLess, err := urns.NewURNFromParts(scheme, path, "", display)
+		if err != nil {
+			return nil, err
+		}
+
+		parsedQuery, err := url.ParseQuery(query)
+		if err != nil {
+			return nil, err
+		}
+
+		var channel Channel
+		channelUUID := parsedQuery.Get("channel")
+		if channelUUID != "" {
+			if channel, err = session.Assets().GetChannel(ChannelUUID(channelUUID)); err != nil {
+				return nil, err
+			}
+		}
+
+		l[u] = &ContactURN{URN: queryLess, channel: channel}
+	}
+	return l, nil
+}
+
+func (l URNList) RawURNs() []urns.URN {
+	raw := make([]urns.URN, len(l))
+	for u := range l {
+		scheme, path, query, display := l[u].URN.ToParts()
+
+		if l[u].channel != nil {
+			query = fmt.Sprintf("channel=%s", l[u].channel.UUID())
+		}
+
+		raw[u], _ = urns.NewURNFromParts(scheme, path, query, display)
+	}
+	return raw
+}
 
 func (l URNList) Clone() URNList {
 	urns := make(URNList, len(l))
@@ -39,7 +110,7 @@ func (l URNList) Clone() URNList {
 func (l URNList) WithScheme(scheme string) URNList {
 	var matching URNList
 	for _, u := range l {
-		if u.Scheme() == scheme {
+		if u.URN.Scheme() == scheme {
 			matching = append(matching, u)
 		}
 	}
@@ -78,5 +149,5 @@ func (l URNList) String() string {
 	return ""
 }
 
-var _ utils.VariableResolver = (urns.URN)("")
+var _ utils.VariableResolver = &ContactURN{}
 var _ utils.VariableResolver = (URNList)(nil)

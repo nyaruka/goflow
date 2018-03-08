@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -43,10 +44,15 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
-	urns := run.Contact().URNs()
+	contactURNs := run.Contact().URNs()
 
-	if a.AllURNs && len(urns) > 0 {
-		log.Add(events.NewBroadcastCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urns, nil, nil))
+	if a.AllURNs && len(contactURNs) > 0 {
+		urnObjs := make([]urns.URN, len(contactURNs))
+		for u := range contactURNs {
+			urnObjs[u] = contactURNs[u].URN
+		}
+
+		log.Add(events.NewBroadcastCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urnObjs, nil, nil))
 	} else {
 		log.Add(events.NewMsgCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, run.Contact().Reference()))
 	}
