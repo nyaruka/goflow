@@ -18,15 +18,15 @@ func TestGetChannelForURN(t *testing.T) {
 	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
 
 	// no channel
-	assert.Nil(t, flows.GetChannelForURN([]flows.Channel{}, urns.URN("tel:+12345678999")))
+	assert.Nil(t, flows.GetChannelForURN([]flows.Channel{}, &flows.ContactURN{URN: urns.URN("tel:+12345678999")}))
 
 	// no channel with correct scheme
-	assert.Nil(t, flows.GetChannelForURN([]flows.Channel{}, urns.URN("twitter:rowan")))
+	assert.Nil(t, flows.GetChannelForURN([]flows.Channel{}, &flows.ContactURN{URN: urns.URN("twitter:rowan")}))
 
-	assert.Equal(t, flows.GetChannelForURN([]flows.Channel{twitter, android}, urns.URN("tel:+250962222222")), android)
+	assert.Equal(t, flows.GetChannelForURN([]flows.Channel{twitter, android}, &flows.ContactURN{URN: urns.URN("tel:+250962222222")}), android)
 
 	// add bulk sender channel
 	nexmo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Nexmo", "+250961111111", []string{"tel"}, rolesSend, android.Reference())
 
-	assert.Equal(t, flows.GetChannelForURN([]flows.Channel{twitter, android, nexmo}, urns.URN("tel:+250962222222")), nexmo)
+	assert.Equal(t, flows.GetChannelForURN([]flows.Channel{twitter, android, nexmo}, &flows.ContactURN{URN: urns.URN("tel:+250962222222")}), nexmo)
 }

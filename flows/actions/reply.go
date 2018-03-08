@@ -69,7 +69,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		for _, u := range run.Contact().URNs() {
 			channel := flows.GetChannelForURN(sendChannels, u)
 			if channel != nil {
-				destinations = append(destinations, msgDestination{urn: u, channel: channel})
+				destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
 			}
 		}
 	} else {
@@ -77,7 +77,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		for _, u := range run.Contact().URNs() {
 			channel := flows.GetChannelForURN(sendChannels, u)
 			if channel != nil {
-				destinations = append(destinations, msgDestination{urn: u, channel: channel})
+				destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
 				break
 			}
 		}

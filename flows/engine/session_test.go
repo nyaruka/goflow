@@ -32,7 +32,15 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@contact.urns", "tel:+12065551212", false}, // TODO should be list
 		{"@contact.urns.tel", "tel:+12065551212", false},
 		{"@contact.urns.0", "tel:+12065551212", false},
+		{"@contact.urns.0.scheme", "tel", false},
+		{"@contact.urns.0.path", "+12065551212", false},
+		{"@contact.urns.0.display", "", false},
+		{"@contact.urns.0.channel", "Nexmo", false},
+		{"@contact.urns.0.channel.uuid", "57f1078f-88aa-46f4-a59a-948a5739c03d", false},
+		{"@contact.urns.0.channel.name", "Nexmo", false},
+		{"@contact.urns.0.channel.address", "+12345671111", false},
 		{"@contact.urns.1", "facebook:1122334455667788", false},
+		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
 		{"@contact.groups", "Survey Audience", false}, // TODO should be list
 		{"@contact.fields.state", "Azuay", false},
@@ -90,6 +98,6 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.False(t, test.hasError, "Did not receive error evaluating '%s'", test.template)
 		}
 
-		assert.Equal(t, eval, test.expected, "Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
+		assert.Equal(t, test.expected, eval, "Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 	}
 }

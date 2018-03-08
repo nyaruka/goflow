@@ -39,7 +39,7 @@
                 {"uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0", "name": "Azuay State"}
             ],
             "urns": [
-                "tel:+12065551212",
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "facebook:1122334455667788",
                 "mailto:ben@macklemore"
             ]

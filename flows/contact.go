@@ -19,7 +19,6 @@ type Contact struct {
 	urns     URNList
 	groups   *GroupList
 	fields   FieldValues
-	channel  Channel
 }
 
 // NewContact returns a new contact
@@ -43,7 +42,6 @@ func (c *Contact) Clone() *Contact {
 		urns:     c.urns.Clone(),
 		groups:   c.groups.Clone(),
 		fields:   c.fields.Clone(),
-		channel:  c.channel,
 	}
 }
 
@@ -77,7 +75,7 @@ func (c *Contact) URNs() URNList { return c.urns }
 func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
-	c.urns = append(c.urns, urn)
+	c.urns = append(c.urns, &ContactURN{URN: urn})
 }
 
 // Groups returns the groups that this contact belongs to
@@ -86,17 +84,13 @@ func (c *Contact) Groups() *GroupList { return c.groups }
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
 
-// Channel returns the preferred channel of this contact
-func (c *Contact) Channel() Channel { return c.channel }
-
-// SetChannel sets the preferred channel of this contact
-func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
-
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
+	case "uuid":
+		return c.uuid
 	case "name":
 		return c.name
 	case "first_name":
@@ -105,20 +99,21 @@ func (c *Contact) Resolve(key string) interface{} {
 			return names[0]
 		}
 		return ""
-	case "uuid":
-		return c.uuid
-	case "urns":
-		return c.urns
 	case "language":
 		return string(c.language)
+	case "timezone":
+		return c.timezone
+	case "urns":
+		return c.urns
 	case "groups":
 		return c.groups
 	case "fields":
 		return c.fields
-	case "timezone":
-		return c.timezone
 	case "channel":
-		return c.channel
+		if len(c.urns) > 0 {
+			return c.urns[0].Channel()
+		}
+		return nil
 	}
 
 	return fmt.Errorf("no field '%s' on contact", key)
@@ -167,7 +162,7 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 		urnsWithScheme := c.urns.WithScheme(key)
 		vals := make([]interface{}, len(urnsWithScheme))
 		for u := range urnsWithScheme {
-			vals[u] = string(urnsWithScheme[u])
+			vals[u] = string(urnsWithScheme[u].URN)
 		}
 		return vals
 	}
@@ -198,10 +193,9 @@ type contactEnvelope struct {
 	Name     string                          `json:"name"`
 	Language utils.Language                  `json:"language"`
 	Timezone string                          `json:"timezone"`
-	URNs     URNList                         `json:"urns"`
+	URNs     []urns.URN                      `json:"urns" validate:"dive,urn"`
 	Groups   []*GroupReference               `json:"groups,omitempty" validate:"dive"`
 	Fields   map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
-	Channel  *ChannelReference               `json:"channel,omitempty" validate:"omitempty,dive"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -226,7 +220,9 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		c.urns = envelope.URNs
+		if c.urns, err = ReadURNList(session, envelope.URNs); err != nil {
+			return nil, err
+		}
 	}
 
 	if envelope.Groups == nil {
@@ -260,13 +256,6 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		}
 	}
 
-	if envelope.Channel != nil {
-		c.channel, err = session.Assets().GetChannel(envelope.Channel.UUID)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	return c, nil
 }
 
@@ -276,7 +265,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.Name = c.name
 	ce.UUID = c.uuid
 	ce.Language = c.language
-	ce.URNs = c.urns
+	ce.URNs = c.urns.RawURNs(true)
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -104,7 +103,7 @@ func (c *channel) String() string {
 var _ utils.VariableResolver = (*channel)(nil)
 
 // GetChannelForURN returns the best channel for the given URN
-func GetChannelForURN(channels []Channel, urn urns.URN) Channel {
+func GetChannelForURN(channels []Channel, urn *ContactURN) Channel {
 	// TODO be smarter than first channel with that scheme
 	scheme := urn.Scheme()
 	for _, channel := range channels {

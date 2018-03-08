@@ -1,26 +1,30 @@
-package flows
+package flows_test
 
 import (
 	"testing"
 
-	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestResolve(t *testing.T) {
-	urnList := URNList{"tel:+250781234567", "twitter:134252511151#billy_bob", "tel:+250781111222"}
+	urnList := flows.URNList{
+		&flows.ContactURN{URN: "tel:+250781234567"},
+		&flows.ContactURN{URN: "twitter:134252511151#billy_bob"},
+		&flows.ContactURN{URN: "tel:+250781111222"},
+	}
 
 	testCases := []struct {
 		key      string
 		hasValue bool
 		value    interface{}
 	}{
-		{"0", true, urns.URN("tel:+250781234567")},
-		{"1", true, urns.URN("twitter:134252511151#billy_bob")},
-		{"2", true, urns.URN("tel:+250781111222")},
-		{"3", false, ""}, // index out of range
-		{"tel", true, URNList{"tel:+250781234567", "tel:+250781111222"}},
-		{"twitter", true, URNList{"twitter:134252511151#billy_bob"}},
+		{"0", true, &flows.ContactURN{URN: "tel:+250781234567"}},
+		{"1", true, &flows.ContactURN{URN: "twitter:134252511151#billy_bob"}},
+		{"2", true, &flows.ContactURN{URN: "tel:+250781111222"}},
+		{"3", false, nil}, // index out of range
+		{"tel", true, flows.URNList{&flows.ContactURN{URN: "tel:+250781234567"}, &flows.ContactURN{URN: "tel:+250781111222"}}},
+		{"twitter", true, flows.URNList{&flows.ContactURN{URN: "twitter:134252511151#billy_bob"}}},
 		{"xxxxxx", false, ""}, // not a valid scheme
 	}
 	for _, tc := range testCases {
