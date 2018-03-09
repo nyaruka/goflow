@@ -77,7 +77,7 @@ func (c *Contact) URNs() URNList { return c.urns }
 func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
-	c.urns = append(c.urns, &ContactURN{URN: urn})
+	c.urns = append(c.urns, ContactURN{URN: urn})
 }
 
 // Groups returns the groups that this contact belongs to
