@@ -75,7 +75,7 @@ func (c *Contact) URNs() URNList { return c.urns }
 func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
-	c.urns = append(c.urns, ContactURN{URN: urn})
+	c.urns = append(c.urns, &ContactURN{URN: urn})
 }
 
 // Groups returns the groups that this contact belongs to
@@ -130,6 +130,28 @@ func (c *Contact) String() string {
 }
 
 var _ utils.VariableResolver = (*Contact)(nil)
+
+// UpdatePreferredChannel updates the preferred channel
+func (c *Contact) UpdatePreferredChannel(channel Channel) {
+	priorityURNs := make([]*ContactURN, 0)
+	otherURNs := make([]*ContactURN, 0)
+
+	for _, urn := range c.urns {
+		// tel URNs can be re-assigned, other URN schemes are considered channel specific
+		if urn.URN.Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+			urn.SetChannel(channel)
+		}
+
+		// move any URNs with this channel to the front of the list
+		if urn.Channel() == channel {
+			priorityURNs = append(priorityURNs, urn)
+		} else {
+			otherURNs = append(otherURNs, urn)
+		}
+	}
+
+	c.urns = append(priorityURNs, otherURNs...)
+}
 
 // UpdateDynamicGroups reevaluates membership of all dynamic groups for this contact
 func (c *Contact) UpdateDynamicGroups(session Session) error {

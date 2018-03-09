@@ -16,11 +16,11 @@
                             },
                             "text": "Hi! What is your name?",
                             "urn": "tel:+12065551212",
-                            "uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8"
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 },
                 {
                     "event": {
@@ -29,7 +29,7 @@
                         "text": "flow loop detected, stopping execution before entering '32bc60ad-5c86-465e-a6b8-049c44ecce49'",
                         "type": "error"
                     },
-                    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 }
             ],
             "session": {
@@ -79,7 +79,7 @@
                                             },
                                             "text": "Hi! What is your name?",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "8aed5d25-d9ba-4799-8c2c-eb689cc91cf8"
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
                                         "type": "msg_created"
                                     },
@@ -93,11 +93,11 @@
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                                "uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
                         ],
                         "status": "errored",
-                        "uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f"
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
                 ],
                 "status": "errored",

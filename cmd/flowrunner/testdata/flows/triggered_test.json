@@ -16,11 +16,11 @@
                             },
                             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                             "urn": "tel:+12065551212",
-                            "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                         },
                         "type": "msg_created"
                     },
-                    "step_uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 }
             ],
             "session": {
@@ -70,18 +70,18 @@
                                             },
                                             "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "e70444e4-a4a4-407e-a8fa-2f769abd7608"
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                         },
                                         "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a"
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
                 ],
                 "status": "completed",

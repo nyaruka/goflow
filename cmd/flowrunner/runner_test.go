@@ -173,14 +173,14 @@ func TestFlows(t *testing.T) {
 	server := newTestHTTPServer()
 	server.Start()
 	defer server.Close()
-
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	// save away our server URL so we can rewrite our URLs
 	serverURL = server.URL
 
 	for _, test := range flowTests {
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+
 		testJSON, err := readFile("flows/", test.output)
 		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", test.assets, test.output, err)
 

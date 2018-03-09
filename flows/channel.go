@@ -111,14 +111,22 @@ func NewChannelSet(channels []Channel) *ChannelSet {
 	return s
 }
 
-func (s *ChannelSet) WithRole(role ChannelRole) []Channel {
-	channels := make([]Channel, 0)
+// GetForURN returns the best channel for the given URN
+func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
+	// if caller has told us which channel to use for this URN, use that
+	if urn.Channel() != nil {
+		return urn.Channel()
+	}
+
+	// if not, return the first channel which supports this URN scheme
+	scheme := urn.Scheme()
 	for _, ch := range s.channels {
-		if ch.HasRole(role) {
-			channels = append(channels, ch)
+		if ch.HasRole(ChannelRoleSend) && ch.SupportsScheme(scheme) {
+			return ch
 		}
 	}
-	return channels
+
+	return nil
 }
 
 func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {

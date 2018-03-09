@@ -9,9 +9,9 @@ import (
 
 func TestResolve(t *testing.T) {
 	urnList := flows.URNList{
-		flows.ContactURN{URN: "tel:+250781234567"},
-		flows.ContactURN{URN: "twitter:134252511151#billy_bob"},
-		flows.ContactURN{URN: "tel:+250781111222"},
+		flows.NewContactURN("tel:+250781234567", nil),
+		flows.NewContactURN("twitter:134252511151#billy_bob", nil),
+		flows.NewContactURN("tel:+250781111222", nil),
 	}
 
 	testCases := []struct {
@@ -19,12 +19,12 @@ func TestResolve(t *testing.T) {
 		hasValue bool
 		value    interface{}
 	}{
-		{"0", true, flows.ContactURN{URN: "tel:+250781234567"}},
-		{"1", true, flows.ContactURN{URN: "twitter:134252511151#billy_bob"}},
-		{"2", true, flows.ContactURN{URN: "tel:+250781111222"}},
+		{"0", true, flows.NewContactURN("tel:+250781234567", nil)},
+		{"1", true, flows.NewContactURN("twitter:134252511151#billy_bob", nil)},
+		{"2", true, flows.NewContactURN("tel:+250781111222", nil)},
 		{"3", false, nil}, // index out of range
-		{"tel", true, flows.URNList{flows.ContactURN{URN: "tel:+250781234567"}, flows.ContactURN{URN: "tel:+250781111222"}}},
-		{"twitter", true, flows.URNList{flows.ContactURN{URN: "twitter:134252511151#billy_bob"}}},
+		{"tel", true, flows.URNList{flows.NewContactURN("tel:+250781234567", nil), flows.NewContactURN("tel:+250781111222", nil)}},
+		{"twitter", true, flows.URNList{flows.NewContactURN("twitter:134252511151#billy_bob", nil)}},
 		{"xxxxxx", false, ""}, // not a valid scheme
 	}
 	for _, tc := range testCases {

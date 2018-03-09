@@ -54,23 +54,15 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 		return err
 	}
 
-	channels := channelSet.WithRole(flows.ChannelRoleSend)
 	destinations := []msgDestination{}
 
-	if a.AllURNs {
-		// send to any URN which has a corresponding channel (i.e. is sendable)
-		for _, u := range run.Contact().URNs() {
-			channel := getChannelForURN(channels, u)
-			if channel != nil {
-				destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
-			}
-		}
-	} else {
-		// send to first URN which has a corresponding channel (i.e. is sendable)
-		for _, u := range run.Contact().URNs() {
-			channel := getChannelForURN(channels, u)
-			if channel != nil {
-				destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
+	for _, u := range run.Contact().URNs() {
+		channel := channelSet.GetForURN(u)
+		if channel != nil {
+			destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
+
+			// if we're not sending to all URNs we just need the first sendable URN
+			if !a.AllURNs {
 				break
 			}
 		}
@@ -80,24 +72,6 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 	for _, dest := range destinations {
 		msg := flows.NewMsgOut(dest.urn, dest.channel, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
 		log.Add(events.NewMsgCreatedEvent(msg))
-	}
-
-	return nil
-}
-
-// returns the best channel for the given URN
-func getChannelForURN(channels []flows.Channel, urn flows.ContactURN) flows.Channel {
-	// if caller has told us which channel to use for this URN, use that
-	if urn.Channel() != nil {
-		return urn.Channel()
-	}
-
-	// if not, return the first channel which supports this URN scheme
-	scheme := urn.Scheme()
-	for _, ch := range channels {
-		if ch.HasRole(flows.ChannelRoleSend) && ch.SupportsScheme(scheme) {
-			return ch
-		}
 	}
 
 	return nil
