@@ -77,7 +77,7 @@ func (c *Contact) URNs() URNList { return c.urns }
 func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
-	c.urns = append(c.urns, urn)
+	c.urns = append(c.urns, &ContactURN{URN: urn})
 }
 
 // Groups returns the groups that this contact belongs to
@@ -169,7 +169,7 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 		urnsWithScheme := c.urns.WithScheme(key)
 		vals := make([]interface{}, len(urnsWithScheme))
 		for u := range urnsWithScheme {
-			vals[u] = string(urnsWithScheme[u])
+			vals[u] = string(urnsWithScheme[u].URN)
 		}
 		return vals
 	}
@@ -200,7 +200,7 @@ type contactEnvelope struct {
 	Name     string                          `json:"name"`
 	Language utils.Language                  `json:"language"`
 	Timezone string                          `json:"timezone"`
-	URNs     URNList                         `json:"urns"`
+	URNs     []urns.URN                      `json:"urns" validate:"dive,urn"`
 	Groups   []*GroupReference               `json:"groups,omitempty" validate:"dive"`
 	Fields   map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
 	Channel  *ChannelReference               `json:"channel,omitempty" validate:"omitempty,dive"`
@@ -228,7 +228,9 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		c.urns = envelope.URNs
+		if c.urns, err = ReadURNList(session, envelope.URNs); err != nil {
+			return nil, err
+		}
 	}
 
 	if envelope.Groups == nil {
@@ -278,7 +280,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce.Name = c.name
 	ce.UUID = c.uuid
 	ce.Language = c.language
-	ce.URNs = c.urns
+	ce.URNs = c.urns.RawURNs(true)
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}

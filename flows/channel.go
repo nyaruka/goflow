@@ -31,18 +31,12 @@ func (c *channel) Reference() *ChannelReference { return NewChannelReference(c.u
 // Resolve satisfies our resolver interface
 func (c *channel) Resolve(key string) interface{} {
 	switch key {
-
 	case "uuid":
 		return c.uuid
-
 	case "name":
 		return c.name
-
 	case "address":
 		return c.address
-
-	case "type":
-		return c.channelType
 	}
 
 	return fmt.Errorf("No field '%s' on channel", key)
