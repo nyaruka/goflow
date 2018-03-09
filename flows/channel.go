@@ -23,17 +23,15 @@ type channel struct {
 	address string
 	schemes []string
 	roles   []ChannelRole
-	parent  *ChannelReference
 }
 
-func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole, parent *ChannelReference) Channel {
+func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole) Channel {
 	return &channel{
 		uuid:    uuid,
 		name:    name,
 		address: address,
 		schemes: schemes,
 		roles:   roles,
-		parent:  parent,
 	}
 }
 
@@ -51,9 +49,6 @@ func (c *channel) Schemes() []string { return c.schemes }
 
 // Roles returns the roles of this channel
 func (c *channel) Roles() []ChannelRole { return c.roles }
-
-// Parent returns the parent of this channel
-func (c *channel) Parent() *ChannelReference { return c.parent }
 
 // Reference returns a reference to this channel
 func (c *channel) Reference() *ChannelReference { return NewChannelReference(c.uuid, c.name) }
@@ -135,12 +130,11 @@ func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {
 //------------------------------------------------------------------------------------------
 
 type channelEnvelope struct {
-	UUID    ChannelUUID       `json:"uuid" validate:"required,uuid4"`
-	Name    string            `json:"name"`
-	Address string            `json:"address"`
-	Schemes []string          `json:"schemes" validate:"min=1"`
-	Roles   []ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
-	Parent  *ChannelReference `json:"parent" validate:"omitempty,dive"`
+	UUID    ChannelUUID   `json:"uuid" validate:"required,uuid4"`
+	Name    string        `json:"name"`
+	Address string        `json:"address"`
+	Schemes []string      `json:"schemes" validate:"min=1"`
+	Roles   []ChannelRole `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
 }
 
 // ReadChannel decodes a channel from the passed in JSON
@@ -156,7 +150,6 @@ func ReadChannel(data json.RawMessage) (Channel, error) {
 		address: ce.Address,
 		schemes: ce.Schemes,
 		roles:   ce.Roles,
-		parent:  ce.Parent,
 	}, nil
 }
 

@@ -34,6 +34,11 @@ type ContactURN struct {
 	channel Channel
 }
 
+// NewContactURN creates a new contact URN with associated channel
+func NewContactURN(urn urns.URN, channel Channel) ContactURN {
+	return ContactURN{URN: urn, channel: channel}
+}
+
 // Channel gets the channel associated with this URN
 func (u ContactURN) Channel() Channel { return u.channel }
 

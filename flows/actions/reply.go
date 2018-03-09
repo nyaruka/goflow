@@ -87,24 +87,18 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 
 // returns the best channel for the given URN
 func getChannelForURN(channels []flows.Channel, urn flows.ContactURN) flows.Channel {
-	var channel flows.Channel
+	// if caller has told us which channel to use for this URN, use that
+	if urn.Channel() != nil {
+		return urn.Channel()
+	}
+
+	// if not, return the first channel which supports this URN scheme
 	scheme := urn.Scheme()
 	for _, ch := range channels {
 		if ch.HasRole(flows.ChannelRoleSend) && ch.SupportsScheme(scheme) {
-			channel = ch
-			break
+			return ch
 		}
 	}
 
-	// look for a delegate sender for this channel
-	if channel != nil {
-		for _, ch := range channels {
-			if ch.Parent() != nil && ch.Parent().UUID == channel.UUID() {
-				channel = ch
-				break
-			}
-		}
-	}
-
-	return channel
+	return nil
 }

@@ -340,5 +340,4 @@ type Channel interface {
 	Roles() []ChannelRole
 	HasRole(ChannelRole) bool
 	Reference() *ChannelReference
-	Parent() *ChannelReference
 }
