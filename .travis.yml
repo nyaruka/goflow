@@ -19,7 +19,7 @@ before_script:
 script:
  - $HOME/gopath/bin/goveralls -service=travis-ci
  - go test $(go list ./... | grep -v /vendor/) -cover
- - go test $(go list ./... | grep -v /vendor/) -cover -bench=. -benchmem
+ - go test $(go list ./... | grep -v /vendor/) -bench=. -benchmem
 
 after_success:
  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
