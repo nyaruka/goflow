@@ -12,6 +12,9 @@
 # Which port to listen on
 port = 8800
 
+# Log level, one of: panic, fatal, error, warn, info, debug
+log_level = "error"
+
 # directory where static content is served from
 static = ""
 
