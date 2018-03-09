@@ -86,7 +86,7 @@ func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.Even
 }
 
 // returns the best channel for the given URN
-func getChannelForURN(channels []flows.Channel, urn *flows.ContactURN) flows.Channel {
+func getChannelForURN(channels []flows.Channel, urn flows.ContactURN) flows.Channel {
 	var channel flows.Channel
 	scheme := urn.Scheme()
 	for _, ch := range channels {

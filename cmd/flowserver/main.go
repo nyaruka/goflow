@@ -34,14 +34,21 @@ func main() {
 		config.Version = version
 	}
 
+	level, err := logrus.ParseLevel(config.LogLevel)
+	if err != nil {
+		logrus.Fatalf("Invalid log level '%s'", level)
+	}
+
 	logger := logrus.New()
+	logger.SetLevel(level)
+
 	lg.RedirectStdlogOutput(logger)
 	lg.DefaultLogger = logger
 
 	flowServer := NewFlowServer(config, logger)
 	flowServer.Start()
 
-	logrus.WithField("comp", "server").WithField("port", config.Port).WithField("version", version).Info("listening")
+	logger.WithField("comp", "server").WithField("port", config.Port).WithField("version", version).Info("listening")
 
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)

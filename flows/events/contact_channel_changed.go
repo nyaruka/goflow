@@ -60,14 +60,14 @@ func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
 		var newPreferredURN *flows.ContactURN
 		for _, urn := range contactURNs {
 			if channel.SupportsScheme(urn.Scheme()) {
-				newPreferredURN = urn
+				newPreferredURN = &urn
 			}
 		}
 
 		// update the highest URN of the right scheme to be highest priority
 		if newPreferredURN != nil {
 			newURNs := make(flows.URNList, 1)
-			newURNs[0] = newPreferredURN
+			newURNs[0] = *newPreferredURN
 
 			for _, urn := range contactURNs {
 				if urn.URN != newPreferredURN.URN {
