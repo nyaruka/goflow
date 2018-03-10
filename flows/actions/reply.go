@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -31,6 +32,11 @@ type ReplyAction struct {
 	AllURNs      bool     `json:"all_urns,omitempty"`
 }
 
+type msgDestination struct {
+	urn     urns.URN
+	channel flows.Channel
+}
+
 // Type returns the type of this action
 func (a *ReplyAction) Type() string { return TypeReply }
 
@@ -43,12 +49,29 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
-	contactURNs := run.Contact().URNs()
+	channelSet, err := run.Session().Assets().GetChannelSet()
+	if err != nil {
+		return err
+	}
 
-	if a.AllURNs && len(contactURNs) > 0 {
-		log.Add(events.NewBroadcastCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, contactURNs.RawURNs(false), nil, nil))
-	} else {
-		log.Add(events.NewMsgCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, run.Contact().Reference()))
+	destinations := []msgDestination{}
+
+	for _, u := range run.Contact().URNs() {
+		channel := channelSet.GetForURN(u)
+		if channel != nil {
+			destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
+
+			// if we're not sending to all URNs we just need the first sendable URN
+			if !a.AllURNs {
+				break
+			}
+		}
+	}
+
+	// create a new message for each URN+channel destination
+	for _, dest := range destinations {
+		msg := flows.NewMsgOut(dest.urn, dest.channel, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+		log.Add(events.NewMsgCreatedEvent(msg))
 	}
 
 	return nil

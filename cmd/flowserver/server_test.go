@@ -14,7 +14,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/sirupsen/logrus"
@@ -354,7 +353,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 
 	// try to resume this completed session
 	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
-	msg := inputs.NewMsgInput(flows.InputUUID(utils.NewUUID()), nil, time.Now(), tgURN, "hello", nil)
+	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), tgURN, nil, "hello", []flows.Attachment{})
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))

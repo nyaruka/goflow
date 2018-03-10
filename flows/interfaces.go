@@ -50,6 +50,10 @@ type InputUUID utils.UUID
 
 func (u InputUUID) String() string { return string(u) }
 
+type MsgUUID utils.UUID
+
+func (u MsgUUID) String() string { return string(u) }
+
 // RunStatus represents the current status of the engine session
 type SessionStatus string
 
@@ -96,6 +100,7 @@ func (r RunStatus) String() string { return string(r) }
 
 type SessionAssets interface {
 	GetChannel(ChannelUUID) (Channel, error)
+	GetChannelSet() (*ChannelSet, error)
 
 	GetField(FieldKey) (*Field, error)
 	GetFieldSet() (*FieldSet, error)
@@ -325,27 +330,14 @@ type FlowRun interface {
 	Exit(RunStatus)
 }
 
-// ChannelType represents the type of a Channel
-type ChannelType string
-
-func (ct ChannelType) String() string { return string(ct) }
-
 // Channel represents a channel for sending and receiving messages
 type Channel interface {
 	UUID() ChannelUUID
 	Name() string
 	Address() string
-	Type() ChannelType
+	Schemes() []string
+	SupportsScheme(string) bool
+	Roles() []ChannelRole
+	HasRole(ChannelRole) bool
 	Reference() *ChannelReference
 }
-
-// MsgDirection is the direction of a Msg (either in or out)
-type MsgDirection string
-
-const (
-	// MsgOut represents an outgoing message
-	MsgOut MsgDirection = "O"
-
-	// MsgIn represents an incoming message
-	MsgIn MsgDirection = "I"
-)

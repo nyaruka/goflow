@@ -8,7 +8,6 @@
                     "name": "Nexmo",
                     "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                 },
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
                 "text": "Hi there",
                 "attachments": [
                     "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"

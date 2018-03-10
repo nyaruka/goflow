@@ -20,11 +20,26 @@
                     }
                 ]
             }
+        },
+        {
+            "type": "channel",
+            "url": "http://testserver/assets/channel",
+            "content": [
+                {
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "name": "Android Channel",
+                    "address": "+12345671111",
+                    "schemes": ["tel"],
+                    "roles": ["send", "receive"]
+                }
+            ],
+            "is_set": true
         }
     ],
     "asset_server": {
 		"type_urls": {
-			"flow": "http://testserver/assets/flow"
+            "channel": "http://testserver/assets/channel",
+            "flow": "http://testserver/assets/flow"
 		}
 	},
     "trigger": {
@@ -52,8 +67,7 @@
             "msg": {
                 "uuid": "77dc2aec-1a2f-4820-a878-52cc26f689de",
                 "text": "Let's go thrifting!",
-                "urn": "tel:+12065551212",
-                "created_on": "2017-05-29T00:00:00.000000000-00:00"
+                "urn": "tel:+12065551212"
             }
         }
     ]

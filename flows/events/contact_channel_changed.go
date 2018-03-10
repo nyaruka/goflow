@@ -1,6 +1,8 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeContactChannelChanged is the type of our set preferred channel event
 const TypeContactChannelChanged string = "contact_channel_changed"
@@ -39,6 +41,6 @@ func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
 		return err
 	}
 
-	run.Contact().SetChannel(channel)
+	run.Contact().UpdatePreferredChannel(channel)
 	return nil
 }

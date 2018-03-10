@@ -19,7 +19,6 @@ type Contact struct {
 	urns     URNList
 	groups   *GroupList
 	fields   FieldValues
-	channel  Channel
 }
 
 // NewContact returns a new contact
@@ -43,7 +42,6 @@ func (c *Contact) Clone() *Contact {
 		urns:     c.urns.Clone(),
 		groups:   c.groups.Clone(),
 		fields:   c.fields.Clone(),
-		channel:  c.channel,
 	}
 }
 
@@ -77,7 +75,7 @@ func (c *Contact) URNs() URNList { return c.urns }
 func (c *Contact) AddURN(urn urns.URN) {
 	// TODO normalize and check we're not adding duplicates
 
-	c.urns = append(c.urns, ContactURN{URN: urn})
+	c.urns = append(c.urns, &ContactURN{URN: urn})
 }
 
 // Groups returns the groups that this contact belongs to
@@ -86,17 +84,13 @@ func (c *Contact) Groups() *GroupList { return c.groups }
 // Fields returns this contact's field values
 func (c *Contact) Fields() FieldValues { return c.fields }
 
-// Channel returns the preferred channel of this contact
-func (c *Contact) Channel() Channel { return c.channel }
-
-// SetChannel sets the preferred channel of this contact
-func (c *Contact) SetChannel(channel Channel) { c.channel = channel }
-
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
+	case "uuid":
+		return c.uuid
 	case "name":
 		return c.name
 	case "first_name":
@@ -105,22 +99,21 @@ func (c *Contact) Resolve(key string) interface{} {
 			return names[0]
 		}
 		return ""
-	case "uuid":
-		return c.uuid
-	case "urns":
-		return c.urns
 	case "language":
 		return string(c.language)
+	case "timezone":
+		return c.timezone
+	case "urns":
+		return c.urns
 	case "groups":
 		return c.groups
 	case "fields":
 		return c.fields
-	case "timezone":
-		return c.timezone
-	case "urn":
-		return c.urns
 	case "channel":
-		return c.channel
+		if len(c.urns) > 0 {
+			return c.urns[0].Channel()
+		}
+		return nil
 	}
 
 	return fmt.Errorf("no field '%s' on contact", key)
@@ -137,6 +130,28 @@ func (c *Contact) String() string {
 }
 
 var _ utils.VariableResolver = (*Contact)(nil)
+
+// UpdatePreferredChannel updates the preferred channel
+func (c *Contact) UpdatePreferredChannel(channel Channel) {
+	priorityURNs := make([]*ContactURN, 0)
+	otherURNs := make([]*ContactURN, 0)
+
+	for _, urn := range c.urns {
+		// tel URNs can be re-assigned, other URN schemes are considered channel specific
+		if urn.URN.Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+			urn.SetChannel(channel)
+		}
+
+		// move any URNs with this channel to the front of the list
+		if urn.Channel() == channel {
+			priorityURNs = append(priorityURNs, urn)
+		} else {
+			otherURNs = append(otherURNs, urn)
+		}
+	}
+
+	c.urns = append(priorityURNs, otherURNs...)
+}
 
 // UpdateDynamicGroups reevaluates membership of all dynamic groups for this contact
 func (c *Contact) UpdateDynamicGroups(session Session) error {
@@ -203,7 +218,6 @@ type contactEnvelope struct {
 	URNs     []urns.URN                      `json:"urns" validate:"dive,urn"`
 	Groups   []*GroupReference               `json:"groups,omitempty" validate:"dive"`
 	Fields   map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
-	Channel  *ChannelReference               `json:"channel,omitempty" validate:"omitempty,dive"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -261,13 +275,6 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 			}
 
 			c.fields[field.key] = NewFieldValue(field, value, valueEnvelope.CreatedOn)
-		}
-	}
-
-	if envelope.Channel != nil {
-		c.channel, err = session.Assets().GetChannel(envelope.Channel.UUID)
-		if err != nil {
-			return nil, err
 		}
 	}
 

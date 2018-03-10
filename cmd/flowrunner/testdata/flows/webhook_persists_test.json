@@ -9,10 +9,9 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "Something!",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                 },
                 "type": "msg_received"
             }
@@ -24,17 +23,19 @@
                 {
                     "action_uuid": "59cee8f1-ed9e-453e-bc17-6f1996e959d0",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "This is the first message.",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "This is the first message.",
+                            "urn": "tel:+12065551212",
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        },
+                        "type": "msg_created"
                     },
-                    "step_uuid": "19ebde80-3969-47d3-a09e-6806aab9f510"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 },
                 {
                     "action_uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
@@ -47,29 +48,31 @@
                         "type": "webhook_called",
                         "url": "http://127.0.0.1:49999/?cmd=success"
                     },
-                    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "action_uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "The status is true. Send something",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "The status is true. Send something",
+                            "urn": "tel:+12065551212",
+                            "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                        },
+                        "type": "msg_created"
                     },
-                    "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525"
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                 },
                 {
                     "event": {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "4a910999-828a-4886-9504-776e7d151101"
+                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                 }
             ],
             "session": {
@@ -111,21 +114,23 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "This is the first message.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "This is the first message.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e7cd9720-9f37-4862-9e9e-007414a04762",
-                                "uuid": "19ebde80-3969-47d3-a09e-6806aab9f510"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -143,27 +148,29 @@
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "be37f70c-e02a-4a67-9ff2-07609e86bbeb",
-                                "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "The status is true. Send something",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "The status is true. Send something",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "186ff11c-61ec-456c-8e28-ec59fa2fb523",
-                                "uuid": "530379ca-3fa7-4959-8ceb-17799a976525"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -174,11 +181,11 @@
                                     }
                                 ],
                                 "node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                                "uuid": "4a910999-828a-4886-9504-776e7d151101"
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",
@@ -235,17 +242,19 @@
                 {
                     "action_uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "The status is now true",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "The status is now true",
+                            "urn": "tel:+12065551212",
+                            "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                        },
+                        "type": "msg_created"
                     },
-                    "step_uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a"
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                 }
             ],
             "session": {
@@ -284,35 +293,37 @@
                         "flow_uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
                             "text": "Something!",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "This is the first message.",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "This is the first message.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "ea324c82-a83b-4e85-8c61-8642d0a70a3d",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e7cd9720-9f37-4862-9e9e-007414a04762",
-                                "uuid": "19ebde80-3969-47d3-a09e-6806aab9f510"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -330,27 +341,29 @@
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "be37f70c-e02a-4a67-9ff2-07609e86bbeb",
-                                "uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "The status is true. Send something",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "The status is true. Send something",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "186ff11c-61ec-456c-8e28-ec59fa2fb523",
-                                "uuid": "530379ca-3fa7-4959-8ceb-17799a976525"
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -366,10 +379,9 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "Something!",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                         },
                                         "type": "msg_received"
                                     }
@@ -377,31 +389,33 @@
                                 "exit_uuid": "dd0d800b-97ce-418f-9eb7-f0985df89f08",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
-                                "uuid": "4a910999-828a-4886-9504-776e7d151101"
+                                "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "The status is now true",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "The status is now true",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "exit_uuid": "accf4276-f719-4664-b0b1-4f18c0184f56",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "9bd027cd-ae88-4906-b3ea-c003f30d8db5",
-                                "uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a"
+                                "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
                             }
                         ],
                         "status": "completed",
-                        "uuid": "8f570cd6-588b-4b10-acdc-e181352d44cc",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "webhook": {
                             "body": "{ \"ok\": \"true\" }",
                             "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n",

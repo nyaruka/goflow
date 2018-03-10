@@ -15,7 +15,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -232,7 +231,7 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		msg := inputs.NewMsgInput(flows.InputUUID(utils.NewUUID()), nil, time.Now(), contact.URNs()[0].URN, scanner.Text(), []flows.Attachment{})
+		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
 		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})

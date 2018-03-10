@@ -1,8 +1,11 @@
 package flows
 
-import "testing"
-import "github.com/stretchr/testify/assert"
-import "github.com/nyaruka/goflow/utils"
+import (
+	"testing"
+
+	"github.com/nyaruka/goflow/utils"
+	"github.com/stretchr/testify/assert"
+)
 
 func TestReferenceValidation(t *testing.T) {
 	// channel references must always be concrete

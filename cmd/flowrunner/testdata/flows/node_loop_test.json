@@ -8,17 +8,19 @@
                 {
                     "action_uuid": "9d9290a7-3713-4c22-8821-4af0a64c0821",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hi! What is your name?",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "Hi! What is your name?",
+                            "urn": "tel:+12065551212",
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        },
+                        "type": "msg_created"
                     },
-                    "step_uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 },
                 {
                     "event": {
@@ -27,7 +29,7 @@
                         "text": "flow loop detected, stopping execution before entering '32bc60ad-5c86-465e-a6b8-049c44ecce49'",
                         "type": "error"
                     },
-                    "step_uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 }
             ],
             "session": {
@@ -69,15 +71,17 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi! What is your name?",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi! What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -89,11 +93,11 @@
                                 "exit_uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",
-                                "uuid": "fd22f579-1e53-4988-92e8-a5e406ecb2a7"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
                         ],
                         "status": "errored",
-                        "uuid": "4ea2415a-21de-432f-977d-88574316827e"
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
                 ],
                 "status": "errored",

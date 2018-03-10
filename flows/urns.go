@@ -34,11 +34,19 @@ type ContactURN struct {
 	channel Channel
 }
 
+// NewContactURN creates a new contact URN with associated channel
+func NewContactURN(urn urns.URN, channel Channel) *ContactURN {
+	return &ContactURN{URN: urn, channel: channel}
+}
+
 // Channel gets the channel associated with this URN
-func (u ContactURN) Channel() Channel { return u.channel }
+func (u *ContactURN) Channel() Channel { return u.channel }
+
+// SetChannel sets the channel associated with this URN
+func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
 
 // Resolve is called when a URN is part of an excellent expression
-func (u ContactURN) Resolve(key string) interface{} {
+func (u *ContactURN) Resolve(key string) interface{} {
 	switch key {
 	case "scheme":
 		return u.URN.Scheme()
@@ -52,12 +60,12 @@ func (u ContactURN) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on URN", key)
 }
 
-func (u ContactURN) Default() interface{} { return u }
+func (u *ContactURN) Default() interface{} { return u }
 
-func (u ContactURN) String() string { return string(u.URN) }
+func (u *ContactURN) String() string { return string(u.URN) }
 
 // URNList is the list of a contact's URNs
-type URNList []ContactURN
+type URNList []*ContactURN
 
 func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
@@ -84,7 +92,7 @@ func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
 			}
 		}
 
-		l[u] = ContactURN{URN: queryLess, channel: channel}
+		l[u] = &ContactURN{URN: queryLess, channel: channel}
 	}
 	return l, nil
 }
@@ -151,5 +159,5 @@ func (l URNList) String() string {
 	return ""
 }
 
-var _ utils.VariableResolver = ContactURN{}
+var _ utils.VariableResolver = &ContactURN{}
 var _ utils.VariableResolver = (URNList)(nil)

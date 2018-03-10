@@ -9,10 +9,9 @@
                         "name": "Nexmo",
                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "text": "I was born on 1977.06.23 at 3:34 pm",
                     "urn": "tel:+12065551212",
-                    "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                 },
                 "type": "msg_received"
             }
@@ -24,17 +23,19 @@
                 {
                     "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                            "urn": "tel:+12065551212",
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        },
+                        "type": "msg_created"
                     },
-                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 },
                 {
                     "event": {
@@ -42,7 +43,7 @@
                         "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                         "type": "msg_wait"
                     },
-                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 }
             ],
             "session": {
@@ -84,15 +85,17 @@
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -101,11 +104,11 @@
                                     }
                                 ],
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
                         ],
                         "status": "waiting",
-                        "uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07"
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
                 ],
                 "status": "waiting",
@@ -162,7 +165,7 @@
                         "type": "run_result_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 },
                 {
                     "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
@@ -175,22 +178,24 @@
                         "type": "contact_field_changed",
                         "value": "1977-06-23T15:34:00.000000-05:00"
                     },
-                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                     "event": {
-                        "contacts": [
-                            {
-                                "name": "Ben Haggerty",
-                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                            }
-                        ],
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Awesome, you were born on 06-23-1977 at 15:34",
-                        "type": "broadcast_created"
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "Awesome, you were born on 06-23-1977 at 15:34",
+                            "urn": "tel:+12065551212",
+                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                        },
+                        "type": "msg_created"
                     },
-                    "step_uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 }
             ],
             "session": {
@@ -233,29 +238,31 @@
                         "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                         "input": {
                             "channel": {
-                                "name": "Twilio Channel",
+                                "name": "Android Channel",
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                             },
                             "created_on": "2000-01-01T00:00:00.000000000-00:00",
                             "text": "I was born on 1977.06.23 at 3:34 pm",
                             "type": "msg",
                             "urn": "tel:+12065551212",
-                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "events": [
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
                                     },
                                     {
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -269,10 +276,9 @@
                                                 "name": "Nexmo",
                                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                             },
-                                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                             "text": "I was born on 1977.06.23 at 3:34 pm",
                                             "urn": "tel:+12065551212",
-                                            "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
+                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                                         },
                                         "type": "msg_received"
                                     },
@@ -289,7 +295,7 @@
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "uuid": "3388ae87-f128-45fe-8631-f6b52b12c734"
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -304,20 +310,22 @@
                                         "value": "1977-06-23T15:34:00.000000-05:00"
                                     },
                                     {
-                                        "contacts": [
-                                            {
-                                                "name": "Ben Haggerty",
-                                                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                                            }
-                                        ],
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Awesome, you were born on 06-23-1977 at 15:34",
-                                        "type": "broadcast_created"
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Awesome, you were born on 06-23-1977 at 15:34",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                        },
+                                        "type": "msg_created"
                                     }
                                 ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                "uuid": "909e2c7b-e0a8-459c-9491-58ccdc93a8a8"
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
                         ],
                         "results": {
@@ -331,7 +339,7 @@
                             }
                         },
                         "status": "completed",
-                        "uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07"
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     }
                 ],
                 "status": "completed",
