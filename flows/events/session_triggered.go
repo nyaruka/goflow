@@ -70,6 +70,11 @@ func (e *SessionTriggeredEvent) Type() string { return TypeSessionTriggered }
 // AllowedOrigin determines where this event type can originate
 func (e *SessionTriggeredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *SessionTriggeredEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *SessionTriggeredEvent) Apply(run flows.FlowRun) error {
 	return nil

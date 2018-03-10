@@ -234,6 +234,7 @@ type Event interface {
 	FromCaller() bool
 	SetFromCaller(bool)
 	AllowedOrigin() EventOrigin
+	Validate(SessionAssets) error
 
 	Apply(FlowRun) error
 

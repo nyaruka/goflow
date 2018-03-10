@@ -52,6 +52,11 @@ func (e *RunResultChangedEvent) Type() string { return TypeRunResultChanged }
 // AllowedOrigin determines where this event type can originate
 func (e *RunResultChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *RunResultChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *RunResultChangedEvent) Apply(run flows.FlowRun) error {
 	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, e.BaseEvent.CreatedOn())

@@ -37,6 +37,11 @@ func (e *EnvironmentChangedEvent) Type() string { return TypeEnvironmentChanged 
 // AllowedOrigin determines where this event type can originate
 func (e *EnvironmentChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *EnvironmentChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *EnvironmentChangedEvent) Apply(run flows.FlowRun) error {
 	env, err := utils.ReadEnvironment(e.Environment)

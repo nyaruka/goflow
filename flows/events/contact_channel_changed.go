@@ -37,6 +37,11 @@ func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelCh
 // AllowedOrigin determines where this event type can originate
 func (e *ContactChannelChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactChannelChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
 	channel, err := run.Session().Assets().GetChannel(e.Channel.UUID)

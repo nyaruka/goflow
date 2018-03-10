@@ -30,6 +30,11 @@ func (e *NothingWaitEvent) Type() string { return TypeNothingWait }
 // AllowedOrigin determines where this event type can originate
 func (e *NothingWaitEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *NothingWaitEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *NothingWaitEvent) Apply(run flows.FlowRun) error {
 	return nil

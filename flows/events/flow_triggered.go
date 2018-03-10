@@ -40,6 +40,11 @@ func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
 // AllowedOrigin determines where this event type can originate
 func (e *FlowTriggeredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *FlowTriggeredEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) error {
 	flow, err := run.Session().Assets().GetFlow(e.Flow.UUID)

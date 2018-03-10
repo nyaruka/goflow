@@ -31,6 +31,11 @@ func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
 // AllowedOrigin determines where this event type can originate
 func (e *RunExpiredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *RunExpiredEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *RunExpiredEvent) Apply(run flows.FlowRun) error {
 	if run.UUID() != e.RunUUID {

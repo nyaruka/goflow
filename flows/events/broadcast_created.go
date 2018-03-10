@@ -50,10 +50,15 @@ func NewBroadcastCreatedEvent(text string, attachments []flows.Attachment, quick
 // Type returns the type of this event
 func (e *BroadcastCreatedEvent) Type() string { return TypeBroadcastCreated }
 
+// AllowedOrigin determines where this event type can originate
+func (e *BroadcastCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
+
+// Validate validates our event is valid and has all the assets it needs
+func (e *BroadcastCreatedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *BroadcastCreatedEvent) Apply(run flows.FlowRun) error {
 	return nil
 }
-
-// AllowedOrigin determines where this event type can originate
-func (e *BroadcastCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }

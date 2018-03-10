@@ -29,6 +29,14 @@ type ContactChangedEvent struct {
 // Type returns the type of this event
 func (e *ContactChangedEvent) Type() string { return TypeContactChanged }
 
+// AllowedOrigin determines where this event type can originate
+func (e *ContactChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
+
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
 	contact, err := flows.ReadContact(run.Session(), e.Contact)
@@ -40,6 +48,3 @@ func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
 	run.Session().SetContact(contact)
 	return nil
 }
-
-// AllowedOrigin determines where this event type can originate
-func (e *ContactChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }

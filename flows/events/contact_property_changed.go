@@ -43,6 +43,11 @@ func (e *ContactPropertyChangedEvent) AllowedOrigin() flows.EventOrigin {
 	return flows.EventOriginEither
 }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactPropertyChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *ContactPropertyChangedEvent) Apply(run flows.FlowRun) error {
 	// if this is either name or language, we save directly to the contact

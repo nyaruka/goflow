@@ -45,6 +45,11 @@ func (e *ErrorEvent) Type() string { return TypeError }
 // AllowedOrigin determines where this event type can originate
 func (e *ErrorEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *ErrorEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *ErrorEvent) Apply(run flows.FlowRun) error {
 	if e.Fatal {

@@ -38,6 +38,11 @@ func (e *InputLabelsAddedEvent) Type() string { return TypeInputLabelsAdded }
 // AllowedOrigin determines where this event type can originate
 func (e *InputLabelsAddedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *InputLabelsAddedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *InputLabelsAddedEvent) Apply(run flows.FlowRun) error {
 	return nil

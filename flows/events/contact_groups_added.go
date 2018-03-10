@@ -35,6 +35,11 @@ func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded 
 // AllowedOrigin determines where this event type can originate
 func (e *ContactGroupsAddedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 // Apply applies this event to the given run
 func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
 	groupSet, err := run.Session().Assets().GetGroupSet()

@@ -118,10 +118,8 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 	}
 
 	// check caller events are valid
-	for _, event := range callerEvents {
-		if event.AllowedOrigin() == flows.EventOriginEngine {
-			return fmt.Errorf("event type %s can't be sent by callers", event.Type())
-		}
+	if err := s.validateCallerEvents(callerEvents); err != nil {
+		return fmt.Errorf("event validation failed: %s", err)
 	}
 
 	if trigger.Environment() != nil {
@@ -155,10 +153,8 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 	}
 
 	// check caller events are valid
-	for _, event := range callerEvents {
-		if event.AllowedOrigin() == flows.EventOriginEngine {
-			return fmt.Errorf("event type %s can't be sent by callers", event.Type())
-		}
+	if err := s.validateCallerEvents(callerEvents); err != nil {
+		return fmt.Errorf("event validation failed: %s", err)
 	}
 
 	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
@@ -444,6 +440,18 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 }
 
 const noDestination = flows.NodeUUID("")
+
+func (s *session) validateCallerEvents(events []flows.Event) error {
+	for _, event := range events {
+		if event.AllowedOrigin() == flows.EventOriginEngine {
+			return fmt.Errorf("event type %s can't be sent by callers", event.Type())
+		}
+		if err := event.Validate(s.assets); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
