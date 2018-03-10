@@ -1,6 +1,10 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"fmt"
+
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeContactFieldChanged is the type of our save to contact event
 const TypeContactFieldChanged string = "contact_field_changed"
@@ -37,6 +41,10 @@ func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChange
 
 // Apply applies this event to the given run
 func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
+	if run.Contact() == nil {
+		return fmt.Errorf("can't apply event in session without a contact")
+	}
+
 	field, err := run.Session().Assets().GetField(e.Field.Key)
 	if err != nil {
 		return err

@@ -1,6 +1,8 @@
 package events
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -40,6 +42,10 @@ func (e *ContactPropertyChangedEvent) Type() string { return TypeContactProperty
 
 // Apply applies this event to the given run
 func (e *ContactPropertyChangedEvent) Apply(run flows.FlowRun) error {
+	if run.Contact() == nil {
+		return fmt.Errorf("can't apply event in session without a contact")
+	}
+
 	// if this is either name or language, we save directly to the contact
 	if e.Property == "name" {
 		run.Contact().SetName(e.Value)

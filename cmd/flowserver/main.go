@@ -52,7 +52,7 @@ func main() {
 
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-	logrus.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
+	logger.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
 
 	flowServer.Stop()
 }

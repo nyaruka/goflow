@@ -36,7 +36,7 @@ func NewEmailCreatedEvent(addresses []string, subject string, body string) *Emai
 }
 
 // Type returns the type of this event
-func (a *EmailCreatedEvent) Type() string { return TypeEmailCreated }
+func (e *EmailCreatedEvent) Type() string { return TypeEmailCreated }
 
 // Apply applies this event to the given run
 func (e *EmailCreatedEvent) Apply(run flows.FlowRun) error {

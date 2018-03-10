@@ -41,9 +41,9 @@ func (a *AddToGroupAction) Validate(assets flows.SessionAssets) error {
 
 // Execute adds our contact to the specified groups
 func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact == nil {
+		log.Add(events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 
@@ -68,6 +68,7 @@ func (a *AddToGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows
 		groupRefs = append(groupRefs, group.Reference())
 	}
 
+	// only generate event if contact's groups change
 	if len(groupRefs) > 0 {
 		log.Add(events.NewContactGroupsAddedEvent(groupRefs))
 	}

@@ -176,7 +176,7 @@ func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
 func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
 	if err := event.Apply(r); err != nil {
-		return err
+		return fmt.Errorf("unable to apply event[type=%s]: %s", event.Type(), err)
 	}
 
 	if s != nil {
