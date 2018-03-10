@@ -6,20 +6,13 @@ go:
 services:
  - redis-server
 
-addons:
-  postgresql: '9.3'
-
 before_script:
- - psql -U postgres -c "CREATE USER goflow WITH PASSWORD 'goflow';"
- - psql -U postgres -c "ALTER ROLE goflow WITH SUPERUSER;"
- - psql -U postgres -c "CREATE DATABASE goflow_test;"
- - psql -U postgres -d goflow_test -f schema.sql
  - go get github.com/mattn/goveralls
 
 script:
- - $HOME/gopath/bin/goveralls -service=travis-ci
- - go test $(go list ./... | grep -v /vendor/) -cover
- - go test $(go list ./... | grep -v /vendor/) -cover -bench=. -benchmem
+ - go test $(go list ./... | grep -v /vendor/) -cover -covermode=count -coverprofile=profile.cov
+ - go test $(go list ./... | grep -v /vendor/) -bench=. -benchmem
 
 after_success:
+ - goveralls -coverprofile=profile.cov -service=travis-ci
  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
