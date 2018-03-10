@@ -411,7 +411,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		// find our exit
 		for _, e := range node.Exits() {
 			if e.UUID() == exitUUID {
-				localizedName := run.GetText(flows.UUID(exitUUID), "name", e.Name())
+				localizedName := run.GetText(utils.UUID(exitUUID), "name", e.Name())
 				if localizedName != e.Name() {
 					localizedExitName = localizedName
 				}

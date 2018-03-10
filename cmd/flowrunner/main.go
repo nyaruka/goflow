@@ -17,7 +17,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
-	uuid "github.com/satori/go.uuid"
+)
+
+const (
+	outputIndent string = "    "
 )
 
 type Output struct {
@@ -58,12 +61,12 @@ func marshalEventLog(eventLog []flows.LogEntry) []json.RawMessage {
 }
 
 func rawMessageAsJSON(msg json.RawMessage) (string, error) {
-	envJSON, err := json.MarshalIndent(msg, "", "  ")
+	envJSON, err := json.MarshalIndent(msg, "", outputIndent)
 	if err != nil {
 		return "", err
 	}
 
-	return string(replaceFields(envJSON)), nil
+	return string(clearTimestamps(envJSON)), nil
 }
 
 func eventAsJSON(event flows.Event) (string, error) {
@@ -72,12 +75,12 @@ func eventAsJSON(event flows.Event) (string, error) {
 		return "", err
 	}
 
-	envJSON, err := json.MarshalIndent(env, "", "  ")
+	envJSON, err := json.MarshalIndent(env, "", outputIndent)
 	if err != nil {
 		return "", err
 	}
 
-	return string(replaceFields(envJSON)), nil
+	return string(clearTimestamps(envJSON)), nil
 }
 
 func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
@@ -117,23 +120,17 @@ func replaceMapFields(replacements map[string]interface{}, parent string, mapFie
 	}
 }
 
-func replaceFields(input []byte) []byte {
+func clearTimestamps(input []byte) []byte {
+	placeholder := "2000-01-01T00:00:00.000000000-00:00"
+
 	replacements := map[string]interface{}{
-		"arrived_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"left_on":         "2000-01-01T00:00:00.000000000-00:00",
-		"exited_on":       "2000-01-01T00:00:00.000000000-00:00",
-		"created_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"modified_on":     "2000-01-01T00:00:00.000000000-00:00",
-		"expires_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"timeout_on":      "2000-01-01T00:00:00.000000000-00:00",
-		"event.uuid":      "",
-		"path.uuid":       "",
-		"run.uuid":        "4213ac47-93fd-48c4-af12-7da8218ef09d",
-		"runs.uuid":       "",
-		"step_uuid":       "",
-		"parent_uuid":     "",
-		"parent_run_uuid": "",
-		"child_uuid":      "",
+		"arrived_on":  placeholder,
+		"left_on":     placeholder,
+		"exited_on":   placeholder,
+		"created_on":  placeholder,
+		"modified_on": placeholder,
+		"expires_on":  placeholder,
+		"timeout_on":  placeholder,
 	}
 
 	// unmarshal to arbitrary json
@@ -146,7 +143,7 @@ func replaceFields(input []byte) []byte {
 	replaceMapFields(replacements, "", inputJSON)
 
 	// return our marshalled result
-	outputJSON, err := json.MarshalIndent(inputJSON, "", "  ")
+	outputJSON, err := json.MarshalIndent(inputJSON, "", outputIndent)
 	if err != nil {
 		log.Fatalf("Error marshalling: %s", err)
 	}
@@ -199,7 +196,7 @@ func main() {
 		log.Fatal("error accessing flow: ", err)
 	}
 
-	trigger := triggers.NewManualTrigger(env, contact, flow, time.Now())
+	trigger := triggers.NewManualTrigger(env, contact, flow, utils.EmptyJSONFragment, time.Now())
 
 	// and start our flow
 	err = session.Start(trigger, nil)
@@ -214,10 +211,8 @@ func main() {
 
 	outputs := make([]*Output, 0)
 
-	channelUUID := flows.ChannelUUID("57f1078f-88aa-46f4-a59a-948a5739c03d")
-
 	for session.Wait() != nil {
-		outJSON, err := json.MarshalIndent(session, "", "  ")
+		outJSON, err := json.MarshalIndent(session, "", outputIndent)
 		if err != nil {
 			log.Fatal("Error marshalling output: ", err)
 		}
@@ -236,8 +231,8 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		channelRef := flows.NewChannelReference(channelUUID, "Test Channel")
-		event := events.NewMsgReceivedEvent(flows.InputUUID(uuid.NewV4().String()), channelRef, contact.URNs()[0], scanner.Text(), []flows.Attachment{})
+		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
+		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
 
@@ -255,7 +250,7 @@ func main() {
 	}
 
 	// print out our context
-	outJSON, err := json.MarshalIndent(session, "", "  ")
+	outJSON, err := json.MarshalIndent(session, "", outputIndent)
 	if err != nil {
 		log.Fatal("Error marshalling output: ", err)
 	}
@@ -264,7 +259,7 @@ func main() {
 
 	// write out our test file
 	if *writePtr {
-		// name of the test file is the same as our assets file, just with _test.json intead of .json
+		// name of the test file is the same as our assets file, just with _test.json instead of .json
 		testFilename := strings.Replace(assetsFilename, ".json", "_test.json", 1)
 
 		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
@@ -286,13 +281,13 @@ func main() {
 		}
 
 		flowTest := FlowTest{Trigger: triggerEnvelope, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
-		testJSON, err := json.MarshalIndent(flowTest, "", "  ")
+		testJSON, err := json.MarshalIndent(flowTest, "", outputIndent)
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)
 		}
 
 		// write our output
-		err = ioutil.WriteFile(testFilename, replaceFields(testJSON), 0644)
+		err = ioutil.WriteFile(testFilename, clearTimestamps(testJSON), 0644)
 		if err != nil {
 			log.Fatalf("Error writing test file to %s: %s\n", testFilename, err)
 		}

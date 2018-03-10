@@ -1,46 +1,74 @@
 {
-    "flows": [
+    "assets": [
         {
-            "uuid": "ba32aba5-661d-4680-b5f7-d80444e4728c",
-            "name": "Echo Flow",
-            "language": "eng",
-            "nodes": [
+            "type": "flow",
+            "url": "http://testserver/assets/flow/ba32aba5-661d-4680-b5f7-d80444e4728c",
+            "content": {
+                "uuid": "ba32aba5-661d-4680-b5f7-d80444e4728c",
+                "name": "Echo Flow",
+                "language": "eng",
+                "nodes": [
+                    {
+                        "uuid": "0edcf559-5233-4d1c-bbea-18686b829427",
+                        "actions": [
+                            {
+                                "uuid": "accca030-7963-4660-92e9-5b86d5f21d05",
+                                "type": "reply",
+                                "text": "You said '@run.input.text'"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "type": "channel",
+            "url": "http://testserver/assets/channel",
+            "content": [
                 {
-                    "uuid": "0edcf559-5233-4d1c-bbea-18686b829427",
-                    "actions": [
-                        {
-                            "uuid": "accca030-7963-4660-92e9-5b86d5f21d05",
-                            "type": "reply",
-                            "text": "You said '@run.input.text'"
-                        }
-                    ]
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "name": "Android Channel",
+                    "address": "+12345671111",
+                    "schemes": ["tel"],
+                    "roles": ["send", "receive"]
                 }
-            ]
+            ],
+            "is_set": true
         }
     ],
-    "contact": {
-        "uuid": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
-        "name": "Ben Haggerty",
-        "language": "eng",
-        "timezone": "America/Guayaquil",
-        "urns": [
-            "tel:+12065551212",
-            "facebook:macklemore"
-        ],
-        "fields": {
-            "birth_year": {
-                "field_name": "Birth Year",
-                "field_uuid": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
-                "value": "1983",
-                "created_on": "2017-05-29T18:52:49.142572463Z"
-            }
+    "asset_server": {
+		"type_urls": {
+            "channel": "http://testserver/assets/channel",
+            "flow": "http://testserver/assets/flow"
+		}
+	},
+    "trigger": {
+        "type": "manual",
+        "triggered_on": "2017-05-29T00:00:00.000000000-00:00",
+        "contact": {
+            "uuid": "7cdecd41-15b6-4427-8086-2e9c253cd01a",
+            "name": "Ben Haggerty",
+            "language": "eng",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:5637322626267272"
+            ]
+        },
+        "flow": {
+            "uuid": "ba32aba5-661d-4680-b5f7-d80444e4728c",
+            "name": "Echo Flow"
         }
     },
-    "input": {
-        "type": "msg_received",
-        "channel_uuid": "8f3ddc92-d04f-4205-a312-bac0a6e311ef",
-        "text": "Let's go thrifting!",
-        "urn": "tel:+12065551212",
-        "created_on": "2017-05-29T00:00:00.000000000-00:00"
-    }
+    "events": [
+        {
+            "type": "msg_received",
+            "created_on": "2017-05-29T00:00:00.000000000-00:00",
+            "msg": {
+                "uuid": "77dc2aec-1a2f-4820-a878-52cc26f689de",
+                "text": "Let's go thrifting!",
+                "urn": "tel:+12065551212"
+            }
+        }
+    ]
 }

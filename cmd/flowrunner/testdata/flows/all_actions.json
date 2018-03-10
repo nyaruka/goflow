@@ -64,14 +64,23 @@
                         {
                             "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
                             "type": "start_flow",
-                            "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"}
+                            "flow": {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Collect Language"
+                            }
                         },
                         {
                             "uuid": "3d8030d6-9ddd-472d-baed-d0393f592524",
                             "type": "start_session",
-                            "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Language"},
+                            "flow": {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Collect Language"
+                            },
                             "contacts": [
-                                {"uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8", "name": "Bob"}
+                                {
+                                    "uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8",
+                                    "name": "Bob"
+                                }
                             ]
                         },
                         {
@@ -92,7 +101,9 @@
                                 }
                             ],
                             "text": "Hi @contact.name, are you ready for these attachments?",
-                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"]
+                            "attachments": [
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"
+                            ]
                         },
                         {
                             "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
@@ -119,8 +130,13 @@
                             "uuid": "62a30ab4-d73c-447d-a989-39c49115153e",
                             "type": "reply",
                             "text": "This is a reply with attachments and quick replies",
-                            "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"],
-                            "quick_replies": ["Yes", "No"]
+                            "attachments": [
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"
+                            ],
+                            "quick_replies": [
+                                "Yes",
+                                "No"
+                            ]
                         },
                         {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
@@ -147,7 +163,7 @@
                         {
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
-                            "method": "get",
+                            "method": "GET",
                             "url": "http://localhost/?cmd=success"
                         }
                     ]

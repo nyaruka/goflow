@@ -2,11 +2,11 @@ package engine
 
 import (
 	"encoding/json"
-	"github.com/nyaruka/goflow/flows"
 	"io/ioutil"
 	"reflect"
 	"testing"
 
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/stretchr/testify/assert"
 )
@@ -136,11 +136,11 @@ func TestFlowValidation(t *testing.T) {
 	prefChannelAction.Channel.UUID = "xyx"
 
 	// can't simulate a missing channel without the asset store trying to fetch it... but we can stuff the wrong thing in the store
-	session.Assets().(*sessionAssets).cache.addAsset("http://testserver/assets/channel/xyx", flow)
+	session.Assets().(*sessionAssets).cache.addAsset("http://testserver/assets/channel", flow)
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_preferred_channel]: asset cache contains asset with wrong type for UUID 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_preferred_channel]: asset cache contains asset with wrong type")
 
 	// fix the set_preferred_channel action
 	prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"

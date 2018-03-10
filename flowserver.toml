@@ -10,11 +10,15 @@
 #-------------------------------------------------------------------------------------
 
 # Which port to listen on
-port = 8080
+port = 8800
 
-# Directory where static content is served from
+# Log level, one of: panic, fatal, error, warn, info, debug
+log_level = "error"
+
+# directory where static content is served from
 static = ""
 
-# Asset cache settings - how many items it can hold and how many to prune when it reaches that size
+# asset cache settings - how many items it can hold and how many to prune when it reaches that size
 asset_cache_size = 1000
 asset_cache_prune = 100
+asset_server_token = "missing_auth_token"

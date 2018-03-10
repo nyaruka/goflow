@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/pressly/chi"
-	"github.com/pressly/chi/middleware"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/pressly/lg"
 	"github.com/rakyll/statik/fs"
 	"github.com/sirupsen/logrus"
@@ -25,13 +25,13 @@ import (
 )
 
 type FlowServer struct {
-	config     *FlowServerConfig
+	config     *Config
 	httpServer *http.Server
 	assetCache *engine.AssetCache
 }
 
 // NewFlowServer creates a new flow server instance
-func NewFlowServer(config *FlowServerConfig, logger *logrus.Logger) *FlowServer {
+func NewFlowServer(config *Config, logger *logrus.Logger) *FlowServer {
 	r := chi.NewRouter()
 	r.Use(middleware.DefaultCompress)
 	r.Use(middleware.StripSlashes)

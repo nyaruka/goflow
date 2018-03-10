@@ -2,6 +2,7 @@ package urns
 
 import (
 	"fmt"
+	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -75,64 +76,72 @@ func IsValidScheme(scheme string) bool {
 var nonTelCharsRegex = regexp.MustCompile(`[^0-9a-z]`)
 var twitterHandleRegex = regexp.MustCompile(`^[a-zA-Z0-9_]{1,15}$`)
 var emailRegex = regexp.MustCompile(`^[^\s@]+@[^\s@]+$`)
-var viberRegex = regexp.MustCompile(`^[a-zA-Z0-9_=]{1,24}$`)
+var viberRegex = regexp.MustCompile(`^[a-zA-Z0-9_=/+]{1,24}$`)
+var lineRegex = regexp.MustCompile(`^[a-zA-Z0-9_]{1,36}$`)
 var allDigitsRegex = regexp.MustCompile(`^[0-9]+$`)
 
 // URN represents a Universal Resource Name, we use this for contact identifiers like phone numbers etc..
 type URN string
 
 // NewTelURNForCountry returns a URN for the passed in telephone number and country code ("US")
-func NewTelURNForCountry(number string, country string) URN {
-	return NewURNFromParts(TelScheme, normalizeNumber(number, country), "")
+func NewTelURNForCountry(number string, country string) (URN, error) {
+	return NewURNFromParts(TelScheme, normalizeNumber(number, country), "", "")
 }
 
 // NewTelegramURN returns a URN for the passed in telegram identifier
-func NewTelegramURN(identifier int64, display string) URN {
-	return NewURNFromParts(TelegramScheme, strconv.FormatInt(identifier, 10), display)
+func NewTelegramURN(identifier int64, display string) (URN, error) {
+	return NewURNFromParts(TelegramScheme, strconv.FormatInt(identifier, 10), "", display)
 }
 
 // NewWhatsAppURN returns a URN for the passed in whatsapp identifier
 func NewWhatsAppURN(identifier string) (URN, error) {
-	// validate identifier
-	urn := NewURNFromParts(WhatsAppScheme, identifier, "")
-	if !urn.Validate() {
-		return urn, fmt.Errorf("invalid whatsapp identifier: %s", identifier)
+	return NewURNFromParts(WhatsAppScheme, identifier, "", "")
+}
+
+// NewFirebaseURN returns a URN for the passed in firebase identifier
+func NewFirebaseURN(identifier string) (URN, error) {
+	return NewURNFromParts(FCMScheme, identifier, "", "")
+}
+
+// NewFacebookURN returns a URN for the passed in facebook identifier
+func NewFacebookURN(identifier string) (URN, error) {
+	return NewURNFromParts(FacebookScheme, identifier, "", "")
+}
+
+// returns a new URN for the given scheme, path, query and display
+func newURNFromParts(scheme string, path string, query string, display string) URN {
+	u := &parsedURN{
+		scheme:   scheme,
+		path:     path,
+		query:    query,
+		fragment: display,
+	}
+	return URN(u.String())
+}
+
+// NewURNFromParts returns a validated URN for the given scheme, path, query and display
+func NewURNFromParts(scheme string, path string, query string, display string) (URN, error) {
+	urn := newURNFromParts(scheme, path, query, display)
+	err := urn.Validate()
+	if err != nil {
+		return NilURN, err
 	}
 	return urn, nil
 }
 
-// NewURNFromParts returns a new URN for the given scheme, path and display
-func NewURNFromParts(scheme string, path string, display string) URN {
-	urn := fmt.Sprintf("%s:%s", scheme, path)
-	if display != "" {
-		urn = fmt.Sprintf("%s#%s", urn, strings.ToLower(display))
-	}
-	return URN(urn)
-}
-
 // ToParts splits the URN into scheme, path and display parts
-func (u URN) ToParts() (string, string, string) {
-	parts := strings.SplitN(string(u), ":", 2)
-	if len(parts) != 2 {
-		return "", string(u), ""
+func (u URN) ToParts() (string, string, string, string) {
+	parsed, err := parseURN(string(u))
+	if err != nil {
+		return "", string(u), "", ""
 	}
 
-	scheme := parts[0]
-	path := parts[1]
-	display := ""
-
-	pathParts := strings.SplitN(path, "#", 2)
-	if len(pathParts) == 2 {
-		path = pathParts[0]
-		display = pathParts[1]
-	}
-
-	return scheme, path, display
+	return parsed.scheme, parsed.path, parsed.query, parsed.fragment
 }
 
 // Normalize normalizes the URN into it's canonical form and should be performed before URN comparisons
 func (u URN) Normalize(country string) URN {
-	scheme, path, display := u.ToParts()
+	scheme, path, query, display := u.ToParts()
 	normPath := strings.TrimSpace(path)
 
 	switch scheme {
@@ -160,93 +169,125 @@ func (u URN) Normalize(country string) URN {
 		normPath = strings.ToLower(normPath)
 	}
 
-	return NewURNFromParts(scheme, normPath, display)
+	return newURNFromParts(scheme, normPath, query, display)
 }
 
 // Validate returns whether this URN is considered valid
-func (u URN) Validate() bool {
-	scheme, path, display := u.ToParts()
-	if !IsValidScheme(scheme) || path == "" {
-		return false
+func (u URN) Validate() error {
+	scheme, path, _, display := u.ToParts()
+
+	if scheme == "" || path == "" {
+		return fmt.Errorf("scheme or path cannot be empty")
+	}
+	if !IsValidScheme(scheme) {
+		return fmt.Errorf("invalid scheme: '%s'", scheme)
 	}
 
 	switch scheme {
 	case TelScheme:
 		// validate is possible phone number
-		parsed, err := phonenumbers.Parse(path, "")
+		_, err := phonenumbers.Parse(path, "")
 		if err != nil {
-			return false
+			return err
 		}
-		return phonenumbers.IsPossibleNumber(parsed)
-
 	case TwitterScheme:
 		// validate twitter URNs look like handles
-		return twitterHandleRegex.MatchString(path)
+		if !twitterHandleRegex.MatchString(path) {
+			return fmt.Errorf("invalid twitter handle: %s", path)
+		}
 
 	case TwitterIDScheme:
 		// validate path is a number and display is a handle if present
 		if !allDigitsRegex.MatchString(path) {
-			return false
+			return fmt.Errorf("invalid twitter id: %s", path)
 		}
 		if display != "" && !twitterHandleRegex.MatchString(display) {
-			return false
+			return fmt.Errorf("invalid twitter handle: %s", display)
 		}
 
 	case EmailScheme:
-		return emailRegex.MatchString(path)
+		if !emailRegex.MatchString(path) {
+			return fmt.Errorf("invalid email: %s", path)
+		}
 
 	case FacebookScheme:
 		// we don't validate facebook refs since they come from the outside
 		if u.IsFacebookRef() {
-			return true
+			return nil
 		}
 
 		// otherwise, this should be an int
-		return allDigitsRegex.MatchString(path)
+		if !allDigitsRegex.MatchString(path) {
+			return fmt.Errorf("invalid facebook id: %s", path)
+		}
+	case JiochatScheme:
+		if !allDigitsRegex.MatchString(path) {
+			return fmt.Errorf("invalid jiochat id: %s", path)
+		}
+
+	case LineScheme:
+		if !lineRegex.MatchString(path) {
+			return fmt.Errorf("invalid line id: %s", path)
+		}
 
 	case TelegramScheme:
-		return allDigitsRegex.MatchString(path)
+		if !allDigitsRegex.MatchString(path) {
+			return fmt.Errorf("invalid telegram id: %s", path)
+		}
 
 	case ViberScheme:
-		return viberRegex.MatchString(path)
+		if !viberRegex.MatchString(path) {
+			return fmt.Errorf("invalid viber id: %s", path)
+		}
 
 	case WhatsAppScheme:
-		return allDigitsRegex.MatchString(path)
+		if !allDigitsRegex.MatchString(path) {
+			return fmt.Errorf("invalid whatsapp id: %s", path)
+		}
 	}
 
-	return true // anything goes for external schemes
+	return nil // anything goes for external schemes
 }
 
 // Scheme returns the scheme portion for the URN
 func (u URN) Scheme() string {
-	scheme, _, _ := u.ToParts()
+	scheme, _, _, _ := u.ToParts()
 	return scheme
 }
 
 // Path returns the path portion for the URN
 func (u URN) Path() string {
-	_, path, _ := u.ToParts()
+	_, path, _, _ := u.ToParts()
 	return path
 }
 
 // Display returns the display portion for the URN (if any)
 func (u URN) Display() string {
-	_, _, display := u.ToParts()
+	_, _, _, display := u.ToParts()
 	return display
 }
 
-// Identity returns the URN with any display attributes stripped
-func (u URN) Identity() string {
-	parts := strings.SplitN(string(u), "#", 2)
-	if len(parts) == 2 {
-		return parts[0]
-	}
-	return string(u)
+// RawQuery returns the unparsed query portion for the URN (if any)
+func (u URN) RawQuery() string {
+	_, _, query, _ := u.ToParts()
+	return query
+}
+
+// Query returns the parsed query portion for the URN (if any)
+func (u URN) Query() (url.Values, error) {
+	_, _, query, _ := u.ToParts()
+	return url.ParseQuery(query)
+}
+
+// Identity returns the URN with any query or display attributes stripped
+func (u URN) Identity() URN {
+	scheme, path, _, _ := u.ToParts()
+	return newURNFromParts(scheme, path, "", "")
 }
 
 // Localize returns a new URN which is local to the given country
 func (u URN) Localize(country string) URN {
-	scheme, path, display := u.ToParts()
+	scheme, path, query, display := u.ToParts()
 
 	if scheme == TelScheme {
 		parsed, err := phonenumbers.Parse(path, country)
@@ -254,8 +295,7 @@ func (u URN) Localize(country string) URN {
 			path = strconv.FormatUint(parsed.GetNationalNumber(), 10)
 		}
 	}
-
-	return NewURNFromParts(scheme, path, display)
+	return newURNFromParts(scheme, path, query, display)
 }
 
 // IsFacebookRef returns whether this URN is a facebook referral
@@ -292,7 +332,7 @@ func (u URN) String() string { return string(u) }
 
 // Format formats this URN as a human friendly string
 func (u URN) Format() string {
-	scheme, path, display := u.ToParts()
+	scheme, path, _, display := u.ToParts()
 
 	if scheme == TelScheme {
 		parsed, err := phonenumbers.Parse(path, "")

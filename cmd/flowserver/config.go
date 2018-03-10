@@ -1,43 +1,38 @@
 package main
 
-import (
-	"github.com/koding/multiconfig"
-)
+import "github.com/nyaruka/ezconf"
 
-// FlowServerConfig is our top level configuration object
-type FlowServerConfig struct {
-	Port int `default:"8080"`
-
-	Static string `default:""`
-
-	AssetCacheSize   int64  `default:"1000"`
-	AssetCachePrune  int    `default:"100"`
-	AssetServerToken string `default:"missing_temba_token"`
-
-	Version string `default:"Dev"`
+// Config is our top level config for our flowserver
+type Config struct {
+	Port             int    `help:"the port we will run on"`
+	LogLevel         string `help:"the logging level to use"`
+	Static           string `help:""`
+	AssetCacheSize   int64  `help:"the maximum size of our asset cache"`
+	AssetCachePrune  int    `help:"the number of assets to prune when we reach our max size"`
+	AssetServerToken string `help:"the token to use when authentication to the asset server"`
+	Version          string `help:"the version to use in request and response headers"`
 }
 
-// NewConfigWithPath returns a new instance of Loader to read from the given configuration file using our config options
-func NewConfigWithPath(path string) *multiconfig.DefaultLoader {
-	loaders := []multiconfig.Loader{}
-
-	loaders = append(loaders, &multiconfig.TagLoader{})
-	loaders = append(loaders, &multiconfig.TOMLLoader{Path: path})
-	loaders = append(loaders, &multiconfig.EnvironmentLoader{CamelCase: true})
-	loaders = append(loaders, &multiconfig.FlagLoader{CamelCase: true})
-	loader := multiconfig.MultiLoader(loaders...)
-
-	return &multiconfig.DefaultLoader{Loader: loader, Validator: multiconfig.MultiValidator(&multiconfig.RequiredValidator{})}
-}
-
-// NewTestConfig returns a new instance of our config initialized just from our defaults as defined above
-func NewTestConfig() *FlowServerConfig {
-	loader := &multiconfig.DefaultLoader{
-		Loader:    multiconfig.MultiLoader(&multiconfig.TagLoader{}),
-		Validator: multiconfig.MultiValidator(&multiconfig.RequiredValidator{}),
+// NewDefaultConfig returns our default configuration
+func NewDefaultConfig() *Config {
+	return &Config{
+		Port:             8800,
+		LogLevel:         "error",
+		AssetCacheSize:   1000,
+		AssetCachePrune:  100,
+		AssetServerToken: "missing_temba_token",
+		Version:          "Dev",
 	}
+}
 
-	config := &FlowServerConfig{}
-	loader.Load(config)
+// NewConfigWithPath returns a new instance of our config loaded from the path, environment and args
+func NewConfigWithPath(path string) *Config {
+	config := NewDefaultConfig()
+	loader := ezconf.NewLoader(
+		config,
+		"flowserver", "flowserver - a self contained flow engine server",
+		[]string{path},
+	)
+	loader.MustLoad()
 	return config
 }

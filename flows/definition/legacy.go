@@ -13,7 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/satori/go.uuid"
 )
 
 // represents a decimal value which may be provided as a string or floating point value
@@ -273,7 +272,7 @@ type wardTest struct {
 
 type localizations map[utils.Language]flows.Action
 
-func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language]string, uuid flows.UUID, key string) string {
+func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language]string, uuid utils.UUID, key string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := excellent.MigrateTemplate(item, excellent.ExtraAsFunction)
@@ -287,7 +286,7 @@ func addTranslationMap(baseLanguage utils.Language, translations *flowTranslatio
 	return inBaseLanguage
 }
 
-func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language][]string, uuid flows.UUID, key string) []string {
+func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language][]string, uuid utils.UUID, key string) []string {
 	var inBaseLanguage []string
 	for language, items := range mapped {
 		expressions := make([]string, len(items))
@@ -304,7 +303,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTrans
 	return inBaseLanguage
 }
 
-func addTranslation(translations *flowTranslations, lang utils.Language, itemUUID flows.UUID, propKey string, translation []string) {
+func addTranslation(translations *flowTranslations, lang utils.Language, itemUUID utils.UUID, propKey string, translation []string) {
 	// ensure we have a translation set for this language
 	langTranslations, found := (*translations)[lang]
 	if !found {
@@ -478,9 +477,9 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			quickReplies = transformTranslations(legacyQuickReplies)
 		}
 
-		migratedText := addTranslationMap(baseLanguage, translations, msg, flows.UUID(a.UUID), "text")
-		migratedMedia := addTranslationMap(baseLanguage, translations, media, flows.UUID(a.UUID), "attachments")
-		migratedQuickReplies := addTranslationMultiMap(baseLanguage, translations, quickReplies, flows.UUID(a.UUID), "quick_replies")
+		migratedText := addTranslationMap(baseLanguage, translations, msg, utils.UUID(a.UUID), "text")
+		migratedMedia := addTranslationMap(baseLanguage, translations, media, utils.UUID(a.UUID), "attachments")
+		migratedQuickReplies := addTranslationMultiMap(baseLanguage, translations, quickReplies, utils.UUID(a.UUID), "quick_replies")
 
 		attachments := []string{}
 		if migratedMedia != "" {
@@ -607,7 +606,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 	var arguments []string
 	var err error
 
-	caseUUID := flows.UUID(uuid.NewV4().String())
+	caseUUID := utils.UUID(utils.NewUUID())
 
 	switch r.Test.Type {
 
@@ -736,7 +735,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	exits := make([]flows.Exit, len(categoryMap))
 	exitMap := make(map[string]flows.Exit)
 	for k, category := range categoryMap {
-		addTranslationMap(baseLanguage, translations, category.translations, flows.UUID(category.uuid), "name")
+		addTranslationMap(baseLanguage, translations, category.translations, utils.UUID(category.uuid), "name")
 
 		exits[category.order] = NewExit(category.uuid, category.destination, k)
 		exitMap[k] = exits[category.order]
@@ -771,12 +770,12 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flow
 	// for webhook rulesets we need to map 2 rules (success/failure) to 3 cases and exits (success/response_error/connection_error)
 	if r.Type == "webhook" {
 		connectionErrorCategory := "Connection Error"
-		connectionErrorExitUUID := flows.ExitUUID(uuid.NewV4().String())
+		connectionErrorExitUUID := flows.ExitUUID(utils.NewUUID())
 		connectionErrorExit := NewExit(connectionErrorExitUUID, exits[1].(*exit).destination, connectionErrorCategory)
 
 		exits = append(exits, connectionErrorExit)
 		cases = append(cases, routers.Case{
-			UUID:        flows.UUID(uuid.NewV4().String()),
+			UUID:        utils.UUID(utils.NewUUID()),
 			Type:        "is_string_eq",
 			Arguments:   []string{"connection_error"},
 			OmitOperand: false,
@@ -817,7 +816,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		node.actions = []flows.Action{
 			&actions.StartFlowAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				Flow:       flows.NewFlowReference(flowUUID, flowName),
 			},
 		}
@@ -840,7 +839,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 
 		node.actions = []flows.Action{
 			&actions.WebhookAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(uuid.NewV4().String())),
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
 				Method:     config.Action,
 				Headers:    migratedHeaders,

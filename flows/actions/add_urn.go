@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
@@ -55,13 +56,13 @@ func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.Eve
 		return nil
 	}
 
-	urn := urns.NewURNFromParts(a.Scheme, evaluatedPath, "").Normalize("")
-
 	// if we don't have a valid URN, log error
-	if !urn.Validate() {
-		log.Add(events.NewErrorEvent(fmt.Errorf("invalid URN: '%s'", string(urn))))
+	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
+	if err != nil {
+		log.Add(events.NewErrorEvent(fmt.Errorf("invalid URN '%s': %s", string(urn), err.Error())))
 		return nil
 	}
+	urn = urn.Normalize("")
 
 	log.Add(events.NewURNAddedEvent(urn))
 	return nil

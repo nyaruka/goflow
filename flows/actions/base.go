@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
@@ -143,17 +144,17 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []string, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []flows.Attachment, []string) {
 	// localize and evaluate the message text
-	localizedText := run.GetText(flows.UUID(a.UUID()), "text", actionText)
+	localizedText := run.GetText(utils.UUID(a.UUID()), "text", actionText)
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
 
 	// localize and evaluate the message attachments
-	translatedAttachments := run.GetTextArray(flows.UUID(a.UUID()), "attachments", actionAttachments)
-	evaluatedAttachments := make([]string, 0, len(translatedAttachments))
+	translatedAttachments := run.GetTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments)
+	evaluatedAttachments := make([]flows.Attachment, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedAttachments[n], false)
 		if err != nil {
@@ -162,11 +163,11 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionT
 			log.Add(events.NewErrorEvent(fmt.Errorf("attachment text evaluated to empty string, skipping")))
 			continue
 		}
-		evaluatedAttachments = append(evaluatedAttachments, evaluatedAttachment)
+		evaluatedAttachments = append(evaluatedAttachments, flows.Attachment(evaluatedAttachment))
 	}
 
 	// localize and evaluate the quick replies
-	translatedQuickReplies := run.GetTextArray(flows.UUID(a.UUID()), "quick_replies", actionQuickReplies)
+	translatedQuickReplies := run.GetTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
 	for n := range translatedQuickReplies {
 		evaluatedQuickReply, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedQuickReplies[n], false)
@@ -227,7 +228,11 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 			groupRefs = append(groupRefs, groupByName.Reference())
 		} else {
 			// if that fails, assume this is a phone number, and let the caller worry about validation
-			urnList = append(urnList, urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, ""))
+			urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
+			if err != nil {
+				return nil, nil, nil, err
+			}
+			urnList = append(urnList, urn)
 		}
 	}
 

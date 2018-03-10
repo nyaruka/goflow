@@ -66,16 +66,18 @@ var assetsDef = `
 
 var contactDef = `
 {
-	"name": "Ryan Lewis",
-	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-	"urns": ["tel:+12065551212", "mailto:foo@bar.com"],
-	"groups": ["b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"],
-	"fields": {
-		"gender": {
-			"value": "Male",
-			"created_on": "2017-05-24T11:31:15.035757258-05:00"
-		}
-	}
+    "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+    "name": "Ryan Lewis",
+    "urns": ["tel:+12065551212", "mailto:foo@bar.com"],
+    "groups": [
+        {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
+    ],
+    "fields": {
+        "gender": {
+            "value": "Male",
+            "created_on": "2017-05-24T11:31:15.035757258-05:00"
+        }
+    }
 }
 `
 
@@ -92,7 +94,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 	// create our contact
 	contact, err := flows.ReadContact(session, json.RawMessage(contactDef))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error reading contact: %s", err)
 	}
 
 	// fetch our flow
@@ -101,7 +103,7 @@ func createExampleSession(assetsDef string) (flows.Session, error) {
 		return nil, err
 	}
 
-	trigger := triggers.NewManualTrigger(nil, contact, flow, time.Now())
+	trigger := triggers.NewManualTrigger(nil, contact, flow, utils.EmptyJSONFragment, time.Now())
 
 	// and start the example flow
 	err = session.Start(trigger, nil)

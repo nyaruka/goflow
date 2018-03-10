@@ -50,7 +50,10 @@
                         {
                             "type": "start_flow",
                             "uuid": "87635c69-61e0-4a06-b967-6f8f7b930806",
-                            "flow": {"uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8", "name": "Rules"}
+                            "flow": {
+                                "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                                "name": "Rules"
+                            }
                         }
                     ]
                 },

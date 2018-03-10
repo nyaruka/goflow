@@ -1,7 +1,9 @@
-package utils
+package utils_test
 
 import (
 	"testing"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 func TestSnakify(t *testing.T) {
@@ -18,7 +20,7 @@ func TestSnakify(t *testing.T) {
 	}
 
 	for _, test := range snakeTests {
-		value := Snakify(test.input)
+		value := utils.Snakify(test.input)
 
 		if value != test.expected {
 			t.Errorf("Expected: '%s' Got: '%s' for input: '%s'", test.expected, value, test.input)

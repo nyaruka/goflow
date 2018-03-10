@@ -1,413 +1,430 @@
 {
-  "caller_events": [
-    [],
-    [
-      {
-        "channel": {
-          "name": "Nexmo",
-          "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-        },
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
-        "text": "Ryan Lewis",
-        "type": "msg_received",
-        "urn": "tel:+12065551212"
-      }
-    ]
-  ],
-  "outputs": [
-    {
-      "log": [
-        {
-          "action_uuid": "d3cd8da7-55f2-4bd3-9a0c-efc93c99e498",
-          "event": {
-            "contacts": [
-              {
-                "name": "Ben Haggerty",
-                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-              }
-            ],
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "What is your name?",
-            "type": "broadcast_created"
-          },
-          "step_uuid": ""
-        },
-        {
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "type": "msg_wait"
-          },
-          "step_uuid": ""
-        }
-      ],
-      "session": {
-        "contact": {
-          "fields": {
-            "first_name": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Ben"
-            },
-            "state": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            }
-          },
-          "language": "eng",
-          "name": "Ben Haggerty",
-          "timezone": "America/Guayaquil",
-          "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
-          ],
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
-        "environment": {
-          "date_format": "yyyy-MM-dd",
-          "languages": [],
-          "time_format": "hh:mm",
-          "timezone": "UTC"
-        },
-        "runs": [
-          {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
-            "path": [
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "What is your name?",
-                    "type": "broadcast_created"
-                  }
-                ],
-                "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-                "uuid": ""
-              },
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  }
-                ],
-                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                "uuid": ""
-              }
-            ],
-            "status": "waiting",
-            "uuid": ""
-          }
-        ],
-        "status": "waiting",
-        "trigger": {
-          "contact": {
-            "fields": {
-              "first_name": {
+    "caller_events": [
+        [],
+        [
+            {
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
-              },
-              "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-              }
-            },
-            "language": "eng",
-            "name": "Ben Haggerty",
-            "timezone": "America/Guayaquil",
-            "urns": [
-              "tel:+12065551212",
-              "facebook:1122334455667788",
-              "mailto:ben@macklemore"
-            ],
-            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-          },
-          "flow": {
-            "name": "Another Flow",
-            "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
-          },
-          "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "manual"
-        },
-        "wait": {
-          "type": "msg"
-        }
-      }
-    },
-    {
-      "log": [
-        {
-          "event": {
-            "category": "All Responses",
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "input": "Ryan Lewis",
-            "name": "Contact Name",
-            "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-            "type": "run_result_changed",
-            "value": "Ryan Lewis"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "aafb505c-603d-4025-864d-471345ed236d",
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "property": "name",
-            "type": "contact_property_changed",
-            "value": "Ryan Lewis"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "aafb505c-603d-4025-864d-471345ed237d",
-          "event": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "field": {
-              "key": "first_name",
-              "label": "First Name"
-            },
-            "type": "contact_field_changed",
-            "value": "Ryan"
-          },
-          "step_uuid": ""
-        },
-        {
-          "action_uuid": "aafb505c-603d-4025-864d-471345ed237d",
-          "event": {
-            "contacts": [
-              {
-                "name": "Ryan Lewis",
-                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-              }
-            ],
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "Great, pleased to meet you Ryan",
-            "type": "broadcast_created"
-          },
-          "step_uuid": ""
-        }
-      ],
-      "session": {
-        "contact": {
-          "fields": {
-            "first_name": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Ryan"
-            },
-            "state": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            }
-          },
-          "language": "eng",
-          "name": "Ryan Lewis",
-          "timezone": "America/Guayaquil",
-          "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
-          ],
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
-        "environment": {
-          "date_format": "yyyy-MM-dd",
-          "languages": [],
-          "time_format": "hh:mm",
-          "timezone": "UTC"
-        },
-        "runs": [
-          {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
-            "input": {
-              "channel_uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "text": "Ryan Lewis",
-              "type": "msg",
-              "urn": "tel:+12065551212",
-              "uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f"
-            },
-            "path": [
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "What is your name?",
-                    "type": "broadcast_created"
-                  }
-                ],
-                "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-                "uuid": ""
-              },
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg_wait"
-                  },
-                  {
+                "msg": {
                     "channel": {
-                      "name": "Nexmo",
-                      "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                     },
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "msg_uuid": "84f8a3cf-0f2c-4881-9502-2d7b114bf01f",
                     "text": "Ryan Lewis",
-                    "type": "msg_received",
-                    "urn": "tel:+12065551212"
-                  },
-                  {
-                    "category": "All Responses",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "input": "Ryan Lewis",
-                    "name": "Contact Name",
-                    "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                    "type": "run_result_changed",
-                    "value": "Ryan Lewis"
-                  }
-                ],
-                "exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                "uuid": ""
-              },
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "property": "name",
-                    "type": "contact_property_changed",
-                    "value": "Ryan Lewis"
-                  },
-                  {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "field": {
-                      "key": "first_name",
-                      "label": "First Name"
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
+                "type": "msg_received"
+            }
+        ]
+    ],
+    "outputs": [
+        {
+            "log": [
+                {
+                    "action_uuid": "d3cd8da7-55f2-4bd3-9a0c-efc93c99e498",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "What is your name?",
+                            "urn": "tel:+12065551212",
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        },
+                        "type": "msg_created"
                     },
-                    "type": "contact_field_changed",
-                    "value": "Ryan"
-                  },
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ryan Lewis",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
-                    ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Great, pleased to meet you Ryan",
-                    "type": "broadcast_created"
-                  }
-                ],
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
-                "uuid": ""
-              }
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                },
+                {
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "type": "msg_wait"
+                    },
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                }
             ],
-            "results": {
-              "contact_name": {
-                "category": "All Responses",
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "Ryan Lewis",
-                "name": "Contact Name",
-                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                "value": "Ryan Lewis"
-              }
-            },
-            "status": "completed",
-            "uuid": ""
-          }
-        ],
-        "status": "completed",
-        "trigger": {
-          "contact": {
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Ben"
+                        },
+                        "state": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Azuay"
+                        }
+                    },
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "UTC"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
+                                    }
+                                ],
+                                "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    }
+                                ],
+                                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Ben"
+                            },
+                            "state": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Azuay"
+                            }
+                        },
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "flow": {
+                        "name": "Another Flow",
+                        "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                },
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "log": [
+                {
+                    "event": {
+                        "category": "All Responses",
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "input": "Ryan Lewis",
+                        "name": "Contact Name",
+                        "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+                        "type": "run_result_changed",
+                        "value": "Ryan Lewis"
+                    },
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                },
+                {
+                    "action_uuid": "aafb505c-603d-4025-864d-471345ed236d",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "property": "name",
+                        "type": "contact_property_changed",
+                        "value": "Ryan Lewis"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                },
+                {
+                    "action_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "field": {
+                            "key": "first_name",
+                            "label": "First Name"
+                        },
+                        "type": "contact_field_changed",
+                        "value": "Ryan"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                },
+                {
+                    "action_uuid": "aafb505c-603d-4025-864d-471345ed237d",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "Great, pleased to meet you Ryan",
+                            "urn": "tel:+12065551212",
+                            "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                        },
+                        "type": "msg_created"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Ryan"
+                        },
+                        "state": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Azuay"
+                        }
+                    },
+                    "language": "eng",
+                    "name": "Ryan Lewis",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "UTC"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+                        "input": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "text": "Ryan Lewis",
+                            "type": "msg",
+                            "urn": "tel:+12065551212",
+                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                        },
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "What is your name?",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
+                                    }
+                                ],
+                                "exit_uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "type": "msg_wait"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Nexmo",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Ryan Lewis",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                        },
+                                        "type": "msg_received"
+                                    },
+                                    {
+                                        "category": "All Responses",
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "input": "Ryan Lewis",
+                                        "name": "Contact Name",
+                                        "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+                                        "type": "run_result_changed",
+                                        "value": "Ryan Lewis"
+                                    }
+                                ],
+                                "exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+                                "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "property": "name",
+                                        "type": "contact_property_changed",
+                                        "value": "Ryan Lewis"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "field": {
+                                            "key": "first_name",
+                                            "label": "First Name"
+                                        },
+                                        "type": "contact_field_changed",
+                                        "value": "Ryan"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Great, pleased to meet you Ryan",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                                        },
+                                        "type": "msg_created"
+                                    }
+                                ],
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
+                                "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                            }
+                        ],
+                        "results": {
+                            "contact_name": {
+                                "category": "All Responses",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "Ryan Lewis",
+                                "name": "Contact Name",
+                                "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
+                                "value": "Ryan Lewis"
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Ben"
+                            },
+                            "state": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Azuay"
+                            }
+                        },
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "flow": {
+                        "name": "Another Flow",
+                        "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                },
+                "wait": {
+                    "type": "msg"
+                }
+            }
+        }
+    ],
+    "trigger": {
+        "contact": {
             "fields": {
-              "first_name": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
-              },
-              "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-              }
+                "first_name": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Ben"
+                },
+                "state": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Azuay"
+                }
             },
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",
             "urns": [
-              "tel:+12065551212",
-              "facebook:1122334455667788",
-              "mailto:ben@macklemore"
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-          },
-          "flow": {
-            "name": "Another Flow",
+        },
+        "flow": {
+            "name": "Registration",
             "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
-          },
-          "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "manual"
         },
-        "wait": {
-          "type": "msg"
-        }
-      }
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "type": "manual"
     }
-  ],
-  "trigger": {
-    "contact": {
-      "fields": {
-        "first_name": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "value": "Ben"
-        },
-        "state": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "value": "Azuay"
-        }
-      },
-      "language": "eng",
-      "name": "Ben Haggerty",
-      "timezone": "America/Guayaquil",
-      "urns": [
-        "tel:+12065551212",
-        "facebook:1122334455667788",
-        "mailto:ben@macklemore"
-      ],
-      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-    },
-    "flow": {
-      "name": "Registration",
-      "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
-    },
-    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-    "type": "manual"
-  }
 }

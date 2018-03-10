@@ -1,207 +1,211 @@
 {
-  "caller_events": [
-    []
-  ],
-  "outputs": [
-    {
-      "log": [
+    "caller_events": [
+        []
+    ],
+    "outputs": [
         {
-          "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
-          "event": {
-            "contacts": [
-              {
-                "name": "Ben Haggerty",
-                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-              }
+            "log": [
+                {
+                    "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "msg": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
+                            "urn": "tel:+12065551212",
+                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                        },
+                        "type": "msg_created"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                }
             ],
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-            "type": "broadcast_created"
-          },
-          "step_uuid": ""
-        }
-      ],
-      "session": {
-        "contact": {
-          "fields": {
-            "first_name": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Ben"
-            },
-            "state": {
-              "created_on": "2000-01-01T00:00:00.000000000-00:00",
-              "value": "Azuay"
-            }
-          },
-          "language": "eng",
-          "name": "Ben Haggerty",
-          "timezone": "America/Guayaquil",
-          "urns": [
-            "tel:+12065551212",
-            "facebook:1122334455667788",
-            "mailto:ben@macklemore"
-          ],
-          "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-        },
-        "environment": {
-          "date_format": "yyyy-MM-dd",
-          "languages": [],
-          "time_format": "hh:mm",
-          "timezone": "America/Los_Angeles"
-        },
-        "runs": [
-          {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-            "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-            "flow_uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
-            "path": [
-              {
-                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                "events": [
-                  {
-                    "contacts": [
-                      {
-                        "name": "Ben Haggerty",
-                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-                      }
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Ben"
+                        },
+                        "state": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "value": "Azuay"
+                        }
+                    },
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
                     ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                    "type": "broadcast_created"
-                  }
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Android Channel",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                        },
+                                        "type": "msg_created"
+                                    }
+                                ],
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            }
+                        ],
+                        "status": "completed",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
                 ],
-                "left_on": "2000-01-01T00:00:00.000000000-00:00",
-                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                "uuid": ""
-              }
-            ],
-            "status": "completed",
-            "uuid": ""
-          }
-        ],
-        "status": "completed",
-        "trigger": {
-          "contact": {
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Ben"
+                            },
+                            "state": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "value": "Azuay"
+                            }
+                        },
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "date_format": "yyyy-MM-dd",
+                        "languages": [],
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Triggered Flow",
+                        "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
+                    },
+                    "run": {
+                        "contact": {
+                            "fields": {
+                                "state": {
+                                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                    "value": "Esmeraldas"
+                                }
+                            },
+                            "language": "",
+                            "name": "Bob",
+                            "timezone": "UTC",
+                            "urns": [],
+                            "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
+                        },
+                        "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+                        "results": {
+                            "age": {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "",
+                                "name": "",
+                                "node_uuid": "",
+                                "value": "33"
+                            }
+                        },
+                        "status": "active",
+                        "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "flow_action"
+                }
+            }
+        }
+    ],
+    "trigger": {
+        "contact": {
             "fields": {
-              "first_name": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Ben"
-              },
-              "state": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "value": "Azuay"
-              }
+                "first_name": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Ben"
+                },
+                "state": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "value": "Azuay"
+                }
             },
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",
             "urns": [
-              "tel:+12065551212",
-              "facebook:1122334455667788",
-              "mailto:ben@macklemore"
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
             ],
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-          },
-          "environment": {
+        },
+        "environment": {
             "date_format": "yyyy-MM-dd",
             "languages": [],
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
-          },
-          "flow": {
-            "name": "Triggered Flow",
+        },
+        "flow": {
+            "name": "Registration",
             "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
-          },
-          "run": {
+        },
+        "run": {
             "contact": {
-              "fields": {
-                "state": {
-                  "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                  "value": "Esmeraldas"
-                }
-              },
-              "language": "",
-              "name": "Bob",
-              "timezone": "UTC",
-              "urns": [],
-              "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
+                "fields": {
+                    "state": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "value": "Esmeraldas"
+                    }
+                },
+                "name": "Bob",
+                "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
             },
             "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
             "results": {
-              "age": {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "input": "",
-                "name": "",
-                "node_uuid": "",
-                "value": "33"
-              }
+                "age": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+                    "result_name": "Age",
+                    "value": "33"
+                }
             },
             "status": "active",
             "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
-          },
-          "triggered_on": "2000-01-01T00:00:00Z",
-          "type": "flow_action"
-        }
-      }
+        },
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "type": "flow_action"
     }
-  ],
-  "trigger": {
-    "contact": {
-      "fields": {
-        "first_name": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "value": "Ben"
-        },
-        "state": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "value": "Azuay"
-        }
-      },
-      "language": "eng",
-      "name": "Ben Haggerty",
-      "timezone": "America/Guayaquil",
-      "urns": [
-        "tel:+12065551212",
-        "facebook:1122334455667788",
-        "mailto:ben@macklemore"
-      ],
-      "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
-    },
-    "environment": {
-      "date_format": "yyyy-MM-dd",
-      "languages": [],
-      "time_format": "hh:mm",
-      "timezone": "America/Los_Angeles"
-    },
-    "flow": {
-      "name": "Registration",
-      "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
-    },
-    "run": {
-      "contact": {
-        "fields": {
-          "state": {
-            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-            "value": "Esmeraldas"
-          }
-        },
-        "name": "Bob",
-        "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
-      },
-      "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
-      "results": {
-        "age": {
-          "created_on": "2000-01-01T00:00:00.000000000-00:00",
-          "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
-          "result_name": "Age",
-          "value": "33"
-        }
-      },
-      "status": "active",
-      "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d"
-    },
-    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-    "type": "flow_action"
-  }
 }

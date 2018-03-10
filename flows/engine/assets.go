@@ -118,7 +118,7 @@ type AssetServer interface {
 }
 
 type assetServer struct {
-	authtoken string
+	authToken string
 	typeURLs  map[assetType]string
 }
 
@@ -127,18 +127,18 @@ type assetServerEnvelope struct {
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(authtoken string, data json.RawMessage) (AssetServer, error) {
+func ReadAssetServer(authToken string, data json.RawMessage) (AssetServer, error) {
 	envelope := &assetServerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope, "asset_server"); err != nil {
 		return nil, err
 	}
 
-	return NewAssetServer(authtoken, envelope.TypeURLs), nil
+	return NewAssetServer(authToken, envelope.TypeURLs), nil
 }
 
 // NewAssetServer creates a new asset server
-func NewAssetServer(authtoken string, typeURLs map[assetType]string) AssetServer {
-	return &assetServer{authtoken: authtoken, typeURLs: typeURLs}
+func NewAssetServer(authToken string, typeURLs map[assetType]string) AssetServer {
+	return &assetServer{authToken: authToken, typeURLs: typeURLs}
 }
 
 // isTypeSupported returns whether the given asset item type is supported
@@ -180,7 +180,7 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	// set request headers
 	request.Header.Set("User-Agent", userAgent)
-	request.Header.Set("Authorization", fmt.Sprintf("Token %s", s.authtoken))
+	request.Header.Set("Authorization", fmt.Sprintf("Token %s", s.authToken))
 
 	// make the actual request
 	response, err := http.DefaultClient.Do(request)
@@ -192,6 +192,10 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	if response.StatusCode != 200 {
 		return nil, fmt.Errorf("asset request returned non-200 response")
+	}
+
+	if response.Header.Get("Content-Type") != "application/json" {
+		return nil, fmt.Errorf("asset request returned non-JSON response")
 	}
 
 	buf, err := ioutil.ReadAll(response.Body)
@@ -273,15 +277,28 @@ func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error)
 
 // GetChannel gets a channel asset for the session
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	asset, err := s.cache.getItemAsset(s.server, assetTypeChannel, string(uuid))
+	channels, err := s.GetChannelSet()
 	if err != nil {
 		return nil, err
 	}
-	channel, isType := asset.(flows.Channel)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
+	channel := channels.FindByUUID(uuid)
+	if channel == nil {
+		return nil, fmt.Errorf("no such channel with uuid '%s'", uuid)
 	}
 	return channel, nil
+}
+
+// GetChannelSet gets the set of all channels asset for the session
+func (s *sessionAssets) GetChannelSet() (*flows.ChannelSet, error) {
+	asset, err := s.cache.getSetAsset(s.server, assetTypeChannel)
+	if err != nil {
+		return nil, err
+	}
+	channels, isType := asset.(*flows.ChannelSet)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return channels, nil
 }
 
 // GetField gets a contact field asset for the session
@@ -418,6 +435,8 @@ func readAsset(data json.RawMessage, itemType assetType, isSet bool) (interface{
 		assetReader = func(data json.RawMessage) (interface{}, error) { return utils.ReadLocationHierarchy(data) }
 	} else if itemType == assetTypeChannel && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
+	} else if itemType == assetTypeChannel && isSet {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) }
 	} else if itemType == assetTypeField && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadField(data) }
 	} else if itemType == assetTypeField && isSet {

@@ -13,6 +13,7 @@ import (
 // TypeMsg is a constant for incoming messages
 const TypeMsg string = "msg"
 
+// MsgInput is a message which can be used as input
 type MsgInput struct {
 	baseInput
 	urn         urns.URN
@@ -36,13 +37,10 @@ func (i *MsgInput) Type() string { return TypeMsg }
 // Resolve resolves the passed in key to a value, returning an error if the key is unknown
 func (i *MsgInput) Resolve(key string) interface{} {
 	switch key {
-
 	case "urn":
 		return i.urn
-
 	case "text":
 		return i.text
-
 	case "attachments":
 		return i.attachments
 	}
@@ -51,6 +49,11 @@ func (i *MsgInput) Resolve(key string) interface{} {
 
 // Default returns our default value if evaluated in a context, which in this case is the text and attachments combined
 func (i *MsgInput) Default() interface{} {
+	return i
+}
+
+// String returns our default value if evaluated in a context, our text in our case
+func (i *MsgInput) String() string {
 	var parts []string
 	if i.text != "" {
 		parts = append(parts, i.text)
@@ -59,11 +62,6 @@ func (i *MsgInput) Default() interface{} {
 		parts = append(parts, attachment.URL())
 	}
 	return strings.Join(parts, "\n")
-}
-
-// String returns our default value if evaluated in a context, our text in our case
-func (i *MsgInput) String() string {
-	return i.text
 }
 
 var _ flows.Input = (*MsgInput)(nil)
@@ -79,10 +77,10 @@ type msgInputEnvelope struct {
 	Attachments []flows.Attachment `json:"attachments,omitempty"`
 }
 
-func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInput, error) {
+func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
-	err := json.Unmarshal(envelope.Data, &i)
+	err := json.Unmarshal(data, &i)
 	if err != nil {
 		return nil, err
 	}
@@ -94,8 +92,8 @@ func ReadMsgInput(session flows.Session, envelope *utils.TypedEnvelope) (*MsgInp
 
 	// lookup the channel
 	var channel flows.Channel
-	if i.ChannelUUID != "" {
-		channel, err = session.Assets().GetChannel(i.ChannelUUID)
+	if i.Channel != nil {
+		channel, err = session.Assets().GetChannel(i.Channel.UUID)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +112,7 @@ func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	var envelope msgInputEnvelope
 
 	if i.Channel() != nil {
-		envelope.baseInputEnvelope.ChannelUUID = i.Channel().UUID()
+		envelope.baseInputEnvelope.Channel = i.Channel().Reference()
 	}
 	envelope.baseInputEnvelope.UUID = i.UUID()
 	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
