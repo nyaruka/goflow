@@ -213,17 +213,17 @@ type Trigger interface {
 }
 
 // EventOrigin is the allowed origin of an event
-type EventOrigin string
+type EventOrigin int
 
 const (
-	// EventOriginCaller is for events that can only originate from the caller
-	EventOriginCaller EventOrigin = "caller"
+	// EventOriginCaller means an event can originate from the caller
+	EventOriginCaller EventOrigin = 1
 
-	// EventOriginEngine is for events that can only originate from the engine
-	EventOriginEngine EventOrigin = "engine"
+	// EventOriginEngine means an event can originate from the engine
+	EventOriginEngine EventOrigin = 2
 
-	// EventOriginEither is for events that can originate from either the caller or engine
-	EventOriginEither EventOrigin = "either"
+	// EventOriginEither means an event can originate from either the caller or engine
+	EventOriginEither EventOrigin = EventOriginCaller | EventOriginEngine
 )
 
 // Event describes a state change

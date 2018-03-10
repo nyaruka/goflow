@@ -119,7 +119,7 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 
 	// check caller events are valid
 	if err := s.validateCallerEvents(callerEvents); err != nil {
-		return fmt.Errorf("event validation failed: %s", err)
+		return err
 	}
 
 	if trigger.Environment() != nil {
@@ -154,7 +154,7 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 
 	// check caller events are valid
 	if err := s.validateCallerEvents(callerEvents); err != nil {
-		return fmt.Errorf("event validation failed: %s", err)
+		return err
 	}
 
 	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
@@ -443,11 +443,11 @@ const noDestination = flows.NodeUUID("")
 
 func (s *session) validateCallerEvents(events []flows.Event) error {
 	for _, event := range events {
-		if event.AllowedOrigin() == flows.EventOriginEngine {
-			return fmt.Errorf("event type %s can't be sent by callers", event.Type())
+		if event.AllowedOrigin()&flows.EventOriginCaller == 0 {
+			return fmt.Errorf("event[type=%s] can't be sent by callers", event.Type())
 		}
 		if err := event.Validate(s.assets); err != nil {
-			return err
+			return fmt.Errorf("validation failed for event[type=%s]: %s", event.Type(), err)
 		}
 	}
 	return nil
