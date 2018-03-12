@@ -59,7 +59,7 @@ func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.Eve
 	// if we don't have a valid URN, log error
 	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
 	if err != nil {
-		log.Add(events.NewErrorEvent(fmt.Errorf("invalid URN '%s': %s", string(urn), err.Error())))
+		log.Add(events.NewErrorEvent(fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error())))
 		return nil
 	}
 	urn = urn.Normalize("")

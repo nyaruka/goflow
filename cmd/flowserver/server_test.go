@@ -16,7 +16,6 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -186,7 +185,7 @@ type ServerTestSuite struct {
 func (ts *ServerTestSuite) SetupSuite() {
 	ts.assetServer = engine.NewMockAssetServer()
 
-	ts.flowServer = NewFlowServer(NewDefaultConfig(), logrus.New())
+	ts.flowServer = NewFlowServer(NewDefaultConfig())
 	ts.flowServer.Start()
 
 	// wait for server to come up

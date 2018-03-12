@@ -893,7 +893,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 	case "random":
 		node.router = routers.NewRandomRouter(resultName)
 	default:
-		fmt.Printf("Unable to migrate unrecognized ruleset type: '%s'\n", r.Type)
+		return nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
 	node.exits = exits
