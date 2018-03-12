@@ -46,16 +46,13 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 
 func (f *flow) Resolve(key string) interface{} {
 	switch key {
-
-	case "name":
-		return f.Name()
-
 	case "uuid":
 		return f.UUID()
-
+	case "name":
+		return f.Name()
 	}
 
-	return fmt.Errorf("No field '%s' on flow", key)
+	return fmt.Errorf("no field '%s' on flow", key)
 }
 
 func (f *flow) Default() interface{} {

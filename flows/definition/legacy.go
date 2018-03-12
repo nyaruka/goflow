@@ -29,6 +29,18 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// TODO add excellent support for JSON serialization of complex objects?
+// Need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
+var legacyWebhookBody = `{
+	"contact": {},
+	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
+	"path": [],
+	"results": {},
+	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
+	"input": {},
+	"channel": {}
+}`
+
 // LegacyFlow imports an old-world flow so it can be exported anew
 type LegacyFlow struct {
 	flow
@@ -587,10 +599,11 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 		}
 
 		return &actions.CallWebhookAction{
+			BaseAction: actions.NewBaseAction(a.UUID),
 			Method:     a.Action,
 			URL:        migratedURL,
+			Body:       legacyWebhookBody,
 			Headers:    headers,
-			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	default:
 		return nil, fmt.Errorf("couldn't create action for %s", a.Type)

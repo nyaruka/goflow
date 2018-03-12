@@ -296,6 +296,8 @@ func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []s
 
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
+	case "uuid":
+		return r.UUID()
 	case "contact":
 		return r.Contact()
 	case "flow":
