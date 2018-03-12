@@ -191,12 +191,10 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	defer response.Body.Close()
 
-	if log.GetLevel() >= log.DebugLevel {
-		log.WithField("asset_type", string(itemType)).WithField("url", url).Debugf("asset requested")
-	}
+	log.WithField("asset_type", string(itemType)).WithField("url", url).Debugf("asset requested")
 
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("asset request returned non-200 response")
+		return nil, fmt.Errorf("asset request returned non-200 response (%d)", response.StatusCode)
 	}
 
 	if response.Header.Get("Content-Type") != "application/json" {
