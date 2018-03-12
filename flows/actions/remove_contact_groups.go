@@ -8,7 +8,7 @@ import (
 )
 
 // TypeRemoveFromGroup is our type for our remove from group action
-const TypeRemoveFromGroup string = "remove_from_group"
+const TypeRemoveFromGroup string = "remove_contact_groups"
 
 // RemoveFromGroupAction can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
 // for the groups which the contact is removed from. If no groups are specified, then the contact will be removed from
@@ -17,7 +17,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 // ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "remove_from_group",
+//     "type": "remove_contact_groups",
 //     "groups": [{
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 //       "name": "Registered Users"
@@ -25,7 +25,7 @@ const TypeRemoveFromGroup string = "remove_from_group"
 //   }
 // ```
 //
-// @action remove_from_group
+// @action remove_contact_groups
 type RemoveFromGroupAction struct {
 	BaseAction
 	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`

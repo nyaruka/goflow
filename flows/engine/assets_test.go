@@ -98,24 +98,24 @@ func TestFlowValidation(t *testing.T) {
 	flow, err := session.Assets().GetFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	assert.NoError(t, err)
 
-	// break the add_label action so references an invalid label
-	addLabelAction := flow.Nodes()[0].Actions()[0].(*actions.AddLabelAction)
+	// break the add_input_labels action so references an invalid label
+	addLabelAction := flow.Nodes()[0].Actions()[0].(*actions.AddInputLabelsAction)
 	addLabelAction.Labels[0].UUID = "xyx"
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_label]: no such label with uuid 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with uuid 'xyx'")
 
-	// fix the add_label action
+	// fix the add_input_labels action
 	addLabelAction.Labels[0].UUID = "3f65d88a-95dc-4140-9451-943e94e06fea"
 
 	// break the add_group action so references an invalid group
-	addGroupAction := flow.Nodes()[0].Actions()[1].(*actions.AddToGroupAction)
+	addGroupAction := flow.Nodes()[0].Actions()[1].(*actions.AddContactGroupsAction)
 	addGroupAction.Groups[0].UUID = "xyx"
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid 'xyx'")
 
 	// fix the add_group action
 	addGroupAction.Groups[0].UUID = "2aad21f6-30b7-42c5-bd7f-1b720c154817"

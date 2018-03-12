@@ -72,7 +72,7 @@
                         },
                         {
                             "uuid": "b3fa763e-474b-49df-b4d6-15e86507668f",
-                            "type": "add_to_group",
+                            "type": "add_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "7be2f40b-38a0-4b06-9e6d-522dca592cc8",

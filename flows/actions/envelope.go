@@ -11,10 +11,10 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	var action flows.Action
 
 	switch envelope.Type {
-	case TypeAddLabel:
-		action = &AddLabelAction{}
-	case TypeAddToGroup:
-		action = &AddToGroupAction{}
+	case TypeAddInputLabels:
+		action = &AddInputLabelsAction{}
+	case TypeAddContactGroups:
+		action = &AddContactGroupsAction{}
 	case TypeAddURN:
 		action = &AddURNAction{}
 	case TypeSendEmail:

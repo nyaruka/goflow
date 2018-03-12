@@ -12,7 +12,7 @@
                     "actions": [
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_label",
+                            "type": "add_input_labels",
                             "labels": [
                                 {
                                     "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
@@ -25,7 +25,7 @@
                         },
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_to_group",
+                            "type": "add_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -107,7 +107,7 @@
                         },
                         {
                             "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
-                            "type": "remove_from_group",
+                            "type": "remove_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",

@@ -379,7 +379,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			labels[i] = label.Migrate()
 		}
 
-		return &actions.AddLabelAction{
+		return &actions.AddInputLabelsAction{
 			Labels:     labels,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
@@ -526,7 +526,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			groups[i] = group.Migrate()
 		}
 
-		return &actions.AddToGroupAction{
+		return &actions.AddContactGroupsAction{
 			Groups:     groups,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil

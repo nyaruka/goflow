@@ -12,7 +12,7 @@
                     "actions": [
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_label",
+                            "type": "add_input_labels",
                             "labels": [
                                 {
                                     "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
@@ -22,7 +22,7 @@
                         },
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_to_group",
+                            "type": "add_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
