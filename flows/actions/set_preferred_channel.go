@@ -25,7 +25,7 @@ func (a *PreferredChannelAction) Validate(assets flows.SessionAssets) error {
 
 func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
-		log.Add(events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 

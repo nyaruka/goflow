@@ -1,0 +1,163 @@
+{
+    "caller_events": [
+        [
+            {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "msg": {
+                    "channel": {
+                        "name": "Nexmo",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Ryan Lewis",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
+                "type": "msg_received"
+            }
+        ]
+    ],
+    "outputs": [
+        {
+            "log": [
+                {
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
+                        "labels": [
+                            {
+                                "name": "Spam",
+                                "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
+                            }
+                        ],
+                        "type": "input_labels_added"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                },
+                {
+                    "action_uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "event": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "fatal": true,
+                        "text": "can't execute action in session without a contact",
+                        "type": "error"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                }
+            ],
+            "session": {
+                "environment": {
+                    "date_format": "yyyy-MM-dd",
+                    "languages": [],
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow_uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
+                        "input": {
+                            "channel": {
+                                "name": "Android Channel",
+                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                            },
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "text": "Ryan Lewis",
+                            "type": "msg",
+                            "urn": "tel:+12065551212",
+                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                        },
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "events": [
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "msg": {
+                                            "channel": {
+                                                "name": "Nexmo",
+                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                            },
+                                            "text": "Ryan Lewis",
+                                            "urn": "tel:+12065551212",
+                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                        },
+                                        "type": "msg_received"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
+                                        "labels": [
+                                            {
+                                                "name": "Spam",
+                                                "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
+                                            }
+                                        ],
+                                        "type": "input_labels_added"
+                                    },
+                                    {
+                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                        "fatal": true,
+                                        "text": "can't execute action in session without a contact",
+                                        "type": "error"
+                                    }
+                                ],
+                                "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            }
+                        ],
+                        "status": "errored",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "status": "errored",
+                "trigger": {
+                    "environment": {
+                        "date_format": "yyyy-MM-dd",
+                        "languages": [],
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Registration Flow",
+                        "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
+                    },
+                    "params": {
+                        "coupons": [
+                            {
+                                "code": "AAA-BBB-CCC",
+                                "expiration": "2000-01-01T00:00:00.000000000-00:00"
+                            }
+                        ]
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                }
+            }
+        }
+    ],
+    "trigger": {
+        "environment": {
+            "date_format": "yyyy-MM-dd",
+            "languages": [],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Registration",
+            "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
+        },
+        "params": {
+            "coupons": [
+                {
+                    "code": "AAA-BBB-CCC",
+                    "expiration": "2000-01-01T00:00:00.000000000-00:00"
+                }
+            ]
+        },
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "type": "manual"
+    }
+}

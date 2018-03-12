@@ -30,7 +30,6 @@ var flowTests = []struct {
 	{"subflow_other.json", "subflow_other_test.json"},
 	{"brochure.json", "brochure_test.json"},
 	{"all_actions.json", "all_actions_test.json"},
-	{"all_actions_no_contact.json", "all_actions_no_contact_test.json"},
 	{"default_result.json", "default_result_test.json"},
 	{"empty.json", "empty_test.json"},
 	{"node_loop.json", "node_loop_test.json"},
@@ -39,6 +38,7 @@ var flowTests = []struct {
 	{"webhook_persists.json", "webhook_persists_test.json"},
 	{"dynamic_groups.json", "dynamic_groups_test.json"},
 	{"triggered.json", "triggered_test.json"},
+	{"no_contact.json", "no_contact_test.json"},
 }
 
 var writeOutput bool
