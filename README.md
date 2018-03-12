@@ -47,3 +47,11 @@ If you've made changes to the flow server static files, you should regenerate th
 ```
 % go generate github.com/nyaruka/goflow/cmd/flowserver
 ```
+
+To make a new release:
+
+```
+% git tag v?.?.?
+% git push origin v?.?.?
+% goreleaser
+```
