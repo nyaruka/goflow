@@ -199,7 +199,7 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 		}
 		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 		eventJSON, _ := json.Marshal(eventEnvelope)
-		log.WithField("code", event.Type()).WithField("run", r.UUID()).WithField("data", string(eventJSON)).Debugf("%s event applied", origin)
+		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("%s event applied", origin)
 	}
 
 	return nil
