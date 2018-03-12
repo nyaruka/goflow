@@ -134,7 +134,7 @@
             "send_all": false
         },
         "expected_action": {
-            "type": "reply",
+            "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": []
@@ -161,7 +161,7 @@
             "send_all": true
         },
         "expected_action": {
-            "type": "reply",
+            "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],
@@ -252,7 +252,7 @@
             ]
         },
         "expected_action": {
-            "type": "send_msg",
+            "type": "send_broadcast",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],

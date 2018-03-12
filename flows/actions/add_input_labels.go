@@ -5,7 +5,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeAddInputLabels is our type for add label actions
+// TypeAddInputLabels is the type for the add label action
 const TypeAddInputLabels string = "add_input_labels"
 
 // AddInputLabelsAction can be used to add labels to the last user input on a flow. An `input_labels_added` event

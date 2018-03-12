@@ -10,7 +10,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeSetContactProperty is the type for our set contact property action
+// TypeSetContactProperty is the type for the set contact property action
 const TypeSetContactProperty string = "set_contact_property"
 
 // SetContactPropertyAction can be used to update one of the built in fields for a contact of "name" or

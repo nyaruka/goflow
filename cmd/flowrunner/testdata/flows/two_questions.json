@@ -81,7 +81,7 @@
                     "actions": [
                         {
                             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Hi @contact.name! What is your favorite color? (red/blue) Your number is @contact.urn"
                         }
                     ],
@@ -142,7 +142,7 @@
                         },
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "@(TITLE(run.results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
                         }
                     ],
@@ -204,7 +204,7 @@
                         },
                         {
                             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Great, you are done and like @run.results.soda! Webhook status was @run.webhook.status_code"
                         }
                     ]

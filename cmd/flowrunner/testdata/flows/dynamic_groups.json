@@ -30,7 +30,7 @@
                         },
                         {
                             "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Current groups: @contact.groups"
                         },
                         {
@@ -41,7 +41,7 @@
                         },
                         {
                             "uuid": "5bc4894f-9ef4-430e-a040-e688fd2dd578",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Current groups: @contact.groups"
                         },
                         {
@@ -55,7 +55,7 @@
                         },
                         {
                             "uuid": "279b0215-c9d5-4a90-b7df-f371812bcc78",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Current groups: @contact.groups"
                         }
                     ]

@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeAddContactURN is our type for add URN actions
+// TypeAddContactURN is our type for the add URN action
 const TypeAddContactURN string = "add_contact_urn"
 
 // AddContactURNAction can be used to add a URN to the current contact. An `contact_urn_added` event

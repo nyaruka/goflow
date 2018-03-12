@@ -7,7 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeRemoveContactGroups is our type for our remove from group action
+// TypeRemoveContactGroups is the type for the remove from groups action
 const TypeRemoveContactGroups string = "remove_contact_groups"
 
 // RemoveContactGroupsAction can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created

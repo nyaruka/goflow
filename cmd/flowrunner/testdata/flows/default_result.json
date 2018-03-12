@@ -17,7 +17,7 @@
                     "actions": [
                         {
                             "text": "What is your name?",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "d3cd8da7-55f2-4bd3-9a0c-efc93c99e498"
                         }
                     ]
@@ -61,7 +61,7 @@
                             "value": "@(WORD(run.results.contact_name, 1))"
                         },
                         {
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "aafb505c-603d-4025-864d-471345ed237d",
                             "text": "Great, pleased to meet you @contact.fields.first_name"
                         }

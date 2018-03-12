@@ -19,7 +19,7 @@
                         {
                             "uuid": "59cee8f1-ed9e-453e-bc17-6f1996e959d0",
                             "text": "This is the first message.",
-                            "type": "reply"
+                            "type": "send_msg"
                         }
                     ]
                 },
@@ -76,7 +76,7 @@
                         {
                             "uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
                             "text": "The status is @run.webhook.json.ok. Send something",
-                            "type": "reply"
+                            "type": "send_msg"
                         }
                     ]
                 },
@@ -112,7 +112,7 @@
                         {
                             "uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
                             "text": "The status is now @run.webhook.json.ok",
-                            "type": "reply"
+                            "type": "send_msg"
                         }
                     ]
                 }

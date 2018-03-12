@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+// TypeSetContactChannel is the type for the set contact channel action
 const TypeSetContactChannel string = "set_contact_channel"
 
 type SetContactChannelAction struct {

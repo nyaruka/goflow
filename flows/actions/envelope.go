@@ -17,28 +17,28 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &AddContactGroupsAction{}
 	case TypeAddContactURN:
 		action = &AddContactURNAction{}
+	case TypeCallWebhook:
+		action = &CallWebhookAction{}
+	case TypeRemoveContactGroups:
+		action = &RemoveContactGroupsAction{}
+	case TypeSendBroadcast:
+		action = &SendBroadcastAction{}
 	case TypeSendEmail:
-		action = &EmailAction{}
+		action = &SendEmailAction{}
+	case TypeSendMsg:
+		action = &SendMsgAction{}
+	case TypeSetContactChannel:
+		action = &SetContactChannelAction{}
+	case TypeSetContactField:
+		action = &SetContactFieldAction{}
+	case TypeSetContactProperty:
+		action = &SetContactPropertyAction{}
+	case TypeSetRunResult:
+		action = &SetRunResultAction{}
 	case TypeStartFlow:
 		action = &StartFlowAction{}
 	case TypeStartSession:
 		action = &StartSessionAction{}
-	case TypeSendMsg:
-		action = &SendMsgAction{}
-	case TypeRemoveContactGroups:
-		action = &RemoveContactGroupsAction{}
-	case TypeReply:
-		action = &ReplyAction{}
-	case TypeSaveFlowResult:
-		action = &SaveFlowResultAction{}
-	case TypeSetContactField:
-		action = &SetContactFieldAction{}
-	case TypeSetContactChannel:
-		action = &SetContactChannelAction{}
-	case TypeSetContactProperty:
-		action = &SetContactPropertyAction{}
-	case TypeCallWebhook:
-		action = &WebhookAction{}
 	default:
 		return nil, fmt.Errorf("unknown action type: %s", envelope.Type)
 	}

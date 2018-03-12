@@ -398,7 +398,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			migratedEmails[e], _ = excellent.MigrateTemplate(email, excellent.ExtraAsFunction)
 		}
 
-		return &actions.EmailAction{
+		return &actions.SendEmailAction{
 			Subject:    migratedSubject,
 			Body:       migratedBody,
 			Addresses:  migratedEmails,
@@ -487,7 +487,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 		}
 
 		if a.Type == "reply" {
-			return &actions.ReplyAction{
+			return &actions.SendMsgAction{
 				BaseAction:   actions.NewBaseAction(a.UUID),
 				Text:         migratedText,
 				Attachments:  attachments,
@@ -510,7 +510,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			variables = append(variables, migratedVar)
 		}
 
-		return &actions.SendMsgAction{
+		return &actions.SendBroadcastAction{
 			BaseAction:  actions.NewBaseAction(a.UUID),
 			Text:        migratedText,
 			Attachments: attachments,
@@ -586,7 +586,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			headers[header.Name] = header.Value
 		}
 
-		return &actions.WebhookAction{
+		return &actions.CallWebhookAction{
 			Method:     a.Action,
 			URL:        migratedURL,
 			Headers:    headers,
@@ -838,7 +838,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 		}
 
 		node.actions = []flows.Action{
-			&actions.WebhookAction{
+			&actions.CallWebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
 				Method:     config.Action,

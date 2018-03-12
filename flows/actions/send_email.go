@@ -10,10 +10,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeSendEmail is our type for the email action
+// TypeSendEmail is the type for the send email action
 const TypeSendEmail string = "send_email"
 
-// EmailAction can be used to send an email to one or more recipients. The subject, body and addresses
+// SendEmailAction can be used to send an email to one or more recipients. The subject, body and addresses
 // can all contain expressions.
 //
 // A `email_created` event will be created for each email address.
@@ -29,7 +29,7 @@ const TypeSendEmail string = "send_email"
 // ```
 //
 // @action send_email
-type EmailAction struct {
+type SendEmailAction struct {
 	BaseAction
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`
@@ -37,15 +37,15 @@ type EmailAction struct {
 }
 
 // Type returns the type of this action
-func (a *EmailAction) Type() string { return TypeSendEmail }
+func (a *SendEmailAction) Type() string { return TypeSendEmail }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *EmailAction) Validate(assets flows.SessionAssets) error {
+func (a *SendEmailAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }
 
 // Execute creates the email events
-func (a *EmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))

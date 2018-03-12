@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeSetContactField is the type for our set contact field action
+// TypeSetContactField is the type for the set contact field action
 const TypeSetContactField string = "set_contact_field"
 
 // SetContactFieldAction can be used to save a value to a contact. The value can be a template and will

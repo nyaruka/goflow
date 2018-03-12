@@ -7,7 +7,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeAddContactGroups is our type for the add to group action
+// TypeAddContactGroups is our type for the add to groups action
 const TypeAddContactGroups string = "add_contact_groups"
 
 // AddContactGroupsAction can be used to add a contact to one or more groups. An `contact_groups_added` event will be created
