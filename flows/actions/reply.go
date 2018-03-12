@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -47,6 +48,11 @@ func (a *ReplyAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *ReplyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+	if run.Contact() == nil {
+		log.Add(events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		return nil
+	}
+
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
 
 	channelSet, err := run.Session().Assets().GetChannelSet()

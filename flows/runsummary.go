@@ -63,8 +63,10 @@ func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
 	}
 
 	// read the contact
-	if run.contact, err = ReadContact(session, e.Contact); err != nil {
-		return nil, err
+	if e.Contact != nil {
+		if run.contact, err = ReadContact(session, e.Contact); err != nil {
+			return nil, err
+		}
 	}
 
 	return run, nil
@@ -79,8 +81,10 @@ func (r *runSummary) MarshalJSON() ([]byte, error) {
 	envelope.Status = r.status
 	envelope.Results = r.results
 
-	if envelope.Contact, err = r.contact.MarshalJSON(); err != nil {
-		return nil, err
+	if r.contact != nil {
+		if envelope.Contact, err = r.contact.MarshalJSON(); err != nil {
+			return nil, err
+		}
 	}
 
 	return json.Marshal(envelope)

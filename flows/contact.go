@@ -34,6 +34,10 @@ func NewContact(uuid ContactUUID, name string, language utils.Language, timezone
 
 // Clone creates a copy of this contact
 func (c *Contact) Clone() *Contact {
+	if c == nil {
+		return nil
+	}
+
 	return &Contact{
 		uuid:     c.uuid,
 		name:     c.name,
