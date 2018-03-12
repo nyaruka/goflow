@@ -98,41 +98,41 @@ func TestFlowValidation(t *testing.T) {
 	flow, err := session.Assets().GetFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	assert.NoError(t, err)
 
-	// break the add_label action so references an invalid label
-	addLabelAction := flow.Nodes()[0].Actions()[0].(*actions.AddLabelAction)
+	// break the add_input_labels action so references an invalid label
+	addLabelAction := flow.Nodes()[0].Actions()[0].(*actions.AddInputLabelsAction)
 	addLabelAction.Labels[0].UUID = "xyx"
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_label]: no such label with uuid 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with uuid 'xyx'")
 
-	// fix the add_label action
+	// fix the add_input_labels action
 	addLabelAction.Labels[0].UUID = "3f65d88a-95dc-4140-9451-943e94e06fea"
 
 	// break the add_group action so references an invalid group
-	addGroupAction := flow.Nodes()[0].Actions()[1].(*actions.AddToGroupAction)
+	addGroupAction := flow.Nodes()[0].Actions()[1].(*actions.AddContactGroupsAction)
 	addGroupAction.Groups[0].UUID = "xyx"
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid 'xyx'")
 
 	// fix the add_group action
 	addGroupAction.Groups[0].UUID = "2aad21f6-30b7-42c5-bd7f-1b720c154817"
 
-	// break the save_contact_field action so references an invalid field
-	saveContactAction := flow.Nodes()[0].Actions()[2].(*actions.SaveContactField)
+	// break the set_contact_field action so references an invalid field
+	saveContactAction := flow.Nodes()[0].Actions()[2].(*actions.SetContactFieldAction)
 	saveContactAction.Field.Key = "xyx"
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=7bd8b3bf-0a3c-4928-bc46-df416e77ddf4, type=save_contact_field]: no such field with key 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=7bd8b3bf-0a3c-4928-bc46-df416e77ddf4, type=set_contact_field]: no such field with key 'xyx'")
 
-	// fix the save_contact_field action
+	// fix the set_contact_field action
 	saveContactAction.Field.Key = "first_name"
 
-	// break the set_preferred_channel action so references an invalid channel
-	prefChannelAction := flow.Nodes()[0].Actions()[3].(*actions.PreferredChannelAction)
+	// break the set_contact_channel action so references an invalid channel
+	prefChannelAction := flow.Nodes()[0].Actions()[3].(*actions.SetContactChannelAction)
 	prefChannelAction.Channel.UUID = "xyx"
 
 	// can't simulate a missing channel without the asset store trying to fetch it... but we can stuff the wrong thing in the store
@@ -140,8 +140,8 @@ func TestFlowValidation(t *testing.T) {
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_preferred_channel]: asset cache contains asset with wrong type")
+	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: asset cache contains asset with wrong type")
 
-	// fix the set_preferred_channel action
+	// fix the set_contact_channel action
 	prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"
 }

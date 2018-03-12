@@ -12,7 +12,7 @@
                     "actions": [
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_label",
+                            "type": "add_input_labels",
                             "labels": [
                                 {
                                     "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
@@ -25,7 +25,7 @@
                         },
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_to_group",
+                            "type": "add_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -38,13 +38,13 @@
                         },
                         {
                             "uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
-                            "type": "add_urn",
+                            "type": "add_contact_urn",
                             "scheme": "twitter",
                             "path": "@(replace(lower(contact.name), \" \", \"_\"))"
                         },
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "activation_token",
                                 "label": "Activation Token"
@@ -85,7 +85,7 @@
                         },
                         {
                             "uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
-                            "type": "send_msg",
+                            "type": "send_broadcast",
                             "urns": [
                                 "tel:+12065551212"
                             ],
@@ -93,7 +93,7 @@
                         },
                         {
                             "uuid": "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
-                            "type": "send_msg",
+                            "type": "send_broadcast",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -107,7 +107,7 @@
                         },
                         {
                             "uuid": "6d1346c0-48d8-4108-9c58-e45a1eb0ff7a",
-                            "type": "remove_from_group",
+                            "type": "remove_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -117,18 +117,18 @@
                         },
                         {
                             "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Hi @contact.name, are you ready to complete today's survey?"
                         },
                         {
                             "uuid": "d98c1e02-69df-4f95-8b89-8587a57ae0c3",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "This is a message to each of @contact.name's urns.",
                             "all_urns": true
                         },
                         {
                             "uuid": "62a30ab4-d73c-447d-a989-39c49115153e",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "This is a reply with attachments and quick replies",
                             "attachments": [
                                 "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"
@@ -140,20 +140,20 @@
                         },
                         {
                             "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
-                            "type": "save_flow_result",
+                            "type": "set_run_result",
                             "name": "Gender",
                             "value": "m",
                             "category": "Male"
                         },
                         {
                             "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
-                            "type": "update_contact",
+                            "type": "set_contact_property",
                             "field_name": "language",
                             "value": "eng"
                         },
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "gender",
                                 "label": "Gender"

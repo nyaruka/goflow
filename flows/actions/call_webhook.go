@@ -11,10 +11,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeCallWebhook is the type for our webhook action
+// TypeCallWebhook is the type for the call webhook action
 const TypeCallWebhook string = "call_webhook"
 
-// WebhookAction can be used to call an external service and insert the results in @run.webhook
+// CallWebhookAction can be used to call an external service and insert the results in @run.webhook
 // context variable. The body, header and url fields may be templates and will be evaluated at runtime.
 //
 // A `webhook_called` event will be created based on the results of the HTTP call.
@@ -32,7 +32,7 @@ const TypeCallWebhook string = "call_webhook"
 // ```
 //
 // @action call_webhook
-type WebhookAction struct {
+type CallWebhookAction struct {
 	BaseAction
 	Method  string            `json:"method"             validate:"required,http_method"`
 	URL     string            `json:"url"                validate:"required"`
@@ -41,15 +41,15 @@ type WebhookAction struct {
 }
 
 // Type returns the type of this action
-func (a *WebhookAction) Type() string { return TypeCallWebhook }
+func (a *CallWebhookAction) Type() string { return TypeCallWebhook }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *WebhookAction) Validate(assets flows.SessionAssets) error {
+func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }
 
 // Execute runs this action
-func (a *WebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// substitute any variables in our url
 	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL, true)
 	if err != nil {

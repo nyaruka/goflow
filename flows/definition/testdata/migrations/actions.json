@@ -9,7 +9,7 @@
             ]
         },
         "expected_action": {
-            "type": "add_to_group",
+            "type": "add_contact_groups",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
                 {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
@@ -28,7 +28,7 @@
             ]
         },
         "expected_action": {
-            "type": "add_label",
+            "type": "add_input_labels",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "labels": [
                 {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Spam"},
@@ -66,7 +66,7 @@
             "name": "Twilio"
         },
         "expected_action": {
-            "type": "set_preferred_channel",
+            "type": "set_contact_channel",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "channel": {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Twilio"}
         },
@@ -82,7 +82,7 @@
             ]
         },
         "expected_action": {
-            "type": "remove_from_group",
+            "type": "remove_contact_groups",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "groups": [
                 {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Testers"},
@@ -116,7 +116,7 @@
             "name": "French"
         },
         "expected_action": {
-            "type": "update_contact",
+            "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field_name": "language",
             "value": "fra"
@@ -134,7 +134,7 @@
             "send_all": false
         },
         "expected_action": {
-            "type": "reply",
+            "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": []
@@ -161,7 +161,7 @@
             "send_all": true
         },
         "expected_action": {
-            "type": "reply",
+            "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352", 
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],
@@ -187,7 +187,7 @@
             "value": "Bob @step.value"
         },
         "expected_action": {
-            "type": "update_contact",
+            "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field_name": "name",
             "value": "Bob @run.input"
@@ -203,7 +203,7 @@
             "value": "@step.value"
         },
         "expected_action": {
-            "type": "update_contact",
+            "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field_name": "name",
             "value": "@run.input @(word_slice(contact.name, 2, -1))"
@@ -219,7 +219,7 @@
             "value": "@step.value"
         },
         "expected_action": {
-            "type": "save_contact_field",
+            "type": "set_contact_field",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field": {"key": "gender", "label": "Gender"},
             "value": "@run.input"
@@ -252,7 +252,7 @@
             ]
         },
         "expected_action": {
-            "type": "send_msg",
+            "type": "send_broadcast",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "text": "Do you still live in @contact.fields.city?", 
             "attachments": ["image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.age"],

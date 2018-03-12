@@ -34,7 +34,7 @@ At its simplest, a node can be just a single action with no exits, wait or route
     "uuid":"5a06445e-d790-4bd3-a10b-b47bdcc9abed",
     "actions":[{
         "uuid": "abc0a2bf-6b4a-4ee0-83e1-1eebae6948ac",
-        "type": "reply",
+        "type": "send_msg",
         "text": "What is your name?"
     }]
 }
@@ -53,7 +53,7 @@ An exit consists of:
     "uuid":"5a06445e-d790-4bd3-a10b-b47bdcc9abed",
     "actions":[{
         "uuid": "abc0a2bf-6b4a-4ee0-83e1-1eebae6948ac",
-        "type": "reply",
+        "type": "send_msg",
         "text": "What is your name?"
     }],
     "exits": [{
@@ -140,7 +140,7 @@ have been started by a `start_flow` action previously in the flow:
 Flows do not describe data flow but rather actions and logic branching. As such, variables collected in a flow and the state of the flow is accessed through
 what is called the Context. The context contains variables representing the current contact in a flow, the last input from that contact
 as well as the results collected in a flow and any webhook requests made during the flow. Variables in the context may be referred to 
-within actions by using the `@` symbol. For example, to greet a contact by their name in a reply action, the text of the reply can be `Hi @contact.name!`.
+within actions by using the `@` symbol. For example, to greet a contact by their name in a send_msg action, the text of the send_msg can be `Hi @contact.name!`.
 
 The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
 

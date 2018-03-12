@@ -12,7 +12,7 @@
                     "actions": [
                         {
                             "uuid": "49f6c984-620f-4d9b-98c4-8ead1d1ef4f6",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "This is the parent flow"
                         },
                         {
@@ -36,7 +36,7 @@
                     "actions": [
                         {
                             "uuid": "5d51eae6-be0f-4cc7-9402-150aa1ed80a1",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "Flow succeeded"
                         }
                     ]
@@ -57,7 +57,7 @@
                     "actions": [
                         {
                             "uuid": "e5a03dde-3b2f-4603-b5d0-d927f6bcc361",
-                            "type": "reply",
+                            "type": "send_msg",
                             "text": "This is the child flow"
                         },
                         {

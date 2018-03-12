@@ -7,17 +7,17 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
-// TypeRemoveFromGroup is our type for our remove from group action
-const TypeRemoveFromGroup string = "remove_from_group"
+// TypeRemoveContactGroups is the type for the remove from groups action
+const TypeRemoveContactGroups string = "remove_contact_groups"
 
-// RemoveFromGroupAction can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
+// RemoveContactGroupsAction can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
 // for the groups which the contact is removed from. If no groups are specified, then the contact will be removed from
 // all groups.
 //
 // ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "remove_from_group",
+//     "type": "remove_contact_groups",
 //     "groups": [{
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 //       "name": "Registered Users"
@@ -25,23 +25,23 @@ const TypeRemoveFromGroup string = "remove_from_group"
 //   }
 // ```
 //
-// @action remove_from_group
-type RemoveFromGroupAction struct {
+// @action remove_contact_groups
+type RemoveContactGroupsAction struct {
 	BaseAction
 	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // Type returns the type of this action
-func (a *RemoveFromGroupAction) Type() string { return TypeRemoveFromGroup }
+func (a *RemoveContactGroupsAction) Type() string { return TypeRemoveContactGroups }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
+func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets) error {
 	// check we have all groups
 	return a.validateGroups(assets, a.Groups)
 }
 
 // Execute runs the action
-func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	contact := run.Contact()
 	if contact == nil {
 		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))

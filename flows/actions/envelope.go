@@ -11,34 +11,34 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	var action flows.Action
 
 	switch envelope.Type {
-	case TypeAddLabel:
-		action = &AddLabelAction{}
-	case TypeAddToGroup:
-		action = &AddToGroupAction{}
-	case TypeAddURN:
-		action = &AddURNAction{}
+	case TypeAddInputLabels:
+		action = &AddInputLabelsAction{}
+	case TypeAddContactGroups:
+		action = &AddContactGroupsAction{}
+	case TypeAddContactURN:
+		action = &AddContactURNAction{}
+	case TypeCallWebhook:
+		action = &CallWebhookAction{}
+	case TypeRemoveContactGroups:
+		action = &RemoveContactGroupsAction{}
+	case TypeSendBroadcast:
+		action = &SendBroadcastAction{}
 	case TypeSendEmail:
-		action = &EmailAction{}
+		action = &SendEmailAction{}
+	case TypeSendMsg:
+		action = &SendMsgAction{}
+	case TypeSetContactChannel:
+		action = &SetContactChannelAction{}
+	case TypeSetContactField:
+		action = &SetContactFieldAction{}
+	case TypeSetContactProperty:
+		action = &SetContactPropertyAction{}
+	case TypeSetRunResult:
+		action = &SetRunResultAction{}
 	case TypeStartFlow:
 		action = &StartFlowAction{}
 	case TypeStartSession:
 		action = &StartSessionAction{}
-	case TypeSendMsg:
-		action = &SendMsgAction{}
-	case TypeRemoveFromGroup:
-		action = &RemoveFromGroupAction{}
-	case TypeReply:
-		action = &ReplyAction{}
-	case TypeSaveFlowResult:
-		action = &SaveFlowResultAction{}
-	case TypeSaveContactField:
-		action = &SaveContactField{}
-	case TypeSetPreferredChannel:
-		action = &PreferredChannelAction{}
-	case TypeUpdateContact:
-		action = &UpdateContactAction{}
-	case TypeCallWebhook:
-		action = &WebhookAction{}
 	default:
 		return nil, fmt.Errorf("unknown action type: %s", envelope.Type)
 	}

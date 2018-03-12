@@ -17,7 +17,7 @@
                     "actions": [
                         {
                             "text": "Hi there, let's go to the child.",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "ac403443-4e93-4127-8b03-469598cd7ae2"
                         }
                     ]
@@ -69,7 +69,7 @@
                     "actions": [
                         {
                             "text": "Hooray, you did it and said @child.results.answer. Say yes or no!",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "54b10283-9863-4edf-abfa-705cf24a64fc"
                         }
                     ]
@@ -86,7 +86,7 @@
                     "actions": [
                         {
                             "text": "Nope, that's neither",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "27442755-3d94-499f-97d5-a9409ab83b67"
                         }
                     ]
@@ -150,7 +150,7 @@
                     "actions": [
                         {
                             "text": "All Done! You said @child.results.answer in the child and @run.results.answer here.",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0"
                         }
                     ]
@@ -177,7 +177,7 @@
                     "actions": [
                         {
                             "text": "Welcome to the child, say yes or no!",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "9b3d32d4-aa6c-44e0-95cd-92117c67738f"
                         }
                     ]
@@ -241,7 +241,7 @@
                     "actions": [
                         {
                             "text": "Nope, that's neither.",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "ef6b42af-9751-4120-972c-e60771904dd2"
                         }
                     ]
@@ -258,7 +258,7 @@
                     "actions": [
                         {
                             "text": "You said yes",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "7d17e71a-2967-4dbb-86a4-eda028aca38a"
                         }
                     ]
@@ -275,7 +275,7 @@
                     "actions": [
                         {
                             "text": "You said no",
-                            "type": "reply",
+                            "type": "send_msg",
                             "uuid": "9b03c1fc-c74f-4e27-9349-24df53c6ce96"
                         }
                     ]

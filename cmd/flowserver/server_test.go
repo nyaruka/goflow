@@ -57,7 +57,7 @@ var testFlowMissingGroupAssets = `[
 					"actions": [
 						{
 							"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-							"type": "add_to_group",
+							"type": "add_contact_groups",
 							"groups": [
 								{
 									"uuid": "77a1bb5c-92f7-42bc-8a54-d21c1536ebc0",
@@ -335,7 +335,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// POST to the start endpoint with a valid flow with no wait (it should complete)
 	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets)
@@ -379,7 +379,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 		events.NewMsgReceivedEvent(msg),
 	}))
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_to_group]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// check we can resume if we include a fixed version of the flow as an asset
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testValidFlowWithWaitAssets, waitingSession, []flows.Event{

@@ -10,33 +10,33 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// TypeUpdateContact is the type for our update contact action
-const TypeUpdateContact string = "update_contact"
+// TypeSetContactProperty is the type for the set contact property action
+const TypeSetContactProperty string = "set_contact_property"
 
-// UpdateContactAction can be used to update one of the built in fields for a contact of "name" or
+// SetContactPropertyAction can be used to update one of the built in fields for a contact of "name" or
 // "language". An `contact_property_changed` event will be created with the corresponding values.
 //
 // ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "update_contact",
+//     "type": "set_contact_property",
 //     "field_name": "language",
 //     "value": "eng"
 //   }
 // ```
 //
-// @action update_contact
-type UpdateContactAction struct {
+// @action set_contact_property
+type SetContactPropertyAction struct {
 	BaseAction
 	FieldName string `json:"field_name"    validate:"required,eq=name|eq=language"`
 	Value     string `json:"value"`
 }
 
 // Type returns the type of this action
-func (a *UpdateContactAction) Type() string { return TypeUpdateContact }
+func (a *SetContactPropertyAction) Type() string { return TypeSetContactProperty }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *UpdateContactAction) Validate(assets flows.SessionAssets) error {
+func (a *SetContactPropertyAction) Validate(assets flows.SessionAssets) error {
 	// check language is valid if specified
 	if a.FieldName == "language" && a.Value != "" {
 		if _, err := utils.ParseLanguage(a.Value); err != nil {
@@ -47,7 +47,7 @@ func (a *UpdateContactAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *SetContactPropertyAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
 		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil

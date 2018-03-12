@@ -12,7 +12,7 @@
                     "actions": [
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_label",
+                            "type": "add_input_labels",
                             "labels": [
                                 {
                                     "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
@@ -22,7 +22,7 @@
                         },
                         {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
-                            "type": "add_to_group",
+                            "type": "add_contact_groups",
                             "groups": [
                                 {
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
@@ -32,7 +32,7 @@
                         },
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "first_name",
                                 "label": "First Name"
@@ -41,7 +41,7 @@
                         },
                         {
                             "uuid": "3248a064-bc42-4dff-aa0f-93d85de2f600",
-                            "type": "set_preferred_channel",
+                            "type": "set_contact_channel",
                             "channel": {
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                                 "name": "Twilio Channel"
