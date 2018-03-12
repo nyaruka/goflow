@@ -51,11 +51,6 @@ func NewWebhookCalledEvent(url string, status utils.RequestResponseStatus, statu
 // Type returns the type of this event
 func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
 
-// Validate validates our event is valid and has all the assets it needs
-func (e *WebhookCalledEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
 // Apply applies this event to the given run
 func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
 	return nil

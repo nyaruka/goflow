@@ -39,6 +39,12 @@ func (e *InputLabelsAddedEvent) Type() string { return TypeInputLabelsAdded }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *InputLabelsAddedEvent) Validate(assets flows.SessionAssets) error {
+	for _, label := range e.Labels {
+		_, err := assets.GetLabel(label.UUID)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

@@ -28,11 +28,6 @@ func NewNothingWait() *NothingWaitEvent {
 // Type returns the type of this event
 func (e *NothingWaitEvent) Type() string { return TypeNothingWait }
 
-// Validate validates our event is valid and has all the assets it needs
-func (e *NothingWaitEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
 // Apply applies this event to the given run
 func (e *NothingWaitEvent) Apply(run flows.FlowRun) error {
 	return nil

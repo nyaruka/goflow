@@ -36,6 +36,12 @@ func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded 
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {
+	for _, group := range e.Groups {
+		_, err := assets.GetGroup(group.UUID)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

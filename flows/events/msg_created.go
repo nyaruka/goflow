@@ -42,11 +42,6 @@ func NewMsgCreatedEvent(msg *flows.MsgOut) *MsgCreatedEvent {
 // Type returns the type of this event
 func (e *MsgCreatedEvent) Type() string { return TypeMsgCreated }
 
-// Validate validates our event is valid and has all the assets it needs
-func (e *MsgCreatedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
 // Apply applies this event to the given run
 func (e *MsgCreatedEvent) Apply(run flows.FlowRun) error {
 	return nil

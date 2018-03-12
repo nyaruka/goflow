@@ -39,11 +39,6 @@ func NewFlowTriggeredEvent(flow *flows.FlowReference, parentRunUUID flows.RunUUI
 // Type returns the type of this event
 func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
 
-// Validate validates our event is valid and has all the assets it needs
-func (e *FlowTriggeredEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
 // Apply applies this event to the given run
 func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) error {
 	flow, err := run.Session().Assets().GetFlow(e.Flow.UUID)

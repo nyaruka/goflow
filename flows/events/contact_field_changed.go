@@ -39,7 +39,8 @@ func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChange
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactFieldChangedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
+	_, err := assets.GetField(e.Field.Key)
+	return err
 }
 
 // Apply applies this event to the given run

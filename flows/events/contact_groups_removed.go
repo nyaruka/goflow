@@ -37,6 +37,12 @@ func (e *ContactGroupsRemovedEvent) Type() string { return TypeContactGroupsRemo
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactGroupsRemovedEvent) Validate(assets flows.SessionAssets) error {
+	for _, group := range e.Groups {
+		_, err := assets.GetGroup(group.UUID)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

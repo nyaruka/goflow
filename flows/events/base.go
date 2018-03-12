@@ -30,6 +30,11 @@ type engineOnlyEvent struct{}
 // AllowedOrigin determines where this event type can originate
 func (e *engineOnlyEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
+// Validate validates our event is valid and has all the assets it needs. We assume engine generated events are valid.
+func (e *engineOnlyEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
+
 type callerOrEngineEvent struct{}
 
 // AllowedOrigin determines where this event type can originate

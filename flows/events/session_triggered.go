@@ -69,11 +69,6 @@ func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contac
 // Type returns the type of this event
 func (e *SessionTriggeredEvent) Type() string { return TypeSessionTriggered }
 
-// Validate validates our event is valid and has all the assets it needs
-func (e *SessionTriggeredEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
 // Apply applies this event to the given run
 func (e *SessionTriggeredEvent) Apply(run flows.FlowRun) error {
 	return nil

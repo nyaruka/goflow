@@ -38,7 +38,8 @@ func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelCh
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactChannelChangedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
+	_, err := assets.GetChannel(e.Channel.UUID)
+	return err
 }
 
 // Apply applies this event to the given run
