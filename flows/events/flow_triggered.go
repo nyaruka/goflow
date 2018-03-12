@@ -21,6 +21,8 @@ const TypeFlowTriggered string = "flow_triggered"
 // @event flow_triggered
 type FlowTriggeredEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Flow          *flows.FlowReference `json:"flow" validate:"required"`
 	ParentRunUUID flows.RunUUID        `json:"parent_run_uuid" validate:"omitempty,uuid4"`
 }

@@ -24,6 +24,8 @@ const TypeMsgWait string = "msg_wait"
 // @event msg_wait
 type MsgWaitEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
 }
 

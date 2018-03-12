@@ -119,6 +119,11 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", trigger.Flow().UUID(), err)
 	}
 
+	// check caller events are valid
+	if err := s.validateCallerEvents(callerEvents); err != nil {
+		return err
+	}
+
 	if trigger.Environment() != nil {
 		s.env = trigger.Environment()
 	}
@@ -147,6 +152,11 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", waitingRun.Flow().UUID(), err)
+	}
+
+	// check caller events are valid
+	if err := s.validateCallerEvents(callerEvents); err != nil {
+		return err
 	}
 
 	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
@@ -206,11 +216,7 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 	s.status = flows.SessionStatusActive
 
 	// off to the races again...
-	if err = s.continueUntilWait(waitingRun, destination, step, []flows.Event{}); err != nil {
-		return err
-	}
-
-	return nil
+	return s.continueUntilWait(waitingRun, destination, step, []flows.Event{})
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
@@ -442,6 +448,18 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 }
 
 const noDestination = flows.NodeUUID("")
+
+func (s *session) validateCallerEvents(events []flows.Event) error {
+	for _, event := range events {
+		if event.AllowedOrigin()&flows.EventOriginCaller == 0 {
+			return fmt.Errorf("event[type=%s] can't be sent by callers", event.Type())
+		}
+		if err := event.Validate(s.assets); err != nil {
+			return fmt.Errorf("validation failed for event[type=%s]: %s", event.Type(), err)
+		}
+	}
+	return nil
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

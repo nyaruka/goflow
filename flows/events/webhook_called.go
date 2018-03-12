@@ -27,6 +27,8 @@ const TypeWebhookCalled string = "webhook_called"
 // @event webhook_called
 type WebhookCalledEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	URL        string                      `json:"url"         validate:"required"`
 	Status     utils.RequestResponseStatus `json:"status"      validate:"required"`
 	StatusCode int                         `json:"status_code" validate:"required"`

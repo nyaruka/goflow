@@ -212,12 +212,26 @@ type Trigger interface {
 	TriggeredOn() time.Time
 }
 
+// EventOrigin is the allowed origin of an event
+type EventOrigin int
+
+const (
+	// EventOriginCaller means an event can originate from the caller
+	EventOriginCaller EventOrigin = 1
+
+	// EventOriginEngine means an event can originate from the engine
+	EventOriginEngine EventOrigin = 2
+)
+
+// Event describes a state change
 type Event interface {
 	CreatedOn() time.Time
 	SetCreatedOn(time.Time)
 
 	FromCaller() bool
 	SetFromCaller(bool)
+	AllowedOrigin() EventOrigin
+	Validate(SessionAssets) error
 
 	Apply(FlowRun) error
 

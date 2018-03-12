@@ -17,6 +17,7 @@ const TypeNothingWait string = "nothing_wait"
 // @event nothing_wait
 type NothingWaitEvent struct {
 	BaseEvent
+	engineOnlyEvent
 }
 
 // NewNothingWait returns a new nothing wait

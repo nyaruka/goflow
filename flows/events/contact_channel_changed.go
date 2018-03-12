@@ -21,6 +21,8 @@ const TypeContactChannelChanged string = "contact_channel_changed"
 // @event contact_channel_changed
 type ContactChannelChangedEvent struct {
 	BaseEvent
+	callerOrEngineEvent
+
 	Channel *flows.ChannelReference `json:"channel" validate:"required"`
 }
 
@@ -34,6 +36,12 @@ func NewContactChannelChangedEvent(channel *flows.ChannelReference) *ContactChan
 
 // Type returns the type of this event
 func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelChanged }
+
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactChannelChangedEvent) Validate(assets flows.SessionAssets) error {
+	_, err := assets.GetChannel(e.Channel.UUID)
+	return err
+}
 
 // Apply applies this event to the given run
 func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {

@@ -43,6 +43,8 @@ const TypeSessionTriggered string = "session_triggered"
 // @event session_triggered
 type SessionTriggeredEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`

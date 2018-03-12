@@ -25,6 +25,8 @@ const TypeBroadcastCreated string = "broadcast_created"
 // @event broadcast_created
 type BroadcastCreatedEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Text         string                    `json:"text"`
 	Attachments  []flows.Attachment        `json:"attachments,omitempty"`
 	QuickReplies []string                  `json:"quick_replies,omitempty"`

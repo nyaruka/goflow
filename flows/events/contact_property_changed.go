@@ -24,6 +24,8 @@ const TypeContactPropertyChanged string = "contact_property_changed"
 // @event contact_property_changed
 type ContactPropertyChangedEvent struct {
 	BaseEvent
+	callerOrEngineEvent
+
 	Property string `json:"property" validate:"required,eq=name|eq=language"`
 	Value    string `json:"value"`
 }
@@ -39,6 +41,11 @@ func NewContactPropertyChangedEvent(property string, value string) *ContactPrope
 
 // Type returns the type of this event
 func (e *ContactPropertyChangedEvent) Type() string { return TypeContactPropertyChanged }
+
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactPropertyChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
 
 // Apply applies this event to the given run
 func (e *ContactPropertyChangedEvent) Apply(run flows.FlowRun) error {

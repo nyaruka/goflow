@@ -22,11 +22,18 @@ const TypeRunExpired string = "run_expired"
 // @event run_expired
 type RunExpiredEvent struct {
 	BaseEvent
+	callerOnlyEvent
+
 	RunUUID flows.RunUUID `json:"run_uuid"    validate:"required,uuid4"`
 }
 
 // Type returns the type of this event
 func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
+
+// Validate validates our event is valid and has all the assets it needs
+func (e *RunExpiredEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
 
 // Apply applies this event to the given run
 func (e *RunExpiredEvent) Apply(run flows.FlowRun) error {

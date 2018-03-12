@@ -26,6 +26,8 @@ const TypeMsgCreated string = "msg_created"
 // @event msg_created
 type MsgCreatedEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Msg flows.MsgOut `json:"msg" validate:"required,dive"`
 }
 

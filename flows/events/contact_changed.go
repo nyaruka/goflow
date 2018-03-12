@@ -23,11 +23,18 @@ const TypeContactChanged string = "contact_changed"
 // @event contact_changed
 type ContactChangedEvent struct {
 	BaseEvent
+	callerOrEngineEvent
+
 	Contact json.RawMessage `json:"contact"`
 }
 
 // Type returns the type of this event
 func (e *ContactChangedEvent) Type() string { return TypeContactChanged }
+
+// Validate validates our event is valid and has all the assets it needs
+func (e *ContactChangedEvent) Validate(assets flows.SessionAssets) error {
+	return nil
+}
 
 // Apply applies this event to the given run
 func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
