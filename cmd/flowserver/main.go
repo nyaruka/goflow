@@ -18,7 +18,7 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/pressly/lg"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
 	"github.com/nyaruka/goflow/utils"
@@ -34,25 +34,24 @@ func main() {
 		config.Version = version
 	}
 
-	level, err := logrus.ParseLevel(config.LogLevel)
+	level, err := log.ParseLevel(config.LogLevel)
 	if err != nil {
-		logrus.Fatalf("Invalid log level '%s'", level)
+		log.Fatalf("Invalid log level '%s'", level)
 	}
 
-	logger := logrus.New()
-	logger.SetLevel(level)
+	log.SetLevel(level)
 
-	lg.RedirectStdlogOutput(logger)
-	lg.DefaultLogger = logger
+	lg.RedirectStdlogOutput(log.StandardLogger())
+	lg.DefaultLogger = log.StandardLogger()
 
-	flowServer := NewFlowServer(config, logger)
+	flowServer := NewFlowServer(config)
 	flowServer.Start()
 
-	logger.WithField("comp", "server").WithField("port", config.Port).WithField("version", version).Info("listening")
+	log.WithField("comp", "server").WithField("port", config.Port).WithField("version", version).Info("listening")
 
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-	logger.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
+	log.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
 
 	flowServer.Stop()
 }
@@ -132,7 +131,7 @@ func templateHandler(fs http.FileSystem, handler templateHandlerFunc) http.Handl
 	}
 }
 
-func traceErrors(logger *logrus.Logger) func(next http.Handler) http.Handler {
+func traceErrors() func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			body := bytes.Buffer{}
@@ -142,7 +141,7 @@ func traceErrors(logger *logrus.Logger) func(next http.Handler) http.Handler {
 
 			// we are returning an error of some kind, log the incoming request body
 			if ww.Status() != 200 && strings.ToLower(r.Method) == "post" {
-				logger.WithFields(logrus.Fields{
+				log.WithFields(log.Fields{
 					"request_body": body.String(),
 					"status":       ww.Status(),
 					"req_id":       r.Context().Value(middleware.RequestIDKey)}).Error()

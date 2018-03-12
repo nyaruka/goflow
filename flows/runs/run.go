@@ -10,6 +10,8 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // a run specific environment which allows values to be overridden by the contact
@@ -188,9 +190,17 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 		r.Session().LogEvent(s, action, event)
 	}
 
-	// eventEnvelope, _ := utils.EnvelopeFromTyped(event)
-	// eventJSON, _ := json.Marshal(eventEnvelope)
-	// fmt.Printf("⚡︎ in run %s: %s\n", r.UUID(), string(eventJSON))
+	if log.GetLevel() >= log.DebugLevel {
+		var origin string
+		if event.FromCaller() {
+			origin = "caller"
+		} else {
+			origin = "engine"
+		}
+		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
+		eventJSON, _ := json.Marshal(eventEnvelope)
+		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("%s event applied", origin)
+	}
 
 	return nil
 }
