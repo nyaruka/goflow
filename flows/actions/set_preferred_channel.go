@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -22,8 +24,8 @@ func (a *PreferredChannelAction) Validate(assets flows.SessionAssets) error {
 }
 
 func (a *PreferredChannelAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	// this is a no-op if we have no contact
 	if run.Contact() == nil {
+		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 

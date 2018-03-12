@@ -1,6 +1,10 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"fmt"
+
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeContactGroupsRemoved is the type fo our remove from group action
 const TypeContactGroupsRemoved string = "contact_groups_removed"
@@ -35,6 +39,10 @@ func (e *ContactGroupsRemovedEvent) Type() string { return TypeContactGroupsRemo
 
 // Apply applies this event to the given run
 func (e *ContactGroupsRemovedEvent) Apply(run flows.FlowRun) error {
+	if run.Contact() == nil {
+		return fmt.Errorf("can't apply event in session without a contact")
+	}
+
 	groupSet, err := run.Session().Assets().GetGroupSet()
 	if err != nil {
 		return err

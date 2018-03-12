@@ -1,6 +1,7 @@
 package events
 
 import (
+	"fmt"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -36,6 +37,10 @@ func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelCh
 
 // Apply applies this event to the given run
 func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
+	if run.Contact() == nil {
+		return fmt.Errorf("can't apply event in session without a contact")
+	}
+
 	channel, err := run.Session().Assets().GetChannel(e.Channel.UUID)
 	if err != nil {
 		return err

@@ -1,6 +1,8 @@
 package events
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -34,6 +36,10 @@ func (e *ContactURNAddedEvent) Type() string { return TypeContactURNAdded }
 
 // Apply applies this event to the given run
 func (e *ContactURNAddedEvent) Apply(run flows.FlowRun) error {
+	if run.Contact() == nil {
+		return fmt.Errorf("can't apply event in session without a contact")
+	}
+
 	run.Contact().AddURN(e.URN)
 	return nil
 }

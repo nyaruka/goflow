@@ -45,6 +45,7 @@ func (a *AddURNAction) Execute(run flows.FlowRun, step flows.Step, log flows.Eve
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
+		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 

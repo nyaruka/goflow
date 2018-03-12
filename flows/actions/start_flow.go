@@ -40,7 +40,6 @@ func (a *StartFlowAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs our action
 func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-
 	if run.Session().FlowOnStack(a.Flow.UUID) {
 		log.Add(events.NewFatalErrorEvent(fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID)))
 		return nil

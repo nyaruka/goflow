@@ -1,6 +1,10 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"fmt"
+
+	"github.com/nyaruka/goflow/flows"
+)
 
 // TypeContactGroupsAdded is the type of our add to group action
 const TypeContactGroupsAdded string = "contact_groups_added"
@@ -34,6 +38,10 @@ func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded 
 
 // Apply applies this event to the given run
 func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
+	if run.Contact() == nil {
+		return fmt.Errorf("can't apply event in session without a contact")
+	}
+
 	groupSet, err := run.Session().Assets().GetGroupSet()
 	if err != nil {
 		return err

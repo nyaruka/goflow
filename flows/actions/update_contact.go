@@ -1,11 +1,13 @@
 package actions
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
-	"strings"
 )
 
 // TypeUpdateContact is the type for our update contact action
@@ -46,8 +48,8 @@ func (a *UpdateContactAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *UpdateContactAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	// this is a no-op if we have no contact
 	if run.Contact() == nil {
+		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 

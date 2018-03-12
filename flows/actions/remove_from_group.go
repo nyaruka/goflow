@@ -42,9 +42,9 @@ func (a *RemoveFromGroupAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs the action
 func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	// only generate event if contact's groups change
 	contact := run.Contact()
 	if contact == nil {
+		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 
@@ -69,6 +69,7 @@ func (a *RemoveFromGroupAction) Execute(run flows.FlowRun, step flows.Step, log 
 		groupRefs = append(groupRefs, group.Reference())
 	}
 
+	// only generate event if contact's groups change
 	if len(groupRefs) > 0 {
 		log.Add(events.NewContactGroupsRemovedEvent(groupRefs))
 	}

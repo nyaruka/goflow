@@ -28,12 +28,12 @@ This utility provides a quick way to test evaluation of expressions which can be
 % $GOPATH/bin/exptester '@(TITLE("foo"))'
 ```
 
-## Running Tests
+## Development
 
 You can run all the tests (excluding tests in vendor packages) with:
 
 ```
-% go test $(go list ./... | grep -v /vendor/)
+% go test github.com/nyaruka/goflow/...
 ```
 
 If you've made changes to the flow server response format, you should regenerate the test files with:
