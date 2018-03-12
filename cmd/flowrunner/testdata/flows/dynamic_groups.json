@@ -12,7 +12,7 @@
                     "actions": [
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "gender",
                                 "label": "Gender"
@@ -21,7 +21,7 @@
                         },
                         {
                             "uuid": "ee4cd27e-1296-40fd-ac9c-8cd43e9fb8b5",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "age",
                                 "label": "Age"
@@ -35,7 +35,7 @@
                         },
                         {
                             "uuid": "bc94b3ba-4aad-410a-ae71-1861f69da0fe",
-                            "type": "add_urn",
+                            "type": "add_contact_urn",
                             "scheme": "tel",
                             "path": "+250781234567"
                         },
@@ -46,7 +46,7 @@
                         },
                         {
                             "uuid": "4ecf6abd-e8c8-424b-aef6-e904cf5b4fbe",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "age",
                                 "label": "Age"

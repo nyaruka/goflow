@@ -120,19 +120,19 @@ func TestFlowValidation(t *testing.T) {
 	// fix the add_group action
 	addGroupAction.Groups[0].UUID = "2aad21f6-30b7-42c5-bd7f-1b720c154817"
 
-	// break the save_contact_field action so references an invalid field
-	saveContactAction := flow.Nodes()[0].Actions()[2].(*actions.SaveContactField)
+	// break the set_contact_field action so references an invalid field
+	saveContactAction := flow.Nodes()[0].Actions()[2].(*actions.SetContactFieldAction)
 	saveContactAction.Field.Key = "xyx"
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=7bd8b3bf-0a3c-4928-bc46-df416e77ddf4, type=save_contact_field]: no such field with key 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=7bd8b3bf-0a3c-4928-bc46-df416e77ddf4, type=set_contact_field]: no such field with key 'xyx'")
 
-	// fix the save_contact_field action
+	// fix the set_contact_field action
 	saveContactAction.Field.Key = "first_name"
 
-	// break the set_preferred_channel action so references an invalid channel
-	prefChannelAction := flow.Nodes()[0].Actions()[3].(*actions.PreferredChannelAction)
+	// break the set_contact_channel action so references an invalid channel
+	prefChannelAction := flow.Nodes()[0].Actions()[3].(*actions.SetContactChannelAction)
 	prefChannelAction.Channel.UUID = "xyx"
 
 	// can't simulate a missing channel without the asset store trying to fetch it... but we can stuff the wrong thing in the store
@@ -140,8 +140,8 @@ func TestFlowValidation(t *testing.T) {
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_preferred_channel]: asset cache contains asset with wrong type")
+	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: asset cache contains asset with wrong type")
 
-	// fix the set_preferred_channel action
+	// fix the set_contact_channel action
 	prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"
 }

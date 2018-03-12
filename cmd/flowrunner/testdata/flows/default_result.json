@@ -46,13 +46,13 @@
                     "uuid": "2929d2fc-2778-4d98-a4bc-73a7345710b0",
                     "actions": [
                         {
-                            "type": "update_contact",
+                            "type": "set_contact_property",
                             "uuid": "aafb505c-603d-4025-864d-471345ed236d",
                             "field_name": "name",
                             "value": "@run.results.contact_name"
                         },
                         {
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "uuid": "aafb505c-603d-4025-864d-471345ed237d",
                             "field": {
                                 "key": "first_name",

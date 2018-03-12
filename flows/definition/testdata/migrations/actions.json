@@ -66,7 +66,7 @@
             "name": "Twilio"
         },
         "expected_action": {
-            "type": "set_preferred_channel",
+            "type": "set_contact_channel",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "channel": {"uuid": "3eca24b7-6313-4f30-870f-f7b948e54b1e", "name": "Twilio"}
         },
@@ -116,7 +116,7 @@
             "name": "French"
         },
         "expected_action": {
-            "type": "update_contact",
+            "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field_name": "language",
             "value": "fra"
@@ -187,7 +187,7 @@
             "value": "Bob @step.value"
         },
         "expected_action": {
-            "type": "update_contact",
+            "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field_name": "name",
             "value": "Bob @run.input"
@@ -203,7 +203,7 @@
             "value": "@step.value"
         },
         "expected_action": {
-            "type": "update_contact",
+            "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field_name": "name",
             "value": "@run.input @(word_slice(contact.name, 2, -1))"
@@ -219,7 +219,7 @@
             "value": "@step.value"
         },
         "expected_action": {
-            "type": "save_contact_field",
+            "type": "set_contact_field",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "field": {"key": "gender", "label": "Gender"},
             "value": "@run.input"

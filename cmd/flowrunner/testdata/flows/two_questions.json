@@ -136,7 +136,7 @@
                     "actions": [
                         {
                             "uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
-                            "type": "update_contact",
+                            "type": "set_contact_property",
                             "field_name": "language",
                             "value": "fra"
                         },

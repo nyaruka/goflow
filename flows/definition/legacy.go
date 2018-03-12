@@ -406,13 +406,13 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 		}, nil
 
 	case "lang":
-		return &actions.UpdateContactAction{
+		return &actions.SetContactPropertyAction{
 			FieldName:  "language",
 			Value:      string(a.Language),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "channel":
-		return &actions.PreferredChannelAction{
+		return &actions.SetContactChannelAction{
 			Channel:    flows.NewChannelReference(a.Channel, a.Name),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
@@ -536,7 +536,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			groups[i] = group.Migrate()
 		}
 
-		return &actions.RemoveFromGroupAction{
+		return &actions.RemoveContactGroupsAction{
 			Groups:     groups,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
@@ -551,7 +551,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 2, -1))", migratedValue)
 			}
 
-			return &actions.UpdateContactAction{
+			return &actions.SetContactPropertyAction{
 				FieldName:  "name",
 				Value:      migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
@@ -560,20 +560,20 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 
 		// and another new action for adding a URN
 		if urns.IsValidScheme(a.Field) {
-			return &actions.AddURNAction{
+			return &actions.AddContactURNAction{
 				Scheme:     a.Field,
 				Path:       migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil
 		} else if a.Field == "tel_e164" {
-			return &actions.AddURNAction{
+			return &actions.AddContactURNAction{
 				Scheme:     "tel",
 				Path:       migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil
 		}
 
-		return &actions.SaveContactField{
+		return &actions.SetContactFieldAction{
 			Field:      flows.NewFieldReference(flows.FieldKey(a.Field), a.Label),
 			Value:      migratedValue,
 			BaseAction: actions.NewBaseAction(a.UUID),

@@ -15,8 +15,8 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &AddInputLabelsAction{}
 	case TypeAddContactGroups:
 		action = &AddContactGroupsAction{}
-	case TypeAddURN:
-		action = &AddURNAction{}
+	case TypeAddContactURN:
+		action = &AddContactURNAction{}
 	case TypeSendEmail:
 		action = &EmailAction{}
 	case TypeStartFlow:
@@ -25,18 +25,18 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &StartSessionAction{}
 	case TypeSendMsg:
 		action = &SendMsgAction{}
-	case TypeRemoveFromGroup:
-		action = &RemoveFromGroupAction{}
+	case TypeRemoveContactGroups:
+		action = &RemoveContactGroupsAction{}
 	case TypeReply:
 		action = &ReplyAction{}
 	case TypeSaveFlowResult:
 		action = &SaveFlowResultAction{}
-	case TypeSaveContactField:
-		action = &SaveContactField{}
-	case TypeSetPreferredChannel:
-		action = &PreferredChannelAction{}
-	case TypeUpdateContact:
-		action = &UpdateContactAction{}
+	case TypeSetContactField:
+		action = &SetContactFieldAction{}
+	case TypeSetContactChannel:
+		action = &SetContactChannelAction{}
+	case TypeSetContactProperty:
+		action = &SetContactPropertyAction{}
 	case TypeCallWebhook:
 		action = &WebhookAction{}
 	default:

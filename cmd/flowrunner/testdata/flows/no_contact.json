@@ -35,7 +35,7 @@
                         },
                         {
                             "uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
-                            "type": "add_urn",
+                            "type": "add_contact_urn",
                             "scheme": "twitter",
                             "path": "@(replace(lower(contact.name), \" \", \"_\"))"
                         }

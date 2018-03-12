@@ -38,13 +38,13 @@
                         },
                         {
                             "uuid": "ca5138c1-2a26-44c6-a29c-6ef695bc67ee",
-                            "type": "add_urn",
+                            "type": "add_contact_urn",
                             "scheme": "twitter",
                             "path": "@(replace(lower(contact.name), \" \", \"_\"))"
                         },
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "activation_token",
                                 "label": "Activation Token"
@@ -147,13 +147,13 @@
                         },
                         {
                             "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
-                            "type": "update_contact",
+                            "type": "set_contact_property",
                             "field_name": "language",
                             "value": "eng"
                         },
                         {
                             "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
-                            "type": "save_contact_field",
+                            "type": "set_contact_field",
                             "field": {
                                 "key": "gender",
                                 "label": "Gender"
