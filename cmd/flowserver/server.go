@@ -9,12 +9,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
-	"github.com/pressly/lg"
-	"github.com/rakyll/statik/fs"
-	"github.com/sirupsen/logrus"
-
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -22,6 +16,12 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/pressly/lg"
+	"github.com/rakyll/statik/fs"
+	log "github.com/sirupsen/logrus"
 )
 
 type FlowServer struct {
@@ -31,14 +31,14 @@ type FlowServer struct {
 }
 
 // NewFlowServer creates a new flow server instance
-func NewFlowServer(config *Config, logger *logrus.Logger) *FlowServer {
+func NewFlowServer(config *Config) *FlowServer {
 	r := chi.NewRouter()
 	r.Use(middleware.DefaultCompress)
 	r.Use(middleware.StripSlashes)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	r.Use(traceErrors(logger))
-	r.Use(lg.RequestLogger(logger))
+	r.Use(traceErrors())
+	r.Use(lg.RequestLogger(log.StandardLogger()))
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	// no static dir passed in? serve from statik
@@ -50,10 +50,10 @@ func NewFlowServer(config *Config, logger *logrus.Logger) *FlowServer {
 		if err != nil {
 			lg.Fatal(err)
 		}
-		logrus.WithField("comp", "server").Info("using compiled statik assets")
+		log.WithField("comp", "server").Info("using compiled statik assets")
 	} else {
 		staticDir = http.Dir(config.Static)
-		logrus.WithField("comp", "server").Info("using asset dir: ", config.Static)
+		log.WithField("comp", "server").Info("using asset dir: ", config.Static)
 	}
 
 	s := &FlowServer{
@@ -88,7 +88,7 @@ func (s *FlowServer) Start() {
 	go func() {
 		err := s.httpServer.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
-			logrus.WithFields(logrus.Fields{
+			log.WithFields(log.Fields{
 				"comp": "server",
 				"err":  err,
 			}).Error()
