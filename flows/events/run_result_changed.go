@@ -25,6 +25,8 @@ const TypeRunResultChanged string = "run_result_changed"
 // @event run_result_changed
 type RunResultChangedEvent struct {
 	BaseEvent
+	callerOrEngineEvent
+
 	Name              string         `json:"name" validate:"required"`
 	Value             string         `json:"value"`
 	Category          string         `json:"category"`
@@ -48,9 +50,6 @@ func NewRunResultChangedEvent(name string, value string, categoryName string, ca
 
 // Type returns the type of this event
 func (e *RunResultChangedEvent) Type() string { return TypeRunResultChanged }
-
-// AllowedOrigin determines where this event type can originate
-func (e *RunResultChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *RunResultChangedEvent) Validate(assets flows.SessionAssets) error {

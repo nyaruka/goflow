@@ -18,6 +18,8 @@ const TypeContactGroupsAdded string = "contact_groups_added"
 // @event contact_groups_added
 type ContactGroupsAddedEvent struct {
 	BaseEvent
+	callerOrEngineEvent
+
 	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
@@ -31,9 +33,6 @@ func NewContactGroupsAddedEvent(groups []*flows.GroupReference) *ContactGroupsAd
 
 // Type returns the type of this event
 func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded }
-
-// AllowedOrigin determines where this event type can originate
-func (e *ContactGroupsAddedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEither }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {

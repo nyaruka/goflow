@@ -26,6 +26,8 @@ const TypeMsgCreated string = "msg_created"
 // @event msg_created
 type MsgCreatedEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Msg flows.MsgOut `json:"msg" validate:"required,dive"`
 }
 
@@ -39,9 +41,6 @@ func NewMsgCreatedEvent(msg *flows.MsgOut) *MsgCreatedEvent {
 
 // Type returns the type of this event
 func (e *MsgCreatedEvent) Type() string { return TypeMsgCreated }
-
-// AllowedOrigin determines where this event type can originate
-func (e *MsgCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *MsgCreatedEvent) Validate(assets flows.SessionAssets) error {

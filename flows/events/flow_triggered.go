@@ -21,6 +21,8 @@ const TypeFlowTriggered string = "flow_triggered"
 // @event flow_triggered
 type FlowTriggeredEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Flow          *flows.FlowReference `json:"flow" validate:"required"`
 	ParentRunUUID flows.RunUUID        `json:"parent_run_uuid" validate:"omitempty,uuid4"`
 }
@@ -36,9 +38,6 @@ func NewFlowTriggeredEvent(flow *flows.FlowReference, parentRunUUID flows.RunUUI
 
 // Type returns the type of this event
 func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
-
-// AllowedOrigin determines where this event type can originate
-func (e *FlowTriggeredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *FlowTriggeredEvent) Validate(assets flows.SessionAssets) error {

@@ -20,6 +20,8 @@ const TypeEmailCreated string = "email_created"
 // @event email_created
 type EmailCreatedEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`
 	Body      string   `json:"body"`
@@ -37,9 +39,6 @@ func NewEmailCreatedEvent(addresses []string, subject string, body string) *Emai
 
 // Type returns the type of this event
 func (a *EmailCreatedEvent) Type() string { return TypeEmailCreated }
-
-// AllowedOrigin determines where this event type can originate
-func (e *EmailCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *EmailCreatedEvent) Validate(assets flows.SessionAssets) error {

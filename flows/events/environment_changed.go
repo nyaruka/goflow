@@ -28,14 +28,13 @@ const TypeEnvironmentChanged string = "environment_changed"
 // @event environment_changed
 type EnvironmentChangedEvent struct {
 	BaseEvent
+	callerOnlyEvent
+
 	Environment json.RawMessage `json:"environment"`
 }
 
 // Type returns the type of this event
 func (e *EnvironmentChangedEvent) Type() string { return TypeEnvironmentChanged }
-
-// AllowedOrigin determines where this event type can originate
-func (e *EnvironmentChangedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *EnvironmentChangedEvent) Validate(assets flows.SessionAssets) error {

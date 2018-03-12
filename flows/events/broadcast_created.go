@@ -25,6 +25,8 @@ const TypeBroadcastCreated string = "broadcast_created"
 // @event broadcast_created
 type BroadcastCreatedEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Text         string                    `json:"text"`
 	Attachments  []flows.Attachment        `json:"attachments,omitempty"`
 	QuickReplies []string                  `json:"quick_replies,omitempty"`
@@ -49,9 +51,6 @@ func NewBroadcastCreatedEvent(text string, attachments []flows.Attachment, quick
 
 // Type returns the type of this event
 func (e *BroadcastCreatedEvent) Type() string { return TypeBroadcastCreated }
-
-// AllowedOrigin determines where this event type can originate
-func (e *BroadcastCreatedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *BroadcastCreatedEvent) Validate(assets flows.SessionAssets) error {

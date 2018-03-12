@@ -24,6 +24,8 @@ const TypeMsgWait string = "msg_wait"
 // @event msg_wait
 type MsgWaitEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
 }
 
@@ -37,9 +39,6 @@ func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
 
 // Type returns the type of this event
 func (e *MsgWaitEvent) Type() string { return TypeMsgWait }
-
-// AllowedOrigin determines where this event type can originate
-func (e *MsgWaitEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *MsgWaitEvent) Validate(assets flows.SessionAssets) error {

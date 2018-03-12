@@ -43,6 +43,8 @@ const TypeSessionTriggered string = "session_triggered"
 // @event session_triggered
 type SessionTriggeredEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
@@ -66,9 +68,6 @@ func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contac
 
 // Type returns the type of this event
 func (e *SessionTriggeredEvent) Type() string { return TypeSessionTriggered }
-
-// AllowedOrigin determines where this event type can originate
-func (e *SessionTriggeredEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *SessionTriggeredEvent) Validate(assets flows.SessionAssets) error {

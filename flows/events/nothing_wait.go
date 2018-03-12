@@ -17,6 +17,7 @@ const TypeNothingWait string = "nothing_wait"
 // @event nothing_wait
 type NothingWaitEvent struct {
 	BaseEvent
+	engineOnlyEvent
 }
 
 // NewNothingWait returns a new nothing wait
@@ -26,9 +27,6 @@ func NewNothingWait() *NothingWaitEvent {
 
 // Type returns the type of this event
 func (e *NothingWaitEvent) Type() string { return TypeNothingWait }
-
-// AllowedOrigin determines where this event type can originate
-func (e *NothingWaitEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *NothingWaitEvent) Validate(assets flows.SessionAssets) error {

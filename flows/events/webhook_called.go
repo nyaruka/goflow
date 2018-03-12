@@ -27,6 +27,8 @@ const TypeWebhookCalled string = "webhook_called"
 // @event webhook_called
 type WebhookCalledEvent struct {
 	BaseEvent
+	engineOnlyEvent
+
 	URL        string                      `json:"url"         validate:"required"`
 	Status     utils.RequestResponseStatus `json:"status"      validate:"required"`
 	StatusCode int                         `json:"status_code" validate:"required"`
@@ -48,9 +50,6 @@ func NewWebhookCalledEvent(url string, status utils.RequestResponseStatus, statu
 
 // Type returns the type of this event
 func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
-
-// AllowedOrigin determines where this event type can originate
-func (e *WebhookCalledEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *WebhookCalledEvent) Validate(assets flows.SessionAssets) error {

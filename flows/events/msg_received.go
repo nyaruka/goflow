@@ -28,6 +28,8 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
+	callerOnlyEvent
+
 	Msg flows.MsgIn `json:"msg" validate:"required,dive"`
 }
 
@@ -41,9 +43,6 @@ func NewMsgReceivedEvent(msg *flows.MsgIn) *MsgReceivedEvent {
 
 // Type returns the type of this event
 func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
-
-// AllowedOrigin determines where this event type can originate
-func (e *MsgReceivedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *MsgReceivedEvent) Validate(assets flows.SessionAssets) error {

@@ -221,9 +221,6 @@ const (
 
 	// EventOriginEngine means an event can originate from the engine
 	EventOriginEngine EventOrigin = 2
-
-	// EventOriginEither means an event can originate from either the caller or engine
-	EventOriginEither EventOrigin = EventOriginCaller | EventOriginEngine
 )
 
 // Event describes a state change
