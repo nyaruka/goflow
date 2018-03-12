@@ -11,6 +11,8 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // used to spawn a new run or sub-flow in the event loop
@@ -337,14 +339,20 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			log := actions.NewEventLog()
+			eventLog := actions.NewEventLog()
 
-			if err := action.Execute(run, step, log); err != nil {
+			if err := action.Execute(run, step, eventLog); err != nil {
 				return nil, noDestination, err
 			}
 
+			if log.GetLevel() >= log.DebugLevel {
+				actionEnvelope, _ := utils.EnvelopeFromTyped(action)
+				actionJSON, _ := json.Marshal(actionEnvelope)
+				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executed")
+			}
+
 			// apply any events that the action generated
-			for _, event := range log.Events() {
+			for _, event := range eventLog.Events() {
 				if err := run.ApplyEvent(step, action, event); err != nil {
 					return nil, noDestination, err
 				}

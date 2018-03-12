@@ -10,11 +10,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/karlseguin/ccache"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/karlseguin/ccache"
+	log "github.com/sirupsen/logrus"
 )
 
 type assetType string
@@ -173,7 +174,7 @@ func (s *assetServer) getItemAssetURL(itemType assetType, uuid string) (string, 
 
 // fetches an asset by its URL and parses it as the provided type
 func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, userAgent string) (interface{}, error) {
-	request, err := http.NewRequest("GET", string(url), nil)
+	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -190,8 +191,10 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 
 	defer response.Body.Close()
 
+	log.WithField("asset_type", string(itemType)).WithField("url", url).Debugf("asset requested")
+
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("asset request returned non-200 response")
+		return nil, fmt.Errorf("asset request returned non-200 response (%d)", response.StatusCode)
 	}
 
 	if response.Header.Get("Content-Type") != "application/json" {
