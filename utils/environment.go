@@ -24,8 +24,8 @@ type Environment interface {
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
 func NewDefaultEnvironment() Environment {
 	return &environment{
-		dateFormat: DateFormat_yyyy_MM_dd,
-		timeFormat: TimeFormat_HH_mm,
+		dateFormat: DateFormatYearMonthDay,
+		timeFormat: TimeFormatHourMinute,
 		timezone:   time.UTC,
 		languages:  LanguageList{},
 	}
@@ -81,7 +81,7 @@ type envEnvelope struct {
 }
 
 // ReadEnvironment reads an environment from the given JSON
-func ReadEnvironment(data json.RawMessage) (*environment, error) {
+func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env := NewDefaultEnvironment().(*environment)
 
 	var envelope envEnvelope
@@ -103,6 +103,7 @@ func ReadEnvironment(data json.RawMessage) (*environment, error) {
 	return env, nil
 }
 
+// MarshalJSON marshals this environment into JSON
 func (e *environment) MarshalJSON() ([]byte, error) {
 	ee := envEnvelope{
 		DateFormat: e.dateFormat,

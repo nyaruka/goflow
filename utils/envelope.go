@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 )
 
+// Typed is an interface of objects that are marshalled as typed envelopes
 type Typed interface {
 	Type() string
 }
@@ -15,6 +16,7 @@ type TypedEnvelope struct {
 	Data []byte `json:"-"`
 }
 
+// UnmarshalJSON unmarshals a typed envelope from the given JSON
 func (e *TypedEnvelope) UnmarshalJSON(b []byte) (err error) {
 	typeE := &struct {
 		Type string `json:"type"`
@@ -30,6 +32,7 @@ func (e *TypedEnvelope) UnmarshalJSON(b []byte) (err error) {
 	return err
 }
 
+// MarshalJSON marshals this envelope into JSON
 func (e *TypedEnvelope) MarshalJSON() ([]byte, error) {
 	// we want the insert the type into our parent data and return that
 	typeE := &struct {
@@ -59,6 +62,7 @@ func (e *TypedEnvelope) MarshalJSON() ([]byte, error) {
 	return data.Bytes(), nil
 }
 
+// EnvelopeFromTyped marshals the give object into a typed envelope
 func EnvelopeFromTyped(typed Typed) (*TypedEnvelope, error) {
 	if typed == nil {
 		return nil, nil

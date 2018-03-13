@@ -28,12 +28,11 @@ func (a Attachment) URL() string {
 	return string(a)
 }
 
+// Resolve resolves the given key when this attachment is referenced in an expression
 func (a Attachment) Resolve(key string) interface{} {
 	switch key {
-
 	case "content_type":
 		return a.ContentType()
-
 	case "url":
 		return a.URL()
 	}
@@ -41,6 +40,7 @@ func (a Attachment) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on attachment", key)
 }
 
+// Default returns the value of this attachment when it is the result of an expression
 func (a Attachment) Default() interface{} { return a }
 func (a Attachment) String() string       { return a.URL() }
 

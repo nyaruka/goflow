@@ -2,7 +2,6 @@ package runs
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
@@ -25,33 +24,6 @@ func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
 func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
 func (s *step) LeftOn() *time.Time       { return s.leftOn }
 func (s *step) Events() []flows.Event    { return s.events }
-
-func (s *step) Resolve(key string) interface{} {
-	switch key {
-	case "uuid":
-		return s.UUID
-	case "node_uuid":
-		return s.NodeUUID
-	case "exit_uuid":
-		return s.ExitUUID
-	case "arrived_on":
-		return s.ArrivedOn
-	case "left_on":
-		return s.LeftOn
-	}
-
-	return fmt.Errorf("No field '%s' on step", key)
-}
-
-func (s *step) Default() interface{} {
-	return s
-}
-
-var _ utils.VariableResolver = (*step)(nil)
-
-func (s *step) String() string {
-	return string(s.nodeUUID)
-}
 
 func (s *step) Leave(exit flows.ExitUUID) {
 	now := time.Now().UTC()
@@ -81,6 +53,7 @@ type stepEnvelope struct {
 	Events    []*utils.TypedEnvelope `json:"events,omitempty" validate:"omitempty,dive"`
 }
 
+// UnmarshalJSON unmarshals a run step from the given JSON
 func (s *step) UnmarshalJSON(data []byte) error {
 	var se stepEnvelope
 	var err error
@@ -107,6 +80,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 	return err
 }
 
+// MarshalJSON marshals this run step into JSON
 func (s *step) MarshalJSON() ([]byte, error) {
 	var se stepEnvelope
 

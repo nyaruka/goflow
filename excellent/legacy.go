@@ -17,6 +17,7 @@ var topLevelScopes = []string{"contact", "child", "parent", "run", "trigger"}
 // ExtraVarsMapping defines how @extra.* variables should be migrated
 type ExtraVarsMapping string
 
+// different ways of mapping @extra in legacy flows
 const (
 	ExtraAsWebhookJSON   ExtraVarsMapping = "run.webhook.json"
 	ExtraAsTriggerParams ExtraVarsMapping = "trigger.params"
@@ -57,6 +58,7 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 	}
 }
 
+// Resolve resolves the given key to a mapped expression
 func (v *varMapper) Resolve(key string) interface{} {
 
 	// is this a complete substitution?
@@ -109,6 +111,7 @@ func (v *varMapper) Resolve(key string) interface{} {
 	return strings.Join(newPath, ".")
 }
 
+// Default returns the value of this mapper when it is the result of an expression
 func (v *varMapper) Default() interface{} {
 	return v.base
 }
@@ -129,6 +132,7 @@ type extraMapper struct {
 	extraAs ExtraVarsMapping
 }
 
+// Resolve resolves the given key to a new expression
 func (m *extraMapper) Resolve(key string) interface{} {
 	newPath := []string{}
 	if m.path != "" {
@@ -138,6 +142,7 @@ func (m *extraMapper) Resolve(key string) interface{} {
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
 }
 
+// Default returns the value of this extra mapper when it is the result of an expression
 func (m *extraMapper) Default() interface{} {
 	return m
 }

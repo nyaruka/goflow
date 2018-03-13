@@ -32,6 +32,7 @@ type logEntryEnvelope struct {
 	Event      *utils.TypedEnvelope `json:"event" validate:"required"`
 }
 
+// MarshalJSON marshals this log entry into JSON
 func (s *logEntry) MarshalJSON() ([]byte, error) {
 	var se logEntryEnvelope
 

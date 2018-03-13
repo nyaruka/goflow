@@ -17,7 +17,7 @@ func (i *baseInput) UUID() flows.InputUUID  { return i.uuid }
 func (i *baseInput) Channel() flows.Channel { return i.channel }
 func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 
-// Resolve resolves the passed in key to a value, returning an error if the key is unknown
+// Resolve resolves the given key when this input is referenced in an expression
 func (i *baseInput) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":

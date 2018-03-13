@@ -71,7 +71,7 @@ func (c *channel) HasRole(role ChannelRole) bool {
 	return false
 }
 
-// Resolve satisfies our resolver interface
+// Resolve resolves the given key when this channel is referenced in an expression
 func (c *channel) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
@@ -85,7 +85,7 @@ func (c *channel) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on channel", key)
 }
 
-// Default returns the default value for a channel, which is itself
+// Default returns the value of this channel when it is the result of an expression
 func (c *channel) Default() interface{} {
 	return c
 }

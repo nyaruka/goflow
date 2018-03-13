@@ -86,6 +86,7 @@ func (r *RequestResponse) Body() string { return r.body }
 // JSON returns the response as a JSON fragment
 func (r *RequestResponse) JSON() JSONFragment { return JSONFragment([]byte(r.body)) }
 
+// Resolve resolves the given key when this webhook is referenced in an expression
 func (r *RequestResponse) Resolve(key string) interface{} {
 	switch key {
 	case "body":
@@ -104,9 +105,10 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 		return r.StatusCode()
 	}
 
-	return fmt.Errorf("No field '%s' on webhook", key)
+	return fmt.Errorf("no field '%s' on webhook", key)
 }
 
+// Default returns the value of this webhook when it is the result of an expression
 func (r *RequestResponse) Default() interface{} {
 	return r
 }
@@ -224,6 +226,7 @@ type rrEnvelope struct {
 	Response   string                `json:"response"`
 }
 
+// UnmarshalJSON unmarshals a request response from the given JSON
 func (r *RequestResponse) UnmarshalJSON(data []byte) error {
 	var envelope rrEnvelope
 	var err error
@@ -243,6 +246,7 @@ func (r *RequestResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON marshals this request reponse into JSON
 func (r *RequestResponse) MarshalJSON() ([]byte, error) {
 	var re rrEnvelope
 

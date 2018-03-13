@@ -249,8 +249,6 @@ type Input interface {
 }
 
 type Step interface {
-	utils.VariableResolver
-
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID

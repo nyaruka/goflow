@@ -60,7 +60,7 @@ func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool,
 
 func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
 
-// Resolve resolves the passed in key to a value
+// Resolve resolves the given key when this group is referenced in an expression
 func (g *Group) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
@@ -72,7 +72,7 @@ func (g *Group) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on group", key)
 }
 
-// Default returns the default value for this group
+// Default returns the value of this group when it is the result of an expression
 func (g *Group) Default() interface{} { return g }
 
 // String satisfies the stringer interface returning the name of the group
@@ -131,7 +131,7 @@ func (l *GroupList) Count() int {
 	return len(l.groups)
 }
 
-// Resolve looks up the passed in key for the group list, which must be either "count" or a numerical index
+// Resolve resolves the given key when this group list is referenced in an expression
 func (l *GroupList) Resolve(key string) interface{} {
 	if key == "count" {
 		return l.Count()
@@ -148,7 +148,7 @@ func (l *GroupList) Resolve(key string) interface{} {
 	return nil
 }
 
-// Default returns the default value for this group, which is our entire list
+// Default returns the value of this group list when it is the result of an expression
 func (l GroupList) Default() interface{} {
 	return l
 }

@@ -18,6 +18,7 @@ import (
 // represents a decimal value which may be provided as a string or floating point value
 type decimalString string
 
+// UnmarshalJSON unmarshals a decimal string from the given JSON
 func (s *decimalString) UnmarshalJSON(data []byte) error {
 	if data[0] == '"' {
 		// data is a quoted string
@@ -101,6 +102,7 @@ func (l *legacyLabelReference) Migrate() *flows.LabelReference {
 	return flows.NewVariableLabelReference(l.Name)
 }
 
+// UnmarshalJSON unmarshals a legacy label reference from the given JSON
 func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
 	// label reference may be a string
 	if data[0] == '"' {
@@ -149,6 +151,7 @@ func (g *legacyGroupReference) Migrate() *flows.GroupReference {
 	return flows.NewVariableGroupReference(g.Name)
 }
 
+// UnmarshalJSON unmarshals a legacy group reference from the given JSON
 func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
 	// group reference may be a string
 	if data[0] == '"' {
@@ -998,7 +1001,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 	return f, err
 }
 
-// MarshalJSON sends turns our legacy flow into bytes
+// MarshalJSON marshals this legacy flow into JSON
 func (f *LegacyFlow) MarshalJSON() ([]byte, error) {
 
 	var fe = flowEnvelope{}

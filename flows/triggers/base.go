@@ -22,11 +22,7 @@ func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
 func (t *baseTrigger) Params() utils.JSONFragment     { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
-func (t *baseTrigger) Default() interface{} {
-	return t
-}
-
-// Resolve resolves the passed in key to a value, returning an error if the key is unknown
+// Resolve resolves the given key when this trigger is referenced in an expression
 func (t *baseTrigger) Resolve(key string) interface{} {
 	switch key {
 	case "params":
@@ -34,6 +30,11 @@ func (t *baseTrigger) Resolve(key string) interface{} {
 	}
 
 	return fmt.Errorf("No such field '%s' on trigger", key)
+}
+
+// Default returns the value of this trigger when it is the result of an expression
+func (t *baseTrigger) Default() interface{} {
+	return t
 }
 
 func (t *baseTrigger) String() string {

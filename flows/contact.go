@@ -105,6 +105,7 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
+// Resolve resolves the given key when this contact is referenced in an expression
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
@@ -137,7 +138,7 @@ func (c *Contact) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on contact", key)
 }
 
-// Default returns our default value in the context
+// Default returns the value of this contact when it is the result of an expression
 func (c *Contact) Default() interface{} {
 	return c
 }
@@ -299,6 +300,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	return c, nil
 }
 
+// MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
 	var ce contactEnvelope
 

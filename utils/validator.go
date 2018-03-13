@@ -32,8 +32,10 @@ func ValidateAs(obj interface{}, objName string) error {
 	return validate(obj, objName)
 }
 
+// ValidationErrors combines multiple validation errors as a single error
 type ValidationErrors []error
 
+// NewValidationErrors creates new ValidationErrors fromn the given error messages
 func NewValidationErrors(messages ...string) ValidationErrors {
 	errs := make([]error, len(messages))
 	for m, msg := range messages {

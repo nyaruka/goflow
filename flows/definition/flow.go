@@ -44,6 +44,7 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 	return err
 }
 
+// Resolve resolves the given key when this flow is referenced in an expression
 func (f *flow) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
@@ -55,6 +56,7 @@ func (f *flow) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on flow", key)
 }
 
+// Default returns the value of this flow when it is the result of an expression
 func (f *flow) Default() interface{} {
 	return f
 }
@@ -135,6 +137,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	return f, nil
 }
 
+// MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
 
 	var fe = flowEnvelope{}

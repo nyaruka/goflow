@@ -10,23 +10,27 @@ import (
 )
 
 // patterns for date and time formats supported for human-entered data
-var dd_mm_yyyy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
-var mm_dd_yyyy = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
-var yyyy_mm_dd = regexp.MustCompile(`([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
-var hh_mm_ss = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
+var patternDayMonthYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
+var patternMonthDayYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
+var patternYearMonthDay = regexp.MustCompile(`([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
+var patternTime = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
 
+// DateFormat a date format string
 type DateFormat string
+
+// TimeFormat a time format string
 type TimeFormat string
 
+// standard date and time formats
 const (
-	DateFormat_yyyy_MM_dd DateFormat = "yyyy-MM-dd"
-	DateFormat_MM_dd_yyyy DateFormat = "MM-dd-yyyy"
-	DateFormat_dd_MM_yyyy DateFormat = "dd-MM-yyyy"
+	DateFormatYearMonthDay DateFormat = "yyyy-MM-dd"
+	DateFormatMonthDayYear DateFormat = "MM-dd-yyyy"
+	DateFormatDayMonthYear DateFormat = "dd-MM-yyyy"
 
-	TimeFormat_HH_mm       TimeFormat = "hh:mm"
-	TimeFormat_hh_mm_tt    TimeFormat = "hh:mm tt"
-	TimeFormat_HH_mm_ss    TimeFormat = "HH:mm:ss"
-	TimeFormat_hh_mm_ss_tt TimeFormat = "hh:mm:ss tt"
+	TimeFormatHourMinute           TimeFormat = "hh:mm"
+	TimeFormatHourMinuteAmPm       TimeFormat = "hh:mm tt"
+	TimeFormatHourMinuteSecond     TimeFormat = "HH:mm:ss"
+	TimeFormatHourMinuteSecondAmPm TimeFormat = "hh:mm:ss tt"
 )
 
 func (df DateFormat) String() string { return string(df) }
@@ -130,14 +134,14 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	var err error
 	switch env.DateFormat() {
 
-	case DateFormat_yyyy_MM_dd:
-		parsed, err = dateFromFormats(env, currentYear, yyyy_mm_dd, 3, 2, 1, str)
+	case DateFormatYearMonthDay:
+		parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
 
-	case DateFormat_dd_MM_yyyy:
-		parsed, err = dateFromFormats(env, currentYear, dd_mm_yyyy, 1, 2, 3, str)
+	case DateFormatDayMonthYear:
+		parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
 
-	case DateFormat_MM_dd_yyyy:
-		parsed, err = dateFromFormats(env, currentYear, mm_dd_yyyy, 2, 1, 3, str)
+	case DateFormatMonthDayYear:
+		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
 
 	default:
 		err = fmt.Errorf("unknown date format: %s", env.DateFormat())
@@ -149,7 +153,7 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	}
 
 	// can we pull out a time?
-	matches := hh_mm_ss.FindAllStringSubmatch(str, -1)
+	matches := patternTime.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		hour, _ := strconv.Atoi(match[1])
 
@@ -359,6 +363,7 @@ func ToGoDateFormat(format string) (string, error) {
 	return goFormat.String(), nil
 }
 
+// DateToUTCRange returns the UTC time range of the given day
 func DateToUTCRange(d time.Time, tz *time.Location) (time.Time, time.Time) {
 	localMidnight := time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, d.Location())
 	utcMidnight := localMidnight.In(tz)

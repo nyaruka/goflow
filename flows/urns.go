@@ -45,7 +45,7 @@ func (u *ContactURN) Channel() Channel { return u.channel }
 // SetChannel sets the channel associated with this URN
 func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
 
-// Resolve is called when a URN is part of an excellent expression
+// Resolve resolves the given key when this URN is referenced in an expression
 func (u *ContactURN) Resolve(key string) interface{} {
 	switch key {
 	case "scheme":
@@ -60,6 +60,7 @@ func (u *ContactURN) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on URN", key)
 }
 
+// Default returns the value of this URN when it is the result of an expression
 func (u *ContactURN) Default() interface{} { return u }
 
 func (u *ContactURN) String() string { return string(u.URN) }
@@ -127,6 +128,7 @@ func (l URNList) WithScheme(scheme string) URNList {
 	return matching
 }
 
+// Resolve resolves the given key when this URN list is referenced in an expression
 func (l URNList) Resolve(key string) interface{} {
 	// first try as numeric index to a single URN
 	index, err := strconv.Atoi(key)
@@ -148,6 +150,7 @@ func (l URNList) Resolve(key string) interface{} {
 	return l.WithScheme(scheme)
 }
 
+// Default returns the value of this URN list when it is the result of an expression
 func (l URNList) Default() interface{} {
 	return l
 }

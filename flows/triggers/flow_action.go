@@ -77,6 +77,7 @@ func ReadFlowActionTrigger(session flows.Session, envelope *utils.TypedEnvelope)
 	return trigger, nil
 }
 
+// MarshalJSON marshals this trigger into JSON
 func (t *FlowActionTrigger) MarshalJSON() ([]byte, error) {
 	var envelope flowActionTriggerEnvelope
 	var err error
