@@ -88,8 +88,8 @@ func (c *Contact) AddURN(urn urns.URN) bool {
 func (c *Contact) HasURN(urn urns.URN) bool {
 	urn = urn.Normalize("")
 
-	for u := range c.urns {
-		if c.urns[u].URN == urn {
+	for _, u := range c.urns {
+		if u.URN == urn {
 			return true
 		}
 	}
