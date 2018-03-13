@@ -76,12 +76,12 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn urns.URN) error {
+func (c *Contact) AddURN(urn urns.URN) bool {
 	if c.HasURN(urn) {
-		return fmt.Errorf("contact already has the URN %s", urn)
+		return false
 	}
 	c.urns = append(c.urns, &ContactURN{URN: urn.Normalize("")})
-	return nil
+	return true
 }
 
 // HasURN checks whether the contact has the given URN

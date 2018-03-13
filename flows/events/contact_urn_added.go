@@ -47,5 +47,6 @@ func (e *ContactURNAddedEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can't apply event in session without a contact")
 	}
 
-	return run.Contact().AddURN(e.URN)
+	run.Contact().AddURN(e.URN)
+	return nil
 }
