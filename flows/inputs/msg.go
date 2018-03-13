@@ -34,7 +34,7 @@ func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Tim
 // Type returns the type of this event
 func (i *MsgInput) Type() string { return TypeMsg }
 
-// Resolve resolves the passed in key to a value, returning an error if the key is unknown
+// Resolve resolves the given key when this input is referenced in an expression
 func (i *MsgInput) Resolve(key string) interface{} {
 	switch key {
 	case "urn":
@@ -47,7 +47,7 @@ func (i *MsgInput) Resolve(key string) interface{} {
 	return i.baseInput.Resolve(key)
 }
 
-// Default returns our default value if evaluated in a context, which in this case is the text and attachments combined
+// Default returns the value of this input when it is the result of an expression
 func (i *MsgInput) Default() interface{} {
 	return i
 }

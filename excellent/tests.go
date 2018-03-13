@@ -75,19 +75,18 @@ func (t XTestResult) Matched() bool { return t.matched }
 // Match returns the item which was matched
 func (t XTestResult) Match() interface{} { return t.match }
 
-// Resolve satisfies the utils.VariableResolver interface, users can look up the match or whether we matched
+// Resolve resolves the given key when this result is referenced in an expression
 func (t XTestResult) Resolve(key string) interface{} {
 	switch key {
 	case "matched":
 		return t.matched
-
 	case "match":
 		return t.match
 	}
 	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
-// Default satisfies the utils.VariableResolver interface, we always default to whether we matched
+// Default returns the value of this result when it is the result of an expression
 func (t XTestResult) Default() interface{} {
 	return t.matched
 }
@@ -391,7 +390,7 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 // Returned by the has_pattern test as its match value
 type patternMatch []string
 
-// Resolve satisfies the utils.VariableResolver interface, users can look up a numbered matching group
+// Resolve resolves the given key when this match is referenced in an expression
 func (m patternMatch) Resolve(key string) interface{} {
 	switch key {
 	case "groups":
@@ -401,7 +400,7 @@ func (m patternMatch) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on pattern match", key)
 }
 
-// Default satisfies the utils.VariableResolver interface, and returns the group 0 match as the default value
+// Default returns the value of this match when it is the result of an expression
 func (m patternMatch) Default() interface{} {
 	return m[0]
 }

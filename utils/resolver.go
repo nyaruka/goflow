@@ -144,6 +144,7 @@ func NewMapResolver(values map[string]interface{}) VariableResolver {
 	}
 }
 
+// Resolve resolves the given key when this map is referenced in an expression
 func (r *mapResolver) Resolve(key string) interface{} {
 	val, found := r.values[key]
 	if !found {
@@ -151,5 +152,8 @@ func (r *mapResolver) Resolve(key string) interface{} {
 	}
 	return val
 }
+
+// Default returns the value of this map when it is the result of an expression
 func (r *mapResolver) Default() interface{} { return r }
-func (r *mapResolver) String() string       { return fmt.Sprintf("%s", r.values) }
+
+func (r *mapResolver) String() string { return fmt.Sprintf("%s", r.values) }

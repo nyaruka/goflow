@@ -16,6 +16,7 @@ func newRunContext(run flows.FlowRun) utils.VariableResolver {
 	return &runContext{run: run}
 }
 
+// Resolve resolves the given top-level key in an expression
 func (c *runContext) Resolve(key string) interface{} {
 	switch key {
 	case "contact":
@@ -33,6 +34,7 @@ func (c *runContext) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on context", key)
 }
 
+// Default returns the value of this context when it is the result of an expression
 func (c *runContext) Default() interface{} {
 	return c
 }
@@ -54,7 +56,7 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 	return nil
 }
 
-// Resolve provides a more limited set of results for parent and child runs
+// Resolve resolves the given key when this related run is referenced in an expression
 func (c *relatedRunContext) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":

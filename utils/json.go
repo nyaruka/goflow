@@ -36,13 +36,7 @@ var EmptyJSONFragment = JSONFragment{}
 // into the json in that byte array
 type JSONFragment []byte
 
-// Default returns the default value for this JSON, which is the JSON itself
-func (j JSONFragment) Default() interface{} {
-	return j
-}
-
-// Resolve resolves the passed in key, which is expected to be either an integer in the case
-// that our JSON is an array or a key name if it is a map
+// Resolve resolves the given key when this JSON fragment is referenced in an expression
 func (j JSONFragment) Resolve(key string) interface{} {
 	_, err := strconv.Atoi(key)
 
@@ -74,6 +68,11 @@ func (j JSONFragment) Resolve(key string) interface{} {
 		}
 	}
 	return JSONFragment(val)
+}
+
+// Default returns the value of this JSON fragment when it is the result of an expression
+func (j JSONFragment) Default() interface{} {
+	return j
 }
 
 var _ VariableResolver = EmptyJSONFragment

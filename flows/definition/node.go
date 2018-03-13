@@ -2,7 +2,6 @@ package definition
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -40,19 +39,6 @@ func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 func (n *node) Wait() flows.Wait        { return n.wait }
-
-func (n *node) Resolve(key string) interface{} {
-	switch key {
-	case "uuid":
-		return n.uuid
-	}
-	return fmt.Errorf("No field '%s' on node", key)
-}
-
-func (n *node) Default() interface{} { return n.uuid }
-func (n *node) String() string       { return n.uuid.String() }
-
-var _ utils.VariableResolver = (*node)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

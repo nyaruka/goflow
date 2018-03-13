@@ -82,6 +82,7 @@ func NewFieldValue(field *Field, value interface{}, createdOn time.Time) *FieldV
 	return &FieldValue{field: field, value: value, createdOn: createdOn}
 }
 
+// Resolve resolves the given key when this field value is referenced in an expression
 func (v *FieldValue) Resolve(key string) interface{} {
 	switch key {
 	case "value":
@@ -92,7 +93,7 @@ func (v *FieldValue) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on field value", key)
 }
 
-// Default returns the default value for FieldValue, which is the value
+// Default returns the value of this field value when it is the result of an expression
 func (v *FieldValue) Default() interface{} {
 	return v.value
 }
@@ -138,11 +139,12 @@ func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) 
 	return nil
 }
 
+// Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(key string) interface{} {
 	return f[FieldKey(key)]
 }
 
-// Default returns the default value for FieldValues, which is ourselves
+// Default returns the value of this set of field values when it is the result of an expression
 func (f FieldValues) Default() interface{} {
 	return f
 }

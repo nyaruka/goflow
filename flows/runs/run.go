@@ -298,6 +298,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 	return native
 }
 
+// Resolve resolves the given key when this run is referenced in an expression
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
@@ -323,6 +324,7 @@ func (r *flowRun) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on run", key)
 }
 
+// Default returns the value of this run when it is the result of an expression
 func (r *flowRun) Default() interface{} {
 	return r
 }

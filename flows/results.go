@@ -41,7 +41,7 @@ func (r *Result) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on result", key)
 }
 
-// Default returns the default value for a result, which is our value
+// Default returns the value of this result when it is the result of an expression
 func (r *Result) Default() interface{} {
 	return r.Value
 }
@@ -92,7 +92,7 @@ func (r Results) Resolve(key string) interface{} {
 	return result
 }
 
-// Default returns the default value for our Results, which is the entire map
+// Default returns the value of this result set when it is the result of an expression
 func (r Results) Default() interface{} {
 	return r
 }
