@@ -55,7 +55,7 @@
             "headers": {
                 "User-Agent": "rapidpro"
             },
-            "body": "{\n\t\"contact\": {},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": [],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": {},\n\t\"channel\": {}\n}"
+            "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": \"@contact.urns.0\"},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": [],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": {},\n\t\"channel\": {}\n}"
         },
         "expected_localization": {}
     },
