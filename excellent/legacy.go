@@ -17,6 +17,7 @@ var topLevelScopes = []string{"contact", "child", "parent", "run", "trigger"}
 // ExtraVarsMapping defines how @extra.* variables should be migrated
 type ExtraVarsMapping string
 
+// different ways of mapping @extra in legacy flows
 const (
 	ExtraAsWebhookJSON   ExtraVarsMapping = "run.webhook.json"
 	ExtraAsTriggerParams ExtraVarsMapping = "trigger.params"

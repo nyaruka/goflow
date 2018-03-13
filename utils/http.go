@@ -226,6 +226,7 @@ type rrEnvelope struct {
 	Response   string                `json:"response"`
 }
 
+// UnmarshalJSON unmarshals a request response from the given JSON
 func (r *RequestResponse) UnmarshalJSON(data []byte) error {
 	var envelope rrEnvelope
 	var err error
@@ -245,6 +246,7 @@ func (r *RequestResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON marshals this request reponse into JSON
 func (r *RequestResponse) MarshalJSON() ([]byte, error) {
 	var re rrEnvelope
 

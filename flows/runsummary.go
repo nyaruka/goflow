@@ -72,6 +72,7 @@ func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
 	return run, nil
 }
 
+// MarshalJSON marshals this run summary into JSON
 func (r *runSummary) MarshalJSON() ([]byte, error) {
 	envelope := runSummaryEnvelope{}
 	var err error

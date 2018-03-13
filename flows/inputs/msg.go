@@ -108,6 +108,7 @@ func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error
 	return &input, nil
 }
 
+// MarshalJSON marshals this msg input into JSON
 func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	var envelope msgInputEnvelope
 

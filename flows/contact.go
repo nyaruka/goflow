@@ -300,6 +300,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	return c, nil
 }
 
+// MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
 	var ce contactEnvelope
 

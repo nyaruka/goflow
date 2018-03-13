@@ -52,6 +52,7 @@ type nodeEnvelope struct {
 	Wait    *utils.TypedEnvelope   `json:"wait,omitempty"`
 }
 
+// UnmarshalJSON unmarshals a flow node from the given JSON
 func (n *node) UnmarshalJSON(data []byte) error {
 	var envelope nodeEnvelope
 	err := utils.UnmarshalAndValidate(data, &envelope, "node")
@@ -95,6 +96,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON marshals this flow node into JSON
 func (n *node) MarshalJSON() ([]byte, error) {
 	envelope := nodeEnvelope{}
 	var err error
@@ -134,6 +136,7 @@ type exitEnvelope struct {
 	Name                string         `json:"name,omitempty"`
 }
 
+// UnmarshalJSON unmarshals a node exit from the given JSON
 func (e *exit) UnmarshalJSON(data []byte) error {
 	var envelope exitEnvelope
 	err := utils.UnmarshalAndValidate(data, &envelope, "exit")
@@ -148,6 +151,7 @@ func (e *exit) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON marshals this node exit into JSON
 func (e *exit) MarshalJSON() ([]byte, error) {
 	envelope := exitEnvelope{e.uuid, e.destination, e.name}
 	return json.Marshal(envelope)

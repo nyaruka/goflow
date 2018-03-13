@@ -53,6 +53,7 @@ type stepEnvelope struct {
 	Events    []*utils.TypedEnvelope `json:"events,omitempty" validate:"omitempty,dive"`
 }
 
+// UnmarshalJSON unmarshals a run step from the given JSON
 func (s *step) UnmarshalJSON(data []byte) error {
 	var se stepEnvelope
 	var err error
@@ -79,6 +80,7 @@ func (s *step) UnmarshalJSON(data []byte) error {
 	return err
 }
 
+// MarshalJSON marshals this run step into JSON
 func (s *step) MarshalJSON() ([]byte, error) {
 	var se stepEnvelope
 

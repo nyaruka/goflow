@@ -420,6 +420,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	return r, nil
 }
 
+// MarshalJSON marshals this flow run into JSON
 func (r *flowRun) MarshalJSON() ([]byte, error) {
 	var re runEnvelope
 	var err error

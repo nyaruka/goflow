@@ -60,11 +60,13 @@ func MapLength(v interface{}) (int, error) {
 	return val.Len(), nil
 }
 
+// IsMap returns whether the given object is a map
 func IsMap(v interface{}) bool {
 	val := reflect.ValueOf(v)
 	return val.Kind() == reflect.Map
 }
 
+// IsNil returns whether the given object is nil or an interface to a nil
 func IsNil(v interface{}) bool {
 	// if v doesn't have a type or value then v == nil
 	if v == nil {
@@ -549,67 +551,68 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 // XType is an an enumeration of the possible types we can deal with
 type XType int
 
-const ( // primitive types we convert to
-	NIL = iota
-	STRING
-	DECIMAL
-	TIME
-	LOCATION
-	BOOLEAN
-	ERROR
-	STRING_SLICE
-	DECIMAL_SLICE
-	TIME_SLICE
-	BOOL_SLICE
-	MAP
+// primitive types we convert to
+const (
+	XTypeNil = iota
+	XTypeString
+	XTypeDecimal
+	XTypeTime
+	XTypeLocation
+	XTypeBool
+	XTypeError
+	XTypeStringSlice
+	XTypeDecimalSlice
+	XTypeTimeSlice
+	XTypeBoolSlice
+	XTypeMap
 )
 
 // ToXAtom figures out the raw type of the passed in interface, returning that type
 func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 	if val == nil {
-		return val, NIL, nil
+		return val, XTypeNil, nil
 	}
 
 	switch val := val.(type) {
 	case error:
-		return val, ERROR, nil
+		return val, XTypeError, nil
 
 	case decimal.Decimal:
-		return val, DECIMAL, nil
+		return val, XTypeDecimal, nil
 
 	case int, int32, int64, float32, float64:
 		decVal, err := ToDecimal(env, val)
 		if err != nil {
-			return val, NIL, err
+			return val, XTypeNil, err
 		}
-		return decVal, DECIMAL, nil
+		return decVal, XTypeDecimal, nil
 
 	case time.Time:
-		return val, TIME, nil
+		return val, XTypeTime, nil
 
 	case Location:
-		return val, LOCATION, nil
+		return val, XTypeLocation, nil
 
 	case string:
-		return val, STRING, nil
+		return val, XTypeString, nil
 
 	case bool:
-		return val, BOOLEAN, nil
+		return val, XTypeBool, nil
 
 	case []string:
-		return val, STRING_SLICE, nil
+		return val, XTypeStringSlice, nil
 
 	case []time.Time:
-		return val, TIME_SLICE, nil
+		return val, XTypeTimeSlice, nil
 
 	case []decimal.Decimal:
-		return val, DECIMAL_SLICE, nil
+		return val, XTypeDecimalSlice, nil
 
 	case []bool:
-		return val, BOOL_SLICE, nil
+		return val, XTypeBoolSlice, nil
 	}
 
-	return val, NIL, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
 }
 
 // Compare returns the difference between the two passed interfaces which must be of the same type
@@ -623,13 +626,13 @@ func Compare(env Environment, arg1 interface{}, arg2 interface{}) (int, error) {
 
 	// common types, do real comparisons
 	switch {
-	case arg1Type == arg2Type && arg1Type == ERROR:
+	case arg1Type == arg2Type && arg1Type == XTypeError:
 		return strings.Compare(arg1.(error).Error(), arg2.(error).Error()), nil
 
-	case arg1Type == arg2Type && arg1Type == DECIMAL:
+	case arg1Type == arg2Type && arg1Type == XTypeDecimal:
 		return arg1.(decimal.Decimal).Cmp(arg2.(decimal.Decimal)), nil
 
-	case arg1Type == arg2Type && arg1Type == BOOLEAN:
+	case arg1Type == arg2Type && arg1Type == XTypeBool:
 		bool1 := arg1.(bool)
 		bool2 := arg2.(bool)
 
@@ -642,7 +645,7 @@ func Compare(env Environment, arg1 interface{}, arg2 interface{}) (int, error) {
 			return 1, nil
 		}
 
-	case arg1Type == arg2Type && arg1Type == TIME:
+	case arg1Type == arg2Type && arg1Type == XTypeTime:
 		time1 := arg1.(time.Time)
 		time2 := arg2.(time.Time)
 
@@ -655,7 +658,7 @@ func Compare(env Environment, arg1 interface{}, arg2 interface{}) (int, error) {
 			return 1, nil
 		}
 
-	case arg1Type == arg2Type && arg1Type == STRING:
+	case arg1Type == arg2Type && arg1Type == XTypeString:
 		return strings.Compare(arg1.(string), arg2.(string)), nil
 	}
 

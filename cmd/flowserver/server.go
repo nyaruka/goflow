@@ -114,6 +114,7 @@ type sessionResponse struct {
 	Log     []flows.LogEntry `json:"log"`
 }
 
+// MarshalJSON marshals this session reponse into JSON
 func (r *sessionResponse) MarshalJSON() ([]byte, error) {
 	envelope := sessionResponse{
 		Session: r.Session,

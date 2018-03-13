@@ -531,6 +531,7 @@ func ReadSession(assetCache *AssetCache, assetServer AssetServer, data json.RawM
 	return s, nil
 }
 
+// MarshalJSON marshals this session into JSON
 func (s *session) MarshalJSON() ([]byte, error) {
 	var envelope sessionEnvelope
 	var err error

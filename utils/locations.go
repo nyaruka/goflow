@@ -28,11 +28,22 @@ func NewLocation(id LocationID, level LocationLevel, name string) *Location {
 	return &Location{id: id, level: level, name: name}
 }
 
-func (b *Location) ID() LocationID        { return b.id }
-func (b *Location) Level() LocationLevel  { return b.level }
-func (b *Location) Name() string          { return b.name }
-func (b *Location) Aliases() []string     { return b.aliases }
-func (b *Location) Parent() *Location     { return b.parent }
+// ID gets the id of this location
+func (b *Location) ID() LocationID { return b.id }
+
+// Level gets the level of this location
+func (b *Location) Level() LocationLevel { return b.level }
+
+// Name gets the name of this location
+func (b *Location) Name() string { return b.name }
+
+// Aliases gets the aliases of this location
+func (b *Location) Aliases() []string { return b.aliases }
+
+// Parent gets the parent of this location
+func (b *Location) Parent() *Location { return b.parent }
+
+// Children gets the children of this location
 func (b *Location) Children() []*Location { return b.children }
 
 type locationVisitor func(Location *Location)
@@ -94,6 +105,7 @@ func (s *LocationHierarchy) addLookups(location *Location) {
 	}
 }
 
+// Root gets the root location of this hierarchy
 func (s *LocationHierarchy) Root() *Location {
 	return s.root
 }

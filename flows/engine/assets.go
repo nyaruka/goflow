@@ -243,6 +243,7 @@ func (s *mockAssetServer) fetchAsset(url string, itemType assetType, isSet bool,
 	return readAsset(assetBuf, itemType, isSet)
 }
 
+// MarshalJSON marshals this mock asset server into JSON
 func (s *mockAssetServer) MarshalJSON() ([]byte, error) {
 	envelope := &assetServerEnvelope{}
 	envelope.TypeURLs = s.typeURLs

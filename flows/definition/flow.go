@@ -137,6 +137,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	return f, nil
 }
 
+// MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
 
 	var fe = flowEnvelope{}

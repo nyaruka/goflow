@@ -56,6 +56,7 @@ func ReadManualTrigger(session flows.Session, envelope *utils.TypedEnvelope) (fl
 	return &trigger, nil
 }
 
+// MarshalJSON marshals this trigger into JSON
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
 	var envelope baseTriggerEnvelope
 
