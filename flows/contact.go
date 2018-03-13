@@ -76,10 +76,24 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn urns.URN) {
-	// TODO normalize and check we're not adding duplicates
+func (c *Contact) AddURN(urn urns.URN) bool {
+	if c.HasURN(urn) {
+		return false
+	}
+	c.urns = append(c.urns, &ContactURN{URN: urn.Normalize("")})
+	return true
+}
 
-	c.urns = append(c.urns, &ContactURN{URN: urn})
+// HasURN checks whether the contact has the given URN
+func (c *Contact) HasURN(urn urns.URN) bool {
+	urn = urn.Normalize("")
+
+	for _, u := range c.urns {
+		if u.URN == urn {
+			return true
+		}
+	}
+	return false
 }
 
 // Groups returns the groups that this contact belongs to

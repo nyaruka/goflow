@@ -63,8 +63,10 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 		log.Add(events.NewErrorEvent(fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error())))
 		return nil
 	}
-	urn = urn.Normalize("")
 
-	log.Add(events.NewURNAddedEvent(urn))
+	if !run.Contact().HasURN(urn) {
+		log.Add(events.NewURNAddedEvent(urn))
+	}
+
 	return nil
 }
