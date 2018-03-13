@@ -144,16 +144,16 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []flows.Attachment, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.LanguageList, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []flows.Attachment, []string) {
 	// localize and evaluate the message text
-	localizedText := run.GetText(utils.UUID(a.UUID()), "text", actionText)
+	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), localizedText, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
 
 	// localize and evaluate the message attachments
-	translatedAttachments := run.GetTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments)
+	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]flows.Attachment, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedAttachments[n], false)
@@ -167,7 +167,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, actionT
 	}
 
 	// localize and evaluate the quick replies
-	translatedQuickReplies := run.GetTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies)
+	translatedQuickReplies := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
 	for n := range translatedQuickReplies {
 		evaluatedQuickReply, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), translatedQuickReplies[n], false)

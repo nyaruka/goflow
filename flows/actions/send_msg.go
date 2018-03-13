@@ -53,7 +53,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 		return nil
 	}
 
-	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
+	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, run.Environment().Languages(), a.Text, a.Attachments, a.QuickReplies, log)
 
 	channelSet, err := run.Session().Assets().GetChannelSet()
 	if err != nil {

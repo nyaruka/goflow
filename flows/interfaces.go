@@ -329,8 +329,9 @@ type FlowRun interface {
 	Path() []Step
 	PathLocation() (Step, Node, error)
 
-	GetText(uuid utils.UUID, key string, native string) string
-	GetTextArray(uuid utils.UUID, key string, native []string) []string
+	GetText(utils.UUID, string, string) string
+	GetTextArray(utils.UUID, string, []string) []string
+	GetTranslatedTextArray(utils.UUID, string, []string, utils.LanguageList) []string
 
 	Snapshot() RunSummary
 	Parent() RunSummary

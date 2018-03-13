@@ -4,6 +4,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSendBroadcast is the type for the send broadcast action
@@ -46,14 +47,26 @@ func (a *SendBroadcastAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, a.Text, a.Attachments, a.QuickReplies, log)
-
 	urnList, contactRefs, groupRefs, err := a.resolveContactsAndGroups(run, step, a.URNs, a.Contacts, a.Groups, a.LegacyVars, log)
 	if err != nil {
 		return err
 	}
 
-	log.Add(events.NewBroadcastCreatedEvent(evaluatedText, evaluatedAttachments, evaluatedQuickReplies, urnList, contactRefs, groupRefs))
+	translations := make(map[utils.Language]*events.BroadcastTranslation)
+
+	// evaluate the broadcast in each language we have translations for
+	for _, language := range run.Session().Environment().Languages() {
+		languages := utils.LanguageList{language, run.Flow().Language()}.RemoveDuplicates()
+
+		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, log)
+		translations[language] = &events.BroadcastTranslation{
+			Text:         evaluatedText,
+			Attachments:  evaluatedAttachments,
+			QuickReplies: evaluatedQuickReplies,
+		}
+	}
+
+	log.Add(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
 
 	return nil
 }

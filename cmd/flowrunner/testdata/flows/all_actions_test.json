@@ -164,8 +164,16 @@
                 {
                     "action_uuid": "ac110f56-a66c-4462-921c-b2c6d1c6dadb",
                     "event": {
+                        "base_language": "eng",
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "text": "Hi Ben Haggerty, are you ready?",
+                        "translations": {
+                            "eng": {
+                                "text": "Hi Ben Haggerty, are you ready?"
+                            },
+                            "spa": {
+                                "text": "Hola Ben Haggerty, ¿estás listo?"
+                            }
+                        },
                         "type": "broadcast_created",
                         "urns": [
                             "tel:+12065551212"
@@ -176,9 +184,7 @@
                 {
                     "action_uuid": "c0057fd9-be0a-43ea-91df-5c18e14f2c59",
                     "event": {
-                        "attachments": [
-                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
-                        ],
+                        "base_language": "eng",
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "groups": [
                             {
@@ -186,7 +192,20 @@
                                 "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                             }
                         ],
-                        "text": "Hi Ben Haggerty, are you ready for these attachments?",
+                        "translations": {
+                            "eng": {
+                                "attachments": [
+                                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                ],
+                                "text": "Hi Ben Haggerty, are you ready for these attachments?"
+                            },
+                            "spa": {
+                                "attachments": [
+                                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                ],
+                                "text": "Hi Ben Haggerty, are you ready for these attachments?"
+                            }
+                        },
                         "type": "broadcast_created"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
@@ -385,7 +404,10 @@
                 },
                 "environment": {
                     "date_format": "yyyy-MM-dd",
-                    "languages": [],
+                    "languages": [
+                        "eng",
+                        "spa"
+                    ],
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -538,17 +560,23 @@
                                         "type": "session_triggered"
                                     },
                                     {
+                                        "base_language": "eng",
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "text": "Hi Ben Haggerty, are you ready?",
+                                        "translations": {
+                                            "eng": {
+                                                "text": "Hi Ben Haggerty, are you ready?"
+                                            },
+                                            "spa": {
+                                                "text": "Hola Ben Haggerty, ¿estás listo?"
+                                            }
+                                        },
                                         "type": "broadcast_created",
                                         "urns": [
                                             "tel:+12065551212"
                                         ]
                                     },
                                     {
-                                        "attachments": [
-                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
-                                        ],
+                                        "base_language": "eng",
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "groups": [
                                             {
@@ -556,7 +584,20 @@
                                                 "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                                             }
                                         ],
-                                        "text": "Hi Ben Haggerty, are you ready for these attachments?",
+                                        "translations": {
+                                            "eng": {
+                                                "attachments": [
+                                                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                                ],
+                                                "text": "Hi Ben Haggerty, are you ready for these attachments?"
+                                            },
+                                            "spa": {
+                                                "attachments": [
+                                                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                                ],
+                                                "text": "Hi Ben Haggerty, are you ready for these attachments?"
+                                            }
+                                        },
                                         "type": "broadcast_created"
                                     },
                                     {
@@ -736,7 +777,10 @@
                     },
                     "environment": {
                         "date_format": "yyyy-MM-dd",
-                        "languages": [],
+                        "languages": [
+                            "eng",
+                            "spa"
+                        ],
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -782,7 +826,10 @@
         },
         "environment": {
             "date_format": "yyyy-MM-dd",
-            "languages": [],
+            "languages": [
+                "eng",
+                "spa"
+            ],
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
         },
