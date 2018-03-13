@@ -32,7 +32,7 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 // TODO add excellent support for JSON serialization of complex objects?
 // Need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
 var legacyWebhookBody = `{
-	"contact": {},
+	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": "@contact.urns.0"},
 	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
 	"path": [],
 	"results": {},
