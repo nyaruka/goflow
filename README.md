@@ -11,7 +11,7 @@ This program provides a command line interface for stepping through a given flow
 
 ## Server
 
-The server provides an HTTP endpoint for stepping through a given flow:
+This server provides an HTTP endpoint for stepping through a given flow:
 
 ```
 % go install github.com/nyaruka/goflow/cmd/flowserver
@@ -30,13 +30,19 @@ This utility provides a quick way to test evaluation of expressions which can be
 
 ## Development
 
-You can run all the tests (excluding tests in vendor packages) with:
+You can run the flow server with detailed output of actions being executed and events being applied with:
+
+```
+% $GOPATH/bin/flowserver --log-level=debug
+```
+
+You can run all the tests with:
 
 ```
 % go test github.com/nyaruka/goflow/...
 ```
 
-If you've made changes to the flow server response format, you should regenerate the test files with:
+If you've made changes to the flow server response format, regenerate the test files with:
 
 ```
 % go test github.com/nyaruka/goflow/cmd/flowrunner -write
