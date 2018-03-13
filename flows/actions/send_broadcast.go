@@ -59,7 +59,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, log fl
 		languages := utils.LanguageList{language, run.Flow().Language()}.RemoveDuplicates()
 
 		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, log)
-		translations[run.Flow().Language()] = &events.BroadcastTranslation{
+		translations[language] = &events.BroadcastTranslation{
 			Text:         evaluatedText,
 			Attachments:  evaluatedAttachments,
 			QuickReplies: evaluatedQuickReplies,

@@ -28,7 +28,7 @@ type BroadcastTranslation struct {
 //         "attachments": [],
 //         "quick_replies": ["All good", "Got 99 problems"]
 //       },
-//       "esp": {
+//       "spa": {
 //         "text": "Que pasa",
 //         "attachments": [],
 //         "quick_replies": ["Todo bien", "Tengo 99 problemas"]
