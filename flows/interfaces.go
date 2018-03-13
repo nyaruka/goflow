@@ -6,55 +6,67 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// NodeUUID is a UUID of a flow node
 type NodeUUID utils.UUID
 
 func (u NodeUUID) String() string { return string(u) }
 
+// ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
 
 func (u ExitUUID) String() string { return string(u) }
 
+// FlowUUID is the UUID of a flow
 type FlowUUID utils.UUID
 
 func (u FlowUUID) String() string { return string(u) }
 
+// ActionUUID is the UUID of an action
 type ActionUUID utils.UUID
 
 func (u ActionUUID) String() string { return string(u) }
 
+// ContactUUID is the UUID of a contact
 type ContactUUID utils.UUID
 
 func (u ContactUUID) String() string { return string(u) }
 
+// ChannelUUID is the UUID of a channel
 type ChannelUUID utils.UUID
 
 func (u ChannelUUID) String() string { return string(u) }
 
+// RunUUID is the UUID of a flow run
 type RunUUID utils.UUID
 
 func (u RunUUID) String() string { return string(u) }
 
+// StepUUID is the UUID of a run step
 type StepUUID utils.UUID
 
 func (u StepUUID) String() string { return string(u) }
 
+// LabelUUID is the UUID of a label
 type LabelUUID utils.UUID
 
 func (u LabelUUID) String() string { return string(u) }
 
+// GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
 
 func (u GroupUUID) String() string { return string(u) }
 
+// InputUUID is the UUID of an input
 type InputUUID utils.UUID
 
 func (u InputUUID) String() string { return string(u) }
 
+// MsgUUID is the UUID of a message
 type MsgUUID utils.UUID
 
 func (u MsgUUID) String() string { return string(u) }
 
-// RunStatus represents the current status of the engine session
+// SessionStatus represents the current status of the engine session
 type SessionStatus string
 
 const (
@@ -98,6 +110,7 @@ const (
 
 func (r RunStatus) String() string { return string(r) }
 
+// SessionAssets is the assets available to a session
 type SessionAssets interface {
 	GetChannel(ChannelUUID) (Channel, error)
 	GetChannelSet() (*ChannelSet, error)
@@ -117,6 +130,7 @@ type SessionAssets interface {
 	GetLocationHierarchy() (*utils.LocationHierarchy, error)
 }
 
+// Flow is a graph of nodes containing actions and routers
 type Flow interface {
 	UUID() FlowUUID
 	Name() string
@@ -131,6 +145,7 @@ type Flow interface {
 	Reference() *FlowReference
 }
 
+// Node is a single node in a flow
 type Node interface {
 	UUID() NodeUUID
 
@@ -140,11 +155,7 @@ type Node interface {
 	Wait() Wait
 }
 
-type EventLog interface {
-	Add(Event)
-	Events() []Event
-}
-
+// Action is an action within a flow node
 type Action interface {
 	UUID() ActionUUID
 
@@ -237,6 +248,12 @@ type Event interface {
 	Apply(FlowRun) error
 
 	utils.Typed
+}
+
+// EventLog is the log of events the caller must apply after each call
+type EventLog interface {
+	Add(Event)
+	Events() []Event
 }
 
 type Input interface {

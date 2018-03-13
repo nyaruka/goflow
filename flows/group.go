@@ -46,6 +46,7 @@ func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
 // IsDynamic returns whether this group is dynamic
 func (g *Group) IsDynamic() bool { return g.query != "" }
 
+// CheckDynamicMembership returns whether the given contact belongs in this dynamic group
 func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool, error) {
 	if !g.IsDynamic() {
 		return false, fmt.Errorf("can't check membership on a non-dynamic group")
@@ -58,6 +59,7 @@ func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool,
 	return contactql.EvaluateQuery(session.Environment(), parsedQuery, contact)
 }
 
+// Reference returns a reference to this group
 func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
 
 // Resolve resolves the given key when this group is referenced in an expression
@@ -85,17 +87,19 @@ type GroupList struct {
 	groups []*Group
 }
 
+// NewGroupList creates a new group list
 func NewGroupList(groups []*Group) *GroupList {
 	return &GroupList{groups: groups}
 }
 
+// Clone returns a clone of this group list
 func (l *GroupList) Clone() *GroupList {
 	groups := make([]*Group, len(l.groups))
 	copy(groups, l.groups)
 	return NewGroupList(groups)
 }
 
-// FindGroup returns the group with the passed in UUID or nil if not found
+// FindByUUID returns the group with the passed in UUID or nil if not found
 func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
 	for _, group := range l.groups {
 		if group.uuid == uuid {
@@ -105,6 +109,7 @@ func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
 	return nil
 }
 
+// Add adds the given group to this group list
 func (l *GroupList) Add(group *Group) bool {
 	if l.FindByUUID(group.uuid) == nil {
 		l.groups = append(l.groups, group)
@@ -113,6 +118,7 @@ func (l *GroupList) Add(group *Group) bool {
 	return false
 }
 
+// Remove removes the given group from this group list
 func (l *GroupList) Remove(group *Group) bool {
 	for g := range l.groups {
 		if l.groups[g].uuid == group.uuid {
@@ -123,10 +129,12 @@ func (l *GroupList) Remove(group *Group) bool {
 	return false
 }
 
+// All returns all groups in this group list
 func (l *GroupList) All() []*Group {
 	return l.groups
 }
 
+// Count returns the number of groups in this group list
 func (l *GroupList) Count() int {
 	return len(l.groups)
 }
@@ -170,6 +178,7 @@ type GroupSet struct {
 	groupsByUUID map[GroupUUID]*Group
 }
 
+// NewGroupSet creates a new group set from the given list of groups
 func NewGroupSet(groups []*Group) *GroupSet {
 	s := &GroupSet{groups: groups, groupsByUUID: make(map[GroupUUID]*Group, len(groups))}
 	for _, group := range s.groups {
@@ -178,10 +187,12 @@ func NewGroupSet(groups []*Group) *GroupSet {
 	return s
 }
 
+// All returns all groups in this group set
 func (s *GroupSet) All() []*Group {
 	return s.groups
 }
 
+// FindByUUID finds the group with the given UUID
 func (s *GroupSet) FindByUUID(uuid GroupUUID) *Group {
 	return s.groupsByUUID[uuid]
 }
@@ -207,6 +218,7 @@ type groupEnvelope struct {
 	Query string    `json:"query,omitempty"`
 }
 
+// ReadGroup reads a group from the given JSON
 func ReadGroup(data json.RawMessage) (*Group, error) {
 	var ge groupEnvelope
 	if err := utils.UnmarshalAndValidate(data, &ge, "group"); err != nil {
@@ -216,6 +228,7 @@ func ReadGroup(data json.RawMessage) (*Group, error) {
 	return NewGroup(ge.UUID, ge.Name, ge.Query), nil
 }
 
+// ReadGroupSet reads a group set from the given JSON
 func ReadGroupSet(data json.RawMessage) (*GroupSet, error) {
 	items, err := utils.UnmarshalArray(data)
 	if err != nil {

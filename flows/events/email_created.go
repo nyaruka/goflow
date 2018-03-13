@@ -19,7 +19,7 @@ const TypeEmailCreated string = "email_created"
 //
 // @event email_created
 type EmailCreatedEvent struct {
-	BaseEvent
+	baseEvent
 	engineOnlyEvent
 
 	Addresses []string `json:"addresses" validate:"required,min=1"`
@@ -30,7 +30,7 @@ type EmailCreatedEvent struct {
 // NewEmailCreatedEvent returns a new email event with the passed in subject, body and emails
 func NewEmailCreatedEvent(addresses []string, subject string, body string) *EmailCreatedEvent {
 	return &EmailCreatedEvent{
-		BaseEvent: NewBaseEvent(),
+		baseEvent: newBaseEvent(),
 		Addresses: addresses,
 		Subject:   subject,
 		Body:      body,

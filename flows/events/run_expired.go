@@ -21,7 +21,7 @@ const TypeRunExpired string = "run_expired"
 //
 // @event run_expired
 type RunExpiredEvent struct {
-	BaseEvent
+	baseEvent
 	callerOnlyEvent
 
 	RunUUID flows.RunUUID `json:"run_uuid"    validate:"required,uuid4"`

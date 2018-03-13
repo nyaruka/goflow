@@ -25,7 +25,7 @@ const TypeMsgCreated string = "msg_created"
 //
 // @event msg_created
 type MsgCreatedEvent struct {
-	BaseEvent
+	baseEvent
 	engineOnlyEvent
 
 	Msg flows.MsgOut `json:"msg" validate:"required,dive"`
@@ -34,7 +34,7 @@ type MsgCreatedEvent struct {
 // NewMsgCreatedEvent creates a new outgoing msg event to a single contact
 func NewMsgCreatedEvent(msg *flows.MsgOut) *MsgCreatedEvent {
 	return &MsgCreatedEvent{
-		BaseEvent: NewBaseEvent(),
+		baseEvent: newBaseEvent(),
 		Msg:       *msg,
 	}
 }

@@ -42,7 +42,7 @@ type BroadcastTranslation struct {
 //
 // @event broadcast_created
 type BroadcastCreatedEvent struct {
-	BaseEvent
+	baseEvent
 	engineOnlyEvent
 
 	Translations map[utils.Language]*BroadcastTranslation `json:"translations,min=1" validate:"dive"`
@@ -55,7 +55,7 @@ type BroadcastCreatedEvent struct {
 // NewBroadcastCreatedEvent creates a new outgoing msg event for the given recipients
 func NewBroadcastCreatedEvent(translations map[utils.Language]*BroadcastTranslation, baseLanguage utils.Language, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *BroadcastCreatedEvent {
 	event := BroadcastCreatedEvent{
-		BaseEvent:    NewBaseEvent(),
+		baseEvent:    newBaseEvent(),
 		Translations: translations,
 		BaseLanguage: baseLanguage,
 		URNs:         urns,

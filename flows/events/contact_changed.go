@@ -22,7 +22,7 @@ const TypeContactChanged string = "contact_changed"
 //
 // @event contact_changed
 type ContactChangedEvent struct {
-	BaseEvent
+	baseEvent
 	callerOrEngineEvent
 
 	Contact json.RawMessage `json:"contact"`

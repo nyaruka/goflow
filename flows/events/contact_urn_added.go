@@ -22,7 +22,7 @@ const TypeContactURNAdded string = "contact_urn_added"
 //
 // @event contact_urn_added
 type ContactURNAddedEvent struct {
-	BaseEvent
+	baseEvent
 	callerOrEngineEvent
 
 	URN urns.URN `json:"urn" validate:"urn"`

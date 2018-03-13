@@ -20,7 +20,7 @@ const TypeFlowTriggered string = "flow_triggered"
 //
 // @event flow_triggered
 type FlowTriggeredEvent struct {
-	BaseEvent
+	baseEvent
 	engineOnlyEvent
 
 	Flow          *flows.FlowReference `json:"flow" validate:"required"`
@@ -30,7 +30,7 @@ type FlowTriggeredEvent struct {
 // NewFlowTriggeredEvent returns a new flow triggered event for the passed in flow and parent run
 func NewFlowTriggeredEvent(flow *flows.FlowReference, parentRunUUID flows.RunUUID) *FlowTriggeredEvent {
 	return &FlowTriggeredEvent{
-		BaseEvent:     NewBaseEvent(),
+		baseEvent:     newBaseEvent(),
 		Flow:          flow,
 		ParentRunUUID: parentRunUUID,
 	}

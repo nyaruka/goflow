@@ -24,6 +24,7 @@ func (l *Label) UUID() LabelUUID { return l.uuid }
 // Name returns the name of this label
 func (l *Label) Name() string { return l.name }
 
+// Reference returns a reference to this label
 func (l *Label) Reference() *LabelReference { return NewLabelReference(l.uuid, l.name) }
 
 // LabelSet defines the unordered set of all labels for a session
@@ -32,6 +33,7 @@ type LabelSet struct {
 	labelsByUUID map[LabelUUID]*Label
 }
 
+// NewLabelSet creates a new label set from the given slice of labels
 func NewLabelSet(labels []*Label) *LabelSet {
 	s := &LabelSet{labels: labels, labelsByUUID: make(map[LabelUUID]*Label, len(labels))}
 	for _, label := range s.labels {
@@ -40,6 +42,7 @@ func NewLabelSet(labels []*Label) *LabelSet {
 	return s
 }
 
+// FindByUUID finds the label with the given UUID
 func (s *LabelSet) FindByUUID(uuid LabelUUID) *Label {
 	return s.labelsByUUID[uuid]
 }
@@ -64,6 +67,7 @@ type labelEnvelope struct {
 	Name string    `json:"name"`
 }
 
+// ReadLabel reads a label from the given JSON
 func ReadLabel(data json.RawMessage) (*Label, error) {
 	var le labelEnvelope
 	if err := utils.UnmarshalAndValidate(data, &le, "label"); err != nil {
@@ -73,6 +77,7 @@ func ReadLabel(data json.RawMessage) (*Label, error) {
 	return NewLabel(le.UUID, le.Name), nil
 }
 
+// ReadLabelSet reads a label set from the given JSON
 func ReadLabelSet(data json.RawMessage) (*LabelSet, error) {
 	items, err := utils.UnmarshalArray(data)
 	if err != nil {

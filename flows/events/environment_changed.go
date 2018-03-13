@@ -27,7 +27,7 @@ const TypeEnvironmentChanged string = "environment_changed"
 //
 // @event environment_changed
 type EnvironmentChangedEvent struct {
-	BaseEvent
+	baseEvent
 	callerOnlyEvent
 
 	Environment json.RawMessage `json:"environment"`

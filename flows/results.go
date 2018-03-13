@@ -56,10 +56,12 @@ var _ utils.VariableResolver = (*Result)(nil)
 // Results is our wrapper around a map of snakified result names to result objects
 type Results map[string]*Result
 
+// NewResults creates a new empty set of results
 func NewResults() Results {
 	return make(Results, 0)
 }
 
+// Clone returns a clone of this results set
 func (r Results) Clone() Results {
 	clone := make(Results, len(r))
 	for k, v := range r {

@@ -23,7 +23,7 @@ const TypeContactPropertyChanged string = "contact_property_changed"
 //
 // @event contact_property_changed
 type ContactPropertyChangedEvent struct {
-	BaseEvent
+	baseEvent
 	callerOrEngineEvent
 
 	Property string `json:"property" validate:"required,eq=name|eq=language"`
@@ -33,7 +33,7 @@ type ContactPropertyChangedEvent struct {
 // NewContactPropertyChangedEvent returns a new contact property changed event
 func NewContactPropertyChangedEvent(property string, value string) *ContactPropertyChangedEvent {
 	return &ContactPropertyChangedEvent{
-		BaseEvent: NewBaseEvent(),
+		baseEvent: newBaseEvent(),
 		Property:  property,
 		Value:     value,
 	}

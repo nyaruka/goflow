@@ -17,6 +17,7 @@ type FieldKey string
 // FieldValueType is the data type of values for each field
 type FieldValueType string
 
+// field value types
 const (
 	FieldValueTypeText     FieldValueType = "text"
 	FieldValueTypeNumeric  FieldValueType = "numeric"
@@ -47,6 +48,7 @@ func NewField(key FieldKey, label string, valueType FieldValueType) *Field {
 // Key returns the key of the field
 func (f *Field) Key() FieldKey { return f.key }
 
+// ParseValue returns a parsed field value for the given input
 func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, error) {
 	switch f.valueType {
 	case FieldValueTypeText:
@@ -78,6 +80,7 @@ type FieldValue struct {
 	createdOn time.Time
 }
 
+// NewFieldValue creates a new field value
 func NewFieldValue(field *Field, value interface{}, createdOn time.Time) *FieldValue {
 	return &FieldValue{field: field, value: value, createdOn: createdOn}
 }
@@ -119,8 +122,10 @@ func (v *FieldValue) SerializeValue() string {
 	return fmt.Sprintf("%v", v.value)
 }
 
+// FieldValues is the set of all field values for a contact
 type FieldValues map[FieldKey]*FieldValue
 
+// Clone returns a clone of this set of field values
 func (f FieldValues) Clone() FieldValues {
 	clone := make(FieldValues, len(f))
 	for k, v := range f {
@@ -129,6 +134,7 @@ func (f FieldValues) Clone() FieldValues {
 	return clone
 }
 
+// Save saves a new field value
 func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) error {
 	value, err := field.ParseValue(env, rawValue)
 	if err != nil {
@@ -167,6 +173,7 @@ type FieldSet struct {
 	fieldsByKey map[FieldKey]*Field
 }
 
+// NewFieldSet creates a new set of fields
 func NewFieldSet(fields []*Field) *FieldSet {
 	s := &FieldSet{fields: fields, fieldsByKey: make(map[FieldKey]*Field, len(fields))}
 	for _, field := range s.fields {
@@ -175,6 +182,7 @@ func NewFieldSet(fields []*Field) *FieldSet {
 	return s
 }
 
+// FindByKey finds the contact field with the given key
 func (s *FieldSet) FindByKey(key FieldKey) *Field {
 	return s.fieldsByKey[key]
 }
@@ -189,6 +197,7 @@ type fieldEnvelope struct {
 	ValueType FieldValueType `json:"value_type,omitempty"`
 }
 
+// ReadField reads a contact field from the given JSON
 func ReadField(data json.RawMessage) (*Field, error) {
 	var fe fieldEnvelope
 	if err := utils.UnmarshalAndValidate(data, &fe, "field"); err != nil {
@@ -198,6 +207,7 @@ func ReadField(data json.RawMessage) (*Field, error) {
 	return NewField(fe.Key, fe.Label, fe.ValueType), nil
 }
 
+// ReadFieldSet reads a set of contact fields from the given JSON
 func ReadFieldSet(data json.RawMessage) (*FieldSet, error) {
 	items, err := utils.UnmarshalArray(data)
 	if err != nil {
