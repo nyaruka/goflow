@@ -268,7 +268,11 @@ func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {
 }
 
 func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []string {
-	for _, lang := range r.environment.Languages() {
+	return r.GetTranslatedTextArray(uuid, key, native, r.environment.Languages())
+}
+
+func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages utils.LanguageList) []string {
+	for _, lang := range languages {
 		if lang == r.Flow().Language() {
 			return native
 		}

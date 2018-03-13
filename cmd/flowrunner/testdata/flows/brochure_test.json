@@ -70,7 +70,9 @@
                 },
                 "environment": {
                     "date_format": "yyyy-MM-dd",
-                    "languages": [],
+                    "languages": [
+                        "eng"
+                    ],
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -145,7 +147,9 @@
                     },
                     "environment": {
                         "date_format": "yyyy-MM-dd",
-                        "languages": [],
+                        "languages": [
+                            "eng"
+                        ],
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -248,7 +252,9 @@
                 },
                 "environment": {
                     "date_format": "yyyy-MM-dd",
-                    "languages": [],
+                    "languages": [
+                        "eng"
+                    ],
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -405,7 +411,9 @@
                     },
                     "environment": {
                         "date_format": "yyyy-MM-dd",
-                        "languages": [],
+                        "languages": [
+                            "eng"
+                        ],
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -447,7 +455,9 @@
         },
         "environment": {
             "date_format": "yyyy-MM-dd",
-            "languages": [],
+            "languages": [
+                "eng"
+            ],
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
         },
