@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"fmt"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
