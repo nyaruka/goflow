@@ -25,8 +25,16 @@ func (t *languageTranslations) GetTextArray(uuid utils.UUID, key string) []strin
 // flowTranslations are our top level container for all the translations for a language
 type flowTranslations map[utils.Language]*languageTranslations
 
-func (t *flowTranslations) GetLanguageTranslations(lang utils.Language) flows.Translations {
-	translations, found := (*t)[lang]
+func (t flowTranslations) Languages() utils.LanguageList {
+	languages := make(utils.LanguageList, 0, len(t))
+	for lang := range t {
+		languages = append(languages, lang)
+	}
+	return languages
+}
+
+func (t flowTranslations) GetLanguageTranslations(lang utils.Language) flows.Translations {
+	translations, found := t[lang]
 	if found {
 		return translations
 	}

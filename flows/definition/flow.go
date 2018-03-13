@@ -98,7 +98,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	f.name = envelope.Name
 	f.language = envelope.Language
 	f.expireAfterMinutes = envelope.ExpireAfterMinutes
-	f.translations = &envelope.Localization
+	f.translations = envelope.Localization
 
 	f.nodes = make([]flows.Node, len(envelope.Nodes))
 	f.nodeMap = make(map[flows.NodeUUID]flows.Node)
