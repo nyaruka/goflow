@@ -81,7 +81,7 @@ type envEnvelope struct {
 }
 
 // ReadEnvironment reads an environment from the given JSON
-func ReadEnvironment(data json.RawMessage) (*environment, error) {
+func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env := NewDefaultEnvironment().(*environment)
 
 	var envelope envEnvelope
