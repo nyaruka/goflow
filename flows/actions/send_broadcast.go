@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -53,9 +54,10 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	}
 
 	translations := make(map[utils.Language]*events.BroadcastTranslation)
+	languages := append(utils.LanguageList{run.Flow().Language()}, run.Flow().Translations().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for
-	for _, language := range run.Session().Environment().Languages() {
+	for _, language := range languages {
 		languages := utils.LanguageList{language, run.Flow().Language()}.RemoveDuplicates()
 
 		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, languages, a.Text, a.Attachments, a.QuickReplies, log)

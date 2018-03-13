@@ -167,9 +167,6 @@
                         "base_language": "eng",
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "translations": {
-                            "eng": {
-                                "text": "Hi Ben Haggerty, are you ready?"
-                            },
                             "spa": {
                                 "text": "Hola Ben Haggerty, ¿estás listo?"
                             }
@@ -193,12 +190,6 @@
                             }
                         ],
                         "translations": {
-                            "eng": {
-                                "attachments": [
-                                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
-                                ],
-                                "text": "Hi Ben Haggerty, are you ready for these attachments?"
-                            },
                             "spa": {
                                 "attachments": [
                                     "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
@@ -563,9 +554,6 @@
                                         "base_language": "eng",
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                         "translations": {
-                                            "eng": {
-                                                "text": "Hi Ben Haggerty, are you ready?"
-                                            },
                                             "spa": {
                                                 "text": "Hola Ben Haggerty, ¿estás listo?"
                                             }
@@ -585,12 +573,6 @@
                                             }
                                         ],
                                         "translations": {
-                                            "eng": {
-                                                "attachments": [
-                                                    "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
-                                                ],
-                                                "text": "Hi Ben Haggerty, are you ready for these attachments?"
-                                            },
                                             "spa": {
                                                 "attachments": [
                                                     "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"

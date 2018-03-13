@@ -194,6 +194,7 @@ type Wait interface {
 // FlowTranslations provide a way to get the Translations for a flow for a specific language
 type FlowTranslations interface {
 	GetLanguageTranslations(utils.Language) Translations
+	Languages() utils.LanguageList
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
