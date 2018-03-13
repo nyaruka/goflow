@@ -63,7 +63,7 @@ func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, er
 			return nil, err
 		}
 		if locations == nil {
-			return nil, fmt.Errorf("can't parse field '%s' (type %s) in enviroment which is not location enabled", f.key, f.valueType)
+			return nil, fmt.Errorf("can't parse field '%s' (type %s) in environment which is not location enabled", f.key, f.valueType)
 		}
 		return locations.FindByID(locationID, locationLevel), nil
 	}

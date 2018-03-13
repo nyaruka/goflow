@@ -147,7 +147,7 @@ func FindLocations(env Environment, name string, level LocationLevel, parent *Lo
 		return nil, err
 	}
 	if locations == nil {
-		return nil, fmt.Errorf("can't find locations in enviroment which is not location enabled")
+		return nil, fmt.Errorf("can't find locations in environment which is not location enabled")
 	}
 
 	return locations.FindByName(name, level, parent), nil

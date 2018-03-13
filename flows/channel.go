@@ -7,8 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// ChannelRole is a role that a channel can perform
 type ChannelRole string
 
+// different roles that channels can perform
 const (
 	ChannelRoleSend    ChannelRole = "send"
 	ChannelRoleReceive ChannelRole = "receive"
@@ -25,6 +27,7 @@ type channel struct {
 	roles   []ChannelRole
 }
 
+// NewChannel creates a new channel
 func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole) Channel {
 	return &channel{
 		uuid:    uuid,
@@ -53,6 +56,7 @@ func (c *channel) Roles() []ChannelRole { return c.roles }
 // Reference returns a reference to this channel
 func (c *channel) Reference() *ChannelReference { return NewChannelReference(c.uuid, c.name) }
 
+// SupportsScheme returns whether this channel supports the given URN scheme
 func (c *channel) SupportsScheme(scheme string) bool {
 	for _, s := range c.schemes {
 		if s == scheme {
@@ -62,6 +66,7 @@ func (c *channel) SupportsScheme(scheme string) bool {
 	return false
 }
 
+// HasRole returns whether this channel has the given role
 func (c *channel) HasRole(role ChannelRole) bool {
 	for _, r := range c.roles {
 		if r == role {
@@ -103,6 +108,7 @@ type ChannelSet struct {
 	channelsByUUID map[ChannelUUID]Channel
 }
 
+// NewChannelSet creates a new channel set
 func NewChannelSet(channels []Channel) *ChannelSet {
 	s := &ChannelSet{channels: channels, channelsByUUID: make(map[ChannelUUID]Channel, len(channels))}
 	for _, channel := range s.channels {
@@ -129,6 +135,7 @@ func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
 	return nil
 }
 
+// FindByUUID finds the channel with the given UUID
 func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {
 	return s.channelsByUUID[uuid]
 }

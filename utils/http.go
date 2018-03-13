@@ -246,7 +246,7 @@ func (r *RequestResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON marshals this request reponse into JSON
+// MarshalJSON marshals this request response into JSON
 func (r *RequestResponse) MarshalJSON() ([]byte, error) {
 	var re rrEnvelope
 

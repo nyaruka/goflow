@@ -96,7 +96,7 @@ func (s *step) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		se.Events[i] = &utils.TypedEnvelope{event.Type(), eventData}
+		se.Events[i] = &utils.TypedEnvelope{Type: event.Type(), Data: eventData}
 	}
 
 	return json.Marshal(se)

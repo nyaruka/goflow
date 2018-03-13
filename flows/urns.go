@@ -68,6 +68,7 @@ func (u *ContactURN) String() string { return string(u.URN) }
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
 
+// ReadURNList parses contact URN list from the given list of raw URNs
 func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
@@ -98,6 +99,7 @@ func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
 	return l, nil
 }
 
+// RawURNs returns the raw URNs with or without channel information
 func (l URNList) RawURNs(includeChannels bool) []urns.URN {
 	raw := make([]urns.URN, len(l))
 	for u := range l {
@@ -112,12 +114,14 @@ func (l URNList) RawURNs(includeChannels bool) []urns.URN {
 	return raw
 }
 
+// Clone returns a clone of this URN list
 func (l URNList) Clone() URNList {
 	urns := make(URNList, len(l))
 	copy(urns, l)
 	return urns
 }
 
+// WithScheme returns a new URN list containing of only URNs of the given scheme
 func (l URNList) WithScheme(scheme string) URNList {
 	var matching URNList
 	for _, u := range l {

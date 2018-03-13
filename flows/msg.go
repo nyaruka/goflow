@@ -62,10 +62,20 @@ func NewMsgOut(urn urns.URN, channel Channel, text string, attachments []Attachm
 	}
 }
 
-func (m *BaseMsg) UUID() MsgUUID              { return m.UUID_ }
-func (m *BaseMsg) URN() urns.URN              { return m.URN_ }
-func (m *BaseMsg) Channel() *ChannelReference { return m.Channel_ }
-func (m *BaseMsg) Text() string               { return m.Text_ }
-func (m *BaseMsg) Attachments() []Attachment  { return m.Attachments_ }
+// UUID returns the UUID of this message
+func (m *BaseMsg) UUID() MsgUUID { return m.UUID_ }
 
+// URN returns the URN of this message
+func (m *BaseMsg) URN() urns.URN { return m.URN_ }
+
+// Channel returns the channel of this message
+func (m *BaseMsg) Channel() *ChannelReference { return m.Channel_ }
+
+// Text returns the text of this message
+func (m *BaseMsg) Text() string { return m.Text_ }
+
+// Attachments returns the attachments of this message
+func (m *BaseMsg) Attachments() []Attachment { return m.Attachments_ }
+
+// QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }

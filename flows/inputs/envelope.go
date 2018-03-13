@@ -14,6 +14,7 @@ type baseInputEnvelope struct {
 	CreatedOn time.Time               `json:"created_on" validate:"required"`
 }
 
+// ReadInput reads an input from the given typed envelope
 func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Input, error) {
 	switch envelope.Type {
 

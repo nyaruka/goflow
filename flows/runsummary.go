@@ -20,6 +20,7 @@ func (r *runSummary) Contact() *Contact { return r.contact }
 func (r *runSummary) Status() RunStatus { return r.status }
 func (r *runSummary) Results() Results  { return r.results }
 
+// NewRunSummaryFromRun creates a new run summary from the given run
 func NewRunSummaryFromRun(run FlowRun) RunSummary {
 	return &runSummary{
 		uuid:    run.UUID(),
@@ -44,6 +45,7 @@ type runSummaryEnvelope struct {
 	Results  Results         `json:"results"`
 }
 
+// ReadRunSummary reads a run summary from the given JSON
 func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
 	var err error
 	e := runSummaryEnvelope{}
