@@ -178,9 +178,9 @@
                     "event": {
                         "category": "Blue",
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "input": "I like blue!",
                         "name": "Favorite Color",
                         "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                        "operand": "I like blue!",
                         "type": "run_result_changed",
                         "value": "blue"
                     },
@@ -307,9 +307,9 @@
                                     {
                                         "category": "Blue",
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "input": "I like blue!",
                                         "name": "Favorite Color",
                                         "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                        "operand": "I like blue!",
                                         "type": "run_result_changed",
                                         "value": "blue"
                                     }
@@ -355,9 +355,9 @@
                             "favorite_color": {
                                 "category": "Blue",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "operand": "I like blue!",
                                 "value": "blue"
                             }
                         },
@@ -415,9 +415,9 @@
                     "event": {
                         "category": "Coke",
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "input": "Coke",
                         "name": "Soda",
                         "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                        "operand": "Coke",
                         "type": "run_result_changed",
                         "value": "Coke"
                     },
@@ -539,9 +539,9 @@
                                     {
                                         "category": "Blue",
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "input": "I like blue!",
                                         "name": "Favorite Color",
                                         "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                        "operand": "I like blue!",
                                         "type": "run_result_changed",
                                         "value": "blue"
                                     }
@@ -594,9 +594,9 @@
                                     {
                                         "category": "Coke",
                                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "input": "Coke",
                                         "name": "Soda",
                                         "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                        "operand": "Coke",
                                         "type": "run_result_changed",
                                         "value": "Coke"
                                     }
@@ -641,17 +641,17 @@
                             "favorite_color": {
                                 "category": "Blue",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "operand": "I like blue!",
                                 "value": "blue"
                             },
                             "soda": {
                                 "category": "Coke",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "input": "Coke",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                "operand": "Coke",
                                 "value": "Coke"
                             }
                         },
