@@ -2,49 +2,10 @@
 
 
 [[projects]]
-  name = "github.com/BurntSushi/toml"
-  packages = ["."]
-  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
-  version = "v0.3.0"
-
-[[projects]]
   name = "github.com/antlr/antlr4"
   packages = ["runtime/Go/antlr"]
   revision = "bdc05c87be2ad981744223df0fd745e8345baba9"
   version = "4.7.1"
-
-[[projects]]
-  name = "github.com/aws/aws-sdk-go"
-  packages = [
-    "aws",
-    "aws/awserr",
-    "aws/awsutil",
-    "aws/client",
-    "aws/client/metadata",
-    "aws/corehandlers",
-    "aws/credentials",
-    "aws/credentials/ec2rolecreds",
-    "aws/credentials/endpointcreds",
-    "aws/credentials/stscreds",
-    "aws/defaults",
-    "aws/ec2metadata",
-    "aws/endpoints",
-    "aws/request",
-    "aws/session",
-    "aws/signer/v4",
-    "internal/sdkrand",
-    "internal/shareddefaults",
-    "private/protocol",
-    "private/protocol/query",
-    "private/protocol/query/queryutil",
-    "private/protocol/rest",
-    "private/protocol/restxml",
-    "private/protocol/xml/xmlutil",
-    "service/s3",
-    "service/sts"
-  ]
-  revision = "aace5875a5c3b85a3902c6d72b9caed301d64cce"
-  version = "v1.13.8"
 
 [[projects]]
   branch = "master"
@@ -65,25 +26,10 @@
   revision = "bb3d318650d48840a39aa21a027c6630e198e626"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/fatih/camelcase"
-  packages = ["."]
-  revision = "44e46d280b43ec1531bb25252440e34f1b800b65"
-
-[[projects]]
   name = "github.com/fatih/structs"
   packages = ["."]
   revision = "a720dfa8df582c51dee1b36feabb906bde1588bd"
   version = "v1.0"
-
-[[projects]]
-  name = "github.com/garyburd/redigo"
-  packages = [
-    "internal",
-    "redis"
-  ]
-  revision = "a69d19351219b6dd56f274f96d85a7014a2ec34e"
-  version = "v1.6.0"
 
 [[projects]]
   name = "github.com/go-chi/chi"
@@ -93,12 +39,6 @@
   ]
   revision = ""
   version = "v3.3.2"
-
-[[projects]]
-  name = "github.com/go-ini/ini"
-  packages = ["."]
-  revision = "32e4c1e6bc4e7d0d8451aa6b75200d19e37a536a"
-  version = "v1.32.0"
 
 [[projects]]
   name = "github.com/go-playground/locales"
@@ -122,51 +62,10 @@
   version = "v1.0.0"
 
 [[projects]]
-  name = "github.com/gorilla/context"
-  packages = ["."]
-  revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
-  version = "v1.1"
-
-[[projects]]
-  name = "github.com/gorilla/mux"
-  packages = ["."]
-  revision = "53c1911da2b537f792e7cafcb446b05ffe33b996"
-  version = "v1.6.1"
-
-[[projects]]
-  name = "github.com/jmespath/go-jmespath"
-  packages = ["."]
-  revision = "0b12d6b5"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/jmoiron/sqlx"
-  packages = [
-    ".",
-    "reflectx"
-  ]
-  revision = "cf35089a197953c69420c8d0cecda90809764b1d"
-
-[[projects]]
   name = "github.com/karlseguin/ccache"
   packages = ["."]
   revision = "a2d62155777b39595c825ed3824279e642a5db3c"
   version = "v2.0.2"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/koding/multiconfig"
-  packages = ["."]
-  revision = "69c27309b2d751c576b59ea9c3726597c2375da3"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/lib/pq"
-  packages = [
-    ".",
-    "oid"
-  ]
-  revision = "88edab0803230a3898347e77b474f8c1820a1f20"
 
 [[projects]]
   name = "github.com/naoina/go-stringutil"
@@ -206,12 +105,6 @@
   packages = ["difflib"]
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
-
-[[projects]]
-  name = "github.com/pressly/lg"
-  packages = ["."]
-  revision = "752dffa29016cc0ec353adf9396d3f4ee0e32b2f"
-  version = "v1.0.2"
 
 [[projects]]
   name = "github.com/rakyll/statik"
@@ -279,15 +172,9 @@
   revision = "1b8c8e19cd250435025214492d9a08411d760fdd"
   version = "v9.12.0"
 
-[[projects]]
-  name = "gopkg.in/yaml.v2"
-  packages = ["."]
-  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
-  version = "v2.1.1"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e98f7c3bf7dd2b38cdfd20017ec6f4bffe508ef3f901669d586dc95e2bdf7cbb"
+  inputs-digest = "7ec798f195be26f1119450b60187920f975d7a763b0fca9f3d62f9bfb83d7cf6"
   solver-name = "gps-cdcl"
   solver-version = 1

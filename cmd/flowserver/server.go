@@ -19,7 +19,6 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/pressly/lg"
 	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
 )
@@ -38,7 +37,7 @@ func NewFlowServer(config *Config) *FlowServer {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(traceErrors())
-	r.Use(lg.RequestLogger(log.StandardLogger()))
+	r.Use(requestLogger())
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	// no static dir passed in? serve from statik
@@ -48,7 +47,7 @@ func NewFlowServer(config *Config) *FlowServer {
 	if config.Static == "" {
 		staticDir, err = fs.New()
 		if err != nil {
-			lg.Fatal(err)
+			log.Fatal(err)
 		}
 		log.WithField("comp", "server").Info("using compiled statik assets")
 	} else {

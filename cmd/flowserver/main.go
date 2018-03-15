@@ -2,26 +2,16 @@
 package main
 
 import (
-	"bytes"
-	"context"
 	"encoding/json"
 	"errors"
-	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
-	"strings"
 	"syscall"
-	"time"
-
-	"github.com/go-chi/chi/middleware"
-	"github.com/pressly/lg"
-	log "github.com/sirupsen/logrus"
 
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
 	"github.com/nyaruka/goflow/utils"
+	log "github.com/sirupsen/logrus"
 )
 
 var version = "Dev"
@@ -41,9 +31,6 @@ func main() {
 
 	log.SetLevel(level)
 
-	lg.RedirectStdlogOutput(log.StandardLogger())
-	lg.DefaultLogger = log.StandardLogger()
-
 	flowServer := NewFlowServer(config)
 	flowServer.Start()
 
@@ -62,7 +49,7 @@ type errorResponse struct {
 
 // writeError writes a JSON response for the passed in error
 func writeError(w http.ResponseWriter, r *http.Request, status int, err error) error {
-	lg.Log(r.Context()).WithError(err).Error()
+	log.WithError(err).Error()
 	var errors []string
 
 	vErrs, isValidation := err.(utils.ValidationErrors)
@@ -81,11 +68,6 @@ func writeError(w http.ResponseWriter, r *http.Request, status int, err error) e
 func writeJSONResponse(w http.ResponseWriter, r *http.Request, statusCode int, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-Version", version)
-	start := r.Context().Value(contextStart)
-	if start != nil {
-		elapsed := time.Since(start.(time.Time)).Nanoseconds()
-		w.Header().Set("X-Elapsed-NS", strconv.FormatInt(elapsed, 10))
-	}
 	w.WriteHeader(statusCode)
 
 	respJSON, err := json.MarshalIndent(response, "", "  ")
@@ -100,15 +82,13 @@ type jsonHandlerFunc func(http.ResponseWriter, *http.Request) (interface{}, erro
 
 func jsonHandler(handler jsonHandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// stuff our start time in our context
-		r = r.WithContext(context.WithValue(r.Context(), contextStart, time.Now()))
 		value, err := handler(w, r)
 		if err != nil {
 			writeError(w, r, http.StatusBadRequest, err)
 		} else {
 			err := writeJSONResponse(w, r, http.StatusOK, value)
 			if err != nil {
-				lg.Log(r.Context()).WithError(err).Error()
+				log.WithError(err).Error()
 			}
 		}
 	}
@@ -130,33 +110,3 @@ func templateHandler(fs http.FileSystem, handler templateHandlerFunc) http.Handl
 		}
 	}
 }
-
-func traceErrors() func(next http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {
-			body := bytes.Buffer{}
-			r.Body = ioutil.NopCloser(io.TeeReader(r.Body, &body))
-			ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
-			next.ServeHTTP(ww, r)
-
-			// we are returning an error of some kind, log the incoming request body
-			if ww.Status() != 200 && strings.ToLower(r.Method) == "post" {
-				log.WithFields(log.Fields{
-					"request_body": body.String(),
-					"status":       ww.Status(),
-					"req_id":       r.Context().Value(middleware.RequestIDKey)}).Error()
-			}
-		}
-		return http.HandlerFunc(fn)
-	}
-}
-
-type contextKey string
-
-func (c contextKey) String() string {
-	return "flowserver: " + string(c)
-}
-
-var (
-	contextStart = contextKey("start")
-)
