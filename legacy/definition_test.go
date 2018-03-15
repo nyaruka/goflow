@@ -231,7 +231,7 @@ func TestRuleSetMigration(t *testing.T) {
 	}
 }
 
-func readLegacyTestFlows(flowsJSON string) ([]*legacy.LegacyFlow, error) {
+func readLegacyTestFlows(flowsJSON string) ([]*legacy.Flow, error) {
 	var legacyFlows []json.RawMessage
 	json.Unmarshal(json.RawMessage(flowsJSON), &legacyFlows)
 	return legacy.ReadLegacyFlows(legacyFlows)

@@ -41,22 +41,23 @@ var legacyWebhookBody = `{
 	"channel": {}
 }`
 
-// LegacyFlow is a legacy style flow
-type LegacyFlow struct {
-	BaseLanguage utils.Language    `json:"base_language"`
-	Metadata     legacyMetadata    `json:"metadata"`
-	RuleSets     []legacyRuleSet   `json:"rule_sets" validate:"dive"`
-	ActionSets   []legacyActionSet `json:"action_sets" validate:"dive"`
-	Entry        flows.NodeUUID    `json:"entry" validate:"required,uuid4"`
+// Flow is a flow in the legacy format
+type Flow struct {
+	BaseLanguage utils.Language `json:"base_language"`
+	Metadata     Metadata       `json:"metadata"`
+	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
+	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
+	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
 }
 
-type legacyMetadata struct {
+// Metadata is the metadata section of a legacy flow
+type Metadata struct {
 	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name    string         `json:"name"`
 	Expires int            `json:"expires"`
 }
 
-type legacyRule struct {
+type Rule struct {
 	UUID            flows.ExitUUID            `json:"uuid" validate:"required,uuid4"`
 	Destination     flows.NodeUUID            `json:"destination" validate:"omitempty,uuid4"`
 	DestinationType string                    `json:"destination_type" validate:"eq=A|eq=R"`
@@ -64,32 +65,32 @@ type legacyRule struct {
 	Category        map[utils.Language]string `json:"category"`
 }
 
-type legacyRuleSet struct {
+type RuleSet struct {
 	Y       int             `json:"y"`
 	X       int             `json:"x"`
 	UUID    flows.NodeUUID  `json:"uuid" validate:"required,uuid4"`
 	Type    string          `json:"ruleset_type"`
 	Label   string          `json:"label"`
 	Operand string          `json:"operand"`
-	Rules   []legacyRule    `json:"rules"`
+	Rules   []Rule          `json:"rules"`
 	Config  json.RawMessage `json:"config"`
 }
 
-type legacyActionSet struct {
+type ActionSet struct {
 	Y           int            `json:"y"`
 	X           int            `json:"x"`
 	Destination flows.NodeUUID `json:"destination" validate:"omitempty,uuid4"`
 	ExitUUID    flows.ExitUUID `json:"exit_uuid" validate:"required,uuid4"`
 	UUID        flows.NodeUUID `json:"uuid" validate:"required,uuid4"`
-	Actions     []legacyAction `json:"actions"`
+	Actions     []Action       `json:"actions"`
 }
 
-type legacyLabelReference struct {
+type LabelReference struct {
 	UUID flows.LabelUUID
 	Name string
 }
 
-func (l *legacyLabelReference) Migrate() *flows.LabelReference {
+func (l *LabelReference) Migrate() *flows.LabelReference {
 	if len(l.UUID) > 0 {
 		return flows.NewLabelReference(l.UUID, l.Name)
 	}
@@ -97,7 +98,7 @@ func (l *legacyLabelReference) Migrate() *flows.LabelReference {
 }
 
 // UnmarshalJSON unmarshals a legacy label reference from the given JSON
-func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
+func (l *LabelReference) UnmarshalJSON(data []byte) error {
 	// label reference may be a string
 	if data[0] == '"' {
 		var nameExpression string
@@ -125,20 +126,20 @@ func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type legacyContactReference struct {
+type ContactReference struct {
 	UUID flows.ContactUUID `json:"uuid"`
 }
 
-func (c *legacyContactReference) Migrate() *flows.ContactReference {
+func (c *ContactReference) Migrate() *flows.ContactReference {
 	return flows.NewContactReference(c.UUID, "")
 }
 
-type legacyGroupReference struct {
+type GroupReference struct {
 	UUID flows.GroupUUID
 	Name string
 }
 
-func (g *legacyGroupReference) Migrate() *flows.GroupReference {
+func (g *GroupReference) Migrate() *flows.GroupReference {
 	if len(g.UUID) > 0 {
 		return flows.NewGroupReference(g.UUID, g.Name)
 	}
@@ -146,7 +147,7 @@ func (g *legacyGroupReference) Migrate() *flows.GroupReference {
 }
 
 // UnmarshalJSON unmarshals a legacy group reference from the given JSON
-func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
+func (g *GroupReference) UnmarshalJSON(data []byte) error {
 	// group reference may be a string
 	if data[0] == '"' {
 		var nameExpression string
@@ -174,31 +175,31 @@ func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type legacyVariable struct {
+type VariableReference struct {
 	ID string `json:"id"`
 }
 
-type legacyFlowReference struct {
+type FlowReference struct {
 	UUID flows.FlowUUID `json:"uuid"`
 	Name string         `json:"name"`
 }
 
-func (f *legacyFlowReference) Migrate() *flows.FlowReference {
+func (f *FlowReference) Migrate() *flows.FlowReference {
 	return flows.NewFlowReference(f.UUID, f.Name)
 }
 
-type legacyWebhookConfig struct {
-	Webhook string                `json:"webhook"`
-	Action  string                `json:"webhook_action"`
-	Headers []legacyWebhookHeader `json:"webhook_headers"`
+type WebhookConfig struct {
+	Webhook string          `json:"webhook"`
+	Action  string          `json:"webhook_action"`
+	Headers []WebhookHeader `json:"webhook_headers"`
 }
 
-type legacyWebhookHeader struct {
+type WebhookHeader struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
-type legacyAction struct {
+type Action struct {
 	Type string           `json:"type"`
 	UUID flows.ActionUUID `json:"uuid"`
 	Name string           `json:"name"`
@@ -210,9 +211,9 @@ type legacyAction struct {
 	SendAll      bool            `json:"send_all"`
 
 	// variable contact actions
-	Contacts  []legacyContactReference `json:"contacts"`
-	Groups    []legacyGroupReference   `json:"groups"`
-	Variables []legacyVariable         `json:"variables"`
+	Contacts  []ContactReference  `json:"contacts"`
+	Groups    []GroupReference    `json:"groups"`
+	Variables []VariableReference `json:"variables"`
 
 	// save actions
 	Field string `json:"field"`
@@ -223,15 +224,15 @@ type legacyAction struct {
 	Language utils.Language `json:"lang"`
 
 	// webhook
-	Action         string                `json:"action"`
-	Webhook        string                `json:"webhook"`
-	WebhookHeaders []legacyWebhookHeader `json:"webhook_headers"`
+	Action         string          `json:"action"`
+	Webhook        string          `json:"webhook"`
+	WebhookHeaders []WebhookHeader `json:"webhook_headers"`
 
 	// add lable action
-	Labels []legacyLabelReference `json:"labels"`
+	Labels []LabelReference `json:"labels"`
 
 	// Start/Trigger flow
-	Flow legacyFlowReference `json:"flow"`
+	Flow FlowReference `json:"flow"`
 
 	// channel
 	Channel flows.ChannelUUID `json:"channel"`
@@ -271,15 +272,13 @@ type timeoutTest struct {
 }
 
 type groupTest struct {
-	Test legacyGroupReference `json:"test"`
+	Test GroupReference `json:"test"`
 }
 
 type wardTest struct {
 	State    string `json:"state"`
 	District string `json:"district"`
 }
-
-type localizations map[utils.Language]flows.Action
 
 func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language]string, uuid utils.UUID, property string) string {
 	var inBaseLanguage string
@@ -362,7 +361,7 @@ var testTypeMappings = map[string]string{
 }
 
 // migrates the given legacy action to a new action
-func migrateAction(baseLanguage utils.Language, a legacyAction, localization flows.Localization) (flows.Action, error) {
+func migrateAction(baseLanguage utils.Language, a Action, localization flows.Localization) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
 		labels := make([]*flows.LabelReference, len(a.Labels))
@@ -590,7 +589,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, localization flo
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, localization flows.Localization) (routers.Case, error) {
+func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r Rule, localization flows.Localization) (routers.Case, error) {
 	category := r.Category[baseLanguage]
 
 	newType, _ := testTypeMappings[r.Test.Type]
@@ -704,7 +703,7 @@ type categoryName struct {
 	order        int
 }
 
-func parseRules(baseLanguage utils.Language, r legacyRuleSet, localization flows.Localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
+func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
 
 	// find our discrete categories
 	categoryMap := make(map[string]categoryName)
@@ -784,7 +783,7 @@ type fieldConfig struct {
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r legacyRuleSet, localization flows.Localization) (flows.Node, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
@@ -818,7 +817,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, localization flows.Loc
 		router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
 
 	case "webhook":
-		var config legacyWebhookConfig
+		var config WebhookConfig
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
 			return nil, err
@@ -893,7 +892,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, localization flows.Loc
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migateActionSet(lang utils.Language, a legacyActionSet, localization flows.Localization) (flows.Node, error) {
+func migateActionSet(lang utils.Language, a ActionSet, localization flows.Localization) (flows.Node, error) {
 	actions := make([]flows.Action, len(a.Actions))
 
 	// migrate each action
@@ -909,9 +908,9 @@ func migateActionSet(lang utils.Language, a legacyActionSet, localization flows.
 }
 
 // ReadLegacyFlows reads in legacy formatted flows
-func ReadLegacyFlows(data []json.RawMessage) ([]*LegacyFlow, error) {
+func ReadLegacyFlows(data []json.RawMessage) ([]*Flow, error) {
 	var err error
-	flows := make([]*LegacyFlow, len(data))
+	flows := make([]*Flow, len(data))
 	for f := range data {
 		flows[f], err = ReadLegacyFlow(data[f])
 		if err != nil {
@@ -923,8 +922,8 @@ func ReadLegacyFlows(data []json.RawMessage) ([]*LegacyFlow, error) {
 }
 
 // ReadLegacyFlow reads a single legacy formatted flow
-func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
-	flow := &LegacyFlow{}
+func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
+	flow := &Flow{}
 	if err := utils.UnmarshalAndValidate(data, flow, ""); err != nil {
 		return nil, err
 	}
@@ -932,7 +931,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *LegacyFlow) Migrate() (flows.Flow, error) {
+func (f *Flow) Migrate() (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	nodes := make([]flows.Node, len(f.ActionSets)+len(f.RuleSets))
 
