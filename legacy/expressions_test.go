@@ -1,4 +1,4 @@
-package excellent
+package legacy
 
 import (
 	"testing"
