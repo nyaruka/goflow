@@ -286,7 +286,7 @@ type wardTest struct {
 
 type localizations map[utils.Language]flows.Action
 
-func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language]string, uuid utils.UUID, key string) string {
+func addTranslationMap(baseLanguage utils.Language, translations *localization, mapped map[utils.Language]string, uuid utils.UUID, key string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := legacy.MigrateTemplate(item, legacy.ExtraAsFunction)
@@ -300,7 +300,7 @@ func addTranslationMap(baseLanguage utils.Language, translations *flowTranslatio
 	return inBaseLanguage
 }
 
-func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language][]string, uuid utils.UUID, key string) []string {
+func addTranslationMultiMap(baseLanguage utils.Language, translations *localization, mapped map[utils.Language][]string, uuid utils.UUID, key string) []string {
 	var inBaseLanguage []string
 	for language, items := range mapped {
 		expressions := make([]string, len(items))
@@ -317,7 +317,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTrans
 	return inBaseLanguage
 }
 
-func addTranslation(translations *flowTranslations, lang utils.Language, itemUUID utils.UUID, propKey string, translation []string) {
+func addTranslation(translations *localization, lang utils.Language, itemUUID utils.UUID, propKey string, translation []string) {
 	// ensure we have a translation set for this language
 	langTranslations, found := (*translations)[lang]
 	if !found {
@@ -339,7 +339,7 @@ func addTranslation(translations *flowTranslations, lang utils.Language, itemUUI
 //
 // [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
 //
-func transformTranslations(items []map[utils.Language]string) map[utils.Language][]string {
+func TransformTranslations(items []map[utils.Language]string) map[utils.Language][]string {
 	// re-organize into a map of arrays
 	transformed := make(map[utils.Language][]string)
 
@@ -385,7 +385,7 @@ var testTypeMappings = map[string]string{
 }
 
 // migrates the given legacy action to a new action
-func migrateAction(baseLanguage utils.Language, a legacyAction, translations *flowTranslations) (flows.Action, error) {
+func migrateAction(baseLanguage utils.Language, a legacyAction, translations *localization) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
 		labels := make([]*flows.LabelReference, len(a.Labels))
@@ -488,7 +488,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 				return nil, err
 			}
 
-			quickReplies = transformTranslations(legacyQuickReplies)
+			quickReplies = TransformTranslations(legacyQuickReplies)
 		}
 
 		migratedText := addTranslationMap(baseLanguage, translations, msg, utils.UUID(a.UUID), "text")
@@ -613,7 +613,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *flowTranslations) (routers.Case, error) {
+func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *localization) (routers.Case, error) {
 	category := r.Category[baseLanguage]
 
 	newType, _ := testTypeMappings[r.Test.Type]
@@ -727,7 +727,7 @@ type categoryName struct {
 	order        int
 }
 
-func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *flowTranslations) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
+func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
 
 	// find our discrete categories
 	categoryMap := make(map[string]categoryName)
@@ -807,7 +807,7 @@ type fieldConfig struct {
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTranslations) (*node, error) {
+func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localization) (*node, error) {
 	node := &node{}
 	node.uuid = r.UUID
 
@@ -917,7 +917,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migateActionSet(lang utils.Language, a legacyActionSet, translations *flowTranslations) (*node, error) {
+func migateActionSet(lang utils.Language, a legacyActionSet, translations *localization) (*node, error) {
 	node := &node{
 		uuid:    a.UUID,
 		actions: make([]flows.Action, len(a.Actions)),
@@ -966,7 +966,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 	f.language = envelope.BaseLanguage
 	f.expireAfterMinutes = envelope.Metadata.Expires
 
-	translations := &flowTranslations{}
+	translations := &localization{}
 
 	f.nodes = make([]flows.Node, len(envelope.ActionSets)+len(envelope.RuleSets))
 	for i := range envelope.ActionSets {
@@ -994,7 +994,7 @@ func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
 		}
 	}
 
-	f.translations = translations
+	f.localization = translations
 	f.envelope = envelope
 
 	return f, err
@@ -1009,8 +1009,8 @@ func (f *LegacyFlow) MarshalJSON() ([]byte, error) {
 	fe.Language = f.language
 	fe.ExpireAfterMinutes = f.expireAfterMinutes
 
-	if f.translations != nil {
-		fe.Localization = *f.translations.(*flowTranslations)
+	if f.localization != nil {
+		fe.Localization = *f.localization.(*localization)
 	}
 
 	fe.Nodes = make([]*node, len(f.nodes))

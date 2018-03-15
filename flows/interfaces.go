@@ -136,7 +136,7 @@ type Flow interface {
 	Name() string
 	Language() utils.Language
 	ExpireAfterMinutes() int
-	Translations() FlowTranslations
+	Localization() Localization
 
 	Validate(SessionAssets) error
 	Nodes() []Node
@@ -202,9 +202,9 @@ type Wait interface {
 	ResumeByTimeOut(FlowRun)
 }
 
-// FlowTranslations provide a way to get the Translations for a flow for a specific language
-type FlowTranslations interface {
-	GetLanguageTranslations(utils.Language) Translations
+// Localization provide a way to get the translations for a specific language
+type Localization interface {
+	GetTranslations(utils.Language) Translations
 	Languages() utils.LanguageList
 }
 

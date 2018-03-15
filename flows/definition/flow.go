@@ -14,7 +14,7 @@ type flow struct {
 	language           utils.Language
 	expireAfterMinutes int
 
-	translations flows.FlowTranslations
+	localization flows.Localization
 
 	nodes   []flows.Node
 	nodeMap map[flows.NodeUUID]flows.Node
@@ -25,7 +25,7 @@ func (f *flow) Name() string                           { return f.name }
 func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
-func (f *flow) Translations() flows.FlowTranslations   { return f.translations }
+func (f *flow) Localization() flows.Localization       { return f.localization }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
 // Validates that structurally we are sane. IE, all required fields are present and
@@ -77,12 +77,12 @@ var _ utils.VariableResolver = (*flow)(nil)
 //------------------------------------------------------------------------------------------
 
 type flowEnvelope struct {
-	UUID               flows.FlowUUID   `json:"uuid"               validate:"required,uuid4"`
-	Name               string           `json:"name"               validate:"required"`
-	Language           utils.Language   `json:"language"`
-	ExpireAfterMinutes int              `json:"expire_after_minutes"`
-	Localization       flowTranslations `json:"localization"`
-	Nodes              []*node          `json:"nodes"`
+	UUID               flows.FlowUUID `json:"uuid"               validate:"required,uuid4"`
+	Name               string         `json:"name"               validate:"required"`
+	Language           utils.Language `json:"language"`
+	ExpireAfterMinutes int            `json:"expire_after_minutes"`
+	Localization       localization   `json:"localization"`
+	Nodes              []*node        `json:"nodes"`
 
 	// only for writing out, optional
 	Metadata map[string]interface{} `json:"_ui,omitempty"`
@@ -100,7 +100,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	f.name = envelope.Name
 	f.language = envelope.Language
 	f.expireAfterMinutes = envelope.ExpireAfterMinutes
-	f.translations = envelope.Localization
+	f.localization = envelope.Localization
 
 	f.nodes = make([]flows.Node, len(envelope.Nodes))
 	f.nodeMap = make(map[flows.NodeUUID]flows.Node)
@@ -146,8 +146,8 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 	fe.Language = f.language
 	fe.ExpireAfterMinutes = f.expireAfterMinutes
 
-	if f.translations != nil {
-		fe.Localization = *f.translations.(*flowTranslations)
+	if f.localization != nil {
+		fe.Localization = *f.localization.(*localization)
 	}
 
 	fe.Nodes = make([]*node, len(f.nodes))

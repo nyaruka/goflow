@@ -53,7 +53,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	}
 
 	translations := make(map[utils.Language]*events.BroadcastTranslation)
-	languages := append(utils.LanguageList{run.Flow().Language()}, run.Flow().Translations().Languages()...)
+	languages := append(utils.LanguageList{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for
 	for _, language := range languages {

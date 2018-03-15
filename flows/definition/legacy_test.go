@@ -1,4 +1,4 @@
-package definition
+package definition_test
 
 import (
 	"encoding/json"
@@ -12,6 +12,7 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
@@ -243,15 +244,14 @@ func TestRuleSetMigration(t *testing.T) {
 	}
 }
 
-func readLegacyTestFlows(flowsJSON string) ([]*LegacyFlow, error) {
+func readLegacyTestFlows(flowsJSON string) ([]*definition.LegacyFlow, error) {
 	var legacyFlows []json.RawMessage
 	json.Unmarshal(json.RawMessage(flowsJSON), &legacyFlows)
-	return ReadLegacyFlows(legacyFlows)
+	return definition.ReadLegacyFlows(legacyFlows)
 }
 
-func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
-	actualLocalization := *flow.translations.(*flowTranslations)
-	actualLocalizationRaw, _ := json.Marshal(actualLocalization)
+func checkFlowLocalization(t *testing.T, flow *definition.LegacyFlow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
+	actualLocalizationRaw, _ := json.Marshal(flow.Localization())
 	actualLocalizationJSON := formatJSON(actualLocalizationRaw)
 
 	// Because localization keys are UUIDs and some of those may be generated during migration, ordering of localized
@@ -270,8 +270,7 @@ func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalizationR
 	})
 
 	// unmarshal and re-marchal expected JSON to get ordering correct after substitutions
-	expectedLocalization := &flowTranslations{}
-	json.Unmarshal(json.RawMessage(expectedLocalizationStr), expectedLocalization)
+	expectedLocalization, _ := definition.ReadLocalization(json.RawMessage(expectedLocalizationStr))
 	expectedLocalizationRaw, _ = json.Marshal(expectedLocalization)
 	expectedLocalizationJSON := formatJSON(expectedLocalizationRaw)
 
@@ -310,5 +309,5 @@ func TestTranslations(t *testing.T) {
 	assert.Equal(t, map[utils.Language][]string{
 		"eng": {"Yes", "No", "Maybe", "Never"},
 		"fra": {"Oui", "Non", "", "Jamas"},
-	}, transformTranslations(translations))
+	}, definition.TransformTranslations(translations))
 }

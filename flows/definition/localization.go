@@ -1,6 +1,8 @@
 package definition
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -22,10 +24,10 @@ func (t *languageTranslations) GetTextArray(uuid utils.UUID, key string) []strin
 	return nil
 }
 
-// flowTranslations are our top level container for all the translations for a language
-type flowTranslations map[utils.Language]*languageTranslations
+// our top level container for all the translations for all languages
+type localization map[utils.Language]*languageTranslations
 
-func (t flowTranslations) Languages() utils.LanguageList {
+func (t localization) Languages() utils.LanguageList {
 	languages := make(utils.LanguageList, 0, len(t))
 	for lang := range t {
 		languages = append(languages, lang)
@@ -33,10 +35,19 @@ func (t flowTranslations) Languages() utils.LanguageList {
 	return languages
 }
 
-func (t flowTranslations) GetLanguageTranslations(lang utils.Language) flows.Translations {
+func (t localization) GetTranslations(lang utils.Language) flows.Translations {
 	translations, found := t[lang]
 	if found {
 		return translations
 	}
 	return nil
+}
+
+// ReadLocalization reads entire localization flow segment
+func ReadLocalization(data json.RawMessage) (flows.Localization, error) {
+	translations := &localization{}
+	if err := json.Unmarshal(data, translations); err != nil {
+		return nil, err
+	}
+	return translations, nil
 }
