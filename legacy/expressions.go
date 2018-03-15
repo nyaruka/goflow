@@ -1,4 +1,4 @@
-package excellent
+package legacy
 
 import (
 	"bytes"
@@ -6,10 +6,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 var topLevelScopes = []string{"contact", "child", "parent", "run", "trigger"}
@@ -354,14 +356,14 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 
 func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
 	var buf bytes.Buffer
-	var errors TemplateErrors
-	scanner := newXScanner(strings.NewReader(template))
+	var errors excellent.TemplateErrors
+	scanner := excellent.NewXScanner(strings.NewReader(template))
 
-	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
+	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
-		case BODY:
+		case excellent.BODY:
 			buf.WriteString(token)
-		case IDENTIFIER:
+		case excellent.IDENTIFIER:
 			value := utils.ResolveVariable(nil, resolver, token)
 			if value == nil {
 				errors = append(errors, fmt.Errorf("Invalid key: '%s'", token))
@@ -378,7 +380,7 @@ func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template str
 				}
 			}
 
-		case EXPRESSION:
+		case excellent.EXPRESSION:
 			value, err := translateExpression(nil, resolver, token)
 			buf.WriteString("@(")
 			if err != nil {
@@ -416,7 +418,7 @@ func toString(params interface{}) (string, error) {
 
 // translateExpression will turn an old expression into a new format expression
 func translateExpression(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
-	errors := newErrorListener()
+	errors := excellent.NewErrorListener()
 
 	input := antlr.NewInputStream(template)
 	lexer := gen.NewExcellent2Lexer(input)
@@ -514,7 +516,7 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 
 	_, ignored := ignoredFunctions[template.name]
 	if !ignored {
-		_, found = XFUNCTIONS[template.name]
+		_, found = excellent.XFUNCTIONS[template.name]
 		if !found {
 			return fmt.Errorf("No function with name '%s'", template.name)
 		}

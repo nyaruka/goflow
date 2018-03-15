@@ -6,12 +6,11 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
-
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -113,7 +112,7 @@ func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = excellent.MigrateTemplate(nameExpression, excellent.ExtraAsFunction)
+			nameExpression, _ = legacy.MigrateTemplate(nameExpression, legacy.ExtraAsFunction)
 		}
 
 		l.Name = nameExpression
@@ -162,7 +161,7 @@ func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = excellent.MigrateTemplate(nameExpression, excellent.ExtraAsFunction)
+			nameExpression, _ = legacy.MigrateTemplate(nameExpression, legacy.ExtraAsFunction)
 		}
 
 		g.Name = nameExpression
@@ -290,7 +289,7 @@ type localizations map[utils.Language]flows.Action
 func addTranslationMap(baseLanguage utils.Language, translations *flowTranslations, mapped map[utils.Language]string, uuid utils.UUID, key string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
-		expression, _ := excellent.MigrateTemplate(item, excellent.ExtraAsFunction)
+		expression, _ := legacy.MigrateTemplate(item, legacy.ExtraAsFunction)
 		if language != baseLanguage {
 			addTranslation(translations, language, uuid, key, []string{expression})
 		} else {
@@ -306,7 +305,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, translations *flowTrans
 	for language, items := range mapped {
 		expressions := make([]string, len(items))
 		for i := range items {
-			expression, _ := excellent.MigrateTemplate(items[i], excellent.ExtraAsFunction)
+			expression, _ := legacy.MigrateTemplate(items[i], legacy.ExtraAsFunction)
 			expressions[i] = expression
 		}
 		if language != baseLanguage {
@@ -406,11 +405,11 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			return nil, err
 		}
 
-		migratedSubject, _ := excellent.MigrateTemplate(a.Subject, excellent.ExtraAsFunction)
-		migratedBody, _ := excellent.MigrateTemplate(msg, excellent.ExtraAsFunction)
+		migratedSubject, _ := legacy.MigrateTemplate(a.Subject, legacy.ExtraAsFunction)
+		migratedBody, _ := legacy.MigrateTemplate(msg, legacy.ExtraAsFunction)
 		migratedEmails := make([]string, len(a.Emails))
 		for e, email := range a.Emails {
-			migratedEmails[e], _ = excellent.MigrateTemplate(email, excellent.ExtraAsFunction)
+			migratedEmails[e], _ = legacy.MigrateTemplate(email, legacy.ExtraAsFunction)
 		}
 
 		return &actions.SendEmailAction{
@@ -451,7 +450,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			if variable.ID == "@new_contact" {
 				createContact = true
 			} else {
-				migratedVar, _ := excellent.MigrateTemplate(variable.ID, excellent.ExtraAsFunction)
+				migratedVar, _ := legacy.MigrateTemplate(variable.ID, legacy.ExtraAsFunction)
 				variables = append(variables, migratedVar)
 			}
 		}
@@ -521,7 +520,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 		}
 		variables := make([]string, 0, len(a.Variables))
 		for _, variable := range a.Variables {
-			migratedVar, _ := excellent.MigrateTemplate(variable.ID, excellent.ExtraAsFunction)
+			migratedVar, _ := legacy.MigrateTemplate(variable.ID, legacy.ExtraAsFunction)
 			variables = append(variables, migratedVar)
 		}
 
@@ -556,7 +555,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":
-		migratedValue, _ := excellent.MigrateTemplate(a.Value, excellent.ExtraAsFunction)
+		migratedValue, _ := legacy.MigrateTemplate(a.Value, legacy.ExtraAsFunction)
 
 		// flows now have different action for name changing
 		if a.Field == "name" || a.Field == "first_name" {
@@ -594,7 +593,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *fl
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":
-		migratedURL, _ := excellent.MigrateTemplate(a.Webhook, excellent.ExtraAsFunction)
+		migratedURL, _ := legacy.MigrateTemplate(a.Webhook, legacy.ExtraAsFunction)
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		for _, header := range a.WebhookHeaders {
@@ -634,7 +633,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 	case "eq", "gt", "gte", "lt", "lte":
 		test := numericTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := excellent.MigrateTemplate(string(test.Test), excellent.ExtraAsFunction)
+		migratedTest, err := legacy.MigrateTemplate(string(test.Test), legacy.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -643,11 +642,11 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedMin, err := excellent.MigrateTemplate(test.Min, excellent.ExtraAsFunction)
+		migratedMin, err := legacy.MigrateTemplate(test.Min, legacy.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
-		migratedMax, err := excellent.MigrateTemplate(test.Max, excellent.ExtraAsFunction)
+		migratedMax, err := legacy.MigrateTemplate(test.Max, legacy.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -847,7 +846,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 			return nil, err
 		}
 
-		migratedURL, _ := excellent.MigrateTemplate(config.Webhook, excellent.ExtraAsFunction)
+		migratedURL, _ := legacy.MigrateTemplate(config.Webhook, legacy.ExtraAsFunction)
 		migratedHeaders := make(map[string]string, len(config.Headers))
 		for _, header := range config.Headers {
 			migratedHeaders[header.Name] = header.Value
@@ -869,7 +868,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 		var config fieldConfig
 		json.Unmarshal(r.Config, &config)
 
-		operand, _ := excellent.MigrateTemplate(r.Operand, excellent.ExtraAsFunction)
+		operand, _ := legacy.MigrateTemplate(r.Operand, legacy.ExtraAsFunction)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
@@ -900,7 +899,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *flowTran
 	case "contact_field":
 		fallthrough
 	case "expression":
-		operand, _ := excellent.MigrateTemplate(r.Operand, excellent.ExtraAsFunction)
+		operand, _ := legacy.MigrateTemplate(r.Operand, legacy.ExtraAsFunction)
 		if operand == "" {
 			operand = "@run.input"
 		}

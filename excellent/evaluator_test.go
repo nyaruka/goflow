@@ -271,7 +271,7 @@ func TestEvaluateTemplate(t *testing.T) {
 }
 
 func TestScanner(t *testing.T) {
-	scanner := newXScanner(strings.NewReader("12"))
+	scanner := NewXScanner(strings.NewReader("12"))
 
 	if scanner.read() != '1' {
 		t.Errorf("Expected '1'")

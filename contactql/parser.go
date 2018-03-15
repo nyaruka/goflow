@@ -170,7 +170,7 @@ func (q *ContactQuery) String() string {
 }
 
 func ParseQuery(text string) (*ContactQuery, error) {
-	errors := newErrorListener()
+	errors := NewErrorListener()
 
 	input := antlr.NewInputStream(text)
 	lexer := gen.NewContactQLLexer(input)
@@ -194,7 +194,7 @@ type errorListener struct {
 	*antlr.DefaultErrorListener
 }
 
-func newErrorListener() *errorListener {
+func NewErrorListener() *errorListener {
 	return &errorListener{}
 }
 
