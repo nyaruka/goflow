@@ -218,7 +218,7 @@
                 {
                     "category": {"eng": "< 10"}, 
                     "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6", 
-                    "destination": "7d40faea-723b-473d-8999-59fb7d3c3ca2", 
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
                     "label": null, 
                     "destination_type": "A", 
                     "test": {
@@ -229,7 +229,7 @@
                 {
                     "category": {"eng": "> 10"}, 
                     "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa", 
-                    "destination": "c12f37e2-8e6c-4c81-ba6d-941bb3caf93f", 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
                     "label": null, 
                     "destination_type": "A", 
                     "test": {
@@ -276,12 +276,12 @@
 		    "exits": [
 		        {
 		            "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
-		            "destination_node_uuid": "7d40faea-723b-473d-8999-59fb7d3c3ca2",
+		            "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
 		            "name": "\u003c 10"
 		        },
 		        {
 		            "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
-		            "destination_node_uuid": "c12f37e2-8e6c-4c81-ba6d-941bb3caf93f",
+		            "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
 		            "name": "\u003e 10"
 		        }
 		    ],

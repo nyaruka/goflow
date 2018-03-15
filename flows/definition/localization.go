@@ -7,16 +7,28 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// itemTranslations map a key for a node to a key - say "text" to "[je suis francais!]"
+// the translations for a specific item, e.g.
+// {
+//   "text": "Do you like cheese?"
+//	 "quick_replies": ["Yes", "No"]
+// }
 type itemTranslations map[string][]string
 
-// languageTranslations map a node uuid to item_translations - say "node1-asdf" to { "text": "je suis francais!" }
+// the translations for a specific language, e.g.
+// {
+//   "f3368070-8db8-4549-872a-e69a9d060612": {
+//	   "text": "Do you like cheese?"
+//	   "quick_replies": ["Yes", "No"]
+//   },
+//   "7a1aec43-f3e1-42f0-b967-0ee75e725e3a": { ... }
+// }
 type languageTranslations map[utils.UUID]itemTranslations
 
-func (t *languageTranslations) GetTextArray(uuid utils.UUID, key string) []string {
-	item, found := (*t)[uuid]
+// GetTextArray returns the requested item translation
+func (t languageTranslations) GetTextArray(uuid utils.UUID, property string) []string {
+	item, found := t[uuid]
 	if found {
-		translation, found := item[key]
+		translation, found := item[property]
 		if found {
 			return translation
 		}
@@ -25,22 +37,37 @@ func (t *languageTranslations) GetTextArray(uuid utils.UUID, key string) []strin
 }
 
 // our top level container for all the translations for all languages
-type localization map[utils.Language]*languageTranslations
+type localization map[utils.Language]languageTranslations
 
-func (t localization) Languages() utils.LanguageList {
-	languages := make(utils.LanguageList, 0, len(t))
-	for lang := range t {
+func NewLocalization() flows.Localization {
+	return make(localization)
+}
+
+// Languages gets the list of languages included in this localization
+func (l localization) Languages() utils.LanguageList {
+	languages := make(utils.LanguageList, 0, len(l))
+	for lang := range l {
 		languages = append(languages, lang)
 	}
 	return languages
 }
 
-func (t localization) GetTranslations(lang utils.Language) flows.Translations {
-	translations, found := t[lang]
-	if found {
-		return translations
+// AddItemTranslation adds a new item translation
+func (l localization) AddItemTranslation(lang utils.Language, itemUUID utils.UUID, property string, translated []string) {
+	_, found := l[lang]
+	if !found {
+		l[lang] = make(languageTranslations)
 	}
-	return nil
+	_, found = l[lang][itemUUID]
+	if !found {
+		l[lang][itemUUID] = make(itemTranslations)
+	}
+	l[lang][itemUUID][property] = translated
+}
+
+// GetTranslations returns the translations for the given language
+func (l localization) GetTranslations(lang utils.Language) flows.Translations {
+	return l[lang]
 }
 
 // ReadLocalization reads entire localization flow segment

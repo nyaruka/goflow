@@ -204,6 +204,7 @@ type Wait interface {
 
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
+	AddItemTranslation(utils.Language, utils.UUID, string, []string)
 	GetTranslations(utils.Language) Translations
 	Languages() utils.LanguageList
 }

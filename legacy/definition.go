@@ -1,4 +1,4 @@
-package definition
+package legacy
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
-	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -41,21 +41,16 @@ var legacyWebhookBody = `{
 	"channel": {}
 }`
 
-// LegacyFlow imports an old-world flow so it can be exported anew
+// LegacyFlow is a legacy style flow
 type LegacyFlow struct {
-	flow
-	envelope legacyFlowEnvelope
+	BaseLanguage utils.Language    `json:"base_language"`
+	Metadata     legacyMetadata    `json:"metadata"`
+	RuleSets     []legacyRuleSet   `json:"rule_sets" validate:"dive"`
+	ActionSets   []legacyActionSet `json:"action_sets" validate:"dive"`
+	Entry        flows.NodeUUID    `json:"entry" validate:"required,uuid4"`
 }
 
-type legacyFlowEnvelope struct {
-	BaseLanguage utils.Language         `json:"base_language"`
-	Metadata     legacyMetadataEnvelope `json:"metadata"`
-	RuleSets     []legacyRuleSet        `json:"rule_sets" validate:"dive"`
-	ActionSets   []legacyActionSet      `json:"action_sets" validate:"dive"`
-	Entry        flows.NodeUUID         `json:"entry" validate:"required,uuid4"`
-}
-
-type legacyMetadataEnvelope struct {
+type legacyMetadata struct {
 	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name    string         `json:"name"`
 	Expires int            `json:"expires"`
@@ -112,7 +107,7 @@ func (l *legacyLabelReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = legacy.MigrateTemplate(nameExpression, legacy.ExtraAsFunction)
+			nameExpression, _ = MigrateTemplate(nameExpression, ExtraAsFunction)
 		}
 
 		l.Name = nameExpression
@@ -161,7 +156,7 @@ func (g *legacyGroupReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = legacy.MigrateTemplate(nameExpression, legacy.ExtraAsFunction)
+			nameExpression, _ = MigrateTemplate(nameExpression, ExtraAsFunction)
 		}
 
 		g.Name = nameExpression
@@ -286,12 +281,12 @@ type wardTest struct {
 
 type localizations map[utils.Language]flows.Action
 
-func addTranslationMap(baseLanguage utils.Language, translations *localization, mapped map[utils.Language]string, uuid utils.UUID, key string) string {
+func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language]string, uuid utils.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
-		expression, _ := legacy.MigrateTemplate(item, legacy.ExtraAsFunction)
+		expression, _ := MigrateTemplate(item, ExtraAsFunction)
 		if language != baseLanguage {
-			addTranslation(translations, language, uuid, key, []string{expression})
+			localization.AddItemTranslation(language, uuid, property, []string{expression})
 		} else {
 			inBaseLanguage = expression
 		}
@@ -300,16 +295,16 @@ func addTranslationMap(baseLanguage utils.Language, translations *localization, 
 	return inBaseLanguage
 }
 
-func addTranslationMultiMap(baseLanguage utils.Language, translations *localization, mapped map[utils.Language][]string, uuid utils.UUID, key string) []string {
+func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language][]string, uuid utils.UUID, property string) []string {
 	var inBaseLanguage []string
 	for language, items := range mapped {
 		expressions := make([]string, len(items))
 		for i := range items {
-			expression, _ := legacy.MigrateTemplate(items[i], legacy.ExtraAsFunction)
+			expression, _ := MigrateTemplate(items[i], ExtraAsFunction)
 			expressions[i] = expression
 		}
 		if language != baseLanguage {
-			addTranslation(translations, language, uuid, key, expressions)
+			localization.AddItemTranslation(language, uuid, property, expressions)
 		} else {
 			inBaseLanguage = expressions
 		}
@@ -317,25 +312,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, translations *localizat
 	return inBaseLanguage
 }
 
-func addTranslation(translations *localization, lang utils.Language, itemUUID utils.UUID, propKey string, translation []string) {
-	// ensure we have a translation set for this language
-	langTranslations, found := (*translations)[lang]
-	if !found {
-		langTranslations = &languageTranslations{}
-		(*translations)[lang] = langTranslations
-	}
-
-	// ensure we have a translation set for this item
-	itemTrans, found := (*langTranslations)[itemUUID]
-	if !found {
-		itemTrans = itemTranslations{}
-		(*langTranslations)[itemUUID] = itemTrans
-	}
-
-	itemTrans[propKey] = translation
-}
-
-// Transforms a list of single item translations into a map of multi-item translations, e.g.
+// TransformTranslations transforms a list of single item translations into a map of multi-item translations, e.g.
 //
 // [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
 //
@@ -385,7 +362,7 @@ var testTypeMappings = map[string]string{
 }
 
 // migrates the given legacy action to a new action
-func migrateAction(baseLanguage utils.Language, a legacyAction, translations *localization) (flows.Action, error) {
+func migrateAction(baseLanguage utils.Language, a legacyAction, localization flows.Localization) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
 		labels := make([]*flows.LabelReference, len(a.Labels))
@@ -405,11 +382,11 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 			return nil, err
 		}
 
-		migratedSubject, _ := legacy.MigrateTemplate(a.Subject, legacy.ExtraAsFunction)
-		migratedBody, _ := legacy.MigrateTemplate(msg, legacy.ExtraAsFunction)
+		migratedSubject, _ := MigrateTemplate(a.Subject, ExtraAsFunction)
+		migratedBody, _ := MigrateTemplate(msg, ExtraAsFunction)
 		migratedEmails := make([]string, len(a.Emails))
 		for e, email := range a.Emails {
-			migratedEmails[e], _ = legacy.MigrateTemplate(email, legacy.ExtraAsFunction)
+			migratedEmails[e], _ = MigrateTemplate(email, ExtraAsFunction)
 		}
 
 		return &actions.SendEmailAction{
@@ -450,7 +427,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 			if variable.ID == "@new_contact" {
 				createContact = true
 			} else {
-				migratedVar, _ := legacy.MigrateTemplate(variable.ID, legacy.ExtraAsFunction)
+				migratedVar, _ := MigrateTemplate(variable.ID, ExtraAsFunction)
 				variables = append(variables, migratedVar)
 			}
 		}
@@ -491,9 +468,9 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 			quickReplies = TransformTranslations(legacyQuickReplies)
 		}
 
-		migratedText := addTranslationMap(baseLanguage, translations, msg, utils.UUID(a.UUID), "text")
-		migratedMedia := addTranslationMap(baseLanguage, translations, media, utils.UUID(a.UUID), "attachments")
-		migratedQuickReplies := addTranslationMultiMap(baseLanguage, translations, quickReplies, utils.UUID(a.UUID), "quick_replies")
+		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
+		migratedMedia := addTranslationMap(baseLanguage, localization, media, utils.UUID(a.UUID), "attachments")
+		migratedQuickReplies := addTranslationMultiMap(baseLanguage, localization, quickReplies, utils.UUID(a.UUID), "quick_replies")
 
 		attachments := []string{}
 		if migratedMedia != "" {
@@ -520,7 +497,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 		}
 		variables := make([]string, 0, len(a.Variables))
 		for _, variable := range a.Variables {
-			migratedVar, _ := legacy.MigrateTemplate(variable.ID, legacy.ExtraAsFunction)
+			migratedVar, _ := MigrateTemplate(variable.ID, ExtraAsFunction)
 			variables = append(variables, migratedVar)
 		}
 
@@ -555,7 +532,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":
-		migratedValue, _ := legacy.MigrateTemplate(a.Value, legacy.ExtraAsFunction)
+		migratedValue, _ := MigrateTemplate(a.Value, ExtraAsFunction)
 
 		// flows now have different action for name changing
 		if a.Field == "name" || a.Field == "first_name" {
@@ -593,7 +570,7 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":
-		migratedURL, _ := legacy.MigrateTemplate(a.Webhook, legacy.ExtraAsFunction)
+		migratedURL, _ := MigrateTemplate(a.Webhook, ExtraAsFunction)
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		for _, header := range a.WebhookHeaders {
@@ -608,12 +585,12 @@ func migrateAction(baseLanguage utils.Language, a legacyAction, translations *lo
 			Headers:    headers,
 		}, nil
 	default:
-		return nil, fmt.Errorf("couldn't create action for %s", a.Type)
+		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, translations *localization) (routers.Case, error) {
+func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r legacyRule, localization flows.Localization) (routers.Case, error) {
 	category := r.Category[baseLanguage]
 
 	newType, _ := testTypeMappings[r.Test.Type]
@@ -633,7 +610,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 	case "eq", "gt", "gte", "lt", "lte":
 		test := numericTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := legacy.MigrateTemplate(string(test.Test), legacy.ExtraAsFunction)
+		migratedTest, err := MigrateTemplate(string(test.Test), ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -642,11 +619,11 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedMin, err := legacy.MigrateTemplate(test.Min, legacy.ExtraAsFunction)
+		migratedMin, err := MigrateTemplate(test.Min, ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
-		migratedMax, err := legacy.MigrateTemplate(test.Max, legacy.ExtraAsFunction)
+		migratedMax, err := MigrateTemplate(test.Max, ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -658,7 +635,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r l
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.Test[baseLanguage]}
 
-		addTranslationMap(baseLanguage, translations, test.Test, caseUUID, "arguments")
+		addTranslationMap(baseLanguage, localization, test.Test, caseUUID, "arguments")
 
 	// tests against a single date value
 	case "date_equal", "date_after", "date_before":
@@ -727,7 +704,7 @@ type categoryName struct {
 	order        int
 }
 
-func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
+func parseRules(baseLanguage utils.Language, r legacyRuleSet, localization flows.Localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
 
 	// find our discrete categories
 	categoryMap := make(map[string]categoryName)
@@ -750,9 +727,9 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *loca
 	exits := make([]flows.Exit, len(categoryMap))
 	exitMap := make(map[string]flows.Exit)
 	for k, category := range categoryMap {
-		addTranslationMap(baseLanguage, translations, category.translations, utils.UUID(category.uuid), "name")
+		addTranslationMap(baseLanguage, localization, category.translations, utils.UUID(category.uuid), "name")
 
-		exits[category.order] = NewExit(category.uuid, category.destination, k)
+		exits[category.order] = definition.NewExit(category.uuid, category.destination, k)
 		exitMap[k] = exits[category.order]
 	}
 
@@ -769,7 +746,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *loca
 			continue
 		}
 
-		c, err := migrateRule(baseLanguage, exitMap, r.Rules[i], translations)
+		c, err := migrateRule(baseLanguage, exitMap, r.Rules[i], localization)
 		if err != nil {
 			return nil, nil, "", err
 		}
@@ -786,7 +763,7 @@ func parseRules(baseLanguage utils.Language, r legacyRuleSet, translations *loca
 	if r.Type == "webhook" {
 		connectionErrorCategory := "Connection Error"
 		connectionErrorExitUUID := flows.ExitUUID(utils.NewUUID())
-		connectionErrorExit := NewExit(connectionErrorExitUUID, exits[1].(*exit).destination, connectionErrorCategory)
+		connectionErrorExit := definition.NewExit(connectionErrorExitUUID, exits[1].DestinationNodeUUID(), connectionErrorCategory)
 
 		exits = append(exits, connectionErrorExit)
 		cases = append(cases, routers.Case{
@@ -807,11 +784,12 @@ type fieldConfig struct {
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localization) (*node, error) {
-	node := &node{}
-	node.uuid = r.UUID
+func migrateRuleSet(lang utils.Language, r legacyRuleSet, localization flows.Localization) (flows.Node, error) {
+	var newActions []flows.Action
+	var router flows.Router
+	var wait flows.Wait
 
-	exits, cases, defaultExit, err := parseRules(lang, r, translations)
+	exits, cases, defaultExit, err := parseRules(lang, r, localization)
 	if err != nil {
 		return nil, err
 	}
@@ -829,7 +807,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localiza
 		flowUUID := flows.FlowUUID(config["flow"]["uuid"])
 		flowName := config["flow"]["name"]
 
-		node.actions = []flows.Action{
+		newActions = []flows.Action{
 			&actions.StartFlowAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				Flow:       flows.NewFlowReference(flowUUID, flowName),
@@ -837,7 +815,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localiza
 		}
 
 		// subflow rulesets operate on the child flow status
-		node.router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
 
 	case "webhook":
 		var config legacyWebhookConfig
@@ -846,13 +824,13 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localiza
 			return nil, err
 		}
 
-		migratedURL, _ := legacy.MigrateTemplate(config.Webhook, legacy.ExtraAsFunction)
+		migratedURL, _ := MigrateTemplate(config.Webhook, ExtraAsFunction)
 		migratedHeaders := make(map[string]string, len(config.Headers))
 		for _, header := range config.Headers {
 			migratedHeaders[header.Name] = header.Value
 		}
 
-		node.actions = []flows.Action{
+		newActions = []flows.Action{
 			&actions.CallWebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
@@ -862,19 +840,19 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localiza
 		}
 
 		// subflow rulesets operate on the child flow status
-		node.router = routers.NewSwitchRouter(defaultExit, "@run.webhook.status", cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, "@run.webhook.status", cases, resultName)
 
 	case "form_field":
 		var config fieldConfig
 		json.Unmarshal(r.Config, &config)
 
-		operand, _ := legacy.MigrateTemplate(r.Operand, legacy.ExtraAsFunction)
+		operand, _ := MigrateTemplate(r.Operand, ExtraAsFunction)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
-		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
 	case "group":
 		// in legacy flows these rulesets have their operand as @step.value but it's not used
-		node.router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
 
 	case "wait_message":
 		// look for timeout test on the legacy ruleset
@@ -891,7 +869,7 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localiza
 			}
 		}
 
-		node.wait = waits.NewMsgWait(timeout)
+		wait = waits.NewMsgWait(timeout)
 
 		fallthrough
 	case "flow_field":
@@ -899,43 +877,35 @@ func migrateRuleSet(lang utils.Language, r legacyRuleSet, translations *localiza
 	case "contact_field":
 		fallthrough
 	case "expression":
-		operand, _ := legacy.MigrateTemplate(r.Operand, legacy.ExtraAsFunction)
+		operand, _ := MigrateTemplate(r.Operand, ExtraAsFunction)
 		if operand == "" {
 			operand = "@run.input"
 		}
 
-		node.router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 	case "random":
-		node.router = routers.NewRandomRouter(resultName)
+		router = routers.NewRandomRouter(resultName)
 	default:
 		return nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
-	node.exits = exits
-
-	return node, nil
+	return definition.NewNode(r.UUID, newActions, router, exits, wait), nil
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
-func migateActionSet(lang utils.Language, a legacyActionSet, translations *localization) (*node, error) {
-	node := &node{
-		uuid:    a.UUID,
-		actions: make([]flows.Action, len(a.Actions)),
-		exits: []flows.Exit{
-			NewExit(a.ExitUUID, a.Destination, ""),
-		},
-	}
+func migateActionSet(lang utils.Language, a legacyActionSet, localization flows.Localization) (flows.Node, error) {
+	actions := make([]flows.Action, len(a.Actions))
 
 	// migrate each action
 	for i := range a.Actions {
-		action, err := migrateAction(lang, a.Actions[i], translations)
+		action, err := migrateAction(lang, a.Actions[i], localization)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error migrating action[type=%s]: %s", a.Actions[i].Type, err)
 		}
-		node.actions[i] = action
+		actions[i] = action
 	}
 
-	return node, nil
+	return definition.NewNode(a.UUID, actions, nil, []flows.Exit{definition.NewExit(a.ExitUUID, a.Destination, "")}, nil), nil
 }
 
 // ReadLegacyFlows reads in legacy formatted flows
@@ -952,96 +922,75 @@ func ReadLegacyFlows(data []json.RawMessage) ([]*LegacyFlow, error) {
 	return flows, nil
 }
 
+// ReadLegacyFlow reads a single legacy formatted flow
 func ReadLegacyFlow(data json.RawMessage) (*LegacyFlow, error) {
-	var envelope legacyFlowEnvelope
-	var err error
-
-	if err := utils.UnmarshalAndValidate(data, &envelope, ""); err != nil {
+	flow := &LegacyFlow{}
+	if err := utils.UnmarshalAndValidate(data, flow, ""); err != nil {
 		return nil, err
 	}
+	return flow, nil
+}
 
-	f := &LegacyFlow{}
-	f.uuid = envelope.Metadata.UUID
-	f.name = envelope.Metadata.Name
-	f.language = envelope.BaseLanguage
-	f.expireAfterMinutes = envelope.Metadata.Expires
+// Migrate migrates this legacy flow to the new format
+func (f *LegacyFlow) Migrate() (flows.Flow, error) {
+	localization := definition.NewLocalization()
+	nodes := make([]flows.Node, len(f.ActionSets)+len(f.RuleSets))
 
-	translations := &localization{}
-
-	f.nodes = make([]flows.Node, len(envelope.ActionSets)+len(envelope.RuleSets))
-	for i := range envelope.ActionSets {
-		node, err := migateActionSet(f.language, envelope.ActionSets[i], translations)
+	for i := range f.ActionSets {
+		node, err := migateActionSet(f.BaseLanguage, f.ActionSets[i], localization)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error migrating action_set[uuid=%s]: %s", f.ActionSets[i].UUID, err)
 		}
-		f.nodes[i] = node
+		nodes[i] = node
 	}
 
-	for i := range envelope.RuleSets {
-		node, err := migrateRuleSet(f.language, envelope.RuleSets[i], translations)
+	for i := range f.RuleSets {
+		node, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
 		}
-		f.nodes[len(envelope.ActionSets)+i] = node
+		nodes[len(f.ActionSets)+i] = node
 	}
 
 	// make sure our entry node is first
-	for i := range f.nodes {
-		if f.nodes[i].UUID() == envelope.Entry {
-			firstNode := f.nodes[0]
-			f.nodes[0] = f.nodes[i]
-			f.nodes[i] = firstNode
+	for i := range nodes {
+		if nodes[i].UUID() == f.Entry {
+			firstNode := nodes[0]
+			nodes[0] = nodes[i]
+			nodes[i] = firstNode
 		}
 	}
 
-	f.localization = translations
-	f.envelope = envelope
+	// convert our UI metadata
+	nodesUI := make(map[flows.NodeUUID]interface{})
 
-	return f, err
-}
-
-// MarshalJSON marshals this legacy flow into JSON
-func (f *LegacyFlow) MarshalJSON() ([]byte, error) {
-
-	var fe = flowEnvelope{}
-	fe.UUID = f.uuid
-	fe.Name = f.name
-	fe.Language = f.language
-	fe.ExpireAfterMinutes = f.expireAfterMinutes
-
-	if f.localization != nil {
-		fe.Localization = *f.localization.(*localization)
-	}
-
-	fe.Nodes = make([]*node, len(f.nodes))
-	for i := range f.nodes {
-		fe.Nodes[i] = f.nodes[i].(*node)
-	}
-
-	// add in our ui metadata
-	fe.Metadata = make(map[string]interface{})
-	fe.Metadata["nodes"] = make(map[flows.NodeUUID]interface{})
-	nodes := fe.Metadata["nodes"].(map[flows.NodeUUID]interface{})
-
-	for i := range f.envelope.ActionSets {
-		actionset := f.envelope.ActionSets[i]
+	for i := range f.ActionSets {
+		actionset := f.ActionSets[i]
 		nmd := make(map[string]interface{})
 		nmd["position"] = map[string]int{
 			"x": actionset.X,
 			"y": actionset.Y,
 		}
-		nodes[actionset.UUID] = nmd
+		nodesUI[actionset.UUID] = nmd
 	}
 
-	for i := range f.envelope.RuleSets {
-		ruleset := f.envelope.RuleSets[i]
+	for i := range f.RuleSets {
+		ruleset := f.RuleSets[i]
 		nmd := make(map[string]interface{})
 		nmd["position"] = map[string]int{
 			"x": ruleset.X,
 			"y": ruleset.Y,
 		}
-		nodes[ruleset.UUID] = nmd
+		nodesUI[ruleset.UUID] = nmd
 	}
 
-	return json.Marshal(&fe)
+	return definition.NewFlow(
+		f.Metadata.UUID,
+		f.Metadata.Name,
+		f.BaseLanguage,
+		f.Metadata.Expires,
+		localization,
+		nodes,
+		map[string]interface{}{"nodes": nodesUI},
+	)
 }
