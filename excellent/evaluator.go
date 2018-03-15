@@ -44,8 +44,8 @@ type xscanner struct {
 	unreadCount int
 }
 
-// newXScanner returns a new instance of Scanner.
-func newXScanner(r io.Reader) *xscanner {
+// NewXScanner returns a new instance of Scanner.
+func NewXScanner(r io.Reader) *xscanner {
 	return &xscanner{r: bufio.NewReader(r), unreadRunes: make([]rune, 4)}
 }
 
@@ -212,7 +212,7 @@ func (s *xscanner) Scan() (xToken, string) {
 
 // EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
 func EvaluateExpression(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
-	errors := newErrorListener()
+	errors := NewErrorListener()
 
 	input := antlr.NewInputStream(template)
 	lexer := gen.NewExcellent2Lexer(input)
@@ -246,7 +246,7 @@ func EvaluateExpression(env utils.Environment, resolver utils.VariableResolver, 
 func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
 	var buf bytes.Buffer
 	template = strings.TrimSpace(template)
-	scanner := newXScanner(strings.NewReader(template))
+	scanner := NewXScanner(strings.NewReader(template))
 
 	// parse our first token
 	tokenType, token := scanner.Scan()
@@ -297,7 +297,7 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableResolver, template string, urlEncode bool) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
-	scanner := newXScanner(strings.NewReader(template))
+	scanner := NewXScanner(strings.NewReader(template))
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -367,7 +367,7 @@ type errorListener struct {
 	*antlr.DefaultErrorListener
 }
 
-func newErrorListener() *errorListener {
+func NewErrorListener() *errorListener {
 	return &errorListener{}
 }
 
