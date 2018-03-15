@@ -164,7 +164,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 	}
 
 	if f.localization != nil {
-		fe.Localization = *f.localization.(*localization)
+		fe.Localization = f.localization.(localization)
 	}
 
 	fe.Nodes = make([]*node, len(f.nodes))
