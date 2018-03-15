@@ -130,13 +130,17 @@ var _ utils.VariableResolver = (*flow)(nil)
 //------------------------------------------------------------------------------------------
 
 type flowEnvelope struct {
-	UUID               flows.FlowUUID         `json:"uuid"               validate:"required,uuid4"`
-	Name               string                 `json:"name"               validate:"required"`
-	Language           utils.Language         `json:"language"`
-	ExpireAfterMinutes int                    `json:"expire_after_minutes"`
-	Localization       localization           `json:"localization"`
-	Nodes              []*node                `json:"nodes"`
-	UI                 map[string]interface{} `json:"_ui,omitempty"`
+	UUID               flows.FlowUUID `json:"uuid"               validate:"required,uuid4"`
+	Name               string         `json:"name"               validate:"required"`
+	Language           utils.Language `json:"language"`
+	ExpireAfterMinutes int            `json:"expire_after_minutes"`
+	Localization       localization   `json:"localization"`
+	Nodes              []*node        `json:"nodes"`
+}
+
+type flowEnvelopeWithUI struct {
+	flowEnvelope
+	UI map[string]interface{} `json:"_ui,omitempty"`
 }
 
 // ReadFlow reads a single flow definition from the passed in byte array
@@ -155,12 +159,14 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 
 // MarshalJSON marshals this flow into JSON
 func (f *flow) MarshalJSON() ([]byte, error) {
-	var fe = &flowEnvelope{
-		UUID:               f.uuid,
-		Name:               f.name,
-		Language:           f.language,
-		ExpireAfterMinutes: f.expireAfterMinutes,
-		UI:                 f.ui,
+	var fe = &flowEnvelopeWithUI{
+		flowEnvelope: flowEnvelope{
+			UUID:               f.uuid,
+			Name:               f.name,
+			Language:           f.language,
+			ExpireAfterMinutes: f.expireAfterMinutes,
+		},
+		UI: f.ui,
 	}
 
 	if f.localization != nil {
