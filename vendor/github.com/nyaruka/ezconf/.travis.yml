@@ -1,0 +1,13 @@
+language: go
+
+go:
+- "1.10"
+
+script:
+- go test -coverprofile=coverage.text -covermode=atomic github.com/nyaruka/ezconf/...
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+- rm coverage.text
+
+
