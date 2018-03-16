@@ -1,43 +1,68 @@
 package excellent
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/stretchr/testify/assert"
 )
 
+type testResolvable struct{}
+
+func (r *testResolvable) Resolve(key string) interface{} {
+	switch key {
+	case "foo":
+		return "bar"
+	case "zed":
+		return 123
+	default:
+		return fmt.Errorf("no such thing")
+	}
+}
+
+func (r *testResolvable) Default() interface{} {
+	return r
+}
+
+func (r *testResolvable) String() string {
+	return "hello"
+}
+
 func TestEvaluateTemplateAsString(t *testing.T) {
-	varMap := make(map[string]interface{})
-	varMap["string1"] = "foo"
-	varMap["string2"] = "bar"
-	varMap["汉字"] = "simplified chinese"
-	varMap["int1"] = 1
-	varMap["int2"] = 2
-	varMap["dec1"] = 1.5
-	varMap["dec2"] = 2.5
-	varMap["words"] = "one two three"
-	varMap["array"] = []string{"one", "two", "three"}
-	vars := utils.NewMapResolver(varMap)
+
+	vars := utils.NewMapResolver(map[string]interface{}{
+		"string1": "foo",
+		"string2": "bar",
+		"汉字":      "simplified chinese",
+		"int1":    1,
+		"int2":    2,
+		"dec1":    1.5,
+		"dec2":    2.5,
+		"words":   "one two three",
+		"array":   []string{"one", "two", "three"},
+		"thing":   &testResolvable{},
+	})
 
 	evaluateAsStringTests := []struct {
 		template string
 		expected string
 		hasError bool
 	}{
-
 		{"hello world", "hello world", false},
 		{"@(\"hello\\nworld\")", "hello\nworld", false},
 		{"@(\"hello😁world\")", "hello😁world", false},
 		{"@(\"hello\\U0001F601world\")", "hello😁world", false},
-		{"@hello", "@hello", false},
-		{"@hello.bar", "@hello.bar", false},
+		{"@hello", "@hello", true},
+		{"@hello.bar", "@hello.bar", true},
 		{"@(title(\"hello\"))", "Hello", false},
 		{"@(title(hello))", "", true},
 		{"Hello @(title(string1))", "Hello Foo", false},
 		{"Hello @@string1", "Hello @string1", false},
-		{"My email is foo@bar.com", "My email is foo@bar.com", false},
+		{"My email is foo@bar.com", "My email is foo@bar.com", true},
 
 		{"1 + 2", "1 + 2", false},
 		{"@(1 + 2)", "3", false},
@@ -46,7 +71,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@string1@string2", "foobar", false},
 		{"@(string1 & string2)", "foobar", false},
 		{"@string1.@string2", "foo.bar", false},
-		{"@string1.@string2.@string3", "foo.bar.@string3", false},
+		{"@string1.@string2.@string3", "foo.bar.@string3", true},
 
 		{"@(汉字)", "simplified chinese", false},
 		{"@(string1", "@(string1", false},
@@ -60,7 +85,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(dec1 + dec2)", "4", false},
 
-		{"@missing", "@missing", false},
+		{"@missing", "@missing", true},
 		{"@(TITLE(missing))", "", true},
 
 		{"@array", "one, two, three", false},
@@ -69,28 +94,32 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
 		{"@(array.0)", "one", false},
-
-		{"@(array[-1])", "three", false},
-		{"@(array.-1)", "", true},
+		{"@(array[-1])", "three", false}, // negative index
+		{"@(array.-1)", "", true},        // invalid negative index
 
 		{"@(split(words, \" \").0)", "one", false},
 		{"@(split(words, \" \")[1])", "two", false},
 		{"@(split(words, \" \")[-1])", "three", false},
+
+		{"@(thing.foo)", "bar", false},
+		{"@(thing.zed)", "123", false},
+		{"@(thing.xxx)", "", true},
+
+		{"@(has_error(array[100]))", "true", false}, // errors are like any other value
+		{"@(has_error(array.100))", "true", false},
+		{"@(has_error(thing.foo))", "false", false},
+		{"@(has_error(thing.xxx))", "true", false},
 	}
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evaluateAsStringTests {
 		eval, err := EvaluateTemplateAsString(env, vars, test.template, false)
-		if err != nil {
-			if !test.hasError {
-				t.Errorf("Received error evaluating '%s': %s", test.template, err)
-			}
-		} else {
-			if test.hasError {
-				t.Errorf("Did not receive error evaluating '%s'", test.template)
-			}
-		}
 
+		if test.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
+		} else {
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
+		}
 		if eval != test.expected {
 			t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 		}
@@ -100,39 +129,38 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 func TestEvaluateTemplate(t *testing.T) {
 	arr := []string{"a", "b", "c"}
 
-	strMap := make(map[string]string)
-	strMap["1"] = "one"
-	strMap["2"] = "two"
-	strMap["3"] = "three"
-	strMap["four"] = "four"
-	strMap["with space"] = "spacy"
-	strMap["with-dash"] = "dashy"
-	strMap["汉字"] = "simplified chinese"
+	strMap := map[string]string{
+		"1":          "one",
+		"2":          "two",
+		"3":          "three",
+		"four":       "four",
+		"with space": "spacy",
+		"with-dash":  "dashy",
+		"汉字":         "simplified chinese",
+	}
 
-	intMap := make(map[int]string)
-	intMap[1] = "one"
-	intMap[2] = "two"
-	intMap[3] = "three"
+	intMap := map[int]string{1: "one", 2: "two", 3: "three"}
 
-	innerMap := make(map[string]interface{})
-	innerMap["int_map"] = intMap
+	innerMap := map[string]interface{}{"int_map": intMap}
 
 	innerArr := []map[string]string{strMap}
 
-	varMap := make(map[string]interface{})
-	varMap["string1"] = "foo"
-	varMap["string2"] = "bar"
-	varMap["key"] = "four"
-	varMap["int1"] = 1
-	varMap["int2"] = 2
-	varMap["dec1"] = 1.5
-	varMap["dec2"] = 2.5
-	varMap["words"] = "one two three"
-	varMap["array1"] = arr
-	varMap["str_map"] = strMap
-	varMap["int_map"] = intMap
-	varMap["inner_map"] = innerMap
-	varMap["inner_arr"] = innerArr
+	varMap := map[string]interface{}{
+		"string1":   "foo",
+		"string2":   "bar",
+		"key":       "four",
+		"int1":      1,
+		"int2":      2,
+		"dec1":      1.5,
+		"dec2":      2.5,
+		"words":     "one two three",
+		"array1":    arr,
+		"str_map":   strMap,
+		"int_map":   intMap,
+		"inner_map": innerMap,
+		"inner_arr": innerArr,
+	}
+
 	vars := utils.NewMapResolver(varMap)
 
 	env := utils.NewDefaultEnvironment()
@@ -238,18 +266,12 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	for _, test := range evaluateTests {
 		eval, err := EvaluateTemplate(env, vars, test.template)
-		if err != nil {
-			if !test.hasError {
-				t.Errorf("Received error evaluating '%s': %s", test.template, err)
-			}
-		} else {
-			if test.hasError {
-				t.Errorf("Did not receive error evaluating '%s'", test.template)
-			}
-		}
 
 		if test.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 			continue
+		} else {
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
 		}
 
 		// first try reflect comparison

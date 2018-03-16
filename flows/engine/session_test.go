@@ -18,7 +18,7 @@ type testRequest struct {
 	Events  []*utils.TypedEnvelope `json:"events"`
 }
 
-func TestEvaluateTemplate(t *testing.T) {
+func TestEvaluateTemplateAsString(t *testing.T) {
 	tests := []struct {
 		template string
 		expected string
@@ -44,8 +44,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
 		{"@contact.groups", "Survey Audience", false}, // TODO should be list
 		{"@contact.fields.state", "Azuay", false},
-		{"@contact.fields.favorite_icecream", "", false},                   // TODO should be error
-		{"@(has_error(contact.fields.favorite_icecream))", "false", false}, // TODO should be true
+		{"@contact.fields.favorite_icecream", "", false},                   // TODO should be error?
+		{"@(has_error(contact.fields.favorite_icecream))", "false", false}, // TODO should be true?
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.text", "Hi there", false},
@@ -54,8 +54,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@run.input.created_on", "2000-01-01T00:00:00.000000Z", false},
 		{"@run.input.channel.name", "Nexmo", false},
 		{"@run.results", "", false},                                     // TODO should be empty dict?
-		{"@run.results.favorite_icecream", "", false},                   // TODO should be error
-		{"@(has_error(run.results.favorite_icecream))", "false", false}, // TODO should be true
+		{"@run.results.favorite_icecream", "", false},                   // TODO should be error?
+		{"@(has_error(run.results.favorite_icecream))", "false", false}, // TODO should be true?
 		{"@run.exited_on", "", false},
 
 		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},
@@ -92,12 +92,11 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	for _, test := range tests {
 		eval, err := excellent.EvaluateTemplateAsString(session.Environment(), run.Context(), test.template, false)
-		if err != nil {
-			assert.True(t, test.hasError, "Received error evaluating '%s': %s", test.template, err)
+		if test.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 		} else {
-			assert.False(t, test.hasError, "Did not receive error evaluating '%s'", test.template)
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
+			assert.Equal(t, test.expected, eval, "Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 		}
-
-		assert.Equal(t, test.expected, eval, "Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 	}
 }

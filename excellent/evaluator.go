@@ -310,12 +310,13 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableReso
 			if value == nil {
 				value = ""
 			}
-			_, isErr := value.(error)
+			err, isErr := value.(error)
 
 			// we got an error, return our raw variable
 			if isErr {
 				buf.WriteString("@")
 				buf.WriteString(token)
+				errors = append(errors, err)
 			} else {
 				strValue, _ := utils.ToString(env, value)
 				if urlEncode {

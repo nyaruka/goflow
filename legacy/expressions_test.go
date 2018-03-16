@@ -11,7 +11,7 @@ type testTemplate struct {
 	extraAs ExtraVarsMapping
 }
 
-func TestTranslate(t *testing.T) {
+func TestMigrateTemplate(t *testing.T) {
 	var tests = []testTemplate{
 
 		// contact variables
@@ -187,9 +187,6 @@ func TestTranslate(t *testing.T) {
 	for _, test := range tests {
 
 		for i := 0; i < 1; i++ {
-			if test.extraAs == "" {
-				test.extraAs = ExtraAsFunction
-			}
 			translation, err := MigrateTemplate(test.old, test.extraAs)
 
 			if err != nil {
