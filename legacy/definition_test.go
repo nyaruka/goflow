@@ -1,20 +1,21 @@
-package definition
+package legacy_test
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"testing"
-
 	"regexp"
-
 	"strings"
+	"testing"
 
 	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var legacyActionHolderDef = `
@@ -126,24 +127,20 @@ type RuleSetMigrationTest struct {
 
 func TestActionMigration(t *testing.T) {
 	data, err := ioutil.ReadFile("testdata/migrations/actions.json")
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	var tests []ActionMigrationTest
 	err = json.Unmarshal(data, &tests)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		legacyFlowsJSON := fmt.Sprintf(legacyActionHolderDef, string(test.LegacyAction))
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
 
-		migratedFlow := legacyFlows[0]
+		migratedFlow, err := legacyFlows[0].Migrate()
+		require.NoError(t, err)
+
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
 		migratedActionEnvelope, _ := utils.EnvelopeFromTyped(migratedAction)
 		migratedActionRaw, _ := json.Marshal(migratedActionEnvelope)
@@ -160,24 +157,20 @@ func TestActionMigration(t *testing.T) {
 
 func TestTestMigration(t *testing.T) {
 	data, err := ioutil.ReadFile("testdata/migrations/tests.json")
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	var tests []TestMigrationTest
 	err = json.Unmarshal(data, &tests)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		legacyFlowsJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
 
-		migratedFlow := legacyFlows[0]
+		migratedFlow, err := legacyFlows[0].Migrate()
+		require.NoError(t, err)
+
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
 
 		if len(migratedRouter.Cases) == 0 {
@@ -199,24 +192,19 @@ func TestTestMigration(t *testing.T) {
 
 func TestRuleSetMigration(t *testing.T) {
 	data, err := ioutil.ReadFile("testdata/migrations/rulesets.json")
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	var tests []RuleSetMigrationTest
 	err = json.Unmarshal(data, &tests)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		legacyFlowsJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
 
-		migratedFlow := legacyFlows[0]
+		migratedFlow, err := legacyFlows[0].Migrate()
+		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations
 		if len(migratedFlow.Nodes()) <= 3 {
@@ -243,15 +231,14 @@ func TestRuleSetMigration(t *testing.T) {
 	}
 }
 
-func readLegacyTestFlows(flowsJSON string) ([]*LegacyFlow, error) {
+func readLegacyTestFlows(flowsJSON string) ([]*legacy.Flow, error) {
 	var legacyFlows []json.RawMessage
 	json.Unmarshal(json.RawMessage(flowsJSON), &legacyFlows)
-	return ReadLegacyFlows(legacyFlows)
+	return legacy.ReadLegacyFlows(legacyFlows)
 }
 
-func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
-	actualLocalization := *flow.translations.(*flowTranslations)
-	actualLocalizationRaw, _ := json.Marshal(actualLocalization)
+func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
+	actualLocalizationRaw, _ := json.Marshal(flow.Localization())
 	actualLocalizationJSON := formatJSON(actualLocalizationRaw)
 
 	// Because localization keys are UUIDs and some of those may be generated during migration, ordering of localized
@@ -270,8 +257,7 @@ func checkFlowLocalization(t *testing.T, flow *LegacyFlow, expectedLocalizationR
 	})
 
 	// unmarshal and re-marchal expected JSON to get ordering correct after substitutions
-	expectedLocalization := &flowTranslations{}
-	json.Unmarshal(json.RawMessage(expectedLocalizationStr), expectedLocalization)
+	expectedLocalization, _ := definition.ReadLocalization(json.RawMessage(expectedLocalizationStr))
 	expectedLocalizationRaw, _ = json.Marshal(expectedLocalization)
 	expectedLocalizationJSON := formatJSON(expectedLocalizationRaw)
 
@@ -310,5 +296,5 @@ func TestTranslations(t *testing.T) {
 	assert.Equal(t, map[utils.Language][]string{
 		"eng": {"Yes", "No", "Maybe", "Never"},
 		"fra": {"Oui", "Non", "", "Jamas"},
-	}, transformTranslations(translations))
+	}, legacy.TransformTranslations(translations))
 }

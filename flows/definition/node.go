@@ -34,6 +34,17 @@ type node struct {
 	wait    flows.Wait
 }
 
+// NewNode creates a new flow node
+func NewNode(uuid flows.NodeUUID, actions []flows.Action, router flows.Router, exits []flows.Exit, wait flows.Wait) flows.Node {
+	return &node{
+		uuid:    uuid,
+		actions: actions,
+		router:  router,
+		exits:   exits,
+		wait:    wait,
+	}
+}
+
 func (n *node) UUID() flows.NodeUUID    { return n.uuid }
 func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Actions() []flows.Action { return n.actions }

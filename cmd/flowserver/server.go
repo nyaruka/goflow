@@ -11,10 +11,10 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/go-chi/chi"
@@ -269,9 +269,17 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 		return nil, fmt.Errorf("missing flows element")
 	}
 
-	flows, err := definition.ReadLegacyFlows(migrate.Flows)
+	legacyFlows, err := legacy.ReadLegacyFlows(migrate.Flows)
 	if err != nil {
 		return nil, err
+	}
+
+	flows := make([]flows.Flow, len(legacyFlows))
+	for f := range legacyFlows {
+		flows[f], err = legacyFlows[f].Migrate()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return flows, err
