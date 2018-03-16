@@ -51,10 +51,9 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 
 	evaluatedPath, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Path, false)
 
-	// if we received an error, log it
+	// if we received an error, log it although it might just be a non-expression like foo@bar.com
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
-		return nil
 	}
 
 	// if we don't have a valid URN, log error
