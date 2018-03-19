@@ -154,6 +154,7 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 						}
 					}
 
+					v.output.WriteString(fmt.Sprintf("<a name=\"functions:%s\"></a>\n\n", name))
 					v.output.WriteString(fmt.Sprintf("## %s\n\n", signature))
 					v.output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
 					v.output.WriteString(fmt.Sprintf("```objectivec\n"))

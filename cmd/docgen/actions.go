@@ -72,6 +72,7 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 			docs[0] = strings.Replace(docs[0], typeName, name, 1)
 		}
 
+		output.WriteString(fmt.Sprintf("<a name=\"actions:%s\"></a>\n\n", name))
 		output.WriteString(fmt.Sprintf("## %s\n\n", name))
 		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
 		if len(example) > 0 {
