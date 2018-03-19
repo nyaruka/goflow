@@ -458,9 +458,9 @@
                             "name": {
                                 "category": "Name",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "Ryan Lewis",
                                 "name": "Name",
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
-                                "operand": "Ryan Lewis",
                                 "value": "Ryan Lewis"
                             }
                         },

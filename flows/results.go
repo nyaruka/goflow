@@ -16,7 +16,7 @@ type Result struct {
 	Category          string    `json:"category,omitempty"`
 	CategoryLocalized string    `json:"category_localized,omitempty"`
 	NodeUUID          NodeUUID  `json:"node_uuid"`
-	Operand           string    `json:"operand"`
+	Input             string    `json:"input"`
 	CreatedOn         time.Time `json:"created_on"`
 }
 
@@ -71,14 +71,14 @@ func (r Results) Clone() Results {
 }
 
 // Save saves a new result in our map. The key is saved in a snakified format
-func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, operand string, createdOn time.Time) {
+func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input string, createdOn time.Time) {
 	r[utils.Snakify(name)] = &Result{
 		Name:              name,
 		Value:             value,
 		Category:          category,
 		CategoryLocalized: categoryLocalized,
 		NodeUUID:          nodeUUID,
-		Operand:           operand,
+		Input:             input,
 		CreatedOn:         createdOn,
 	}
 }

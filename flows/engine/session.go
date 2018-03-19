@@ -435,12 +435,12 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" && route.Match() != "" {
-		resultOperand, err := utils.ToString(run.Environment(), operand)
+		input, err := utils.ToString(run.Environment(), operand)
 		if err != nil {
 			return nil, noDestination, err
 		}
 
-		event := events.NewRunResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, node.UUID(), resultOperand)
+		event := events.NewRunResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, node.UUID(), input)
 		run.ApplyEvent(step, nil, event)
 	}
 

@@ -518,9 +518,9 @@
                             "answer": {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "neither",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "neither",
                                 "value": "neither"
                             }
                         },
@@ -900,9 +900,9 @@
                             "answer": {
                                 "category": "Yes",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "yes",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "yes",
                                 "value": "yes"
                             }
                         },
@@ -1175,9 +1175,9 @@
                             "answer": {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "never",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "operand": "never",
                                 "value": "never"
                             }
                         },
@@ -1343,9 +1343,9 @@
                             "answer": {
                                 "category": "Yes",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "yes",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "yes",
                                 "value": "yes"
                             }
                         },
@@ -1657,9 +1657,9 @@
                             "answer": {
                                 "category": "No",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "no",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "operand": "no",
                                 "value": "no"
                             }
                         },
@@ -1825,9 +1825,9 @@
                             "answer": {
                                 "category": "Yes",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "yes",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "yes",
                                 "value": "yes"
                             }
                         },
