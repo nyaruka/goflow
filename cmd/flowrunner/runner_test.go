@@ -117,7 +117,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
+		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
 		session, err = engine.ReadSession(assetCache, engine.NewMockAssetServer(), outJSON)
 		if err != nil {
@@ -138,7 +138,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	if err != nil {
 		return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 	}
-	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
+	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
 	return runResult{assetCache, session, outputs}, nil
 }

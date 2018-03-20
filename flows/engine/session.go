@@ -31,12 +31,12 @@ type session struct {
 	runs    []flows.FlowRun
 	status  flows.SessionStatus
 	wait    flows.Wait
-	log     []flows.LogEntry
 
 	// state which is temporary to each call
 	runsByUUID map[flows.RunUUID]flows.FlowRun
 	pushedFlow *pushedFlow
 	flowStack  *flowStack
+	newEvents  []flows.Event
 }
 
 // NewSession creates a new session
@@ -45,7 +45,7 @@ func NewSession(assetCache *AssetCache, assetServer AssetServer) flows.Session {
 		env:        utils.NewDefaultEnvironment(),
 		assets:     NewSessionAssets(assetCache, assetServer),
 		status:     flows.SessionStatusActive,
-		log:        []flows.LogEntry{},
+		newEvents:  []flows.Event{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 		flowStack:  newFlowStack(),
 	}
@@ -101,11 +101,10 @@ func (s *session) waitingRun() flows.FlowRun {
 	return nil
 }
 
-func (s *session) LogEvent(step flows.Step, action flows.Action, event flows.Event) {
-	s.log = append(s.log, NewLogEntry(step, action, event))
+func (s *session) LogEvent(event flows.Event) {
+	s.newEvents = append(s.newEvents, event)
 }
-func (s *session) Log() []flows.LogEntry { return s.log }
-func (s *session) ClearLog()             { s.log = nil }
+func (s *session) Events() []flows.Event { return s.newEvents }
 
 //------------------------------------------------------------------------------------------
 // Flow execution
@@ -165,7 +164,7 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 			run.Exit(flows.RunStatusErrored)
 		}
 		s.status = flows.SessionStatusErrored
-		s.LogEvent(nil, nil, events.NewFatalErrorEvent(err))
+		s.LogEvent(events.NewFatalErrorEvent(err))
 	}
 
 	return nil
@@ -193,7 +192,7 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 
 	// events can change run status so only proceed to the wait if we're still waiting
 	if waitingRun.Status() == flows.RunStatusWaiting {
-		waitCanResume := s.wait.CanResume(waitingRun, step)
+		waitCanResume := s.wait.CanResume(callerEvents)
 		waitHasTimedOut := s.wait.HasTimedOut()
 
 		if waitCanResume || waitHasTimedOut {

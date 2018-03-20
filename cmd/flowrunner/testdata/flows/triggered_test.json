@@ -4,21 +4,17 @@
     ],
     "outputs": [
         {
-            "log": [
+            "events": [
                 {
-                    "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "msg": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                            "urn": "tel:+12065551212",
-                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "type": "msg_created"
+                        "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 }
@@ -56,27 +52,28 @@
                 "runs": [
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "events": [
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_created"
+                            }
+                        ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Hi Ben Haggerty you were started in this flow by Bob from the 'Parent Flow' flow. He is from Esmeraldas and is aged 33.",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-                                        },
-                                        "type": "msg_created"
-                                    }
-                                ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"

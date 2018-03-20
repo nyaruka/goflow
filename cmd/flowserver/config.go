@@ -17,7 +17,7 @@ type Config struct {
 func NewDefaultConfig() *Config {
 	return &Config{
 		Port:             8800,
-		LogLevel:         "error",
+		LogLevel:         "info",
 		AssetCacheSize:   1000,
 		AssetCachePrune:  100,
 		AssetServerToken: "missing_temba_token",

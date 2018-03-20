@@ -23,9 +23,9 @@ func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
 	run.ApplyEvent(step, nil, events.NewMsgWait(w.TimeoutOn))
 }
 
-// CanResume returns true for a message wait if a message has now been received on this step
-func (w *MsgWait) CanResume(run flows.FlowRun, step flows.Step) bool {
-	for _, event := range step.Events() {
+// CanResume returns true for a message wait if a message has now been received
+func (w *MsgWait) CanResume(callerEvents []flows.Event) bool {
+	for _, event := range callerEvents {
 		_, isMsg := event.(*events.MsgReceivedEvent)
 		if isMsg {
 			return true

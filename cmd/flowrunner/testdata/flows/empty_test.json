@@ -4,7 +4,7 @@
     ],
     "outputs": [
         {
-            "log": [],
+            "events": [],
             "session": {
                 "contact": {
                     "fields": {

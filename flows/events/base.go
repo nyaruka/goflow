@@ -6,8 +6,9 @@ import (
 )
 
 type baseEvent struct {
-	CreatedOn_  time.Time `json:"created_on"    validate:"required"`
-	FromCaller_ bool      `json:"-"`
+	CreatedOn_  time.Time      `json:"created_on" validate:"required"`
+	StepUUID_   flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
+	FromCaller_ bool           `json:"-"`
 }
 
 func newBaseEvent() baseEvent {
@@ -16,6 +17,9 @@ func newBaseEvent() baseEvent {
 
 func (e *baseEvent) CreatedOn() time.Time        { return e.CreatedOn_ }
 func (e *baseEvent) SetCreatedOn(time time.Time) { e.CreatedOn_ = time }
+
+func (e *baseEvent) StepUUID() flows.StepUUID            { return e.StepUUID_ }
+func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
 func (e *baseEvent) FromCaller() bool              { return e.FromCaller_ }
 func (e *baseEvent) SetFromCaller(fromCaller bool) { e.FromCaller_ = fromCaller }

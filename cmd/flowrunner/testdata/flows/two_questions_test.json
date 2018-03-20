@@ -34,31 +34,24 @@
     ],
     "outputs": [
         {
-            "log": [
+            "events": [
                 {
-                    "action_uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "msg": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
-                            "urn": "tel:+12065551212",
-                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "type": "msg_created"
+                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                        "urn": "tel:+12065551212",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                 },
                 {
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "type": "msg_wait"
-                    },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00"
                 }
             ],
             "session": {
@@ -94,32 +87,34 @@
                 "runs": [
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "events": [
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "type": "msg_wait"
+                            }
+                        ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-                                        },
-                                        "type": "msg_created"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "type": "msg_wait"
-                                    }
-                                ],
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
@@ -173,53 +168,39 @@
             }
         },
         {
-            "log": [
+            "events": [
                 {
-                    "event": {
-                        "category": "Blue",
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "name": "Favorite Color",
-                        "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                        "operand": "I like blue!",
-                        "type": "run_result_changed",
-                        "value": "blue"
-                    },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "category": "Blue",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "name": "Favorite Color",
+                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "operand": "I like blue!",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "value": "blue"
                 },
                 {
-                    "action_uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "property": "language",
-                        "type": "contact_property_changed",
-                        "value": "fra"
-                    },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "property": "language",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "value": "fra"
                 },
                 {
-                    "action_uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "msg": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                            "urn": "tel:+12065551212",
-                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "type": "msg_created"
+                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                        "urn": "tel:+12065551212",
+                        "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "type": "msg_wait"
-                    },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00"
                 }
             ],
             "session": {
@@ -255,6 +236,79 @@
                 "runs": [
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "events": [
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "I like blue!",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Blue",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "name": "Favorite Color",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "operand": "I like blue!",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "run_result_changed",
+                                "value": "blue"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "property": "language",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "contact_property_changed",
+                                "value": "fra"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                },
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "type": "msg_wait"
+                            }
+                        ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
@@ -272,48 +326,6 @@
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-                                        },
-                                        "type": "msg_created"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "type": "msg_wait"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Nexmo",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "I like blue!",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                                        },
-                                        "type": "msg_received"
-                                    },
-                                    {
-                                        "category": "Blue",
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "name": "Favorite Color",
-                                        "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                        "operand": "I like blue!",
-                                        "type": "run_result_changed",
-                                        "value": "blue"
-                                    }
-                                ],
                                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -321,32 +333,6 @@
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "property": "language",
-                                        "type": "contact_property_changed",
-                                        "value": "fra"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
-                                        },
-                                        "type": "msg_created"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "type": "msg_wait"
-                                    }
-                                ],
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
@@ -410,46 +396,35 @@
             }
         },
         {
-            "log": [
+            "events": [
                 {
-                    "event": {
-                        "category": "Coke",
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "name": "Soda",
-                        "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                        "operand": "Coke",
-                        "type": "run_result_changed",
-                        "value": "Coke"
-                    },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "category": "Coke",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "name": "Soda",
+                    "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                    "operand": "Coke",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "value": "Coke"
                 },
                 {
-                    "action_uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
-                        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-                        "status": "success",
-                        "status_code": 200,
-                        "type": "webhook_called",
-                        "url": "http://127.0.0.1:49999/?cmd=success"
-                    },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
+                    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+                    "status": "success",
+                    "status_code": 200,
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "url": "http://127.0.0.1:49999/?cmd=success"
                 },
                 {
-                    "action_uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
-                    "event": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "msg": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "text": "Parfait, vous avez finis et tu aimes Coke",
-                            "urn": "tel:+12065551212",
-                            "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "type": "msg_created"
+                        "text": "Parfait, vous avez finis et tu aimes Coke",
+                        "urn": "tel:+12065551212",
+                        "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                 }
@@ -487,6 +462,127 @@
                 "runs": [
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "events": [
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "I like blue!",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Blue",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "name": "Favorite Color",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "operand": "I like blue!",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "run_result_changed",
+                                "value": "blue"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "property": "language",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "contact_property_changed",
+                                "value": "fra"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
+                                },
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Coke",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
+                                },
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "msg_received"
+                            },
+                            {
+                                "category": "Coke",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "name": "Soda",
+                                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                "operand": "Coke",
+                                "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                                "type": "run_result_changed",
+                                "value": "Coke"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
+                                "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
+                                "status": "success",
+                                "status_code": 200,
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "webhook_called",
+                                "url": "http://127.0.0.1:49999/?cmd=success"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Parfait, vous avez finis et tu aimes Coke",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                                },
+                                "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "type": "msg_created"
+                            }
+                        ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
                         "flow_uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
@@ -504,48 +600,6 @@
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-                                        },
-                                        "type": "msg_created"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "type": "msg_wait"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Nexmo",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "I like blue!",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                                        },
-                                        "type": "msg_received"
-                                    },
-                                    {
-                                        "category": "Blue",
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "name": "Favorite Color",
-                                        "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                        "operand": "I like blue!",
-                                        "type": "run_result_changed",
-                                        "value": "blue"
-                                    }
-                                ],
                                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -553,54 +607,6 @@
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "property": "language",
-                                        "type": "contact_property_changed",
-                                        "value": "fra"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
-                                        },
-                                        "type": "msg_created"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "type": "msg_wait"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Nexmo",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Coke",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
-                                        },
-                                        "type": "msg_received"
-                                    },
-                                    {
-                                        "category": "Coke",
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "name": "Soda",
-                                        "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
-                                        "operand": "Coke",
-                                        "type": "run_result_changed",
-                                        "value": "Coke"
-                                    }
-                                ],
                                 "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -608,30 +614,6 @@
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "events": [
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
-                                        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: \r\n\r\n{ \"ok\": \"true\" }",
-                                        "status": "success",
-                                        "status_code": 200,
-                                        "type": "webhook_called",
-                                        "url": "http://127.0.0.1:49999/?cmd=success"
-                                    },
-                                    {
-                                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                        "msg": {
-                                            "channel": {
-                                                "name": "Android Channel",
-                                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                                            },
-                                            "text": "Parfait, vous avez finis et tu aimes Coke",
-                                            "urn": "tel:+12065551212",
-                                            "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
-                                        },
-                                        "type": "msg_created"
-                                    }
-                                ],
                                 "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"

@@ -25,7 +25,7 @@ const (
 
 type Output struct {
 	Session json.RawMessage   `json:"session"`
-	Log     []json.RawMessage `json:"log"`
+	Log     []json.RawMessage `json:"events"`
 }
 
 type FlowTest struct {
@@ -47,7 +47,7 @@ func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {
 	return envelopes
 }
 
-func marshalEventLog(eventLog []flows.LogEntry) []json.RawMessage {
+func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 	envelopes := make([]json.RawMessage, len(eventLog))
 	for i := range eventLog {
 		envelope, err := json.Marshal(eventLog[i])
@@ -217,12 +217,12 @@ func main() {
 			log.Fatal("Error marshalling output: ", err)
 		}
 		fmt.Printf("%s\n", outJSON)
-		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
+		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
 		// print any msg_created events
-		for _, e := range session.Log() {
-			if e.Event().Type() == events.TypeMsgCreated {
-				fmt.Printf(">>> %s\n", e.Event().(*events.MsgCreatedEvent).Msg.Text())
+		for _, event := range session.Events() {
+			if event.Type() == events.TypeMsgCreated {
+				fmt.Printf(">>> %s\n", event.(*events.MsgCreatedEvent).Msg.Text())
 			}
 		}
 
@@ -255,7 +255,7 @@ func main() {
 		log.Fatal("Error marshalling output: ", err)
 	}
 	fmt.Printf("%s\n", outJSON)
-	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Log())})
+	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
 	// write out our test file
 	if *writePtr {
