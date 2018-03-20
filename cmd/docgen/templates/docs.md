@@ -265,6 +265,7 @@ An input describes input from the contact and currently we only support one type
 Any input has the following properties which can be accessed:
 
  * `uuid` the UUID of the input
+ * `type` the type of the input, e.g. `msg`
  * `channel` the [channel](#channels) that the input was received on
  * `created_on` the time when the input was created
 
@@ -278,6 +279,7 @@ An input of type `msg` renders as its text and attachments in a template, and ha
 
 ```
 @run.input → Hello\nimage/jpeg:https://example.com/test.jpg
+@run.input.type → msg
 @run.input.text → Hello
 @run.input.attachments → image/jpeg:https://example.com/test.jpg
 @(json(run.input)) → {"uuid": "8ddfda9c-9ea7-451e-a812-1c3153f91a87", "text": "Hello", "attachments": ["image/jpeg:https://example.com/test.jpg"], "created_on": "2000-01-01T00:00:00.000000000-00:00"}
@@ -323,11 +325,13 @@ A trigger represents something which can initiate a session with the flow engine
 
 A trigger has several properties which can be accessed in expressions:
 
+ * `type` the type of the trigger, one of `manual` or `flow`
  * `params` the parameters passed to the trigger
 
 ### Examples
 
 ```
+@trigger.type → manual
 @trigger.params → source: website\naddress:\n  state: WA
 @(json(trigger.params)) → {"source": "website", "address": {"state": "WA"}}
 ```
@@ -367,7 +371,7 @@ A webhook has several properties which can be accessed in expressions:
  * `status_code` the status code of the response
  * `body` the body of the response
  * `json` the parsed JSON response (if response body was JSON)
- * `json.[key]` sub-elements of the parsed JSON response, e.g. ``
+ * `json.[key]` sub-elements of the parsed JSON response
  * `request` the raw request made, including headers
  * `response` the raw response received, including headers
 
