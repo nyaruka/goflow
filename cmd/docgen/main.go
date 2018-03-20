@@ -1,7 +1,7 @@
 package main
 
 // generate full docs with:
-// go install github.com/nyaruka/goflow/cmd/docgen && $GOPATH/bin/docgen . | pandoc --from=markdown --to=html -o docs.html --standalone --template=cmd/docgen/templates/template.html --toc --toc-depth=2
+// go install github.com/nyaruka/goflow/cmd/docgen && $GOPATH/bin/docgen . | pandoc --from=markdown --to=html -o docs/index.html --standalone --template=cmd/docgen/templates/template.html --toc --toc-depth=1
 
 import (
 	"bytes"

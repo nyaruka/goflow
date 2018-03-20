@@ -166,6 +166,8 @@ The following types appear in the context:
  * [URNs](#urns)
  * [Webhooks](#webhooks)
 
+<div class="context">
+
 ## Channels
 
 A channel represents a means for sending and receiving input during a flow run.
@@ -381,6 +383,8 @@ A webhook has several properties which can be accessed in expressions:
 @run.webhook.status_code → 200
 @run.webhook.json.results.0.state_name → Washington
 ```
+
+</div>
 
 # Template Functions
 
