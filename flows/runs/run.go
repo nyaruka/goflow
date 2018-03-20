@@ -420,7 +420,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.events = make([]flows.Event, len(envelope.Events))
 	for i := range r.events {
 		if r.events[i], err = events.EventFromEnvelope(envelope.Events[i]); err != nil {
-			return nil, fmt.Errorf("error reading: %s -- %s", string(envelope.Events[i].Data), err)
+			return nil, err
 		}
 	}
 
@@ -459,13 +459,9 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 		re.Path[i] = s.(*step)
 	}
 
-	re.Events = make([]*utils.TypedEnvelope, len(r.events))
-	for i, event := range r.events {
-		eventData, err := json.Marshal(event)
-		if err != nil {
-			return nil, err
-		}
-		re.Events[i] = &utils.TypedEnvelope{Type: event.Type(), Data: eventData}
+	re.Events, err = events.EventsToEnvelopes(r.events)
+	if err != nil {
+		return nil, err
 	}
 
 	return json.Marshal(re)

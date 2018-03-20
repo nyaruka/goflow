@@ -25,26 +25,13 @@ const (
 
 type Output struct {
 	Session json.RawMessage   `json:"session"`
-	Log     []json.RawMessage `json:"events"`
+	Events  []json.RawMessage `json:"events"`
 }
 
 type FlowTest struct {
 	Trigger      *utils.TypedEnvelope     `json:"trigger"`
 	CallerEvents [][]*utils.TypedEnvelope `json:"caller_events"`
 	Outputs      []json.RawMessage        `json:"outputs"`
-}
-
-func envelopesForEvents(events []flows.Event) []*utils.TypedEnvelope {
-	envelopes := make([]*utils.TypedEnvelope, len(events))
-	for i := range events {
-		envelope, err := utils.EnvelopeFromTyped(events[i])
-		if err != nil {
-			log.Fatalf("Error creating envelope for %s: %s", events[i], err)
-		}
-
-		envelopes[i] = envelope
-	}
-	return envelopes
 }
 
 func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
@@ -264,7 +251,7 @@ func main() {
 
 		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
 		for i := range callerEvents {
-			callerEventEnvelopes[i] = envelopesForEvents(callerEvents[i])
+			callerEventEnvelopes[i], _ = events.EventsToEnvelopes(callerEvents[i])
 		}
 
 		rawOutputs := make([]json.RawMessage, len(outputs))

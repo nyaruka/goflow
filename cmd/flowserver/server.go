@@ -115,14 +115,10 @@ type sessionResponse struct {
 
 // MarshalJSON marshals this session response into JSON
 func (r *sessionResponse) MarshalJSON() ([]byte, error) {
-	var err error
-	eventEnvelopes := make([]*utils.TypedEnvelope, len(r.Session.Events()))
-	for e, event := range r.Session.Events() {
-		if eventEnvelopes[e], err = utils.EnvelopeFromTyped(event); err != nil {
-			return nil, err
-		}
+	eventEnvelopes, err := events.EventsToEnvelopes(r.Session.Events())
+	if err != nil {
+		return nil, err
 	}
-
 	envelope := struct {
 		Session flows.Session          `json:"session"`
 		Events  []*utils.TypedEnvelope `json:"events"`

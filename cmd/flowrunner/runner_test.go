@@ -272,13 +272,13 @@ func TestFlows(t *testing.T) {
 					}
 				}
 
-				if len(actualOutput.Log) != len(expectedOutput.Log) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Log, expectedOutput.Log, test.assets)
+				if len(actualOutput.Events) != len(expectedOutput.Events) {
+					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, test.assets)
 				}
 
-				for j := range actualOutput.Log {
-					event := actualOutput.Log[j]
-					expected := expectedOutput.Log[j]
+				for j := range actualOutput.Events {
+					event := actualOutput.Events[j]
+					expected := expectedOutput.Events[j]
 
 					// write our events as json
 					eventJSON, err := rawMessageAsJSON(event)
