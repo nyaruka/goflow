@@ -39,9 +39,19 @@
             padding: 5px;
         }
 
+        .context h2 {
+            background-color: rgb(153, 130, 30);
+            border: 1px solid rgb(107, 79, 17);
+        }
+
         .excellent_functions h2 {
             background-color: #2B823A;
             border: 1px solid #10621E;
+        }
+
+        .excellent_tests h2 {
+            background-color: #8b257e;
+            border: 1px solid rgb(78, 14, 64);
         }
 
         .actions h2 {
@@ -146,8 +156,21 @@
 </head>
 
 <body>
-    $if(titleblock)$ $titleblock$ $endif$ $for(header-includes)$ $header-includes$ $endfor$ $for(include-before)$ $include-before$
-    $endfor$ $if(toc)$ $toc$ $endif$ $body$ $for(include-after)$ $include-after$ $endfor$
+    <center>
+        <h1>Flow Specification</h1>
+    </center>
+
+$if(titleblock)$ $titleblock$ $endif$ 
+    
+$for(header-includes)$ $header-includes$ $endfor$ 
+    
+$for(include-before)$ $include-before$ $endfor$ 
+    
+$if(toc)$ $toc$ $endif$ 
+    
+$body$ 
+    
+$for(include-after)$ $include-after$ $endfor$
 </body>
 
 </html>
