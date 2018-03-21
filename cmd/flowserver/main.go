@@ -4,6 +4,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,6 +15,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var splash = `                ______             
+   ____  ____  / __/ /___ _      ______
+  / __ '/ __ \/ /_/ / __ \ | /| / / __
+ / /_/ / /_/ / __/ / /_/ / |/ |/ / _
+ \__, /\____/_/ /_/\____/|__/|__/ _
+/____/`
+
 var version = "Dev"
 
 func main() {
@@ -23,6 +31,8 @@ func main() {
 	if version != "Dev" {
 		config.Version = version
 	}
+
+	fmt.Printf("%s  --- version: %s ---\n", splash, config.Version)
 
 	level, err := log.ParseLevel(config.LogLevel)
 	if err != nil {
