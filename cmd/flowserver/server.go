@@ -109,15 +109,22 @@ func (s *FlowServer) handleVersion(w http.ResponseWriter, r *http.Request) (inte
 }
 
 type sessionResponse struct {
-	Session flows.Session    `json:"session"`
-	Log     []flows.LogEntry `json:"log"`
+	Session flows.Session
+	Events  []flows.Event
 }
 
 // MarshalJSON marshals this session response into JSON
 func (r *sessionResponse) MarshalJSON() ([]byte, error) {
-	envelope := sessionResponse{
+	eventEnvelopes, err := events.EventsToEnvelopes(r.Session.Events())
+	if err != nil {
+		return nil, err
+	}
+	envelope := struct {
+		Session flows.Session          `json:"session"`
+		Events  []*utils.TypedEnvelope `json:"events"`
+	}{
 		Session: r.Session,
-		Log:     r.Session.Log(),
+		Events:  eventEnvelopes,
 	}
 
 	return json.Marshal(envelope)
@@ -183,7 +190,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 		return nil, err
 	}
 
-	return &sessionResponse{Session: session, Log: session.Log()}, nil
+	return &sessionResponse{Session: session, Events: session.Events()}, nil
 }
 
 type resumeRequest struct {
@@ -243,7 +250,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 		return nil, err
 	}
 
-	return &sessionResponse{Session: session, Log: session.Log()}, nil
+	return &sessionResponse{Session: session, Events: session.Events()}, nil
 }
 
 type migrateRequest struct {

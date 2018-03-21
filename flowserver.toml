@@ -13,7 +13,7 @@
 port = 8800
 
 # Log level, one of: panic, fatal, error, warn, info, debug
-log_level = "error"
+log_level = "info"
 
 # directory where static content is served from
 static = ""

@@ -91,6 +91,7 @@ type flowRun struct {
 
 	results flows.Results
 	path    []flows.Step
+	events  []flows.Event
 	status  flows.RunStatus
 
 	createdOn time.Time
@@ -129,6 +130,7 @@ func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
 func (r *flowRun) Context() utils.VariableResolver { return r.context }
 func (r *flowRun) Results() flows.Results          { return r.results }
+func (r *flowRun) Events() []flows.Event           { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -182,12 +184,12 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 	}
 
 	if s != nil {
-		fs := s.(*step)
-		fs.addEvent(event)
+		event.SetStepUUID(s.UUID())
+		r.events = append(r.events, event)
 	}
 
 	if !event.FromCaller() {
-		r.Session().LogEvent(s, action, event)
+		r.Session().LogEvent(event)
 	}
 
 	if log.GetLevel() >= log.DebugLevel {
@@ -206,11 +208,11 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 }
 
 func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
-	r.ApplyEvent(step, action, &events.ErrorEvent{Text: err.Error(), Fatal: false})
+	r.ApplyEvent(step, action, events.NewErrorEvent(err))
 }
 
 func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
-	r.ApplyEvent(step, action, &events.ErrorEvent{Text: err.Error(), Fatal: true})
+	r.ApplyEvent(step, action, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -347,9 +349,10 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID     flows.RunUUID  `json:"uuid" validate:"required,uuid4"`
-	FlowUUID flows.FlowUUID `json:"flow_uuid" validate:"required,uuid4"`
-	Path     []*step        `json:"path" validate:"dive"`
+	UUID     flows.RunUUID          `json:"uuid" validate:"required,uuid4"`
+	FlowUUID flows.FlowUUID         `json:"flow_uuid" validate:"required,uuid4"`
+	Path     []*step                `json:"path" validate:"dive"`
+	Events   []*utils.TypedEnvelope `json:"events,omitempty"`
 
 	Status     flows.RunStatus `json:"status"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
@@ -413,6 +416,14 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 		r.path[i] = step
 	}
 
+	// read in our events
+	r.events = make([]flows.Event, len(envelope.Events))
+	for i := range r.events {
+		if r.events[i], err = events.EventFromEnvelope(envelope.Events[i]); err != nil {
+			return nil, err
+		}
+	}
+
 	// create a run specific environment and context
 	r.environment = newRunEnvironment(session.Environment(), r)
 	r.context = newRunContext(r)
@@ -446,6 +457,11 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.Path = make([]*step, len(r.path))
 	for i, s := range r.path {
 		re.Path[i] = s.(*step)
+	}
+
+	re.Events, err = events.EventsToEnvelopes(r.events)
+	if err != nil {
+		return nil, err
 	}
 
 	return json.Marshal(re)

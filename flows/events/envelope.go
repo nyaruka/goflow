@@ -74,3 +74,15 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 
 	return event, utils.UnmarshalAndValidate(envelope.Data, event, fmt.Sprintf("event[type=%s]", envelope.Type))
 }
+
+// EventsToEnvelopes converts the given events to typed envelopes
+func EventsToEnvelopes(events []flows.Event) ([]*utils.TypedEnvelope, error) {
+	var err error
+	envelopes := make([]*utils.TypedEnvelope, len(events))
+	for e, event := range events {
+		if envelopes[e], err = utils.EnvelopeFromTyped(event); err != nil {
+			return nil, err
+		}
+	}
+	return envelopes, nil
+}

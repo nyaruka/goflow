@@ -117,10 +117,10 @@ func eventsForAction(actionJSON []byte) (json.RawMessage, error) {
 		return nil, err
 	}
 
-	eventLog := session.Log()
+	eventLog := session.Events()
 	eventJSON := make([]json.RawMessage, len(eventLog))
-	for i, logEntry := range eventLog {
-		typed, err := utils.EnvelopeFromTyped(logEntry.Event())
+	for i, event := range eventLog {
+		typed, err := utils.EnvelopeFromTyped(event)
 		if err != nil {
 			return nil, err
 		}
