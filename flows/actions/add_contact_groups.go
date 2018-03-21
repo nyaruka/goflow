@@ -18,8 +18,8 @@ const TypeAddContactGroups string = "add_contact_groups"
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_contact_groups",
 //     "groups": [{
-//       "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
-//       "name": "Survey Audience"
+//       "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+//       "name": "Customers"
 //     }]
 //   }
 // ```

@@ -17,8 +17,8 @@ const TypeAddInputLabels string = "add_input_labels"
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_input_labels",
 //     "labels": [{
-//       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//       "name": "complaint"
+//       "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+//       "name": "Spam"
 //     }]
 //   }
 // ```

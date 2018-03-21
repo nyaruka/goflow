@@ -81,7 +81,7 @@ var functionsTestAssets = `
 `
 
 func newFuncVisitor(funcType string, output *bytes.Buffer) ast.Visitor {
-	session, err := createExampleSession(functionsTestAssets)
+	session, err := createExampleSession(nil)
 	if err != nil {
 		log.Fatalf("Error creating example session: %s", err)
 	}
