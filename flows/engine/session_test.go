@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
@@ -91,7 +90,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	run := session.Runs()[0]
 
 	for _, test := range tests {
-		eval, err := excellent.EvaluateTemplateAsString(session.Environment(), run.Context(), test.template, false)
+		eval, err := run.EvaluateTemplate(test.template, false)
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 		} else {

@@ -7,8 +7,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/flows"
 )
 
 // the set of assets loaded into the session that function examples are evaluated against
@@ -86,21 +85,17 @@ func newFuncVisitor(funcType string, output *bytes.Buffer) ast.Visitor {
 		log.Fatalf("Error creating example session: %s", err)
 	}
 
-	run := session.Runs()[0]
-
 	return &funcVisitor{
-		prefix:   "@" + funcType,
-		env:      run.Environment(),
-		resolver: run.Context(),
-		output:   output,
+		prefix: "@" + funcType,
+		run:    session.Runs()[0],
+		output: output,
 	}
 }
 
 type funcVisitor struct {
-	prefix   string
-	env      utils.Environment
-	resolver utils.VariableResolver
-	output   *bytes.Buffer
+	prefix string
+	run    flows.FlowRun
+	output *bytes.Buffer
 }
 
 func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
@@ -145,7 +140,7 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 						}
 
 						// evaluate our expression
-						val, err := excellent.EvaluateTemplateAsString(v.env, v.resolver, test, false)
+						val, err := v.run.EvaluateTemplate(test, false)
 						if err != nil && expected != "ERROR" {
 							log.Fatalf("Invalid example: %s  Error: %s", l, err)
 						}

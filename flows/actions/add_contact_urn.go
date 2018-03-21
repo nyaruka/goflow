@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -49,7 +48,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 		return nil
 	}
 
-	evaluatedPath, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Path, false)
+	evaluatedPath, err := run.EvaluateTemplate(a.Path, false)
 
 	// if we received an error, log it although it might just be a non-expression like foo@bar.com
 	if err != nil {

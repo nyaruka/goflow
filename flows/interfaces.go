@@ -342,6 +342,7 @@ type FlowRun interface {
 	Path() []Step
 	PathLocation() (Step, Node, error)
 
+	EvaluateTemplate(template string, urlEncode bool) (string, error)
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string
 	GetTranslatedTextArray(utils.UUID, string, []string, utils.LanguageList) []string

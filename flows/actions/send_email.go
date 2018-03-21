@@ -5,7 +5,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -46,7 +45,7 @@ func (a *SendEmailAction) Validate(assets flows.SessionAssets) error {
 
 // Execute creates the email events
 func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	subject, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Subject, false)
+	subject, err := run.EvaluateTemplate(a.Subject, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -58,7 +57,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
 	subject = regexp.MustCompile(`\s+`).ReplaceAllString(subject, " ")
 
-	body, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body, false)
+	body, err := run.EvaluateTemplate(a.Body, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -70,7 +69,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.
 	evaluatedAddresses := make([]string, 0)
 
 	for _, address := range a.Addresses {
-		evaluatedAddress, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), address, false)
+		evaluatedAddress, err := run.EvaluateTemplate(address, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}
