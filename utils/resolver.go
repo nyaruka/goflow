@@ -46,8 +46,12 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 		key = key[1:]
 	}
 
+	if IsNil(variable) {
+		return fmt.Errorf("can't resolve property %s of nil", key)
+	}
+
 	rest := key
-	for rest != "" && !IsNil(variable) {
+	for rest != "" {
 		key, rest = popNextVariable(rest)
 
 		resolver, isResolver := variable.(VariableResolver)

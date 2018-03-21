@@ -19,6 +19,8 @@ func (r *testResolvable) Resolve(key string) interface{} {
 		return "bar"
 	case "zed":
 		return 123
+	case "missing":
+		return nil
 	default:
 		return fmt.Errorf("no such thing")
 	}
@@ -103,6 +105,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(thing.foo)", "bar", false},
 		{"@(thing.zed)", "123", false},
+		{"@(thing.missing)", "", false},    // missing is nil which becomes empty string
+		{"@(thing.missing.xxx)", "", true}, // but can't look up a property on nil
 		{"@(thing.xxx)", "", true},
 
 		{"@(has_error(array[100]))", "true", false}, // errors are like any other value
