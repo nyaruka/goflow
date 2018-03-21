@@ -90,7 +90,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	run := session.Runs()[0]
 
 	for _, test := range tests {
-		eval, err := run.EvaluateTemplate(test.template, false)
+		eval, err := run.EvaluateTemplateAsString(test.template, false)
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 		} else {

@@ -140,7 +140,7 @@ func (v *funcVisitor) Visit(node ast.Node) ast.Visitor {
 						}
 
 						// evaluate our expression
-						val, err := v.run.EvaluateTemplate(test, false)
+						val, err := v.run.EvaluateTemplateAsString(test, false)
 						if err != nil && expected != "ERROR" {
 							log.Fatalf("Invalid example: %s  Error: %s", l, err)
 						}

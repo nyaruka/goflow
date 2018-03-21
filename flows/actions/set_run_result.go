@@ -46,7 +46,7 @@ func (a *SetRunResultAction) Validate(assets flows.SessionAssets) error {
 func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// get our localized value if any
 	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
-	value, err := run.EvaluateTemplate(template, false)
+	value, err := run.EvaluateTemplateAsString(template, false)
 
 	// log any error received
 	if err != nil {

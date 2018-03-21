@@ -45,7 +45,7 @@ func (a *SendEmailAction) Validate(assets flows.SessionAssets) error {
 
 // Execute creates the email events
 func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	subject, err := run.EvaluateTemplate(a.Subject, false)
+	subject, err := run.EvaluateTemplateAsString(a.Subject, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -57,7 +57,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.
 	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
 	subject = regexp.MustCompile(`\s+`).ReplaceAllString(subject, " ")
 
-	body, err := run.EvaluateTemplate(a.Body, false)
+	body, err := run.EvaluateTemplateAsString(a.Body, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -69,7 +69,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.
 	evaluatedAddresses := make([]string, 0)
 
 	for _, address := range a.Addresses {
-		evaluatedAddress, err := run.EvaluateTemplate(address, false)
+		evaluatedAddress, err := run.EvaluateTemplateAsString(address, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}

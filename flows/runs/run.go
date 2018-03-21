@@ -266,7 +266,12 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *flowRun) EvaluateTemplate(template string, urlEncode bool) (string, error) {
+func (r *flowRun) EvaluateTemplate(template string) (interface{}, error) {
+	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template)
+}
+
+// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
+func (r *flowRun) EvaluateTemplateAsString(template string, urlEncode bool) (string, error) {
 	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, urlEncode)
 }
 

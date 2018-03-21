@@ -54,7 +54,7 @@ func (a *SetContactPropertyAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// get our localized value if any
 	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
-	value, err := run.EvaluateTemplate(template, false)
+	value, err := run.EvaluateTemplateAsString(template, false)
 	value = strings.TrimSpace(value)
 
 	// if we received an error, log it

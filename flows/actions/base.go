@@ -82,7 +82,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 			}
 		} else {
 			// group is an expression that evaluates to an existing group's name
-			evaluatedGroupName, err := run.EvaluateTemplate(ref.NameMatch, false)
+			evaluatedGroupName, err := run.EvaluateTemplateAsString(ref.NameMatch, false)
 			if err != nil {
 				log.Add(events.NewErrorEvent(err))
 			} else {
@@ -122,7 +122,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 			}
 		} else {
 			// label is an expression that evaluates to an existing label's name
-			evaluatedLabelName, err := run.EvaluateTemplate(ref.NameMatch, false)
+			evaluatedLabelName, err := run.EvaluateTemplateAsString(ref.NameMatch, false)
 			if err != nil {
 				log.Add(events.NewErrorEvent(err))
 			} else {
@@ -146,7 +146,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.LanguageList, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []flows.Attachment, []string) {
 	// localize and evaluate the message text
 	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
-	evaluatedText, err := run.EvaluateTemplate(localizedText, false)
+	evaluatedText, err := run.EvaluateTemplateAsString(localizedText, false)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -155,7 +155,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]flows.Attachment, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
-		evaluatedAttachment, err := run.EvaluateTemplate(translatedAttachments[n], false)
+		evaluatedAttachment, err := run.EvaluateTemplateAsString(translatedAttachments[n], false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		} else if evaluatedAttachment == "" {
@@ -169,7 +169,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	translatedQuickReplies := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "quick_replies", actionQuickReplies, languages)
 	evaluatedQuickReplies := make([]string, 0, len(translatedQuickReplies))
 	for n := range translatedQuickReplies {
-		evaluatedQuickReply, err := run.EvaluateTemplate(translatedQuickReplies[n], false)
+		evaluatedQuickReply, err := run.EvaluateTemplateAsString(translatedQuickReplies[n], false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		} else if evaluatedQuickReply == "" {
@@ -213,7 +213,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 
 	// evaluate the legacy variables
 	for _, legacyVar := range actionLegacyVars {
-		evaluatedLegacyVar, err := run.EvaluateTemplate(legacyVar, false)
+		evaluatedLegacyVar, err := run.EvaluateTemplateAsString(legacyVar, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}
