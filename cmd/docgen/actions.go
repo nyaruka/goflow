@@ -61,10 +61,9 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 	}
 
 	// get the events created by this action
-	events, err := eventsForAction(exampleJSON)
+	events, err := eventsForAction(action)
 	if err != nil {
-		//log.Fatalf("Error running action: %s\nHas err: %s", exampleJSON, err)
-		events = json.RawMessage(fmt.Sprintf("error: %s", err.Error()))
+		log.Fatalf("error running action: %s\nHas err: %s", exampleJSON, err)
 	}
 
 	if name != "" {

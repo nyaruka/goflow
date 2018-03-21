@@ -19,7 +19,7 @@ const TypeStartSession string = "start_session"
 //     "type": "start_session",
 //     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Registration"},
 //     "groups": [
-//       {"uuid": "8f8e2cae-3c8d-4dce-9c4b-19514437e427", "name": "New contacts"}
+//       {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
 //     ]
 //   }
 // ```

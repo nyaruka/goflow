@@ -51,6 +51,10 @@ func (n *node) Actions() []flows.Action { return n.actions }
 func (n *node) Exits() []flows.Exit     { return n.exits }
 func (n *node) Wait() flows.Wait        { return n.wait }
 
+func (n *node) AddAction(action flows.Action) {
+	n.actions = append(n.actions, action)
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

@@ -149,8 +149,10 @@ type Flow interface {
 type Node interface {
 	UUID() NodeUUID
 
-	Router() Router
 	Actions() []Action
+	AddAction(Action)
+
+	Router() Router
 	Exits() []Exit
 	Wait() Wait
 }
