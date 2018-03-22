@@ -165,6 +165,7 @@ var startRequestTemplate = `{
 	"assets": %s,
 	"asset_server": {
 		"type_urls": {
+			"field": "http://testserver/assets/field",
 			"flow": "http://testserver/assets/flow",
 			"group": "http://testserver/assets/group"
 		}

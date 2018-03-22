@@ -22,6 +22,18 @@
             }
         },
         {
+            "type": "field",
+            "url": "http://testserver/assets/field",
+            "content": [
+                {
+                    "key": "gender",
+                    "label": "Gender",
+                    "value_type": "text"
+                }
+            ],
+            "is_set": true
+        },
+        {
             "type": "channel",
             "url": "http://testserver/assets/channel",
             "content": [
@@ -39,6 +51,7 @@
     "asset_server": {
 		"type_urls": {
             "channel": "http://testserver/assets/channel",
+            "field": "http://testserver/assets/field",
             "flow": "http://testserver/assets/flow"
 		}
 	},

@@ -143,8 +143,7 @@ var sessionTrigger = `{
         ],
         "fields": {
             "gender": {
-                "value": "Male",
-                "created_on": "2017-05-24T11:31:15.035757258-05:00"
+                "text": "Male"
             }
         }
     }
