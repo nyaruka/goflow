@@ -138,7 +138,7 @@ func (s *xscanner) scanIdentifier() (xToken, string) {
 		topLevel = identifier
 	}
 
-	// ff we end with a period, unread that as well
+	// if we end with a period, unread that as well
 	if len(identifier) > 1 && identifier[len(identifier)-1] == '.' {
 		s.unread('.')
 		identifier = identifier[:len(identifier)-1]

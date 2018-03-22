@@ -75,7 +75,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"My email is foo@bar.com", "My email is foo@bar.com", false},
 
 		// identifier which is valid top-level, errors and isn't echo'ed back
-		{"@string1.missing", "", true},
+		{"@string1.xxx", "", true},
 
 		{"1 + 2", "1 + 2", false},
 		{"@(1 + 2)", "3", false},
@@ -98,7 +98,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(dec1 + dec2)", "4", false},
 
-		{"@(TITLE(string1.missing))", "", true},
+		{"@(TITLE(missing))", "", true},
+		{"@(TITLE(string1.xxx))", "", true},
 
 		{"@array", "one, two, three", false},
 		{"@array[0]", "one, two, three[0]", false}, // [n] notation not supported outside expression
