@@ -9,12 +9,14 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/gen"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-var topLevelScopes = []string{"contact", "child", "parent", "run", "trigger"}
+// allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
+var legacyContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
 
 // ExtraVarsMapping defines how @extra.* variables should be migrated
 type ExtraVarsMapping int
@@ -339,7 +341,7 @@ func isDate(operand string) bool {
 }
 
 func wrapRawExpression(raw string) string {
-	for _, topLevel := range topLevelScopes {
+	for _, topLevel := range runs.RunContextTopLevels {
 		if strings.HasPrefix(raw, topLevel+".") || raw == topLevel {
 			return "@" + raw
 		}
@@ -357,7 +359,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors excellent.TemplateErrors
-	scanner := excellent.NewXScanner(strings.NewReader(template))
+	scanner := excellent.NewXScanner(strings.NewReader(template), legacyContextTopLevels)
 
 	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {

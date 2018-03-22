@@ -267,12 +267,12 @@ func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // EvaluateTemplate evaluates the given template in the context of this run
 func (r *flowRun) EvaluateTemplate(template string) (interface{}, error) {
-	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template)
+	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, RunContextTopLevels)
 }
 
 // EvaluateTemplateAsString evaluates the given template as a string in the context of this run
 func (r *flowRun) EvaluateTemplateAsString(template string, urlEncode bool) (string, error) {
-	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, urlEncode)
+	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, urlEncode, RunContextTopLevels)
 }
 
 func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {

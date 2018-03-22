@@ -59,6 +59,10 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},
 		{"@trigger.params.coupons.0.code", "AAA-BBB-CCC", false},
+
+		// non-expressions
+		{"bob@nyaruka.com", "bob@nyaruka.com", false},
+		{"@twitter_handle", "@twitter_handle", false},
 	}
 
 	assetsJSON, err := ioutil.ReadFile("testdata/assets.json")

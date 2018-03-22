@@ -37,16 +37,32 @@ func isIdentifierChar(ch rune) bool {
 	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '.' || ch == '_'
 }
 
-// xscanner represents a lexical scanner.
-type xscanner struct {
-	r           *bufio.Reader
-	unreadRunes []rune
-	unreadCount int
+// IsValidIdentifier returns whether the given path (e.g. foo.bar) is valid identifier
+func IsValidIdentifier(path string, allowedTopLevels []string) bool {
+	topLevelVar := strings.Split(path, ".")[0]
+	for _, validTopLevel := range allowedTopLevels {
+		if topLevelVar == validTopLevel {
+			return true
+		}
+	}
+	return false
 }
 
-// NewXScanner returns a new instance of Scanner.
-func NewXScanner(r io.Reader) *xscanner {
-	return &xscanner{r: bufio.NewReader(r), unreadRunes: make([]rune, 4)}
+// xscanner represents a lexical scanner.
+type xscanner struct {
+	reader              *bufio.Reader
+	unreadRunes         []rune
+	unreadCount         int
+	identifierTopLevels []string
+}
+
+// NewXScanner returns a new instance of our excellent scanner
+func NewXScanner(r io.Reader, identifierTopLevels []string) *xscanner {
+	return &xscanner{
+		reader:              bufio.NewReader(r),
+		unreadRunes:         make([]rune, 4),
+		identifierTopLevels: identifierTopLevels,
+	}
 }
 
 // gets the next rune or EOF if we are at the end of the string
@@ -59,7 +75,7 @@ func (s *xscanner) read() rune {
 	}
 
 	// otherwise, read the next run
-	ch, _, err := s.r.ReadRune()
+	ch, _, err := s.reader.ReadRune()
 	if err != nil {
 		return eof
 	}
@@ -110,10 +126,15 @@ func (s *xscanner) scanExpression() (xToken, string) {
 // our read should be after the '@'
 func (s *xscanner) scanIdentifier() (xToken, string) {
 	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
+	var buf strings.Builder
+	var topLevel string
 
 	// Read every subsequent character until we reach the end of the identifier
 	for ch := s.read(); ch != eof; ch = s.read() {
+		if ch == '.' && topLevel == "" {
+			topLevel = buf.String()
+		}
+
 		if isIdentifierChar(ch) {
 			buf.WriteRune(ch)
 		} else {
@@ -122,14 +143,31 @@ func (s *xscanner) scanIdentifier() (xToken, string) {
 		}
 	}
 
-	// If we end with a period, unread that as well
 	identifier := buf.String()
+
+	if topLevel == "" {
+		topLevel = identifier
+	}
+
+	// ff we end with a period, unread that as well
 	if len(identifier) > 1 && identifier[len(identifier)-1] == '.' {
 		s.unread('.')
 		identifier = identifier[:len(identifier)-1]
 	}
 
-	return IDENTIFIER, identifier
+	// only return as an identifier if the toplevel scope is valid
+	if s.identifierTopLevels != nil {
+		for _, validTopLevel := range s.identifierTopLevels {
+			if topLevel == validTopLevel {
+				return IDENTIFIER, identifier
+			}
+		}
+	} else {
+		return IDENTIFIER, identifier
+	}
+
+	// this was something that looked like an identifier but wasn't an allowed top-level variable, e.g. email address
+	return BODY, fmt.Sprintf("@%s", identifier)
 }
 
 // scanBody consumes the current body until we reach the end of the file or the start of an expression
@@ -243,10 +281,10 @@ func EvaluateExpression(env utils.Environment, resolver utils.VariableResolver, 
 // EvaluateTemplate tries to evaluate the passed in template into an object, this only works if the template
 // is a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In cases
 // which are not a single identifier or expression, we return the stringified value
-func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
+func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, template string, allowedTopLevels []string) (interface{}, error) {
 	var buf bytes.Buffer
 	template = strings.TrimSpace(template)
-	scanner := NewXScanner(strings.NewReader(template))
+	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
 
 	// parse our first token
 	tokenType, token := scanner.Scan()
@@ -256,7 +294,7 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 
 	// if we had one, then just return our string evaluation strategy
 	if nextTT != EOF {
-		return EvaluateTemplateAsString(env, resolver, template, false)
+		return EvaluateTemplateAsString(env, resolver, template, false, allowedTopLevels)
 	}
 
 	switch tokenType {
@@ -290,14 +328,14 @@ func EvaluateTemplate(env utils.Environment, resolver utils.VariableResolver, te
 	}
 
 	// different type of token, return the string representation
-	return EvaluateTemplateAsString(env, resolver, template, false)
+	return EvaluateTemplateAsString(env, resolver, template, false, allowedTopLevels)
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableResolver, template string, urlEncode bool) (string, error) {
+func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableResolver, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
-	scanner := NewXScanner(strings.NewReader(template))
+	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -314,8 +352,6 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.VariableReso
 
 			// we got an error, return our raw variable
 			if isErr {
-				buf.WriteString("@")
-				buf.WriteString(token)
 				errors = append(errors, err)
 			} else {
 				strValue, _ := utils.ToString(env, value)

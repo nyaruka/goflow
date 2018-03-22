@@ -36,7 +36,7 @@ func (r *testResolvable) String() string {
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 
-	vars := utils.NewMapResolver(map[string]interface{}{
+	varMap := map[string]interface{}{
 		"string1": "foo",
 		"string2": "bar",
 		"汉字":      "simplified chinese",
@@ -47,7 +47,13 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"words":   "one two three",
 		"array":   []string{"one", "two", "three"},
 		"thing":   &testResolvable{},
-	})
+	}
+	vars := utils.NewMapResolver(varMap)
+
+	keys := make([]string, 0, len(varMap))
+	for key := range varMap {
+		keys = append(keys, key)
+	}
 
 	evaluateAsStringTests := []struct {
 		template string
@@ -58,13 +64,18 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(\"hello\\nworld\")", "hello\nworld", false},
 		{"@(\"hello😁world\")", "hello😁world", false},
 		{"@(\"hello\\U0001F601world\")", "hello😁world", false},
-		{"@hello", "@hello", true},
-		{"@hello.bar", "@hello.bar", true},
 		{"@(title(\"hello\"))", "Hello", false},
 		{"@(title(hello))", "", true},
 		{"Hello @(title(string1))", "Hello Foo", false},
 		{"Hello @@string1", "Hello @string1", false},
-		{"My email is foo@bar.com", "My email is foo@bar.com", true},
+
+		// an identifier which isn't valid top-level is ignored completely
+		{"@hello", "@hello", false},
+		{"@hello.bar", "@hello.bar", false},
+		{"My email is foo@bar.com", "My email is foo@bar.com", false},
+
+		// identifier which is valid top-level, errors and isn't echo'ed back
+		{"@string1.missing", "", true},
 
 		{"1 + 2", "1 + 2", false},
 		{"@(1 + 2)", "3", false},
@@ -73,7 +84,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@string1@string2", "foobar", false},
 		{"@(string1 & string2)", "foobar", false},
 		{"@string1.@string2", "foo.bar", false},
-		{"@string1.@string2.@string3", "foo.bar.@string3", true},
+		{"@string1.@string2.@string3", "foo.bar.@string3", false},
 
 		{"@(汉字)", "simplified chinese", false},
 		{"@(string1", "@(string1", false},
@@ -87,8 +98,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(dec1 + dec2)", "4", false},
 
-		{"@missing", "@missing", true},
-		{"@(TITLE(missing))", "", true},
+		{"@(TITLE(string1.missing))", "", true},
 
 		{"@array", "one, two, three", false},
 		{"@array[0]", "one, two, three[0]", false}, // [n] notation not supported outside expression
@@ -117,7 +127,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evaluateAsStringTests {
-		eval, err := EvaluateTemplateAsString(env, vars, test.template, false)
+		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, keys)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -167,6 +177,11 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	vars := utils.NewMapResolver(varMap)
 
+	keys := make([]string, 0, len(varMap))
+	for key := range varMap {
+		keys = append(keys, key)
+	}
+
 	env := utils.NewDefaultEnvironment()
 
 	evaluateTests := []struct {
@@ -175,7 +190,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		hasError bool
 	}{
 		{"hello world", "hello world", false},
-		{"@hello", "@hello", true},
+		{"@hello", "@hello", false},
 		{"@(title(\"hello\"))", "Hello", false},
 
 		{"@dec1", 1.5, false},
@@ -269,7 +284,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 
 	for _, test := range evaluateTests {
-		eval, err := EvaluateTemplate(env, vars, test.template)
+		eval, err := EvaluateTemplate(env, vars, test.template, keys)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -297,7 +312,7 @@ func TestEvaluateTemplate(t *testing.T) {
 }
 
 func TestScanner(t *testing.T) {
-	scanner := NewXScanner(strings.NewReader("12"))
+	scanner := NewXScanner(strings.NewReader("12"), []string{})
 
 	if scanner.read() != '1' {
 		t.Errorf("Expected '1'")

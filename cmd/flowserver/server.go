@@ -322,7 +322,7 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 	context := utils.JSONFragment(expression.Context)
 
 	// evaluate it
-	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, false)
+	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, false, nil)
 	if err != nil {
 		return expressionResponse{Result: result, Errors: []string{err.Error()}}, nil
 	}
