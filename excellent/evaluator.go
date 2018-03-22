@@ -37,17 +37,6 @@ func isIdentifierChar(ch rune) bool {
 	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '.' || ch == '_'
 }
 
-// IsValidIdentifier returns whether the given path (e.g. foo.bar) is valid identifier
-func IsValidIdentifier(path string, allowedTopLevels []string) bool {
-	topLevelVar := strings.Split(path, ".")[0]
-	for _, validTopLevel := range allowedTopLevels {
-		if topLevelVar == validTopLevel {
-			return true
-		}
-	}
-	return false
-}
-
 // xscanner represents a lexical scanner.
 type xscanner struct {
 	reader              *bufio.Reader
