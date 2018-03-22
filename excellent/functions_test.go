@@ -117,12 +117,12 @@ var funcTests = []struct {
 	{"title", []interface{}{struct{}{}}, nil, true},
 	{"title", []interface{}{}, nil, true},
 
-	{"word", []interface{}{"hello World", 2}, "World", false},
-	{"word", []interface{}{"", 1}, "", true},
-	{"word", []interface{}{"😁 hello World", 1}, "😁", false},
-	{"word", []interface{}{" hello World", 3}, nil, true},
+	{"word", []interface{}{"hello World", 1}, "World", false},
+	{"word", []interface{}{"", 0}, "", true},
+	{"word", []interface{}{"😁 hello World", 0}, "😁", false},
+	{"word", []interface{}{" hello World", 2}, nil, true},
 	{"word", []interface{}{"hello World", struct{}{}}, nil, true},
-	{"word", []interface{}{struct{}{}, 3}, nil, true},
+	{"word", []interface{}{struct{}{}, 2}, nil, true},
 	{"word", []interface{}{struct{}{}}, nil, true},
 	{"word", []interface{}{}, nil, true},
 

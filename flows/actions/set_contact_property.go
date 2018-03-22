@@ -20,7 +20,7 @@ const TypeSetContactProperty string = "set_contact_property"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "set_contact_property",
-//     "field_name": "language",
+//     "property": "language",
 //     "value": "eng"
 //   }
 // ```
@@ -28,8 +28,8 @@ const TypeSetContactProperty string = "set_contact_property"
 // @action set_contact_property
 type SetContactPropertyAction struct {
 	BaseAction
-	FieldName string `json:"field_name"    validate:"required,eq=name|eq=language"`
-	Value     string `json:"value"`
+	Property string `json:"property" validate:"required,eq=name|eq=language"`
+	Value    string `json:"value"`
 }
 
 // Type returns the type of this action
@@ -38,7 +38,7 @@ func (a *SetContactPropertyAction) Type() string { return TypeSetContactProperty
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactPropertyAction) Validate(assets flows.SessionAssets) error {
 	// check language is valid if specified
-	if a.FieldName == "language" && a.Value != "" {
+	if a.Property == "language" && a.Value != "" {
 		if _, err := utils.ParseLanguage(a.Value); err != nil {
 			return err
 		}
@@ -64,6 +64,6 @@ func (a *SetContactPropertyAction) Execute(run flows.FlowRun, step flows.Step, l
 		return nil
 	}
 
-	log.Add(events.NewContactPropertyChangedEvent(a.FieldName, value))
+	log.Add(events.NewContactPropertyChangedEvent(a.Property, value))
 	return nil
 }

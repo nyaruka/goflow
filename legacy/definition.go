@@ -397,7 +397,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 	case "lang":
 		return &actions.SetContactPropertyAction{
-			FieldName:  "language",
+			Property:   "language",
 			Value:      string(a.Language),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
@@ -542,7 +542,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 
 			return &actions.SetContactPropertyAction{
-				FieldName:  "name",
+				Property:   "name",
 				Value:      migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil

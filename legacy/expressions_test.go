@@ -91,6 +91,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
 		{old: "@(\"this\" & contact.that)", new: "@(\"this\" & contact.fields.that)"},
 		{old: "@(FIRST_WORD(flow.blerg))", new: "@(split(run.results.blerg, \" \")[0])"},
+		{old: "@(WORD(flow.blerg, flow.index))", new: "@(word(run.results.blerg, run.results.index - 1))"},
+		{old: "@(WORD(flow.blerg, 1))", new: "@(word(run.results.blerg, 1 - 1))"},
 		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2))"},
 		{old: "@(ABS(-5))", new: "@(abs(-5))"},
 		{old: "@(AVERAGE(1, 2, 3, 4, 5))", new: "@(mean(1, 2, 3, 4, 5))"},
