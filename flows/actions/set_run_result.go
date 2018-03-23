@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -47,7 +46,7 @@ func (a *SetRunResultAction) Validate(assets flows.SessionAssets) error {
 func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// get our localized value if any
 	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
-	value, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), template, false)
+	value, err := run.EvaluateTemplateAsString(template, false)
 
 	// log any error received
 	if err != nil {

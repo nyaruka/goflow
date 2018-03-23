@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -263,6 +264,16 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 }
 
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
+
+// EvaluateTemplate evaluates the given template in the context of this run
+func (r *flowRun) EvaluateTemplate(template string) (interface{}, error) {
+	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, RunContextTopLevels)
+}
+
+// EvaluateTemplateAsString evaluates the given template as a string in the context of this run
+func (r *flowRun) EvaluateTemplateAsString(template string, urlEncode bool) (string, error) {
+	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, urlEncode, RunContextTopLevels)
+}
 
 func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})

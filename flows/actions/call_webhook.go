@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -51,7 +50,7 @@ func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// substitute any variables in our url
-	url, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.URL, true)
+	url, err := run.EvaluateTemplateAsString(a.URL, true)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
@@ -63,7 +62,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	// substitute any body variables
 	body := a.Body
 	if body != "" {
-		body, err = excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), a.Body, false)
+		body, err = run.EvaluateTemplateAsString(a.Body, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}
@@ -78,7 +77,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 
 	// add our headers, substituting any template vars
 	for key, value := range a.Headers {
-		headerValue, err := excellent.EvaluateTemplateAsString(run.Environment(), run.Context(), value, false)
+		headerValue, err := run.EvaluateTemplateAsString(value, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}

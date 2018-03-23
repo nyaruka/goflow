@@ -21,7 +21,7 @@ func main() {
 
 	env := utils.NewDefaultEnvironment()
 
-	val, err := excellent.EvaluateTemplateAsString(env, utils.NewMapResolver(vars), os.Args[1], false)
+	val, err := excellent.EvaluateTemplateAsString(env, utils.NewMapResolver(vars), os.Args[1], false, nil)
 
 	fmt.Printf("Value: %s\n", val)
 	if err != nil {

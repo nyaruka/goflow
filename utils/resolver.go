@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -47,8 +48,12 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 	}
 
 	rest := key
-	for rest != "" && !IsNil(variable) {
+	for rest != "" {
 		key, rest = popNextVariable(rest)
+
+		if IsNil(variable) {
+			return fmt.Errorf("can't resolve key '%s' of nil", key)
+		}
 
 		resolver, isResolver := variable.(VariableResolver)
 
@@ -61,11 +66,7 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 				return err
 			}
 
-			continue
-		}
-
-		// we are a slice
-		if IsSlice(variable) {
+		} else if IsSlice(variable) {
 			idx, err := strconv.Atoi(key)
 			if err != nil {
 				return err
@@ -75,19 +76,16 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 			if err != nil {
 				return err
 			}
-			continue
-		}
 
-		// we are a map
-		if IsMap(variable) {
+		} else if IsMap(variable) {
 			variable, err = LookupKey(variable, key)
 			if err != nil {
 				return err
 			}
-			continue
-		}
 
-		variable = fmt.Sprintf("%s.%s", variable, key)
+		} else {
+			return fmt.Errorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
+		}
 	}
 
 	return variable
@@ -148,7 +146,7 @@ func NewMapResolver(values map[string]interface{}) VariableResolver {
 func (r *mapResolver) Resolve(key string) interface{} {
 	val, found := r.values[key]
 	if !found {
-		return fmt.Errorf("No key '%s' in map", key)
+		return fmt.Errorf("no key '%s' in map", key)
 	}
 	return val
 }
