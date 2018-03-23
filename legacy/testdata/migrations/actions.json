@@ -119,7 +119,7 @@
         "expected_action": {
             "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "field_name": "language",
+            "property": "language",
             "value": "fra"
         },
         "expected_localization": {}
@@ -190,7 +190,7 @@
         "expected_action": {
             "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "field_name": "name",
+            "property": "name",
             "value": "Bob @run.input"
         },
         "expected_localization": {}
@@ -206,7 +206,7 @@
         "expected_action": {
             "type": "set_contact_property",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "field_name": "name",
+            "property": "name",
             "value": "@run.input @(word_slice(contact.name, 2, -1))"
         },
         "expected_localization": {}

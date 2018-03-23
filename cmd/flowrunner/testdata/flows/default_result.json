@@ -48,7 +48,7 @@
                         {
                             "type": "set_contact_property",
                             "uuid": "aafb505c-603d-4025-864d-471345ed236d",
-                            "field_name": "name",
+                            "property": "name",
                             "value": "@run.results.contact_name"
                         },
                         {
@@ -58,7 +58,7 @@
                                 "key": "first_name",
                                 "label": "First Name"
                             },
-                            "value": "@(WORD(run.results.contact_name, 1))"
+                            "value": "@(WORD(run.results.contact_name, 0))"
                         },
                         {
                             "type": "send_msg",

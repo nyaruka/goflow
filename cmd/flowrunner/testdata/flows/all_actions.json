@@ -155,7 +155,7 @@
                         {
                             "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
                             "type": "set_contact_property",
-                            "field_name": "language",
+                            "property": "language",
                             "value": "eng"
                         },
                         {

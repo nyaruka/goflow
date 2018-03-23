@@ -804,11 +804,11 @@ func Title(env utils.Environment, args ...interface{}) interface{} {
 	return strings.Title(arg)
 }
 
-// Word returns the word at the passed in `offset` for the passed in `string`, 1 indexed
+// Word returns the word at the passed in `offset` for the passed in `string`
 //
-//   @(word("foo bar", 1)) -> "foo"
-//   @(word("foo.bar", 1)) -> "foo"
-//   @(word("one two.three", 3)) -> "three"
+//   @(word("foo bar", 0)) -> "foo"
+//   @(word("foo.bar", 0)) -> "foo"
+//   @(word("one two.three", 2)) -> "three"
 //
 // @function word(string, offset)
 func Word(env utils.Environment, args ...interface{}) interface{} {
@@ -827,11 +827,11 @@ func Word(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	words := utils.TokenizeString(val)
-	if word-1 >= len(words) {
+	if word >= len(words) {
 		return fmt.Errorf("Word offset %d is greater than number of words %d", word, len(words))
 	}
 
-	return words[word-1]
+	return words[word]
 }
 
 // RemoveFirstWord removes the 1st word of `string`

@@ -67,7 +67,7 @@
                         {
                             "uuid": "455ba297-f6d2-45e6-bf3e-c1ef028b55ae",
                             "type": "set_contact_property",
-                            "field_name": "name",
+                            "property": "name",
                             "value": "@run.input.text"
                         },
                         {

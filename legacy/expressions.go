@@ -176,6 +176,7 @@ var functionTemplates = map[string]functionTemplate{
 	"first_word": {name: "split", params: "(%s, \" \")[0]"},
 	"datevalue":  {name: "date"},
 	"edate":      {name: "date_add", params: "(%s, \"m\", %s)"},
+	"word":       {name: "word", params: "(%s, %s - 1)"},
 	"word_slice": {name: "word_slice", params: "(%s, %s)", three: "(%s, %s, %s)", four: "(%s, %s, %s, %v)"},
 	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
 	"datedif":    {name: "date_diff"},
