@@ -151,6 +151,10 @@ func (c *Contact) String() string {
 
 var _ utils.VariableResolver = (*Contact)(nil)
 
+func (c *Contact) SetField(env utils.Environment, field *Field, rawValue string) {
+	c.fields.save(env, field, rawValue)
+}
+
 // UpdatePreferredChannel updates the preferred channel
 func (c *Contact) UpdatePreferredChannel(channel Channel) {
 	priorityURNs := make([]*ContactURN, 0)

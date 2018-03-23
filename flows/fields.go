@@ -48,31 +48,6 @@ func NewField(key FieldKey, label string, valueType FieldValueType) *Field {
 // Key returns the key of the field
 func (f *Field) Key() FieldKey { return f.key }
 
-// ParseValue returns a parsed field value for the given input
-func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, error) {
-	switch f.valueType {
-	case FieldValueTypeText:
-		return value, nil
-	case FieldValueTypeDatetime:
-		return utils.DateFromString(env, value)
-	case FieldValueTypeDecimal:
-		return decimal.NewFromString(value)
-	case FieldValueTypeState, FieldValueTypeDistrict, FieldValueTypeWard:
-		locationID := utils.LocationID(value)
-		locationLevel := fieldLocationLevels[f.valueType]
-		locations, err := env.Locations()
-		if err != nil {
-			return nil, err
-		}
-		if locations == nil {
-			return nil, fmt.Errorf("can't parse field '%s' (type %s) in environment which is not location enabled", f.key, f.valueType)
-		}
-		return locations.FindByID(locationID, locationLevel), nil
-	}
-
-	return nil, fmt.Errorf("field %s has invalid value type: '%s'", f.key, f.valueType)
-}
-
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
@@ -142,15 +117,15 @@ func (f FieldValues) Clone() FieldValues {
 }
 
 // Save saves a new field value
-func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) error {
+func (f FieldValues) save(env utils.Environment, field *Field, rawValue string) {
 	var asDatetime *time.Time
 	var asDecimal *decimal.Decimal
 
-	if parsedDecimal, err := decimal.NewFromString(rawValue); err == nil {
+	if parsedDecimal, err := utils.ToDecimal(env, rawValue); err == nil {
 		asDecimal = &parsedDecimal
 	}
 
-	if parsedDatetime, err := utils.DateFromString(env, rawValue); err == nil {
+	if parsedDatetime, err := utils.ToDate(env, rawValue); err == nil {
 		asDatetime = &parsedDatetime
 	}
 
@@ -162,7 +137,6 @@ func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) 
 		datetime: asDatetime,
 		decimal:  asDecimal,
 	}
-	return nil
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression

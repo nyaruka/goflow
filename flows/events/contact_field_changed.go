@@ -58,7 +58,7 @@ func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
 		return err
 	}
 
-	run.Contact().Fields().Save(run.Environment(), field, e.Value)
+	run.Contact().SetField(run.Environment(), field, e.Value)
 
 	return run.Contact().UpdateDynamicGroups(run.Session())
 }
