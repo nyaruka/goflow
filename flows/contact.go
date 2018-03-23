@@ -3,12 +3,13 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/shopspring/decimal"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 // Contact represents a single contact
