@@ -101,14 +101,15 @@ func (v *FieldValue) Default() interface{} {
 
 // String returns the string representation of this field value
 func (v *FieldValue) String() string {
-	return v.text
+	str, _ := utils.ToString(nil, v.TypedValue())
+	return str
 }
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[FieldKey]*FieldValue
 
 // Clone returns a clone of this set of field values
-func (f FieldValues) Clone() FieldValues {
+func (f FieldValues) clone() FieldValues {
 	clone := make(FieldValues, len(f))
 	for k, v := range f {
 		clone[k] = v
@@ -116,8 +117,7 @@ func (f FieldValues) Clone() FieldValues {
 	return clone
 }
 
-// Save saves a new field value
-func (f FieldValues) save(env utils.Environment, field *Field, rawValue string) {
+func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue string) {
 	var asDatetime *time.Time
 	var asDecimal *decimal.Decimal
 
@@ -141,7 +141,11 @@ func (f FieldValues) save(env utils.Environment, field *Field, rawValue string) 
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(key string) interface{} {
-	return f[FieldKey(key)]
+	val, exists := f[FieldKey(key)]
+	if !exists {
+		return fmt.Errorf("no such contact field '%s'", key)
+	}
+	return val
 }
 
 // Default returns the value of this set of field values when it is the result of an expression

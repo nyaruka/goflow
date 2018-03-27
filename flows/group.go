@@ -93,7 +93,7 @@ func NewGroupList(groups []*Group) *GroupList {
 }
 
 // Clone returns a clone of this group list
-func (l *GroupList) Clone() *GroupList {
+func (l *GroupList) clone() *GroupList {
 	groups := make([]*Group, len(l.groups))
 	copy(groups, l.groups)
 	return NewGroupList(groups)

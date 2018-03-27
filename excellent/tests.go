@@ -146,7 +146,7 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 //
 //   @(has_error(date("foo"))) -> true
 //   @(has_error(run.not.existing)) -> true
-//   @(has_error(contact.fields.unset)) -> false
+//   @(has_error(contact.fields.unset)) -> true
 //   @(has_error("hello")) -> false
 //
 // @test has_error(value)

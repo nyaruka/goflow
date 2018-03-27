@@ -45,9 +45,9 @@ func (c *Contact) Clone() *Contact {
 		name:     c.name,
 		language: c.language,
 		timezone: c.timezone,
-		urns:     c.urns.Clone(),
-		groups:   c.groups.Clone(),
-		fields:   c.fields.Clone(),
+		urns:     c.urns.clone(),
+		groups:   c.groups.clone(),
+		fields:   c.fields.clone(),
 	}
 }
 
@@ -152,8 +152,9 @@ func (c *Contact) String() string {
 
 var _ utils.VariableResolver = (*Contact)(nil)
 
-func (c *Contact) SetField(env utils.Environment, field *Field, rawValue string) {
-	c.fields.save(env, field, rawValue)
+// SetField updates the given contact field value for this contact
+func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
+	c.fields.setValue(env, field, rawValue)
 }
 
 // UpdatePreferredChannel updates the preferred channel
