@@ -86,11 +86,6 @@ func (t XTestResult) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
-// Default returns the value of this result when it is the result of an expression
-func (t XTestResult) Default() interface{} {
-	return t.matched
-}
-
 // String satisfies the utils.VariableResolver interface, we always default to whether we matched
 func (t XTestResult) String() string {
 	return strconv.FormatBool(t.matched)
@@ -398,11 +393,6 @@ func (m patternMatch) Resolve(key string) interface{} {
 	}
 
 	return fmt.Errorf("no such key '%s' on pattern match", key)
-}
-
-// Default returns the value of this match when it is the result of an expression
-func (m patternMatch) Default() interface{} {
-	return m[0]
 }
 
 func (m patternMatch) String() string {

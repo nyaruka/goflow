@@ -32,11 +32,6 @@ func (t *baseTrigger) Resolve(key string) interface{} {
 	return fmt.Errorf("No such field '%s' on trigger", key)
 }
 
-// Default returns the value of this trigger when it is the result of an expression
-func (t *baseTrigger) Default() interface{} {
-	return t
-}
-
 func (t *baseTrigger) String() string {
 	return string(t.flow.UUID())
 }

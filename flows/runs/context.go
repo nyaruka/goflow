@@ -37,11 +37,6 @@ func (c *runContext) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on context", key)
 }
 
-// Default returns the value of this context when it is the result of an expression
-func (c *runContext) Default() interface{} {
-	return c
-}
-
 func (c *runContext) String() string {
 	return c.run.UUID().String()
 }
@@ -75,10 +70,6 @@ func (c *relatedRunContext) Resolve(key string) interface{} {
 	}
 
 	return fmt.Errorf("no field '%s' on related run", key)
-}
-
-func (c *relatedRunContext) Default() interface{} {
-	return c
 }
 
 func (c *relatedRunContext) String() string {

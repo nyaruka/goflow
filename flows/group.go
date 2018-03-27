@@ -74,9 +74,6 @@ func (g *Group) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on group", key)
 }
 
-// Default returns the value of this group when it is the result of an expression
-func (g *Group) Default() interface{} { return g }
-
 // String satisfies the stringer interface returning the name of the group
 func (g *Group) String() string { return g.name }
 
@@ -154,11 +151,6 @@ func (l *GroupList) Resolve(key string) interface{} {
 		return l.groups[i]
 	}
 	return nil
-}
-
-// Default returns the value of this group list when it is the result of an expression
-func (l GroupList) Default() interface{} {
-	return l
 }
 
 // String stringifies the group list, joining our names with a comma

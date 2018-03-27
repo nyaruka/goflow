@@ -140,11 +140,6 @@ func (c *Contact) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on contact", key)
 }
 
-// Default returns the value of this contact when it is the result of an expression
-func (c *Contact) Default() interface{} {
-	return c
-}
-
 // String returns our string value in the context
 func (c *Contact) String() string {
 	return c.name

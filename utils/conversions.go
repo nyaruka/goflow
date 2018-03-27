@@ -235,15 +235,6 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case fmt.Stringer:
 		return ToFragment(json.Marshal(val.String()))
 
-	case VariableResolver:
-		// this checks that we aren't getting into an infinite loop
-		valDefault := val.Default()
-		valResolver, isResolver := valDefault.(VariableResolver)
-		if isResolver && reflect.DeepEqual(valResolver, val) {
-			return EmptyJSONFragment, fmt.Errorf("Loop found in ToJSON of '%s' with value '%+v'", reflect.TypeOf(val), val)
-		}
-		return ToJSON(env, valDefault)
-
 	case []string:
 		return ToFragment(json.Marshal(val))
 
@@ -318,15 +309,6 @@ func ToString(env Environment, val interface{}) (string, error) {
 
 	case fmt.Stringer:
 		return val.String(), nil
-
-	case VariableResolver:
-		// this checks that we aren't getting into an infinite loop
-		valDefault := val.Default()
-		valResolver, isResolver := valDefault.(VariableResolver)
-		if isResolver && reflect.DeepEqual(valResolver, val) {
-			return "", fmt.Errorf("Loop found in ToString of '%s' with value '%+v'", reflect.TypeOf(val), val)
-		}
-		return ToString(env, valDefault)
 
 	case Location:
 		return val.Name(), nil

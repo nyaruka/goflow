@@ -40,8 +40,6 @@ func (a Attachment) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on attachment", key)
 }
 
-// Default returns the value of this attachment when it is the result of an expression
-func (a Attachment) Default() interface{} { return a }
-func (a Attachment) String() string       { return a.URL() }
+func (a Attachment) String() string { return a.URL() }
 
 var _ utils.VariableResolver = (Attachment)("")

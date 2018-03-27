@@ -115,11 +115,6 @@ func (v *varMapper) Resolve(key string) interface{} {
 	return strings.Join(newPath, ".")
 }
 
-// Default returns the value of this mapper when it is the result of an expression
-func (v *varMapper) Default() interface{} {
-	return v.base
-}
-
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]
 	if exists {
@@ -144,11 +139,6 @@ func (m *extraMapper) Resolve(key string) interface{} {
 	}
 	newPath = append(newPath, key)
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
-}
-
-// Default returns the value of this extra mapper when it is the result of an expression
-func (m *extraMapper) Default() interface{} {
-	return m
 }
 
 func (m *extraMapper) String() string {

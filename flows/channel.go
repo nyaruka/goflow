@@ -90,11 +90,6 @@ func (c *channel) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on channel", key)
 }
 
-// Default returns the value of this channel when it is the result of an expression
-func (c *channel) Default() interface{} {
-	return c
-}
-
 // String returns the default string value for a channel, which is its name
 func (c *channel) String() string {
 	return c.name

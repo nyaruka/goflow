@@ -41,11 +41,6 @@ func (r *Result) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on result", key)
 }
 
-// Default returns the value of this result when it is the result of an expression
-func (r *Result) Default() interface{} {
-	return r.Value
-}
-
 // String returns the string representation of a result, which is our value
 func (r *Result) String() string {
 	return r.Value
@@ -92,11 +87,6 @@ func (r Results) Resolve(key string) interface{} {
 	}
 
 	return result
-}
-
-// Default returns the value of this result set when it is the result of an expression
-func (r Results) Default() interface{} {
-	return r
 }
 
 // String returns the string representation of our Results, which is a key/value pairing of our fields

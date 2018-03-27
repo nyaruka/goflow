@@ -94,11 +94,6 @@ func (v *FieldValue) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on field value", key)
 }
 
-// Default returns the value of this field value when it is the result of an expression
-func (v *FieldValue) Default() interface{} {
-	return v.TypedValue()
-}
-
 // String returns the string representation of this field value
 func (v *FieldValue) String() string {
 	str, _ := utils.ToString(nil, v.TypedValue())
@@ -146,11 +141,6 @@ func (f FieldValues) Resolve(key string) interface{} {
 		return fmt.Errorf("no such contact field '%s'", key)
 	}
 	return val
-}
-
-// Default returns the value of this set of field values when it is the result of an expression
-func (f FieldValues) Default() interface{} {
-	return f
 }
 
 // String returns the string representation of these Fields, which is our JSON representation

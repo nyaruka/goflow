@@ -108,11 +108,6 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on webhook", key)
 }
 
-// Default returns the value of this webhook when it is the result of an expression
-func (r *RequestResponse) Default() interface{} {
-	return r
-}
-
 func (r *RequestResponse) String() string {
 	return r.body
 }

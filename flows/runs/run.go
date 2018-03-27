@@ -337,11 +337,6 @@ func (r *flowRun) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on run", key)
 }
 
-// Default returns the value of this run when it is the result of an expression
-func (r *flowRun) Default() interface{} {
-	return r
-}
-
 // String returns the default string value for this run, which is just our UUID
 func (r *flowRun) String() string {
 	return string(r.uuid)

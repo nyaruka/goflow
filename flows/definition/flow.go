@@ -96,11 +96,6 @@ func (f *flow) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on flow", key)
 }
 
-// Default returns the value of this flow when it is the result of an expression
-func (f *flow) Default() interface{} {
-	return f
-}
-
 // String returns the default string value for this flow, which is just our name
 func (f *flow) String() string {
 	return f.name

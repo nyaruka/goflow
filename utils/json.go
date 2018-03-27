@@ -71,11 +71,6 @@ func (j JSONFragment) Resolve(key string) interface{} {
 	return JSONFragment(val)
 }
 
-// Default returns the value of this JSON fragment when it is the result of an expression
-func (j JSONFragment) Default() interface{} {
-	return j
-}
-
 var _ VariableResolver = EmptyJSONFragment
 
 // String returns the string representation of this JSON, which is just the JSON itself

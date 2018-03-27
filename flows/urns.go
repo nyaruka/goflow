@@ -60,9 +60,6 @@ func (u *ContactURN) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on URN", key)
 }
 
-// Default returns the value of this URN when it is the result of an expression
-func (u *ContactURN) Default() interface{} { return u }
-
 func (u *ContactURN) String() string { return string(u.URN) }
 
 // URNList is the list of a contact's URNs
@@ -152,11 +149,6 @@ func (l URNList) Resolve(key string) interface{} {
 	}
 
 	return l.WithScheme(scheme)
-}
-
-// Default returns the value of this URN list when it is the result of an expression
-func (l URNList) Default() interface{} {
-	return l
 }
 
 func (l URNList) String() string {

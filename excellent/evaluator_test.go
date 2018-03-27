@@ -26,10 +26,6 @@ func (r *testResolvable) Resolve(key string) interface{} {
 	}
 }
 
-func (r *testResolvable) Default() interface{} {
-	return r
-}
-
 func (r *testResolvable) String() string {
 	return "hello"
 }
