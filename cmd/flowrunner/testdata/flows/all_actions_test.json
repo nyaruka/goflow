@@ -97,16 +97,13 @@
                         "contact": {
                             "fields": {
                                 "activation_token": {
-                                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                    "value": "XXX-YYY-ZZZ"
+                                    "text": "XXX-YYY-ZZZ"
                                 },
                                 "first_name": {
-                                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                    "value": "Ben"
+                                    "text": "Ben"
                                 },
                                 "state": {
-                                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                    "value": "Azuay"
+                                    "text": "Azuay"
                                 }
                             },
                             "groups": [
@@ -293,20 +290,16 @@
                 "contact": {
                     "fields": {
                         "activation_token": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "XXX-YYY-ZZZ"
+                            "text": "XXX-YYY-ZZZ"
                         },
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "gender": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Male"
+                            "text": "Male"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "groups": [
@@ -437,16 +430,13 @@
                                     "contact": {
                                         "fields": {
                                             "activation_token": {
-                                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                                "value": "XXX-YYY-ZZZ"
+                                                "text": "XXX-YYY-ZZZ"
                                             },
                                             "first_name": {
-                                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                                "value": "Ben"
+                                                "text": "Ben"
                                             },
                                             "state": {
-                                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                                "value": "Azuay"
+                                                "text": "Azuay"
                                             }
                                         },
                                         "groups": [
@@ -701,12 +691,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -750,12 +738,10 @@
         "contact": {
             "fields": {
                 "first_name": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "value": "Ben"
+                    "text": "Ben"
                 },
                 "state": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "value": "Azuay"
+                    "text": "Azuay"
                 }
             },
             "language": "eng",

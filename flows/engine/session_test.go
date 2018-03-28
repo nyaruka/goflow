@@ -42,9 +42,12 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
 		{"@contact.groups", "Survey Audience", false}, // TODO should be list
+		{"@contact.fields.first_name", "Bob", false},
+		{"@contact.fields.age", "23", false},
+		{"@contact.fields.joined", "2018-03-27T10:30:00.123456+02:00", false},
 		{"@contact.fields.state", "Azuay", false},
-		{"@contact.fields.favorite_icecream", "", false},                   // TODO should be error?
-		{"@(has_error(contact.fields.favorite_icecream))", "false", false}, // TODO should be true?
+		{"@contact.fields.favorite_icecream", "", true},
+		{"@(has_error(contact.fields.favorite_icecream))", "true", false},
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.text", "Hi there", false},

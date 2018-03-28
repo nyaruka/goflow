@@ -8,6 +8,8 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 // Contact represents a single contact
@@ -43,9 +45,9 @@ func (c *Contact) Clone() *Contact {
 		name:     c.name,
 		language: c.language,
 		timezone: c.timezone,
-		urns:     c.urns.Clone(),
-		groups:   c.groups.Clone(),
-		fields:   c.fields.Clone(),
+		urns:     c.urns.clone(),
+		groups:   c.groups.clone(),
+		fields:   c.fields.clone(),
 	}
 }
 
@@ -150,6 +152,11 @@ func (c *Contact) String() string {
 
 var _ utils.VariableResolver = (*Contact)(nil)
 
+// SetField updates the given contact field value for this contact
+func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
+	c.fields.setValue(env, field, rawValue)
+}
+
 // UpdatePreferredChannel updates the preferred channel
 func (c *Contact) UpdatePreferredChannel(channel Channel) {
 	priorityURNs := make([]*ContactURN, 0)
@@ -211,7 +218,11 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 	// try as a contact field
 	for k, value := range c.fields {
 		if key == string(k) {
-			return []interface{}{value.value}
+			fieldValue := value.TypedValue()
+			if fieldValue != nil {
+				return []interface{}{fieldValue}
+			}
+			return nil
 		}
 	}
 
@@ -225,18 +236,22 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Value     string    `json:"value"`
-	CreatedOn time.Time `json:"created_on"`
+	Text     string           `json:"text,omitempty"`
+	Datetime *time.Time       `json:"datetime,omitempty"`
+	Decimal  *decimal.Decimal `json:"decimal,omitempty"`
+	State    string           `json:"state,omitempty"`
+	District string           `json:"district,omitempty"`
+	Ward     string           `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {
-	UUID     ContactUUID                     `json:"uuid" validate:"required,uuid4"`
-	Name     string                          `json:"name"`
-	Language utils.Language                  `json:"language"`
-	Timezone string                          `json:"timezone"`
-	URNs     []urns.URN                      `json:"urns" validate:"dive,urn"`
-	Groups   []*GroupReference               `json:"groups,omitempty" validate:"dive"`
-	Fields   map[FieldKey]fieldValueEnvelope `json:"fields,omitempty"`
+	UUID     ContactUUID                      `json:"uuid" validate:"required,uuid4"`
+	Name     string                           `json:"name"`
+	Language utils.Language                   `json:"language"`
+	Timezone string                           `json:"timezone"`
+	URNs     []urns.URN                       `json:"urns" validate:"dive,urn"`
+	Groups   []*GroupReference                `json:"groups,omitempty" validate:"dive"`
+	Fields   map[FieldKey]*fieldValueEnvelope `json:"fields,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -278,23 +293,28 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		c.groups = NewGroupList(groups)
 	}
 
-	if envelope.Fields == nil {
-		c.fields = make(FieldValues)
-	} else {
-		c.fields = make(FieldValues, len(envelope.Fields))
-		for fieldKey, valueEnvelope := range envelope.Fields {
-			field, err := session.Assets().GetField(fieldKey)
-			if err != nil {
-				return nil, err
-			}
+	fieldSet, err := session.Assets().GetFieldSet()
+	if err != nil {
+		return nil, err
+	}
 
-			value, err := field.ParseValue(session.Environment(), valueEnvelope.Value)
-			if err != nil {
-				return nil, err
-			}
+	c.fields = make(FieldValues, len(fieldSet.All()))
 
-			c.fields[field.key] = NewFieldValue(field, value, valueEnvelope.CreatedOn)
+	for _, field := range fieldSet.All() {
+		value := &FieldValue{field: field}
+
+		if envelope.Fields != nil {
+			valueEnvelope := envelope.Fields[field.key]
+			if valueEnvelope != nil {
+				value.text = valueEnvelope.Text
+				value.decimal = valueEnvelope.Decimal
+				value.datetime = valueEnvelope.Datetime
+
+				// TODO parse locations
+			}
 		}
+
+		c.fields[field.key] = value
 	}
 
 	return c, nil
@@ -317,9 +337,18 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Groups[g] = group.Reference()
 	}
 
-	ce.Fields = make(map[FieldKey]fieldValueEnvelope, len(c.fields))
+	ce.Fields = make(map[FieldKey]*fieldValueEnvelope)
 	for _, v := range c.fields {
-		ce.Fields[v.field.Key()] = fieldValueEnvelope{Value: v.SerializeValue(), CreatedOn: v.createdOn}
+		if !v.IsEmpty() {
+			ce.Fields[v.field.Key()] = &fieldValueEnvelope{
+				Text:     v.text,
+				Decimal:  v.decimal,
+				Datetime: v.datetime,
+				//State:    v.state,
+				//District: v.district,
+				//Ward:     v.ward,
+			}
+		}
 	}
 
 	return json.Marshal(ce)

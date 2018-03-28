@@ -81,20 +81,17 @@
                 "contact": {
                     "fields": {
                         "age": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "17"
+                            "decimal": "17",
+                            "text": "17"
                         },
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "gender": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "MALE"
+                            "text": "MALE"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "groups": [
@@ -231,12 +228,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -263,12 +258,10 @@
         "contact": {
             "fields": {
                 "first_name": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "value": "Ben"
+                    "text": "Ben"
                 },
                 "state": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "value": "Azuay"
+                    "text": "Azuay"
                 }
             },
             "language": "eng",

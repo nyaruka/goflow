@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shopspring/decimal"
-
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 // FieldKey is the unique key for this field
@@ -20,7 +20,7 @@ type FieldValueType string
 // field value types
 const (
 	FieldValueTypeText     FieldValueType = "text"
-	FieldValueTypeNumeric  FieldValueType = "numeric"
+	FieldValueTypeDecimal  FieldValueType = "decimal"
 	FieldValueTypeDatetime FieldValueType = "datetime"
 	FieldValueTypeWard     FieldValueType = "ward"
 	FieldValueTypeDistrict FieldValueType = "district"
@@ -48,85 +48,68 @@ func NewField(key FieldKey, label string, valueType FieldValueType) *Field {
 // Key returns the key of the field
 func (f *Field) Key() FieldKey { return f.key }
 
-// ParseValue returns a parsed field value for the given input
-func (f *Field) ParseValue(env utils.Environment, value string) (interface{}, error) {
-	switch f.valueType {
-	case FieldValueTypeText:
-		return value, nil
-	case FieldValueTypeNumeric:
-		return decimal.NewFromString(value)
-	case FieldValueTypeDatetime:
-		return utils.DateFromString(env, value)
-	case FieldValueTypeState, FieldValueTypeDistrict, FieldValueTypeWard:
-		locationID := utils.LocationID(value)
-		locationLevel := fieldLocationLevels[f.valueType]
-		locations, err := env.Locations()
-		if err != nil {
-			return nil, err
-		}
-		if locations == nil {
-			return nil, fmt.Errorf("can't parse field '%s' (type %s) in environment which is not location enabled", f.key, f.valueType)
-		}
-		return locations.FindByID(locationID, locationLevel), nil
-	}
-
-	return nil, fmt.Errorf("field %s has invalid value type: '%s'", f.key, f.valueType)
-}
-
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
-	field     *Field
-	value     interface{}
-	createdOn time.Time
+	field    *Field
+	text     string
+	datetime *time.Time
+	decimal  *decimal.Decimal
+	state    *utils.Location
+	district *utils.Location
+	ward     *utils.Location
 }
 
-// NewFieldValue creates a new field value
-func NewFieldValue(field *Field, value interface{}, createdOn time.Time) *FieldValue {
-	return &FieldValue{field: field, value: value, createdOn: createdOn}
+func (v *FieldValue) IsEmpty() bool {
+	return !(v.text != "" || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
+}
+
+func (v *FieldValue) TypedValue() interface{} {
+	switch v.field.valueType {
+	case FieldValueTypeText:
+		return v.text
+	case FieldValueTypeDatetime:
+		if v.datetime != nil {
+			return *v.datetime
+		}
+	case FieldValueTypeDecimal:
+		if v.decimal != nil {
+			return *v.decimal
+		}
+	case FieldValueTypeState:
+		return v.state
+	case FieldValueTypeDistrict:
+		return v.district
+	case FieldValueTypeWard:
+		return v.ward
+	}
+	return nil
 }
 
 // Resolve resolves the given key when this field value is referenced in an expression
 func (v *FieldValue) Resolve(key string) interface{} {
 	switch key {
-	case "value":
-		return v.value
-	case "created_on":
-		return v.createdOn
+	case "text":
+		return v.text
 	}
 	return fmt.Errorf("no field '%s' on field value", key)
 }
 
 // Default returns the value of this field value when it is the result of an expression
 func (v *FieldValue) Default() interface{} {
-	return v.value
+	return v.TypedValue()
 }
 
 // String returns the string representation of this field value
 func (v *FieldValue) String() string {
-	return fmt.Sprintf("%v", v.value)
-}
-
-// SerializeValue returns the string representation of this field value for serialization
-func (v *FieldValue) SerializeValue() string {
-	switch v.field.valueType {
-	case FieldValueTypeText:
-		return v.value.(string)
-	case FieldValueTypeNumeric:
-		return v.value.(decimal.Decimal).String()
-	case FieldValueTypeDatetime:
-		return utils.DateToISO(v.value.(time.Time))
-	case FieldValueTypeState, FieldValueTypeDistrict, FieldValueTypeWard:
-		return string(v.value.(*utils.Location).ID())
-	}
-
-	return fmt.Sprintf("%v", v.value)
+	str, _ := utils.ToString(nil, v.TypedValue())
+	return str
 }
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[FieldKey]*FieldValue
 
 // Clone returns a clone of this set of field values
-func (f FieldValues) Clone() FieldValues {
+func (f FieldValues) clone() FieldValues {
 	clone := make(FieldValues, len(f))
 	for k, v := range f {
 		clone[k] = v
@@ -134,20 +117,35 @@ func (f FieldValues) Clone() FieldValues {
 	return clone
 }
 
-// Save saves a new field value
-func (f FieldValues) Save(env utils.Environment, field *Field, rawValue string) error {
-	value, err := field.ParseValue(env, rawValue)
-	if err != nil {
-		return err
+func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue string) {
+	var asDatetime *time.Time
+	var asDecimal *decimal.Decimal
+
+	if parsedDecimal, err := utils.ToDecimal(env, rawValue); err == nil {
+		asDecimal = &parsedDecimal
 	}
 
-	f[field.key] = NewFieldValue(field, value, time.Now().UTC())
-	return nil
+	if parsedDatetime, err := utils.ToDate(env, rawValue); err == nil {
+		asDatetime = &parsedDatetime
+	}
+
+	// TODO parse as locations
+
+	f[field.key] = &FieldValue{
+		field:    field,
+		text:     rawValue,
+		datetime: asDatetime,
+		decimal:  asDecimal,
+	}
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(key string) interface{} {
-	return f[FieldKey(key)]
+	val, exists := f[FieldKey(key)]
+	if !exists {
+		return fmt.Errorf("no such contact field '%s'", key)
+	}
+	return val
 }
 
 // Default returns the value of this set of field values when it is the result of an expression
@@ -185,6 +183,10 @@ func NewFieldSet(fields []*Field) *FieldSet {
 // FindByKey finds the contact field with the given key
 func (s *FieldSet) FindByKey(key FieldKey) *Field {
 	return s.fieldsByKey[key]
+}
+
+func (s *FieldSet) All() []*Field {
+	return s.fields
 }
 
 //------------------------------------------------------------------------------------------

@@ -76,14 +76,19 @@
                 "value_type": "text"
             },
             {
+                "key": "age",
+                "label": "Age",
+                "value_type": "decimal"
+            },
+            {
                 "key": "state",
                 "label": "State",
                 "value_type": "text"
             },
             {
-                "key": "birth_date",
-                "label": "birth Date",
-                "value_type": "text"
+                "key": "joined",
+                "label": "Joined On",
+                "value_type": "datetime"
             }
         ],
         "is_set": true

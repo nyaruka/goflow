@@ -115,7 +115,7 @@ func (l URNList) RawURNs(includeChannels bool) []urns.URN {
 }
 
 // Clone returns a clone of this URN list
-func (l URNList) Clone() URNList {
+func (l URNList) clone() URNList {
 	urns := make(URNList, len(l))
 	copy(urns, l)
 	return urns

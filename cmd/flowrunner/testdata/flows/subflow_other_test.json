@@ -109,12 +109,10 @@
                 "contact": {
                     "fields": {
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "language": "eng",
@@ -234,12 +232,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -305,12 +301,10 @@
                 "contact": {
                     "fields": {
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "language": "eng",
@@ -508,12 +502,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -592,12 +584,10 @@
                 "contact": {
                     "fields": {
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "language": "eng",
@@ -875,12 +865,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -946,12 +934,10 @@
                 "contact": {
                     "fields": {
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "language": "eng",
@@ -1307,12 +1293,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -1374,12 +1358,10 @@
                 "contact": {
                     "fields": {
                         "first_name": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Ben"
+                            "text": "Ben"
                         },
                         "state": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                            "value": "Azuay"
+                            "text": "Azuay"
                         }
                     },
                     "language": "eng",
@@ -1782,12 +1764,10 @@
                     "contact": {
                         "fields": {
                             "first_name": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Ben"
+                                "text": "Ben"
                             },
                             "state": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "value": "Azuay"
+                                "text": "Azuay"
                             }
                         },
                         "language": "eng",
@@ -1825,12 +1805,10 @@
         "contact": {
             "fields": {
                 "first_name": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "value": "Ben"
+                    "text": "Ben"
                 },
                 "state": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "value": "Azuay"
+                    "text": "Azuay"
                 }
             },
             "language": "eng",
