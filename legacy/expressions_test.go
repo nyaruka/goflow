@@ -161,7 +161,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: "@(FIXED(contact.balance))", new: "@(format_num(contact.fields.balance))"},
 		{old: "@(FIXED(contact.balance, 2))", new: "@(format_num(contact.fields.balance, 2))"},
 		{old: "@(FIXED(contact.balance, 2, false))", new: "@(format_num(contact.fields.balance, 2, false))"},
-		{old: "@(INT(contact.balance))", new: "@(int(contact.fields.balance))"},
+		{old: "@(INT(contact.balance))", new: "@(round_down(contact.fields.balance))"},
 		{old: "@(LEFT(contact.account_number, 4))", new: "@(left(contact.fields.account_number, 4))"},
 		{old: "@(RIGHT(contact.ssn, 4))", new: "@(right(contact.fields.ssn, 4))"},
 		{old: "@(LEN(contact.first_name))", new: "@(string_length(contact.first_name))"},

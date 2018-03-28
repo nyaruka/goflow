@@ -187,6 +187,7 @@ var functionTemplates = map[string]functionTemplate{
 	"fixed":      {name: "format_num", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
 
 	"roundup":     {name: "round_up"},
+	"int":         {name: "round_down"},
 	"rounddown":   {name: "round_down"},
 	"randbetween": {name: "rand"},
 	"rept":        {name: "repeat"},
