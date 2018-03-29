@@ -28,9 +28,9 @@ const (
 	DateFormatDayMonthYear DateFormat = "DD-MM-YYYY"
 
 	TimeFormatHourMinute           TimeFormat = "tt:mm"
-	TimeFormatHourMinuteAmPm       TimeFormat = "tt:mm aa"
+	TimeFormatHourMinuteAmPm       TimeFormat = "h:mm aa"
 	TimeFormatHourMinuteSecond     TimeFormat = "tt:mm:ss"
-	TimeFormatHourMinuteSecondAmPm TimeFormat = "tt:mm:ss aa"
+	TimeFormatHourMinuteSecondAmPm TimeFormat = "h:mm:ss aa"
 )
 
 func (df DateFormat) String() string { return string(df) }
