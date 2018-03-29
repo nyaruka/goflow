@@ -1166,28 +1166,34 @@ func Percent(env utils.Environment, args ...interface{}) interface{} {
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
-// * `YY`    - last two digits of year 0-99
-// * `YYYY`  - four digits of your 0000-9999
-// * `M`     - month 1-12
-// * `MM`    - month 01-12
-// * `D`     - day of month, 1-31
-// * `DD`    - day of month, zero padded 0-31
-// * `h`     - hour of the day 1-12
-// * `hh`    - hour of the day 01-12
-// * `tt`    - twenty four hour of the day 01-23
-// * `m`     - minute 0-59
-// * `mm`    - minute 00-59
-// * `s`     - second 0-59
-// * `ss`    - second 00-59
-// * `fff`   - thousandths of a second
-// * `aa`    - am or pm
-// * `AA`    - AM or PM
-// * `Z`     - hour and minute offset from UTC, or Z for UTC
-// * `ZZZ`   - hour and minute offset from UTC
+// * `YY`        - last two digits of year 0-99
+// * `YYYY`      - four digits of your 0000-9999
+// * `M`         - month 1-12
+// * `MM`        - month 01-12
+// * `D`         - day of month, 1-31
+// * `DD`        - day of month, zero padded 0-31
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+// * `Z`         - hour and minute offset from UTC, or Z for UTC
+// * `ZZZ`       - hour and minute offset from UTC
 //
 // Timezone should be a location name as specified in the IANA Time Zone database, such
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
+//
+// Note that fractional seconds will be parsed even without an explicit format identifier.
+// You should only specify fractional seconds when you want to assert the number of places
+// in the input format.
 //
 // parse_date will return an error if it is unable to convert the string to a date.
 //
@@ -1246,24 +1252,26 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
-// * `YY`    - last two digits of year 0-99
-// * `YYYY`  - four digits of your 0000-9999
-// * `M`     - month 1-12
-// * `MM`    - month 01-12
-// * `D`     - day of month, 1-31
-// * `DD`    - day of month, zero padded 0-31
-// * `h`     - hour of the day 1-12
-// * `hh`    - hour of the day 01-12
-// * `tt`    - twenty four hour of the day 01-23
-// * `m`     - minute 0-59
-// * `mm`    - minute 00-59
-// * `s`     - second 0-59
-// * `ss`    - second 00-59
-// * `fff`   - thousandths of a second
-// * `aa`    - am or pm
-// * `AA`    - AM or PM
-// * `Z`     - hour and minute offset from UTC, or Z for UTC
-// * `ZZZ`   - hour and minute offset from UTC
+// * `YY`        - last two digits of year 0-99
+// * `YYYY`      - four digits of your 0000-9999
+// * `M`         - month 1-12
+// * `MM`        - month 01-12
+// * `D`         - day of month, 1-31
+// * `DD`        - day of month, zero padded 0-31
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+// * `Z`         - hour and minute offset from UTC, or Z for UTC
+// * `ZZZ`       - hour and minute offset from UTC
 //
 // Timezone should be a location name as specified in the IANA Time Zone database, such
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
