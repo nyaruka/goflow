@@ -19,7 +19,11 @@ func Snakify(text string) string {
 // VariableResolver defines the interface used by Excellent objects that can be indexed into
 type VariableResolver interface {
 	Resolve(key string) interface{}
-	String() string
+}
+
+// VariableAtomizer defines the interface used by Excellent objects that can be indexed into
+type VariableAtomizer interface {
+	Atomize() interface{}
 }
 
 // ResolveVariable will resolve the passed in string variable given in dot notation and return

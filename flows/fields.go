@@ -94,10 +94,9 @@ func (v *FieldValue) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on field value", key)
 }
 
-// String returns the string representation of this field value
-func (v *FieldValue) String() string {
-	str, _ := utils.ToString(nil, v.TypedValue())
-	return str
+// Atomize returns the value of this as an XAtom type
+func (v *FieldValue) Atomize() interface{} {
+	return v.TypedValue()
 }
 
 // FieldValues is the set of all field values for a contact
@@ -148,7 +147,7 @@ func (f FieldValues) String() string {
 	fields := make([]string, 0, len(f))
 	for k, v := range f {
 		// TODO serilalize field value according to type
-		fields = append(fields, fmt.Sprintf("%s: %s", k, v.String()))
+		fields = append(fields, fmt.Sprintf("%s: %s", k, v.TypedValue()))
 	}
 	return strings.Join(fields, ", ")
 }
