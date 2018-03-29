@@ -27,7 +27,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                        "text": "Hi Ben Haggerty! When were you born, enter in format YYYY.MM.DD",
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
@@ -60,11 +60,11 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "yyyy-MM-dd",
+                    "date_format": "YYYY-MM-DD",
                     "languages": [
                         "eng"
                     ],
-                    "time_format": "hh:mm",
+                    "time_format": "h:mm aa",
                     "timezone": "America/Los_Angeles"
                 },
                 "runs": [
@@ -78,7 +78,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                                    "text": "Hi Ben Haggerty! When were you born, enter in format YYY.MM.DD",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                 },
@@ -128,11 +128,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "yyyy-MM-dd",
+                        "date_format": "YYYY-MM-DD",
                         "languages": [
                             "eng"
                         ],
-                        "time_format": "hh:mm",
+                        "time_format": "h:mm aa",
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
@@ -207,11 +207,11 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "yyyy-MM-dd",
+                    "date_format": "YYYY-MM-DD",
                     "languages": [
                         "eng"
                     ],
-                    "time_format": "hh:mm",
+                    "time_format": "h:mm aa",
                     "timezone": "America/Los_Angeles"
                 },
                 "runs": [
@@ -225,7 +225,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Hi Ben Haggerty! When were you born, enter in format yyyy.MM.dd",
+                                    "text": "Hi Ben Haggerty! When were you born, enter in format YYYY.MM.DD",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                 },
@@ -356,7 +356,7 @@
                         "languages": [
                             "eng"
                         ],
-                        "time_format": "hh:mm",
+                        "time_format": "hh:mm aa",
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
@@ -394,11 +394,11 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-            "date_format": "yyyy-MM-dd",
+            "date_format": "YYYY-MM-DD",
             "languages": [
                 "eng"
             ],
-            "time_format": "hh:mm",
+            "time_format": "h:mm aa",
             "timezone": "America/Los_Angeles"
         },
         "flow": {

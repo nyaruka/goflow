@@ -1164,38 +1164,43 @@ func Percent(env utils.Environment, args ...interface{}) interface{} {
 // ParseDate turns `string` into a date according to the `format` and optional `timezone` specified
 //
 // The format string can consist of the following characters. The characters
-// ' ', ':', ',', 'T', 'Z', '-' and '_' are ignored. Any other character is an error.
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
-// * `d`     - day of month, 1-31
-// * `dd`    - day of month, zero padded 0-31
-// * `fff`   - thousandths of a second
-// * `h`     - hour of the day 1-12
-// * `hh`    - hour of the day 01-12
-// * `H`     - hour of the day 1-23
-// * `HH`    - hour of the day 01-23
-// * `K`     - hour and minute offset from UTC, or Z for UTC
-// * `m`     - minute 0-59
-// * `mm`    - minute 00-59
-// * `M`     - month 1-12
-// * `MM`    - month 01-12
-// * `s`     - second 0-59
-// * `ss`    - second 00-59
-// * `tt`    - am or pm
-// * `TT`    - AM or PM
-// * `yy`    - last two digits of year 0-99
-// * `yyyy`  - four digits of your 0000-9999
-// * `zzz`   - hour and minute offset from UTC
+// * `YY`        - last two digits of year 0-99
+// * `YYYY`      - four digits of your 0000-9999
+// * `M`         - month 1-12
+// * `MM`        - month 01-12
+// * `D`         - day of month, 1-31
+// * `DD`        - day of month, zero padded 0-31
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+// * `Z`         - hour and minute offset from UTC, or Z for UTC
+// * `ZZZ`       - hour and minute offset from UTC
 //
 // Timezone should be a location name as specified in the IANA Time Zone database, such
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
 //
+// Note that fractional seconds will be parsed even without an explicit format identifier.
+// You should only specify fractional seconds when you want to assert the number of places
+// in the input format.
+//
 // parse_date will return an error if it is unable to convert the string to a date.
 //
-//   @(parse_date("1979-07-18", "yyyy-MM-dd")) -> 1979-07-18T00:00:00.000000Z
-//   @(parse_date("2010 5 10", "yyyy M dd")) -> 2010-05-10T00:00:00.000000Z
-//   @(parse_date("2010 5 10 12:50", "yyyy M dd HH:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
-//   @(parse_date("NOT DATE", "yyyy-mm-dd")) -> ERROR
+//   @(parse_date("1979-07-18", "YYYY-MM-DD")) -> 1979-07-18T00:00:00.000000Z
+//   @(parse_date("2010 5 10", "YYYY M DD")) -> 2010-05-10T00:00:00.000000Z
+//   @(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
+//   @(parse_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function parse_date(string, format [,timezone])
 func ParseDate(env utils.Environment, args ...interface{}) interface{} {
@@ -1245,37 +1250,38 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 // the optional `timezone`.
 //
 // The format string can consist of the following characters. The characters
-// ' ', ':', ',', 'T', 'Z', '-' and '_' are ignored. Any other character is an error.
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
-// * `d`     - day of month, 1-31
-// * `dd`    - day of month, zero padded 0-31
-// * `fff`   - thousandths of a second
-// * `h`     - hour of the day 1-12
-// * `hh`    - hour of the day 01-12
-// * `H`     - hour of the day 1-23
-// * `HH`    - hour of the day 01-23
-// * `K`     - hour and minute offset from UTC, or Z for UTC
-// * `m`     - minute 0-59
-// * `mm`    - minute 00-59
-// * `M`     - month 1-12
-// * `MM`    - month 01-12
-// * `s`     - second 0-59
-// * `ss`    - second 00-59
-// * `tt`    - am or pm
-// * `TT`    - AM or PM
-// * `yy`    - last two digits of year 0-99
-// * `yyyy`  - four digits of your 0000-9999
-// * `zzz`   - hour and minute offset from UTC
+// * `YY`        - last two digits of year 0-99
+// * `YYYY`      - four digits of your 0000-9999
+// * `M`         - month 1-12
+// * `MM`        - month 01-12
+// * `D`         - day of month, 1-31
+// * `DD`        - day of month, zero padded 0-31
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+// * `Z`         - hour and minute offset from UTC, or Z for UTC
+// * `ZZZ`       - hour and minute offset from UTC
 //
 // Timezone should be a location name as specified in the IANA Time Zone database, such
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
 //
-//   @(format_date("1979-07-18T00:00:00.000000Z")) -> 1979-07-18 12:00
-//   @(format_date("1979-07-18T00:00:00.000000Z", "yyyy-MM-dd")) -> 1979-07-18
-//   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy M dd HH:mm")) -> 2010 5 10 19:50
-//   @(format_date("2010-05-10T19:50:00.000000Z", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
-//   @(format_date("NOT DATE", "yyyy-mm-dd")) -> ERROR
+//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 15:00
+//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
+//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 19:50
+//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function format_date(date, format [,timezone])
 func FormatDate(env utils.Environment, args ...interface{}) interface{} {

@@ -13,7 +13,7 @@
                         {
                             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                             "type": "send_msg",
-                            "text": "Hi @contact.name! When were you born, enter in format yyyy.MM.dd"
+                            "text": "Hi @contact.name! When were you born, enter in format YYYY.MM.DD"
                         }
                     ],
                     "wait": {
@@ -61,7 +61,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "Awesome, you were born on @(FORMAT_DATE(run.results.birth_date, \"MM-dd-yyyy\")) at @(FORMAT_DATE(run.results.birth_date, \"HH:mm\"))"
+                            "text": "Awesome, you were born on @(FORMAT_DATE(run.results.birth_date, \"MM-DD-YYYY\")) at @(FORMAT_DATE(run.results.birth_date, \"tt:mm\"))"
                         }
                     ]
                 }
