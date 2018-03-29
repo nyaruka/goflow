@@ -241,7 +241,8 @@ var funcTests = []struct {
 
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z"}, "23-06-1977 15:34:00", false},
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YYYY-MM-DDTtt:mm:ss.fffZZZ", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
-	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YYYY-MM-DDTtt:mm:ss.fffZ", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
+	{"format_date", []interface{}{"1977-06-23T15:34:00.123000Z", "YYYY-MM-DDTtt:mm:ss.fffZ", "America/Los_Angeles"}, "1977-06-23T08:34:00.123-07:00", false},
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YYYY-MM-DDTtt:mm:ss.ffffffZ", "America/Los_Angeles"}, "1977-06-23T08:34:00.000000-07:00", false},
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YY-MM-DD h:mm:ss AA", "America/Los_Angeles"}, "77-06-23 8:34:00 AM", false},
 	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "YYYY-MM-DDTtt:mm:ss.fffZ", "UTC"}, "1977-06-23T15:34:00.000Z", false},
 
