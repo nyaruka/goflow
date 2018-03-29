@@ -138,15 +138,30 @@ func TestDateFormat(t *testing.T) {
 		expected string
 		hasErr   bool
 	}{
-		{"MM-dd-yyyy", "01-02-2006", false},
-		{"M-d-yy", "1-2-06", false},
+		{"MM-DD-YYYY", "01-02-2006", false},
+		{"M-D-YY", "1-2-06", false},
 		{"h:m", "3:4", false},
-		{"h:m:s tt", "3:4:5 pm", false},
-		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-07:00", false},
-		{"yyyy-MM-ddTHH:mm:sszzz", "2006-01-02T15:04:05-07:00", false},
-		{"yyyy-MM-ddThh:mm:ss.fffzzz", "2006-01-02T03:04:05.000-07:00", false},
-		{"yyyy-MM-ddThh:mm:ss.fffK", "2006-01-02T03:04:05.000Z07:00", false},
-		{"yyyy-MM-dd", "2006-01-02", false},
+		{"h:m:s aa", "3:4:5 pm", false},
+		{"h:m:s AA", "3:4:5 PM", false},
+		{"YYYY-MM-DDTtt:mm:ssZZZ", "2006-01-02T15:04:05-07:00", false},
+		{"YYYY-MM-DDTtt:mm:ssZZZ", "2006-01-02T15:04:05-07:00", false},
+		{"YYYY-MM-DDThh:mm:ss.fffZZZ", "2006-01-02T03:04:05.000-07:00", false},
+		{"YYYY-MM-DDThh:mm:ss.fffZ", "2006-01-02T03:04:05.000Z07:00", false},
+		{"YYYY-MM-DD", "2006-01-02", false},
+
+		{"tt:mm:ss.ffffff", "15:04:05.000000", false},
+		{"tt:mm:ss.fffffffff", "15:04:05.000000000", false},
+
+		{"tt:mm:ss.ffff", "", true},
+		{"t:mm:ss.ffff", "", true},
+		{"tt:mmm:ss.ffff", "", true},
+		{"YYYY-MMM-DD", "", true},
+		{"YYY-MM-DD", "", true},
+		{"tt:mm:sss", "", true},
+		{"tt:mm:ss a", "", true},
+		{"tt:mm:ss A", "", true},
+		{"tt:mm:ssZZZZ", "", true},
+
 		{"2006-01-02", "", true},
 	}
 

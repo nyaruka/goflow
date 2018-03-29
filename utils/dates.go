@@ -23,14 +23,14 @@ type TimeFormat string
 
 // standard date and time formats
 const (
-	DateFormatYearMonthDay DateFormat = "yyyy-MM-dd"
-	DateFormatMonthDayYear DateFormat = "MM-dd-yyyy"
-	DateFormatDayMonthYear DateFormat = "dd-MM-yyyy"
+	DateFormatYearMonthDay DateFormat = "YYYY-MM-DD"
+	DateFormatMonthDayYear DateFormat = "MM-DD-YYYY"
+	DateFormatDayMonthYear DateFormat = "DD-MM-YYYY"
 
-	TimeFormatHourMinute           TimeFormat = "hh:mm"
-	TimeFormatHourMinuteAmPm       TimeFormat = "hh:mm tt"
-	TimeFormatHourMinuteSecond     TimeFormat = "HH:mm:ss"
-	TimeFormatHourMinuteSecondAmPm TimeFormat = "hh:mm:ss tt"
+	TimeFormatHourMinute           TimeFormat = "tt:mm"
+	TimeFormatHourMinuteAmPm       TimeFormat = "tt:mm aa"
+	TimeFormatHourMinuteSecond     TimeFormat = "tt:mm:ss"
+	TimeFormatHourMinuteSecondAmPm TimeFormat = "tt:mm:ss aa"
 )
 
 func (df DateFormat) String() string { return string(df) }
@@ -211,26 +211,26 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 //
 // Format strings we support:
 //
-// d       - day of month, 1-31
-// dd      - day of month, zero padded 0-31
-// fff     - thousandths of a second
-// h       - hour of the day 1-12
-// hh      - hour of the day 01-12
-// H       - hour of the day 1-23
-// HH      - hour of the day 01-23
-// K       - hour and minute offset from UTC, or Z fo UTC
-// m       - minute 0-59
-// mm      - minute 00-59
-// M       - month 1-12
-// MM      - month 01-12
-// s       - second 0-59
-// ss      - second 00-59
-// TT      - AM or PM
-// tt      - am or pm
-// yy      - last two digits of year 0-99
-// yyyy    - four digits of your 0000-9999
-// zzz     - hour and minute offset from UTC
-// ignored chars: ' ', ':', ',', 'T', 'Z', '-', '_', '/'
+//   `YY`    - last two digits of year 0-99
+//   `YYYY`  - four digits of your 0000-9999
+//   `M`     - month 1-12
+//   `MM`    - month 01-12
+//   `D`     - day of month, 1-31
+//   `DD`    - day of month, zero padded 0-31
+//   `h`     - hour of the day 1-12
+//   `hh`    - hour of the day 01-12
+//   `t`     - twenty four hour of the day 01-23
+//   `m`     - minute 0-59
+//   `mm`    - minute 00-59
+//   `s`     - second 0-59
+//   `ss`    - second 00-59
+//   `fff`   - thousandths of a second
+//   `aa`    - am or pm
+//   `AA`    - AM or PM
+//   `Z`     - hour and minute offset from UTC, or Z for UTC
+//   `ZZZ`   - hour and minute offset from UTC
+//
+// ignored chars: ' ', ':', ',', 'T', '-', '_', '/'
 func ToGoDateFormat(format string) (string, error) {
 	runes := []rune(format)
 	goFormat := bytes.Buffer{}
@@ -252,7 +252,7 @@ func ToGoDateFormat(format string) (string, error) {
 		count := repeatCount(runes, i, r)
 
 		switch r {
-		case 'd':
+		case 'D':
 			if count == 1 {
 				goFormat.WriteString("2")
 			} else if count >= 2 {
@@ -261,13 +261,13 @@ func ToGoDateFormat(format string) (string, error) {
 			}
 
 		case 'f':
-			if count >= 9 {
+			if count == 9 {
 				goFormat.WriteString("000000000")
 				i += 8
-			} else if count >= 6 {
+			} else if count == 6 {
 				goFormat.WriteString("000000")
 				i += 5
-			} else if count >= 3 {
+			} else if count == 3 {
 				goFormat.WriteString("000")
 				i += 2
 			} else {
@@ -277,82 +277,87 @@ func ToGoDateFormat(format string) (string, error) {
 		case 'h':
 			if count == 1 {
 				goFormat.WriteString("3")
-			} else if count >= 2 {
+			} else if count == 2 {
 				goFormat.WriteString("03")
 				i++
 			}
 
-		case 'H':
-			if count >= 2 {
-				goFormat.WriteString("15")
-				i++
-			} else {
-				return "", fmt.Errorf("invalid date format, invalid count of 'H' format: %d", count)
-			}
-
-		case 'K':
-			goFormat.WriteString("Z07:00")
-
-		case 'm':
-			if count == 1 {
-				goFormat.WriteString("4")
-			} else if count >= 2 {
-				goFormat.WriteString("04")
-				i++
-			}
-
-		case 'M':
-			if count == 1 {
-				goFormat.WriteString("1")
-			} else if count >= 2 {
-				goFormat.WriteString("01")
-				i++
-			}
-
-		case 's':
-			if count == 1 {
-				goFormat.WriteString("5")
-			} else if count >= 2 {
-				goFormat.WriteString("05")
-				i++
-			}
-
 		case 't':
-			if count >= 2 {
-				goFormat.WriteString("pm")
+			if count == 2 {
+				goFormat.WriteString("15")
 				i++
 			} else {
 				return "", fmt.Errorf("invalid date format, invalid count of 't' format: %d", count)
 			}
 
-		case 'T':
+		case 'm':
 			if count == 1 {
-				goFormat.WriteString("T")
-			} else if count >= 2 {
-				goFormat.WriteString("PM")
+				goFormat.WriteString("4")
+			} else if count == 2 {
+				goFormat.WriteString("04")
 				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'm' format: %d", count)
 			}
 
-		case 'y':
+		case 'M':
+			if count == 1 {
+				goFormat.WriteString("1")
+			} else if count == 2 {
+				goFormat.WriteString("01")
+				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'M' format: %d", count)
+			}
+
+		case 's':
+			if count == 1 {
+				goFormat.WriteString("5")
+			} else if count == 2 {
+				goFormat.WriteString("05")
+				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 's' format: %d", count)
+			}
+
+		case 'a':
+			if count == 2 {
+				goFormat.WriteString("pm")
+				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'a' format: %d", count)
+			}
+
+		case 'A':
+			if count == 2 {
+				goFormat.WriteString("PM")
+				i++
+			} else {
+				return "", fmt.Errorf("invalid date format, invalid count of 'A' format: %d", count)
+			}
+
+		case 'Y':
 			if count == 2 {
 				goFormat.WriteString("06")
 				i++
-			} else if count >= 4 {
+			} else if count == 4 {
 				goFormat.WriteString("2006")
 				i += 3
 			} else {
-				return "", fmt.Errorf("invalid date format, invalid count of 'y' format: %d", count)
+				return "", fmt.Errorf("invalid date format, invalid count of 'Y' format: %d", count)
 			}
 
-		case 'z':
-			if count == 3 {
+		case 'Z':
+			if count == 1 {
+				goFormat.WriteString("Z07:00")
+			} else if count == 3 {
 				goFormat.WriteString("-07:00")
 				i += 2
 			} else {
-				return "", fmt.Errorf("invalid date format, invalid count of 'z' format: %d", count)
+				return "", fmt.Errorf("invalid date format, invalid count of 'Z' format: %d", count)
 			}
 
-		case ' ', ':', '/', '.', 'Z', '-', '_':
+		case ' ', ':', '/', '.', 'T', '-', '_':
 			goFormat.WriteRune(r)
 
 		default:

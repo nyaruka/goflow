@@ -240,14 +240,15 @@ var funcTests = []struct {
 	{"date", []interface{}{}, nil, true},
 
 	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z"}, "23-06-1977 15:34:00", false},
-	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffzzz", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
-	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.fffK", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
-	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "yyyy-MM-ddTHH:mm:ss.fffK", "UTC"}, "1977-06-23T15:34:00.000Z", false},
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YYYY-MM-DDTtt:mm:ss.fffZZZ", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YYYY-MM-DDTtt:mm:ss.fffZ", "America/Los_Angeles"}, "1977-06-23T08:34:00.000-07:00", false},
+	{"format_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YY-MM-DD h:mm:ss AA", "America/Los_Angeles"}, "77-06-23 8:34:00 AM", false},
+	{"format_date", []interface{}{"1977-06-23T08:34:00.000-07:00", "YYYY-MM-DDTtt:mm:ss.fffZ", "UTC"}, "1977-06-23T15:34:00.000Z", false},
 
-	{"parse_date", []interface{}{"1977-06-23T15:34:00.000000Z", "yyyy-MM-ddTHH:mm:ss.ffffffK", "America/Los_Angeles"}, time.Date(1977, 06, 23, 8, 34, 0, 0, la), false},
-	{"parse_date", []interface{}{"1977-06-23 15:34", "yyyy-MM-dd HH:mm", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
-	{"parse_date", []interface{}{"1977-06-23 03:34 pm", "yyyy-MM-dd HH:mm tt", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
-	{"parse_date", []interface{}{"1977-06-23 03:34 PM", "yyyy-MM-dd HH:mm TT", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23T15:34:00.000000Z", "YYYY-MM-DDTtt:mm:ss.ffffffZ", "America/Los_Angeles"}, time.Date(1977, 06, 23, 8, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23 15:34", "YYYY-MM-DD tt:mm", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23 03:34 pm", "YYYY-MM-DD tt:mm aa", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
+	{"parse_date", []interface{}{"1977-06-23 03:34 PM", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles"}, time.Date(1977, 06, 23, 15, 34, 0, 0, la), false},
 
 	{"date_diff", []interface{}{"03-12-2017", "01-12-2017", "d"}, 2, false},
 	{"date_diff", []interface{}{"03-12-2017 10:15", "03-12-2017 18:15", "d"}, 0, false},
