@@ -64,11 +64,6 @@ var funcTests = []struct {
 	{"round_down", []interface{}{"not_num"}, nil, true},
 	{"round_down", []interface{}{}, nil, true},
 
-	{"int", []interface{}{"10.5"}, newDecimal("10"), false},
-	{"int", []interface{}{"10.7"}, newDecimal("10"), false},
-	{"int", []interface{}{"not_num"}, nil, true},
-	{"int", []interface{}{}, nil, true},
-
 	{"max", []interface{}{"10.5", "11"}, newDecimal("11"), false},
 	{"max", []interface{}{"10.2", "9"}, newDecimal("10.2"), false},
 	{"max", []interface{}{"not_num", "9"}, nil, true},

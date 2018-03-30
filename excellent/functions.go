@@ -37,7 +37,6 @@ var XFUNCTIONS = map[string]XFunction{
 	"round":      Round,
 	"round_up":   RoundUp,
 	"round_down": RoundDown,
-	"int":        Int,
 	"max":        Max,
 	"min":        Min,
 	"mean":       Mean,
@@ -407,22 +406,6 @@ func RoundUp(env utils.Environment, args ...interface{}) interface{} {
 // @function round_down(num)
 func RoundDown(env utils.Environment, args ...interface{}) interface{} {
 	dec, err := checkOneDecimalArg(env, "ROUND_DOWN", args)
-	if err != nil {
-		return err
-	}
-
-	return dec.Floor()
-}
-
-// Int takes `num` and returns the integer value (floored)
-//
-//   @(int(12.14)) -> 12
-//   @(int(12.9)) -> 12
-//   @(int("foo")) -> ERROR
-//
-// @function int(num)
-func Int(env utils.Environment, args ...interface{}) interface{} {
-	dec, err := checkOneDecimalArg(env, "INT", args)
 	if err != nil {
 		return err
 	}
