@@ -267,10 +267,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(2 < 1)", false, false},
 		{"@(1 = 1)", true, false},
 		{"@(1 = 2)", false, false},
+		{`@("asdf" = "basf")`, "", true},
 		{"@(1 != 2)", true, false},
 		{"@(1 != 1)", false, false},
 		{"@(-1 = 1)", false, false},
 		{"@(1 < asdf)", "", true},
+		{`@("asdf" < "basf")`, "", true},
 
 		{"@(\"foo\" & \"bar\")", "foobar", false},
 		{"@(missing & \"bar\")", "", true},

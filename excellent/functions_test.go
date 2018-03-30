@@ -192,6 +192,11 @@ var funcTests = []struct {
 	{"array_length", []interface{}{struct{}{}}, nil, true},
 	{"array_length", []interface{}{}, nil, true},
 
+	{"string_cmp", []interface{}{"abc", "abc"}, decimal.NewFromFloat(0), false},
+	{"string_cmp", []interface{}{"abc", "def"}, decimal.NewFromFloat(-1), false},
+	{"string_cmp", []interface{}{"def", "abc"}, decimal.NewFromFloat(1), false},
+	{"string_cmp", []interface{}{"abc", fmt.Errorf("error")}, nil, true},
+
 	{"default", []interface{}{"10", "20"}, "10", false},
 	{"default", []interface{}{nil, "20"}, "20", false},
 	{"default", []interface{}{fmt.Errorf("This is error"), "20"}, "20", false},

@@ -67,6 +67,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"length":            Length,
 	"right":             Right,
 	"string_length":     Length,
+	"string_cmp":        StringCmp,
 	"repeat":            Repeat,
 	"replace":           Replace,
 	"upper":             Upper,
@@ -1067,6 +1068,24 @@ func Length(env utils.Environment, args ...interface{}) interface{} {
 	return utf8.RuneCountInString(arg)
 }
 
+// StringCmp returns the comparison between the strings `str1` and `str2`.
+// The return value will be -1 if str1 is smaller than str2, 0 if they
+// are equal and 1 if str1 is greater than str2
+//
+//   @(string_cmp("abc", "abc")) -> 0
+//   @(string_cmp("abc", "def")) -> -1
+//   @(string_cmp("zzz", "aaa")) -> 1
+//
+// @function string_cmp(str1, str2)
+func StringCmp(env utils.Environment, args ...interface{}) interface{} {
+	str1, str2, err := checkTwoStringArgs(env, "STRING_CMP", args)
+	if err != nil {
+		return err
+	}
+
+	return strings.Compare(str1, str2)
+}
+
 // Repeat return `string` repeated `count` number of times
 //
 //   @(repeat("*", 8)) -> "********"
@@ -1694,6 +1713,24 @@ func checkOneStringArg(env utils.Environment, funcName string, args []interface{
 	}
 
 	return arg1, nil
+}
+
+func checkTwoStringArgs(env utils.Environment, funcName string, args []interface{}) (string, string, error) {
+	if len(args) != 2 {
+		return "", "", fmt.Errorf("%s takes exactly two string arguments, got %d", funcName, len(args))
+	}
+
+	arg1, err := utils.ToString(env, args[0])
+	if err != nil {
+		return "", "", err
+	}
+
+	arg2, err := utils.ToString(env, args[1])
+	if err != nil {
+		return "", "", err
+	}
+
+	return arg1, arg2, nil
 }
 
 func checkOneStringOneIntArg(env utils.Environment, funcName string, args []interface{}) (string, int, error) {

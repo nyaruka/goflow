@@ -193,19 +193,21 @@ func (v *Visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionConte
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
 func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
-	arg1 := v.Visit(ctx.Expression(0))
-	arg2 := v.Visit(ctx.Expression(1))
+	arg1, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
+	if err != nil {
+		return err
+	}
 
-	cmp, err := utils.Compare(v.env, arg1, arg2)
+	arg2, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
 
 	if ctx.EQ() != nil {
-		return cmp == 0
+		return arg1.Equal(arg2)
 	}
 
-	return cmp != 0
+	return !arg1.Equal(arg2)
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression
@@ -239,23 +241,25 @@ func (v *Visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
 func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
-	arg1 := v.Visit(ctx.Expression(0))
-	arg2 := v.Visit(ctx.Expression(1))
+	arg1, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
+	if err != nil {
+		return err
+	}
 
-	cmp, err := utils.Compare(v.env, arg1, arg2)
+	arg2, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
 
 	switch {
 	case ctx.LT() != nil:
-		return cmp < 0
+		return arg1.LessThan(arg2)
 	case ctx.LTE() != nil:
-		return cmp <= 0
+		return arg1.LessThanOrEqual(arg2)
 	case ctx.GTE() != nil:
-		return cmp >= 0
+		return arg1.GreaterThanOrEqual(arg2)
 	case ctx.GT() != nil:
-		return cmp > 0
+		return arg1.GreaterThan(arg2)
 	}
 
 	return fmt.Errorf("Unknown comparison operator: %s", ctx.GetText())
