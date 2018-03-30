@@ -11,40 +11,8 @@ import (
 
 	"math"
 
-	"github.com/buger/jsonparser"
 	"github.com/shopspring/decimal"
 )
-
-// IsSlice returns whether the passed in interface is a slice
-func IsSlice(v interface{}) bool {
-	val := reflect.ValueOf(v)
-	return val.Kind() == reflect.Slice
-}
-
-// SliceLength returns the length of the passed in slice, it returns an error if the argument is not a slice
-func SliceLength(v interface{}) (int, error) {
-	if v == nil {
-		return 0, fmt.Errorf("Cannot convert nil to slice")
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() == reflect.Slice {
-		return val.Len(), nil
-	}
-
-	json, isJSON := v.(JSONFragment)
-	if isJSON {
-		count := 0
-		_, err := jsonparser.ArrayEach(json, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-			count++
-		})
-		if err == nil {
-			return count, nil
-		}
-	}
-
-	return 0, fmt.Errorf("Unable to convert %s to slice", val)
-}
 
 // MapLength returns the length of the passed in map, it returns an error if the argument is not a map
 func MapLength(v interface{}) (int, error) {

@@ -414,10 +414,16 @@ func migrateLegacyTemplateAsString(resolver utils.Resolvable, template string) (
 func toString(params interface{}) (string, error) {
 	switch params := params.(type) {
 	case []interface{}:
-		strArr, err := utils.ToStringArray(nil, params)
-		if err == nil {
-			return strings.Join(strArr, ", "), nil
+		strArr := make([]string, len(params))
+		for i := range strArr {
+			str, err := utils.ToString(nil, params[i])
+			if err != nil {
+				return utils.ToString(nil, params)
+			}
+			strArr[i] = str
 		}
+
+		return strings.Join(strArr, ", "), nil
 	}
 	return utils.ToString(nil, params)
 }
