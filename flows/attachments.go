@@ -44,3 +44,15 @@ func (a Attachment) Atomize() interface{} { return a.URL() }
 
 var _ utils.VariableAtomizer = (Attachment)("")
 var _ utils.VariableResolver = (Attachment)("")
+
+type AttachmentList []Attachment
+
+func (a AttachmentList) Index(index int) interface{} {
+	return a[index]
+}
+
+func (a AttachmentList) Length() int {
+	return len(a)
+}
+
+var _ utils.VariableIndexer = (AttachmentList)(nil)

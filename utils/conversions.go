@@ -83,34 +83,6 @@ func IsNil(v interface{}) bool {
 	return false
 }
 
-// LookupIndex tries to look up the interface at the passed in index for the passed in slice
-func LookupIndex(v interface{}, idx int) (interface{}, error) {
-	if v == nil {
-		return nil, fmt.Errorf("Cannot convert nil to interface array")
-	}
-
-	// deal with a passed in error, we just return it out
-	err, isErr := v.(error)
-	if isErr {
-		return nil, err
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Slice {
-		return nil, fmt.Errorf("Cannot convert non-array to interface array: %v", v)
-	}
-
-	if idx >= val.Len() || idx < -val.Len() {
-		return nil, fmt.Errorf("Index %d out of range for slice of length %d", idx, val.Len())
-	}
-
-	if idx < 0 {
-		idx += val.Len()
-	}
-
-	return val.Index(idx).Interface(), nil
-}
-
 // Tries to use golang reflection to lookup the key in the passed in map value
 func attemptMapLookup(valMap reflect.Value, key interface{}) (value interface{}, err error) {
 	defer func() {

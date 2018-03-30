@@ -18,7 +18,7 @@ type MsgInput struct {
 	baseInput
 	urn         urns.URN
 	text        string
-	attachments []flows.Attachment
+	attachments flows.AttachmentList
 }
 
 // NewMsgInput creates a new user input based on a message
@@ -69,9 +69,9 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN         urns.URN           `json:"urn" validate:"urn"`
-	Text        string             `json:"text" validate:"required"`
-	Attachments []flows.Attachment `json:"attachments,omitempty"`
+	URN         urns.URN             `json:"urn" validate:"urn"`
+	Text        string               `json:"text" validate:"required"`
+	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }
 
 func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error) {

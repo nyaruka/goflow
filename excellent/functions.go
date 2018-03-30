@@ -724,14 +724,15 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
+	splits := utils.NewArray()
+
 	allSplits := strings.Split(s, sep)
-	splits := make([]interface{}, 0, len(allSplits))
 	for i := range allSplits {
 		if allSplits[i] != "" {
-			splits = append(splits, allSplits[i])
+			splits.Append(allSplits[i])
 		}
 	}
-	return utils.NewArray(splits)
+	return splits
 }
 
 // Join joins the passed in `array` of strings with the passed in `delimeter`
@@ -744,9 +745,9 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	array, isArray := args[0].(*utils.Array)
-	if !isArray {
-		return fmt.Errorf("JOIN requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
+	indexable, isIndexable := args[0].(utils.VariableIndexer)
+	if !isIndexable {
+		return fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
 	sep, err := utils.ToString(env, args[1])
@@ -755,11 +756,11 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	var output bytes.Buffer
-	for i := 0; i < array.Length(); i++ {
+	for i := 0; i < indexable.Length(); i++ {
 		if i > 0 {
 			output.WriteString(sep)
 		}
-		itemAsStr, err := utils.ToString(env, array.Index(i))
+		itemAsStr, err := utils.ToString(env, indexable.Index(i))
 		if err != nil {
 			return err
 		}
@@ -1641,12 +1642,13 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FORMAT_URN takes one argument, got %d", len(args))
 	}
 
-	// if we've been passed a slice like a URNList, use first item
+	// if we've been passed an indexable like a URNList, use first item
 	urnArg := args[0]
-	if utils.IsSlice(urnArg) {
-		sliceLen, _ := utils.SliceLength(urnArg)
-		if sliceLen >= 1 {
-			urnArg, _ = utils.LookupIndex(urnArg, 0)
+
+	indexable, isIndexable := urnArg.(utils.VariableIndexer)
+	if isIndexable {
+		if indexable.Length() >= 1 {
+			urnArg = indexable.Index(0)
 		} else {
 			return ""
 		}

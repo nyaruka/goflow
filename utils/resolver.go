@@ -91,17 +91,6 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 				return err
 			}
 
-		} else if IsSlice(variable) {
-			idx, err := strconv.Atoi(key)
-			if err != nil {
-				return err
-			}
-
-			variable, err = LookupIndex(variable, idx)
-			if err != nil {
-				return err
-			}
-
 		} else if IsMap(variable) {
 			variable, err = LookupKey(variable, key)
 			if err != nil {
