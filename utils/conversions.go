@@ -458,6 +458,7 @@ const (
 	XTypeDecimal
 	XTypeTime
 	XTypeBool
+	XTypeArray
 	XTypeError
 	XTypeMap
 )
@@ -490,6 +491,9 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 
 	case bool:
 		return val, XTypeBool, nil
+
+	case Array:
+		return val, XTypeArray, nil
 	}
 
 	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)

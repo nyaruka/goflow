@@ -148,11 +148,11 @@ func (l *GroupList) Length() int {
 
 // Atomize is called when this object needs to be reduced to a primitive
 func (l GroupList) Atomize() interface{} {
-	names := make([]string, len(l.groups))
-	for g := range l.groups {
-		names[g] = l.groups[g].name
+	array := utils.NewArray()
+	for _, group := range l.groups {
+		array.Append(group)
 	}
-	return strings.Join(names, ", ")
+	return array
 }
 
 var _ utils.Atomizable = (*GroupList)(nil)

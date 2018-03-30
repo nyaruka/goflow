@@ -146,10 +146,11 @@ func (l URNList) Resolve(key string) interface{} {
 
 // Atomize is called when this object needs to be reduced to a primitive
 func (l URNList) Atomize() interface{} {
-	if len(l) > 0 {
-		return l[0].String()
+	array := utils.NewArray()
+	for _, urn := range l {
+		array.Append(urn)
 	}
-	return ""
+	return array
 }
 
 // Index is called when this object is indexed into in an expression
