@@ -57,7 +57,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field": {
                         "key": "activation_token",
-                        "label": "Activation Token"
+                        "name": "Activation Token"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "value": "XXX-YYY-ZZZ"
@@ -271,7 +271,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field": {
                         "key": "gender",
-                        "label": "Gender"
+                        "name": "Gender"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "value": "Male"
@@ -387,7 +387,7 @@
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "field": {
                                     "key": "activation_token",
-                                    "label": "Activation Token"
+                                    "name": "Activation Token"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",
@@ -615,7 +615,7 @@
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "field": {
                                     "key": "gender",
-                                    "label": "Gender"
+                                    "name": "Gender"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",

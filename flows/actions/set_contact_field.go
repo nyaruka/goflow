@@ -18,7 +18,7 @@ const TypeSetContactField string = "set_contact_field"
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "set_contact_field",
-//     "field": {"key": "gender", "label": "Gender"},
+//     "field": {"key": "gender", "name": "Gender"},
 //     "value": "Male"
 //   }
 // ```

@@ -59,9 +59,9 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "yyyy-MM-dd",
+                    "date_format": "YYYY-MM-DD",
                     "languages": [],
-                    "time_format": "hh:mm",
+                    "time_format": "tt:mm",
                     "timezone": "UTC"
                 },
                 "runs": [
@@ -163,7 +163,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field": {
                         "key": "first_name",
-                        "label": "First Name"
+                        "name": "First Name"
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "value": "Ryan"
@@ -203,9 +203,9 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "yyyy-MM-dd",
+                    "date_format": "YYYY-MM-DD",
                     "languages": [],
-                    "time_format": "hh:mm",
+                    "time_format": "tt:mm",
                     "timezone": "UTC"
                 },
                 "runs": [
@@ -266,7 +266,7 @@
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "field": {
                                     "key": "first_name",
-                                    "label": "First Name"
+                                    "name": "First Name"
                                 },
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_field_changed",
