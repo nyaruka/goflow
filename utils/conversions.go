@@ -173,18 +173,6 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 
 	case Atomizable:
 		return ToJSON(env, val.Atomize())
-
-	case map[string]string:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]bool:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]int:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]interface{}:
-		return ToFragment(json.Marshal(val))
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
@@ -232,10 +220,6 @@ func ToString(env Environment, val interface{}) (string, error) {
 			output.WriteString(itemAsStr)
 		}
 		return output.String(), nil
-
-	case map[string]string:
-		bytes, err := json.Marshal(val)
-		return string(bytes), err
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
@@ -387,7 +371,6 @@ const (
 	XTypeTime
 	XTypeBool
 	XTypeArray
-	XTypeMap
 )
 
 // ToXAtom figures out the raw type of the passed in interface, returning that type

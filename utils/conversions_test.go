@@ -21,9 +21,6 @@ func (r *resolver) Resolve(key string) interface{} {
 }
 
 func TestToString(t *testing.T) {
-	strMap := make(map[string]string)
-	strMap["one"] = "1.0"
-
 	chi, err := time.LoadLocation("America/Chicago")
 	if err != nil {
 		t.Fatal("Unable to load America/Chicago timezone")
@@ -52,7 +49,6 @@ func TestToString(t *testing.T) {
 		{utils.NewArray(true, false, true), "true, false, true", false},
 		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), "1.5, 2.5", false},
 		{utils.NewArray(5, -10, 15), "5, -10, 15", false},
-		{strMap, "{\"one\":\"1.0\"}", false},
 		{struct{}{}, "", true},
 	}
 
@@ -191,7 +187,6 @@ func TestToJSON(t *testing.T) {
 		{utils.NewArray(true, false, true), `[true,false,true]`, false},
 		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
 		{utils.NewArray(5, -10, 15), `[5,-10,15]`, false},
-		{strMap, `{"one":"1.0"}`, false},
 		{struct{}{}, "", true},
 	}
 
