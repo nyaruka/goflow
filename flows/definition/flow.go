@@ -88,7 +88,7 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 func (f *flow) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return f.UUID()
+		return string(f.UUID())
 	case "name":
 		return f.Name()
 	}
@@ -97,9 +97,12 @@ func (f *flow) Resolve(key string) interface{} {
 }
 
 // String returns the default string value for this flow, which is just our name
-func (f *flow) String() string {
+func (f *flow) Atomize() interface{} {
 	return f.name
 }
+
+var _ utils.VariableAtomizer = (*flow)(nil)
+var _ utils.VariableResolver = (*flow)(nil)
 
 func (f *flow) Reference() *flows.FlowReference {
 	return flows.NewFlowReference(f.uuid, f.name)
@@ -117,8 +120,6 @@ func (f *flow) buildNodeMap() error {
 	}
 	return nil
 }
-
-var _ utils.VariableResolver = (*flow)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

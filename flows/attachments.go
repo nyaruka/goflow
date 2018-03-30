@@ -40,6 +40,7 @@ func (a Attachment) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on attachment", key)
 }
 
-func (a Attachment) String() string { return a.URL() }
+func (a Attachment) Atomize() interface{} { return a.URL() }
 
+var _ utils.VariableAtomizer = (Attachment)("")
 var _ utils.VariableResolver = (Attachment)("")

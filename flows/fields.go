@@ -143,7 +143,7 @@ func (f FieldValues) Resolve(key string) interface{} {
 }
 
 // String returns the string representation of these Fields, which is our JSON representation
-func (f FieldValues) String() string {
+func (f FieldValues) Atomize() interface{} {
 	fields := make([]string, 0, len(f))
 	for k, v := range f {
 		// TODO serilalize field value according to type
@@ -152,6 +152,7 @@ func (f FieldValues) String() string {
 	return strings.Join(fields, ", ")
 }
 
+var _ utils.VariableAtomizer = (FieldValues)(nil)
 var _ utils.VariableResolver = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session

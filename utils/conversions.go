@@ -232,9 +232,6 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case JSONFragment:
 		return val, nil
 
-	case fmt.Stringer:
-		return ToFragment(json.Marshal(val.String()))
-
 	case VariableAtomizer:
 		return ToJSON(env, val.Atomize())
 
@@ -309,9 +306,6 @@ func ToString(env Environment, val interface{}) (string, error) {
 
 	case time.Time:
 		return DateToISO(val), nil
-
-	case fmt.Stringer:
-		return val.String(), nil
 
 	case VariableAtomizer:
 		return ToString(env, val.Atomize())
@@ -421,9 +415,6 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 			return decimal.Zero, fmt.Errorf("Cannot convert '%s' to a decimal", val)
 		}
 		return parsed, nil
-
-	case fmt.Stringer:
-		return ToDecimal(env, val.String())
 
 	case VariableAtomizer:
 		return ToDecimal(env, val.Atomize())

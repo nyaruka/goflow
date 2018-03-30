@@ -111,7 +111,7 @@ func (c *Contact) Reference() *ContactReference { return NewContactReference(c.u
 func (c *Contact) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return c.uuid
+		return string(c.uuid)
 	case "name":
 		return c.name
 	case "first_name":
@@ -123,7 +123,10 @@ func (c *Contact) Resolve(key string) interface{} {
 	case "language":
 		return string(c.language)
 	case "timezone":
-		return c.timezone
+		if c.timezone != nil {
+			return c.timezone.String()
+		}
+		return nil
 	case "urns":
 		return c.urns
 	case "groups":
@@ -141,10 +144,11 @@ func (c *Contact) Resolve(key string) interface{} {
 }
 
 // String returns our string value in the context
-func (c *Contact) String() string {
+func (c *Contact) Atomize() interface{} {
 	return c.name
 }
 
+var _ utils.VariableAtomizer = (*Contact)(nil)
 var _ utils.VariableResolver = (*Contact)(nil)
 
 // SetField updates the given contact field value for this contact

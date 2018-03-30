@@ -32,6 +32,9 @@ func (t *baseTrigger) Resolve(key string) interface{} {
 	return fmt.Errorf("No such field '%s' on trigger", key)
 }
 
-func (t *baseTrigger) String() string {
+func (t *baseTrigger) Atomize() interface{} {
 	return string(t.flow.UUID())
 }
+
+var _ utils.VariableAtomizer = (*baseTrigger)(nil)
+var _ utils.VariableResolver = (*baseTrigger)(nil)

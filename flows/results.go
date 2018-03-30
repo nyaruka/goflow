@@ -42,10 +42,11 @@ func (r *Result) Resolve(key string) interface{} {
 }
 
 // String returns the string representation of a result, which is our value
-func (r *Result) String() string {
+func (r *Result) Atomize() interface{} {
 	return r.Value
 }
 
+var _ utils.VariableAtomizer = (*Result)(nil)
 var _ utils.VariableResolver = (*Result)(nil)
 
 // Results is our wrapper around a map of snakified result names to result objects
@@ -90,7 +91,7 @@ func (r Results) Resolve(key string) interface{} {
 }
 
 // String returns the string representation of our Results, which is a key/value pairing of our fields
-func (r Results) String() string {
+func (r Results) Atomize() interface{} {
 	results := make([]string, 0, len(r))
 	for _, v := range r {
 		results = append(results, fmt.Sprintf("%s: %s", v.Name, v.Value))
@@ -98,4 +99,5 @@ func (r Results) String() string {
 	return strings.Join(results, ", ")
 }
 
+var _ utils.VariableAtomizer = (*Results)(nil)
 var _ utils.VariableResolver = (*Results)(nil)

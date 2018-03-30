@@ -315,7 +315,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return r.UUID()
+		return string(r.UUID())
 	case "contact":
 		return r.Contact()
 	case "flow":
@@ -325,7 +325,7 @@ func (r *flowRun) Resolve(key string) interface{} {
 	case "webhook":
 		return r.Webhook()
 	case "status":
-		return r.Status()
+		return string(r.Status())
 	case "results":
 		return r.Results()
 	case "created_on":
@@ -338,7 +338,7 @@ func (r *flowRun) Resolve(key string) interface{} {
 }
 
 // String returns the default string value for this run, which is just our UUID
-func (r *flowRun) String() string {
+func (r *flowRun) Atomize() interface{} {
 	return string(r.uuid)
 }
 
@@ -346,6 +346,7 @@ func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)
 }
 
+var _ utils.VariableAtomizer = (*flowRun)(nil)
 var _ utils.VariableResolver = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)

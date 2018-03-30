@@ -66,7 +66,7 @@ func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g
 func (g *Group) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return g.uuid
+		return string(g.uuid)
 	case "name":
 		return g.name
 	}
@@ -75,8 +75,9 @@ func (g *Group) Resolve(key string) interface{} {
 }
 
 // String satisfies the stringer interface returning the name of the group
-func (g *Group) String() string { return g.name }
+func (g *Group) Atomize() interface{} { return g.name }
 
+var _ utils.VariableAtomizer = (*Group)(nil)
 var _ utils.VariableResolver = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
@@ -154,7 +155,7 @@ func (l *GroupList) Resolve(key string) interface{} {
 }
 
 // String stringifies the group list, joining our names with a comma
-func (l GroupList) String() string {
+func (l GroupList) Atomize() interface{} {
 	names := make([]string, len(l.groups))
 	for g := range l.groups {
 		names[g] = l.groups[g].name
@@ -162,6 +163,7 @@ func (l GroupList) String() string {
 	return strings.Join(names, ", ")
 }
 
+var _ utils.VariableAtomizer = (*GroupList)(nil)
 var _ utils.VariableResolver = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session

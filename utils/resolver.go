@@ -154,4 +154,7 @@ func (r *mapResolver) Resolve(key string) interface{} {
 	return val
 }
 
-func (r *mapResolver) String() string { return fmt.Sprintf("%s", r.values) }
+func (r *mapResolver) Atomize() interface{} { return fmt.Sprintf("%s", r.values) }
+
+var _ VariableAtomizer = (*mapResolver)(nil)
+var _ VariableResolver = (*mapResolver)(nil)
