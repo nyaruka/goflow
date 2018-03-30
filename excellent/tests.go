@@ -87,7 +87,7 @@ func (t XTestResult) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
-// String satisfies the utils.VariableResolver interface, we always default to whether we matched
+// Atomize is called when this object needs to be reduced to a primitive
 func (t XTestResult) Atomize() interface{} {
 	return strconv.FormatBool(t.matched)
 }
@@ -406,6 +406,7 @@ func (m *patternMatch) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on pattern match", key)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (m *patternMatch) Atomize() interface{} {
 	return m.groups.Index(0)
 }

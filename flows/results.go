@@ -41,7 +41,7 @@ func (r *Result) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on result", key)
 }
 
-// String returns the string representation of a result, which is our value
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *Result) Atomize() interface{} {
 	return r.Value
 }
@@ -90,7 +90,7 @@ func (r Results) Resolve(key string) interface{} {
 	return result
 }
 
-// String returns the string representation of our Results, which is a key/value pairing of our fields
+// Atomize is called when this object needs to be reduced to a primitive
 func (r Results) Atomize() interface{} {
 	results := make([]string, 0, len(r))
 	for _, v := range r {

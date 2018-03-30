@@ -90,7 +90,7 @@ func (c *channel) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on channel", key)
 }
 
-// String returns the default string value for a channel, which is its name
+// Atomize is called when this object needs to be reduced to a primitive
 func (c *channel) Atomize() interface{} {
 	return c.name
 }

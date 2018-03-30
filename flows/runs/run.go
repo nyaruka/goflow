@@ -337,7 +337,7 @@ func (r *flowRun) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on run", key)
 }
 
-// String returns the default string value for this run, which is just our UUID
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *flowRun) Atomize() interface{} {
 	return string(r.uuid)
 }

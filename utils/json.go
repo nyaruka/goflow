@@ -71,7 +71,7 @@ func (j JSONFragment) Resolve(key string) interface{} {
 	return JSONFragment(val)
 }
 
-// String returns the string representation of this JSON, which is just the JSON itself
+// Atomize is called when this object needs to be reduced to a primitive
 func (j JSONFragment) Atomize() interface{} {
 	return string(j)
 }

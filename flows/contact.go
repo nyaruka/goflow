@@ -143,7 +143,7 @@ func (c *Contact) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on contact", key)
 }
 
-// String returns our string value in the context
+// Atomize is called when this object needs to be reduced to a primitive
 func (c *Contact) Atomize() interface{} {
 	return c.name
 }

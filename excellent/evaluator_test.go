@@ -26,6 +26,7 @@ func (r *testResolvable) Resolve(key string) interface{} {
 	}
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *testResolvable) Atomize() interface{} {
 	return "hello"
 }

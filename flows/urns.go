@@ -59,6 +59,7 @@ func (u *ContactURN) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on URN", key)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Atomize() interface{} { return string(u.URN) }
 
 var _ utils.VariableAtomizer = (*ContactURN)(nil)
@@ -143,6 +144,7 @@ func (l URNList) Resolve(key string) interface{} {
 	return l.WithScheme(scheme)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (l URNList) Atomize() interface{} {
 	if len(l) > 0 {
 		return l[0].String()
@@ -150,10 +152,12 @@ func (l URNList) Atomize() interface{} {
 	return ""
 }
 
+// Index is called when this object is indexed into in an expression
 func (l URNList) Index(index int) interface{} {
 	return l[index]
 }
 
+// Length is called when the length of this object is requested in an expression
 func (l URNList) Length() int {
 	return len(l)
 }

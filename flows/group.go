@@ -73,7 +73,7 @@ func (g *Group) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on group", key)
 }
 
-// String satisfies the stringer interface returning the name of the group
+// Atomize is called when this object needs to be reduced to a primitive
 func (g *Group) Atomize() interface{} { return g.name }
 
 var _ utils.VariableAtomizer = (*Group)(nil)
@@ -136,16 +136,17 @@ func (l *GroupList) Count() int {
 	return len(l.groups)
 }
 
-// Resolve resolves the given key when this group list is referenced in an expression
+// Index is called when this object is indexed into in an expression
 func (l *GroupList) Index(index int) interface{} {
 	return l.groups[index]
 }
 
+// Length is called when the length of this object is requested in an expression
 func (l *GroupList) Length() int {
 	return len(l.groups)
 }
 
-// String stringifies the group list, joining our names with a comma
+// Atomize is called when this object needs to be reduced to a primitive
 func (l GroupList) Atomize() interface{} {
 	names := make([]string, len(l.groups))
 	for g := range l.groups {

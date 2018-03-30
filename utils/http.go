@@ -108,6 +108,7 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on webhook", key)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *RequestResponse) Atomize() interface{} {
 	return r.body
 }

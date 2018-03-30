@@ -165,6 +165,7 @@ func (r *mapResolver) Resolve(key string) interface{} {
 	return val
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *mapResolver) Atomize() interface{} { return fmt.Sprintf("%s", r.values) }
 
 var _ VariableAtomizer = (*mapResolver)(nil)

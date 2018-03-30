@@ -47,7 +47,7 @@ func (i *MsgInput) Resolve(key string) interface{} {
 	return i.baseInput.Resolve(key)
 }
 
-// String returns our default value if evaluated in a context, our text in our case
+// Atomize is called when this object needs to be reduced to a primitive
 func (i *MsgInput) Atomize() interface{} {
 	var parts []string
 	if i.text != "" {

@@ -115,6 +115,7 @@ func (v *varMapper) Resolve(key string) interface{} {
 	return strings.Join(newPath, ".")
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (v *varMapper) Atomize() interface{} {
 	return v.String()
 }
@@ -148,6 +149,7 @@ func (m *extraMapper) Resolve(key string) interface{} {
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (m *extraMapper) Atomize() interface{} {
 	switch m.extraAs {
 	case ExtraAsWebhookJSON:
