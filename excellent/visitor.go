@@ -84,13 +84,7 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 
 	var params []interface{}
 	if ctx.Parameters() != nil {
-		funcParams := v.Visit(ctx.Parameters())
-		switch funcParams.(type) {
-		case error:
-			return funcParams
-		default:
-			params = funcParams.([]interface{})
-		}
+		params = v.Visit(ctx.Parameters()).([]interface{})
 	}
 	val := function(v.env, params...)
 	return val
