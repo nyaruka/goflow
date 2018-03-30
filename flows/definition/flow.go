@@ -96,13 +96,13 @@ func (f *flow) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on flow", key)
 }
 
-// String returns the default string value for this flow, which is just our name
+// Atomize is called when this object needs to be reduced to a primitive
 func (f *flow) Atomize() interface{} {
 	return f.name
 }
 
-var _ utils.VariableAtomizer = (*flow)(nil)
-var _ utils.VariableResolver = (*flow)(nil)
+var _ utils.Atomizable = (*flow)(nil)
+var _ utils.Resolvable = (*flow)(nil)
 
 func (f *flow) Reference() *flows.FlowReference {
 	return flows.NewFlowReference(f.uuid, f.name)

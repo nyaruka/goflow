@@ -16,13 +16,19 @@ func Snakify(text string) string {
 	return strings.Trim(strings.ToLower(snakedChars.ReplaceAllString(text, "_")), "_")
 }
 
-// VariableResolver is the interface for objects in the context which can be keyed into, e.g. foo.bar
-type VariableResolver interface {
+// Resolvable is the interface for objects in the context which can be keyed into, e.g. foo.bar
+type Resolvable interface {
 	Resolve(key string) interface{}
 }
 
-// VariableAtomizer is the interface for objects in the context which can reduce themselves to an XAtom primitive
-type VariableAtomizer interface {
+// Indexable is the interface for objects in the context which can be indexed into, e.g. foo.0
+type Indexable interface {
+	Index(index int) interface{}
+	Length() int
+}
+
+// Atomizable is the interface for objects in the context which can reduce themselves to an XAtom primitive
+type Atomizable interface {
 	Atomize() interface{}
 }
 
@@ -58,7 +64,23 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 			return fmt.Errorf("can't resolve key '%s' of nil", key)
 		}
 
-		resolver, isResolver := variable.(VariableResolver)
+		// is our key numeric?
+		index, err := strconv.Atoi(key)
+		if err == nil {
+			indexable, isIndexable := variable.(Indexable)
+			if isIndexable {
+				if index >= indexable.Length() || index < -indexable.Length() {
+					return fmt.Errorf("index %d out of range for %d items", index, indexable.Length())
+				}
+				if index < 0 {
+					index += indexable.Length()
+				}
+				variable = indexable.Index(index)
+				continue
+			}
+		}
+
+		resolver, isResolver := variable.(Resolvable)
 
 		// look it up in our resolver
 		if isResolver {
@@ -66,17 +88,6 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 
 			err, isErr := variable.(error)
 			if isErr {
-				return err
-			}
-
-		} else if IsSlice(variable) {
-			idx, err := strconv.Atoi(key)
-			if err != nil {
-				return err
-			}
-
-			variable, err = LookupIndex(variable, idx)
-			if err != nil {
 				return err
 			}
 
@@ -139,7 +150,7 @@ type mapResolver struct {
 
 // NewMapResolver returns a simple resolver that resolves variables according to the values
 // passed in
-func NewMapResolver(values map[string]interface{}) VariableResolver {
+func NewMapResolver(values map[string]interface{}) Resolvable {
 	return &mapResolver{
 		values: values,
 	}
@@ -154,7 +165,8 @@ func (r *mapResolver) Resolve(key string) interface{} {
 	return val
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *mapResolver) Atomize() interface{} { return fmt.Sprintf("%s", r.values) }
 
-var _ VariableAtomizer = (*mapResolver)(nil)
-var _ VariableResolver = (*mapResolver)(nil)
+var _ Atomizable = (*mapResolver)(nil)
+var _ Resolvable = (*mapResolver)(nil)

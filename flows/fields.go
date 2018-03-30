@@ -94,7 +94,7 @@ func (v *FieldValue) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on field value", key)
 }
 
-// Atomize returns the value of this as an XAtom type
+// Atomize is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Atomize() interface{} {
 	return v.TypedValue()
 }
@@ -142,7 +142,7 @@ func (f FieldValues) Resolve(key string) interface{} {
 	return val
 }
 
-// String returns the string representation of these Fields, which is our JSON representation
+// Atomize is called when this object needs to be reduced to a primitive
 func (f FieldValues) Atomize() interface{} {
 	fields := make([]string, 0, len(f))
 	for k, v := range f {
@@ -152,8 +152,8 @@ func (f FieldValues) Atomize() interface{} {
 	return strings.Join(fields, ", ")
 }
 
-var _ utils.VariableAtomizer = (FieldValues)(nil)
-var _ utils.VariableResolver = (FieldValues)(nil)
+var _ utils.Atomizable = (FieldValues)(nil)
+var _ utils.Resolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {

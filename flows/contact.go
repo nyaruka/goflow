@@ -143,15 +143,15 @@ func (c *Contact) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on contact", key)
 }
 
-// String returns our string value in the context
+// Atomize is called when this object needs to be reduced to a primitive
 func (c *Contact) Atomize() interface{} {
 	return c.name
 }
 
-var _ utils.VariableAtomizer = (*Contact)(nil)
-var _ utils.VariableResolver = (*Contact)(nil)
+var _ utils.Atomizable = (*Contact)(nil)
+var _ utils.Resolvable = (*Contact)(nil)
 
-// SetField updates the given contact field value for this contact
+// SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
 	c.fields.setValue(env, field, rawValue)
 }

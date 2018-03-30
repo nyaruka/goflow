@@ -26,12 +26,13 @@ func (r *testResolvable) Resolve(key string) interface{} {
 	}
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *testResolvable) Atomize() interface{} {
 	return "hello"
 }
 
-var _ utils.VariableAtomizer = (*testResolvable)(nil)
-var _ utils.VariableResolver = (*testResolvable)(nil)
+var _ utils.Atomizable = (*testResolvable)(nil)
+var _ utils.Resolvable = (*testResolvable)(nil)
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 
@@ -44,7 +45,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"dec1":    1.5,
 		"dec2":    2.5,
 		"words":   "one two three",
-		"array":   []string{"one", "two", "three"},
+		"array":   utils.NewArray("one", "two", "three"),
 		"thing":   &testResolvable{},
 		"err":     fmt.Errorf("an error"),
 	}
@@ -145,7 +146,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	arr := []string{"a", "b", "c"}
+	arr := utils.NewArray("a", "b", "c")
 
 	strMap := map[string]string{
 		"1":          "one",
@@ -161,7 +162,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	innerMap := map[string]interface{}{"int_map": intMap}
 
-	innerArr := []map[string]string{strMap}
+	innerArr := utils.NewArray(strMap)
 
 	varMap := map[string]interface{}{
 		"string1":   "foo",

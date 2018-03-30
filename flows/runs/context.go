@@ -15,7 +15,7 @@ type runContext struct {
 }
 
 // creates a new evaluation context for the passed in run
-func newRunContext(run flows.FlowRun) utils.VariableResolver {
+func newRunContext(run flows.FlowRun) utils.Resolvable {
 	return &runContext{run: run}
 }
 
@@ -72,5 +72,5 @@ func (c *relatedRunContext) String() string {
 	return c.run.UUID().String()
 }
 
-var _ utils.VariableResolver = (*runContext)(nil)
-var _ utils.VariableResolver = (*relatedRunContext)(nil)
+var _ utils.Resolvable = (*runContext)(nil)
+var _ utils.Resolvable = (*relatedRunContext)(nil)

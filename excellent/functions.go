@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -161,12 +162,13 @@ func ArrayLength(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("ARRAY_LENGTH takes exactly one argument, got %d", len(args))
 	}
 
-	len, err := utils.SliceLength(args[0])
-	if err != nil {
-		return err
+	// test whether arg1 is indexable
+	indexable, isIndexable := args[0].(utils.Indexable)
+	if !isIndexable {
+		return fmt.Errorf("ARRAY_LENGTH requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
-	return len
+	return indexable.Length()
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
@@ -737,11 +739,12 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
+	splits := utils.NewArray()
+
 	allSplits := strings.Split(s, sep)
-	splits := make([]string, 0, len(allSplits))
 	for i := range allSplits {
 		if allSplits[i] != "" {
-			splits = append(splits, allSplits[i])
+			splits.Append(allSplits[i])
 		}
 	}
 	return splits
@@ -757,9 +760,9 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	s, err := utils.ToStringArray(env, args[0])
-	if err != nil {
-		return err
+	indexable, isIndexable := args[0].(utils.Indexable)
+	if !isIndexable {
+		return fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
 	sep, err := utils.ToString(env, args[1])
@@ -767,7 +770,19 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
-	return strings.Join(s, sep)
+	var output bytes.Buffer
+	for i := 0; i < indexable.Length(); i++ {
+		if i > 0 {
+			output.WriteString(sep)
+		}
+		itemAsStr, err := utils.ToString(env, indexable.Index(i))
+		if err != nil {
+			return err
+		}
+		output.WriteString(itemAsStr)
+	}
+
+	return output.String()
 }
 
 // Char returns the rune for the passed in codepoint, `num`, which may be unicode, this is the reverse of code
@@ -1660,12 +1675,13 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FORMAT_URN takes one argument, got %d", len(args))
 	}
 
-	// if we've been passed a slice like a URNList, use first item
+	// if we've been passed an indexable like a URNList, use first item
 	urnArg := args[0]
-	if utils.IsSlice(urnArg) {
-		sliceLen, _ := utils.SliceLength(urnArg)
-		if sliceLen >= 1 {
-			urnArg, _ = utils.LookupIndex(urnArg, 0)
+
+	indexable, isIndexable := urnArg.(utils.Indexable)
+	if isIndexable {
+		if indexable.Length() >= 1 {
+			urnArg = indexable.Index(0)
 		} else {
 			return ""
 		}
