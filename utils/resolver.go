@@ -21,6 +21,12 @@ type VariableResolver interface {
 	Resolve(key string) interface{}
 }
 
+// VariableIndexer is the interface for objects in the context which can be indexed into, e.g. foo.0
+type VariableIndexer interface {
+	Index(index int) interface{}
+	Length() int
+}
+
 // VariableAtomizer is the interface for objects in the context which can reduce themselves to an XAtom primitive
 type VariableAtomizer interface {
 	Atomize() interface{}
@@ -56,6 +62,22 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 
 		if IsNil(variable) {
 			return fmt.Errorf("can't resolve key '%s' of nil", key)
+		}
+
+		// is our key numeric?
+		index, err := strconv.Atoi(key)
+		if err == nil {
+			indexable, isIndexable := variable.(VariableIndexer)
+			if isIndexable {
+				if index >= indexable.Length() || index < -indexable.Length() {
+					return fmt.Errorf("index %d out of range for %d items", index, indexable.Length())
+				}
+				if index < 0 {
+					index += indexable.Length()
+				}
+				variable = indexable.Index(index)
+				continue
+			}
 		}
 
 		resolver, isResolver := variable.(VariableResolver)

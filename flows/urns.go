@@ -3,7 +3,6 @@ package flows
 import (
 	"fmt"
 	"net/url"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -134,16 +133,6 @@ func (l URNList) WithScheme(scheme string) URNList {
 
 // Resolve resolves the given key when this URN list is referenced in an expression
 func (l URNList) Resolve(key string) interface{} {
-	// first try as numeric index to a single URN
-	index, err := strconv.Atoi(key)
-	if err == nil {
-		if index < len(l) {
-			return l[index]
-		}
-		return fmt.Errorf("index out of range: %d", index)
-	}
-
-	// next try as a URN scheme
 	scheme := strings.ToLower(key)
 
 	// if this isn't a valid scheme, bail
@@ -161,5 +150,14 @@ func (l URNList) Atomize() interface{} {
 	return ""
 }
 
+func (l URNList) Index(index int) interface{} {
+	return l[index]
+}
+
+func (l URNList) Length() int {
+	return len(l)
+}
+
 var _ utils.VariableAtomizer = (URNList)(nil)
+var _ utils.VariableIndexer = (URNList)(nil)
 var _ utils.VariableResolver = (URNList)(nil)

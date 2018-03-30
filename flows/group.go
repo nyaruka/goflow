@@ -3,7 +3,6 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/contactql"
@@ -138,20 +137,12 @@ func (l *GroupList) Count() int {
 }
 
 // Resolve resolves the given key when this group list is referenced in an expression
-func (l *GroupList) Resolve(key string) interface{} {
-	if key == "count" {
-		return l.Count()
-	}
+func (l *GroupList) Index(index int) interface{} {
+	return l.groups[index]
+}
 
-	// key must be a numerical index
-	i, err := strconv.Atoi(key)
-	if err != nil {
-		return fmt.Errorf("not a valid integer '%s'", key)
-	}
-	if i < l.Count() {
-		return l.groups[i]
-	}
-	return nil
+func (l *GroupList) Length() int {
+	return len(l.groups)
 }
 
 // String stringifies the group list, joining our names with a comma
@@ -164,7 +155,7 @@ func (l GroupList) Atomize() interface{} {
 }
 
 var _ utils.VariableAtomizer = (*GroupList)(nil)
-var _ utils.VariableResolver = (*GroupList)(nil)
+var _ utils.VariableIndexer = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {
