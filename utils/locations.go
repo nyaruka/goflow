@@ -46,6 +46,10 @@ func (b *Location) Parent() *Location { return b.parent }
 // Children gets the children of this location
 func (b *Location) Children() []*Location { return b.children }
 
+func (b *Location) Atomize() interface{} { return b.name }
+
+var _ VariableAtomizer = (*Location)(nil)
+
 type locationVisitor func(Location *Location)
 
 func (b *Location) visit(visitor locationVisitor) {

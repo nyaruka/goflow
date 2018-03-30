@@ -385,7 +385,7 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 
 // Returned by the has_pattern test as its match value
 type patternMatch struct {
-	groups *utils.Array
+	groups utils.Array
 }
 
 func newPatternMatch(matches []string) *patternMatch {

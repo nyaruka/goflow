@@ -204,27 +204,11 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case JSONFragment:
 		return val, nil
 
+	case Array:
+		return ToFragment(json.Marshal(val))
+
 	case VariableAtomizer:
 		return ToJSON(env, val.Atomize())
-
-	case []string:
-		return ToFragment(json.Marshal(val))
-
-	case []bool:
-		return ToFragment(json.Marshal(val))
-
-	case []time.Time:
-		times := make([]string, len(val))
-		for i := range val {
-			times[i] = DateToISO(val[i])
-		}
-		return ToFragment(json.Marshal(times))
-
-	case []decimal.Decimal:
-		return ToFragment(json.Marshal(val))
-
-	case []int:
-		return ToFragment(json.Marshal(val))
 
 	case map[string]string:
 		return ToFragment(json.Marshal(val))
@@ -282,10 +266,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case VariableAtomizer:
 		return ToString(env, val.Atomize())
 
-	case Location:
-		return val.Name(), nil
-
-	case *Array:
+	case Array:
 		var output bytes.Buffer
 		for i := 0; i < val.Length(); i++ {
 			if i > 0 {
@@ -296,46 +277,6 @@ func ToString(env Environment, val interface{}) (string, error) {
 				return "", err
 			}
 			output.WriteString(itemAsStr)
-		}
-		return output.String(), nil
-
-	case []bool:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(strconv.FormatBool(val[i]))
-		}
-		return output.String(), nil
-
-	case []time.Time:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(DateToISO(val[i]))
-		}
-		return output.String(), nil
-
-	case []decimal.Decimal:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(val[i].String())
-		}
-		return output.String(), nil
-
-	case []int:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(strconv.FormatInt(int64(val[i]), 10))
 		}
 		return output.String(), nil
 
@@ -522,10 +463,6 @@ const (
 	XTypeLocation
 	XTypeBool
 	XTypeError
-	XTypeStringSlice
-	XTypeDecimalSlice
-	XTypeTimeSlice
-	XTypeBoolSlice
 	XTypeMap
 )
 
@@ -560,18 +497,6 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 
 	case bool:
 		return val, XTypeBool, nil
-
-	case []string:
-		return val, XTypeStringSlice, nil
-
-	case []time.Time:
-		return val, XTypeTimeSlice, nil
-
-	case []decimal.Decimal:
-		return val, XTypeDecimalSlice, nil
-
-	case []bool:
-		return val, XTypeBoolSlice, nil
 	}
 
 	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)

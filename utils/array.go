@@ -1,23 +1,37 @@
 package utils
 
-type Array struct {
+import (
+	"encoding/json"
+)
+
+type Array interface {
+	VariableIndexer
+
+	Append(interface{})
+}
+
+type array struct {
 	values []interface{}
 }
 
-func NewArray(values ...interface{}) *Array {
-	return &Array{values: values}
+func NewArray(values ...interface{}) Array {
+	return &array{values: values}
 }
 
-func (a *Array) Index(index int) interface{} {
+func (a *array) Index(index int) interface{} {
 	return a.values[index]
 }
 
-func (a *Array) Length() int {
+func (a *array) Length() int {
 	return len(a.values)
 }
 
-func (a *Array) Append(value interface{}) {
+func (a *array) Append(value interface{}) {
 	a.values = append(a.values, value)
 }
 
-var _ VariableIndexer = (*Array)(nil)
+func (a *array) MarshalJSON() ([]byte, error) {
+	return json.Marshal(a.values)
+}
+
+var _ VariableIndexer = (*array)(nil)
