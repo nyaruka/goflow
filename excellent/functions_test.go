@@ -49,10 +49,13 @@ var funcTests = []struct {
 
 	{"round", []interface{}{"10.5", "0"}, newDecimal("11"), false},
 	{"round", []interface{}{"10.5", "1"}, newDecimal("10.5"), false},
+	{"round", []interface{}{"10.51", "1"}, newDecimal("10.5"), false},
+	{"round", []interface{}{"10.56", "1"}, newDecimal("10.6"), false},
+	{"round", []interface{}{"12.56", "-1"}, newDecimal("10"), false},
+	{"round", []interface{}{"10.5"}, newDecimal("11"), false},
 	{"round", []interface{}{"not_num", "1"}, nil, true},
 	{"round", []interface{}{"10.5", "not_num"}, nil, true},
-	{"round", []interface{}{"10.5", "-1"}, nil, true},
-	{"round", []interface{}{"10.5"}, nil, true},
+	{"round", []interface{}{"10.5", "1", "30"}, nil, true},
 
 	{"round_up", []interface{}{"10.5"}, newDecimal("11"), false},
 	{"round_up", []interface{}{"10.2"}, newDecimal("11"), false},
@@ -188,6 +191,11 @@ var funcTests = []struct {
 	{"array_length", []interface{}{utils.NewArray()}, decimal.NewFromFloat(0), false},
 	{"array_length", []interface{}{struct{}{}}, nil, true},
 	{"array_length", []interface{}{}, nil, true},
+
+	{"string_cmp", []interface{}{"abc", "abc"}, decimal.NewFromFloat(0), false},
+	{"string_cmp", []interface{}{"abc", "def"}, decimal.NewFromFloat(-1), false},
+	{"string_cmp", []interface{}{"def", "abc"}, decimal.NewFromFloat(1), false},
+	{"string_cmp", []interface{}{"abc", fmt.Errorf("error")}, nil, true},
 
 	{"default", []interface{}{"10", "20"}, "10", false},
 	{"default", []interface{}{nil, "20"}, "20", false},
