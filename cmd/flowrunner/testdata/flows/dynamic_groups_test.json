@@ -9,7 +9,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field": {
                         "key": "gender",
-                        "label": "Gender"
+                        "name": "Gender"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "value": "MALE"
@@ -18,7 +18,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field": {
                         "key": "age",
-                        "label": "Age"
+                        "name": "Age"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "value": "64"
@@ -58,7 +58,7 @@
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "field": {
                         "key": "age",
-                        "label": "Age"
+                        "name": ""
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "value": "17"
@@ -120,9 +120,9 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "yyyy-MM-dd",
+                    "date_format": "YYYY-MM-DD",
                     "languages": [],
-                    "time_format": "hh:mm",
+                    "time_format": "tt:mm",
                     "timezone": "UTC"
                 },
                 "runs": [
@@ -133,7 +133,7 @@
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "field": {
                                     "key": "gender",
-                                    "label": "Gender"
+                                    "name": "Gender"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",
@@ -143,7 +143,7 @@
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "field": {
                                     "key": "age",
-                                    "label": "Age"
+                                    "name": "Age"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",
@@ -187,7 +187,7 @@
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "field": {
                                     "key": "age",
-                                    "label": "Age"
+                                    "name": ""
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",

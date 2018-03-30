@@ -56,7 +56,7 @@
                             "uuid": "aafb505c-603d-4025-864d-471345ed237d",
                             "field": {
                                 "key": "first_name",
-                                "label": "First Name"
+                                "name": "First Name"
                             },
                             "value": "@(WORD(run.results.contact_name, 0))"
                         },
