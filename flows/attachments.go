@@ -40,8 +40,33 @@ func (a Attachment) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on attachment", key)
 }
 
-// Default returns the value of this attachment when it is the result of an expression
-func (a Attachment) Default() interface{} { return a }
-func (a Attachment) String() string       { return a.URL() }
+// Atomize is called when this object needs to be reduced to a primitive
+func (a Attachment) Atomize() interface{} { return a.URL() }
 
-var _ utils.VariableResolver = (Attachment)("")
+var _ utils.Atomizable = (Attachment)("")
+var _ utils.Resolvable = (Attachment)("")
+
+// AttachmentList is a list of attachments
+type AttachmentList []Attachment
+
+// Index is called when this object is indexed into in an expression
+func (a AttachmentList) Index(index int) interface{} {
+	return a[index]
+}
+
+// Length is called when the length of this object is requested in an expression
+func (a AttachmentList) Length() int {
+	return len(a)
+}
+
+// Atomize is called when this object needs to be reduced to a primitive
+func (a AttachmentList) Atomize() interface{} {
+	array := utils.NewArray()
+	for _, attachment := range a {
+		array.Append(attachment)
+	}
+	return array
+}
+
+var _ utils.Atomizable = (AttachmentList)(nil)
+var _ utils.Indexable = (AttachmentList)(nil)

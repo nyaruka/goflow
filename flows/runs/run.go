@@ -85,7 +85,7 @@ type flowRun struct {
 	contact *flows.Contact
 	extra   utils.JSONFragment
 
-	context utils.VariableResolver
+	context utils.Resolvable
 	webhook *utils.RequestResponse
 	input   flows.Input
 	parent  flows.FlowRun
@@ -129,9 +129,9 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() utils.VariableResolver { return r.context }
-func (r *flowRun) Results() flows.Results          { return r.results }
-func (r *flowRun) Events() []flows.Event           { return r.events }
+func (r *flowRun) Context() utils.Resolvable { return r.context }
+func (r *flowRun) Results() flows.Results    { return r.results }
+func (r *flowRun) Events() []flows.Event     { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -315,7 +315,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 func (r *flowRun) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return r.UUID()
+		return string(r.UUID())
 	case "contact":
 		return r.Contact()
 	case "flow":
@@ -325,7 +325,7 @@ func (r *flowRun) Resolve(key string) interface{} {
 	case "webhook":
 		return r.Webhook()
 	case "status":
-		return r.Status()
+		return string(r.Status())
 	case "results":
 		return r.Results()
 	case "created_on":
@@ -337,13 +337,8 @@ func (r *flowRun) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on run", key)
 }
 
-// Default returns the value of this run when it is the result of an expression
-func (r *flowRun) Default() interface{} {
-	return r
-}
-
-// String returns the default string value for this run, which is just our UUID
-func (r *flowRun) String() string {
+// Atomize is called when this object needs to be reduced to a primitive
+func (r *flowRun) Atomize() interface{} {
 	return string(r.uuid)
 }
 
@@ -351,7 +346,8 @@ func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)
 }
 
-var _ utils.VariableResolver = (*flowRun)(nil)
+var _ utils.Atomizable = (*flowRun)(nil)
+var _ utils.Resolvable = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 

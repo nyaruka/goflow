@@ -3,7 +3,6 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/contactql"
@@ -66,7 +65,7 @@ func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g
 func (g *Group) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return g.uuid
+		return string(g.uuid)
 	case "name":
 		return g.name
 	}
@@ -74,13 +73,11 @@ func (g *Group) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on group", key)
 }
 
-// Default returns the value of this group when it is the result of an expression
-func (g *Group) Default() interface{} { return g }
+// Atomize is called when this object needs to be reduced to a primitive
+func (g *Group) Atomize() interface{} { return g.name }
 
-// String satisfies the stringer interface returning the name of the group
-func (g *Group) String() string { return g.name }
-
-var _ utils.VariableResolver = (*Group)(nil)
+var _ utils.Atomizable = (*Group)(nil)
+var _ utils.Resolvable = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
 type GroupList struct {
@@ -139,38 +136,27 @@ func (l *GroupList) Count() int {
 	return len(l.groups)
 }
 
-// Resolve resolves the given key when this group list is referenced in an expression
-func (l *GroupList) Resolve(key string) interface{} {
-	if key == "count" {
-		return l.Count()
-	}
-
-	// key must be a numerical index
-	i, err := strconv.Atoi(key)
-	if err != nil {
-		return fmt.Errorf("not a valid integer '%s'", key)
-	}
-	if i < l.Count() {
-		return l.groups[i]
-	}
-	return nil
+// Index is called when this object is indexed into in an expression
+func (l *GroupList) Index(index int) interface{} {
+	return l.groups[index]
 }
 
-// Default returns the value of this group list when it is the result of an expression
-func (l GroupList) Default() interface{} {
-	return l
+// Length is called when the length of this object is requested in an expression
+func (l *GroupList) Length() int {
+	return len(l.groups)
 }
 
-// String stringifies the group list, joining our names with a comma
-func (l GroupList) String() string {
-	names := make([]string, len(l.groups))
-	for g := range l.groups {
-		names[g] = l.groups[g].name
+// Atomize is called when this object needs to be reduced to a primitive
+func (l GroupList) Atomize() interface{} {
+	array := utils.NewArray()
+	for _, group := range l.groups {
+		array.Append(group)
 	}
-	return strings.Join(names, ", ")
+	return array
 }
 
-var _ utils.VariableResolver = (*GroupList)(nil)
+var _ utils.Atomizable = (*GroupList)(nil)
+var _ utils.Indexable = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {

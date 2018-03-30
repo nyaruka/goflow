@@ -106,7 +106,7 @@
                 "name": "Azuay State"
             },
             {
-                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
+                "uuid": "435a8fad-6780-49ab-93ec-443c20386df8",
                 "name": "Males",
                 "query": "gender = Male"
             }

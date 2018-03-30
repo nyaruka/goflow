@@ -21,11 +21,21 @@ var timeTests = []struct {
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
+	// must be real, strict iso to match despite format
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", " 2001-01-02 ", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "on 2001-01-02 ", "", true},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001_01_02", "", true},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001-1-2", "", true},
+
 	// month first
 	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", "2001-1-2", "", true},
 
 	// year first
 	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", "99-02-01", "01-02-1999 00:00:00 +0000 UTC", false},
 
 	// specific timezone
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},
@@ -39,6 +49,7 @@ var timeTests = []struct {
 	// valid two digit cases
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01-01-16a", "", true},
 
 	// iso dates
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
@@ -72,20 +83,22 @@ func TestDateFromString(t *testing.T) {
 			continue
 		}
 
-		expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
-		if err != nil {
-			t.Errorf("Error parsing expected date: %s", err)
-			continue
-		}
-
 		value, err := utils.DateFromString(env, test.Value)
 		if err != nil && !test.Error {
 			t.Errorf("Error parsing date: %s", err)
 			continue
 		}
 
-		if !value.Equal(expected) {
-			t.Errorf("Date '%s' not match expected date '%s' for input: '%s'", value, expected, test.Value)
+		if test.Expected != "" {
+			expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
+			if err != nil {
+				t.Errorf("Error parsing expected date: %s", err)
+				continue
+			}
+
+			if !value.Equal(expected) {
+				t.Errorf("Date '%s' not match expected date '%s' for input: '%s'", value, expected, test.Value)
+			}
 		}
 	}
 }

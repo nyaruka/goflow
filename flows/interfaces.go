@@ -217,7 +217,7 @@ type Translations interface {
 }
 
 type Trigger interface {
-	utils.VariableResolver
+	utils.Resolvable
 	utils.Typed
 
 	Environment() utils.Environment
@@ -264,7 +264,7 @@ type EventLog interface {
 }
 
 type Input interface {
-	utils.VariableResolver
+	utils.Resolvable
 	utils.Typed
 
 	UUID() InputUUID
@@ -325,7 +325,7 @@ type FlowRun interface {
 
 	Environment() utils.Environment
 	Session() Session
-	Context() utils.VariableResolver
+	Context() utils.Resolvable
 	Input() Input
 	Webhook() *utils.RequestResponse
 

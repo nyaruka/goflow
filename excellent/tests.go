@@ -2,6 +2,7 @@ package excellent
 
 import (
 	"fmt"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -86,21 +87,16 @@ func (t XTestResult) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
-// Default returns the value of this result when it is the result of an expression
-func (t XTestResult) Default() interface{} {
-	return t.matched
-}
-
-// String satisfies the utils.VariableResolver interface, we always default to whether we matched
-func (t XTestResult) String() string {
+// Atomize is called when this object needs to be reduced to a primitive
+func (t XTestResult) Atomize() interface{} {
 	return strconv.FormatBool(t.matched)
 }
 
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}
 
-// Enforce Variable Resolver interface
-var _ utils.VariableResolver = XTestResult{}
+var _ utils.Atomizable = XTestResult{}
+var _ utils.Resolvable = XTestResult{}
 
 //------------------------------------------------------------------------------------------
 // Tests
@@ -128,7 +124,7 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 	string1, err1 := utils.ToString(env, args[0])
 	string2, err2 := utils.ToString(env, args[1])
 	if err1 != nil || err2 != nil {
-		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments")
+		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments, but got '%s' and '%s'", reflect.TypeOf(args[0]), reflect.TypeOf(args[1]))
 	}
 
 	if string1 == string2 {
@@ -388,26 +384,35 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 }
 
 // Returned by the has_pattern test as its match value
-type patternMatch []string
+type patternMatch struct {
+	groups utils.Array
+}
+
+func newPatternMatch(matches []string) *patternMatch {
+	groups := utils.NewArray()
+	for _, match := range matches {
+		groups.Append(match)
+	}
+	return &patternMatch{groups: groups}
+}
 
 // Resolve resolves the given key when this match is referenced in an expression
-func (m patternMatch) Resolve(key string) interface{} {
+func (m *patternMatch) Resolve(key string) interface{} {
 	switch key {
 	case "groups":
-		return []string(m)
+		return m.groups
 	}
 
 	return fmt.Errorf("no such key '%s' on pattern match", key)
 }
 
-// Default returns the value of this match when it is the result of an expression
-func (m patternMatch) Default() interface{} {
-	return m[0]
+// Atomize is called when this object needs to be reduced to a primitive
+func (m *patternMatch) Atomize() interface{} {
+	return m.groups.Index(0)
 }
 
-func (m patternMatch) String() string {
-	return m[0]
-}
+var _ utils.Atomizable = (*patternMatch)(nil)
+var _ utils.Resolvable = (*patternMatch)(nil)
 
 // HasPattern tests whether `string` matches the regex `pattern`
 //
@@ -442,7 +447,7 @@ func HasPattern(env utils.Environment, args ...interface{}) interface{} {
 
 	matches := regex.FindStringSubmatch(strings.TrimSpace(hayStack))
 	if matches != nil {
-		return XTestResult{true, patternMatch(matches)}
+		return XTestResult{true, newPatternMatch(matches)}
 	}
 
 	return XFalseResult

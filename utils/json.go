@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/shopspring/decimal"
 	"strconv"
 
 	"github.com/buger/jsonparser"
@@ -39,48 +40,80 @@ type JSONFragment []byte
 
 // Resolve resolves the given key when this JSON fragment is referenced in an expression
 func (j JSONFragment) Resolve(key string) interface{} {
-	_, err := strconv.Atoi(key)
+	_, isIndex := strconv.Atoi(key)
 
 	// this is a numerical index, convert to jsonparser format
-	if err == nil {
+	if isIndex == nil {
 		jIdx := "[" + key + "]"
 		val, valType, _, err := jsonparser.Get(j, jIdx)
 		if err == nil {
-			if err == nil {
-				if valType == jsonparser.String {
-					strVal, err := jsonparser.ParseString(val)
-					if err == nil {
-						return strVal
-					}
-				}
-				return JSONFragment(val)
-			}
+			return jsonTypeToXAtom(val, valType)
 		}
 	}
+
 	val, valType, _, err := jsonparser.Get(j, key)
 	if err != nil {
 		return fmt.Errorf("no such variable: %s", key)
 	}
 
-	if valType == jsonparser.String {
-		strVal, err := jsonparser.ParseString(val)
+	return jsonTypeToXAtom(val, valType)
+}
+
+// Atomize is called when this object needs to be reduced to a primitive
+func (j JSONFragment) Atomize() interface{} {
+	return string(j)
+}
+
+var _ Atomizable = EmptyJSONFragment
+var _ Resolvable = EmptyJSONFragment
+
+// JSONArray is a JSON fragment containing an array
+type JSONArray JSONFragment
+
+// Index is called when this object is indexed into in an expression
+func (j JSONArray) Index(index int) interface{} {
+	val, valType, _, err := jsonparser.Get(j, fmt.Sprintf("[%d]", index))
+	if err != nil {
+		return err
+	}
+	return jsonTypeToXAtom(val, valType)
+}
+
+// Length is called when the length of this object is requested in an expression
+func (j JSONArray) Length() int {
+	length := 0
+	jsonparser.ArrayEach(j, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
+		length++
+	})
+	return length
+}
+
+var _ Indexable = JSONArray{}
+
+func jsonTypeToXAtom(data []byte, valType jsonparser.ValueType) interface{} {
+	switch valType {
+	case jsonparser.Null:
+		return nil
+	case jsonparser.String:
+		strVal, err := jsonparser.ParseString(data)
 		if err == nil {
 			return strVal
 		}
+	case jsonparser.Number:
+		decimalVal, err := decimal.NewFromString(string(data))
+		if err == nil {
+			return decimalVal
+		}
+	case jsonparser.Boolean:
+		boolVal, err := jsonparser.ParseBoolean(data)
+		if err == nil {
+			return boolVal
+		}
+	case jsonparser.Array:
+		return JSONArray(data)
 	}
-	return JSONFragment(val)
-}
 
-// Default returns the value of this JSON fragment when it is the result of an expression
-func (j JSONFragment) Default() interface{} {
-	return j
-}
-
-var _ VariableResolver = EmptyJSONFragment
-
-// String returns the string representation of this JSON, which is just the JSON itself
-func (j JSONFragment) String() string {
-	return string(j)
+	return JSONFragment(data)
 }
 
 //------------------------------------------------------------------------------------------

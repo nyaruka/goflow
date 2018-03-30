@@ -11,40 +11,8 @@ import (
 
 	"math"
 
-	"github.com/buger/jsonparser"
 	"github.com/shopspring/decimal"
 )
-
-// IsSlice returns whether the passed in interface is a slice
-func IsSlice(v interface{}) bool {
-	val := reflect.ValueOf(v)
-	return val.Kind() == reflect.Slice
-}
-
-// SliceLength returns the length of the passed in slice, it returns an error if the argument is not a slice
-func SliceLength(v interface{}) (int, error) {
-	if v == nil {
-		return 0, fmt.Errorf("Cannot convert nil to slice")
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() == reflect.Slice {
-		return val.Len(), nil
-	}
-
-	json, isJSON := v.(JSONFragment)
-	if isJSON {
-		count := 0
-		_, err := jsonparser.ArrayEach(json, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-			count++
-		})
-		if err == nil {
-			return count, nil
-		}
-	}
-
-	return 0, fmt.Errorf("Unable to convert %s to slice", val)
-}
 
 // MapLength returns the length of the passed in map, it returns an error if the argument is not a map
 func MapLength(v interface{}) (int, error) {
@@ -81,34 +49,6 @@ func IsNil(v interface{}) bool {
 	}
 
 	return false
-}
-
-// LookupIndex tries to look up the interface at the passed in index for the passed in slice
-func LookupIndex(v interface{}, idx int) (interface{}, error) {
-	if v == nil {
-		return nil, fmt.Errorf("Cannot convert nil to interface array")
-	}
-
-	// deal with a passed in error, we just return it out
-	err, isErr := v.(error)
-	if isErr {
-		return nil, err
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Slice {
-		return nil, fmt.Errorf("Cannot convert non-array to interface array: %v", v)
-	}
-
-	if idx >= val.Len() || idx < -val.Len() {
-		return nil, fmt.Errorf("Index %d out of range for slice of length %d", idx, val.Len())
-	}
-
-	if idx < 0 {
-		idx += val.Len()
-	}
-
-	return val.Index(idx).Interface(), nil
 }
 
 // Tries to use golang reflection to lookup the key in the passed in map value
@@ -232,36 +172,11 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case JSONFragment:
 		return val, nil
 
-	case fmt.Stringer:
-		return ToFragment(json.Marshal(val.String()))
-
-	case VariableResolver:
-		// this checks that we aren't getting into an infinite loop
-		valDefault := val.Default()
-		valResolver, isResolver := valDefault.(VariableResolver)
-		if isResolver && reflect.DeepEqual(valResolver, val) {
-			return EmptyJSONFragment, fmt.Errorf("Loop found in ToJSON of '%s' with value '%+v'", reflect.TypeOf(val), val)
-		}
-		return ToJSON(env, valDefault)
-
-	case []string:
+	case Array:
 		return ToFragment(json.Marshal(val))
 
-	case []bool:
-		return ToFragment(json.Marshal(val))
-
-	case []time.Time:
-		times := make([]string, len(val))
-		for i := range val {
-			times[i] = DateToISO(val[i])
-		}
-		return ToFragment(json.Marshal(times))
-
-	case []decimal.Decimal:
-		return ToFragment(json.Marshal(val))
-
-	case []int:
-		return ToFragment(json.Marshal(val))
+	case Atomizable:
+		return ToJSON(env, val.Atomize())
 
 	case map[string]string:
 		return ToFragment(json.Marshal(val))
@@ -316,61 +231,20 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case time.Time:
 		return DateToISO(val), nil
 
-	case fmt.Stringer:
-		return val.String(), nil
+	case Atomizable:
+		return ToString(env, val.Atomize())
 
-	case VariableResolver:
-		// this checks that we aren't getting into an infinite loop
-		valDefault := val.Default()
-		valResolver, isResolver := valDefault.(VariableResolver)
-		if isResolver && reflect.DeepEqual(valResolver, val) {
-			return "", fmt.Errorf("Loop found in ToString of '%s' with value '%+v'", reflect.TypeOf(val), val)
-		}
-		return ToString(env, valDefault)
-
-	case Location:
-		return val.Name(), nil
-
-	case []string:
-		return strings.Join(val, ", "), nil
-
-	case []bool:
+	case Array:
 		var output bytes.Buffer
-		for i := range val {
+		for i := 0; i < val.Length(); i++ {
 			if i > 0 {
 				output.WriteString(", ")
 			}
-			output.WriteString(strconv.FormatBool(val[i]))
-		}
-		return output.String(), nil
-
-	case []time.Time:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
+			itemAsStr, err := ToString(env, val.Index(i))
+			if err != nil {
+				return "", err
 			}
-			output.WriteString(DateToISO(val[i]))
-		}
-		return output.String(), nil
-
-	case []decimal.Decimal:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(val[i].String())
-		}
-		return output.String(), nil
-
-	case []int:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(strconv.FormatInt(int64(val[i]), 10))
+			output.WriteString(itemAsStr)
 		}
 		return output.String(), nil
 
@@ -380,7 +254,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
-	return "", fmt.Errorf("ToString unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+	return "", fmt.Errorf("unable to convert value '%+v' of type '%s' to a string", val, reflect.TypeOf(val))
 }
 
 // ToInt tries to convert the passed in interface{} to an integer value, returning an error if that isn't possible
@@ -433,14 +307,12 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 			return decimal.Zero, fmt.Errorf("Cannot convert '%s' to a decimal", val)
 		}
 		return parsed, nil
+
+	case Atomizable:
+		return ToDecimal(env, val.Atomize())
 	}
 
-	asString, err := ToString(env, val)
-	if err != nil {
-		return decimal.Zero, err
-	}
-
-	return ToDecimal(env, asString)
+	return decimal.Zero, fmt.Errorf("unable to convert value '%+v' of type '%s' to a decimal", val, reflect.TypeOf(val))
 }
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
@@ -468,14 +340,12 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 
 	case string:
 		return DateFromString(env, val)
+
+	case Atomizable:
+		return ToDate(env, val.Atomize())
 	}
 
-	asString, err := ToString(env, val)
-	if err != nil {
-		return time.Time{}, err
-	}
-
-	return ToDate(env, asString)
+	return time.Time{}, fmt.Errorf("unable to convert value '%+v' of type '%s' to a date", val, reflect.TypeOf(val))
 }
 
 // ToBool tests whether the passed in item should be considered True
@@ -538,14 +408,12 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 
 		// finally just string version
 		return asString != "" && strings.ToLower(asString) != "false", nil
+
+	case Atomizable:
+		return ToBool(env, test.Atomize())
 	}
 
-	asString, err := ToString(env, test)
-	if err != nil {
-		return false, err
-	}
-
-	return ToBool(env, asString)
+	return false, fmt.Errorf("unable to convert value '%+v' of type '%s' to a bool", test, reflect.TypeOf(test))
 }
 
 // XType is an an enumeration of the possible types we can deal with
@@ -557,13 +425,9 @@ const (
 	XTypeString
 	XTypeDecimal
 	XTypeTime
-	XTypeLocation
 	XTypeBool
+	XTypeArray
 	XTypeError
-	XTypeStringSlice
-	XTypeDecimalSlice
-	XTypeTimeSlice
-	XTypeBoolSlice
 	XTypeMap
 )
 
@@ -590,26 +454,14 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 	case time.Time:
 		return val, XTypeTime, nil
 
-	case Location:
-		return val, XTypeLocation, nil
-
 	case string:
 		return val, XTypeString, nil
 
 	case bool:
 		return val, XTypeBool, nil
 
-	case []string:
-		return val, XTypeStringSlice, nil
-
-	case []time.Time:
-		return val, XTypeTimeSlice, nil
-
-	case []decimal.Decimal:
-		return val, XTypeDecimalSlice, nil
-
-	case []bool:
-		return val, XTypeBoolSlice, nil
+	case Array:
+		return val, XTypeArray, nil
 	}
 
 	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)

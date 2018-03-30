@@ -49,10 +49,13 @@ var funcTests = []struct {
 
 	{"round", []interface{}{"10.5", "0"}, newDecimal("11"), false},
 	{"round", []interface{}{"10.5", "1"}, newDecimal("10.5"), false},
+	{"round", []interface{}{"10.51", "1"}, newDecimal("10.5"), false},
+	{"round", []interface{}{"10.56", "1"}, newDecimal("10.6"), false},
+	{"round", []interface{}{"12.56", "-1"}, newDecimal("10"), false},
+	{"round", []interface{}{"10.5"}, newDecimal("11"), false},
 	{"round", []interface{}{"not_num", "1"}, nil, true},
 	{"round", []interface{}{"10.5", "not_num"}, nil, true},
-	{"round", []interface{}{"10.5", "-1"}, nil, true},
-	{"round", []interface{}{"10.5"}, nil, true},
+	{"round", []interface{}{"10.5", "1", "30"}, nil, true},
 
 	{"round_up", []interface{}{"10.5"}, newDecimal("11"), false},
 	{"round_up", []interface{}{"10.2"}, newDecimal("11"), false},
@@ -94,18 +97,18 @@ var funcTests = []struct {
 	{"read_code", []interface{}{struct{}{}}, nil, true},
 	{"read_code", []interface{}{}, nil, true},
 
-	{"split", []interface{}{"1,2,3", ","}, []string{"1", "2", "3"}, false},
-	{"split", []interface{}{"1,2,3", "."}, []string{"1,2,3"}, false},
+	{"split", []interface{}{"1,2,3", ","}, utils.NewArray("1", "2", "3"), false},
+	{"split", []interface{}{"1,2,3", "."}, utils.NewArray("1,2,3"), false},
 	{"split", []interface{}{struct{}{}, "."}, nil, true},
 	{"split", []interface{}{"1,2,3", struct{}{}}, nil, true},
 	{"split", []interface{}{}, nil, true},
 
-	{"join", []interface{}{[]interface{}{"1", "2", "3"}, ","}, "1,2,3", false},
-	{"join", []interface{}{[]interface{}{}, ","}, "", false},
-	{"join", []interface{}{[]interface{}{"1"}, ","}, "1", false},
+	{"join", []interface{}{utils.NewArray("1", "2", "3"), ","}, "1,2,3", false},
+	{"join", []interface{}{utils.NewArray(), ","}, "", false},
+	{"join", []interface{}{utils.NewArray("1"), ","}, "1", false},
 	{"join", []interface{}{"1,2,3", struct{}{}}, nil, true},
-	{"join", []interface{}{[]interface{}{"1,2,3"}, struct{}{}}, nil, true},
-	{"join", []interface{}{[]interface{}{"1"}}, nil, true},
+	{"join", []interface{}{utils.NewArray("1,2,3"), struct{}{}}, nil, true},
+	{"join", []interface{}{utils.NewArray("1")}, nil, true},
 
 	{"title", []interface{}{"hello"}, "Hello", false},
 	{"title", []interface{}{""}, "", false},
@@ -184,10 +187,15 @@ var funcTests = []struct {
 	{"string_length", []interface{}{[]interface{}{"hello", "world"}}, decimal.NewFromFloat(2), true},
 	{"string_length", []interface{}{[]interface{}{}}, decimal.NewFromFloat(0), true},
 
-	{"array_length", []interface{}{[]string{"hello"}}, decimal.NewFromFloat(1), false},
-	{"array_length", []interface{}{[]string{}}, decimal.NewFromFloat(0), false},
+	{"array_length", []interface{}{utils.NewArray("hello")}, decimal.NewFromFloat(1), false},
+	{"array_length", []interface{}{utils.NewArray()}, decimal.NewFromFloat(0), false},
 	{"array_length", []interface{}{struct{}{}}, nil, true},
 	{"array_length", []interface{}{}, nil, true},
+
+	{"string_cmp", []interface{}{"abc", "abc"}, decimal.NewFromFloat(0), false},
+	{"string_cmp", []interface{}{"abc", "def"}, decimal.NewFromFloat(-1), false},
+	{"string_cmp", []interface{}{"def", "abc"}, decimal.NewFromFloat(1), false},
+	{"string_cmp", []interface{}{"abc", fmt.Errorf("error")}, nil, true},
 
 	{"default", []interface{}{"10", "20"}, "10", false},
 	{"default", []interface{}{nil, "20"}, "20", false},
@@ -314,7 +322,7 @@ var funcTests = []struct {
 	{"legacy_add", []interface{}{}, nil, true},
 
 	{"format_urn", []interface{}{"tel:+250781234567"}, "0781 234 567", false},
-	{"format_urn", []interface{}{[]string{"tel:+250781112222", "tel:+250781234567"}}, "0781 112 222", false},
+	{"format_urn", []interface{}{utils.NewArray("tel:+250781112222", "tel:+250781234567")}, "0781 112 222", false},
 	{"format_urn", []interface{}{"twitter:134252511151#billy_bob"}, "billy_bob", false},
 	{"format_urn", []interface{}{"NOT URN"}, nil, true},
 }

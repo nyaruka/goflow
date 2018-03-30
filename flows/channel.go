@@ -80,7 +80,7 @@ func (c *channel) HasRole(role ChannelRole) bool {
 func (c *channel) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return c.uuid
+		return string(c.uuid)
 	case "name":
 		return c.name
 	case "address":
@@ -90,17 +90,13 @@ func (c *channel) Resolve(key string) interface{} {
 	return fmt.Errorf("No field '%s' on channel", key)
 }
 
-// Default returns the value of this channel when it is the result of an expression
-func (c *channel) Default() interface{} {
-	return c
-}
-
-// String returns the default string value for a channel, which is its name
-func (c *channel) String() string {
+// Atomize is called when this object needs to be reduced to a primitive
+func (c *channel) Atomize() interface{} {
 	return c.name
 }
 
-var _ utils.VariableResolver = (*channel)(nil)
+var _ utils.Atomizable = (*channel)(nil)
+var _ utils.Resolvable = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {

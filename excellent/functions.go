@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -67,6 +68,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"length":            Length,
 	"right":             Right,
 	"string_length":     Length,
+	"string_cmp":        StringCmp,
 	"repeat":            Repeat,
 	"replace":           Replace,
 	"upper":             Upper,
@@ -160,12 +162,13 @@ func ArrayLength(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("ARRAY_LENGTH takes exactly one argument, got %d", len(args))
 	}
 
-	len, err := utils.SliceLength(args[0])
-	if err != nil {
-		return err
+	// test whether arg1 is indexable
+	indexable, isIndexable := args[0].(utils.Indexable)
+	if !isIndexable {
+		return fmt.Errorf("ARRAY_LENGTH requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
-	return len
+	return indexable.Length()
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
@@ -361,24 +364,38 @@ func Abs(env utils.Environment, args ...interface{}) interface{} {
 	return dec.Abs()
 }
 
-// Round rounds `num` to the corresponding number of `places`
+// Round rounds `num` to the nearest value. You can optionally pass
+// in the number of decimal places to round to as `places`.
 //
+// If places < 0, it will round the integer part to the nearest 10^(-places).
+//
+//   @(round(12.141)) -> 12
+//   @(round(12.6)) -> 13
 //   @(round(12.141, 2)) -> 12.14
+//   @(round(12.146, 2)) -> 12.15
+//   @(round(12.146, -1)) -> 10
 //   @(round("notnum", 2)) -> ERROR
 //
-// @function round(num, places)
+// @function round(num [,places])
 func Round(env utils.Environment, args ...interface{}) interface{} {
-	dec, round, err := checkTwoDecimalArgs(env, "ROUND", args)
+	if len(args) < 1 || len(args) > 2 {
+		return fmt.Errorf("ROUND takes either one or two arguments")
+	}
+
+	dec, err := utils.ToDecimal(env, args[0])
 	if err != nil {
-		return err
+		return fmt.Errorf("ROUND's first argument must be decimal")
 	}
 
-	roundInt := round.IntPart()
-	if roundInt < 0 {
-		return fmt.Errorf("ROUND decimal places argument must be valid 32 bit integer")
+	round := 0
+	if len(args) == 2 {
+		round, err = utils.ToInt(env, args[1])
+		if err != nil {
+			return fmt.Errorf("ROUND's decimal places argument must be integer")
+		}
 	}
 
-	return dec.Round(int32(roundInt))
+	return dec.Round(int32(round))
 }
 
 // RoundUp rounds `num` up to the nearest integer value, also good at fighting weeds
@@ -482,7 +499,7 @@ func Min(env utils.Environment, args ...interface{}) interface{} {
 // @function mean(values)
 func Mean(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) == 0 {
-		return fmt.Errorf("Mean requires at least one argument, got 0")
+		return fmt.Errorf("MEAN requires at least one argument, got 0")
 	}
 
 	sum := decimal.Zero
@@ -722,11 +739,12 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
+	splits := utils.NewArray()
+
 	allSplits := strings.Split(s, sep)
-	splits := make([]string, 0, len(allSplits))
 	for i := range allSplits {
 		if allSplits[i] != "" {
-			splits = append(splits, allSplits[i])
+			splits.Append(allSplits[i])
 		}
 	}
 	return splits
@@ -742,9 +760,9 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	s, err := utils.ToStringArray(env, args[0])
-	if err != nil {
-		return err
+	indexable, isIndexable := args[0].(utils.Indexable)
+	if !isIndexable {
+		return fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
 	sep, err := utils.ToString(env, args[1])
@@ -752,7 +770,19 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
-	return strings.Join(s, sep)
+	var output bytes.Buffer
+	for i := 0; i < indexable.Length(); i++ {
+		if i > 0 {
+			output.WriteString(sep)
+		}
+		itemAsStr, err := utils.ToString(env, indexable.Index(i))
+		if err != nil {
+			return err
+		}
+		output.WriteString(itemAsStr)
+	}
+
+	return output.String()
 }
 
 // Char returns the rune for the passed in codepoint, `num`, which may be unicode, this is the reverse of code
@@ -1051,6 +1081,24 @@ func Length(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return utf8.RuneCountInString(arg)
+}
+
+// StringCmp returns the comparison between the strings `str1` and `str2`.
+// The return value will be -1 if str1 is smaller than str2, 0 if they
+// are equal and 1 if str1 is greater than str2
+//
+//   @(string_cmp("abc", "abc")) -> 0
+//   @(string_cmp("abc", "def")) -> -1
+//   @(string_cmp("zzz", "aaa")) -> 1
+//
+// @function string_cmp(str1, str2)
+func StringCmp(env utils.Environment, args ...interface{}) interface{} {
+	str1, str2, err := checkTwoStringArgs(env, "STRING_CMP", args)
+	if err != nil {
+		return err
+	}
+
+	return strings.Compare(str1, str2)
 }
 
 // Repeat return `string` repeated `count` number of times
@@ -1627,12 +1675,13 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FORMAT_URN takes one argument, got %d", len(args))
 	}
 
-	// if we've been passed a slice like a URNList, use first item
+	// if we've been passed an indexable like a URNList, use first item
 	urnArg := args[0]
-	if utils.IsSlice(urnArg) {
-		sliceLen, _ := utils.SliceLength(urnArg)
-		if sliceLen >= 1 {
-			urnArg, _ = utils.LookupIndex(urnArg, 0)
+
+	indexable, isIndexable := urnArg.(utils.Indexable)
+	if isIndexable {
+		if indexable.Length() >= 1 {
+			urnArg = indexable.Index(0)
 		} else {
 			return ""
 		}
@@ -1680,6 +1729,24 @@ func checkOneStringArg(env utils.Environment, funcName string, args []interface{
 	}
 
 	return arg1, nil
+}
+
+func checkTwoStringArgs(env utils.Environment, funcName string, args []interface{}) (string, string, error) {
+	if len(args) != 2 {
+		return "", "", fmt.Errorf("%s takes exactly two string arguments, got %d", funcName, len(args))
+	}
+
+	arg1, err := utils.ToString(env, args[0])
+	if err != nil {
+		return "", "", err
+	}
+
+	arg2, err := utils.ToString(env, args[1])
+	if err != nil {
+		return "", "", err
+	}
+
+	return arg1, arg2, nil
 }
 
 func checkOneStringOneIntArg(env utils.Environment, funcName string, args []interface{}) (string, int, error) {

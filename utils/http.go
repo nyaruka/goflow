@@ -100,7 +100,7 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 	case "response":
 		return r.Response()
 	case "status":
-		return r.Status()
+		return string(r.Status())
 	case "status_code":
 		return r.StatusCode()
 	}
@@ -108,16 +108,13 @@ func (r *RequestResponse) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on webhook", key)
 }
 
-// Default returns the value of this webhook when it is the result of an expression
-func (r *RequestResponse) Default() interface{} {
-	return r
-}
-
-func (r *RequestResponse) String() string {
+// Atomize is called when this object needs to be reduced to a primitive
+func (r *RequestResponse) Atomize() interface{} {
 	return r.body
 }
 
-var _ VariableResolver = (*RequestResponse)(nil)
+var _ Atomizable = (*RequestResponse)(nil)
+var _ Resolvable = (*RequestResponse)(nil)
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http request and error (when we received no response)
 func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError error) (*RequestResponse, error) {

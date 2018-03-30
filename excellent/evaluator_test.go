@@ -26,13 +26,13 @@ func (r *testResolvable) Resolve(key string) interface{} {
 	}
 }
 
-func (r *testResolvable) Default() interface{} {
-	return r
-}
-
-func (r *testResolvable) String() string {
+// Atomize is called when this object needs to be reduced to a primitive
+func (r *testResolvable) Atomize() interface{} {
 	return "hello"
 }
+
+var _ utils.Atomizable = (*testResolvable)(nil)
+var _ utils.Resolvable = (*testResolvable)(nil)
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 
@@ -45,8 +45,9 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"dec1":    1.5,
 		"dec2":    2.5,
 		"words":   "one two three",
-		"array":   []string{"one", "two", "three"},
+		"array":   utils.NewArray("one", "two", "three"),
 		"thing":   &testResolvable{},
+		"err":     fmt.Errorf("an error"),
 	}
 	vars := utils.NewMapResolver(varMap)
 
@@ -122,8 +123,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(has_error(array[100]))", "true", false}, // errors are like any other value
 		{"@(has_error(array.100))", "true", false},
+		{`@(has_error(round("foo", "bar")))`, "true", false},
+		{`@(has_error(err))`, "true", false},
 		{"@(has_error(thing.foo))", "false", false},
 		{"@(has_error(thing.xxx))", "true", false},
+		{"@(has_error(1 / 0))", "true", false},
 	}
 
 	env := utils.NewDefaultEnvironment()
@@ -142,7 +146,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	arr := []string{"a", "b", "c"}
+	arr := utils.NewArray("a", "b", "c")
 
 	strMap := map[string]string{
 		"1":          "one",
@@ -158,7 +162,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 	innerMap := map[string]interface{}{"int_map": intMap}
 
-	innerArr := []map[string]string{strMap}
+	innerArr := utils.NewArray(strMap)
 
 	varMap := map[string]interface{}{
 		"string1":   "foo",
@@ -264,10 +268,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(2 < 1)", false, false},
 		{"@(1 = 1)", true, false},
 		{"@(1 = 2)", false, false},
+		{`@("asdf" = "basf")`, "", true},
 		{"@(1 != 2)", true, false},
 		{"@(1 != 1)", false, false},
 		{"@(-1 = 1)", false, false},
 		{"@(1 < asdf)", "", true},
+		{`@("asdf" < "basf")`, "", true},
 
 		{"@(\"foo\" & \"bar\")", "foobar", false},
 		{"@(missing & \"bar\")", "", true},
