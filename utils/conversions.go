@@ -373,9 +373,6 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 	case string:
 		return DateFromString(env, val)
 
-	case fmt.Stringer:
-		return ToDate(env, val.String())
-
 	case VariableAtomizer:
 		return ToDate(env, val.Atomize())
 	}
@@ -460,7 +457,6 @@ const (
 	XTypeString
 	XTypeDecimal
 	XTypeTime
-	XTypeLocation
 	XTypeBool
 	XTypeError
 	XTypeMap
@@ -488,9 +484,6 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 
 	case time.Time:
 		return val, XTypeTime, nil
-
-	case Location:
-		return val, XTypeLocation, nil
 
 	case string:
 		return val, XTypeString, nil
