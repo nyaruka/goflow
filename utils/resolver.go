@@ -16,12 +16,12 @@ func Snakify(text string) string {
 	return strings.Trim(strings.ToLower(snakedChars.ReplaceAllString(text, "_")), "_")
 }
 
-// VariableResolver defines the interface used by Excellent objects that can be indexed into
+// VariableResolver is the interface for objects in the context which can be keyed into, e.g. foo.bar
 type VariableResolver interface {
 	Resolve(key string) interface{}
 }
 
-// VariableAtomizer defines the interface used by Excellent objects that can be indexed into
+// VariableAtomizer is the interface for objects in the context which can reduce themselves to an XAtom primitive
 type VariableAtomizer interface {
 	Atomize() interface{}
 }
