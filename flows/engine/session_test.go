@@ -31,6 +31,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns", "tel:+12065551212, facebook:1122334455667788, mailto:ben@macklemore", false},
 		{"@contact.urns.tel", "tel:+12065551212", false},
 		{"@contact.urns.0", "tel:+12065551212", false},
+		{"@(contact.urns[0])", "tel:+12065551212", false},
 		{"@contact.urns.0.scheme", "tel", false},
 		{"@contact.urns.0.path", "+12065551212", false},
 		{"@contact.urns.0.display", "", false},
@@ -41,8 +42,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1", "facebook:1122334455667788", false},
 		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
-		{"@contact.groups", "Survey Audience", false}, // TODO should be list
-		{"@(array_length(contact.groups))", "1", false},
+		{"@contact.groups", "Azuay State, Survey Audience", false},
+		{"@(array_length(contact.groups))", "2", false},
 		{"@contact.fields.first_name", "Bob", false},
 		{"@contact.fields.age", "23", false},
 		{"@contact.fields.joined", "2018-03-27T10:30:00.123456+02:00", false},

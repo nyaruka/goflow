@@ -151,7 +151,7 @@ func (c *Contact) Atomize() interface{} {
 var _ utils.Atomizable = (*Contact)(nil)
 var _ utils.Resolvable = (*Contact)(nil)
 
-// SetField updates the given contact field value for this contact
+// SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
 	c.fields.setValue(env, field, rawValue)
 }
