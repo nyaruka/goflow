@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,8 +43,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"汉字":      "simplified chinese",
 		"int1":    1,
 		"int2":    2,
-		"dec1":    1.5,
-		"dec2":    2.5,
+		"dec1":    decimal.RequireFromString("1.5"),
+		"dec2":    decimal.RequireFromString("2.5"),
 		"words":   "one two three",
 		"array":   utils.NewArray("one", "two", "three"),
 		"thing":   &testResolvable{},
@@ -170,8 +171,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		"key":       "four",
 		"int1":      1,
 		"int2":      2,
-		"dec1":      1.5,
-		"dec2":      2.5,
+		"dec1":      decimal.RequireFromString("1.5"),
+		"dec2":      decimal.RequireFromString("2.5"),
 		"words":     "one two three",
 		"array1":    arr,
 		"str_map":   strMap,
@@ -198,8 +199,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@hello", "@hello", false},
 		{"@(title(\"hello\"))", "Hello", false},
 
-		{"@dec1", 1.5, false},
-		{"@(dec1 + dec2)", 4, false},
+		{"@dec1", decimal.RequireFromString("1.5"), false},
+		{"@(dec1 + dec2)", decimal.RequireFromString("4.0"), false},
 		{"@array1", arr, false},
 		{"@str_map", strMap, false},
 		{"@int_map", intMap, false},
@@ -232,12 +233,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(asdf^2)", "", true},
 
 		{"@(1+2)", 3, false},
-		{"@(1-2.5)", -1.5, false},
+		{"@(1-2.5)", decimal.RequireFromString("-1.5"), false},
 		{"@(1-asdf)", "", true},
 		{"@(asdf+1)", "", true},
 
 		{"@(1*2)", 2, false},
-		{"@(1/2)", .5, false},
+		{"@(1/2)", decimal.RequireFromString("0.5"), false},
 		{"@(1/0)", "", true},
 		{"@(1*asdf)", "", true},
 		{"@(asdf/1)", "", true},
