@@ -26,6 +26,7 @@ var timeTests = []struct {
 
 	// year first
 	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", "99-02-01", "01-02-1999 00:00:00 +0000 UTC", false},
 
 	// specific timezone
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "America/Los_Angeles", "01\\02\\2001", "01-02-2001 00:00:00 -0800 PST", false},

@@ -13,6 +13,7 @@ import (
 var patternDayMonthYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
 var patternMonthDayYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
 var patternYearMonthDay = regexp.MustCompile(`([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
+var patternISODate = regexp.MustCompile(`([0-9]{4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
 var patternTime = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
 
 // DateFormat a date format string
@@ -132,19 +133,26 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	parsed := ZeroTime
 	currentYear := time.Now().Year()
 	var err error
-	switch env.DateFormat() {
 
-	case DateFormatYearMonthDay:
-		parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
+	// first try iso date parsing
+	parsed, err = dateFromFormats(env, currentYear, patternISODate, 3, 2, 1, str)
 
-	case DateFormatDayMonthYear:
-		parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
+	// not found? try org specific formats
+	if err != nil {
+		switch env.DateFormat() {
 
-	case DateFormatMonthDayYear:
-		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
+		case DateFormatYearMonthDay:
+			parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
 
-	default:
-		err = fmt.Errorf("unknown date format: %s", env.DateFormat())
+		case DateFormatDayMonthYear:
+			parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
+
+		case DateFormatMonthDayYear:
+			parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
+
+		default:
+			err = fmt.Errorf("unknown date format: %s", env.DateFormat())
+		}
 	}
 
 	// couldn't find a date? bail
