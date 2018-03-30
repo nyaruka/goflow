@@ -361,24 +361,38 @@ func Abs(env utils.Environment, args ...interface{}) interface{} {
 	return dec.Abs()
 }
 
-// Round rounds `num` to the corresponding number of `places`
+// Round rounds `num` to the nearest value. You can optionally pass
+// in the number of decimal places to round to as `places`.
 //
+// If places < 0, it will round the integer part to the nearest 10^(-places).
+//
+//   @(round(12.141)) -> 12
+//   @(round(12.6)) -> 13
 //   @(round(12.141, 2)) -> 12.14
+//   @(round(12.146, 2)) -> 12.15
+//   @(round(12.146, -1)) -> 10
 //   @(round("notnum", 2)) -> ERROR
 //
-// @function round(num, places)
+// @function round(num [,places])
 func Round(env utils.Environment, args ...interface{}) interface{} {
-	dec, round, err := checkTwoDecimalArgs(env, "ROUND", args)
+	if len(args) < 1 || len(args) > 2 {
+		return fmt.Errorf("ROUND takes either one or two arguments")
+	}
+
+	dec, err := utils.ToDecimal(env, args[0])
 	if err != nil {
-		return err
+		return fmt.Errorf("ROUND's first argument must be decimal")
 	}
 
-	roundInt := round.IntPart()
-	if roundInt < 0 {
-		return fmt.Errorf("ROUND decimal places argument must be valid 32 bit integer")
+	round := 0
+	if len(args) == 2 {
+		round, err = utils.ToInt(env, args[1])
+		if err != nil {
+			return fmt.Errorf("ROUND's decimal places argument must be integer")
+		}
 	}
 
-	return dec.Round(int32(roundInt))
+	return dec.Round(int32(round))
 }
 
 // RoundUp rounds `num` up to the nearest integer value, also good at fighting weeds
@@ -482,7 +496,7 @@ func Min(env utils.Environment, args ...interface{}) interface{} {
 // @function mean(values)
 func Mean(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) == 0 {
-		return fmt.Errorf("Mean requires at least one argument, got 0")
+		return fmt.Errorf("MEAN requires at least one argument, got 0")
 	}
 
 	sum := decimal.Zero
