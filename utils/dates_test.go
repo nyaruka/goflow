@@ -49,6 +49,7 @@ var timeTests = []struct {
 	// valid two digit cases
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01-01-99", "01-01-1999 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01-01-16", "01-01-2016 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01-01-16a", "", true},
 
 	// iso dates
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2016-05-01T18:30:15-08:00", "01-05-2016 18:30:15 -0800 PST", false},
