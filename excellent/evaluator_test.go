@@ -44,7 +44,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"dec1":    1.5,
 		"dec2":    2.5,
 		"words":   "one two three",
-		"array":   []string{"one", "two", "three"},
+		"array":   utils.NewArray([]interface{}{"one", "two", "three"}),
 		"thing":   &testResolvable{},
 	}
 	vars := utils.NewMapResolver(varMap)

@@ -313,8 +313,19 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case Location:
 		return val.Name(), nil
 
-	case []string:
-		return strings.Join(val, ", "), nil
+	case *Array:
+		var output bytes.Buffer
+		for i := 0; i < val.Length(); i++ {
+			if i > 0 {
+				output.WriteString(", ")
+			}
+			itemAsStr, err := ToString(env, val.Index(i))
+			if err != nil {
+				return "", err
+			}
+			output.WriteString(itemAsStr)
+		}
+		return output.String(), nil
 
 	case []bool:
 		var output bytes.Buffer

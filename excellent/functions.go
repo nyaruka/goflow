@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -160,12 +161,13 @@ func ArrayLength(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("ARRAY_LENGTH takes exactly one argument, got %d", len(args))
 	}
 
-	len, err := utils.SliceLength(args[0])
-	if err != nil {
-		return err
+	// test whether arg1 is indexable
+	indexable, isIndexable := args[0].(utils.VariableIndexer)
+	if !isIndexable {
+		return fmt.Errorf("ARRAY_LENGTH requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
-	return len
+	return indexable.Length()
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
@@ -723,13 +725,13 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	allSplits := strings.Split(s, sep)
-	splits := make([]string, 0, len(allSplits))
+	splits := make([]interface{}, 0, len(allSplits))
 	for i := range allSplits {
 		if allSplits[i] != "" {
 			splits = append(splits, allSplits[i])
 		}
 	}
-	return splits
+	return utils.NewArray(splits)
 }
 
 // Join joins the passed in `array` of strings with the passed in `delimeter`
@@ -742,9 +744,9 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	s, err := utils.ToStringArray(env, args[0])
-	if err != nil {
-		return err
+	array, isArray := args[0].(*utils.Array)
+	if !isArray {
+		return fmt.Errorf("JOIN requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
 	sep, err := utils.ToString(env, args[1])
@@ -752,7 +754,19 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
-	return strings.Join(s, sep)
+	var output bytes.Buffer
+	for i := 0; i < array.Length(); i++ {
+		if i > 0 {
+			output.WriteString(sep)
+		}
+		itemAsStr, err := utils.ToString(env, array.Index(i))
+		if err != nil {
+			return err
+		}
+		output.WriteString(itemAsStr)
+	}
+
+	return output.String()
 }
 
 // Char returns the rune for the passed in codepoint, `num`, which may be unicode, this is the reverse of code
