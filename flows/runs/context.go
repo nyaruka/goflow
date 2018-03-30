@@ -37,15 +37,6 @@ func (c *runContext) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on context", key)
 }
 
-// Default returns the value of this context when it is the result of an expression
-func (c *runContext) Default() interface{} {
-	return c
-}
-
-func (c *runContext) String() string {
-	return c.run.UUID().String()
-}
-
 // wraps parent/child runs and provides a reduced set of keys in the context
 type relatedRunContext struct {
 	run flows.RunSummary
@@ -63,22 +54,18 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 func (c *relatedRunContext) Resolve(key string) interface{} {
 	switch key {
 	case "uuid":
-		return c.run.UUID()
+		return string(c.run.UUID())
 	case "contact":
 		return c.run.Contact()
 	case "flow":
 		return c.run.Flow()
 	case "status":
-		return c.run.Status()
+		return string(c.run.Status())
 	case "results":
 		return c.run.Results()
 	}
 
 	return fmt.Errorf("no field '%s' on related run", key)
-}
-
-func (c *relatedRunContext) Default() interface{} {
-	return c
 }
 
 func (c *relatedRunContext) String() string {

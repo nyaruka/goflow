@@ -60,10 +60,10 @@ func (u *ContactURN) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on URN", key)
 }
 
-// Default returns the value of this URN when it is the result of an expression
-func (u *ContactURN) Default() interface{} { return u }
+func (u *ContactURN) Atomize() interface{} { return string(u.URN) }
 
-func (u *ContactURN) String() string { return string(u.URN) }
+var _ utils.VariableAtomizer = (*ContactURN)(nil)
+var _ utils.VariableResolver = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -154,17 +154,12 @@ func (l URNList) Resolve(key string) interface{} {
 	return l.WithScheme(scheme)
 }
 
-// Default returns the value of this URN list when it is the result of an expression
-func (l URNList) Default() interface{} {
-	return l
-}
-
-func (l URNList) String() string {
+func (l URNList) Atomize() interface{} {
 	if len(l) > 0 {
 		return l[0].String()
 	}
 	return ""
 }
 
-var _ utils.VariableResolver = &ContactURN{}
+var _ utils.VariableAtomizer = (URNList)(nil)
 var _ utils.VariableResolver = (URNList)(nil)

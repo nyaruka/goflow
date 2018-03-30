@@ -16,11 +16,14 @@ func Snakify(text string) string {
 	return strings.Trim(strings.ToLower(snakedChars.ReplaceAllString(text, "_")), "_")
 }
 
-// VariableResolver defines the interface used by Excellent objects that can be indexed into
+// VariableResolver is the interface for objects in the context which can be keyed into, e.g. foo.bar
 type VariableResolver interface {
 	Resolve(key string) interface{}
-	Default() interface{}
-	String() string
+}
+
+// VariableAtomizer is the interface for objects in the context which can reduce themselves to an XAtom primitive
+type VariableAtomizer interface {
+	Atomize() interface{}
 }
 
 // ResolveVariable will resolve the passed in string variable given in dot notation and return
@@ -151,7 +154,7 @@ func (r *mapResolver) Resolve(key string) interface{} {
 	return val
 }
 
-// Default returns the value of this map when it is the result of an expression
-func (r *mapResolver) Default() interface{} { return r }
+func (r *mapResolver) Atomize() interface{} { return fmt.Sprintf("%s", r.values) }
 
-func (r *mapResolver) String() string { return fmt.Sprintf("%s", r.values) }
+var _ VariableAtomizer = (*mapResolver)(nil)
+var _ VariableResolver = (*mapResolver)(nil)

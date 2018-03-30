@@ -47,13 +47,8 @@ func (i *MsgInput) Resolve(key string) interface{} {
 	return i.baseInput.Resolve(key)
 }
 
-// Default returns the value of this input when it is the result of an expression
-func (i *MsgInput) Default() interface{} {
-	return i
-}
-
 // String returns our default value if evaluated in a context, our text in our case
-func (i *MsgInput) String() string {
+func (i *MsgInput) Atomize() interface{} {
 	var parts []string
 	if i.text != "" {
 		parts = append(parts, i.text)
@@ -64,6 +59,8 @@ func (i *MsgInput) String() string {
 	return strings.Join(parts, "\n")
 }
 
+var _ utils.VariableAtomizer = (*MsgInput)(nil)
+var _ utils.VariableResolver = (*MsgInput)(nil)
 var _ flows.Input = (*MsgInput)(nil)
 
 //------------------------------------------------------------------------------------------

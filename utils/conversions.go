@@ -232,17 +232,8 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case JSONFragment:
 		return val, nil
 
-	case fmt.Stringer:
-		return ToFragment(json.Marshal(val.String()))
-
-	case VariableResolver:
-		// this checks that we aren't getting into an infinite loop
-		valDefault := val.Default()
-		valResolver, isResolver := valDefault.(VariableResolver)
-		if isResolver && reflect.DeepEqual(valResolver, val) {
-			return EmptyJSONFragment, fmt.Errorf("Loop found in ToJSON of '%s' with value '%+v'", reflect.TypeOf(val), val)
-		}
-		return ToJSON(env, valDefault)
+	case VariableAtomizer:
+		return ToJSON(env, val.Atomize())
 
 	case []string:
 		return ToFragment(json.Marshal(val))
@@ -316,17 +307,8 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case time.Time:
 		return DateToISO(val), nil
 
-	case fmt.Stringer:
-		return val.String(), nil
-
-	case VariableResolver:
-		// this checks that we aren't getting into an infinite loop
-		valDefault := val.Default()
-		valResolver, isResolver := valDefault.(VariableResolver)
-		if isResolver && reflect.DeepEqual(valResolver, val) {
-			return "", fmt.Errorf("Loop found in ToString of '%s' with value '%+v'", reflect.TypeOf(val), val)
-		}
-		return ToString(env, valDefault)
+	case VariableAtomizer:
+		return ToString(env, val.Atomize())
 
 	case Location:
 		return val.Name(), nil
@@ -380,7 +362,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
-	return "", fmt.Errorf("ToString unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+	return "", fmt.Errorf("unable to convert value '%+v' of type '%s' to a string", val, reflect.TypeOf(val))
 }
 
 // ToInt tries to convert the passed in interface{} to an integer value, returning an error if that isn't possible
@@ -433,14 +415,12 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 			return decimal.Zero, fmt.Errorf("Cannot convert '%s' to a decimal", val)
 		}
 		return parsed, nil
+
+	case VariableAtomizer:
+		return ToDecimal(env, val.Atomize())
 	}
 
-	asString, err := ToString(env, val)
-	if err != nil {
-		return decimal.Zero, err
-	}
-
-	return ToDecimal(env, asString)
+	return decimal.Zero, fmt.Errorf("unable to convert value '%+v' of type '%s' to a decimal", val, reflect.TypeOf(val))
 }
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
@@ -468,14 +448,15 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 
 	case string:
 		return DateFromString(env, val)
+
+	case fmt.Stringer:
+		return ToDate(env, val.String())
+
+	case VariableAtomizer:
+		return ToDate(env, val.Atomize())
 	}
 
-	asString, err := ToString(env, val)
-	if err != nil {
-		return time.Time{}, err
-	}
-
-	return ToDate(env, asString)
+	return time.Time{}, fmt.Errorf("unable to convert value '%+v' of type '%s' to a date", val, reflect.TypeOf(val))
 }
 
 // ToBool tests whether the passed in item should be considered True
@@ -538,14 +519,12 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 
 		// finally just string version
 		return asString != "" && strings.ToLower(asString) != "false", nil
+
+	case VariableAtomizer:
+		return ToBool(env, test.Atomize())
 	}
 
-	asString, err := ToString(env, test)
-	if err != nil {
-		return false, err
-	}
-
-	return ToBool(env, asString)
+	return false, fmt.Errorf("unable to convert value '%+v' of type '%s' to a bool", test, reflect.TypeOf(test))
 }
 
 // XType is an an enumeration of the possible types we can deal with

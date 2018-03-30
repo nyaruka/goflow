@@ -15,16 +15,10 @@ type resolver struct {
 	defaultString string
 }
 
-func (r *resolver) Default() interface{} { return r.defaultString }
-func (r *resolver) String() string       { return r.defaultString }
+func (r *resolver) Atomize() interface{} { return r.defaultString }
 func (r *resolver) Resolve(key string) interface{} {
 	return fmt.Errorf("No such key")
 }
-
-// test stringer
-type stringer struct{}
-
-func (s *stringer) String() string { return "Stringer" }
 
 func TestToString(t *testing.T) {
 	strMap := make(map[string]string)
@@ -38,7 +32,6 @@ func TestToString(t *testing.T) {
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
 
-	testStringer := &stringer{}
 	testResolver := &resolver{"Resolver"}
 
 	var tests = []struct {
@@ -56,7 +49,6 @@ func TestToString(t *testing.T) {
 		{float32(15.5), "15.5", false},
 		{float64(15.5), "15.5", false},
 		{decimal.NewFromFloat(15.5), "15.5", false},
-		{testStringer, "Stringer", false},
 		{testResolver, "Resolver", false},
 		{date1, "2017-06-23T15:30:00.000000Z", false},
 		{[]time.Time{date1, date2}, "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
@@ -191,7 +183,6 @@ func TestToJSON(t *testing.T) {
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
 
-	testStringer := &stringer{}
 	testResolver := &resolver{"Resolver"}
 
 	var tests = []struct {
@@ -209,7 +200,6 @@ func TestToJSON(t *testing.T) {
 		{float32(15.5), "15.5", false},
 		{float64(15.5), "15.5", false},
 		{decimal.NewFromFloat(15.5), "15.5", false},
-		{testStringer, `"Stringer"`, false},
 		{testResolver, `"Resolver"`, false},
 		{date1, `"2017-06-23T15:30:00.000000Z"`, false},
 		{[]time.Time{date1, date2}, `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`, false},
@@ -225,7 +215,7 @@ func TestToJSON(t *testing.T) {
 
 	for _, test := range tests {
 		fragment, err := utils.ToJSON(env, test.input)
-		result := fragment.String()
+		result := string(fragment)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToJSON on '%v': %s", test.input, err)

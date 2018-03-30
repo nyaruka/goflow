@@ -115,9 +115,8 @@ func (v *varMapper) Resolve(key string) interface{} {
 	return strings.Join(newPath, ".")
 }
 
-// Default returns the value of this mapper when it is the result of an expression
-func (v *varMapper) Default() interface{} {
-	return v.base
+func (v *varMapper) Atomize() interface{} {
+	return v.String()
 }
 
 func (v *varMapper) String() string {
@@ -127,6 +126,9 @@ func (v *varMapper) String() string {
 	}
 	return v.base
 }
+
+var _ utils.VariableAtomizer = (*varMapper)(nil)
+var _ utils.VariableResolver = (*varMapper)(nil)
 
 // Migration of @extra requires its own mapper because it can map differently depending on the containing flow
 type extraMapper struct {
@@ -146,12 +148,7 @@ func (m *extraMapper) Resolve(key string) interface{} {
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
 }
 
-// Default returns the value of this extra mapper when it is the result of an expression
-func (m *extraMapper) Default() interface{} {
-	return m
-}
-
-func (m *extraMapper) String() string {
+func (m *extraMapper) Atomize() interface{} {
 	switch m.extraAs {
 	case ExtraAsWebhookJSON:
 		return fmt.Sprintf("run.webhook.json.%s", m.path)
@@ -162,6 +159,9 @@ func (m *extraMapper) String() string {
 	}
 	return ""
 }
+
+var _ utils.VariableAtomizer = (*extraMapper)(nil)
+var _ utils.VariableResolver = (*extraMapper)(nil)
 
 type functionTemplate struct {
 	name   string

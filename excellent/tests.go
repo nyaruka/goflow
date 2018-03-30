@@ -2,6 +2,7 @@ package excellent
 
 import (
 	"fmt"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -86,20 +87,15 @@ func (t XTestResult) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
-// Default returns the value of this result when it is the result of an expression
-func (t XTestResult) Default() interface{} {
-	return t.matched
-}
-
 // String satisfies the utils.VariableResolver interface, we always default to whether we matched
-func (t XTestResult) String() string {
+func (t XTestResult) Atomize() interface{} {
 	return strconv.FormatBool(t.matched)
 }
 
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}
 
-// Enforce Variable Resolver interface
+var _ utils.VariableAtomizer = XTestResult{}
 var _ utils.VariableResolver = XTestResult{}
 
 //------------------------------------------------------------------------------------------
@@ -128,7 +124,7 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 	string1, err1 := utils.ToString(env, args[0])
 	string2, err2 := utils.ToString(env, args[1])
 	if err1 != nil || err2 != nil {
-		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments")
+		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments, but got '%s' and '%s'", reflect.TypeOf(args[0]), reflect.TypeOf(args[1]))
 	}
 
 	if string1 == string2 {
@@ -400,14 +396,12 @@ func (m patternMatch) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on pattern match", key)
 }
 
-// Default returns the value of this match when it is the result of an expression
-func (m patternMatch) Default() interface{} {
+func (m patternMatch) Atomize() interface{} {
 	return m[0]
 }
 
-func (m patternMatch) String() string {
-	return m[0]
-}
+var _ utils.VariableAtomizer = patternMatch{}
+var _ utils.VariableResolver = patternMatch{}
 
 // HasPattern tests whether `string` matches the regex `pattern`
 //

@@ -26,13 +26,12 @@ func (r *testResolvable) Resolve(key string) interface{} {
 	}
 }
 
-func (r *testResolvable) Default() interface{} {
-	return r
-}
-
-func (r *testResolvable) String() string {
+func (r *testResolvable) Atomize() interface{} {
 	return "hello"
 }
+
+var _ utils.VariableAtomizer = (*testResolvable)(nil)
+var _ utils.VariableResolver = (*testResolvable)(nil)
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 

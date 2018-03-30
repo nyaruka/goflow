@@ -41,16 +41,12 @@ func (r *Result) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on result", key)
 }
 
-// Default returns the value of this result when it is the result of an expression
-func (r *Result) Default() interface{} {
-	return r.Value
-}
-
 // String returns the string representation of a result, which is our value
-func (r *Result) String() string {
+func (r *Result) Atomize() interface{} {
 	return r.Value
 }
 
+var _ utils.VariableAtomizer = (*Result)(nil)
 var _ utils.VariableResolver = (*Result)(nil)
 
 // Results is our wrapper around a map of snakified result names to result objects
@@ -94,13 +90,8 @@ func (r Results) Resolve(key string) interface{} {
 	return result
 }
 
-// Default returns the value of this result set when it is the result of an expression
-func (r Results) Default() interface{} {
-	return r
-}
-
 // String returns the string representation of our Results, which is a key/value pairing of our fields
-func (r Results) String() string {
+func (r Results) Atomize() interface{} {
 	results := make([]string, 0, len(r))
 	for _, v := range r {
 		results = append(results, fmt.Sprintf("%s: %s", v.Name, v.Value))
@@ -108,4 +99,5 @@ func (r Results) String() string {
 	return strings.Join(results, ", ")
 }
 
+var _ utils.VariableAtomizer = (*Results)(nil)
 var _ utils.VariableResolver = (*Results)(nil)
