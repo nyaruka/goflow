@@ -13,7 +13,7 @@ import (
 var patternDayMonthYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
 var patternMonthDayYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
 var patternYearMonthDay = regexp.MustCompile(`([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
-var patternISODate = regexp.MustCompile(`([0-9]{4})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
+var patternISODate = regexp.MustCompile(`([0-9]{4})[-.\\/_ ]([0-9]{2})[-.\\/_ ]([0-9]{2})`)
 var patternTime = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
 
 // DateFormat a date format string

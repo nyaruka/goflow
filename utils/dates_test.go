@@ -21,8 +21,13 @@ var timeTests = []struct {
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001-1-2", "", true},
+
 	// month first
 	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", "01-02-2001", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatMonthDayYear, utils.TimeFormatHourMinute, "UTC", "2001-1-2", "", true},
 
 	// year first
 	{utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, "UTC", "2001-02-01", "01-02-2001 00:00:00 +0000 UTC", false},
@@ -73,20 +78,22 @@ func TestDateFromString(t *testing.T) {
 			continue
 		}
 
-		expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
-		if err != nil {
-			t.Errorf("Error parsing expected date: %s", err)
-			continue
-		}
-
 		value, err := utils.DateFromString(env, test.Value)
 		if err != nil && !test.Error {
 			t.Errorf("Error parsing date: %s", err)
 			continue
 		}
 
-		if !value.Equal(expected) {
-			t.Errorf("Date '%s' not match expected date '%s' for input: '%s'", value, expected, test.Value)
+		if test.Expected != "" {
+			expected, err := time.Parse("02-01-2006 15:04:05.999999999 -0700 MST", test.Expected)
+			if err != nil {
+				t.Errorf("Error parsing expected date: %s", err)
+				continue
+			}
+
+			if !value.Equal(expected) {
+				t.Errorf("Date '%s' not match expected date '%s' for input: '%s'", value, expected, test.Value)
+			}
 		}
 	}
 }
