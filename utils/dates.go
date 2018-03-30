@@ -13,7 +13,7 @@ import (
 var patternDayMonthYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
 var patternMonthDayYear = regexp.MustCompile(`([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})`)
 var patternYearMonthDay = regexp.MustCompile(`([0-9]{4}|[0-9]{2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})`)
-var patternISODate = regexp.MustCompile(`([0-9]{4})[-.\\/_ ]([0-9]{2})[-.\\/_ ]([0-9]{2})`)
+
 var patternTime = regexp.MustCompile(`([0-9]{1,2}):([0-9]{2})(:([0-9]{2})(\.(\d+))?)?\W*([aApP][mM])?`)
 
 // DateFormat a date format string
@@ -101,8 +101,9 @@ var iso8601Default = "2006-01-02T15:04:05.000000Z07:00"
 // generic format for parsing any 8601 date
 var iso8601Format = "2006-01-02T15:04:05Z07:00"
 var iso8601NoSecondsFormat = "2006-01-02T15:04Z07:00"
+var iso8601Date = "2006-01-02"
 
-var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat}
+var isoFormats = []string{iso8601Format, iso8601NoSecondsFormat, iso8601Date}
 
 // DateToISO converts the passed in time.Time to a string in ISO8601 format
 func DateToISO(date time.Time) string {
@@ -120,7 +121,7 @@ func DateToString(env Environment, date time.Time) string {
 func DateFromString(env Environment, str string) (time.Time, error) {
 	// first see if we can parse in any known iso formats, if so return that
 	for _, format := range isoFormats {
-		parsed, err := time.Parse(format, str)
+		parsed, err := time.Parse(format, strings.Trim(str, " \n\r\t"))
 		if err == nil {
 			if env.Timezone() != nil {
 				parsed = parsed.In(env.Timezone())
@@ -134,25 +135,19 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	currentYear := time.Now().Year()
 	var err error
 
-	// first try iso date parsing
-	parsed, err = dateFromFormats(env, currentYear, patternISODate, 3, 2, 1, str)
+	switch env.DateFormat() {
 
-	// not found? try org specific formats
-	if err != nil {
-		switch env.DateFormat() {
+	case DateFormatYearMonthDay:
+		parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
 
-		case DateFormatYearMonthDay:
-			parsed, err = dateFromFormats(env, currentYear, patternYearMonthDay, 3, 2, 1, str)
+	case DateFormatDayMonthYear:
+		parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
 
-		case DateFormatDayMonthYear:
-			parsed, err = dateFromFormats(env, currentYear, patternDayMonthYear, 1, 2, 3, str)
+	case DateFormatMonthDayYear:
+		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
 
-		case DateFormatMonthDayYear:
-			parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
-
-		default:
-			err = fmt.Errorf("unknown date format: %s", env.DateFormat())
-		}
+	default:
+		err = fmt.Errorf("unknown date format: %s", env.DateFormat())
 	}
 
 	// couldn't find a date? bail

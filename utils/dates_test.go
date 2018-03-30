@@ -21,7 +21,11 @@ var timeTests = []struct {
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "date is 1-2-99 yes", "01-02-1999 00:00:00 +0000 UTC", false},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "01/02/2001", "01-02-2001 00:00:00 +0000 UTC", false},
 
+	// must be real, strict iso to match despite format
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001-01-02", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", " 2001-01-02 ", "02-01-2001 00:00:00 +0000 UTC", false},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "on 2001-01-02 ", "", true},
+	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001_01_02", "", true},
 	{utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, "UTC", "2001-1-2", "", true},
 
 	// month first
