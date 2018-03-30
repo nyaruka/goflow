@@ -31,8 +31,8 @@ func (r *testResolvable) Atomize() interface{} {
 	return "hello"
 }
 
-var _ utils.VariableAtomizer = (*testResolvable)(nil)
-var _ utils.VariableResolver = (*testResolvable)(nil)
+var _ utils.Atomizable = (*testResolvable)(nil)
+var _ utils.Resolvable = (*testResolvable)(nil)
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 

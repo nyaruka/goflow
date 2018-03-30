@@ -59,8 +59,8 @@ func (i *MsgInput) Atomize() interface{} {
 	return strings.Join(parts, "\n")
 }
 
-var _ utils.VariableAtomizer = (*MsgInput)(nil)
-var _ utils.VariableResolver = (*MsgInput)(nil)
+var _ utils.Atomizable = (*MsgInput)(nil)
+var _ utils.Resolvable = (*MsgInput)(nil)
 var _ flows.Input = (*MsgInput)(nil)
 
 //------------------------------------------------------------------------------------------

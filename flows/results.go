@@ -46,8 +46,8 @@ func (r *Result) Atomize() interface{} {
 	return r.Value
 }
 
-var _ utils.VariableAtomizer = (*Result)(nil)
-var _ utils.VariableResolver = (*Result)(nil)
+var _ utils.Atomizable = (*Result)(nil)
+var _ utils.Resolvable = (*Result)(nil)
 
 // Results is our wrapper around a map of snakified result names to result objects
 type Results map[string]*Result
@@ -99,5 +99,5 @@ func (r Results) Atomize() interface{} {
 	return strings.Join(results, ", ")
 }
 
-var _ utils.VariableAtomizer = (*Results)(nil)
-var _ utils.VariableResolver = (*Results)(nil)
+var _ utils.Atomizable = (*Results)(nil)
+var _ utils.Resolvable = (*Results)(nil)

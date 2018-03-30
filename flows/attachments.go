@@ -43,8 +43,8 @@ func (a Attachment) Resolve(key string) interface{} {
 // Atomize is called when this object needs to be reduced to a primitive
 func (a Attachment) Atomize() interface{} { return a.URL() }
 
-var _ utils.VariableAtomizer = (Attachment)("")
-var _ utils.VariableResolver = (Attachment)("")
+var _ utils.Atomizable = (Attachment)("")
+var _ utils.Resolvable = (Attachment)("")
 
 type AttachmentList []Attachment
 
@@ -58,4 +58,4 @@ func (a AttachmentList) Length() int {
 	return len(a)
 }
 
-var _ utils.VariableIndexer = (AttachmentList)(nil)
+var _ utils.Indexable = (AttachmentList)(nil)

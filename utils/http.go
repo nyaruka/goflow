@@ -113,8 +113,8 @@ func (r *RequestResponse) Atomize() interface{} {
 	return r.body
 }
 
-var _ VariableAtomizer = (*RequestResponse)(nil)
-var _ VariableResolver = (*RequestResponse)(nil)
+var _ Atomizable = (*RequestResponse)(nil)
+var _ Resolvable = (*RequestResponse)(nil)
 
 // newRRFromResponse creates a new RequestResponse based on the passed in http request and error (when we received no response)
 func newRRFromRequestAndError(r *http.Request, requestTrace string, requestError error) (*RequestResponse, error) {

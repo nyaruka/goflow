@@ -152,8 +152,8 @@ func (f FieldValues) Atomize() interface{} {
 	return strings.Join(fields, ", ")
 }
 
-var _ utils.VariableAtomizer = (FieldValues)(nil)
-var _ utils.VariableResolver = (FieldValues)(nil)
+var _ utils.Atomizable = (FieldValues)(nil)
+var _ utils.Resolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {

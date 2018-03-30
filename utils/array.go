@@ -6,7 +6,7 @@ import (
 
 // Array is a simple data structure which is indexable in expressions
 type Array interface {
-	VariableIndexer
+	Indexable
 
 	Append(interface{})
 }
@@ -39,4 +39,4 @@ func (a *array) MarshalJSON() ([]byte, error) {
 	return json.Marshal(a.values)
 }
 
-var _ VariableIndexer = (*array)(nil)
+var _ Indexable = (*array)(nil)

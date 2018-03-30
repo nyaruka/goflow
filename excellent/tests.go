@@ -95,8 +95,8 @@ func (t XTestResult) Atomize() interface{} {
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}
 
-var _ utils.VariableAtomizer = XTestResult{}
-var _ utils.VariableResolver = XTestResult{}
+var _ utils.Atomizable = XTestResult{}
+var _ utils.Resolvable = XTestResult{}
 
 //------------------------------------------------------------------------------------------
 // Tests
@@ -411,8 +411,8 @@ func (m *patternMatch) Atomize() interface{} {
 	return m.groups.Index(0)
 }
 
-var _ utils.VariableAtomizer = (*patternMatch)(nil)
-var _ utils.VariableResolver = (*patternMatch)(nil)
+var _ utils.Atomizable = (*patternMatch)(nil)
+var _ utils.Resolvable = (*patternMatch)(nil)
 
 // HasPattern tests whether `string` matches the regex `pattern`
 //

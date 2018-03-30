@@ -101,8 +101,8 @@ func (f *flow) Atomize() interface{} {
 	return f.name
 }
 
-var _ utils.VariableAtomizer = (*flow)(nil)
-var _ utils.VariableResolver = (*flow)(nil)
+var _ utils.Atomizable = (*flow)(nil)
+var _ utils.Resolvable = (*flow)(nil)
 
 func (f *flow) Reference() *flows.FlowReference {
 	return flows.NewFlowReference(f.uuid, f.name)

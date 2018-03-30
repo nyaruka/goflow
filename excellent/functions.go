@@ -162,7 +162,7 @@ func ArrayLength(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// test whether arg1 is indexable
-	indexable, isIndexable := args[0].(utils.VariableIndexer)
+	indexable, isIndexable := args[0].(utils.Indexable)
 	if !isIndexable {
 		return fmt.Errorf("ARRAY_LENGTH requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
@@ -745,7 +745,7 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	indexable, isIndexable := args[0].(utils.VariableIndexer)
+	indexable, isIndexable := args[0].(utils.Indexable)
 	if !isIndexable {
 		return fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
@@ -1645,7 +1645,7 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 	// if we've been passed an indexable like a URNList, use first item
 	urnArg := args[0]
 
-	indexable, isIndexable := urnArg.(utils.VariableIndexer)
+	indexable, isIndexable := urnArg.(utils.Indexable)
 	if isIndexable {
 		if indexable.Length() >= 1 {
 			urnArg = indexable.Index(0)

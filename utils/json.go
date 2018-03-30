@@ -76,8 +76,8 @@ func (j JSONFragment) Atomize() interface{} {
 	return string(j)
 }
 
-var _ VariableAtomizer = EmptyJSONFragment
-var _ VariableResolver = EmptyJSONFragment
+var _ Atomizable = EmptyJSONFragment
+var _ Resolvable = EmptyJSONFragment
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

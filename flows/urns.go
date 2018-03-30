@@ -62,8 +62,8 @@ func (u *ContactURN) Resolve(key string) interface{} {
 // Atomize is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Atomize() interface{} { return string(u.URN) }
 
-var _ utils.VariableAtomizer = (*ContactURN)(nil)
-var _ utils.VariableResolver = (*ContactURN)(nil)
+var _ utils.Atomizable = (*ContactURN)(nil)
+var _ utils.Resolvable = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -162,6 +162,6 @@ func (l URNList) Length() int {
 	return len(l)
 }
 
-var _ utils.VariableAtomizer = (URNList)(nil)
-var _ utils.VariableIndexer = (URNList)(nil)
-var _ utils.VariableResolver = (URNList)(nil)
+var _ utils.Atomizable = (URNList)(nil)
+var _ utils.Indexable = (URNList)(nil)
+var _ utils.Resolvable = (URNList)(nil)

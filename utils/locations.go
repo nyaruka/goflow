@@ -49,7 +49,7 @@ func (b *Location) Children() []*Location { return b.children }
 // Atomize is called when this object needs to be reduced to a primitive
 func (b *Location) Atomize() interface{} { return b.name }
 
-var _ VariableAtomizer = (*Location)(nil)
+var _ Atomizable = (*Location)(nil)
 
 type locationVisitor func(Location *Location)
 

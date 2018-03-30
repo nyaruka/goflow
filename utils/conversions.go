@@ -207,7 +207,7 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case Array:
 		return ToFragment(json.Marshal(val))
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToJSON(env, val.Atomize())
 
 	case map[string]string:
@@ -263,7 +263,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case time.Time:
 		return DateToISO(val), nil
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToString(env, val.Atomize())
 
 	case Array:
@@ -340,7 +340,7 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 		}
 		return parsed, nil
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToDecimal(env, val.Atomize())
 	}
 
@@ -373,7 +373,7 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 	case string:
 		return DateFromString(env, val)
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToDate(env, val.Atomize())
 	}
 
@@ -441,7 +441,7 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 		// finally just string version
 		return asString != "" && strings.ToLower(asString) != "false", nil
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToBool(env, test.Atomize())
 	}
 

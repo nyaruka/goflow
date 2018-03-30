@@ -95,8 +95,8 @@ func (c *channel) Atomize() interface{} {
 	return c.name
 }
 
-var _ utils.VariableAtomizer = (*channel)(nil)
-var _ utils.VariableResolver = (*channel)(nil)
+var _ utils.Atomizable = (*channel)(nil)
+var _ utils.Resolvable = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {

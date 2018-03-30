@@ -76,8 +76,8 @@ func (g *Group) Resolve(key string) interface{} {
 // Atomize is called when this object needs to be reduced to a primitive
 func (g *Group) Atomize() interface{} { return g.name }
 
-var _ utils.VariableAtomizer = (*Group)(nil)
-var _ utils.VariableResolver = (*Group)(nil)
+var _ utils.Atomizable = (*Group)(nil)
+var _ utils.Resolvable = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
 type GroupList struct {
@@ -155,8 +155,8 @@ func (l GroupList) Atomize() interface{} {
 	return strings.Join(names, ", ")
 }
 
-var _ utils.VariableAtomizer = (*GroupList)(nil)
-var _ utils.VariableIndexer = (*GroupList)(nil)
+var _ utils.Atomizable = (*GroupList)(nil)
+var _ utils.Indexable = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {

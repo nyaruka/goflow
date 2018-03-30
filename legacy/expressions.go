@@ -128,8 +128,8 @@ func (v *varMapper) String() string {
 	return v.base
 }
 
-var _ utils.VariableAtomizer = (*varMapper)(nil)
-var _ utils.VariableResolver = (*varMapper)(nil)
+var _ utils.Atomizable = (*varMapper)(nil)
+var _ utils.Resolvable = (*varMapper)(nil)
 
 // Migration of @extra requires its own mapper because it can map differently depending on the containing flow
 type extraMapper struct {
@@ -162,8 +162,8 @@ func (m *extraMapper) Atomize() interface{} {
 	return ""
 }
 
-var _ utils.VariableAtomizer = (*extraMapper)(nil)
-var _ utils.VariableResolver = (*extraMapper)(nil)
+var _ utils.Atomizable = (*extraMapper)(nil)
+var _ utils.Resolvable = (*extraMapper)(nil)
 
 type functionTemplate struct {
 	name   string
@@ -360,7 +360,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 	return migrateLegacyTemplateAsString(migrationVarMapper, template)
 }
 
-func migrateLegacyTemplateAsString(resolver utils.VariableResolver, template string) (string, error) {
+func migrateLegacyTemplateAsString(resolver utils.Resolvable, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors excellent.TemplateErrors
 	scanner := excellent.NewXScanner(strings.NewReader(template), legacyContextTopLevels)
@@ -423,7 +423,7 @@ func toString(params interface{}) (string, error) {
 }
 
 // translateExpression will turn an old expression into a new format expression
-func translateExpression(env utils.Environment, resolver utils.VariableResolver, template string) (interface{}, error) {
+func translateExpression(env utils.Environment, resolver utils.Resolvable, template string) (interface{}, error) {
 	errors := excellent.NewErrorListener()
 
 	input := antlr.NewInputStream(template)
@@ -468,10 +468,10 @@ func translateExpression(env utils.Environment, resolver utils.VariableResolver,
 type legacyVisitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver utils.VariableResolver
+	resolver utils.Resolvable
 }
 
-func newLegacyVisitor(env utils.Environment, resolver utils.VariableResolver) *legacyVisitor {
+func newLegacyVisitor(env utils.Environment, resolver utils.Resolvable) *legacyVisitor {
 	return &legacyVisitor{env: env, resolver: resolver}
 }
 
