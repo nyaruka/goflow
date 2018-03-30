@@ -46,6 +46,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"words":   "one two three",
 		"array":   []string{"one", "two", "three"},
 		"thing":   &testResolvable{},
+		"err":     fmt.Errorf("an error"),
 	}
 	vars := utils.NewMapResolver(varMap)
 
@@ -121,8 +122,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@(has_error(array[100]))", "true", false}, // errors are like any other value
 		{"@(has_error(array.100))", "true", false},
+		{`@(has_error(round("foo", "bar")))`, "true", false},
+		{`@(has_error(err))`, "true", false},
 		{"@(has_error(thing.foo))", "false", false},
 		{"@(has_error(thing.xxx))", "true", false},
+		{"@(has_error(1 / 0))", "true", false},
 	}
 
 	env := utils.NewDefaultEnvironment()
