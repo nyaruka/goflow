@@ -331,7 +331,10 @@ func (r *flowRun) Resolve(key string) interface{} {
 	case "created_on":
 		return r.CreatedOn()
 	case "exited_on":
-		return r.ExitedOn()
+		if r.exitedOn != nil {
+			return r.exitedOn
+		}
+		return nil
 	}
 
 	return fmt.Errorf("no field '%s' on run", key)

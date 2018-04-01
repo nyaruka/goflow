@@ -70,6 +70,11 @@ var _ Resolvable = EmptyJSONFragment
 // JSONArray is a JSON fragment containing an array
 type JSONArray JSONFragment
 
+// Atomize is called when this object needs to be reduced to a primitive
+func (j JSONArray) Atomize() interface{} {
+	return string(j)
+}
+
 // Index is called when this object is indexed into in an expression
 func (j JSONArray) Index(index int) interface{} {
 	val, valType, _, err := jsonparser.Get(j, fmt.Sprintf("[%d]", index))
@@ -88,6 +93,7 @@ func (j JSONArray) Length() int {
 	return length
 }
 
+var _ Atomizable = JSONArray{}
 var _ Indexable = JSONArray{}
 
 func jsonTypeToXAtom(data []byte, valType jsonparser.ValueType) interface{} {

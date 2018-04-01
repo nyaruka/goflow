@@ -1638,7 +1638,7 @@ func ToEpoch(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
-	return date.UnixNano()
+	return decimal.New(date.UnixNano(), 0)
 }
 
 // Now returns the current date and time in the environment timezone

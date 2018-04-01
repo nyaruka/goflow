@@ -313,7 +313,7 @@ var funcTests = []struct {
 
 	{"legacy_add", []interface{}{"01-12-2017", "2"}, time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC), false},
 	{"legacy_add", []interface{}{"2", "01-12-2017 10:15:33pm"}, time.Date(2017, 12, 3, 22, 15, 33, 0, time.UTC), false},
-	{"legacy_add", []interface{}{"2", "3.5"}, 5.5, false},
+	{"legacy_add", []interface{}{"2", "3.5"}, decimal.RequireFromString("5.5"), false},
 	{"legacy_add", []interface{}{"01-12-2017 10:15:33pm", "01-12-2017"}, nil, true},
 	{"legacy_add", []interface{}{math.MaxInt32 + 1, "01-12-2017 10:15:33pm"}, nil, true},
 	{"legacy_add", []interface{}{"01-12-2017 10:15:33pm", math.MaxInt32 + 1}, nil, true},
