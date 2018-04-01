@@ -85,7 +85,7 @@ type flowRun struct {
 	contact *flows.Contact
 	extra   utils.JSONFragment
 
-	context utils.VariableResolver
+	context utils.Resolvable
 	webhook *utils.RequestResponse
 	input   flows.Input
 	parent  flows.FlowRun
@@ -129,9 +129,9 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() utils.VariableResolver { return r.context }
-func (r *flowRun) Results() flows.Results          { return r.results }
-func (r *flowRun) Events() []flows.Event           { return r.events }
+func (r *flowRun) Context() utils.Resolvable { return r.context }
+func (r *flowRun) Results() flows.Results    { return r.results }
+func (r *flowRun) Events() []flows.Event     { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -331,13 +331,16 @@ func (r *flowRun) Resolve(key string) interface{} {
 	case "created_on":
 		return r.CreatedOn()
 	case "exited_on":
-		return r.ExitedOn()
+		if r.exitedOn != nil {
+			return r.exitedOn
+		}
+		return nil
 	}
 
 	return fmt.Errorf("no field '%s' on run", key)
 }
 
-// String returns the default string value for this run, which is just our UUID
+// Atomize is called when this object needs to be reduced to a primitive
 func (r *flowRun) Atomize() interface{} {
 	return string(r.uuid)
 }
@@ -346,8 +349,8 @@ func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)
 }
 
-var _ utils.VariableAtomizer = (*flowRun)(nil)
-var _ utils.VariableResolver = (*flowRun)(nil)
+var _ utils.Atomizable = (*flowRun)(nil)
+var _ utils.Resolvable = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 

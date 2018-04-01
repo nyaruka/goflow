@@ -32,9 +32,10 @@ func (t *baseTrigger) Resolve(key string) interface{} {
 	return fmt.Errorf("No such field '%s' on trigger", key)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (t *baseTrigger) Atomize() interface{} {
 	return string(t.flow.UUID())
 }
 
-var _ utils.VariableAtomizer = (*baseTrigger)(nil)
-var _ utils.VariableResolver = (*baseTrigger)(nil)
+var _ utils.Atomizable = (*baseTrigger)(nil)
+var _ utils.Resolvable = (*baseTrigger)(nil)

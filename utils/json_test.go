@@ -1,37 +1,61 @@
 package utils_test
 
 import (
+	"github.com/shopspring/decimal"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestJSON(t *testing.T) {
+func TestJSONResolve(t *testing.T) {
 	var jsonTests = []struct {
 		JSON     []byte
 		lookup   string
-		expected string
+		expected interface{}
+		hasError bool
 	}{
-		{nil, "key", ""},
-		{[]byte(`malformed`), "key", ""},
-		{[]byte(`["one", "two", "three"]`), "0", "one"},
-		{[]byte(`["escaped \"string\""]`), "0", `escaped "string"`},
-		{[]byte(`{"1": "one"}`), "1", "one"},
-		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", "two"},
-		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", "two"},
-		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", "val2"},
-		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, "val2"},
-		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, "val2"},
+		// error cases
+		{nil, "key", "", true},
+		{[]byte(`malformed`), "key", "", true},
+
+		// different data types in an object
+		{[]byte(`{"foo": "x", "bar": "one"}`), "bar", "one", false},
+		{[]byte(`{"foo": "x", "bar": 1.23}`), "bar", decimal.RequireFromString("1.23"), false},
+		{[]byte(`{"foo": "x", "bar": true}`), "bar", true, false},
+		{[]byte(`{"foo": "x", "bar": null}`), "bar", nil, false},
+
+		// different data types in an object
+		{[]byte(`["foo", "one"]`), "1", "one", false},
+		{[]byte(`["foo", 1.23]`), "1", decimal.RequireFromString("1.23"), false},
+		{[]byte(`["foo", true]`), "1", true, false},
+		{[]byte(`["foo", null]`), "1", nil, false},
+
+		{[]byte(`["one", "two", "three"]`), "0", "one", false},
+		{[]byte(`["escaped \"string\""]`), "0", `escaped "string"`, false},
+		{[]byte(`{"1": "one"}`), "1", "one", false}, // map key is numerical string
+		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", "two", false},
+		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", "two", false},
+		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", "val2", false},
+		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, "val2", false},
+		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, "val2", false},
+
+		{[]byte(`{"arr": ["one", "two"]}`), "arr", utils.JSONArray([]byte(`["one", "two"]`)), false},
+		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", utils.JSONFragment([]byte(`{"foo": "bar"}`)), false},
 	}
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
 		fragment := utils.JSONFragment(test.JSON)
 		value := utils.ResolveVariable(env, fragment, test.lookup)
+		err, _ := value.(error)
 
-		valueStr, _ := utils.ToString(env, value)
-		if valueStr != test.expected {
-			t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and JSON fragment:\n%s", test.expected, valueStr, test.lookup, test.JSON)
+		if test.hasError {
+			assert.Error(t, err, "expected error resolving '%s' in '%s'", test.lookup, test.JSON)
+		} else {
+			assert.NoError(t, err, "unexpected error resolving '%s' in '%s'", test.lookup, test.JSON)
+			assert.Equal(t, test.expected, value, "Actual '%s' does not match expected '%s' resolving '%s' in '%s'", value, test.expected, test.lookup, test.JSON)
 		}
 	}
 }

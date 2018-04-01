@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -28,9 +29,10 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.first_name", "Ben", false},
 		{"@contact.language", "eng", false},
 		{"@contact.timezone", "America/Guayaquil", false},
-		{"@contact.urns", "tel:+12065551212", false}, // TODO should be list
+		{"@contact.urns", "tel:+12065551212, facebook:1122334455667788, mailto:ben@macklemore", false},
 		{"@contact.urns.tel", "tel:+12065551212", false},
 		{"@contact.urns.0", "tel:+12065551212", false},
+		{"@(contact.urns[0])", "tel:+12065551212", false},
 		{"@contact.urns.0.scheme", "tel", false},
 		{"@contact.urns.0.path", "+12065551212", false},
 		{"@contact.urns.0.display", "", false},
@@ -41,7 +43,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1", "facebook:1122334455667788", false},
 		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
-		{"@contact.groups", "Survey Audience", false}, // TODO should be list
+		{"@contact.groups", "Azuay State, Survey Audience", false},
+		{"@(array_length(contact.groups))", "2", false},
 		{"@contact.fields.first_name", "Bob", false},
 		{"@contact.fields.age", "23", false},
 		{"@contact.fields.joined", "2018-03-27T10:30:00.123456+02:00", false},
@@ -51,7 +54,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.text", "Hi there", false},
-		{"@run.input.attachments", "", false}, // TODO should be list
+		{"@run.input.attachments", "http://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.attachments.0", "http://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.created_on", "2000-01-01T00:00:00.000000Z", false},
 		{"@run.input.channel.name", "Nexmo", false},
@@ -64,6 +67,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},
 		{"@trigger.params.coupons.0.code", "AAA-BBB-CCC", false},
+		{"@(array_length(trigger.params.coupons))", "1", false},
 
 		// non-expressions
 		{"bob@nyaruka.com", "bob@nyaruka.com", false},

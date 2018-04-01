@@ -15,7 +15,7 @@
                             "type": "set_contact_field",
                             "field": {
                                 "key": "gender",
-                                "label": "Gender"
+                                "name": "Gender"
                             },
                             "value": "MALE"
                         },
@@ -24,7 +24,7 @@
                             "type": "set_contact_field",
                             "field": {
                                 "key": "age",
-                                "label": "Age"
+                                "name": "Age"
                             },
                             "value": "64"
                         },

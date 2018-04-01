@@ -21,9 +21,6 @@ func (r *resolver) Resolve(key string) interface{} {
 }
 
 func TestToString(t *testing.T) {
-	strMap := make(map[string]string)
-	strMap["one"] = "1.0"
-
 	chi, err := time.LoadLocation("America/Chicago")
 	if err != nil {
 		t.Fatal("Unable to load America/Chicago timezone")
@@ -44,19 +41,14 @@ func TestToString(t *testing.T) {
 		{"string1", "string1", false},
 		{true, "true", false},
 		{int(15), "15", false},
-		{int32(15), "15", false},
-		{int64(15), "15", false},
-		{float32(15.5), "15.5", false},
-		{float64(15.5), "15.5", false},
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testResolver, "Resolver", false},
 		{date1, "2017-06-23T15:30:00.000000Z", false},
-		{[]time.Time{date1, date2}, "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
-		{[]string{"one", "two", "three"}, "one, two, three", false},
-		{[]bool{true, false, true}, "true, false, true", false},
-		{[]decimal.Decimal{decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)}, "1.5, 2.5", false},
-		{[]int{5, -10, 15}, "5, -10, 15", false},
-		{strMap, "{\"one\":\"1.0\"}", false},
+		{utils.NewArray(date1, date2), "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
+		{utils.NewArray("one", "two", "three"), "one, two, three", false},
+		{utils.NewArray(true, false, true), "true, false, true", false},
+		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), "1.5, 2.5", false},
+		{utils.NewArray(5, -10, 15), "5, -10, 15", false},
 		{struct{}{}, "", true},
 	}
 
@@ -91,10 +83,6 @@ func TestToDecimal(t *testing.T) {
 		{fmt.Errorf("Error"), decimal.Zero, true},
 		{decimal.NewFromFloat(42), decimal.NewFromFloat(42), false},
 		{int(15), decimal.NewFromFloat(15), false},
-		{int32(15), decimal.NewFromFloat(15), false},
-		{int64(15), decimal.NewFromFloat(15), false},
-		{float32(15.5), decimal.NewFromFloat(15.5), false},
-		{float64(15.5), decimal.NewFromFloat(15.5), false},
 		{"15.5", decimal.NewFromFloat(15.5), false},
 		{"lO.5", decimal.NewFromFloat(10.5), false},
 		{testResolver, decimal.NewFromFloat(155), false},
@@ -133,10 +121,6 @@ func TestToBool(t *testing.T) {
 		{decimal.NewFromFloat(42), true, false},
 		{int(0), false, false},
 		{int(15), true, false},
-		{int32(15), true, false},
-		{int64(15), true, false},
-		{float32(15.5), true, false},
-		{float64(15.5), true, false},
 		{"15.5", true, false},
 		{"lO.5", true, false},
 		{"", false, false},
@@ -195,19 +179,14 @@ func TestToJSON(t *testing.T) {
 		{"string1", `"string1"`, false},
 		{true, "true", false},
 		{int(15), "15", false},
-		{int32(15), "15", false},
-		{int64(15), "15", false},
-		{float32(15.5), "15.5", false},
-		{float64(15.5), "15.5", false},
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testResolver, `"Resolver"`, false},
 		{date1, `"2017-06-23T15:30:00.000000Z"`, false},
-		{[]time.Time{date1, date2}, `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`, false},
-		{[]string{"one", "two", "three"}, `["one","two","three"]`, false},
-		{[]bool{true, false, true}, `[true,false,true]`, false},
-		{[]decimal.Decimal{decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)}, `["1.5","2.5"]`, false},
-		{[]int{5, -10, 15}, `[5,-10,15]`, false},
-		{strMap, `{"one":"1.0"}`, false},
+		{utils.NewArray(date1, date2), `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`, false},
+		{utils.NewArray("one", "two", "three"), `["one","two","three"]`, false},
+		{utils.NewArray(true, false, true), `[true,false,true]`, false},
+		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
+		{utils.NewArray(5, -10, 15), `[5,-10,15]`, false},
 		{struct{}{}, "", true},
 	}
 

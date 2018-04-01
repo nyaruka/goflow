@@ -18,7 +18,7 @@ type MsgInput struct {
 	baseInput
 	urn         urns.URN
 	text        string
-	attachments []flows.Attachment
+	attachments flows.AttachmentList
 }
 
 // NewMsgInput creates a new user input based on a message
@@ -47,7 +47,7 @@ func (i *MsgInput) Resolve(key string) interface{} {
 	return i.baseInput.Resolve(key)
 }
 
-// String returns our default value if evaluated in a context, our text in our case
+// Atomize is called when this object needs to be reduced to a primitive
 func (i *MsgInput) Atomize() interface{} {
 	var parts []string
 	if i.text != "" {
@@ -59,8 +59,8 @@ func (i *MsgInput) Atomize() interface{} {
 	return strings.Join(parts, "\n")
 }
 
-var _ utils.VariableAtomizer = (*MsgInput)(nil)
-var _ utils.VariableResolver = (*MsgInput)(nil)
+var _ utils.Atomizable = (*MsgInput)(nil)
+var _ utils.Resolvable = (*MsgInput)(nil)
 var _ flows.Input = (*MsgInput)(nil)
 
 //------------------------------------------------------------------------------------------
@@ -69,9 +69,9 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN         urns.URN           `json:"urn" validate:"urn"`
-	Text        string             `json:"text" validate:"required"`
-	Attachments []flows.Attachment `json:"attachments,omitempty"`
+	URN         urns.URN             `json:"urn" validate:"urn"`
+	Text        string               `json:"text" validate:"required"`
+	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }
 
 func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error) {

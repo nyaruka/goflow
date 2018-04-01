@@ -16,11 +16,11 @@ import (
 type Visitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver utils.VariableResolver
+	resolver utils.Resolvable
 }
 
 // NewVisitor creates a new Excellent visitor
-func NewVisitor(env utils.Environment, resolver utils.VariableResolver) *Visitor {
+func NewVisitor(env utils.Environment, resolver utils.Resolvable) *Visitor {
 	visitor := Visitor{env: env, resolver: resolver}
 	return &visitor
 }

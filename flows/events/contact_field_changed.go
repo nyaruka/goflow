@@ -15,7 +15,7 @@ const TypeContactFieldChanged string = "contact_field_changed"
 //   {
 //     "type": "contact_field_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "field": {"key": "gender", "label": "Gender"},
+//     "field": {"key": "gender", "name": "Gender"},
 //     "value": "Male"
 //   }
 // ```

@@ -4,61 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"math"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
 
-	"math"
-
-	"github.com/buger/jsonparser"
 	"github.com/shopspring/decimal"
 )
-
-// IsSlice returns whether the passed in interface is a slice
-func IsSlice(v interface{}) bool {
-	val := reflect.ValueOf(v)
-	return val.Kind() == reflect.Slice
-}
-
-// SliceLength returns the length of the passed in slice, it returns an error if the argument is not a slice
-func SliceLength(v interface{}) (int, error) {
-	if v == nil {
-		return 0, fmt.Errorf("Cannot convert nil to slice")
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() == reflect.Slice {
-		return val.Len(), nil
-	}
-
-	json, isJSON := v.(JSONFragment)
-	if isJSON {
-		count := 0
-		_, err := jsonparser.ArrayEach(json, func(value []byte, dataType jsonparser.ValueType, offset int, err error) {
-			count++
-		})
-		if err == nil {
-			return count, nil
-		}
-	}
-
-	return 0, fmt.Errorf("Unable to convert %s to slice", val)
-}
-
-// MapLength returns the length of the passed in map, it returns an error if the argument is not a map
-func MapLength(v interface{}) (int, error) {
-	if v == nil {
-		return 0, fmt.Errorf("Cannot convert nil to map")
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Map {
-		return 0, fmt.Errorf("Unable to convert %s to map", val)
-	}
-
-	return val.Len(), nil
-}
 
 // IsMap returns whether the given object is a map
 func IsMap(v interface{}) bool {
@@ -81,34 +34,6 @@ func IsNil(v interface{}) bool {
 	}
 
 	return false
-}
-
-// LookupIndex tries to look up the interface at the passed in index for the passed in slice
-func LookupIndex(v interface{}, idx int) (interface{}, error) {
-	if v == nil {
-		return nil, fmt.Errorf("Cannot convert nil to interface array")
-	}
-
-	// deal with a passed in error, we just return it out
-	err, isErr := v.(error)
-	if isErr {
-		return nil, err
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Slice {
-		return nil, fmt.Errorf("Cannot convert non-array to interface array: %v", v)
-	}
-
-	if idx >= val.Len() || idx < -val.Len() {
-		return nil, fmt.Errorf("Index %d out of range for slice of length %d", idx, val.Len())
-	}
-
-	if idx < 0 {
-		idx += val.Len()
-	}
-
-	return val.Index(idx).Interface(), nil
 }
 
 // Tries to use golang reflection to lookup the key in the passed in map value
@@ -216,10 +141,7 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case bool:
 		return ToFragment(json.Marshal(val))
 
-	case int, int32, int64:
-		return ToFragment(json.Marshal(val))
-
-	case float32, float64:
+	case int:
 		return ToFragment(json.Marshal(val))
 
 	case decimal.Decimal:
@@ -232,39 +154,11 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 	case JSONFragment:
 		return val, nil
 
-	case VariableAtomizer:
+	case Array:
+		return ToFragment(json.Marshal(val))
+
+	case Atomizable:
 		return ToJSON(env, val.Atomize())
-
-	case []string:
-		return ToFragment(json.Marshal(val))
-
-	case []bool:
-		return ToFragment(json.Marshal(val))
-
-	case []time.Time:
-		times := make([]string, len(val))
-		for i := range val {
-			times[i] = DateToISO(val[i])
-		}
-		return ToFragment(json.Marshal(times))
-
-	case []decimal.Decimal:
-		return ToFragment(json.Marshal(val))
-
-	case []int:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]string:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]bool:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]int:
-		return ToFragment(json.Marshal(val))
-
-	case map[string]interface{}:
-		return ToFragment(json.Marshal(val))
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
@@ -279,7 +173,6 @@ func ToString(env Environment, val interface{}) (string, error) {
 	}
 
 	switch val := val.(type) {
-
 	case error:
 		return "", val
 
@@ -289,76 +182,30 @@ func ToString(env Environment, val interface{}) (string, error) {
 	case bool:
 		return strconv.FormatBool(val), nil
 
-	case int:
-		return strconv.FormatInt(int64(val), 10), nil
-	case int32:
-		return strconv.FormatInt(int64(val), 10), nil
-	case int64:
-		return strconv.FormatInt(val, 10), nil
-
-	case float32:
-		return strconv.FormatFloat(float64(val), 'f', -1, 32), nil
-	case float64:
-		return strconv.FormatFloat(val, 'f', -1, 64), nil
-
 	case decimal.Decimal:
 		return val.String(), nil
+	case int:
+		return strconv.FormatInt(int64(val), 10), nil
 
 	case time.Time:
 		return DateToISO(val), nil
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToString(env, val.Atomize())
 
-	case Location:
-		return val.Name(), nil
-
-	case []string:
-		return strings.Join(val, ", "), nil
-
-	case []bool:
+	case Array:
 		var output bytes.Buffer
-		for i := range val {
+		for i := 0; i < val.Length(); i++ {
 			if i > 0 {
 				output.WriteString(", ")
 			}
-			output.WriteString(strconv.FormatBool(val[i]))
-		}
-		return output.String(), nil
-
-	case []time.Time:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
+			itemAsStr, err := ToString(env, val.Index(i))
+			if err != nil {
+				return "", err
 			}
-			output.WriteString(DateToISO(val[i]))
+			output.WriteString(itemAsStr)
 		}
 		return output.String(), nil
-
-	case []decimal.Decimal:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(val[i].String())
-		}
-		return output.String(), nil
-
-	case []int:
-		var output bytes.Buffer
-		for i := range val {
-			if i > 0 {
-				output.WriteString(", ")
-			}
-			output.WriteString(strconv.FormatInt(int64(val[i]), 10))
-		}
-		return output.String(), nil
-
-	case map[string]string:
-		bytes, err := json.Marshal(val)
-		return string(bytes), err
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
@@ -386,24 +233,8 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 	}
 
 	switch val := val.(type) {
-
 	case error:
 		return decimal.Zero, val
-
-	case decimal.Decimal:
-		return val, nil
-
-	case int:
-		return decimal.NewFromString(strconv.FormatInt(int64(val), 10))
-	case int32:
-		return decimal.NewFromString(strconv.FormatInt(int64(val), 10))
-	case int64:
-		return decimal.NewFromString(strconv.FormatInt(val, 10))
-
-	case float32:
-		return decimal.NewFromFloat(float64(val)), nil
-	case float64:
-		return decimal.NewFromFloat(val), nil
 
 	case string:
 		// common SMS foibles
@@ -416,7 +247,12 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 		}
 		return parsed, nil
 
-	case VariableAtomizer:
+	case decimal.Decimal:
+		return val, nil
+	case int:
+		return decimal.NewFromString(strconv.FormatInt(int64(val), 10))
+
+	case Atomizable:
 		return ToDecimal(env, val.Atomize())
 	}
 
@@ -430,29 +266,21 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 	}
 
 	switch val := val.(type) {
-
 	case error:
 		return time.Time{}, val
-
-	case decimal.Decimal:
-		return time.Time{}, fmt.Errorf("Cannot convert decimal to date")
-
-	case int, int32, int64:
-		return time.Time{}, fmt.Errorf("Cannot convert integer to date")
-
-	case float32, float64:
-		return time.Time{}, fmt.Errorf("Cannot convert float to date")
-
-	case time.Time:
-		return val, nil
 
 	case string:
 		return DateFromString(env, val)
 
-	case fmt.Stringer:
-		return ToDate(env, val.String())
+	case decimal.Decimal:
+		return time.Time{}, fmt.Errorf("Cannot convert decimal to date")
+	case int:
+		return time.Time{}, fmt.Errorf("Cannot convert integer to date")
 
-	case VariableAtomizer:
+	case time.Time:
+		return val, nil
+
+	case Atomizable:
 		return ToDate(env, val.Atomize())
 	}
 
@@ -470,29 +298,19 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 	case error:
 		return false, test
 
-	case bool:
-		return test, nil
-
-	case int:
-		return test != 0, nil
-	case int32:
-		return test != 0, nil
-	case int64:
-		return test != 0, nil
-
-	case float32:
-		return test != float32(0), nil
-	case float64:
-		return test != float64(0), nil
+	case string:
+		return test != "" && strings.ToLower(test) != "false", nil
 
 	case decimal.Decimal:
 		return !test.Equals(decimal.Zero), nil
+	case int:
+		return test != 0, nil
 
 	case time.Time:
 		return !test.IsZero(), nil
 
-	case string:
-		return test != "" && strings.ToLower(test) != "false", nil
+	case bool:
+		return test, nil
 
 	case JSONFragment:
 		asString, err := ToString(env, test)
@@ -520,7 +338,7 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 		// finally just string version
 		return asString != "" && strings.ToLower(asString) != "false", nil
 
-	case VariableAtomizer:
+	case Atomizable:
 		return ToBool(env, test.Atomize())
 	}
 
@@ -533,17 +351,12 @@ type XType int
 // primitive types we convert to
 const (
 	XTypeNil = iota
+	XTypeError
 	XTypeString
 	XTypeDecimal
 	XTypeTime
-	XTypeLocation
 	XTypeBool
-	XTypeError
-	XTypeStringSlice
-	XTypeDecimalSlice
-	XTypeTimeSlice
-	XTypeBoolSlice
-	XTypeMap
+	XTypeArray
 )
 
 // ToXAtom figures out the raw type of the passed in interface, returning that type
@@ -556,10 +369,12 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 	case error:
 		return val, XTypeError, nil
 
+	case string:
+		return val, XTypeString, nil
+
 	case decimal.Decimal:
 		return val, XTypeDecimal, nil
-
-	case int, int32, int64, float32, float64:
+	case int:
 		decVal, err := ToDecimal(env, val)
 		if err != nil {
 			return val, XTypeNil, err
@@ -569,26 +384,11 @@ func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
 	case time.Time:
 		return val, XTypeTime, nil
 
-	case Location:
-		return val, XTypeLocation, nil
-
-	case string:
-		return val, XTypeString, nil
-
 	case bool:
 		return val, XTypeBool, nil
 
-	case []string:
-		return val, XTypeStringSlice, nil
-
-	case []time.Time:
-		return val, XTypeTimeSlice, nil
-
-	case []decimal.Decimal:
-		return val, XTypeDecimalSlice, nil
-
-	case []bool:
-		return val, XTypeBoolSlice, nil
+	case Array:
+		return val, XTypeArray, nil
 	}
 
 	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)

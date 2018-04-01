@@ -9,7 +9,9 @@
             "localization": {
                 "spa": {
                     "ac110f56-a66c-4462-921c-b2c6d1c6dadb": {
-                        "text": ["Hola @contact.name, ¿estás listo?"]
+                        "text": [
+                            "Hola @contact.name, ¿estás listo?"
+                        ]
                     }
                 }
             },
@@ -54,7 +56,7 @@
                             "type": "set_contact_field",
                             "field": {
                                 "key": "activation_token",
-                                "label": "Activation Token"
+                                "name": "Activation Token"
                             },
                             "value": "XXX-YYY-ZZZ"
                         },
@@ -163,7 +165,7 @@
                             "type": "set_contact_field",
                             "field": {
                                 "key": "gender",
-                                "label": "Gender"
+                                "name": "Gender"
                             },
                             "value": "@run.results.gender.category"
                         },

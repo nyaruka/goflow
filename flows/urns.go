@@ -3,7 +3,6 @@ package flows
 import (
 	"fmt"
 	"net/url"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -60,10 +59,11 @@ func (u *ContactURN) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on URN", key)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Atomize() interface{} { return string(u.URN) }
 
-var _ utils.VariableAtomizer = (*ContactURN)(nil)
-var _ utils.VariableResolver = (*ContactURN)(nil)
+var _ utils.Atomizable = (*ContactURN)(nil)
+var _ utils.Resolvable = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -134,16 +134,6 @@ func (l URNList) WithScheme(scheme string) URNList {
 
 // Resolve resolves the given key when this URN list is referenced in an expression
 func (l URNList) Resolve(key string) interface{} {
-	// first try as numeric index to a single URN
-	index, err := strconv.Atoi(key)
-	if err == nil {
-		if index < len(l) {
-			return l[index]
-		}
-		return fmt.Errorf("index out of range: %d", index)
-	}
-
-	// next try as a URN scheme
 	scheme := strings.ToLower(key)
 
 	// if this isn't a valid scheme, bail
@@ -154,12 +144,25 @@ func (l URNList) Resolve(key string) interface{} {
 	return l.WithScheme(scheme)
 }
 
+// Atomize is called when this object needs to be reduced to a primitive
 func (l URNList) Atomize() interface{} {
-	if len(l) > 0 {
-		return l[0].String()
+	array := utils.NewArray()
+	for _, urn := range l {
+		array.Append(urn)
 	}
-	return ""
+	return array
 }
 
-var _ utils.VariableAtomizer = (URNList)(nil)
-var _ utils.VariableResolver = (URNList)(nil)
+// Index is called when this object is indexed into in an expression
+func (l URNList) Index(index int) interface{} {
+	return l[index]
+}
+
+// Length is called when the length of this object is requested in an expression
+func (l URNList) Length() int {
+	return len(l)
+}
+
+var _ utils.Atomizable = (URNList)(nil)
+var _ utils.Indexable = (URNList)(nil)
+var _ utils.Resolvable = (URNList)(nil)

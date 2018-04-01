@@ -54,7 +54,7 @@
                             "type": "set_contact_field",
                             "field": {
                                 "key": "birth_date",
-                                "label": "Birth Date"
+                                "name": "Birth Date"
                             },
                             "value": "@run.results.birth_date"
                         },

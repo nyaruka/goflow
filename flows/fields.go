@@ -36,13 +36,13 @@ var fieldLocationLevels = map[FieldValueType]utils.LocationLevel{
 // Field represents a contact field
 type Field struct {
 	key       FieldKey
-	label     string
+	name      string
 	valueType FieldValueType
 }
 
 // NewField returns a new field object with the passed in uuid, key and value type
-func NewField(key FieldKey, label string, valueType FieldValueType) *Field {
-	return &Field{key: key, label: label, valueType: valueType}
+func NewField(key FieldKey, name string, valueType FieldValueType) *Field {
+	return &Field{key: key, name: name, valueType: valueType}
 }
 
 // Key returns the key of the field
@@ -94,7 +94,7 @@ func (v *FieldValue) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on field value", key)
 }
 
-// Atomize returns the value of this as an XAtom type
+// Atomize is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Atomize() interface{} {
 	return v.TypedValue()
 }
@@ -142,7 +142,7 @@ func (f FieldValues) Resolve(key string) interface{} {
 	return val
 }
 
-// String returns the string representation of these Fields, which is our JSON representation
+// Atomize is called when this object needs to be reduced to a primitive
 func (f FieldValues) Atomize() interface{} {
 	fields := make([]string, 0, len(f))
 	for k, v := range f {
@@ -152,8 +152,8 @@ func (f FieldValues) Atomize() interface{} {
 	return strings.Join(fields, ", ")
 }
 
-var _ utils.VariableAtomizer = (FieldValues)(nil)
-var _ utils.VariableResolver = (FieldValues)(nil)
+var _ utils.Atomizable = (FieldValues)(nil)
+var _ utils.Resolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {
@@ -185,7 +185,7 @@ func (s *FieldSet) All() []*Field {
 
 type fieldEnvelope struct {
 	Key       FieldKey       `json:"key"`
-	Label     string         `json:"label"`
+	Name      string         `json:"name"`
 	ValueType FieldValueType `json:"value_type,omitempty"`
 }
 
@@ -196,7 +196,7 @@ func ReadField(data json.RawMessage) (*Field, error) {
 		return nil, err
 	}
 
-	return NewField(fe.Key, fe.Label, fe.ValueType), nil
+	return NewField(fe.Key, fe.Name, fe.ValueType), nil
 }
 
 // ReadFieldSet reads a set of contact fields from the given JSON
