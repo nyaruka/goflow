@@ -50,7 +50,7 @@
                         {
                             "uuid": "3248a064-bc42-4dff-aa0f-93d85de2f600",
                             "type": "set_run_result",
-                            "name": "Favourite Color",
+                            "name": "Favorite Color",
                             "value": "red",
                             "category": "Red"
                         }
