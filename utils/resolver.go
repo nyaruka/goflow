@@ -102,6 +102,15 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 		}
 	}
 
+	// check what we are returning is a type that expressions understand
+	_, _, err = ToXAtom(env, variable)
+	if err != nil {
+		_, isAtomizable := variable.(Atomizable)
+		if !isAtomizable {
+			panic(fmt.Sprintf("key '%s' of resolved to usupported type %s", key, reflect.TypeOf(variable)))
+		}
+	}
+
 	return variable
 }
 

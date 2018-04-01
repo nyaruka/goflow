@@ -13,20 +13,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// MapLength returns the length of the passed in map, it returns an error if the argument is not a map
-func MapLength(v interface{}) (int, error) {
-	if v == nil {
-		return 0, fmt.Errorf("Cannot convert nil to map")
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Map {
-		return 0, fmt.Errorf("Unable to convert %s to map", val)
-	}
-
-	return val.Len(), nil
-}
-
 // IsMap returns whether the given object is a map
 func IsMap(v interface{}) bool {
 	val := reflect.ValueOf(v)

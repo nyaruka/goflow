@@ -147,38 +147,20 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	arr := utils.NewArray("a", "b", "c")
-
-	strMap := map[string]string{
-		"1":          "one",
-		"2":          "two",
-		"3":          "three",
-		"four":       "four",
-		"with space": "spacy",
-		"with-dash":  "dashy",
-		"汉字":         "simplified chinese",
-	}
-
-	intMap := map[int]string{1: "one", 2: "two", 3: "three"}
-
-	innerMap := map[string]interface{}{"int_map": intMap}
-
-	innerArr := utils.NewArray(strMap)
+	array1d := utils.NewArray("a", "b", "c")
+	array2d := utils.NewArray(array1d, utils.NewArray("one", "two", "three"))
 
 	varMap := map[string]interface{}{
-		"string1":   "foo",
-		"string2":   "bar",
-		"key":       "four",
-		"int1":      1,
-		"int2":      2,
-		"dec1":      decimal.RequireFromString("1.5"),
-		"dec2":      decimal.RequireFromString("2.5"),
-		"words":     "one two three",
-		"array1":    arr,
-		"str_map":   strMap,
-		"int_map":   intMap,
-		"inner_map": innerMap,
-		"inner_arr": innerArr,
+		"string1": "foo",
+		"string2": "bar",
+		"key":     "four",
+		"int1":    1,
+		"int2":    2,
+		"dec1":    decimal.RequireFromString("1.5"),
+		"dec2":    decimal.RequireFromString("2.5"),
+		"words":   "one two three",
+		"array1d": array1d,
+		"array2d": array2d,
 	}
 
 	vars := utils.NewMapResolver(varMap)
@@ -201,27 +183,15 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		{"@dec1", decimal.RequireFromString("1.5"), false},
 		{"@(dec1 + dec2)", decimal.RequireFromString("4.0"), false},
-		{"@array1", arr, false},
-		{"@str_map", strMap, false},
-		{"@int_map", intMap, false},
-		{"@int_map.1", "one", false},
-		{"@str_map.1", "one", false},
-		{"@(str_map[1])", "one", false},
-		{"@(str_map[10])", nil, false},
-		{"@(str_map.汉字)", "simplified chinese", false},
-		{"@(int_map[1])", "one", false},
-		{"@(int_map[10])", nil, false},
-		{"@(str_map[\"four\"])", "four", false},
-		{"@(str_map[key])", "four", false},
-		{"@(str_map[lower(key)])", "four", false},
-		{"@(title(missing))", "", true},
-		{`@(str_map["with-dash"])`, "dashy", false},
-		{`@(str_map["with space"])`, "spacy", false},
-		{`@(inner_map["int_map"].1)`, `one`, false},
-		{`@(inner_map.int_map.1)`, `one`, false},
-		{`@(inner_arr[0].four)`, `four`, false},
-		{`@(inner_arr[0].0)`, nil, false},
-		{`@(inner_arr[0].1)`, `one`, false},
+
+		{"@array1d", array1d, false},
+		{"@array1d.0", "a", false},
+		{"@array1d.1", "b", false},
+		{"@array2d.0.2", "c", false},
+		{"@(array1d[0])", "a", false},
+		{"@(array1d[1])", "b", false},
+		{"@(array2d[0])", array1d, false},
+		{"@(array2d[0][2])", "c", false},
 
 		{"@string1 world", "foo world", false},
 
