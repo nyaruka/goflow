@@ -87,11 +87,11 @@ func (r Results) Length() int {
 // Resolve resolves the passed in key, which is snakified before lookup
 func (r Results) Resolve(key string) interface{} {
 	key = utils.Snakify(key)
-	result, ok := r[key]
-	if !ok {
-		return nil
-	}
 
+	result, exists := r[key]
+	if !exists {
+		return fmt.Errorf("no such run result '%s'", key)
+	}
 	return result
 }
 
