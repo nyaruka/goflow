@@ -58,9 +58,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@run.input.attachments.0", "http://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.created_on", "2000-01-01T00:00:00.000000Z", false},
 		{"@run.input.channel.name", "Nexmo", false},
-		{"@run.results", "", false},                                     // TODO should be empty dict?
-		{"@run.results.favorite_icecream", "", false},                   // TODO should be error?
-		{"@(has_error(run.results.favorite_icecream))", "false", false}, // TODO should be true?
+		{"@run.results", "Favorite Color: red", false},
+		{"@run.results.favorite_color", "red", false},
+		{"@run.results.favorite_color.category", "Red", false},
+		{"@run.results.favorite_icecream", "", true},
+		{"@(has_error(run.results.favorite_icecream))", "true", false},
 		{"@run.exited_on", "", false},
 
 		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},
