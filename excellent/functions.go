@@ -152,9 +152,10 @@ func LegacyAdd(env utils.Environment, args ...interface{}) interface{} {
 //
 // length will return an error if it is passed an item which doesn't have length.
 //
-//   @(length(SPLIT("1 2 3", " "))) -> 3
 //   @(length("Hello")) -> 5
 //   @(length("😀😃😄😁")) -> 4
+//   @(length(array())) -> "0"
+//   @(length(array("a", "b", "c"))) -> "3"
 //   @(length(1234)) -> ERROR
 //
 // @function length(object)
