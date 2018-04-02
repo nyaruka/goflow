@@ -178,19 +178,19 @@ var funcTests = []struct {
 	{"right", []interface{}{"hello", struct{}{}}, nil, true},
 	{"right", []interface{}{}, nil, true},
 
-	{"string_length", []interface{}{"hello"}, decimal.NewFromFloat(5), false},
-	{"string_length", []interface{}{""}, decimal.NewFromFloat(0), false},
-	{"string_length", []interface{}{"😁😁"}, decimal.NewFromFloat(2), false},
-	{"string_length", []interface{}{struct{}{}}, nil, true},
-	{"string_length", []interface{}{}, nil, true},
-	// string_length doesn't work on arrays
-	{"string_length", []interface{}{[]interface{}{"hello", "world"}}, decimal.NewFromFloat(2), true},
-	{"string_length", []interface{}{[]interface{}{}}, decimal.NewFromFloat(0), true},
+	{"length", []interface{}{"hello"}, decimal.NewFromFloat(5), false},
+	{"length", []interface{}{""}, decimal.NewFromFloat(0), false},
+	{"length", []interface{}{"😁😁"}, decimal.NewFromFloat(2), false},
+	{"length", []interface{}{struct{}{}}, nil, true},
+	{"length", []interface{}{}, nil, true},
 
-	{"array_length", []interface{}{utils.NewArray("hello")}, decimal.NewFromFloat(1), false},
-	{"array_length", []interface{}{utils.NewArray()}, decimal.NewFromFloat(0), false},
-	{"array_length", []interface{}{struct{}{}}, nil, true},
-	{"array_length", []interface{}{}, nil, true},
+	{"length", []interface{}{[]interface{}{"hello", "world"}}, decimal.NewFromFloat(2), true},
+	{"length", []interface{}{[]interface{}{}}, decimal.NewFromFloat(0), true},
+
+	{"length", []interface{}{utils.NewArray("hello")}, decimal.NewFromFloat(1), false},
+	{"length", []interface{}{utils.NewArray()}, decimal.NewFromFloat(0), false},
+	{"length", []interface{}{struct{}{}}, nil, true},
+	{"length", []interface{}{}, nil, true},
 
 	{"string_cmp", []interface{}{"abc", "abc"}, decimal.NewFromFloat(0), false},
 	{"string_cmp", []interface{}{"abc", "def"}, decimal.NewFromFloat(-1), false},

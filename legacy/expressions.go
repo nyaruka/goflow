@@ -205,7 +205,7 @@ var functionTemplates = map[string]functionTemplate{
 
 	// we drop this function, instead joining with the cat operator
 	"concatenate": {join: " & "},
-	"len":         {name: "string_length"},
+	"len":         {name: "length"},
 
 	// translate to maths
 	"power": {params: "%s ^ %s"},
