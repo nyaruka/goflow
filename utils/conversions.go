@@ -13,12 +13,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// IsMap returns whether the given object is a map
-func IsMap(v interface{}) bool {
-	val := reflect.ValueOf(v)
-	return val.Kind() == reflect.Map
-}
-
 // IsNil returns whether the given object is nil or an interface to a nil
 func IsNil(v interface{}) bool {
 	// if v doesn't have a type or value then v == nil
@@ -34,56 +28,6 @@ func IsNil(v interface{}) bool {
 	}
 
 	return false
-}
-
-// Tries to use golang reflection to lookup the key in the passed in map value
-func attemptMapLookup(valMap reflect.Value, key interface{}) (value interface{}, err error) {
-	defer func() {
-		if recover() != nil {
-			value = nil
-			err = fmt.Errorf("Invalid key type for map: %v", key)
-		}
-	}()
-
-	mapValue := valMap.MapIndex(reflect.ValueOf(key))
-	if !mapValue.IsValid() {
-		return nil, nil
-	}
-
-	value = mapValue.Interface()
-	return value, nil
-}
-
-// LookupKey tries to look up the interface at the passed in key for the passed in map
-func LookupKey(v interface{}, key string) (value interface{}, err error) {
-	if v == nil {
-		return nil, fmt.Errorf("Cannot convert nil to interface map")
-	}
-
-	// deal with a passed in error, we just return it out
-	err, isErr := v.(error)
-	if isErr {
-		return nil, err
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Map {
-		return nil, fmt.Errorf("Cannot convert non-map to map: %v", v)
-	}
-
-	// try to look up the value with our key as a string
-	result, err := attemptMapLookup(val, key)
-	if err == nil {
-		return result, err
-	}
-
-	// no luck, try to convert to an integer instead
-	intKey, intErr := strconv.Atoi(key)
-	if intErr != nil {
-		return result, err
-	}
-
-	return attemptMapLookup(val, intKey)
 }
 
 // ToStringArray tries to turn the passed in interface (which must be an underlying slice) to a string array

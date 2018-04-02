@@ -98,12 +98,6 @@ func ResolveVariable(env Environment, variable interface{}, key string) interfac
 				return err
 			}
 
-		} else if IsMap(variable) {
-			variable, err = LookupKey(variable, key)
-			if err != nil {
-				return err
-			}
-
 		} else {
 			return fmt.Errorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
 		}
