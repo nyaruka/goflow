@@ -32,6 +32,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	"length":  Length,
 	"default": Default,
+	"array":   Array,
 
 	"legacy_add": LegacyAdd,
 
@@ -201,6 +202,18 @@ func Default(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return args[0]
+}
+
+// Array takes a list of `values` and returns them as an array
+//
+//   @(array("a", "b", 356)[1]) -> "b"
+//   @(join(array("a", "b", "c"), "|")) -> "a|b|c"
+//   @(length(array())) -> "0"
+//   @(length(array("a", "b"))) -> "2"
+//
+// @function array(values...)
+func Array(env utils.Environment, args ...interface{}) interface{} {
+	return utils.NewArray(args...)
 }
 
 // FromJSON tries to parse `string` as JSON, returning a fragment you can index into
@@ -758,6 +771,7 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 
 // Join joins the passed in `array` of strings with the passed in `delimeter`
 //
+//   @(join(array("a", "b", "c"), "|")) -> "a|b|c"
 //   @(join(split("a.b.c", "."), " ")) -> "a b c"
 //
 // @function join(array, delimeter)
