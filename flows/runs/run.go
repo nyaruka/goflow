@@ -86,7 +86,7 @@ type flowRun struct {
 	extra   utils.JSONFragment
 
 	context utils.Resolvable
-	webhook *utils.RequestResponse
+	webhook *flows.WebhookCall
 	input   flows.Input
 	parent  flows.FlowRun
 
@@ -240,8 +240,8 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 	return step, node, nil
 }
 
-func (r *flowRun) Webhook() *utils.RequestResponse      { return r.webhook }
-func (r *flowRun) SetWebhook(rr *utils.RequestResponse) { r.webhook = rr }
+func (r *flowRun) Webhook() *flows.WebhookCall      { return r.webhook }
+func (r *flowRun) SetWebhook(rr *flows.WebhookCall) { r.webhook = rr }
 
 func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
@@ -367,9 +367,9 @@ type runEnvelope struct {
 	Status     flows.RunStatus `json:"status"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
 
-	Results flows.Results          `json:"results,omitempty" validate:"omitempty,dive"`
-	Input   *utils.TypedEnvelope   `json:"input,omitempty" validate:"omitempty,dive"`
-	Webhook *utils.RequestResponse `json:"webhook,omitempty" validate:"omitempty,dive"`
+	Results flows.Results        `json:"results,omitempty" validate:"omitempty,dive"`
+	Input   *utils.TypedEnvelope `json:"input,omitempty" validate:"omitempty,dive"`
+	Webhook *flows.WebhookCall   `json:"webhook,omitempty" validate:"omitempty,dive"`
 
 	CreatedOn time.Time  `json:"created_on"`
 	ExpiresOn *time.Time `json:"expires_on"`

@@ -7,7 +7,6 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeCallWebhook is the type for the call webhook action
@@ -85,7 +84,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		req.Header.Add(key, headerValue)
 	}
 
-	rr, err := utils.MakeHTTPRequest(req)
+	rr, err := flows.MakeWebhookCall(req)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
