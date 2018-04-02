@@ -51,6 +51,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.fields.state", "Azuay", false},
 		{"@contact.fields.favorite_icecream", "", true},
 		{"@(has_error(contact.fields.favorite_icecream))", "true", false},
+		{"@(array_length(contact.fields))", "6", false},
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.text", "Hi there", false},
@@ -61,6 +62,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@run.results", "", false},                                     // TODO should be empty dict?
 		{"@run.results.favorite_icecream", "", false},                   // TODO should be error?
 		{"@(has_error(run.results.favorite_icecream))", "false", false}, // TODO should be true?
+		{"@(array_length(run.results))", "0", false},
 		{"@run.exited_on", "", false},
 
 		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},

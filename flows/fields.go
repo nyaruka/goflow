@@ -133,6 +133,11 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue stri
 	}
 }
 
+// Length is called to get the length of this object
+func (f FieldValues) Length() int {
+	return len(f)
+}
+
 // Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(key string) interface{} {
 	val, exists := f[FieldKey(key)]
@@ -153,6 +158,7 @@ func (f FieldValues) Atomize() interface{} {
 }
 
 var _ utils.Atomizable = (FieldValues)(nil)
+var _ utils.Lengthable = (FieldValues)(nil)
 var _ utils.Resolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session

@@ -162,13 +162,13 @@ func ArrayLength(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("ARRAY_LENGTH takes exactly one argument, got %d", len(args))
 	}
 
-	// test whether arg1 is indexable
-	indexable, isIndexable := args[0].(utils.Indexable)
-	if !isIndexable {
-		return fmt.Errorf("ARRAY_LENGTH requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
+	// test whether arg1 has length
+	lengthable, isLengthable := args[0].(utils.Lengthable)
+	if !isLengthable {
+		return fmt.Errorf("ARRAY_LENGTH requires an object with length as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
-	return indexable.Length()
+	return lengthable.Length()
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`

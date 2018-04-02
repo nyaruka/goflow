@@ -21,10 +21,17 @@ type Resolvable interface {
 	Resolve(key string) interface{}
 }
 
-// Indexable is the interface for objects in the context which can be indexed into, e.g. foo.0
-type Indexable interface {
-	Index(index int) interface{}
+// Lengthable is the interface for objects in the context which have a length
+type Lengthable interface {
 	Length() int
+}
+
+// Indexable is the interface for objects in the context which can be indexed into, e.g. foo.0. Such objects
+// also need to be lengthable so that the engine knows what is a valid index and what isn't.
+type Indexable interface {
+	Lengthable
+
+	Index(index int) interface{}
 }
 
 // Atomizable is the interface for objects in the context which can reduce themselves to an XAtom primitive
