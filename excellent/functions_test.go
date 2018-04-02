@@ -7,7 +7,9 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/shopspring/decimal"
+	"github.com/stretchr/testify/assert"
 )
 
 var errorArg = fmt.Errorf("I am error")
@@ -22,7 +24,7 @@ var funcTests = []struct {
 	name     string
 	args     []interface{}
 	expected interface{}
-	error    bool
+	hasError bool
 }{
 	{"and", []interface{}{true}, true, false},
 	{"and", []interface{}{true, false}, false, false},
@@ -178,19 +180,13 @@ var funcTests = []struct {
 	{"right", []interface{}{"hello", struct{}{}}, nil, true},
 	{"right", []interface{}{}, nil, true},
 
-	{"string_length", []interface{}{"hello"}, decimal.NewFromFloat(5), false},
-	{"string_length", []interface{}{""}, decimal.NewFromFloat(0), false},
-	{"string_length", []interface{}{"😁😁"}, decimal.NewFromFloat(2), false},
-	{"string_length", []interface{}{struct{}{}}, nil, true},
-	{"string_length", []interface{}{}, nil, true},
-	// string_length doesn't work on arrays
-	{"string_length", []interface{}{[]interface{}{"hello", "world"}}, decimal.NewFromFloat(2), true},
-	{"string_length", []interface{}{[]interface{}{}}, decimal.NewFromFloat(0), true},
-
-	{"array_length", []interface{}{utils.NewArray("hello")}, decimal.NewFromFloat(1), false},
-	{"array_length", []interface{}{utils.NewArray()}, decimal.NewFromFloat(0), false},
-	{"array_length", []interface{}{struct{}{}}, nil, true},
-	{"array_length", []interface{}{}, nil, true},
+	{"length", []interface{}{"hello"}, decimal.NewFromFloat(5), false},
+	{"length", []interface{}{""}, decimal.NewFromFloat(0), false},
+	{"length", []interface{}{"😁😁"}, decimal.NewFromFloat(2), false},
+	{"length", []interface{}{utils.NewArray("hello")}, decimal.NewFromFloat(1), false},
+	{"length", []interface{}{utils.NewArray()}, decimal.NewFromFloat(0), false},
+	{"length", []interface{}{struct{}{}}, nil, true},
+	{"length", []interface{}{}, nil, true},
 
 	{"string_cmp", []interface{}{"abc", "abc"}, decimal.NewFromFloat(0), false},
 	{"string_cmp", []interface{}{"abc", "def"}, decimal.NewFromFloat(-1), false},
@@ -339,28 +335,22 @@ func TestFunctions(t *testing.T) {
 		}()
 
 		result := xFunc(env, test.args...)
-		err, isErr := result.(error)
+		err, _ := result.(error)
 
-		// unexpected error
-		if isErr != test.error {
-			t.Errorf("Unexpected error value: %v running function %s(%#v): %s", isErr, test.name, test.args, err)
-		}
+		if test.hasError {
+			assert.Error(t, err, "expected error running function %s(%#v)", test.name, test.args)
+		} else {
+			assert.NoError(t, err, "unexpected error running function %s(%#v): %s", test.name, test.args, err)
 
-		_, expectErr := test.expected.(error)
+			// and the match itself
+			cmp, err := utils.Compare(env, result, test.expected)
+			if err != nil {
+				t.Errorf("error while comparing expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
+			}
 
-		// if this was an error and our expected isn't, move on, we have nothing to test against
-		if isErr && !expectErr {
-			continue
-		}
-
-		// and the match itself
-		cmp, err := utils.Compare(env, result, test.expected)
-		if err != nil {
-			t.Errorf("Error while comparing expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
-		}
-
-		if cmp != 0 {
-			t.Errorf("Unexpected value, expected '%v', got '%v' for function %s(%#v)", test.expected, result, test.name, test.args)
+			if cmp != 0 {
+				t.Errorf("unexpected value, expected '%v', got '%v' for function %s(%#v)", test.expected, result, test.name, test.args)
+			}
 		}
 	}
 }

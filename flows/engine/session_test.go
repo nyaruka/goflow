@@ -44,13 +44,14 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
 		{"@contact.groups", "Azuay State, Survey Audience", false},
-		{"@(array_length(contact.groups))", "2", false},
+		{"@(length(contact.groups))", "2", false},
 		{"@contact.fields.first_name", "Bob", false},
 		{"@contact.fields.age", "23", false},
 		{"@contact.fields.joined", "2018-03-27T10:30:00.123456+02:00", false},
 		{"@contact.fields.state", "Azuay", false},
 		{"@contact.fields.favorite_icecream", "", true},
 		{"@(has_error(contact.fields.favorite_icecream))", "true", false},
+		{"@(length(contact.fields))", "6", false},
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.text", "Hi there", false},
@@ -63,11 +64,12 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@run.results.favorite_color.category", "Red", false},
 		{"@run.results.favorite_icecream", "", true},
 		{"@(has_error(run.results.favorite_icecream))", "true", false},
+		{"@(length(run.results))", "1", false},
 		{"@run.exited_on", "", false},
 
 		{"@trigger.params", "{\n            \"coupons\": [\n                {\n                    \"code\": \"AAA-BBB-CCC\",\n                    \"expiration\": \"2000-01-01T00:00:00.000000000-00:00\"\n                }\n            ]\n        }", false},
 		{"@trigger.params.coupons.0.code", "AAA-BBB-CCC", false},
-		{"@(array_length(trigger.params.coupons))", "1", false},
+		{"@(length(trigger.params.coupons))", "1", false},
 
 		// non-expressions
 		{"bob@nyaruka.com", "bob@nyaruka.com", false},

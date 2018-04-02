@@ -465,83 +465,92 @@
 @run.webhook.json.results.0.state_name → Washington</code></pre>
 </div>
 <h1 id="template-functions">Template Functions</h1>
-<p>In addition to simple substitutions, flows also have access to a set of functions which can be used in templates to further manipulate the context. Functions are called using the <code>@(function_name(args..))</code> syntax. For example, to title case a contact’s name in a message, you can use <code>@(title(contact.name))</code>. Context variables referred to within functions do not need a leading <code>@</code>. Functions can also use literal numbers or strings as arguments, for example <code>@(array_length(split(&quot;1 2 3&quot;, &quot; &quot;))</code>.</p>
+<p>In addition to simple substitutions, flows also have access to a set of functions which can be used in templates to further manipulate the context. Functions are called using the <code>@(function_name(args..))</code> syntax. For example, to title case a contact’s name in a message, you can use <code>@(title(contact.name))</code>. Context variables referred to within functions do not need a leading <code>@</code>. Functions can also use literal numbers or strings as arguments, for example <code>@(length(split(&quot;1 2 3&quot;, &quot; &quot;))</code>.</p>
 <div class="excellent_functions">
-<p><a name="functions:array_length"></a></p>
-<h2 id="array_lengtharray">array_length(array)</h2>
-<p>array_length returns the number of items in the passed in array</p>
-<p>array_length will return an error if it is passed an item which is not an array.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb16-1" data-line-number="1"> @(array_length(SPLIT(<span class="st">&quot;1 2 3&quot;</span>, <span class="st">&quot; &quot;</span>))) -&gt; <span class="dv">3</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"> @(array_length(<span class="st">&quot;123&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<p><a name="functions:length"></a></p>
+<h2 id="lengthobject">length(object)</h2>
+<p>length returns the length of the passed in string or array.</p>
+<p>length will return an error if it is passed an item which doesn’t have length.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb16-1" data-line-number="1">@(length(<span class="st">&quot;Hello&quot;</span>)) -&gt; <span class="dv">5</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">@(length(<span class="st">&quot;😀😃😄😁&quot;</span>)) -&gt; <span class="dv">4</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">@(length(array())) -&gt; <span class="st">&quot;0&quot;</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>))) -&gt; <span class="st">&quot;3&quot;</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">@(length(<span class="dv">1234</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:default"></a></p>
 <h2 id="defaulttest-default">default(test, default)</h2>
 <p>default takes two arguments, returning <code>test</code> if not an error or nil, otherwise returning <code>default</code></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb17-1" data-line-number="1">@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) -&gt; default_value</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">@(<span class="kw">default</span>(<span class="st">&quot;10&quot;</span>, <span class="st">&quot;20&quot;</span>)) -&gt; <span class="dv">10</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">@(<span class="kw">default</span>(date(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) -&gt; today</a></code></pre></div>
+<p><a name="functions:array"></a></p>
+<h2 id="arrayvalues">array(values…)</h2>
+<p>array takes a list of <code>values</code> and returns them as an array</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb18-1" data-line-number="1">@(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="dv">356</span>)[<span class="dv">1</span>]) -&gt; <span class="st">&quot;b&quot;</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) -&gt; <span class="st">&quot;a|b|c&quot;</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">@(length(array())) -&gt; <span class="st">&quot;0&quot;</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>))) -&gt; <span class="st">&quot;2&quot;</span></a></code></pre></div>
 <p><a name="functions:from_json"></a></p>
 <h2 id="from_jsonstring">from_json(string)</h2>
 <p>from_json tries to parse <code>string</code> as JSON, returning a fragment you can index into</p>
 <p>If the passed in value is not JSON, then an error is returned</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb18-1" data-line-number="1">@(from_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) -&gt; <span class="dv">3</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">@(from_json(<span class="st">&quot;invalid json&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb19-1" data-line-number="1">@(from_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) -&gt; <span class="dv">3</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">@(from_json(<span class="st">&quot;invalid json&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:to_json"></a></p>
 <h2 id="to_jsonvalue">to_json(value)</h2>
 <p>to_json tries to return a JSON representation of <code>value</code>. An error is returned if there is no JSON representation of that object.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb19-1" data-line-number="1">@(to_json(<span class="st">&quot;string&quot;</span>)) -&gt; <span class="st">&quot;string&quot;</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">@(to_json(<span class="dv">10</span>)) -&gt; <span class="dv">10</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">@(to_json(contact.uuid)) -&gt; <span class="st">&quot;ce2b5142-453b-4e43-868e-abdafafaa878&quot;</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">@(to_json(now())) -&gt; <span class="st">&quot;2017-05-10T12:50:00.000000-07:00&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(to_json(<span class="st">&quot;string&quot;</span>)) -&gt; <span class="st">&quot;string&quot;</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">@(to_json(<span class="dv">10</span>)) -&gt; <span class="dv">10</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">@(to_json(contact.uuid)) -&gt; <span class="st">&quot;ce2b5142-453b-4e43-868e-abdafafaa878&quot;</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">@(to_json(now())) -&gt; <span class="st">&quot;2017-05-10T12:50:00.000000-07:00&quot;</span></a></code></pre></div>
 <p><a name="functions:url_encode"></a></p>
 <h2 id="url_encodestring">url_encode(string)</h2>
 <p>url_encode URL encodes <code>string</code> for use in a URL parameter</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(url_encode(<span class="st">&quot;two words&quot;</span>)) -&gt; two+words</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">@(url_encode(<span class="dv">10</span>)) -&gt; <span class="dv">10</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" data-line-number="1">@(url_encode(<span class="st">&quot;two words&quot;</span>)) -&gt; two+words</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">@(url_encode(<span class="dv">10</span>)) -&gt; <span class="dv">10</span></a></code></pre></div>
 <p><a name="functions:and"></a></p>
 <h2 id="andtests">and(tests…)</h2>
 <p>and returns whether all the passed in arguments are truthy</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" data-line-number="1">@(and(true)) -&gt; true</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">@(and(true, false, true)) -&gt; false</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb22-1" data-line-number="1">@(and(true)) -&gt; true</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">@(and(true, false, true)) -&gt; false</a></code></pre></div>
 <p><a name="functions:or"></a></p>
 <h2 id="ortests">or(tests…)</h2>
 <p>or returns whether if any of the passed in arguments are truthy</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb22-1" data-line-number="1">@(or(true)) -&gt; true</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">@(or(true, false, true)) -&gt; true</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" data-line-number="1">@(or(true)) -&gt; true</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">@(or(true, false, true)) -&gt; true</a></code></pre></div>
 <p><a name="functions:if"></a></p>
 <h2 id="iftest-true_value-false_value">if(test, true_value, false_value)</h2>
 <p>if evaluates the <code>test</code> argument, and if truthy returns <code>true_value</code>, if not returning <code>false_value</code></p>
 <p>If the first argument is an error that error is returned</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) -&gt; <span class="st">&quot;foo&quot;</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb24-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) -&gt; <span class="st">&quot;foo&quot;</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:abs"></a></p>
 <h2 id="absnum">abs(num)</h2>
 <p>abs returns the absolute value of <code>num</code></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb24-1" data-line-number="1">@(abs(-<span class="dv">10</span>)) -&gt; <span class="dv">10</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">@(abs(<span class="fl">10.5</span>)) -&gt; <span class="fl">10.5</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3">@(abs(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(abs(-<span class="dv">10</span>)) -&gt; <span class="dv">10</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">@(abs(<span class="fl">10.5</span>)) -&gt; <span class="fl">10.5</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">@(abs(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:round"></a></p>
-<h2 id="roundnum-places">round(num, places)</h2>
-<p>round rounds <code>num</code> to the corresponding number of <code>places</code></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) -&gt; <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) -&gt; ERROR</a></code></pre></div>
+<h2 id="roundnum-places">round(num [,places])</h2>
+<p>round rounds <code>num</code> to the nearest value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
+<p>If places &lt; 0, it will round the integer part to the nearest 10^(-places).</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(round(<span class="fl">12.141</span>)) -&gt; <span class="dv">12</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">@(round(<span class="fl">12.6</span>)) -&gt; <span class="dv">13</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) -&gt; <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) -&gt; <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) -&gt; <span class="dv">10</span></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:round_up"></a></p>
 <h2 id="round_upnum">round_up(num)</h2>
 <p>round_up rounds <code>num</code> up to the nearest integer value, also good at fighting weeds</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(round_up(<span class="fl">12.141</span>)) -&gt; <span class="dv">13</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">@(round_up(<span class="dv">12</span>)) -&gt; <span class="dv">12</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">@(round_up(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" data-line-number="1">@(round_up(<span class="fl">12.141</span>)) -&gt; <span class="dv">13</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">@(round_up(<span class="dv">12</span>)) -&gt; <span class="dv">12</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">@(round_up(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:round_down"></a></p>
 <h2 id="round_downnum">round_down(num)</h2>
 <p>round_down rounds <code>num</code> down to the nearest integer value</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" data-line-number="1">@(round_down(<span class="fl">12.141</span>)) -&gt; <span class="dv">12</span></a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">@(round_down(<span class="fl">12.9</span>)) -&gt; <span class="dv">12</span></a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">@(round_down(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
-<p><a name="functions:int"></a></p>
-<h2 id="intnum">int(num)</h2>
-<p>int takes <code>num</code> and returns the integer value (floored)</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(<span class="dt">int</span>(<span class="fl">12.14</span>)) -&gt; <span class="dv">12</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">@(<span class="dt">int</span>(<span class="fl">12.9</span>)) -&gt; <span class="dv">12</span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">@(<span class="dt">int</span>(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(round_down(<span class="fl">12.141</span>)) -&gt; <span class="dv">12</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">@(round_down(<span class="fl">12.9</span>)) -&gt; <span class="dv">12</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">@(round_down(<span class="st">&quot;foo&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:max"></a></p>
 <h2 id="maxvalues">max(values…)</h2>
 <p>max takes a list of <code>values</code> and returns the greatest of them</p>
@@ -605,7 +614,8 @@
 <p><a name="functions:join"></a></p>
 <h2 id="joinarray-delimeter">join(array, delimeter)</h2>
 <p>join joins the passed in <code>array</code> of strings with the passed in <code>delimeter</code></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb38-1" data-line-number="1">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) -&gt; <span class="st">&quot;a b c&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb38-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) -&gt; <span class="st">&quot;a|b|c&quot;</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) -&gt; <span class="st">&quot;a b c&quot;</span></a></code></pre></div>
 <p><a name="functions:char"></a></p>
 <h2 id="charnum">char(num)</h2>
 <p>char returns the rune for the passed in codepoint, <code>num</code>, which may be unicode, this is the reverse of code</p>
@@ -677,12 +687,12 @@
 <a class="sourceLine" id="cb49-2" data-line-number="2">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">7</span>)) -&gt; <span class="st">&quot;hello&quot;</span></a>
 <a class="sourceLine" id="cb49-3" data-line-number="3">@(right(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) -&gt; <span class="st">&quot;😄😁&quot;</span></a>
 <a class="sourceLine" id="cb49-4" data-line-number="4">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) -&gt; ERROR</a></code></pre></div>
-<p><a name="functions:length"></a></p>
-<h2 id="lengthstring">length(string)</h2>
-<p>length returns the number of unicode characters in <code>string</code></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb50-1" data-line-number="1">@(length(<span class="st">&quot;Hello&quot;</span>)) -&gt; <span class="dv">5</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">@(length(<span class="st">&quot;😀😃😄😁&quot;</span>)) -&gt; <span class="dv">4</span></a>
-<a class="sourceLine" id="cb50-3" data-line-number="3">@(length(<span class="dv">1234</span>)) -&gt; <span class="dv">4</span></a></code></pre></div>
+<p><a name="functions:string_cmp"></a></p>
+<h2 id="string_cmpstr1-str2">string_cmp(str1, str2)</h2>
+<p>string_cmp returns the comparison between the strings <code>str1</code> and <code>str2</code>. The return value will be -1 if str1 is smaller than str2, 0 if they are equal and 1 if str1 is greater than str2</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb50-1" data-line-number="1">@(string_cmp(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;abc&quot;</span>)) -&gt; <span class="dv">0</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">@(string_cmp(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>)) -&gt; <span class="dv">-1</span></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">@(string_cmp(<span class="st">&quot;zzz&quot;</span>, <span class="st">&quot;aaa&quot;</span>)) -&gt; <span class="dv">1</span></a></code></pre></div>
 <p><a name="functions:repeat"></a></p>
 <h2 id="repeatstring-count">repeat(string, count)</h2>
 <p>repeat return <code>string</code> repeated <code>count</code> number of times</p>
@@ -707,65 +717,68 @@
 <p><a name="functions:parse_date"></a></p>
 <h2 id="parse_datestring-format-timezone">parse_date(string, format [,timezone])</h2>
 <p>parse_date turns <code>string</code> into a date according to the <code>format</code> and optional <code>timezone</code> specified</p>
-<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘Z’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
-<li><code>d</code> - day of month, 1-31</li>
-<li><code>dd</code> - day of month, zero padded 0-31</li>
-<li><code>fff</code> - thousandths of a second</li>
-<li><code>h</code> - hour of the day 1-12</li>
-<li><code>hh</code> - hour of the day 01-12</li>
-<li><code>H</code> - hour of the day 1-23</li>
-<li><code>HH</code> - hour of the day 01-23</li>
-<li><code>K</code> - hour and minute offset from UTC, or Z for UTC</li>
-<li><code>m</code> - minute 0-59</li>
-<li><code>mm</code> - minute 00-59</li>
+<li><code>YY</code> - last two digits of year 0-99</li>
+<li><code>YYYY</code> - four digits of your 0000-9999</li>
 <li><code>M</code> - month 1-12</li>
 <li><code>MM</code> - month 01-12</li>
+<li><code>D</code> - day of month, 1-31</li>
+<li><code>DD</code> - day of month, zero padded 0-31</li>
+<li><code>h</code> - hour of the day 1-12</li>
+<li><code>hh</code> - hour of the day 01-12</li>
+<li><code>tt</code> - twenty four hour of the day 01-23</li>
+<li><code>m</code> - minute 0-59</li>
+<li><code>mm</code> - minute 00-59</li>
 <li><code>s</code> - second 0-59</li>
 <li><code>ss</code> - second 00-59</li>
-<li><code>tt</code> - am or pm</li>
-<li><code>TT</code> - AM or PM</li>
-<li><code>yy</code> - last two digits of year 0-99</li>
-<li><code>yyyy</code> - four digits of your 0000-9999</li>
-<li><code>zzz</code> - hour and minute offset from UTC</li>
+<li><code>fff</code> - milliseconds</li>
+<li><code>ffffff</code> - microseconds</li>
+<li><code>fffffffff</code> - nanoseconds</li>
+<li><code>aa</code> - am or pm</li>
+<li><code>AA</code> - AM or PM</li>
+<li><code>Z</code> - hour and minute offset from UTC, or Z for UTC</li>
+<li><code>ZZZ</code> - hour and minute offset from UTC</li>
 </ul>
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
+<p>Note that fractional seconds will be parsed even without an explicit format identifier. You should only specify fractional seconds when you want to assert the number of places in the input format.</p>
 <p>parse_date will return an error if it is unable to convert the string to a date.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(parse_date(<span class="st">&quot;1979-07-18&quot;</span>, <span class="st">&quot;yyyy-MM-dd&quot;</span>)) -&gt; <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">@(parse_date(<span class="st">&quot;2010 5 10&quot;</span>, <span class="st">&quot;yyyy M dd&quot;</span>)) -&gt; <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">@(parse_date(<span class="st">&quot;2010 5 10 12:50&quot;</span>, <span class="st">&quot;yyyy M dd HH:mm&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) -&gt; <span class="dv">2010-05</span>-10T12:<span class="dv">50</span>:<span class="fl">00.000000</span><span class="dv">-07</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">@(parse_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;yyyy-mm-dd&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(parse_date(<span class="st">&quot;1979-07-18&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) -&gt; <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">@(parse_date(<span class="st">&quot;2010 5 10&quot;</span>, <span class="st">&quot;YYYY M DD&quot;</span>)) -&gt; <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">@(parse_date(<span class="st">&quot;2010 5 10 12:50&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) -&gt; <span class="dv">2010-05</span>-10T12:<span class="dv">50</span>:<span class="fl">00.000000</span><span class="dv">-07</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4">@(parse_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:format_date"></a></p>
 <h2 id="format_datedate-format-timezone">format_date(date, format [,timezone])</h2>
 <p>format_date turns <code>date</code> into a string according to the <code>format</code> specified and in the optional <code>timezone</code>.</p>
-<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘Z’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
-<li><code>d</code> - day of month, 1-31</li>
-<li><code>dd</code> - day of month, zero padded 0-31</li>
-<li><code>fff</code> - thousandths of a second</li>
-<li><code>h</code> - hour of the day 1-12</li>
-<li><code>hh</code> - hour of the day 01-12</li>
-<li><code>H</code> - hour of the day 1-23</li>
-<li><code>HH</code> - hour of the day 01-23</li>
-<li><code>K</code> - hour and minute offset from UTC, or Z for UTC</li>
-<li><code>m</code> - minute 0-59</li>
-<li><code>mm</code> - minute 00-59</li>
+<li><code>YY</code> - last two digits of year 0-99</li>
+<li><code>YYYY</code> - four digits of your 0000-9999</li>
 <li><code>M</code> - month 1-12</li>
 <li><code>MM</code> - month 01-12</li>
+<li><code>D</code> - day of month, 1-31</li>
+<li><code>DD</code> - day of month, zero padded 0-31</li>
+<li><code>h</code> - hour of the day 1-12</li>
+<li><code>hh</code> - hour of the day 01-12</li>
+<li><code>tt</code> - twenty four hour of the day 01-23</li>
+<li><code>m</code> - minute 0-59</li>
+<li><code>mm</code> - minute 00-59</li>
 <li><code>s</code> - second 0-59</li>
 <li><code>ss</code> - second 00-59</li>
-<li><code>tt</code> - am or pm</li>
-<li><code>TT</code> - AM or PM</li>
-<li><code>yy</code> - last two digits of year 0-99</li>
-<li><code>yyyy</code> - four digits of your 0000-9999</li>
-<li><code>zzz</code> - hour and minute offset from UTC</li>
+<li><code>fff</code> - milliseconds</li>
+<li><code>ffffff</code> - microseconds</li>
+<li><code>fffffffff</code> - nanoseconds</li>
+<li><code>aa</code> - am or pm</li>
+<li><code>AA</code> - AM or PM</li>
+<li><code>Z</code> - hour and minute offset from UTC, or Z for UTC</li>
+<li><code>ZZZ</code> - hour and minute offset from UTC</li>
 </ul>
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T00:00:00.000000Z&quot;</span>)) -&gt; <span class="dv">1979-07-18</span> <span class="dv">12</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">@(format_date(<span class="st">&quot;1979-07-18T00:00:00.000000Z&quot;</span>, <span class="st">&quot;yyyy-MM-dd&quot;</span>)) -&gt; <span class="dv">1979-07-18</span></a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;yyyy M dd HH:mm&quot;</span>)) -&gt; <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">19</span>:<span class="dv">50</span></a>
-<a class="sourceLine" id="cb56-4" data-line-number="4">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;yyyy-MM-dd HH:mm TT&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) -&gt; <span class="dv">2010-05-10</span> <span class="dv">12</span>:<span class="dv">50</span> PM</a>
-<a class="sourceLine" id="cb56-5" data-line-number="5">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;yyyy-mm-dd&quot;</span>)) -&gt; ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) -&gt; <span class="dv">1979-07-18</span> <span class="dv">15</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) -&gt; <span class="dv">1979-07-18</span></a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>)) -&gt; <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">19</span>:<span class="dv">50</span></a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD tt:mm AA&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) -&gt; <span class="dv">2010-05-10</span> <span class="dv">12</span>:<span class="dv">50</span> PM</a>
+<a class="sourceLine" id="cb56-5" data-line-number="5">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) -&gt; ERROR</a></code></pre></div>
 <p><a name="functions:date"></a></p>
 <h2 id="datestring">date(string)</h2>
 <p>date turns <code>string</code> into a date according to the environment’s settings</p>
@@ -861,7 +874,7 @@
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb70-1" data-line-number="1">@(has_error(date(<span class="st">&quot;foo&quot;</span>))) -&gt; true</a>
 <a class="sourceLine" id="cb70-2" data-line-number="2">@(has_error(run.not.existing)) -&gt; true</a>
-<a class="sourceLine" id="cb70-3" data-line-number="3">@(has_error(contact.fields.unset)) -&gt; false</a>
+<a class="sourceLine" id="cb70-3" data-line-number="3">@(has_error(contact.fields.unset)) -&gt; true</a>
 <a class="sourceLine" id="cb70-4" data-line-number="4">@(has_error(<span class="st">&quot;hello&quot;</span>)) -&gt; false</a></code></pre></div>
 <p><a name="functions:has_value"></a></p>
 <h2 id="has_valuevalue">has_value(value)</h2>
@@ -1084,8 +1097,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb98"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_added&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb98-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:37.405414422Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb98-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;583b06c3-ee19-4b79-bdc4-de178da6f24a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb98-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.130674704Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb98-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;a8ba9534-f20a-4199-ba0b-1eb3f10c437b&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb98-5" data-line-number="5">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb98-6" data-line-number="6">        <span class="fu">{</span></a>
 <a class="sourceLine" id="cb98-7" data-line-number="7">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></a>
@@ -1112,22 +1125,13 @@ Action
 <h3>
 Event
 </h3>
-<div class="sourceCode" id="cb100"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="ot">[</span></a>
-<a class="sourceLine" id="cb100-2" data-line-number="2">    <span class="fu">{</span></a>
-<a class="sourceLine" id="cb100-3" data-line-number="3">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-4" data-line-number="4">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:37.405828975Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-5" data-line-number="5">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;74b55798-a395-4ceb-aa4b-a8d94aac231f&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-6" data-line-number="6">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;no field &#39;flow&#39; on context&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-7" data-line-number="7">        <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
-<a class="sourceLine" id="cb100-8" data-line-number="8">    <span class="fu">}</span><span class="ot">,</span></a>
-<a class="sourceLine" id="cb100-9" data-line-number="9">    <span class="fu">{</span></a>
-<a class="sourceLine" id="cb100-10" data-line-number="10">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-11" data-line-number="11">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:37.405834208Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-12" data-line-number="12">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;74b55798-a395-4ceb-aa4b-a8d94aac231f&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-13" data-line-number="13">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;unable to add URN &#39;tel:@flow.phone_number&#39;: The phone number supplied was empty.&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb100-14" data-line-number="14">        <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
-<a class="sourceLine" id="cb100-15" data-line-number="15">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb100-16" data-line-number="16"><span class="ot">]</span></a></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb100-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb100-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.131070224Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb100-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;234d23c2-d759-4d1e-9163-e788c93157b9&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb100-5" data-line-number="5">    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;unable to add URN &#39;tel:@flow.phone_number&#39;: The phone number supplied was empty.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb100-6" data-line-number="6">    <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb100-7" data-line-number="7"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="actions:add_input_labels"></a></p>
 <h2 id="add_input_labels">add_input_labels</h2>
@@ -1177,13 +1181,13 @@ Event
 </h3>
 <div class="sourceCode" id="cb104"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb104-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb104-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.133054744Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb104-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9242d680-5029-4e7a-b835-6f1c10b02704&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb104-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.889299331Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb104-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;dab36965-d51b-4b26-bd64-5d9112a8129f&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb104-5" data-line-number="5">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb104-6" data-line-number="6">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb104-7" data-line-number="7">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb104-8" data-line-number="8">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?format=json HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: api.ipify.org</span><span class="ch">\r\n</span><span class="st">User-Agent: Go-http-client/1.1</span><span class="ch">\r\n</span><span class="st">Authorization: Token AAFFZZHH</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb104-9" data-line-number="9">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 23</span><span class="ch">\r\n</span><span class="st">Connection: keep-alive</span><span class="ch">\r\n</span><span class="st">Content-Type: application/json</span><span class="ch">\r\n</span><span class="st">Date: Wed, 21 Mar 2018 20:47:38 GMT</span><span class="ch">\r\n</span><span class="st">Server: Cowboy</span><span class="ch">\r\n</span><span class="st">Vary: Origin</span><span class="ch">\r\n</span><span class="st">Via: 1.1 vegur</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></a>
+<a class="sourceLine" id="cb104-9" data-line-number="9">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n</span><span class="st">Content-Length: 23</span><span class="ch">\r\n</span><span class="st">Connection: keep-alive</span><span class="ch">\r\n</span><span class="st">Content-Type: application/json</span><span class="ch">\r\n</span><span class="st">Date: Mon, 02 Apr 2018 16:42:22 GMT</span><span class="ch">\r\n</span><span class="st">Server: Cowboy</span><span class="ch">\r\n</span><span class="st">Vary: Origin</span><span class="ch">\r\n</span><span class="st">Via: 1.1 vegur</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></a>
 <a class="sourceLine" id="cb104-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="actions:remove_contact_groups"></a></p>
@@ -1210,8 +1214,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb106"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb106-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_removed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb106-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.134048187Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb106-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;d825584d-e4ca-4585-a748-0a6f734cc3fb&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb106-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.890177472Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb106-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;14fa9ec8-659c-45af-8f7e-c19312ce2704&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb106-5" data-line-number="5">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb106-6" data-line-number="6">        <span class="fu">{</span></a>
 <a class="sourceLine" id="cb106-7" data-line-number="7">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
@@ -1244,8 +1248,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb108"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb108-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;broadcast_created&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb108-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.13483456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb108-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5f3f384a-5196-4a0c-ad81-c1c61dc80f45&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb108-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.890784011Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb108-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c23b3377-296c-48e5-8d4d-787b02954f53&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb108-5" data-line-number="5">    <span class="dt">&quot;translations&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb108-6" data-line-number="6">        <span class="dt">&quot;&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb108-7" data-line-number="7">            <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span></a>
@@ -1282,22 +1286,26 @@ Event
 <div class="sourceCode" id="cb110"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="ot">[</span></a>
 <a class="sourceLine" id="cb110-2" data-line-number="2">    <span class="fu">{</span></a>
 <a class="sourceLine" id="cb110-3" data-line-number="3">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-4" data-line-number="4">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.13569856Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-5" data-line-number="5">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;a5089b11-47a3-4db9-bea6-b561468c0607&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-6" data-line-number="6">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;unknown URN scheme: email&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-4" data-line-number="4">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.891434212Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-5" data-line-number="5">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8bd1aa47-1d9d-4f86-9410-45b2b532dd3a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-6" data-line-number="6">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;no such contact field &#39;activation_token&#39;&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb110-7" data-line-number="7">        <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
 <a class="sourceLine" id="cb110-8" data-line-number="8">    <span class="fu">}</span><span class="ot">,</span></a>
 <a class="sourceLine" id="cb110-9" data-line-number="9">    <span class="fu">{</span></a>
-<a class="sourceLine" id="cb110-10" data-line-number="10">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_created&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-11" data-line-number="11">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.135705359Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-12" data-line-number="12">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;a5089b11-47a3-4db9-bea6-b561468c0607&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-13" data-line-number="13">        <span class="dt">&quot;addresses&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
-<a class="sourceLine" id="cb110-14" data-line-number="14">            <span class="st">&quot;@contact.urns.email&quot;</span></a>
-<a class="sourceLine" id="cb110-15" data-line-number="15">        <span class="ot">]</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-16" data-line-number="16">        <span class="dt">&quot;subject&quot;</span><span class="fu">:</span> <span class="st">&quot;Here is your activation token&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb110-17" data-line-number="17">        <span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;Your activation token is &quot;</span></a>
-<a class="sourceLine" id="cb110-18" data-line-number="18">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb110-19" data-line-number="19"><span class="ot">]</span></a></code></pre></div>
+<a class="sourceLine" id="cb110-10" data-line-number="10">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-11" data-line-number="11">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.891440532Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-12" data-line-number="12">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8bd1aa47-1d9d-4f86-9410-45b2b532dd3a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-13" data-line-number="13">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;unknown URN scheme: email&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-14" data-line-number="14">        <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb110-15" data-line-number="15">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb110-16" data-line-number="16">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb110-17" data-line-number="17">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;error&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-18" data-line-number="18">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.891447Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-19" data-line-number="19">        <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8bd1aa47-1d9d-4f86-9410-45b2b532dd3a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-20" data-line-number="20">        <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;send_email address evaluated to empty string, skipping&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb110-21" data-line-number="21">        <span class="dt">&quot;fatal&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb110-22" data-line-number="22">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb110-23" data-line-number="23"><span class="ot">]</span></a></code></pre></div>
 </div>
 <p><a name="actions:send_msg"></a></p>
 <h2 id="send_msg">send_msg</h2>
@@ -1320,10 +1328,10 @@ Event
 </h3>
 <div class="sourceCode" id="cb112"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb112-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb112-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_created&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb112-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.136306386Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb112-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;d36bc0f9-a5a3-4c89-959c-848d23025a85&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb112-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.89203721Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb112-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;0401aa76-6562-46f8-a612-6d3721b69fdf&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb112-5" data-line-number="5">    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb112-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;a15748a3-dc1b-4e6b-9a3c-3b1590a6828c&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb112-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;535dc185-3dd8-423c-928e-cde6778acffc&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb112-7" data-line-number="7">        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb112-8" data-line-number="8">        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb112-9" data-line-number="9">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="fu">,</span></a>
@@ -1345,7 +1353,7 @@ Action
 <a class="sourceLine" id="cb113-3" data-line-number="3">  <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb113-4" data-line-number="4">  <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb113-5" data-line-number="5">    <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;gender&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-6" data-line-number="6">    <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
+<a class="sourceLine" id="cb113-6" data-line-number="6">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
 <a class="sourceLine" id="cb113-7" data-line-number="7">  <span class="fu">},</span></a>
 <a class="sourceLine" id="cb113-8" data-line-number="8">  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
 <a class="sourceLine" id="cb113-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
@@ -1356,11 +1364,11 @@ Event
 </h3>
 <div class="sourceCode" id="cb114"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb114-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_field_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb114-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.136905236Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb114-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;ff618f48-4bf5-41a8-b0d4-a81a6dfd78fa&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb114-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.892634827Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb114-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;870a616c-d827-4e99-88be-c96daafa7445&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb114-5" data-line-number="5">    <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb114-6" data-line-number="6">        <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;gender&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb114-7" data-line-number="7">        <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
+<a class="sourceLine" id="cb114-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
 <a class="sourceLine" id="cb114-8" data-line-number="8">    <span class="fu">},</span></a>
 <a class="sourceLine" id="cb114-9" data-line-number="9">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
 <a class="sourceLine" id="cb114-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
@@ -1385,8 +1393,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb116"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb116-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_property_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb116-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.137648818Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb116-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;26f9d949-e299-46e7-b712-8cdb1d8a7a4e&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb116-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.893188451Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb116-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8fd393ab-cece-416c-b943-59bf84df6767&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb116-5" data-line-number="5">    <span class="dt">&quot;property&quot;</span><span class="fu">:</span> <span class="st">&quot;language&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb116-6" data-line-number="6">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span></a>
 <a class="sourceLine" id="cb116-7" data-line-number="7"><span class="fu">}</span></a></code></pre></div>
@@ -1413,8 +1421,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb118"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb118-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb118-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb118-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.138613728Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb118-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;28d50c29-a520-4f2d-bf9b-a9578c762653&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb118-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.893733709Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb118-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9a86bbaa-dcc4-47da-9151-96380875f5ec&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb118-5" data-line-number="5">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb118-6" data-line-number="6">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb118-7" data-line-number="7">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></a>
@@ -1444,13 +1452,13 @@ Event
 </h3>
 <div class="sourceCode" id="cb120"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb120-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_triggered&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb120-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.139231138Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb120-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b472a83a-324d-485a-9118-3dec55949117&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb120-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.894266854Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb120-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5a331ab5-1682-47e5-83e7-b750a9d80181&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb120-5" data-line-number="5">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb120-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb120-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Collect Language&quot;</span></a>
 <a class="sourceLine" id="cb120-8" data-line-number="8">    <span class="fu">},</span></a>
-<a class="sourceLine" id="cb120-9" data-line-number="9">    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5ef2e18e-5b79-42b1-9f88-5617612c8a04&quot;</span></a>
+<a class="sourceLine" id="cb120-9" data-line-number="9">    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9d365943-920a-4b65-a68a-f9b2e903a073&quot;</span></a>
 <a class="sourceLine" id="cb120-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="actions:start_session"></a></p>
@@ -1481,8 +1489,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb122"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb122-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb122-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;session_triggered&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb122-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-03-21T20:47:38.13993173Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb122-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f72aaa14-518f-4894-9b39-9c03463df981&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb122-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-02T16:42:22.89491409Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb122-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9d7d6a24-5588-4b98-bb14-9561eae2c3ef&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb122-5" data-line-number="5">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb122-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb122-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></a>
@@ -1494,7 +1502,7 @@ Event
 <a class="sourceLine" id="cb122-13" data-line-number="13">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb122-14" data-line-number="14">    <span class="ot">]</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb122-15" data-line-number="15">    <span class="dt">&quot;run&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb122-16" data-line-number="16">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b4014a6b-835a-4a13-8e93-65e0bdad91c9&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb122-16" data-line-number="16">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;dbf7fe8a-7332-4fa8-80ae-c25210f589d8&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb122-17" data-line-number="17">        <span class="dt">&quot;flow_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb122-18" data-line-number="18">        <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb122-19" data-line-number="19">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span><span class="fu">,</span></a>
@@ -1513,15 +1521,14 @@ Event
 <a class="sourceLine" id="cb122-32" data-line-number="32">            <span class="ot">]</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb122-33" data-line-number="33">            <span class="dt">&quot;fields&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb122-34" data-line-number="34">                <span class="dt">&quot;gender&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb122-35" data-line-number="35">                    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb122-36" data-line-number="36">                    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2017-05-24T11:31:15.035757258-05:00&quot;</span></a>
-<a class="sourceLine" id="cb122-37" data-line-number="37">                <span class="fu">}</span></a>
-<a class="sourceLine" id="cb122-38" data-line-number="38">            <span class="fu">}</span></a>
-<a class="sourceLine" id="cb122-39" data-line-number="39">        <span class="fu">},</span></a>
-<a class="sourceLine" id="cb122-40" data-line-number="40">        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;active&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb122-41" data-line-number="41">        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{}</span></a>
-<a class="sourceLine" id="cb122-42" data-line-number="42">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb122-43" data-line-number="43"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb122-35" data-line-number="35">                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
+<a class="sourceLine" id="cb122-36" data-line-number="36">                <span class="fu">}</span></a>
+<a class="sourceLine" id="cb122-37" data-line-number="37">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb122-38" data-line-number="38">        <span class="fu">},</span></a>
+<a class="sourceLine" id="cb122-39" data-line-number="39">        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;active&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb122-40" data-line-number="40">        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{}</span></a>
+<a class="sourceLine" id="cb122-41" data-line-number="41">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb122-42" data-line-number="42"><span class="fu">}</span></a></code></pre></div>
 </div>
 </div>
 <h1 id="event-definitions">Event Definitions</h1>
@@ -1612,7 +1619,7 @@ Event
 <a class="sourceLine" id="cb126-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb126-4" data-line-number="4">    <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb126-5" data-line-number="5">        <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;gender&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb126-6" data-line-number="6">        <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
+<a class="sourceLine" id="cb126-6" data-line-number="6">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
 <a class="sourceLine" id="cb126-7" data-line-number="7">    <span class="fu">},</span></a>
 <a class="sourceLine" id="cb126-8" data-line-number="8">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
 <a class="sourceLine" id="cb126-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>

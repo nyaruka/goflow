@@ -79,6 +79,11 @@ func (r Results) Save(name string, value string, category string, categoryLocali
 	}
 }
 
+// Length is called to get the length of this object
+func (r Results) Length() int {
+	return len(r)
+}
+
 // Resolve resolves the passed in key, which is snakified before lookup
 func (r Results) Resolve(key string) interface{} {
 	key = utils.Snakify(key)
@@ -99,5 +104,6 @@ func (r Results) Atomize() interface{} {
 	return strings.Join(results, ", ")
 }
 
-var _ utils.Atomizable = (*Results)(nil)
-var _ utils.Resolvable = (*Results)(nil)
+var _ utils.Atomizable = (Results)(nil)
+var _ utils.Lengthable = (Results)(nil)
+var _ utils.Resolvable = (Results)(nil)

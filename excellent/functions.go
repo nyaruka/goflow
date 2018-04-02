@@ -30,8 +30,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"if":  If,
 	"or":  Or,
 
-	"array_length": ArrayLength,
-	"default":      Default,
+	"length":  Length,
+	"default": Default,
+	"array":   Array,
 
 	"legacy_add": LegacyAdd,
 
@@ -65,9 +66,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"clean":             Clean,
 	"left":              Left,
 	"lower":             Lower,
-	"length":            Length,
 	"right":             Right,
-	"string_length":     Length,
 	"string_cmp":        StringCmp,
 	"repeat":            Repeat,
 	"replace":           Replace,
@@ -149,26 +148,35 @@ func LegacyAdd(env utils.Environment, args ...interface{}) interface{} {
 // Utility Functions
 //------------------------------------------------------------------------------------------
 
-// ArrayLength returns the number of items in the passed in array
+// Length returns the length of the passed in string or array.
 //
-// array_length will return an error if it is passed an item which is not an array.
+// length will return an error if it is passed an item which doesn't have length.
 //
-//    @(array_length(SPLIT("1 2 3", " "))) -> 3
-//    @(array_length("123")) -> ERROR
+//   @(length("Hello")) -> 5
+//   @(length("😀😃😄😁")) -> 4
+//   @(length(array())) -> "0"
+//   @(length(array("a", "b", "c"))) -> "3"
+//   @(length(1234)) -> ERROR
 //
-// @function array_length(array)
-func ArrayLength(env utils.Environment, args ...interface{}) interface{} {
+// @function length(object)
+func Length(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
-		return fmt.Errorf("ARRAY_LENGTH takes exactly one argument, got %d", len(args))
+		return fmt.Errorf("LENGTH takes exactly one argument, got %d", len(args))
 	}
 
-	// test whether arg1 is indexable
-	indexable, isIndexable := args[0].(utils.Indexable)
-	if !isIndexable {
-		return fmt.Errorf("ARRAY_LENGTH requires an array as its first argument, got %s", reflect.TypeOf(args[0]))
+	// argument must either be an object with length
+	lengthable, isLengthable := args[0].(utils.Lengthable)
+	if isLengthable {
+		return decimal.New(int64(lengthable.Length()), 0)
 	}
 
-	return indexable.Length()
+	// or a string
+	asString, isString := args[0].(string)
+	if isString {
+		return decimal.New(int64(utf8.RuneCountInString(asString)), 0)
+	}
+
+	return fmt.Errorf("LENGTH requires an object with length as its first argument, got %s", reflect.TypeOf(args[0]))
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
@@ -195,6 +203,18 @@ func Default(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return args[0]
+}
+
+// Array takes a list of `values` and returns them as an array
+//
+//   @(array("a", "b", 356)[1]) -> "b"
+//   @(join(array("a", "b", "c"), "|")) -> "a|b|c"
+//   @(length(array())) -> "0"
+//   @(length(array("a", "b"))) -> "2"
+//
+// @function array(values...)
+func Array(env utils.Environment, args ...interface{}) interface{} {
+	return utils.NewArray(args...)
 }
 
 // FromJSON tries to parse `string` as JSON, returning a fragment you can index into
@@ -752,6 +772,7 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 
 // Join joins the passed in `array` of strings with the passed in `delimeter`
 //
+//   @(join(array("a", "b", "c"), "|")) -> "a|b|c"
 //   @(join(split("a.b.c", "."), " ")) -> "a b c"
 //
 // @function join(array, delimeter)
@@ -924,7 +945,7 @@ func WordCount(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	words := utils.TokenizeString(arg)
-	return decimal.NewFromFloat(float64(len(words)))
+	return decimal.New(int64(len(words)), 0)
 }
 
 // Field splits `string` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
@@ -1065,22 +1086,6 @@ func Right(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	return output.String()
-}
-
-// Length returns the number of unicode characters in `string`
-//
-//   @(length("Hello")) -> 5
-//   @(length("😀😃😄😁")) -> 4
-//   @(length(1234)) -> 4
-//
-// @function length(string)
-func Length(env utils.Environment, args ...interface{}) interface{} {
-	arg, err := checkOneStringArg(env, "LENGTH", args)
-	if err != nil {
-		return err
-	}
-
-	return utf8.RuneCountInString(arg)
 }
 
 // StringCmp returns the comparison between the strings `str1` and `str2`.
