@@ -342,8 +342,6 @@ func TestFunctions(t *testing.T) {
 		} else {
 			assert.NoError(t, err, "unexpected error running function %s(%#v): %s", test.name, test.args, err)
 
-			//assert.Equal(t, test.expected, result, "actual '%s' does not match expected '%s' running function %s(%#v)", result, test.expected, test.name, test.args)
-
 			// and the match itself
 			cmp, err := utils.Compare(env, result, test.expected)
 			if err != nil {
