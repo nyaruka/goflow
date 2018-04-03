@@ -922,14 +922,14 @@
 <a class="sourceLine" id="cb77-2" data-line-number="2">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>).match) -&gt; <span class="st">&quot;foo1@bar.com&quot;</span></a>
 <a class="sourceLine" id="cb77-3" data-line-number="3">@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>)) -&gt; true</a>
 <a class="sourceLine" id="cb77-4" data-line-number="4">@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) -&gt; false</a></code></pre></div>
-<p><a name="functions:has_error"></a></p>
-<h2 id="has_errorvalue">has_error(value)</h2>
-<p>has_error returns whether <code>value</code> is an error</p>
+<p><a name="functions:is_error"></a></p>
+<h2 id="is_errorvalue">is_error(value)</h2>
+<p>is_error returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb78-1" data-line-number="1">@(has_error(date(<span class="st">&quot;foo&quot;</span>))) -&gt; true</a>
-<a class="sourceLine" id="cb78-2" data-line-number="2">@(has_error(run.not.existing)) -&gt; true</a>
-<a class="sourceLine" id="cb78-3" data-line-number="3">@(has_error(contact.fields.unset)) -&gt; true</a>
-<a class="sourceLine" id="cb78-4" data-line-number="4">@(has_error(<span class="st">&quot;hello&quot;</span>)) -&gt; false</a></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb78-1" data-line-number="1">@(is_error(date(<span class="st">&quot;foo&quot;</span>))) -&gt; true</a>
+<a class="sourceLine" id="cb78-2" data-line-number="2">@(is_error(run.not.existing)) -&gt; true</a>
+<a class="sourceLine" id="cb78-3" data-line-number="3">@(is_error(contact.fields.unset)) -&gt; true</a>
+<a class="sourceLine" id="cb78-4" data-line-number="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) -&gt; false</a></code></pre></div>
 <p><a name="functions:has_group"></a></p>
 <h2 id="has_groupcontact">has_group(contact)</h2>
 <p>has_group returns whether the <code>contact</code> is part of group with the passed in UUID</p>

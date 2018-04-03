@@ -33,7 +33,7 @@ func init() {
 
 // XTESTS is our mapping of the excellent test names to their actual functions
 var XTESTS = map[string]excellent.XFunction{
-	"has_error":          HasError,
+	"is_error":           IsError,
 	"has_value":          HasValue,
 	"has_group":          HasGroup,
 	"has_wait_timed_out": HasWaitTimedOut,
@@ -104,21 +104,21 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
-// HasError returns whether `value` is an error
+// IsError returns whether `value` is an error
 //
 // Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
 // to try to retrieve a value from fields or results which don't exist, rather these return an empty
 // value.
 //
-//   @(has_error(date("foo"))) -> true
-//   @(has_error(run.not.existing)) -> true
-//   @(has_error(contact.fields.unset)) -> true
-//   @(has_error("hello")) -> false
+//   @(is_error(date("foo"))) -> true
+//   @(is_error(run.not.existing)) -> true
+//   @(is_error(contact.fields.unset)) -> true
+//   @(is_error("hello")) -> false
 //
-// @test has_error(value)
-func HasError(env utils.Environment, args ...interface{}) interface{} {
+// @test is_error(value)
+func IsError(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_ERROR takes exactly one argument, got %d", len(args))
+		return fmt.Errorf("IS_ERROR takes exactly one argument, got %d", len(args))
 	}
 
 	// nil is not an error

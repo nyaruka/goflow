@@ -50,10 +50,10 @@ var testTests = []struct {
 	match    interface{}
 	hasError bool
 }{
-	{"has_error", []interface{}{"hello"}, false, nil, false},
-	{"has_error", []interface{}{nil}, false, nil, false},
-	{"has_error", []interface{}{fmt.Errorf("I am error")}, true, fmt.Errorf("I am error"), false},
-	{"has_error", []interface{}{}, false, nil, true},
+	{"is_error", []interface{}{"hello"}, false, nil, false},
+	{"is_error", []interface{}{nil}, false, nil, false},
+	{"is_error", []interface{}{fmt.Errorf("I am error")}, true, fmt.Errorf("I am error"), false},
+	{"is_error", []interface{}{}, false, nil, true},
 
 	{"has_text", []interface{}{"hello"}, true, "hello", false},
 	{"has_text", []interface{}{"  "}, false, nil, false},
@@ -246,13 +246,13 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		expected string
 		hasError bool
 	}{
-		{"@(has_error(array[100]))", "true", false}, // errors are like any other value
-		{"@(has_error(array.100))", "true", false},
-		{`@(has_error(round("foo", "bar")))`, "true", false},
-		{`@(has_error(err))`, "true", false},
-		{"@(has_error(thing.foo))", "false", false},
-		{"@(has_error(thing.xxx))", "true", false},
-		{"@(has_error(1 / 0))", "true", false},
+		{"@(is_error(array[100]))", "true", false}, // errors are like any other value
+		{"@(is_error(array.100))", "true", false},
+		{`@(is_error(round("foo", "bar")))`, "true", false},
+		{`@(is_error(err))`, "true", false},
+		{"@(is_error(thing.foo))", "false", false},
+		{"@(is_error(thing.xxx))", "true", false},
+		{"@(is_error(1 / 0))", "true", false},
 	}
 
 	env := utils.NewDefaultEnvironment()

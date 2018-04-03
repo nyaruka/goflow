@@ -174,7 +174,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		{old: "@extra.blerg.foo", new: "@run.webhook.json.blerg.foo", extraAs: ExtraAsWebhookJSON},
 		{old: "@extra.blerg.foo", new: "@trigger.params.blerg.foo", extraAs: ExtraAsTriggerParams},
-		{old: "@extra.blerg.foo", new: "@(if(has_error(run.webhook.json.blerg.foo), trigger.params.blerg.foo, run.webhook.json.blerg.foo))", extraAs: ExtraAsFunction},
+		{old: "@extra.blerg.foo", new: "@(if(is_error(run.webhook.json.blerg.foo), trigger.params.blerg.foo, run.webhook.json.blerg.foo))", extraAs: ExtraAsFunction},
 
 		// non-expressions
 		{old: "bob@nyaruka.com", new: "bob@nyaruka.com"},
