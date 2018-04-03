@@ -91,10 +91,6 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 		}
 		return dateComparison(val.(time.Time), c.comparator, asDate)
 
-	case *utils.Location:
-		// location field conditions are string comparisons on the location name
-		return stringComparison(val.(*utils.Location).Name(), c.comparator, c.value)
-
 	default:
 		return false, fmt.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
 	}

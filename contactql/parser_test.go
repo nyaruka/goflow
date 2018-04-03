@@ -60,11 +60,11 @@ func (t *TestQueryable) ResolveQueryKey(key string) []interface{} {
 	case "dob":
 		return []interface{}{time.Date(1981, 5, 28, 13, 30, 23, 0, time.UTC)}
 	case "state":
-		return []interface{}{utils.NewLocation(utils.LocationID("1123"), utils.LocationLevel(1), "Kigali")}
+		return []interface{}{"Kigali"}
 	case "district":
-		return []interface{}{utils.NewLocation(utils.LocationID("2345"), utils.LocationLevel(1), "Gasabo")}
+		return []interface{}{"Gasabo"}
 	case "ward":
-		return []interface{}{utils.NewLocation(utils.LocationID("34567"), utils.LocationLevel(1), "Ndera")}
+		return []interface{}{"Ndera"}
 	}
 	return nil
 }

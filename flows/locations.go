@@ -176,7 +176,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
 func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
 	var le locationEnvelope
-	if err := UnmarshalAndValidate(data, &le, "location"); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &le, "location"); err != nil {
 		return nil, err
 	}
 

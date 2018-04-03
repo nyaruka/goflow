@@ -218,6 +218,11 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 	for k, value := range c.fields {
 		if key == string(k) {
 			fieldValue := value.TypedValue()
+			locationValue, isLocation := fieldValue.(*Location)
+
+			if isLocation {
+				return []interface{}{locationValue.Name()}
+			}
 			if fieldValue != nil {
 				return []interface{}{fieldValue}
 			}

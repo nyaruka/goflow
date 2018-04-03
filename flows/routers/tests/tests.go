@@ -697,7 +697,7 @@ func HasState(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
@@ -736,12 +736,12 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(stateText, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText, flows.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
 	if len(states) > 0 {
-		districts, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(2), states[0])
 		if err != nil {
 			return err
 		}
@@ -752,7 +752,7 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText == "" {
-		districts, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(2), nil)
+		districts, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(2), nil)
 		if err != nil {
 			return err
 		}
@@ -798,17 +798,17 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(stateText, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText, flows.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
 	if len(states) > 0 {
-		districts, err := runEnv.FindLocationsFuzzy(districtText, utils.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(districtText, flows.LocationLevel(2), states[0])
 		if err != nil {
 			return err
 		}
 		if len(districts) > 0 {
-			wards, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(3), districts[0])
+			wards, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(3), districts[0])
 			if err != nil {
 				return err
 			}
@@ -820,7 +820,7 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText == "" {
-		wards, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(3), nil)
+		wards, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(3), nil)
 		if err != nil {
 			return err
 		}

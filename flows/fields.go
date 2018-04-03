@@ -27,10 +27,10 @@ const (
 	FieldValueTypeState    FieldValueType = "state"
 )
 
-var fieldLocationLevels = map[FieldValueType]utils.LocationLevel{
-	FieldValueTypeState:    utils.LocationLevel(1),
-	FieldValueTypeDistrict: utils.LocationLevel(2),
-	FieldValueTypeWard:     utils.LocationLevel(3),
+var fieldLocationLevels = map[FieldValueType]LocationLevel{
+	FieldValueTypeState:    LocationLevel(1),
+	FieldValueTypeDistrict: LocationLevel(2),
+	FieldValueTypeWard:     LocationLevel(3),
 }
 
 // Field represents a contact field
@@ -54,9 +54,9 @@ type FieldValue struct {
 	text     string
 	datetime *time.Time
 	decimal  *decimal.Decimal
-	state    *utils.Location
-	district *utils.Location
-	ward     *utils.Location
+	state    *Location
+	district *Location
+	ward     *Location
 }
 
 func (v *FieldValue) IsEmpty() bool {

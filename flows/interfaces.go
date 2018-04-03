@@ -127,7 +127,7 @@ type SessionAssets interface {
 	GetLabelSet() (*LabelSet, error)
 
 	HasLocations() bool
-	GetLocationHierarchy() (*utils.LocationHierarchy, error)
+	GetLocationHierarchy() (*LocationHierarchy, error)
 }
 
 // Flow is a graph of nodes containing actions and routers
@@ -323,8 +323,8 @@ type RunSummary interface {
 type RunEnvironment interface {
 	utils.Environment
 
-	FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
-	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
+	FindLocations(string, LocationLevel, *Location) ([]*Location, error)
+	FindLocationsFuzzy(string, LocationLevel, *Location) ([]*Location, error)
 }
 
 // FlowRun represents a run in the current session
