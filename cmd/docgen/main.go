@@ -63,7 +63,7 @@ func main() {
 		EventDocs    string
 	}{
 		FunctionDocs: buildDocSet(path, "excellent", "@function", handleFunctionDoc, session),
-		TestDocs:     buildDocSet(path, "flows/tests", "@test", handleFunctionDoc, session),
+		TestDocs:     buildDocSet(path, "flows/routers/tests", "@test", handleFunctionDoc, session),
 		ActionDocs:   buildDocSet(path, "flows/actions", "@action", handleActionDoc, session),
 		EventDocs:    buildDocSet(path, "flows/events", "@event", handleEventDoc, session),
 	}

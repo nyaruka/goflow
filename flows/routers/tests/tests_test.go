@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/flows/tests"
+	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
