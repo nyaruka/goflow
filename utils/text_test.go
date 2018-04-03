@@ -27,3 +27,23 @@ func TestSnakify(t *testing.T) {
 		}
 	}
 }
+
+func TestTokenizeString(t *testing.T) {
+	tokenizerTests := []struct {
+		text   string
+		result []string
+	}{
+		{"one   two three", []string{"one", "two", "three"}},
+		{"one.two.three", []string{"one", "two", "three"}},
+		{"one.βήταa.three", []string{"one", "βήταa", "three"}},
+		{"one😄three", []string{"one", "😄", "three"}},
+		{"  one.two.*@three ", []string{"one", "two", "three"}},
+		{" one ", []string{"one"}},
+	}
+	for _, test := range tokenizerTests {
+		result := utils.TokenizeString(test.text)
+		if !reflect.DeepEqual(result, test.result) {
+			t.Errorf("Unexpected result tokenizing '%s', got: %s expected: %v", test.text, result, test.result)
+		}
+	}
+}
