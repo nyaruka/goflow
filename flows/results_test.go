@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -29,7 +30,7 @@ func TestResults(t *testing.T) {
 			t.Errorf("Error unmarshalling: '%s'", err)
 			continue
 		}
-		value := types.ResolveVariable(env, results, test.lookup)
+		value := excellent.ResolveVariable(env, results, test.lookup)
 
 		valueStr, _ := types.ToString(env, value)
 		if valueStr != test.expected {

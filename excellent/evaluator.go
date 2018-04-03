@@ -1,14 +1,12 @@
 package excellent
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
-	"io"
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
-	"unicode"
 
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -16,228 +14,6 @@ import (
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
-
-type xToken int
-
-const (
-	// BODY - Not in expression
-	BODY xToken = iota
-
-	// IDENTIFIER - 'contact.age' in '@contact.age'
-	IDENTIFIER
-
-	// EXPRESSION - the body of an expression '1+2' in '@(1+2)'
-	EXPRESSION
-
-	// EOF - end of expression
-	EOF
-)
-
-const eof rune = rune(0)
-
-func isIdentifierChar(ch rune) bool {
-	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '.' || ch == '_'
-}
-
-// xscanner represents a lexical scanner.
-type xscanner struct {
-	reader              *bufio.Reader
-	unreadRunes         []rune
-	unreadCount         int
-	identifierTopLevels []string
-}
-
-// NewXScanner returns a new instance of our excellent scanner
-func NewXScanner(r io.Reader, identifierTopLevels []string) *xscanner {
-	return &xscanner{
-		reader:              bufio.NewReader(r),
-		unreadRunes:         make([]rune, 4),
-		identifierTopLevels: identifierTopLevels,
-	}
-}
-
-// gets the next rune or EOF if we are at the end of the string
-func (s *xscanner) read() rune {
-	// first see if we have any unread runes to return
-	if s.unreadCount > 0 {
-		ch := s.unreadRunes[s.unreadCount-1]
-		s.unreadCount--
-		return ch
-	}
-
-	// otherwise, read the next run
-	ch, _, err := s.reader.ReadRune()
-	if err != nil {
-		return eof
-	}
-	return ch
-}
-
-// pops the passed in rune as the next rune to be returned
-func (s *xscanner) unread(ch rune) {
-	s.unreadRunes[s.unreadCount] = ch
-	s.unreadCount++
-}
-
-// scanExpression consumes the current rune and all contiguous pieces until the end of the expression
-// our read should be after the '('
-func (s *xscanner) scanExpression() (xToken, string) {
-	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
-
-	// our parentheses depth
-	parens := 1
-
-	// Read every subsequent character until we reach the end of the expression
-	for ch := s.read(); ch != eof; ch = s.read() {
-		if ch == '(' {
-			buf.WriteRune(ch)
-			parens++
-		} else if ch == ')' {
-			parens--
-
-			// we are the end of the expression
-			if parens == 0 {
-				break
-			}
-			buf.WriteRune(ch)
-		} else {
-			buf.WriteRune(ch)
-		}
-	}
-
-	if parens == 0 {
-		return EXPRESSION, buf.String()
-	}
-
-	return BODY, strings.Join([]string{"@(", buf.String()}, "")
-}
-
-// scanIdentifier consumes the current rune and all contiguous pieces until the end of the identifer
-// our read should be after the '@'
-func (s *xscanner) scanIdentifier() (xToken, string) {
-	// Create a buffer and read the current character into it.
-	var buf strings.Builder
-	var topLevel string
-
-	// Read every subsequent character until we reach the end of the identifier
-	for ch := s.read(); ch != eof; ch = s.read() {
-		if ch == '.' && topLevel == "" {
-			topLevel = buf.String()
-		}
-
-		if isIdentifierChar(ch) {
-			buf.WriteRune(ch)
-		} else {
-			s.unread(ch)
-			break
-		}
-	}
-
-	identifier := buf.String()
-
-	if topLevel == "" {
-		topLevel = identifier
-	}
-
-	// if we end with a period, unread that as well
-	if len(identifier) > 1 && identifier[len(identifier)-1] == '.' {
-		s.unread('.')
-		identifier = identifier[:len(identifier)-1]
-	}
-
-	// only return as an identifier if the toplevel scope is valid
-	if s.identifierTopLevels != nil {
-		for _, validTopLevel := range s.identifierTopLevels {
-			if topLevel == validTopLevel {
-				return IDENTIFIER, identifier
-			}
-		}
-	} else {
-		return IDENTIFIER, identifier
-	}
-
-	// this was something that looked like an identifier but wasn't an allowed top-level variable, e.g. email address
-	return BODY, fmt.Sprintf("@%s", identifier)
-}
-
-// scanBody consumes the current body until we reach the end of the file or the start of an expression
-func (s *xscanner) scanBody() (xToken, string) {
-	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
-
-	// read characters until we reach the end of the file or the start of an expression or identifier
-	for ch := s.read(); ch != eof; ch = s.read() {
-		// could be start of an expression
-		if ch == '@' {
-			peek := s.read()
-
-			// start of an expression
-			if peek == '(' {
-				s.unread(peek)
-				s.unread('@')
-				break
-
-				// @@, means literal @
-			} else if peek == '@' {
-				buf.WriteRune('@')
-
-				// this is an identifier
-			} else if isIdentifierChar(peek) {
-				s.unread(peek)
-				s.unread('@')
-				break
-
-				// @ followed by non-letter
-			} else {
-				buf.WriteRune('@')
-				buf.WriteRune(peek)
-			}
-		} else {
-			buf.WriteRune(ch)
-		}
-	}
-
-	return BODY, buf.String()
-}
-
-// Scan returns the next token and literal value.
-func (s *xscanner) Scan() (xToken, string) {
-	for ch := s.read(); ch != eof; ch = s.read() {
-		switch ch {
-		case '@':
-			peek := s.read()
-
-			// start of an expression
-			if peek == '(' {
-				return s.scanExpression()
-
-				// @@, means literal @
-			} else if peek == '@' {
-				s.unread('@')
-				s.unread('@')
-				return s.scanBody()
-
-				// this is an identifier
-			} else if isIdentifierChar(peek) {
-				s.unread(peek)
-				return s.scanIdentifier()
-
-				// '@' followed by non-letter, plain body
-			}
-
-			s.unread(peek)
-			s.unread('@')
-			return s.scanBody()
-
-		default:
-			s.unread(ch)
-			return s.scanBody()
-		}
-	}
-
-	return EOF, ""
-}
 
 // EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
 func EvaluateExpression(env utils.Environment, resolver types.Resolvable, template string) (interface{}, error) {
@@ -290,7 +66,7 @@ func EvaluateTemplate(env utils.Environment, resolver types.Resolvable, template
 
 	switch tokenType {
 	case IDENTIFIER:
-		value := types.ResolveVariable(env, resolver, token)
+		value := ResolveVariable(env, resolver, token)
 
 		// didn't find it, our value is empty string
 		if value == nil {
@@ -333,7 +109,7 @@ func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, 
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER:
-			value := types.ResolveVariable(env, resolver, token)
+			value := ResolveVariable(env, resolver, token)
 
 			// didn't find it, our value is empty string
 			if value == nil {
@@ -374,39 +150,117 @@ func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, 
 	return buf.String(), nil
 }
 
-// TemplateErrors represents the list of errors we may have received during execution
-type TemplateErrors []error
+// ResolveVariable will resolve the passed in string variable given in dot notation and return
+// the value as defined by the VariableResolver passed in.
+//
+// Example syntaxes:
+//      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
+//      foo.bar[0] - same as above
+func ResolveVariable(env utils.Environment, variable interface{}, key string) interface{} {
+	var err error
 
-// Error returns a single string describing all the errors encountered
-func (e TemplateErrors) Error() string {
-	if len(e) == 1 {
-		return e[0].Error()
+	err, isErr := variable.(error)
+	if isErr {
+		return err
 	}
 
-	msg := "multiple errors:"
-	for _, err := range e {
-		msg += "\n" + err.Error()
+	// self referencing
+	if key == "" {
+		return variable
 	}
-	return msg
+
+	// strip leading '.'
+	if key[0] == '.' {
+		key = key[1:]
+	}
+
+	rest := key
+	for rest != "" {
+		key, rest = popNextVariable(rest)
+
+		if types.IsNil(variable) {
+			return fmt.Errorf("can't resolve key '%s' of nil", key)
+		}
+
+		// is our key numeric?
+		index, err := strconv.Atoi(key)
+		if err == nil {
+			indexable, isIndexable := variable.(types.Indexable)
+			if isIndexable {
+				if index >= indexable.Length() || index < -indexable.Length() {
+					return fmt.Errorf("index %d out of range for %d items", index, indexable.Length())
+				}
+				if index < 0 {
+					index += indexable.Length()
+				}
+				variable = indexable.Index(index)
+				continue
+			}
+		}
+
+		resolver, isResolver := variable.(types.Resolvable)
+
+		// look it up in our resolver
+		if isResolver {
+			variable = resolver.Resolve(key)
+
+			err, isErr := variable.(error)
+			if isErr {
+				return err
+			}
+
+		} else {
+			return fmt.Errorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
+		}
+	}
+
+	// check what we are returning is a type that expressions understand
+	_, _, err = types.ToXAtom(env, variable)
+	if err != nil {
+		_, isAtomizable := variable.(types.Atomizable)
+		if !isAtomizable {
+			panic(fmt.Sprintf("key '%s' of resolved to usupported type %s", key, reflect.TypeOf(variable)))
+		}
+	}
+
+	return variable
 }
 
-type errorListener struct {
-	errors bytes.Buffer
-	*antlr.DefaultErrorListener
-}
+// popNextVariable pops the next variable off our string:
+//     foo.bar.baz -> "foo", "bar.baz"
+//     foo[0].bar -> "foo", "[0].baz"
+//     foo.0.bar -> "foo", "0.baz"
+//     [0].bar -> "0", "bar"
+//     foo["my key"] -> "foo", "my key"
+func popNextVariable(input string) (string, string) {
+	var keyStart = 0
+	var keyEnd = -1
+	var restStart = -1
 
-func NewErrorListener() *errorListener {
-	return &errorListener{}
-}
+	for i, c := range input {
+		if i == 0 && c == '[' {
+			keyStart++
+		} else if c == '[' {
+			keyEnd = i
+			restStart = i
+			break
+		} else if c == ']' {
+			keyEnd = i
+			restStart = i + 1
+			break
+		} else if c == '.' {
+			keyEnd = i
+			restStart = i + 1
+			break
+		}
+	}
 
-func (l *errorListener) HasErrors() bool {
-	return l.errors.Len() > 0
-}
+	if keyEnd == -1 {
+		return input, ""
+	}
 
-func (l *errorListener) Errors() string {
-	return l.errors.String()
-}
+	key := strings.Trim(input[keyStart:keyEnd], "\"")
+	rest := input[restStart:]
 
-func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
-	l.errors.WriteString(fmt.Sprintln("line " + strconv.Itoa(line) + ":" + strconv.Itoa(column) + " " + msg))
+	return key, rest
 }

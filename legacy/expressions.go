@@ -371,7 +371,7 @@ func migrateLegacyTemplateAsString(resolver types.Resolvable, template string) (
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := types.ResolveVariable(nil, resolver, token)
+			value := excellent.ResolveVariable(nil, resolver, token)
 			if value == nil {
 				errors = append(errors, fmt.Errorf("Invalid key: '%s'", token))
 				buf.WriteString("@")
@@ -507,7 +507,7 @@ func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	if err != nil {
 		return err
 	}
-	return types.ResolveVariable(v.env, value, lookup)
+	return excellent.ResolveVariable(v.env, value, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -604,13 +604,13 @@ func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{
 	if err != nil {
 		return err
 	}
-	return types.ResolveVariable(v.env, value, lookup)
+	return excellent.ResolveVariable(v.env, value, lookup)
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := types.ResolveVariable(v.env, v.resolver, key)
+	val := excellent.ResolveVariable(v.env, v.resolver, key)
 	if val == nil {
 		return fmt.Errorf("Invalid key: '%s'", key)
 	}

@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -49,7 +50,7 @@ func TestJSONResolve(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
 		fragment := types.JSONFragment(test.JSON)
-		value := types.ResolveVariable(env, fragment, test.lookup)
+		value := excellent.ResolveVariable(env, fragment, test.lookup)
 		err, _ := value.(error)
 
 		if test.hasError {
