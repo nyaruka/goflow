@@ -111,33 +111,31 @@ func (w *WebhookCall) Atomize() interface{} {
 var _ utils.Atomizable = (*WebhookCall)(nil)
 var _ utils.Resolvable = (*WebhookCall)(nil)
 
-// newRRFromResponse creates a new RequestResponse based on the passed in http request and error (when we received no response)
+// newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
 func newWebhookCallFromError(r *http.Request, requestTrace string, requestError error) (*WebhookCall, error) {
-	rr := WebhookCall{}
-	rr.url = r.URL.String()
-
-	rr.request = requestTrace
-	rr.status = WebhookStatusConnectionError
-	rr.body = requestError.Error()
-
-	return &rr, nil
+	return &WebhookCall{
+		url:     r.URL.String(),
+		request: requestTrace,
+		status:  WebhookStatusConnectionError,
+		body:    requestError.Error(),
+	}, nil
 }
 
 // newWebhookCallFromResponse creates a new RequestResponse based on the passed in http Response
 func newWebhookCallFromResponse(requestTrace string, r *http.Response) (*WebhookCall, error) {
 	var err error
-	rr := WebhookCall{}
-	rr.url = r.Request.URL.String()
-	rr.statusCode = r.StatusCode
-
-	// set our status based on our status code
-	if rr.statusCode/100 == 2 {
-		rr.status = WebhookStatusSuccess
-	} else {
-		rr.status = WebhookStatusResponseError
+	w := &WebhookCall{
+		url:        r.Request.URL.String(),
+		statusCode: r.StatusCode,
+		request:    requestTrace,
 	}
 
-	rr.request = requestTrace
+	// set our status based on our status code
+	if w.statusCode/100 == 2 {
+		w.status = WebhookStatusSuccess
+	} else {
+		w.status = WebhookStatusResponseError
+	}
 
 	// figure out if our Response is something that looks like text from our headers
 	isText := false
@@ -154,22 +152,22 @@ func newWebhookCallFromResponse(requestTrace string, r *http.Response) (*Webhook
 	// only dump the whole body if this looks like text
 	response, err := httputil.DumpResponse(r, isText)
 	if err != nil {
-		return &rr, err
+		return w, err
 	}
-	rr.response = string(response)
+	w.response = string(response)
 
 	if isText {
 		bodyBytes, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			return &rr, err
+			return w, err
 		}
-		rr.body = strings.TrimSpace(string(bodyBytes))
+		w.body = strings.TrimSpace(string(bodyBytes))
 	} else {
 		// no body for non-text responses but add it to our Response log so users know why
-		rr.response = rr.response + "\nNon-text body, ignoring"
+		w.response = w.response + "\nNon-text body, ignoring"
 	}
 
-	return &rr, nil
+	return w, nil
 }
 
 //------------------------------------------------------------------------------------------
