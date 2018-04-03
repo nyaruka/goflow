@@ -15,71 +15,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// a run specific environment which allows values to be overridden by the contact
-type runEnvironment struct {
-	utils.Environment
-	run *flowRun
-
-	cachedLanguages utils.LanguageList
-}
-
-// creates a run environment based on the given run
-func newRunEnvironment(base utils.Environment, run *flowRun) *runEnvironment {
-	env := &runEnvironment{base, run, nil}
-	env.refreshLanguagesCache()
-	return env
-}
-
-func (e *runEnvironment) Timezone() *time.Location {
-	contact := e.run.contact
-
-	// if run has a contact with a timezone, that overrides the enviroment's timezone
-	if contact != nil && contact.Timezone() != nil {
-		return contact.Timezone()
-	}
-	return e.run.Session().Environment().Timezone()
-}
-
-func (e *runEnvironment) Languages() utils.LanguageList {
-	// if contact language has changed, rebuild our cached language list
-	if e.run.Contact() != nil && e.cachedLanguages[0] != e.run.Contact().Language() {
-		e.refreshLanguagesCache()
-	}
-
-	return e.cachedLanguages
-}
-
-func (e *runEnvironment) Locations() (*utils.LocationHierarchy, error) {
-	sessionAssets := e.run.Session().Assets()
-	if sessionAssets.HasLocations() {
-		return sessionAssets.GetLocationHierarchy()
-	}
-
-	return nil, nil
-}
-
-func (e *runEnvironment) refreshLanguagesCache() {
-	contact := e.run.contact
-	var languages utils.LanguageList
-
-	// if contact has a language, it takes priority
-	if contact != nil && contact.Language() != utils.NilLanguage {
-		languages = append(languages, contact.Language())
-	}
-
-	// next we include any environment languages
-	languages = append(languages, e.run.Session().Environment().Languages()...)
-
-	// finally we include the flow native language
-	languages = append(languages, e.run.flow.Language())
-
-	e.cachedLanguages = languages.RemoveDuplicates()
-}
-
 type flowRun struct {
 	uuid        flows.RunUUID
 	session     flows.Session
-	environment *runEnvironment
+	environment flows.RunEnvironment
 
 	flow    flows.Flow
 	contact *flows.Contact
@@ -121,9 +60,9 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 	return r
 }
 
-func (r *flowRun) UUID() flows.RunUUID            { return r.uuid }
-func (r *flowRun) Session() flows.Session         { return r.session }
-func (r *flowRun) Environment() utils.Environment { return r.environment }
+func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
+func (r *flowRun) Session() flows.Session            { return r.session }
+func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
 func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }

@@ -1,12 +1,13 @@
 package main
 
 // generate full docs with:
-// go install github.com/nyaruka/goflow/cmd/docgen && $GOPATH/bin/docgen . | pandoc --from=markdown --to=html -o docs/index.html --standalone --template=cmd/docgen/templates/template.html --toc --toc-depth=1
+//
+// go install github.com/nyaruka/goflow/cmd/docgen
+// $GOPATH/bin/docgen . | pandoc --from=markdown --to=html -o docs/index.html --standalone --template=cmd/docgen/templates/template.html --toc --toc-depth=1
 
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
 	"go/doc"
 	"go/parser"
 	"go/token"
@@ -15,37 +16,11 @@ import (
 	"path"
 	"strings"
 	"text/template"
+
+	"github.com/nyaruka/goflow/flows"
 )
 
-func buildExcellentDocs(goflowPath string) (string, string) {
-	excellentPath := path.Join(goflowPath, "excellent")
-
-	fset := token.NewFileSet()
-	pkgs, e := parser.ParseDir(fset, excellentPath, nil, parser.ParseComments)
-	if e != nil {
-		log.Fatal(e)
-	}
-
-	astf := make([]*ast.File, 0)
-	for _, pkg := range pkgs {
-		for _, f := range pkg.Files {
-			astf = append(astf, f)
-		}
-	}
-
-	functionOutput := bytes.Buffer{}
-	for _, f := range astf {
-		ast.Walk(newFuncVisitor("function", &functionOutput), f)
-	}
-
-	testOutput := bytes.Buffer{}
-	for _, f := range astf {
-		ast.Walk(newFuncVisitor("test", &testOutput), f)
-	}
-	return functionOutput.String(), testOutput.String()
-}
-
-func buildExampleDocs(goflowPath string, subdir string, tag string, handler handleExampleFunc) string {
+func buildDocSet(goflowPath string, subdir string, tag string, handler handleFunc, session flows.Session) string {
 	output := bytes.Buffer{}
 	examplePath := path.Join(goflowPath, subdir)
 
@@ -59,30 +34,39 @@ func buildExampleDocs(goflowPath string, subdir string, tag string, handler hand
 		p := doc.New(f, "./", 0)
 		for _, t := range p.Types {
 			if strings.Contains(t.Doc, tag) {
-				handler(&output, tag, t.Name, t.Doc)
+				handler(&output, tag, t.Name, t.Doc, session)
+			}
+		}
+		for _, t := range p.Funcs {
+			if strings.Contains(t.Doc, tag) {
+				handler(&output, tag, t.Name, t.Doc, session)
 			}
 		}
 	}
 	return output.String()
 }
 
-type handleExampleFunc func(output *bytes.Buffer, prefix string, typeName string, docString string)
-
-type docContext struct {
-	ExcellentFunctionDocs string
-	ExcellentTestDocs     string
-	ActionDocs            string
-	EventDocs             string
-}
+type handleFunc func(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session)
 
 func main() {
 	path := os.Args[1]
 
-	context := docContext{}
+	session, err := createExampleSession(nil)
+	if err != nil {
+		log.Fatalf("Error creating example session: %s", err)
+	}
 
-	context.ExcellentFunctionDocs, context.ExcellentTestDocs = buildExcellentDocs(path)
-	context.ActionDocs = buildExampleDocs(path, "flows/actions", "@action", handleActionDoc)
-	context.EventDocs = buildExampleDocs(path, "flows/events", "@event", handleEventDoc)
+	context := struct {
+		FunctionDocs string
+		TestDocs     string
+		ActionDocs   string
+		EventDocs    string
+	}{
+		FunctionDocs: buildDocSet(path, "excellent", "@function", handleFunctionDoc, session),
+		TestDocs:     buildDocSet(path, "flows/routers/tests", "@test", handleFunctionDoc, session),
+		ActionDocs:   buildDocSet(path, "flows/actions", "@action", handleActionDoc, session),
+		EventDocs:    buildDocSet(path, "flows/events", "@event", handleEventDoc, session),
+	}
 
 	// generate our complete docs
 	docTpl, err := template.ParseFiles("cmd/docgen/templates/docs.md")

@@ -1,4 +1,4 @@
-package excellent
+package tests_test
 
 import (
 	"fmt"
@@ -6,24 +6,54 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
+	"github.com/stretchr/testify/assert"
 )
+
+type testResolvable struct{}
+
+func (r *testResolvable) Resolve(key string) interface{} {
+	switch key {
+	case "foo":
+		return "bar"
+	case "zed":
+		return 123
+	case "missing":
+		return nil
+	default:
+		return fmt.Errorf("no such thing")
+	}
+}
+
+// Atomize is called when this object needs to be reduced to a primitive
+func (r *testResolvable) Atomize() interface{} {
+	return "hello"
+}
+
+func newDecimal(val string) decimal.Decimal {
+	dec, _ := decimal.NewFromString(val)
+	return dec
+}
 
 // noStr is used to blow up our type conversions in the tests below
 type noStr struct {
 }
 
 var testTests = []struct {
-	name    string
-	args    []interface{}
-	matched bool
-	match   interface{}
-	error   bool
+	name     string
+	args     []interface{}
+	matched  bool
+	match    interface{}
+	hasError bool
 }{
-	{"has_error", []interface{}{"hello"}, false, nil, false},
-	{"has_error", []interface{}{nil}, false, nil, false},
-	{"has_error", []interface{}{fmt.Errorf("I am error")}, true, fmt.Errorf("I am error"), false},
-	{"has_error", []interface{}{}, false, nil, true},
+	{"is_error", []interface{}{"hello"}, false, nil, false},
+	{"is_error", []interface{}{nil}, false, nil, false},
+	{"is_error", []interface{}{fmt.Errorf("I am error")}, true, fmt.Errorf("I am error"), false},
+	{"is_error", []interface{}{}, false, nil, true},
 
 	{"has_text", []interface{}{"hello"}, true, "hello", false},
 	{"has_text", []interface{}{"  "}, false, nil, false},
@@ -172,32 +202,69 @@ func TestTests(t *testing.T) {
 	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{})
 
 	for _, test := range testTests {
-		testFunc := XTESTS[test.name]
+		testFunc := tests.XTESTS[test.name]
 
 		result := testFunc(env, test.args...)
-		err, isErr := result.(error)
+		err, _ := result.(error)
 
-		// unexpected error
-		if isErr != test.error {
-			t.Errorf("Unexpected error value: %v running test %s(%#v): %v", isErr, test.name, test.args, err)
+		if test.hasError {
+			assert.Error(t, err, "expected error running test %s(%#v)", test.name, test.args)
+		} else {
+			assert.NoError(t, err, "unexpected error running test %s(%#v): %v", test.name, test.args, err)
+
+			// otherwise, cast to our result
+			testResult := result.(tests.XTestResult)
+
+			// check our expected match
+			assert.Equal(t, test.matched, testResult.Matched(), "unexpected matched value: %v for test %s(%#v)", testResult.Matched(), test.name, test.args)
+
+			// and the match itself
+			if !reflect.DeepEqual(testResult.Match(), test.match) {
+				assert.Fail(t, "Unexpected match value, expected '%s', got '%s' for test %s(%#v)", test.match, testResult.Match(), test.name, test.args)
+			}
 		}
+	}
+}
 
-		// if this was an error, move on, no value to test
-		if isErr {
-			continue
-		}
+func TestEvaluateTemplateAsString(t *testing.T) {
+	varMap := map[string]interface{}{
+		"int1":  1,
+		"int2":  2,
+		"array": utils.NewArray("one", "two", "three"),
+		"thing": &testResolvable{},
+		"err":   fmt.Errorf("an error"),
+	}
+	vars := utils.NewMapResolver(varMap)
 
-		// otherwise, cast to our result
-		testResult := result.(XTestResult)
+	keys := make([]string, 0, len(varMap))
+	for key := range varMap {
+		keys = append(keys, key)
+	}
 
-		// check our expected match
-		if testResult.Matched() != test.matched {
-			t.Errorf("Unexpected matched value: %v for test %s(%#v)", testResult.Matched(), test.name, test.args)
-		}
+	evalTests := []struct {
+		template string
+		expected string
+		hasError bool
+	}{
+		{"@(is_error(array[100]))", "true", false}, // errors are like any other value
+		{"@(is_error(array.100))", "true", false},
+		{`@(is_error(round("foo", "bar")))`, "true", false},
+		{`@(is_error(err))`, "true", false},
+		{"@(is_error(thing.foo))", "false", false},
+		{"@(is_error(thing.xxx))", "true", false},
+		{"@(is_error(1 / 0))", "true", false},
+	}
 
-		// and the match itself
-		if !reflect.DeepEqual(testResult.Match(), test.match) {
-			t.Errorf("Unexpected match value, expected '%s', got '%s' for test %s(%#v)", test.match, testResult.Match(), test.name, test.args)
+	env := utils.NewDefaultEnvironment()
+	for _, test := range evalTests {
+		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, keys)
+
+		if test.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
+		} else {
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
+
+			assert.Equal(t, test.expected, eval, "actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 		}
 	}
 }

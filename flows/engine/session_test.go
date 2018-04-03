@@ -50,7 +50,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.fields.joined", "2018-03-27T10:30:00.123456+02:00", false},
 		{"@contact.fields.state", "Azuay", false},
 		{"@contact.fields.favorite_icecream", "", true},
-		{"@(has_error(contact.fields.favorite_icecream))", "true", false},
+		{"@(is_error(contact.fields.favorite_icecream))", "true", false},
 		{"@(length(contact.fields))", "6", false},
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
@@ -63,7 +63,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@run.results.favorite_color", "red", false},
 		{"@run.results.favorite_color.category", "Red", false},
 		{"@run.results.favorite_icecream", "", true},
-		{"@(has_error(run.results.favorite_icecream))", "true", false},
+		{"@(is_error(run.results.favorite_icecream))", "true", false},
 		{"@(length(run.results))", "1", false},
 		{"@run.exited_on", "", false},
 

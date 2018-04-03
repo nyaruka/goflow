@@ -18,7 +18,6 @@ type Environment interface {
 	SetTimezone(*time.Location)
 
 	Languages() LanguageList
-	Locations() (*LocationHierarchy, error)
 }
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
@@ -66,8 +65,7 @@ func (e *environment) SetTimezone(timezone *time.Location) {
 	}
 }
 
-func (e *environment) Languages() LanguageList                { return e.languages }
-func (e *environment) Locations() (*LocationHierarchy, error) { return nil, nil }
+func (e *environment) Languages() LanguageList { return e.languages }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

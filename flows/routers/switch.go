@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -85,7 +85,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		test := strings.ToLower(c.Type)
 
 		// try to look up our function
-		xtest := excellent.XTESTS[test]
+		xtest := tests.XTESTS[test]
 		if xtest == nil {
 			return operand, flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
 		}
@@ -114,7 +114,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		}
 
 		// ok, not an error, must be an XTestResult
-		result, isResult := rawResult.(excellent.XTestResult)
+		result, isResult := rawResult.(tests.XTestResult)
 		if !isResult {
 			return operand, flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
 		}

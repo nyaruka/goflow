@@ -1,15 +1,16 @@
-package excellent
+package tests
 
 import (
 	"fmt"
 	"reflect"
 	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/nyaruka/phonenumbers"
 	"github.com/shopspring/decimal"
 )
@@ -23,9 +24,16 @@ import (
 // Mapping
 //------------------------------------------------------------------------------------------
 
+func init() {
+	// register our router tests as Excellent functions
+	for name, testFunc := range XTESTS {
+		excellent.RegisterFunction(name, testFunc)
+	}
+}
+
 // XTESTS is our mapping of the excellent test names to their actual functions
-var XTESTS = map[string]XFunction{
-	"has_error":          HasError,
+var XTESTS = map[string]excellent.XFunction{
+	"is_error":           IsError,
 	"has_value":          HasValue,
 	"has_group":          HasGroup,
 	"has_wait_timed_out": HasWaitTimedOut,
@@ -59,44 +67,6 @@ var XTESTS = map[string]XFunction{
 	"has_district": HasDistrict,
 	"has_ward":     HasWard,
 }
-
-//------------------------------------------------------------------------------------------
-// Interfaces
-//------------------------------------------------------------------------------------------
-
-// XTestResult encapsulates not only if the test was true but what the match was
-type XTestResult struct {
-	matched bool
-	match   interface{}
-}
-
-// Matched returns whether the test matched
-func (t XTestResult) Matched() bool { return t.matched }
-
-// Match returns the item which was matched
-func (t XTestResult) Match() interface{} { return t.match }
-
-// Resolve resolves the given key when this result is referenced in an expression
-func (t XTestResult) Resolve(key string) interface{} {
-	switch key {
-	case "matched":
-		return t.matched
-	case "match":
-		return t.match
-	}
-	return fmt.Errorf("no such key '%s' on test result", key)
-}
-
-// Atomize is called when this object needs to be reduced to a primitive
-func (t XTestResult) Atomize() interface{} {
-	return strconv.FormatBool(t.matched)
-}
-
-// XFalseResult can be used as a singleton for false result values
-var XFalseResult = XTestResult{}
-
-var _ utils.Atomizable = XTestResult{}
-var _ utils.Resolvable = XTestResult{}
 
 //------------------------------------------------------------------------------------------
 // Tests
@@ -134,21 +104,21 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 	return XFalseResult
 }
 
-// HasError returns whether `value` is an error
+// IsError returns whether `value` is an error
 //
 // Note that `contact.fields` and `run.results` are considered dynamic, so it is not an error
 // to try to retrieve a value from fields or results which don't exist, rather these return an empty
 // value.
 //
-//   @(has_error(date("foo"))) -> true
-//   @(has_error(run.not.existing)) -> true
-//   @(has_error(contact.fields.unset)) -> true
-//   @(has_error("hello")) -> false
+//   @(is_error(date("foo"))) -> true
+//   @(is_error(run.not.existing)) -> true
+//   @(is_error(contact.fields.unset)) -> true
+//   @(is_error("hello")) -> false
 //
-// @test has_error(value)
-func HasError(env utils.Environment, args ...interface{}) interface{} {
+// @test is_error(value)
+func IsError(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_ERROR takes exactly one argument, got %d", len(args))
+		return fmt.Errorf("IS_ERROR takes exactly one argument, got %d", len(args))
 	}
 
 	// nil is not an error
@@ -719,13 +689,15 @@ func HasState(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_STATE takes exactly one arguments, got %d", len(args))
 	}
 
+	runEnv, _ := env.(flows.RunEnvironment)
+
 	// grab the text we will search
 	text, err := utils.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	states, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
@@ -749,6 +721,8 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_DISTRICT takes one or two arguments, got %d", len(args))
 	}
 
+	runEnv, _ := env.(flows.RunEnvironment)
+
 	var text, stateText string
 	var err error
 
@@ -762,12 +736,12 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	states, err := utils.FindLocationsFuzzy(env, stateText, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText, utils.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
 	if len(states) > 0 {
-		districts, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(2), states[0])
 		if err != nil {
 			return err
 		}
@@ -778,7 +752,7 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText == "" {
-		districts, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(2), nil)
+		districts, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(2), nil)
 		if err != nil {
 			return err
 		}
@@ -806,6 +780,8 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_WARD takes one or three arguments, got %d", len(args))
 	}
 
+	runEnv, _ := env.(flows.RunEnvironment)
+
 	var text, districtText, stateText string
 	var err error
 
@@ -822,17 +798,17 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	states, err := utils.FindLocationsFuzzy(env, stateText, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText, utils.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
 	if len(states) > 0 {
-		districts, err := utils.FindLocationsFuzzy(env, districtText, utils.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(districtText, utils.LocationLevel(2), states[0])
 		if err != nil {
 			return err
 		}
 		if len(districts) > 0 {
-			wards, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(3), districts[0])
+			wards, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(3), districts[0])
 			if err != nil {
 				return err
 			}
@@ -844,7 +820,7 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText == "" {
-		wards, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(3), nil)
+		wards, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(3), nil)
 		if err != nil {
 			return err
 		}

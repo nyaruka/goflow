@@ -157,7 +157,7 @@ func (m *extraMapper) Atomize() interface{} {
 	case ExtraAsTriggerParams:
 		return fmt.Sprintf("trigger.params.%s", m.path)
 	case ExtraAsFunction:
-		return fmt.Sprintf("if(has_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path)
+		return fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path)
 	}
 	return ""
 }
