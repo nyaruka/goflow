@@ -3,8 +3,9 @@ package contactql
 import (
 	"strings"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/goflow/contactql/gen"
+
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 var comparatorAliases = map[string]string{

@@ -8,9 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/goflow/contactql/gen"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/shopspring/decimal"
 )
 
@@ -78,14 +79,14 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 		return stringComparison(val.(string), c.comparator, c.value)
 
 	case decimal.Decimal:
-		asDecimal, err := utils.ToDecimal(env, c.value)
+		asDecimal, err := decimal.NewFromString(c.value)
 		if err != nil {
 			return false, err
 		}
 		return decimalComparison(val.(decimal.Decimal), c.comparator, asDecimal)
 
 	case time.Time:
-		asDate, err := utils.ToDate(env, c.value)
+		asDate, err := utils.DateFromString(env, c.value)
 		if err != nil {
 			return false, err
 		}

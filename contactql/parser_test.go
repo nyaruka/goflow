@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/shopspring/decimal"
 )
 
