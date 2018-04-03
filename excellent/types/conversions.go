@@ -15,36 +15,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// ToStringArray tries to turn the passed in interface (which must be an underlying slice) to a string array
-func ToStringArray(env utils.Environment, v interface{}) ([]string, error) {
-	if utils.IsNil(v) {
-		return nil, fmt.Errorf("Cannot convert nil to string array")
-	}
-
-	// deal with a passed in error, we just return it out
-	err, isErr := v.(error)
-	if isErr {
-		return nil, err
-	}
-
-	val := reflect.ValueOf(v)
-	if val.Kind() != reflect.Slice {
-		return nil, fmt.Errorf("Cannot convert non-array to string array")
-	}
-
-	strArr := make([]string, val.Len())
-	for i := range strArr {
-		str, err := ToString(env, val.Index(i).Interface())
-		if err != nil {
-			return nil, err
-		}
-
-		strArr[i] = str
-	}
-
-	return strArr, nil
-}
-
 // ToJSON tries to turn the passed in interface to a JSON fragment
 func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 	ToFragment := func(bytes []byte, err error) (JSONFragment, error) {
