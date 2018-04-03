@@ -46,12 +46,12 @@ func ToStringArray(env utils.Environment, v interface{}) ([]string, error) {
 }
 
 // ToJSON tries to turn the passed in interface to a JSON fragment
-func ToJSON(env utils.Environment, val interface{}) (utils.JSONFragment, error) {
-	ToFragment := func(bytes []byte, err error) (utils.JSONFragment, error) {
+func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
+	ToFragment := func(bytes []byte, err error) (JSONFragment, error) {
 		if bytes == nil {
-			return utils.EmptyJSONFragment, err
+			return EmptyJSONFragment, err
 		}
-		return utils.JSONFragment(bytes), err
+		return JSONFragment(bytes), err
 	}
 
 	// null is null
@@ -62,7 +62,7 @@ func ToJSON(env utils.Environment, val interface{}) (utils.JSONFragment, error) 
 	switch val := val.(type) {
 
 	case error:
-		return utils.EmptyJSONFragment, val
+		return EmptyJSONFragment, val
 
 	case string:
 		return ToFragment(json.Marshal(val))
@@ -80,7 +80,7 @@ func ToJSON(env utils.Environment, val interface{}) (utils.JSONFragment, error) 
 	case time.Time:
 		return ToFragment(json.Marshal(utils.DateToISO(val)))
 
-	case utils.JSONFragment:
+	case JSONFragment:
 		return val, nil
 
 	case utils.Array:
@@ -91,7 +91,7 @@ func ToJSON(env utils.Environment, val interface{}) (utils.JSONFragment, error) 
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
-	return utils.EmptyJSONFragment, fmt.Errorf("ToJSON unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+	return EmptyJSONFragment, fmt.Errorf("ToJSON unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
 }
 
 // ToString tries to turn the passed in interface to a string
@@ -241,7 +241,7 @@ func ToBool(env utils.Environment, test interface{}) (bool, error) {
 	case bool:
 		return test, nil
 
-	case utils.JSONFragment:
+	case JSONFragment:
 		asString, err := ToString(env, test)
 		if err != nil {
 			return false, err

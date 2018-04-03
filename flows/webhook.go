@@ -8,6 +8,7 @@ import (
 	"net/http/httputil"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -79,7 +80,7 @@ func (w *WebhookCall) Response() string { return w.response }
 func (w *WebhookCall) Body() string { return w.body }
 
 // JSON returns the response as a JSON fragment
-func (w *WebhookCall) JSON() utils.JSONFragment { return utils.JSONFragment([]byte(w.body)) }
+func (w *WebhookCall) JSON() types.JSONFragment { return types.JSONFragment([]byte(w.body)) }
 
 // Resolve resolves the given key when this webhook is referenced in an expression
 func (w *WebhookCall) Resolve(key string) interface{} {

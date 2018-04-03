@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -183,7 +184,7 @@ func main() {
 		log.Fatal("error accessing flow: ", err)
 	}
 
-	trigger := triggers.NewManualTrigger(env, contact, flow, utils.EmptyJSONFragment, time.Now())
+	trigger := triggers.NewManualTrigger(env, contact, flow, types.EmptyJSONFragment, time.Now())
 
 	// and start our flow
 	err = session.Start(trigger, nil)

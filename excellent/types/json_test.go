@@ -1,11 +1,12 @@
-package utils_test
+package types_test
 
 import (
-	"github.com/shopspring/decimal"
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -41,13 +42,13 @@ func TestJSONResolve(t *testing.T) {
 		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, "val2", false},
 		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, "val2", false},
 
-		{[]byte(`{"arr": ["one", "two"]}`), "arr", utils.JSONArray([]byte(`["one", "two"]`)), false},
-		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", utils.JSONFragment([]byte(`{"foo": "bar"}`)), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "arr", types.JSONArray([]byte(`["one", "two"]`)), false},
+		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", types.JSONFragment([]byte(`{"foo": "bar"}`)), false},
 	}
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
-		fragment := utils.JSONFragment(test.JSON)
+		fragment := types.JSONFragment(test.JSON)
 		value := utils.ResolveVariable(env, fragment, test.lookup)
 		err, _ := value.(error)
 

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -22,7 +23,7 @@ type flowRun struct {
 
 	flow    flows.Flow
 	contact *flows.Contact
-	extra   utils.JSONFragment
+	extra   types.JSONFragment
 
 	context utils.Resolvable
 	webhook *flows.WebhookCall

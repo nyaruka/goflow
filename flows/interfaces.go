@@ -3,6 +3,7 @@ package flows
 import (
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -223,7 +224,7 @@ type Trigger interface {
 	Environment() utils.Environment
 	Flow() Flow
 	Contact() *Contact
-	Params() utils.JSONFragment
+	Params() types.JSONFragment
 	TriggeredOn() time.Time
 }
 
