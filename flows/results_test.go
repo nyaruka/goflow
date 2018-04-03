@@ -29,7 +29,7 @@ func TestResults(t *testing.T) {
 			t.Errorf("Error unmarshalling: '%s'", err)
 			continue
 		}
-		value := utils.ResolveVariable(env, results, test.lookup)
+		value := types.ResolveVariable(env, results, test.lookup)
 
 		valueStr, _ := types.ToString(env, value)
 		if valueStr != test.expected {

@@ -17,11 +17,11 @@ import (
 type Visitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver utils.Resolvable
+	resolver types.Resolvable
 }
 
 // NewVisitor creates a new Excellent visitor
-func NewVisitor(env utils.Environment, resolver utils.Resolvable) *Visitor {
+func NewVisitor(env utils.Environment, resolver types.Resolvable) *Visitor {
 	visitor := Visitor{env: env, resolver: resolver}
 	return &visitor
 }
@@ -46,7 +46,7 @@ func (v *Visitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{
 func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	context := v.Visit(ctx.Atom(0))
 	lookup := ctx.Atom(1).GetText()
-	return utils.ResolveVariable(v.env, context, lookup)
+	return types.ResolveVariable(v.env, context, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -103,13 +103,13 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 		return err
 	}
 
-	return utils.ResolveVariable(v.env, context, lookup)
+	return types.ResolveVariable(v.env, context, lookup)
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *Visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := utils.ResolveVariable(v.env, v.resolver, key)
+	val := types.ResolveVariable(v.env, v.resolver, key)
 	return val
 }
 

@@ -153,7 +153,7 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// nil is not a value
-	if utils.IsNil(args[0]) {
+	if types.IsNil(args[0]) {
 		return XFalseResult
 	}
 
@@ -356,11 +356,11 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 
 // Returned by the has_pattern test as its match value
 type patternMatch struct {
-	groups utils.Array
+	groups types.Array
 }
 
 func newPatternMatch(matches []string) *patternMatch {
-	groups := utils.NewArray()
+	groups := types.NewArray()
 	for _, match := range matches {
 		groups.Append(match)
 	}
@@ -382,8 +382,8 @@ func (m *patternMatch) Atomize() interface{} {
 	return m.groups.Index(0)
 }
 
-var _ utils.Atomizable = (*patternMatch)(nil)
-var _ utils.Resolvable = (*patternMatch)(nil)
+var _ types.Atomizable = (*patternMatch)(nil)
+var _ types.Resolvable = (*patternMatch)(nil)
 
 // HasPattern tests whether `string` matches the regex `pattern`
 //

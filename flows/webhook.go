@@ -109,8 +109,8 @@ func (w *WebhookCall) Atomize() interface{} {
 	return w.body
 }
 
-var _ utils.Atomizable = (*WebhookCall)(nil)
-var _ utils.Resolvable = (*WebhookCall)(nil)
+var _ types.Atomizable = (*WebhookCall)(nil)
+var _ types.Resolvable = (*WebhookCall)(nil)
 
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
 func newWebhookCallFromError(r *http.Request, requestTrace string, requestError error) (*WebhookCall, error) {

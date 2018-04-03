@@ -169,7 +169,7 @@ func Length(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// argument must either be an object with length
-	lengthable, isLengthable := args[0].(utils.Lengthable)
+	lengthable, isLengthable := args[0].(types.Lengthable)
 	if isLengthable {
 		return decimal.New(int64(lengthable.Length()), 0)
 	}
@@ -218,7 +218,7 @@ func Default(env utils.Environment, args ...interface{}) interface{} {
 //
 // @function array(values...)
 func Array(env utils.Environment, args ...interface{}) interface{} {
-	return utils.NewArray(args...)
+	return types.NewArray(args...)
 }
 
 // FromJSON tries to parse `string` as JSON, returning a fragment you can index into
@@ -763,7 +763,7 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 		return err
 	}
 
-	splits := utils.NewArray()
+	splits := types.NewArray()
 
 	allSplits := strings.Split(s, sep)
 	for i := range allSplits {
@@ -785,7 +785,7 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	indexable, isIndexable := args[0].(utils.Indexable)
+	indexable, isIndexable := args[0].(types.Indexable)
 	if !isIndexable {
 		return fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
@@ -1687,7 +1687,7 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 	// if we've been passed an indexable like a URNList, use first item
 	urnArg := args[0]
 
-	indexable, isIndexable := urnArg.(utils.Indexable)
+	indexable, isIndexable := urnArg.(types.Indexable)
 	if isIndexable {
 		if indexable.Length() >= 1 {
 			urnArg = indexable.Index(0)

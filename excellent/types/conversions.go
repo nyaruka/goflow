@@ -17,7 +17,7 @@ import (
 
 // ToStringArray tries to turn the passed in interface (which must be an underlying slice) to a string array
 func ToStringArray(env utils.Environment, v interface{}) ([]string, error) {
-	if utils.IsNil(v) {
+	if IsNil(v) {
 		return nil, fmt.Errorf("Cannot convert nil to string array")
 	}
 
@@ -55,7 +55,7 @@ func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 	}
 
 	// null is null
-	if utils.IsNil(val) {
+	if IsNil(val) {
 		return ToFragment(json.Marshal(nil))
 	}
 
@@ -83,10 +83,10 @@ func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 	case JSONFragment:
 		return val, nil
 
-	case utils.Array:
+	case Array:
 		return ToFragment(json.Marshal(val))
 
-	case utils.Atomizable:
+	case Atomizable:
 		return ToJSON(env, val.Atomize())
 	}
 
@@ -97,7 +97,7 @@ func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 // ToString tries to turn the passed in interface to a string
 func ToString(env utils.Environment, val interface{}) (string, error) {
 	// Strings are always defined, just empty
-	if utils.IsNil(val) {
+	if IsNil(val) {
 		return "", nil
 	}
 
@@ -119,10 +119,10 @@ func ToString(env utils.Environment, val interface{}) (string, error) {
 	case time.Time:
 		return utils.DateToISO(val), nil
 
-	case utils.Atomizable:
+	case Atomizable:
 		return ToString(env, val.Atomize())
 
-	case utils.Array:
+	case Array:
 		var output bytes.Buffer
 		for i := 0; i < val.Length(); i++ {
 			if i > 0 {
@@ -157,7 +157,7 @@ func ToInt(env utils.Environment, val interface{}) (int, error) {
 
 // ToDecimal tries to convert the passed in interface{} to a Decimal value, returning an error if that isn't possible
 func ToDecimal(env utils.Environment, val interface{}) (decimal.Decimal, error) {
-	if utils.IsNil(val) {
+	if IsNil(val) {
 		return decimal.Zero, nil
 	}
 
@@ -181,7 +181,7 @@ func ToDecimal(env utils.Environment, val interface{}) (decimal.Decimal, error) 
 	case int:
 		return decimal.NewFromString(strconv.FormatInt(int64(val), 10))
 
-	case utils.Atomizable:
+	case Atomizable:
 		return ToDecimal(env, val.Atomize())
 	}
 
@@ -190,7 +190,7 @@ func ToDecimal(env utils.Environment, val interface{}) (decimal.Decimal, error) 
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
 func ToDate(env utils.Environment, val interface{}) (time.Time, error) {
-	if utils.IsNil(val) {
+	if IsNil(val) {
 		return time.Time{}, fmt.Errorf("Cannot convert nil to date")
 	}
 
@@ -209,7 +209,7 @@ func ToDate(env utils.Environment, val interface{}) (time.Time, error) {
 	case time.Time:
 		return val, nil
 
-	case utils.Atomizable:
+	case Atomizable:
 		return ToDate(env, val.Atomize())
 	}
 
@@ -267,7 +267,7 @@ func ToBool(env utils.Environment, test interface{}) (bool, error) {
 		// finally just string version
 		return asString != "" && strings.ToLower(asString) != "false", nil
 
-	case utils.Atomizable:
+	case Atomizable:
 		return ToBool(env, test.Atomize())
 	}
 
@@ -280,18 +280,18 @@ func Compare(env utils.Environment, arg1 interface{}, arg2 interface{}) (int, er
 		return 0, nil
 	}
 
-	arg1, arg1Type, _ := utils.ToXAtom(env, arg1)
-	arg2, arg2Type, _ := utils.ToXAtom(env, arg2)
+	arg1, arg1Type, _ := ToXAtom(env, arg1)
+	arg2, arg2Type, _ := ToXAtom(env, arg2)
 
 	// common types, do real comparisons
 	switch {
-	case arg1Type == arg2Type && arg1Type == utils.XTypeError:
+	case arg1Type == arg2Type && arg1Type == XTypeError:
 		return strings.Compare(arg1.(error).Error(), arg2.(error).Error()), nil
 
-	case arg1Type == arg2Type && arg1Type == utils.XTypeDecimal:
+	case arg1Type == arg2Type && arg1Type == XTypeDecimal:
 		return arg1.(decimal.Decimal).Cmp(arg2.(decimal.Decimal)), nil
 
-	case arg1Type == arg2Type && arg1Type == utils.XTypeBool:
+	case arg1Type == arg2Type && arg1Type == XTypeBool:
 		bool1 := arg1.(bool)
 		bool2 := arg2.(bool)
 
@@ -304,7 +304,7 @@ func Compare(env utils.Environment, arg1 interface{}, arg2 interface{}) (int, er
 			return 1, nil
 		}
 
-	case arg1Type == arg2Type && arg1Type == utils.XTypeTime:
+	case arg1Type == arg2Type && arg1Type == XTypeTime:
 		time1 := arg1.(time.Time)
 		time2 := arg2.(time.Time)
 
@@ -317,7 +317,7 @@ func Compare(env utils.Environment, arg1 interface{}, arg2 interface{}) (int, er
 			return 1, nil
 		}
 
-	case arg1Type == arg2Type && arg1Type == utils.XTypeString:
+	case arg1Type == arg2Type && arg1Type == XTypeString:
 		return strings.Compare(arg1.(string), arg2.(string)), nil
 	}
 

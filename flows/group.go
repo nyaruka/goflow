@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -76,8 +77,8 @@ func (g *Group) Resolve(key string) interface{} {
 // Atomize is called when this object needs to be reduced to a primitive
 func (g *Group) Atomize() interface{} { return g.name }
 
-var _ utils.Atomizable = (*Group)(nil)
-var _ utils.Resolvable = (*Group)(nil)
+var _ types.Atomizable = (*Group)(nil)
+var _ types.Resolvable = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
 type GroupList struct {
@@ -148,15 +149,15 @@ func (l *GroupList) Length() int {
 
 // Atomize is called when this object needs to be reduced to a primitive
 func (l GroupList) Atomize() interface{} {
-	array := utils.NewArray()
+	array := types.NewArray()
 	for _, group := range l.groups {
 		array.Append(group)
 	}
 	return array
 }
 
-var _ utils.Atomizable = (*GroupList)(nil)
-var _ utils.Indexable = (*GroupList)(nil)
+var _ types.Atomizable = (*GroupList)(nil)
+var _ types.Indexable = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {

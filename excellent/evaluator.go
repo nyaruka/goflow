@@ -240,7 +240,7 @@ func (s *xscanner) Scan() (xToken, string) {
 }
 
 // EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
-func EvaluateExpression(env utils.Environment, resolver utils.Resolvable, template string) (interface{}, error) {
+func EvaluateExpression(env utils.Environment, resolver types.Resolvable, template string) (interface{}, error) {
 	errors := NewErrorListener()
 
 	input := antlr.NewInputStream(template)
@@ -272,7 +272,7 @@ func EvaluateExpression(env utils.Environment, resolver utils.Resolvable, templa
 // EvaluateTemplate tries to evaluate the passed in template into an object, this only works if the template
 // is a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In cases
 // which are not a single identifier or expression, we return the stringified value
-func EvaluateTemplate(env utils.Environment, resolver utils.Resolvable, template string, allowedTopLevels []string) (interface{}, error) {
+func EvaluateTemplate(env utils.Environment, resolver types.Resolvable, template string, allowedTopLevels []string) (interface{}, error) {
 	var buf bytes.Buffer
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
@@ -290,7 +290,7 @@ func EvaluateTemplate(env utils.Environment, resolver utils.Resolvable, template
 
 	switch tokenType {
 	case IDENTIFIER:
-		value := utils.ResolveVariable(env, resolver, token)
+		value := types.ResolveVariable(env, resolver, token)
 
 		// didn't find it, our value is empty string
 		if value == nil {
@@ -323,7 +323,7 @@ func EvaluateTemplate(env utils.Environment, resolver utils.Resolvable, template
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, resolver utils.Resolvable, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
+func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
@@ -333,7 +333,7 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.Resolvable, 
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER:
-			value := utils.ResolveVariable(env, resolver, token)
+			value := types.ResolveVariable(env, resolver, token)
 
 			// didn't find it, our value is empty string
 			if value == nil {

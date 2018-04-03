@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -95,8 +96,8 @@ func (c *channel) Atomize() interface{} {
 	return c.name
 }
 
-var _ utils.Atomizable = (*channel)(nil)
-var _ utils.Resolvable = (*channel)(nil)
+var _ types.Atomizable = (*channel)(nil)
+var _ types.Resolvable = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {

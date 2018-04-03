@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // Attachment is a media attachment on a message
@@ -43,8 +43,8 @@ func (a Attachment) Resolve(key string) interface{} {
 // Atomize is called when this object needs to be reduced to a primitive
 func (a Attachment) Atomize() interface{} { return a.URL() }
 
-var _ utils.Atomizable = (Attachment)("")
-var _ utils.Resolvable = (Attachment)("")
+var _ types.Atomizable = (Attachment)("")
+var _ types.Resolvable = (Attachment)("")
 
 // AttachmentList is a list of attachments
 type AttachmentList []Attachment
@@ -61,12 +61,12 @@ func (a AttachmentList) Length() int {
 
 // Atomize is called when this object needs to be reduced to a primitive
 func (a AttachmentList) Atomize() interface{} {
-	array := utils.NewArray()
+	array := types.NewArray()
 	for _, attachment := range a {
 		array.Append(attachment)
 	}
 	return array
 }
 
-var _ utils.Atomizable = (AttachmentList)(nil)
-var _ utils.Indexable = (AttachmentList)(nil)
+var _ types.Atomizable = (AttachmentList)(nil)
+var _ types.Indexable = (AttachmentList)(nil)

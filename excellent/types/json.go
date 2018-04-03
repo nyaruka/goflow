@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/nyaruka/goflow/utils"
-
 	"github.com/buger/jsonparser"
 	"github.com/shopspring/decimal"
 )
@@ -44,8 +42,8 @@ func (j JSONFragment) Atomize() interface{} {
 	return string(j)
 }
 
-var _ utils.Atomizable = EmptyJSONFragment
-var _ utils.Resolvable = EmptyJSONFragment
+var _ Atomizable = EmptyJSONFragment
+var _ Resolvable = EmptyJSONFragment
 
 // JSONArray is a JSON fragment containing an array
 type JSONArray JSONFragment
@@ -73,8 +71,8 @@ func (j JSONArray) Length() int {
 	return length
 }
 
-var _ utils.Atomizable = JSONArray{}
-var _ utils.Indexable = JSONArray{}
+var _ Atomizable = JSONArray{}
+var _ Indexable = JSONArray{}
 
 func jsonTypeToXAtom(data []byte, valType jsonparser.ValueType) interface{} {
 	switch valType {

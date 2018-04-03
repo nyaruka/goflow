@@ -49,7 +49,7 @@ func TestJSONResolve(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
 		fragment := types.JSONFragment(test.JSON)
-		value := utils.ResolveVariable(env, fragment, test.lookup)
+		value := types.ResolveVariable(env, fragment, test.lookup)
 		err, _ := value.(error)
 
 		if test.hasError {

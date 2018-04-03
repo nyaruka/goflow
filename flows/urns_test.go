@@ -3,6 +3,7 @@ package flows_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -33,7 +34,7 @@ func TestURNListResolve(t *testing.T) {
 		{"xxxxxx", false, ""}, // not a valid scheme
 	}
 	for _, tc := range testCases {
-		val := utils.ResolveVariable(env, urnList, tc.key)
+		val := types.ResolveVariable(env, urnList, tc.key)
 
 		err, isErr := val.(error)
 

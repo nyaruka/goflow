@@ -38,5 +38,5 @@ func (t *baseTrigger) Atomize() interface{} {
 	return string(t.flow.UUID())
 }
 
-var _ utils.Atomizable = (*baseTrigger)(nil)
-var _ utils.Resolvable = (*baseTrigger)(nil)
+var _ types.Atomizable = (*baseTrigger)(nil)
+var _ types.Resolvable = (*baseTrigger)(nil)

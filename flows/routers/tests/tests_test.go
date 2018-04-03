@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
 
@@ -230,11 +231,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	varMap := map[string]interface{}{
 		"int1":  1,
 		"int2":  2,
-		"array": utils.NewArray("one", "two", "three"),
+		"array": types.NewArray("one", "two", "three"),
 		"thing": &testResolvable{},
 		"err":   fmt.Errorf("an error"),
 	}
-	vars := utils.NewMapResolver(varMap)
+	vars := types.NewMapResolver(varMap)
 
 	keys := make([]string, 0, len(varMap))
 	for key := range varMap {

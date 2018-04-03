@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -21,7 +22,7 @@ func main() {
 
 	env := utils.NewDefaultEnvironment()
 
-	val, err := excellent.EvaluateTemplateAsString(env, utils.NewMapResolver(vars), os.Args[1], false, nil)
+	val, err := excellent.EvaluateTemplateAsString(env, types.NewMapResolver(vars), os.Args[1], false, nil)
 
 	fmt.Printf("Value: %s\n", val)
 	if err != nil {

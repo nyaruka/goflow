@@ -129,8 +129,8 @@ func (v *varMapper) String() string {
 	return v.base
 }
 
-var _ utils.Atomizable = (*varMapper)(nil)
-var _ utils.Resolvable = (*varMapper)(nil)
+var _ types.Atomizable = (*varMapper)(nil)
+var _ types.Resolvable = (*varMapper)(nil)
 
 // Migration of @extra requires its own mapper because it can map differently depending on the containing flow
 type extraMapper struct {
@@ -163,8 +163,8 @@ func (m *extraMapper) Atomize() interface{} {
 	return ""
 }
 
-var _ utils.Atomizable = (*extraMapper)(nil)
-var _ utils.Resolvable = (*extraMapper)(nil)
+var _ types.Atomizable = (*extraMapper)(nil)
+var _ types.Resolvable = (*extraMapper)(nil)
 
 type functionTemplate struct {
 	name   string
@@ -361,7 +361,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 	return migrateLegacyTemplateAsString(migrationVarMapper, template)
 }
 
-func migrateLegacyTemplateAsString(resolver utils.Resolvable, template string) (string, error) {
+func migrateLegacyTemplateAsString(resolver types.Resolvable, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors excellent.TemplateErrors
 	scanner := excellent.NewXScanner(strings.NewReader(template), legacyContextTopLevels)
@@ -371,7 +371,7 @@ func migrateLegacyTemplateAsString(resolver utils.Resolvable, template string) (
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := utils.ResolveVariable(nil, resolver, token)
+			value := types.ResolveVariable(nil, resolver, token)
 			if value == nil {
 				errors = append(errors, fmt.Errorf("Invalid key: '%s'", token))
 				buf.WriteString("@")
@@ -430,7 +430,7 @@ func toString(params interface{}) (string, error) {
 }
 
 // translateExpression will turn an old expression into a new format expression
-func translateExpression(env utils.Environment, resolver utils.Resolvable, template string) (interface{}, error) {
+func translateExpression(env utils.Environment, resolver types.Resolvable, template string) (interface{}, error) {
 	errors := excellent.NewErrorListener()
 
 	input := antlr.NewInputStream(template)
@@ -475,10 +475,10 @@ func translateExpression(env utils.Environment, resolver utils.Resolvable, templ
 type legacyVisitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver utils.Resolvable
+	resolver types.Resolvable
 }
 
-func newLegacyVisitor(env utils.Environment, resolver utils.Resolvable) *legacyVisitor {
+func newLegacyVisitor(env utils.Environment, resolver types.Resolvable) *legacyVisitor {
 	return &legacyVisitor{env: env, resolver: resolver}
 }
 
@@ -507,7 +507,7 @@ func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	if err != nil {
 		return err
 	}
-	return utils.ResolveVariable(v.env, value, lookup)
+	return types.ResolveVariable(v.env, value, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -604,13 +604,13 @@ func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{
 	if err != nil {
 		return err
 	}
-	return utils.ResolveVariable(v.env, value, lookup)
+	return types.ResolveVariable(v.env, value, lookup)
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := utils.ResolveVariable(v.env, v.resolver, key)
+	val := types.ResolveVariable(v.env, v.resolver, key)
 	if val == nil {
 		return fmt.Errorf("Invalid key: '%s'", key)
 	}

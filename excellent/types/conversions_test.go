@@ -45,11 +45,11 @@ func TestToString(t *testing.T) {
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testResolver, "Resolver", false},
 		{date1, "2017-06-23T15:30:00.000000Z", false},
-		{utils.NewArray(date1, date2), "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
-		{utils.NewArray("one", "two", "three"), "one, two, three", false},
-		{utils.NewArray(true, false, true), "true, false, true", false},
-		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), "1.5, 2.5", false},
-		{utils.NewArray(5, -10, 15), "5, -10, 15", false},
+		{types.NewArray(date1, date2), "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
+		{types.NewArray("one", "two", "three"), "one, two, three", false},
+		{types.NewArray(true, false, true), "true, false, true", false},
+		{types.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), "1.5, 2.5", false},
+		{types.NewArray(5, -10, 15), "5, -10, 15", false},
 		{struct{}{}, "", true},
 	}
 
@@ -183,11 +183,11 @@ func TestToJSON(t *testing.T) {
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testResolver, `"Resolver"`, false},
 		{date1, `"2017-06-23T15:30:00.000000Z"`, false},
-		{utils.NewArray(date1, date2), `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`, false},
-		{utils.NewArray("one", "two", "three"), `["one","two","three"]`, false},
-		{utils.NewArray(true, false, true), `[true,false,true]`, false},
-		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
-		{utils.NewArray(5, -10, 15), `[5,-10,15]`, false},
+		{types.NewArray(date1, date2), `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`, false},
+		{types.NewArray("one", "two", "three"), `["one","two","three"]`, false},
+		{types.NewArray(true, false, true), `[true,false,true]`, false},
+		{types.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
+		{types.NewArray(5, -10, 15), `[5,-10,15]`, false},
 		{struct{}{}, "", true},
 	}
 

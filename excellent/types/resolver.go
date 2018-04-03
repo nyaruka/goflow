@@ -1,4 +1,4 @@
-package utils
+package types
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 )
@@ -56,7 +58,7 @@ func IsNil(v interface{}) bool {
 // Example syntaxes:
 //      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
 //      foo.bar[0] - same as above
-func ResolveVariable(env Environment, variable interface{}, key string) interface{} {
+func ResolveVariable(env utils.Environment, variable interface{}, key string) interface{} {
 	var err error
 
 	err, isErr := variable.(error)
@@ -207,7 +209,7 @@ const (
 )
 
 // ToXAtom figures out the raw type of the passed in interface, returning that type
-func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
+func ToXAtom(env utils.Environment, val interface{}) (interface{}, XType, error) {
 	if val == nil {
 		return val, XTypeNil, nil
 	}

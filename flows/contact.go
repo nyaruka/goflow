@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/contactql"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -148,8 +149,8 @@ func (c *Contact) Atomize() interface{} {
 	return c.name
 }
 
-var _ utils.Atomizable = (*Contact)(nil)
-var _ utils.Resolvable = (*Contact)(nil)
+var _ types.Atomizable = (*Contact)(nil)
+var _ types.Resolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
