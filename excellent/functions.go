@@ -2,22 +2,20 @@ package excellent
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"math"
 	"math/rand"
 	"net/url"
 	"reflect"
 	"strings"
 	"time"
-
 	"unicode/utf8"
 
-	"math"
-
-	"encoding/json"
-
-	humanize "github.com/dustin/go-humanize"
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/utils"
+
+	humanize "github.com/dustin/go-humanize"
 	"github.com/shopspring/decimal"
 )
 

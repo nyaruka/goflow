@@ -327,12 +327,12 @@ type FlowRun interface {
 	Session() Session
 	Context() utils.Resolvable
 	Input() Input
-	Webhook() *utils.RequestResponse
+	Webhook() *WebhookCall
 
 	SetContact(*Contact)
 	SetInput(Input)
 	SetStatus(RunStatus)
-	SetWebhook(*utils.RequestResponse)
+	SetWebhook(*WebhookCall)
 
 	ApplyEvent(Step, Action, Event) error
 	AddError(Step, Action, error)
