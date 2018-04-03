@@ -180,31 +180,3 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	err = session.Start(trigger, nil)
 	return session, err
 }
-
-func eventsForAction(action flows.Action) (json.RawMessage, error) {
-	session, err := createExampleSession(action)
-	if err != nil {
-		return nil, err
-	}
-
-	eventLog := session.Events()
-	eventJSON := make([]json.RawMessage, len(eventLog))
-	for i, event := range eventLog {
-		typed, err := utils.EnvelopeFromTyped(event)
-		if err != nil {
-			return nil, err
-		}
-		eventJSON[i], err = json.MarshalIndent(typed, "", "    ")
-		if err != nil {
-			return nil, err
-		}
-	}
-	if len(eventLog) == 1 {
-		return eventJSON[0], err
-	}
-	js, err := json.MarshalIndent(eventJSON, "", "    ")
-	if err != nil {
-		return nil, err
-	}
-	return js, nil
-}
