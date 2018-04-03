@@ -1,4 +1,4 @@
-package utils_test
+package flows_test
 
 import (
 	"encoding/json"

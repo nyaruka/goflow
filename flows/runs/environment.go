@@ -43,7 +43,7 @@ func (e *runEnvironment) Languages() utils.LanguageList {
 	return e.cachedLanguages
 }
 
-func (e *runEnvironment) Locations() (*utils.LocationHierarchy, error) {
+func (e *runEnvironment) Locations() (*flows.LocationHierarchy, error) {
 	sessionAssets := e.run.Session().Assets()
 	if sessionAssets.HasLocations() {
 		return sessionAssets.GetLocationHierarchy()
@@ -71,7 +71,7 @@ func (e *runEnvironment) refreshLanguagesCache() {
 }
 
 // FindLocations returns locations with the matching name (case-insensitive), level and parent (optional)
-func (e *runEnvironment) FindLocations(name string, level utils.LocationLevel, parent *utils.Location) ([]*utils.Location, error) {
+func (e *runEnvironment) FindLocations(name string, level flows.LocationLevel, parent *flows.Location) ([]*flows.Location, error) {
 	locations, err := e.Locations()
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (e *runEnvironment) FindLocations(name string, level utils.LocationLevel, p
 //   2. Match with punctuation removed
 //   3. Split input into words and try to match each word
 //   4. Try to match pairs of words
-func (e *runEnvironment) FindLocationsFuzzy(text string, level utils.LocationLevel, parent *utils.Location) ([]*utils.Location, error) {
+func (e *runEnvironment) FindLocationsFuzzy(text string, level flows.LocationLevel, parent *flows.Location) ([]*flows.Location, error) {
 	// try matching name exactly
 	if locations, err := e.FindLocations(text, level, parent); len(locations) > 0 || err != nil {
 		return locations, err
@@ -117,7 +117,7 @@ func (e *runEnvironment) FindLocationsFuzzy(text string, level utils.LocationLev
 		}
 	}
 
-	return []*utils.Location{}, nil
+	return []*flows.Location{}, nil
 }
 
 var _ flows.RunEnvironment = (*runEnvironment)(nil)

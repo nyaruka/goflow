@@ -1,8 +1,10 @@
-package utils
+package flows
 
 import (
 	"encoding/json"
 	"strings"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // LocationID is the unique identifier for each location, e.g. an OSM ID
@@ -47,7 +49,7 @@ func (b *Location) Children() []*Location { return b.children }
 // Atomize is called when this object needs to be reduced to a primitive
 func (b *Location) Atomize() interface{} { return b.name }
 
-var _ Atomizable = (*Location)(nil)
+var _ utils.Atomizable = (*Location)(nil)
 
 type locationVisitor func(Location *Location)
 
