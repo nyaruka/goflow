@@ -18,7 +18,7 @@ import (
 type flowRun struct {
 	uuid        flows.RunUUID
 	session     flows.Session
-	environment *runEnvironment
+	environment flows.RunEnvironment
 
 	flow    flows.Flow
 	contact *flows.Contact
@@ -60,9 +60,9 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 	return r
 }
 
-func (r *flowRun) UUID() flows.RunUUID            { return r.uuid }
-func (r *flowRun) Session() flows.Session         { return r.session }
-func (r *flowRun) Environment() utils.Environment { return r.environment }
+func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
+func (r *flowRun) Session() flows.Session            { return r.session }
+func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
 func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }

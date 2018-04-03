@@ -319,11 +319,19 @@ type RunSummary interface {
 	Results() Results
 }
 
+// RunEnvironment is a run specific environment which adds location functionality required by some router tests
+type RunEnvironment interface {
+	utils.Environment
+
+	FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
+	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
+}
+
 // FlowRun represents a run in the current session
 type FlowRun interface {
 	RunSummary
 
-	Environment() utils.Environment
+	Environment() RunEnvironment
 	Session() Session
 	Context() utils.Resolvable
 	Input() Input

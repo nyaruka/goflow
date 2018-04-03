@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/nyaruka/phonenumbers"
 	"github.com/shopspring/decimal"
 )
@@ -688,13 +689,15 @@ func HasState(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_STATE takes exactly one arguments, got %d", len(args))
 	}
 
+	runEnv, _ := env.(flows.RunEnvironment)
+
 	// grab the text we will search
 	text, err := utils.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	states, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
@@ -718,6 +721,8 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_DISTRICT takes one or two arguments, got %d", len(args))
 	}
 
+	runEnv, _ := env.(flows.RunEnvironment)
+
 	var text, stateText string
 	var err error
 
@@ -731,12 +736,12 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	states, err := utils.FindLocationsFuzzy(env, stateText, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText, utils.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
 	if len(states) > 0 {
-		districts, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(2), states[0])
 		if err != nil {
 			return err
 		}
@@ -747,7 +752,7 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText == "" {
-		districts, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(2), nil)
+		districts, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(2), nil)
 		if err != nil {
 			return err
 		}
@@ -775,6 +780,8 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_WARD takes one or three arguments, got %d", len(args))
 	}
 
+	runEnv, _ := env.(flows.RunEnvironment)
+
 	var text, districtText, stateText string
 	var err error
 
@@ -791,17 +798,17 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	states, err := utils.FindLocationsFuzzy(env, stateText, utils.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText, utils.LocationLevel(1), nil)
 	if err != nil {
 		return err
 	}
 	if len(states) > 0 {
-		districts, err := utils.FindLocationsFuzzy(env, districtText, utils.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(districtText, utils.LocationLevel(2), states[0])
 		if err != nil {
 			return err
 		}
 		if len(districts) > 0 {
-			wards, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(3), districts[0])
+			wards, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(3), districts[0])
 			if err != nil {
 				return err
 			}
@@ -813,7 +820,7 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText == "" {
-		wards, err := utils.FindLocationsFuzzy(env, text, utils.LocationLevel(3), nil)
+		wards, err := runEnv.FindLocationsFuzzy(text, utils.LocationLevel(3), nil)
 		if err != nil {
 			return err
 		}

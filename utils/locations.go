@@ -2,8 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
-	"regexp"
 	"strings"
 )
 
@@ -143,56 +141,6 @@ func (s *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 		}
 	}
 	return []*Location{}
-}
-
-// FindLocations returns locations with the matching name (case-insensitive), level and parent (optional)
-func FindLocations(env Environment, name string, level LocationLevel, parent *Location) ([]*Location, error) {
-	locations, err := env.Locations()
-	if err != nil {
-		return nil, err
-	}
-	if locations == nil {
-		return nil, fmt.Errorf("can't find locations in environment which is not location enabled")
-	}
-
-	return locations.FindByName(name, level, parent), nil
-}
-
-// FindLocationsFuzzy returns matching locations like FindLocations but attempts the following strategies
-// to find locations:
-//   1. Exact match
-//   2. Match with punctuation removed
-//   3. Split input into words and try to match each word
-//   4. Try to match pairs of words
-func FindLocationsFuzzy(env Environment, text string, level LocationLevel, parent *Location) ([]*Location, error) {
-	// try matching name exactly
-	if locations, err := FindLocations(env, text, level, parent); len(locations) > 0 || err != nil {
-		return locations, err
-	}
-
-	// try with punctuation removed
-	stripped := strings.TrimSpace(regexp.MustCompile(`\W+`).ReplaceAllString(text, ""))
-	if locations, err := FindLocations(env, stripped, level, parent); len(locations) > 0 || err != nil {
-		return locations, err
-	}
-
-	// try on each tokenized word
-	words := regexp.MustCompile(`\W+`).Split(text, -1)
-	for _, word := range words {
-		if locations, err := FindLocations(env, word, level, parent); len(locations) > 0 || err != nil {
-			return locations, err
-		}
-	}
-
-	// try with each pair of words
-	for w := 0; w < len(words)-1; w++ {
-		wordPair := strings.Join(words[w:w+2], " ")
-		if locations, err := FindLocations(env, wordPair, level, parent); len(locations) > 0 || err != nil {
-			return locations, err
-		}
-	}
-
-	return []*Location{}, nil
 }
 
 //------------------------------------------------------------------------------------------
