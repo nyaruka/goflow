@@ -71,15 +71,9 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	var function XFunction
 	var found bool
 
-	// this is a test, look it up from those
-	if strings.HasPrefix(functionName, "has_") {
-		function, found = XTESTS[functionName]
-	} else {
-		function, found = XFUNCTIONS[functionName]
-	}
-
+	function, found = XFUNCTIONS[functionName]
 	if !found {
-		return fmt.Errorf("No function with name '%s'", functionName)
+		return fmt.Errorf("no function with name '%s'", functionName)
 	}
 
 	var params []interface{}

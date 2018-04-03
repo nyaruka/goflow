@@ -22,6 +22,11 @@ import (
 // XFunction defines the interface that Excellent functions must implement
 type XFunction func(env utils.Environment, args ...interface{}) interface{}
 
+// RegisterFunction registers a new function in Excellent
+func RegisterFunction(name string, function XFunction) {
+	XFUNCTIONS[name] = function
+}
+
 // XFUNCTIONS is our map of functions available in Excellent which aren't tests
 var XFUNCTIONS = map[string]XFunction{
 	"and": And,

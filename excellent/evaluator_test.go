@@ -121,14 +121,6 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(thing.missing)", "", false},    // missing is nil which becomes empty string
 		{"@(thing.missing.xxx)", "", true}, // but can't look up a property on nil
 		{"@(thing.xxx)", "", true},
-
-		{"@(has_error(array[100]))", "true", false}, // errors are like any other value
-		{"@(has_error(array.100))", "true", false},
-		{`@(has_error(round("foo", "bar")))`, "true", false},
-		{`@(has_error(err))`, "true", false},
-		{"@(has_error(thing.foo))", "false", false},
-		{"@(has_error(thing.xxx))", "true", false},
-		{"@(has_error(1 / 0))", "true", false},
 	}
 
 	env := utils.NewDefaultEnvironment()
