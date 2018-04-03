@@ -5,6 +5,9 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 // Resolvable is the interface for objects in the context which can be keyed into, e.g. foo.bar
@@ -28,6 +31,23 @@ type Indexable interface {
 // Atomizable is the interface for objects in the context which can reduce themselves to an XAtom primitive
 type Atomizable interface {
 	Atomize() interface{}
+}
+
+// IsNil returns whether the given object is nil or an interface to a nil
+func IsNil(v interface{}) bool {
+	// if v doesn't have a type or value then v == nil
+	if v == nil {
+		return true
+	}
+
+	val := reflect.ValueOf(v)
+
+	// if v is a typed nil pointer then v != nil but the value is nil
+	if val.Kind() == reflect.Ptr {
+		return val.IsNil()
+	}
+
+	return false
 }
 
 // ResolveVariable will resolve the passed in string variable given in dot notation and return
@@ -171,3 +191,48 @@ func (r *mapResolver) Atomize() interface{} { return fmt.Sprintf("%s", r.values)
 
 var _ Atomizable = (*mapResolver)(nil)
 var _ Resolvable = (*mapResolver)(nil)
+
+// XType is an an enumeration of the possible types we can deal with
+type XType int
+
+// primitive types we convert to
+const (
+	XTypeNil = iota
+	XTypeError
+	XTypeString
+	XTypeDecimal
+	XTypeTime
+	XTypeBool
+	XTypeArray
+)
+
+// ToXAtom figures out the raw type of the passed in interface, returning that type
+func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
+	if val == nil {
+		return val, XTypeNil, nil
+	}
+
+	switch val := val.(type) {
+	case error:
+		return val, XTypeError, nil
+
+	case string:
+		return val, XTypeString, nil
+
+	case decimal.Decimal:
+		return val, XTypeDecimal, nil
+	case int:
+		return decimal.New(int64(val), 0), XTypeDecimal, nil
+
+	case time.Time:
+		return val, XTypeTime, nil
+
+	case bool:
+		return val, XTypeBool, nil
+
+	case Array:
+		return val, XTypeArray, nil
+	}
+
+	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+}

@@ -10,9 +10,11 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/nyaruka/goflow/excellent/gen"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
 type xToken int
@@ -343,7 +345,7 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.Resolvable, 
 			if isErr {
 				errors = append(errors, err)
 			} else {
-				strValue, _ := utils.ToString(env, value)
+				strValue, _ := types.ToString(env, value)
 				if urlEncode {
 					strValue = url.QueryEscape(strValue)
 				}
@@ -355,7 +357,7 @@ func EvaluateTemplateAsString(env utils.Environment, resolver utils.Resolvable, 
 			if err != nil {
 				errors = append(errors, err)
 			} else {
-				strValue, _ := utils.ToString(env, value)
+				strValue, _ := types.ToString(env, value)
 				if urlEncode {
 					strValue = url.QueryEscape(strValue)
 				}

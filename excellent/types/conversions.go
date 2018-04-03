@@ -1,4 +1,4 @@
-package utils
+package types
 
 import (
 	"bytes"
@@ -10,29 +10,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/utils"
+
 	"github.com/shopspring/decimal"
 )
 
-// IsNil returns whether the given object is nil or an interface to a nil
-func IsNil(v interface{}) bool {
-	// if v doesn't have a type or value then v == nil
-	if v == nil {
-		return true
-	}
-
-	val := reflect.ValueOf(v)
-
-	// if v is a typed nil pointer then v != nil but the value is nil
-	if val.Kind() == reflect.Ptr {
-		return val.IsNil()
-	}
-
-	return false
-}
-
 // ToStringArray tries to turn the passed in interface (which must be an underlying slice) to a string array
-func ToStringArray(env Environment, v interface{}) ([]string, error) {
-	if IsNil(v) {
+func ToStringArray(env utils.Environment, v interface{}) ([]string, error) {
+	if utils.IsNil(v) {
 		return nil, fmt.Errorf("Cannot convert nil to string array")
 	}
 
@@ -61,23 +46,23 @@ func ToStringArray(env Environment, v interface{}) ([]string, error) {
 }
 
 // ToJSON tries to turn the passed in interface to a JSON fragment
-func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
-	ToFragment := func(bytes []byte, err error) (JSONFragment, error) {
+func ToJSON(env utils.Environment, val interface{}) (utils.JSONFragment, error) {
+	ToFragment := func(bytes []byte, err error) (utils.JSONFragment, error) {
 		if bytes == nil {
-			return EmptyJSONFragment, err
+			return utils.EmptyJSONFragment, err
 		}
-		return JSONFragment(bytes), err
+		return utils.JSONFragment(bytes), err
 	}
 
 	// null is null
-	if IsNil(val) {
+	if utils.IsNil(val) {
 		return ToFragment(json.Marshal(nil))
 	}
 
 	switch val := val.(type) {
 
 	case error:
-		return EmptyJSONFragment, val
+		return utils.EmptyJSONFragment, val
 
 	case string:
 		return ToFragment(json.Marshal(val))
@@ -93,26 +78,26 @@ func ToJSON(env Environment, val interface{}) (JSONFragment, error) {
 		return ToFragment(json.Marshal(floatVal))
 
 	case time.Time:
-		return ToFragment(json.Marshal(DateToISO(val)))
+		return ToFragment(json.Marshal(utils.DateToISO(val)))
 
-	case JSONFragment:
+	case utils.JSONFragment:
 		return val, nil
 
-	case Array:
+	case utils.Array:
 		return ToFragment(json.Marshal(val))
 
-	case Atomizable:
+	case utils.Atomizable:
 		return ToJSON(env, val.Atomize())
 	}
 
 	// welp, we give up, this isn't something we can convert, return an error
-	return EmptyJSONFragment, fmt.Errorf("ToJSON unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
+	return utils.EmptyJSONFragment, fmt.Errorf("ToJSON unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
 }
 
 // ToString tries to turn the passed in interface to a string
-func ToString(env Environment, val interface{}) (string, error) {
+func ToString(env utils.Environment, val interface{}) (string, error) {
 	// Strings are always defined, just empty
-	if IsNil(val) {
+	if utils.IsNil(val) {
 		return "", nil
 	}
 
@@ -132,12 +117,12 @@ func ToString(env Environment, val interface{}) (string, error) {
 		return strconv.FormatInt(int64(val), 10), nil
 
 	case time.Time:
-		return DateToISO(val), nil
+		return utils.DateToISO(val), nil
 
-	case Atomizable:
+	case utils.Atomizable:
 		return ToString(env, val.Atomize())
 
-	case Array:
+	case utils.Array:
 		var output bytes.Buffer
 		for i := 0; i < val.Length(); i++ {
 			if i > 0 {
@@ -157,7 +142,7 @@ func ToString(env Environment, val interface{}) (string, error) {
 }
 
 // ToInt tries to convert the passed in interface{} to an integer value, returning an error if that isn't possible
-func ToInt(env Environment, val interface{}) (int, error) {
+func ToInt(env utils.Environment, val interface{}) (int, error) {
 	dec, err := ToDecimal(env, val)
 	if err != nil {
 		return 0, err
@@ -171,8 +156,8 @@ func ToInt(env Environment, val interface{}) (int, error) {
 }
 
 // ToDecimal tries to convert the passed in interface{} to a Decimal value, returning an error if that isn't possible
-func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
-	if IsNil(val) {
+func ToDecimal(env utils.Environment, val interface{}) (decimal.Decimal, error) {
+	if utils.IsNil(val) {
 		return decimal.Zero, nil
 	}
 
@@ -196,7 +181,7 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 	case int:
 		return decimal.NewFromString(strconv.FormatInt(int64(val), 10))
 
-	case Atomizable:
+	case utils.Atomizable:
 		return ToDecimal(env, val.Atomize())
 	}
 
@@ -204,8 +189,8 @@ func ToDecimal(env Environment, val interface{}) (decimal.Decimal, error) {
 }
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
-func ToDate(env Environment, val interface{}) (time.Time, error) {
-	if IsNil(val) {
+func ToDate(env utils.Environment, val interface{}) (time.Time, error) {
+	if utils.IsNil(val) {
 		return time.Time{}, fmt.Errorf("Cannot convert nil to date")
 	}
 
@@ -214,7 +199,7 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 		return time.Time{}, val
 
 	case string:
-		return DateFromString(env, val)
+		return utils.DateFromString(env, val)
 
 	case decimal.Decimal:
 		return time.Time{}, fmt.Errorf("Cannot convert decimal to date")
@@ -224,7 +209,7 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 	case time.Time:
 		return val, nil
 
-	case Atomizable:
+	case utils.Atomizable:
 		return ToDate(env, val.Atomize())
 	}
 
@@ -233,7 +218,7 @@ func ToDate(env Environment, val interface{}) (time.Time, error) {
 
 // ToBool tests whether the passed in item should be considered True
 // false, 0, "" and nil are false, everything else is true
-func ToBool(env Environment, test interface{}) (bool, error) {
+func ToBool(env utils.Environment, test interface{}) (bool, error) {
 	if test == nil {
 		return false, nil
 	}
@@ -256,7 +241,7 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 	case bool:
 		return test, nil
 
-	case JSONFragment:
+	case utils.JSONFragment:
 		asString, err := ToString(env, test)
 		if err != nil {
 			return false, err
@@ -282,80 +267,31 @@ func ToBool(env Environment, test interface{}) (bool, error) {
 		// finally just string version
 		return asString != "" && strings.ToLower(asString) != "false", nil
 
-	case Atomizable:
+	case utils.Atomizable:
 		return ToBool(env, test.Atomize())
 	}
 
 	return false, fmt.Errorf("unable to convert value '%+v' of type '%s' to a bool", test, reflect.TypeOf(test))
 }
 
-// XType is an an enumeration of the possible types we can deal with
-type XType int
-
-// primitive types we convert to
-const (
-	XTypeNil = iota
-	XTypeError
-	XTypeString
-	XTypeDecimal
-	XTypeTime
-	XTypeBool
-	XTypeArray
-)
-
-// ToXAtom figures out the raw type of the passed in interface, returning that type
-func ToXAtom(env Environment, val interface{}) (interface{}, XType, error) {
-	if val == nil {
-		return val, XTypeNil, nil
-	}
-
-	switch val := val.(type) {
-	case error:
-		return val, XTypeError, nil
-
-	case string:
-		return val, XTypeString, nil
-
-	case decimal.Decimal:
-		return val, XTypeDecimal, nil
-	case int:
-		decVal, err := ToDecimal(env, val)
-		if err != nil {
-			return val, XTypeNil, err
-		}
-		return decVal, XTypeDecimal, nil
-
-	case time.Time:
-		return val, XTypeTime, nil
-
-	case bool:
-		return val, XTypeBool, nil
-
-	case Array:
-		return val, XTypeArray, nil
-	}
-
-	return val, XTypeNil, fmt.Errorf("Unknown type '%s' with value '%+v'", reflect.TypeOf(val), val)
-}
-
 // Compare returns the difference between the two passed interfaces which must be of the same type
-func Compare(env Environment, arg1 interface{}, arg2 interface{}) (int, error) {
+func Compare(env utils.Environment, arg1 interface{}, arg2 interface{}) (int, error) {
 	if arg1 == nil && arg2 == nil {
 		return 0, nil
 	}
 
-	arg1, arg1Type, _ := ToXAtom(env, arg1)
-	arg2, arg2Type, _ := ToXAtom(env, arg2)
+	arg1, arg1Type, _ := utils.ToXAtom(env, arg1)
+	arg2, arg2Type, _ := utils.ToXAtom(env, arg2)
 
 	// common types, do real comparisons
 	switch {
-	case arg1Type == arg2Type && arg1Type == XTypeError:
+	case arg1Type == arg2Type && arg1Type == utils.XTypeError:
 		return strings.Compare(arg1.(error).Error(), arg2.(error).Error()), nil
 
-	case arg1Type == arg2Type && arg1Type == XTypeDecimal:
+	case arg1Type == arg2Type && arg1Type == utils.XTypeDecimal:
 		return arg1.(decimal.Decimal).Cmp(arg2.(decimal.Decimal)), nil
 
-	case arg1Type == arg2Type && arg1Type == XTypeBool:
+	case arg1Type == arg2Type && arg1Type == utils.XTypeBool:
 		bool1 := arg1.(bool)
 		bool2 := arg2.(bool)
 
@@ -368,7 +304,7 @@ func Compare(env Environment, arg1 interface{}, arg2 interface{}) (int, error) {
 			return 1, nil
 		}
 
-	case arg1Type == arg2Type && arg1Type == XTypeTime:
+	case arg1Type == arg2Type && arg1Type == utils.XTypeTime:
 		time1 := arg1.(time.Time)
 		time2 := arg2.(time.Time)
 
@@ -381,7 +317,7 @@ func Compare(env Environment, arg1 interface{}, arg2 interface{}) (int, error) {
 			return 1, nil
 		}
 
-	case arg1Type == arg2Type && arg1Type == XTypeString:
+	case arg1Type == arg2Type && arg1Type == utils.XTypeString:
 		return strings.Compare(arg1.(string), arg2.(string)), nil
 	}
 

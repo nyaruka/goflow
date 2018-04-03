@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -268,7 +269,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// back down to our equality
 		if !equal {
-			cmp, err := utils.Compare(env, eval, test.expected)
+			cmp, err := types.Compare(env, eval, test.expected)
 			if err != nil {
 				t.Errorf("Actual '%#v' does not match expected '%#v' evaluating template: '%s'", eval, test.expected, test.template)
 			}

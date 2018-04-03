@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/gen"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 
@@ -416,16 +417,16 @@ func toString(params interface{}) (string, error) {
 	case []interface{}:
 		strArr := make([]string, len(params))
 		for i := range strArr {
-			str, err := utils.ToString(nil, params[i])
+			str, err := types.ToString(nil, params[i])
 			if err != nil {
-				return utils.ToString(nil, params)
+				return types.ToString(nil, params)
 			}
 			strArr[i] = str
 		}
 
 		return strings.Join(strArr, ", "), nil
 	}
-	return utils.ToString(nil, params)
+	return types.ToString(nil, params)
 }
 
 // translateExpression will turn an old expression into a new format expression
@@ -502,7 +503,7 @@ func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) inte
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	value := v.Visit(ctx.Atom(0))
-	lookup, err := utils.ToString(v.env, v.Visit(ctx.Atom(1)))
+	lookup, err := types.ToString(v.env, v.Visit(ctx.Atom(1)))
 	if err != nil {
 		return err
 	}
@@ -599,7 +600,7 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 // VisitArrayLookup deals with lookups such as foo[5]
 func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	value := v.Visit(ctx.Atom())
-	lookup, err := utils.ToString(v.env, v.Visit(ctx.Expression()))
+	lookup, err := types.ToString(v.env, v.Visit(ctx.Expression()))
 	if err != nil {
 		return err
 	}

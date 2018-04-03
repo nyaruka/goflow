@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -30,7 +31,7 @@ func TestResults(t *testing.T) {
 		}
 		value := utils.ResolveVariable(env, results, test.lookup)
 
-		valueStr, _ := utils.ToString(env, value)
+		valueStr, _ := types.ToString(env, value)
 		if valueStr != test.expected {
 			t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, valueStr, test.lookup, test.JSON)
 		}

@@ -1,10 +1,11 @@
-package utils_test
+package types_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -55,7 +56,7 @@ func TestToString(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := utils.ToString(env, test.input)
+		result, err := types.ToString(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToString on '%v': %s", test.input, err)
@@ -92,7 +93,7 @@ func TestToDecimal(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := utils.ToDecimal(env, test.input)
+		result, err := types.ToDecimal(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToDecimal on '%v': %s", test.input, err)
@@ -139,7 +140,7 @@ func TestToBool(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := utils.ToBool(env, test.input)
+		result, err := types.ToBool(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToBool on '%v': %s", test.input, err)
@@ -193,7 +194,7 @@ func TestToJSON(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		fragment, err := utils.ToJSON(env, test.input)
+		fragment, err := types.ToJSON(env, test.input)
 		result := string(fragment)
 
 		if err != nil && !test.hasError {

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -115,11 +116,11 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue stri
 	var asDatetime *time.Time
 	var asDecimal *decimal.Decimal
 
-	if parsedDecimal, err := utils.ToDecimal(env, rawValue); err == nil {
+	if parsedDecimal, err := types.ToDecimal(env, rawValue); err == nil {
 		asDecimal = &parsedDecimal
 	}
 
-	if parsedDatetime, err := utils.ToDate(env, rawValue); err == nil {
+	if parsedDatetime, err := types.ToDate(env, rawValue); err == nil {
 		asDatetime = &parsedDatetime
 	}
 

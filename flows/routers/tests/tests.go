@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -91,8 +92,8 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// both parameters needs to be strings
-	string1, err1 := utils.ToString(env, args[0])
-	string2, err2 := utils.ToString(env, args[1])
+	string1, err1 := types.ToString(env, args[0])
+	string2, err2 := types.ToString(env, args[1])
 	if err1 != nil || err2 != nil {
 		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments, but got '%s' and '%s'", reflect.TypeOf(args[0]), reflect.TypeOf(args[1]))
 	}
@@ -204,7 +205,7 @@ func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_GROUP must have a contact as its first argument")
 	}
 
-	groupUUID, err := utils.ToString(env, args[1])
+	groupUUID, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -289,7 +290,7 @@ func HasText(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_TEXT takes exactly one arguments, got %d", len(args))
 	}
 
-	text, err := utils.ToString(env, args[0])
+	text, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -321,12 +322,12 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_BEGINNING takes exactly two arguments, got %d", len(args))
 	}
 
-	hayStack, err := utils.ToString(env, args[0])
+	hayStack, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	pinCushion, err := utils.ToString(env, args[1])
+	pinCushion, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -400,12 +401,12 @@ func HasPattern(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_PATTERN takes exactly two arguments, got %d", len(args))
 	}
 
-	hayStack, err := utils.ToString(env, args[0])
+	hayStack, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	pattern, err := utils.ToString(env, args[1])
+	pattern, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -460,23 +461,23 @@ func HasNumberBetween(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("HAS_NUMBER_BETWEEN takes exactly three arguments, got %d", len(args))
 	}
 
-	values, err := utils.ToString(env, args[0])
+	values, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	min, err := utils.ToDecimal(env, args[1])
+	min, err := types.ToDecimal(env, args[1])
 	if err != nil {
 		return err
 	}
-	max, err := utils.ToDecimal(env, args[2])
+	max, err := types.ToDecimal(env, args[2])
 	if err != nil {
 		return err
 	}
 
 	// for each of our values, try to evaluate to a decimal
 	for _, value := range strings.Fields(values) {
-		decimalValue, err := utils.ToDecimal(env, value)
+		decimalValue, err := types.ToDecimal(env, value)
 		if err == nil {
 			if decimalValue.Cmp(min) >= 0 && decimalValue.Cmp(max) <= 0 {
 				return XTestResult{true, decimalValue}
@@ -627,7 +628,7 @@ func HasEmail(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// convert our arg to a string
-	text, err := utils.ToString(env, args[0])
+	text, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -654,13 +655,13 @@ func HasPhone(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// grab the text we will search
-	text, err := utils.ToString(env, args[0])
+	text, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	// and the country we are searching
-	country, err := utils.ToString(env, args[1])
+	country, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -692,7 +693,7 @@ func HasState(env utils.Environment, args ...interface{}) interface{} {
 	runEnv, _ := env.(flows.RunEnvironment)
 
 	// grab the text we will search
-	text, err := utils.ToString(env, args[0])
+	text, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -727,11 +728,11 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 	var err error
 
 	// grab the text we will search and the parent state name
-	if text, err = utils.ToString(env, args[0]); err != nil {
+	if text, err = types.ToString(env, args[0]); err != nil {
 		return err
 	}
 	if len(args) == 2 {
-		if stateText, err = utils.ToString(env, args[1]); err != nil {
+		if stateText, err = types.ToString(env, args[1]); err != nil {
 			return err
 		}
 	}
@@ -786,14 +787,14 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 	var err error
 
 	// grab the text we will search, as well as the parent district and state names
-	if text, err = utils.ToString(env, args[0]); err != nil {
+	if text, err = types.ToString(env, args[0]); err != nil {
 		return err
 	}
 	if len(args) == 3 {
-		if districtText, err = utils.ToString(env, args[1]); err != nil {
+		if districtText, err = types.ToString(env, args[1]); err != nil {
 			return err
 		}
-		if stateText, err = utils.ToString(env, args[2]); err != nil {
+		if stateText, err = types.ToString(env, args[2]); err != nil {
 			return err
 		}
 	}
@@ -843,12 +844,12 @@ func testStringTokens(env utils.Environment, name string, test stringTokenTest, 
 		return fmt.Errorf("%s takes exactly two arguments, got %d", name, len(args))
 	}
 
-	hayStack, err := utils.ToString(env, args[0])
+	hayStack, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	pinCushion, err := utils.ToString(env, args[1])
+	pinCushion, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -975,19 +976,19 @@ func testDecimal(env utils.Environment, name string, test decimalTest, args []in
 		return fmt.Errorf("%s takes exactly two arguments, got %d", name, len(args))
 	}
 
-	values, err := utils.ToString(env, args[0])
+	values, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	decimalTest, err := utils.ToDecimal(env, args[1])
+	decimalTest, err := types.ToDecimal(env, args[1])
 	if err != nil {
 		return err
 	}
 
 	// for each of our values, try to evaluate to a decimal
 	for _, value := range strings.Fields(values) {
-		decimalValue, err := utils.ToDecimal(env, value)
+		decimalValue, err := types.ToDecimal(env, value)
 		if err == nil {
 			if test(decimalValue, decimalTest) {
 				return XTestResult{true, decimalValue}
@@ -1034,18 +1035,18 @@ func testDate(env utils.Environment, name string, test dateTest, args []interfac
 	}
 
 	// if we can't convert this to a string, then that's an error
-	_, err := utils.ToString(env, args[0])
+	_, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	// error is if we don't find a date on our test value, that's ok but no match
-	value, err := utils.ToDate(env, args[0])
+	value, err := types.ToDate(env, args[0])
 	if err != nil {
 		return XFalseResult
 	}
 
-	dateTest, err := utils.ToDate(env, args[1])
+	dateTest, err := types.ToDate(env, args[1])
 	if err != nil {
 		return err
 	}

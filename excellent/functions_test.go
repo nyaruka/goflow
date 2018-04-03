@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -343,7 +344,7 @@ func TestFunctions(t *testing.T) {
 			assert.NoError(t, err, "unexpected error running function %s(%#v): %s", test.name, test.args, err)
 
 			// and the match itself
-			cmp, err := utils.Compare(env, result, test.expected)
+			cmp, err := types.Compare(env, result, test.expected)
 			if err != nil {
 				t.Errorf("error while comparing expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
 			}
@@ -402,12 +403,12 @@ func TestRangeFunctions(t *testing.T) {
 		}
 
 		// and the match itself
-		minCmp, err := utils.Compare(env, result, test.minExpected)
+		minCmp, err := types.Compare(env, result, test.minExpected)
 		if err != nil {
 			t.Errorf("Error while comparing min expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.minExpected, result, err, test.name, test.args)
 		}
 
-		maxCmp, err := utils.Compare(env, result, test.maxExpected)
+		maxCmp, err := types.Compare(env, result, test.maxExpected)
 		if err != nil {
 			t.Errorf("Error while comparing max expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.maxExpected, result, err, test.name, test.args)
 		}
