@@ -178,7 +178,7 @@ func ResolveVariable(env utils.Environment, variable interface{}, key string) in
 	for rest != "" {
 		key, rest = popNextVariable(rest)
 
-		if types.IsNil(variable) {
+		if utils.IsNil(variable) {
 			return fmt.Errorf("can't resolve key '%s' of nil", key)
 		}
 

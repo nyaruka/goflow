@@ -17,7 +17,7 @@ import (
 
 // ToStringArray tries to turn the passed in interface (which must be an underlying slice) to a string array
 func ToStringArray(env utils.Environment, v interface{}) ([]string, error) {
-	if IsNil(v) {
+	if utils.IsNil(v) {
 		return nil, fmt.Errorf("Cannot convert nil to string array")
 	}
 
@@ -55,7 +55,7 @@ func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 	}
 
 	// null is null
-	if IsNil(val) {
+	if utils.IsNil(val) {
 		return ToFragment(json.Marshal(nil))
 	}
 
@@ -97,7 +97,7 @@ func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 // ToString tries to turn the passed in interface to a string
 func ToString(env utils.Environment, val interface{}) (string, error) {
 	// Strings are always defined, just empty
-	if IsNil(val) {
+	if utils.IsNil(val) {
 		return "", nil
 	}
 
@@ -157,7 +157,7 @@ func ToInt(env utils.Environment, val interface{}) (int, error) {
 
 // ToDecimal tries to convert the passed in interface{} to a Decimal value, returning an error if that isn't possible
 func ToDecimal(env utils.Environment, val interface{}) (decimal.Decimal, error) {
-	if IsNil(val) {
+	if utils.IsNil(val) {
 		return decimal.Zero, nil
 	}
 
@@ -190,7 +190,7 @@ func ToDecimal(env utils.Environment, val interface{}) (decimal.Decimal, error) 
 
 // ToDate tries to convert the passed in interface to a time.Time returning an error if that isn't possible
 func ToDate(env utils.Environment, val interface{}) (time.Time, error) {
-	if IsNil(val) {
+	if utils.IsNil(val) {
 		return time.Time{}, fmt.Errorf("Cannot convert nil to date")
 	}
 

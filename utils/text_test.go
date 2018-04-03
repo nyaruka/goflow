@@ -1,6 +1,7 @@
 package utils_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
