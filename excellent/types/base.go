@@ -63,11 +63,6 @@ type XIndexable interface {
 	Index(index int) XValue
 }
 
-// XReducible is the interface for types which can reduce themselves to a primitive
-type XReducible interface {
-	Reduce() XPrimitive
-}
-
 // XString is a string of characters
 type XString string
 
@@ -223,7 +218,8 @@ var _ XError = NilXError
 // XObject is the interface for any complex object in Excellent
 type XObject interface {
 	XValue
-	XReducible
+
+	Reduce() XPrimitive
 }
 
 // BaseXObject is base of any XObject
@@ -248,7 +244,7 @@ func ToXString(value XValue) XString {
 	switch v := value.(type) {
 	case XPrimitive:
 		return v.ToString()
-	case XReducible:
+	case XObject:
 		return v.Reduce().ToString()
 	}
 	panic(fmt.Sprintf("can't convert type %v to a string", value))
@@ -261,7 +257,7 @@ func ToXBool(value XValue) XBool {
 		return v.ToBool()
 	case XLengthable:
 		return v.Length() > 0
-	case XReducible:
+	case XObject:
 		return v.Reduce().ToBool()
 	}
 	panic(fmt.Sprintf("can't convert type %v to a bool", value))
