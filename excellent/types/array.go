@@ -6,7 +6,7 @@ import (
 
 // XArray is a simple data structure which is indexable in expressions
 type XArray interface {
-	XValue
+	XPrimitive
 	XIndexable
 
 	Append(XValue)
@@ -31,6 +31,11 @@ func (a *xarray) ToString() XString {
 		strs[i] = string(ToXString(a.values[i]))
 	}
 	return RequireMarshalToXString(strs)
+}
+
+// ToBool converts this type to a bool
+func (a *xarray) ToBool() XBool {
+	return len(a.values) > 0
 }
 
 // ToJSON converts this type to JSON

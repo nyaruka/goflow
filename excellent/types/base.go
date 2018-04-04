@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
@@ -41,6 +42,7 @@ type XPrimitive interface {
 	XValue
 
 	ToString() XString
+	ToBool() XBool
 }
 
 // XResolvable is the interface for types which can be keyed into, e.g. foo.bar
@@ -80,6 +82,9 @@ func (v XString) Type() XType { return XTypeString }
 // ToString converts this type to a string
 func (v XString) ToString() XString { return v }
 
+// ToBool converts this type to a bool
+func (v XString) ToBool() XBool { return string(v) != "" && strings.ToLower(string(v)) != "false" }
+
 // ToJSON converts this type to JSON
 func (v XString) ToJSON() XString { return RequireMarshalToXString(v.Native()) }
 
@@ -116,6 +121,9 @@ func (v XNumber) Type() XType { return XTypeNumber }
 // ToString converts this type to a string
 func (v XNumber) ToString() XString { return XString(v.Native().String()) }
 
+// ToBool converts this type to a bool
+func (v XNumber) ToBool() XBool { return XBool(!v.Native().Equals(decimal.Zero)) }
+
 // ToJSON converts this type to JSON
 func (v XNumber) ToJSON() XString { return RequireMarshalToXString(v.Native()) }
 
@@ -139,6 +147,9 @@ func (v XBool) Type() XType { return XTypeBool }
 // ToString converts this type to a string
 func (v XBool) ToString() XString { return XString(strconv.FormatBool(v.Native())) }
 
+// ToBool converts this type to a bool
+func (v XBool) ToBool() XBool { return v }
+
 // ToJSON converts this type to JSON
 func (v XBool) ToJSON() XString { return RequireMarshalToXString(v.Native()) }
 
@@ -161,6 +172,9 @@ func (v XTime) Type() XType { return XTypeTime }
 
 // ToString converts this type to a string
 func (v XTime) ToString() XString { return XString(utils.DateToISO(v.Native())) }
+
+// ToBool converts this type to a bool
+func (v XTime) ToBool() XBool { return XBool(!v.Native().IsZero()) }
 
 // ToJSON converts this type to JSON
 func (v XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO(v.Native())) }
@@ -191,6 +205,9 @@ func (v xerror) Type() XType { return XTypeError }
 
 // ToString converts this type to a string
 func (v xerror) ToString() XString { return XString(v.Native().Error()) }
+
+// ToBool converts this type to a bool
+func (v xerror) ToBool() XBool { return XBool(false) }
 
 // ToJSON converts this type to JSON
 func (v xerror) ToJSON() XString { return RequireMarshalToXString(v.Native().Error()) }
@@ -226,6 +243,7 @@ func RequireMarshalToXString(v interface{}) XString {
 	return XString(j)
 }
 
+// ToXString converts the given value to a string
 func ToXString(value XValue) XString {
 	switch v := value.(type) {
 	case XPrimitive:
@@ -233,5 +251,18 @@ func ToXString(value XValue) XString {
 	case XReducible:
 		return v.Reduce().ToString()
 	}
-	panic(fmt.Sprintf("can't convert type %v to an XString", value))
+	panic(fmt.Sprintf("can't convert type %v to a string", value))
+}
+
+// ToXBool converts the given value to a bool
+func ToXBool(value XValue) XBool {
+	switch v := value.(type) {
+	case XPrimitive:
+		return v.ToBool()
+	case XLengthable:
+		return v.Length() > 0
+	case XReducible:
+		return v.Reduce().ToBool()
+	}
+	panic(fmt.Sprintf("can't convert type %v to a bool", value))
 }

@@ -49,34 +49,98 @@ func TestXValuesToStringAndJSON(t *testing.T) {
 		value    types.XValue
 		asString string
 		asJSON   string
+		asBool   bool
 	}{
-		{types.NewXString("hello \"bob\""), "hello \"bob\"", `"hello \"bob\""`},
-		{types.NewXNumberFromInt(123), "123", `123`},
-		{types.RequireXNumberFromString("123.00"), "123", `123`},
-		{types.RequireXNumberFromString("123.45"), "123.45", `123.45`},
-		{types.NewXBool(false), "false", `false`},
-		{types.NewXBool(true), "true", `true`},
-		{types.NewXTime(date1), "2017-06-23T15:30:00.000000Z", `"2017-06-23T15:30:00.000000Z"`},
-		{types.NewXTime(date2), "2017-07-18T15:30:00.000000-05:00", `"2017-07-18T15:30:00.000000-05:00"`},
-		{types.NewXError(fmt.Errorf("it failed")), "it failed", `"it failed"`},
 		{
-			types.NewXArray(types.NewXTime(date1), types.NewXTime(date2)),
-			`["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
-			`["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
-		},
-		{
-			NewTestXObject("Hello", 123),
-			"Hello",
-			`{"foo":"Hello","bar":123}`,
-		},
-		{
-			types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
-			`["Hello","World"]`,
-			`[{"foo":"Hello","bar":123},{"foo":"World","bar":456}]`,
+			value:    types.NewXString(""),
+			asString: "",
+			asJSON:   `""`,
+			asBool:   false, // empty strings are false
+		}, {
+			value:    types.NewXString("FALSE"),
+			asString: "FALSE",
+			asJSON:   `"FALSE"`,
+			asBool:   false, // because it's string value is "false"
+		}, {
+			value:    types.NewXString("hello \"bob\""),
+			asString: "hello \"bob\"",
+			asJSON:   `"hello \"bob\""`,
+			asBool:   true,
+		}, {
+			value:    types.NewXNumberFromInt(0),
+			asString: "0",
+			asJSON:   `0`,
+			asBool:   false, // because any decimal != 0 is true
+		}, {
+			value:    types.NewXNumberFromInt(123),
+			asString: "123",
+			asJSON:   `123`,
+			asBool:   true, // because any decimal != 0 is true
+		}, {
+			value:    types.RequireXNumberFromString("123.00"),
+			asString: "123",
+			asJSON:   `123`,
+			asBool:   true,
+		}, {
+			value:    types.RequireXNumberFromString("123.45"),
+			asString: "123.45",
+			asJSON:   `123.45`,
+			asBool:   true,
+		}, {
+			value:    types.NewXBool(false),
+			asString: "false",
+			asJSON:   `false`,
+			asBool:   false,
+		}, {
+			value:    types.NewXBool(true),
+			asString: "true",
+			asJSON:   `true`,
+			asBool:   true,
+		}, {
+			value:    types.NewXTime(date1),
+			asString: "2017-06-23T15:30:00.000000Z",
+			asJSON:   `"2017-06-23T15:30:00.000000Z"`,
+			asBool:   true,
+		}, {
+			value:    types.NewXTime(date2),
+			asString: "2017-07-18T15:30:00.000000-05:00",
+			asJSON:   `"2017-07-18T15:30:00.000000-05:00"`,
+			asBool:   true,
+		}, {
+			value:    types.NewXError(fmt.Errorf("it failed")),
+			asString: "it failed",
+			asJSON:   `"it failed"`,
+			asBool:   false,
+		}, {
+			value:    types.NewXArray(),
+			asString: `[]`,
+			asJSON:   `[]`,
+			asBool:   false,
+		}, {
+			value:    types.NewXArray(types.NewXTime(date1), types.NewXTime(date2)),
+			asString: `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
+			asJSON:   `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
+			asBool:   true,
+		}, {
+			value:    NewTestXObject("Hello", 123),
+			asString: "Hello",
+			asJSON:   `{"foo":"Hello","bar":123}`,
+			asBool:   true,
+		}, {
+			value:    NewTestXObject("", 123),
+			asString: "",
+			asJSON:   `{"foo":"","bar":123}`,
+			asBool:   false, // because it reduces to a string which itself is false
+		}, {
+			value:    types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
+			asString: `["Hello","World"]`,
+			asJSON:   `[{"foo":"Hello","bar":123},{"foo":"World","bar":456}]`,
+			asBool:   true,
 		},
 	}
 	for _, test := range tests {
-		assert.Equal(t, types.NewXString(test.asString), types.ToXString(test.value))
-		assert.Equal(t, types.NewXString(test.asJSON), test.value.ToJSON())
+		assert.Equal(t, types.NewXString(test.asString), types.ToXString(test.value), "ToXString failed for %+v", test.value)
+		assert.Equal(t, types.NewXString(test.asJSON), test.value.ToJSON(), "ToJSON failed for %+v", test.value)
+		assert.Equal(t, types.NewXBool(test.asBool), types.ToXBool(test.value), "ToXBool failed for %+v", test.value)
 	}
 }
