@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // XTestResult encapsulates not only if the test was true but what the match was
@@ -38,5 +38,5 @@ func (t XTestResult) Atomize() interface{} {
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}
 
-var _ utils.Atomizable = XTestResult{}
-var _ utils.Resolvable = XTestResult{}
+var _ types.Atomizable = XTestResult{}
+var _ types.Resolvable = XTestResult{}

@@ -13,6 +13,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	humanize "github.com/dustin/go-humanize"
@@ -107,11 +108,11 @@ func LegacyAdd(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// try to parse dates and decimals
-	date1, date1Err := utils.ToDate(env, args[0])
-	date2, date2Err := utils.ToDate(env, args[1])
+	date1, date1Err := types.ToDate(env, args[0])
+	date2, date2Err := types.ToDate(env, args[1])
 
-	dec1, dec1Err := utils.ToDecimal(env, args[0])
-	dec2, dec2Err := utils.ToDecimal(env, args[1])
+	dec1, dec1Err := types.ToDecimal(env, args[0])
+	dec2, dec2Err := types.ToDecimal(env, args[1])
 
 	// if they are both dates, that's an error
 	if date1Err == nil && date2Err == nil {
@@ -168,7 +169,7 @@ func Length(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// argument must either be an object with length
-	lengthable, isLengthable := args[0].(utils.Lengthable)
+	lengthable, isLengthable := args[0].(types.Lengthable)
 	if isLengthable {
 		return decimal.New(int64(lengthable.Length()), 0)
 	}
@@ -217,7 +218,7 @@ func Default(env utils.Environment, args ...interface{}) interface{} {
 //
 // @function array(values...)
 func Array(env utils.Environment, args ...interface{}) interface{} {
-	return utils.NewArray(args...)
+	return types.NewArray(args...)
 }
 
 // FromJSON tries to parse `string` as JSON, returning a fragment you can index into
@@ -233,13 +234,13 @@ func FromJSON(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FROM_JSON takes exactly one string argument, got %d", len(args))
 	}
 
-	arg, err := utils.ToString(env, args[0])
+	arg, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	// unmarshal our string into a JSON fragment
-	var fragment utils.JSONFragment
+	var fragment types.JSONFragment
 	err = json.Unmarshal([]byte(arg), &fragment)
 	if err != nil {
 		return err
@@ -261,7 +262,7 @@ func ToJSON(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("TO_JSON takes exactly one argument, got %d", len(args))
 	}
 
-	json, err := utils.ToJSON(env, args[0])
+	json, err := types.ToJSON(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -280,7 +281,7 @@ func URLEncode(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("URL_ENCODE takes exactly one argument, got %d", len(args))
 	}
 
-	arg1, err := utils.ToString(env, args[0])
+	arg1, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -303,12 +304,12 @@ func And(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("AND requires at least one argument")
 	}
 
-	val, err := utils.ToBool(env, args[0])
+	val, err := types.ToBool(env, args[0])
 	if err != nil {
 		return err
 	}
 	for _, iArg := range args[1:] {
-		iVal, err := utils.ToBool(env, iArg)
+		iVal, err := types.ToBool(env, iArg)
 		if err != nil {
 			return err
 		}
@@ -328,13 +329,13 @@ func Or(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("OR requires at least one argument")
 	}
 
-	val, err := utils.ToBool(env, args[0])
+	val, err := types.ToBool(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	for _, iArg := range args[1:] {
-		iVal, err := utils.ToBool(env, iArg)
+		iVal, err := types.ToBool(env, iArg)
 		if err != nil {
 			return err
 		}
@@ -356,7 +357,7 @@ func If(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("IF requires exactly 3 arguments, got %d", len(args))
 	}
 
-	truthy, err := utils.ToBool(env, args[0])
+	truthy, err := types.ToBool(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -405,14 +406,14 @@ func Round(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("ROUND takes either one or two arguments")
 	}
 
-	dec, err := utils.ToDecimal(env, args[0])
+	dec, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return fmt.Errorf("ROUND's first argument must be decimal")
 	}
 
 	round := 0
 	if len(args) == 2 {
-		round, err = utils.ToInt(env, args[1])
+		round, err = types.ToInt(env, args[1])
 		if err != nil {
 			return fmt.Errorf("ROUND's decimal places argument must be integer")
 		}
@@ -465,13 +466,13 @@ func Max(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("MAX takes at least one argument")
 	}
 
-	max, err := utils.ToDecimal(env, args[0])
+	max, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	for _, v := range args[1:] {
-		val, err := utils.ToDecimal(env, v)
+		val, err := types.ToDecimal(env, v)
 		if err != nil {
 			return err
 		}
@@ -495,13 +496,13 @@ func Min(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("MIN takes at least one argument")
 	}
 
-	max, err := utils.ToDecimal(env, args[0])
+	max, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	for _, v := range args[1:] {
-		val, err := utils.ToDecimal(env, v)
+		val, err := types.ToDecimal(env, v)
 		if err != nil {
 			return err
 		}
@@ -528,7 +529,7 @@ func Mean(env utils.Environment, args ...interface{}) interface{} {
 	sum := decimal.Zero
 
 	for _, val := range args {
-		dec, err := utils.ToDecimal(env, val)
+		dec, err := types.ToDecimal(env, val)
 		if err != nil {
 			return err
 		}
@@ -571,11 +572,11 @@ func Rand(env utils.Environment, args ...interface{}) interface{} {
 		return decimal.NewFromFloat(rand.New(randSource).Float64())
 	}
 
-	min, err := utils.ToDecimal(env, args[0])
+	min, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return err
 	}
-	max, err := utils.ToDecimal(env, args[1])
+	max, err := types.ToDecimal(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -608,12 +609,12 @@ func FormatNum(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FORMAT_NUM takes exactly three arguments, got %d", len(args))
 	}
 
-	dec, err := utils.ToDecimal(env, args[0])
+	dec, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	places, err := utils.ToInt(env, args[1])
+	places, err := types.ToInt(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -621,7 +622,7 @@ func FormatNum(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FORMAT_NUM must take 0-9 number of places, got %d", args[1])
 	}
 
-	commas, err := utils.ToBool(env, args[2])
+	commas, err := types.ToBool(env, args[2])
 	if err != nil {
 		return err
 	}
@@ -662,7 +663,7 @@ func ReadCode(env utils.Environment, args ...interface{}) interface{} {
 	}
 
 	// convert to a string
-	val, err := utils.ToString(env, args[0])
+	val, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -752,17 +753,17 @@ func Split(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("SPLIT takes exactly two arguments: string and delimiter, got %d", len(args))
 	}
 
-	s, err := utils.ToString(env, args[0])
+	s, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	sep, err := utils.ToString(env, args[1])
+	sep, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
 
-	splits := utils.NewArray()
+	splits := types.NewArray()
 
 	allSplits := strings.Split(s, sep)
 	for i := range allSplits {
@@ -784,12 +785,12 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
-	indexable, isIndexable := args[0].(utils.Indexable)
+	indexable, isIndexable := args[0].(types.Indexable)
 	if !isIndexable {
 		return fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
-	sep, err := utils.ToString(env, args[1])
+	sep, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -799,7 +800,7 @@ func Join(env utils.Environment, args ...interface{}) interface{} {
 		if i > 0 {
 			output.WriteString(sep)
 		}
-		itemAsStr, err := utils.ToString(env, indexable.Index(i))
+		itemAsStr, err := types.ToString(env, indexable.Index(i))
 		if err != nil {
 			return err
 		}
@@ -853,12 +854,12 @@ func Word(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("WORD takes exactly two arguments, got %d", len(args))
 	}
 
-	val, err := utils.ToString(env, args[0])
+	val, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	word, err := utils.ToInt(env, args[1])
+	word, err := types.ToInt(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -902,18 +903,18 @@ func WordSlice(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("WORD_SLICE takes exactly three arguments, got %d", len(args))
 	}
 
-	arg, err := utils.ToString(env, args[0])
+	arg, err := types.ToString(env, args[0])
 	if err != nil {
 		return fmt.Errorf("WORD_SLICE requires a string as its first argument")
 	}
 
-	start, err := utils.ToInt(env, args[1])
+	start, err := types.ToInt(env, args[1])
 	if err != nil || start <= 0 {
 		return fmt.Errorf("WORD_SLICE must start with a positive index")
 	}
 	start--
 
-	stop, err := utils.ToInt(env, args[2])
+	stop, err := types.ToInt(env, args[2])
 	if err != nil || start < 0 {
 		return fmt.Errorf("WORD_SLICE must have a stop of 0 or greater")
 	}
@@ -963,12 +964,12 @@ func WordCount(env utils.Environment, args ...interface{}) interface{} {
 //
 // @function field(string, offset, delimeter)
 func Field(env utils.Environment, args ...interface{}) interface{} {
-	source, err := utils.ToString(env, args[0])
+	source, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	field, err := utils.ToInt(env, args[1])
+	field, err := types.ToInt(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -977,7 +978,7 @@ func Field(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("Cannot use a negative index to FIELD")
 	}
 
-	sep, err := utils.ToString(env, args[2])
+	sep, err := types.ToString(env, args[2])
 	if err != nil {
 		return err
 	}
@@ -1144,17 +1145,17 @@ func Replace(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("REPLACE takes exactly three arguments, got %d", len(args))
 	}
 
-	source, err := utils.ToString(env, args[0])
+	source, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	find, err := utils.ToString(env, args[1])
+	find, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
 
-	replace, err := utils.ToString(env, args[2])
+	replace, err := types.ToString(env, args[2])
 	if err != nil {
 		return err
 	}
@@ -1246,12 +1247,12 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) < 2 || len(args) > 3 {
 		return fmt.Errorf("PARSE_DATE requires at least two arguments, got %d", len(args))
 	}
-	arg1, err := utils.ToString(env, args[0])
+	arg1, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	format, err := utils.ToString(env, args[1])
+	format, err := types.ToString(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -1265,7 +1266,7 @@ func ParseDate(env utils.Environment, args ...interface{}) interface{} {
 	// grab our location
 	location := env.Timezone()
 	if len(args) == 3 {
-		arg3, err := utils.ToString(env, args[2])
+		arg3, err := types.ToString(env, args[2])
 		if err != nil {
 			return err
 		}
@@ -1327,14 +1328,14 @@ func FormatDate(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) < 1 || len(args) > 3 {
 		return fmt.Errorf("FORMAT_DATE takes one or two arguments, got %d", len(args))
 	}
-	date, err := utils.ToDate(env, args[0])
+	date, err := types.ToDate(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	format := fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String())
 	if len(args) >= 2 {
-		format, err = utils.ToString(env, args[1])
+		format, err = types.ToString(env, args[1])
 		if err != nil {
 			return err
 		}
@@ -1349,7 +1350,7 @@ func FormatDate(env utils.Environment, args ...interface{}) interface{} {
 	// grab our location
 	location := env.Timezone()
 	if len(args) == 3 {
-		arg3, err := utils.ToString(env, args[2])
+		arg3, err := types.ToString(env, args[2])
 		if err != nil {
 			return err
 		}
@@ -1381,7 +1382,7 @@ func Date(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 1 {
 		return fmt.Errorf("DATE requires exactly one argument, got %d", len(args))
 	}
-	arg1, err := utils.ToString(env, args[0])
+	arg1, err := types.ToString(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -1405,11 +1406,11 @@ func DateFromParts(env utils.Environment, args ...interface{}) interface{} {
 	if len(args) != 3 {
 		return fmt.Errorf("DATE_FROM_PARTS requires three arguments, got %d", len(args))
 	}
-	year, err := utils.ToInt(env, args[0])
+	year, err := types.ToInt(env, args[0])
 	if err != nil {
 		return err
 	}
-	month, err := utils.ToInt(env, args[1])
+	month, err := types.ToInt(env, args[1])
 	if err != nil {
 		return err
 	}
@@ -1417,7 +1418,7 @@ func DateFromParts(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("Invalidate value for month, must be 1-12")
 	}
 
-	day, err := utils.ToInt(env, args[2])
+	day, err := types.ToInt(env, args[2])
 	if err != nil {
 		return err
 	}
@@ -1440,17 +1441,17 @@ func DateDiff(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("DATE_DIFF takes exactly three arguments, received %d", len(args))
 	}
 
-	date1, err := utils.ToDate(env, args[0])
+	date1, err := types.ToDate(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	date2, err := utils.ToDate(env, args[1])
+	date2, err := types.ToDate(env, args[1])
 	if err != nil {
 		return err
 	}
 
-	unit, err := utils.ToString(env, args[2])
+	unit, err := types.ToString(env, args[2])
 	if err != nil {
 		return err
 	}
@@ -1500,17 +1501,17 @@ func DateAdd(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("DATE_ADD takes exactly three arguments, received %d", len(args))
 	}
 
-	date, err := utils.ToDate(env, args[0])
+	date, err := types.ToDate(env, args[0])
 	if err != nil {
 		return err
 	}
 
-	duration, err := utils.ToInt(env, args[1])
+	duration, err := types.ToInt(env, args[1])
 	if err != nil {
 		return err
 	}
 
-	unit, err := utils.ToString(env, args[2])
+	unit, err := types.ToString(env, args[2])
 	if err != nil {
 		return err
 	}
@@ -1623,7 +1624,7 @@ func FromEpoch(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("FROM_EPOCH takes exactly one number argument, got %d", len(args))
 	}
 
-	offset, err := utils.ToDecimal(env, args[0])
+	offset, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -1641,7 +1642,7 @@ func ToEpoch(env utils.Environment, args ...interface{}) interface{} {
 		return fmt.Errorf("TO_EPOCH takes exactly one date argument, got %d", len(args))
 	}
 
-	date, err := utils.ToDate(env, args[0])
+	date, err := types.ToDate(env, args[0])
 	if err != nil {
 		return err
 	}
@@ -1686,7 +1687,7 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 	// if we've been passed an indexable like a URNList, use first item
 	urnArg := args[0]
 
-	indexable, isIndexable := urnArg.(utils.Indexable)
+	indexable, isIndexable := urnArg.(types.Indexable)
 	if isIndexable {
 		if indexable.Length() >= 1 {
 			urnArg = indexable.Index(0)
@@ -1695,7 +1696,7 @@ func FormatURN(env utils.Environment, args ...interface{}) interface{} {
 		}
 	}
 
-	urnString, err := utils.ToString(env, urnArg)
+	urnString, err := types.ToString(env, urnArg)
 	if err != nil {
 		return err
 	}
@@ -1718,7 +1719,7 @@ func checkOneDecimalArg(env utils.Environment, funcName string, args []interface
 		return decimal.Zero, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
 	}
 
-	arg1, err := utils.ToDecimal(env, args[0])
+	arg1, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return decimal.Zero, err
 	}
@@ -1731,7 +1732,7 @@ func checkOneStringArg(env utils.Environment, funcName string, args []interface{
 		return "", fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
 	}
 
-	arg1, err := utils.ToString(env, args[0])
+	arg1, err := types.ToString(env, args[0])
 	if err != nil {
 		return "", err
 	}
@@ -1744,12 +1745,12 @@ func checkTwoStringArgs(env utils.Environment, funcName string, args []interface
 		return "", "", fmt.Errorf("%s takes exactly two string arguments, got %d", funcName, len(args))
 	}
 
-	arg1, err := utils.ToString(env, args[0])
+	arg1, err := types.ToString(env, args[0])
 	if err != nil {
 		return "", "", err
 	}
 
-	arg2, err := utils.ToString(env, args[1])
+	arg2, err := types.ToString(env, args[1])
 	if err != nil {
 		return "", "", err
 	}
@@ -1762,12 +1763,12 @@ func checkOneStringOneIntArg(env utils.Environment, funcName string, args []inte
 		return "", 0, fmt.Errorf("%s takes exactly two arguments, got %d", funcName, len(args))
 	}
 
-	arg1, err := utils.ToString(env, args[0])
+	arg1, err := types.ToString(env, args[0])
 	if err != nil {
 		return "", 0, err
 	}
 
-	arg2, err := utils.ToInt(env, args[1])
+	arg2, err := types.ToInt(env, args[1])
 	if err != nil {
 		return "", 0, err
 	}
@@ -1780,12 +1781,12 @@ func checkTwoDecimalArgs(env utils.Environment, funcName string, args []interfac
 		return decimal.Zero, decimal.Zero, fmt.Errorf("%s takes exactly two arguments, got %d", funcName, len(args))
 	}
 
-	arg1, err := utils.ToDecimal(env, args[0])
+	arg1, err := types.ToDecimal(env, args[0])
 	if err != nil {
 		return decimal.Zero, decimal.Zero, err
 	}
 
-	arg2, err := utils.ToDecimal(env, args[1])
+	arg2, err := types.ToDecimal(env, args[1])
 	if err != nil {
 		return decimal.Zero, decimal.Zero, err
 	}
@@ -1798,7 +1799,7 @@ func checkOneDateArg(env utils.Environment, funcName string, args []interface{})
 		return utils.ZeroTime, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
 	}
 
-	arg1, err := utils.ToDate(env, args[0])
+	arg1, err := types.ToDate(env, args[0])
 	if err != nil {
 		return utils.ZeroTime, err
 	}

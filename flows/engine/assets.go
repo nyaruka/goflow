@@ -267,12 +267,12 @@ func (s *sessionAssets) HasLocations() bool {
 }
 
 // GetLocationHierarchy gets the location hierarchy asset for the session
-func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error) {
+func (s *sessionAssets) GetLocationHierarchy() (*flows.LocationHierarchy, error) {
 	asset, err := s.cache.getSetAsset(s.server, assetTypeLocationHierarchy)
 	if err != nil {
 		return nil, err
 	}
-	hierarchy, isType := asset.(*utils.LocationHierarchy)
+	hierarchy, isType := asset.(*flows.LocationHierarchy)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
@@ -436,7 +436,7 @@ func readAsset(data json.RawMessage, itemType assetType, isSet bool) (interface{
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
 	if itemType == assetTypeLocationHierarchy && !isSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return utils.ReadLocationHierarchy(data) }
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchy(data) }
 	} else if itemType == assetTypeChannel && !isSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
 	} else if itemType == assetTypeChannel && isSet {

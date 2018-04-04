@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
@@ -434,7 +435,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 	// save our results if appropriate
 	if router != nil && router.ResultName() != "" && route.Match() != "" {
-		input, err := utils.ToString(run.Environment(), operand)
+		input, err := types.ToString(run.Environment(), operand)
 		if err != nil {
 			return nil, noDestination, err
 		}

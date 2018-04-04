@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	validator "gopkg.in/go-playground/validator.v9"
@@ -62,8 +63,8 @@ func (u *ContactURN) Resolve(key string) interface{} {
 // Atomize is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Atomize() interface{} { return string(u.URN) }
 
-var _ utils.Atomizable = (*ContactURN)(nil)
-var _ utils.Resolvable = (*ContactURN)(nil)
+var _ types.Atomizable = (*ContactURN)(nil)
+var _ types.Resolvable = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -146,7 +147,7 @@ func (l URNList) Resolve(key string) interface{} {
 
 // Atomize is called when this object needs to be reduced to a primitive
 func (l URNList) Atomize() interface{} {
-	array := utils.NewArray()
+	array := types.NewArray()
 	for _, urn := range l {
 		array.Append(urn)
 	}
@@ -163,6 +164,6 @@ func (l URNList) Length() int {
 	return len(l)
 }
 
-var _ utils.Atomizable = (URNList)(nil)
-var _ utils.Indexable = (URNList)(nil)
-var _ utils.Resolvable = (URNList)(nil)
+var _ types.Atomizable = (URNList)(nil)
+var _ types.Indexable = (URNList)(nil)
+var _ types.Resolvable = (URNList)(nil)

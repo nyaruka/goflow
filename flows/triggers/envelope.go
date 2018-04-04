@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -50,9 +51,9 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 		}
 	}
 	if envelope.Params != nil {
-		base.params = utils.JSONFragment(envelope.Params)
+		base.params = types.JSONFragment(envelope.Params)
 	} else {
-		base.params = utils.EmptyJSONFragment
+		base.params = types.EmptyJSONFragment
 	}
 
 	return nil

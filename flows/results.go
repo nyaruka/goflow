@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -46,8 +47,8 @@ func (r *Result) Atomize() interface{} {
 	return r.Value
 }
 
-var _ utils.Atomizable = (*Result)(nil)
-var _ utils.Resolvable = (*Result)(nil)
+var _ types.Atomizable = (*Result)(nil)
+var _ types.Resolvable = (*Result)(nil)
 
 // Results is our wrapper around a map of snakified result names to result objects
 type Results map[string]*Result
@@ -104,6 +105,6 @@ func (r Results) Atomize() interface{} {
 	return strings.Join(results, ", ")
 }
 
-var _ utils.Atomizable = (Results)(nil)
-var _ utils.Lengthable = (Results)(nil)
-var _ utils.Resolvable = (Results)(nil)
+var _ types.Atomizable = (Results)(nil)
+var _ types.Lengthable = (Results)(nil)
+var _ types.Resolvable = (Results)(nil)

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -59,8 +60,8 @@ func (i *MsgInput) Atomize() interface{} {
 	return strings.Join(parts, "\n")
 }
 
-var _ utils.Atomizable = (*MsgInput)(nil)
-var _ utils.Resolvable = (*MsgInput)(nil)
+var _ types.Atomizable = (*MsgInput)(nil)
+var _ types.Resolvable = (*MsgInput)(nil)
 var _ flows.Input = (*MsgInput)(nil)
 
 //------------------------------------------------------------------------------------------

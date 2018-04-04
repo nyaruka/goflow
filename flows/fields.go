@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -27,10 +28,10 @@ const (
 	FieldValueTypeState    FieldValueType = "state"
 )
 
-var fieldLocationLevels = map[FieldValueType]utils.LocationLevel{
-	FieldValueTypeState:    utils.LocationLevel(1),
-	FieldValueTypeDistrict: utils.LocationLevel(2),
-	FieldValueTypeWard:     utils.LocationLevel(3),
+var fieldLocationLevels = map[FieldValueType]LocationLevel{
+	FieldValueTypeState:    LocationLevel(1),
+	FieldValueTypeDistrict: LocationLevel(2),
+	FieldValueTypeWard:     LocationLevel(3),
 }
 
 // Field represents a contact field
@@ -54,9 +55,9 @@ type FieldValue struct {
 	text     string
 	datetime *time.Time
 	decimal  *decimal.Decimal
-	state    *utils.Location
-	district *utils.Location
-	ward     *utils.Location
+	state    *Location
+	district *Location
+	ward     *Location
 }
 
 func (v *FieldValue) IsEmpty() bool {
@@ -115,11 +116,11 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue stri
 	var asDatetime *time.Time
 	var asDecimal *decimal.Decimal
 
-	if parsedDecimal, err := utils.ToDecimal(env, rawValue); err == nil {
+	if parsedDecimal, err := types.ToDecimal(env, rawValue); err == nil {
 		asDecimal = &parsedDecimal
 	}
 
-	if parsedDatetime, err := utils.ToDate(env, rawValue); err == nil {
+	if parsedDatetime, err := types.ToDate(env, rawValue); err == nil {
 		asDatetime = &parsedDatetime
 	}
 
@@ -157,9 +158,9 @@ func (f FieldValues) Atomize() interface{} {
 	return strings.Join(fields, ", ")
 }
 
-var _ utils.Atomizable = (FieldValues)(nil)
-var _ utils.Lengthable = (FieldValues)(nil)
-var _ utils.Resolvable = (FieldValues)(nil)
+var _ types.Atomizable = (FieldValues)(nil)
+var _ types.Lengthable = (FieldValues)(nil)
+var _ types.Resolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {

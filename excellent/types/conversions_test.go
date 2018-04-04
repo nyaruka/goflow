@@ -1,10 +1,11 @@
-package utils_test
+package types_test
 
 import (
 	"fmt"
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -44,18 +45,18 @@ func TestToString(t *testing.T) {
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testResolver, "Resolver", false},
 		{date1, "2017-06-23T15:30:00.000000Z", false},
-		{utils.NewArray(date1, date2), "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
-		{utils.NewArray("one", "two", "three"), "one, two, three", false},
-		{utils.NewArray(true, false, true), "true, false, true", false},
-		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), "1.5, 2.5", false},
-		{utils.NewArray(5, -10, 15), "5, -10, 15", false},
+		{types.NewArray(date1, date2), "2017-06-23T15:30:00.000000Z, 2017-07-18T15:30:00.000000-05:00", false},
+		{types.NewArray("one", "two", "three"), "one, two, three", false},
+		{types.NewArray(true, false, true), "true, false, true", false},
+		{types.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), "1.5, 2.5", false},
+		{types.NewArray(5, -10, 15), "5, -10, 15", false},
 		{struct{}{}, "", true},
 	}
 
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := utils.ToString(env, test.input)
+		result, err := types.ToString(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToString on '%v': %s", test.input, err)
@@ -92,7 +93,7 @@ func TestToDecimal(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := utils.ToDecimal(env, test.input)
+		result, err := types.ToDecimal(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToDecimal on '%v': %s", test.input, err)
@@ -125,21 +126,21 @@ func TestToBool(t *testing.T) {
 		{"lO.5", true, false},
 		{"", false, false},
 		{testResolver, true, false},
-		{utils.JSONFragment([]byte(`false`)), false, false},
-		{utils.JSONFragment([]byte(`true`)), true, false},
-		{utils.JSONFragment([]byte(`[]`)), false, false},
-		{utils.JSONFragment([]byte(`15.5`)), true, false},
-		{utils.JSONFragment([]byte(`0`)), false, false},
-		{utils.JSONFragment([]byte(`[5]`)), true, false},
-		{utils.JSONFragment([]byte("{\n}")), false, false},
-		{utils.JSONFragment([]byte(`{"one": "two"}`)), true, false},
+		{types.JSONFragment([]byte(`false`)), false, false},
+		{types.JSONFragment([]byte(`true`)), true, false},
+		{types.JSONFragment([]byte(`[]`)), false, false},
+		{types.JSONFragment([]byte(`15.5`)), true, false},
+		{types.JSONFragment([]byte(`0`)), false, false},
+		{types.JSONFragment([]byte(`[5]`)), true, false},
+		{types.JSONFragment([]byte("{\n}")), false, false},
+		{types.JSONFragment([]byte(`{"one": "two"}`)), true, false},
 		{struct{}{}, false, true},
 	}
 
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		result, err := utils.ToBool(env, test.input)
+		result, err := types.ToBool(env, test.input)
 
 		if err != nil && !test.hasError {
 			t.Errorf("Unexpected error calling ToBool on '%v': %s", test.input, err)
@@ -182,18 +183,18 @@ func TestToJSON(t *testing.T) {
 		{decimal.NewFromFloat(15.5), "15.5", false},
 		{testResolver, `"Resolver"`, false},
 		{date1, `"2017-06-23T15:30:00.000000Z"`, false},
-		{utils.NewArray(date1, date2), `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`, false},
-		{utils.NewArray("one", "two", "three"), `["one","two","three"]`, false},
-		{utils.NewArray(true, false, true), `[true,false,true]`, false},
-		{utils.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
-		{utils.NewArray(5, -10, 15), `[5,-10,15]`, false},
+		{types.NewArray(date1, date2), `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`, false},
+		{types.NewArray("one", "two", "three"), `["one","two","three"]`, false},
+		{types.NewArray(true, false, true), `[true,false,true]`, false},
+		{types.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
+		{types.NewArray(5, -10, 15), `[5,-10,15]`, false},
 		{struct{}{}, "", true},
 	}
 
 	env := utils.NewDefaultEnvironment()
 
 	for _, test := range tests {
-		fragment, err := utils.ToJSON(env, test.input)
+		fragment, err := types.ToJSON(env, test.input)
 		result := string(fragment)
 
 		if err != nil && !test.hasError {

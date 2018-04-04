@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -101,8 +102,8 @@ func (f *flow) Atomize() interface{} {
 	return f.name
 }
 
-var _ utils.Atomizable = (*flow)(nil)
-var _ utils.Resolvable = (*flow)(nil)
+var _ types.Atomizable = (*flow)(nil)
+var _ types.Resolvable = (*flow)(nil)
 
 func (f *flow) Reference() *flows.FlowReference {
 	return flows.NewFlowReference(f.uuid, f.name)

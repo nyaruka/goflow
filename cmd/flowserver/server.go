@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -319,7 +320,7 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 		return nil, fmt.Errorf("missing context or expression element")
 	}
 
-	context := utils.JSONFragment(expression.Context)
+	context := types.JSONFragment(expression.Context)
 
 	// evaluate it
 	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, false, nil)

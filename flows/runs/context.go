@@ -3,8 +3,8 @@ package runs
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // RunContextTopLevels are the allowed top-level variables for expression evaluations
@@ -15,7 +15,7 @@ type runContext struct {
 }
 
 // creates a new evaluation context for the passed in run
-func newRunContext(run flows.FlowRun) utils.Resolvable {
+func newRunContext(run flows.FlowRun) types.Resolvable {
 	return &runContext{run: run}
 }
 
@@ -72,5 +72,5 @@ func (c *relatedRunContext) String() string {
 	return c.run.UUID().String()
 }
 
-var _ utils.Resolvable = (*runContext)(nil)
-var _ utils.Resolvable = (*relatedRunContext)(nil)
+var _ types.Resolvable = (*runContext)(nil)
+var _ types.Resolvable = (*relatedRunContext)(nil)

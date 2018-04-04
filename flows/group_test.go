@@ -4,6 +4,7 @@ import (
 	"github.com/satori/go.uuid"
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -30,7 +31,7 @@ func TestGroupListResolve(t *testing.T) {
 		{"3", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
-		val := utils.ResolveVariable(env, urnList, tc.key)
+		val := excellent.ResolveVariable(env, urnList, tc.key)
 
 		err, isErr := val.(error)
 

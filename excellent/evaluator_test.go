@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
@@ -32,8 +33,8 @@ func (r *testResolvable) Atomize() interface{} {
 	return "hello"
 }
 
-var _ utils.Atomizable = (*testResolvable)(nil)
-var _ utils.Resolvable = (*testResolvable)(nil)
+var _ types.Atomizable = (*testResolvable)(nil)
+var _ types.Resolvable = (*testResolvable)(nil)
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 
@@ -46,11 +47,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"dec1":    decimal.RequireFromString("1.5"),
 		"dec2":    decimal.RequireFromString("2.5"),
 		"words":   "one two three",
-		"array":   utils.NewArray("one", "two", "three"),
+		"array":   types.NewArray("one", "two", "three"),
 		"thing":   &testResolvable{},
 		"err":     fmt.Errorf("an error"),
 	}
-	vars := utils.NewMapResolver(varMap)
+	vars := types.NewMapResolver(varMap)
 
 	keys := make([]string, 0, len(varMap))
 	for key := range varMap {
@@ -139,8 +140,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	array1d := utils.NewArray("a", "b", "c")
-	array2d := utils.NewArray(array1d, utils.NewArray("one", "two", "three"))
+	array1d := types.NewArray("a", "b", "c")
+	array2d := types.NewArray(array1d, types.NewArray("one", "two", "three"))
 
 	varMap := map[string]interface{}{
 		"string1": "foo",
@@ -155,7 +156,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		"array2d": array2d,
 	}
 
-	vars := utils.NewMapResolver(varMap)
+	vars := types.NewMapResolver(varMap)
 
 	keys := make([]string, 0, len(varMap))
 	for key := range varMap {
@@ -268,7 +269,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// back down to our equality
 		if !equal {
-			cmp, err := utils.Compare(env, eval, test.expected)
+			cmp, err := types.Compare(env, eval, test.expected)
 			if err != nil {
 				t.Errorf("Actual '%#v' does not match expected '%#v' evaluating template: '%s'", eval, test.expected, test.template)
 			}

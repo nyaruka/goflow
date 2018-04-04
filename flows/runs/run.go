@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -22,9 +23,9 @@ type flowRun struct {
 
 	flow    flows.Flow
 	contact *flows.Contact
-	extra   utils.JSONFragment
+	extra   types.JSONFragment
 
-	context utils.Resolvable
+	context types.Resolvable
 	webhook *flows.WebhookCall
 	input   flows.Input
 	parent  flows.FlowRun
@@ -68,7 +69,7 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() utils.Resolvable { return r.context }
+func (r *flowRun) Context() types.Resolvable { return r.context }
 func (r *flowRun) Results() flows.Results    { return r.results }
 func (r *flowRun) Events() []flows.Event     { return r.events }
 
@@ -288,8 +289,8 @@ func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)
 }
 
-var _ utils.Atomizable = (*flowRun)(nil)
-var _ utils.Resolvable = (*flowRun)(nil)
+var _ types.Atomizable = (*flowRun)(nil)
+var _ types.Resolvable = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
@@ -121,7 +122,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 
 		// looks truthy, lets return this exit
 		if result.Matched() {
-			asStr, err := utils.ToString(env, result.Match())
+			asStr, err := types.ToString(env, result.Match())
 			if err != nil {
 				return operand, flows.NoRoute, err
 			}
@@ -133,7 +134,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	// we have a default exit, use that
 	if r.Default != "" {
 		// evaluate our operand as a string
-		value, err := utils.ToString(env, operand)
+		value, err := types.ToString(env, operand)
 		if err != nil {
 			run.AddError(step, nil, err)
 		}

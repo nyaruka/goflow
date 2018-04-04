@@ -3,6 +3,7 @@ package flows
 import (
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -127,7 +128,7 @@ type SessionAssets interface {
 	GetLabelSet() (*LabelSet, error)
 
 	HasLocations() bool
-	GetLocationHierarchy() (*utils.LocationHierarchy, error)
+	GetLocationHierarchy() (*LocationHierarchy, error)
 }
 
 // Flow is a graph of nodes containing actions and routers
@@ -217,13 +218,13 @@ type Translations interface {
 }
 
 type Trigger interface {
-	utils.Resolvable
+	types.Resolvable
 	utils.Typed
 
 	Environment() utils.Environment
 	Flow() Flow
 	Contact() *Contact
-	Params() utils.JSONFragment
+	Params() types.JSONFragment
 	TriggeredOn() time.Time
 }
 
@@ -264,7 +265,7 @@ type EventLog interface {
 }
 
 type Input interface {
-	utils.Resolvable
+	types.Resolvable
 	utils.Typed
 
 	UUID() InputUUID
@@ -323,8 +324,8 @@ type RunSummary interface {
 type RunEnvironment interface {
 	utils.Environment
 
-	FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
-	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
+	FindLocations(string, LocationLevel, *Location) ([]*Location, error)
+	FindLocationsFuzzy(string, LocationLevel, *Location) ([]*Location, error)
 }
 
 // FlowRun represents a run in the current session
@@ -333,7 +334,7 @@ type FlowRun interface {
 
 	Environment() RunEnvironment
 	Session() Session
-	Context() utils.Resolvable
+	Context() types.Resolvable
 	Input() Input
 	Webhook() *WebhookCall
 

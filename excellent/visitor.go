@@ -3,24 +3,25 @@ package excellent
 import (
 	"bytes"
 	"fmt"
+	"strconv"
 	"strings"
 
-	"strconv"
+	"github.com/nyaruka/goflow/excellent/gen"
+	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/nyaruka/goflow/excellent/gen"
-	"github.com/nyaruka/goflow/utils"
 	"github.com/shopspring/decimal"
 )
 
 type Visitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver utils.Resolvable
+	resolver types.Resolvable
 }
 
 // NewVisitor creates a new Excellent visitor
-func NewVisitor(env utils.Environment, resolver utils.Resolvable) *Visitor {
+func NewVisitor(env utils.Environment, resolver types.Resolvable) *Visitor {
 	visitor := Visitor{env: env, resolver: resolver}
 	return &visitor
 }
@@ -37,7 +38,7 @@ func (v *Visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // VisitDecimalLiteral deals with decimals like 1.5
 func (v *Visitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{} {
-	dec, _ := utils.ToDecimal(v.env, ctx.GetText())
+	dec, _ := types.ToDecimal(v.env, ctx.GetText())
 	return dec
 }
 
@@ -45,7 +46,7 @@ func (v *Visitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{
 func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	context := v.Visit(ctx.Atom(0))
 	lookup := ctx.Atom(1).GetText()
-	return utils.ResolveVariable(v.env, context, lookup)
+	return ResolveVariable(v.env, context, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -97,18 +98,18 @@ func (v *Visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 // VisitArrayLookup deals with lookups such as foo[5]
 func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	context := v.Visit(ctx.Atom())
-	lookup, err := utils.ToString(v.env, v.Visit(ctx.Expression()))
+	lookup, err := types.ToString(v.env, v.Visit(ctx.Expression()))
 	if err != nil {
 		return err
 	}
 
-	return utils.ResolveVariable(v.env, context, lookup)
+	return ResolveVariable(v.env, context, lookup)
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *Visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := utils.ResolveVariable(v.env, v.resolver, key)
+	val := ResolveVariable(v.env, v.resolver, key)
 	return val
 }
 
@@ -119,7 +120,7 @@ func (v *Visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
 
 // VisitNegation deals with negations such as -5
 func (v *Visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
-	dec, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression()))
+	dec, err := types.ToDecimal(v.env, v.Visit(ctx.Expression()))
 	if err != nil {
 		return err
 	}
@@ -132,12 +133,12 @@ func (v *Visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
 
 // VisitExponent deals with exponenets such as 5^5
 func (v *Visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
-	arg1, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
+	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
 	}
 
-	arg2, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
@@ -147,12 +148,12 @@ func (v *Visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
 func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} {
-	arg1, err := utils.ToString(v.env, v.Visit(ctx.Expression(0)))
+	arg1, err := types.ToString(v.env, v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
 	}
 
-	arg2, err := utils.ToString(v.env, v.Visit(ctx.Expression(1)))
+	arg2, err := types.ToString(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
@@ -169,12 +170,12 @@ func (v *Visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionConte
 	arg1 := v.Visit(ctx.Expression(0))
 	arg2 := v.Visit(ctx.Expression(1))
 
-	arg1Dec, err := utils.ToDecimal(v.env, arg1)
+	arg1Dec, err := types.ToDecimal(v.env, arg1)
 	if err != nil {
 		return err
 	}
 
-	arg2Dec, err := utils.ToDecimal(v.env, arg2)
+	arg2Dec, err := types.ToDecimal(v.env, arg2)
 	if err != nil {
 		return err
 	}
@@ -187,12 +188,12 @@ func (v *Visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionConte
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
 func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
-	arg1, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
+	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
 	}
 
-	arg2, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
@@ -211,12 +212,12 @@ func (v *Visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} 
 
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
 func (v *Visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) interface{} {
-	arg1, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
+	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
 	}
 
-	arg2, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}
@@ -235,12 +236,12 @@ func (v *Visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
 func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
-	arg1, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
+	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
 	if err != nil {
 		return err
 	}
 
-	arg2, err := utils.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
 	if err != nil {
 		return err
 	}

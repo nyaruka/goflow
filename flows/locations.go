@@ -1,8 +1,11 @@
-package utils
+package flows
 
 import (
 	"encoding/json"
 	"strings"
+
+	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // LocationID is the unique identifier for each location, e.g. an OSM ID
@@ -47,7 +50,7 @@ func (b *Location) Children() []*Location { return b.children }
 // Atomize is called when this object needs to be reduced to a primitive
 func (b *Location) Atomize() interface{} { return b.name }
 
-var _ Atomizable = (*Location)(nil)
+var _ types.Atomizable = (*Location)(nil)
 
 type locationVisitor func(Location *Location)
 
@@ -174,7 +177,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
 func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
 	var le locationEnvelope
-	if err := UnmarshalAndValidate(data, &le, "location"); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &le, "location"); err != nil {
 		return nil, err
 	}
 
