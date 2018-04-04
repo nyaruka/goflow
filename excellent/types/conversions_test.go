@@ -186,7 +186,7 @@ func TestToJSON(t *testing.T) {
 		{types.NewArray(date1, date2), `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`, false},
 		{types.NewArray("one", "two", "three"), `["one","two","three"]`, false},
 		{types.NewArray(true, false, true), `[true,false,true]`, false},
-		{types.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `["1.5","2.5"]`, false},
+		{types.NewArray(decimal.NewFromFloat(1.5), decimal.NewFromFloat(2.5)), `[1.5,2.5]`, false},
 		{types.NewArray(5, -10, 15), `[5,-10,15]`, false},
 		{struct{}{}, "", true},
 	}

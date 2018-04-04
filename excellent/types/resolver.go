@@ -60,20 +60,6 @@ func (r *mapResolver) Atomize() interface{} { return fmt.Sprintf("%s", r.values)
 var _ Atomizable = (*mapResolver)(nil)
 var _ Resolvable = (*mapResolver)(nil)
 
-// XType is an an enumeration of the possible types we can deal with
-type XType int
-
-// primitive types we convert to
-const (
-	XTypeNil = iota
-	XTypeError
-	XTypeString
-	XTypeDecimal
-	XTypeTime
-	XTypeBool
-	XTypeArray
-)
-
 // ToXAtom figures out the raw type of the passed in interface, returning that type
 func ToXAtom(env utils.Environment, val interface{}) (interface{}, XType, error) {
 	if val == nil {
@@ -88,9 +74,9 @@ func ToXAtom(env utils.Environment, val interface{}) (interface{}, XType, error)
 		return val, XTypeString, nil
 
 	case decimal.Decimal:
-		return val, XTypeDecimal, nil
+		return val, XTypeNumber, nil
 	case int:
-		return decimal.New(int64(val), 0), XTypeDecimal, nil
+		return decimal.New(int64(val), 0), XTypeNumber, nil
 
 	case time.Time:
 		return val, XTypeTime, nil
