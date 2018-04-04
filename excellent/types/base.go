@@ -72,21 +72,21 @@ func NewXString(value string) XString {
 }
 
 // Type is the XType of this type
-func (v XString) Type() XType { return XTypeString }
+func (x XString) Type() XType { return XTypeString }
 
 // ToString converts this type to a string
-func (v XString) ToString() XString { return v }
+func (x XString) ToString() XString { return x }
 
 // ToBool converts this type to a bool
-func (v XString) ToBool() XBool { return string(v) != "" && strings.ToLower(string(v)) != "false" }
+func (x XString) ToBool() XBool { return string(x) != "" && strings.ToLower(string(x)) != "false" }
 
 // ToJSON converts this type to JSON
-func (v XString) ToJSON() XString { return RequireMarshalToXString(v.Native()) }
+func (x XString) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
-func (v XString) Native() string { return string(v) }
+func (x XString) Native() string { return string(x) }
 
-func (v XString) Length() int { return len(v) }
+func (x XString) Length() int { return len(x) }
 
 var NilXString = NewXString("")
 var _ XPrimitive = NilXString
@@ -111,19 +111,19 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Type is the XType of this type
-func (v XNumber) Type() XType { return XTypeNumber }
+func (x XNumber) Type() XType { return XTypeNumber }
 
 // ToString converts this type to a string
-func (v XNumber) ToString() XString { return XString(v.Native().String()) }
+func (x XNumber) ToString() XString { return XString(x.Native().String()) }
 
 // ToBool converts this type to a bool
-func (v XNumber) ToBool() XBool { return XBool(!v.Native().Equals(decimal.Zero)) }
+func (x XNumber) ToBool() XBool { return XBool(!x.Native().Equals(decimal.Zero)) }
 
 // ToJSON converts this type to JSON
-func (v XNumber) ToJSON() XString { return RequireMarshalToXString(v.Native()) }
+func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
-func (v XNumber) Native() decimal.Decimal { return decimal.Decimal(v) }
+func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
 
 var NilXNumber = XNumber(decimal.Zero)
 var _ XPrimitive = NilXNumber
@@ -137,19 +137,19 @@ func NewXBool(value bool) XBool {
 }
 
 // Type is the XType of this type
-func (v XBool) Type() XType { return XTypeBool }
+func (x XBool) Type() XType { return XTypeBool }
 
 // ToString converts this type to a string
-func (v XBool) ToString() XString { return XString(strconv.FormatBool(v.Native())) }
+func (x XBool) ToString() XString { return XString(strconv.FormatBool(x.Native())) }
 
 // ToBool converts this type to a bool
-func (v XBool) ToBool() XBool { return v }
+func (x XBool) ToBool() XBool { return x }
 
 // ToJSON converts this type to JSON
-func (v XBool) ToJSON() XString { return RequireMarshalToXString(v.Native()) }
+func (x XBool) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
-func (v XBool) Native() bool { return bool(v) }
+func (x XBool) Native() bool { return bool(x) }
 
 var NilXBool = NewXBool(false)
 var _ XPrimitive = NilXBool
@@ -163,19 +163,19 @@ func NewXTime(value time.Time) XTime {
 }
 
 // Type is the XType of this type
-func (v XTime) Type() XType { return XTypeTime }
+func (x XTime) Type() XType { return XTypeTime }
 
 // ToString converts this type to a string
-func (v XTime) ToString() XString { return XString(utils.DateToISO(v.Native())) }
+func (x XTime) ToString() XString { return XString(utils.DateToISO(x.Native())) }
 
 // ToBool converts this type to a bool
-func (v XTime) ToBool() XBool { return XBool(!v.Native().IsZero()) }
+func (x XTime) ToBool() XBool { return XBool(!x.Native().IsZero()) }
 
 // ToJSON converts this type to JSON
-func (v XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO(v.Native())) }
+func (x XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO(x.Native())) }
 
 // Native returns the native value of this type
-func (v XTime) Native() time.Time { return time.Time(v) }
+func (x XTime) Native() time.Time { return time.Time(x) }
 
 var NilXTime = NewXTime(time.Time{})
 var _ XPrimitive = NilXTime
@@ -196,21 +196,21 @@ func NewXError(err error) XError {
 }
 
 // Type is the XType of this type
-func (v xerror) Type() XType { return XTypeError }
+func (x xerror) Type() XType { return XTypeError }
 
 // ToString converts this type to a string
-func (v xerror) ToString() XString { return XString(v.Native().Error()) }
+func (x xerror) ToString() XString { return XString(x.Native().Error()) }
 
 // ToBool converts this type to a bool
-func (v xerror) ToBool() XBool { return XBool(false) }
+func (x xerror) ToBool() XBool { return XBool(false) }
 
 // ToJSON converts this type to JSON
-func (v xerror) ToJSON() XString { return RequireMarshalToXString(v.Native().Error()) }
+func (x xerror) ToJSON() XString { return RequireMarshalToXString(x.Native().Error()) }
 
 // Native returns the native value of this type
-func (v xerror) Native() error { return v.err }
+func (x xerror) Native() error { return x.err }
 
-func (v xerror) Error() string { return v.err.Error() }
+func (x xerror) Error() string { return x.err.Error() }
 
 var NilXError = NewXError(nil)
 var _ XError = NilXError
@@ -225,40 +225,40 @@ type XObject interface {
 // BaseXObject is base of any XObject
 type BaseXObject struct{}
 
-func (v *BaseXObject) Reduce() XValue { panic("BaseXObject should implement XReducible") }
+func (x *BaseXObject) Reduce() XValue { panic("BaseXObject should implement XReducible") }
 
 // Type is the XType of this type
-func (v *BaseXObject) Type() XType { return XTypeObject }
+func (x *BaseXObject) Type() XType { return XTypeObject }
 
 // RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
-func RequireMarshalToXString(v interface{}) XString {
-	j, err := json.Marshal(v)
+func RequireMarshalToXString(x interface{}) XString {
+	j, err := json.Marshal(x)
 	if err != nil {
-		panic(fmt.Sprintf("unable to marshal %v to JSON", v))
+		panic(fmt.Sprintf("unable to marshal %v to JSON", x))
 	}
 	return XString(j)
 }
 
 // ToXString converts the given value to a string
 func ToXString(value XValue) XString {
-	switch v := value.(type) {
+	switch x := value.(type) {
 	case XPrimitive:
-		return v.ToString()
+		return x.ToString()
 	case XObject:
-		return v.Reduce().ToString()
+		return x.Reduce().ToString()
 	}
 	panic(fmt.Sprintf("can't convert type %v to a string", value))
 }
 
 // ToXBool converts the given value to a bool
 func ToXBool(value XValue) XBool {
-	switch v := value.(type) {
+	switch x := value.(type) {
 	case XPrimitive:
-		return v.ToBool()
+		return x.ToBool()
 	case XLengthable:
-		return v.Length() > 0
+		return x.Length() > 0
 	case XObject:
-		return v.Reduce().ToBool()
+		return x.Reduce().ToBool()
 	}
 	panic(fmt.Sprintf("can't convert type %v to a bool", value))
 }
