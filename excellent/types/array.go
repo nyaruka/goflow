@@ -21,11 +21,14 @@ func NewXArray(values ...XValue) XArray {
 	return &xarray{values: values}
 }
 
+// Reduce returns the primitive version of this type (i.e. itself)
+func (a *xarray) Reduce() XPrimitive { return a }
+
 // ToString converts this type to a string
 func (a *xarray) ToString() XString {
-	strs := make([]string, len(a.values))
+	strs := make([]XString, len(a.values))
 	for i := range a.values {
-		strs[i] = string(ToXString(a.values[i]))
+		strs[i] = a.values[i].Reduce().ToString()
 	}
 	return RequireMarshalToXString(strs)
 }

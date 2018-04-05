@@ -20,6 +20,7 @@ func init() {
 // XValue is the base interface of all Excellent types
 type XValue interface {
 	ToJSON() XString
+	Reduce() XPrimitive
 }
 
 // XPrimitive is the base interface of all Excellent primitive types
@@ -56,6 +57,9 @@ func NewXString(value string) XString {
 	return XString(value)
 }
 
+// Reduce returns the primitive version of this type (i.e. itself)
+func (x XString) Reduce() XPrimitive { return x }
+
 // ToString converts this type to a string
 func (x XString) ToString() XString { return x }
 
@@ -70,9 +74,9 @@ func (x XString) Native() string { return string(x) }
 
 func (x XString) Length() int { return len(x) }
 
-var NilXString = NewXString("")
-var _ XPrimitive = NilXString
-var _ XLengthable = NilXString
+var XStringEmpty = NewXString("")
+var _ XPrimitive = XStringEmpty
+var _ XLengthable = XStringEmpty
 
 // XNumber is any whole or fractional number
 type XNumber decimal.Decimal
@@ -92,6 +96,9 @@ func RequireXNumberFromString(value string) XNumber {
 	return XNumber(decimal.RequireFromString(value))
 }
 
+// Reduce returns the primitive version of this type (i.e. itself)
+func (x XNumber) Reduce() XPrimitive { return x }
+
 // ToString converts this type to a string
 func (x XNumber) ToString() XString { return XString(x.Native().String()) }
 
@@ -104,8 +111,8 @@ func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
 
-var NilXNumber = XNumber(decimal.Zero)
-var _ XPrimitive = NilXNumber
+var XNumberZero = XNumber(decimal.Zero)
+var _ XPrimitive = XNumberZero
 
 // XBool is a boolean true or false
 type XBool bool
@@ -114,6 +121,9 @@ type XBool bool
 func NewXBool(value bool) XBool {
 	return XBool(value)
 }
+
+// Reduce returns the primitive version of this type (i.e. itself)
+func (x XBool) Reduce() XPrimitive { return x }
 
 // ToString converts this type to a string
 func (x XBool) ToString() XString { return XString(strconv.FormatBool(x.Native())) }
@@ -127,8 +137,9 @@ func (x XBool) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XBool) Native() bool { return bool(x) }
 
-var NilXBool = NewXBool(false)
-var _ XPrimitive = NilXBool
+var XBoolFalse = NewXBool(false)
+var XBoolTrue = NewXBool(true)
+var _ XPrimitive = XBoolFalse
 
 // XTime is a point in time
 type XTime time.Time
@@ -137,6 +148,9 @@ type XTime time.Time
 func NewXTime(value time.Time) XTime {
 	return XTime(value)
 }
+
+// Reduce returns the primitive version of this type (i.e. itself)
+func (x XTime) Reduce() XPrimitive { return x }
 
 // ToString converts this type to a string
 func (x XTime) ToString() XString { return XString(utils.DateToISO(x.Native())) }
@@ -150,8 +164,8 @@ func (x XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO
 // Native returns the native value of this type
 func (x XTime) Native() time.Time { return time.Time(x) }
 
-var NilXTime = NewXTime(time.Time{})
-var _ XPrimitive = NilXTime
+var XTimeZero = NewXTime(time.Time{})
+var _ XPrimitive = XTimeZero
 
 // XError is an error
 type XError interface {
@@ -173,6 +187,9 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 	return NewXError(fmt.Errorf("unable to resolve '%s' on %s", key, reflect.TypeOf(resolvable)))
 }
 
+// Reduce returns the primitive version of this type (i.e. itself)
+func (x xerror) Reduce() XPrimitive { return x }
+
 // ToString converts this type to a string
 func (x xerror) ToString() XString { return XString(x.Native().Error()) }
 
@@ -190,16 +207,6 @@ func (x xerror) Error() string { return x.err.Error() }
 var NilXError = NewXError(nil)
 var _ XError = NilXError
 
-// XObject is the interface for any complex object in Excellent
-type XObject interface {
-	XValue
-
-	Reduce() XPrimitive
-}
-
-// BaseXObject is base of any XObject
-type BaseXObject struct{}
-
 // RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
 func RequireMarshalToXString(x interface{}) XString {
 	j, err := json.Marshal(x)
@@ -207,28 +214,4 @@ func RequireMarshalToXString(x interface{}) XString {
 		panic(fmt.Sprintf("unable to marshal %v to JSON", x))
 	}
 	return XString(j)
-}
-
-// ToXString converts the given value to a string
-func ToXString(value XValue) XString {
-	switch x := value.(type) {
-	case XPrimitive:
-		return x.ToString()
-	case XObject:
-		return x.Reduce().ToString()
-	}
-	panic(fmt.Sprintf("can't convert type %v to a string", value))
-}
-
-// ToXBool converts the given value to a bool
-func ToXBool(value XValue) XBool {
-	switch x := value.(type) {
-	case XPrimitive:
-		return x.ToBool()
-	case XLengthable:
-		return x.Length() > 0
-	case XObject:
-		return x.Reduce().ToBool()
-	}
-	panic(fmt.Sprintf("can't convert type %v to a bool", value))
 }

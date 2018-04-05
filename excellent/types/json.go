@@ -32,7 +32,7 @@ func (x XJSONObject) Resolve(key string) XValue {
 	return jsonTypeToXValue(val, valType)
 }
 
-var _ XObject = XJSONObject{}
+var _ XValue = XJSONObject{}
 var _ XResolvable = XJSONObject{}
 
 type XJSONArray struct {
@@ -59,7 +59,7 @@ func (x XJSONArray) Index(index int) XValue {
 	return jsonTypeToXValue(val, valType)
 }
 
-var _ XObject = XJSONArray{}
+var _ XValue = XJSONArray{}
 var _ XIndexable = XJSONArray{}
 
 func JSONToXValue(data []byte) XValue {

@@ -22,11 +22,14 @@ func NewXMap(values map[string]XValue) XMap {
 	}
 }
 
+// Reduce returns the primitive version of this type (i.e. itself)
+func (m *xmap) Reduce() XPrimitive { return m }
+
 // ToString converts this type to a string
 func (m *xmap) ToString() XString {
-	strs := make(map[string]string, len(m.values))
+	strs := make(map[string]XString, len(m.values))
 	for k, v := range m.values {
-		strs[k] = string(ToXString(v))
+		strs[k] = v.Reduce().ToString()
 	}
 	return RequireMarshalToXString(strs)
 }
