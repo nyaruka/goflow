@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/nyaruka/goflow/utils"
 
@@ -71,7 +72,8 @@ func (x XString) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XString) Native() string { return string(x) }
 
-func (x XString) Length() int { return len(x) }
+// Length returns the length of this string
+func (x XString) Length() int { return utf8.RuneCountInString(x.Native()) }
 
 // XStringEmpty is the empty string value
 var XStringEmpty = NewXString("")
@@ -111,6 +113,7 @@ func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
 
+// XNumberZero is the zero number value
 var XNumberZero = XNumber(decimal.Zero)
 var _ XPrimitive = XNumberZero
 
@@ -209,5 +212,59 @@ func (x xerror) Native() error { return x.err }
 
 func (x xerror) Error() string { return x.err.Error() }
 
+// NilXError is the nil error value
 var NilXError = NewXError(nil)
 var _ XError = NilXError
+
+// CompareXValues returns the difference between the two passed in XValues
+func CompareXValues(x1 XValue, x2 XValue) (int, error) {
+	if x1 == nil && x2 == nil {
+		return 0, nil
+	} else if x1 == nil || x2 == nil {
+		return 0, fmt.Errorf("can't compare non-nil and nil values: %v and %v", x1, x2)
+	}
+
+	x1 = x1.Reduce()
+	x2 = x2.Reduce()
+
+	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
+		return 0, fmt.Errorf("can't compare different types of %#v and %#v", x1, x2)
+	}
+
+	// common types, do real comparisons
+	switch typed := x1.(type) {
+	case XError:
+		return strings.Compare(typed.Error(), x2.(error).Error()), nil
+	case XNumber:
+		return typed.Native().Cmp(x2.(XNumber).Native()), nil
+	case XBool:
+		bool1 := typed.Native()
+		bool2 := x2.(XBool).Native()
+
+		switch {
+		case !bool1 && bool2:
+			return -1, nil
+		case bool1 == bool2:
+			return 0, nil
+		case bool1 && !bool2:
+			return 1, nil
+		}
+	case XTime:
+		time1 := typed.Native()
+		time2 := x2.(XTime).Native()
+
+		switch {
+		case time1.Before(time2):
+			return -1, nil
+		case time1.Equal(time2):
+			return 0, nil
+		case time1.After(time2):
+			return 1, nil
+		}
+	case XString:
+		return strings.Compare(typed.Native(), x2.(XString).Native()), nil
+	}
+
+	// TODO: find better fallback
+	return strings.Compare(fmt.Sprintf("%v", x1), fmt.Sprintf("%v", x2)), nil
+}
