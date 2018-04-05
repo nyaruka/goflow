@@ -195,6 +195,11 @@ func NewXError(err error) XError {
 	return xerror{err: err}
 }
 
+// NewXErrorf creates a new XError
+func NewXErrorf(format string, a ...interface{}) XError {
+	return NewXError(fmt.Errorf(format, a...))
+}
+
 // NewXResolveError creates a new XError when a key can't be resolved on an XResolvable
 func NewXResolveError(resolvable XResolvable, key string) XError {
 	return NewXError(fmt.Errorf("unable to resolve '%s' on %s", key, reflect.TypeOf(resolvable)))

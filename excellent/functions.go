@@ -24,7 +24,7 @@ var randSource = rand.NewSource(time.Now().UnixNano())
 // XFunction defines the interface that Excellent functions must implement
 type XFunction func(env utils.Environment, args ...types.XValue) types.XValue
 
-// RegisterFunction registers a new function in Excellent
+// RegisterXFunction registers a new function in Excellent
 func RegisterXFunction(name string, function XFunction) {
 	XFUNCTIONS[name] = function
 }
@@ -105,7 +105,7 @@ var XFUNCTIONS = map[string]XFunction{
 // decimal addition is attempted.
 func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return types.NewXError(fmt.Errorf("LEGACY_ADD requires exactly two arguments, got %d", len(args)))
+		return types.NewXErrorf("LEGACY_ADD requires exactly two arguments, got %d", len(args))
 	}
 
 	// try to parse dates and decimals
@@ -117,13 +117,13 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 
 	// if they are both dates, that's an error
 	if date1Err == nil && date2Err == nil {
-		return types.NewXError(fmt.Errorf("LEGACY_ADD cannot operate on two dates"))
+		return types.NewXErrorf("LEGACY_ADD cannot operate on two dates")
 	}
 
 	// date and int, do a day addition
 	if date1Err == nil && dec2Err == nil {
 		if dec2.Native().IntPart() < math.MinInt32 || dec2.Native().IntPart() > math.MaxInt32 {
-			return types.NewXError(fmt.Errorf("LEGACY_ADD cannot operate on integers greater than 32 bit"))
+			return types.NewXErrorf("LEGACY_ADD cannot operate on integers greater than 32 bit")
 		}
 		return types.NewXTime(date1.Native().AddDate(0, 0, int(dec2.Native().IntPart())))
 	}
@@ -131,7 +131,7 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	// int and date, do a day addition
 	if date2Err == nil && dec1Err == nil {
 		if dec1.Native().IntPart() < math.MinInt32 || dec1.Native().IntPart() > math.MaxInt32 {
-			return types.NewXError(fmt.Errorf("LEGACY_ADD cannot operate on integers greater than 32 bit"))
+			return types.NewXErrorf("LEGACY_ADD cannot operate on integers greater than 32 bit")
 		}
 		return types.NewXTime(date2.Native().AddDate(0, 0, int(dec1.Native().IntPart())))
 	}
@@ -166,7 +166,7 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 // @function length(object)
 func Length(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("LENGTH takes exactly one argument, got %d", len(args)))
+		return types.NewXErrorf("LENGTH takes exactly one argument, got %d", len(args))
 	}
 
 	// argument must be a value with length
@@ -175,7 +175,7 @@ func Length(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 
-	return types.NewXError(fmt.Errorf("LENGTH requires an object with length as its first argument, got %s", reflect.TypeOf(args[0])))
+	return types.NewXErrorf("LENGTH requires an object with length as its first argument, got %s", reflect.TypeOf(args[0]))
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
@@ -187,7 +187,7 @@ func Length(env utils.Environment, args ...types.XValue) types.XValue {
 // @function default(test, default)
 func Default(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return types.NewXError(fmt.Errorf("DEFAULT takes exactly two arguments, got %d", len(args)))
+		return types.NewXErrorf("DEFAULT takes exactly two arguments, got %d", len(args))
 	}
 
 	// first argument is nil, return arg2
@@ -226,7 +226,7 @@ func Array(env utils.Environment, args ...types.XValue) types.XValue {
 // @function from_json(string)
 func FromJSON(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("FROM_JSON takes exactly one string argument, got %d", len(args)))
+		return types.NewXErrorf("FROM_JSON takes exactly one string argument, got %d", len(args))
 	}
 
 	arg := types.ToXString(args[0])
@@ -245,7 +245,7 @@ func FromJSON(env utils.Environment, args ...types.XValue) types.XValue {
 // @function to_json(value)
 func ToJSON(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("TO_JSON takes exactly one argument, got %d", len(args)))
+		return types.NewXErrorf("TO_JSON takes exactly one argument, got %d", len(args))
 	}
 
 	return types.ToXJSON(args[0])
@@ -259,7 +259,7 @@ func ToJSON(env utils.Environment, args ...types.XValue) types.XValue {
 // @function url_encode(string)
 func URLEncode(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("URL_ENCODE takes exactly one argument, got %d", len(args)))
+		return types.NewXErrorf("URL_ENCODE takes exactly one argument, got %d", len(args))
 	}
 
 	arg1 := types.ToXString(args[0])
@@ -278,7 +278,7 @@ func URLEncode(env utils.Environment, args ...types.XValue) types.XValue {
 // @function and(tests...)
 func And(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) == 0 {
-		return types.NewXError(fmt.Errorf("AND requires at least one argument"))
+		return types.NewXErrorf("AND requires at least one argument")
 	}
 
 	for _, arg := range args {
@@ -297,7 +297,7 @@ func And(env utils.Environment, args ...types.XValue) types.XValue {
 // @function or(tests...)
 func Or(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) == 0 {
-		return types.NewXError(fmt.Errorf("OR requires at least one argument"))
+		return types.NewXErrorf("OR requires at least one argument")
 	}
 
 	for _, arg := range args {
@@ -318,7 +318,7 @@ func Or(env utils.Environment, args ...types.XValue) types.XValue {
 // @function if(test, true_value, false_value)
 func If(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("IF requires exactly 3 arguments, got %d", len(args)))
+		return types.NewXErrorf("IF requires exactly 3 arguments, got %d", len(args))
 	}
 
 	if types.ToXBool(args[0]) {
@@ -361,19 +361,19 @@ func Abs(env utils.Environment, args ...types.XValue) types.XValue {
 // @function round(num [,places])
 func Round(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 2 {
-		return types.NewXError(fmt.Errorf("ROUND takes either one or two arguments"))
+		return types.NewXErrorf("ROUND takes either one or two arguments")
 	}
 
 	num, err := types.ToXNumber(args[0])
 	if err != nil {
-		return types.NewXError(fmt.Errorf("ROUND's first argument must be decimal"))
+		return types.NewXErrorf("ROUND's first argument must be decimal")
 	}
 
 	round := 0
 	if len(args) == 2 {
 		round, err = types.ToInteger(args[1])
 		if err != nil {
-			return types.NewXError(fmt.Errorf("ROUND's decimal places argument must be integer"))
+			return types.NewXErrorf("ROUND's decimal places argument must be integer")
 		}
 	}
 
@@ -421,7 +421,7 @@ func RoundDown(env utils.Environment, args ...types.XValue) types.XValue {
 // @function max(values...)
 func Max(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) == 0 {
-		return types.NewXError(fmt.Errorf("MAX takes at least one argument"))
+		return types.NewXErrorf("MAX takes at least one argument")
 	}
 
 	max, err := types.ToXNumber(args[0])
@@ -451,7 +451,7 @@ func Max(env utils.Environment, args ...types.XValue) types.XValue {
 // @function min(values)
 func Min(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) == 0 {
-		return types.NewXError(fmt.Errorf("MIN takes at least one argument"))
+		return types.NewXErrorf("MIN takes at least one argument")
 	}
 
 	max, err := types.ToXNumber(args[0])
@@ -481,7 +481,7 @@ func Min(env utils.Environment, args ...types.XValue) types.XValue {
 // @function mean(values)
 func Mean(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) == 0 {
-		return types.NewXError(fmt.Errorf("MEAN requires at least one argument, got 0"))
+		return types.NewXErrorf("MEAN requires at least one argument, got 0")
 	}
 
 	sum := decimal.Zero
@@ -521,7 +521,7 @@ func Mod(env utils.Environment, args ...types.XValue) types.XValue {
 // @function rand(floor, ceiling)
 func Rand(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 0 && len(args) != 2 {
-		return types.NewXError(fmt.Errorf("RAND takes either no arguments or two arguments, got %d", len(args)))
+		return types.NewXErrorf("RAND takes either no arguments or two arguments, got %d", len(args))
 	}
 
 	if len(args) == 0 {
@@ -562,7 +562,7 @@ func Rand(env utils.Environment, args ...types.XValue) types.XValue {
 // @function format_num(num, places, commas)
 func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("FORMAT_NUM takes exactly three arguments, got %d", len(args)))
+		return types.NewXErrorf("FORMAT_NUM takes exactly three arguments, got %d", len(args))
 	}
 
 	num, err := types.ToXNumber(args[0])
@@ -575,7 +575,7 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXError(err)
 	}
 	if places < 0 || places > 9 {
-		return types.NewXError(fmt.Errorf("FORMAT_NUM must take 0-9 number of places, got %d", args[1]))
+		return types.NewXErrorf("FORMAT_NUM must take 0-9 number of places, got %d", args[1])
 	}
 
 	commas := types.ToXBool(args[2])
@@ -612,7 +612,7 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 // @function read_code(code)
 func ReadCode(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("READ_CODE takes exactly one argument, got %d", len(args)))
+		return types.NewXErrorf("READ_CODE takes exactly one argument, got %d", len(args))
 	}
 
 	val := types.ToXString(args[0])
@@ -679,7 +679,7 @@ func Code(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if len(str) == 0 {
-		return types.NewXError(fmt.Errorf("CODE requires a string of at least one character"))
+		return types.NewXErrorf("CODE requires a string of at least one character")
 	}
 
 	r, _ := utf8.DecodeRuneInString(str.Native())
@@ -699,7 +699,7 @@ func Code(env utils.Environment, args ...types.XValue) types.XValue {
 // @function split(string, delimeter)
 func Split(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return types.NewXError(fmt.Errorf("SPLIT takes exactly two arguments: string and delimiter, got %d", len(args)))
+		return types.NewXErrorf("SPLIT takes exactly two arguments: string and delimiter, got %d", len(args))
 	}
 
 	s, err := types.ToString(env, args[0])
@@ -731,12 +731,12 @@ func Split(env utils.Environment, args ...types.XValue) types.XValue {
 // @function join(array, delimeter)
 func Join(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return types.NewXError(fmt.Errorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args)))
+		return types.NewXErrorf("JOIN takes exactly two arguments: the array to join and delimiter, got %d", len(args))
 	}
 
 	indexable, isIndexable := args[0].(types.XIndexable)
 	if !isIndexable {
-		return types.NewXError(fmt.Errorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0])))
+		return types.NewXErrorf("JOIN requires an indexable as its first argument, got %s", reflect.TypeOf(args[0]))
 	}
 
 	sep := types.ToXString(args[1])
@@ -799,7 +799,7 @@ func Title(env utils.Environment, args ...types.XValue) types.XValue {
 // @function word(string, offset)
 func Word(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return types.NewXError(fmt.Errorf("WORD takes exactly two arguments, got %d", len(args)))
+		return types.NewXErrorf("WORD takes exactly two arguments, got %d", len(args))
 	}
 
 	val := types.ToXString(args[0])
@@ -811,7 +811,7 @@ func Word(env utils.Environment, args ...types.XValue) types.XValue {
 
 	words := utils.TokenizeString(val.Native())
 	if word >= len(words) {
-		return types.NewXError(fmt.Errorf("Word offset %d is greater than number of words %d", word, len(words)))
+		return types.NewXErrorf("Word offset %d is greater than number of words %d", word, len(words))
 	}
 
 	return types.NewXString(words[word])
@@ -845,20 +845,20 @@ func RemoveFirstWord(env utils.Environment, args ...types.XValue) types.XValue {
 // @function word_slice(string, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("WORD_SLICE takes exactly three arguments, got %d", len(args)))
+		return types.NewXErrorf("WORD_SLICE takes exactly three arguments, got %d", len(args))
 	}
 
 	arg := types.ToXString(args[0])
 
 	start, err := types.ToInteger(args[1])
 	if err != nil || start <= 0 {
-		return types.NewXError(fmt.Errorf("WORD_SLICE must start with a positive index"))
+		return types.NewXErrorf("WORD_SLICE must start with a positive index")
 	}
 	start--
 
 	stop, err := types.ToInteger(args[2])
 	if err != nil || start < 0 {
-		return types.NewXError(fmt.Errorf("WORD_SLICE must have a stop of 0 or greater"))
+		return types.NewXErrorf("WORD_SLICE must have a stop of 0 or greater")
 	}
 
 	words := utils.TokenizeString(arg.Native())
@@ -913,7 +913,7 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if field < 0 {
-		return types.NewXError(fmt.Errorf("cannot use a negative index to FIELD"))
+		return types.NewXErrorf("cannot use a negative index to FIELD")
 	}
 
 	sep := types.ToXString(args[2])
@@ -1058,7 +1058,7 @@ func Repeat(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	if i < 0 {
-		return types.NewXError(fmt.Errorf("REPEAT must be called with a positive integer, got %d", i))
+		return types.NewXErrorf("REPEAT must be called with a positive integer, got %d", i)
 	}
 
 	var output bytes.Buffer
@@ -1077,7 +1077,7 @@ func Repeat(env utils.Environment, args ...types.XValue) types.XValue {
 // @function replace(string, needle, replacement)
 func Replace(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("REPLACE takes exactly three arguments, got %d", len(args)))
+		return types.NewXErrorf("REPLACE takes exactly three arguments, got %d", len(args))
 	}
 
 	source := types.ToXString(args[0])
@@ -1169,7 +1169,7 @@ func Percent(env utils.Environment, args ...types.XValue) types.XValue {
 // @function parse_date(string, format [,timezone])
 func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 2 || len(args) > 3 {
-		return types.NewXError(fmt.Errorf("PARSE_DATE requires at least two arguments, got %d", len(args)))
+		return types.NewXErrorf("PARSE_DATE requires at least two arguments, got %d", len(args))
 	}
 
 	arg1 := types.ToXString(args[0])
@@ -1241,7 +1241,7 @@ func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 // @function format_date(date, format [,timezone])
 func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 3 {
-		return types.NewXError(fmt.Errorf("FORMAT_DATE takes one or two arguments, got %d", len(args)))
+		return types.NewXErrorf("FORMAT_DATE takes one or two arguments, got %d", len(args))
 	}
 	date, err := types.ToDate(env, args[0])
 	if err != nil {
@@ -1290,7 +1290,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 // @function date(string)
 func Date(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("DATE requires exactly one argument, got %d", len(args)))
+		return types.NewXErrorf("DATE requires exactly one argument, got %d", len(args))
 	}
 
 	arg1 := types.ToXString(args[0])
@@ -1312,7 +1312,7 @@ func Date(env utils.Environment, args ...types.XValue) types.XValue {
 // @function date_from_parts(year, month, day)
 func DateFromParts(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("DATE_FROM_PARTS requires three arguments, got %d", len(args)))
+		return types.NewXErrorf("DATE_FROM_PARTS requires three arguments, got %d", len(args))
 	}
 	year, err := types.ToInteger(args[0])
 	if err != nil {
@@ -1323,7 +1323,7 @@ func DateFromParts(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXError(err)
 	}
 	if month < 1 || month > 12 {
-		return types.NewXError(fmt.Errorf("invalid value for month, must be 1-12"))
+		return types.NewXErrorf("invalid value for month, must be 1-12")
 	}
 
 	day, err := types.ToInteger(args[2])
@@ -1346,7 +1346,7 @@ func DateFromParts(env utils.Environment, args ...types.XValue) types.XValue {
 // @function date_diff(date1, date2, unit)
 func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("DATE_DIFF takes exactly three arguments, received %d", len(args)))
+		return types.NewXErrorf("DATE_DIFF takes exactly three arguments, received %d", len(args))
 	}
 
 	date1, err := types.ToXTime(env, args[0])
@@ -1382,7 +1382,7 @@ func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXNumberFromInt(date1.Native().Year() - date2.Native().Year())
 	}
 
-	return types.NewXError(fmt.Errorf("Unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit))
+	return types.NewXErrorf("Unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
 }
 
 // DateAdd calculates the date value arrived at by adding `offset` number of `unit` to the `date`
@@ -1396,7 +1396,7 @@ func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 // @function date_add(date, offset, unit)
 func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 3 {
-		return types.NewXError(fmt.Errorf("DATE_ADD takes exactly three arguments, received %d", len(args)))
+		return types.NewXErrorf("DATE_ADD takes exactly three arguments, received %d", len(args))
 	}
 
 	date, err := types.ToXTime(env, args[0])
@@ -1428,7 +1428,7 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXTime(date.Native().AddDate(duration, 0, 0))
 	}
 
-	return types.NewXError(fmt.Errorf("Unknown unit: %s, must be one of s, m, h, d, w, M, y", unit))
+	return types.NewXErrorf("Unknown unit: %s, must be one of s, m, h, d, w, M, y", unit)
 }
 
 // Weekday returns the day of the week for `date`, 0 is sunday, 1 is monday..
@@ -1495,7 +1495,7 @@ func TZOffset(env utils.Environment, args ...types.XValue) types.XValue {
 // @function today()
 func Today(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) > 0 {
-		return types.NewXError(fmt.Errorf("TODAY takes no arguments, got %d", len(args)))
+		return types.NewXErrorf("TODAY takes no arguments, got %d", len(args))
 	}
 
 	nowTZ := time.Now().In(env.Timezone())
@@ -1509,7 +1509,7 @@ func Today(env utils.Environment, args ...types.XValue) types.XValue {
 // @function from_epoch(num)
 func FromEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("FROM_EPOCH takes exactly one number argument, got %d", len(args)))
+		return types.NewXErrorf("FROM_EPOCH takes exactly one number argument, got %d", len(args))
 	}
 
 	offset, err := types.ToXNumber(args[0])
@@ -1527,7 +1527,7 @@ func FromEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 // @function to_epoch(date)
 func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("TO_EPOCH takes exactly one date argument, got %d", len(args)))
+		return types.NewXErrorf("TO_EPOCH takes exactly one date argument, got %d", len(args))
 	}
 
 	date, err := types.ToXTime(env, args[0])
@@ -1545,7 +1545,7 @@ func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 // @function now()
 func Now(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) > 0 {
-		return types.NewXError(fmt.Errorf("NOW takes no arguments, got %d", len(args)))
+		return types.NewXErrorf("NOW takes no arguments, got %d", len(args))
 	}
 
 	return types.NewXTime(time.Now().In(env.Timezone()))
@@ -1569,7 +1569,7 @@ func Now(env utils.Environment, args ...types.XValue) types.XValue {
 // @function format_urn(urn)
 func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return types.NewXError(fmt.Errorf("FORMAT_URN takes one argument, got %d", len(args)))
+		return types.NewXErrorf("FORMAT_URN takes one argument, got %d", len(args))
 	}
 
 	// if we've been passed an indexable like a URNList, use first item
@@ -1589,7 +1589,7 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 	urn := urns.URN(urnString)
 	err := urn.Validate()
 	if err != nil {
-		return types.NewXError(fmt.Errorf("%s is not a valid URN: %s", urnString, err))
+		return types.NewXErrorf("%s is not a valid URN: %s", urnString, err)
 	}
 
 	return types.NewXString(urn.Format())
