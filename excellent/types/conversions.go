@@ -15,6 +15,82 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// ToXJSON converts the given value to a JSON string
+func ToXJSON(x XValue) XString {
+	if utils.IsNil(x) {
+		return NewXString(`null`)
+	}
+
+	return x.ToJSON()
+}
+
+// ToXString converts the given value to a string
+func ToXString(x XValue) XString {
+	if utils.IsNil(x) {
+		return XStringEmpty
+	}
+
+	return x.Reduce().ToString()
+}
+
+// ToXBool converts the given value to a boolean
+func ToXBool(x XValue) XBool {
+	if utils.IsNil(x) {
+		return XBoolFalse
+	}
+
+	primitive, isPrimitive := x.(XPrimitive)
+	if isPrimitive {
+		return primitive.ToBool()
+	}
+
+	lengthable, isLengthable := x.(XLengthable)
+	if isLengthable {
+		return lengthable.Length() > 0
+	}
+
+	return x.Reduce().ToBool()
+}
+
+// ToXNumber converts the given value to a number or returns an error if that isn't possible
+func ToXNumber(x XValue) (XNumber, error) {
+	if utils.IsNil(x) {
+		return XNumberZero, nil
+	}
+
+	x = x.Reduce()
+
+	switch typed := x.(type) {
+	case XError:
+		return XNumberZero, typed
+	case XString:
+		// common SMS foibles
+		subbed := strings.ToLower(string(typed))
+		subbed = strings.Replace(subbed, "o", "0", -1)
+		subbed = strings.Replace(subbed, "l", "1", -1)
+		parsed, err := decimal.NewFromString(subbed)
+		if err != nil {
+			return XNumberZero, fmt.Errorf("cannot convert '%s' to a decimal", x)
+		}
+		return NewXNumber(parsed), nil
+	case XNumber:
+		return typed, nil
+	}
+
+	return XNumberZero, fmt.Errorf("unable to convert value '%+v' of type '%s' to a number", x, reflect.TypeOf(x))
+}
+
+// RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
+func RequireMarshalToXString(x interface{}) XString {
+	j, err := json.Marshal(x)
+	if err != nil {
+		panic(fmt.Sprintf("unable to marshal %v to JSON", x))
+	}
+	return XString(j)
+}
+
+// Legacy...
+
 // ToJSON tries to turn the passed in interface to a JSON fragment
 func ToJSON(env utils.Environment, val interface{}) (JSONFragment, error) {
 	ToFragment := func(bytes []byte, err error) (JSONFragment, error) {

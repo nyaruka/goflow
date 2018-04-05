@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -74,6 +73,7 @@ func (x XString) Native() string { return string(x) }
 
 func (x XString) Length() int { return len(x) }
 
+// XStringEmpty is the empty string value
 var XStringEmpty = NewXString("")
 var _ XPrimitive = XStringEmpty
 var _ XLengthable = XStringEmpty
@@ -137,8 +137,12 @@ func (x XBool) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XBool) Native() bool { return bool(x) }
 
+// XBoolFalse is the false boolean value
 var XBoolFalse = NewXBool(false)
+
+// XBoolTrue is the true boolean value
 var XBoolTrue = NewXBool(true)
+
 var _ XPrimitive = XBoolFalse
 
 // XTime is a point in time
@@ -164,6 +168,7 @@ func (x XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO
 // Native returns the native value of this type
 func (x XTime) Native() time.Time { return time.Time(x) }
 
+// XTimeZero is the zero time value
 var XTimeZero = NewXTime(time.Time{})
 var _ XPrimitive = XTimeZero
 
@@ -206,12 +211,3 @@ func (x xerror) Error() string { return x.err.Error() }
 
 var NilXError = NewXError(nil)
 var _ XError = NilXError
-
-// RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
-func RequireMarshalToXString(x interface{}) XString {
-	j, err := json.Marshal(x)
-	if err != nil {
-		panic(fmt.Sprintf("unable to marshal %v to JSON", x))
-	}
-	return XString(j)
-}

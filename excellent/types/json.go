@@ -9,6 +9,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// XJSON is the base type for XJSONObject and XJSONArray
 type XJSON []byte
 
 func (x XJSON) ToJSON() XString { return NewXString(string(x)) }
@@ -23,6 +24,15 @@ func NewXJSONObject(data []byte) XJSONObject {
 	return XJSONObject{XJSON: data}
 }
 
+func (x XJSONObject) Length() int {
+	length := 0
+	jsonparser.ObjectEach(x.XJSON, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
+		length++
+		return nil
+	})
+	return length
+}
+
 func (x XJSONObject) Resolve(key string) XValue {
 	val, valType, _, err := jsonparser.Get(x.XJSON, key)
 	if err != nil {
@@ -33,6 +43,7 @@ func (x XJSONObject) Resolve(key string) XValue {
 }
 
 var _ XValue = XJSONObject{}
+var _ XLengthable = XJSONObject{}
 var _ XResolvable = XJSONObject{}
 
 type XJSONArray struct {
