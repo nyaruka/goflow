@@ -63,21 +63,55 @@ func ToXNumber(x XValue) (XNumber, error) {
 	switch typed := x.(type) {
 	case XError:
 		return XNumberZero, typed
-	case XString:
-		// common SMS foibles
-		subbed := strings.ToLower(string(typed))
-		subbed = strings.Replace(subbed, "o", "0", -1)
-		subbed = strings.Replace(subbed, "l", "1", -1)
-		parsed, err := decimal.NewFromString(subbed)
-		if err != nil {
-			return XNumberZero, fmt.Errorf("cannot convert '%s' to a decimal", x)
-		}
-		return NewXNumber(parsed), nil
 	case XNumber:
 		return typed, nil
+	case XString:
+		parsed, err := parseDecimalFuzzy(string(typed))
+		if err == nil {
+			return NewXNumber(parsed), nil
+		}
 	}
 
-	return XNumberZero, fmt.Errorf("unable to convert value '%+v' of type '%s' to a number", x, reflect.TypeOf(x))
+	return XNumberZero, fmt.Errorf("unable to convert value '%s' to a number", x)
+}
+
+// ToXTime converts the given value to a time or returns an error if that isn't possible
+func ToXTime(env utils.Environment, x XValue) (XTime, error) {
+	if utils.IsNil(x) {
+		return XTimeZero, nil
+	}
+
+	x = x.Reduce()
+
+	switch typed := x.(type) {
+	case XError:
+		return XTimeZero, typed
+	case XTime:
+		return typed, nil
+	case XString:
+		parsed, err := utils.DateFromString(env, string(typed))
+		if err == nil {
+			return NewXTime(parsed), nil
+		}
+	}
+
+	return XTimeZero, fmt.Errorf("unable to convert value '%v' of type '%s' to a time", x, reflect.TypeOf(x))
+}
+
+// ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
+func ToInteger(x XValue) (int, error) {
+	number, err := ToXNumber(x)
+	if err != nil {
+		return 0, err
+	}
+
+	intPart := number.Native().IntPart()
+
+	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
+		return 0, fmt.Errorf("number value %s is out of range for an integer", string(number.ToString()))
+	}
+
+	return int(intPart), nil
 }
 
 // RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
@@ -87,6 +121,14 @@ func RequireMarshalToXString(x interface{}) XString {
 		panic(fmt.Sprintf("unable to marshal %v to JSON", x))
 	}
 	return XString(j)
+}
+
+func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
+	// common SMS foibles
+	val = strings.ToLower(val)
+	val = strings.Replace(val, "o", "0", -1)
+	val = strings.Replace(val, "l", "1", -1)
+	return decimal.NewFromString(val)
 }
 
 // Legacy...

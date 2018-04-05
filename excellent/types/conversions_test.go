@@ -174,8 +174,6 @@ func TestXValueRequiredConversions(t *testing.T) {
 }
 
 func TestToXNumber(t *testing.T) {
-	//testResolver := &resolver{"155"}
-
 	var tests = []struct {
 		value    types.XValue
 		asNumber types.XNumber
@@ -192,6 +190,35 @@ func TestToXNumber(t *testing.T) {
 
 	for _, test := range tests {
 		result, err := types.ToXNumber(test.value)
+
+		if test.hasError {
+			assert.Error(t, err, "expected error for input '%s'", test.value)
+		} else {
+			assert.NoError(t, err, "unexpected error for input '%s'", test.value)
+			assert.Equal(t, test.asNumber.Native(), result.Native(), "result mismatch for input '%+v'", test.value)
+		}
+	}
+}
+
+func TestToXTime(t *testing.T) {
+	var tests = []struct {
+		value    types.XValue
+		asNumber types.XTime
+		hasError bool
+	}{
+		{nil, types.XTimeZero, false},
+		{types.NewXError(fmt.Errorf("Error")), types.XTimeZero, true},
+		{types.NewXNumberFromInt(123), types.XTimeZero, true},
+		{types.NewXString("2018-06-05"), types.NewXTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{types.NewXString("wha?"), types.XTimeZero, true},
+		{NewTestXObject("Hello", 123), types.XTimeZero, true},
+		{NewTestXObject("2018/6/5", 123), types.NewXTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+	}
+
+	env := utils.NewDefaultEnvironment()
+
+	for _, test := range tests {
+		result, err := types.ToXTime(env, test.value)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error for input '%s'", test.value)
