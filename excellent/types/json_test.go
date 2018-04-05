@@ -7,50 +7,49 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestJSONResolve(t *testing.T) {
+func TestXJSONResolve(t *testing.T) {
 	var jsonTests = []struct {
 		JSON     []byte
 		lookup   string
-		expected interface{}
+		expected types.XValue
 		hasError bool
 	}{
 		// error cases
-		{nil, "key", "", true},
-		{[]byte(`malformed`), "key", "", true},
+		{nil, "key", nil, true},
+		{[]byte(`malformed`), "key", nil, true},
 
 		// different data types in an object
-		{[]byte(`{"foo": "x", "bar": "one"}`), "bar", "one", false},
-		{[]byte(`{"foo": "x", "bar": 1.23}`), "bar", decimal.RequireFromString("1.23"), false},
-		{[]byte(`{"foo": "x", "bar": true}`), "bar", true, false},
+		{[]byte(`{"foo": "x", "bar": "one"}`), "bar", types.NewXString("one"), false},
+		{[]byte(`{"foo": "x", "bar": 1.23}`), "bar", types.RequireXNumberFromString("1.23"), false},
+		{[]byte(`{"foo": "x", "bar": true}`), "bar", types.NewXBool(true), false},
 		{[]byte(`{"foo": "x", "bar": null}`), "bar", nil, false},
 
-		// different data types in an object
-		{[]byte(`["foo", "one"]`), "1", "one", false},
-		{[]byte(`["foo", 1.23]`), "1", decimal.RequireFromString("1.23"), false},
-		{[]byte(`["foo", true]`), "1", true, false},
+		// different data types in an array
+		{[]byte(`["foo", "one"]`), "1", types.NewXString("one"), false},
+		{[]byte(`["foo", 1.23]`), "1", types.RequireXNumberFromString("1.23"), false},
+		{[]byte(`["foo", true]`), "1", types.NewXBool(true), false},
 		{[]byte(`["foo", null]`), "1", nil, false},
 
-		{[]byte(`["one", "two", "three"]`), "0", "one", false},
-		{[]byte(`["escaped \"string\""]`), "0", `escaped "string"`, false},
-		{[]byte(`{"1": "one"}`), "1", "one", false}, // map key is numerical string
-		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", "two", false},
-		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", "two", false},
-		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", "val2", false},
-		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, "val2", false},
-		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, "val2", false},
+		{[]byte(`["one", "two", "three"]`), "0", types.NewXString("one"), false},
+		{[]byte(`["escaped \"string\""]`), "0", types.NewXString(`escaped "string"`), false},
+		{[]byte(`{"1": "one"}`), "1", types.NewXString("one"), false}, // map key is numerical string
+		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", types.NewXString("two"), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", types.NewXString("two"), false},
+		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", types.NewXString("val2"), false},
+		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, types.NewXString("val2"), false},
+		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, types.NewXString("val2"), false},
 
-		{[]byte(`{"arr": ["one", "two"]}`), "arr", types.JSONArray([]byte(`["one", "two"]`)), false},
-		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", types.JSONFragment([]byte(`{"foo": "bar"}`)), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
+		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
 	}
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
-		fragment := types.JSONFragment(test.JSON)
-		value := excellent.ResolveVariable(env, fragment, test.lookup)
+		fragment := types.JSONToXValue(test.JSON)
+		value := excellent.ResolveXValue(env, fragment, test.lookup)
 		err, _ := value.(error)
 
 		if test.hasError {

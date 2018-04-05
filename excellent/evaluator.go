@@ -150,6 +150,66 @@ func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, 
 	return buf.String(), nil
 }
 
+// ResolveXValue will resolve the passed in string variable given in dot notation and return
+// the value as defined by the Resolvable passed in.
+//
+// Example syntaxes:
+//      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
+//      foo.bar[0] - same as above
+func ResolveXValue(env utils.Environment, variable types.XValue, key string) types.XValue {
+	// self referencing
+	if key == "" {
+		return variable
+	}
+
+	// strip leading '.'
+	if key[0] == '.' {
+		key = key[1:]
+	}
+
+	rest := key
+	for rest != "" {
+		key, rest = popNextVariable(rest)
+
+		if utils.IsNil(variable) {
+			return types.NewXError(fmt.Errorf("can't resolve key '%s' of nil", key))
+		}
+
+		// is our key numeric?
+		index, err := strconv.Atoi(key)
+		if err == nil {
+			indexable, isIndexable := variable.(types.XIndexable)
+			if isIndexable {
+				if index >= indexable.Length() || index < -indexable.Length() {
+					return types.NewXError(fmt.Errorf("index %d out of range for %d items", index, indexable.Length()))
+				}
+				if index < 0 {
+					index += indexable.Length()
+				}
+				variable = indexable.Index(index)
+				continue
+			}
+		}
+
+		resolver, isResolver := variable.(types.XResolvable)
+
+		// look it up in our resolver
+		if isResolver {
+			variable = resolver.Resolve(key)
+
+			err, isErr := variable.(error)
+			if isErr {
+				return types.NewXError(err)
+			}
+
+		} else {
+			return types.NewXError(fmt.Errorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable)))
+		}
+	}
+
+	return variable
+}
+
 // ResolveVariable will resolve the passed in string variable given in dot notation and return
 // the value as defined by the VariableResolver passed in.
 //

@@ -225,8 +225,6 @@ type XObject interface {
 // BaseXObject is base of any XObject
 type BaseXObject struct{}
 
-func (x *BaseXObject) Reduce() XValue { panic("BaseXObject should implement XReducible") }
-
 // Type is the XType of this type
 func (x *BaseXObject) Type() XType { return XTypeObject }
 
