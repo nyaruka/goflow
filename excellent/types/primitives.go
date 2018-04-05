@@ -93,6 +93,11 @@ func NewXNumberFromInt(value int) XNumber {
 	return XNumber(decimal.New(int64(value), 0))
 }
 
+// NewXNumberFromInt64 creates a new XNumber from the given int
+func NewXNumberFromInt64(value int64) XNumber {
+	return XNumber(decimal.New(value, 0))
+}
+
 // RequireXNumberFromString creates a new XNumber from the given string
 func RequireXNumberFromString(value string) XNumber {
 	return XNumber(decimal.RequireFromString(value))
