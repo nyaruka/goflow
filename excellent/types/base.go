@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -16,24 +17,8 @@ func init() {
 	decimal.MarshalJSONWithoutQuotes = true
 }
 
-// XType represents a type in Excellent
-type XType int
-
-// the supported types
-const (
-	XTypeString XType = iota
-	XTypeNumber
-	XTypeBool
-	XTypeTime
-	XTypeArray
-	XTypeObject
-	XTypeError
-	XTypeNil
-)
-
 // XValue is the base interface of all Excellent types
 type XValue interface {
-	Type() XType
 	ToJSON() XString
 }
 
@@ -71,9 +56,6 @@ func NewXString(value string) XString {
 	return XString(value)
 }
 
-// Type is the XType of this type
-func (x XString) Type() XType { return XTypeString }
-
 // ToString converts this type to a string
 func (x XString) ToString() XString { return x }
 
@@ -110,9 +92,6 @@ func RequireXNumberFromString(value string) XNumber {
 	return XNumber(decimal.RequireFromString(value))
 }
 
-// Type is the XType of this type
-func (x XNumber) Type() XType { return XTypeNumber }
-
 // ToString converts this type to a string
 func (x XNumber) ToString() XString { return XString(x.Native().String()) }
 
@@ -136,9 +115,6 @@ func NewXBool(value bool) XBool {
 	return XBool(value)
 }
 
-// Type is the XType of this type
-func (x XBool) Type() XType { return XTypeBool }
-
 // ToString converts this type to a string
 func (x XBool) ToString() XString { return XString(strconv.FormatBool(x.Native())) }
 
@@ -161,9 +137,6 @@ type XTime time.Time
 func NewXTime(value time.Time) XTime {
 	return XTime(value)
 }
-
-// Type is the XType of this type
-func (x XTime) Type() XType { return XTypeTime }
 
 // ToString converts this type to a string
 func (x XTime) ToString() XString { return XString(utils.DateToISO(x.Native())) }
@@ -195,8 +168,10 @@ func NewXError(err error) XError {
 	return xerror{err: err}
 }
 
-// Type is the XType of this type
-func (x xerror) Type() XType { return XTypeError }
+// NewXResolveError creates a new XError when a key can't be resolved on an XResolvable
+func NewXResolveError(resolvable XResolvable, key string) XError {
+	return NewXError(fmt.Errorf("unable to resolve '%s' on %s", key, reflect.TypeOf(resolvable)))
+}
 
 // ToString converts this type to a string
 func (x xerror) ToString() XString { return XString(x.Native().Error()) }
@@ -224,9 +199,6 @@ type XObject interface {
 
 // BaseXObject is base of any XObject
 type BaseXObject struct{}
-
-// Type is the XType of this type
-func (x *BaseXObject) Type() XType { return XTypeObject }
 
 // RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
 func RequireMarshalToXString(x interface{}) XString {

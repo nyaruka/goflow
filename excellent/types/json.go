@@ -11,8 +11,6 @@ import (
 
 type XJSON []byte
 
-func (x XJSON) Type() XType { return XTypeObject }
-
 func (x XJSON) ToJSON() XString { return NewXString(string(x)) }
 
 func (x XJSON) Reduce() XPrimitive { return x.ToJSON() }

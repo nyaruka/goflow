@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-// XArray is a simple data structure which is indexable in expressions
+// XArray is an array primitive in Excellent expressions
 type XArray interface {
 	XPrimitive
 	XIndexable
@@ -20,9 +20,6 @@ type xarray struct {
 func NewXArray(values ...XValue) XArray {
 	return &xarray{values: values}
 }
-
-// Type is the XType of this type
-func (a *xarray) Type() XType { return XTypeArray }
 
 // ToString converts this type to a string
 func (a *xarray) ToString() XString {

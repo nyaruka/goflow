@@ -258,7 +258,7 @@ func Compare(env utils.Environment, arg1 interface{}, arg2 interface{}) (int, er
 	case arg1Type == arg2Type && arg1Type == XTypeError:
 		return strings.Compare(arg1.(error).Error(), arg2.(error).Error()), nil
 
-	case arg1Type == arg2Type && arg1Type == XTypeNumber:
+	case arg1Type == arg2Type && arg1Type == XTypeDecimal:
 		return arg1.(decimal.Decimal).Cmp(arg2.(decimal.Decimal)), nil
 
 	case arg1Type == arg2Type && arg1Type == XTypeBool:
