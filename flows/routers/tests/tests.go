@@ -33,7 +33,7 @@ func init() {
 }
 
 // XTESTS is our mapping of the excellent test names to their actual functions
-var XTESTS = map[string]excellent.Function{
+var XTESTS = map[string]excellent.XFunction{
 	"is_error":           IsError,
 	"has_value":          HasValue,
 	"has_group":          HasGroup,

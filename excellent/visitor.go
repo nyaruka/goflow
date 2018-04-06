@@ -69,10 +69,10 @@ func (v *Visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	functionName := strings.ToLower(ctx.Fnname().GetText())
 
-	var function Function
+	var function XFunction
 	var found bool
 
-	function, found = FUNCTIONS[functionName]
+	function, found = XFUNCTIONS[functionName]
 	if !found {
 		return fmt.Errorf("no function with name '%s'", functionName)
 	}
