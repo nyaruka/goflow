@@ -30,9 +30,9 @@ func TestResults(t *testing.T) {
 			t.Errorf("Error unmarshalling: '%s'", err)
 			continue
 		}
-		value := excellent.ResolveVariable(env, results, test.lookup)
+		value := excellent.ResolveXValue(env, results, test.lookup)
 
-		valueStr, _ := types.ToString(env, value)
+		valueStr := types.ToXString(value).Native()
 		if valueStr != test.expected {
 			t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, valueStr, test.lookup, test.JSON)
 		}

@@ -1,8 +1,6 @@
 package runs
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -15,7 +13,7 @@ type runContext struct {
 }
 
 // creates a new evaluation context for the passed in run
-func newRunContext(run flows.FlowRun) types.XResolvable {
+func newRunContext(run flows.FlowRun) types.XValue {
 	return &runContext{run: run}
 }
 
@@ -34,8 +32,17 @@ func (c *runContext) Resolve(key string) types.XValue {
 		return c.run.Session().Trigger()
 	}
 
-	return fmt.Errorf("no field '%s' on context", key)
+	return types.NewXResolveError(c, key)
 }
+
+func (c *runContext) Reduce() types.XPrimitive {
+	return types.NewXString(c.run.UUID().String())
+}
+
+func (c *runContext) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*runContext)(nil)
+var _ types.XResolvable = (*runContext)(nil)
 
 // wraps parent/child runs and provides a reduced set of keys in the context
 type relatedRunContext struct {
@@ -54,23 +61,25 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 func (c *relatedRunContext) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(c.run.UUID())
+		return types.NewXString(string(c.run.UUID()))
 	case "contact":
 		return c.run.Contact()
 	case "flow":
 		return c.run.Flow()
 	case "status":
-		return string(c.run.Status())
+		return types.NewXString(string(c.run.Status()))
 	case "results":
 		return c.run.Results()
 	}
 
-	return fmt.Errorf("no field '%s' on related run", key)
+	return types.NewXResolveError(c, key)
 }
 
-func (c *relatedRunContext) String() string {
-	return c.run.UUID().String()
+func (c *relatedRunContext) Reduce() types.XPrimitive {
+	return types.NewXString(c.run.UUID().String())
 }
 
-var _ types.XResolvable = (*runContext)(nil)
+func (c *relatedRunContext) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*relatedRunContext)(nil)
 var _ types.XResolvable = (*relatedRunContext)(nil)

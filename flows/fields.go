@@ -64,17 +64,17 @@ func (v *FieldValue) IsEmpty() bool {
 	return !(v.text != "" || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
 }
 
-func (v *FieldValue) TypedValue() interface{} {
+func (v *FieldValue) TypedValue() types.XValue {
 	switch v.field.valueType {
 	case FieldValueTypeText:
-		return v.text
+		return types.NewXString(v.text)
 	case FieldValueTypeDatetime:
 		if v.datetime != nil {
-			return *v.datetime
+			return types.NewXTime(*v.datetime)
 		}
 	case FieldValueTypeDecimal:
 		if v.decimal != nil {
-			return *v.decimal
+			return types.NewXNumber(*v.decimal)
 		}
 	case FieldValueTypeState:
 		return v.state
@@ -97,8 +97,13 @@ func (v *FieldValue) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Reduce() types.XPrimitive {
-	return v.TypedValue()
+	return v.TypedValue().Reduce()
 }
+
+func (v *FieldValue) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*FieldValue)(nil)
+var _ types.XResolvable = (*FieldValue)(nil)
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[FieldKey]*FieldValue
@@ -116,12 +121,14 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue stri
 	var asDatetime *time.Time
 	var asDecimal *decimal.Decimal
 
-	if parsedDecimal, err := types.ToDecimal(env, rawValue); err == nil {
-		asDecimal = &parsedDecimal
+	if parsedDecimal, err := types.ToXNumber(types.NewXString(rawValue)); err == nil {
+		v := parsedDecimal.Native()
+		asDecimal = &v
 	}
 
-	if parsedDatetime, err := types.ToDate(env, rawValue); err == nil {
-		asDatetime = &parsedDatetime
+	if parsedDatetime, err := types.ToXTime(env, types.NewXString(rawValue)); err == nil {
+		v := parsedDatetime.Native()
+		asDatetime = &v
 	}
 
 	// TODO parse as locations

@@ -1,13 +1,11 @@
 package tests
 
 import (
-	"fmt"
-	"reflect"
 	"regexp"
 	"strings"
 	"time"
 
-	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -28,12 +26,12 @@ import (
 func init() {
 	// register our router tests as Excellent functions
 	for name, testFunc := range XTESTS {
-		excellent.RegisterFunction(name, testFunc)
+		functions.RegisterXFunction(name, testFunc)
 	}
 }
 
 // XTESTS is our mapping of the excellent test names to their actual functions
-var XTESTS = map[string]excellent.XFunction{
+var XTESTS = map[string]functions.XFunction{
 	"is_error":           IsError,
 	"has_value":          HasValue,
 	"has_group":          HasGroup,
@@ -86,19 +84,16 @@ var XTESTS = map[string]excellent.XFunction{
 //  @(is_string_eq(webhook.status, "connection_error")) -> false
 //
 // @test is_string_eq(run)
-func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
+func IsStringEQ(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return fmt.Errorf("IS_STRING_EQ takes exactly two arguments, got %d", len(args))
+		return types.NewXErrorf("IS_STRING_EQ takes exactly two arguments, got %d", len(args))
 	}
 
 	// both parameters needs to be strings
-	string1, err1 := types.ToString(env, args[0])
-	string2, err2 := types.ToString(env, args[1])
-	if err1 != nil || err2 != nil {
-		return fmt.Errorf("IS_STRING_EQ must be called with strings as both arguments, but got '%s' and '%s'", reflect.TypeOf(args[0]), reflect.TypeOf(args[1]))
-	}
+	string1 := types.ToXString(args[0])
+	string2 := types.ToXString(args[1])
 
-	if string1 == string2 {
+	if string1.Native() == string2.Native() {
 		return XTestResult{true, string1}
 	}
 
@@ -117,9 +112,9 @@ func IsStringEQ(env utils.Environment, args ...interface{}) interface{} {
 //   @(is_error("hello")) -> false
 //
 // @test is_error(value)
-func IsError(env utils.Environment, args ...interface{}) interface{} {
+func IsError(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return fmt.Errorf("IS_ERROR takes exactly one argument, got %d", len(args))
+		return types.NewXErrorf("IS_ERROR takes exactly one argument, got %d", len(args))
 	}
 
 	// nil is not an error
@@ -127,7 +122,7 @@ func IsError(env utils.Environment, args ...interface{}) interface{} {
 		return XFalseResult
 	}
 
-	err, isErr := args[0].(error)
+	err, isErr := args[0].(types.XError)
 	if isErr {
 		return XTestResult{true, err}
 	}
@@ -147,9 +142,9 @@ func IsError(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_value("hello")) -> true
 //
 // @test has_value(value)
-func HasValue(env utils.Environment, args ...interface{}) interface{} {
+func HasValue(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_VALUE takes exactly one argument, got %d", len(args))
+		return types.NewXErrorf("HAS_VALUE takes exactly one argument, got %d", len(args))
 	}
 
 	// nil is not a value
@@ -171,15 +166,15 @@ func HasValue(env utils.Environment, args ...interface{}) interface{} {
 //  @(has_wait_timed_out(run)) -> false
 //
 // @test has_wait_timed_out(run)
-func HasWaitTimedOut(env utils.Environment, args ...interface{}) interface{} {
+func HasWaitTimedOut(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_WAIT_TIMED_OUT takes exactly one argument, got %d", len(args))
+		return types.NewXErrorf("HAS_WAIT_TIMED_OUT takes exactly one argument, got %d", len(args))
 	}
 
 	// first parameter needs to be a flow run
 	run, isRun := args[0].(flows.FlowRun)
 	if !isRun {
-		return fmt.Errorf("HAS_WAIT_TIMED_OUT must be called with a run as first argument")
+		return types.NewXErrorf("HAS_WAIT_TIMED_OUT must be called with a run as first argument")
 	}
 
 	if run.Session().Wait() != nil && run.Session().Wait().HasTimedOut() {
@@ -194,21 +189,18 @@ func HasWaitTimedOut(env utils.Environment, args ...interface{}) interface{} {
 //  @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> true
 //
 // @test has_group(contact)
-func HasGroup(env utils.Environment, args ...interface{}) interface{} {
+func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return fmt.Errorf("HAS_GROUP takes exactly two arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_GROUP takes exactly two arguments, got %d", len(args))
 	}
 
 	// is the first argument a contact?
 	contact, isContact := args[0].(*flows.Contact)
 	if !isContact {
-		return fmt.Errorf("HAS_GROUP must have a contact as its first argument")
+		return types.NewXErrorf("HAS_GROUP must have a contact as its first argument")
 	}
 
-	groupUUID, err := types.ToString(env, args[1])
-	if err != nil {
-		return err
-	}
+	groupUUID := types.ToXString(args[1])
 
 	// iterate through the groups looking for one with the same UUID as passed in
 	group := contact.Groups().FindByUUID(flows.GroupUUID(groupUUID))
@@ -230,7 +222,7 @@ func HasGroup(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_phrase("the.quick.brown.fox", "the quick").match) -> "the quick"
 //
 // @test has_phrase(string, phrase)
-func HasPhrase(env utils.Environment, args ...interface{}) interface{} {
+func HasPhrase(env utils.Environment, args ...types.XValue) types.XValue {
 	return testStringTokens(env, "HAS_PHRASE", hasPhraseTest, args)
 }
 
@@ -243,7 +235,7 @@ func HasPhrase(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_all_words("the quick brown fox", "red fox")) -> false
 //
 // @test has_all_words(string, words)
-func HasAllWords(env utils.Environment, args ...interface{}) interface{} {
+func HasAllWords(env utils.Environment, args ...types.XValue) types.XValue {
 	return testStringTokens(env, "HAS_ALL_WORDS", hasAllWordsTest, args)
 }
 
@@ -256,7 +248,7 @@ func HasAllWords(env utils.Environment, args ...interface{}) interface{} {
 //  @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
 //
 // @test has_any_word(string, words)
-func HasAnyWord(env utils.Environment, args ...interface{}) interface{} {
+func HasAnyWord(env utils.Environment, args ...types.XValue) types.XValue {
 	return testStringTokens(env, "HAS_ANY_WORD", hasAnyWordTest, args)
 }
 
@@ -272,7 +264,7 @@ func HasAnyWord(env utils.Environment, args ...interface{}) interface{} {
 //  @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(string, phrase)
-func HasOnlyPhrase(env utils.Environment, args ...interface{}) interface{} {
+func HasOnlyPhrase(env utils.Environment, args ...types.XValue) types.XValue {
 	return testStringTokens(env, "HAS_ONLY_PHRASE", hasOnlyPhraseTest, args)
 }
 
@@ -285,9 +277,9 @@ func HasOnlyPhrase(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_text(123)) -> true
 //
 // @test has_text(string)
-func HasText(env utils.Environment, args ...interface{}) interface{} {
+func HasText(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_TEXT takes exactly one arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_TEXT takes exactly one arguments, got %d", len(args))
 	}
 
 	text, err := types.ToString(env, args[0])
@@ -317,9 +309,9 @@ func HasText(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_beginning("The Quick Brown", "quick brown")) -> false
 //
 // @test has_beginning(string, beginning)
-func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
+func HasBeginning(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return fmt.Errorf("HAS_BEGINNING takes exactly two arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_BEGINNING takes exactly two arguments, got %d", len(args))
 	}
 
 	hayStack, err := types.ToString(env, args[0])
@@ -356,7 +348,7 @@ func HasBeginning(env utils.Environment, args ...interface{}) interface{} {
 
 // Returned by the has_pattern test as its match value
 type patternMatch struct {
-	groups types.Array
+	groups types.XArray
 }
 
 func newPatternMatch(matches []string) *patternMatch {
@@ -374,13 +366,15 @@ func (m *patternMatch) Resolve(key string) types.XValue {
 		return m.groups
 	}
 
-	return fmt.Errorf("no such key '%s' on pattern match", key)
+	return types.NewXResolveError(m, key)
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (m *patternMatch) Reduce() types.XPrimitive {
 	return m.groups.Index(0)
 }
+
+func (m *patternMatch) ToJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*patternMatch)(nil)
 var _ types.XResolvable = (*patternMatch)(nil)
@@ -396,9 +390,9 @@ var _ types.XResolvable = (*patternMatch)(nil)
 //   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> "cheese"
 //
 // @test has_pattern(string, pattern)
-func HasPattern(env utils.Environment, args ...interface{}) interface{} {
+func HasPattern(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return fmt.Errorf("HAS_PATTERN takes exactly two arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_PATTERN takes exactly two arguments, got %d", len(args))
 	}
 
 	hayStack, err := types.ToString(env, args[0])
@@ -413,7 +407,7 @@ func HasPattern(env utils.Environment, args ...interface{}) interface{} {
 
 	regex, err := regexp.Compile("(?i)" + strings.TrimSpace(pattern))
 	if err != nil {
-		return fmt.Errorf("HAS_PATTERN must be called with a valid regular expression")
+		return types.NewXErrorf("HAS_PATTERN must be called with a valid regular expression")
 	}
 
 	matches := regex.FindStringSubmatch(strings.TrimSpace(hayStack))
@@ -431,10 +425,10 @@ func HasPattern(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number("the number is forty two")) -> false
 //
 // @test has_number(string)
-func HasNumber(env utils.Environment, args ...interface{}) interface{} {
+func HasNumber(env utils.Environment, args ...types.XValue) types.XValue {
 	// only one argument for has number
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_NUMBER takes exactly one arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_NUMBER takes exactly one arguments, got %d", len(args))
 	}
 
 	testArgs := make([]interface{}, 2)
@@ -455,10 +449,10 @@ func HasNumber(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number_between("the number is not there", "foo", 60)) -> ERROR
 //
 // @test has_number_between(string, min, max)
-func HasNumberBetween(env utils.Environment, args ...interface{}) interface{} {
+func HasNumberBetween(env utils.Environment, args ...types.XValue) types.XValue {
 	// need three arguments, value being tested and min, max
 	if len(args) != 3 {
-		return fmt.Errorf("HAS_NUMBER_BETWEEN takes exactly three arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_NUMBER_BETWEEN takes exactly three arguments, got %d", len(args))
 	}
 
 	values, err := types.ToString(env, args[0])
@@ -496,7 +490,7 @@ func HasNumberBetween(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number_lt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lt(string, max)
-func HasNumberLT(env utils.Environment, args ...interface{}) interface{} {
+func HasNumberLT(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDecimal(env, "HAS_NUMBER_LT", isNumberLT, args)
 }
 
@@ -509,7 +503,7 @@ func HasNumberLT(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number_lte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lte(string, max)
-func HasNumberLTE(env utils.Environment, args ...interface{}) interface{} {
+func HasNumberLTE(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDecimal(env, "HAS_NUMBER_LTE", isNumberLTE, args)
 }
 
@@ -522,7 +516,7 @@ func HasNumberLTE(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number_eq("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_eq(string, value)
-func HasNumberEQ(env utils.Environment, args ...interface{}) interface{} {
+func HasNumberEQ(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDecimal(env, "HAS_NUMBER_EQ", isNumberEQ, args)
 }
 
@@ -535,7 +529,7 @@ func HasNumberEQ(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number_gte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gte(string, min)
-func HasNumberGTE(env utils.Environment, args ...interface{}) interface{} {
+func HasNumberGTE(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDecimal(env, "HAS_NUMBER_GTE", isNumberGTE, args)
 }
 
@@ -548,7 +542,7 @@ func HasNumberGTE(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_number_gt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gt(string, min)
-func HasNumberGT(env utils.Environment, args ...interface{}) interface{} {
+func HasNumberGT(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDecimal(env, "HAS_NUMBER_GT", isNumberGT, args)
 }
 
@@ -559,10 +553,10 @@ func HasNumberGT(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_date("there is no date here, just a year 2017")) -> false
 //
 // @test has_date(string)
-func HasDate(env utils.Environment, args ...interface{}) interface{} {
+func HasDate(env utils.Environment, args ...types.XValue) types.XValue {
 	// only one argument for has date
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_DATE takes exactly one arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_DATE takes exactly one arguments, got %d", len(args))
 	}
 
 	testArgs := make([]interface{}, 2)
@@ -582,7 +576,7 @@ func HasDate(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_lt(string, max)
-func HasDateLT(env utils.Environment, args ...interface{}) interface{} {
+func HasDateLT(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDate(env, "HAS_DATE_LT", isDateLTTest, args)
 }
 
@@ -595,7 +589,7 @@ func HasDateLT(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_eq(string, date)
-func HasDateEQ(env utils.Environment, args ...interface{}) interface{} {
+func HasDateEQ(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDate(env, "HAS_DATE_EQ", isDateEQTest, args)
 }
 
@@ -608,7 +602,7 @@ func HasDateEQ(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_gt(string, min)
-func HasDateGT(env utils.Environment, args ...interface{}) interface{} {
+func HasDateGT(env utils.Environment, args ...types.XValue) types.XValue {
 	return testDate(env, "HAS_DATE_GT", isDateGTTest, args)
 }
 
@@ -622,9 +616,9 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\
 //   @(has_email("i'm not sharing my email")) -> false
 //
 // @test has_email(string)
-func HasEmail(env utils.Environment, args ...interface{}) interface{} {
+func HasEmail(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_EMAIL takes exactly one argument, got %d", len(args))
+		return types.NewXErrorf("HAS_EMAIL takes exactly one argument, got %d", len(args))
 	}
 
 	// convert our arg to a string
@@ -649,9 +643,9 @@ func HasEmail(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(string, country_code)
-func HasPhone(env utils.Environment, args ...interface{}) interface{} {
+func HasPhone(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 2 {
-		return fmt.Errorf("HAS_PHONE takes exactly two arguments, the string to search and the country code, got %d", len(args))
+		return types.NewXErrorf("HAS_PHONE takes exactly two arguments, the string to search and the country code, got %d", len(args))
 	}
 
 	// grab the text we will search
@@ -685,9 +679,9 @@ func HasPhone(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_state("I live in Kigali")) -> true
 //
 // @test has_state(string)
-func HasState(env utils.Environment, args ...interface{}) interface{} {
+func HasState(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 {
-		return fmt.Errorf("HAS_STATE takes exactly one arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_STATE takes exactly one arguments, got %d", len(args))
 	}
 
 	runEnv, _ := env.(flows.RunEnvironment)
@@ -717,9 +711,9 @@ func HasState(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_district("Gasabo")) -> true
 //
 // @test has_district(string, state)
-func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
+func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 && len(args) != 2 {
-		return fmt.Errorf("HAS_DISTRICT takes one or two arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_DISTRICT takes one or two arguments, got %d", len(args))
 	}
 
 	runEnv, _ := env.(flows.RunEnvironment)
@@ -776,9 +770,9 @@ func HasDistrict(env utils.Environment, args ...interface{}) interface{} {
 //   @(has_ward("Gisozi")) -> true
 //
 // @test has_ward(string, district, state)
-func HasWard(env utils.Environment, args ...interface{}) interface{} {
+func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) != 1 && len(args) != 3 {
-		return fmt.Errorf("HAS_WARD takes one or three arguments, got %d", len(args))
+		return types.NewXErrorf("HAS_WARD takes one or three arguments, got %d", len(args))
 	}
 
 	runEnv, _ := env.(flows.RunEnvironment)
@@ -839,9 +833,9 @@ func HasWard(env utils.Environment, args ...interface{}) interface{} {
 
 type stringTokenTest func(origHayTokens []string, hayTokens []string, pinTokens []string) interface{}
 
-func testStringTokens(env utils.Environment, name string, test stringTokenTest, args []interface{}) interface{} {
+func testStringTokens(env utils.Environment, name string, test stringTokenTest, args []types.XValue) types.XValue {
 	if len(args) != 2 {
-		return fmt.Errorf("%s takes exactly two arguments, got %d", name, len(args))
+		return types.NewXErrorf("%s takes exactly two arguments, got %d", name, len(args))
 	}
 
 	hayStack, err := types.ToString(env, args[0])
@@ -973,7 +967,7 @@ type decimalTest func(value decimal.Decimal, test decimal.Decimal) bool
 
 func testDecimal(env utils.Environment, name string, test decimalTest, args []interface{}) interface{} {
 	if len(args) != 2 {
-		return fmt.Errorf("%s takes exactly two arguments, got %d", name, len(args))
+		return types.NewXErrorf("%s takes exactly two arguments, got %d", name, len(args))
 	}
 
 	values, err := types.ToString(env, args[0])
@@ -1031,7 +1025,7 @@ type dateTest func(value time.Time, test time.Time) bool
 
 func testDate(env utils.Environment, name string, test dateTest, args []interface{}) interface{} {
 	if len(args) != 2 {
-		return fmt.Errorf("%s takes exactly two arguments, got %d", name, len(args))
+		return types.NewXErrorf("%s takes exactly two arguments, got %d", name, len(args))
 	}
 
 	// if we can't convert this to a string, then that's an error

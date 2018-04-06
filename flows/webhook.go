@@ -79,7 +79,7 @@ func (w *WebhookCall) Response() string { return w.response }
 func (w *WebhookCall) Body() string { return w.body }
 
 // JSON returns the response as a JSON fragment
-func (w *WebhookCall) JSON() types.JSONFragment { return types.JSONFragment([]byte(w.body)) }
+func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.body)) }
 
 // Resolve resolves the given key when this webhook is referenced in an expression
 func (w *WebhookCall) Resolve(key string) types.XValue {
@@ -105,7 +105,7 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (w *WebhookCall) Reduce() types.XPrimitive {
-	return w.body
+	return types.NewXString(w.body)
 }
 
 func (w *WebhookCall) ToJSON() types.XString { return types.NewXString("TODO") }

@@ -23,9 +23,8 @@ type flowRun struct {
 
 	flow    flows.Flow
 	contact *flows.Contact
-	extra   types.JSONFragment
 
-	context types.XResolvable
+	context types.XValue
 	webhook *flows.WebhookCall
 	input   flows.Input
 	parent  flows.FlowRun
@@ -69,9 +68,9 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() types.XResolvable { return r.context }
-func (r *flowRun) Results() flows.Results     { return r.results }
-func (r *flowRun) Events() []flows.Event      { return r.events }
+func (r *flowRun) Context() types.XValue  { return r.context }
+func (r *flowRun) Results() flows.Results { return r.results }
+func (r *flowRun) Events() []flows.Event  { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -255,7 +254,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 func (r *flowRun) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(r.UUID())
+		return types.NewXString(string(r.UUID()))
 	case "contact":
 		return r.Contact()
 	case "flow":
@@ -265,25 +264,27 @@ func (r *flowRun) Resolve(key string) types.XValue {
 	case "webhook":
 		return r.Webhook()
 	case "status":
-		return string(r.Status())
+		return types.NewXString(string(r.Status()))
 	case "results":
 		return r.Results()
 	case "created_on":
-		return r.CreatedOn()
+		return types.NewXTime(r.CreatedOn())
 	case "exited_on":
 		if r.exitedOn != nil {
-			return r.exitedOn
+			return types.NewXTime(*r.exitedOn)
 		}
 		return nil
 	}
 
-	return fmt.Errorf("no field '%s' on run", key)
+	return types.NewXResolveError(r, key)
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *flowRun) Reduce() types.XPrimitive {
-	return string(r.uuid)
+	return types.NewXString(string(r.uuid))
 }
+
+func (r *flowRun) ToJSON() types.XString { return types.NewXString("TODO") }
 
 func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)

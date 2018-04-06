@@ -34,7 +34,7 @@ func TestURNListResolve(t *testing.T) {
 		{"xxxxxx", false, ""}, // not a valid scheme
 	}
 	for _, tc := range testCases {
-		val := excellent.ResolveVariable(env, urnList, tc.key)
+		val := excellent.ResolveXValue(env, urnList, tc.key)
 
 		err, isErr := val.(error)
 

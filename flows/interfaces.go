@@ -133,6 +133,8 @@ type SessionAssets interface {
 
 // Flow is a graph of nodes containing actions and routers
 type Flow interface {
+	types.XValue
+
 	UUID() FlowUUID
 	Name() string
 	Language() utils.Language
@@ -218,13 +220,13 @@ type Translations interface {
 }
 
 type Trigger interface {
-	types.XResolvable
+	types.XValue
 	utils.Typed
 
 	Environment() utils.Environment
 	Flow() Flow
 	Contact() *Contact
-	Params() types.JSONFragment
+	Params() types.XValue
 	TriggeredOn() time.Time
 }
 
@@ -265,7 +267,7 @@ type EventLog interface {
 }
 
 type Input interface {
-	types.XResolvable
+	types.XValue
 	utils.Typed
 
 	UUID() InputUUID
@@ -330,11 +332,12 @@ type RunEnvironment interface {
 
 // FlowRun represents a run in the current session
 type FlowRun interface {
+	types.XValue
 	RunSummary
 
 	Environment() RunEnvironment
 	Session() Session
-	Context() types.XResolvable
+	Context() types.XValue
 	Input() Input
 	Webhook() *WebhookCall
 
@@ -372,6 +375,8 @@ type FlowRun interface {
 
 // Channel represents a channel for sending and receiving messages
 type Channel interface {
+	types.XValue
+
 	UUID() ChannelUUID
 	Name() string
 	Address() string

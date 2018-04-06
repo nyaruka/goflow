@@ -39,9 +39,9 @@ func (i *MsgInput) Type() string { return TypeMsg }
 func (i *MsgInput) Resolve(key string) types.XValue {
 	switch key {
 	case "urn":
-		return i.urn
+		return types.NewXString(i.urn.String())
 	case "text":
-		return i.text
+		return types.NewXString(i.text)
 	case "attachments":
 		return i.attachments
 	}
@@ -57,8 +57,10 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	for _, attachment := range i.attachments {
 		parts = append(parts, attachment.URL())
 	}
-	return strings.Join(parts, "\n")
+	return types.NewXString(strings.Join(parts, "\n"))
 }
+
+func (i *MsgInput) ToJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*MsgInput)(nil)
 var _ types.XResolvable = (*MsgInput)(nil)
