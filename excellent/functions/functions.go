@@ -702,19 +702,11 @@ func Split(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("SPLIT takes exactly two arguments: string and delimiter, got %d", len(args))
 	}
 
-	s, err := types.ToString(env, args[0])
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	sep, err := types.ToString(env, args[1])
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+	s := types.ToXString(args[0])
+	sep := types.ToXString(args[1])
 	splits := types.NewXArray()
 
-	allSplits := strings.Split(s, sep)
+	allSplits := strings.Split(s.Native(), sep.Native())
 	for i := range allSplits {
 		if allSplits[i] != "" {
 			splits.Append(types.NewXString(allSplits[i]))

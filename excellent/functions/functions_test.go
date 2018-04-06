@@ -89,6 +89,29 @@ var funcTests = []struct {
 	{"mod", []types.XValue{xs("not_num"), xs("3")}, nil, true},
 	{"mod", []types.XValue{xs("9"), xs("not_num")}, nil, true},
 	{"mod", []types.XValue{}, nil, true},
+
+	{"read_code", []types.XValue{xs("123456")}, xs("1 2 3 , 4 5 6"), false},
+	{"read_code", []types.XValue{xs("abcd")}, xs("a b c d"), false},
+	{"read_code", []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8"), false},
+	{"read_code", []types.XValue{xs("12")}, xs("1 , 2"), false},
+	{"read_code", []types.XValue{}, nil, true},
+
+	{"split", []types.XValue{xs("1,2,3"), xs(",")}, types.NewXArray(xs("1"), xs("2"), xs("3")), false},
+	{"split", []types.XValue{xs("1,2,3"), xs(".")}, types.NewXArray(xs("1,2,3")), false},
+	{"split", []types.XValue{xs("1,2,3"), nil}, types.NewXArray(xs("1"), xs(","), xs("2"), xs(","), xs("3")), false},
+	{"split", []types.XValue{}, nil, true},
+
+	{"join", []types.XValue{types.NewXArray(xs("1"), xs("2"), xs("3")), xs(",")}, xs("1,2,3"), false},
+	{"join", []types.XValue{types.NewXArray(), xs(",")}, xs(""), false},
+	{"join", []types.XValue{types.NewXArray(xs("1")), xs(",")}, xs("1"), false},
+	{"join", []types.XValue{xs("1,2,3"), nil}, nil, true},
+	{"join", []types.XValue{types.NewXArray(xs("1,2,3")), nil}, xs("1,2,3"), false},
+	{"join", []types.XValue{types.NewXArray(xs("1"))}, nil, true},
+
+	{"title", []types.XValue{xs("hello")}, xs("Hello"), false},
+	{"title", []types.XValue{xs("")}, xs(""), false},
+	{"title", []types.XValue{nil}, xs(""), false},
+	{"title", []types.XValue{}, nil, true},
 }
 
 func TestFunctions(t *testing.T) {
