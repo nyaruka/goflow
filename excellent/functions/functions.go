@@ -42,41 +42,41 @@ var XFUNCTIONS = map[string]XFunction{
 	"legacy_add": LegacyAdd,
 
 	"round":      Round,
-	"round_up":   RoundUp,
-	"round_down": RoundDown,
+	"round_up":   OneNumberFunction("round_up", RoundUp),
+	"round_down": OneNumberFunction("round_down", RoundDown),
 	"max":        Max,
 	"min":        Min,
 	"mean":       Mean,
-	"mod":        Mod,
+	"mod":        TwoNumberFunction("mod", Mod),
 	"rand":       Rand,
-	"abs":        Abs,
+	"abs":        OneNumberFunction("abs", Abs),
 
 	"format_num": FormatNum,
-	"read_code":  ReadCode,
+	"read_code":  OneStringFunction("read_code", ReadCode),
 
 	"to_json":    ToJSON,
 	"from_json":  FromJSON,
-	"url_encode": URLEncode,
+	"url_encode": OneStringFunction("url_encode", URLEncode),
 
-	"char":              Char,
-	"code":              Code,
-	"split":             Split,
+	"char":              OneNumberFunction("char", Char),
+	"code":              OneStringFunction("code", Code),
+	"split":             TwoStringFunction("split", Split),
 	"join":              Join,
-	"title":             Title,
+	"title":             OneStringFunction("title", Title),
 	"word":              Word,
-	"remove_first_word": RemoveFirstWord,
-	"word_count":        WordCount,
+	"remove_first_word": OneStringFunction("remove_first_word", RemoveFirstWord),
+	"word_count":        OneStringFunction("word_count", WordCount),
 	"word_slice":        WordSlice,
 	"field":             Field,
-	"clean":             Clean,
-	"left":              Left,
-	"lower":             Lower,
-	"right":             Right,
-	"string_cmp":        StringCmp,
-	"repeat":            Repeat,
+	"clean":             OneStringFunction("clean", Clean),
+	"left":              StringAndIntegerFunction("left", Left),
+	"lower":             OneStringFunction("lower", Lower),
+	"right":             StringAndIntegerFunction("right", Right),
+	"string_cmp":        TwoStringFunction("string_cmp", StringCmp),
+	"repeat":            StringAndIntegerFunction("repeat", Repeat),
 	"replace":           Replace,
-	"upper":             Upper,
-	"percent":           Percent,
+	"upper":             OneStringFunction("upper", Upper),
+	"percent":           OneNumberFunction("percent", Percent),
 
 	"format_date":     FormatDate,
 	"parse_date":      ParseDate,
@@ -84,9 +84,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"date_from_parts": DateFromParts,
 	"date_diff":       DateDiff,
 	"date_add":        DateAdd,
-	"weekday":         Weekday,
-	"tz":              TZ,
-	"tz_offset":       TZOffset,
+	"weekday":         OneDateFunction("weekday", Weekday),
+	"tz":              OneDateFunction("tz", TZ),
+	"tz_offset":       OneDateFunction("tz_offset", TZOffset),
 	"today":           Today,
 	"now":             Now,
 	"from_epoch":      FromEpoch,
@@ -257,13 +257,8 @@ func ToJSON(env utils.Environment, args ...types.XValue) types.XValue {
 //  @(url_encode(10)) -> 10
 //
 // @function url_encode(string)
-func URLEncode(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("URL_ENCODE takes exactly one argument, got %d", len(args))
-	}
-
-	arg1 := types.ToXString(args[0])
-	return types.NewXString(url.QueryEscape(arg1.Native()))
+func URLEncode(env utils.Environment, str types.XString) types.XValue {
+	return types.NewXString(url.QueryEscape(str.Native()))
 }
 
 //------------------------------------------------------------------------------------------
@@ -338,11 +333,7 @@ func If(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(abs("foo")) -> ERROR
 //
 // @function abs(num)
-func Abs(env utils.Environment, args ...types.XValue) types.XValue {
-	num, err := checkOneDecimalArg(env, "ABS", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
+func Abs(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Abs())
 }
 
@@ -387,12 +378,7 @@ func Round(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(round_up("foo")) -> ERROR
 //
 // @function round_up(num)
-func RoundUp(env utils.Environment, args ...types.XValue) types.XValue {
-	num, err := checkOneDecimalArg(env, "ROUND_UP", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func RoundUp(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Ceil())
 }
 
@@ -403,12 +389,7 @@ func RoundUp(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(round_down("foo")) -> ERROR
 //
 // @function round_down(num)
-func RoundDown(env utils.Environment, args ...types.XValue) types.XValue {
-	num, err := checkOneDecimalArg(env, "ROUND_DOWN", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func RoundDown(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Floor())
 }
 
@@ -504,12 +485,7 @@ func Mean(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(mod(5, "foo")) -> ERROR
 //
 // @function mod(dividend, divisor)
-func Mod(env utils.Environment, args ...types.XValue) types.XValue {
-	num1, num2, err := checkTwoDecimalArgs(env, "MOD", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func Mod(env utils.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
 	return types.NewXNumber(num1.Native().Mod(num2.Native()))
 }
 
@@ -610,13 +586,7 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(read_code("abcdef")) -> "a b c , d e f"
 //
 // @function read_code(code)
-func ReadCode(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("READ_CODE takes exactly one argument, got %d", len(args))
-	}
-
-	val := types.ToXString(args[0])
-
+func ReadCode(env utils.Environment, val types.XString) types.XValue {
 	var output bytes.Buffer
 
 	// remove any leading +
@@ -672,13 +642,8 @@ func ReadCode(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(code(15)) -> "49"
 //
 // @function code(string)
-func Code(env utils.Environment, args ...types.XValue) types.XValue {
-	str, err := checkOneStringArg(env, "code", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	if len(str) == 0 {
+func Code(env utils.Environment, str types.XString) types.XValue {
+	if str.Length() == 0 {
 		return types.NewXErrorf("CODE requires a string of at least one character")
 	}
 
@@ -696,16 +661,9 @@ func Code(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(split("a.b.c.", ".")) -> "a, b, c"
 //   @(split("a && b && c", " && ")) -> "a, b, c"
 //
-// @function split(string, delimeter)
-func Split(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("SPLIT takes exactly two arguments: string and delimiter, got %d", len(args))
-	}
-
-	s := types.ToXString(args[0])
-	sep := types.ToXString(args[1])
+// @function split(string, delimiter)
+func Split(env utils.Environment, s types.XString, sep types.XString) types.XValue {
 	splits := types.NewXArray()
-
 	allSplits := strings.Split(s.Native(), sep.Native())
 	for i := range allSplits {
 		if allSplits[i] != "" {
@@ -752,18 +710,13 @@ func Join(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(char("foo")) -> ERROR
 //
 // @function char(num)
-func Char(env utils.Environment, args ...types.XValue) types.XValue {
-	arg, err := checkOneDecimalArg(env, "CHAR", args)
+func Char(env utils.Environment, num types.XNumber) types.XValue {
+	code, err := types.ToInteger(num)
 	if err != nil {
 		return types.NewXError(err)
 	}
 
-	num, err := types.ToInteger(arg)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXString(string(rune(num)))
+	return types.NewXString(string(rune(code)))
 }
 
 // Title titlecases the passed in `string`, capitalizing each word
@@ -773,13 +726,8 @@ func Char(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(title(123)) -> "123"
 //
 // @function title(string)
-func Title(env utils.Environment, args ...types.XValue) types.XValue {
-	arg, err := checkOneStringArg(env, "TITLE", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXString(strings.Title(arg.Native()))
+func Title(env utils.Environment, str types.XString) types.XValue {
+	return types.NewXString(strings.Title(str.Native()))
 }
 
 // Word returns the word at the passed in `offset` for the passed in `string`
@@ -814,13 +762,8 @@ func Word(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(remove_first_word("foo bar")) -> "bar"
 //
 // @function remove_first_word(string)
-func RemoveFirstWord(env utils.Environment, args ...types.XValue) types.XValue {
-	arg, err := checkOneStringArg(env, "REMOVE_FIRST_WORD", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	words := utils.TokenizeString(arg.Native())
+func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
+	words := utils.TokenizeString(str.Native())
 	if len(words) > 1 {
 		return types.NewXString(strings.Join(words[1:], " "))
 	}
@@ -876,13 +819,8 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(word_count("😀😃😄😁")) -> 4
 //
 // @function word_count(string)
-func WordCount(env utils.Environment, args ...types.XValue) types.XValue {
-	arg, err := checkOneStringArg(env, "WORD_COUNT", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	words := utils.TokenizeString(arg.Native())
+func WordCount(env utils.Environment, str types.XString) types.XValue {
+	words := utils.TokenizeString(str.Native())
 	return types.NewXNumberFromInt(len(words))
 }
 
@@ -936,13 +874,8 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(clean(123)) -> "123"
 //
 // @function clean(string)
-func Clean(env utils.Environment, args ...types.XValue) types.XValue {
-	arg, err := checkOneStringArg(env, "CLEAN", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXString(strings.TrimSpace(arg.Native()))
+func Clean(env utils.Environment, str types.XString) types.XValue {
+	return types.NewXString(strings.TrimSpace(str.Native()))
 }
 
 // Left returns the `len` most left characters of the passed in `string`
@@ -953,12 +886,7 @@ func Clean(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(left("hello", -1)) -> ERROR
 //
 // @function left(string, len)
-func Left(env utils.Environment, args ...types.XValue) types.XValue {
-	str, l, err := checkOneStringOneIntArg(env, "LEFT", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func Left(env utils.Environment, str types.XString, l int) types.XValue {
 	// this weird construct does the right thing for multi-byte unicode
 	var output bytes.Buffer
 	i := 0
@@ -981,13 +909,8 @@ func Left(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(lower("😀")) -> "😀"
 //
 // @function lower(string)
-func Lower(env utils.Environment, args ...types.XValue) types.XValue {
-	arg, err := checkOneStringArg(env, "LOWER", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXString(strings.ToLower(arg.Native()))
+func Lower(env utils.Environment, str types.XString) types.XValue {
+	return types.NewXString(strings.ToLower(str.Native()))
 }
 
 // Right returns the `len` most right characters of the passed in `string`
@@ -998,12 +921,7 @@ func Lower(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(right("hello", -1)) -> ERROR
 //
 // @function right(string, len)
-func Right(env utils.Environment, args ...types.XValue) types.XValue {
-	str, l, err := checkOneStringOneIntArg(env, "RIGHT", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func Right(env utils.Environment, str types.XString, l int) types.XValue {
 	start := utf8.RuneCountInString(str.Native()) - l
 
 	// this weird construct does the right thing for multi-byte unicode
@@ -1028,12 +946,7 @@ func Right(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(string_cmp("zzz", "aaa")) -> 1
 //
 // @function string_cmp(str1, str2)
-func StringCmp(env utils.Environment, args ...types.XValue) types.XValue {
-	str1, str2, err := checkTwoStringArgs(env, "STRING_CMP", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func StringCmp(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
 	return types.NewXNumberFromInt(strings.Compare(str1.Native(), str2.Native()))
 }
 
@@ -1043,18 +956,13 @@ func StringCmp(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(repeat("*", "foo")) -> ERROR
 //
 // @function repeat(string, count)
-func Repeat(env utils.Environment, args ...types.XValue) types.XValue {
-	str, i, err := checkOneStringOneIntArg(env, "REPEAT", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	if i < 0 {
-		return types.NewXErrorf("REPEAT must be called with a positive integer, got %d", i)
+func Repeat(env utils.Environment, str types.XString, count int) types.XValue {
+	if count < 0 {
+		return types.NewXErrorf("REPEAT must be called with a positive integer, got %d", count)
 	}
 
 	var output bytes.Buffer
-	for j := 0; j < i; j++ {
+	for j := 0; j < count; j++ {
 		output.WriteString(str.Native())
 	}
 
@@ -1085,11 +993,7 @@ func Replace(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(upper(123)) -> "123"
 //
 // @function upper(string)
-func Upper(env utils.Environment, args ...types.XValue) types.XValue {
-	str, err := checkOneStringArg(env, "UPPER", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
+func Upper(env utils.Environment, str types.XString) types.XValue {
 	return types.NewXString(strings.ToUpper(str.Native()))
 }
 
@@ -1100,12 +1004,7 @@ func Upper(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(percent("foo")) -> ERROR
 //
 // @function percent(num)
-func Percent(env utils.Environment, args ...types.XValue) types.XValue {
-	num, err := checkOneDecimalArg(env, "PERCENT", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func Percent(env utils.Environment, num types.XNumber) types.XValue {
 	// multiply by 100 and floor
 	percent := num.Native().Mul(decimal.NewFromFloat(100)).Round(0)
 
@@ -1429,12 +1328,7 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(weekday("foo")) -> ERROR
 //
 // @function weekday(date)
-func Weekday(env utils.Environment, args ...types.XValue) types.XValue {
-	date, err := checkOneDateArg(env, "WEEKDAY", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func Weekday(env utils.Environment, date types.XTime) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
 }
 
@@ -1449,12 +1343,7 @@ func Weekday(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(tz("foo")) -> ERROR
 //
 // @function tz(date)
-func TZ(env utils.Environment, args ...types.XValue) types.XValue {
-	date, err := checkOneDateArg(env, "TZ", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func TZ(env utils.Environment, date types.XTime) types.XValue {
 	return types.NewXString(date.Native().Location().String())
 }
 
@@ -1469,12 +1358,7 @@ func TZ(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(tz_offset("foo")) -> ERROR
 //
 // @function tz_offset(date)
-func TZOffset(env utils.Environment, args ...types.XValue) types.XValue {
-	date, err := checkOneDateArg(env, "TZ_OFFSET", args)
-	if err != nil {
-		return types.NewXError(err)
-	}
-
+func TZOffset(env utils.Environment, date types.XTime) types.XValue {
 	// this looks like we are returning a set offset, but this is how go describes formats
 	return types.NewXString(date.Native().Format("-0700"))
 
@@ -1585,90 +1469,4 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXString(urn.Format())
-}
-
-//----------------------------------------------------------------------------------------
-// Utility Functions
-//----------------------------------------------------------------------------------------
-
-// TODO need a generalized way of preparing function parameters that doesn't do conversions on errors
-func toStringParam(arg types.XValue) (types.XString, types.XError) {
-	if types.IsError(arg) {
-		return types.XStringEmpty, arg.(types.XError)
-	}
-
-	return types.ToXString(arg), nil
-}
-
-func checkOneDecimalArg(env utils.Environment, funcName string, args []types.XValue) (types.XNumber, error) {
-	if len(args) != 1 {
-		return types.XNumberZero, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
-	}
-
-	arg1, err := types.ToXNumber(args[0])
-	if err != nil {
-		return types.XNumberZero, err
-	}
-
-	return arg1, nil
-}
-
-func checkOneStringArg(env utils.Environment, funcName string, args []types.XValue) (types.XString, error) {
-	if len(args) != 1 {
-		return types.XStringEmpty, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
-	}
-
-	return toStringParam(args[0])
-}
-
-func checkTwoStringArgs(env utils.Environment, funcName string, args []types.XValue) (types.XString, types.XString, error) {
-	if len(args) != 2 {
-		return types.XStringEmpty, types.XStringEmpty, fmt.Errorf("%s takes exactly two string arguments, got %d", funcName, len(args))
-	}
-
-	return types.ToXString(args[0]), types.ToXString(args[1]), nil
-}
-
-func checkOneStringOneIntArg(env utils.Environment, funcName string, args []types.XValue) (types.XString, int, error) {
-	if len(args) != 2 {
-		return types.XStringEmpty, 0, fmt.Errorf("%s takes exactly two arguments, got %d", funcName, len(args))
-	}
-
-	num, err := types.ToInteger(args[1])
-	if err != nil {
-		return types.XStringEmpty, 0, err
-	}
-
-	return types.ToXString(args[0]), num, err
-}
-
-func checkTwoDecimalArgs(env utils.Environment, funcName string, args []types.XValue) (types.XNumber, types.XNumber, error) {
-	if len(args) != 2 {
-		return types.XNumberZero, types.XNumberZero, fmt.Errorf("%s takes exactly two arguments, got %d", funcName, len(args))
-	}
-
-	num1, err := types.ToXNumber(args[0])
-	if err != nil {
-		return types.XNumberZero, types.XNumberZero, err
-	}
-
-	num2, err := types.ToXNumber(args[1])
-	if err != nil {
-		return types.XNumberZero, types.XNumberZero, err
-	}
-
-	return num1, num2, nil
-}
-
-func checkOneDateArg(env utils.Environment, funcName string, args []types.XValue) (types.XTime, error) {
-	if len(args) != 1 {
-		return types.XTimeZero, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
-	}
-
-	arg1, err := types.ToXTime(env, args[0])
-	if err != nil {
-		return types.XTimeZero, err
-	}
-
-	return arg1, err
 }
