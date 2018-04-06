@@ -61,7 +61,8 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 
 	// if we had one, then just return our string evaluation strategy
 	if nextTT != EOF {
-		return EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+		asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+		return types.NewXString(asStr), err
 	}
 
 	switch tokenType {
@@ -95,11 +96,12 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	}
 
 	// different type of token, return the string representation
-	return EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+	asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+	return types.NewXString(asStr), err
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, urlEncode bool, allowedTopLevels []string) (types.XString, error) {
+func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
@@ -145,9 +147,9 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 	}
 
 	if len(errors) > 0 {
-		return types.NewXString(buf.String()), errors
+		return buf.String(), errors
 	}
-	return types.NewXString(buf.String()), nil
+	return buf.String(), nil
 }
 
 // ResolveXValue will resolve the passed in string variable given in dot notation and return

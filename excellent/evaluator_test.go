@@ -159,7 +159,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		} else {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
 
-			if eval.Native() != test.expected {
+			if eval != test.expected {
 				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 			}
 		}
