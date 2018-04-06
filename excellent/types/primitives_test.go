@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCompareXValues(t *testing.T) {
+func TestCompare(t *testing.T) {
 	var tests = []struct {
 		x1       types.XValue
 		x2       types.XValue
@@ -29,7 +29,7 @@ func TestCompareXValues(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, err := types.CompareXValues(test.x1, test.x2)
+		result, err := types.Compare(test.x1, test.x2)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error for inputs '%s' and '%s'", test.x1, test.x2)

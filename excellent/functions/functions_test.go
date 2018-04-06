@@ -327,7 +327,7 @@ func TestFunctions(t *testing.T) {
 			continue
 		}
 
-		cmp, err := types.CompareXValues(result, test.expected)
+		cmp, err := types.Compare(result, test.expected)
 		if err != nil {
 			assert.Fail(t, err.Error(), "error while comparing expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
 		}

@@ -296,7 +296,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// back down to our equality
 		if !equal {
-			cmp, err := types.CompareXValues(eval, test.expected)
+			cmp, err := types.Compare(eval, test.expected)
 			if err != nil {
 				t.Errorf("Actual '%#v' does not match expected '%#v' evaluating template: '%s'", eval, test.expected, test.template)
 			}

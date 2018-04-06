@@ -226,16 +226,17 @@ func (x xerror) Error() string { return x.err.Error() }
 var NilXError = NewXError(nil)
 var _ XError = NilXError
 
+// IsError returns whether the given value is an error
 func IsError(x XValue) bool {
 	_, isError := x.(XError)
 	return isError
 }
 
-// CompareXValues returns the difference between the two passed in XValues
-func CompareXValues(x1 XValue, x2 XValue) (int, error) {
-	if x1 == nil && x2 == nil {
+// Compare returns the difference between two given values
+func Compare(x1 XValue, x2 XValue) (int, error) {
+	if utils.IsNil(x1) && utils.IsNil(x2) {
 		return 0, nil
-	} else if x1 == nil || x2 == nil {
+	} else if utils.IsNil(x1) || utils.IsNil(x2) {
 		return 0, fmt.Errorf("can't compare non-nil and nil values: %v and %v", x1, x2)
 	}
 
