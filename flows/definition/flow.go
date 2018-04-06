@@ -86,7 +86,7 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 }
 
 // Resolve resolves the given key when this flow is referenced in an expression
-func (f *flow) Resolve(key string) interface{} {
+func (f *flow) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
 		return string(f.UUID())
@@ -97,13 +97,13 @@ func (f *flow) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on flow", key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (f *flow) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (f *flow) Reduce() types.XPrimitive {
 	return f.name
 }
 
-var _ types.Atomizable = (*flow)(nil)
-var _ types.Resolvable = (*flow)(nil)
+var _ types.XValue = (*flow)(nil)
+var _ types.XResolvable = (*flow)(nil)
 
 func (f *flow) Reference() *flows.FlowReference {
 	return flows.NewFlowReference(f.uuid, f.name)

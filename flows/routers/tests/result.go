@@ -20,7 +20,7 @@ func (t XTestResult) Matched() bool { return t.matched }
 func (t XTestResult) Match() interface{} { return t.match }
 
 // Resolve resolves the given key when this result is referenced in an expression
-func (t XTestResult) Resolve(key string) interface{} {
+func (t XTestResult) Resolve(key string) types.XValue {
 	switch key {
 	case "matched":
 		return t.matched
@@ -30,13 +30,13 @@ func (t XTestResult) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on test result", key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (t XTestResult) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (t XTestResult) Reduce() types.XPrimitive {
 	return strconv.FormatBool(t.matched)
 }
 
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}
 
-var _ types.Atomizable = XTestResult{}
-var _ types.Resolvable = XTestResult{}
+var _ types.XValue = XTestResult{}
+var _ types.XResolvable = XTestResult{}

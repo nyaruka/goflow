@@ -25,7 +25,7 @@ type flowRun struct {
 	contact *flows.Contact
 	extra   types.JSONFragment
 
-	context types.Resolvable
+	context types.XResolvable
 	webhook *flows.WebhookCall
 	input   flows.Input
 	parent  flows.FlowRun
@@ -69,9 +69,9 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() types.Resolvable { return r.context }
-func (r *flowRun) Results() flows.Results    { return r.results }
-func (r *flowRun) Events() []flows.Event     { return r.events }
+func (r *flowRun) Context() types.XResolvable { return r.context }
+func (r *flowRun) Results() flows.Results     { return r.results }
+func (r *flowRun) Events() []flows.Event      { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -252,7 +252,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 }
 
 // Resolve resolves the given key when this run is referenced in an expression
-func (r *flowRun) Resolve(key string) interface{} {
+func (r *flowRun) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
 		return string(r.UUID())
@@ -280,8 +280,8 @@ func (r *flowRun) Resolve(key string) interface{} {
 	return fmt.Errorf("no field '%s' on run", key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r *flowRun) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (r *flowRun) Reduce() types.XPrimitive {
 	return string(r.uuid)
 }
 
@@ -289,8 +289,8 @@ func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)
 }
 
-var _ types.Atomizable = (*flowRun)(nil)
-var _ types.Resolvable = (*flowRun)(nil)
+var _ types.XValue = (*flowRun)(nil)
+var _ types.XResolvable = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 

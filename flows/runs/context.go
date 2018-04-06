@@ -15,12 +15,12 @@ type runContext struct {
 }
 
 // creates a new evaluation context for the passed in run
-func newRunContext(run flows.FlowRun) types.Resolvable {
+func newRunContext(run flows.FlowRun) types.XResolvable {
 	return &runContext{run: run}
 }
 
 // Resolve resolves the given top-level key in an expression
-func (c *runContext) Resolve(key string) interface{} {
+func (c *runContext) Resolve(key string) types.XValue {
 	switch key {
 	case "contact":
 		return c.run.Contact()
@@ -51,7 +51,7 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 }
 
 // Resolve resolves the given key when this related run is referenced in an expression
-func (c *relatedRunContext) Resolve(key string) interface{} {
+func (c *relatedRunContext) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
 		return string(c.run.UUID())
@@ -72,5 +72,5 @@ func (c *relatedRunContext) String() string {
 	return c.run.UUID().String()
 }
 
-var _ types.Resolvable = (*runContext)(nil)
-var _ types.Resolvable = (*relatedRunContext)(nil)
+var _ types.XResolvable = (*runContext)(nil)
+var _ types.XResolvable = (*relatedRunContext)(nil)

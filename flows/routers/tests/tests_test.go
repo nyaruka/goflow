@@ -17,7 +17,7 @@ import (
 
 type testResolvable struct{}
 
-func (r *testResolvable) Resolve(key string) interface{} {
+func (r *testResolvable) Resolve(key string) types.XValue {
 	switch key {
 	case "foo":
 		return "bar"
@@ -30,8 +30,8 @@ func (r *testResolvable) Resolve(key string) interface{} {
 	}
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r *testResolvable) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (r *testResolvable) Reduce() types.XPrimitive {
 	return "hello"
 }
 

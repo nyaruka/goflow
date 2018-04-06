@@ -218,7 +218,7 @@ type Translations interface {
 }
 
 type Trigger interface {
-	types.Resolvable
+	types.XResolvable
 	utils.Typed
 
 	Environment() utils.Environment
@@ -265,7 +265,7 @@ type EventLog interface {
 }
 
 type Input interface {
-	types.Resolvable
+	types.XResolvable
 	utils.Typed
 
 	UUID() InputUUID
@@ -334,7 +334,7 @@ type FlowRun interface {
 
 	Environment() RunEnvironment
 	Session() Session
-	Context() types.Resolvable
+	Context() types.XResolvable
 	Input() Input
 	Webhook() *WebhookCall
 

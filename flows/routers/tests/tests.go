@@ -368,7 +368,7 @@ func newPatternMatch(matches []string) *patternMatch {
 }
 
 // Resolve resolves the given key when this match is referenced in an expression
-func (m *patternMatch) Resolve(key string) interface{} {
+func (m *patternMatch) Resolve(key string) types.XValue {
 	switch key {
 	case "groups":
 		return m.groups
@@ -377,13 +377,13 @@ func (m *patternMatch) Resolve(key string) interface{} {
 	return fmt.Errorf("no such key '%s' on pattern match", key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (m *patternMatch) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (m *patternMatch) Reduce() types.XPrimitive {
 	return m.groups.Index(0)
 }
 
-var _ types.Atomizable = (*patternMatch)(nil)
-var _ types.Resolvable = (*patternMatch)(nil)
+var _ types.XValue = (*patternMatch)(nil)
+var _ types.XResolvable = (*patternMatch)(nil)
 
 // HasPattern tests whether `string` matches the regex `pattern`
 //

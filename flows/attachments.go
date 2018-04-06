@@ -1,7 +1,6 @@
 package flows
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -29,28 +28,30 @@ func (a Attachment) URL() string {
 }
 
 // Resolve resolves the given key when this attachment is referenced in an expression
-func (a Attachment) Resolve(key string) interface{} {
+func (a Attachment) Resolve(key string) types.XValue {
 	switch key {
 	case "content_type":
-		return a.ContentType()
+		return types.NewXString(a.ContentType())
 	case "url":
-		return a.URL()
+		return types.NewXString(a.URL())
 	}
 
-	return fmt.Errorf("No field '%s' on attachment", key)
+	return types.NewXResolveError(a, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (a Attachment) Atomize() interface{} { return a.URL() }
+// Reduce is called when this object needs to be reduced to a primitive
+func (a Attachment) Reduce() types.XPrimitive { return types.NewXString(a.URL()) }
 
-var _ types.Atomizable = (Attachment)("")
-var _ types.Resolvable = (Attachment)("")
+func (a Attachment) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (Attachment)("")
+var _ types.XResolvable = (Attachment)("")
 
 // AttachmentList is a list of attachments
 type AttachmentList []Attachment
 
 // Index is called when this object is indexed into in an expression
-func (a AttachmentList) Index(index int) interface{} {
+func (a AttachmentList) Index(index int) types.XValue {
 	return a[index]
 }
 
@@ -59,14 +60,16 @@ func (a AttachmentList) Length() int {
 	return len(a)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (a AttachmentList) Atomize() interface{} {
-	array := types.NewArray()
+// Reduce is called when this object needs to be reduced to a primitive
+func (a AttachmentList) Reduce() types.XPrimitive {
+	array := types.NewXArray()
 	for _, attachment := range a {
 		array.Append(attachment)
 	}
 	return array
 }
 
-var _ types.Atomizable = (AttachmentList)(nil)
-var _ types.Indexable = (AttachmentList)(nil)
+func (a AttachmentList) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (AttachmentList)(nil)
+var _ types.XIndexable = (AttachmentList)(nil)

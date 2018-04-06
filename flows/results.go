@@ -22,33 +22,35 @@ type Result struct {
 }
 
 // Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
-func (r *Result) Resolve(key string) interface{} {
+func (r *Result) Resolve(key string) types.XValue {
 	switch key {
 	case "name":
-		return r.Name
+		return types.NewXString(r.Name)
 	case "value":
-		return r.Value
+		return types.NewXString(r.Value)
 	case "category":
-		return r.Category
+		return types.NewXString(r.Category)
 	case "category_localized":
 		if r.CategoryLocalized == "" {
-			return r.Category
+			return types.NewXString(r.Category)
 		}
-		return r.CategoryLocalized
+		return types.NewXString(r.CategoryLocalized)
 	case "created_on":
-		return r.CreatedOn
+		return types.NewXTime(r.CreatedOn)
 	}
 
-	return fmt.Errorf("no field '%s' on result", key)
+	return types.NewXResolveError(r, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r *Result) Atomize() interface{} {
-	return r.Value
+// Reduce is called when this object needs to be reduced to a primitive
+func (r *Result) Reduce() types.XPrimitive {
+	return types.NewXString(r.Value)
 }
 
-var _ types.Atomizable = (*Result)(nil)
-var _ types.Resolvable = (*Result)(nil)
+func (r *Result) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*Result)(nil)
+var _ types.XResolvable = (*Result)(nil)
 
 // Results is our wrapper around a map of snakified result names to result objects
 type Results map[string]*Result
@@ -86,25 +88,27 @@ func (r Results) Length() int {
 }
 
 // Resolve resolves the passed in key, which is snakified before lookup
-func (r Results) Resolve(key string) interface{} {
+func (r Results) Resolve(key string) types.XValue {
 	key = utils.Snakify(key)
 
 	result, exists := r[key]
 	if !exists {
-		return fmt.Errorf("no such run result '%s'", key)
+		return types.NewXResolveError(r, key)
 	}
 	return result
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r Results) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (r Results) Reduce() types.XPrimitive {
 	results := make([]string, 0, len(r))
 	for _, v := range r {
 		results = append(results, fmt.Sprintf("%s: %s", v.Name, v.Value))
 	}
-	return strings.Join(results, ", ")
+	return types.NewXString(strings.Join(results, ", "))
 }
 
-var _ types.Atomizable = (Results)(nil)
-var _ types.Lengthable = (Results)(nil)
-var _ types.Resolvable = (Results)(nil)
+func (r Results) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (Results)(nil)
+var _ types.XLengthable = (Results)(nil)
+var _ types.XResolvable = (Results)(nil)

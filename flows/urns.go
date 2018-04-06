@@ -46,25 +46,27 @@ func (u *ContactURN) Channel() Channel { return u.channel }
 func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
 
 // Resolve resolves the given key when this URN is referenced in an expression
-func (u *ContactURN) Resolve(key string) interface{} {
+func (u *ContactURN) Resolve(key string) types.XValue {
 	switch key {
 	case "scheme":
-		return u.URN.Scheme()
+		return types.NewXString(u.URN.Scheme())
 	case "path":
-		return u.URN.Path()
+		return types.NewXString(u.URN.Path())
 	case "display":
-		return u.URN.Display()
+		return types.NewXString(u.URN.Display())
 	case "channel":
 		return u.Channel()
 	}
-	return fmt.Errorf("no field '%s' on URN", key)
+	return types.NewXResolveError(u, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (u *ContactURN) Atomize() interface{} { return string(u.URN) }
+// Reduce is called when this object needs to be reduced to a primitive
+func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXString(string(u.URN)) }
 
-var _ types.Atomizable = (*ContactURN)(nil)
-var _ types.Resolvable = (*ContactURN)(nil)
+func (u *ContactURN) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*ContactURN)(nil)
+var _ types.XResolvable = (*ContactURN)(nil)
 
 // URNList is the list of a contact's URNs
 type URNList []*ContactURN
@@ -134,28 +136,30 @@ func (l URNList) WithScheme(scheme string) URNList {
 }
 
 // Resolve resolves the given key when this URN list is referenced in an expression
-func (l URNList) Resolve(key string) interface{} {
+func (l URNList) Resolve(key string) types.XValue {
 	scheme := strings.ToLower(key)
 
 	// if this isn't a valid scheme, bail
 	if !urns.IsValidScheme(scheme) {
-		return fmt.Errorf("unknown URN scheme: %s", key)
+		return types.NewXResolveError(l, key)
 	}
 
 	return l.WithScheme(scheme)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (l URNList) Atomize() interface{} {
-	array := types.NewArray()
+// Reduce is called when this object needs to be reduced to a primitive
+func (l URNList) Reduce() types.XPrimitive {
+	array := types.NewXArray()
 	for _, urn := range l {
 		array.Append(urn)
 	}
 	return array
 }
 
+func (l URNList) ToJSON() types.XString { return types.NewXString("TODO") }
+
 // Index is called when this object is indexed into in an expression
-func (l URNList) Index(index int) interface{} {
+func (l URNList) Index(index int) types.XValue {
 	return l[index]
 }
 
@@ -164,6 +168,6 @@ func (l URNList) Length() int {
 	return len(l)
 }
 
-var _ types.Atomizable = (URNList)(nil)
-var _ types.Indexable = (URNList)(nil)
-var _ types.Resolvable = (URNList)(nil)
+var _ types.XValue = (URNList)(nil)
+var _ types.XIndexable = (URNList)(nil)
+var _ types.XResolvable = (URNList)(nil)

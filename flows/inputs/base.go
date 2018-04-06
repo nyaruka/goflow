@@ -18,7 +18,7 @@ func (i *baseInput) Channel() flows.Channel { return i.channel }
 func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 
 // Resolve resolves the given key when this input is referenced in an expression
-func (i *baseInput) Resolve(key string) interface{} {
+func (i *baseInput) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
 		return string(i.uuid)

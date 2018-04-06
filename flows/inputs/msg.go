@@ -36,7 +36,7 @@ func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Tim
 func (i *MsgInput) Type() string { return TypeMsg }
 
 // Resolve resolves the given key when this input is referenced in an expression
-func (i *MsgInput) Resolve(key string) interface{} {
+func (i *MsgInput) Resolve(key string) types.XValue {
 	switch key {
 	case "urn":
 		return i.urn
@@ -48,8 +48,8 @@ func (i *MsgInput) Resolve(key string) interface{} {
 	return i.baseInput.Resolve(key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (i *MsgInput) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (i *MsgInput) Reduce() types.XPrimitive {
 	var parts []string
 	if i.text != "" {
 		parts = append(parts, i.text)
@@ -60,8 +60,8 @@ func (i *MsgInput) Atomize() interface{} {
 	return strings.Join(parts, "\n")
 }
 
-var _ types.Atomizable = (*MsgInput)(nil)
-var _ types.Resolvable = (*MsgInput)(nil)
+var _ types.XValue = (*MsgInput)(nil)
+var _ types.XResolvable = (*MsgInput)(nil)
 var _ flows.Input = (*MsgInput)(nil)
 
 //------------------------------------------------------------------------------------------

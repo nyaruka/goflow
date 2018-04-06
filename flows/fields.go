@@ -87,16 +87,16 @@ func (v *FieldValue) TypedValue() interface{} {
 }
 
 // Resolve resolves the given key when this field value is referenced in an expression
-func (v *FieldValue) Resolve(key string) interface{} {
+func (v *FieldValue) Resolve(key string) types.XValue {
 	switch key {
 	case "text":
-		return v.text
+		return types.NewXString(v.text)
 	}
-	return fmt.Errorf("no field '%s' on field value", key)
+	return types.NewXResolveError(v, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (v *FieldValue) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (v *FieldValue) Reduce() types.XPrimitive {
 	return v.TypedValue()
 }
 
@@ -140,27 +140,29 @@ func (f FieldValues) Length() int {
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
-func (f FieldValues) Resolve(key string) interface{} {
+func (f FieldValues) Resolve(key string) types.XValue {
 	val, exists := f[FieldKey(key)]
 	if !exists {
-		return fmt.Errorf("no such contact field '%s'", key)
+		return types.NewXResolveError(f, key)
 	}
 	return val
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (f FieldValues) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (f FieldValues) Reduce() types.XPrimitive {
 	fields := make([]string, 0, len(f))
 	for k, v := range f {
 		// TODO serilalize field value according to type
 		fields = append(fields, fmt.Sprintf("%s: %s", k, v.TypedValue()))
 	}
-	return strings.Join(fields, ", ")
+	return types.NewXString(strings.Join(fields, ", "))
 }
 
-var _ types.Atomizable = (FieldValues)(nil)
-var _ types.Lengthable = (FieldValues)(nil)
-var _ types.Resolvable = (FieldValues)(nil)
+func (f FieldValues) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (FieldValues)(nil)
+var _ types.XLengthable = (FieldValues)(nil)
+var _ types.XResolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {

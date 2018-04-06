@@ -24,7 +24,7 @@ func (t *baseTrigger) Params() types.JSONFragment     { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Resolve resolves the given key when this trigger is referenced in an expression
-func (t *baseTrigger) Resolve(key string) interface{} {
+func (t *baseTrigger) Resolve(key string) types.XValue {
 	switch key {
 	case "params":
 		return t.params
@@ -33,10 +33,10 @@ func (t *baseTrigger) Resolve(key string) interface{} {
 	return fmt.Errorf("No such field '%s' on trigger", key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (t *baseTrigger) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (t *baseTrigger) Reduce() types.XPrimitive {
 	return string(t.flow.UUID())
 }
 
-var _ types.Atomizable = (*baseTrigger)(nil)
-var _ types.Resolvable = (*baseTrigger)(nil)
+var _ types.XValue = (*baseTrigger)(nil)
+var _ types.XResolvable = (*baseTrigger)(nil)

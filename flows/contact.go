@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -109,23 +108,23 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 // Resolve resolves the given key when this contact is referenced in an expression
-func (c *Contact) Resolve(key string) interface{} {
+func (c *Contact) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(c.uuid)
+		return types.NewXString(string(c.uuid))
 	case "name":
-		return c.name
+		return types.NewXString(c.name)
 	case "first_name":
 		names := utils.TokenizeString(c.name)
 		if len(names) >= 1 {
-			return names[0]
+			return types.NewXString(names[0])
 		}
-		return ""
+		return nil
 	case "language":
-		return string(c.language)
+		return types.NewXString(string(c.language))
 	case "timezone":
 		if c.timezone != nil {
-			return c.timezone.String()
+			return types.NewXString(c.timezone.String())
 		}
 		return nil
 	case "urns":
@@ -141,16 +140,18 @@ func (c *Contact) Resolve(key string) interface{} {
 		return nil
 	}
 
-	return fmt.Errorf("no field '%s' on contact", key)
+	return types.NewXResolveError(c, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (c *Contact) Atomize() interface{} {
-	return c.name
+// Reduce is called when this object needs to be reduced to a primitive
+func (c *Contact) Reduce() types.XPrimitive {
+	return types.NewXString(c.name)
 }
 
-var _ types.Atomizable = (*Contact)(nil)
-var _ types.Resolvable = (*Contact)(nil)
+func (c *Contact) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*Contact)(nil)
+var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
