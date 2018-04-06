@@ -2,10 +2,10 @@ package excellent
 
 import (
 	"bytes"
-	"fmt"
 	"strconv"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -17,11 +17,11 @@ import (
 type Visitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver types.Resolvable
+	resolver types.XValue
 }
 
 // NewVisitor creates a new Excellent visitor
-func NewVisitor(env utils.Environment, resolver types.Resolvable) *Visitor {
+func NewVisitor(env utils.Environment, resolver types.XValue) *Visitor {
 	visitor := Visitor{env: env, resolver: resolver}
 	return &visitor
 }
@@ -38,15 +38,18 @@ func (v *Visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // VisitDecimalLiteral deals with decimals like 1.5
 func (v *Visitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{} {
-	dec, _ := types.ToDecimal(v.env, ctx.GetText())
-	return dec
+	return types.RequireXNumberFromString(ctx.GetText())
 }
 
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	context := v.Visit(ctx.Atom(0))
+	context, _ := v.Visit(ctx.Atom(0)).(types.XValue)
+	if types.IsError(context) {
+		return context
+	}
+
 	lookup := ctx.Atom(1).GetText()
-	return ResolveVariable(v.env, context, lookup)
+	return ResolveXValue(v.env, context, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -62,24 +65,26 @@ func (v *Visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 	}
 
 	// replace "" with "
-	return strings.Replace(unquoted, "\"\"", "\"", -1)
+	unquoted = strings.Replace(unquoted, "\"\"", "\"", -1)
+
+	return types.NewXString(unquoted)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	functionName := strings.ToLower(ctx.Fnname().GetText())
 
-	var function XFunction
+	var function functions.XFunction
 	var found bool
 
-	function, found = XFUNCTIONS[functionName]
+	function, found = functions.XFUNCTIONS[functionName]
 	if !found {
-		return fmt.Errorf("no function with name '%s'", functionName)
+		return types.NewXErrorf("no function with name '%s'", functionName)
 	}
 
-	var params []interface{}
+	var params []types.XValue
 	if ctx.Parameters() != nil {
-		params = v.Visit(ctx.Parameters()).([]interface{})
+		params, _ = v.Visit(ctx.Parameters()).([]types.XValue)
 	}
 	val := function(v.env, params...)
 	return val
@@ -87,30 +92,36 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 
 // VisitTrue deals with the "true" literal
 func (v *Visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
-	return true
+	return types.XBoolTrue
 }
 
 // VisitFalse deals with the "false" literal
 func (v *Visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
-	return false
+	return types.XBoolFalse
 }
 
 // VisitArrayLookup deals with lookups such as foo[5]
 func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
-	context := v.Visit(ctx.Atom())
-	lookup, err := types.ToString(v.env, v.Visit(ctx.Expression()))
-	if err != nil {
-		return err
+	context, _ := v.Visit(ctx.Atom()).(types.XValue)
+	if types.IsError(context) {
+		return context
 	}
 
-	return ResolveVariable(v.env, context, lookup)
+	expression, _ := v.Visit(ctx.Expression()).(types.XValue)
+	if types.IsError(expression) {
+		return expression
+	}
+
+	lookup := types.ToXString(expression).Native()
+
+	return ResolveXValue(v.env, context, lookup)
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *Visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := ResolveVariable(v.env, v.resolver, key)
-	return val
+
+	return ResolveXValue(v.env, v.resolver, key)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)
@@ -120,89 +131,124 @@ func (v *Visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
 
 // VisitNegation deals with negations such as -5
 func (v *Visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
-	dec, err := types.ToDecimal(v.env, v.Visit(ctx.Expression()))
+	arg, _ := v.Visit(ctx.Expression()).(types.XValue)
+	if types.IsError(arg) {
+		return arg
+	}
+
+	number, err := types.ToXNumber(arg)
 	if err != nil {
-		return err
+		return types.NewXError(err)
 	}
 
 	if ctx.MINUS() != nil {
-		return dec.Neg()
+		return types.NewXNumber(number.Native().Neg())
 	}
-	return dec
+	return number
 }
 
 // VisitExponent deals with exponenets such as 5^5
 func (v *Visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
-	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
-	if err != nil {
-		return err
+	arg1, _ := v.Visit(ctx.Expression(0)).(types.XValue)
+	if types.IsError(arg1) {
+		return arg1
 	}
 
-	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
-	if err != nil {
-		return err
+	arg2, _ := v.Visit(ctx.Expression(1)).(types.XValue)
+	if types.IsError(arg2) {
+		return arg2
 	}
 
-	return arg1.Pow(arg2)
+	num1, err := types.ToXNumber(arg1)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	num2, err := types.ToXNumber(arg2)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	return types.NewXNumber(num1.Native().Pow(num2.Native()))
 }
 
 // VisitConcatenation deals with string concatenations like "foo" & "bar"
 func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} {
-	arg1, err := types.ToString(v.env, v.Visit(ctx.Expression(0)))
-	if err != nil {
-		return err
+	arg1, _ := v.Visit(ctx.Expression(0)).(types.XValue)
+	if types.IsError(arg1) {
+		return arg1
 	}
 
-	arg2, err := types.ToString(v.env, v.Visit(ctx.Expression(1)))
-	if err != nil {
-		return err
+	arg2, _ := v.Visit(ctx.Expression(1)).(types.XValue)
+	if types.IsError(arg2) {
+		return arg2
 	}
+
+	str1 := types.ToXString(arg1)
+	str2 := types.ToXString(arg2)
 
 	var buffer bytes.Buffer
-	buffer.WriteString(arg1)
-	buffer.WriteString(arg2)
+	buffer.WriteString(str1.Native())
+	buffer.WriteString(str2.Native())
 
-	return buffer.String()
+	return types.NewXString(buffer.String())
 }
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
 func (v *Visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionContext) interface{} {
-	arg1 := v.Visit(ctx.Expression(0))
-	arg2 := v.Visit(ctx.Expression(1))
-
-	arg1Dec, err := types.ToDecimal(v.env, arg1)
-	if err != nil {
-		return err
+	arg1, _ := v.Visit(ctx.Expression(0)).(types.XValue)
+	if types.IsError(arg1) {
+		return arg1
 	}
 
-	arg2Dec, err := types.ToDecimal(v.env, arg2)
+	arg2, _ := v.Visit(ctx.Expression(1)).(types.XValue)
+	if types.IsError(arg2) {
+		return arg2
+	}
+
+	num1, err := types.ToXNumber(arg1)
 	if err != nil {
-		return err
+		return types.NewXError(err)
+	}
+
+	num2, err := types.ToXNumber(arg2)
+	if err != nil {
+		return types.NewXError(err)
 	}
 
 	if ctx.PLUS() != nil {
-		return arg1Dec.Add(arg2Dec)
+		return types.NewXNumber(num1.Native().Add(num2.Native()))
 	}
-	return arg1Dec.Sub(arg2Dec)
+	return types.NewXNumber(num1.Native().Sub(num2.Native()))
 }
 
 // VisitEquality deals with equality or inequality tests 5 = 5 and 5 != 5
 func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
-	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
-	if err != nil {
-		return err
+	arg1, _ := v.Visit(ctx.Expression(0)).(types.XValue)
+	if types.IsError(arg1) {
+		return arg1
 	}
 
-	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, _ := v.Visit(ctx.Expression(1)).(types.XValue)
+	if types.IsError(arg2) {
+		return arg2
+	}
+
+	num1, err := types.ToXNumber(arg1)
 	if err != nil {
-		return err
+		return types.NewXError(err)
+	}
+
+	num2, err := types.ToXNumber(arg2)
+	if err != nil {
+		return types.NewXError(err)
 	}
 
 	if ctx.EQ() != nil {
-		return arg1.Equal(arg2)
+		return types.NewXBool(num1.Native().Equal(num2.Native()))
 	}
 
-	return !arg1.Equal(arg2)
+	return types.NewXBool(!num1.Native().Equal(num2.Native()))
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression
@@ -212,61 +258,81 @@ func (v *Visitor) VisitAtomReference(ctx *gen.AtomReferenceContext) interface{} 
 
 // VisitMultiplicationOrDivision deals with division and multiplication such as 5*5 or 5/2
 func (v *Visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisionContext) interface{} {
-	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
-	if err != nil {
-		return err
+	arg1, _ := v.Visit(ctx.Expression(0)).(types.XValue)
+	if types.IsError(arg1) {
+		return arg1
 	}
 
-	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, _ := v.Visit(ctx.Expression(1)).(types.XValue)
+	if types.IsError(arg2) {
+		return arg2
+	}
+
+	num1, err := types.ToXNumber(arg1)
 	if err != nil {
-		return err
+		return types.NewXError(err)
+	}
+
+	num2, err := types.ToXNumber(arg2)
+	if err != nil {
+		return types.NewXError(err)
 	}
 
 	if ctx.TIMES() != nil {
-		return arg1.Mul(arg2)
+		return types.NewXNumber(num1.Native().Mul(num2.Native()))
 	}
 
 	// division!
-	if arg2.Equals(decimal.Zero) {
-		return fmt.Errorf("Division by zero")
+	if num2.Native().Equals(decimal.Zero) {
+		return types.NewXErrorf("division by zero")
 	}
 
-	return arg1.Div(arg2)
+	return types.NewXNumber(num1.Native().Div(num2.Native()))
 }
 
 // VisitComparison deals with visiting a comparison between two values, such as 5<3 or 3>5
 func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
-	arg1, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(0)))
-	if err != nil {
-		return err
+	arg1, _ := v.Visit(ctx.Expression(0)).(types.XValue)
+	if types.IsError(arg1) {
+		return arg1
 	}
 
-	arg2, err := types.ToDecimal(v.env, v.Visit(ctx.Expression(1)))
+	arg2, _ := v.Visit(ctx.Expression(1)).(types.XValue)
+	if types.IsError(arg2) {
+		return arg2
+	}
+
+	num1, err := types.ToXNumber(arg1)
 	if err != nil {
-		return err
+		return types.NewXError(err)
+	}
+
+	num2, err := types.ToXNumber(arg2)
+	if err != nil {
+		return types.NewXError(err)
 	}
 
 	switch {
 	case ctx.LT() != nil:
-		return arg1.LessThan(arg2)
+		return types.NewXBool(num1.Native().LessThan(num2.Native()))
 	case ctx.LTE() != nil:
-		return arg1.LessThanOrEqual(arg2)
+		return types.NewXBool(num1.Native().LessThanOrEqual(num2.Native()))
 	case ctx.GTE() != nil:
-		return arg1.GreaterThanOrEqual(arg2)
+		return types.NewXBool(num1.Native().GreaterThanOrEqual(num2.Native()))
 	case ctx.GT() != nil:
-		return arg1.GreaterThan(arg2)
+		return types.NewXBool(num1.Native().GreaterThan(num2.Native()))
 	}
 
-	return fmt.Errorf("Unknown comparison operator: %s", ctx.GetText())
+	return types.NewXErrorf("unknown comparison operator: %s", ctx.GetText())
 }
 
 // VisitFunctionParameters deals with the parameters to a function call
 func (v *Visitor) VisitFunctionParameters(ctx *gen.FunctionParametersContext) interface{} {
 	expressions := ctx.AllExpression()
-	params := make([]interface{}, len(expressions))
+	params := make([]types.XValue, len(expressions))
 
 	for i := range expressions {
-		params[i] = v.Visit(expressions[i])
+		params[i], _ = v.Visit(expressions[i]).(types.XValue)
 	}
 	return params
 }

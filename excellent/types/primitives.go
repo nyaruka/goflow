@@ -226,6 +226,11 @@ func (x xerror) Error() string { return x.err.Error() }
 var NilXError = NewXError(nil)
 var _ XError = NilXError
 
+func IsError(x XValue) bool {
+	_, isError := x.(XError)
+	return isError
+}
+
 // CompareXValues returns the difference between the two passed in XValues
 func CompareXValues(x1 XValue, x2 XValue) (int, error) {
 	if x1 == nil && x2 == nil {

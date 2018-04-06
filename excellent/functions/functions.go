@@ -170,7 +170,7 @@ func Length(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// argument must be a value with length
-	lengthable, isLengthable := args[0].(types.Lengthable)
+	lengthable, isLengthable := args[0].(types.XLengthable)
 	if isLengthable {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
@@ -1591,6 +1591,15 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 // Utility Functions
 //----------------------------------------------------------------------------------------
 
+// TODO need a generalized way of preparing function parameters that doesn't do conversions on errors
+func toStringParam(arg types.XValue) (types.XString, types.XError) {
+	if types.IsError(arg) {
+		return types.XStringEmpty, arg.(types.XError)
+	}
+
+	return types.ToXString(arg), nil
+}
+
 func checkOneDecimalArg(env utils.Environment, funcName string, args []types.XValue) (types.XNumber, error) {
 	if len(args) != 1 {
 		return types.XNumberZero, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
@@ -1609,7 +1618,7 @@ func checkOneStringArg(env utils.Environment, funcName string, args []types.XVal
 		return types.XStringEmpty, fmt.Errorf("%s takes exactly one argument, got %d", funcName, len(args))
 	}
 
-	return types.ToXString(args[0]), nil
+	return toStringParam(args[0])
 }
 
 func checkTwoStringArgs(env utils.Environment, funcName string, args []types.XValue) (types.XString, types.XString, error) {
