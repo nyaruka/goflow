@@ -66,7 +66,7 @@ func ToXNumber(x XValue) (XNumber, error) {
 	case XNumber:
 		return typed, nil
 	case XString:
-		parsed, err := parseDecimalFuzzy(string(typed))
+		parsed, err := parseDecimalFuzzy(typed.Native())
 		if err == nil {
 			return NewXNumber(parsed), nil
 		}
@@ -89,7 +89,7 @@ func ToXTime(env utils.Environment, x XValue) (XTime, error) {
 	case XTime:
 		return typed, nil
 	case XString:
-		parsed, err := utils.DateFromString(env, string(typed))
+		parsed, err := utils.DateFromString(env, typed.Native())
 		if err == nil {
 			return NewXTime(parsed), nil
 		}

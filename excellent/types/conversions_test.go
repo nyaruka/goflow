@@ -51,6 +51,11 @@ func TestXValueRequiredConversions(t *testing.T) {
 		asBool   bool
 	}{
 		{
+			value:    nil,
+			asJSON:   `null`,
+			asString: "",
+			asBool:   false,
+		}, {
 			value:    types.NewXString(""),
 			asJSON:   `""`,
 			asString: "",

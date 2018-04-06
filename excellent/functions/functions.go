@@ -1235,7 +1235,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 3 {
 		return types.NewXErrorf("FORMAT_DATE takes one or two arguments, got %d", len(args))
 	}
-	date, err := types.ToDate(env, args[0])
+	date, err := types.ToXTime(env, args[0])
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1264,11 +1264,11 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 
 	// convert to our timezone if we have one (otherwise we remain in the date's default)
 	if location != nil {
-		date = date.In(location)
+		date = types.NewXTime(date.Native().In(location))
 	}
 
 	// return the formatted date
-	return types.NewXString(date.Format(goFormat))
+	return types.NewXString(date.Native().Format(goFormat))
 }
 
 // Date turns `string` into a date according to the environment's settings
