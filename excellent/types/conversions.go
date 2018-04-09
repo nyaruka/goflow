@@ -13,44 +13,53 @@ import (
 )
 
 // ToXJSON converts the given value to a JSON string
-func ToXJSON(x XValue) XString {
+func ToXJSON(x XValue) (XString, XError) {
 	if utils.IsNil(x) {
-		return NewXString(`null`)
+		return NewXString(`null`), nil
+	}
+	if IsXError(x) {
+		return XStringEmpty, x.(XError)
 	}
 
-	return x.ToJSON()
+	return x.ToJSON(), nil
 }
 
 // ToXString converts the given value to a string
-func ToXString(x XValue) XString {
+func ToXString(x XValue) (XString, XError) {
 	if utils.IsNil(x) {
-		return XStringEmpty
+		return XStringEmpty, nil
+	}
+	if IsXError(x) {
+		return XStringEmpty, x.(XError)
 	}
 
-	return x.Reduce().ToString()
+	return x.Reduce().ToString(), nil
 }
 
 // ToXBool converts the given value to a boolean
-func ToXBool(x XValue) XBool {
+func ToXBool(x XValue) (XBool, XError) {
 	if utils.IsNil(x) {
-		return XBoolFalse
+		return XBoolFalse, nil
+	}
+	if IsXError(x) {
+		return XBoolFalse, x.(XError)
 	}
 
 	primitive, isPrimitive := x.(XPrimitive)
 	if isPrimitive {
-		return primitive.ToBool()
+		return primitive.ToBool(), nil
 	}
 
 	lengthable, isLengthable := x.(XLengthable)
 	if isLengthable {
-		return lengthable.Length() > 0
+		return lengthable.Length() > 0, nil
 	}
 
-	return x.Reduce().ToBool()
+	return x.Reduce().ToBool(), nil
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
-func ToXNumber(x XValue) (XNumber, error) {
+func ToXNumber(x XValue) (XNumber, XError) {
 	if utils.IsNil(x) {
 		return XNumberZero, nil
 	}
@@ -69,11 +78,11 @@ func ToXNumber(x XValue) (XNumber, error) {
 		}
 	}
 
-	return XNumberZero, fmt.Errorf("unable to convert value '%s' to a number", x)
+	return XNumberZero, NewXErrorf("unable to convert value '%s' to a number", x)
 }
 
 // ToXTime converts the given value to a time or returns an error if that isn't possible
-func ToXTime(env utils.Environment, x XValue) (XTime, error) {
+func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
 	if utils.IsNil(x) {
 		return XTimeZero, nil
 	}
@@ -92,11 +101,11 @@ func ToXTime(env utils.Environment, x XValue) (XTime, error) {
 		}
 	}
 
-	return XTimeZero, fmt.Errorf("unable to convert value '%v' of type '%s' to a time", x, reflect.TypeOf(x))
+	return XTimeZero, NewXErrorf("unable to convert value '%v' of type '%s' to a time", x, reflect.TypeOf(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
-func ToInteger(x XValue) (int, error) {
+func ToInteger(x XValue) (int, XError) {
 	number, err := ToXNumber(x)
 	if err != nil {
 		return 0, err
@@ -105,7 +114,7 @@ func ToInteger(x XValue) (int, error) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
-		return 0, fmt.Errorf("number value %s is out of range for an integer", string(number.ToString()))
+		return 0, NewXErrorf("number value %s is out of range for an integer", string(number.ToString()))
 	}
 
 	return int(intPart), nil

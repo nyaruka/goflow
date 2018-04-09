@@ -111,11 +111,6 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString: "2017-07-18T15:30:00.000000-05:00",
 			asBool:   true,
 		}, {
-			value:    types.NewXError(fmt.Errorf("it failed")),
-			asJSON:   `"it failed"`,
-			asString: "it failed",
-			asBool:   false,
-		}, {
 			value:    types.NewXArray(),
 			asJSON:   `[]`,
 			asString: `[]`,
@@ -168,12 +163,21 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asJSON:   `{"foo":"World","bar":456}`,
 			asString: `{"foo":"World","bar":456}`,
 			asBool:   true,
-		},
+		}, {
+			value:    types.NewXError(fmt.Errorf("it failed")), // once an error, always an error
+			asJSON:   "",
+			asString: "",
+			asBool:   false,
+		}
 	}
 	for _, test := range tests {
-		assert.Equal(t, types.NewXString(test.asJSON), types.ToXJSON(test.value), "ToXJSON failed for %+v", test.value)
-		assert.Equal(t, types.NewXString(test.asString), types.ToXString(test.value), "ToXString failed for %+v", test.value)
-		assert.Equal(t, types.NewXBool(test.asBool), types.ToXBool(test.value), "ToXBool failed for %+v", test.value)
+		asJSON, _ := types.ToXJSON(test.value)
+		asString, _ := types.ToXString(test.value)
+		asBool, _ := types.ToXBool(test.value)
+
+		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %+v", test.value)
+		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %+v", test.value)
+		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %+v", test.value)
 	}
 }
 
@@ -184,7 +188,7 @@ func TestToXNumber(t *testing.T) {
 		hasError bool
 	}{
 		{nil, types.XNumberZero, false},
-		{types.NewXError(fmt.Errorf("Error")), types.XNumberZero, true},
+		{types.NewErrorf("Error")), types.XNumberZero, true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), false},
 		{types.NewXString("15.5"), types.RequireXNumberFromString("15.5"), false},
 		{types.NewXString("lO.5"), types.RequireXNumberFromString("10.5"), false},

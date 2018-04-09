@@ -226,8 +226,8 @@ func (x xerror) Error() string { return x.err.Error() }
 var NilXError = NewXError(nil)
 var _ XError = NilXError
 
-// IsError returns whether the given value is an error
-func IsError(x XValue) bool {
+// IsXError returns whether the given value is an error value
+func IsXError(x XValue) bool {
 	_, isError := x.(XError)
 	return isError
 }

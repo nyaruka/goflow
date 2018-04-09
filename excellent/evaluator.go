@@ -117,18 +117,17 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			if value == nil {
 				value = types.XStringEmpty
 			}
-			err, isErr := value.(error)
 
 			// we got an error, return our raw variable
-			if isErr {
-				errors = append(errors, err)
+			if types.IsXError(value) {
+				errors = append(errors, value.(types.XError))
 			} else {
-				strValue := types.ToXString(value).Native()
+				strValue, _ := types.ToXString(value)
 				if urlEncode {
-					strValue = url.QueryEscape(strValue)
+					strValue = types.NewXString(url.QueryEscape(strValue.Native()))
 				}
 
-				buf.WriteString(strValue)
+				buf.WriteString(strValue.Native())
 			}
 		case EXPRESSION:
 			value, err := EvaluateExpression(env, context, token)
@@ -136,12 +135,12 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			if err != nil {
 				errors = append(errors, err)
 			} else {
-				strValue := types.ToXString(value).Native()
+				strValue, _ := types.ToXString(value)
 				if urlEncode {
-					strValue = url.QueryEscape(strValue)
+					strValue = types.NewXString(url.QueryEscape(strValue.Native()))
 				}
 
-				buf.WriteString(strValue)
+				buf.WriteString(strValue.Native())
 			}
 		}
 	}
@@ -199,9 +198,8 @@ func ResolveXValue(env utils.Environment, variable types.XValue, key string) typ
 		if isResolver {
 			variable = resolver.Resolve(key)
 
-			err, isErr := variable.(types.XError)
-			if isErr {
-				return err
+			if types.IsXError(variable) {
+				return variable
 			}
 
 		} else {
