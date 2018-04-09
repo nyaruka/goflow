@@ -168,7 +168,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asJSON:   "",
 			asString: "",
 			asBool:   false,
-		}
+		},
 	}
 	for _, test := range tests {
 		asJSON, _ := types.ToXJSON(test.value)
@@ -188,7 +188,7 @@ func TestToXNumber(t *testing.T) {
 		hasError bool
 	}{
 		{nil, types.XNumberZero, false},
-		{types.NewErrorf("Error")), types.XNumberZero, true},
+		{types.NewXErrorf("Error"), types.XNumberZero, true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), false},
 		{types.NewXString("15.5"), types.RequireXNumberFromString("15.5"), false},
 		{types.NewXString("lO.5"), types.RequireXNumberFromString("10.5"), false},

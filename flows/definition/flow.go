@@ -89,18 +89,20 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 func (f *flow) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(f.UUID())
+		return types.NewXString(string(f.UUID()))
 	case "name":
-		return f.Name()
+		return types.NewXString(f.name)
 	}
 
-	return fmt.Errorf("no field '%s' on flow", key)
+	return types.NewXResolveError(f, key)
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (f *flow) Reduce() types.XPrimitive {
-	return f.name
+	return types.NewXString(f.name)
 }
+
+func (f *flow) ToJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*flow)(nil)
 var _ types.XResolvable = (*flow)(nil)

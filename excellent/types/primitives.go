@@ -118,6 +118,12 @@ func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
 
+// UnmarshalJSON is called when a struct containing this type is unmarshaled
+func (x *XNumber) UnmarshalJSON(data []byte) error {
+	nativePtr := (*decimal.Decimal)(x)
+	return nativePtr.UnmarshalJSON(data)
+}
+
 // XNumberZero is the zero number value
 var XNumberZero = XNumber(decimal.Zero)
 var _ XPrimitive = XNumberZero
@@ -175,6 +181,12 @@ func (x XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO
 
 // Native returns the native value of this type
 func (x XTime) Native() time.Time { return time.Time(x) }
+
+// UnmarshalJSON is called when a struct containing this type is unmarshaled
+func (x *XTime) UnmarshalJSON(data []byte) error {
+	nativePtr := (*time.Time)(x)
+	return nativePtr.UnmarshalJSON(data)
+}
 
 // XTimeZero is the zero time value
 var XTimeZero = NewXTime(time.Time{})

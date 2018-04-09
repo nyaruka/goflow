@@ -29,8 +29,8 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.first_name", "Ben", false},
 		{"@contact.language", "eng", false},
 		{"@contact.timezone", "America/Guayaquil", false},
-		{"@contact.urns", "tel:+12065551212, facebook:1122334455667788, mailto:ben@macklemore", false},
-		{"@contact.urns.tel", "tel:+12065551212", false},
+		{"@contact.urns", `["tel:+12065551212","facebook:1122334455667788","mailto:ben@macklemore"]`, false},
+		{"@contact.urns.tel", `["tel:+12065551212"]`, false},
 		{"@contact.urns.0", "tel:+12065551212", false},
 		{"@(contact.urns[0])", "tel:+12065551212", false},
 		{"@contact.urns.0.scheme", "tel", false},
@@ -43,7 +43,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1", "facebook:1122334455667788", false},
 		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
-		{"@contact.groups", "Azuay State, Survey Audience", false},
+		{"@contact.groups", `["Azuay State","Survey Audience"]`, false},
 		{"@(length(contact.groups))", "2", false},
 		{"@contact.fields.first_name", "Bob", false},
 		{"@contact.fields.age", "23", false},
@@ -55,7 +55,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@run.input", "Hi there\nhttp://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.text", "Hi there", false},
-		{"@run.input.attachments", "http://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
+		{"@run.input.attachments", `["http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"]`, false},
 		{"@run.input.attachments.0", "http://s3.amazon.com/bucket/test_en.jpg?a=Azuay", false},
 		{"@run.input.created_on", "2000-01-01T00:00:00.000000Z", false},
 		{"@run.input.channel.name", "Nexmo", false},
@@ -103,6 +103,12 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	session.Start(trigger, initialEvents)
 	run := session.Runs()[0]
+
+	// check for unexpected errors in the session
+	for _, event := range session.Events() {
+		require.NotEqual(t, event.Type(), events.TypeError)
+	}
+	require.Equal(t, run.Results().Length(), 1)
 
 	for _, test := range tests {
 		eval, err := run.EvaluateTemplateAsString(test.template, false)

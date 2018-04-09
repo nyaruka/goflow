@@ -72,7 +72,7 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 
 // PickRoute evaluates each of the tests on our cases in order, returning the exit for the first case which
 // evaluates to a true. If no cases evaluate to true, then the default exit (if specified) is returned
-func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (interface{}, flows.Route, error) {
+func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (string, flows.Route, error) {
 	env := run.Environment()
 
 	// first evaluate our operand
@@ -80,6 +80,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	if err != nil {
 		run.AddError(step, nil, err)
 	}
+	operandAsStr, _ := types.ToXString(operand)
 
 	// each of our cases
 	for _, c := range r.Cases {
@@ -88,11 +89,11 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// try to look up our function
 		xtest := tests.XTESTS[test]
 		if xtest == nil {
-			return operand, flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
+			return "", flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
 		}
 
 		// build our argument list
-		args := make([]interface{}, 0, 1)
+		args := make([]types.XValue, 0, 1)
 		if !c.OmitOperand {
 			args = append(args, operand)
 		}
@@ -108,40 +109,38 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		}
 
 		// call our function
-		rawResult := xtest(env, args...)
-		err, isErr := rawResult.(error)
-		if isErr {
-			return operand, flows.NoRoute, err
-		}
+		result := xtest(env, args...)
 
-		// ok, not an error, must be an XTestResult
-		result, isResult := rawResult.(tests.XTestResult)
-		if !isResult {
-			return operand, flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
-		}
+		// tests have to return either errors or test results
+		switch typedResult := result.(type) {
+		case types.XError:
+			return "", flows.NoRoute, typedResult
+		case tests.XTestResult:
+			// looks truthy, lets return this exit
+			if typedResult.Matched() {
+				resultAsStr, xerr := types.ToXString(typedResult.Match())
+				if xerr != nil {
+					return "", flows.NoRoute, xerr
+				}
 
-		// looks truthy, lets return this exit
-		if result.Matched() {
-			asStr, err := types.ToString(env, result.Match())
-			if err != nil {
-				return operand, flows.NoRoute, err
+				return operandAsStr.Native(), flows.NewRoute(c.ExitUUID, resultAsStr.Native()), nil
 			}
-
-			return operand, flows.NewRoute(c.ExitUUID, asStr), nil
+		default:
+			return "", flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
 		}
 	}
 
 	// we have a default exit, use that
 	if r.Default != "" {
 		// evaluate our operand as a string
-		value, err := types.ToString(env, operand)
-		if err != nil {
-			run.AddError(step, nil, err)
+		value, xerr := types.ToXString(operand)
+		if xerr != nil {
+			run.AddError(step, nil, xerr)
 		}
 
-		return operand, flows.NewRoute(r.Default, value), nil
+		return operandAsStr.Native(), flows.NewRoute(r.Default, value.Native()), nil
 	}
 
 	// no matches, no defaults, no route
-	return operand, flows.NoRoute, nil
+	return operandAsStr.Native(), flows.NoRoute, nil
 }

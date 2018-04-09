@@ -4,12 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 // FieldKey is the unique key for this field
@@ -52,9 +49,9 @@ func (f *Field) Key() FieldKey { return f.key }
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
-	text     string
-	datetime *time.Time
-	decimal  *decimal.Decimal
+	text     types.XString
+	datetime *types.XTime
+	decimal  *types.XNumber
 	state    *Location
 	district *Location
 	ward     *Location
@@ -67,14 +64,14 @@ func (v *FieldValue) IsEmpty() bool {
 func (v *FieldValue) TypedValue() types.XValue {
 	switch v.field.valueType {
 	case FieldValueTypeText:
-		return types.NewXString(v.text)
+		return v.text
 	case FieldValueTypeDatetime:
 		if v.datetime != nil {
-			return types.NewXTime(*v.datetime)
+			return *v.datetime
 		}
 	case FieldValueTypeDecimal:
 		if v.decimal != nil {
-			return types.NewXNumber(*v.decimal)
+			return *v.decimal
 		}
 	case FieldValueTypeState:
 		return v.state
@@ -90,7 +87,7 @@ func (v *FieldValue) TypedValue() types.XValue {
 func (v *FieldValue) Resolve(key string) types.XValue {
 	switch key {
 	case "text":
-		return types.NewXString(v.text)
+		return v.text
 	}
 	return types.NewXResolveError(v, key)
 }
@@ -117,18 +114,16 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue string) {
-	var asDatetime *time.Time
-	var asDecimal *decimal.Decimal
+func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XString) {
+	var asDate *types.XTime
+	var asNumber *types.XNumber
 
-	if parsedDecimal, err := types.ToXNumber(types.NewXString(rawValue)); err == nil {
-		v := parsedDecimal.Native()
-		asDecimal = &v
+	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
+		asNumber = &parsedNumber
 	}
 
-	if parsedDatetime, err := types.ToXTime(env, types.NewXString(rawValue)); err == nil {
-		v := parsedDatetime.Native()
-		asDatetime = &v
+	if parsedDate, xerr := types.ToXTime(env, rawValue); xerr == nil {
+		asDate = &parsedDate
 	}
 
 	// TODO parse as locations
@@ -136,8 +131,8 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue stri
 	f[field.key] = &FieldValue{
 		field:    field,
 		text:     rawValue,
-		datetime: asDatetime,
-		decimal:  asDecimal,
+		datetime: asDate,
+		decimal:  asNumber,
 	}
 }
 

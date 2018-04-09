@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -38,4 +39,17 @@ func TestCompare(t *testing.T) {
 			assert.Equal(t, test.result, result, "result mismatch for inputs '%s' and '%s'", test.x1, test.x2)
 		}
 	}
+}
+
+func TestXNumberUnmarshal(t *testing.T) {
+	// try with quotes
+	var num types.XNumber
+	err := json.Unmarshal([]byte(`"23.45"`), &num)
+	assert.NoError(t, err)
+	assert.Equal(t, types.RequireXNumberFromString("23.45"), num)
+
+	// try without quotes
+	err = json.Unmarshal([]byte(`34.56`), &num)
+	assert.NoError(t, err)
+	assert.Equal(t, types.RequireXNumberFromString("34.56"), num)
 }

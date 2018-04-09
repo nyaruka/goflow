@@ -8,8 +8,6 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 // Contact represents a single contact
@@ -155,7 +153,7 @@ var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
-	c.fields.setValue(env, field, rawValue)
+	c.fields.setValue(env, field, types.NewXString(rawValue))
 }
 
 // UpdatePreferredChannel updates the preferred channel
@@ -220,15 +218,20 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 	for k, value := range c.fields {
 		if key == string(k) {
 			fieldValue := value.TypedValue()
-			locationValue, isLocation := fieldValue.(*Location)
+			var nativeValue interface{}
 
-			if isLocation {
-				return []interface{}{locationValue.Name()}
+			switch typed := fieldValue.(type) {
+			case *Location:
+				nativeValue = typed.Name()
+			case types.XString:
+				nativeValue = typed.Native()
+			case types.XNumber:
+				nativeValue = typed.Native()
+			case types.XTime:
+				nativeValue = typed.Native()
 			}
-			if fieldValue != nil {
-				return []interface{}{fieldValue}
-			}
-			return nil
+
+			return []interface{}{nativeValue}
 		}
 	}
 
@@ -242,12 +245,12 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Text     string           `json:"text,omitempty"`
-	Datetime *time.Time       `json:"datetime,omitempty"`
-	Decimal  *decimal.Decimal `json:"decimal,omitempty"`
-	State    string           `json:"state,omitempty"`
-	District string           `json:"district,omitempty"`
-	Ward     string           `json:"ward,omitempty"`
+	Text     types.XString  `json:"text,omitempty"`
+	Datetime *types.XTime   `json:"datetime,omitempty"`
+	Decimal  *types.XNumber `json:"decimal,omitempty"`
+	State    string         `json:"state,omitempty"`
+	District string         `json:"district,omitempty"`
+	Ward     string         `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {

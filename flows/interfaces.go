@@ -170,7 +170,7 @@ type Action interface {
 }
 
 type Router interface {
-	PickRoute(FlowRun, []Exit, Step) (interface{}, Route, error)
+	PickRoute(FlowRun, []Exit, Step) (string, Route, error)
 	Validate([]Exit) error
 	ResultName() string
 	utils.Typed
@@ -354,7 +354,7 @@ type FlowRun interface {
 	Path() []Step
 	PathLocation() (Step, Node, error)
 
-	EvaluateTemplate(template string) (interface{}, error)
+	EvaluateTemplate(template string) (types.XValue, error)
 	EvaluateTemplateAsString(template string, urlEncode bool) (string, error)
 
 	GetText(utils.UUID, string, string) string
