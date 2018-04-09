@@ -23,7 +23,7 @@ func (i *baseInput) Resolve(key string) types.XValue {
 	case "uuid":
 		return types.NewXString(string(i.uuid))
 	case "created_on":
-		return types.NewXTime(i.createdOn)
+		return types.NewXDate(i.createdOn)
 	case "channel":
 		return i.channel
 	}

@@ -81,27 +81,27 @@ func ToXNumber(x XValue) (XNumber, XError) {
 	return XNumberZero, NewXErrorf("unable to convert value '%s' to a number", x)
 }
 
-// ToXTime converts the given value to a time or returns an error if that isn't possible
-func ToXTime(env utils.Environment, x XValue) (XTime, XError) {
+// ToXDate converts the given value to a time or returns an error if that isn't possible
+func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 	if utils.IsNil(x) {
-		return XTimeZero, nil
+		return XDateZero, nil
 	}
 
 	x = x.Reduce()
 
 	switch typed := x.(type) {
 	case XError:
-		return XTimeZero, typed
-	case XTime:
+		return XDateZero, typed
+	case XDate:
 		return typed, nil
 	case XString:
 		parsed, err := utils.DateFromString(env, typed.Native())
 		if err == nil {
-			return NewXTime(parsed), nil
+			return NewXDate(parsed), nil
 		}
 	}
 
-	return XTimeZero, NewXErrorf("unable to convert value '%v' of type '%s' to a date", x, reflect.TypeOf(x))
+	return XDateZero, NewXErrorf("unable to convert value '%v' of type '%s' to a date", x, reflect.TypeOf(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible

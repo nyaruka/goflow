@@ -16,7 +16,7 @@ import (
 var xs = types.NewXString
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xt = types.NewXTime
+var xt = types.NewXDate
 
 type testResolvable struct{}
 

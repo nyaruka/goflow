@@ -18,7 +18,7 @@ var la, _ = time.LoadLocation("America/Los_Angeles")
 var xs = types.NewXString
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xt = types.NewXTime
+var xd = types.NewXDate
 
 var ERROR = types.NewXErrorf("any error")
 
@@ -216,8 +216,8 @@ var funcTests = []struct {
 	{"percent", []types.XValue{xs("")}, ERROR},
 	{"percent", []types.XValue{}, ERROR},
 
-	{"date", []types.XValue{xs("01-12-2017")}, xt(time.Date(2017, 12, 1, 0, 0, 0, 0, time.UTC))},
-	{"date", []types.XValue{xs("01-12-2017 10:15pm")}, xt(time.Date(2017, 12, 1, 22, 15, 0, 0, time.UTC))},
+	{"date", []types.XValue{xs("01-12-2017")}, xd(time.Date(2017, 12, 1, 0, 0, 0, 0, time.UTC))},
+	{"date", []types.XValue{xs("01-12-2017 10:15pm")}, xd(time.Date(2017, 12, 1, 22, 15, 0, 0, time.UTC))},
 	{"date", []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
 	{"date", []types.XValue{xs("no date")}, ERROR},    // invalid date
 	{"date", []types.XValue{}, ERROR},
@@ -229,11 +229,11 @@ var funcTests = []struct {
 	{"format_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YY-MM-DD h:mm:ss AA"), xs("America/Los_Angeles")}, xs("77-06-23 8:34:00 AM")},
 	{"format_date", []types.XValue{xs("1977-06-23T08:34:00.000-07:00"), xs("YYYY-MM-DDTtt:mm:ss.fffZ"), xs("UTC")}, xs("1977-06-23T15:34:00.000Z")},
 
-	{"parse_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xt(time.Date(1977, 06, 23, 8, 34, 0, 0, la))},
-	{"parse_date", []types.XValue{xs("1977-06-23T15:34:00.1234Z"), xs("YYYY-MM-DDTtt:mm:ssZ"), xs("America/Los_Angeles")}, xt(time.Date(1977, 06, 23, 8, 34, 0, 123400000, la))},
-	{"parse_date", []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD tt:mm"), xs("America/Los_Angeles")}, xt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
-	{"parse_date", []types.XValue{xs("1977-06-23 03:34 pm"), xs("YYYY-MM-DD tt:mm aa"), xs("America/Los_Angeles")}, xt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
-	{"parse_date", []types.XValue{xs("1977-06-23 03:34 PM"), xs("YYYY-MM-DD tt:mm AA"), xs("America/Los_Angeles")}, xt(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+	{"parse_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 8, 34, 0, 0, la))},
+	{"parse_date", []types.XValue{xs("1977-06-23T15:34:00.1234Z"), xs("YYYY-MM-DDTtt:mm:ssZ"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 8, 34, 0, 123400000, la))},
+	{"parse_date", []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD tt:mm"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+	{"parse_date", []types.XValue{xs("1977-06-23 03:34 pm"), xs("YYYY-MM-DD tt:mm aa"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+	{"parse_date", []types.XValue{xs("1977-06-23 03:34 PM"), xs("YYYY-MM-DD tt:mm AA"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
 
 	{"date_diff", []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("d")}, xi(2)},
 	{"date_diff", []types.XValue{xs("03-12-2017 10:15"), xs("03-12-2017 18:15"), xs("d")}, xi(0)},
@@ -256,20 +256,20 @@ var funcTests = []struct {
 	{"date_diff", []types.XValue{xs("01-12-2017"), xs("01-12-2017"), xs("xxx")}, ERROR},
 	{"date_diff", []types.XValue{}, ERROR},
 
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("y")}, xt(time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("y")}, xt(time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("M")}, xt(time.Date(2018, 2, 03, 22, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("M")}, xt(time.Date(2017, 10, 3, 22, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("w")}, xt(time.Date(2017, 12, 17, 22, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("w")}, xt(time.Date(2017, 11, 19, 22, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017"), xs("2"), xs("d")}, xt(time.Date(2017, 12, 5, 0, 0, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017"), xs("-4"), xs("d")}, xt(time.Date(2017, 11, 29, 0, 0, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("h")}, xt(time.Date(2017, 12, 4, 0, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("h")}, xt(time.Date(2017, 12, 3, 20, 15, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("105"), xs("m")}, xt(time.Date(2017, 12, 4, 0, 0, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-20"), xs("m")}, xt(time.Date(2017, 12, 3, 21, 55, 0, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("s")}, xt(time.Date(2017, 12, 3, 22, 15, 2, 0, time.UTC))},
-	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("s")}, xt(time.Date(2017, 12, 3, 22, 14, 58, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("y")}, xd(time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("y")}, xd(time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("M")}, xd(time.Date(2018, 2, 03, 22, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("M")}, xd(time.Date(2017, 10, 3, 22, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("w")}, xd(time.Date(2017, 12, 17, 22, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("w")}, xd(time.Date(2017, 11, 19, 22, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017"), xs("2"), xs("d")}, xd(time.Date(2017, 12, 5, 0, 0, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017"), xs("-4"), xs("d")}, xd(time.Date(2017, 11, 29, 0, 0, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("h")}, xd(time.Date(2017, 12, 4, 0, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("h")}, xd(time.Date(2017, 12, 3, 20, 15, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("105"), xs("m")}, xd(time.Date(2017, 12, 4, 0, 0, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-20"), xs("m")}, xd(time.Date(2017, 12, 3, 21, 55, 0, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("s")}, xd(time.Date(2017, 12, 3, 22, 15, 2, 0, time.UTC))},
+	{"date_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("s")}, xd(time.Date(2017, 12, 3, 22, 14, 58, 0, time.UTC))},
 	{"date_add", []types.XValue{xs("xxx"), xs("2"), xs("d")}, ERROR},
 	{"date_add", []types.XValue{xs("03-12-2017 10:15"), xs("xxx"), xs("D")}, ERROR},
 	{"date_add", []types.XValue{xs("03-12-2017 10:15"), xs("2"), xs("xxx")}, ERROR},
@@ -291,8 +291,8 @@ var funcTests = []struct {
 	{"tz_offset", []types.XValue{xs("xxx")}, ERROR},
 	{"tz_offset", []types.XValue{}, ERROR},
 
-	{"legacy_add", []types.XValue{xs("01-12-2017"), xi(2)}, xt(time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC))},
-	{"legacy_add", []types.XValue{xs("2"), xs("01-12-2017 10:15:33pm")}, xt(time.Date(2017, 12, 3, 22, 15, 33, 0, time.UTC))},
+	{"legacy_add", []types.XValue{xs("01-12-2017"), xi(2)}, xd(time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC))},
+	{"legacy_add", []types.XValue{xs("2"), xs("01-12-2017 10:15:33pm")}, xd(time.Date(2017, 12, 3, 22, 15, 33, 0, time.UTC))},
 	{"legacy_add", []types.XValue{xs("2"), xs("3.5")}, xn("5.5")},
 	{"legacy_add", []types.XValue{xs("01-12-2017 10:15:33pm"), xs("01-12-2017")}, ERROR},
 	{"legacy_add", []types.XValue{types.NewXNumberFromInt64(int64(math.MaxInt32 + 1)), xs("01-12-2017 10:15:33pm")}, ERROR},

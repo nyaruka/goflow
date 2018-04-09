@@ -15,7 +15,7 @@ import (
 var xs = types.NewXString
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xt = types.NewXTime
+var xd = types.NewXDate
 
 type testXObject struct {
 	foo string

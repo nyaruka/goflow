@@ -109,8 +109,8 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// try to parse dates and decimals
-	date1, date1Err := types.ToXTime(env, args[0])
-	date2, date2Err := types.ToXTime(env, args[1])
+	date1, date1Err := types.ToXDate(env, args[0])
+	date2, date2Err := types.ToXDate(env, args[1])
 
 	dec1, dec1Err := types.ToXNumber(args[0])
 	dec2, dec2Err := types.ToXNumber(args[1])
@@ -125,7 +125,7 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		if dec2.Native().IntPart() < math.MinInt32 || dec2.Native().IntPart() > math.MaxInt32 {
 			return types.NewXErrorf("LEGACY_ADD cannot operate on integers greater than 32 bit")
 		}
-		return types.NewXTime(date1.Native().AddDate(0, 0, int(dec2.Native().IntPart())))
+		return types.NewXDate(date1.Native().AddDate(0, 0, int(dec2.Native().IntPart())))
 	}
 
 	// int and date, do a day addition
@@ -133,7 +133,7 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		if dec1.Native().IntPart() < math.MinInt32 || dec1.Native().IntPart() > math.MaxInt32 {
 			return types.NewXErrorf("LEGACY_ADD cannot operate on integers greater than 32 bit")
 		}
-		return types.NewXTime(date2.Native().AddDate(0, 0, int(dec1.Native().IntPart())))
+		return types.NewXDate(date2.Native().AddDate(0, 0, int(dec1.Native().IntPart())))
 	}
 
 	// one of these doesn't look like a valid decimal either, bail
@@ -1159,7 +1159,7 @@ func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXError(err)
 	}
 
-	return types.NewXTime(parsed.In(location))
+	return types.NewXDate(parsed.In(location))
 }
 
 // FormatDate turns `date` into a string according to the `format` specified and in
@@ -1204,7 +1204,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 3 {
 		return types.NewXErrorf("FORMAT_DATE takes one or two arguments, got %d", len(args))
 	}
-	date, xerr := types.ToXTime(env, args[0])
+	date, xerr := types.ToXDate(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1239,7 +1239,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 
 	// convert to our timezone if we have one (otherwise we remain in the date's default)
 	if location != nil {
-		date = types.NewXTime(date.Native().In(location))
+		date = types.NewXDate(date.Native().In(location))
 	}
 
 	// return the formatted date
@@ -1270,7 +1270,7 @@ func Date(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXError(err)
 	}
 
-	return types.NewXTime(date)
+	return types.NewXDate(date)
 }
 
 // DateFromParts converts the passed in `year`, `month`` and `day`
@@ -1301,7 +1301,7 @@ func DateFromParts(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	return types.NewXTime(time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()))
+	return types.NewXDate(time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()))
 }
 
 // DateDiff returns the integer duration between `date1` and `date2` in the `unit` specified.
@@ -1319,12 +1319,12 @@ func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("DATE_DIFF takes exactly three arguments, received %d", len(args))
 	}
 
-	date1, xerr := types.ToXTime(env, args[0])
+	date1, xerr := types.ToXDate(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	date2, xerr := types.ToXTime(env, args[1])
+	date2, xerr := types.ToXDate(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
@@ -1372,7 +1372,7 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("DATE_ADD takes exactly three arguments, received %d", len(args))
 	}
 
-	date, xerr := types.ToXTime(env, args[0])
+	date, xerr := types.ToXDate(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1389,19 +1389,19 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 
 	switch unit.Native() {
 	case "s":
-		return types.NewXTime(date.Native().Add(time.Duration(duration) * time.Second))
+		return types.NewXDate(date.Native().Add(time.Duration(duration) * time.Second))
 	case "m":
-		return types.NewXTime(date.Native().Add(time.Duration(duration) * time.Minute))
+		return types.NewXDate(date.Native().Add(time.Duration(duration) * time.Minute))
 	case "h":
-		return types.NewXTime(date.Native().Add(time.Duration(duration) * time.Hour))
+		return types.NewXDate(date.Native().Add(time.Duration(duration) * time.Hour))
 	case "d":
-		return types.NewXTime(date.Native().AddDate(0, 0, duration))
+		return types.NewXDate(date.Native().AddDate(0, 0, duration))
 	case "w":
-		return types.NewXTime(date.Native().AddDate(0, 0, duration*7))
+		return types.NewXDate(date.Native().AddDate(0, 0, duration*7))
 	case "M":
-		return types.NewXTime(date.Native().AddDate(0, duration, 0))
+		return types.NewXDate(date.Native().AddDate(0, duration, 0))
 	case "y":
-		return types.NewXTime(date.Native().AddDate(duration, 0, 0))
+		return types.NewXDate(date.Native().AddDate(duration, 0, 0))
 	}
 
 	return types.NewXErrorf("Unknown unit: %s, must be one of s, m, h, d, w, M, y", unit)
@@ -1413,7 +1413,7 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(weekday("foo")) -> ERROR
 //
 // @function weekday(date)
-func Weekday(env utils.Environment, date types.XTime) types.XValue {
+func Weekday(env utils.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt(int(date.Native().Weekday()))
 }
 
@@ -1428,7 +1428,7 @@ func Weekday(env utils.Environment, date types.XTime) types.XValue {
 //   @(tz("foo")) -> ERROR
 //
 // @function tz(date)
-func TZ(env utils.Environment, date types.XTime) types.XValue {
+func TZ(env utils.Environment, date types.XDate) types.XValue {
 	return types.NewXString(date.Native().Location().String())
 }
 
@@ -1443,7 +1443,7 @@ func TZ(env utils.Environment, date types.XTime) types.XValue {
 //   @(tz_offset("foo")) -> ERROR
 //
 // @function tz_offset(date)
-func TZOffset(env utils.Environment, date types.XTime) types.XValue {
+func TZOffset(env utils.Environment, date types.XDate) types.XValue {
 	// this looks like we are returning a set offset, but this is how go describes formats
 	return types.NewXString(date.Native().Format("-0700"))
 
@@ -1460,7 +1460,7 @@ func Today(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	nowTZ := time.Now().In(env.Timezone())
-	return types.NewXTime(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
+	return types.NewXDate(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
 }
 
 // FromEpoch returns a new date created from `num` which represents number of nanoseconds since January 1st, 1970 GMT
@@ -1478,7 +1478,7 @@ func FromEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	return types.NewXTime(time.Unix(0, offset.Native().IntPart()).In(env.Timezone()))
+	return types.NewXDate(time.Unix(0, offset.Native().IntPart()).In(env.Timezone()))
 }
 
 // ToEpoch converts `date` to the number of nanoseconds since January 1st, 1970 GMT
@@ -1491,7 +1491,7 @@ func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("TO_EPOCH takes exactly one date argument, got %d", len(args))
 	}
 
-	date, xerr := types.ToXTime(env, args[0])
+	date, xerr := types.ToXDate(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1509,7 +1509,7 @@ func Now(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("NOW takes no arguments, got %d", len(args))
 	}
 
-	return types.NewXTime(time.Now().In(env.Timezone()))
+	return types.NewXDate(time.Now().In(env.Timezone()))
 }
 
 //----------------------------------------------------------------------------------------

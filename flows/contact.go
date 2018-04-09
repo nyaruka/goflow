@@ -229,7 +229,7 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 				nativeValue = typed.Native()
 			case types.XNumber:
 				nativeValue = typed.Native()
-			case types.XTime:
+			case types.XDate:
 				nativeValue = typed.Native()
 			}
 
@@ -248,7 +248,7 @@ var _ contactql.Queryable = (*Contact)(nil)
 
 type fieldValueEnvelope struct {
 	Text     types.XString  `json:"text,omitempty"`
-	Datetime *types.XTime   `json:"datetime,omitempty"`
+	Datetime *types.XDate   `json:"datetime,omitempty"`
 	Decimal  *types.XNumber `json:"decimal,omitempty"`
 	State    string         `json:"state,omitempty"`
 	District string         `json:"district,omitempty"`

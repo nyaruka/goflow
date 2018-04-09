@@ -50,7 +50,7 @@ func (f *Field) Key() FieldKey { return f.key }
 type FieldValue struct {
 	field    *Field
 	text     types.XString
-	datetime *types.XTime
+	datetime *types.XDate
 	decimal  *types.XNumber
 	state    *Location
 	district *Location
@@ -115,14 +115,14 @@ func (f FieldValues) clone() FieldValues {
 }
 
 func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XString) {
-	var asDate *types.XTime
+	var asDate *types.XDate
 	var asNumber *types.XNumber
 
 	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
 		asNumber = &parsedNumber
 	}
 
-	if parsedDate, xerr := types.ToXTime(env, rawValue); xerr == nil {
+	if parsedDate, xerr := types.ToXDate(env, rawValue); xerr == nil {
 		asDate = &parsedDate
 	}
 
