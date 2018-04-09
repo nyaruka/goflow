@@ -221,6 +221,8 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 			var nativeValue interface{}
 
 			switch typed := fieldValue.(type) {
+			case nil:
+				return nil
 			case *Location:
 				nativeValue = typed.Name()
 			case types.XString:

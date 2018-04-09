@@ -118,6 +118,12 @@ func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
 
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XNumber) MarshalJSON() ([]byte, error) {
+	nativePtr := (decimal.Decimal)(x)
+	return nativePtr.MarshalJSON()
+}
+
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
 func (x *XNumber) UnmarshalJSON(data []byte) error {
 	nativePtr := (*decimal.Decimal)(x)
@@ -181,6 +187,12 @@ func (x XTime) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO
 
 // Native returns the native value of this type
 func (x XTime) Native() time.Time { return time.Time(x) }
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XTime) MarshalJSON() ([]byte, error) {
+	nativePtr := (time.Time)(x)
+	return nativePtr.MarshalJSON()
+}
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
 func (x *XTime) UnmarshalJSON(data []byte) error {

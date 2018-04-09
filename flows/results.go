@@ -47,7 +47,7 @@ func (r *Result) Reduce() types.XPrimitive {
 	return types.NewXString(r.Value)
 }
 
-func (r *Result) ToJSON() types.XString { return types.NewXString("TODO") }
+func (r *Result) ToJSON() types.XString { return types.RequireMarshalToXString(r.Value) }
 
 var _ types.XValue = (*Result)(nil)
 var _ types.XResolvable = (*Result)(nil)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 
@@ -41,15 +42,32 @@ func TestCompare(t *testing.T) {
 	}
 }
 
-func TestXNumberUnmarshal(t *testing.T) {
-	// try with quotes
+func TestXNumberMarshaling(t *testing.T) {
+	// unmarshal with quotes
 	var num types.XNumber
 	err := json.Unmarshal([]byte(`"23.45"`), &num)
 	assert.NoError(t, err)
 	assert.Equal(t, types.RequireXNumberFromString("23.45"), num)
 
-	// try without quotes
+	// unmarshal without quotes
 	err = json.Unmarshal([]byte(`34.56`), &num)
 	assert.NoError(t, err)
 	assert.Equal(t, types.RequireXNumberFromString("34.56"), num)
+
+	// marshal (doesn't use quotes)
+	data, err := json.Marshal(types.RequireXNumberFromString("23.45"))
+	assert.NoError(t, err)
+	assert.Equal(t, []byte(`23.45`), data)
+}
+
+func TestXTimeMarshaling(t *testing.T) {
+	var date types.XTime
+	err := json.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
+	assert.NoError(t, err)
+	assert.Equal(t, types.NewXTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), date)
+
+	// marshal
+	data, err := json.Marshal(types.NewXTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
+	assert.NoError(t, err)
+	assert.Equal(t, []byte(`"2018-04-09T17:01:30Z"`), data)
 }
