@@ -34,7 +34,7 @@ func (x XJSONObject) Length() int {
 func (x XJSONObject) Resolve(key string) XValue {
 	val, valType, _, err := jsonparser.Get(x.XJSON, key)
 	if err != nil {
-		return NewXError(fmt.Errorf("can't resolve '%s'", key))
+		return NewXResolveError(x, key)
 	}
 
 	return jsonTypeToXValue(val, valType)

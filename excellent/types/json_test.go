@@ -49,7 +49,7 @@ func TestXJSONResolve(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 	for _, test := range jsonTests {
 		fragment := types.JSONToXValue(test.JSON)
-		value := excellent.ResolveXValue(env, fragment, test.lookup)
+		value := excellent.ResolveValue(env, fragment, test.lookup)
 		err, _ := value.(error)
 
 		if test.hasError {

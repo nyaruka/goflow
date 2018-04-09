@@ -32,7 +32,7 @@ func TestResults(t *testing.T) {
 			t.Errorf("Error unmarshalling: '%s'", err)
 			continue
 		}
-		value := excellent.ResolveXValue(env, results, test.lookup)
+		value := excellent.ResolveValue(env, results, test.lookup)
 
 		// don't check error equality - just check that we got an error if we expected one
 		errExpected, _ := test.expected.(types.XError)

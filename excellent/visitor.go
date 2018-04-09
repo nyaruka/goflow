@@ -49,7 +49,7 @@ func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	}
 
 	lookup := ctx.Atom(1).GetText()
-	return ResolveXValue(v.env, context, lookup)
+	return ResolveValue(v.env, context, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -114,14 +114,14 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 		return xerr
 	}
 
-	return ResolveXValue(v.env, context, lookup.Native())
+	return ResolveValue(v.env, context, lookup.Native())
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *Visitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
 
-	return ResolveXValue(v.env, v.resolver, key)
+	return ResolveValue(v.env, v.resolver, key)
 }
 
 // VisitParentheses deals with expressions in parentheses such as (1+2)

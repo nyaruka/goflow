@@ -32,7 +32,7 @@ func EvaluateExpression(env utils.Environment, context types.XValue, template st
 	}
 
 	visitor := NewVisitor(env, context)
-	value, _ := visitor.Visit(tree).(types.XValue)
+	value := toXValue(visitor.Visit(tree))
 
 	err, isErr := value.(types.XError)
 
@@ -67,7 +67,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 
 	switch tokenType {
 	case IDENTIFIER:
-		value := ResolveXValue(env, context, token)
+		value := ResolveValue(env, context, token)
 
 		// didn't find it, our value is empty string
 		if value == nil {
@@ -111,7 +111,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER:
-			value := ResolveXValue(env, context, token)
+			value := ResolveValue(env, context, token)
 
 			// didn't find it, our value is empty string
 			if value == nil {
@@ -151,13 +151,13 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 	return buf.String(), nil
 }
 
-// ResolveXValue will resolve the passed in string variable given in dot notation and return
+// ResolveValue will resolve the passed in string variable given in dot notation and return
 // the value as defined by the Resolvable passed in.
 //
 // Example syntaxes:
 //      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
 //      foo.bar[0] - same as above
-func ResolveXValue(env utils.Environment, variable types.XValue, key string) types.XValue {
+func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
 	// self referencing
 	if key == "" {
 		return variable
