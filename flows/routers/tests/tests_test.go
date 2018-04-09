@@ -222,19 +222,13 @@ func TestTests(t *testing.T) {
 }
 
 func TestEvaluateTemplateAsString(t *testing.T) {
-	varMap := map[string]types.XValue{
+	vars := types.NewXMap(map[string]types.XValue{
 		"int1":  types.NewXNumberFromInt(1),
 		"int2":  types.NewXNumberFromInt(2),
 		"array": types.NewXArray(xs("one"), xs("two"), xs("three")),
 		"thing": &testResolvable{},
 		"err":   types.NewXErrorf("an error"),
-	}
-	vars := types.NewXMap(varMap)
-
-	keys := make([]string, 0, len(varMap))
-	for key := range varMap {
-		keys = append(keys, key)
-	}
+	})
 
 	evalTests := []struct {
 		template string
@@ -252,7 +246,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, keys)
+		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

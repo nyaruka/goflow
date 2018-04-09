@@ -2,8 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -152,12 +150,11 @@ func (f FieldValues) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (f FieldValues) Reduce() types.XPrimitive {
-	fields := make([]string, 0, len(f))
+	values := types.NewXEmptyMap()
 	for k, v := range f {
-		// TODO serilalize field value according to type
-		fields = append(fields, fmt.Sprintf("%s: %s", k, v.TypedValue()))
+		values.Put(string(k), v.Reduce())
 	}
-	return types.NewXString(strings.Join(fields, ", "))
+	return values
 }
 
 func (f FieldValues) ToJSON() types.XString { return types.NewXString("TODO") }

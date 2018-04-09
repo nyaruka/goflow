@@ -58,7 +58,7 @@ var _ types.XResolvable = &testXObject{}
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 
-	varMap := map[string]types.XValue{
+	vars := types.NewXMap(map[string]types.XValue{
 		"string1": types.NewXString("foo"),
 		"string2": types.NewXString("bar"),
 		"汉字":      types.NewXString("simplified chinese"),
@@ -70,13 +70,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"array":   types.NewXArray(types.NewXString("one"), types.NewXString("two"), types.NewXString("three")),
 		"thing":   NewTestXObject("hello", 123),
 		"err":     types.NewXError(fmt.Errorf("an error")),
-	}
-	vars := types.NewXMap(varMap)
-
-	keys := make([]string, 0, len(varMap))
-	for key := range varMap {
-		keys = append(keys, key)
-	}
+	})
 
 	evaluateAsStringTests := []struct {
 		template string
@@ -152,7 +146,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 			}
 		}()
 
-		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, keys)
+		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -170,7 +164,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	array1d := types.NewXArray(types.NewXString("a"), types.NewXString("b"), types.NewXString("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXString("one"), types.NewXString("two"), types.NewXString("three")))
 
-	varMap := map[string]types.XValue{
+	vars := types.NewXMap(map[string]types.XValue{
 		"string1": types.NewXString("foo"),
 		"string2": types.NewXString("bar"),
 		"key":     types.NewXString("four"),
@@ -181,14 +175,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		"words":   types.NewXString("one two three"),
 		"array1d": array1d,
 		"array2d": array2d,
-	}
-
-	vars := types.NewXMap(varMap)
-
-	keys := make([]string, 0, len(varMap))
-	for key := range varMap {
-		keys = append(keys, key)
-	}
+	})
 
 	env := utils.NewDefaultEnvironment()
 
@@ -282,7 +269,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 
 	for _, test := range evaluateTests {
-		eval, err := EvaluateTemplate(env, vars, test.template, keys)
+		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

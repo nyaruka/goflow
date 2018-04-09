@@ -1,8 +1,6 @@
 package flows
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -100,11 +98,11 @@ func (r Results) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r Results) Reduce() types.XPrimitive {
-	results := make([]string, 0, len(r))
+	results := types.NewXEmptyMap()
 	for _, v := range r {
-		results = append(results, fmt.Sprintf("%s: %s", v.Name, v.Value))
+		results.Put(v.Name, v.Reduce())
 	}
-	return types.NewXString(strings.Join(results, ", "))
+	return results
 }
 
 func (r Results) ToJSON() types.XString { return types.NewXString("TODO") }
