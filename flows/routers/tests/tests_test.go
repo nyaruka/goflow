@@ -114,7 +114,7 @@ var testTests = []struct {
 	{"has_number_lt", []types.XValue{xs("nothing here"), xs("12")}, false, nil, false},
 	{"has_number_lt", []types.XValue{xs("too big 15"), xs("12")}, false, nil, false},
 	{"has_number_lt", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
-	{"has_number_lt", []types.XValue{xs("but foo"), nil}, false, nil, true},
+	{"has_number_lt", []types.XValue{xs("but foo"), nil}, false, nil, false},
 	{"has_number_lt", []types.XValue{nil, xs("but foo")}, false, nil, true},
 
 	{"has_number_lte", []types.XValue{xs("the number 10"), xs("11")}, true, xn("10"), false},
@@ -145,7 +145,7 @@ var testTests = []struct {
 	{"has_number_between", []types.XValue{xs("another is -12.51"), xs("-12.51"), xs("-10")}, true, xn("-12.51"), false},
 	{"has_number_between", []types.XValue{xs("nothing here"), xs("10"), xs("15")}, false, nil, false},
 	{"has_number_between", []types.XValue{xs("one"), xs("two")}, false, nil, true},
-	{"has_number_between", []types.XValue{xs("but foo"), nil, xs("10")}, false, nil, true},
+	{"has_number_between", []types.XValue{xs("but foo"), nil, xs("10")}, false, nil, false},
 	{"has_number_between", []types.XValue{nil, xs("but foo"), xs("10")}, false, nil, true},
 	{"has_number_between", []types.XValue{xs("a string"), xs("10"), xs("not number")}, false, nil, true},
 
@@ -160,7 +160,7 @@ var testTests = []struct {
 	{"has_date_lt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
 	{"has_date_lt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), nil}, false, nil, true},
+	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), nil}, false, nil, false},
 	{"has_date_lt", []types.XValue{nil, xs("but foo")}, false, nil, true},
 
 	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, true, xt(time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC)), false},

@@ -46,7 +46,7 @@ var funcTests = []struct {
 	{"if", []types.XValue{types.XBoolFalse, xs("10"), xs("20")}, xs("20")},
 	{"if", []types.XValue{types.XBoolTrue, errorArg, xs("20")}, errorArg},
 	{"if", []types.XValue{}, ERROR},
-	{"if", []types.XValue{errorArg, xs("10"), xs("20")}, xs("20")},
+	{"if", []types.XValue{errorArg, xs("10"), xs("20")}, errorArg},
 
 	{"round", []types.XValue{xs("10.5"), xs("0")}, xi(11)},
 	{"round", []types.XValue{xs("10.5"), xs("1")}, xn("10.5")},
@@ -329,7 +329,7 @@ func TestFunctions(t *testing.T) {
 
 		cmp, err := types.Compare(result, test.expected)
 		if err != nil {
-			assert.Fail(t, err.Error(), "error while comparing expected: '%#v' with result: '%#v': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
+			assert.Fail(t, err.Error(), "error while comparing expected: '%s' with result: '%s': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
 		}
 		if cmp != 0 {
 			assert.Fail(t, "", "unexpected value, expected '%v', got '%v' for function %s(%#v)", test.expected, result, test.name, test.args)

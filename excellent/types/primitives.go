@@ -232,7 +232,8 @@ func (x xerror) ToJSON() XString { return RequireMarshalToXString(x.Native().Err
 // Native returns the native value of this type
 func (x xerror) Native() error { return x.err }
 
-func (x xerror) Error() string { return x.err.Error() }
+func (x xerror) Error() string  { return x.err.Error() }
+func (x xerror) String() string { return x.Native().Error() }
 
 // NilXError is the nil error value
 var NilXError = NewXError(nil)

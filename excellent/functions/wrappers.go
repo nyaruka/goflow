@@ -93,7 +93,7 @@ func StringAndDateFunction(name string, f func(utils.Environment, types.XString,
 // OneNumberFunction creates an XFunction from a single number function
 func OneNumberFunction(name string, f func(utils.Environment, types.XNumber) types.XValue) XFunction {
 	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
-		num, xerr := types.ToXNumber(args[1])
+		num, xerr := types.ToXNumber(args[0])
 		if xerr != nil {
 			return xerr
 		}
