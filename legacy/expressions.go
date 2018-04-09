@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
+	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/runs"
@@ -64,11 +65,11 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 }
 
 // Resolve resolves the given key to a mapped expression
-func (v *varMapper) Resolve(key string) interface{} {
+func (v *varMapper) Resolve(key string) types.XValue {
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
-		return substitute
+		return types.NewXString(substitute)
 	}
 
 	newPath := make([]string, 0, 1)
@@ -96,7 +97,7 @@ func (v *varMapper) Resolve(key string) interface{} {
 
 		// or a simple string in which case we add to the end of the path and return that
 		newPath = append(newPath, value.(string))
-		return strings.Join(newPath, ".")
+		return types.NewXString(strings.Join(newPath, "."))
 	}
 
 	// then it must be an arbitrary item
@@ -113,13 +114,16 @@ func (v *varMapper) Resolve(key string) interface{} {
 		}
 	}
 
-	return strings.Join(newPath, ".")
+	return types.NewXString(strings.Join(newPath, "."))
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (v *varMapper) Atomize() interface{} {
-	return v.String()
+// Reduce is called when this object needs to be reduced to a primitive
+func (v *varMapper) Reduce() types.XPrimitive {
+	return types.NewXString(v.String())
 }
+
+// Reduce is called when this object needs to be reduced to a primitive
+func (v *varMapper) ToJSON() types.XString { return types.NewXString("TODO") }
 
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]
@@ -129,8 +133,8 @@ func (v *varMapper) String() string {
 	return v.base
 }
 
-var _ types.Atomizable = (*varMapper)(nil)
-var _ types.Resolvable = (*varMapper)(nil)
+var _ types.XValue = (*varMapper)(nil)
+var _ types.XResolvable = (*varMapper)(nil)
 
 // Migration of @extra requires its own mapper because it can map differently depending on the containing flow
 type extraMapper struct {
@@ -141,7 +145,7 @@ type extraMapper struct {
 }
 
 // Resolve resolves the given key to a new expression
-func (m *extraMapper) Resolve(key string) interface{} {
+func (m *extraMapper) Resolve(key string) types.XValue {
 	newPath := []string{}
 	if m.path != "" {
 		newPath = append(newPath, m.path)
@@ -150,21 +154,21 @@ func (m *extraMapper) Resolve(key string) interface{} {
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (m *extraMapper) Atomize() interface{} {
+// Reduce is called when this object needs to be reduced to a primitive
+func (m *extraMapper) Reduce() types.XPrimitive {
 	switch m.extraAs {
 	case ExtraAsWebhookJSON:
-		return fmt.Sprintf("run.webhook.json.%s", m.path)
+		return types.NewXString(fmt.Sprintf("run.webhook.json.%s", m.path))
 	case ExtraAsTriggerParams:
-		return fmt.Sprintf("trigger.params.%s", m.path)
+		return types.NewXString(fmt.Sprintf("trigger.params.%s", m.path))
 	case ExtraAsFunction:
-		return fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path)
+		return types.NewXString(fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path))
 	}
-	return ""
+	return types.XStringEmpty
 }
 
-var _ types.Atomizable = (*extraMapper)(nil)
-var _ types.Resolvable = (*extraMapper)(nil)
+var _ types.XValue = (*extraMapper)(nil)
+var _ types.XResolvable = (*extraMapper)(nil)
 
 type functionTemplate struct {
 	name   string
@@ -361,7 +365,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 	return migrateLegacyTemplateAsString(migrationVarMapper, template)
 }
 
-func migrateLegacyTemplateAsString(resolver types.Resolvable, template string) (string, error) {
+func migrateLegacyTemplateAsString(resolver types.XValue, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors excellent.TemplateErrors
 	scanner := excellent.NewXScanner(strings.NewReader(template), legacyContextTopLevels)
@@ -371,7 +375,7 @@ func migrateLegacyTemplateAsString(resolver types.Resolvable, template string) (
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := excellent.ResolveVariable(nil, resolver, token)
+			value := excellent.ResolveXValue(nil, resolver, token)
 			if value == nil {
 				errors = append(errors, fmt.Errorf("Invalid key: '%s'", token))
 				buf.WriteString("@")
@@ -411,26 +415,31 @@ func migrateLegacyTemplateAsString(resolver types.Resolvable, template string) (
 	return buf.String(), nil
 }
 
-// toString defers to main ToString, but will also stringify arrays
 func toString(params interface{}) (string, error) {
-	switch params := params.(type) {
+	switch typed := params.(type) {
+	case types.XValue:
+		str, xerr := types.ToXString(typed)
+		return str.Native(), xerr
+	case string:
+		return typed, nil
+
 	case []interface{}:
-		strArr := make([]string, len(params))
+		strArr := make([]string, len(typed))
 		for i := range strArr {
-			str, err := types.ToString(nil, params[i])
+			str, err := toString(typed[i])
 			if err != nil {
-				return types.ToString(nil, params)
+				return "", err
 			}
 			strArr[i] = str
 		}
-
 		return strings.Join(strArr, ", "), nil
+	default:
+		panic(fmt.Sprintf("can't toString a %s", typed))
 	}
-	return types.ToString(nil, params)
 }
 
 // translateExpression will turn an old expression into a new format expression
-func translateExpression(env utils.Environment, resolver types.Resolvable, template string) (interface{}, error) {
+func translateExpression(env utils.Environment, resolver types.XValue, template string) (interface{}, error) {
 	errors := excellent.NewErrorListener()
 
 	input := antlr.NewInputStream(template)
@@ -475,10 +484,10 @@ func translateExpression(env utils.Environment, resolver types.Resolvable, templ
 type legacyVisitor struct {
 	gen.BaseExcellent2Visitor
 	env      utils.Environment
-	resolver types.Resolvable
+	resolver types.XValue
 }
 
-func newLegacyVisitor(env utils.Environment, resolver types.Resolvable) *legacyVisitor {
+func newLegacyVisitor(env utils.Environment, resolver types.XValue) *legacyVisitor {
 	return &legacyVisitor{env: env, resolver: resolver}
 }
 
@@ -502,12 +511,13 @@ func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) inte
 
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	value := v.Visit(ctx.Atom(0))
-	lookup, err := types.ToString(v.env, v.Visit(ctx.Atom(1)))
+	value := v.Visit(ctx.Atom(0)).(types.XValue)
+	expression := v.Visit(ctx.Atom(1)).(types.XValue)
+	lookup, err := types.ToXString(expression)
 	if err != nil {
 		return err
 	}
-	return excellent.ResolveVariable(v.env, value, lookup)
+	return excellent.ResolveXValue(v.env, value, lookup.Native())
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -529,7 +539,7 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 
 	_, ignored := ignoredFunctions[template.name]
 	if !ignored {
-		_, found = excellent.XFUNCTIONS[template.name]
+		_, found = functions.XFUNCTIONS[template.name]
 		if !found {
 			return fmt.Errorf("No function with name '%s'", template.name)
 		}
@@ -599,18 +609,19 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 
 // VisitArrayLookup deals with lookups such as foo[5]
 func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
-	value := v.Visit(ctx.Atom())
-	lookup, err := types.ToString(v.env, v.Visit(ctx.Expression()))
+	value := v.Visit(ctx.Atom()).(types.XValue)
+	expression := v.Visit(ctx.Expression()).(types.XValue)
+	lookup, err := types.ToXString(expression)
 	if err != nil {
 		return err
 	}
-	return excellent.ResolveVariable(v.env, value, lookup)
+	return excellent.ResolveXValue(v.env, value, lookup.Native())
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := excellent.ResolveVariable(v.env, v.resolver, key)
+	val := excellent.ResolveXValue(v.env, v.resolver, key)
 	if val == nil {
 		return fmt.Errorf("Invalid key: '%s'", key)
 	}
