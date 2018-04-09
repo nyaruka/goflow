@@ -37,32 +37,32 @@ var XTESTS = map[string]functions.XFunction{
 	"has_group":          HasGroup,
 	"has_wait_timed_out": HasWaitTimedOut,
 
-	"is_string_eq":    IsStringEQ,
-	"has_phrase":      HasPhrase,
-	"has_only_phrase": HasOnlyPhrase,
-	"has_any_word":    HasAnyWord,
-	"has_all_words":   HasAllWords,
-	"has_beginning":   HasBeginning,
-	"has_text":        HasText,
-	"has_pattern":     HasPattern,
+	"is_string_eq":    functions.TwoStringFunction("is_string_eq", IsStringEQ),
+	"has_phrase":      functions.TwoStringFunction("has_phrase", HasPhrase),
+	"has_only_phrase": functions.TwoStringFunction("has_only_phrase", HasOnlyPhrase),
+	"has_any_word":    functions.TwoStringFunction("has_any_word", HasAnyWord),
+	"has_all_words":   functions.TwoStringFunction("has_all_words", HasAllWords),
+	"has_beginning":   functions.TwoStringFunction("has_beginning", HasBeginning),
+	"has_text":        functions.OneStringFunction("has_text", HasText),
+	"has_pattern":     functions.TwoStringFunction("has_pattern", HasPattern),
 
-	"has_number":         HasNumber,
+	"has_number":         functions.OneStringFunction("has_number", HasNumber),
 	"has_number_between": HasNumberBetween,
-	"has_number_lt":      HasNumberLT,
-	"has_number_lte":     HasNumberLTE,
-	"has_number_eq":      HasNumberEQ,
-	"has_number_gte":     HasNumberGTE,
-	"has_number_gt":      HasNumberGT,
+	"has_number_lt":      functions.StringAndNumberFunction("has_number_lt", HasNumberLT),
+	"has_number_lte":     functions.StringAndNumberFunction("has_number_lte", HasNumberLTE),
+	"has_number_eq":      functions.StringAndNumberFunction("has_number_eq", HasNumberEQ),
+	"has_number_gte":     functions.StringAndNumberFunction("has_number_gte", HasNumberGTE),
+	"has_number_gt":      functions.StringAndNumberFunction("has_number_gt", HasNumberGT),
 
-	"has_date":    HasDate,
-	"has_date_lt": HasDateLT,
-	"has_date_eq": HasDateEQ,
-	"has_date_gt": HasDateGT,
+	"has_date":    functions.OneStringFunction("has_date", HasDate),
+	"has_date_lt": functions.StringAndDateFunction("has_date_lt", HasDateLT),
+	"has_date_eq": functions.StringAndDateFunction("has_date_eq", HasDateEQ),
+	"has_date_gt": functions.StringAndDateFunction("has_date_gt", HasDateGT),
 
-	"has_phone": HasPhone,
-	"has_email": HasEmail,
+	"has_phone": functions.TwoStringFunction("has_phone", HasPhone),
+	"has_email": functions.OneStringFunction("has_email", HasEmail),
 
-	"has_state":    HasState,
+	"has_state":    functions.OneStringFunction("has_state", HasState),
 	"has_district": HasDistrict,
 	"has_ward":     HasWard,
 }
@@ -84,17 +84,9 @@ var XTESTS = map[string]functions.XFunction{
 //  @(is_string_eq(webhook.status, "connection_error")) -> false
 //
 // @test is_string_eq(run)
-func IsStringEQ(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("IS_STRING_EQ takes exactly two arguments, got %d", len(args))
-	}
-
-	// both parameters needs to be strings
-	string1 := types.ToXString(args[0])
-	string2 := types.ToXString(args[1])
-
-	if string1.Native() == string2.Native() {
-		return XTestResult{true, string1}
+func IsStringEQ(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
+	if str1.Native() == str2.Native() {
+		return XTestResult{true, str1}
 	}
 
 	return XFalseResult
@@ -117,14 +109,8 @@ func IsError(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("IS_ERROR takes exactly one argument, got %d", len(args))
 	}
 
-	// nil is not an error
-	if args[0] == nil {
-		return XFalseResult
-	}
-
-	err, isErr := args[0].(types.XError)
-	if isErr {
-		return XTestResult{true, err}
+	if types.IsXError(args[0]) {
+		return XTestResult{true, args[0]}
 	}
 
 	return XFalseResult
@@ -200,7 +186,10 @@ func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("HAS_GROUP must have a contact as its first argument")
 	}
 
-	groupUUID := types.ToXString(args[1])
+	groupUUID, xerr := types.ToXString(args[1])
+	if xerr != nil {
+		return xerr
+	}
 
 	// iterate through the groups looking for one with the same UUID as passed in
 	group := contact.Groups().FindByUUID(flows.GroupUUID(groupUUID))
@@ -222,8 +211,8 @@ func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_phrase("the.quick.brown.fox", "the quick").match) -> "the quick"
 //
 // @test has_phrase(string, phrase)
-func HasPhrase(env utils.Environment, args ...types.XValue) types.XValue {
-	return testStringTokens(env, "HAS_PHRASE", hasPhraseTest, args)
+func HasPhrase(env utils.Environment, str types.XString, test types.XString) types.XValue {
+	return testStringTokens(env, "HAS_PHRASE", str, test, hasPhraseTest)
 }
 
 // HasAllWords tests whether all the `words` are contained in `string`
@@ -235,8 +224,8 @@ func HasPhrase(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_all_words("the quick brown fox", "red fox")) -> false
 //
 // @test has_all_words(string, words)
-func HasAllWords(env utils.Environment, args ...types.XValue) types.XValue {
-	return testStringTokens(env, "HAS_ALL_WORDS", hasAllWordsTest, args)
+func HasAllWords(env utils.Environment, str types.XString, test types.XString) types.XValue {
+	return testStringTokens(env, "HAS_ALL_WORDS", str, test, hasAllWordsTest)
 }
 
 // HasAnyWord tests whether any of the `words` are contained in the `string`
@@ -248,8 +237,8 @@ func HasAllWords(env utils.Environment, args ...types.XValue) types.XValue {
 //  @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
 //
 // @test has_any_word(string, words)
-func HasAnyWord(env utils.Environment, args ...types.XValue) types.XValue {
-	return testStringTokens(env, "HAS_ANY_WORD", hasAnyWordTest, args)
+func HasAnyWord(env utils.Environment, str types.XString, test types.XString) types.XValue {
+	return testStringTokens(env, "HAS_ANY_WORD", str, test, hasAnyWordTest)
 }
 
 // HasOnlyPhrase tests whether the `string` contains only `phrase`
@@ -264,8 +253,8 @@ func HasAnyWord(env utils.Environment, args ...types.XValue) types.XValue {
 //  @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(string, phrase)
-func HasOnlyPhrase(env utils.Environment, args ...types.XValue) types.XValue {
-	return testStringTokens(env, "HAS_ONLY_PHRASE", hasOnlyPhraseTest, args)
+func HasOnlyPhrase(env utils.Environment, str types.XString, test types.XString) types.XValue {
+	return testStringTokens(env, "HAS_ONLY_PHRASE", str, test, hasOnlyPhraseTest)
 }
 
 // HasText tests whether there the string has any characters in it
@@ -277,22 +266,13 @@ func HasOnlyPhrase(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_text(123)) -> true
 //
 // @test has_text(string)
-func HasText(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("HAS_TEXT takes exactly one arguments, got %d", len(args))
-	}
-
-	text, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
+func HasText(env utils.Environment, str types.XString) types.XValue {
 	// trim any whitespace
-	text = strings.TrimSpace(text)
+	str = types.NewXString(strings.TrimSpace(str.Native()))
 
 	// if there is anything left then we have text
-	if len(text) > 0 {
-		return XTestResult{true, text}
+	if len(str) > 0 {
+		return XTestResult{true, str}
 	}
 
 	return XFalseResult
@@ -309,24 +289,10 @@ func HasText(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_beginning("The Quick Brown", "quick brown")) -> false
 //
 // @test has_beginning(string, beginning)
-func HasBeginning(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("HAS_BEGINNING takes exactly two arguments, got %d", len(args))
-	}
-
-	hayStack, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
-	pinCushion, err := types.ToString(env, args[1])
-	if err != nil {
-		return err
-	}
-
+func HasBeginning(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
 	// trim both
-	pinCushion = strings.TrimSpace(pinCushion)
-	hayStack = strings.TrimSpace(hayStack)
+	hayStack := strings.TrimSpace(str1.Native())
+	pinCushion := strings.TrimSpace(str2.Native())
 
 	// either are empty, no match
 	if hayStack == "" || pinCushion == "" {
@@ -340,7 +306,7 @@ func HasBeginning(env utils.Environment, args ...types.XValue) types.XValue {
 
 	segment := hayStack[:len(pinCushion)]
 	if strings.ToLower(segment) == strings.ToLower(pinCushion) {
-		return XTestResult{true, segment}
+		return XTestResult{true, types.NewXString(segment)}
 	}
 
 	return XFalseResult
@@ -352,9 +318,9 @@ type patternMatch struct {
 }
 
 func newPatternMatch(matches []string) *patternMatch {
-	groups := types.NewArray()
+	groups := types.NewXArray()
 	for _, match := range matches {
-		groups.Append(match)
+		groups.Append(types.NewXString(match))
 	}
 	return &patternMatch{groups: groups}
 }
@@ -371,7 +337,7 @@ func (m *patternMatch) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (m *patternMatch) Reduce() types.XPrimitive {
-	return m.groups.Index(0)
+	return m.groups.Index(0).(types.XString)
 }
 
 func (m *patternMatch) ToJSON() types.XString { return types.NewXString("TODO") }
@@ -390,27 +356,13 @@ var _ types.XResolvable = (*patternMatch)(nil)
 //   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> "cheese"
 //
 // @test has_pattern(string, pattern)
-func HasPattern(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("HAS_PATTERN takes exactly two arguments, got %d", len(args))
-	}
-
-	hayStack, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
-	pattern, err := types.ToString(env, args[1])
-	if err != nil {
-		return err
-	}
-
-	regex, err := regexp.Compile("(?i)" + strings.TrimSpace(pattern))
+func HasPattern(env utils.Environment, haystack types.XString, pattern types.XString) types.XValue {
+	regex, err := regexp.Compile("(?i)" + strings.TrimSpace(pattern.Native()))
 	if err != nil {
 		return types.NewXErrorf("HAS_PATTERN must be called with a valid regular expression")
 	}
 
-	matches := regex.FindStringSubmatch(strings.TrimSpace(hayStack))
+	matches := regex.FindStringSubmatch(strings.TrimSpace(haystack.Native()))
 	if matches != nil {
 		return XTestResult{true, newPatternMatch(matches)}
 	}
@@ -425,19 +377,8 @@ func HasPattern(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_number("the number is forty two")) -> false
 //
 // @test has_number(string)
-func HasNumber(env utils.Environment, args ...types.XValue) types.XValue {
-	// only one argument for has number
-	if len(args) != 1 {
-		return types.NewXErrorf("HAS_NUMBER takes exactly one arguments, got %d", len(args))
-	}
-
-	testArgs := make([]interface{}, 2)
-	testArgs[0] = args[0]
-
-	// set our second argument to a dummy, it isn't used but is need to satisfy our interface
-	testArgs[1] = "0"
-
-	return testDecimal(env, "HAS_NUMBER", isNumberTest, testArgs)
+func HasNumber(env utils.Environment, str types.XString) types.XValue {
+	return testNumber(env, "HAS_NUMBER", str, types.XNumberZero, isNumberTest)
 }
 
 // HasNumberBetween tests whether `string` contains a number between `min` and `max` inclusive
@@ -455,26 +396,25 @@ func HasNumberBetween(env utils.Environment, args ...types.XValue) types.XValue 
 		return types.NewXErrorf("HAS_NUMBER_BETWEEN takes exactly three arguments, got %d", len(args))
 	}
 
-	values, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
+	str, xerr := types.ToXString(args[0])
+	if xerr != nil {
+		return xerr
 	}
-
-	min, err := types.ToDecimal(env, args[1])
-	if err != nil {
-		return err
+	min, xerr := types.ToXNumber(args[1])
+	if xerr != nil {
+		return xerr
 	}
-	max, err := types.ToDecimal(env, args[2])
-	if err != nil {
-		return err
+	max, xerr := types.ToXNumber(args[2])
+	if xerr != nil {
+		return xerr
 	}
 
 	// for each of our values, try to evaluate to a decimal
-	for _, value := range strings.Fields(values) {
-		decimalValue, err := types.ToDecimal(env, value)
-		if err == nil {
-			if decimalValue.Cmp(min) >= 0 && decimalValue.Cmp(max) <= 0 {
-				return XTestResult{true, decimalValue}
+	for _, value := range strings.Fields(str.Native()) {
+		num, xerr := types.ToXNumber(types.NewXString(value))
+		if xerr == nil {
+			if num.Native().Cmp(min.Native()) >= 0 && num.Native().Cmp(max.Native()) <= 0 {
+				return XTestResult{true, num}
 			}
 		}
 	}
@@ -490,8 +430,8 @@ func HasNumberBetween(env utils.Environment, args ...types.XValue) types.XValue 
 //   @(has_number_lt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lt(string, max)
-func HasNumberLT(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDecimal(env, "HAS_NUMBER_LT", isNumberLT, args)
+func HasNumberLT(env utils.Environment, str types.XString, num types.XNumber) types.XValue {
+	return testNumber(env, "HAS_NUMBER_LT", str, num, isNumberLT)
 }
 
 // HasNumberLTE tests whether `value` contains a number less than or equal to `max`
@@ -503,8 +443,8 @@ func HasNumberLT(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_number_lte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_lte(string, max)
-func HasNumberLTE(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDecimal(env, "HAS_NUMBER_LTE", isNumberLTE, args)
+func HasNumberLTE(env utils.Environment, str types.XString, num types.XNumber) types.XValue {
+	return testNumber(env, "HAS_NUMBER_LTE", str, num, isNumberLTE)
 }
 
 // HasNumberEQ tests whether `strung` contains a number equal to the `value`
@@ -516,8 +456,8 @@ func HasNumberLTE(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_number_eq("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_eq(string, value)
-func HasNumberEQ(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDecimal(env, "HAS_NUMBER_EQ", isNumberEQ, args)
+func HasNumberEQ(env utils.Environment, str types.XString, num types.XNumber) types.XValue {
+	return testNumber(env, "HAS_NUMBER_EQ", str, num, isNumberEQ)
 }
 
 // HasNumberGTE tests whether `string` contains a number greater than or equal to `min`
@@ -529,8 +469,8 @@ func HasNumberEQ(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_number_gte("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gte(string, min)
-func HasNumberGTE(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDecimal(env, "HAS_NUMBER_GTE", isNumberGTE, args)
+func HasNumberGTE(env utils.Environment, str types.XString, num types.XNumber) types.XValue {
+	return testNumber(env, "HAS_NUMBER_GTE", str, num, isNumberGTE)
 }
 
 // HasNumberGT tests whether `string` contains a number greater than `min`
@@ -542,8 +482,8 @@ func HasNumberGTE(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_number_gt("the number is not there", "foo")) -> ERROR
 //
 // @test has_number_gt(string, min)
-func HasNumberGT(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDecimal(env, "HAS_NUMBER_GT", isNumberGT, args)
+func HasNumberGT(env utils.Environment, str types.XString, num types.XNumber) types.XValue {
+	return testNumber(env, "HAS_NUMBER_GT", str, num, isNumberGT)
 }
 
 // HasDate tests whether `string` contains a date formatted according to our environment
@@ -553,19 +493,8 @@ func HasNumberGT(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_date("there is no date here, just a year 2017")) -> false
 //
 // @test has_date(string)
-func HasDate(env utils.Environment, args ...types.XValue) types.XValue {
-	// only one argument for has date
-	if len(args) != 1 {
-		return types.NewXErrorf("HAS_DATE takes exactly one arguments, got %d", len(args))
-	}
-
-	testArgs := make([]interface{}, 2)
-	testArgs[0] = args[0]
-
-	// set our second argument to a dummy, it isn't used but is need to satisfy our interface
-	testArgs[1] = time.Now()
-
-	return testDate(env, "HAS_DATE", isDateTest, testArgs)
+func HasDate(env utils.Environment, str types.XString) types.XValue {
+	return testDate(env, "HAS_DATE", str, types.XTimeZero, isDateTest)
 }
 
 // HasDateLT tests whether `value` contains a date before the date `max`
@@ -576,8 +505,8 @@ func HasDate(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_lt(string, max)
-func HasDateLT(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDate(env, "HAS_DATE_LT", isDateLTTest, args)
+func HasDateLT(env utils.Environment, str types.XString, date types.XTime) types.XValue {
+	return testDate(env, "HAS_DATE_LT", str, date, isDateLTTest)
 }
 
 // HasDateEQ tests whether `string` a date equal to `date`
@@ -589,8 +518,8 @@ func HasDateLT(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_eq(string, date)
-func HasDateEQ(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDate(env, "HAS_DATE_EQ", isDateEQTest, args)
+func HasDateEQ(env utils.Environment, str types.XString, date types.XTime) types.XValue {
+	return testDate(env, "HAS_DATE_EQ", str, date, isDateEQTest)
 }
 
 // HasDateGT tests whether `string` a date after the date `min`
@@ -602,8 +531,8 @@ func HasDateEQ(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_gt(string, min)
-func HasDateGT(env utils.Environment, args ...types.XValue) types.XValue {
-	return testDate(env, "HAS_DATE_GT", isDateGTTest, args)
+func HasDateGT(env utils.Environment, str types.XString, date types.XTime) types.XValue {
+	return testDate(env, "HAS_DATE_GT", str, date, isDateGTTest)
 }
 
 var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\pN]*)(\.[\pL\pN][-_\pL\pN]*)+`)
@@ -616,21 +545,11 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\
 //   @(has_email("i'm not sharing my email")) -> false
 //
 // @test has_email(string)
-func HasEmail(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("HAS_EMAIL takes exactly one argument, got %d", len(args))
-	}
-
-	// convert our arg to a string
-	text, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
+func HasEmail(env utils.Environment, str types.XString) types.XValue {
 	// split by whitespace
-	email := emailAddressRE.FindString(text)
+	email := emailAddressRE.FindString(str.Native())
 	if email != "" {
-		return XTestResult{true, email}
+		return XTestResult{true, types.NewXString(email)}
 	}
 
 	return XFalseResult
@@ -643,32 +562,16 @@ func HasEmail(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(string, country_code)
-func HasPhone(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("HAS_PHONE takes exactly two arguments, the string to search and the country code, got %d", len(args))
-	}
-
-	// grab the text we will search
-	text, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
-	// and the country we are searching
-	country, err := types.ToString(env, args[1])
-	if err != nil {
-		return err
-	}
-
+func HasPhone(env utils.Environment, str types.XString, country types.XString) types.XValue {
 	// try to find a phone number
-	phone, err := phonenumbers.Parse(text, country)
+	phone, err := phonenumbers.Parse(str.Native(), country.Native())
 	if err != nil {
 		return XFalseResult
 	}
 
 	// format as E164 number
 	formatted := phonenumbers.Format(phone, phonenumbers.E164)
-	return XTestResult{true, formatted}
+	return XTestResult{true, types.NewXString(formatted)}
 }
 
 // HasState tests whether a state name is contained in the `string`
@@ -679,22 +582,12 @@ func HasPhone(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_state("I live in Kigali")) -> true
 //
 // @test has_state(string)
-func HasState(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("HAS_STATE takes exactly one arguments, got %d", len(args))
-	}
-
+func HasState(env utils.Environment, str types.XString) types.XValue {
 	runEnv, _ := env.(flows.RunEnvironment)
 
-	// grab the text we will search
-	text, err := types.ToString(env, args[0])
+	states, err := runEnv.FindLocationsFuzzy(str.Native(), flows.LocationLevel(1), nil)
 	if err != nil {
-		return err
-	}
-
-	states, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(1), nil)
-	if err != nil {
-		return err
+		return types.NewXError(err)
 	}
 	if len(states) > 0 {
 		return XTestResult{true, states[0]}
@@ -718,27 +611,27 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 
 	runEnv, _ := env.(flows.RunEnvironment)
 
-	var text, stateText string
-	var err error
+	var text, stateText types.XString
+	var xerr types.XError
 
 	// grab the text we will search and the parent state name
-	if text, err = types.ToString(env, args[0]); err != nil {
-		return err
+	if text, xerr = types.ToXString(args[0]); xerr != nil {
+		return xerr
 	}
 	if len(args) == 2 {
-		if stateText, err = types.ToString(env, args[1]); err != nil {
-			return err
+		if stateText, xerr = types.ToXString(args[1]); xerr != nil {
+			return xerr
 		}
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(stateText, flows.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText.Native(), flows.LocationLevel(1), nil)
 	if err != nil {
-		return err
+		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		districts, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(2), states[0])
 		if err != nil {
-			return err
+			return types.NewXError(err)
 		}
 		if len(districts) > 0 {
 			return XTestResult{true, districts[0]}
@@ -747,9 +640,9 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText == "" {
-		districts, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(2), nil)
+		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(2), nil)
 		if err != nil {
-			return err
+			return types.NewXError(err)
 		}
 		if len(districts) == 1 {
 			return XTestResult{true, districts[0]}
@@ -777,35 +670,35 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 
 	runEnv, _ := env.(flows.RunEnvironment)
 
-	var text, districtText, stateText string
-	var err error
+	var text, districtText, stateText types.XString
+	var xerr types.XError
 
 	// grab the text we will search, as well as the parent district and state names
-	if text, err = types.ToString(env, args[0]); err != nil {
-		return err
+	if text, xerr = types.ToXString(args[0]); xerr != nil {
+		return xerr
 	}
 	if len(args) == 3 {
-		if districtText, err = types.ToString(env, args[1]); err != nil {
-			return err
+		if districtText, xerr = types.ToXString(args[1]); xerr != nil {
+			return xerr
 		}
-		if stateText, err = types.ToString(env, args[2]); err != nil {
-			return err
+		if stateText, xerr = types.ToXString(args[2]); xerr != nil {
+			return xerr
 		}
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(stateText, flows.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText.Native(), flows.LocationLevel(1), nil)
 	if err != nil {
-		return err
+		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		districts, err := runEnv.FindLocationsFuzzy(districtText, flows.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(districtText.Native(), flows.LocationLevel(2), states[0])
 		if err != nil {
-			return err
+			return types.NewXError(err)
 		}
 		if len(districts) > 0 {
-			wards, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(3), districts[0])
+			wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(3), districts[0])
 			if err != nil {
-				return err
+				return types.NewXError(err)
 			}
 			if len(wards) > 0 {
 				return XTestResult{true, wards[0]}
@@ -815,9 +708,9 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText == "" {
-		wards, err := runEnv.FindLocationsFuzzy(text, flows.LocationLevel(3), nil)
+		wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(3), nil)
 		if err != nil {
-			return err
+			return types.NewXError(err)
 		}
 		if len(wards) == 1 {
 			return XTestResult{true, wards[0]}
@@ -831,36 +724,22 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 // String Test Functions
 //------------------------------------------------------------------------------------------
 
-type stringTokenTest func(origHayTokens []string, hayTokens []string, pinTokens []string) interface{}
+type stringTokenTest func(origHayTokens []string, hayTokens []string, pinTokens []string) XTestResult
 
-func testStringTokens(env utils.Environment, name string, test stringTokenTest, args []types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("%s takes exactly two arguments, got %d", name, len(args))
-	}
-
-	hayStack, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
-	pinCushion, err := types.ToString(env, args[1])
-	if err != nil {
-		return err
-	}
-
-	hayStack = strings.TrimSpace(hayStack)
-	pinCushion = strings.TrimSpace(pinCushion)
+func testStringTokens(env utils.Environment, name string, str types.XString, testStr types.XString, testFunc stringTokenTest) types.XValue {
+	hayStack := strings.TrimSpace(str.Native())
+	needle := strings.TrimSpace(testStr.Native())
 
 	origHays := utils.TokenizeString(hayStack)
 	hays := utils.TokenizeString(strings.ToLower(hayStack))
-	pins := utils.TokenizeString(strings.ToLower(pinCushion))
+	needles := utils.TokenizeString(strings.ToLower(needle))
 
-	return test(origHays, hays, pins)
+	return testFunc(origHays, hays, needles)
 }
 
-func hasPhraseTest(origHays []string, hays []string, pins []string) interface{} {
+func hasPhraseTest(origHays []string, hays []string, pins []string) XTestResult {
 	if len(pins) == 0 {
-		return XTestResult{true, ""}
+		return XTestResult{true, types.XStringEmpty}
 	}
 
 	pinIdx := 0
@@ -878,13 +757,13 @@ func hasPhraseTest(origHays []string, hays []string, pins []string) interface{} 
 	}
 
 	if pinIdx == len(pins) {
-		return XTestResult{true, strings.Join(matches, " ")}
+		return XTestResult{true, types.NewXString(strings.Join(matches, " "))}
 	}
 
 	return XFalseResult
 }
 
-func hasAllWordsTest(origHays []string, hays []string, pins []string) interface{} {
+func hasAllWordsTest(origHays []string, hays []string, pins []string) XTestResult {
 	matches := make([]string, 0, len(pins))
 	pinMatches := make([]int, len(pins))
 
@@ -912,13 +791,13 @@ func hasAllWordsTest(origHays []string, hays []string, pins []string) interface{
 	}
 
 	if allMatch {
-		return XTestResult{true, strings.Join(matches, " ")}
+		return XTestResult{true, types.NewXString(strings.Join(matches, " "))}
 	}
 
 	return XFalseResult
 }
 
-func hasAnyWordTest(origHays []string, hays []string, pins []string) interface{} {
+func hasAnyWordTest(origHays []string, hays []string, pins []string) XTestResult {
 	matches := make([]string, 0, len(pins))
 	for i, hay := range hays {
 		matched := false
@@ -935,13 +814,13 @@ func hasAnyWordTest(origHays []string, hays []string, pins []string) interface{}
 	}
 
 	if len(matches) > 0 {
-		return XTestResult{true, strings.Join(matches, " ")}
+		return XTestResult{true, types.NewXString(strings.Join(matches, " "))}
 	}
 
 	return XFalseResult
 }
 
-func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) interface{} {
+func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestResult {
 	// must be same length
 	if len(hays) != len(pins) {
 		return XFalseResult
@@ -956,36 +835,22 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) interfac
 		matches = append(matches, origHays[i])
 	}
 
-	return XTestResult{true, strings.Join(matches, " ")}
+	return XTestResult{true, types.NewXString(strings.Join(matches, " "))}
 }
 
 //------------------------------------------------------------------------------------------
-// Decimal Test Functions
+// Numerical Test Functions
 //------------------------------------------------------------------------------------------
 
 type decimalTest func(value decimal.Decimal, test decimal.Decimal) bool
 
-func testDecimal(env utils.Environment, name string, test decimalTest, args []interface{}) interface{} {
-	if len(args) != 2 {
-		return types.NewXErrorf("%s takes exactly two arguments, got %d", name, len(args))
-	}
-
-	values, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
-	decimalTest, err := types.ToDecimal(env, args[1])
-	if err != nil {
-		return err
-	}
-
+func testNumber(env utils.Environment, name string, str types.XString, testNum types.XNumber, testFunc decimalTest) types.XValue {
 	// for each of our values, try to evaluate to a decimal
-	for _, value := range strings.Fields(values) {
-		decimalValue, err := types.ToDecimal(env, value)
-		if err == nil {
-			if test(decimalValue, decimalTest) {
-				return XTestResult{true, decimalValue}
+	for _, value := range strings.Fields(str.Native()) {
+		num, xerr := types.ToXNumber(types.NewXString(value))
+		if xerr == nil {
+			if testFunc(num.Native(), testNum.Native()) {
+				return XTestResult{true, num}
 			}
 		}
 	}
@@ -1023,29 +888,14 @@ func isNumberGT(value decimal.Decimal, test decimal.Decimal) bool {
 
 type dateTest func(value time.Time, test time.Time) bool
 
-func testDate(env utils.Environment, name string, test dateTest, args []interface{}) interface{} {
-	if len(args) != 2 {
-		return types.NewXErrorf("%s takes exactly two arguments, got %d", name, len(args))
-	}
-
-	// if we can't convert this to a string, then that's an error
-	_, err := types.ToString(env, args[0])
-	if err != nil {
-		return err
-	}
-
+func testDate(env utils.Environment, name string, str types.XString, testDate types.XTime, testFunc dateTest) types.XValue {
 	// error is if we don't find a date on our test value, that's ok but no match
-	value, err := types.ToDate(env, args[0])
-	if err != nil {
+	value, xerr := types.ToXTime(env, str)
+	if xerr != nil {
 		return XFalseResult
 	}
 
-	dateTest, err := types.ToDate(env, args[1])
-	if err != nil {
-		return err
-	}
-
-	if test(value, dateTest) {
+	if testFunc(value.Native(), testDate.Native()) {
 		return XTestResult{true, value}
 	}
 

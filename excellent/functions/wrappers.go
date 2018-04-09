@@ -42,6 +42,22 @@ func TwoStringFunction(name string, f func(utils.Environment, types.XString, typ
 	})
 }
 
+// StringAndNumberFunction creates an XFunction from a function that takes a string and a number
+func StringAndNumberFunction(name string, f func(utils.Environment, types.XString, types.XNumber) types.XValue) XFunction {
+	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+		str, xerr := types.ToXString(args[0])
+		if xerr != nil {
+			return xerr
+		}
+		num, xerr := types.ToXNumber(args[1])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, str, num)
+	})
+}
+
 // StringAndIntegerFunction creates an XFunction from a function that takes a string and an integer
 func StringAndIntegerFunction(name string, f func(utils.Environment, types.XString, int) types.XValue) XFunction {
 	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
@@ -55,6 +71,22 @@ func StringAndIntegerFunction(name string, f func(utils.Environment, types.XStri
 		}
 
 		return f(env, str, num)
+	})
+}
+
+// StringAndDateFunction creates an XFunction from a function that takes a string and a date
+func StringAndDateFunction(name string, f func(utils.Environment, types.XString, types.XTime) types.XValue) XFunction {
+	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+		str, xerr := types.ToXString(args[0])
+		if xerr != nil {
+			return xerr
+		}
+		date, xerr := types.ToXTime(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+
+		return f(env, str, date)
 	})
 }
 
