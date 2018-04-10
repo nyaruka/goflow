@@ -372,17 +372,3 @@ type FlowRun interface {
 	ExitedOn() *time.Time
 	Exit(RunStatus)
 }
-
-// Channel represents a channel for sending and receiving messages
-type Channel interface {
-	types.XValue
-
-	UUID() ChannelUUID
-	Name() string
-	Address() string
-	Schemes() []string
-	SupportsScheme(string) bool
-	Roles() []ChannelRole
-	HasRole(ChannelRole) bool
-	Reference() *ChannelReference
-}

@@ -12,67 +12,63 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func handleFunctionDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error {
-	lines := strings.Split(docString, "\n")
-	signature := ""
+func handleContextDoc(output *bytes.Buffer, tag string, typeName string, docString string, session flows.Session) error {
+	parsed := parseDocString(docString, tag)
+	if len(parsed.examples) == 0 {
+		return fmt.Errorf("no examples found for context item %s", parsed.tagValue)
+	}
 
-	docs := make([]string, 0, len(lines))
-	examples := make([]string, 0, len(lines))
-	literalExamples := make([]string, 0, len(lines))
-	for _, l := range lines {
-		if strings.HasPrefix(l, prefix) {
-			signature = l[len(prefix)+1:]
-		} else if strings.HasPrefix(l, "  ") {
-			examples = append(examples, l[2:])
-		} else if strings.HasPrefix(l, " ") {
-			literalExamples = append(literalExamples, l[1:])
-		} else {
-			docs = append(docs, l)
+	// check our examples
+	for _, ex := range parsed.examples {
+		if err := checkExample(session, ex); err != nil {
+			return err
 		}
 	}
 
-	if signature != "" {
-		name := signature[0:strings.Index(signature, "(")]
-		if len(docs) > 0 && strings.HasPrefix(docs[0], typeName) {
-			docs[0] = strings.Replace(docs[0], typeName, name, 1)
-		}
+	exampleBlock := strings.Replace(strings.Join(parsed.examples, "\n"), "->", "→", -1)
 
-		// check our examples
-		for _, l := range examples {
-			pieces := strings.Split(l, "->")
-			if len(pieces) != 2 {
-				return fmt.Errorf("invalid example: %s", l)
-			}
-			test, expected := strings.TrimSpace(pieces[0]), strings.TrimSpace(pieces[1])
+	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", parsed.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", parsed.tagValue))
+	output.WriteString(strings.Join(parsed.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```objectivec\n")
+	output.WriteString(exampleBlock)
+	output.WriteString("\n")
+	output.WriteString("```\n")
+	output.WriteString("\n")
+	return nil
+}
 
-			if expected[0] == '"' && expected[len(expected)-1] == '"' {
-				expected = expected[1 : len(expected)-1]
-			}
-
-			// evaluate our expression
-			val, err := session.Runs()[0].EvaluateTemplateAsString(test, false)
-
-			if err != nil && expected != "ERROR" {
-				return fmt.Errorf("invalid example: %s  Error: %s", l, err)
-			}
-			if val != expected && expected != "ERROR" {
-				return fmt.Errorf("invalid example: %s  Got: '%s' Expected: '%s'", l, val, expected)
-			}
-		}
-
-		output.WriteString(fmt.Sprintf("<a name=\"functions:%s\"></a>\n\n", name))
-		output.WriteString(fmt.Sprintf("## %s\n\n", signature))
-		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
-		output.WriteString(fmt.Sprintf("```objectivec\n"))
-		if len(examples) > 0 {
-			output.WriteString(fmt.Sprintf("%s\n", strings.Join(examples, "\n")))
-		}
-		if len(literalExamples) > 0 {
-			output.WriteString(fmt.Sprintf("%s\n", strings.Join(literalExamples, "\n")))
-		}
-		output.WriteString(fmt.Sprintf("```\n"))
-		output.WriteString(fmt.Sprintf("\n"))
+func handleFunctionDoc(output *bytes.Buffer, tag string, typeName string, docString string, session flows.Session) error {
+	parsed := parseDocString(docString, tag)
+	if len(parsed.examples) == 0 {
+		return fmt.Errorf("no examples found for function %s", parsed.tagValue)
 	}
+
+	name := parsed.tagValue[0:strings.Index(parsed.tagValue, "(")]
+
+	if len(parsed.description) > 0 && strings.HasPrefix(parsed.description[0], typeName) {
+		parsed.description[0] = strings.Replace(parsed.description[0], typeName, name, 1)
+	}
+
+	// check our examples
+	for _, l := range parsed.examples {
+		if err := checkExample(session, l); err != nil {
+			return err
+		}
+	}
+
+	exampleBlock := strings.Replace(strings.Join(parsed.examples, "\n"), "->", "→", -1)
+
+	output.WriteString(fmt.Sprintf("<a name=\"%ss:%s\"></a>\n\n", tag[1:], name))
+	output.WriteString(fmt.Sprintf("## %s\n\n", parsed.tagValue))
+	output.WriteString(strings.Join(parsed.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```objectivec\n")
+	output.WriteString(exampleBlock)
+	output.WriteString("\n")
+	output.WriteString("```\n")
+	output.WriteString("\n")
 	return nil
 }
 
@@ -226,6 +222,54 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 		}
 		output.WriteString(fmt.Sprintf("\n"))
 	}
+	return nil
+}
+
+type parsedDocs struct {
+	tagValue    string   // value after @tag
+	examples    []string // any indented line
+	description []string // any other line
+}
+
+func parseDocString(docString string, tag string) *parsedDocs {
+	var tagValue string
+	examples := make([]string, 0)
+	description := make([]string, 0)
+
+	for _, l := range strings.Split(docString, "\n") {
+		trimmed := strings.TrimSpace(l)
+
+		if strings.HasPrefix(l, tag) {
+			tagValue = l[len(tag)+1:]
+		} else if strings.HasPrefix(l, "  ") {
+			examples = append(examples, trimmed)
+		} else {
+			description = append(description, l)
+		}
+	}
+
+	return &parsedDocs{tagValue: tagValue, examples: examples, description: description}
+}
+
+func checkExample(session flows.Session, line string) error {
+	pieces := strings.Split(line, "->")
+	if len(pieces) != 2 {
+		return fmt.Errorf("unparseable example: %s", line)
+	}
+
+	test, expected := strings.TrimSpace(pieces[0]), strings.TrimSpace(pieces[1])
+
+	// evaluate our expression
+	val, err := session.Runs()[0].EvaluateTemplateAsString(test, false)
+
+	if expected == "ERROR" {
+		if err == nil {
+			return fmt.Errorf("expected example '%s' to error but it didn't", test)
+		}
+	} else if val != expected {
+		return fmt.Errorf("expected '%s' from example: '%s', but got '%s'", expected, test, val)
+	}
+
 	return nil
 }
 

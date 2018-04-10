@@ -18,7 +18,7 @@ var sessionAssets = `[
         "content": [
             {
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "Android Channel",
+                "name": "My Android Phone",
                 "address": "+12345671111",
                 "schemes": ["tel"],
                 "roles": ["send", "receive"]
@@ -152,7 +152,10 @@ var sessionTrigger = `{
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
         "name": "Ryan Lewis",
-        "urns": ["tel:+12065551212", "mailto:foo@bar.com"],
+        "urns": [
+            "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+            "mailto:foo@bar.com"
+        ],
         "groups": [
             {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
         ],

@@ -208,7 +208,7 @@ func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_phrase("the quick brown fox", "brown fox")) -> true
 //   @(has_phrase("the Quick Brown fox", "quick fox")) -> false
 //   @(has_phrase("the Quick Brown fox", "")) -> true
-//   @(has_phrase("the.quick.brown.fox", "the quick").match) -> "the quick"
+//   @(has_phrase("the.quick.brown.fox", "the quick").match) -> the quick
 //
 // @test has_phrase(string, phrase)
 func HasPhrase(env utils.Environment, str types.XString, test types.XString) types.XValue {
@@ -220,7 +220,7 @@ func HasPhrase(env utils.Environment, str types.XString, test types.XString) typ
 // The words can be in any order and may appear more than once.
 //
 //   @(has_all_words("the quick brown FOX", "the fox")) -> true
-//   @(has_all_words("the quick brown FOX", "the fox").match) -> "the FOX"
+//   @(has_all_words("the quick brown FOX", "the fox").match) -> the FOX
 //   @(has_all_words("the quick brown fox", "red fox")) -> false
 //
 // @test has_all_words(string, words)
@@ -234,7 +234,7 @@ func HasAllWords(env utils.Environment, str types.XString, test types.XString) t
 //
 //   @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
 //   @(has_any_word("The Quick Brown Fox", "red fox")) -> true
-//   @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
+//   @(has_any_word("The Quick Brown Fox", "red fox").match) -> Fox
 //
 // @test has_any_word(string, words)
 func HasAnyWord(env utils.Environment, str types.XString, test types.XString) types.XValue {
@@ -249,7 +249,7 @@ func HasAnyWord(env utils.Environment, str types.XString, test types.XString) ty
 //   @(has_only_phrase("Quick Brown", "quick brown")) -> true
 //   @(has_only_phrase("the Quick Brown fox", "")) -> false
 //   @(has_only_phrase("", "")) -> true
-//   @(has_only_phrase("Quick Brown", "quick brown").match) -> "Quick Brown"
+//   @(has_only_phrase("Quick Brown", "quick brown").match) -> Quick Brown
 //   @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(string, phrase)
@@ -260,7 +260,7 @@ func HasOnlyPhrase(env utils.Environment, str types.XString, test types.XString)
 // HasText tests whether there the string has any characters in it
 //
 //   @(has_text("quick brown")) -> true
-//   @(has_text("quick brown").match) -> "quick brown"
+//   @(has_text("quick brown").match) -> quick brown
 //   @(has_text("")) -> false
 //   @(has_text(" \n")) -> false
 //   @(has_text(123)) -> true
@@ -284,7 +284,7 @@ func HasText(env utils.Environment, str types.XString) types.XValue {
 // without any tokenization.
 //
 //   @(has_beginning("The Quick Brown", "the quick")) -> true
-//   @(has_beginning("The Quick Brown", "the quick").match) -> "The Quick"
+//   @(has_beginning("The Quick Brown", "the quick").match) -> The Quick
 //   @(has_beginning("The Quick Brown", "the   quick")) -> false
 //   @(has_beginning("The Quick Brown", "quick brown")) -> false
 //
@@ -351,9 +351,9 @@ var _ types.XResolvable = (*patternMatch)(nil)
 //
 //   @(has_pattern("Sell cheese please", "buy (\w+)")) -> false
 //   @(has_pattern("Buy cheese please", "buy (\w+)")) -> true
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> "Buy cheese"
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) -> "Buy cheese"
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> "cheese"
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> Buy cheese
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) -> Buy cheese
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> cheese
 //
 // @test has_pattern(string, pattern)
 func HasPattern(env utils.Environment, haystack types.XString, pattern types.XString) types.XValue {
@@ -540,7 +540,7 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\
 // HasEmail tests whether an email is contained in `string`
 //
 //   @(has_email("my email is foo1@bar.com, please respond")) -> true
-//   @(has_email("my email is foo1@bar.com, please respond").match) -> "foo1@bar.com"
+//   @(has_email("my email is foo1@bar.com, please respond").match) -> foo1@bar.com
 //   @(has_email("my email is <foo@bar2.com>")) -> true
 //   @(has_email("i'm not sharing my email")) -> false
 //
@@ -558,7 +558,7 @@ func HasEmail(env utils.Environment, str types.XString) types.XValue {
 // HasPhone tests whether a phone number (in the passed in `country_code`) is contained in the `string`
 //
 //   @(has_phone("my number is 2067799294", "US")) -> true
-//   @(has_phone("my number is 206 779 9294", "US").match) -> "+12067799294"
+//   @(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
 //   @(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(string, country_code)

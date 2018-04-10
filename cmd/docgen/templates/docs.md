@@ -168,25 +168,7 @@ The following types appear in the context:
 
 <div class="context">
 
-## Channels
-
-A channel represents a means for sending and receiving input during a flow run.
-
-A channel renders as its name in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the channel
- * `name` the name of the channel
- * `address` the address of the channel
-
-### Examples
-
-```
-@contact.channel → My Android Phone
-@contact.channel.name → My Android Phone
-@contact.channel.address → +16303455678
-@run.input.channel.uuid → c42528a5-8550-480e-ae4d-92995550e1d6
-@(json(contact.channel)) → {"uuid": "c42528a5-8550-480e-ae4d-92995550e1d6", "name": "My Android Phone", "address": "+16303455678"}
-```
+{{ .ContextDocs }}
 
 ## Contacts
 

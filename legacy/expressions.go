@@ -199,7 +199,7 @@ var functionTemplates = map[string]functionTemplate{
 	"randbetween": {name: "rand"},
 	"rept":        {name: "repeat"},
 
-	"year":   {name: "format_date", params: `(%s, "yyyy")`},
+	"year":   {name: "format_date", params: `(%s, "YYYY")`},
 	"month":  {name: "format_date", params: `(%s, "M")`},
 	"day":    {name: "format_date", params: `(%s, "d")`},
 	"hour":   {name: "format_date", params: `(%s, "h")`},
