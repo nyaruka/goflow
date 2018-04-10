@@ -91,6 +91,7 @@ var sessionAssets = `[
         "url": "http://testserver/assets/group",
         "content": [
             {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
             {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
         ],
         "is_set": true
@@ -152,12 +153,14 @@ var sessionTrigger = `{
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
         "name": "Ryan Lewis",
+        "language": "eng",
         "urns": [
             "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
             "mailto:foo@bar.com"
         ],
         "groups": [
-            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
+            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
         ],
         "fields": {
             "gender": {

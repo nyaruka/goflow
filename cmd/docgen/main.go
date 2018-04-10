@@ -52,24 +52,21 @@ func buildDocs(baseDir string) (string, error) {
 		return "", fmt.Errorf("error creating example session: %s", err)
 	}
 
-	contextDocs, _, err := buildDocSet(baseDir, "flows", "@context", handleContextDoc, session)
-	if err != nil {
+	var contextDocs, functionDocs, testDocs, actionDocs, eventDocs string
+
+	if contextDocs, err = buildDocSet(baseDir, "flows", "@context", handleContextDoc, session); err != nil {
 		return "", err
 	}
-	functionDocs, _, err := buildDocSet(baseDir, "excellent/functions", "@function", handleFunctionDoc, session)
-	if err != nil {
+	if functionDocs, err = buildDocSet(baseDir, "excellent/functions", "@function", handleFunctionDoc, session); err != nil {
 		return "", err
 	}
-	testDocs, _, err := buildDocSet(baseDir, "flows/routers/tests", "@test", handleFunctionDoc, session)
-	if err != nil {
+	if testDocs, err = buildDocSet(baseDir, "flows/routers/tests", "@test", handleFunctionDoc, session); err != nil {
 		return "", err
 	}
-	actionDocs, _, err := buildDocSet(baseDir, "flows/actions", "@action", handleActionDoc, session)
-	if err != nil {
+	if actionDocs, err = buildDocSet(baseDir, "flows/actions", "@action", handleActionDoc, session); err != nil {
 		return "", err
 	}
-	eventDocs, _, err := buildDocSet(baseDir, "flows/events", "@event", handleEventDoc, session)
-	if err != nil {
+	if eventDocs, err = buildDocSet(baseDir, "flows/events", "@event", handleEventDoc, session); err != nil {
 		return "", err
 	}
 
@@ -102,36 +99,38 @@ func buildDocs(baseDir string) (string, error) {
 	return output.String(), nil
 }
 
-func buildDocSet(goflowPath string, subdir string, tag string, handler handleFunc, session flows.Session) (string, int, error) {
-	output := bytes.Buffer{}
+func buildDocSet(goflowPath string, subdir string, tag string, handler handleFunc, session flows.Session) (string, error) {
+	buffer := bytes.Buffer{}
 	examplePath := path.Join(goflowPath, subdir)
 
 	fset := token.NewFileSet()
 	pkgs, err := parser.ParseDir(fset, examplePath, nil, parser.ParseComments)
 	if err != nil {
-		return "", 0, err
+		return "", err
 	}
-
-	itemsFound := 0
 
 	for _, f := range pkgs {
 		p := doc.New(f, "./", 0)
 		for _, t := range p.Types {
 			if strings.Contains(t.Doc, tag) {
-				itemsFound++
-				if err := handler(&output, tag, t.Name, t.Doc, session); err != nil {
-					return "", 0, fmt.Errorf("error parsing %s docstrings: %s", tag, err)
+				if err := handler(&buffer, tag, t.Name, t.Doc, session); err != nil {
+					return "", fmt.Errorf("error parsing %s docstrings: %s", tag, err)
 				}
 			}
 		}
 		for _, t := range p.Funcs {
 			if strings.Contains(t.Doc, tag) {
-				itemsFound++
-				if err := handler(&output, tag, t.Name, t.Doc, session); err != nil {
-					return "", 0, fmt.Errorf("error parsing %s docstrings: %s", tag, err)
+				if err := handler(&buffer, tag, t.Name, t.Doc, session); err != nil {
+					return "", fmt.Errorf("error parsing %s docstrings: %s", tag, err)
 				}
 			}
 		}
 	}
-	return output.String(), itemsFound, nil
+
+	output := buffer.String()
+	if output == "" {
+		return "", fmt.Errorf("found 0 docstrings for tag %s", tag)
+	}
+
+	return output, nil
 }

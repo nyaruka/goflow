@@ -147,64 +147,27 @@ The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` w
 
 The context contains the following top-level variables:
 
- * `contact` the [contact](#contacts) of the current flow run
- * `run` the current [run](#runs)
- * `parent` the parent of the current [run](#runs), i.e. the run that started the current run
- * `child` the child of the current [run](#runs), i.e. the last subflow
- * `trigger` the [trigger](#triggers) that initiated this session
+ * `contact` the [contact](#context:contact) of the current flow run
+ * `run` the current [run](#context:run)
+ * `parent` the parent of the current [run](#context:run), i.e. the run that started the current run
+ * `child` the child of the current [run](#context:run), i.e. the last subflow
+ * `trigger` the [trigger](#context:trigger) that initiated this session
 
 The following types appear in the context:
 
- * [Channels](#channels)
- * [Contacts](#contacts)
- * [Flows](#flows)
- * [Groups](#groups)
- * [Inputs](#inputs)
- * [Results](#results)
- * [Runs](#runs)
- * [Triggers](#triggers)
- * [URNs](#urns)
- * [Webhooks](#webhooks)
+ * [Channel](#context:channel)
+ * [Contact](#context:contact)
+ * [Flow](#context:flow)
+ * [Group](#context:group)
+ * [Input](#context:input)
+ * [Results](#context:results)
+ * [Run](#context:run)
+ * [Triggers](#context:trigger)
+ * [URN](#context:urn)
+ * [Webhook](#context:webhook)
 
 <div class="context">
-
 {{ .ContextDocs }}
-
-## Contacts
-
-A contact represents a person who is interacting with the flow.
-
-A contact renders as the person's name (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the contact
- * `name` the full name of the contact
- * `first_name` the first name of the contact
- * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
- * `urns` all [URNs](#urns) the contact has set
- * `urns.[scheme]` all the [URNs](#urns) the contact has set for the particular URN scheme
- * `urn` shorthand for `@(format_urn(c.urns.0))`, i.e. the contact's preferred [URN](#urns) in friendly formatting
- * `groups` all the [groups](#groups) that the contact belongs to
- * `fields` all the custom contact fields the contact has set
- * `fields.[snaked_field_name]` the value of the specific field
- * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#channels) of the contact's preferred URN
-
-### Examples
-
-```
-@contact → Bobby Smith
-@contact.name → Bobby Smith
-@contact.first_name → Bobby
-@contact.language → eng
-@contact.urns → tel:+12065551212, tel:+16302425788, mailto:foo@bar.com
-@contact.urns.0 → tel:+12065551212
-@contact.urns.tel → tel:+12065551212, tel:+16302425788
-@contact.mailto.0 → mailto:foo@bar.com
-@contact.urn → (206) 555 1212
-@contact.groups → Males, Reporters
-@contact.fields → age: 36\ngender: MALE
-@contact.fields.age → 36
-@contact.fields.gender → MALE
-```
 
 ## Flows
 
@@ -222,24 +185,6 @@ A flow renders as its name in a template, and has the following properties which
 @child.flow → Age Collection
 @run.flow.uuid → 8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5
 @(json(run.flow)) → {"uuid": "8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5", "name": "Registration"}
-```
-
-## Groups
-
-A group represents a grouping of contacts. It can be static (contacts are added and removed manually through [actions](#actions:add_contact_group)) or dynamic (contacts are added automatically by a query).
-
-A group renders as its name in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the group
- * `name` the name of the group
-
-### Examples
-
-```
-@contact.groups → Males, Reporters
-@contact.groups.0.uuid → 8ddfda9c-9ea7-451e-a812-1c3153f91a87
-@contact.groups.1.name → Reporters
-@(json(contact.groups.1)) → {"uuid": "8ddfda9c-9ea7-451e-a812-1c3153f91a87", "name": "Reporters"}
 ```
 
 ## Inputs

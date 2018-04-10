@@ -28,7 +28,7 @@ func handleContextDoc(output *bytes.Buffer, tag string, typeName string, docStri
 	exampleBlock := strings.Replace(strings.Join(parsed.examples, "\n"), "->", "→", -1)
 
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", parsed.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", parsed.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(parsed.tagValue)))
 	output.WriteString(strings.Join(parsed.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")

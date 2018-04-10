@@ -19,9 +19,8 @@ const (
 	ChannelRoleUSSD    ChannelRole = "ussd"
 )
 
-// Channel represents a means for sending and receiving input during a flow run.
-//
-// It renders as its name in a template, and has the following properties which can be accessed:
+// Channel represents a means for sending and receiving input during a flow run. It renders as its name in a template,
+// and has the following properties which can be accessed:
 //
 //  * `uuid` the UUID of the channel
 //  * `name` the name of the channel
@@ -35,7 +34,7 @@ const (
 //   @run.input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
 //   @(to_json(contact.channel)) -> {"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone","address":"+12345671111"}
 //
-// @context Channel
+// @context channel
 type Channel interface {
 	types.XValue
 	types.XResolvable
@@ -126,6 +125,7 @@ func (c *channel) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
+// ToJSON converts this type to JSON
 func (c *channel) ToJSON() types.XString {
 	e := struct {
 		UUID    string `json:"uuid"`
