@@ -120,8 +120,8 @@ func ToInteger(x XValue) (int, XError) {
 	return int(intPart), nil
 }
 
-// RequireMarshalToXString calls json.Marshal in the given value and panics in the case of an error
-func RequireMarshalToXString(x interface{}) XString {
+// MustMarshalToXString calls json.Marshal in the given value and panics in the case of an error
+func MustMarshalToXString(x interface{}) XString {
 	j, err := json.Marshal(x)
 	if err != nil {
 		panic(fmt.Sprintf("unable to marshal %v to JSON", x))

@@ -24,7 +24,7 @@ func (x XDate) ToString() XString { return XString(utils.DateToISO(x.Native())) 
 func (x XDate) ToBool() XBool { return XBool(!x.Native().IsZero()) }
 
 // ToJSON converts this type to JSON
-func (x XDate) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO(x.Native())) }
+func (x XDate) ToJSON() XString { return MustMarshalToXString(utils.DateToISO(x.Native())) }
 
 // Native returns the native value of this type
 func (x XDate) Native() time.Time { return time.Time(x) }

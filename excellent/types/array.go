@@ -30,7 +30,7 @@ func (a *xarray) ToString() XString {
 	for i := range a.values {
 		strs[i] = a.values[i].Reduce().ToString()
 	}
-	return RequireMarshalToXString(strs)
+	return MustMarshalToXString(strs)
 }
 
 // ToBool converts this type to a bool
@@ -44,7 +44,7 @@ func (a *xarray) ToJSON() XString {
 	for i := range a.values {
 		marshaled[i] = json.RawMessage(a.values[i].ToJSON())
 	}
-	return RequireMarshalToXString(marshaled)
+	return MustMarshalToXString(marshaled)
 }
 
 // Index is called when this object is indexed into in an expression

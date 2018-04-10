@@ -22,7 +22,7 @@ func (x XBool) ToString() XString { return NewXString(strconv.FormatBool(x.Nativ
 func (x XBool) ToBool() XBool { return x }
 
 // ToJSON converts this type to JSON
-func (x XBool) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
+func (x XBool) ToJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
 func (x XBool) Native() bool { return bool(x) }

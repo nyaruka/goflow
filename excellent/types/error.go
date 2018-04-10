@@ -39,7 +39,7 @@ func (x xerror) ToString() XString { return XString(x.Native().Error()) }
 func (x xerror) ToBool() XBool { return XBool(false) }
 
 // ToJSON converts this type to JSON
-func (x xerror) ToJSON() XString { return RequireMarshalToXString(x.Native().Error()) }
+func (x xerror) ToJSON() XString { return MustMarshalToXString(x.Native().Error()) }
 
 // Native returns the native value of this type
 func (x xerror) Native() error { return x.err }

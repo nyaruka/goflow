@@ -35,7 +35,7 @@ func (v *testXObject) ToJSON() types.XString {
 		Foo: v.foo,
 		Bar: v.bar,
 	}
-	return types.RequireMarshalToXString(e)
+	return types.MustMarshalToXString(e)
 }
 
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXString(v.foo) }

@@ -41,7 +41,7 @@ func (m *xmap) ToString() XString {
 	for k, v := range m.values {
 		strs[k] = v.Reduce().ToString()
 	}
-	return RequireMarshalToXString(strs)
+	return MustMarshalToXString(strs)
 }
 
 // ToBool converts this type to a bool
@@ -55,7 +55,7 @@ func (m *xmap) ToJSON() XString {
 	for k, v := range m.values {
 		marshaled[k] = json.RawMessage(v.ToJSON())
 	}
-	return RequireMarshalToXString(marshaled)
+	return MustMarshalToXString(marshaled)
 }
 
 // Length is called when the length of this object is requested in an expression

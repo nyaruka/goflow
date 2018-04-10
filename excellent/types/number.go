@@ -41,7 +41,7 @@ func (x XNumber) ToString() XString { return XString(x.Native().String()) }
 func (x XNumber) ToBool() XBool { return XBool(!x.Native().Equals(decimal.Zero)) }
 
 // ToJSON converts this type to JSON
-func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
+func (x XNumber) ToJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
