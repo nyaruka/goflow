@@ -11,10 +11,11 @@ import (
 )
 
 func main() {
-	vars := make(map[string]interface{})
-	vars["int1"] = 1
-	vars["string1"] = "string1"
-	vars["int2"] = 2
+	vars := types.NewXMap(map[string]types.XValue{
+		"int1":    types.NewXNumberFromInt(1),
+		"int2":    types.NewXNumberFromInt(2),
+		"string1": types.NewXString("string1"),
+	})
 
 	if len(os.Args) != 2 {
 		log.Fatal("usage: exptester <expression>")
@@ -22,11 +23,10 @@ func main() {
 
 	env := utils.NewDefaultEnvironment()
 
-	val, err := excellent.EvaluateTemplateAsString(env, types.NewMapResolver(vars), os.Args[1], false, nil)
+	val, err := excellent.EvaluateTemplateAsString(env, vars, os.Args[1], false, nil)
 
 	fmt.Printf("Value: %s\n", val)
 	if err != nil {
 		fmt.Printf("Errors: %s\n", err.Error())
 	}
-
 }

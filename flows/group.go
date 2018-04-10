@@ -63,22 +63,24 @@ func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool,
 func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
 
 // Resolve resolves the given key when this group is referenced in an expression
-func (g *Group) Resolve(key string) interface{} {
+func (g *Group) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(g.uuid)
+		return types.NewXString(string(g.uuid))
 	case "name":
-		return g.name
+		return types.NewXString(g.name)
 	}
 
-	return fmt.Errorf("no field '%s' on group", key)
+	return types.NewXResolveError(g, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (g *Group) Atomize() interface{} { return g.name }
+// Reduce is called when this object needs to be reduced to a primitive
+func (g *Group) Reduce() types.XPrimitive { return types.NewXString(g.name) }
 
-var _ types.Atomizable = (*Group)(nil)
-var _ types.Resolvable = (*Group)(nil)
+func (g *Group) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*Group)(nil)
+var _ types.XResolvable = (*Group)(nil)
 
 // GroupList defines a contact's list of groups
 type GroupList struct {
@@ -138,7 +140,7 @@ func (l *GroupList) Count() int {
 }
 
 // Index is called when this object is indexed into in an expression
-func (l *GroupList) Index(index int) interface{} {
+func (l *GroupList) Index(index int) types.XValue {
 	return l.groups[index]
 }
 
@@ -147,17 +149,19 @@ func (l *GroupList) Length() int {
 	return len(l.groups)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (l GroupList) Atomize() interface{} {
-	array := types.NewArray()
+// Reduce is called when this object needs to be reduced to a primitive
+func (l GroupList) Reduce() types.XPrimitive {
+	array := types.NewXArray()
 	for _, group := range l.groups {
 		array.Append(group)
 	}
 	return array
 }
 
-var _ types.Atomizable = (*GroupList)(nil)
-var _ types.Indexable = (*GroupList)(nil)
+func (l GroupList) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*GroupList)(nil)
+var _ types.XIndexable = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {

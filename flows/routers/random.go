@@ -30,13 +30,13 @@ func (r *RandomRouter) Validate(exits []flows.Exit) error {
 }
 
 // PickRoute picks a route randomly from our available exits
-func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (interface{}, flows.Route, error) {
+func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (string, flows.Route, error) {
 	if len(exits) == 0 {
-		return nil, flows.NoRoute, nil
+		return "", flows.NoRoute, nil
 	}
 
 	// pick a random exit
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	exitN := random.Intn(len(exits))
-	return nil, flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
+	return "", flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
 }

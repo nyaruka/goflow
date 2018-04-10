@@ -1,9 +1,9 @@
 package inputs
 
 import (
-	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -18,15 +18,15 @@ func (i *baseInput) Channel() flows.Channel { return i.channel }
 func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 
 // Resolve resolves the given key when this input is referenced in an expression
-func (i *baseInput) Resolve(key string) interface{} {
+func (i *baseInput) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(i.uuid)
+		return types.NewXString(string(i.uuid))
 	case "created_on":
-		return i.createdOn
+		return types.NewXDate(i.createdOn)
 	case "channel":
 		return i.channel
 	}
 
-	return fmt.Errorf("No such field '%s' on input", key)
+	return types.NewXResolveError(i, key)
 }

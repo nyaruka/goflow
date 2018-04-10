@@ -23,9 +23,8 @@ type flowRun struct {
 
 	flow    flows.Flow
 	contact *flows.Contact
-	extra   types.JSONFragment
 
-	context types.Resolvable
+	context types.XValue
 	webhook *flows.WebhookCall
 	input   flows.Input
 	parent  flows.FlowRun
@@ -69,9 +68,9 @@ func (r *flowRun) Flow() flows.Flow                  { return r.flow }
 func (r *flowRun) Contact() *flows.Contact           { return r.contact }
 func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
 
-func (r *flowRun) Context() types.Resolvable { return r.context }
-func (r *flowRun) Results() flows.Results    { return r.results }
-func (r *flowRun) Events() []flows.Event     { return r.events }
+func (r *flowRun) Context() types.XValue  { return r.context }
+func (r *flowRun) Results() flows.Results { return r.results }
+func (r *flowRun) Events() []flows.Event  { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
@@ -206,7 +205,7 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 func (r *flowRun) ExitedOn() *time.Time { return r.exitedOn }
 
 // EvaluateTemplate evaluates the given template in the context of this run
-func (r *flowRun) EvaluateTemplate(template string) (interface{}, error) {
+func (r *flowRun) EvaluateTemplate(template string) (types.XValue, error) {
 	return excellent.EvaluateTemplate(r.Environment(), r.Context(), template, RunContextTopLevels)
 }
 
@@ -252,10 +251,10 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 }
 
 // Resolve resolves the given key when this run is referenced in an expression
-func (r *flowRun) Resolve(key string) interface{} {
+func (r *flowRun) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(r.UUID())
+		return types.NewXString(string(r.UUID()))
 	case "contact":
 		return r.Contact()
 	case "flow":
@@ -265,32 +264,34 @@ func (r *flowRun) Resolve(key string) interface{} {
 	case "webhook":
 		return r.Webhook()
 	case "status":
-		return string(r.Status())
+		return types.NewXString(string(r.Status()))
 	case "results":
 		return r.Results()
 	case "created_on":
-		return r.CreatedOn()
+		return types.NewXDate(r.CreatedOn())
 	case "exited_on":
 		if r.exitedOn != nil {
-			return r.exitedOn
+			return types.NewXDate(*r.exitedOn)
 		}
 		return nil
 	}
 
-	return fmt.Errorf("no field '%s' on run", key)
+	return types.NewXResolveError(r, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r *flowRun) Atomize() interface{} {
-	return string(r.uuid)
+// Reduce is called when this object needs to be reduced to a primitive
+func (r *flowRun) Reduce() types.XPrimitive {
+	return types.NewXString(string(r.uuid))
 }
+
+func (r *flowRun) ToJSON() types.XString { return types.NewXString("TODO") }
 
 func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)
 }
 
-var _ types.Atomizable = (*flowRun)(nil)
-var _ types.Resolvable = (*flowRun)(nil)
+var _ types.XValue = (*flowRun)(nil)
+var _ types.XResolvable = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 

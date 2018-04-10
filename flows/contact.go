@@ -2,15 +2,12 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 // Contact represents a single contact
@@ -109,23 +106,23 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 // Resolve resolves the given key when this contact is referenced in an expression
-func (c *Contact) Resolve(key string) interface{} {
+func (c *Contact) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(c.uuid)
+		return types.NewXString(string(c.uuid))
 	case "name":
-		return c.name
+		return types.NewXString(c.name)
 	case "first_name":
 		names := utils.TokenizeString(c.name)
 		if len(names) >= 1 {
-			return names[0]
+			return types.NewXString(names[0])
 		}
-		return ""
+		return nil
 	case "language":
-		return string(c.language)
+		return types.NewXString(string(c.language))
 	case "timezone":
 		if c.timezone != nil {
-			return c.timezone.String()
+			return types.NewXString(c.timezone.String())
 		}
 		return nil
 	case "urns":
@@ -141,20 +138,22 @@ func (c *Contact) Resolve(key string) interface{} {
 		return nil
 	}
 
-	return fmt.Errorf("no field '%s' on contact", key)
+	return types.NewXResolveError(c, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (c *Contact) Atomize() interface{} {
-	return c.name
+// Reduce is called when this object needs to be reduced to a primitive
+func (c *Contact) Reduce() types.XPrimitive {
+	return types.NewXString(c.name)
 }
 
-var _ types.Atomizable = (*Contact)(nil)
-var _ types.Resolvable = (*Contact)(nil)
+func (c *Contact) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*Contact)(nil)
+var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
-	c.fields.setValue(env, field, rawValue)
+	c.fields.setValue(env, field, types.NewXString(rawValue))
 }
 
 // UpdatePreferredChannel updates the preferred channel
@@ -219,15 +218,22 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 	for k, value := range c.fields {
 		if key == string(k) {
 			fieldValue := value.TypedValue()
-			locationValue, isLocation := fieldValue.(*Location)
+			var nativeValue interface{}
 
-			if isLocation {
-				return []interface{}{locationValue.Name()}
+			switch typed := fieldValue.(type) {
+			case nil:
+				return nil
+			case *Location:
+				nativeValue = typed.Name()
+			case types.XString:
+				nativeValue = typed.Native()
+			case types.XNumber:
+				nativeValue = typed.Native()
+			case types.XDate:
+				nativeValue = typed.Native()
 			}
-			if fieldValue != nil {
-				return []interface{}{fieldValue}
-			}
-			return nil
+
+			return []interface{}{nativeValue}
 		}
 	}
 
@@ -241,12 +247,12 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Text     string           `json:"text,omitempty"`
-	Datetime *time.Time       `json:"datetime,omitempty"`
-	Decimal  *decimal.Decimal `json:"decimal,omitempty"`
-	State    string           `json:"state,omitempty"`
-	District string           `json:"district,omitempty"`
-	Ward     string           `json:"ward,omitempty"`
+	Text     types.XString  `json:"text,omitempty"`
+	Datetime *types.XDate   `json:"datetime,omitempty"`
+	Decimal  *types.XNumber `json:"decimal,omitempty"`
+	State    string         `json:"state,omitempty"`
+	District string         `json:"district,omitempty"`
+	Ward     string         `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {

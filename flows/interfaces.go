@@ -133,6 +133,8 @@ type SessionAssets interface {
 
 // Flow is a graph of nodes containing actions and routers
 type Flow interface {
+	types.XValue
+
 	UUID() FlowUUID
 	Name() string
 	Language() utils.Language
@@ -168,7 +170,7 @@ type Action interface {
 }
 
 type Router interface {
-	PickRoute(FlowRun, []Exit, Step) (interface{}, Route, error)
+	PickRoute(FlowRun, []Exit, Step) (string, Route, error)
 	Validate([]Exit) error
 	ResultName() string
 	utils.Typed
@@ -218,13 +220,13 @@ type Translations interface {
 }
 
 type Trigger interface {
-	types.Resolvable
+	types.XValue
 	utils.Typed
 
 	Environment() utils.Environment
 	Flow() Flow
 	Contact() *Contact
-	Params() types.JSONFragment
+	Params() types.XValue
 	TriggeredOn() time.Time
 }
 
@@ -265,7 +267,7 @@ type EventLog interface {
 }
 
 type Input interface {
-	types.Resolvable
+	types.XValue
 	utils.Typed
 
 	UUID() InputUUID
@@ -330,11 +332,12 @@ type RunEnvironment interface {
 
 // FlowRun represents a run in the current session
 type FlowRun interface {
+	types.XValue
 	RunSummary
 
 	Environment() RunEnvironment
 	Session() Session
-	Context() types.Resolvable
+	Context() types.XValue
 	Input() Input
 	Webhook() *WebhookCall
 
@@ -351,7 +354,7 @@ type FlowRun interface {
 	Path() []Step
 	PathLocation() (Step, Node, error)
 
-	EvaluateTemplate(template string) (interface{}, error)
+	EvaluateTemplate(template string) (types.XValue, error)
 	EvaluateTemplateAsString(template string, urlEncode bool) (string, error)
 
 	GetText(utils.UUID, string, string) string
@@ -372,6 +375,8 @@ type FlowRun interface {
 
 // Channel represents a channel for sending and receiving messages
 type Channel interface {
+	types.XValue
+
 	UUID() ChannelUUID
 	Name() string
 	Address() string

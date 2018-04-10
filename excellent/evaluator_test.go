@@ -9,54 +9,68 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
-type testResolvable struct{}
+var xs = types.NewXString
+var xn = types.RequireXNumberFromString
+var xi = types.NewXNumberFromInt
+var xd = types.NewXDate
 
-func (r *testResolvable) Resolve(key string) interface{} {
+type testXObject struct {
+	foo string
+	bar int
+}
+
+func NewTestXObject(foo string, bar int) *testXObject {
+	return &testXObject{foo: foo, bar: bar}
+}
+
+// ToJSON converts this type to JSON
+func (v *testXObject) ToJSON() types.XString {
+	e := struct {
+		Foo string `json:"foo"`
+		Bar int    `json:"bar"`
+	}{
+		Foo: v.foo,
+		Bar: v.bar,
+	}
+	return types.MustMarshalToXString(e)
+}
+
+func (v *testXObject) Reduce() types.XPrimitive { return types.NewXString(v.foo) }
+
+func (v *testXObject) Resolve(key string) types.XValue {
 	switch key {
 	case "foo":
-		return "bar"
+		return types.NewXString("bar")
 	case "zed":
-		return 123
+		return types.NewXNumberFromInt(123)
 	case "missing":
 		return nil
 	default:
-		return fmt.Errorf("no such thing")
+		return types.NewXResolveError(v, key)
 	}
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r *testResolvable) Atomize() interface{} {
-	return "hello"
-}
-
-var _ types.Atomizable = (*testResolvable)(nil)
-var _ types.Resolvable = (*testResolvable)(nil)
+var _ types.XValue = &testXObject{}
+var _ types.XResolvable = &testXObject{}
 
 func TestEvaluateTemplateAsString(t *testing.T) {
 
-	varMap := map[string]interface{}{
-		"string1": "foo",
-		"string2": "bar",
-		"汉字":      "simplified chinese",
-		"int1":    1,
-		"int2":    2,
-		"dec1":    decimal.RequireFromString("1.5"),
-		"dec2":    decimal.RequireFromString("2.5"),
-		"words":   "one two three",
-		"array":   types.NewArray("one", "two", "three"),
-		"thing":   &testResolvable{},
-		"err":     fmt.Errorf("an error"),
-	}
-	vars := types.NewMapResolver(varMap)
-
-	keys := make([]string, 0, len(varMap))
-	for key := range varMap {
-		keys = append(keys, key)
-	}
+	vars := types.NewXMap(map[string]types.XValue{
+		"string1": types.NewXString("foo"),
+		"string2": types.NewXString("bar"),
+		"汉字":      types.NewXString("simplified chinese"),
+		"int1":    types.NewXNumberFromInt(1),
+		"int2":    types.NewXNumberFromInt(2),
+		"dec1":    types.RequireXNumberFromString("1.5"),
+		"dec2":    types.RequireXNumberFromString("2.5"),
+		"words":   types.NewXString("one two three"),
+		"array":   types.NewXArray(types.NewXString("one"), types.NewXString("two"), types.NewXString("three")),
+		"thing":   NewTestXObject("hello", 123),
+		"err":     types.NewXError(fmt.Errorf("an error")),
+	})
 
 	evaluateAsStringTests := []struct {
 		template string
@@ -104,9 +118,9 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@(TITLE(missing))", "", true},
 		{"@(TITLE(string1.xxx))", "", true},
 
-		{"@array", "one, two, three", false},
-		{"@array[0]", "one, two, three[0]", false}, // [n] notation not supported outside expression
-		{"@array.0", "one", false},                 // works as dot notation however
+		{"@array", `["one","two","three"]`, false},
+		{"@array[0]", `["one","two","three"][0]`, false}, // [n] notation not supported outside expression
+		{"@array.0", "one", false},                       // works as dot notation however
 		{"@(array [0])", "one", false},
 		{"@(array[0])", "one", false},
 		{"@(array.0)", "one", false},
@@ -126,136 +140,136 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evaluateAsStringTests {
-		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, keys)
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("panic evaluating template %s", test.template)
+			}
+		}()
+
+		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
 		} else {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
-		}
-		if eval != test.expected {
-			t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
+
+			if eval != test.expected {
+				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
+			}
 		}
 	}
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	array1d := types.NewArray("a", "b", "c")
-	array2d := types.NewArray(array1d, types.NewArray("one", "two", "three"))
+	array1d := types.NewXArray(types.NewXString("a"), types.NewXString("b"), types.NewXString("c"))
+	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXString("one"), types.NewXString("two"), types.NewXString("three")))
 
-	varMap := map[string]interface{}{
-		"string1": "foo",
-		"string2": "bar",
-		"key":     "four",
-		"int1":    1,
-		"int2":    2,
-		"dec1":    decimal.RequireFromString("1.5"),
-		"dec2":    decimal.RequireFromString("2.5"),
-		"words":   "one two three",
+	vars := types.NewXMap(map[string]types.XValue{
+		"string1": types.NewXString("foo"),
+		"string2": types.NewXString("bar"),
+		"key":     types.NewXString("four"),
+		"int1":    types.NewXNumberFromInt(1),
+		"int2":    types.NewXNumberFromInt(2),
+		"dec1":    types.RequireXNumberFromString("1.5"),
+		"dec2":    types.RequireXNumberFromString("2.5"),
+		"words":   types.NewXString("one two three"),
 		"array1d": array1d,
 		"array2d": array2d,
-	}
-
-	vars := types.NewMapResolver(varMap)
-
-	keys := make([]string, 0, len(varMap))
-	for key := range varMap {
-		keys = append(keys, key)
-	}
+	})
 
 	env := utils.NewDefaultEnvironment()
 
 	evaluateTests := []struct {
 		template string
-		expected interface{}
+		expected types.XValue
 		hasError bool
 	}{
-		{"hello world", "hello world", false},
-		{"@hello", "@hello", false},
-		{"@(title(\"hello\"))", "Hello", false},
+		{"hello world", xs("hello world"), false},
+		{"@hello", xs("@hello"), false},
+		{"@(title(\"hello\"))", xs("Hello"), false},
 
-		{"@dec1", decimal.RequireFromString("1.5"), false},
-		{"@(dec1 + dec2)", decimal.RequireFromString("4.0"), false},
+		{"@dec1", xn("1.5"), false},
+		{"@(dec1 + dec2)", xn("4.0"), false},
 
 		{"@array1d", array1d, false},
-		{"@array1d.0", "a", false},
-		{"@array1d.1", "b", false},
-		{"@array2d.0.2", "c", false},
-		{"@(array1d[0])", "a", false},
-		{"@(array1d[1])", "b", false},
+		{"@array1d.0", xs("a"), false},
+		{"@array1d.1", xs("b"), false},
+		{"@array2d.0.2", xs("c"), false},
+		{"@(array1d[0])", xs("a"), false},
+		{"@(array1d[1])", xs("b"), false},
 		{"@(array2d[0])", array1d, false},
-		{"@(array2d[0][2])", "c", false},
+		{"@(array2d[0][2])", xs("c"), false},
 
-		{"@string1 world", "foo world", false},
+		{"@string1 world", xs("foo world"), false},
 
-		{"@(-10)", -10, false},
-		{"@(-asdf)", "", true},
+		{"@(-10)", xi(-10), false},
+		{"@(-asdf)", xs(""), true},
 
-		{"@(2^2)", 4, false},
-		{"@(2^asdf)", "", true},
-		{"@(asdf^2)", "", true},
+		{"@(2^2)", xi(4), false},
+		{"@(2^asdf)", xs(""), true},
+		{"@(asdf^2)", xs(""), true},
 
-		{"@(1+2)", 3, false},
-		{"@(1-2.5)", decimal.RequireFromString("-1.5"), false},
-		{"@(1-asdf)", "", true},
-		{"@(asdf+1)", "", true},
+		{"@(1+2)", xi(3), false},
+		{"@(1-2.5)", xn("-1.5"), false},
+		{"@(1-asdf)", xs(""), true},
+		{"@(asdf+1)", xs(""), true},
 
-		{"@(1*2)", 2, false},
-		{"@(1/2)", decimal.RequireFromString("0.5"), false},
-		{"@(1/0)", "", true},
-		{"@(1*asdf)", "", true},
-		{"@(asdf/1)", "", true},
+		{"@(1*2)", xi(2), false},
+		{"@(1/2)", xn("0.5"), false},
+		{"@(1/0)", xs(""), true},
+		{"@(1*asdf)", xs(""), true},
+		{"@(asdf/1)", xs(""), true},
 
-		{"@(false)", false, false},
-		{"@(TRUE)", true, false},
+		{"@(false)", types.XBoolFalse, false},
+		{"@(TRUE)", types.XBoolTrue, false},
 
-		{"@(1+1+1)", 3, false},
-		{"@(5-2+1)", 4, false},
-		{"@(2*3*4+2)", 26, false},
-		{"@(4*3/4)", 3, false},
-		{"@(4/2*4)", 8, false},
-		{"@(2^2^2)", 16, false},
-		{"@(11=11=11)", "", true},
-		{"@(1<2<3)", "", true},
-		{"@(\"a\" & \"b\" & \"c\")", "abc", false},
-		{"@(1+3 <= 1+4)", true, false},
+		{"@(1+1+1)", xi(3), false},
+		{"@(5-2+1)", xi(4), false},
+		{"@(2*3*4+2)", xi(26), false},
+		{"@(4*3/4)", xi(3), false},
+		{"@(4/2*4)", xi(8), false},
+		{"@(2^2^2)", xi(16), false},
+		{"@(11=11=11)", xs(""), true},
+		{"@(1<2<3)", xs(""), true},
+		{"@(\"a\" & \"b\" & \"c\")", xs("abc"), false},
+		{"@(1+3 <= 1+4)", types.XBoolTrue, false},
 
-		{"@((1 = 1))", true, false},
-		{"@((1 != 2))", true, false},
-		{"@(2 > 1)", true, false},
-		{"@(1 > 2)", false, false},
-		{"@(2 >= 1)", true, false},
-		{"@(1 >= 2)", false, false},
-		{"@(1 <= 2)", true, false},
-		{"@(2 <= 1)", false, false},
-		{"@(1 < 2)", true, false},
-		{"@(2 < 1)", false, false},
-		{"@(1 = 1)", true, false},
-		{"@(1 = 2)", false, false},
-		{`@("asdf" = "basf")`, "", true},
-		{"@(1 != 2)", true, false},
-		{"@(1 != 1)", false, false},
-		{"@(-1 = 1)", false, false},
-		{"@(1 < asdf)", "", true},
-		{`@("asdf" < "basf")`, "", true},
+		{"@((1 = 1))", types.XBoolTrue, false},
+		{"@((1 != 2))", types.XBoolTrue, false},
+		{"@(2 > 1)", types.XBoolTrue, false},
+		{"@(1 > 2)", types.XBoolFalse, false},
+		{"@(2 >= 1)", types.XBoolTrue, false},
+		{"@(1 >= 2)", types.XBoolFalse, false},
+		{"@(1 <= 2)", types.XBoolTrue, false},
+		{"@(2 <= 1)", types.XBoolFalse, false},
+		{"@(1 < 2)", types.XBoolTrue, false},
+		{"@(2 < 1)", types.XBoolFalse, false},
+		{"@(1 = 1)", types.XBoolTrue, false},
+		{"@(1 = 2)", types.XBoolFalse, false},
+		{`@("asdf" = "basf")`, nil, true},
+		{"@(1 != 2)", types.XBoolTrue, false},
+		{"@(1 != 1)", types.XBoolFalse, false},
+		{"@(-1 = 1)", types.XBoolFalse, false},
+		{"@(1 < asdf)", nil, true},
+		{`@("asdf" < "basf")`, nil, true},
 
-		{"@(\"foo\" & \"bar\")", "foobar", false},
-		{"@(missing & \"bar\")", "", true},
-		{"@(\"foo\" & missing)", "", true},
+		{"@(\"foo\" & \"bar\")", xs("foobar"), false},
+		{"@(missing & \"bar\")", nil, true},
+		{"@(\"foo\" & missing)", nil, true},
 
-		{"@(TITLE(string1))", "Foo", false},
-		{"@(MISSING(string1))", "", true},
-		{"@(TITLE(string1, string2))", "", true},
+		{"@(TITLE(string1))", xs("Foo"), false},
+		{"@(MISSING(string1))", nil, true},
+		{"@(TITLE(string1, string2))", nil, true},
 
-		{"@(1 = asdf)", "", true},
+		{"@(1 = asdf)", nil, true},
 
-		{"@(split(words, \" \").0)", "one", false},
-		{"@(split(words, \" \")[1])", "two", false},
-		{"@(split(words, \" \")[-1])", "three", false},
+		{"@(split(words, \" \").0)", xs("one"), false},
+		{"@(split(words, \" \")[1])", xs("two"), false},
+		{"@(split(words, \" \")[-1])", xs("three"), false},
 	}
 
 	for _, test := range evaluateTests {
-		eval, err := EvaluateTemplate(env, vars, test.template, keys)
+		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -269,7 +283,7 @@ func TestEvaluateTemplate(t *testing.T) {
 
 		// back down to our equality
 		if !equal {
-			cmp, err := types.Compare(env, eval, test.expected)
+			cmp, err := types.Compare(eval, test.expected)
 			if err != nil {
 				t.Errorf("Actual '%#v' does not match expected '%#v' evaluating template: '%s'", eval, test.expected, test.template)
 			}

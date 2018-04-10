@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -78,26 +77,28 @@ func (c *channel) HasRole(role ChannelRole) bool {
 }
 
 // Resolve resolves the given key when this channel is referenced in an expression
-func (c *channel) Resolve(key string) interface{} {
+func (c *channel) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return string(c.uuid)
+		return types.NewXString(string(c.uuid))
 	case "name":
-		return c.name
+		return types.NewXString(c.name)
 	case "address":
-		return c.address
+		return types.NewXString(c.address)
 	}
 
-	return fmt.Errorf("No field '%s' on channel", key)
+	return types.NewXResolveError(c, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (c *channel) Atomize() interface{} {
-	return c.name
+// Reduce is called when this object needs to be reduced to a primitive
+func (c *channel) Reduce() types.XPrimitive {
+	return types.NewXString(c.name)
 }
 
-var _ types.Atomizable = (*channel)(nil)
-var _ types.Resolvable = (*channel)(nil)
+func (c *channel) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*channel)(nil)
+var _ types.XResolvable = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {

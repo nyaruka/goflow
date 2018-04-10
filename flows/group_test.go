@@ -31,7 +31,7 @@ func TestGroupListResolve(t *testing.T) {
 		{"3", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
-		val := excellent.ResolveVariable(env, urnList, tc.key)
+		val := excellent.ResolveValue(env, urnList, tc.key)
 
 		err, isErr := val.(error)
 

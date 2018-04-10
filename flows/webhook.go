@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
@@ -80,37 +79,39 @@ func (w *WebhookCall) Response() string { return w.response }
 func (w *WebhookCall) Body() string { return w.body }
 
 // JSON returns the response as a JSON fragment
-func (w *WebhookCall) JSON() types.JSONFragment { return types.JSONFragment([]byte(w.body)) }
+func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.body)) }
 
 // Resolve resolves the given key when this webhook is referenced in an expression
-func (w *WebhookCall) Resolve(key string) interface{} {
+func (w *WebhookCall) Resolve(key string) types.XValue {
 	switch key {
 	case "body":
-		return w.Body()
+		return types.NewXString(w.Body())
 	case "json":
 		return w.JSON()
 	case "url":
-		return w.URL()
+		return types.NewXString(w.URL())
 	case "request":
-		return w.Request()
+		return types.NewXString(w.Request())
 	case "response":
-		return w.Response()
+		return types.NewXString(w.Response())
 	case "status":
-		return string(w.Status())
+		return types.NewXString(string(w.Status()))
 	case "status_code":
-		return w.StatusCode()
+		return types.NewXNumberFromInt(w.StatusCode())
 	}
 
-	return fmt.Errorf("no field '%s' on webhook", key)
+	return types.NewXResolveError(w, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (w *WebhookCall) Atomize() interface{} {
-	return w.body
+// Reduce is called when this object needs to be reduced to a primitive
+func (w *WebhookCall) Reduce() types.XPrimitive {
+	return types.NewXString(w.body)
 }
 
-var _ types.Atomizable = (*WebhookCall)(nil)
-var _ types.Resolvable = (*WebhookCall)(nil)
+func (w *WebhookCall) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*WebhookCall)(nil)
+var _ types.XResolvable = (*WebhookCall)(nil)
 
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
 func newWebhookCallFromError(r *http.Request, requestTrace string, requestError error) (*WebhookCall, error) {

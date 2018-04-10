@@ -320,7 +320,7 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 		return nil, fmt.Errorf("missing context or expression element")
 	}
 
-	context := types.JSONFragment(expression.Context)
+	context := types.JSONToXValue(expression.Context)
 
 	// evaluate it
 	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, false, nil)

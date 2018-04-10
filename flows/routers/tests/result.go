@@ -1,42 +1,41 @@
 package tests
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
 // XTestResult encapsulates not only if the test was true but what the match was
 type XTestResult struct {
 	matched bool
-	match   interface{}
+	match   types.XValue
 }
 
 // Matched returns whether the test matched
 func (t XTestResult) Matched() bool { return t.matched }
 
 // Match returns the item which was matched
-func (t XTestResult) Match() interface{} { return t.match }
+func (t XTestResult) Match() types.XValue { return t.match }
 
 // Resolve resolves the given key when this result is referenced in an expression
-func (t XTestResult) Resolve(key string) interface{} {
+func (t XTestResult) Resolve(key string) types.XValue {
 	switch key {
 	case "matched":
-		return t.matched
+		return types.NewXBool(t.matched)
 	case "match":
 		return t.match
 	}
-	return fmt.Errorf("no such key '%s' on test result", key)
+	return types.NewXResolveError(t, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (t XTestResult) Atomize() interface{} {
-	return strconv.FormatBool(t.matched)
+// Reduce is called when this object needs to be reduced to a primitive
+func (t XTestResult) Reduce() types.XPrimitive {
+	return types.NewXBool(t.matched)
 }
+
+func (t XTestResult) ToJSON() types.XString { return types.NewXString("TODO") }
 
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}
 
-var _ types.Atomizable = XTestResult{}
-var _ types.Resolvable = XTestResult{}
+var _ types.XValue = XTestResult{}
+var _ types.XResolvable = XTestResult{}

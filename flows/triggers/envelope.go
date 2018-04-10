@@ -51,9 +51,7 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 		}
 	}
 	if envelope.Params != nil {
-		base.params = types.JSONFragment(envelope.Params)
-	} else {
-		base.params = types.EmptyJSONFragment
+		base.params = types.JSONToXValue(envelope.Params)
 	}
 
 	return nil
@@ -77,7 +75,10 @@ func marshalBaseTrigger(t *baseTrigger, envelope *baseTriggerEnvelope) error {
 		}
 	}
 	if t.params != nil {
-		envelope.Params = json.RawMessage(t.params)
+		envelope.Params, err = json.Marshal(t.params)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

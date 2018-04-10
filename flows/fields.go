@@ -2,14 +2,9 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
-	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 // FieldKey is the unique key for this field
@@ -52,9 +47,9 @@ func (f *Field) Key() FieldKey { return f.key }
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
-	text     string
-	datetime *time.Time
-	decimal  *decimal.Decimal
+	text     types.XString
+	datetime *types.XDate
+	decimal  *types.XNumber
 	state    *Location
 	district *Location
 	ward     *Location
@@ -64,7 +59,7 @@ func (v *FieldValue) IsEmpty() bool {
 	return !(v.text != "" || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
 }
 
-func (v *FieldValue) TypedValue() interface{} {
+func (v *FieldValue) TypedValue() types.XValue {
 	switch v.field.valueType {
 	case FieldValueTypeText:
 		return v.text
@@ -87,18 +82,23 @@ func (v *FieldValue) TypedValue() interface{} {
 }
 
 // Resolve resolves the given key when this field value is referenced in an expression
-func (v *FieldValue) Resolve(key string) interface{} {
+func (v *FieldValue) Resolve(key string) types.XValue {
 	switch key {
 	case "text":
 		return v.text
 	}
-	return fmt.Errorf("no field '%s' on field value", key)
+	return types.NewXResolveError(v, key)
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (v *FieldValue) Atomize() interface{} {
-	return v.TypedValue()
+// Reduce is called when this object needs to be reduced to a primitive
+func (v *FieldValue) Reduce() types.XPrimitive {
+	return v.TypedValue().Reduce()
 }
+
+func (v *FieldValue) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*FieldValue)(nil)
+var _ types.XResolvable = (*FieldValue)(nil)
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[FieldKey]*FieldValue
@@ -112,16 +112,16 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue string) {
-	var asDatetime *time.Time
-	var asDecimal *decimal.Decimal
+func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XString) {
+	var asDate *types.XDate
+	var asNumber *types.XNumber
 
-	if parsedDecimal, err := types.ToDecimal(env, rawValue); err == nil {
-		asDecimal = &parsedDecimal
+	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
+		asNumber = &parsedNumber
 	}
 
-	if parsedDatetime, err := types.ToDate(env, rawValue); err == nil {
-		asDatetime = &parsedDatetime
+	if parsedDate, xerr := types.ToXDate(env, rawValue); xerr == nil {
+		asDate = &parsedDate
 	}
 
 	// TODO parse as locations
@@ -129,8 +129,8 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue stri
 	f[field.key] = &FieldValue{
 		field:    field,
 		text:     rawValue,
-		datetime: asDatetime,
-		decimal:  asDecimal,
+		datetime: asDate,
+		decimal:  asNumber,
 	}
 }
 
@@ -140,27 +140,28 @@ func (f FieldValues) Length() int {
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
-func (f FieldValues) Resolve(key string) interface{} {
+func (f FieldValues) Resolve(key string) types.XValue {
 	val, exists := f[FieldKey(key)]
 	if !exists {
-		return fmt.Errorf("no such contact field '%s'", key)
+		return types.NewXResolveError(f, key)
 	}
 	return val
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (f FieldValues) Atomize() interface{} {
-	fields := make([]string, 0, len(f))
+// Reduce is called when this object needs to be reduced to a primitive
+func (f FieldValues) Reduce() types.XPrimitive {
+	values := types.NewXEmptyMap()
 	for k, v := range f {
-		// TODO serilalize field value according to type
-		fields = append(fields, fmt.Sprintf("%s: %s", k, v.TypedValue()))
+		values.Put(string(k), v.Reduce())
 	}
-	return strings.Join(fields, ", ")
+	return values
 }
 
-var _ types.Atomizable = (FieldValues)(nil)
-var _ types.Lengthable = (FieldValues)(nil)
-var _ types.Resolvable = (FieldValues)(nil)
+func (f FieldValues) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (FieldValues)(nil)
+var _ types.XLengthable = (FieldValues)(nil)
+var _ types.XResolvable = (FieldValues)(nil)
 
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {

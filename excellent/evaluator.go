@@ -16,7 +16,7 @@ import (
 )
 
 // EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
-func EvaluateExpression(env utils.Environment, resolver types.Resolvable, template string) (interface{}, error) {
+func EvaluateExpression(env utils.Environment, context types.XValue, template string) (types.XValue, error) {
 	errors := NewErrorListener()
 
 	input := antlr.NewInputStream(template)
@@ -31,10 +31,10 @@ func EvaluateExpression(env utils.Environment, resolver types.Resolvable, templa
 		return nil, fmt.Errorf(errors.Errors())
 	}
 
-	visitor := NewVisitor(env, resolver)
-	value := visitor.Visit(tree)
+	visitor := NewVisitor(env, context)
+	value := toXValue(visitor.Visit(tree))
 
-	err, isErr := value.(error)
+	err, isErr := value.(types.XError)
 
 	// did our evaluation result in an error? return that
 	if isErr {
@@ -48,7 +48,7 @@ func EvaluateExpression(env utils.Environment, resolver types.Resolvable, templa
 // EvaluateTemplate tries to evaluate the passed in template into an object, this only works if the template
 // is a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In cases
 // which are not a single identifier or expression, we return the stringified value
-func EvaluateTemplate(env utils.Environment, resolver types.Resolvable, template string, allowedTopLevels []string) (interface{}, error) {
+func EvaluateTemplate(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (types.XValue, error) {
 	var buf bytes.Buffer
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
@@ -61,16 +61,17 @@ func EvaluateTemplate(env utils.Environment, resolver types.Resolvable, template
 
 	// if we had one, then just return our string evaluation strategy
 	if nextTT != EOF {
-		return EvaluateTemplateAsString(env, resolver, template, false, allowedTopLevels)
+		asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+		return types.NewXString(asStr), err
 	}
 
 	switch tokenType {
 	case IDENTIFIER:
-		value := ResolveVariable(env, resolver, token)
+		value := ResolveValue(env, context, token)
 
 		// didn't find it, our value is empty string
 		if value == nil {
-			value = ""
+			value = types.XStringEmpty
 		}
 
 		err, isErr := value.(error)
@@ -79,27 +80,28 @@ func EvaluateTemplate(env utils.Environment, resolver types.Resolvable, template
 		if isErr {
 			buf.WriteString("@")
 			buf.WriteString(token)
-			return buf.String(), err
+			return types.NewXString(buf.String()), err
 		}
 
 		// found it, return that value
 		return value, nil
 
 	case EXPRESSION:
-		value, err := EvaluateExpression(env, resolver, token)
+		value, err := EvaluateExpression(env, context, token)
 		if err != nil {
-			return buf.String(), err
+			return types.NewXString(buf.String()), err
 		}
 
 		return value, nil
 	}
 
 	// different type of token, return the string representation
-	return EvaluateTemplateAsString(env, resolver, template, false, allowedTopLevels)
+	asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+	return types.NewXString(asStr), err
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
+func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
 	var buf bytes.Buffer
 	var errors TemplateErrors
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
@@ -109,38 +111,37 @@ func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, 
 		case BODY:
 			buf.WriteString(token)
 		case IDENTIFIER:
-			value := ResolveVariable(env, resolver, token)
+			value := ResolveValue(env, context, token)
 
 			// didn't find it, our value is empty string
 			if value == nil {
-				value = ""
+				value = types.XStringEmpty
 			}
-			err, isErr := value.(error)
 
 			// we got an error, return our raw variable
-			if isErr {
-				errors = append(errors, err)
+			if types.IsXError(value) {
+				errors = append(errors, value.(types.XError))
 			} else {
-				strValue, _ := types.ToString(env, value)
+				strValue, _ := types.ToXString(value)
 				if urlEncode {
-					strValue = url.QueryEscape(strValue)
+					strValue = types.NewXString(url.QueryEscape(strValue.Native()))
 				}
 
-				buf.WriteString(strValue)
+				buf.WriteString(strValue.Native())
 			}
 		case EXPRESSION:
-			value, err := EvaluateExpression(env, resolver, token)
+			value, err := EvaluateExpression(env, context, token)
+
 			if err != nil {
 				errors = append(errors, err)
 			} else {
-				strValue, _ := types.ToString(env, value)
+				strValue, _ := types.ToXString(value)
 				if urlEncode {
-					strValue = url.QueryEscape(strValue)
+					strValue = types.NewXString(url.QueryEscape(strValue.Native()))
 				}
 
-				buf.WriteString(strValue)
+				buf.WriteString(strValue.Native())
 			}
-
 		}
 	}
 
@@ -150,20 +151,13 @@ func EvaluateTemplateAsString(env utils.Environment, resolver types.Resolvable, 
 	return buf.String(), nil
 }
 
-// ResolveVariable will resolve the passed in string variable given in dot notation and return
-// the value as defined by the VariableResolver passed in.
+// ResolveValue will resolve the passed in string variable given in dot notation and return
+// the value as defined by the Resolvable passed in.
 //
 // Example syntaxes:
 //      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
 //      foo.bar[0] - same as above
-func ResolveVariable(env utils.Environment, variable interface{}, key string) interface{} {
-	var err error
-
-	err, isErr := variable.(error)
-	if isErr {
-		return err
-	}
-
+func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
 	// self referencing
 	if key == "" {
 		return variable
@@ -179,16 +173,16 @@ func ResolveVariable(env utils.Environment, variable interface{}, key string) in
 		key, rest = popNextVariable(rest)
 
 		if utils.IsNil(variable) {
-			return fmt.Errorf("can't resolve key '%s' of nil", key)
+			return types.NewXErrorf("can't resolve key '%s' of nil", key)
 		}
 
 		// is our key numeric?
 		index, err := strconv.Atoi(key)
 		if err == nil {
-			indexable, isIndexable := variable.(types.Indexable)
+			indexable, isIndexable := variable.(types.XIndexable)
 			if isIndexable {
 				if index >= indexable.Length() || index < -indexable.Length() {
-					return fmt.Errorf("index %d out of range for %d items", index, indexable.Length())
+					return types.NewXErrorf("index %d out of range for %d items", index, indexable.Length())
 				}
 				if index < 0 {
 					index += indexable.Length()
@@ -198,28 +192,18 @@ func ResolveVariable(env utils.Environment, variable interface{}, key string) in
 			}
 		}
 
-		resolver, isResolver := variable.(types.Resolvable)
+		resolver, isResolver := variable.(types.XResolvable)
 
 		// look it up in our resolver
 		if isResolver {
 			variable = resolver.Resolve(key)
 
-			err, isErr := variable.(error)
-			if isErr {
-				return err
+			if types.IsXError(variable) {
+				return variable
 			}
 
 		} else {
-			return fmt.Errorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
-		}
-	}
-
-	// check what we are returning is a type that expressions understand
-	_, _, err = types.ToXAtom(env, variable)
-	if err != nil {
-		_, isAtomizable := variable.(types.Atomizable)
-		if !isAtomizable {
-			panic(fmt.Sprintf("key '%s' of resolved to usupported type %s", key, reflect.TypeOf(variable)))
+			return types.NewXErrorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
 		}
 	}
 

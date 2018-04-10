@@ -47,10 +47,12 @@ func (b *Location) Parent() *Location { return b.parent }
 // Children gets the children of this location
 func (b *Location) Children() []*Location { return b.children }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (b *Location) Atomize() interface{} { return b.name }
+// Reduce is called when this object needs to be reduced to a primitive
+func (b *Location) Reduce() types.XPrimitive { return types.NewXString(b.name) }
 
-var _ types.Atomizable = (*Location)(nil)
+func (b *Location) ToJSON() types.XString { return types.NewXString("TODO") }
+
+var _ types.XValue = (*Location)(nil)
 
 type locationVisitor func(Location *Location)
 

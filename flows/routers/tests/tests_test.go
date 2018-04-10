@@ -1,7 +1,6 @@
 package tests_test
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -11,192 +10,187 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
+var xs = types.NewXString
+var xn = types.RequireXNumberFromString
+var xi = types.NewXNumberFromInt
+var xt = types.NewXDate
+
 type testResolvable struct{}
 
-func (r *testResolvable) Resolve(key string) interface{} {
+func (r *testResolvable) Resolve(key string) types.XValue {
 	switch key {
 	case "foo":
-		return "bar"
+		return types.NewXString("bar")
 	case "zed":
-		return 123
+		return types.NewXNumberFromInt(123)
 	case "missing":
 		return nil
 	default:
-		return fmt.Errorf("no such thing")
+		return types.NewXResolveError(r, key)
 	}
 }
 
-// Atomize is called when this object needs to be reduced to a primitive
-func (r *testResolvable) Atomize() interface{} {
-	return "hello"
+// Reduce is called when this object needs to be reduced to a primitive
+func (r *testResolvable) Reduce() types.XPrimitive {
+	return types.NewXString("hello")
 }
 
-func newDecimal(val string) decimal.Decimal {
-	dec, _ := decimal.NewFromString(val)
-	return dec
-}
-
-// noStr is used to blow up our type conversions in the tests below
-type noStr struct {
-}
+func (r *testResolvable) ToJSON() types.XString { return types.NewXString("TODO") }
 
 var testTests = []struct {
 	name     string
-	args     []interface{}
+	args     []types.XValue
 	matched  bool
-	match    interface{}
+	match    types.XValue
 	hasError bool
 }{
-	{"is_error", []interface{}{"hello"}, false, nil, false},
-	{"is_error", []interface{}{nil}, false, nil, false},
-	{"is_error", []interface{}{fmt.Errorf("I am error")}, true, fmt.Errorf("I am error"), false},
-	{"is_error", []interface{}{}, false, nil, true},
+	{"is_error", []types.XValue{xs("hello")}, false, nil, false},
+	{"is_error", []types.XValue{nil}, false, nil, false},
+	{"is_error", []types.XValue{types.NewXErrorf("I am error")}, true, types.NewXErrorf("I am error"), false},
+	{"is_error", []types.XValue{}, false, nil, true},
 
-	{"has_text", []interface{}{"hello"}, true, "hello", false},
-	{"has_text", []interface{}{"  "}, false, nil, false},
-	{"has_text", []interface{}{"one", "two"}, false, nil, true},
-	{"has_text", []interface{}{noStr{}}, false, nil, true},
+	{"has_text", []types.XValue{xs("hello")}, true, xs("hello"), false},
+	{"has_text", []types.XValue{xs("  ")}, false, nil, false},
+	{"has_text", []types.XValue{nil}, false, nil, false},
+	{"has_text", []types.XValue{xs("one"), xs("two")}, false, nil, true},
 
-	{"has_beginning", []interface{}{"hello", "hell"}, true, "hell", false},
-	{"has_beginning", []interface{}{"  HelloThere", "hello"}, true, "Hello", false},
-	{"has_beginning", []interface{}{"one", "two", "three"}, false, nil, true},
-	{"has_beginning", []interface{}{noStr{}, "hell"}, false, nil, true},
-	{"has_beginning", []interface{}{"hello", noStr{}}, false, nil, true},
-	{"has_beginning", []interface{}{"", "hello"}, false, nil, false},
-	{"has_beginning", []interface{}{"hel", "hello"}, false, nil, false},
+	{"has_beginning", []types.XValue{xs("hello"), xs("hell")}, true, xs("hell"), false},
+	{"has_beginning", []types.XValue{xs("  HelloThere"), xs("hello")}, true, xs("Hello"), false},
+	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
+	{"has_beginning", []types.XValue{nil, xs("hell")}, false, nil, false},
+	{"has_beginning", []types.XValue{xs("hello"), nil}, false, nil, false},
+	{"has_beginning", []types.XValue{xs(""), xs("hello")}, false, nil, false},
+	{"has_beginning", []types.XValue{xs("hel"), xs("hello")}, false, nil, false},
 
-	{"has_any_word", []interface{}{"this.is.my.word", "WORD word2 word"}, true, "word", false},
-	{"has_any_word", []interface{}{"this.is.my.βήτα", "βήτα"}, true, "βήτα", false},
-	{"has_any_word", []interface{}{"I say to you📴", "📴"}, true, "📴", false},
-	{"has_any_word", []interface{}{"this World too", "world"}, true, "World", false},
-	{"has_any_word", []interface{}{"BUT not this one", "world"}, false, nil, false},
-	{"has_any_word", []interface{}{"", "world"}, false, nil, false},
-	{"has_any_word", []interface{}{"world", "foo"}, false, nil, false},
-	{"has_any_word", []interface{}{"one", "two", "three"}, false, nil, true},
-	{"has_any_word", []interface{}{"but foo", noStr{}}, false, nil, true},
-	{"has_any_word", []interface{}{noStr{}, "but foo"}, false, nil, true},
+	{"has_any_word", []types.XValue{xs("this.is.my.word"), xs("WORD word2 word")}, true, xs("word"), false},
+	{"has_any_word", []types.XValue{xs("this.is.my.βήτα"), xs("βήτα")}, true, xs("βήτα"), false},
+	{"has_any_word", []types.XValue{xs("I say to you📴"), xs("📴")}, true, xs("📴"), false},
+	{"has_any_word", []types.XValue{xs("this World too"), xs("world")}, true, xs("World"), false},
+	{"has_any_word", []types.XValue{xs("BUT not this one"), xs("world")}, false, nil, false},
+	{"has_any_word", []types.XValue{xs(""), xs("world")}, false, nil, false},
+	{"has_any_word", []types.XValue{xs("world"), xs("foo")}, false, nil, false},
+	{"has_any_word", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
+	{"has_any_word", []types.XValue{xs("but foo"), nil}, false, nil, false},
+	{"has_any_word", []types.XValue{nil, xs("but foo")}, false, nil, false},
 
-	{"has_all_words", []interface{}{"this.is.my.word", "WORD word"}, true, "word", false},
-	{"has_all_words", []interface{}{"this World too", "world too"}, true, "World too", false},
-	{"has_all_words", []interface{}{"BUT not this one", "world"}, false, nil, false},
-	{"has_all_words", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_all_words", []types.XValue{xs("this.is.my.word"), xs("WORD word")}, true, xs("word"), false},
+	{"has_all_words", []types.XValue{xs("this World too"), xs("world too")}, true, xs("World too"), false},
+	{"has_all_words", []types.XValue{xs("BUT not this one"), xs("world")}, false, nil, false},
+	{"has_all_words", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_phrase", []interface{}{"you Must resist", "must resist"}, true, "Must resist", false},
-	{"has_phrase", []interface{}{"this world Too", "world too"}, true, "world Too", false},
-	{"has_phrase", []interface{}{"this world Too", ""}, true, "", false},
-	{"has_phrase", []interface{}{"this is not world", "this world"}, false, nil, false},
-	{"has_phrase", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_phrase", []types.XValue{xs("you Must resist"), xs("must resist")}, true, xs("Must resist"), false},
+	{"has_phrase", []types.XValue{xs("this world Too"), xs("world too")}, true, xs("world Too"), false},
+	{"has_phrase", []types.XValue{xs("this world Too"), xs("")}, true, xs(""), false},
+	{"has_phrase", []types.XValue{xs("this is not world"), xs("this world")}, false, nil, false},
+	{"has_phrase", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_only_phrase", []interface{}{"Must resist", "must resist"}, true, "Must resist", false},
-	{"has_only_phrase", []interface{}{" world Too ", "world too"}, true, "world Too", false},
-	{"has_only_phrase", []interface{}{"this world Too", ""}, false, nil, false},
-	{"has_only_phrase", []interface{}{"", ""}, true, "", false},
-	{"has_only_phrase", []interface{}{"this world is my world", "this world"}, false, nil, false},
-	{"has_only_phrase", []interface{}{"this world", "this mighty"}, false, nil, false},
-	{"has_only_phrase", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_only_phrase", []types.XValue{xs("Must resist"), xs("must resist")}, true, xs("Must resist"), false},
+	{"has_only_phrase", []types.XValue{xs(" world Too "), xs("world too")}, true, xs("world Too"), false},
+	{"has_only_phrase", []types.XValue{xs("this world Too"), xs("")}, false, nil, false},
+	{"has_only_phrase", []types.XValue{xs(""), xs("")}, true, xs(""), false},
+	{"has_only_phrase", []types.XValue{xs("this world is my world"), xs("this world")}, false, nil, false},
+	{"has_only_phrase", []types.XValue{xs("this world"), xs("this mighty")}, false, nil, false},
+	{"has_only_phrase", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_beginning", []interface{}{"Must resist", "must resist"}, true, "Must resist", false},
-	{"has_beginning", []interface{}{" 2061212", "206"}, true, "206", false},
-	{"has_beginning", []interface{}{" world Too foo", "world too"}, true, "world Too", false},
-	{"has_beginning", []interface{}{"but this world", "this world"}, false, nil, false},
-	{"has_beginning", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_beginning", []types.XValue{xs("Must resist"), xs("must resist")}, true, xs("Must resist"), false},
+	{"has_beginning", []types.XValue{xs(" 2061212"), xs("206")}, true, xs("206"), false},
+	{"has_beginning", []types.XValue{xs(" world Too foo"), xs("world too")}, true, xs("world Too"), false},
+	{"has_beginning", []types.XValue{xs("but this world"), xs("this world")}, false, nil, false},
+	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_number", []interface{}{"the number 10"}, true, newDecimal("10"), false},
-	{"has_number", []interface{}{"the number 1o"}, true, newDecimal("10"), false},
-	{"has_number", []interface{}{"the number lo"}, true, newDecimal("10"), false},
-	{"has_number", []interface{}{"another is -12.51"}, true, newDecimal("-12.51"), false},
-	{"has_number", []interface{}{".51"}, true, newDecimal(".51"), false},
-	{"has_number", []interface{}{"nothing here"}, false, nil, false},
-	{"has_number", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_number", []types.XValue{xs("the number 10")}, true, xn("10"), false},
+	{"has_number", []types.XValue{xs("the number 1o")}, true, xn("10"), false},
+	{"has_number", []types.XValue{xs("the number lo")}, true, xn("10"), false},
+	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
+	{"has_number", []types.XValue{xs(".51")}, true, xn(".51"), false},
+	{"has_number", []types.XValue{xs("nothing here")}, false, nil, false},
+	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_number_lt", []interface{}{"the number 10", "11"}, true, newDecimal("10"), false},
-	{"has_number_lt", []interface{}{"another is -12.51", "12"}, true, newDecimal("-12.51"), false},
-	{"has_number_lt", []interface{}{"nothing here", "12"}, false, nil, false},
-	{"has_number_lt", []interface{}{"too big 15", "12"}, false, nil, false},
-	{"has_number_lt", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_number_lt", []types.XValue{xs("the number 10"), xs("11")}, true, xn("10"), false},
+	{"has_number_lt", []types.XValue{xs("another is -12.51"), xs("12")}, true, xn("-12.51"), false},
+	{"has_number_lt", []types.XValue{xs("nothing here"), xs("12")}, false, nil, false},
+	{"has_number_lt", []types.XValue{xs("too big 15"), xs("12")}, false, nil, false},
+	{"has_number_lt", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
+	{"has_number_lt", []types.XValue{xs("but foo"), nil}, false, nil, false},
+	{"has_number_lt", []types.XValue{nil, xs("but foo")}, false, nil, true},
 
-	{"has_number_lt", []interface{}{"but foo", noStr{}}, false, nil, true},
-	{"has_number_lt", []interface{}{noStr{}, "but foo"}, false, nil, true},
+	{"has_number_lte", []types.XValue{xs("the number 10"), xs("11")}, true, xn("10"), false},
+	{"has_number_lte", []types.XValue{xs("another is -12.51"), xs("12")}, true, xn("-12.51"), false},
+	{"has_number_lte", []types.XValue{xs("nothing here"), xs("12")}, false, nil, false},
+	{"has_number_lte", []types.XValue{xs("too big 15"), xs("12")}, false, nil, false},
+	{"has_number_lte", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_number_lte", []interface{}{"the number 10", "11"}, true, newDecimal("10"), false},
-	{"has_number_lte", []interface{}{"another is -12.51", "12"}, true, newDecimal("-12.51"), false},
-	{"has_number_lte", []interface{}{"nothing here", "12"}, false, nil, false},
-	{"has_number_lte", []interface{}{"too big 15", "12"}, false, nil, false},
-	{"has_number_lte", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_number_eq", []types.XValue{xs("the number 10"), xs("10")}, true, xn("10"), false},
+	{"has_number_eq", []types.XValue{xs("another is -12.51"), xs("-12.51")}, true, xn("-12.51"), false},
+	{"has_number_eq", []types.XValue{xs("nothing here"), xs("12")}, false, nil, false},
+	{"has_number_eq", []types.XValue{xs("wrong .51"), xs(".61")}, false, nil, false},
+	{"has_number_eq", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_number_eq", []interface{}{"the number 10", "10"}, true, newDecimal("10"), false},
-	{"has_number_eq", []interface{}{"another is -12.51", "-12.51"}, true, newDecimal("-12.51"), false},
-	{"has_number_eq", []interface{}{"nothing here", "12"}, false, nil, false},
-	{"has_number_eq", []interface{}{"wrong .51", ".61"}, false, nil, false},
-	{"has_number_eq", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_number_gte", []types.XValue{xs("the number 10"), xs("9")}, true, xn("10"), false},
+	{"has_number_gte", []types.XValue{xs("another is -12.51"), xs("-13")}, true, xn("-12.51"), false},
+	{"has_number_gte", []types.XValue{xs("nothing here"), xs("12")}, false, nil, false},
+	{"has_number_gte", []types.XValue{xs("too small -12"), xs("-11")}, false, nil, false},
+	{"has_number_gte", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_number_gte", []interface{}{"the number 10", "9"}, true, newDecimal("10"), false},
-	{"has_number_gte", []interface{}{"another is -12.51", "-13"}, true, newDecimal("-12.51"), false},
-	{"has_number_gte", []interface{}{"nothing here", "12"}, false, nil, false},
-	{"has_number_gte", []interface{}{"too small -12", "-11"}, false, nil, false},
-	{"has_number_gte", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_number_gt", []types.XValue{xs("the number 10"), xs("9")}, true, xn("10"), false},
+	{"has_number_gt", []types.XValue{xs("another is -12.51"), xs("-13")}, true, xn("-12.51"), false},
+	{"has_number_gt", []types.XValue{xs("nothing here"), xs("12")}, false, nil, false},
+	{"has_number_gt", []types.XValue{xs("not great -12.51"), xs("-12.51")}, false, nil, false},
+	{"has_number_gt", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
-	{"has_number_gt", []interface{}{"the number 10", "9"}, true, newDecimal("10"), false},
-	{"has_number_gt", []interface{}{"another is -12.51", "-13"}, true, newDecimal("-12.51"), false},
-	{"has_number_gt", []interface{}{"nothing here", "12"}, false, nil, false},
-	{"has_number_gt", []interface{}{"not great -12.51", "-12.51"}, false, nil, false},
-	{"has_number_gt", []interface{}{"one", "two", "three"}, false, nil, true},
+	{"has_number_between", []types.XValue{xs("the number 10"), xs("8"), xs("12")}, true, xn("10"), false},
+	{"has_number_between", []types.XValue{xs("another is -12.51"), xs("-12.51"), xs("-10")}, true, xn("-12.51"), false},
+	{"has_number_between", []types.XValue{xs("nothing here"), xs("10"), xs("15")}, false, nil, false},
+	{"has_number_between", []types.XValue{xs("one"), xs("two")}, false, nil, true},
+	{"has_number_between", []types.XValue{xs("but foo"), nil, xs("10")}, false, nil, false},
+	{"has_number_between", []types.XValue{nil, xs("but foo"), xs("10")}, false, nil, true},
+	{"has_number_between", []types.XValue{xs("a string"), xs("10"), xs("not number")}, false, nil, true},
 
-	{"has_number_between", []interface{}{"the number 10", "8", "12"}, true, newDecimal("10"), false},
-	{"has_number_between", []interface{}{"another is -12.51", "-12.51", "-10"}, true, newDecimal("-12.51"), false},
-	{"has_number_between", []interface{}{"nothing here", "10", "15"}, false, nil, false},
-	{"has_number_between", []interface{}{"one", "two"}, false, nil, true},
+	{"has_date", []types.XValue{xs("last date was 1.10.2017")}, true, xt(time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC)), false},
+	{"has_date", []types.XValue{xs("last date was 1.10.99")}, true, xt(time.Date(1999, 10, 1, 0, 0, 0, 0, time.UTC)), false},
+	{"has_date", []types.XValue{xs("this isn't a valid date 33.2.99")}, false, nil, false},
+	{"has_date", []types.XValue{xs("no date at all")}, false, nil, false},
+	{"has_date", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_number_between", []interface{}{"but foo", noStr{}, "10"}, false, nil, true},
-	{"has_number_between", []interface{}{noStr{}, "but foo", "10"}, false, nil, true},
-	{"has_number_between", []interface{}{"a string", "10", "not number"}, false, nil, true},
+	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2017")}, true, xt(time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC)), false},
+	{"has_date_lt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, false, nil, false},
+	{"has_date_lt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
+	{"has_date_lt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date", []interface{}{"last date was 1.10.2017"}, true, time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC), false},
-	{"has_date", []interface{}{"last date was 1.10.99"}, true, time.Date(1999, 10, 1, 0, 0, 0, 0, time.UTC), false},
-	{"has_date", []interface{}{"this isn't a valid date 33.2.99"}, false, nil, false},
-	{"has_date", []interface{}{"no date at all"}, false, nil, false},
-	{"has_date", []interface{}{"too many", "args"}, false, nil, true},
+	{"has_date_lt", []types.XValue{xs("last date was 1.10.2017"), nil}, false, nil, false},
+	{"has_date_lt", []types.XValue{nil, xs("but foo")}, false, nil, true},
 
-	{"has_date_lt", []interface{}{"last date was 1.10.2017", "3.10.2017"}, true, time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC), false},
-	{"has_date_lt", []interface{}{"last date was 1.10.99", "3.10.98"}, false, nil, false},
-	{"has_date_lt", []interface{}{"no date at all", "3.10.98"}, false, nil, false},
-	{"has_date_lt", []interface{}{"too", "many", "args"}, false, nil, true},
+	{"has_date_eq", []types.XValue{xs("last date was 1.10.2017"), xs("1.10.2017")}, true, xt(time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC)), false},
+	{"has_date_eq", []types.XValue{xs("last date was 1.10.99"), xs("3.10.98")}, false, nil, false},
+	{"has_date_eq", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
+	{"has_date_eq", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_lt", []interface{}{"last date was 1.10.2017", noStr{}}, false, nil, true},
-	{"has_date_lt", []interface{}{noStr{}, "but foo"}, false, nil, true},
+	{"has_date_gt", []types.XValue{xs("last date was 1.10.2017"), xs("3.10.2016")}, true, xt(time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC)), false},
+	{"has_date_gt", []types.XValue{xs("last date was 1.10.99"), xs("3.10.01")}, false, nil, false},
+	{"has_date_gt", []types.XValue{xs("no date at all"), xs("3.10.98")}, false, nil, false},
+	{"has_date_gt", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_eq", []interface{}{"last date was 1.10.2017", "1.10.2017"}, true, time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC), false},
-	{"has_date_eq", []interface{}{"last date was 1.10.99", "3.10.98"}, false, nil, false},
-	{"has_date_eq", []interface{}{"no date at all", "3.10.98"}, false, nil, false},
-	{"has_date_eq", []interface{}{"too", "many", "args"}, false, nil, true},
+	{"has_email", []types.XValue{xs("my email is foo@bar.com.")}, true, xs("foo@bar.com"), false},
+	{"has_email", []types.XValue{xs("my email is <foo1@bar-2.com>")}, true, xs("foo1@bar-2.com"), false},
+	{"has_email", []types.XValue{xs("FOO@bar.whatzit")}, true, xs("FOO@bar.whatzit"), false},
+	{"has_email", []types.XValue{xs("FOO@βήτα.whatzit")}, true, xs("FOO@βήτα.whatzit"), false},
+	{"has_email", []types.XValue{xs("email is foo @ bar . com")}, false, nil, false},
+	{"has_email", []types.XValue{xs("email is foo@bar")}, false, nil, false},
+	{"has_email", []types.XValue{nil}, false, nil, false},
+	{"has_email", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
-	{"has_date_gt", []interface{}{"last date was 1.10.2017", "3.10.2016"}, true, time.Date(2017, 10, 1, 0, 0, 0, 0, time.UTC), false},
-	{"has_date_gt", []interface{}{"last date was 1.10.99", "3.10.01"}, false, nil, false},
-	{"has_date_gt", []interface{}{"no date at all", "3.10.98"}, false, nil, false},
-	{"has_date_gt", []interface{}{"too", "many", "args"}, false, nil, true},
-
-	{"has_email", []interface{}{"my email is foo@bar.com."}, true, "foo@bar.com", false},
-	{"has_email", []interface{}{"my email is <foo1@bar-2.com>"}, true, "foo1@bar-2.com", false},
-	{"has_email", []interface{}{"FOO@bar.whatzit"}, true, "FOO@bar.whatzit", false},
-	{"has_email", []interface{}{"FOO@βήτα.whatzit"}, true, "FOO@βήτα.whatzit", false},
-	{"has_email", []interface{}{"email is foo @ bar . com"}, false, nil, false},
-	{"has_email", []interface{}{"email is foo@bar"}, false, nil, false},
-	{"has_email", []interface{}{noStr{}}, false, nil, true},
-	{"has_email", []interface{}{"too", "many", "args"}, false, nil, true},
-
-	{"has_phone", []interface{}{"my number is 0788123123", "RW"}, true, "+250788123123", false},
-	{"has_phone", []interface{}{"my number is +250788123123", "RW"}, true, "+250788123123", false},
-	{"has_phone", []interface{}{"my number is +12065551212", "RW"}, true, "+12065551212", false},
-	{"has_phone", []interface{}{"my number is 12065551212", "US"}, true, "+12065551212", false},
-	{"has_phone", []interface{}{"my number is 206 555 1212", "US"}, true, "+12065551212", false},
-	{"has_phone", []interface{}{"my number is none of your business", "US"}, false, nil, false},
-	{"has_phone", []interface{}{noStr{}}, false, nil, true},
-	{"has_phone", []interface{}{"number", noStr{}}, false, nil, true},
-	{"has_phone", []interface{}{"too", "many", "args"}, false, nil, true},
+	{"has_phone", []types.XValue{xs("my number is 0788123123"), xs("RW")}, true, xs("+250788123123"), false},
+	{"has_phone", []types.XValue{xs("my number is +250788123123"), xs("RW")}, true, xs("+250788123123"), false},
+	{"has_phone", []types.XValue{xs("my number is +12065551212"), xs("RW")}, true, xs("+12065551212"), false},
+	{"has_phone", []types.XValue{xs("my number is 12065551212"), xs("US")}, true, xs("+12065551212"), false},
+	{"has_phone", []types.XValue{xs("my number is 206 555 1212"), xs("US")}, true, xs("+12065551212"), false},
+	{"has_phone", []types.XValue{xs("my number is none of your business"), xs("US")}, false, nil, false},
+	{"has_phone", []types.XValue{nil}, false, nil, true},
+	{"has_phone", []types.XValue{xs("number"), nil}, false, nil, false},
+	{"has_phone", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 }
 
 func TestTests(t *testing.T) {
@@ -221,26 +215,20 @@ func TestTests(t *testing.T) {
 
 			// and the match itself
 			if !reflect.DeepEqual(testResult.Match(), test.match) {
-				assert.Fail(t, "Unexpected match value, expected '%s', got '%s' for test %s(%#v)", test.match, testResult.Match(), test.name, test.args)
+				assert.Fail(t, "", "Unexpected match value, expected '%s', got '%s' for test %s(%#v)", test.match, testResult.Match(), test.name, test.args)
 			}
 		}
 	}
 }
 
 func TestEvaluateTemplateAsString(t *testing.T) {
-	varMap := map[string]interface{}{
-		"int1":  1,
-		"int2":  2,
-		"array": types.NewArray("one", "two", "three"),
+	vars := types.NewXMap(map[string]types.XValue{
+		"int1":  types.NewXNumberFromInt(1),
+		"int2":  types.NewXNumberFromInt(2),
+		"array": types.NewXArray(xs("one"), xs("two"), xs("three")),
 		"thing": &testResolvable{},
-		"err":   fmt.Errorf("an error"),
-	}
-	vars := types.NewMapResolver(varMap)
-
-	keys := make([]string, 0, len(varMap))
-	for key := range varMap {
-		keys = append(keys, key)
-	}
+		"err":   types.NewXErrorf("an error"),
+	})
 
 	evalTests := []struct {
 		template string
@@ -258,7 +246,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, keys)
+		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

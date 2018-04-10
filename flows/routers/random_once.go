@@ -50,9 +50,9 @@ func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
 
 // PickRoute will attempt to take a random exit it hasn't taken before. If all exits have been taken, then it will
 // take the exit specified in it's Exit parameter
-func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (interface{}, flows.Route, error) {
+func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (string, flows.Route, error) {
 	if len(exits) == 0 {
-		return nil, flows.NoRoute, nil
+		return "", flows.NoRoute, nil
 	}
 
 	// find all the exits we have taken
@@ -74,11 +74,11 @@ func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step
 
 	// no valid choices? exit!
 	if len(validExits) == 0 {
-		return nil, flows.NewRoute(r.Exit, "0"), nil
+		return "", flows.NewRoute(r.Exit, "0"), nil
 	}
 
 	// ok, now pick one randomly
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	exitN := random.Intn(len(validExits))
-	return nil, flows.NewRoute(validExits[exitN], string(exitN)), nil
+	return "", flows.NewRoute(validExits[exitN], string(exitN)), nil
 }
