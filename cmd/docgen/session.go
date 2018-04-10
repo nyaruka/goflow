@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/flows/events"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -47,7 +48,20 @@ var sessionAssets = `[
             "name": "Action Flow",
             "nodes": [{
                 "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-                "actions": []
+                "actions": [
+                    {
+                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                        "type": "set_run_result",
+                        "name": "Phone Number",
+                        "value": "+12344563452"
+                    },
+                    {
+                        "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
+                        "type": "call_webhook",
+                        "method": "GET",
+                        "url": "http://localhost:49999/?cmd=success"
+                    }
+                ]
             }]
         }
     },
@@ -67,7 +81,8 @@ var sessionAssets = `[
         "type": "field",
         "url": "http://testserver/assets/field",
         "content": [
-            {"key": "gender", "label": "Gender", "value_type": "text"}
+            {"key": "gender", "label": "Gender", "value_type": "text"},
+            {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
         ],
         "is_set": true
     },
@@ -144,10 +159,33 @@ var sessionTrigger = `{
         "fields": {
             "gender": {
                 "text": "Male"
+            },
+            "activation_token": {
+                "text": "AACC55"
             }
         }
     }
 }`
+
+var initialEvents = `[
+    {
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "msg": {
+            "attachments": [
+                "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
+                "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
+            ],
+            "channel": {
+                "name": "Nexmo",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            },
+            "text": "Hi there",
+            "urn": "tel:+12065551212",
+            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+        },
+        "type": "msg_received"
+    }
+]`
 
 func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our assets
@@ -170,13 +208,22 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	if err := triggerEnvelope.UnmarshalJSON(json.RawMessage(sessionTrigger)); err != nil {
 		return nil, err
 	}
-
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
 		return nil, fmt.Errorf("error reading trigger: %s", err)
 	}
 
+	// and the initial events
+	eventEnvelopes := []*utils.TypedEnvelope{}
+	if err := json.Unmarshal(json.RawMessage(initialEvents), &eventEnvelopes); err != nil {
+		return nil, err
+	}
+	events, err := events.ReadEvents(eventEnvelopes)
+	if err != nil {
+		return nil, err
+	}
+
 	// and start the example flow
-	err = session.Start(trigger, nil)
+	err = session.Start(trigger, events)
 	return session, err
 }

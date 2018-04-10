@@ -74,14 +74,13 @@ var XTESTS = map[string]functions.XFunction{
 // IsStringEQ returns whether two strings are equal (case sensitive). In the case that they
 // are, it will return the string as the match.
 //
-//  @(is_string_eq("foo", "foo")) -> true
-//  @(is_string_eq("foo", "FOO")) -> false
-//  @(is_string_eq("foo", "bar")) -> false
-//  @(is_string_eq("foo", " foo ")) -> false
-//  @(is_string_eq(run.status, "completed")) -> true
-//  @(is_string_eq(child.status, "expired")) -> false
-//  @(is_string_eq(webhook.status, "success")) -> true
-//  @(is_string_eq(webhook.status, "connection_error")) -> false
+//   @(is_string_eq("foo", "foo")) -> true
+//   @(is_string_eq("foo", "FOO")) -> false
+//   @(is_string_eq("foo", "bar")) -> false
+//   @(is_string_eq("foo", " foo ")) -> false
+//   @(is_string_eq(run.status, "completed")) -> true
+//   @(is_string_eq(run.webhook.status, "success")) -> true
+//   @(is_string_eq(run.webhook.status, "connection_error")) -> false
 //
 // @test is_string_eq(run)
 func IsStringEQ(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
@@ -149,7 +148,7 @@ func HasValue(env utils.Environment, args ...types.XValue) types.XValue {
 
 // HasWaitTimedOut returns whether the last wait timed out.
 //
-//  @(has_wait_timed_out(run)) -> false
+//   @(has_wait_timed_out(run)) -> false
 //
 // @test has_wait_timed_out(run)
 func HasWaitTimedOut(env utils.Environment, args ...types.XValue) types.XValue {
@@ -172,7 +171,8 @@ func HasWaitTimedOut(env utils.Environment, args ...types.XValue) types.XValue {
 
 // HasGroup returns whether the `contact` is part of group with the passed in UUID
 //
-//  @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> true
+//   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) -> true
+//   @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact)
 func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
@@ -232,9 +232,9 @@ func HasAllWords(env utils.Environment, str types.XString, test types.XString) t
 //
 // Only one of the words needs to match and it may appear more than once.
 //
-//  @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
-//  @(has_any_word("The Quick Brown Fox", "red fox")) -> true
-//  @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
+//   @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
+//   @(has_any_word("The Quick Brown Fox", "red fox")) -> true
+//   @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
 //
 // @test has_any_word(string, words)
 func HasAnyWord(env utils.Environment, str types.XString, test types.XString) types.XValue {
@@ -245,12 +245,12 @@ func HasAnyWord(env utils.Environment, str types.XString, test types.XString) ty
 //
 // The phrase must be the only text in the string to match
 //
-//  @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
-//  @(has_only_phrase("Quick Brown", "quick brown")) -> true
-//  @(has_only_phrase("the Quick Brown fox", "")) -> false
-//  @(has_only_phrase("", "")) -> true
-//  @(has_only_phrase("Quick Brown", "quick brown").match) -> "Quick Brown"
-//  @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
+//   @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
+//   @(has_only_phrase("Quick Brown", "quick brown")) -> true
+//   @(has_only_phrase("the Quick Brown fox", "")) -> false
+//   @(has_only_phrase("", "")) -> true
+//   @(has_only_phrase("Quick Brown", "quick brown").match) -> "Quick Brown"
+//   @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(string, phrase)
 func HasOnlyPhrase(env utils.Environment, str types.XString, test types.XString) types.XValue {

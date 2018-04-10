@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -13,7 +12,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func handleFunctionDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) {
+func handleFunctionDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error {
 	lines := strings.Split(docString, "\n")
 	signature := ""
 
@@ -42,7 +41,7 @@ func handleFunctionDoc(output *bytes.Buffer, prefix string, typeName string, doc
 		for _, l := range examples {
 			pieces := strings.Split(l, "->")
 			if len(pieces) != 2 {
-				log.Fatalf("Invalid example: %s", l)
+				return fmt.Errorf("invalid example: %s", l)
 			}
 			test, expected := strings.TrimSpace(pieces[0]), strings.TrimSpace(pieces[1])
 
@@ -52,11 +51,12 @@ func handleFunctionDoc(output *bytes.Buffer, prefix string, typeName string, doc
 
 			// evaluate our expression
 			val, err := session.Runs()[0].EvaluateTemplateAsString(test, false)
+
 			if err != nil && expected != "ERROR" {
-				log.Fatalf("Invalid example: %s  Error: %s", l, err)
+				return fmt.Errorf("invalid example: %s  Error: %s", l, err)
 			}
 			if val != expected && expected != "ERROR" {
-				log.Fatalf("Invalid example: %s  Got: '%s' Expected: '%s'", l, val, expected)
+				return fmt.Errorf("invalid example: %s  Got: '%s' Expected: '%s'", l, val, expected)
 			}
 		}
 
@@ -73,9 +73,10 @@ func handleFunctionDoc(output *bytes.Buffer, prefix string, typeName string, doc
 		output.WriteString(fmt.Sprintf("```\n"))
 		output.WriteString(fmt.Sprintf("\n"))
 	}
+	return nil
 }
 
-func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) {
+func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error {
 	lines := strings.Split(docString, "\n")
 	name := ""
 
@@ -99,32 +100,32 @@ func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docStr
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	if err != nil {
-		log.Fatalf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
 	}
 
 	event, err := events.EventFromEnvelope(typed)
 	if err != nil {
-		log.Fatalf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
 	}
 
 	// make sure types match
 	if name != event.Type() {
-		log.Fatalf("mismatched event types for example of %s", name)
+		return fmt.Errorf("mismatched event types for example of %s", name)
 	}
 
 	// validate it
 	err = utils.Validate(event)
 	if err != nil {
-		log.Fatalf("unable to validate example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to validate example: %s\nHad err: %s", exampleJSON, err)
 	}
 
 	typed, err = utils.EnvelopeFromTyped(event)
 	if err != nil {
-		log.Fatalf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
 	}
 	exampleJSON, err = json.MarshalIndent(typed, "", "    ")
 	if err != nil {
-		log.Fatalf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
 	}
 
 	if name != "" {
@@ -144,9 +145,10 @@ func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docStr
 		}
 		output.WriteString(fmt.Sprintf("\n"))
 	}
+	return nil
 }
 
-func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) {
+func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error {
 	lines := strings.Split(docString, "\n")
 	name := ""
 
@@ -171,34 +173,34 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 	err := json.Unmarshal(exampleJSON, typed)
 	action, err := actions.ActionFromEnvelope(typed)
 	if err != nil {
-		log.Fatalf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to parse example: %s: %s", exampleJSON, err)
 	}
 
 	// validate it
 	err = utils.Validate(action)
 	if err != nil {
-		log.Fatalf("unable to validate example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to validate example: %s: %s", exampleJSON, err)
 	}
 
 	// make sure types match
 	if name != action.Type() {
-		log.Fatalf("mismatched action types for example of %s", name)
+		return fmt.Errorf("mismatched action types for example of %s", name)
 	}
 
 	typed, err = utils.EnvelopeFromTyped(action)
 	if err != nil {
-		log.Fatalf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example %s: %s", exampleJSON, err)
 	}
 
 	exampleJSON, err = json.MarshalIndent(typed, "", "  ")
 	if err != nil {
-		log.Fatalf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example %s: %s", exampleJSON, err)
 	}
 
 	// get the events created by this action
 	events, err := eventsForAction(action)
 	if err != nil {
-		log.Fatalf("error running action: %s\nHas err: %s", exampleJSON, err)
+		return fmt.Errorf("error running action %s: %s", exampleJSON, err)
 	}
 
 	if name != "" {
@@ -224,6 +226,7 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 		}
 		output.WriteString(fmt.Sprintf("\n"))
 	}
+	return nil
 }
 
 func eventsForAction(action flows.Action) (json.RawMessage, error) {
@@ -232,9 +235,17 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 		return nil, err
 	}
 
-	eventLog := session.Events()
+	// only interested in events after the new action
+	eventLog := session.Events()[2:]
+
 	eventJSON := make([]json.RawMessage, len(eventLog))
 	for i, event := range eventLog {
+		// action examples aren't supposed to generate error events - if they have, something went wrong
+		if event.Type() == events.TypeError {
+			errEvent := event.(*events.ErrorEvent)
+			return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
+		}
+
 		typed, err := utils.EnvelopeFromTyped(event)
 		if err != nil {
 			return nil, err

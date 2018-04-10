@@ -11,49 +11,62 @@ import (
 	"go/doc"
 	"go/parser"
 	"go/token"
-	"log"
 	"os"
 	"path"
 	"strings"
 	"text/template"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
-func buildDocSet(goflowPath string, subdir string, tag string, handler handleFunc, session flows.Session) string {
-	output := bytes.Buffer{}
-	examplePath := path.Join(goflowPath, subdir)
-
-	fset := token.NewFileSet()
-	pkgs, e := parser.ParseDir(fset, examplePath, nil, parser.ParseComments)
-	if e != nil {
-		log.Fatal(e)
-	}
-
-	for _, f := range pkgs {
-		p := doc.New(f, "./", 0)
-		for _, t := range p.Types {
-			if strings.Contains(t.Doc, tag) {
-				handler(&output, tag, t.Name, t.Doc, session)
-			}
-		}
-		for _, t := range p.Funcs {
-			if strings.Contains(t.Doc, tag) {
-				handler(&output, tag, t.Name, t.Doc, session)
-			}
-		}
-	}
-	return output.String()
-}
-
-type handleFunc func(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session)
+type handleFunc func(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error
 
 func main() {
-	path := os.Args[1]
+	if len(os.Args) != 2 {
+		fmt.Println("usage: docgen <basedir>")
+		os.Exit(1)
+	}
+
+	output, err := buildDocs(os.Args[1])
+
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	// write output to stdout so it can be piped elsewhere
+	fmt.Println(output)
+}
+
+func buildDocs(baseDir string) (string, error) {
+	server, err := utils.NewTestHTTPServer()
+	if err != nil {
+		return "", fmt.Errorf("error starting mock HTTP server: %s", err)
+	}
+	server.Start()
+	defer server.Close()
 
 	session, err := createExampleSession(nil)
 	if err != nil {
-		log.Fatalf("Error creating example session: %s", err)
+		return "", fmt.Errorf("error creating example session: %s", err)
+	}
+
+	functionDocs, err := buildDocSet(baseDir, "excellent", "@function", handleFunctionDoc, session)
+	if err != nil {
+		return "", err
+	}
+	testDocs, err := buildDocSet(baseDir, "flows/routers/tests", "@test", handleFunctionDoc, session)
+	if err != nil {
+		return "", err
+	}
+	actionDocs, err := buildDocSet(baseDir, "flows/actions", "@action", handleActionDoc, session)
+	if err != nil {
+		return "", err
+	}
+	eventDocs, err := buildDocSet(baseDir, "flows/events", "@event", handleEventDoc, session)
+	if err != nil {
+		return "", err
 	}
 
 	context := struct {
@@ -62,23 +75,53 @@ func main() {
 		ActionDocs   string
 		EventDocs    string
 	}{
-		FunctionDocs: buildDocSet(path, "excellent", "@function", handleFunctionDoc, session),
-		TestDocs:     buildDocSet(path, "flows/routers/tests", "@test", handleFunctionDoc, session),
-		ActionDocs:   buildDocSet(path, "flows/actions", "@action", handleActionDoc, session),
-		EventDocs:    buildDocSet(path, "flows/events", "@event", handleEventDoc, session),
+		FunctionDocs: functionDocs,
+		TestDocs:     testDocs,
+		ActionDocs:   actionDocs,
+		EventDocs:    eventDocs,
 	}
 
 	// generate our complete docs
-	docTpl, err := template.ParseFiles("cmd/docgen/templates/docs.md")
+	docTpl, err := template.ParseFiles(path.Join(baseDir, "cmd/docgen/templates/docs.md"))
 	if err != nil {
-		log.Fatalf("Error reading template file: %s", err)
+		return "", fmt.Errorf("Error reading template file: %s", err)
 	}
 
 	output := bytes.Buffer{}
 	err = docTpl.Execute(&output, context)
 	if err != nil {
-		log.Fatalf("Error executing template: %s", err)
+		return "", fmt.Errorf("Error executing template: %s", err)
 	}
 
-	fmt.Println(output.String())
+	return output.String(), nil
+}
+
+func buildDocSet(goflowPath string, subdir string, tag string, handler handleFunc, session flows.Session) (string, error) {
+	output := bytes.Buffer{}
+	examplePath := path.Join(goflowPath, subdir)
+
+	fset := token.NewFileSet()
+	pkgs, err := parser.ParseDir(fset, examplePath, nil, parser.ParseComments)
+	if err != nil {
+		return "", err
+	}
+
+	for _, f := range pkgs {
+		p := doc.New(f, "./", 0)
+		for _, t := range p.Types {
+			if strings.Contains(t.Doc, tag) {
+				if err := handler(&output, tag, t.Name, t.Doc, session); err != nil {
+					return "", err
+				}
+			}
+		}
+		for _, t := range p.Funcs {
+			if strings.Contains(t.Doc, tag) {
+				if err := handler(&output, tag, t.Name, t.Doc, session); err != nil {
+					return "", err
+				}
+			}
+		}
+	}
+	return output.String(), nil
 }
