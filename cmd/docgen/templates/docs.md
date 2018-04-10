@@ -141,7 +141,7 @@ wait enables the caller to commit changes in the session up to that point in the
 Flows do not describe data flow but rather actions and logic branching. As such, variables collected in a flow and the state of the flow are accessed through
 what is called the context. The context contains variables representing the current contact in a flow, the last input from that contact
 as well as the results collected in a flow and any webhook requests made during the flow. Variables in the context may be referred to 
-within actions by using the `@` symbol. For example, to greet a contact by their name in a [send_msg](#actions:send_msg) action, the text of the action can be `Hi @contact.name!`.
+within actions by using the `@` symbol. For example, to greet a contact by their name in a [send_msg](#action:send_msg) action, the text of the action can be `Hi @contact.name!`.
 
 The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
 
@@ -187,36 +187,9 @@ A flow renders as its name in a template, and has the following properties which
 @(json(run.flow)) → {"uuid": "8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5", "name": "Registration"}
 ```
 
-## Inputs
-
-An input describes input from the contact and currently we only support one type of input: `msg`.
-
-Any input has the following properties which can be accessed:
-
- * `uuid` the UUID of the input
- * `type` the type of the input, e.g. `msg`
- * `channel` the [channel](#channels) that the input was received on
- * `created_on` the time when the input was created
-
-An input of type `msg` renders as its text and attachments in a template, and has the following additional properties:
-
- * `text` the text of the message
- * `attachments` any attachments on the message
- * `urn` the [URN](#urns) that the input was received on
-
-### Examples
-
-```
-@run.input → Hello\nimage/jpeg:https://example.com/test.jpg
-@run.input.type → msg
-@run.input.text → Hello
-@run.input.attachments → image/jpeg:https://example.com/test.jpg
-@(json(run.input)) → {"uuid": "8ddfda9c-9ea7-451e-a812-1c3153f91a87", "text": "Hello", "attachments": ["image/jpeg:https://example.com/test.jpg"], "created_on": "2000-01-01T00:00:00.000000000-00:00"}
-```
-
 ## Results
 
-A result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly created by a [set_run_result](#actions:set_run_result) action.
+A result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly created by a [set_run_result](#action:set_run_result) action.
 
 A result renders as its value in a template, and has the following properties which can be accessed:
 

@@ -38,6 +38,8 @@ func (i *MsgInput) Type() string { return TypeMsg }
 // Resolve resolves the given key when this input is referenced in an expression
 func (i *MsgInput) Resolve(key string) types.XValue {
 	switch key {
+	case "type":
+		return types.NewXString(TypeMsg)
 	case "urn":
 		return types.NewXString(i.urn.String())
 	case "text":
@@ -60,7 +62,19 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	return types.NewXString(strings.Join(parts, "\n"))
 }
 
-func (i *MsgInput) ToJSON() types.XString { return types.NewXString("TODO") }
+// ToJSON converts this type to JSON
+func (i *MsgInput) ToJSON() types.XString {
+	e := struct {
+		UUID      string    `json:"uuid"`
+		CreatedOn time.Time `json:"created_on"`
+		Text      string    `json:"text"`
+	}{
+		UUID:      string(i.uuid),
+		CreatedOn: i.createdOn,
+		Text:      i.text,
+	}
+	return types.MustMarshalToXString(e)
+}
 
 var _ types.XValue = (*MsgInput)(nil)
 var _ types.XResolvable = (*MsgInput)(nil)

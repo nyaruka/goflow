@@ -60,7 +60,7 @@ func handleFunctionDoc(output *bytes.Buffer, tag string, typeName string, docStr
 
 	exampleBlock := strings.Replace(strings.Join(parsed.examples, "\n"), "->", "→", -1)
 
-	output.WriteString(fmt.Sprintf("<a name=\"%ss:%s\"></a>\n\n", tag[1:], name))
+	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", tag[1:], name))
 	output.WriteString(fmt.Sprintf("## %s\n\n", parsed.tagValue))
 	output.WriteString(strings.Join(parsed.description, "\n"))
 	output.WriteString("\n")
@@ -204,7 +204,7 @@ func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docSt
 			docs[0] = strings.Replace(docs[0], typeName, name, 1)
 		}
 
-		output.WriteString(fmt.Sprintf("<a name=\"actions:%s\"></a>\n\n", name))
+		output.WriteString(fmt.Sprintf("<a name=\"action:%s\"></a>\n\n", name))
 		output.WriteString(fmt.Sprintf("## %s\n\n", name))
 		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
 		if len(example) > 0 {
@@ -257,7 +257,8 @@ func checkExample(session flows.Session, line string) error {
 		return fmt.Errorf("unparseable example: %s", line)
 	}
 
-	test, expected := strings.TrimSpace(pieces[0]), strings.TrimSpace(pieces[1])
+	test := strings.TrimSpace(pieces[0])
+	expected := strings.Replace(strings.TrimSpace(pieces[1]), "\\n", "\n", -1)
 
 	// evaluate our expression
 	val, err := session.Runs()[0].EvaluateTemplateAsString(test, false)

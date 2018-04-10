@@ -266,6 +266,29 @@ type EventLog interface {
 	Events() []Event
 }
 
+// Input describes input from the contact and currently we only support one type of input: `msg`. Any input has the following
+// properties which can be accessed:
+//
+//  * `uuid` the UUID of the input
+//  * `type` the type of the input, e.g. `msg`
+//  * `channel` the [channel](#context:channel) that the input was received on
+//  * `created_on` the time when the input was created
+//
+// An input of type `msg` renders as its text and attachments in a template, and has the following additional properties:
+//
+//  * `text` the text of the message
+//  * `attachments` any attachments on the message
+//  * `urn` the [URN](#context:urn) that the input was received on
+//
+// Examples:
+//
+//   @run.input -> Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
+//   @run.input.type -> msg
+//   @run.input.text -> Hi there
+//   @run.input.attachments -> ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
+//   @(to_json(run.input)) -> {"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5","created_on":"2000-01-01T00:00:00Z","text":"Hi there"}
+//
+// @context input
 type Input interface {
 	types.XValue
 	utils.Typed

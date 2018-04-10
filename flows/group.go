@@ -11,7 +11,7 @@ import (
 )
 
 // Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
-// [actions](#actions:add_contact_group)) or dynamic (contacts are added automatically by a query). It renders as its name in a
+// [actions](#action:add_contact_groups)) or dynamic (contacts are added automatically by a query). It renders as its name in a
 // template, and has the following properties which can be accessed:
 //
 //  * `uuid` the UUID of the group
