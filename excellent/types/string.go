@@ -28,6 +28,11 @@ func (x XString) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XString) Native() string { return string(x) }
 
+// Compare compares this string to another
+func (x XString) Compare(other XString) int {
+	return strings.Compare(x.Native(), other.Native())
+}
+
 // Length returns the length of this string
 func (x XString) Length() int { return utf8.RuneCountInString(x.Native()) }
 

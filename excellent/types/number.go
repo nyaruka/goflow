@@ -46,6 +46,11 @@ func (x XNumber) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return decimal.Decimal(x) }
 
+// Compare compares this number to another
+func (x XNumber) Compare(other XNumber) int {
+	return x.Native().Cmp(other.Native())
+}
+
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XNumber) MarshalJSON() ([]byte, error) {
 	nativePtr := (decimal.Decimal)(x)

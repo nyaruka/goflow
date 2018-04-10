@@ -216,11 +216,13 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 		return xerr
 	}
 
+	cmp := num1.Compare(num2)
+
 	if ctx.EQ() != nil {
-		return types.NewXBool(num1.Native().Equal(num2.Native()))
+		return types.NewXBool(cmp == 0)
 	}
 
-	return types.NewXBool(!num1.Native().Equal(num2.Native()))
+	return types.NewXBool(cmp != 0)
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression
@@ -268,15 +270,17 @@ func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 		return xerr
 	}
 
+	cmp := num1.Compare(num2)
+
 	switch {
 	case ctx.LT() != nil:
-		return types.NewXBool(num1.Native().LessThan(num2.Native()))
+		return types.NewXBool(cmp < 0)
 	case ctx.LTE() != nil:
-		return types.NewXBool(num1.Native().LessThanOrEqual(num2.Native()))
+		return types.NewXBool(cmp <= 0)
 	case ctx.GTE() != nil:
-		return types.NewXBool(num1.Native().GreaterThanOrEqual(num2.Native()))
+		return types.NewXBool(cmp >= 0)
 	case ctx.GT() != nil:
-		return types.NewXBool(num1.Native().GreaterThan(num2.Native()))
+		return types.NewXBool(cmp > 0)
 	}
 
 	return types.NewXErrorf("unknown comparison operator: %s", ctx.GetText())

@@ -436,7 +436,7 @@ func Max(env utils.Environment, args ...types.XValue) types.XValue {
 			return xerr
 		}
 
-		if val.Native().Cmp(max.Native()) > 0 {
+		if val.Compare(max) > 0 {
 			max = val
 		}
 	}
@@ -466,7 +466,7 @@ func Min(env utils.Environment, args ...types.XValue) types.XValue {
 			return xerr
 		}
 
-		if val.Native().Cmp(max.Native()) < 0 {
+		if val.Compare(max) < 0 {
 			max = val
 		}
 	}
@@ -996,7 +996,7 @@ func Right(env utils.Environment, str types.XString, l int) types.XValue {
 //
 // @function string_cmp(str1, str2)
 func StringCmp(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
-	return types.NewXNumberFromInt(strings.Compare(str1.Native(), str2.Native()))
+	return types.NewXNumberFromInt(str1.Compare(str2))
 }
 
 // Repeat return `string` repeated `count` number of times

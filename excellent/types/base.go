@@ -60,33 +60,13 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 	case XError:
 		return strings.Compare(typed.Error(), x2.(error).Error()), nil
 	case XNumber:
-		return typed.Native().Cmp(x2.(XNumber).Native()), nil
+		return typed.Compare(x2.(XNumber)), nil
 	case XBool:
-		bool1 := typed.Native()
-		bool2 := x2.(XBool).Native()
-
-		switch {
-		case !bool1 && bool2:
-			return -1, nil
-		case bool1 == bool2:
-			return 0, nil
-		case bool1 && !bool2:
-			return 1, nil
-		}
+		return typed.Compare(x2.(XBool)), nil
 	case XDate:
-		time1 := typed.Native()
-		time2 := x2.(XDate).Native()
-
-		switch {
-		case time1.Before(time2):
-			return -1, nil
-		case time1.Equal(time2):
-			return 0, nil
-		case time1.After(time2):
-			return 1, nil
-		}
+		return typed.Compare(x2.(XDate)), nil
 	case XString:
-		return strings.Compare(typed.Native(), x2.(XString).Native()), nil
+		return typed.Compare(x2.(XString)), nil
 	}
 
 	// TODO: find better fallback

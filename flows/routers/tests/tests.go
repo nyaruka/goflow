@@ -413,7 +413,7 @@ func HasNumberBetween(env utils.Environment, args ...types.XValue) types.XValue 
 	for _, value := range strings.Fields(str.Native()) {
 		num, xerr := types.ToXNumber(types.NewXString(value))
 		if xerr == nil {
-			if num.Native().Cmp(min.Native()) >= 0 && num.Native().Cmp(max.Native()) <= 0 {
+			if num.Compare(min) >= 0 && num.Compare(max) <= 0 {
 				return XTestResult{true, num}
 			}
 		}

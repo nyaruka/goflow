@@ -27,6 +27,18 @@ func (x XBool) ToJSON() XString { return RequireMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XBool) Native() bool { return bool(x) }
 
+// Compare compares this bool to another
+func (x XBool) Compare(other XBool) int {
+	switch {
+	case !x.Native() && other.Native():
+		return -1
+	case x.Native() && !other.Native():
+		return 1
+	default:
+		return 0
+	}
+}
+
 // XBoolFalse is the false boolean value
 var XBoolFalse = NewXBool(false)
 

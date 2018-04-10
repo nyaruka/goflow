@@ -29,6 +29,18 @@ func (x XDate) ToJSON() XString { return RequireMarshalToXString(utils.DateToISO
 // Native returns the native value of this type
 func (x XDate) Native() time.Time { return time.Time(x) }
 
+// Compare compares this date to another
+func (x XDate) Compare(other XDate) int {
+	switch {
+	case x.Native().Before(other.Native()):
+		return -1
+	case x.Native().After(other.Native()):
+		return 1
+	default:
+		return 0
+	}
+}
+
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XDate) MarshalJSON() ([]byte, error) {
 	nativePtr := (time.Time)(x)
