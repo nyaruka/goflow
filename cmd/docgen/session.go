@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/flows/events"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -17,7 +19,7 @@ var sessionAssets = `[
         "content": [
             {
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "Android Channel",
+                "name": "My Android Phone",
                 "address": "+12345671111",
                 "schemes": ["tel"],
                 "roles": ["send", "receive"]
@@ -44,10 +46,38 @@ var sessionAssets = `[
         "url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
         "content": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-            "name": "Action Flow",
+            "name": "Registration",
             "nodes": [{
                 "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-                "actions": []
+                "actions": [
+                    {
+                        "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                        "type": "start_flow",
+                        "flow": {
+                            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                            "name": "Collect Language"
+                        }
+                    },
+                    {
+                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                        "type": "set_run_result",
+                        "name": "Phone Number",
+                        "value": "+12344563452"
+                    },
+                    {
+                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                        "type": "set_run_result",
+                        "name": "Color",
+                        "value": "red",
+                        "category": "Red"
+                    },
+                    {
+                        "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
+                        "type": "call_webhook",
+                        "method": "GET",
+                        "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
+                    }
+                ]
             }]
         }
     },
@@ -56,7 +86,7 @@ var sessionAssets = `[
         "url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "content": {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "name": "Subflow",
+            "name": "Collect Language",
             "nodes": [{
                 "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
                 "actions": []
@@ -67,7 +97,8 @@ var sessionAssets = `[
         "type": "field",
         "url": "http://testserver/assets/field",
         "content": [
-            {"key": "gender", "label": "Gender", "value_type": "text"}
+            {"key": "gender", "label": "Gender", "value_type": "text"},
+            {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
         ],
         "is_set": true
     },
@@ -76,6 +107,7 @@ var sessionAssets = `[
         "url": "http://testserver/assets/group",
         "content": [
             {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
             {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
         ],
         "is_set": true
@@ -133,31 +165,73 @@ var sessionAssets = `[
 var sessionTrigger = `{
     "type": "manual",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
-    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Action Flow"},
+    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
         "name": "Ryan Lewis",
-        "urns": ["tel:+12065551212", "mailto:foo@bar.com"],
+        "language": "eng",
+        "urns": [
+            "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+            "twitterid:54784326227#nyaruka",
+            "mailto:foo@bar.com"
+        ],
         "groups": [
-            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
+            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
         ],
         "fields": {
             "gender": {
                 "text": "Male"
+            },
+            "activation_token": {
+                "text": "AACC55"
             }
         }
-    }
+    },
+    "params": {"source": "website","address": {"state": "WA"}}
 }`
+
+var initialEvents = `[
+    {
+        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+        "msg": {
+            "attachments": [
+                "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
+                "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
+            ],
+            "channel": {
+                "name": "Nexmo",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            },
+            "text": "Hi there",
+            "urn": "tel:+12065551212",
+            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+        },
+        "type": "msg_received"
+    }
+]`
+
+// an extended environment that will let us override Now() so that it's constant
+type docEnvironment struct {
+	utils.Environment
+}
+
+func (e *docEnvironment) Now() time.Time {
+	return time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
+}
 
 func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our assets
 	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error including assets: %s", err)
 	}
 
 	// create our engine session
 	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
+
+	// override the session environment
+	session.SetEnvironment(&docEnvironment{session.Environment()})
 
 	// optional modify the main flow by adding the provided action
 	if actionToAdd != nil {
@@ -168,15 +242,24 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our trigger
 	triggerEnvelope := &utils.TypedEnvelope{}
 	if err := triggerEnvelope.UnmarshalJSON(json.RawMessage(sessionTrigger)); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error unmarsalling trigger: %s", err)
 	}
-
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
 		return nil, fmt.Errorf("error reading trigger: %s", err)
 	}
 
+	// and the initial events
+	eventEnvelopes := []*utils.TypedEnvelope{}
+	if err := json.Unmarshal(json.RawMessage(initialEvents), &eventEnvelopes); err != nil {
+		return nil, err
+	}
+	events, err := events.ReadEvents(eventEnvelopes)
+	if err != nil {
+		return nil, err
+	}
+
 	// and start the example flow
-	err = session.Start(trigger, nil)
+	err = session.Start(trigger, events)
 	return session, err
 }

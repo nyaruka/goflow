@@ -12,7 +12,6 @@ const TypeAddInputLabels string = "add_input_labels"
 // will be created with the labels added when this action is encountered. If there is
 // no user input at that point then this action will be ignored.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_input_labels",
@@ -21,7 +20,6 @@ const TypeAddInputLabels string = "add_input_labels"
 //       "name": "Spam"
 //     }]
 //   }
-// ```
 //
 // @action add_input_labels
 type AddInputLabelsAction struct {

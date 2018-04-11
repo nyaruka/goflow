@@ -28,7 +28,31 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 	return urns.IsValidScheme(fl.Field().String())
 }
 
-// ContactURN holds a URN for a contact with the channel parsed out
+// ContactURN represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3
+// components: scheme, path, and display (optional). For example:
+//
+//  - _tel:+16303524567_
+//  - _twitterid:54784326227#nyaruka_
+//  - _telegram:34642632786#bobby_
+//
+// It has several properties which can be accessed in expressions:
+//
+//  * `scheme` the scheme of the URN, e.g. "tel", "twitter"
+//  * `path` the path of the URN, e.g. "+16303524567"
+//  * `display` the display portion of the URN, e.g. "+16303524567"
+//  * `channel` the preferred [channel](#context:channel) of the URN
+//
+// To render a URN in a human friendly format, use the [format_urn](#function:format_urn) function.
+//
+// Examples:
+//
+//   @contact.urns.0 -> tel:+12065551212
+//   @contact.urns.0.scheme -> tel
+//   @contact.urns.0.path -> +12065551212
+//   @contact.urns.1.display -> nyaruka
+//   @(format_urn(contact.urns.0)) -> (206) 555-1212
+//
+// @context urn
 type ContactURN struct {
 	urns.URN
 	channel Channel

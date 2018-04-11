@@ -10,13 +10,11 @@ const TypeContactChannelChanged string = "contact_channel_changed"
 
 // ContactChannelChangedEvent events are created when a contact's preferred channel is changed.
 //
-// ```
 //   {
 //     "type": "contact_channel_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "channel": {"uuid": "67a3ac69-e5e0-4ef0-8423-eddf71a71472", "name": "Twilio"}
 //   }
-// ```
 //
 // @event contact_channel_changed
 type ContactChannelChangedEvent struct {

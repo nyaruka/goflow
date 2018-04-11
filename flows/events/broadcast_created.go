@@ -18,7 +18,6 @@ type BroadcastTranslation struct {
 
 // BroadcastCreatedEvent events are created for outgoing broadcasts.
 //
-// ```
 //   {
 //     "type": "broadcast_created",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -38,7 +37,6 @@ type BroadcastTranslation struct {
 //     "urns": ["tel:+12065551212"],
 //     "contacts": [{"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Bob"}]
 //   }
-// ```
 //
 // @event broadcast_created
 type BroadcastCreatedEvent struct {

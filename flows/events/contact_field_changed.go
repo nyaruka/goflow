@@ -11,14 +11,12 @@ const TypeContactFieldChanged string = "contact_field_changed"
 
 // ContactFieldChangedEvent events are created when a contact field is updated.
 //
-// ```
 //   {
 //     "type": "contact_field_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "field": {"key": "gender", "name": "Gender"},
 //     "value": "Male"
 //   }
-// ```
 //
 // @event contact_field_changed
 type ContactFieldChangedEvent struct {

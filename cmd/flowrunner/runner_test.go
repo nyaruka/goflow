@@ -5,10 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
-	"net"
-	"net/http"
-	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -143,35 +139,10 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	return runResult{assetCache, session, outputs}, nil
 }
 
-// set up a mock server for webhook actions
-func newTestHTTPServer() *httptest.Server {
-	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		cmd := r.URL.Query().Get("cmd")
-		defer r.Body.Close()
-		w.Header().Set("Date", "")
-
-		switch cmd {
-		case "success":
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{ "ok": "true" }`))
-		case "unavailable":
-			w.WriteHeader(http.StatusServiceUnavailable)
-			w.Write([]byte(`{ "errors": ["service unavailable"] }`))
-		default:
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(`{ "errors": ["bad_request"] }`))
-		}
-	}))
-	// manually create a listener for our test server so that our output is predictable
-	l, err := net.Listen("tcp", "127.0.0.1:49999")
-	if err != nil {
-		log.Fatal(err)
-	}
-	server.Listener = l
-	return server
-}
 func TestFlows(t *testing.T) {
-	server := newTestHTTPServer()
+	server, err := utils.NewTestHTTPServer()
+	require.NoError(t, err)
+
 	server.Start()
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)

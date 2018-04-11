@@ -19,6 +19,36 @@ const (
 	ChannelRoleUSSD    ChannelRole = "ussd"
 )
 
+// Channel represents a means for sending and receiving input during a flow run. It renders as its name in a template,
+// and has the following properties which can be accessed:
+//
+//  * `uuid` the UUID of the channel
+//  * `name` the name of the channel
+//  * `address` the address of the channel
+//
+// Examples:
+//
+//   @contact.channel -> My Android Phone
+//   @contact.channel.name -> My Android Phone
+//   @contact.channel.address -> +12345671111
+//   @run.input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
+//   @(to_json(contact.channel)) -> {"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone","address":"+12345671111"}
+//
+// @context channel
+type Channel interface {
+	types.XValue
+	types.XResolvable
+
+	UUID() ChannelUUID
+	Name() string
+	Address() string
+	Schemes() []string
+	SupportsScheme(string) bool
+	Roles() []ChannelRole
+	HasRole(ChannelRole) bool
+	Reference() *ChannelReference
+}
+
 type channel struct {
 	uuid    ChannelUUID
 	name    string
@@ -95,10 +125,21 @@ func (c *channel) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-func (c *channel) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON converts this type to JSON
+func (c *channel) ToXJSON() types.XString {
+	e := struct {
+		UUID    string `json:"uuid"`
+		Name    string `json:"name"`
+		Address string `json:"address"`
+	}{
+		UUID:    string(c.uuid),
+		Name:    c.name,
+		Address: c.address,
+	}
+	return types.MustMarshalToXString(e)
+}
 
-var _ types.XValue = (*channel)(nil)
-var _ types.XResolvable = (*channel)(nil)
+var _ Channel = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
 type ChannelSet struct {

@@ -8,13 +8,11 @@ const TypeError string = "error"
 // ErrorEvent events will be created whenever an error is encountered during flow execution. This
 // can vary from template evaluation errors to invalid actions.
 //
-// ```
 //   {
 //     "type": "error",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "text": "invalid date format: '12th of October'"
 //   }
-// ```
 //
 // @event error
 type ErrorEvent struct {

@@ -135,7 +135,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		{old: "@((5 + contact.balance) / 2)", new: "@((legacy_add(5, contact.fields.balance)) / 2)"},
 		{old: "@(WEEKDAY(TODAY()))", new: "@(weekday(today()))"},
-		{old: "@(YEAR(date.now))", new: "@(format_date(now(), \"yyyy\"))"},
+		{old: "@(YEAR(date.now))", new: "@(format_date(now(), \"YYYY\"))"},
 
 		// booleans and conditionals
 		{old: "@(AND(contact.gender = \"F\", contact.age >= 18))", new: "@(and(contact.fields.gender == \"F\", contact.fields.age >= 18))"},

@@ -37,6 +37,16 @@ func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow flows.
 // Type returns the type of this trigger
 func (t *ManualTrigger) Type() string { return TypeManual }
 
+// Resolve resolves the given key when this trigger is referenced in an expression
+func (t *ManualTrigger) Resolve(key string) types.XValue {
+	switch key {
+	case "type":
+		return types.NewXString(TypeManual)
+	}
+
+	return t.baseTrigger.Resolve(key)
+}
+
 var _ flows.Trigger = (*ManualTrigger)(nil)
 
 //------------------------------------------------------------------------------------------

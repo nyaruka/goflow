@@ -15,14 +15,12 @@ const TypeAddContactURN string = "add_contact_urn"
 // will be created when this action is encountered. If there is no contact then this
 // action will be ignored.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_contact_urn",
 //     "scheme": "tel",
-//     "path": "@flow.phone_number"
+//     "path": "@run.results.phone_number"
 //   }
-// ```
 //
 // @action add_contact_urn
 type AddContactURNAction struct {

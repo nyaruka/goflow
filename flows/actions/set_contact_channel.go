@@ -10,6 +10,17 @@ import (
 // TypeSetContactChannel is the type for the set contact channel action
 const TypeSetContactChannel string = "set_contact_channel"
 
+// SetContactChannelAction can be used to update the preferred channel of the current contact.
+//
+// A `contact_channel_changed` event will be created with the set channel.
+//
+//   {
+//     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+//     "type": "set_contact_channel",
+//     "channel": {"uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648", "name": "FAcebook Channel"}
+//   }
+//
+// @action set_contact_channel
 type SetContactChannelAction struct {
 	BaseAction
 	Channel *flows.ChannelReference `json:"channel"`

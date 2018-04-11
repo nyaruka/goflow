@@ -8,7 +8,6 @@ const TypeContactChanged string = "contact_changed"
 
 // ContactChangedEvent events are created to set a contact on a session
 //
-// ```
 //   {
 //     "type": "contact_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -18,7 +17,6 @@ const TypeContactChanged string = "contact_changed"
 //       "urns": ["tel:+11231234567"]
 //     }
 //   }
-// ```
 //
 // @event contact_changed
 type ContactChangedEvent struct {

@@ -7,8 +7,22 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// Result represents a result value in our flow run. Results have a name for which they are the result for,
-// the value itself of the result, optional category and the date and node the result was collected on
+// Result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
+// created by a [set_run_result](#action:set_run_result) action.It renders as its value in a template, and has the following
+// properties which can be accessed:
+//
+//  * `value` the value of the result
+//  * `category` the category of the result
+//  * `category_localized` the localized category of the result
+//  * `created_on` the time when the result was created
+//
+// Examples:
+//
+//   @run.results.color -> red
+//   @run.results.color.value -> red
+//   @run.results.color.category -> Red
+//
+// @context result
 type Result struct {
 	Name              string    `json:"name"`
 	Value             string    `json:"value"`

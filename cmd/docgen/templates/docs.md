@@ -141,249 +141,33 @@ wait enables the caller to commit changes in the session up to that point in the
 Flows do not describe data flow but rather actions and logic branching. As such, variables collected in a flow and the state of the flow are accessed through
 what is called the context. The context contains variables representing the current contact in a flow, the last input from that contact
 as well as the results collected in a flow and any webhook requests made during the flow. Variables in the context may be referred to 
-within actions by using the `@` symbol. For example, to greet a contact by their name in a [send_msg](#actions:send_msg) action, the text of the action can be `Hi @contact.name!`.
+within actions by using the `@` symbol. For example, to greet a contact by their name in a [send_msg](#action:send_msg) action, the text of the action can be `Hi @contact.name!`.
 
 The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
 
 The context contains the following top-level variables:
 
- * `contact` the [contact](#contacts) of the current flow run
- * `run` the current [run](#runs)
- * `parent` the parent of the current [run](#runs), i.e. the run that started the current run
- * `child` the child of the current [run](#runs), i.e. the last subflow
- * `trigger` the [trigger](#triggers) that initiated this session
+ * `contact` the [contact](#context:contact) of the current flow run
+ * `run` the current [run](#context:run)
+ * `parent` the parent of the current [run](#context:run), i.e. the run that started the current run
+ * `child` the child of the current [run](#context:run), i.e. the last subflow
+ * `trigger` the [trigger](#context:trigger) that initiated this session
 
 The following types appear in the context:
 
- * [Channels](#channels)
- * [Contacts](#contacts)
- * [Flows](#flows)
- * [Groups](#groups)
- * [Inputs](#inputs)
- * [Results](#results)
- * [Runs](#runs)
- * [Triggers](#triggers)
- * [URNs](#urns)
- * [Webhooks](#webhooks)
+ * [Channel](#context:channel)
+ * [Contact](#context:contact)
+ * [Flow](#context:flow)
+ * [Group](#context:group)
+ * [Input](#context:input)
+ * [Result](#context:result)
+ * [Run](#context:run)
+ * [Trigger](#context:trigger)
+ * [URN](#context:urn)
+ * [Webhook](#context:webhook)
 
 <div class="context">
-
-## Channels
-
-A channel represents a means for sending and receiving input during a flow run.
-
-A channel renders as its name in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the channel
- * `name` the name of the channel
- * `address` the address of the channel
-
-### Examples
-
-```
-@contact.channel → My Android Phone
-@contact.channel.name → My Android Phone
-@contact.channel.address → +16303455678
-@run.input.channel.uuid → c42528a5-8550-480e-ae4d-92995550e1d6
-@(json(contact.channel)) → {"uuid": "c42528a5-8550-480e-ae4d-92995550e1d6", "name": "My Android Phone", "address": "+16303455678"}
-```
-
-## Contacts
-
-A contact represents a person who is interacting with the flow.
-
-A contact renders as the person's name (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the contact
- * `name` the full name of the contact
- * `first_name` the first name of the contact
- * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
- * `urns` all [URNs](#urns) the contact has set
- * `urns.[scheme]` all the [URNs](#urns) the contact has set for the particular URN scheme
- * `urn` shorthand for `@(format_urn(c.urns.0))`, i.e. the contact's preferred [URN](#urns) in friendly formatting
- * `groups` all the [groups](#groups) that the contact belongs to
- * `fields` all the custom contact fields the contact has set
- * `fields.[snaked_field_name]` the value of the specific field
- * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#channels) of the contact's preferred URN
-
-### Examples
-
-```
-@contact → Bobby Smith
-@contact.name → Bobby Smith
-@contact.first_name → Bobby
-@contact.language → eng
-@contact.urns → tel:+12065551212, tel:+16302425788, mailto:foo@bar.com
-@contact.urns.0 → tel:+12065551212
-@contact.urns.tel → tel:+12065551212, tel:+16302425788
-@contact.mailto.0 → mailto:foo@bar.com
-@contact.urn → (206) 555 1212
-@contact.groups → Males, Reporters
-@contact.fields → age: 36\ngender: MALE
-@contact.fields.age → 36
-@contact.fields.gender → MALE
-```
-
-## Flows
-
-A flow describes the ordered logic of actions and routers.
-
-A flow renders as its name in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the flow
- * `name` the name of the flow
-
-### Examples
-
-```
-@run.flow → Registration
-@child.flow → Age Collection
-@run.flow.uuid → 8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5
-@(json(run.flow)) → {"uuid": "8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5", "name": "Registration"}
-```
-
-## Groups
-
-A group represents a grouping of contacts. It can be static (contacts are added and removed manually through [actions](#actions:add_contact_group)) or dynamic (contacts are added automatically by a query).
-
-A group renders as its name in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the group
- * `name` the name of the group
-
-### Examples
-
-```
-@contact.groups → Males, Reporters
-@contact.groups.0.uuid → 8ddfda9c-9ea7-451e-a812-1c3153f91a87
-@contact.groups.1.name → Reporters
-@(json(contact.groups.1)) → {"uuid": "8ddfda9c-9ea7-451e-a812-1c3153f91a87", "name": "Reporters"}
-```
-
-## Inputs
-
-An input describes input from the contact and currently we only support one type of input: `msg`.
-
-Any input has the following properties which can be accessed:
-
- * `uuid` the UUID of the input
- * `type` the type of the input, e.g. `msg`
- * `channel` the [channel](#channels) that the input was received on
- * `created_on` the time when the input was created
-
-An input of type `msg` renders as its text and attachments in a template, and has the following additional properties:
-
- * `text` the text of the message
- * `attachments` any attachments on the message
- * `urn` the [URN](#urns) that the input was received on
-
-### Examples
-
-```
-@run.input → Hello\nimage/jpeg:https://example.com/test.jpg
-@run.input.type → msg
-@run.input.text → Hello
-@run.input.attachments → image/jpeg:https://example.com/test.jpg
-@(json(run.input)) → {"uuid": "8ddfda9c-9ea7-451e-a812-1c3153f91a87", "text": "Hello", "attachments": ["image/jpeg:https://example.com/test.jpg"], "created_on": "2000-01-01T00:00:00.000000000-00:00"}
-```
-
-## Results
-
-A result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly created by a [set_run_result](#actions:set_run_result) action.
-
-A result renders as its value in a template, and has the following properties which can be accessed:
-
- * `value` the value of the result
- * `category` the category of the result
- * `category_localized` the localized category of the result
- * `created_on` the time when the result was created
-
-### Examples
-
-```
-@run.results.color → red
-@run.results.color.value → red
-@run.results.color.category → Red
-@run.results.color.category_localized → Rojo
-```
-
-## Runs
-
-A run is a single contact's journey through a flow. It records the path they have taken, and the results that have been collected.
-
-A run has several properties which can be accessed in expressions:
-
- * `uuid` the UUID of the run
- * `flow` the [flow](#flows) of the run
- * `contact` the [contact](#contacts) of the flow run
- * `input` the [input](#inputs) of the current run
- * `results` the results that have been saved for this run
- * `results.[snaked_result_name]` the value of the specific result, e.g. `run.results.age`
- * `webhook` the last [webhook](#webhooks) call made in the current run
-
-## Triggers
-
-A trigger represents something which can initiate a session with the flow engine.
-
-A trigger has several properties which can be accessed in expressions:
-
- * `type` the type of the trigger, one of `manual` or `flow`
- * `params` the parameters passed to the trigger
-
-### Examples
-
-```
-@trigger.type → manual
-@trigger.params → source: website\naddress:\n  state: WA
-@(json(trigger.params)) → {"source": "website", "address": {"state": "WA"}}
-```
-
-## URNs
-
-A URN represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:
-
- * _tel:+16303524567_
- * _twitterid:54784326227#nyaruka_
- * _telegram:34642632786#bobby_
-
-A URN has several properties which can be accessed in expressions:
-
- * `scheme` the scheme of the URN, e.g. "tel", "twitter"
- * `path` the path of the URN, e.g. "+16303524567"
- * `display` the display portion of the URN, e.g. "+16303524567"
- * `channel` the preferred [channel](#channels) of the URN
-
-To render a URN in a human friendly format, use the [format_urn](#functions:format_urn) function.
-
-```
-@contact.urns.0 → tel:+12065551212
-@contact.urns.0.scheme → tel
-@contact.urns.0.path → +12065551212
-@contact.urns.1.display → nyaruka
-@(format_urn(contact.urns.0)) → (206) 555 1212
-```
-
-## Webhooks
-
-A webhook describes a call made to an external service.
-
-A webhook has several properties which can be accessed in expressions:
-
- * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
- * `status_code` the status code of the response
- * `body` the body of the response
- * `json` the parsed JSON response (if response body was JSON)
- * `json.[key]` sub-elements of the parsed JSON response
- * `request` the raw request made, including headers
- * `response` the raw response received, including headers
-
-### Examples
-
-```
-@run.webhook.status_code → 200
-@run.webhook.json.results.0.state_name → Washington
-```
-
+{{ .ContextDocs }}
 </div>
 
 # Template Functions

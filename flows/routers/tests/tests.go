@@ -74,16 +74,15 @@ var XTESTS = map[string]functions.XFunction{
 // IsStringEQ returns whether two strings are equal (case sensitive). In the case that they
 // are, it will return the string as the match.
 //
-//  @(is_string_eq("foo", "foo")) -> true
-//  @(is_string_eq("foo", "FOO")) -> false
-//  @(is_string_eq("foo", "bar")) -> false
-//  @(is_string_eq("foo", " foo ")) -> false
-//  @(is_string_eq(run.status, "completed")) -> true
-//  @(is_string_eq(child.status, "expired")) -> false
-//  @(is_string_eq(webhook.status, "success")) -> true
-//  @(is_string_eq(webhook.status, "connection_error")) -> false
+//   @(is_string_eq("foo", "foo")) -> true
+//   @(is_string_eq("foo", "FOO")) -> false
+//   @(is_string_eq("foo", "bar")) -> false
+//   @(is_string_eq("foo", " foo ")) -> false
+//   @(is_string_eq(run.status, "completed")) -> true
+//   @(is_string_eq(run.webhook.status, "success")) -> true
+//   @(is_string_eq(run.webhook.status, "connection_error")) -> false
 //
-// @test is_string_eq(run)
+// @test is_string_eq(string, string)
 func IsStringEQ(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
 	if str1.Native() == str2.Native() {
 		return XTestResult{true, str1}
@@ -149,7 +148,7 @@ func HasValue(env utils.Environment, args ...types.XValue) types.XValue {
 
 // HasWaitTimedOut returns whether the last wait timed out.
 //
-//  @(has_wait_timed_out(run)) -> false
+//   @(has_wait_timed_out(run)) -> false
 //
 // @test has_wait_timed_out(run)
 func HasWaitTimedOut(env utils.Environment, args ...types.XValue) types.XValue {
@@ -172,7 +171,8 @@ func HasWaitTimedOut(env utils.Environment, args ...types.XValue) types.XValue {
 
 // HasGroup returns whether the `contact` is part of group with the passed in UUID
 //
-//  @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> true
+//   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) -> true
+//   @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact)
 func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
@@ -208,7 +208,7 @@ func HasGroup(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(has_phrase("the quick brown fox", "brown fox")) -> true
 //   @(has_phrase("the Quick Brown fox", "quick fox")) -> false
 //   @(has_phrase("the Quick Brown fox", "")) -> true
-//   @(has_phrase("the.quick.brown.fox", "the quick").match) -> "the quick"
+//   @(has_phrase("the.quick.brown.fox", "the quick").match) -> the quick
 //
 // @test has_phrase(string, phrase)
 func HasPhrase(env utils.Environment, str types.XString, test types.XString) types.XValue {
@@ -220,7 +220,7 @@ func HasPhrase(env utils.Environment, str types.XString, test types.XString) typ
 // The words can be in any order and may appear more than once.
 //
 //   @(has_all_words("the quick brown FOX", "the fox")) -> true
-//   @(has_all_words("the quick brown FOX", "the fox").match) -> "the FOX"
+//   @(has_all_words("the quick brown FOX", "the fox").match) -> the FOX
 //   @(has_all_words("the quick brown fox", "red fox")) -> false
 //
 // @test has_all_words(string, words)
@@ -232,9 +232,9 @@ func HasAllWords(env utils.Environment, str types.XString, test types.XString) t
 //
 // Only one of the words needs to match and it may appear more than once.
 //
-//  @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
-//  @(has_any_word("The Quick Brown Fox", "red fox")) -> true
-//  @(has_any_word("The Quick Brown Fox", "red fox").match) -> "Fox"
+//   @(has_any_word("The Quick Brown Fox", "fox quick")) -> true
+//   @(has_any_word("The Quick Brown Fox", "red fox")) -> true
+//   @(has_any_word("The Quick Brown Fox", "red fox").match) -> Fox
 //
 // @test has_any_word(string, words)
 func HasAnyWord(env utils.Environment, str types.XString, test types.XString) types.XValue {
@@ -245,12 +245,12 @@ func HasAnyWord(env utils.Environment, str types.XString, test types.XString) ty
 //
 // The phrase must be the only text in the string to match
 //
-//  @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
-//  @(has_only_phrase("Quick Brown", "quick brown")) -> true
-//  @(has_only_phrase("the Quick Brown fox", "")) -> false
-//  @(has_only_phrase("", "")) -> true
-//  @(has_only_phrase("Quick Brown", "quick brown").match) -> "Quick Brown"
-//  @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
+//   @(has_only_phrase("The Quick Brown Fox", "quick brown")) -> false
+//   @(has_only_phrase("Quick Brown", "quick brown")) -> true
+//   @(has_only_phrase("the Quick Brown fox", "")) -> false
+//   @(has_only_phrase("", "")) -> true
+//   @(has_only_phrase("Quick Brown", "quick brown").match) -> Quick Brown
+//   @(has_only_phrase("The Quick Brown Fox", "red fox")) -> false
 //
 // @test has_only_phrase(string, phrase)
 func HasOnlyPhrase(env utils.Environment, str types.XString, test types.XString) types.XValue {
@@ -260,7 +260,7 @@ func HasOnlyPhrase(env utils.Environment, str types.XString, test types.XString)
 // HasText tests whether there the string has any characters in it
 //
 //   @(has_text("quick brown")) -> true
-//   @(has_text("quick brown").match) -> "quick brown"
+//   @(has_text("quick brown").match) -> quick brown
 //   @(has_text("")) -> false
 //   @(has_text(" \n")) -> false
 //   @(has_text(123)) -> true
@@ -284,7 +284,7 @@ func HasText(env utils.Environment, str types.XString) types.XValue {
 // without any tokenization.
 //
 //   @(has_beginning("The Quick Brown", "the quick")) -> true
-//   @(has_beginning("The Quick Brown", "the quick").match) -> "The Quick"
+//   @(has_beginning("The Quick Brown", "the quick").match) -> The Quick
 //   @(has_beginning("The Quick Brown", "the   quick")) -> false
 //   @(has_beginning("The Quick Brown", "quick brown")) -> false
 //
@@ -351,9 +351,9 @@ var _ types.XResolvable = (*patternMatch)(nil)
 //
 //   @(has_pattern("Sell cheese please", "buy (\w+)")) -> false
 //   @(has_pattern("Buy cheese please", "buy (\w+)")) -> true
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> "Buy cheese"
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) -> "Buy cheese"
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> "cheese"
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> Buy cheese
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) -> Buy cheese
+//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> cheese
 //
 // @test has_pattern(string, pattern)
 func HasPattern(env utils.Environment, haystack types.XString, pattern types.XString) types.XValue {
@@ -540,7 +540,7 @@ var emailAddressRE = regexp.MustCompile(`([\pL\pN][-_.\pL\pN]*)@([\pL\pN][-_\pL\
 // HasEmail tests whether an email is contained in `string`
 //
 //   @(has_email("my email is foo1@bar.com, please respond")) -> true
-//   @(has_email("my email is foo1@bar.com, please respond").match) -> "foo1@bar.com"
+//   @(has_email("my email is foo1@bar.com, please respond").match) -> foo1@bar.com
 //   @(has_email("my email is <foo@bar2.com>")) -> true
 //   @(has_email("i'm not sharing my email")) -> false
 //
@@ -558,7 +558,7 @@ func HasEmail(env utils.Environment, str types.XString) types.XValue {
 // HasPhone tests whether a phone number (in the passed in `country_code`) is contained in the `string`
 //
 //   @(has_phone("my number is 2067799294", "US")) -> true
-//   @(has_phone("my number is 206 779 9294", "US").match) -> "+12067799294"
+//   @(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
 //   @(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(string, country_code)

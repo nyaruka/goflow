@@ -10,7 +10,38 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// Contact represents a single contact
+// Contact represents a person who is interacting with the flow. It renders as the person's name
+// (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
+//
+//  * `uuid` the UUID of the contact
+//  * `name` the full name of the contact
+//  * `first_name` the first name of the contact
+//  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
+//  * `urns` all [URNs](#context:urn) the contact has set
+//  * `urns.[scheme]` all the [URNs](#context:urn) the contact has set for the particular URN scheme
+//  * `urn` shorthand for `@(format_urn(c.urns.0))`, i.e. the contact's preferred [URN](#context:urn) in friendly formatting
+//  * `groups` all the [groups](#context:group) that the contact belongs to
+//  * `fields` all the custom contact fields the contact has set
+//  * `fields.[snaked_field_name]` the value of the specific field
+//  * `channel` shorthand for `contact.urns.0.channel`, i.e. the [channel](#context:channel) of the contact's preferred URN
+//
+// Examples:
+//
+//   @contact -> Ryan Lewis
+//   @contact.name -> Ryan Lewis
+//   @contact.first_name -> Ryan
+//   @contact.language -> eng
+//   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
+//   @contact.urns.0 -> tel:+12065551212
+//   @contact.urns.tel -> ["tel:+12065551212"]
+//   @contact.urns.mailto.0 -> mailto:foo@bar.com
+//   @contact.urn -> (206) 555-1212
+//   @contact.groups -> ["Testers","Males"]
+//   @contact.fields -> {"activation_token":"AACC55","gender":"Male"}
+//   @contact.fields.activation_token -> AACC55
+//   @contact.fields.gender -> Male
+//
+// @context contact
 type Contact struct {
 	uuid     ContactUUID
 	name     string
@@ -127,6 +158,11 @@ func (c *Contact) Resolve(key string) types.XValue {
 		return nil
 	case "urns":
 		return c.urns
+	case "urn":
+		if len(c.urns) > 0 {
+			return types.NewXString(c.urns[0].Format())
+		}
+		return nil
 	case "groups":
 		return c.groups
 	case "fields":

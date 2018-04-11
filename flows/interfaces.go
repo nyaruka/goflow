@@ -131,7 +131,19 @@ type SessionAssets interface {
 	GetLocationHierarchy() (*LocationHierarchy, error)
 }
 
-// Flow is a graph of nodes containing actions and routers
+// Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
+// properties which can be accessed:
+//
+//  * `uuid` the UUID of the flow
+//  * `name` the name of the flow
+//
+// Examples:
+//
+//   @run.flow -> Registration
+//   @child.flow -> Collect Language
+//   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
+//
+// @context flow
 type Flow interface {
 	types.XValue
 
@@ -219,6 +231,18 @@ type Translations interface {
 	GetTextArray(uuid utils.UUID, key string) []string
 }
 
+// Trigger represents something which can initiate a session with the flow engine. It has several properties which can be
+// accessed in expressions:
+//
+//  * `type` the type of the trigger, one of "manual" or "flow"
+//  * `params` the parameters passed to the trigger
+//
+// Examples:
+//
+//   @trigger.type -> manual
+//   @trigger.params -> {"source": "website","address": {"state": "WA"}}
+//
+// @context trigger
 type Trigger interface {
 	types.XValue
 	utils.Typed
@@ -266,6 +290,28 @@ type EventLog interface {
 	Events() []Event
 }
 
+// Input describes input from the contact and currently we only support one type of input: `msg`. Any input has the following
+// properties which can be accessed:
+//
+//  * `uuid` the UUID of the input
+//  * `type` the type of the input, e.g. `msg`
+//  * `channel` the [channel](#context:channel) that the input was received on
+//  * `created_on` the time when the input was created
+//
+// An input of type `msg` renders as its text and attachments in a template, and has the following additional properties:
+//
+//  * `text` the text of the message
+//  * `attachments` any attachments on the message
+//  * `urn` the [URN](#context:urn) that the input was received on
+//
+// Examples:
+//
+//   @run.input -> Hi there\nhttp://s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3
+//   @run.input.type -> msg
+//   @run.input.text -> Hi there
+//   @run.input.attachments -> ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
+//
+// @context input
 type Input interface {
 	types.XValue
 	utils.Typed
@@ -330,7 +376,22 @@ type RunEnvironment interface {
 	FindLocationsFuzzy(string, LocationLevel, *Location) ([]*Location, error)
 }
 
-// FlowRun represents a run in the current session
+// FlowRun is a single contact's journey through a flow. It records the path they have taken, and the results that have been
+// collected. It has several properties which can be accessed in expressions:
+//
+//  * `uuid` the UUID of the run
+//  * `flow` the [flow](#context:flow) of the run
+//  * `contact` the [contact](#context:contact) of the flow run
+//  * `input` the [input](#context:input) of the current run
+//  * `results` the results that have been saved for this run
+//  * `results.[snaked_result_name]` the value of the specific result, e.g. `run.results.age`
+//  * `webhook` the last [webhook](#context:webhook) call made in the current run
+//
+// Examples:
+//
+//   @run.flow.name -> Registration
+//
+// @context run
 type FlowRun interface {
 	types.XValue
 	RunSummary
@@ -371,18 +432,4 @@ type FlowRun interface {
 	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time
 	Exit(RunStatus)
-}
-
-// Channel represents a channel for sending and receiving messages
-type Channel interface {
-	types.XValue
-
-	UUID() ChannelUUID
-	Name() string
-	Address() string
-	Schemes() []string
-	SupportsScheme(string) bool
-	Roles() []ChannelRole
-	HasRole(ChannelRole) bool
-	Reference() *ChannelReference
 }

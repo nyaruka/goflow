@@ -159,8 +159,8 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 //
 //   @(length("Hello")) -> 5
 //   @(length("😀😃😄😁")) -> 4
-//   @(length(array())) -> "0"
-//   @(length(array("a", "b", "c"))) -> "3"
+//   @(length(array())) -> 0
+//   @(length(array("a", "b", "c"))) -> 3
 //   @(length(1234)) -> ERROR
 //
 // @function length(object)
@@ -206,10 +206,10 @@ func Default(env utils.Environment, args ...types.XValue) types.XValue {
 
 // Array takes a list of `values` and returns them as an array
 //
-//   @(array("a", "b", 356)[1]) -> "b"
-//   @(join(array("a", "b", "c"), "|")) -> "a|b|c"
-//   @(length(array())) -> "0"
-//   @(length(array("a", "b"))) -> "2"
+//   @(array("a", "b", 356)[1]) -> b
+//   @(join(array("a", "b", "c"), "|")) -> a|b|c
+//   @(length(array())) -> 0
+//   @(length(array("a", "b"))) -> 2
 //
 // @function array(values...)
 func Array(env utils.Environment, args ...types.XValue) types.XValue {
@@ -240,10 +240,9 @@ func FromJSON(env utils.Environment, args ...types.XValue) types.XValue {
 // ToJSON tries to return a JSON representation of `value`. An error is returned if there is
 // no JSON representation of that object.
 //
-//  @(to_json("string")) -> "string"
-//  @(to_json(10)) -> 10
-//  @(to_json(contact.uuid)) -> "ce2b5142-453b-4e43-868e-abdafafaa878"
-//  @(to_json(now())) -> "2017-05-10T12:50:00.000000-07:00"
+//   @(to_json("string")) -> "string"
+//   @(to_json(10)) -> 10
+//   @(to_json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 //
 // @function to_json(value)
 func ToJSON(env utils.Environment, args ...types.XValue) types.XValue {
@@ -260,8 +259,8 @@ func ToJSON(env utils.Environment, args ...types.XValue) types.XValue {
 
 // URLEncode URL encodes `string` for use in a URL parameter
 //
-//  @(url_encode("two words")) -> two+words
-//  @(url_encode(10)) -> 10
+//   @(url_encode("two words")) -> two+words
+//   @(url_encode(10)) -> 10
 //
 // @function url_encode(string)
 func URLEncode(env utils.Environment, str types.XString) types.XValue {
@@ -322,7 +321,7 @@ func Or(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // If the first argument is an error that error is returned
 //
-//   @(if(1 = 1, "foo", "bar")) -> "foo"
+//   @(if(1 = 1, "foo", "bar")) -> foo
 //   @(if("foo" > "bar", "foo", "bar")) -> ERROR
 //
 // @function if(test, true_value, false_value)
@@ -511,8 +510,8 @@ func Mod(env utils.Environment, num1 types.XNumber, num2 types.XNumber) types.XV
 
 // Rand returns either a single random decimal between 0-1 or a random integer between `floor` and `ceiling` (inclusive)
 //
-//  @(rand()) == 0.5152
-//  @(rand(1, 5)) == 3
+//   @(rand() > 0) -> true
+//   @(rand(1, 5) <= 5) -> true
 //
 // @function rand(floor, ceiling)
 func Rand(env utils.Environment, args ...types.XValue) types.XValue {
@@ -551,8 +550,8 @@ func Rand(env utils.Environment, args ...types.XValue) types.XValue {
 
 // FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 //
-//   @(format_num(31337, 2, true)) -> "31,337.00"
-//   @(format_num(31337, 0, false)) -> "31337"
+//   @(format_num(31337, 2, true)) -> 31,337.00
+//   @(format_num(31337, 0, false)) -> 31337
 //   @(format_num("foo", 2, false)) -> ERROR
 //
 // @function format_num(num, places, commas)
@@ -604,9 +603,9 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 // ReadCode will split the numbers such as they are easier to understand. This includes
 // splitting in 3s or 4s if appropriate.
 //
-//   @(read_code("1234")) -> "1 2 3 4"
-//   @(read_code("abc")) -> "a b c"
-//   @(read_code("abcdef")) -> "a b c , d e f"
+//   @(read_code("1234")) -> 1 2 3 4
+//   @(read_code("abc")) -> a b c
+//   @(read_code("abcdef")) -> a b c , d e f
 //
 // @function read_code(code)
 func ReadCode(env utils.Environment, val types.XString) types.XValue {
@@ -657,12 +656,12 @@ func ReadCode(env utils.Environment, val types.XString) types.XValue {
 
 // Code returns the numeric code for the first character in `string`, it is the inverse of char
 //
-//   @(code("a")) -> "97"
-//   @(code("abc")) -> "97"
-//   @(code("😀")) -> "128512"
-//   @(code("")) -> "ERROR"
-//   @(code("15")) -> "49"
-//   @(code(15)) -> "49"
+//   @(code("a")) -> 97
+//   @(code("abc")) -> 97
+//   @(code("😀")) -> 128512
+//   @(code("15")) -> 49
+//   @(code(15)) -> 49
+//   @(code("")) -> ERROR
 //
 // @function code(string)
 func Code(env utils.Environment, str types.XString) types.XValue {
@@ -678,11 +677,11 @@ func Code(env utils.Environment, str types.XString) types.XValue {
 //
 // Empty values are removed from the returned list
 //
-//   @(split("a b c", " ")) -> "a, b, c"
-//   @(split("a", " ")) -> "a"
-//   @(split("abc..d", ".")) -> "abc, d"
-//   @(split("a.b.c.", ".")) -> "a, b, c"
-//   @(split("a && b && c", " && ")) -> "a, b, c"
+//   @(split("a b c", " ")) -> ["a","b","c"]
+//   @(split("a", " ")) -> ["a"]
+//   @(split("abc..d", ".")) -> ["abc","d"]
+//   @(split("a.b.c.", ".")) -> ["a","b","c"]
+//   @(split("a && b && c", " && ")) -> ["a","b","c"]
 //
 // @function split(string, delimiter)
 func Split(env utils.Environment, s types.XString, sep types.XString) types.XValue {
@@ -698,8 +697,8 @@ func Split(env utils.Environment, s types.XString, sep types.XString) types.XVal
 
 // Join joins the passed in `array` of strings with the passed in `delimeter`
 //
-//   @(join(array("a", "b", "c"), "|")) -> "a|b|c"
-//   @(join(split("a.b.c", "."), " ")) -> "a b c"
+//   @(join(array("a", "b", "c"), "|")) -> a|b|c
+//   @(join(split("a.b.c", "."), " ")) -> a b c
 //
 // @function join(array, delimeter)
 func Join(env utils.Environment, args ...types.XValue) types.XValue {
@@ -735,8 +734,8 @@ func Join(env utils.Environment, args ...types.XValue) types.XValue {
 
 // Char returns the rune for the passed in codepoint, `num`, which may be unicode, this is the reverse of code
 //
-//   @(char(33)) -> "!"
-//   @(char(128512)) -> "😀"
+//   @(char(33)) -> !
+//   @(char(128512)) -> 😀
 //   @(char("foo")) -> ERROR
 //
 // @function char(num)
@@ -751,9 +750,9 @@ func Char(env utils.Environment, num types.XNumber) types.XValue {
 
 // Title titlecases the passed in `string`, capitalizing each word
 //
-//   @(title("foo")) -> "Foo"
-//   @(title("ryan lewis")) -> "Ryan Lewis"
-//   @(title(123)) -> "123"
+//   @(title("foo")) -> Foo
+//   @(title("ryan lewis")) -> Ryan Lewis
+//   @(title(123)) -> 123
 //
 // @function title(string)
 func Title(env utils.Environment, str types.XString) types.XValue {
@@ -762,9 +761,9 @@ func Title(env utils.Environment, str types.XString) types.XValue {
 
 // Word returns the word at the passed in `offset` for the passed in `string`
 //
-//   @(word("foo bar", 0)) -> "foo"
-//   @(word("foo.bar", 0)) -> "foo"
-//   @(word("one two.three", 2)) -> "three"
+//   @(word("foo bar", 0)) -> foo
+//   @(word("foo.bar", 0)) -> foo
+//   @(word("one two.three", 2)) -> three
 //
 // @function word(string, offset)
 func Word(env utils.Environment, args ...types.XValue) types.XValue {
@@ -792,7 +791,7 @@ func Word(env utils.Environment, args ...types.XValue) types.XValue {
 
 // RemoveFirstWord removes the 1st word of `string`
 //
-//   @(remove_first_word("foo bar")) -> "bar"
+//   @(remove_first_word("foo bar")) -> bar
 //
 // @function remove_first_word(string)
 func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
@@ -806,9 +805,9 @@ func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
 
 // WordSlice extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 1)
 //
-//   @(word_slice("foo bar", 1, 1)) -> "foo"
-//   @(word_slice("foo bar", 1, 3)) -> "foo bar"
-//   @(word_slice("foo bar", 3, 4)) -> ""
+//   @(word_slice("foo bar", 1, 1)) -> foo
+//   @(word_slice("foo bar", 1, 3)) -> foo bar
+//   @(word_slice("foo bar", 3, 4)) ->
 //
 // @function word_slice(string, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
@@ -869,11 +868,11 @@ func WordCount(env utils.Environment, str types.XString) types.XValue {
 // Field splits `string` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
 // with a space, the delimiter is considered to be all whitespace.  (first field is 0)
 //
-//   @(field("a,b,c", 1, ",")) -> "b"
-//   @(field("a,,b,c", 1, ",")) -> ""
-//   @(field("a   b c", 1, " ")) -> "b"
-//   @(field("a		b	c	d", 1, "	")) -> ""
-//   @(field("a\t\tb\tc\td", 1, " ")) -> ""
+//   @(field("a,b,c", 1, ",")) -> b
+//   @(field("a,,b,c", 1, ",")) ->
+//   @(field("a   b c", 1, " ")) -> b
+//   @(field("a		b	c	d", 1, "	")) ->
+//   @(field("a\t\tb\tc\td", 1, " ")) ->
 //   @(field("a,b,c", "foo", ",")) -> ERROR
 //
 // @function field(string, offset, delimeter)
@@ -918,29 +917,33 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 
 // Clean strips any leading or trailing whitespace from `string``
 //
-//   @(clean("\nfoo\t")) -> "foo"
-//   @(clean(" bar")) -> "bar"
-//   @(clean(123)) -> "123"
+//   @(clean("\nfoo\t")) -> foo
+//   @(clean(" bar")) -> bar
+//   @(clean(123)) -> 123
 //
 // @function clean(string)
 func Clean(env utils.Environment, str types.XString) types.XValue {
 	return types.NewXString(strings.TrimSpace(str.Native()))
 }
 
-// Left returns the `len` most left characters of the passed in `string`
+// Left returns the `count` most left characters of the passed in `string`
 //
-//   @(left("hello", 2)) -> "he"
-//   @(left("hello", 7)) -> "hello"
-//   @(left("😀😃😄😁", 2)) -> "😀😃"
+//   @(left("hello", 2)) -> he
+//   @(left("hello", 7)) -> hello
+//   @(left("😀😃😄😁", 2)) -> 😀😃
 //   @(left("hello", -1)) -> ERROR
 //
-// @function left(string, len)
-func Left(env utils.Environment, str types.XString, l int) types.XValue {
+// @function left(string, count)
+func Left(env utils.Environment, str types.XString, count int) types.XValue {
+	if count < 0 {
+		return types.NewXErrorf("LEFT can't take a negative count")
+	}
+
 	// this weird construct does the right thing for multi-byte unicode
 	var output bytes.Buffer
 	i := 0
 	for _, r := range str.Native() {
-		if i >= l {
+		if i >= count {
 			break
 		}
 		output.WriteRune(r)
@@ -952,26 +955,30 @@ func Left(env utils.Environment, str types.XString, l int) types.XValue {
 
 // Lower lowercases the passed in `string`
 //
-//   @(lower("HellO")) -> "hello"
-//   @(lower("hello")) -> "hello"
-//   @(lower("123")) -> "123"
-//   @(lower("😀")) -> "😀"
+//   @(lower("HellO")) -> hello
+//   @(lower("hello")) -> hello
+//   @(lower("123")) -> 123
+//   @(lower("😀")) -> 😀
 //
 // @function lower(string)
 func Lower(env utils.Environment, str types.XString) types.XValue {
 	return types.NewXString(strings.ToLower(str.Native()))
 }
 
-// Right returns the `len` most right characters of the passed in `string`
+// Right returns the `count` most right characters of the passed in `string`
 //
-//   @(right("hello", 2)) -> "lo"
-//   @(right("hello", 7)) -> "hello"
-//   @(right("😀😃😄😁", 2)) -> "😄😁"
+//   @(right("hello", 2)) -> lo
+//   @(right("hello", 7)) -> hello
+//   @(right("😀😃😄😁", 2)) -> 😄😁
 //   @(right("hello", -1)) -> ERROR
 //
-// @function right(string, len)
-func Right(env utils.Environment, str types.XString, l int) types.XValue {
-	start := utf8.RuneCountInString(str.Native()) - l
+// @function right(string, count)
+func Right(env utils.Environment, str types.XString, count int) types.XValue {
+	if count < 0 {
+		return types.NewXErrorf("RIGHT can't take a negative count")
+	}
+
+	start := utf8.RuneCountInString(str.Native()) - count
 
 	// this weird construct does the right thing for multi-byte unicode
 	var output bytes.Buffer
@@ -1001,7 +1008,7 @@ func StringCmp(env utils.Environment, str1 types.XString, str2 types.XString) ty
 
 // Repeat return `string` repeated `count` number of times
 //
-//   @(repeat("*", 8)) -> "********"
+//   @(repeat("*", 8)) -> ********
 //   @(repeat("*", "foo")) -> ERROR
 //
 // @function repeat(string, count)
@@ -1020,8 +1027,8 @@ func Repeat(env utils.Environment, str types.XString, count int) types.XValue {
 
 // Replace replaces all occurrences of `needle` with `replacement` in `string`
 //
-//   @(replace("foo bar", "foo", "zap")) -> "zap bar"
-//   @(replace("foo bar", "baz", "zap")) -> "foo bar"
+//   @(replace("foo bar", "foo", "zap")) -> zap bar
+//   @(replace("foo bar", "baz", "zap")) -> foo bar
 //
 // @function replace(string, needle, replacement)
 func Replace(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1049,8 +1056,8 @@ func Replace(env utils.Environment, args ...types.XValue) types.XValue {
 
 // Upper uppercases all characters in the passed `string`
 //
-//   @(upper("Asdf")) -> "ASDF"
-//   @(upper(123)) -> "123"
+//   @(upper("Asdf")) -> ASDF
+//   @(upper(123)) -> 123
 //
 // @function upper(string)
 func Upper(env utils.Environment, str types.XString) types.XValue {
@@ -1059,8 +1066,8 @@ func Upper(env utils.Environment, str types.XString) types.XValue {
 
 // Percent converts `num` to a string represented as a percentage
 //
-//   @(percent(0.54234)) -> "54%"
-//   @(percent(1.2)) -> "120%"
+//   @(percent(0.54234)) -> 54%
+//   @(percent(1.2)) -> 120%
 //   @(percent("foo")) -> ERROR
 //
 // @function percent(num)
@@ -1197,6 +1204,8 @@ func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
 //   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 19:50
 //   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
+//   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
 //   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function format_date(date, format [,timezone])
@@ -1273,7 +1282,7 @@ func Date(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXDate(date)
 }
 
-// DateFromParts converts the passed in `year`, `month`` and `day`
+// DateFromParts converts the passed in `year`, `month` and `day`
 //
 //   @(date_from_parts(2017, 1, 15)) -> 2017-01-15T00:00:00.000000Z
 //   @(date_from_parts(2017, 2, 31)) -> 2017-03-03T00:00:00.000000Z
@@ -1422,9 +1431,9 @@ func Weekday(env utils.Environment, date types.XDate) types.XValue {
 // If not timezone information is present in the date, then the environment's
 // timezone will be returned
 //
-//   @(tz("2017-01-15 02:15:18PM UTC")) -> "UTC"
-//   @(tz("2017-01-15 02:15:18PM")) -> "UTC"
-//   @(tz("2017-01-15")) -> "UTC"
+//   @(tz("2017-01-15 02:15:18PM UTC")) -> UTC
+//   @(tz("2017-01-15 02:15:18PM")) -> UTC
+//   @(tz("2017-01-15")) -> UTC
 //   @(tz("foo")) -> ERROR
 //
 // @function tz(date)
@@ -1437,9 +1446,9 @@ func TZ(env utils.Environment, date types.XDate) types.XValue {
 // If no timezone information is present in the date, then the environment's
 // timezone offset will be returned
 //
-//   @(tz_offset("2017-01-15 02:15:18PM UTC")) -> "+0000"
-//   @(tz_offset("2017-01-15 02:15:18PM")) -> "+0000"
-//   @(tz_offset("2017-01-15")) -> "+0000"
+//   @(tz_offset("2017-01-15 02:15:18PM UTC")) -> +0000
+//   @(tz_offset("2017-01-15 02:15:18PM")) -> +0000
+//   @(tz_offset("2017-01-15")) -> +0000
 //   @(tz_offset("foo")) -> ERROR
 //
 // @function tz_offset(date)
@@ -1451,7 +1460,7 @@ func TZOffset(env utils.Environment, date types.XDate) types.XValue {
 
 // Today returns the current date in the current timezone, time is set to midnight in the environment timezone
 //
-//  @(today()) -> 2017-01-20T00:00:00.000000Z
+//   @(today()) -> 2018-04-11T00:00:00.000000Z
 //
 // @function today()
 func Today(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1459,7 +1468,7 @@ func Today(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("TODAY takes no arguments, got %d", len(args))
 	}
 
-	nowTZ := time.Now().In(env.Timezone())
+	nowTZ := env.Now()
 	return types.NewXDate(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
 }
 
@@ -1501,7 +1510,7 @@ func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 
 // Now returns the current date and time in the environment timezone
 //
-//  @(now()) -> 2017-01-20T15:35:65.153654Z
+//   @(now()) -> 2018-04-11T13:24:30.123456Z
 //
 // @function now()
 func Now(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1509,7 +1518,7 @@ func Now(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("NOW takes no arguments, got %d", len(args))
 	}
 
-	return types.NewXDate(time.Now().In(env.Timezone()))
+	return types.NewXDate(env.Now())
 }
 
 //----------------------------------------------------------------------------------------
@@ -1521,10 +1530,10 @@ func Now(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
 //   @(format_urn(contact.urns)) -> (206) 555-1212
-//   @(format_urn(contact.urns.1)) -> foo@bar.com
+//   @(format_urn(contact.urns.2)) -> foo@bar.com
 //   @(format_urn(contact.urns.mailto)) -> foo@bar.com
 //   @(format_urn(contact.urns.mailto.0)) -> foo@bar.com
-//   @(format_urn(contact.urns.telegram)) -> ""
+//   @(format_urn(contact.urns.telegram)) ->
 //   @(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)

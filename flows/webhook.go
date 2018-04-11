@@ -29,7 +29,22 @@ func (r WebhookStatus) String() string {
 	return string(r)
 }
 
-// WebhookCall represents both the outgoing request and response for a webhook call
+// WebhookCall describes a call made to an external service. It has several properties which can be accessed in expressions:
+//
+//  * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
+//  * `status_code` the status code of the response
+//  * `body` the body of the response
+//  * `json` the parsed JSON response (if response body was JSON)
+//  * `json.[key]` sub-elements of the parsed JSON response
+//  * `request` the raw request made, including headers
+//  * `response` the raw response received, including headers
+//
+// Examples:
+//
+//   @run.webhook.status_code -> 200
+//   @run.webhook.json.results.0.state -> WA
+//
+// @context webhook
 type WebhookCall struct {
 	url        string
 	method     string

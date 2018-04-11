@@ -13,7 +13,6 @@ const TypeStartSession string = "start_session"
 
 // StartSessionAction can be used to trigger sessions for other contacts and groups
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "start_session",
@@ -22,7 +21,6 @@ const TypeStartSession string = "start_session"
 //       {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
 //     ]
 //   }
-// ```
 //
 // @action start_session
 type StartSessionAction struct {

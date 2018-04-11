@@ -10,7 +10,21 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// Group represents a grouping of contacts
+// Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
+// [actions](#action:add_contact_groups)) or dynamic (contacts are added automatically by a query). It renders as its name in a
+// template, and has the following properties which can be accessed:
+//
+//  * `uuid` the UUID of the group
+//  * `name` the name of the group
+//
+// Examples:
+//
+//   @contact.groups -> ["Testers","Males"]
+//   @contact.groups.0.uuid -> b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
+//   @contact.groups.1.name -> Males
+//   @(to_json(contact.groups.1)) -> {"uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9","name":"Males"}
+//
+// @context group
 type Group struct {
 	uuid        GroupUUID
 	name        string
@@ -77,7 +91,17 @@ func (g *Group) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (g *Group) Reduce() types.XPrimitive { return types.NewXString(g.name) }
 
-func (g *Group) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON converts this type to JSON
+func (g *Group) ToXJSON() types.XString {
+	e := struct {
+		UUID string `json:"uuid"`
+		Name string `json:"name"`
+	}{
+		UUID: string(g.uuid),
+		Name: g.name,
+	}
+	return types.MustMarshalToXString(e)
+}
 
 var _ types.XValue = (*Group)(nil)
 var _ types.XResolvable = (*Group)(nil)
