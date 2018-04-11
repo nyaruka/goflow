@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -12,10 +11,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func handleContextDoc(output *bytes.Buffer, tag string, typeName string, docString string, session flows.Session) error {
+func handleContextDoc(output *strings.Builder, tag string, typeName string, docString string, session flows.Session) error {
 	parsed := parseDocString(docString, tag)
 	if len(parsed.examples) == 0 {
-		return fmt.Errorf("no examples found for context item %s", parsed.tagValue)
+		return fmt.Errorf("no examples found for context item %s/%s", parsed.tagValue, typeName)
 	}
 
 	// check our examples
@@ -39,7 +38,7 @@ func handleContextDoc(output *bytes.Buffer, tag string, typeName string, docStri
 	return nil
 }
 
-func handleFunctionDoc(output *bytes.Buffer, tag string, typeName string, docString string, session flows.Session) error {
+func handleFunctionDoc(output *strings.Builder, tag string, typeName string, docString string, session flows.Session) error {
 	parsed := parseDocString(docString, tag)
 	if len(parsed.examples) == 0 {
 		return fmt.Errorf("no examples found for function %s", parsed.tagValue)
@@ -72,7 +71,7 @@ func handleFunctionDoc(output *bytes.Buffer, tag string, typeName string, docStr
 	return nil
 }
 
-func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error {
+func handleEventDoc(output *strings.Builder, prefix string, typeName string, docString string, session flows.Session) error {
 	lines := strings.Split(docString, "\n")
 	name := ""
 
@@ -144,7 +143,7 @@ func handleEventDoc(output *bytes.Buffer, prefix string, typeName string, docStr
 	return nil
 }
 
-func handleActionDoc(output *bytes.Buffer, prefix string, typeName string, docString string, session flows.Session) error {
+func handleActionDoc(output *strings.Builder, prefix string, typeName string, docString string, session flows.Session) error {
 	lines := strings.Split(docString, "\n")
 	name := ""
 
