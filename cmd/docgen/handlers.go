@@ -12,12 +12,19 @@ import (
 )
 
 func handleContextDoc(output *strings.Builder, tag string, typeName string, docString string, session flows.Session) error {
-	parsed := parseDocString(docString, tag)
+	parsed := parseDocString(docString, tag, typeName)
 	if len(parsed.examples) == 0 {
 		return fmt.Errorf("no examples found for context item %s/%s", parsed.tagValue, typeName)
 	}
 
-	// check our examples
+	// remove type name from start of description and capitalize the next word
+	if strings.HasPrefix(parsed.description[0], typeName) {
+		parsed.description[0] = strings.Replace(parsed.description[0], typeName, "", 1)
+		parsed.description[0] = strings.TrimSpace(parsed.description[0])
+		parsed.description[0] = strings.ToUpper(parsed.description[0][0:1]) + parsed.description[0][1:]
+	}
+
+	// check the examples
 	for _, ex := range parsed.examples {
 		if err := checkExample(session, ex); err != nil {
 			return err
@@ -39,18 +46,15 @@ func handleContextDoc(output *strings.Builder, tag string, typeName string, docS
 }
 
 func handleFunctionDoc(output *strings.Builder, tag string, typeName string, docString string, session flows.Session) error {
-	parsed := parseDocString(docString, tag)
+	parsed := parseDocString(docString, tag, typeName)
 	if len(parsed.examples) == 0 {
 		return fmt.Errorf("no examples found for function %s", parsed.tagValue)
 	}
 
+	// get name of function from signature to use as our anchor
 	name := parsed.tagValue[0:strings.Index(parsed.tagValue, "(")]
 
-	if len(parsed.description) > 0 && strings.HasPrefix(parsed.description[0], typeName) {
-		parsed.description[0] = strings.Replace(parsed.description[0], typeName, name, 1)
-	}
-
-	// check our examples
+	// check the examples
 	for _, l := range parsed.examples {
 		if err := checkExample(session, l); err != nil {
 			return err
@@ -230,10 +234,12 @@ type parsedDocs struct {
 	description []string // any other line
 }
 
-func parseDocString(docString string, tag string) *parsedDocs {
+func parseDocString(docString string, tag string, typeName string) *parsedDocs {
 	var tagValue string
 	examples := make([]string, 0)
 	description := make([]string, 0)
+
+	docString = removeTypeNamePrefix(docString, typeName)
 
 	for _, l := range strings.Split(docString, "\n") {
 		trimmed := strings.TrimSpace(l)
@@ -248,6 +254,18 @@ func parseDocString(docString string, tag string) *parsedDocs {
 	}
 
 	return &parsedDocs{tagValue: tagValue, examples: examples, description: description}
+}
+
+// Golang convention is to start all docstrings with the type name, but the actual type name can differ from how the type is
+// referenced in the flow spec, so we remove it.
+func removeTypeNamePrefix(docString string, typeName string) string {
+	// remove type name from start of description and capitalize the next word
+	if strings.HasPrefix(docString, typeName) {
+		docString = strings.Replace(docString, typeName, "", 1)
+		docString = strings.TrimSpace(docString)
+		docString = strings.ToUpper(docString[0:1]) + docString[1:]
+	}
+	return docString
 }
 
 func checkExample(session flows.Session, line string) error {
