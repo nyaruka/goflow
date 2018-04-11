@@ -39,7 +39,7 @@ func (c *runContext) Reduce() types.XPrimitive {
 	return types.NewXString(c.run.UUID().String())
 }
 
-func (c *runContext) ToJSON() types.XString { return types.NewXString("TODO") }
+func (c *runContext) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*runContext)(nil)
 var _ types.XResolvable = (*runContext)(nil)
@@ -79,7 +79,7 @@ func (c *relatedRunContext) Reduce() types.XPrimitive {
 	return types.NewXString(c.run.UUID().String())
 }
 
-func (c *relatedRunContext) ToJSON() types.XString { return types.NewXString("TODO") }
+func (c *relatedRunContext) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*relatedRunContext)(nil)
 var _ types.XResolvable = (*relatedRunContext)(nil)

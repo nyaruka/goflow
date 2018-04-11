@@ -62,8 +62,8 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	return types.NewXString(strings.Join(parts, "\n"))
 }
 
-// ToJSON converts this type to JSON
-func (i *MsgInput) ToJSON() types.XString { return types.MustMarshalToXString(types.NewXString("TODO")) }
+// ToXJSON converts this type to JSON
+func (i *MsgInput) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*MsgInput)(nil)
 var _ types.XResolvable = (*MsgInput)(nil)

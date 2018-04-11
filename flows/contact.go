@@ -182,7 +182,7 @@ func (c *Contact) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-func (c *Contact) ToJSON() types.XString { return types.NewXString("TODO") }
+func (c *Contact) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)

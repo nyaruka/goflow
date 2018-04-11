@@ -11,9 +11,9 @@ import (
 // XJSON is the base type for XJSONObject and XJSONArray
 type XJSON []byte
 
-func (x XJSON) ToJSON() XString { return NewXString(string(x)) }
+func (x XJSON) ToXJSON() XString { return NewXString(string(x)) }
 
-func (x XJSON) Reduce() XPrimitive { return x.ToJSON() }
+func (x XJSON) Reduce() XPrimitive { return x.ToXJSON() }
 
 func (x XJSON) MarshalJSON() ([]byte, error) {
 	return []byte(x), nil

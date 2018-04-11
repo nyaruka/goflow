@@ -10,7 +10,7 @@ import (
 
 // XValue is the base interface of all Excellent types
 type XValue interface {
-	ToJSON() XString
+	ToXJSON() XString
 	Reduce() XPrimitive
 }
 
@@ -18,8 +18,8 @@ type XValue interface {
 type XPrimitive interface {
 	XValue
 
-	ToString() XString
-	ToBool() XBool
+	ToXString() XString
+	ToXBool() XBool
 }
 
 // XResolvable is the interface for types which can be keyed into, e.g. foo.bar

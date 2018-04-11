@@ -16,14 +16,14 @@ func NewXString(value string) XString {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XString) Reduce() XPrimitive { return x }
 
-// ToString converts this type to a string
-func (x XString) ToString() XString { return x }
+// ToXString converts this type to a string
+func (x XString) ToXString() XString { return x }
 
-// ToBool converts this type to a bool
-func (x XString) ToBool() XBool { return string(x) != "" && strings.ToLower(string(x)) != "false" }
+// ToXBool converts this type to a bool
+func (x XString) ToXBool() XBool { return string(x) != "" && strings.ToLower(string(x)) != "false" }
 
-// ToJSON converts this type to JSON
-func (x XString) ToJSON() XString { return MustMarshalToXString(x.Native()) }
+// ToXJSON converts this type to JSON
+func (x XString) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
 func (x XString) Native() string { return string(x) }

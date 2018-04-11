@@ -27,25 +27,25 @@ func NewXArray(values ...XValue) XArray {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (a *xarray) Reduce() XPrimitive { return a }
 
-// ToString converts this type to a string
-func (a *xarray) ToString() XString {
+// ToXString converts this type to a string
+func (a *xarray) ToXString() XString {
 	strs := make([]XString, len(a.values))
 	for i := range a.values {
-		strs[i] = a.values[i].Reduce().ToString()
+		strs[i] = a.values[i].Reduce().ToXString()
 	}
 	return MustMarshalToXString(strs)
 }
 
-// ToBool converts this type to a bool
-func (a *xarray) ToBool() XBool {
+// ToXBool converts this type to a bool
+func (a *xarray) ToXBool() XBool {
 	return len(a.values) > 0
 }
 
-// ToJSON converts this type to JSON
-func (a *xarray) ToJSON() XString {
+// ToXJSON converts this type to JSON
+func (a *xarray) ToXJSON() XString {
 	marshaled := make([]json.RawMessage, len(a.values))
 	for i := range a.values {
-		marshaled[i] = json.RawMessage(a.values[i].ToJSON())
+		marshaled[i] = json.RawMessage(a.values[i].ToXJSON())
 	}
 	return MustMarshalToXString(marshaled)
 }

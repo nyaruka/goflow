@@ -87,7 +87,7 @@ func (u *ContactURN) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXString(string(u.URN)) }
 
-func (u *ContactURN) ToJSON() types.XString { return types.NewXString("TODO") }
+func (u *ContactURN) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*ContactURN)(nil)
 var _ types.XResolvable = (*ContactURN)(nil)
@@ -180,7 +180,7 @@ func (l URNList) Reduce() types.XPrimitive {
 	return array
 }
 
-func (l URNList) ToJSON() types.XString { return types.NewXString("TODO") }
+func (l URNList) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 // Index is called when this object is indexed into in an expression
 func (l URNList) Index(index int) types.XValue {

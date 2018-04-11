@@ -32,14 +32,14 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x xerror) Reduce() XPrimitive { return x }
 
-// ToString converts this type to a string
-func (x xerror) ToString() XString { return XString(x.Native().Error()) }
+// ToXString converts this type to a string
+func (x xerror) ToXString() XString { return XString(x.Native().Error()) }
 
-// ToBool converts this type to a bool
-func (x xerror) ToBool() XBool { return XBool(false) }
+// ToXBool converts this type to a bool
+func (x xerror) ToXBool() XBool { return XBool(false) }
 
-// ToJSON converts this type to JSON
-func (x xerror) ToJSON() XString { return MustMarshalToXString(x.Native().Error()) }
+// ToXJSON converts this type to JSON
+func (x xerror) ToXJSON() XString { return MustMarshalToXString(x.Native().Error()) }
 
 // MarshalJSON converts this type to internal JSON
 func (x xerror) MarshalJSON() ([]byte, error) {

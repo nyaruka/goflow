@@ -125,8 +125,8 @@ func (c *channel) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-// ToJSON converts this type to JSON
-func (c *channel) ToJSON() types.XString {
+// ToXJSON converts this type to JSON
+func (c *channel) ToXJSON() types.XString {
 	e := struct {
 		UUID    string `json:"uuid"`
 		Name    string `json:"name"`
