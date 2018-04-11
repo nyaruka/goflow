@@ -160,130 +160,14 @@ The following types appear in the context:
  * [Flow](#context:flow)
  * [Group](#context:group)
  * [Input](#context:input)
- * [Results](#context:results)
+ * [Result](#context:result)
  * [Run](#context:run)
- * [Triggers](#context:trigger)
+ * [Trigger](#context:trigger)
  * [URN](#context:urn)
  * [Webhook](#context:webhook)
 
 <div class="context">
 {{ .ContextDocs }}
-
-## Flows
-
-A flow describes the ordered logic of actions and routers.
-
-A flow renders as its name in a template, and has the following properties which can be accessed:
-
- * `uuid` the UUID of the flow
- * `name` the name of the flow
-
-### Examples
-
-```
-@run.flow → Registration
-@child.flow → Age Collection
-@run.flow.uuid → 8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5
-@(json(run.flow)) → {"uuid": "8eba5c7d-d7cb-4ebe-af7f-7d84bea870c5", "name": "Registration"}
-```
-
-## Results
-
-A result describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly created by a [set_run_result](#action:set_run_result) action.
-
-A result renders as its value in a template, and has the following properties which can be accessed:
-
- * `value` the value of the result
- * `category` the category of the result
- * `category_localized` the localized category of the result
- * `created_on` the time when the result was created
-
-### Examples
-
-```
-@run.results.color → red
-@run.results.color.value → red
-@run.results.color.category → Red
-@run.results.color.category_localized → Rojo
-```
-
-## Runs
-
-A run is a single contact's journey through a flow. It records the path they have taken, and the results that have been collected.
-
-A run has several properties which can be accessed in expressions:
-
- * `uuid` the UUID of the run
- * `flow` the [flow](#flows) of the run
- * `contact` the [contact](#contacts) of the flow run
- * `input` the [input](#inputs) of the current run
- * `results` the results that have been saved for this run
- * `results.[snaked_result_name]` the value of the specific result, e.g. `run.results.age`
- * `webhook` the last [webhook](#webhooks) call made in the current run
-
-## Triggers
-
-A trigger represents something which can initiate a session with the flow engine.
-
-A trigger has several properties which can be accessed in expressions:
-
- * `type` the type of the trigger, one of `manual` or `flow`
- * `params` the parameters passed to the trigger
-
-### Examples
-
-```
-@trigger.type → manual
-@trigger.params → source: website\naddress:\n  state: WA
-@(json(trigger.params)) → {"source": "website", "address": {"state": "WA"}}
-```
-
-## URNs
-
-A URN represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:
-
- * _tel:+16303524567_
- * _twitterid:54784326227#nyaruka_
- * _telegram:34642632786#bobby_
-
-A URN has several properties which can be accessed in expressions:
-
- * `scheme` the scheme of the URN, e.g. "tel", "twitter"
- * `path` the path of the URN, e.g. "+16303524567"
- * `display` the display portion of the URN, e.g. "+16303524567"
- * `channel` the preferred [channel](#channels) of the URN
-
-To render a URN in a human friendly format, use the [format_urn](#functions:format_urn) function.
-
-```
-@contact.urns.0 → tel:+12065551212
-@contact.urns.0.scheme → tel
-@contact.urns.0.path → +12065551212
-@contact.urns.1.display → nyaruka
-@(format_urn(contact.urns.0)) → (206) 555 1212
-```
-
-## Webhooks
-
-A webhook describes a call made to an external service.
-
-A webhook has several properties which can be accessed in expressions:
-
- * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
- * `status_code` the status code of the response
- * `body` the body of the response
- * `json` the parsed JSON response (if response body was JSON)
- * `json.[key]` sub-elements of the parsed JSON response
- * `request` the raw request made, including headers
- * `response` the raw response received, including headers
-
-### Examples
-
-```
-@run.webhook.status_code → 200
-@run.webhook.json.results.0.state_name → Washington
-```
-
 </div>
 
 # Template Functions

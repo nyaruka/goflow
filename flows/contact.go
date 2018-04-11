@@ -31,7 +31,7 @@ import (
 //   @contact.name -> Ryan Lewis
 //   @contact.first_name -> Ryan
 //   @contact.language -> eng
-//   @contact.urns -> ["tel:+12065551212","mailto:foo@bar.com"]
+//   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
 //   @contact.urns.0 -> tel:+12065551212
 //   @contact.urns.tel -> ["tel:+12065551212"]
 //   @contact.urns.mailto.0 -> mailto:foo@bar.com

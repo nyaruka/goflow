@@ -3,6 +3,7 @@ package triggers
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -46,6 +47,16 @@ type FlowActionTrigger struct {
 func (t *FlowActionTrigger) Type() string { return TypeFlowAction }
 
 func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
+
+// Resolve resolves the given key when this trigger is referenced in an expression
+func (t *FlowActionTrigger) Resolve(key string) types.XValue {
+	switch key {
+	case "type":
+		return types.NewXString(TypeFlowAction)
+	}
+
+	return t.baseTrigger.Resolve(key)
+}
 
 var _ flows.Trigger = (*FlowActionTrigger)(nil)
 

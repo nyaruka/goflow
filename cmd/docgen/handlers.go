@@ -280,7 +280,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 	}
 
 	// only interested in events after the new action
-	eventLog := session.Events()[2:]
+	eventLog := session.Events()[4:]
 
 	eventJSON := make([]json.RawMessage, len(eventLog))
 	for i, event := range eventLog {

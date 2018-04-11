@@ -131,7 +131,19 @@ type SessionAssets interface {
 	GetLocationHierarchy() (*LocationHierarchy, error)
 }
 
-// Flow is a graph of nodes containing actions and routers
+// Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
+// properties which can be accessed:
+//
+//  * `uuid` the UUID of the flow
+//  * `name` the name of the flow
+//
+// Examples:
+//
+//   @run.flow -> Registration
+//   @child.flow -> Collect Language
+//   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
+//
+// @context flow
 type Flow interface {
 	types.XValue
 
@@ -219,6 +231,18 @@ type Translations interface {
 	GetTextArray(uuid utils.UUID, key string) []string
 }
 
+// Trigger represents something which can initiate a session with the flow engine. It has several properties which can be
+// accessed in expressions:
+//
+//  * `type` the type of the trigger, one of "manual" or "flow"
+//  * `params` the parameters passed to the trigger
+//
+// Examples:
+//
+//   @trigger.type -> manual
+//   @trigger.params -> {"source": "website","address": {"state": "WA"}}
+//
+// @context trigger
 type Trigger interface {
 	types.XValue
 	utils.Typed
@@ -286,7 +310,6 @@ type EventLog interface {
 //   @run.input.type -> msg
 //   @run.input.text -> Hi there
 //   @run.input.attachments -> ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
-//   @(to_json(run.input)) -> {"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5","created_on":"2000-01-01T00:00:00Z","text":"Hi there"}
 //
 // @context input
 type Input interface {
@@ -353,7 +376,22 @@ type RunEnvironment interface {
 	FindLocationsFuzzy(string, LocationLevel, *Location) ([]*Location, error)
 }
 
-// FlowRun represents a run in the current session
+// FlowRun is a single contact's journey through a flow. It records the path they have taken, and the results that have been
+// collected. It has several properties which can be accessed in expressions:
+//
+//  * `uuid` the UUID of the run
+//  * `flow` the [flow](#flows) of the run
+//  * `contact` the [contact](#contacts) of the flow run
+//  * `input` the [input](#inputs) of the current run
+//  * `results` the results that have been saved for this run
+//  * `results.[snaked_result_name]` the value of the specific result, e.g. `run.results.age`
+//  * `webhook` the last [webhook](#webhooks) call made in the current run
+//
+// Examples:
+//
+//   @run.flow.name -> Registration
+//
+// @context run
 type FlowRun interface {
 	types.XValue
 	RunSummary

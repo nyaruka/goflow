@@ -45,10 +45,18 @@ var sessionAssets = `[
         "url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
         "content": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-            "name": "Action Flow",
+            "name": "Registration",
             "nodes": [{
                 "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
                 "actions": [
+                    {
+                        "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                        "type": "start_flow",
+                        "flow": {
+                            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                            "name": "Collect Language"
+                        }
+                    },
                     {
                         "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
                         "type": "set_run_result",
@@ -56,10 +64,17 @@ var sessionAssets = `[
                         "value": "+12344563452"
                     },
                     {
+                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                        "type": "set_run_result",
+                        "name": "Color",
+                        "value": "red",
+                        "category": "Red"
+                    },
+                    {
                         "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                         "type": "call_webhook",
                         "method": "GET",
-                        "url": "http://localhost:49999/?cmd=success"
+                        "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
                     }
                 ]
             }]
@@ -70,7 +85,7 @@ var sessionAssets = `[
         "url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "content": {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "name": "Subflow",
+            "name": "Collect Language",
             "nodes": [{
                 "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
                 "actions": []
@@ -149,13 +164,14 @@ var sessionAssets = `[
 var sessionTrigger = `{
     "type": "manual",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
-    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Action Flow"},
+    "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
         "name": "Ryan Lewis",
         "language": "eng",
         "urns": [
             "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+            "twitterid:54784326227#nyaruka",
             "mailto:foo@bar.com"
         ],
         "groups": [
@@ -170,7 +186,8 @@ var sessionTrigger = `{
                 "text": "AACC55"
             }
         }
-    }
+    },
+    "params": {"source": "website","address": {"state": "WA"}}
 }`
 
 var initialEvents = `[
@@ -197,7 +214,7 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our assets
 	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error including assets: %s", err)
 	}
 
 	// create our engine session
@@ -212,7 +229,7 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our trigger
 	triggerEnvelope := &utils.TypedEnvelope{}
 	if err := triggerEnvelope.UnmarshalJSON(json.RawMessage(sessionTrigger)); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error unmarsalling trigger: %s", err)
 	}
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {

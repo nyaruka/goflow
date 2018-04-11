@@ -1530,7 +1530,7 @@ func Now(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
 //   @(format_urn(contact.urns)) -> (206) 555-1212
-//   @(format_urn(contact.urns.1)) -> foo@bar.com
+//   @(format_urn(contact.urns.2)) -> foo@bar.com
 //   @(format_urn(contact.urns.mailto)) -> foo@bar.com
 //   @(format_urn(contact.urns.mailto.0)) -> foo@bar.com
 //   @(format_urn(contact.urns.telegram)) ->

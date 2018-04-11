@@ -57,6 +57,9 @@ func NewTestHTTPServer() (*httptest.Server, error) {
 		case "success":
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte(`{ "ok": "true" }`))
+		case "echo":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(r.URL.Query().Get("content")))
 		case "unavailable":
 			w.WriteHeader(http.StatusServiceUnavailable)
 			w.Write([]byte(`{ "errors": ["service unavailable"] }`))

@@ -37,7 +37,7 @@ func buildDocs(baseDir string) (string, error) {
 
 	var contextDocs, functionDocs, testDocs, actionDocs, eventDocs string
 
-	if contextDocs, err = buildDocSet(baseDir, []string{"flows", "flows/inputs"}, "@context", handleContextDoc, session); err != nil {
+	if contextDocs, err = buildDocSet(baseDir, []string{"flows"}, "@context", handleContextDoc, session); err != nil {
 		return "", err
 	}
 	if functionDocs, err = buildDocSet(baseDir, []string{"excellent/functions"}, "@function", handleFunctionDoc, session); err != nil {

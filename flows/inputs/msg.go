@@ -63,18 +63,7 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 }
 
 // ToJSON converts this type to JSON
-func (i *MsgInput) ToJSON() types.XString {
-	e := struct {
-		UUID      string    `json:"uuid"`
-		CreatedOn time.Time `json:"created_on"`
-		Text      string    `json:"text"`
-	}{
-		UUID:      string(i.uuid),
-		CreatedOn: i.createdOn,
-		Text:      i.text,
-	}
-	return types.MustMarshalToXString(e)
-}
+func (i *MsgInput) ToJSON() types.XString { return types.MustMarshalToXString(types.NewXString("TODO")) }
 
 var _ types.XValue = (*MsgInput)(nil)
 var _ types.XResolvable = (*MsgInput)(nil)
