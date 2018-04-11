@@ -325,12 +325,12 @@ Is a single contact's journey through a flow. It records the path they have take
 collected. It has several properties which can be accessed in expressions:
 
  * `uuid` the UUID of the run
- * `flow` the [flow](#flows) of the run
- * `contact` the [contact](#contacts) of the flow run
- * `input` the [input](#inputs) of the current run
+ * `flow` the [flow](#context:flow) of the run
+ * `contact` the [contact](#context:contact) of the flow run
+ * `input` the [input](#context:input) of the current run
  * `results` the results that have been saved for this run
  * `results.[snaked_result_name]` the value of the specific result, e.g. `run.results.age`
- * `webhook` the last [webhook](#webhooks) call made in the current run
+ * `webhook` the last [webhook](#context:webhook) call made in the current run
 
 Examples:
 
@@ -552,7 +552,7 @@ Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, 
 
 ## date_from_parts(year, month, day)
 
-Converts the passed in `year`, `month`` and `day`
+Converts the passed in `year`, `month` and `day`
 
 
 ```objectivec

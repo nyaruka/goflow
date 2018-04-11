@@ -407,12 +407,12 @@
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
 <ul>
 <li><code>uuid</code> the UUID of the run</li>
-<li><code>flow</code> the <a href="#flows">flow</a> of the run</li>
-<li><code>contact</code> the <a href="#contacts">contact</a> of the flow run</li>
-<li><code>input</code> the <a href="#inputs">input</a> of the current run</li>
+<li><code>flow</code> the <a href="#context:flow">flow</a> of the run</li>
+<li><code>contact</code> the <a href="#context:contact">contact</a> of the flow run</li>
+<li><code>input</code> the <a href="#context:input">input</a> of the current run</li>
 <li><code>results</code> the results that have been saved for this run</li>
 <li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>run.results.age</code></li>
-<li><code>webhook</code> the last <a href="#webhooks">webhook</a> call made in the current run</li>
+<li><code>webhook</code> the last <a href="#context:webhook">webhook</a> call made in the current run</li>
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb13-1" data-line-number="1">@run.flow.name → Registration</a></code></pre></div>
@@ -528,7 +528,7 @@
 <a class="sourceLine" id="cb25-3" data-line-number="3">@(date_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;y&quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:date_from_parts"></a></p>
 <h2 id="date_from_partsyear-month-day">date_from_parts(year, month, day)</h2>
-<p>Converts the passed in <code>year</code>, <code>month`` and</code>day`</p>
+<p>Converts the passed in <code>year</code>, <code>month</code> and <code>day</code></p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">1</span>, <span class="dv">15</span>)) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
 <a class="sourceLine" id="cb26-2" data-line-number="2">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">2</span>, <span class="dv">31</span>)) → <span class="dv">2017-03</span>-03T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
 <a class="sourceLine" id="cb26-3" data-line-number="3">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">13</span>, <span class="dv">15</span>)) → ERROR</a></code></pre></div>

@@ -1282,7 +1282,7 @@ func Date(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXDate(date)
 }
 
-// DateFromParts converts the passed in `year`, `month`` and `day`
+// DateFromParts converts the passed in `year`, `month` and `day`
 //
 //   @(date_from_parts(2017, 1, 15)) -> 2017-01-15T00:00:00.000000Z
 //   @(date_from_parts(2017, 2, 31)) -> 2017-03-03T00:00:00.000000Z

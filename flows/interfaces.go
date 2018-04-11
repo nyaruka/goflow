@@ -380,12 +380,12 @@ type RunEnvironment interface {
 // collected. It has several properties which can be accessed in expressions:
 //
 //  * `uuid` the UUID of the run
-//  * `flow` the [flow](#flows) of the run
-//  * `contact` the [contact](#contacts) of the flow run
-//  * `input` the [input](#inputs) of the current run
+//  * `flow` the [flow](#context:flow) of the run
+//  * `contact` the [contact](#context:contact) of the flow run
+//  * `input` the [input](#context:input) of the current run
 //  * `results` the results that have been saved for this run
 //  * `results.[snaked_result_name]` the value of the specific result, e.g. `run.results.age`
-//  * `webhook` the last [webhook](#webhooks) call made in the current run
+//  * `webhook` the last [webhook](#context:webhook) call made in the current run
 //
 // Examples:
 //

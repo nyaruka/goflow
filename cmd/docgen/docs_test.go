@@ -16,7 +16,6 @@ func TestDocGeneration(t *testing.T) {
 	existingDocs, err := ioutil.ReadFile("../../docs/docs.md")
 	require.NoError(t, err)
 
-	ioutil.WriteFile("../../docs/tests.md", []byte(output), 0666)
-
+	// if the docs we just generated don't match the existing ones, someone needs to run docgen
 	assert.Equal(t, string(existingDocs), output, "changes have been made that require re-running docgen")
 }
