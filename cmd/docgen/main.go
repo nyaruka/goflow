@@ -2,27 +2,47 @@ package main
 
 // generate full docs with:
 //
-// go install github.com/nyaruka/goflow/cmd/docgen
-// $GOPATH/bin/docgen . | pandoc --from=markdown --to=html -o docs/index.html --standalone --template=cmd/docgen/templates/template.html --toc --toc-depth=1
+// go install github.com/nyaruka/goflow/cmd/docgen; docgen
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
+	"os/exec"
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Println("usage: docgen <basedir>")
-		os.Exit(1)
-	}
+	markdownFile := "docs/docs.md"
+	htmlFile := "docs/index.html"
 
-	output, err := buildDocs(os.Args[1])
+	output, err := buildDocs(".")
 
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
-	// write output to stdout so it can be piped elsewhere
-	fmt.Println(output)
+	// write the markdown file
+	ioutil.WriteFile(markdownFile, []byte(output), 0666)
+
+	fmt.Printf("Markdown written to '%s'\n", markdownFile)
+
+	panDocArgs := []string{
+		"--from=markdown",
+		"--to=html",
+		"-o", htmlFile,
+		"--standalone",
+		"--template=cmd/docgen/templates/template.html",
+		"--toc",
+		"--toc-depth=1",
+		markdownFile,
+	}
+
+	cmd := exec.Command("pandoc", panDocArgs...)
+	if err := cmd.Run(); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	fmt.Printf("HTML written to '%s'\n", htmlFile)
 }

@@ -27,12 +27,17 @@ type handleFunc func(output *strings.Builder, item *documentedItem, session flow
 
 // builds all documentation from the given base directory
 func buildDocs(baseDir string) (string, error) {
+	fmt.Println("Generating docs...")
+
 	server, err := utils.NewTestHTTPServer()
 	if err != nil {
 		return "", fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
 	server.Start()
 	defer server.Close()
+
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	session, err := createExampleSession(nil)
 	if err != nil {
@@ -87,21 +92,23 @@ func buildDocs(baseDir string) (string, error) {
 }
 
 func buildDocSet(baseDir string, searchDirs []string, tag string, handler handleFunc, session flows.Session) (string, error) {
-	documentedItems := make([]*documentedItem, 0)
+	items := make([]*documentedItem, 0)
 	for _, searchDir := range searchDirs {
 		fromDir, err := findDocumentedItems(baseDir, searchDir, tag)
 		if err != nil {
 			return "", err
 		}
-		documentedItems = append(documentedItems, fromDir...)
+		items = append(items, fromDir...)
 	}
 
 	// sort documented items by their tag value
-	sort.SliceStable(documentedItems, func(i, j int) bool { return documentedItems[i].tagValue < documentedItems[j].tagValue })
+	sort.SliceStable(items, func(i, j int) bool { return items[i].tagValue < items[j].tagValue })
+
+	fmt.Printf(" > found %d documented items with tag %s\n", len(items), tag)
 
 	buffer := &strings.Builder{}
 
-	for _, item := range documentedItems {
+	for _, item := range items {
 		if err := handler(buffer, item, session); err != nil {
 			return "", fmt.Errorf("error parsing %s:%s: %s", item.tagName, item.tagValue, err)
 		}
