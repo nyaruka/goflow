@@ -58,6 +58,11 @@ func (m *xmap) ToJSON() XString {
 	return MustMarshalToXString(marshaled)
 }
 
+// MarshalJSON converts this type to internal JSON
+func (m *xmap) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.values)
+}
+
 // Length is called when the length of this object is requested in an expression
 func (m *xmap) Length() int {
 	return len(m.values)
@@ -86,3 +91,4 @@ func (m *xmap) Keys() []string {
 }
 
 var _ XMap = (*xmap)(nil)
+var _ json.Marshaler = (*xmap)(nil)
