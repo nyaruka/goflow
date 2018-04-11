@@ -1767,7 +1767,7 @@ A `webhook_called` event will be created based on the results of the HTTP call.
   "type": "call_webhook",
   "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
   "method": "GET",
-  "url": "https://api.ipify.org?format=json",
+  "url": "http://localhost:49999/?cmd=success",
   "headers": {
     "Authorization": "Token AAFFZZHH"
   }
@@ -1778,11 +1778,11 @@ A `webhook_called` event will be created based on the results of the HTTP call.
     "type": "webhook_called",
     "created_on": "2018-04-11T13:24:30.123456Z",
     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-    "url": "https://api.ipify.org?format=json",
+    "url": "http://localhost:49999/?cmd=success",
     "status": "success",
     "status_code": 200,
-    "request": "GET /?format=json HTTP/1.1\r\nHost: api.ipify.org\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
-    "response": "HTTP/1.1 200 OK\r\nContent-Length: 23\r\nConnection: keep-alive\r\nContent-Type: application/json\r\nDate: Wed, 11 Apr 2018 18:38:54 GMT\r\nServer: Cowboy\r\nVary: Origin\r\nVia: 1.1 vegur\r\n\r\n{\"ip\":\"190.154.48.130\"}"
+    "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49999\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
+    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
 }
 ```
 </div>
@@ -2150,14 +2150,14 @@ Can be used to trigger sessions for other contacts and groups
                 "category": "Red",
                 "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
                 "input": "",
-                "created_on": "2018-04-11T18:38:54.708636983Z"
+                "created_on": "2018-04-11T18:46:46.054519302Z"
             },
             "phone_number": {
                 "name": "Phone Number",
                 "value": "+12344563452",
                 "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
                 "input": "",
-                "created_on": "2018-04-11T18:38:54.708626591Z"
+                "created_on": "2018-04-11T18:46:46.054513042Z"
             }
         }
     }

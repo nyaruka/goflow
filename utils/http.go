@@ -51,7 +51,7 @@ func NewTestHTTPServer() (*httptest.Server, error) {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cmd := r.URL.Query().Get("cmd")
 		defer r.Body.Close()
-		w.Header().Set("Date", "")
+		w.Header().Set("Date", "Wed, 11 Apr 2018 18:24:30 GMT")
 
 		switch cmd {
 		case "success":
