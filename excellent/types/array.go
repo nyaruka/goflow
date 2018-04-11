@@ -18,6 +18,9 @@ type xarray struct {
 
 // NewXArray returns a new array with the given items
 func NewXArray(values ...XValue) XArray {
+	if values == nil {
+		values = []XValue{}
+	}
 	return &xarray{values: values}
 }
 
@@ -47,6 +50,11 @@ func (a *xarray) ToJSON() XString {
 	return MustMarshalToXString(marshaled)
 }
 
+// MarshalJSON converts this type to internal JSON
+func (a *xarray) MarshalJSON() ([]byte, error) {
+	return json.Marshal(a.values)
+}
+
 // Index is called when this object is indexed into in an expression
 func (a *xarray) Index(index int) XValue {
 	return a.values[index]
@@ -63,3 +71,4 @@ func (a *xarray) Append(value XValue) {
 }
 
 var _ XArray = (*xarray)(nil)
+var _ json.Marshaler = (*xarray)(nil)

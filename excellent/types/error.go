@@ -41,6 +41,11 @@ func (x xerror) ToBool() XBool { return XBool(false) }
 // ToJSON converts this type to JSON
 func (x xerror) ToJSON() XString { return MustMarshalToXString(x.Native().Error()) }
 
+// MarshalJSON converts this type to internal JSON
+func (x xerror) MarshalJSON() ([]byte, error) {
+	return nil, nil
+}
+
 // Native returns the native value of this type
 func (x xerror) Native() error { return x.err }
 

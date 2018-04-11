@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -33,6 +34,16 @@ func (v *testXObject) ToJSON() types.XString {
 	return types.MustMarshalToXString(e)
 }
 
+// MarshalJSON converts this type to its internal JSON representation which can differ from ToJSON
+func (v *testXObject) MarshalJSON() ([]byte, error) {
+	e := struct {
+		Foo string `json:"foo"`
+	}{
+		Foo: v.foo,
+	}
+	return json.Marshal(e)
+}
+
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXString(v.foo) }
 
 var _ types.XValue = &testXObject{}
@@ -45,136 +56,162 @@ func TestXValueRequiredConversions(t *testing.T) {
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
 
 	tests := []struct {
-		value    types.XValue
-		asJSON   string
-		asString string
-		asBool   bool
+		value          types.XValue
+		asJSON         string
+		asInternalJSON string
+		asString       string
+		asBool         bool
 	}{
 		{
-			value:    nil,
-			asJSON:   `null`,
-			asString: "",
-			asBool:   false,
+			value:          nil,
+			asInternalJSON: `null`,
+			asJSON:         `null`,
+			asString:       "",
+			asBool:         false,
 		}, {
-			value:    types.NewXString(""),
-			asJSON:   `""`,
-			asString: "",
-			asBool:   false, // empty strings are false
+			value:          types.NewXString(""),
+			asInternalJSON: `""`,
+			asJSON:         `""`,
+			asString:       "",
+			asBool:         false, // empty strings are false
 		}, {
-			value:    types.NewXString("FALSE"),
-			asJSON:   `"FALSE"`,
-			asString: "FALSE",
-			asBool:   false, // because it's string value is "false"
+			value:          types.NewXString("FALSE"),
+			asInternalJSON: `"FALSE"`,
+			asJSON:         `"FALSE"`,
+			asString:       "FALSE",
+			asBool:         false, // because it's string value is "false"
 		}, {
-			value:    types.NewXString("hello \"bob\""),
-			asJSON:   `"hello \"bob\""`,
-			asString: "hello \"bob\"",
-			asBool:   true,
+			value:          types.NewXString("hello \"bob\""),
+			asInternalJSON: `"hello \"bob\""`,
+			asJSON:         `"hello \"bob\""`,
+			asString:       "hello \"bob\"",
+			asBool:         true,
 		}, {
-			value:    types.NewXNumberFromInt(0),
-			asJSON:   `0`,
-			asString: "0",
-			asBool:   false, // because any decimal != 0 is true
+			value:          types.NewXNumberFromInt(0),
+			asInternalJSON: `0`,
+			asJSON:         `0`,
+			asString:       "0",
+			asBool:         false, // because any decimal != 0 is true
 		}, {
-			value:    types.NewXNumberFromInt(123),
-			asJSON:   `123`,
-			asString: "123",
-			asBool:   true, // because any decimal != 0 is true
+			value:          types.NewXNumberFromInt(123),
+			asInternalJSON: `123`,
+			asJSON:         `123`,
+			asString:       "123",
+			asBool:         true, // because any decimal != 0 is true
 		}, {
-			value:    types.RequireXNumberFromString("123.00"),
-			asJSON:   `123`,
-			asString: "123",
-			asBool:   true,
+			value:          types.RequireXNumberFromString("123.00"),
+			asInternalJSON: `123`,
+			asJSON:         `123`,
+			asString:       "123",
+			asBool:         true,
 		}, {
-			value:    types.RequireXNumberFromString("123.45"),
-			asJSON:   `123.45`,
-			asString: "123.45",
-			asBool:   true,
+			value:          types.RequireXNumberFromString("123.45"),
+			asInternalJSON: `123.45`,
+			asJSON:         `123.45`,
+			asString:       "123.45",
+			asBool:         true,
 		}, {
-			value:    types.NewXBool(false),
-			asJSON:   `false`,
-			asString: "false",
-			asBool:   false,
+			value:          types.NewXBool(false),
+			asInternalJSON: `false`,
+			asJSON:         `false`,
+			asString:       "false",
+			asBool:         false,
 		}, {
-			value:    types.NewXBool(true),
-			asJSON:   `true`,
-			asString: "true",
-			asBool:   true,
+			value:          types.NewXBool(true),
+			asInternalJSON: `true`,
+			asJSON:         `true`,
+			asString:       "true",
+			asBool:         true,
 		}, {
-			value:    types.NewXDate(date1),
-			asJSON:   `"2017-06-23T15:30:00.000000Z"`,
-			asString: "2017-06-23T15:30:00.000000Z",
-			asBool:   true,
+			value:          types.NewXDate(date1),
+			asInternalJSON: `"2017-06-23T15:30:00Z"`,
+			asJSON:         `"2017-06-23T15:30:00.000000Z"`,
+			asString:       "2017-06-23T15:30:00.000000Z",
+			asBool:         true,
 		}, {
-			value:    types.NewXDate(date2),
-			asJSON:   `"2017-07-18T15:30:00.000000-05:00"`,
-			asString: "2017-07-18T15:30:00.000000-05:00",
-			asBool:   true,
+			value:          types.NewXDate(date2),
+			asInternalJSON: `"2017-07-18T15:30:00-05:00"`,
+			asJSON:         `"2017-07-18T15:30:00.000000-05:00"`,
+			asString:       "2017-07-18T15:30:00.000000-05:00",
+			asBool:         true,
 		}, {
-			value:    types.NewXArray(),
-			asJSON:   `[]`,
-			asString: `[]`,
-			asBool:   false,
+			value:          types.NewXArray(),
+			asInternalJSON: `[]`,
+			asJSON:         `[]`,
+			asString:       `[]`,
+			asBool:         false,
 		}, {
-			value:    types.NewXArray(types.NewXDate(date1), types.NewXDate(date2)),
-			asJSON:   `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
-			asString: `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
-			asBool:   true,
+			value:          types.NewXArray(types.NewXDate(date1), types.NewXDate(date2)),
+			asInternalJSON: `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`,
+			asJSON:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
+			asString:       `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
+			asBool:         true,
 		}, {
-			value:    NewTestXObject("Hello", 123),
-			asJSON:   `{"foo":"Hello","bar":123}`,
-			asString: "Hello",
-			asBool:   true,
+			value:          NewTestXObject("Hello", 123),
+			asInternalJSON: `{"foo":"Hello"}`,
+			asJSON:         `{"foo":"Hello","bar":123}`,
+			asString:       "Hello",
+			asBool:         true,
 		}, {
-			value:    NewTestXObject("", 123),
-			asJSON:   `{"foo":"","bar":123}`,
-			asString: "",
-			asBool:   false, // because it reduces to a string which itself is false
+			value:          NewTestXObject("", 123),
+			asInternalJSON: `{"foo":""}`,
+			asJSON:         `{"foo":"","bar":123}`,
+			asString:       "",
+			asBool:         false, // because it reduces to a string which itself is false
 		}, {
-			value:    types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
-			asJSON:   `[{"foo":"Hello","bar":123},{"foo":"World","bar":456}]`,
-			asString: `["Hello","World"]`,
-			asBool:   true,
+			value:          types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
+			asInternalJSON: `[{"foo":"Hello"},{"foo":"World"}]`,
+			asJSON:         `[{"foo":"Hello","bar":123},{"foo":"World","bar":456}]`,
+			asString:       `["Hello","World"]`,
+			asBool:         true,
 		}, {
 			value: types.NewXMap(map[string]types.XValue{
 				"first":  NewTestXObject("Hello", 123),
 				"second": NewTestXObject("World", 456),
 			}),
-			asJSON:   `{"first":{"foo":"Hello","bar":123},"second":{"foo":"World","bar":456}}`,
-			asString: `{"first":"Hello","second":"World"}`,
-			asBool:   true,
+			asInternalJSON: `{"first":{"foo":"Hello"},"second":{"foo":"World"}}`,
+			asJSON:         `{"first":{"foo":"Hello","bar":123},"second":{"foo":"World","bar":456}}`,
+			asString:       `{"first":"Hello","second":"World"}`,
+			asBool:         true,
 		}, {
-			value:    types.NewXJSONArray([]byte(`[]`)),
-			asJSON:   `[]`,
-			asString: `[]`,
-			asBool:   false,
+			value:          types.NewXJSONArray([]byte(`[]`)),
+			asInternalJSON: `[]`,
+			asJSON:         `[]`,
+			asString:       `[]`,
+			asBool:         false,
 		}, {
-			value:    types.NewXJSONArray([]byte(`[5, "x"]`)),
-			asJSON:   `[5, "x"]`,
-			asString: `[5, "x"]`,
-			asBool:   true,
+			value:          types.NewXJSONArray([]byte(`[5,     "x"]`)),
+			asInternalJSON: `[5,"x"]`,
+			asJSON:         `[5,     "x"]`,
+			asString:       `[5,     "x"]`,
+			asBool:         true,
 		}, {
-			value:    types.NewXJSONObject([]byte(`{}`)),
-			asJSON:   `{}`,
-			asString: `{}`,
-			asBool:   false,
+			value:          types.NewXJSONObject([]byte(`{}`)),
+			asInternalJSON: `{}`,
+			asJSON:         `{}`,
+			asString:       `{}`,
+			asBool:         false,
 		}, {
-			value:    types.NewXJSONObject([]byte(`{"foo":"World","bar":456}`)),
-			asJSON:   `{"foo":"World","bar":456}`,
-			asString: `{"foo":"World","bar":456}`,
-			asBool:   true,
+			value:          types.NewXJSONObject([]byte(`{"foo":"World","bar":456}`)),
+			asInternalJSON: `{"foo":"World","bar":456}`,
+			asJSON:         `{"foo":"World","bar":456}`,
+			asString:       `{"foo":"World","bar":456}`,
+			asBool:         true,
 		}, {
-			value:    types.NewXError(fmt.Errorf("it failed")), // once an error, always an error
-			asJSON:   "",
-			asString: "",
-			asBool:   false,
+			value:          types.NewXError(fmt.Errorf("it failed")), // once an error, always an error
+			asInternalJSON: "",
+			asJSON:         "",
+			asString:       "",
+			asBool:         false,
 		},
 	}
 	for _, test := range tests {
+		asInternalJSON, _ := json.Marshal(test.value)
 		asJSON, _ := types.ToXJSON(test.value)
 		asString, _ := types.ToXString(test.value)
 		asBool, _ := types.ToXBool(test.value)
 
+		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %+v", test.value)
 		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %+v", test.value)
 		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %+v", test.value)
 		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %+v", test.value)

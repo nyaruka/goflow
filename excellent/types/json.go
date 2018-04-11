@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/buger/jsonparser"
@@ -13,6 +14,10 @@ type XJSON []byte
 func (x XJSON) ToJSON() XString { return NewXString(string(x)) }
 
 func (x XJSON) Reduce() XPrimitive { return x.ToJSON() }
+
+func (x XJSON) MarshalJSON() ([]byte, error) {
+	return []byte(x), nil
+}
 
 type XJSONObject struct {
 	XJSON
@@ -43,6 +48,7 @@ func (x XJSONObject) Resolve(key string) XValue {
 var _ XValue = XJSONObject{}
 var _ XLengthable = XJSONObject{}
 var _ XResolvable = XJSONObject{}
+var _ json.Marshaler = XJSONObject{}
 
 type XJSONArray struct {
 	XJSON
@@ -70,6 +76,7 @@ func (x XJSONArray) Index(index int) XValue {
 
 var _ XValue = XJSONArray{}
 var _ XIndexable = XJSONArray{}
+var _ json.Marshaler = XJSONArray{}
 
 func JSONToXValue(data []byte) XValue {
 	val, valType, _, err := jsonparser.Get(data)
