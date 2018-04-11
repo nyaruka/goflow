@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/nyaruka/goflow/flows/events"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -210,6 +211,15 @@ var initialEvents = `[
     }
 ]`
 
+// an extended environment that will let us override Now() so that it's constant
+type docEnvironment struct {
+	utils.Environment
+}
+
+func (e *docEnvironment) Now() time.Time {
+	return time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
+}
+
 func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our assets
 	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
@@ -219,6 +229,9 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 
 	// create our engine session
 	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
+
+	// override the session environment
+	session.SetEnvironment(&docEnvironment{session.Environment()})
 
 	// optional modify the main flow by adding the provided action
 	if actionToAdd != nil {

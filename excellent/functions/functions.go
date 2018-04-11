@@ -1460,7 +1460,7 @@ func TZOffset(env utils.Environment, date types.XDate) types.XValue {
 
 // Today returns the current date in the current timezone, time is set to midnight in the environment timezone
 //
-//   @(format_date(today(), "YYYY") >= 2018) -> true
+//   @(today()) -> 2018-04-11T00:00:00.000000Z
 //
 // @function today()
 func Today(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1468,7 +1468,7 @@ func Today(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("TODAY takes no arguments, got %d", len(args))
 	}
 
-	nowTZ := time.Now().In(env.Timezone())
+	nowTZ := env.Now()
 	return types.NewXDate(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
 }
 
@@ -1510,7 +1510,7 @@ func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 
 // Now returns the current date and time in the environment timezone
 //
-//   @(format_date(now(), "YYYY") >= 2018) -> true
+//   @(now()) -> 2018-04-11T13:24:30.123456Z
 //
 // @function now()
 func Now(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1518,7 +1518,7 @@ func Now(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("NOW takes no arguments, got %d", len(args))
 	}
 
-	return types.NewXDate(time.Now().In(env.Timezone()))
+	return types.NewXDate(env.Now())
 }
 
 //----------------------------------------------------------------------------------------
