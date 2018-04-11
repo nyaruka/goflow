@@ -2150,14 +2150,14 @@ Can be used to trigger sessions for other contacts and groups
                 "category": "Red",
                 "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
                 "input": "",
-                "created_on": "2018-04-11T18:46:46.054519302Z"
+                "created_on": "2018-04-11T13:24:30.123456Z"
             },
             "phone_number": {
                 "name": "Phone Number",
                 "value": "+12344563452",
                 "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
                 "input": "",
-                "created_on": "2018-04-11T18:46:46.054513042Z"
+                "created_on": "2018-04-11T13:24:30.123456Z"
             }
         }
     }

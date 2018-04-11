@@ -1,6 +1,9 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/goflow/flows"
+	"time"
+)
 
 // TypeRunResultChanged is the type of our run result event
 const TypeRunResultChanged string = "run_result_changed"
@@ -56,6 +59,6 @@ func (e *RunResultChangedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *RunResultChangedEvent) Apply(run flows.FlowRun) error {
-	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Operand, e.baseEvent.CreatedOn())
+	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Operand, run.Session().Environment().Now().In(time.UTC))
 	return nil
 }
