@@ -95,7 +95,7 @@ func (c *channel) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-func (c *channel) ToJSON() types.XString { return types.NewXString("TODO") }
+func (c *channel) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*channel)(nil)
 var _ types.XResolvable = (*channel)(nil)

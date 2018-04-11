@@ -22,8 +22,8 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-// ToJSON converts this type to JSON
-func (v *testXObject) ToJSON() types.XString {
+// ToXJSON converts this type to JSON
+func (v *testXObject) ToXJSON() types.XString {
 	e := struct {
 		Foo string `json:"foo"`
 		Bar int    `json:"bar"`

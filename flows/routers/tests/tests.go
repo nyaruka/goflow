@@ -340,7 +340,7 @@ func (m *patternMatch) Reduce() types.XPrimitive {
 	return m.groups.Index(0).(types.XString)
 }
 
-func (m *patternMatch) ToJSON() types.XString { return types.NewXString("TODO") }
+func (m *patternMatch) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*patternMatch)(nil)
 var _ types.XResolvable = (*patternMatch)(nil)

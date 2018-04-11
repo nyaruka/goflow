@@ -77,7 +77,7 @@ func (g *Group) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (g *Group) Reduce() types.XPrimitive { return types.NewXString(g.name) }
 
-func (g *Group) ToJSON() types.XString { return types.NewXString("TODO") }
+func (g *Group) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*Group)(nil)
 var _ types.XResolvable = (*Group)(nil)
@@ -158,7 +158,7 @@ func (l GroupList) Reduce() types.XPrimitive {
 	return array
 }
 
-func (l GroupList) ToJSON() types.XString { return types.NewXString("TODO") }
+func (l GroupList) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*GroupList)(nil)
 var _ types.XIndexable = (*GroupList)(nil)

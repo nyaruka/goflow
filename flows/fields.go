@@ -95,7 +95,7 @@ func (v *FieldValue) Reduce() types.XPrimitive {
 	return v.TypedValue().Reduce()
 }
 
-func (v *FieldValue) ToJSON() types.XString { return types.NewXString("TODO") }
+func (v *FieldValue) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
@@ -157,7 +157,7 @@ func (f FieldValues) Reduce() types.XPrimitive {
 	return values
 }
 
-func (f FieldValues) ToJSON() types.XString { return types.NewXString("TODO") }
+func (f FieldValues) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (FieldValues)(nil)
 var _ types.XLengthable = (FieldValues)(nil)

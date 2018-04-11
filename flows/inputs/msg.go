@@ -60,7 +60,7 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	return types.NewXString(strings.Join(parts, "\n"))
 }
 
-func (i *MsgInput) ToJSON() types.XString { return types.NewXString("TODO") }
+func (i *MsgInput) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*MsgInput)(nil)
 var _ types.XResolvable = (*MsgInput)(nil)

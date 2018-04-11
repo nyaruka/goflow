@@ -102,7 +102,7 @@ func (f *flow) Reduce() types.XPrimitive {
 	return types.NewXString(f.name)
 }
 
-func (f *flow) ToJSON() types.XString { return types.NewXString("TODO") }
+func (f *flow) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*flow)(nil)
 var _ types.XResolvable = (*flow)(nil)

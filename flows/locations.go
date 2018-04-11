@@ -50,7 +50,7 @@ func (b *Location) Children() []*Location { return b.children }
 // Reduce is called when this object needs to be reduced to a primitive
 func (b *Location) Reduce() types.XPrimitive { return types.NewXString(b.name) }
 
-func (b *Location) ToJSON() types.XString { return types.NewXString("TODO") }
+func (b *Location) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*Location)(nil)
 

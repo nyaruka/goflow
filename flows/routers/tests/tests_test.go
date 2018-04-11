@@ -38,7 +38,7 @@ func (r *testResolvable) Reduce() types.XPrimitive {
 	return types.NewXString("hello")
 }
 
-func (r *testResolvable) ToJSON() types.XString { return types.NewXString("TODO") }
+func (r *testResolvable) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var testTests = []struct {
 	name     string

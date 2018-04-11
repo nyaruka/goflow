@@ -21,7 +21,7 @@ func ToXJSON(x XValue) (XString, XError) {
 		return XStringEmpty, x.(XError)
 	}
 
-	return x.ToJSON(), nil
+	return x.ToXJSON(), nil
 }
 
 // ToXString converts the given value to a string
@@ -33,7 +33,7 @@ func ToXString(x XValue) (XString, XError) {
 		return XStringEmpty, x.(XError)
 	}
 
-	return x.Reduce().ToString(), nil
+	return x.Reduce().ToXString(), nil
 }
 
 // ToXBool converts the given value to a boolean
@@ -47,7 +47,7 @@ func ToXBool(x XValue) (XBool, XError) {
 
 	primitive, isPrimitive := x.(XPrimitive)
 	if isPrimitive {
-		return primitive.ToBool(), nil
+		return primitive.ToXBool(), nil
 	}
 
 	lengthable, isLengthable := x.(XLengthable)
@@ -55,7 +55,7 @@ func ToXBool(x XValue) (XBool, XError) {
 		return lengthable.Length() > 0, nil
 	}
 
-	return x.Reduce().ToBool(), nil
+	return x.Reduce().ToXBool(), nil
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
@@ -114,7 +114,7 @@ func ToInteger(x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", string(number.ToString()))
+		return 0, NewXErrorf("number value %s is out of range for an integer", string(number.ToXString()))
 	}
 
 	return int(intPart), nil

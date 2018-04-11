@@ -37,7 +37,7 @@ func (t *baseTrigger) Reduce() types.XPrimitive {
 	return types.NewXString(string(t.flow.UUID()))
 }
 
-func (t *baseTrigger) ToJSON() types.XString { return types.NewXString("TODO") }
+func (t *baseTrigger) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*baseTrigger)(nil)
 var _ types.XResolvable = (*baseTrigger)(nil)
