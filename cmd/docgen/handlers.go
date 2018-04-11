@@ -11,31 +11,23 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func handleContextDoc(output *strings.Builder, tag string, typeName string, docString string, session flows.Session) error {
-	parsed := parseDocString(docString, tag, typeName)
-	if len(parsed.examples) == 0 {
-		return fmt.Errorf("no examples found for context item %s/%s", parsed.tagValue, typeName)
-	}
-
-	// remove type name from start of description and capitalize the next word
-	if strings.HasPrefix(parsed.description[0], typeName) {
-		parsed.description[0] = strings.Replace(parsed.description[0], typeName, "", 1)
-		parsed.description[0] = strings.TrimSpace(parsed.description[0])
-		parsed.description[0] = strings.ToUpper(parsed.description[0][0:1]) + parsed.description[0][1:]
+func handleContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	if len(item.examples) == 0 {
+		return fmt.Errorf("no examples found for context item %s/%s", item.tagValue, item.typeName)
 	}
 
 	// check the examples
-	for _, ex := range parsed.examples {
+	for _, ex := range item.examples {
 		if err := checkExample(session, ex); err != nil {
 			return err
 		}
 	}
 
-	exampleBlock := strings.Replace(strings.Join(parsed.examples, "\n"), "->", "→", -1)
+	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
 
-	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", parsed.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(parsed.tagValue)))
-	output.WriteString(strings.Join(parsed.description, "\n"))
+	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
 	output.WriteString(exampleBlock)
@@ -45,27 +37,26 @@ func handleContextDoc(output *strings.Builder, tag string, typeName string, docS
 	return nil
 }
 
-func handleFunctionDoc(output *strings.Builder, tag string, typeName string, docString string, session flows.Session) error {
-	parsed := parseDocString(docString, tag, typeName)
-	if len(parsed.examples) == 0 {
-		return fmt.Errorf("no examples found for function %s", parsed.tagValue)
+func handleFunctionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	if len(item.examples) == 0 {
+		return fmt.Errorf("no examples found for function %s", item.tagValue)
 	}
 
 	// get name of function from signature to use as our anchor
-	name := parsed.tagValue[0:strings.Index(parsed.tagValue, "(")]
+	name := item.tagValue[0:strings.Index(item.tagValue, "(")]
 
 	// check the examples
-	for _, l := range parsed.examples {
+	for _, l := range item.examples {
 		if err := checkExample(session, l); err != nil {
 			return err
 		}
 	}
 
-	exampleBlock := strings.Replace(strings.Join(parsed.examples, "\n"), "->", "→", -1)
+	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
 
-	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", tag[1:], name))
-	output.WriteString(fmt.Sprintf("## %s\n\n", parsed.tagValue))
-	output.WriteString(strings.Join(parsed.description, "\n"))
+	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, name))
+	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
 	output.WriteString(exampleBlock)
@@ -75,197 +66,100 @@ func handleFunctionDoc(output *strings.Builder, tag string, typeName string, doc
 	return nil
 }
 
-func handleEventDoc(output *strings.Builder, prefix string, typeName string, docString string, session flows.Session) error {
-	lines := strings.Split(docString, "\n")
-	name := ""
-
-	docs := make([]string, 0, len(lines))
-	example := make([]string, 0, len(lines))
-	inExample := false
-	for _, l := range lines {
-		if strings.HasPrefix(l, prefix) {
-			name = l[len(prefix)+1:]
-		} else if strings.HasPrefix(l, "```") {
-			inExample = !inExample
-		} else if inExample {
-			example = append(example, l[2:])
-		} else {
-			docs = append(docs, l)
-		}
-	}
-
+func handleEventDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
-	exampleJSON := []byte(strings.Join(example, "\n"))
+	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	if err != nil {
-		return fmt.Errorf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to parse example: %s", err)
 	}
 
 	event, err := events.EventFromEnvelope(typed)
 	if err != nil {
-		return fmt.Errorf("unable to parse example: %s\nHas err: %s", exampleJSON, err)
-	}
-
-	// make sure types match
-	if name != event.Type() {
-		return fmt.Errorf("mismatched event types for example of %s", name)
+		return fmt.Errorf("unable to parse example: %s", err)
 	}
 
 	// validate it
 	err = utils.Validate(event)
 	if err != nil {
-		return fmt.Errorf("unable to validate example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
 	typed, err = utils.EnvelopeFromTyped(event)
 	if err != nil {
-		return fmt.Errorf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example: %s", err)
 	}
 	exampleJSON, err = json.MarshalIndent(typed, "", "    ")
 	if err != nil {
-		return fmt.Errorf("unable to marshal example: %s\nHad err: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example: %s", err)
 	}
 
-	if name != "" {
-		if len(docs) > 0 && strings.HasPrefix(docs[0], typeName) {
-			docs[0] = strings.Replace(docs[0], typeName, name, 1)
-		}
+	output.WriteString(fmt.Sprintf("<a name=\"event:%s\"></a>\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(strings.Join(item.description, "\n"))
 
-		output.WriteString(fmt.Sprintf("<a name=\"events:%s\"></a>\n\n", name))
-		output.WriteString(fmt.Sprintf("## %s\n\n", name))
-		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
-		if len(example) > 0 {
-			output.WriteString(`<div class="output_event"><h3>Event</h3>`)
-			output.WriteString("```json\n")
-			output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
-			output.WriteString("```\n")
-			output.WriteString(`</div>`)
-		}
-		output.WriteString(fmt.Sprintf("\n"))
-	}
+	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString("```json\n")
+	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
+	output.WriteString("```\n")
+	output.WriteString(`</div>`)
+
+	output.WriteString("\n")
+
 	return nil
 }
 
-func handleActionDoc(output *strings.Builder, prefix string, typeName string, docString string, session flows.Session) error {
-	lines := strings.Split(docString, "\n")
-	name := ""
-
-	docs := make([]string, 0, len(lines))
-	example := make([]string, 0, len(lines))
-	inExample := false
-	for _, l := range lines {
-		if strings.HasPrefix(l, prefix) {
-			name = l[len(prefix)+1:]
-		} else if strings.HasPrefix(l, "```") {
-			inExample = !inExample
-		} else if inExample {
-			example = append(example, l[2:])
-		} else {
-			docs = append(docs, l)
-		}
-	}
-
+func handleActionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
-	exampleJSON := []byte(strings.Join(example, "\n"))
+	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	action, err := actions.ActionFromEnvelope(typed)
 	if err != nil {
-		return fmt.Errorf("unable to parse example: %s: %s", exampleJSON, err)
+		return fmt.Errorf("unable to parse example: %s", err)
 	}
 
 	// validate it
 	err = utils.Validate(action)
 	if err != nil {
-		return fmt.Errorf("unable to validate example: %s: %s", exampleJSON, err)
-	}
-
-	// make sure types match
-	if name != action.Type() {
-		return fmt.Errorf("mismatched action types for example of %s", name)
+		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
 	typed, err = utils.EnvelopeFromTyped(action)
 	if err != nil {
-		return fmt.Errorf("unable to marshal example %s: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example: %s", err)
 	}
 
 	exampleJSON, err = json.MarshalIndent(typed, "", "  ")
 	if err != nil {
-		return fmt.Errorf("unable to marshal example %s: %s", exampleJSON, err)
+		return fmt.Errorf("unable to marshal example: %s", err)
 	}
 
 	// get the events created by this action
 	events, err := eventsForAction(action)
 	if err != nil {
-		return fmt.Errorf("error running action %s: %s", exampleJSON, err)
+		return fmt.Errorf("error running action %s", err)
 	}
 
-	if name != "" {
-		if len(docs) > 0 && strings.HasPrefix(docs[0], typeName) {
-			docs[0] = strings.Replace(docs[0], typeName, name, 1)
-		}
+	output.WriteString(fmt.Sprintf("<a name=\"action:%s\"></a>\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(strings.Join(item.description, "\n"))
 
-		output.WriteString(fmt.Sprintf("<a name=\"action:%s\"></a>\n\n", name))
-		output.WriteString(fmt.Sprintf("## %s\n\n", name))
-		output.WriteString(fmt.Sprintf("%s", strings.Join(docs, "\n")))
-		if len(example) > 0 {
-			output.WriteString(`<div class="input_action"><h3>Action</h3>`)
-			output.WriteString("```json\n")
-			output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
-			output.WriteString("```\n")
-			output.WriteString(`</div>`)
+	output.WriteString(`<div class="input_action"><h3>Action</h3>`)
+	output.WriteString("```json\n")
+	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
+	output.WriteString("```\n")
+	output.WriteString(`</div>`)
 
-			output.WriteString(`<div class="output_event"><h3>Event</h3>`)
-			output.WriteString("```json\n")
-			output.WriteString(fmt.Sprintf("%s\n", events))
-			output.WriteString("```\n")
-			output.WriteString(`</div>`)
-		}
-		output.WriteString(fmt.Sprintf("\n"))
-	}
+	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString("```json\n")
+	output.WriteString(fmt.Sprintf("%s\n", events))
+	output.WriteString("```\n")
+	output.WriteString(`</div>`)
+	output.WriteString("\n")
+
 	return nil
-}
-
-type parsedDocs struct {
-	tagValue    string   // value after @tag
-	examples    []string // any indented line
-	description []string // any other line
-}
-
-func parseDocString(docString string, tag string, typeName string) *parsedDocs {
-	var tagValue string
-	examples := make([]string, 0)
-	description := make([]string, 0)
-
-	docString = removeTypeNamePrefix(docString, typeName)
-
-	for _, l := range strings.Split(docString, "\n") {
-		trimmed := strings.TrimSpace(l)
-
-		if strings.HasPrefix(l, tag) {
-			tagValue = l[len(tag)+1:]
-		} else if strings.HasPrefix(l, "  ") {
-			examples = append(examples, trimmed)
-		} else {
-			description = append(description, l)
-		}
-	}
-
-	return &parsedDocs{tagValue: tagValue, examples: examples, description: description}
-}
-
-// Golang convention is to start all docstrings with the type name, but the actual type name can differ from how the type is
-// referenced in the flow spec, so we remove it.
-func removeTypeNamePrefix(docString string, typeName string) string {
-	// remove type name from start of description and capitalize the next word
-	if strings.HasPrefix(docString, typeName) {
-		docString = strings.Replace(docString, typeName, "", 1)
-		docString = strings.TrimSpace(docString)
-		docString = strings.ToUpper(docString[0:1]) + docString[1:]
-	}
-	return docString
 }
 
 func checkExample(session flows.Session, line string) error {

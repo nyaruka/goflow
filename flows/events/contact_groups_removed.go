@@ -12,13 +12,11 @@ const TypeContactGroupsRemoved string = "contact_groups_removed"
 // ContactGroupsRemovedEvent events are created when a contact has been removed from one or more
 // groups.
 //
-// ```
 //   {
 //     "type": "contact_groups_removed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "groups": [{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Reporters"}]
 //   }
-// ```
 //
 // @event contact_groups_removed
 type ContactGroupsRemovedEvent struct {

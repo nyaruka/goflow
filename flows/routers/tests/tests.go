@@ -82,7 +82,7 @@ var XTESTS = map[string]functions.XFunction{
 //   @(is_string_eq(run.webhook.status, "success")) -> true
 //   @(is_string_eq(run.webhook.status, "connection_error")) -> false
 //
-// @test is_string_eq(run)
+// @test is_string_eq(string, string)
 func IsStringEQ(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
 	if str1.Native() == str2.Native() {
 		return XTestResult{true, str1}

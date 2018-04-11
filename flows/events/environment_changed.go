@@ -12,7 +12,6 @@ const TypeEnvironmentChanged string = "environment_changed"
 
 // EnvironmentChangedEvent events are created to set the environment on a session
 //
-// ```
 //   {
 //     "type": "environment_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -23,7 +22,6 @@ const TypeEnvironmentChanged string = "environment_changed"
 //       "languages": ["eng", "fra"]
 //     }
 //   }
-// ```
 //
 // @event environment_changed
 type EnvironmentChangedEvent struct {

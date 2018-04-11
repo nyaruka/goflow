@@ -11,7 +11,6 @@ const TypeWebhookCalled string = "webhook_called"
 // the status and status code of the response, as well as a full dump of the
 // request and response.
 //
-// ```
 //   {
 //     "type": "webhook_called",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -21,7 +20,6 @@ const TypeWebhookCalled string = "webhook_called"
 //     "request": "GET https://api.ipify.org?format=json",
 //     "response": "HTTP/1.1 200 OK {\"ip\":\"190.154.48.130\"}"
 //   }
-// ```
 //
 // @event webhook_called
 type WebhookCalledEvent struct {

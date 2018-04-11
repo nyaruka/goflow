@@ -7,7 +7,6 @@ const TypeEmailCreated string = "email_created"
 
 // EmailCreatedEvent events are created for each recipient which should receive an email.
 //
-// ```
 //   {
 //     "type": "email_created",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -15,7 +14,6 @@ const TypeEmailCreated string = "email_created"
 //     "subject": "Your activation token",
 //     "body": "Your activation token is AAFFKKEE"
 //   }
-// ```
 //
 // @event email_created
 type EmailCreatedEvent struct {

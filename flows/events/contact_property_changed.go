@@ -12,14 +12,12 @@ const TypeContactPropertyChanged string = "contact_property_changed"
 
 // ContactPropertyChangedEvent events are created when a property of a contact has been changed
 //
-// ```
 //   {
 //     "type": "contact_property_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "property": "language",
 //     "value": "eng"
 //   }
-// ```
 //
 // @event contact_property_changed
 type ContactPropertyChangedEvent struct {

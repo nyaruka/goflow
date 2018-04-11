@@ -13,7 +13,6 @@ const TypeAddContactGroups string = "add_contact_groups"
 // AddContactGroupsAction can be used to add a contact to one or more groups. An `contact_groups_added` event will be created
 // for the groups which the contact has been added to.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "add_contact_groups",
@@ -22,7 +21,6 @@ const TypeAddContactGroups string = "add_contact_groups"
 //       "name": "Customers"
 //     }]
 //   }
-// ```
 //
 // @action add_contact_groups
 type AddContactGroupsAction struct {

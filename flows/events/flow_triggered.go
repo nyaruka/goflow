@@ -9,14 +9,12 @@ const TypeFlowTriggered string = "flow_triggered"
 
 // FlowTriggeredEvent events are created when an action wants to start a subflow
 //
-// ```
 //   {
 //     "type": "flow_triggered",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "flow": {"uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a", "name": "Registration"},
 //     "parent_run_uuid": "95eb96df-461b-4668-b168-727f8ceb13dd"
 //   }
-// ```
 //
 // @event flow_triggered
 type FlowTriggeredEvent struct {

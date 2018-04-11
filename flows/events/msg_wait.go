@@ -13,13 +13,11 @@ const TypeMsgWait string = "msg_wait"
 // a contact. If a timeout is set, then the caller should resume the flow after
 // the number of seconds in the timeout to resume it.
 //
-// ```
 //   {
 //     "type": "msg_wait",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "timeout": 300
 //   }
-// ```
 //
 // @event msg_wait
 type MsgWaitEvent struct {

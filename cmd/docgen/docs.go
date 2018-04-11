@@ -7,6 +7,7 @@ import (
 	"go/parser"
 	"go/token"
 	"path"
+	"sort"
 	"strings"
 	"text/template"
 
@@ -14,12 +15,15 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type taggedType struct {
-	docString string
-	typeName  string
+type documentedItem struct {
+	typeName    string   // actual go type name
+	tagName     string   // tag used to make this as a documented item
+	tagValue    string   // value after @tag
+	examples    []string // any indented line
+	description []string // any other line
 }
 
-type handleFunc func(output *strings.Builder, prefix string, docString string, typeName string, session flows.Session) error
+type handleFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
 
 // builds all documentation from the given base directory
 func buildDocs(baseDir string) (string, error) {
@@ -83,34 +87,33 @@ func buildDocs(baseDir string) (string, error) {
 }
 
 func buildDocSet(baseDir string, searchDirs []string, tag string, handler handleFunc, session flows.Session) (string, error) {
-	taggedTypes := make([]taggedType, 0)
+	documentedItems := make([]*documentedItem, 0)
 	for _, searchDir := range searchDirs {
-		fromDir, err := findTaggedTypes(baseDir, searchDir, tag)
+		fromDir, err := findDocumentedItems(baseDir, searchDir, tag)
 		if err != nil {
 			return "", err
 		}
-		taggedTypes = append(taggedTypes, fromDir...)
+		documentedItems = append(documentedItems, fromDir...)
 	}
+
+	// sort documented items by their tag value
+	sort.SliceStable(documentedItems, func(i, j int) bool { return documentedItems[i].tagValue < documentedItems[j].tagValue })
 
 	buffer := &strings.Builder{}
 
-	for _, taggedType := range taggedTypes {
-		if err := handler(buffer, tag, taggedType.typeName, taggedType.docString, session); err != nil {
-			return "", fmt.Errorf("error parsing %s docstrings: %s", tag, err)
+	for _, item := range documentedItems {
+		if err := handler(buffer, item, session); err != nil {
+			return "", fmt.Errorf("error parsing %s:%s: %s", item.tagName, item.tagValue, err)
 		}
 	}
 
-	output := buffer.String()
-	if output == "" {
-		return "", fmt.Errorf("found 0 docstrings for tag %s", tag)
-	}
-
-	return output, nil
+	return buffer.String(), nil
 }
 
-// finds all tagged types in go files in the given directory
-func findTaggedTypes(baseDir string, searchDir string, tag string) ([]taggedType, error) {
-	taggedTypes := make([]taggedType, 0)
+// finds all documented items in go files in the given directory
+func findDocumentedItems(baseDir string, searchDir string, tag string) ([]*documentedItem, error) {
+	documentedItems := make([]*documentedItem, 0)
+
 	fset := token.NewFileSet()
 	pkgs, err := parser.ParseDir(fset, path.Join(baseDir, searchDir), nil, parser.ParseComments)
 	if err != nil {
@@ -121,15 +124,49 @@ func findTaggedTypes(baseDir string, searchDir string, tag string) ([]taggedType
 		p := doc.New(f, "./", 0)
 		for _, t := range p.Types {
 			if strings.Contains(t.Doc, tag) {
-				taggedTypes = append(taggedTypes, taggedType{docString: t.Doc, typeName: t.Name})
+				documentedItems = append(documentedItems, parseDocString(tag, t.Doc, t.Name))
 			}
 		}
 		for _, t := range p.Funcs {
 			if strings.Contains(t.Doc, tag) {
-				taggedTypes = append(taggedTypes, taggedType{docString: t.Doc, typeName: t.Name})
+				documentedItems = append(documentedItems, parseDocString(tag, t.Doc, t.Name))
 			}
 		}
 	}
 
-	return taggedTypes, nil
+	return documentedItems, nil
+}
+
+func parseDocString(tag string, docString string, typeName string) *documentedItem {
+	var tagValue string
+	examples := make([]string, 0)
+	description := make([]string, 0)
+
+	docString = removeTypeNamePrefix(docString, typeName)
+
+	for _, l := range strings.Split(docString, "\n") {
+		trimmed := strings.TrimSpace(l)
+
+		if strings.HasPrefix(l, tag) {
+			tagValue = l[len(tag)+1:]
+		} else if strings.HasPrefix(l, "  ") { // examples are indented by at least two spaces
+			examples = append(examples, trimmed)
+		} else {
+			description = append(description, l)
+		}
+	}
+
+	return &documentedItem{typeName: typeName, tagName: tag[1:], tagValue: tagValue, examples: examples, description: description}
+}
+
+// Golang convention is to start all docstrings with the type name, but the actual type name can differ from how the type is
+// referenced in the flow spec, so we remove it.
+func removeTypeNamePrefix(docString string, typeName string) string {
+	// remove type name from start of description and capitalize the next word
+	if strings.HasPrefix(docString, typeName) {
+		docString = strings.Replace(docString, typeName, "", 1)
+		docString = strings.TrimSpace(docString)
+		docString = strings.ToUpper(docString[0:1]) + docString[1:]
+	}
+	return docString
 }

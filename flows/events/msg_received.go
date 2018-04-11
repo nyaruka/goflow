@@ -11,7 +11,6 @@ const TypeMsgReceived string = "msg_received"
 // MsgReceivedEvent events are used for starting flows or resuming flows which are waiting for a message.
 // They represent an incoming message for a contact.
 //
-// ```
 //   {
 //     "type": "msg_received",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -23,7 +22,6 @@ const TypeMsgReceived string = "msg_received"
 //       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //     }
 //   }
-// ```
 //
 // @event msg_received
 type MsgReceivedEvent struct {

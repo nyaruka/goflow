@@ -9,7 +9,6 @@ const TypeRunResultChanged string = "run_result_changed"
 // the name, value and category of the result, but also the UUID of the node where
 // the result was generated.
 //
-// ```
 //   {
 //     "type": "run_result_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -20,7 +19,6 @@ const TypeRunResultChanged string = "run_result_changed"
 //     "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 //     "input": "M"
 //   }
-// ```
 //
 // @event run_result_changed
 type RunResultChangedEvent struct {

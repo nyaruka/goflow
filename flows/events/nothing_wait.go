@@ -7,12 +7,11 @@ const TypeNothingWait string = "nothing_wait"
 
 // NothingWaitEvent events are created when a flow requests to hand back control to the caller but isn't
 // waiting for anything from the caller.
-// ```
+//
 //   {
 //     "type": "nothing_wait",
 //     "created_on": "2006-01-02T15:04:05.234532Z"
 //   }
-// ```
 //
 // @event nothing_wait
 type NothingWaitEvent struct {

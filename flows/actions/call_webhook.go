@@ -17,7 +17,6 @@ const TypeCallWebhook string = "call_webhook"
 //
 // A `webhook_called` event will be created based on the results of the HTTP call.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "call_webhook",
@@ -27,7 +26,6 @@ const TypeCallWebhook string = "call_webhook"
 //	      "Authorization": "Token AAFFZZHH"
 //     }
 //   }
-// ```
 //
 // @action call_webhook
 type CallWebhookAction struct {

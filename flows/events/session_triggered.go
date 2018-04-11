@@ -12,7 +12,6 @@ const TypeSessionTriggered string = "session_triggered"
 
 // SessionTriggeredEvent events are created when an action wants to start a subflow
 //
-// ```
 //   {
 //     "type": "session_triggered",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -38,7 +37,6 @@ const TypeSessionTriggered string = "session_triggered"
 //       }
 //     }
 //   }
-// ```
 //
 // @event session_triggered
 type SessionTriggeredEvent struct {

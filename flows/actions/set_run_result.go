@@ -16,7 +16,6 @@ const TypeSetRunResult string = "set_run_result"
 // Both the value and category fields may be templates. A `run_result_changed` event will be created with the
 // final values.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "set_run_result",
@@ -24,7 +23,6 @@ const TypeSetRunResult string = "set_run_result"
 //     "value": "m",
 //     "category": "Male"
 //   }
-// ```
 //
 // @action set_run_result
 type SetRunResultAction struct {

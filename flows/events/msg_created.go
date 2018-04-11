@@ -9,7 +9,6 @@ const TypeMsgCreated string = "msg_created"
 
 // MsgCreatedEvent events are used for replies to the session contact.
 //
-// ```
 //   {
 //     "type": "msg_created",
 //     "created_on": "2006-01-02T15:04:05Z",
@@ -21,7 +20,6 @@ const TypeMsgCreated string = "msg_created"
 //       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //     }
 //   }
-// ```
 //
 // @event msg_created
 type MsgCreatedEvent struct {

@@ -14,7 +14,6 @@ const TypeSendMsg string = "send_msg"
 //
 // A `broadcast_created` event will be created with the evaluated text.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "send_msg",
@@ -22,7 +21,6 @@ const TypeSendMsg string = "send_msg"
 //     "attachments": [],
 //     "all_urns": false
 //   }
-// ```
 //
 // @action send_msg
 type SendMsgAction struct {

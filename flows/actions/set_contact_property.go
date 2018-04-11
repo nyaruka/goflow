@@ -15,14 +15,12 @@ const TypeSetContactProperty string = "set_contact_property"
 // SetContactPropertyAction can be used to update one of the built in fields for a contact of "name" or
 // "language". An `contact_property_changed` event will be created with the corresponding values.
 //
-// ```
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "set_contact_property",
 //     "property": "language",
 //     "value": "eng"
 //   }
-// ```
 //
 // @action set_contact_property
 type SetContactPropertyAction struct {

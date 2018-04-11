@@ -12,13 +12,11 @@ const TypeContactURNAdded string = "contact_urn_added"
 
 // ContactURNAddedEvent events will be created with the URN that should be added to the current contact.
 //
-// ```
 //   {
 //     "type": "contact_urn_added",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "urn": "tel:+12345678900"
 //   }
-// ```
 //
 // @event contact_urn_added
 type ContactURNAddedEvent struct {
