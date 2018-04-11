@@ -32,7 +32,7 @@ func (t XTestResult) Reduce() types.XPrimitive {
 	return types.NewXBool(t.matched)
 }
 
-func (t XTestResult) ToJSON() types.XString { return types.NewXString("TODO") }
+func (t XTestResult) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}

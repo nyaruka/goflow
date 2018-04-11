@@ -35,27 +35,32 @@ func NewXEmptyMap() XMap {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (m *xmap) Reduce() XPrimitive { return m }
 
-// ToString converts this type to a string
-func (m *xmap) ToString() XString {
+// ToXString converts this type to a string
+func (m *xmap) ToXString() XString {
 	strs := make(map[string]XString, len(m.values))
 	for k, v := range m.values {
-		strs[k] = v.Reduce().ToString()
+		strs[k] = v.Reduce().ToXString()
 	}
 	return MustMarshalToXString(strs)
 }
 
-// ToBool converts this type to a bool
-func (m *xmap) ToBool() XBool {
+// ToXBool converts this type to a bool
+func (m *xmap) ToXBool() XBool {
 	return len(m.values) > 0
 }
 
-// ToJSON converts this type to JSON
-func (m *xmap) ToJSON() XString {
+// ToXJSON converts this type to JSON
+func (m *xmap) ToXJSON() XString {
 	marshaled := make(map[string]json.RawMessage, len(m.values))
 	for k, v := range m.values {
-		marshaled[k] = json.RawMessage(v.ToJSON())
+		marshaled[k] = json.RawMessage(v.ToXJSON())
 	}
 	return MustMarshalToXString(marshaled)
+}
+
+// MarshalJSON converts this type to internal JSON
+func (m *xmap) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.values)
 }
 
 // Length is called when the length of this object is requested in an expression
@@ -86,3 +91,4 @@ func (m *xmap) Keys() []string {
 }
 
 var _ XMap = (*xmap)(nil)
+var _ json.Marshaler = (*xmap)(nil)

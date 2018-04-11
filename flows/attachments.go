@@ -42,7 +42,7 @@ func (a Attachment) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (a Attachment) Reduce() types.XPrimitive { return types.NewXString(a.URL()) }
 
-func (a Attachment) ToJSON() types.XString { return types.NewXString("TODO") }
+func (a Attachment) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (Attachment)("")
 var _ types.XResolvable = (Attachment)("")
@@ -69,7 +69,7 @@ func (a AttachmentList) Reduce() types.XPrimitive {
 	return array
 }
 
-func (a AttachmentList) ToJSON() types.XString { return types.NewXString("TODO") }
+func (a AttachmentList) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (AttachmentList)(nil)
 var _ types.XIndexable = (AttachmentList)(nil)

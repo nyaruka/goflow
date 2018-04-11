@@ -108,7 +108,7 @@ func (w *WebhookCall) Reduce() types.XPrimitive {
 	return types.NewXString(w.body)
 }
 
-func (w *WebhookCall) ToJSON() types.XString { return types.NewXString("TODO") }
+func (w *WebhookCall) ToXJSON() types.XString { return types.NewXString("TODO") }
 
 var _ types.XValue = (*WebhookCall)(nil)
 var _ types.XResolvable = (*WebhookCall)(nil)
