@@ -865,10 +865,12 @@
 <a class="sourceLine" id="cb69-4" data-line-number="4">@(word_count(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a></code></pre></div>
 <p><a name="function:word_slice"></a></p>
 <h2 id="word_slicestring-start-end">word_slice(string, start, end)</h2>
-<p>Extracts a substring from <code>string</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 1)</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb70-1" data-line-number="1">@(word_slice(<span class="st">&quot;foo bar&quot;</span>, <span class="dv">1</span>, <span class="dv">1</span>)) → foo</a>
-<a class="sourceLine" id="cb70-2" data-line-number="2">@(word_slice(<span class="st">&quot;foo bar&quot;</span>, <span class="dv">1</span>, <span class="dv">3</span>)) → foo bar</a>
-<a class="sourceLine" id="cb70-3" data-line-number="3">@(word_slice(<span class="st">&quot;foo bar&quot;</span>, <span class="dv">3</span>, <span class="dv">4</span>)) →</a></code></pre></div>
+<p>Extracts a substring from <code>string</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 0). A negative stop value means that all words after the start should be returned.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb70-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</a>
+<a class="sourceLine" id="cb70-3" data-line-number="3">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</a>
+<a class="sourceLine" id="cb70-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
+<a class="sourceLine" id="cb70-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a></code></pre></div>
 </div>
 <h1 id="router-tests">Router Tests</h1>
 <p>Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using the <code>match</code> component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template function is used.</p>

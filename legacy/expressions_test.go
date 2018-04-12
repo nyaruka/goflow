@@ -82,18 +82,17 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// functions
 		{old: "@(REMOVE_FIRST_WORD(flow.blerg))", new: "@(remove_first_word(run.results.blerg))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2, 4))", new: "@(word_slice(run.results.blerg, 2, 4))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2, 4, true))", new: "@(word_slice(run.results.blerg, 2, 4, true))"},
+		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2 - 1))"},
+		{old: "@(WORD_SLICE(flow.blerg, 2, 4))", new: "@(word_slice(run.results.blerg, 2 - 1, 4 - 1))"},
 		{old: "@(FIELD(flow.blerg, 2, \",\"))", new: "@(field(run.results.blerg, 2 - 1, \",\"))"},
 		{old: "@(FIELD(flow.blerg, flow.index, \",\"))", new: "@(field(run.results.blerg, run.results.index - 1, \",\"))"},
-		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
-		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
+		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2 - 1, 4 - 1), \" \")[0])"},
+		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2 - 1, 4 - 1), \" \")[0])"},
 		{old: "@(\"this\" & contact.that)", new: "@(\"this\" & contact.fields.that)"},
 		{old: "@(FIRST_WORD(flow.blerg))", new: "@(split(run.results.blerg, \" \")[0])"},
 		{old: "@(WORD(flow.blerg, flow.index))", new: "@(word(run.results.blerg, run.results.index - 1))"},
 		{old: "@(WORD(flow.blerg, 1))", new: "@(word(run.results.blerg, 1 - 1))"},
-		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2))"},
+		{old: "@(WORD_SLICE(flow.blerg, 2))", new: "@(word_slice(run.results.blerg, 2 - 1))"},
 		{old: "@(ABS(-5))", new: "@(abs(-5))"},
 		{old: "@(AVERAGE(1, 2, 3, 4, 5))", new: "@(mean(1, 2, 3, 4, 5))"},
 		{old: "@(AND(contact.age > 30, flow.amount < 5))", new: "@(and(contact.fields.age > 30, run.results.amount < 5))"},
@@ -107,7 +106,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: "@(MONTH(NOW()))", new: "@(format_date(now(), \"M\"))"},
 		{old: "@(NOW())", new: "@(now())"},
 		{old: "@(SECOND(NOW()))", new: "@(format_date(now(), \"s\"))"},
-		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2, 4), \" \")[0])"},
+		{old: "@(FIRST_WORD(WORD_SLICE(contact.blerg, 2, 4)))", new: "@(split(word_slice(contact.fields.blerg, 2 - 1, 4 - 1), \" \")[0])"},
 
 		// date addition should get converted to date_add
 		{old: "@(date.now + 5)", new: "@(date_add(now(), \"d\", 5))"},

@@ -803,11 +803,14 @@ func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
 	return types.XStringEmpty
 }
 
-// WordSlice extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 1)
+// WordSlice extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 0). A negative
+// stop value means that all words after the start should be returned.
 //
-//   @(word_slice("foo bar", 1, 1)) -> foo
-//   @(word_slice("foo bar", 1, 3)) -> foo bar
-//   @(word_slice("foo bar", 3, 4)) ->
+//   @(word_slice("bee cat dog", 0, 1)) -> bee
+//   @(word_slice("bee cat dog", 0, 2)) -> bee cat
+//   @(word_slice("bee cat dog", 1, -1)) -> cat dog
+//   @(word_slice("bee cat dog", 2, 3)) -> dog
+//   @(word_slice("bee cat dog", 3, 10)) ->
 //
 // @function word_slice(string, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
@@ -815,33 +818,31 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("WORD_SLICE takes exactly three arguments, got %d", len(args))
 	}
 
-	arg, xerr := types.ToXString(args[0])
+	str, xerr := types.ToXString(args[0])
 	if xerr != nil {
 		return xerr
 	}
-
 	start, xerr := types.ToInteger(args[1])
 	if xerr != nil {
 		return xerr
 	}
-	if start <= 0 {
-		return types.NewXErrorf("WORD_SLICE must start with a positive index")
-	}
-	start--
-
 	stop, xerr := types.ToInteger(args[2])
 	if xerr != nil {
 		return xerr
 	}
+
 	if start < 0 {
-		return types.NewXErrorf("WORD_SLICE must have a stop of 0 or greater")
+		return types.NewXErrorf("WORD_SLICE must start with a positive index")
+	}
+	if stop > 0 && stop <= start {
+		return types.NewXErrorf("WORD_SLICE must have a stop which is greater than the start")
 	}
 
-	words := utils.TokenizeString(arg.Native())
+	words := utils.TokenizeString(str.Native())
+
 	if start >= len(words) {
 		return types.XStringEmpty
 	}
-
 	if stop >= len(words) {
 		stop = len(words)
 	}
