@@ -86,7 +86,14 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	if ctx.Parameters() != nil {
 		params, _ = v.Visit(ctx.Parameters()).([]types.XValue)
 	}
+
 	val := function(v.env, params...)
+
+	// if function returned an error, wrap the error with the function name
+	if types.IsXError(val) {
+		return types.NewXErrorf("error calling %s: %s", strings.ToUpper(functionName), val.(types.XError).Error())
+	}
+
 	return val
 }
 
