@@ -48,6 +48,12 @@ var funcTests = []struct {
 	{"if", []types.XValue{}, ERROR},
 	{"if", []types.XValue{errorArg, xs("10"), xs("20")}, errorArg},
 
+	{"rand", []types.XValue{}, xn("0.3849275689214193274523267973563633859157562255859375")},
+	{"rand", []types.XValue{}, xn("0.607552015674623913099594574305228888988494873046875")},
+
+	{"rand_between", []types.XValue{xn("1"), xn("10")}, xn("5")},
+	{"rand_between", []types.XValue{xn("1"), xn("10")}, xn("10")},
+
 	{"round", []types.XValue{xs("10.5"), xs("0")}, xi(11)},
 	{"round", []types.XValue{xs("10.5"), xs("1")}, xn("10.5")},
 	{"round", []types.XValue{xs("10.51"), xs("1")}, xn("10.5")},
@@ -309,6 +315,9 @@ var funcTests = []struct {
 
 func TestFunctions(t *testing.T) {
 	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{})
+
+	utils.SetRand(utils.NewSeededRand(123456))
+	defer utils.SetRand(utils.DefaultRand)
 
 	for _, test := range funcTests {
 		xFunc := functions.XFUNCTIONS[test.name]

@@ -29,7 +29,7 @@ type SeededUUID4Generator struct {
 
 // NewSeededUUID4Generator creates a new SeededUUID4Generator from the given seed
 func NewSeededUUID4Generator(seed int64) *SeededUUID4Generator {
-	return &SeededUUID4Generator{rnd: rand.New(rand.NewSource(seed))}
+	return &SeededUUID4Generator{rnd: NewSeededRand(seed)}
 }
 
 // Next returns the next random UUID

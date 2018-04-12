@@ -2,8 +2,6 @@ package routers
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -36,7 +34,6 @@ func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	}
 
 	// pick a random exit
-	random := rand.New(rand.NewSource(time.Now().UnixNano()))
-	exitN := random.Intn(len(exits))
+	exitN := utils.RandIntN(len(exits))
 	return "", flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
 }

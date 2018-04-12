@@ -642,7 +642,7 @@
 <a class="sourceLine" id="cb37-3" data-line-number="3">@(left(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) → 😀😃</a>
 <a class="sourceLine" id="cb37-4" data-line-number="4">@(left(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:length"></a></p>
-<h2 id="lengthobject">length(object)</h2>
+<h2 id="lengthvalue">length(value)</h2>
 <p>Returns the length of the passed in string or array.</p>
 <p>length will return an error if it is passed an item which doesn’t have length.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb38-1" data-line-number="1">@(length(<span class="st">&quot;Hello&quot;</span>)) → <span class="dv">5</span></a>
@@ -732,11 +732,13 @@
 <p><a name="function:rand"></a></p>
 <h2 id="rand">rand()</h2>
 <p>Returns a single random number between [0.0-1.0).</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(rand() &gt; <span class="dv">0</span>) → true</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(rand()) → <span class="fl">0.3849275689214193274523267973563633859157562255859375</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">@(rand()) → <span class="fl">0.607552015674623913099594574305228888988494873046875</span></a></code></pre></div>
 <p><a name="function:rand_between"></a></p>
 <h2 id="rand_between">rand_between()</h2>
 <p>A single random integer in the given inclusive range.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" data-line-number="1">@(rand_between(<span class="dv">3</span>, <span class="dv">5</span>) &gt; <span class="dv">0</span>) → true</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" data-line-number="1">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">5</span></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
 <p><a name="function:read_code"></a></p>
 <h2 id="read_codecode">read_code(code)</h2>
 <p>Converts <code>code</code> into something that can be read by IVR systems</p>

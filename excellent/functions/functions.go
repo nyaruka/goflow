@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"math/rand"
 	"net/url"
 	"reflect"
 	"strings"
@@ -18,8 +17,6 @@ import (
 	humanize "github.com/dustin/go-humanize"
 	"github.com/shopspring/decimal"
 )
-
-var randSource = rand.NewSource(time.Now().UnixNano())
 
 // XFunction defines the interface that Excellent functions must implement
 type XFunction func(env utils.Environment, args ...types.XValue) types.XValue
@@ -494,25 +491,26 @@ func Mod(env utils.Environment, num1 types.XNumber, num2 types.XNumber) types.XV
 
 // Rand returns a single random number between [0.0-1.0).
 //
-//   @(rand() > 0) -> true
+//   @(rand()) -> 0.3849275689214193274523267973563633859157562255859375
+//   @(rand()) -> 0.607552015674623913099594574305228888988494873046875
 //
 // @function rand()
 func Rand(env utils.Environment) types.XValue {
-	return types.NewXNumber(decimal.NewFromFloat(rand.New(randSource).Float64()))
+	return types.NewXNumber(utils.RandDecimal())
 }
 
 // RandBetween a single random integer in the given inclusive range.
 //
-//   @(rand_between(3, 5) > 0) -> true
+//   @(rand_between(1, 10)) -> 5
+//   @(rand_between(1, 10)) -> 10
 //
 // @function rand_between()
 func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) types.XValue {
 	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
 
-	val := decimal.NewFromFloat(rand.New(randSource).Float64())
-	val = val.Mul(span).Add(min.Native())
+	val := utils.RandDecimal().Mul(span).Add(min.Native()).Floor()
 
-	return types.NewXNumber(val.Floor())
+	return types.NewXNumber(val)
 }
 
 // FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
