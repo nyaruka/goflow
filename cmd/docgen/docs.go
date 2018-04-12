@@ -36,6 +36,9 @@ func buildDocs(baseDir string) (string, error) {
 	server.Start()
 	defer server.Close()
 
+	utils.SetRand(utils.NewSeededRand(123456))
+	defer utils.SetRand(utils.DefaultRand)
+
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 

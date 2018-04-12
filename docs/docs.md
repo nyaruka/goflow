@@ -757,7 +757,7 @@ Returns the `count` most left characters of the passed in `string`
 
 <a name="function:length"></a>
 
-## length(object)
+## length(value)
 
 Returns the length of the passed in string or array.
 
@@ -924,14 +924,26 @@ Converts `num` to a string represented as a percentage
 
 <a name="function:rand"></a>
 
-## rand(floor, ceiling)
+## rand()
 
-Returns either a single random decimal between 0-1 or a random integer between `floor` and `ceiling` (inclusive)
+Returns a single random number between [0.0-1.0).
 
 
 ```objectivec
-@(rand() > 0) → true
-@(rand(1, 5) <= 5) → true
+@(rand()) → 0.3849275689214193274523267973563633859157562255859375
+@(rand()) → 0.607552015674623913099594574305228888988494873046875
+```
+
+<a name="function:rand_between"></a>
+
+## rand_between()
+
+A single random integer in the given inclusive range.
+
+
+```objectivec
+@(rand_between(1, 10)) → 5
+@(rand_between(1, 10)) → 10
 ```
 
 <a name="function:read_code"></a>

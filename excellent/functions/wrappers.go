@@ -16,6 +16,20 @@ func ArgCountCheck(name string, count int, f XFunction) XFunction {
 	}
 }
 
+// NoArgFunction creates an XFunction from a no-arg function
+func NoArgFunction(name string, f func(utils.Environment) types.XValue) XFunction {
+	return ArgCountCheck(name, 0, func(env utils.Environment, args ...types.XValue) types.XValue {
+		return f(env)
+	})
+}
+
+// OneArgFunction creates an XFunction from a single-arg function
+func OneArgFunction(name string, f func(utils.Environment, types.XValue) types.XValue) XFunction {
+	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
+		return f(env, args[0])
+	})
+}
+
 // OneStringFunction creates an XFunction from a single string function
 func OneStringFunction(name string, f func(utils.Environment, types.XString) types.XValue) XFunction {
 	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {

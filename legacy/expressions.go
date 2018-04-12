@@ -196,7 +196,7 @@ var functionTemplates = map[string]functionTemplate{
 	"roundup":     {name: "round_up"},
 	"int":         {name: "round_down"},
 	"rounddown":   {name: "round_down"},
-	"randbetween": {name: "rand"},
+	"randbetween": {name: "rand_between"},
 	"rept":        {name: "repeat"},
 
 	"year":   {name: "format_date", params: `(%s, "YYYY")`},
