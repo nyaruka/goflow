@@ -152,10 +152,7 @@ func (c *Contact) Resolve(key string) types.XValue {
 	case "language":
 		return types.NewXString(string(c.language))
 	case "timezone":
-		if c.timezone != nil {
-			return types.NewXString(c.timezone.String())
-		}
-		return nil
+		return c.xTimezone()
 	case "urns":
 		return c.urns
 	case "urn":
@@ -182,7 +179,17 @@ func (c *Contact) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-func (c *Contact) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (c *Contact) ToXJSON() types.XString {
+	return types.ResolveKeys(c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON()
+}
+
+func (c *Contact) xTimezone() types.XValue {
+	if c.timezone != nil {
+		return types.NewXString(c.timezone.String())
+	}
+	return nil
+}
 
 var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)

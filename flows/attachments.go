@@ -6,7 +6,18 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 )
 
-// Attachment is a media attachment on a message
+// Attachment is a media attachment on a message, and it has the following properties which can be accessed:
+//
+//  * `content_type` the MIME type of the attachment
+//  * `url` the URL of the attachment
+//
+// Examples:
+//
+//   @run.input.attachments.0.content_type -> image/jpeg
+//   @run.input.attachments.0.url -> http://s3.amazon.com/bucket/test.jpg
+//   @(to_json(run.input.attachments.0)) -> {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
+//
+// @context attachment
 type Attachment string
 
 // ContentType returns the MIME type of this attachment
@@ -42,7 +53,10 @@ func (a Attachment) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (a Attachment) Reduce() types.XPrimitive { return types.NewXString(a.URL()) }
 
-func (a Attachment) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (a Attachment) ToXJSON() types.XString {
+	return types.ResolveKeys(a, "content_type", "url").ToXJSON()
+}
 
 var _ types.XValue = (Attachment)("")
 var _ types.XResolvable = (Attachment)("")
@@ -69,7 +83,8 @@ func (a AttachmentList) Reduce() types.XPrimitive {
 	return array
 }
 
-func (a AttachmentList) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (a AttachmentList) ToXJSON() types.XString { return a.Reduce().ToXJSON() }
 
 var _ types.XValue = (AttachmentList)(nil)
 var _ types.XIndexable = (AttachmentList)(nil)

@@ -59,7 +59,10 @@ func (r *Result) Reduce() types.XPrimitive {
 	return types.NewXString(r.Value)
 }
 
-func (r *Result) ToXJSON() types.XString { return types.MustMarshalToXString(r.Value) }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (r *Result) ToXJSON() types.XString {
+	return types.ResolveKeys(r, "name", "value", "category", "category_localized", "created_on").ToXJSON()
+}
 
 var _ types.XValue = (*Result)(nil)
 var _ types.XResolvable = (*Result)(nil)
@@ -113,13 +116,16 @@ func (r Results) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (r Results) Reduce() types.XPrimitive {
 	results := types.NewXEmptyMap()
-	for _, v := range r {
-		results.Put(v.Name, v.Reduce())
+	for k, v := range r {
+		results.Put(k, v)
 	}
 	return results
 }
 
-func (r Results) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (r Results) ToXJSON() types.XString {
+	return r.Reduce().ToXJSON()
+}
 
 var _ types.XValue = (Results)(nil)
 var _ types.XLengthable = (Results)(nil)

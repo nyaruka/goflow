@@ -17,7 +17,7 @@ const TypeMsg string = "msg"
 // MsgInput is a message which can be used as input
 type MsgInput struct {
 	baseInput
-	urn         urns.URN
+	urn         *flows.ContactURN
 	text        string
 	attachments flows.AttachmentList
 }
@@ -26,7 +26,7 @@ type MsgInput struct {
 func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Time, urn urns.URN, text string, attachments []flows.Attachment) *MsgInput {
 	return &MsgInput{
 		baseInput:   baseInput{uuid: uuid, channel: channel, createdOn: createdOn},
-		urn:         urn,
+		urn:         flows.NewContactURN(urn, nil),
 		text:        text,
 		attachments: attachments,
 	}
@@ -41,7 +41,7 @@ func (i *MsgInput) Resolve(key string) types.XValue {
 	case "type":
 		return types.NewXString(TypeMsg)
 	case "urn":
-		return types.NewXString(i.urn.String())
+		return i.urn
 	case "text":
 		return types.NewXString(i.text)
 	case "attachments":
@@ -62,8 +62,10 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	return types.NewXString(strings.Join(parts, "\n"))
 }
 
-// ToXJSON converts this type to JSON
-func (i *MsgInput) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (i *MsgInput) ToXJSON() types.XString {
+	return types.ResolveKeys(i, "uuid", "created_on", "channel", "type", "urn", "text", "attachments").ToXJSON()
+}
 
 var _ types.XValue = (*MsgInput)(nil)
 var _ types.XResolvable = (*MsgInput)(nil)
@@ -105,7 +107,7 @@ func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error
 	input.baseInput.uuid = i.UUID
 	input.baseInput.channel = channel
 	input.baseInput.createdOn = i.CreatedOn
-	input.urn = i.URN
+	input.urn = flows.NewContactURN(i.URN, nil)
 	input.text = i.Text
 	input.attachments = i.Attachments
 	return &input, nil
@@ -120,7 +122,7 @@ func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	}
 	envelope.baseInputEnvelope.UUID = i.UUID()
 	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
-	envelope.URN = i.urn
+	envelope.URN = i.urn.URN
 	envelope.Text = i.text
 	envelope.Attachments = i.attachments
 

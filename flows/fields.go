@@ -95,7 +95,8 @@ func (v *FieldValue) Reduce() types.XPrimitive {
 	return v.TypedValue().Reduce()
 }
 
-func (v *FieldValue) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (v *FieldValue) ToXJSON() types.XString { return v.Reduce().ToXJSON() }
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
@@ -152,12 +153,15 @@ func (f FieldValues) Resolve(key string) types.XValue {
 func (f FieldValues) Reduce() types.XPrimitive {
 	values := types.NewXEmptyMap()
 	for k, v := range f {
-		values.Put(string(k), v.Reduce())
+		values.Put(string(k), v)
 	}
 	return values
 }
 
-func (f FieldValues) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (f FieldValues) ToXJSON() types.XString {
+	return f.Reduce().ToXJSON()
+}
 
 var _ types.XValue = (FieldValues)(nil)
 var _ types.XLengthable = (FieldValues)(nil)

@@ -200,7 +200,7 @@
                             "type": "call_webhook",
                             "url": "http://localhost/?cmd=success",
                             "method": "POST",
-                            "body": "{ \"contact\": @(to_json(contact.uuid)), \"soda\": @(to_json(run.results.soda)) }"
+                            "body": "{ \"contact\": @(to_json(contact.uuid)), \"soda\": @(to_json(run.results.soda.value)) }"
                         },
                         {
                             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",

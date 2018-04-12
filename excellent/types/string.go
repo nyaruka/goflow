@@ -22,7 +22,7 @@ func (x XString) ToXString() XString { return x }
 // ToXBool converts this type to a bool
 func (x XString) ToXBool() XBool { return string(x) != "" && strings.ToLower(string(x)) != "false" }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (x XString) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type

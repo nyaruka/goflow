@@ -51,6 +51,7 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //   @contact.urns.0.path -> +12065551212
 //   @contact.urns.1.display -> nyaruka
 //   @(format_urn(contact.urns.0)) -> (206) 555-1212
+//   @(to_json(contact.urns.0)) -> {"display":"","path":"+12065551212","scheme":"tel"}
 //
 // @context urn
 type ContactURN struct {
@@ -87,7 +88,10 @@ func (u *ContactURN) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXString(string(u.URN)) }
 
-func (u *ContactURN) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (u *ContactURN) ToXJSON() types.XString {
+	return types.ResolveKeys(u, "scheme", "path", "display").ToXJSON()
+}
 
 var _ types.XValue = (*ContactURN)(nil)
 var _ types.XResolvable = (*ContactURN)(nil)
@@ -180,7 +184,10 @@ func (l URNList) Reduce() types.XPrimitive {
 	return array
 }
 
-func (l URNList) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (l URNList) ToXJSON() types.XString {
+	return l.Reduce().ToXJSON()
+}
 
 // Index is called when this object is indexed into in an expression
 func (l URNList) Index(index int) types.XValue {

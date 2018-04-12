@@ -40,7 +40,7 @@ func (x XNumber) ToXString() XString { return XString(x.Native().String()) }
 // ToXBool converts this type to a bool
 func (x XNumber) ToXBool() XBool { return XBool(!x.Native().Equals(decimal.Zero)) }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (x XNumber) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type

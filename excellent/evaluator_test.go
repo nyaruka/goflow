@@ -26,18 +26,6 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-// ToXJSON converts this type to JSON
-func (v *testXObject) ToXJSON() types.XString {
-	e := struct {
-		Foo string `json:"foo"`
-		Bar int    `json:"bar"`
-	}{
-		Foo: v.foo,
-		Bar: v.bar,
-	}
-	return types.MustMarshalToXString(e)
-}
-
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXString(v.foo) }
 
 func (v *testXObject) Resolve(key string) types.XValue {
@@ -51,6 +39,11 @@ func (v *testXObject) Resolve(key string) types.XValue {
 	default:
 		return types.NewXResolveError(v, key)
 	}
+}
+
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (v *testXObject) ToXJSON() types.XString {
+	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
 }
 
 var _ types.XValue = &testXObject{}

@@ -32,7 +32,7 @@ const (
 //   @contact.channel.name -> My Android Phone
 //   @contact.channel.address -> +12345671111
 //   @run.input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
-//   @(to_json(contact.channel)) -> {"uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d","name":"My Android Phone","address":"+12345671111"}
+//   @(to_json(contact.channel)) -> {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"}
 //
 // @context channel
 type Channel interface {
@@ -125,18 +125,9 @@ func (c *channel) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (c *channel) ToXJSON() types.XString {
-	e := struct {
-		UUID    string `json:"uuid"`
-		Name    string `json:"name"`
-		Address string `json:"address"`
-	}{
-		UUID:    string(c.uuid),
-		Name:    c.name,
-		Address: c.address,
-	}
-	return types.MustMarshalToXString(e)
+	return types.ResolveKeys(c, "uuid", "name", "address").ToXJSON()
 }
 
 var _ Channel = (*channel)(nil)

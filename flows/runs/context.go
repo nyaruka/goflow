@@ -39,7 +39,10 @@ func (c *runContext) Reduce() types.XPrimitive {
 	return types.NewXString(c.run.UUID().String())
 }
 
-func (c *runContext) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON can never actually be called on the context root
+func (c *runContext) ToXJSON() types.XString {
+	panic("shouldn't be possible to call ToXJSON on the context root")
+}
 
 var _ types.XValue = (*runContext)(nil)
 var _ types.XResolvable = (*runContext)(nil)
@@ -79,7 +82,10 @@ func (c *relatedRunContext) Reduce() types.XPrimitive {
 	return types.NewXString(c.run.UUID().String())
 }
 
-func (c *relatedRunContext) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (c *relatedRunContext) ToXJSON() types.XString {
+	return types.ResolveKeys(c, "uuid", "contact", "flow", "status", "results").ToXJSON()
+}
 
 var _ types.XValue = (*relatedRunContext)(nil)
 var _ types.XResolvable = (*relatedRunContext)(nil)
