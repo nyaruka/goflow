@@ -804,7 +804,7 @@ func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
 }
 
 // WordSlice extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 0). A negative
-// stop value means that all words after the start should be returned.
+// end value means that all words after the start should be returned.
 //
 //   @(word_slice("bee cat dog", 0, 1)) -> bee
 //   @(word_slice("bee cat dog", 0, 2)) -> bee cat
@@ -826,7 +826,7 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	if xerr != nil {
 		return xerr
 	}
-	stop, xerr := types.ToInteger(args[2])
+	end, xerr := types.ToInteger(args[2])
 	if xerr != nil {
 		return xerr
 	}
@@ -834,7 +834,7 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	if start < 0 {
 		return types.NewXErrorf("WORD_SLICE must start with a positive index")
 	}
-	if stop > 0 && stop <= start {
+	if end > 0 && end <= start {
 		return types.NewXErrorf("WORD_SLICE must have a stop which is greater than the start")
 	}
 
@@ -843,12 +843,12 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	if start >= len(words) {
 		return types.XStringEmpty
 	}
-	if stop >= len(words) {
-		stop = len(words)
+	if end >= len(words) {
+		end = len(words)
 	}
 
-	if stop > 0 {
-		return types.NewXString(strings.Join(words[start:stop], " "))
+	if end > 0 {
+		return types.NewXString(strings.Join(words[start:end], " "))
 	}
 	return types.NewXString(strings.Join(words[start:], " "))
 }

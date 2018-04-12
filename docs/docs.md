@@ -1227,7 +1227,7 @@ Returns the number of words in `string`
 ## word_slice(string, start, end)
 
 Extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 0). A negative
-stop value means that all words after the start should be returned.
+end value means that all words after the start should be returned.
 
 
 ```objectivec
