@@ -32,7 +32,10 @@ func (t XTestResult) Reduce() types.XPrimitive {
 	return types.NewXBool(t.matched)
 }
 
-func (t XTestResult) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (t XTestResult) ToXJSON() types.XString {
+	return types.ResolveKeys(t, "matched", "match").ToXJSON()
+}
 
 // XFalseResult can be used as a singleton for false result values
 var XFalseResult = XTestResult{}

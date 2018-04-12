@@ -40,6 +40,15 @@ type XIndexable interface {
 	Index(index int) XValue
 }
 
+// ResolveKeys is a utility function that resolves multiple keys on an XResolvable and returns the results as a map
+func ResolveKeys(resolvable XResolvable, keys ...string) XMap {
+	values := make(map[string]XValue, len(keys))
+	for _, key := range keys {
+		values[key] = resolvable.Resolve(key)
+	}
+	return NewXMap(values)
+}
+
 // Compare returns the difference between two given values
 func Compare(x1 XValue, x2 XValue) (int, error) {
 	if utils.IsNil(x1) && utils.IsNil(x2) {

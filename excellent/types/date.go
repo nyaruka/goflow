@@ -23,7 +23,7 @@ func (x XDate) ToXString() XString { return XString(utils.DateToISO(x.Native()))
 // ToXBool converts this type to a bool
 func (x XDate) ToXBool() XBool { return XBool(!x.Native().IsZero()) }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (x XDate) ToXJSON() XString { return MustMarshalToXString(utils.DateToISO(x.Native())) }
 
 // Native returns the native value of this type

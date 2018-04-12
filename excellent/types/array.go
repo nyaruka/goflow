@@ -41,11 +41,14 @@ func (a *xarray) ToXBool() XBool {
 	return len(a.values) > 0
 }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (a *xarray) ToXJSON() XString {
 	marshaled := make([]json.RawMessage, len(a.values))
-	for i := range a.values {
-		marshaled[i] = json.RawMessage(a.values[i].ToXJSON())
+	for i, v := range a.values {
+		asJSON, err := ToXJSON(v)
+		if err == nil {
+			marshaled[i] = json.RawMessage(asJSON)
+		}
 	}
 	return MustMarshalToXString(marshaled)
 }

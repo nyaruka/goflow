@@ -122,8 +122,8 @@ func (v *varMapper) Reduce() types.XPrimitive {
 	return types.NewXString(v.String())
 }
 
-// Reduce is called when this object needs to be reduced to a primitive
-func (v *varMapper) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON won't be called on this but needs to be defined
+func (v *varMapper) ToXJSON() types.XString { return types.XStringEmpty }
 
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]

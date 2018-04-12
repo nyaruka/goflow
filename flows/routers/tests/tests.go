@@ -340,7 +340,10 @@ func (m *patternMatch) Reduce() types.XPrimitive {
 	return m.groups.Index(0).(types.XString)
 }
 
-func (m *patternMatch) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (m *patternMatch) ToXJSON() types.XString {
+	return types.ResolveKeys(m, "groups").ToXJSON()
+}
 
 var _ types.XValue = (*patternMatch)(nil)
 var _ types.XResolvable = (*patternMatch)(nil)

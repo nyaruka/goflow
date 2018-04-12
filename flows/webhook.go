@@ -123,7 +123,10 @@ func (w *WebhookCall) Reduce() types.XPrimitive {
 	return types.NewXString(w.body)
 }
 
-func (w *WebhookCall) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (w *WebhookCall) ToXJSON() types.XString {
+	return types.ResolveKeys(w, "body", "json", "url", "request", "response", "status", "status_code").ToXJSON()
+}
 
 var _ types.XValue = (*WebhookCall)(nil)
 var _ types.XResolvable = (*WebhookCall)(nil)

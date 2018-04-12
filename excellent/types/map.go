@@ -49,11 +49,14 @@ func (m *xmap) ToXBool() XBool {
 	return len(m.values) > 0
 }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (m *xmap) ToXJSON() XString {
 	marshaled := make(map[string]json.RawMessage, len(m.values))
 	for k, v := range m.values {
-		marshaled[k] = json.RawMessage(v.ToXJSON())
+		asJSON, err := ToXJSON(v)
+		if err == nil {
+			marshaled[k] = json.RawMessage(asJSON)
+		}
 	}
 	return MustMarshalToXString(marshaled)
 }

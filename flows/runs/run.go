@@ -284,7 +284,9 @@ func (r *flowRun) Reduce() types.XPrimitive {
 	return types.NewXString(string(r.uuid))
 }
 
-func (r *flowRun) ToXJSON() types.XString { return types.NewXString("TODO") }
+func (r *flowRun) ToXJSON() types.XString {
+	return types.ResolveKeys(r, "uuid", "contact", "flow", "input", "webhook", "status", "results", "created_on", "exited_on").ToXJSON()
+}
 
 func (r *flowRun) Snapshot() flows.RunSummary {
 	return flows.NewRunSummaryFromRun(r)

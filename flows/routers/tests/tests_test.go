@@ -38,7 +38,10 @@ func (r *testResolvable) Reduce() types.XPrimitive {
 	return types.NewXString("hello")
 }
 
-func (r *testResolvable) ToXJSON() types.XString { return types.NewXString("TODO") }
+// ToXJSON is called when this type is passed to @(to_json(...))
+func (r *testResolvable) ToXJSON() types.XString {
+	return types.ResolveKeys(r, "foo", "zed").ToXJSON()
+}
 
 var testTests = []struct {
 	name     string

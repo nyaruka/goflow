@@ -11,6 +11,14 @@
                     "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                     "actions": [
                         {
+                            "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                            "type": "start_flow",
+                            "flow": {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Collect Language"
+                            }
+                        },
+                        {
                             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
                             "type": "add_input_labels",
                             "labels": [
@@ -46,7 +54,7 @@
                                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                                 "name": "Twilio Channel"
                             }
-                        },
+                        }, 
                         {
                             "uuid": "3248a064-bc42-4dff-aa0f-93d85de2f600",
                             "type": "set_run_result",
@@ -58,9 +66,35 @@
                     "wait": {
                         "type": "msg",
                         "timeout": 600
-                    }
+                    },
+                    "exits": [
+                        {
+                            "uuid": "2d481ce6-efcf-4898-a825-f76208e32f2a",
+                            "destination_node_uuid": "3bfdb92a-3ffd-48e5-adbd-2ad8f8869437"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "3bfdb92a-3ffd-48e5-adbd-2ad8f8869437",
+                    "actions": [],
+                    "wait": {
+                        "type": "msg",
+                        "timeout": 600
+                    } 
                 }
             ]
+        }
+    },
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "content": {
+            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "name": "Collect Language",
+            "nodes": [{
+                "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+                "actions": []
+            }]
         }
     },
     {

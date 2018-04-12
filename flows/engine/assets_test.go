@@ -99,7 +99,7 @@ func TestFlowValidation(t *testing.T) {
 	assert.NoError(t, err)
 
 	// break the add_input_labels action so references an invalid label
-	addLabelAction := flow.Nodes()[0].Actions()[0].(*actions.AddInputLabelsAction)
+	addLabelAction := flow.Nodes()[0].Actions()[1].(*actions.AddInputLabelsAction)
 	addLabelAction.Labels[0].UUID = "xyx"
 
 	// check that validation fails
@@ -110,7 +110,7 @@ func TestFlowValidation(t *testing.T) {
 	addLabelAction.Labels[0].UUID = "3f65d88a-95dc-4140-9451-943e94e06fea"
 
 	// break the add_group action so references an invalid group
-	addGroupAction := flow.Nodes()[0].Actions()[1].(*actions.AddContactGroupsAction)
+	addGroupAction := flow.Nodes()[0].Actions()[2].(*actions.AddContactGroupsAction)
 	addGroupAction.Groups[0].UUID = "xyx"
 
 	// check that validation fails
@@ -121,7 +121,7 @@ func TestFlowValidation(t *testing.T) {
 	addGroupAction.Groups[0].UUID = "2aad21f6-30b7-42c5-bd7f-1b720c154817"
 
 	// break the set_contact_field action so references an invalid field
-	saveContactAction := flow.Nodes()[0].Actions()[2].(*actions.SetContactFieldAction)
+	saveContactAction := flow.Nodes()[0].Actions()[3].(*actions.SetContactFieldAction)
 	saveContactAction.Field.Key = "xyx"
 
 	// check that validation fails
@@ -132,7 +132,7 @@ func TestFlowValidation(t *testing.T) {
 	saveContactAction.Field.Key = "first_name"
 
 	// break the set_contact_channel action so references an invalid channel
-	prefChannelAction := flow.Nodes()[0].Actions()[3].(*actions.SetContactChannelAction)
+	prefChannelAction := flow.Nodes()[0].Actions()[4].(*actions.SetContactChannelAction)
 	prefChannelAction.Channel.UUID = "xyx"
 
 	// can't simulate a missing channel without the asset store trying to fetch it... but we can stuff the wrong thing in the store

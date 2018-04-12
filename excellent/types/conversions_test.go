@@ -22,16 +22,12 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-// ToXJSON converts this type to JSON
+// ToXJSON is called when this type is passed to @(to_json(...))
 func (v *testXObject) ToXJSON() types.XString {
-	e := struct {
-		Foo string `json:"foo"`
-		Bar int    `json:"bar"`
-	}{
-		Foo: v.foo,
-		Bar: v.bar,
-	}
-	return types.MustMarshalToXString(e)
+	return types.NewXMap(map[string]types.XValue{
+		"foo": types.NewXString(v.foo),
+		"bar": types.NewXNumberFromInt(v.bar),
+	}).ToXJSON()
 }
 
 // MarshalJSON converts this type to its internal JSON representation which can differ from ToJSON
@@ -149,19 +145,19 @@ func TestXValueRequiredConversions(t *testing.T) {
 		}, {
 			value:          NewTestXObject("Hello", 123),
 			asInternalJSON: `{"foo":"Hello"}`,
-			asJSON:         `{"foo":"Hello","bar":123}`,
+			asJSON:         `{"bar":123,"foo":"Hello"}`,
 			asString:       "Hello",
 			asBool:         true,
 		}, {
 			value:          NewTestXObject("", 123),
 			asInternalJSON: `{"foo":""}`,
-			asJSON:         `{"foo":"","bar":123}`,
+			asJSON:         `{"bar":123,"foo":""}`,
 			asString:       "",
 			asBool:         false, // because it reduces to a string which itself is false
 		}, {
 			value:          types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
 			asInternalJSON: `[{"foo":"Hello"},{"foo":"World"}]`,
-			asJSON:         `[{"foo":"Hello","bar":123},{"foo":"World","bar":456}]`,
+			asJSON:         `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
 			asString:       `["Hello","World"]`,
 			asBool:         true,
 		}, {
@@ -170,7 +166,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 				"second": NewTestXObject("World", 456),
 			}),
 			asInternalJSON: `{"first":{"foo":"Hello"},"second":{"foo":"World"}}`,
-			asJSON:         `{"first":{"foo":"Hello","bar":123},"second":{"foo":"World","bar":456}}`,
+			asJSON:         `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
 			asString:       `{"first":"Hello","second":"World"}`,
 			asBool:         true,
 		}, {
@@ -211,10 +207,10 @@ func TestXValueRequiredConversions(t *testing.T) {
 		asString, _ := types.ToXString(test.value)
 		asBool, _ := types.ToXBool(test.value)
 
-		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %+v", test.value)
-		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %+v", test.value)
-		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %+v", test.value)
-		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %+v", test.value)
+		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %s", test.value)
+		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %s", test.value)
+		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %s", test.value)
+		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %s", test.value)
 	}
 }
 
