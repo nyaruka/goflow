@@ -924,14 +924,24 @@ Converts `num` to a string represented as a percentage
 
 <a name="function:rand"></a>
 
-## rand(floor, ceiling)
+## rand()
 
-Returns either a single random decimal between 0-1 or a random integer between `floor` and `ceiling` (inclusive)
+Returns a single random number between [0.0-1.0).
 
 
 ```objectivec
 @(rand() > 0) → true
-@(rand(1, 5) <= 5) → true
+```
+
+<a name="function:rand_between"></a>
+
+## rand_between()
+
+A single random integer in the given inclusive range.
+
+
+```objectivec
+@(rand_between(3, 5) > 0) → true
 ```
 
 <a name="function:read_code"></a>

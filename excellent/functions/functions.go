@@ -41,15 +41,16 @@ var XFUNCTIONS = map[string]XFunction{
 
 	"legacy_add": LegacyAdd,
 
-	"round":      Round,
-	"round_up":   OneNumberFunction("round_up", RoundUp),
-	"round_down": OneNumberFunction("round_down", RoundDown),
-	"max":        Max,
-	"min":        Min,
-	"mean":       Mean,
-	"mod":        TwoNumberFunction("mod", Mod),
-	"rand":       Rand,
-	"abs":        OneNumberFunction("abs", Abs),
+	"round":        Round,
+	"round_up":     OneNumberFunction("round_up", RoundUp),
+	"round_down":   OneNumberFunction("round_down", RoundDown),
+	"max":          Max,
+	"min":          Min,
+	"mean":         Mean,
+	"mod":          TwoNumberFunction("mod", Mod),
+	"rand":         NoArgFunction("rand", Rand),
+	"rand_between": TwoNumberFunction("rand_between", RandBetween),
+	"abs":          OneNumberFunction("abs", Abs),
 
 	"format_num": FormatNum,
 	"read_code":  OneStringFunction("read_code", ReadCode),
@@ -87,8 +88,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"weekday":         OneDateFunction("weekday", Weekday),
 	"tz":              OneDateFunction("tz", TZ),
 	"tz_offset":       OneDateFunction("tz_offset", TZOffset),
-	"today":           Today,
-	"now":             Now,
+	"today":           NoArgFunction("today", Today),
+	"now":             NoArgFunction("now", Now),
 	"from_epoch":      FromEpoch,
 	"to_epoch":        ToEpoch,
 
@@ -508,44 +509,27 @@ func Mod(env utils.Environment, num1 types.XNumber, num2 types.XNumber) types.XV
 	return types.NewXNumber(num1.Native().Mod(num2.Native()))
 }
 
-// Rand returns either a single random decimal between 0-1 or a random integer between `floor` and `ceiling` (inclusive)
+// Rand returns a single random number between [0.0-1.0).
 //
 //   @(rand() > 0) -> true
-//   @(rand(1, 5) <= 5) -> true
 //
-// @function rand(floor, ceiling)
-func Rand(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 0 && len(args) != 2 {
-		return types.NewXErrorf("RAND takes either no arguments or two arguments, got %d", len(args))
-	}
+// @function rand()
+func Rand(env utils.Environment) types.XValue {
+	return types.NewXNumber(decimal.NewFromFloat(rand.New(randSource).Float64()))
+}
 
-	if len(args) == 0 {
-		return types.NewXNumber(decimal.NewFromFloat(rand.New(randSource).Float64()))
-	}
+// RandBetween a single random integer in the given inclusive range.
+//
+//   @(rand_between(3, 5) > 0) -> true
+//
+// @function rand_between()
+func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) types.XValue {
+	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
 
-	min, xerr := types.ToXNumber(args[0])
-	if xerr != nil {
-		return xerr
-	}
-	max, xerr := types.ToXNumber(args[1])
-	if xerr != nil {
-		return xerr
-	}
+	val := decimal.NewFromFloat(rand.New(randSource).Float64())
+	val = val.Mul(span).Add(min.Native())
 
-	// turn to integers
-	minDec := min.Native().Floor()
-	maxDec := max.Native().Floor()
-
-	spread := minDec.Sub(maxDec).Abs()
-
-	// we add one here as the golang rand does is not inclusive, 2 will always return 1
-	// since our contract is inclusive of both ends we need one more
-	add := rand.New(randSource).Int63n(spread.IntPart() + 1)
-
-	if minDec.Cmp(maxDec) <= 0 {
-		return types.NewXNumber(minDec.Add(decimal.NewFromFloat(float64(add))))
-	}
-	return types.NewXNumber(maxDec.Add(decimal.NewFromFloat(float64(add))))
+	return types.NewXNumber(val.Floor())
 }
 
 // FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
@@ -1463,11 +1447,7 @@ func TZOffset(env utils.Environment, date types.XDate) types.XValue {
 //   @(today()) -> 2018-04-11T00:00:00.000000Z
 //
 // @function today()
-func Today(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) > 0 {
-		return types.NewXErrorf("TODAY takes no arguments, got %d", len(args))
-	}
-
+func Today(env utils.Environment) types.XValue {
 	nowTZ := env.Now()
 	return types.NewXDate(time.Date(nowTZ.Year(), nowTZ.Month(), nowTZ.Day(), 0, 0, 0, 0, env.Timezone()))
 }
@@ -1513,11 +1493,7 @@ func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(now()) -> 2018-04-11T13:24:30.123456Z
 //
 // @function now()
-func Now(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) > 0 {
-		return types.NewXErrorf("NOW takes no arguments, got %d", len(args))
-	}
-
+func Now(env utils.Environment) types.XValue {
 	return types.NewXDate(env.Now())
 }
 

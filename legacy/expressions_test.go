@@ -148,7 +148,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: "@(MIN(flow.questions, 10))", new: "@(min(run.results.questions, 10))"},
 		{old: "@(POWER(2, 3))", new: "@(2 ^ 3)"},
 		{old: "@(RAND())", new: "@(rand())"},
-		{old: "@(RANDBETWEEN(1, 10))", new: "@(rand(1, 10))"},
+		{old: "@(RANDBETWEEN(1, 10))", new: "@(rand_between(1, 10))"},
 		{old: "@(ROUND(9.4378, 3))", new: "@(round(9.4378, 3))"},
 		{old: "@(ROUNDUP(9.4378, 3))", new: "@(round_up(9.4378, 3))"},
 		{old: "@(ROUNDDOWN(9.4378, 3))", new: "@(round_down(9.4378, 3))"},
