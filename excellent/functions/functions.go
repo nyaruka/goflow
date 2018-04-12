@@ -35,7 +35,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"if":  If,
 	"or":  Or,
 
-	"length":  Length,
+	"length":  OneArgFunction("length", Length),
 	"default": Default,
 	"array":   Array,
 
@@ -55,8 +55,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"format_num": FormatNum,
 	"read_code":  OneStringFunction("read_code", ReadCode),
 
-	"to_json":    ToJSON,
-	"from_json":  FromJSON,
+	"to_json":    OneArgFunction("to_json", ToJSON),
+	"from_json":  OneStringFunction("from_json", FromJSON),
 	"url_encode": OneStringFunction("url_encode", URLEncode),
 
 	"char":              OneNumberFunction("char", Char),
@@ -64,7 +64,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"split":             TwoStringFunction("split", Split),
 	"join":              Join,
 	"title":             OneStringFunction("title", Title),
-	"word":              Word,
+	"word":              StringAndIntegerFunction("word", Word),
 	"remove_first_word": OneStringFunction("remove_first_word", RemoveFirstWord),
 	"word_count":        OneStringFunction("word_count", WordCount),
 	"word_slice":        WordSlice,
@@ -81,7 +81,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	"format_date":     FormatDate,
 	"parse_date":      ParseDate,
-	"date":            Date,
+	"date":            OneStringFunction("date", Date),
 	"date_from_parts": DateFromParts,
 	"date_diff":       DateDiff,
 	"date_add":        DateAdd,
@@ -91,7 +91,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"today":           NoArgFunction("today", Today),
 	"now":             NoArgFunction("now", Now),
 	"from_epoch":      FromEpoch,
-	"to_epoch":        ToEpoch,
+	"to_epoch":        OneDateFunction("to_epoch", ToEpoch),
 
 	"format_urn": FormatURN,
 }
@@ -164,19 +164,15 @@ func LegacyAdd(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(length(array("a", "b", "c"))) -> 3
 //   @(length(1234)) -> ERROR
 //
-// @function length(object)
-func Length(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("LENGTH takes exactly one argument, got %d", len(args))
-	}
-
+// @function length(value)
+func Length(env utils.Environment, value types.XValue) types.XValue {
 	// argument must be a value with length
-	lengthable, isLengthable := args[0].(types.XLengthable)
+	lengthable, isLengthable := value.(types.XLengthable)
 	if isLengthable {
 		return types.NewXNumberFromInt(lengthable.Length())
 	}
 
-	return types.NewXErrorf("LENGTH requires an object with length as its first argument, got %s", reflect.TypeOf(args[0]))
+	return types.NewXErrorf("LENGTH requires an object with length as its first argument, got %s", reflect.TypeOf(value))
 }
 
 // Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
@@ -225,17 +221,8 @@ func Array(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(from_json("invalid json")) -> ERROR
 //
 // @function from_json(string)
-func FromJSON(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("FROM_JSON takes exactly one string argument, got %d", len(args))
-	}
-
-	arg, err := types.ToXString(args[0])
-	if err != nil {
-		return err
-	}
-
-	return types.JSONToXValue([]byte(arg.Native()))
+func FromJSON(env utils.Environment, str types.XString) types.XValue {
+	return types.JSONToXValue([]byte(str.Native()))
 }
 
 // ToJSON tries to return a JSON representation of `value`. An error is returned if there is
@@ -246,12 +233,8 @@ func FromJSON(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(to_json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 //
 // @function to_json(value)
-func ToJSON(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("TO_JSON takes exactly one argument, got %d", len(args))
-	}
-
-	asJSON, err := types.ToXJSON(args[0])
+func ToJSON(env utils.Environment, value types.XValue) types.XValue {
+	asJSON, err := types.ToXJSON(value)
 	if err != nil {
 		return err
 	}
@@ -750,27 +733,13 @@ func Title(env utils.Environment, str types.XString) types.XValue {
 //   @(word("one two.three", 2)) -> three
 //
 // @function word(string, offset)
-func Word(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 2 {
-		return types.NewXErrorf("WORD takes exactly two arguments, got %d", len(args))
+func Word(env utils.Environment, str types.XString, offset int) types.XValue {
+	words := utils.TokenizeString(str.Native())
+	if offset >= len(words) {
+		return types.NewXErrorf("Word offset %d is greater than number of words %d", offset, len(words))
 	}
 
-	val, xerr := types.ToXString(args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	word, xerr := types.ToInteger(args[1])
-	if xerr != nil {
-		return xerr
-	}
-
-	words := utils.TokenizeString(val.Native())
-	if word >= len(words) {
-		return types.NewXErrorf("Word offset %d is greater than number of words %d", word, len(words))
-	}
-
-	return types.NewXString(words[word])
+	return types.NewXString(words[offset])
 }
 
 // RemoveFirstWord removes the 1st word of `string`
@@ -1248,17 +1217,8 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(date("NOT DATE")) -> ERROR
 //
 // @function date(string)
-func Date(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("DATE requires exactly one argument, got %d", len(args))
-	}
-
-	arg1, xerr := types.ToXString(args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	date, err := utils.DateFromString(env, arg1.Native())
+func Date(env utils.Environment, str types.XString) types.XValue {
+	date, err := utils.DateFromString(env, str.Native())
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1475,16 +1435,7 @@ func FromEpoch(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(to_epoch("2017-06-12T16:56:59.000000Z")) -> 1497286619000000000
 //
 // @function to_epoch(date)
-func ToEpoch(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("TO_EPOCH takes exactly one date argument, got %d", len(args))
-	}
-
-	date, xerr := types.ToXDate(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
+func ToEpoch(env utils.Environment, date types.XDate) types.XValue {
 	return types.NewXNumberFromInt64(date.Native().UnixNano())
 }
 
