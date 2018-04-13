@@ -47,38 +47,61 @@ var sessionAssets = `[
         "content": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration",
-            "nodes": [{
-                "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-                "actions": [
-                    {
-                        "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
-                        "type": "start_flow",
-                        "flow": {
-                            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                            "name": "Collect Age"
+            "nodes": [
+                {
+                    "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "actions": [
+                        {
+                            "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                            "type": "start_flow",
+                            "flow": {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Collect Age"
+                            }
                         }
-                    },
-                    {
-                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
-                        "type": "set_run_result",
-                        "name": "Phone Number",
-                        "value": "+12344563452"
-                    },
-                    {
-                        "uuid": "72fea511-246f-49ad-846d-853b22ecc9c9",
-                        "type": "set_run_result",
-                        "name": "Favorite Color",
-                        "value": "red",
-                        "category": "Red"
-                    },
-                    {
-                        "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
-                        "type": "call_webhook",
-                        "method": "GET",
-                        "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
-                    }
-                ]
-            }]
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                            "destination_node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "actions": [
+                        {
+                            "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                            "type": "set_run_result",
+                            "name": "Phone Number",
+                            "value": "+12344563452"
+                        },
+                        {
+                            "uuid": "72fea511-246f-49ad-846d-853b22ecc9c9",
+                            "type": "set_run_result",
+                            "name": "Favorite Color",
+                            "value": "red",
+                            "category": "Red"
+                        },
+                        {
+                            "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
+                            "type": "call_webhook",
+                            "method": "GET",
+                            "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
+                            "destination_node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                    "actions": []
+                }
+            ]
         }
     },
     {
@@ -302,10 +325,10 @@ func CreateTestSession(actionToAdd flows.Action) (flows.Session, error) {
 	// override the session environment
 	session.SetEnvironment(newTestEnvironment())
 
-	// optional modify the main flow by adding the provided action
+	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {
 		flow, _ := session.Assets().GetFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
-		flow.Nodes()[0].AddAction(actionToAdd)
+		flow.Nodes()[2].AddAction(actionToAdd)
 	}
 
 	// read our trigger

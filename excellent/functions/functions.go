@@ -1221,7 +1221,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 // date will return an error if it is unable to convert the string to a date.
 //
 //   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000Z
-//   @(date("2010 05 10 ")) -> 2010-05-10T00:00:00.000000Z
+//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000Z
 //   @(date("NOT DATE")) -> ERROR
 //
 // @function date(string)

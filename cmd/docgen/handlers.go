@@ -192,8 +192,16 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 		return nil, err
 	}
 
-	// only interested in events after the new action
-	eventLog := session.Events()[4:]
+	path := session.Runs()[0].Path()
+	lastStep := path[len(path)-1]
+
+	// only interested in events created on the last step
+	eventLog := make([]flows.Event, 0)
+	for _, event := range session.Events() {
+		if event.StepUUID() == lastStep.UUID() {
+			eventLog = append(eventLog, event)
+		}
+	}
 
 	eventJSON := make([]json.RawMessage, len(eventLog))
 	for i, event := range eventLog {
