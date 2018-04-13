@@ -68,7 +68,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85",
+                        "flow": {
+                            "name": "Triggered Flow",
+                            "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
+                        },
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",

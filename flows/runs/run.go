@@ -299,10 +299,10 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID     flows.RunUUID          `json:"uuid" validate:"required,uuid4"`
-	FlowUUID flows.FlowUUID         `json:"flow_uuid" validate:"required,uuid4"`
-	Path     []*step                `json:"path" validate:"dive"`
-	Events   []*utils.TypedEnvelope `json:"events,omitempty"`
+	UUID   flows.RunUUID          `json:"uuid" validate:"required,uuid4"`
+	Flow   *flows.FlowReference   `json:"flow" validate:"required,dive"`
+	Path   []*step                `json:"path" validate:"dive"`
+	Events []*utils.TypedEnvelope `json:"events,omitempty"`
 
 	Status     flows.RunStatus `json:"status"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
@@ -337,7 +337,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.exitedOn = envelope.ExitedOn
 
 	// lookup flow
-	if r.flow, err = session.Assets().GetFlow(envelope.FlowUUID); err != nil {
+	if r.flow, err = session.Assets().GetFlow(envelope.Flow.UUID); err != nil {
 		return nil, err
 	}
 
@@ -387,7 +387,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	var err error
 
 	re.UUID = r.uuid
-	re.FlowUUID = r.flow.UUID()
+	re.Flow = r.flow.Reference()
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
 	re.ExpiresOn = r.expiresOn

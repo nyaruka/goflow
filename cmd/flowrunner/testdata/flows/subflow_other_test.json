@@ -164,7 +164,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
+                        "flow": {
+                            "name": "Parent Flow",
+                            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+                        },
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -207,7 +210,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                        "flow": {
+                            "name": "Rules",
+                            "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                        },
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "path": [
                             {
@@ -356,7 +362,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
+                        "flow": {
+                            "name": "Parent Flow",
+                            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+                        },
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -442,7 +451,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                        "flow": {
+                            "name": "Rules",
+                            "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                        },
                         "input": {
                             "channel": {
                                 "name": "Android Channel",
@@ -658,7 +670,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
+                        "flow": {
+                            "name": "Parent Flow",
+                            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+                        },
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -796,7 +811,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                        "flow": {
+                            "name": "Rules",
+                            "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                        },
                         "input": {
                             "channel": {
                                 "name": "Android Channel",
@@ -1051,7 +1069,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
+                        "flow": {
+                            "name": "Parent Flow",
+                            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+                        },
                         "input": {
                             "channel": {
                                 "name": "Android Channel",
@@ -1224,7 +1245,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                        "flow": {
+                            "name": "Rules",
+                            "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                        },
                         "input": {
                             "channel": {
                                 "name": "Android Channel",
@@ -1513,7 +1537,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
+                        "flow": {
+                            "name": "Parent Flow",
+                            "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
+                        },
                         "input": {
                             "channel": {
                                 "name": "Android Channel",
@@ -1695,7 +1722,10 @@
                         ],
                         "exited_on": "2000-01-01T00:00:00.000000000-00:00",
                         "expires_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "flow_uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+                        "flow": {
+                            "name": "Rules",
+                            "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                        },
                         "input": {
                             "channel": {
                                 "name": "Android Channel",

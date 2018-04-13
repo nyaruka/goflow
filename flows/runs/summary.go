@@ -40,7 +40,7 @@ var _ flows.RunSummary = (*runSummary)(nil)
 
 type runSummaryEnvelope struct {
 	UUID    flows.RunUUID        `json:"uuid" validate:"uuid4"`
-	Flow    *flows.FlowReference `json:"flow" validate:"dive"`
+	Flow    *flows.FlowReference `json:"flow" validate:"required,dive"`
 	Contact json.RawMessage      `json:"contact" validate:"required"`
 	Status  flows.RunStatus      `json:"status" validate:"required"`
 	Results flows.Results        `json:"results"`
