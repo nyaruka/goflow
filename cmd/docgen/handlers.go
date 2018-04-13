@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
@@ -45,6 +46,12 @@ func handleFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 
 	// get name of function from signature to use as our anchor
 	name := item.tagValue[0:strings.Index(item.tagValue, "(")]
+
+	// check the function name is a registered function
+	_, exists := functions.XFUNCTIONS[name]
+	if !exists {
+		return fmt.Errorf("docstring function tag %s isn't a registered function", item.tagValue)
+	}
 
 	// check the examples
 	for _, l := range item.examples {
