@@ -3,36 +3,49 @@ package functions
 import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
-	"strings"
 )
 
 // ArgCountCheck wraps an XFunction and checks the number of args
-func ArgCountCheck(name string, count int, f XFunction) XFunction {
+func ArgCountCheck(count int, f XFunction) XFunction {
 	return func(env utils.Environment, args ...types.XValue) types.XValue {
 		if len(args) != count {
-			return types.NewXErrorf("%s takes %d argument(s), got %d", strings.ToUpper(name), count, len(args))
+			return types.NewXErrorf("need %d argument(s), got %d", count, len(args))
 		}
 		return f(env, args...)
 	}
 }
 
 // NoArgFunction creates an XFunction from a no-arg function
-func NoArgFunction(name string, f func(utils.Environment) types.XValue) XFunction {
-	return ArgCountCheck(name, 0, func(env utils.Environment, args ...types.XValue) types.XValue {
+func NoArgFunction(f func(utils.Environment) types.XValue) XFunction {
+	return ArgCountCheck(0, func(env utils.Environment, args ...types.XValue) types.XValue {
 		return f(env)
 	})
 }
 
 // OneArgFunction creates an XFunction from a single-arg function
-func OneArgFunction(name string, f func(utils.Environment, types.XValue) types.XValue) XFunction {
-	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
+func OneArgFunction(f func(utils.Environment, types.XValue) types.XValue) XFunction {
+	return ArgCountCheck(1, func(env utils.Environment, args ...types.XValue) types.XValue {
 		return f(env, args[0])
 	})
 }
 
+// TwoArgFunction creates an XFunction from a two-arg function
+func TwoArgFunction(f func(utils.Environment, types.XValue, types.XValue) types.XValue) XFunction {
+	return ArgCountCheck(2, func(env utils.Environment, args ...types.XValue) types.XValue {
+		return f(env, args[0], args[1])
+	})
+}
+
+// ThreeArgFunction creates an XFunction from a three-arg function
+func ThreeArgFunction(f func(utils.Environment, types.XValue, types.XValue, types.XValue) types.XValue) XFunction {
+	return ArgCountCheck(3, func(env utils.Environment, args ...types.XValue) types.XValue {
+		return f(env, args[0], args[1], args[2])
+	})
+}
+
 // OneStringFunction creates an XFunction from a single string function
-func OneStringFunction(name string, f func(utils.Environment, types.XString) types.XValue) XFunction {
-	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
+func OneStringFunction(f func(utils.Environment, types.XString) types.XValue) XFunction {
+	return ArgCountCheck(1, func(env utils.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXString(args[0])
 		if xerr != nil {
 			return xerr
@@ -42,8 +55,8 @@ func OneStringFunction(name string, f func(utils.Environment, types.XString) typ
 }
 
 // TwoStringFunction creates an XFunction from a function that takes two strings
-func TwoStringFunction(name string, f func(utils.Environment, types.XString, types.XString) types.XValue) XFunction {
-	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+func TwoStringFunction(f func(utils.Environment, types.XString, types.XString) types.XValue) XFunction {
+	return ArgCountCheck(2, func(env utils.Environment, args ...types.XValue) types.XValue {
 		str1, xerr := types.ToXString(args[0])
 		if xerr != nil {
 			return xerr
@@ -56,9 +69,28 @@ func TwoStringFunction(name string, f func(utils.Environment, types.XString, typ
 	})
 }
 
+// ThreeStringFunction creates an XFunction from a function that takes three strings
+func ThreeStringFunction(f func(utils.Environment, types.XString, types.XString, types.XString) types.XValue) XFunction {
+	return ArgCountCheck(3, func(env utils.Environment, args ...types.XValue) types.XValue {
+		str1, xerr := types.ToXString(args[0])
+		if xerr != nil {
+			return xerr
+		}
+		str2, xerr := types.ToXString(args[1])
+		if xerr != nil {
+			return xerr
+		}
+		str3, xerr := types.ToXString(args[2])
+		if xerr != nil {
+			return xerr
+		}
+		return f(env, str1, str2, str3)
+	})
+}
+
 // StringAndNumberFunction creates an XFunction from a function that takes a string and a number
-func StringAndNumberFunction(name string, f func(utils.Environment, types.XString, types.XNumber) types.XValue) XFunction {
-	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+func StringAndNumberFunction(f func(utils.Environment, types.XString, types.XNumber) types.XValue) XFunction {
+	return ArgCountCheck(2, func(env utils.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXString(args[0])
 		if xerr != nil {
 			return xerr
@@ -73,8 +105,8 @@ func StringAndNumberFunction(name string, f func(utils.Environment, types.XStrin
 }
 
 // StringAndIntegerFunction creates an XFunction from a function that takes a string and an integer
-func StringAndIntegerFunction(name string, f func(utils.Environment, types.XString, int) types.XValue) XFunction {
-	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+func StringAndIntegerFunction(f func(utils.Environment, types.XString, int) types.XValue) XFunction {
+	return ArgCountCheck(2, func(env utils.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXString(args[0])
 		if xerr != nil {
 			return xerr
@@ -89,8 +121,8 @@ func StringAndIntegerFunction(name string, f func(utils.Environment, types.XStri
 }
 
 // StringAndDateFunction creates an XFunction from a function that takes a string and a date
-func StringAndDateFunction(name string, f func(utils.Environment, types.XString, types.XDate) types.XValue) XFunction {
-	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+func StringAndDateFunction(f func(utils.Environment, types.XString, types.XDate) types.XValue) XFunction {
+	return ArgCountCheck(2, func(env utils.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXString(args[0])
 		if xerr != nil {
 			return xerr
@@ -105,8 +137,8 @@ func StringAndDateFunction(name string, f func(utils.Environment, types.XString,
 }
 
 // OneNumberFunction creates an XFunction from a single number function
-func OneNumberFunction(name string, f func(utils.Environment, types.XNumber) types.XValue) XFunction {
-	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
+func OneNumberFunction(f func(utils.Environment, types.XNumber) types.XValue) XFunction {
+	return ArgCountCheck(1, func(env utils.Environment, args ...types.XValue) types.XValue {
 		num, xerr := types.ToXNumber(args[0])
 		if xerr != nil {
 			return xerr
@@ -117,8 +149,8 @@ func OneNumberFunction(name string, f func(utils.Environment, types.XNumber) typ
 }
 
 // TwoNumberFunction creates an XFunction from a function that takes two numbers
-func TwoNumberFunction(name string, f func(utils.Environment, types.XNumber, types.XNumber) types.XValue) XFunction {
-	return ArgCountCheck(name, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
+func TwoNumberFunction(f func(utils.Environment, types.XNumber, types.XNumber) types.XValue) XFunction {
+	return ArgCountCheck(2, func(env utils.Environment, args ...types.XValue) types.XValue {
 		num1, xerr := types.ToXNumber(args[0])
 		if xerr != nil {
 			return xerr
@@ -133,8 +165,8 @@ func TwoNumberFunction(name string, f func(utils.Environment, types.XNumber, typ
 }
 
 // OneDateFunction creates an XFunction from a single number function
-func OneDateFunction(name string, f func(utils.Environment, types.XDate) types.XValue) XFunction {
-	return ArgCountCheck(name, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
+func OneDateFunction(f func(utils.Environment, types.XDate) types.XValue) XFunction {
+	return ArgCountCheck(1, func(env utils.Environment, args ...types.XValue) types.XValue {
 		date, xerr := types.ToXDate(env, args[0])
 		if xerr != nil {
 			return xerr
