@@ -630,7 +630,7 @@
 <div class="sourceCode" id="cb35"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb35-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → foo</a>
 <a class="sourceLine" id="cb35-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:join"></a></p>
-<h2 id="joinarray-delimeter">join(array, delimeter)</h2>
+<h2 id="joinarray-delimiter">join(array, delimiter)</h2>
 <p>Joins the passed in <code>array</code> of strings with the passed in <code>delimeter</code></p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb36-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
 <a class="sourceLine" id="cb36-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) → a b c</a></code></pre></div>
@@ -949,7 +949,7 @@
 <a class="sourceLine" id="cb80-3" data-line-number="3">@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb80-4" data-line-number="4">@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_group"></a></p>
-<h2 id="has_groupcontact">has_group(contact)</h2>
+<h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>
 <p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb81-1" data-line-number="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb81-2" data-line-number="2">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</a></code></pre></div>

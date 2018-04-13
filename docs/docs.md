@@ -731,7 +731,7 @@ If the first argument is an error that error is returned
 
 <a name="function:join"></a>
 
-## join(array, delimeter)
+## join(array, delimiter)
 
 Joins the passed in `array` of strings with the passed in `delimeter`
 
@@ -1399,7 +1399,7 @@ Tests whether an email is contained in `string`
 
 <a name="test:has_group"></a>
 
-## has_group(contact)
+## has_group(contact, group_uuid)
 
 Returns whether the `contact` is part of group with the passed in UUID
 
