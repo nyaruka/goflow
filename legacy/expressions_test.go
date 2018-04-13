@@ -89,7 +89,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// functions
 		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(run.results.favorite_color))`},
-		//{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(run.results.favorite_color, 2 - 1))`}, // TODO
+		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(run.results.favorite_color, 2 - 1))`},
 		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(run.results.favorite_color, 2 - 1, 4 - 1))`},
 		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(run.results.favorite_color, 2 - 1, ","))`},
 		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(run.results.favorite_color, child.results.age - 1, ","))`},

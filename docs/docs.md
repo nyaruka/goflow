@@ -1257,6 +1257,7 @@ end value means that all words after the start should be returned.
 @(word_slice("bee cat dog", 0, 1)) → bee
 @(word_slice("bee cat dog", 0, 2)) → bee cat
 @(word_slice("bee cat dog", 1, -1)) → cat dog
+@(word_slice("bee cat dog", 1)) → cat dog
 @(word_slice("bee cat dog", 2, 3)) → dog
 @(word_slice("bee cat dog", 3, 10)) →
 ```

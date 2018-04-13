@@ -886,8 +886,9 @@
 <div class="sourceCode" id="cb71"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb71-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
 <a class="sourceLine" id="cb71-2" data-line-number="2">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</a>
 <a class="sourceLine" id="cb71-3" data-line-number="3">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</a>
-<a class="sourceLine" id="cb71-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
-<a class="sourceLine" id="cb71-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a></code></pre></div>
+<a class="sourceLine" id="cb71-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>)) → cat dog</a>
+<a class="sourceLine" id="cb71-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
+<a class="sourceLine" id="cb71-6" data-line-number="6">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a></code></pre></div>
 </div>
 <h1 id="router-tests">Router Tests</h1>
 <p>Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using the <code>match</code> component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template function is used.</p>

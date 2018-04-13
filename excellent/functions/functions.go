@@ -63,7 +63,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"word":              StringAndIntegerFunction(Word),
 	"remove_first_word": OneStringFunction(RemoveFirstWord),
 	"word_count":        OneStringFunction(WordCount),
-	"word_slice":        WordSlice,
+	"word_slice":        ArgCountCheck(2, 3, WordSlice),
 	"field":             Field,
 	"clean":             OneStringFunction(Clean),
 	"left":              StringAndIntegerFunction(Left),
@@ -764,33 +764,33 @@ func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
 //   @(word_slice("bee cat dog", 0, 1)) -> bee
 //   @(word_slice("bee cat dog", 0, 2)) -> bee cat
 //   @(word_slice("bee cat dog", 1, -1)) -> cat dog
+//   @(word_slice("bee cat dog", 1)) -> cat dog
 //   @(word_slice("bee cat dog", 2, 3)) -> dog
 //   @(word_slice("bee cat dog", 3, 10)) ->
 //
 // @function word_slice(string, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 3 {
-		return types.NewXErrorf("takes exactly three arguments, got %d", len(args))
-	}
-
 	str, xerr := types.ToXString(args[0])
 	if xerr != nil {
 		return xerr
 	}
+
 	start, xerr := types.ToInteger(args[1])
 	if xerr != nil {
 		return xerr
 	}
-	end, xerr := types.ToInteger(args[2])
-	if xerr != nil {
-		return xerr
-	}
-
 	if start < 0 {
 		return types.NewXErrorf("must start with a positive index")
 	}
+
+	end := -1
+	if len(args) == 3 {
+		if end, xerr = types.ToInteger(args[2]); xerr != nil {
+			return xerr
+		}
+	}
 	if end > 0 && end <= start {
-		return types.NewXErrorf("must have a stop which is greater than the start")
+		return types.NewXErrorf("must have a end which is greater than the start")
 	}
 
 	words := utils.TokenizeString(str.Native())
