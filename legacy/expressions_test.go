@@ -62,8 +62,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@date`, new: `@(now())`},
 		{old: `@date.now`, new: `@(now())`},
 		{old: `@date.today`, new: `@(today())`},
-		//{old: `@date.tomorrow`, new: `@(tomorrow())`}, // TODO
-		//{old: `@date.yesterday`, new: `@(yesterday())`}, // TODO
+		{old: `@date.tomorrow`, new: `@(date_add(today(), 1, "D"))`},
+		{old: `@date.yesterday`, new: `@(date_add(today(), -1, "D"))`},
 
 		// variables in parens
 		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel.0))`},
@@ -122,10 +122,10 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: "@(contact.age + 5)", new: "@(legacy_add(contact.fields.age, 5))"},
 		{old: "@(contact.join_date + 5 + contact.age)", new: "@(legacy_add(legacy_add(contact.fields.join_date, 5), contact.fields.age))"},
 		{old: "@(contact.age + 100 - 5)", new: "@(legacy_add(legacy_add(contact.fields.age, 100), -5))"},
-		// {old: "@(date.yesterday - 3 + 10)", new: "@(legacy_add(date_add(yesterday(), -3, \"D\"), 10))"}, // TODO
+		{old: "@(date.yesterday - 3 + 10)", new: "@(legacy_add(legacy_add(date_add(today(), -1, \"D\"), -3), 10))"},
 
 		{old: "@(3 + date.now)", new: "@(date_add(now(), 3, \"D\"))"},
-		//{old: "@(date.yesterday - 3)", new: "@(date_add(yesterday(), -3, \"D\"))"},  // TODO
+		{old: "@(date.tomorrow - 3)", new: "@(legacy_add(date_add(today(), 1, \"D\"), -3))"},
 		{old: "@(date.now + TIME(2, 30, 0))", new: "@(date_add(now(), 9000, \"s\"))"},
 		{old: "@(TIME(0, 1, 5) + contact.join_date)", new: "@(date_add(contact.fields.join_date, 65, \"s\"))"},
 		{old: "@(contact.join_date - TIME(0,0,12))", new: "@(date_add(contact.fields.join_date, -12, \"s\"))"},

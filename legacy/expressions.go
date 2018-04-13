@@ -297,11 +297,11 @@ func newMigrationBaseVars() map[string]interface{} {
 		},
 		"date": &varMapper{
 			substitutions: map[string]string{
-				"__default__": "now()",
-				"now":         "now()",
-				"today":       "today()",
-				"tomorrow":    "tomorrow()",
-				"yesterday":   "yesterday()",
+				"__default__": `now()`,
+				"now":         `now()`,
+				"today":       `today()`,
+				"tomorrow":    `date_add(today(), 1, "D")`,
+				"yesterday":   `date_add(today(), -1, "D")`,
 			},
 		},
 	}
