@@ -1,13 +1,13 @@
-package main
+package test
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/goflow/flows/events"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -47,38 +47,61 @@ var sessionAssets = `[
         "content": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration",
-            "nodes": [{
-                "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
-                "actions": [
-                    {
-                        "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
-                        "type": "start_flow",
-                        "flow": {
-                            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                            "name": "Collect Language"
+            "nodes": [
+                {
+                    "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "actions": [
+                        {
+                            "uuid": "9487a60e-a6ef-4a88-b35d-894bfe074144",
+                            "type": "start_flow",
+                            "flow": {
+                                "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                                "name": "Collect Age"
+                            }
                         }
-                    },
-                    {
-                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
-                        "type": "set_run_result",
-                        "name": "Phone Number",
-                        "value": "+12344563452"
-                    },
-                    {
-                        "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
-                        "type": "set_run_result",
-                        "name": "Color",
-                        "value": "red",
-                        "category": "Red"
-                    },
-                    {
-                        "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
-                        "type": "call_webhook",
-                        "method": "GET",
-                        "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
-                    }
-                ]
-            }]
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                            "destination_node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
+                    "actions": [
+                        {
+                            "uuid": "5508e6a7-26ce-4b3b-b32e-bb4e2e614f5d",
+                            "type": "set_run_result",
+                            "name": "Phone Number",
+                            "value": "+12344563452"
+                        },
+                        {
+                            "uuid": "72fea511-246f-49ad-846d-853b22ecc9c9",
+                            "type": "set_run_result",
+                            "name": "Favorite Color",
+                            "value": "red",
+                            "category": "Red"
+                        },
+                        {
+                            "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
+                            "type": "call_webhook",
+                            "method": "GET",
+                            "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "d898f9a4-f0fc-4ac4-a639-c98c602bb511",
+                            "destination_node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
+                    "actions": []
+                }
+            ]
         }
     },
     {
@@ -86,11 +109,37 @@ var sessionAssets = `[
         "url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "content": {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "name": "Collect Language",
+            "name": "Collect Age",
             "nodes": [{
                 "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
-                "actions": []
+                "actions": [
+                    {
+                        "uuid": "4ed673b3-bdcc-40f2-944b-6ad1c82eb3ee",
+                        "type": "set_run_result",
+                        "name": "Age",
+                        "value": "23",
+                        "category": "Youth"
+                    },
+                    {
+                        "uuid": "7a0c3cec-ef84-41aa-bf2b-be8259038683",
+                        "type": "set_contact_field",
+                        "field": {
+                            "key": "age",
+                            "name": "Age"
+                        },
+                        "value": "@run.results.age"
+                    }
+                ]
             }]
+        }
+    },
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/fece6eac-9127-4343-9269-56e88f391562",
+        "content": {
+            "uuid": "fece6eac-9127-4343-9269-56e88f391562",
+            "name": "Parent",
+            "nodes": []
         }
     },
     {
@@ -98,6 +147,8 @@ var sessionAssets = `[
         "url": "http://testserver/assets/field",
         "content": [
             {"key": "gender", "label": "Gender", "value_type": "text"},
+            {"key": "age", "label": "Age", "value_type": "decimal"},
+            {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
             {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
         ],
         "is_set": true
@@ -163,7 +214,7 @@ var sessionAssets = `[
 ]`
 
 var sessionTrigger = `{
-    "type": "manual",
+    "type": "flow_action",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
     "contact": {
@@ -183,10 +234,42 @@ var sessionTrigger = `{
             "gender": {
                 "text": "Male"
             },
+            "join_date": {
+                "text": "2017-12-02", "datetime": "2017-12-02T00:00:00-02:00"
+            },
             "activation_token": {
                 "text": "AACC55"
             }
         }
+    },
+    "run": {
+        "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",
+        "contact": {
+            "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
+            "name": "Jasmine",
+            "language": "spa",
+            "urns": [],
+            "fields": {
+                "age": {
+                    "text": "33 years", "decimal": 33
+                },
+                "gender": {
+                    "text": "Female"
+                }
+            }
+        },
+        "flow_uuid": "fece6eac-9127-4343-9269-56e88f391562",
+        "results": {
+            "role": {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "input": "a reporter",
+                "name": "Role",
+                "node_uuid": "385cb848-5043-448e-9123-05cbcf26ad74",
+                "value": "reporter",
+                "category": "Reporter"
+            }
+        },
+        "status": "active"
     },
     "params": {"source": "website","address": {"state": "WA"}}
 }`
@@ -212,15 +295,24 @@ var initialEvents = `[
 ]`
 
 // an extended environment that will let us override Now() so that it's constant
-type docEnvironment struct {
+type testEnvironment struct {
 	utils.Environment
 }
 
-func (e *docEnvironment) Now() time.Time {
-	return time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
+// creates a new test environment
+func newTestEnvironment() utils.Environment {
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	return &testEnvironment{
+		utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
+	}
 }
 
-func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
+func (e *testEnvironment) Now() time.Time {
+	return time.Date(2018, 4, 11, 13, 24, 30, 123456000, e.Timezone())
+}
+
+// CreateTestSession creates an example session for testing
+func CreateTestSession(actionToAdd flows.Action) (flows.Session, error) {
 	// read our assets
 	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {
@@ -231,12 +323,12 @@ func createExampleSession(actionToAdd flows.Action) (flows.Session, error) {
 	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
 
 	// override the session environment
-	session.SetEnvironment(&docEnvironment{session.Environment()})
+	session.SetEnvironment(newTestEnvironment())
 
-	// optional modify the main flow by adding the provided action
+	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {
 		flow, _ := session.Assets().GetFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
-		flow.Nodes()[0].AddAction(actionToAdd)
+		flow.Nodes()[2].AddAction(actionToAdd)
 	}
 
 	// read our trigger

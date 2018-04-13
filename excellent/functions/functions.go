@@ -37,9 +37,9 @@ var XFUNCTIONS = map[string]XFunction{
 
 	"legacy_add": TwoArgFunction(LegacyAdd),
 
-	"round":        Round,
-	"round_up":     OneNumberFunction(RoundUp),
-	"round_down":   OneNumberFunction(RoundDown),
+	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
+	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
+	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
 	"max":          Max,
 	"min":          Min,
 	"mean":         Mean,
@@ -63,7 +63,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"word":              StringAndIntegerFunction(Word),
 	"remove_first_word": OneStringFunction(RemoveFirstWord),
 	"word_count":        OneStringFunction(WordCount),
-	"word_slice":        WordSlice,
+	"word_slice":        ArgCountCheck(2, 3, WordSlice),
 	"field":             Field,
 	"clean":             OneStringFunction(Clean),
 	"left":              StringAndIntegerFunction(Left),
@@ -325,11 +325,11 @@ func Abs(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Abs())
 }
 
-// Round rounds `num` to the nearest value. You can optionally pass
-// in the number of decimal places to round to as `places`.
+// Round rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
 //
 // If places < 0, it will round the integer part to the nearest 10^(-places).
 //
+//   @(round(12)) -> 12
 //   @(round(12.141)) -> 12
 //   @(round(12.6)) -> 13
 //   @(round(12.141, 2)) -> 12.14
@@ -338,47 +338,52 @@ func Abs(env utils.Environment, num types.XNumber) types.XValue {
 //   @(round("notnum", 2)) -> ERROR
 //
 // @function round(num [,places])
-func Round(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 2 {
-		return types.NewXErrorf("takes either one or two arguments")
-	}
-
-	num, err := types.ToXNumber(args[0])
-	if err != nil {
-		return types.NewXErrorf("first argument must be a number")
-	}
-
-	round := 0
-	if len(args) == 2 {
-		round, err = types.ToInteger(args[1])
-		if err != nil {
-			return types.NewXErrorf("decimal places argument must be integer")
-		}
-	}
-
-	return types.NewXNumber(num.Native().Round(int32(round)))
+func Round(env utils.Environment, num types.XNumber, places int) types.XValue {
+	return types.NewXNumber(num.Native().Round(int32(places)))
 }
 
-// RoundUp rounds `num` up to the nearest integer value, also good at fighting weeds
+// RoundUp rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 //
-//   @(round_up(12.141)) -> 13
 //   @(round_up(12)) -> 12
+//   @(round_up(12.141)) -> 13
+//   @(round_up(12.6)) -> 13
+//   @(round_up(12.141, 2)) -> 12.15
+//   @(round_up(12.146, 2)) -> 12.15
 //   @(round_up("foo")) -> ERROR
 //
-// @function round_up(num)
-func RoundUp(env utils.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Ceil())
+// @function round_up(num [,places])
+func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue {
+	dec := num.Native()
+	if dec.Round(int32(places)).Equal(dec) {
+		return num
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+	roundedDec := dec.Add(halfPrecision).Round(int32(places))
+
+	return types.NewXNumber(roundedDec)
 }
 
-// RoundDown rounds `num` down to the nearest integer value
+// RoundDown rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 //
+//   @(round_down(12)) -> 12
 //   @(round_down(12.141)) -> 12
-//   @(round_down(12.9)) -> 12
+//   @(round_down(12.6)) -> 12
+//   @(round_down(12.141, 2)) -> 12.14
+//   @(round_down(12.146, 2)) -> 12.14
 //   @(round_down("foo")) -> ERROR
 //
-// @function round_down(num)
-func RoundDown(env utils.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Floor())
+// @function round_down(num [,places])
+func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValue {
+	dec := num.Native()
+	if dec.Round(int32(places)).Equal(dec) {
+		return num
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+	roundedDec := dec.Sub(halfPrecision).Round(int32(places))
+
+	return types.NewXNumber(roundedDec)
 }
 
 // Max takes a list of `values` and returns the greatest of them
@@ -503,14 +508,16 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 
 // FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 //
+//   @(format_num(31337)) -> 31,337.00
+//   @(format_num(31337, 2)) -> 31,337.00
 //   @(format_num(31337, 2, true)) -> 31,337.00
 //   @(format_num(31337, 0, false)) -> 31337
 //   @(format_num("foo", 2, false)) -> ERROR
 //
 // @function format_num(num, places, commas)
 func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 3 {
-		return types.NewXErrorf("takes exactly three arguments, got %d", len(args))
+	if len(args) < 1 || len(args) > 3 {
+		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
 	}
 
 	num, err := types.ToXNumber(args[0])
@@ -518,17 +525,21 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 		return err
 	}
 
-	places, err := types.ToInteger(args[1])
-	if err != nil {
-		return err
-	}
-	if places < 0 || places > 9 {
-		return types.NewXErrorf("must take 0-9 number of places, got %d", args[1])
+	places := 2
+	if len(args) > 1 {
+		if places, err = types.ToInteger(args[1]); err != nil {
+			return err
+		}
+		if places < 0 || places > 9 {
+			return types.NewXErrorf("must take 0-9 number of places, got %d", args[1])
+		}
 	}
 
-	commas, err := types.ToXBool(args[2])
-	if err != nil {
-		return err
+	commas := types.XBoolTrue
+	if len(args) > 2 {
+		if commas, err = types.ToXBool(args[2]); err != nil {
+			return err
+		}
 	}
 
 	// build our format string
@@ -708,17 +719,26 @@ func Title(env utils.Environment, str types.XString) types.XValue {
 	return types.NewXString(strings.Title(str.Native()))
 }
 
-// Word returns the word at the passed in `offset` for the passed in `string`
+// Word returns the word at the passed in `index` for the passed in `string`
 //
-//   @(word("foo bar", 0)) -> foo
-//   @(word("foo.bar", 0)) -> foo
-//   @(word("one two.three", 2)) -> three
+//   @(word("bee cat dog", 0)) -> bee
+//   @(word("bee.cat,dog", 0)) -> bee
+//   @(word("bee.cat,dog", 1)) -> cat
+//   @(word("bee.cat,dog", 2)) -> dog
+//   @(word("bee.cat,dog", -1)) -> dog
+//   @(word("bee.cat,dog", -2)) -> cat
 //
-// @function word(string, offset)
-func Word(env utils.Environment, str types.XString, offset int) types.XValue {
+// @function word(string, index)
+func Word(env utils.Environment, str types.XString, index int) types.XValue {
 	words := utils.TokenizeString(str.Native())
-	if offset >= len(words) {
-		return types.NewXErrorf("offset %d is greater than number of words %d", offset, len(words))
+
+	offset := index
+	if offset < 0 {
+		offset += len(words)
+	}
+
+	if !(offset >= 0 && offset < len(words)) {
+		return types.NewXErrorf("index %d is out of range for the number of words %d", index, len(words))
 	}
 
 	return types.NewXString(words[offset])
@@ -744,33 +764,33 @@ func RemoveFirstWord(env utils.Environment, str types.XString) types.XValue {
 //   @(word_slice("bee cat dog", 0, 1)) -> bee
 //   @(word_slice("bee cat dog", 0, 2)) -> bee cat
 //   @(word_slice("bee cat dog", 1, -1)) -> cat dog
+//   @(word_slice("bee cat dog", 1)) -> cat dog
 //   @(word_slice("bee cat dog", 2, 3)) -> dog
 //   @(word_slice("bee cat dog", 3, 10)) ->
 //
 // @function word_slice(string, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 3 {
-		return types.NewXErrorf("takes exactly three arguments, got %d", len(args))
-	}
-
 	str, xerr := types.ToXString(args[0])
 	if xerr != nil {
 		return xerr
 	}
+
 	start, xerr := types.ToInteger(args[1])
 	if xerr != nil {
 		return xerr
 	}
-	end, xerr := types.ToInteger(args[2])
-	if xerr != nil {
-		return xerr
-	}
-
 	if start < 0 {
 		return types.NewXErrorf("must start with a positive index")
 	}
+
+	end := -1
+	if len(args) == 3 {
+		if end, xerr = types.ToInteger(args[2]); xerr != nil {
+			return xerr
+		}
+	}
 	if end > 0 && end <= start {
-		return types.NewXErrorf("must have a stop which is greater than the start")
+		return types.NewXErrorf("must have a end which is greater than the start")
 	}
 
 	words := utils.TokenizeString(str.Native())
@@ -1223,12 +1243,12 @@ func DateFromParts(env utils.Environment, args ...types.XValue) types.XValue {
 
 // DateDiff returns the integer duration between `date1` and `date2` in the `unit` specified.
 //
-// Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, h" for hour,
+// Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds
 //
-//   @(date_diff("2017-01-17", "2017-01-15", "d")) -> 2
+//   @(date_diff("2017-01-17", "2017-01-15", "D")) -> 2
 //   @(date_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) -> -1
-//   @(date_diff("2017-01-17", "2015-12-17", "y")) -> 2
+//   @(date_diff("2017-01-17", "2015-12-17", "Y")) -> 2
 //
 // @function date_diff(date1, date2, unit)
 func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1262,13 +1282,13 @@ func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXNumberFromInt(int(duration / time.Minute))
 	case "h":
 		return types.NewXNumberFromInt(int(duration / time.Hour))
-	case "d":
+	case "D":
 		return types.NewXNumberFromInt(utils.DaysBetween(date1.Native(), date2.Native()))
-	case "w":
+	case "W":
 		return types.NewXNumberFromInt(int(utils.DaysBetween(date1.Native(), date2.Native()) / 7))
 	case "M":
 		return types.NewXNumberFromInt(utils.MonthsBetween(date1.Native(), date2.Native()))
-	case "y":
+	case "Y":
 		return types.NewXNumberFromInt(date1.Native().Year() - date2.Native().Year())
 	}
 
@@ -1277,10 +1297,10 @@ func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 
 // DateAdd calculates the date value arrived at by adding `offset` number of `unit` to the `date`
 //
-// Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, h" for hour,
+// Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds
 //
-//   @(date_add("2017-01-15", 5, "d")) -> 2017-01-20T00:00:00.000000Z
+//   @(date_add("2017-01-15", 5, "D")) -> 2017-01-20T00:00:00.000000Z
 //   @(date_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000Z
 //
 // @function date_add(date, offset, unit)
@@ -1311,17 +1331,17 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXDate(date.Native().Add(time.Duration(duration) * time.Minute))
 	case "h":
 		return types.NewXDate(date.Native().Add(time.Duration(duration) * time.Hour))
-	case "d":
+	case "D":
 		return types.NewXDate(date.Native().AddDate(0, 0, duration))
-	case "w":
+	case "W":
 		return types.NewXDate(date.Native().AddDate(0, 0, duration*7))
 	case "M":
 		return types.NewXDate(date.Native().AddDate(0, duration, 0))
-	case "y":
+	case "Y":
 		return types.NewXDate(date.Native().AddDate(duration, 0, 0))
 	}
 
-	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, d, w, M, y", unit)
+	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
 }
 
 // Weekday returns the day of the week for `date`, 0 is sunday, 1 is monday..
@@ -1396,7 +1416,7 @@ func ToEpoch(env utils.Environment, date types.XDate) types.XValue {
 
 // Now returns the current date and time in the environment timezone
 //
-//   @(now()) -> 2018-04-11T13:24:30.123456Z
+//   @(now()) -> 2018-04-11T13:24:30.123456-05:00
 //
 // @function now()
 func Now(env utils.Environment) types.XValue {

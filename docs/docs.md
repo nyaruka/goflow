@@ -240,7 +240,7 @@ Examples:
 @contact.urns.mailto.0 → mailto:foo@bar.com
 @contact.urn → (206) 555-1212
 @contact.groups → ["Testers","Males"]
-@contact.fields → {"activation_token":"AACC55","gender":"Male"}
+@contact.fields → {"activation_token":"AACC55","age":"23","gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"}
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
@@ -260,7 +260,7 @@ Examples:
 
 ```objectivec
 @run.flow → Registration
-@child.flow → Collect Language
+@child.flow → Collect Age
 @run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7
 @(to_json(run.flow)) → {"name":"Registration","uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
 ```
@@ -332,9 +332,9 @@ Examples:
 
 
 ```objectivec
-@run.results.color → red
-@run.results.color.value → red
-@run.results.color.category → Red
+@run.results.favorite_color → red
+@run.results.favorite_color.value → red
+@run.results.favorite_color.category → Red
 ```
 
 <a name="context:run"></a>
@@ -373,9 +373,9 @@ Examples:
 
 
 ```objectivec
-@trigger.type → manual
+@trigger.type → flow_action
 @trigger.params → {"source": "website","address": {"state": "WA"}}
-@(to_json(trigger)) → {"params":{"source":"website","address":{"state":"WA"}},"type":"manual"}
+@(to_json(trigger)) → {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
 ```
 
 <a name="context:urn"></a>
@@ -545,12 +545,12 @@ date will return an error if it is unable to convert the string to a date.
 
 Calculates the date value arrived at by adding `offset` number of `unit` to the `date`
 
-Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, h" for hour,
+Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 "m" for minutes, "s" for seconds
 
 
 ```objectivec
-@(date_add("2017-01-15", 5, "d")) → 2017-01-20T00:00:00.000000Z
+@(date_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000Z
 @(date_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000Z
 ```
 
@@ -560,14 +560,14 @@ Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, 
 
 Returns the integer duration between `date1` and `date2` in the `unit` specified.
 
-Valid durations are "y" for years, "M" for months, "w" for weeks, "d" for days, h" for hour,
+Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 "m" for minutes, "s" for seconds
 
 
 ```objectivec
-@(date_diff("2017-01-17", "2017-01-15", "d")) → 2
+@(date_diff("2017-01-17", "2017-01-15", "D")) → 2
 @(date_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
-@(date_diff("2017-01-17", "2015-12-17", "y")) → 2
+@(date_diff("2017-01-17", "2015-12-17", "Y")) → 2
 ```
 
 <a name="function:date_from_parts"></a>
@@ -667,6 +667,8 @@ Returns `num` formatted with the passed in number of decimal `places` and option
 
 
 ```objectivec
+@(format_num(31337)) → 31,337.00
+@(format_num(31337, 2)) → 31,337.00
 @(format_num(31337, 2, true)) → 31,337.00
 @(format_num(31337, 0, false)) → 31337
 @(format_num("foo", 2, false)) → ERROR
@@ -846,7 +848,7 @@ Returns the current date and time in the environment timezone
 
 
 ```objectivec
-@(now()) → 2018-04-11T13:24:30.123456Z
+@(now()) → 2018-04-11T13:24:30.123456-05:00
 ```
 
 <a name="function:or"></a>
@@ -1015,13 +1017,13 @@ Returns the `count` most right characters of the passed in `string`
 
 ## round(num [,places])
 
-Rounds `num` to the nearest value. You can optionally pass
-in the number of decimal places to round to as `places`.
+Rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
 
 If places < 0, it will round the integer part to the nearest 10^(-places).
 
 
 ```objectivec
+@(round(12)) → 12
 @(round(12.141)) → 12
 @(round(12.6)) → 13
 @(round(12.141, 2)) → 12.14
@@ -1032,27 +1034,33 @@ If places < 0, it will round the integer part to the nearest 10^(-places).
 
 <a name="function:round_down"></a>
 
-## round_down(num)
+## round_down(num [,places])
 
-Rounds `num` down to the nearest integer value
+Rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 
 
 ```objectivec
+@(round_down(12)) → 12
 @(round_down(12.141)) → 12
-@(round_down(12.9)) → 12
+@(round_down(12.6)) → 12
+@(round_down(12.141, 2)) → 12.14
+@(round_down(12.146, 2)) → 12.14
 @(round_down("foo")) → ERROR
 ```
 
 <a name="function:round_up"></a>
 
-## round_up(num)
+## round_up(num [,places])
 
-Rounds `num` up to the nearest integer value, also good at fighting weeds
+Rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 
 
 ```objectivec
-@(round_up(12.141)) → 13
 @(round_up(12)) → 12
+@(round_up(12.141)) → 13
+@(round_up(12.6)) → 13
+@(round_up(12.141, 2)) → 12.15
+@(round_up(12.146, 2)) → 12.15
 @(round_up("foo")) → ERROR
 ```
 
@@ -1209,15 +1217,18 @@ Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
 <a name="function:word"></a>
 
-## word(string, offset)
+## word(string, index)
 
-Returns the word at the passed in `offset` for the passed in `string`
+Returns the word at the passed in `index` for the passed in `string`
 
 
 ```objectivec
-@(word("foo bar", 0)) → foo
-@(word("foo.bar", 0)) → foo
-@(word("one two.three", 2)) → three
+@(word("bee cat dog", 0)) → bee
+@(word("bee.cat,dog", 0)) → bee
+@(word("bee.cat,dog", 1)) → cat
+@(word("bee.cat,dog", 2)) → dog
+@(word("bee.cat,dog", -1)) → dog
+@(word("bee.cat,dog", -2)) → cat
 ```
 
 <a name="function:word_count"></a>
@@ -1246,6 +1257,7 @@ end value means that all words after the start should be returned.
 @(word_slice("bee cat dog", 0, 1)) → bee
 @(word_slice("bee cat dog", 0, 2)) → bee cat
 @(word_slice("bee cat dog", 1, -1)) → cat dog
+@(word_slice("bee cat dog", 1)) → cat dog
 @(word_slice("bee cat dog", 2, 3)) → dog
 @(word_slice("bee cat dog", 3, 10)) →
 ```
@@ -1719,8 +1731,8 @@ for the groups which the contact has been added to.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_added",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
     "groups": [
         {
             "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -1749,8 +1761,8 @@ action will be ignored.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_urn_added",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "b88ce93d-4360-4455-a691-235cbe720980",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
     "urn": "tel:+12344563452"
 }
 ```
@@ -1778,8 +1790,8 @@ no user input at that point then this action will be ignored.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "input_labels_added",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
     "labels": [
         {
@@ -1813,8 +1825,8 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "webhook_called",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
     "url": "http://localhost:49999/?cmd=success",
     "status": "success",
     "status_code": 200,
@@ -1846,8 +1858,8 @@ all groups.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_removed",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "658fd57d-f132-4ae4-8ab7-4a517a86045c",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
     "groups": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -1881,8 +1893,8 @@ with the evaluated text.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "broadcast_created",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "347b55be-7be1-4e68-aaa3-04d3fbce5f9a",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
     "translations": {
         "": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -1918,8 +1930,8 @@ An `email_created` event will be created for each email address.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "email_created",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
     "addresses": [
         "foo@bar.com"
     ],
@@ -1947,10 +1959,10 @@ A `broadcast_created` event will be created with the evaluated text.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_created",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "951242a1-5333-4221-8f9d-465efd6fbb5e",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
     "msg": {
-        "uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
+        "uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -1982,8 +1994,8 @@ A `contact_channel_changed` event will be created with the set channel.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_channel_changed",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "dc47e96a-392b-429b-92ca-6e1d7f550554",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
         "name": "FAcebook Channel"
@@ -2012,8 +2024,8 @@ be evaluated during the flow. A `contact_field_changed` event will be created wi
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_field_changed",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "5865a06e-6fcc-4db9-bfd7-d22404241e07",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -2040,8 +2052,8 @@ Can be used to update one of the built in fields for a contact of "name" or
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_property_changed",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "19ebde80-3969-47d3-a09e-6806aab9f510",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
     "property": "language",
     "value": "eng"
 }
@@ -2070,12 +2082,12 @@ final values.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "run_result_changed",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
     "name": "Gender",
     "value": "m",
     "category": "Male",
-    "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5"
+    "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325"
 }
 ```
 </div>
@@ -2100,13 +2112,13 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "flow_triggered",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d"
+    "parent_run_uuid": "c62762c3-d95c-477b-9869-2c286badfdad"
 }
 ```
 </div>
@@ -2135,8 +2147,8 @@ Can be used to trigger sessions for other contacts and groups
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "session_triggered",
-    "created_on": "2018-04-11T13:24:30.123456Z",
-    "step_uuid": "bcfb7b96-7c87-48ba-ad03-b49f80627da4",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "43bdd132-957b-464b-bdca-2ca05d3bc6b3",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -2148,7 +2160,7 @@ Can be used to trigger sessions for other contacts and groups
         }
     ],
     "run": {
-        "uuid": "e3895066-303a-4b1f-be22-6e6983962829",
+        "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a",
         "flow_uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
         "contact": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
@@ -2174,27 +2186,35 @@ Can be used to trigger sessions for other contacts and groups
                 "activation_token": {
                     "text": "AACC55"
                 },
+                "age": {
+                    "text": "23",
+                    "decimal": 23
+                },
                 "gender": {
                     "text": "Male"
+                },
+                "join_date": {
+                    "text": "2017-12-02",
+                    "datetime": "2017-12-02T00:00:00-02:00"
                 }
             }
         },
         "status": "active",
         "results": {
-            "color": {
-                "name": "Color",
+            "favorite_color": {
+                "name": "Favorite Color",
                 "value": "red",
                 "category": "Red",
-                "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
                 "input": "",
-                "created_on": "2018-04-11T13:24:30.123456Z"
+                "created_on": "2018-04-11T18:24:30.123456Z"
             },
             "phone_number": {
                 "name": "Phone Number",
                 "value": "+12344563452",
-                "node_uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
                 "input": "",
-                "created_on": "2018-04-11T13:24:30.123456Z"
+                "created_on": "2018-04-11T18:24:30.123456Z"
             }
         }
     }
@@ -2401,7 +2421,7 @@ Events are created to set the environment on a session
     "type": "environment_changed",
     "created_on": "2006-01-02T15:04:05Z",
     "environment": {
-        "date_format": "yyyy-MM-dd",
+        "date_format": "YYYY-MM-DD",
         "time_format": "hh:mm",
         "timezone": "Africa/Kigali",
         "languages": [

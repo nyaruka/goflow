@@ -354,7 +354,7 @@
 <a class="sourceLine" id="cb9-8" data-line-number="8">@contact.urns.mailto<span class="fl">.0</span> → mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb9-9" data-line-number="9">@contact.urn → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
 <a class="sourceLine" id="cb9-10" data-line-number="10">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>}</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="st">&quot;23&quot;</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00.000000-02:00&quot;</span>}</a>
 <a class="sourceLine" id="cb9-12" data-line-number="12">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb9-13" data-line-number="13">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
@@ -366,7 +366,7 @@
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@run.flow → Registration</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">@child.flow → Collect Language</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">@child.flow → Collect Age</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">@(to_json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
 <p><a name="context:group"></a></p>
@@ -412,9 +412,9 @@
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb13-1" data-line-number="1">@run.results.color → red</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">@run.results.color.value → red</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">@run.results.color.category → Red</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb13-1" data-line-number="1">@run.results.favorite_color → red</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">@run.results.favorite_color.value → red</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">@run.results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
@@ -437,9 +437,9 @@
 <li><code>params</code> the parameters passed to the trigger</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb15-1" data-line-number="1">@trigger.type → manual</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb15-1" data-line-number="1">@trigger.type → flow_action</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">@trigger.params → {<span class="st">&quot;source&quot;</span>: <span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>: {<span class="st">&quot;state&quot;</span>: <span class="st">&quot;WA&quot;</span>}}</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">@(to_json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;manual&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb15-3" data-line-number="3">@(to_json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
 <p><a name="context:urn"></a></p>
 <h2 id="urn">Urn</h2>
 <p>Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:</p>
@@ -531,16 +531,16 @@
 <p><a name="function:date_add"></a></p>
 <h2 id="date_adddate-offset-unit">date_add(date, offset, unit)</h2>
 <p>Calculates the date value arrived at by adding <code>offset</code> number of <code>unit</code> to the <code>date</code></p>
-<p>Valid durations are “y” for years, “M” for months, “w” for weeks, “d” for days, h&quot; for hour, “m” for minutes, “s” for seconds</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(date_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;d&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(date_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
 <a class="sourceLine" id="cb25-2" data-line-number="2">@(date_add(<span class="st">&quot;2017-01-15 10:45&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;m&quot;</span>)) → <span class="dv">2017-01</span>-15T11:<span class="dv">15</span>:<span class="fl">00.000000</span>Z</a></code></pre></div>
 <p><a name="function:date_diff"></a></p>
 <h2 id="date_diffdate1-date2-unit">date_diff(date1, date2, unit)</h2>
 <p>Returns the integer duration between <code>date1</code> and <code>date2</code> in the <code>unit</code> specified.</p>
-<p>Valid durations are “y” for years, “M” for months, “w” for weeks, “d” for days, h&quot; for hour, “m” for minutes, “s” for seconds</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(date_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;d&quot;</span>)) → <span class="dv">2</span></a>
+<p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(date_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb26-2" data-line-number="2">@(date_diff(<span class="st">&quot;2017-01-17 10:50&quot;</span>, <span class="st">&quot;2017-01-17 12:30&quot;</span>, <span class="st">&quot;h&quot;</span>)) → <span class="dv">-1</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">@(date_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;y&quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
+<a class="sourceLine" id="cb26-3" data-line-number="3">@(date_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:date_from_parts"></a></p>
 <h2 id="date_from_partsyear-month-day">date_from_parts(year, month, day)</h2>
 <p>Converts the passed in <code>year</code>, <code>month</code> and <code>day</code></p>
@@ -599,9 +599,11 @@
 <p><a name="function:format_num"></a></p>
 <h2 id="format_numnum-places-commas">format_num(num, places, commas)</h2>
 <p>Returns <code>num</code> formatted with the passed in number of decimal <code>places</code> and optional <code>commas</code> dividing thousands separators</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_num(<span class="dv">31337</span>, <span class="dv">2</span>, true)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">@(format_num(<span class="dv">31337</span>, <span class="dv">0</span>, false)) → <span class="dv">31337</span></a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_num(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_num(<span class="dv">31337</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">@(format_num(<span class="dv">31337</span>, <span class="dv">2</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_num(<span class="dv">31337</span>, <span class="dv">2</span>, true)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">@(format_num(<span class="dv">31337</span>, <span class="dv">0</span>, false)) → <span class="dv">31337</span></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">@(format_num(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
 <p><a name="function:format_urn"></a></p>
 <h2 id="format_urnurn">format_urn(urn)</h2>
 <p>Turns <code>urn</code> into a human friendly string</p>
@@ -684,7 +686,7 @@
 <p><a name="function:now"></a></p>
 <h2 id="now">now()</h2>
 <p>Returns the current date and time in the environment timezone</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb44-1" data-line-number="1">@(now()) → <span class="dv">2018-04</span>-11T13:<span class="dv">24</span>:<span class="fl">30.123456</span>Z</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb44-1" data-line-number="1">@(now()) → <span class="dv">2018-04</span>-11T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:or"></a></p>
 <h2 id="ortests">or(tests…)</h2>
 <p>Returns whether if any of the passed in arguments are truthy</p>
@@ -771,24 +773,31 @@
 <h2 id="roundnum-places">round(num [,places])</h2>
 <p>Rounds <code>num</code> to the nearest value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
 <p>If places &lt; 0, it will round the integer part to the nearest 10^(-places).</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
-<a class="sourceLine" id="cb55-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb55-6" data-line-number="6">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb55-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb55-6" data-line-number="6">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
+<a class="sourceLine" id="cb55-7" data-line-number="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_down"></a></p>
-<h2 id="round_downnum">round_down(num)</h2>
-<p>Rounds <code>num</code> down to the nearest integer value</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">@(round_down(<span class="fl">12.9</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<h2 id="round_downnum-places">round_down(num [,places])</h2>
+<p>Rounds <code>num</code> down to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">@(round_down(<span class="fl">12.6</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">@(round_down(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb56-5" data-line-number="5">@(round_down(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb56-6" data-line-number="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_up"></a></p>
-<h2 id="round_upnum">round_up(num)</h2>
-<p>Rounds <code>num</code> up to the nearest integer value, also good at fighting weeds</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<h2 id="round_upnum-places">round_up(num [,places])</h2>
+<p>Rounds <code>num</code> up to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">@(round_up(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">@(round_up(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:split"></a></p>
 <h2 id="splitstring-delimiter">split(string, delimiter)</h2>
 <p>Splits <code>string</code> based on the passed in <code>delimeter</code></p>
@@ -856,11 +865,14 @@
 <div class="sourceCode" id="cb68"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb68-1" data-line-number="1">@(weekday(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">0</span></a>
 <a class="sourceLine" id="cb68-2" data-line-number="2">@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:word"></a></p>
-<h2 id="wordstring-offset">word(string, offset)</h2>
-<p>Returns the word at the passed in <code>offset</code> for the passed in <code>string</code></p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb69-1" data-line-number="1">@(word(<span class="st">&quot;foo bar&quot;</span>, <span class="dv">0</span>)) → foo</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2">@(word(<span class="st">&quot;foo.bar&quot;</span>, <span class="dv">0</span>)) → foo</a>
-<a class="sourceLine" id="cb69-3" data-line-number="3">@(word(<span class="st">&quot;one two.three&quot;</span>, <span class="dv">2</span>)) → three</a></code></pre></div>
+<h2 id="wordstring-index">word(string, index)</h2>
+<p>Returns the word at the passed in <code>index</code> for the passed in <code>string</code></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb69-1" data-line-number="1">@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">1</span>)) → cat</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">2</span>)) → dog</a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-1</span>)) → dog</a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-2</span>)) → cat</a></code></pre></div>
 <p><a name="function:word_count"></a></p>
 <h2 id="word_countstring">word_count(string)</h2>
 <p>Returns the number of words in <code>string</code></p>
@@ -874,8 +886,9 @@
 <div class="sourceCode" id="cb71"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb71-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
 <a class="sourceLine" id="cb71-2" data-line-number="2">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</a>
 <a class="sourceLine" id="cb71-3" data-line-number="3">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</a>
-<a class="sourceLine" id="cb71-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
-<a class="sourceLine" id="cb71-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a></code></pre></div>
+<a class="sourceLine" id="cb71-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>)) → cat dog</a>
+<a class="sourceLine" id="cb71-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
+<a class="sourceLine" id="cb71-6" data-line-number="6">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a></code></pre></div>
 </div>
 <h1 id="router-tests">Router Tests</h1>
 <p>Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using the <code>match</code> component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template function is used.</p>
@@ -1120,8 +1133,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb101"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb101-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_added&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb101-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb101-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;970b8069-50f5-4f6f-8f41-6b2d9f33d623&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb101-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb101-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4f15f627-b1e2-4851-8dbf-00ecf5d03034&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb101-5" data-line-number="5">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb101-6" data-line-number="6">        <span class="fu">{</span></a>
 <a class="sourceLine" id="cb101-7" data-line-number="7">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;1e1ce1e1-9288-4504-869e-022d1003c72a&quot;</span><span class="fu">,</span></a>
@@ -1150,8 +1163,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb103"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb103-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb103-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urn_added&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb103-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb103-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b88ce93d-4360-4455-a691-235cbe720980&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb103-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb103-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b504fe9e-d8a8-47fd-af9c-ff2f1faac4db&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb103-5" data-line-number="5">    <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12344563452&quot;</span></a>
 <a class="sourceLine" id="cb103-6" data-line-number="6"><span class="fu">}</span></a></code></pre></div>
 </div>
@@ -1179,8 +1192,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb105"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb105-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb105-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;input_labels_added&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb105-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb105-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;688e64f9-2456-4b42-afcb-91a2073e5459&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb105-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb105-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f3cbd795-9bb3-4331-ba82-c15b24dd577f&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb105-5" data-line-number="5">    <span class="dt">&quot;input_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb105-6" data-line-number="6">    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb105-7" data-line-number="7">        <span class="fu">{</span></a>
@@ -1214,8 +1227,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb107"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb107-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb107-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb107-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b504fe9e-d8a8-47fd-af9c-ff2f1faac4db&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb107-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb107-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;229bd432-dac7-4a3f-ba91-c48ad8c50e6b&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb107-5" data-line-number="5">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49999/?cmd=success&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb107-6" data-line-number="6">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb107-7" data-line-number="7">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
@@ -1247,8 +1260,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb109"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb109-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_groups_removed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb109-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb109-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;658fd57d-f132-4ae4-8ab7-4a517a86045c&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb109-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb109-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;e68a851e-6328-426b-a8fd-1537ca860f97&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb109-5" data-line-number="5">    <span class="dt">&quot;groups&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb109-6" data-line-number="6">        <span class="fu">{</span></a>
 <a class="sourceLine" id="cb109-7" data-line-number="7">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
@@ -1281,8 +1294,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb111"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb111-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;broadcast_created&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb111-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb111-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;347b55be-7be1-4e68-aaa3-04d3fbce5f9a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb111-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb111-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5fa51f39-76ea-421c-a71b-fe4af29b871a&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb111-5" data-line-number="5">    <span class="dt">&quot;translations&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb111-6" data-line-number="6">        <span class="dt">&quot;&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb111-7" data-line-number="7">            <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span></a>
@@ -1318,8 +1331,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb113"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb113-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;email_created&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;229bd432-dac7-4a3f-ba91-c48ad8c50e6b&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8e64b588-d46e-4016-a5ef-59cf4d9d7a5b&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb113-5" data-line-number="5">    <span class="dt">&quot;addresses&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb113-6" data-line-number="6">        <span class="st">&quot;foo@bar.com&quot;</span></a>
 <a class="sourceLine" id="cb113-7" data-line-number="7">    <span class="ot">]</span><span class="fu">,</span></a>
@@ -1348,10 +1361,10 @@ Event
 </h3>
 <div class="sourceCode" id="cb115"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb115-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;msg_created&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb115-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb115-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;951242a1-5333-4221-8f9d-465efd6fbb5e&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb115-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb115-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;08eba586-0bb1-47ab-8c15-15a7c0c5228d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb115-5" data-line-number="5">    <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb115-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;644592ee-11ad-4bc4-9566-6fb2598c32d6&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb115-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;40c152ee-c9ed-46ff-9c02-6222e1badc14&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb115-7" data-line-number="7">        <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12065551212&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb115-8" data-line-number="8">        <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb115-9" data-line-number="9">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="fu">,</span></a>
@@ -1384,8 +1397,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb117"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb117-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_channel_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb117-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb117-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;dc47e96a-392b-429b-92ca-6e1d7f550554&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb117-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb117-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;10c62052-7db1-49d1-b8ba-60d66db82e39&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb117-5" data-line-number="5">    <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb117-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4bb288a0-7fca-4da1-abe8-59a593aff648&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb117-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;FAcebook Channel&quot;</span></a>
@@ -1415,8 +1428,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb119"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb119-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_field_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb119-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb119-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5865a06e-6fcc-4db9-bfd7-d22404241e07&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb119-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb119-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c174a241-6057-41a3-874b-f17fb8365c22&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb119-5" data-line-number="5">    <span class="dt">&quot;field&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb119-6" data-line-number="6">        <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;gender&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb119-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span></a>
@@ -1444,8 +1457,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb121"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb121-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb121-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_property_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb121-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb121-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;19ebde80-3969-47d3-a09e-6806aab9f510&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb121-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb121-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;a08b46fc-f057-4e9a-9bd7-277a6a165264&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb121-5" data-line-number="5">    <span class="dt">&quot;property&quot;</span><span class="fu">:</span> <span class="st">&quot;language&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb121-6" data-line-number="6">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span></a>
 <a class="sourceLine" id="cb121-7" data-line-number="7"><span class="fu">}</span></a></code></pre></div>
@@ -1472,12 +1485,12 @@ Event
 </h3>
 <div class="sourceCode" id="cb123"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb123-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;run_result_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb123-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb123-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;edbc66c0-53a8-4b2a-998e-ae5bd773804a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb123-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb123-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;7ca3fc1e-e652-4f5c-979e-17606f578787&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb123-5" data-line-number="5">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Gender&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb123-6" data-line-number="6">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb123-7" data-line-number="7">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb123-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;72a1f5df-49f9-45df-94c9-d86f7ea064e5&quot;</span></a>
+<a class="sourceLine" id="cb123-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c0781400-737f-4940-9a6c-1ec1c3df0325&quot;</span></a>
 <a class="sourceLine" id="cb123-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="action:start_flow"></a></p>
@@ -1503,13 +1516,13 @@ Event
 </h3>
 <div class="sourceCode" id="cb125"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb125-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_triggered&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb125-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb125-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;40c152ee-c9ed-46ff-9c02-6222e1badc14&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb125-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb125-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;fbce9f1c-ddff-45f4-8d46-86b76f70a6a6&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb125-5" data-line-number="5">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb125-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb125-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Collect Language&quot;</span></a>
 <a class="sourceLine" id="cb125-8" data-line-number="8">    <span class="fu">},</span></a>
-<a class="sourceLine" id="cb125-9" data-line-number="9">    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;08eba586-0bb1-47ab-8c15-15a7c0c5228d&quot;</span></a>
+<a class="sourceLine" id="cb125-9" data-line-number="9">    <span class="dt">&quot;parent_run_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c62762c3-d95c-477b-9869-2c286badfdad&quot;</span></a>
 <a class="sourceLine" id="cb125-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="action:start_session"></a></p>
@@ -1540,8 +1553,8 @@ Event
 </h3>
 <div class="sourceCode" id="cb127"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb127-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb127-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;session_triggered&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;bcfb7b96-7c87-48ba-ad03-b49f80627da4&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;43bdd132-957b-464b-bdca-2ca05d3bc6b3&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb127-5" data-line-number="5">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb127-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb127-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></a>
@@ -1553,7 +1566,7 @@ Event
 <a class="sourceLine" id="cb127-13" data-line-number="13">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb127-14" data-line-number="14">    <span class="ot">]</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb127-15" data-line-number="15">    <span class="dt">&quot;run&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb127-16" data-line-number="16">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;e3895066-303a-4b1f-be22-6e6983962829&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-16" data-line-number="16">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb127-17" data-line-number="17">        <span class="dt">&quot;flow_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb127-18" data-line-number="18">        <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb127-19" data-line-number="19">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span><span class="fu">,</span></a>
@@ -1579,31 +1592,39 @@ Event
 <a class="sourceLine" id="cb127-39" data-line-number="39">                <span class="dt">&quot;activation_token&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb127-40" data-line-number="40">                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;AACC55&quot;</span></a>
 <a class="sourceLine" id="cb127-41" data-line-number="41">                <span class="fu">},</span></a>
-<a class="sourceLine" id="cb127-42" data-line-number="42">                <span class="dt">&quot;gender&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb127-43" data-line-number="43">                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
-<a class="sourceLine" id="cb127-44" data-line-number="44">                <span class="fu">}</span></a>
-<a class="sourceLine" id="cb127-45" data-line-number="45">            <span class="fu">}</span></a>
-<a class="sourceLine" id="cb127-46" data-line-number="46">        <span class="fu">},</span></a>
-<a class="sourceLine" id="cb127-47" data-line-number="47">        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;active&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-48" data-line-number="48">        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb127-49" data-line-number="49">            <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb127-50" data-line-number="50">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Color&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-51" data-line-number="51">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-52" data-line-number="52">                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-53" data-line-number="53">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;72a1f5df-49f9-45df-94c9-d86f7ea064e5&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-54" data-line-number="54">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-55" data-line-number="55">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span></a>
-<a class="sourceLine" id="cb127-56" data-line-number="56">            <span class="fu">},</span></a>
-<a class="sourceLine" id="cb127-57" data-line-number="57">            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb127-58" data-line-number="58">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-59" data-line-number="59">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-60" data-line-number="60">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;72a1f5df-49f9-45df-94c9-d86f7ea064e5&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-61" data-line-number="61">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb127-62" data-line-number="62">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456Z&quot;</span></a>
-<a class="sourceLine" id="cb127-63" data-line-number="63">            <span class="fu">}</span></a>
-<a class="sourceLine" id="cb127-64" data-line-number="64">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb127-65" data-line-number="65">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb127-66" data-line-number="66"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb127-42" data-line-number="42">                <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb127-43" data-line-number="43">                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;23&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-44" data-line-number="44">                    <span class="dt">&quot;decimal&quot;</span><span class="fu">:</span> <span class="dv">23</span></a>
+<a class="sourceLine" id="cb127-45" data-line-number="45">                <span class="fu">},</span></a>
+<a class="sourceLine" id="cb127-46" data-line-number="46">                <span class="dt">&quot;gender&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb127-47" data-line-number="47">                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span></a>
+<a class="sourceLine" id="cb127-48" data-line-number="48">                <span class="fu">},</span></a>
+<a class="sourceLine" id="cb127-49" data-line-number="49">                <span class="dt">&quot;join_date&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb127-50" data-line-number="50">                    <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;2017-12-02&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-51" data-line-number="51">                    <span class="dt">&quot;datetime&quot;</span><span class="fu">:</span> <span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span></a>
+<a class="sourceLine" id="cb127-52" data-line-number="52">                <span class="fu">}</span></a>
+<a class="sourceLine" id="cb127-53" data-line-number="53">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb127-54" data-line-number="54">        <span class="fu">},</span></a>
+<a class="sourceLine" id="cb127-55" data-line-number="55">        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;active&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-56" data-line-number="56">        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb127-57" data-line-number="57">            <span class="dt">&quot;favorite_color&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb127-58" data-line-number="58">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Favorite Color&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-59" data-line-number="59">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-60" data-line-number="60">                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-61" data-line-number="61">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-62" data-line-number="62">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-63" data-line-number="63">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
+<a class="sourceLine" id="cb127-64" data-line-number="64">            <span class="fu">},</span></a>
+<a class="sourceLine" id="cb127-65" data-line-number="65">            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb127-66" data-line-number="66">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-67" data-line-number="67">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-68" data-line-number="68">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-69" data-line-number="69">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb127-70" data-line-number="70">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
+<a class="sourceLine" id="cb127-71" data-line-number="71">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb127-72" data-line-number="72">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb127-73" data-line-number="73">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb127-74" data-line-number="74"><span class="fu">}</span></a></code></pre></div>
 </div>
 </div>
 <h1 id="event-definitions">Event Definitions</h1>
@@ -1790,7 +1811,7 @@ Event
 <a class="sourceLine" id="cb137-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;environment_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb137-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb137-4" data-line-number="4">    <span class="dt">&quot;environment&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb137-5" data-line-number="5">        <span class="dt">&quot;date_format&quot;</span><span class="fu">:</span> <span class="st">&quot;yyyy-MM-dd&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb137-5" data-line-number="5">        <span class="dt">&quot;date_format&quot;</span><span class="fu">:</span> <span class="st">&quot;YYYY-MM-DD&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb137-6" data-line-number="6">        <span class="dt">&quot;time_format&quot;</span><span class="fu">:</span> <span class="st">&quot;hh:mm&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb137-7" data-line-number="7">        <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb137-8" data-line-number="8">        <span class="dt">&quot;languages&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>

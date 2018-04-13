@@ -16,7 +16,7 @@ const TypeEnvironmentChanged string = "environment_changed"
 //     "type": "environment_changed",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "environment": {
-//       "date_format": "yyyy-MM-dd",
+//       "date_format": "YYYY-MM-DD",
 //       "time_format": "hh:mm",
 //       "timezone": "Africa/Kigali",
 //       "languages": ["eng", "fra"]

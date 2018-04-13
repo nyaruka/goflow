@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -193,13 +194,21 @@ func checkExample(session flows.Session, line string) error {
 }
 
 func eventsForAction(action flows.Action) (json.RawMessage, error) {
-	session, err := createExampleSession(action)
+	session, err := test.CreateTestSession(action)
 	if err != nil {
 		return nil, err
 	}
 
-	// only interested in events after the new action
-	eventLog := session.Events()[4:]
+	path := session.Runs()[0].Path()
+	lastStep := path[len(path)-1]
+
+	// only interested in events created on the last step
+	eventLog := make([]flows.Event, 0)
+	for _, event := range session.Events() {
+		if event.StepUUID() == lastStep.UUID() {
+			eventLog = append(eventLog, event)
+		}
+	}
 
 	eventJSON := make([]json.RawMessage, len(eventLog))
 	for i, event := range eventLog {

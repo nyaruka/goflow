@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/require"
@@ -140,10 +141,9 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 }
 
 func TestFlows(t *testing.T) {
-	server, err := utils.NewTestHTTPServer()
+	server, err := test.NewTestHTTPServer()
 	require.NoError(t, err)
 
-	server.Start()
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
