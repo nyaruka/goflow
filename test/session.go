@@ -258,7 +258,10 @@ var sessionTrigger = `{
                 }
             }
         },
-        "flow_uuid": "fece6eac-9127-4343-9269-56e88f391562",
+        "flow": {
+            "uuid": "fece6eac-9127-4343-9269-56e88f391562",
+            "name": "Parent Flow"
+        },
         "results": {
             "role": {
                 "created_on": "2000-01-01T00:00:00.000000000-00:00",

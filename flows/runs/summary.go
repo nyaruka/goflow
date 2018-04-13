@@ -39,11 +39,11 @@ var _ flows.RunSummary = (*runSummary)(nil)
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID     flows.RunUUID   `json:"uuid" validate:"uuid4"`
-	FlowUUID flows.FlowUUID  `json:"flow_uuid" validate:"uuid4"`
-	Contact  json.RawMessage `json:"contact" validate:"required"`
-	Status   flows.RunStatus `json:"status" validate:"required"`
-	Results  flows.Results   `json:"results"`
+	UUID    flows.RunUUID        `json:"uuid" validate:"uuid4"`
+	Flow    *flows.FlowReference `json:"flow" validate:"dive"`
+	Contact json.RawMessage      `json:"contact" validate:"required"`
+	Status  flows.RunStatus      `json:"status" validate:"required"`
+	Results flows.Results        `json:"results"`
 }
 
 // ReadRunSummary reads a run summary from the given JSON
@@ -61,7 +61,7 @@ func ReadRunSummary(session flows.Session, data json.RawMessage) (flows.RunSumma
 	}
 
 	// lookup the flow
-	if run.flow, err = session.Assets().GetFlow(e.FlowUUID); err != nil {
+	if run.flow, err = session.Assets().GetFlow(e.Flow.UUID); err != nil {
 		return nil, err
 	}
 
@@ -81,7 +81,7 @@ func (r *runSummary) MarshalJSON() ([]byte, error) {
 	var err error
 
 	envelope.UUID = r.uuid
-	envelope.FlowUUID = r.flow.UUID()
+	envelope.Flow = r.flow.Reference()
 	envelope.Status = r.status
 	envelope.Results = r.results
 

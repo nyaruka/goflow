@@ -127,7 +127,10 @@
                             "urns": [],
                             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
                         },
-                        "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+                        "flow": {
+                            "name": "Parent Flow",
+                            "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87"
+                        },
                         "results": {
                             "age": {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -188,7 +191,10 @@
                 "name": "Bob",
                 "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
             },
-            "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+            "flow": {
+                "name": "Parent Flow",
+                "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87"
+            },
             "results": {
                 "age": {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
