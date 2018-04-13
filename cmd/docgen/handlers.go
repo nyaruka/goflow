@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -186,7 +187,7 @@ func checkExample(session flows.Session, line string) error {
 }
 
 func eventsForAction(action flows.Action) (json.RawMessage, error) {
-	session, err := createExampleSession(action)
+	session, err := test.CreateTestSession(action)
 	if err != nil {
 		return nil, err
 	}

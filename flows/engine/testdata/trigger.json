@@ -51,7 +51,7 @@
             ]
         },
         "environment": {
-            "date_format": "yyyy-MM-dd",
+            "date_format": "YYYY-MM-DD",
             "languages": ["eng"],
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"

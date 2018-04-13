@@ -180,9 +180,9 @@ type functionTemplate struct {
 }
 
 var functionTemplates = map[string]functionTemplate{
-	"first_word": {name: "split", params: "(%s, \" \")[0]"},
+	"first_word": {name: "word", params: "(%s, 0)"},
 	"datevalue":  {name: "date"},
-	"edate":      {name: "date_add", params: "(%s, \"m\", %s)"},
+	"edate":      {name: "date_add", params: "(%s, %s, \"M\")"},
 	"word":       {name: "word", params: "(%s, %s - 1)"},
 	"word_slice": {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
 	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
@@ -201,7 +201,7 @@ var functionTemplates = map[string]functionTemplate{
 
 	"year":   {name: "format_date", params: `(%s, "YYYY")`},
 	"month":  {name: "format_date", params: `(%s, "M")`},
-	"day":    {name: "format_date", params: `(%s, "d")`},
+	"day":    {name: "format_date", params: `(%s, "D")`},
 	"hour":   {name: "format_date", params: `(%s, "h")`},
 	"minute": {name: "format_date", params: `(%s, "m")`},
 	"second": {name: "format_date", params: `(%s, "s")`},
@@ -237,8 +237,8 @@ func newMigrationBaseVars() map[string]interface{} {
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
 			substitutions: map[string]string{
-				"__default__": fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
-				"display":     fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
+				"__default__": fmt.Sprintf("format_urn(contact.urns.%s.0)", scheme),
+				"display":     fmt.Sprintf("format_urn(contact.urns.%s.0)", scheme),
 				"scheme":      fmt.Sprintf("contact.urns.%s.0.scheme", scheme),
 				"path":        fmt.Sprintf("contact.urns.%s.0.path", scheme),
 				"urn":         fmt.Sprintf("contact.urns.%s.0", scheme),
@@ -690,7 +690,7 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 		return err
 	}
 
-	dateUnit := "d"
+	dateUnit := "D"
 	firstIsDate := isDate(value)
 	if firstIsDate {
 		firstSeconds, ok := convertTimeToSeconds(value)
@@ -727,15 +727,15 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 	if (firstIsDate || secondIsDate) && (firstNumberErr != nil || secondNumberErr != nil) {
 
 		// we are adding two values where we know at least one side is a date
-		template := "date_add(%s, \"%s\", %s)"
+		template := "date_add(%s, %s, \"%s\")"
 		if op == "-" {
-			template = "date_add(%s, \"%s\", -%s)"
+			template = "date_add(%s, -%s, \"%s\")"
 		}
 
 		// determine the order of our parameters
-		replacements := []interface{}{value, dateUnit, next}
+		replacements := []interface{}{value, next, dateUnit}
 		if firstNumberErr == nil {
-			replacements = []interface{}{next, dateUnit, value}
+			replacements = []interface{}{next, value, dateUnit}
 		}
 
 		value = fmt.Sprintf(template, replacements...)
@@ -774,7 +774,7 @@ func (v *legacyVisitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	}
 
 	if ctx.EQ() != nil {
-		return fmt.Sprintf("%s == %s", arg1, arg2)
+		return fmt.Sprintf("%s = %s", arg1, arg2)
 	}
 
 	return fmt.Sprintf("%s != %s", arg1, arg2)

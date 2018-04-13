@@ -140,7 +140,7 @@ type SessionAssets interface {
 // Examples:
 //
 //   @run.flow -> Registration
-//   @child.flow -> Collect Language
+//   @child.flow -> Collect Age
 //   @run.flow.uuid -> 50c3706e-fedb-42c0-8eab-dda3335714b7
 //   @(to_json(run.flow)) -> {"name":"Registration","uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
 //
@@ -240,9 +240,9 @@ type Translations interface {
 //
 // Examples:
 //
-//   @trigger.type -> manual
+//   @trigger.type -> flow_action
 //   @trigger.params -> {"source": "website","address": {"state": "WA"}}
-//   @(to_json(trigger)) -> {"params":{"source":"website","address":{"state":"WA"}},"type":"manual"}
+//   @(to_json(trigger)) -> {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
 //
 // @context trigger
 type Trigger interface {

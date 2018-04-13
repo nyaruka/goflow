@@ -46,7 +46,7 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "yyyy-MM-dd",
+                    "date_format": "YYYY-MM-DD",
                     "languages": [
                         "eng"
                     ],
@@ -117,7 +117,7 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "yyyy-MM-dd",
+                        "date_format": "YYYY-MM-DD",
                         "languages": [
                             "eng"
                         ],
@@ -155,7 +155,7 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-            "date_format": "yyyy-MM-dd",
+            "date_format": "YYYY-MM-DD",
             "languages": [
                 "eng"
             ],

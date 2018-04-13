@@ -18,9 +18,9 @@ import (
 //
 // Examples:
 //
-//   @run.results.color -> red
-//   @run.results.color.value -> red
-//   @run.results.color.category -> Red
+//   @run.results.favorite_color -> red
+//   @run.results.favorite_color.value -> red
+//   @run.results.favorite_color.category -> Red
 //
 // @context result
 type Result struct {

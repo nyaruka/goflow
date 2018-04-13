@@ -12,6 +12,7 @@ import (
 	"text/template"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -29,11 +30,10 @@ type handleFunc func(output *strings.Builder, item *documentedItem, session flow
 func buildDocs(baseDir string) (string, error) {
 	fmt.Println("Generating docs...")
 
-	server, err := utils.NewTestHTTPServer()
+	server, err := test.NewTestHTTPServer()
 	if err != nil {
 		return "", fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
-	server.Start()
 	defer server.Close()
 
 	utils.SetRand(utils.NewSeededRand(123456))
@@ -42,7 +42,7 @@ func buildDocs(baseDir string) (string, error) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	session, err := createExampleSession(nil)
+	session, err := test.CreateTestSession(nil)
 	if err != nil {
 		return "", fmt.Errorf("error creating example session: %s", err)
 	}
