@@ -160,8 +160,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(CODE("A"))`, new: `@(code("A"))`},
 		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`},
 
-		//{old: `@(FIXED(contact.balance))`, new: `@(format_num(contact.fields.balance))`}, // TODO
-		//{old: `@(FIXED(contact.balance, 2))`, new: `@(format_num(contact.fields.balance, 2))`}, // TODO
+		{old: `@(FIXED(contact.age))`, new: `@(format_num(contact.fields.age))`},
+		{old: `@(FIXED(contact.age, 2))`, new: `@(format_num(contact.fields.age, 2))`},
 		{old: `@(FIXED(contact.age, 2, false))`, new: `@(format_num(contact.fields.age, 2, false))`},
 		{old: `@(INT(contact.age))`, new: `@(round_down(contact.fields.age))`},
 		{old: `@(LEFT(contact.name, 4))`, new: `@(left(contact.name, 4))`},
@@ -172,7 +172,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
-		// {old: `@((DATEDIF(DATEVALUE("01-01-1970"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: ``},
+		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((date_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_date(now(), "h"), 7)) * 60), format_date(now(), "m"))) * 60)))`},
 
 		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: ExtraAsWebhookJSON},
 		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: ExtraAsTriggerParams},

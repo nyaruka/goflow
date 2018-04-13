@@ -667,6 +667,8 @@ Returns `num` formatted with the passed in number of decimal `places` and option
 
 
 ```objectivec
+@(format_num(31337)) → 31,337.00
+@(format_num(31337, 2)) → 31,337.00
 @(format_num(31337, 2, true)) → 31,337.00
 @(format_num(31337, 0, false)) → 31337
 @(format_num("foo", 2, false)) → ERROR

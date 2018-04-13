@@ -503,14 +503,16 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 
 // FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 //
+//   @(format_num(31337)) -> 31,337.00
+//   @(format_num(31337, 2)) -> 31,337.00
 //   @(format_num(31337, 2, true)) -> 31,337.00
 //   @(format_num(31337, 0, false)) -> 31337
 //   @(format_num("foo", 2, false)) -> ERROR
 //
 // @function format_num(num, places, commas)
 func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 3 {
-		return types.NewXErrorf("takes exactly three arguments, got %d", len(args))
+	if len(args) < 1 || len(args) > 3 {
+		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
 	}
 
 	num, err := types.ToXNumber(args[0])
@@ -518,17 +520,21 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 		return err
 	}
 
-	places, err := types.ToInteger(args[1])
-	if err != nil {
-		return err
-	}
-	if places < 0 || places > 9 {
-		return types.NewXErrorf("must take 0-9 number of places, got %d", args[1])
+	places := 2
+	if len(args) > 1 {
+		if places, err = types.ToInteger(args[1]); err != nil {
+			return err
+		}
+		if places < 0 || places > 9 {
+			return types.NewXErrorf("must take 0-9 number of places, got %d", args[1])
+		}
 	}
 
-	commas, err := types.ToXBool(args[2])
-	if err != nil {
-		return err
+	commas := types.XBoolTrue
+	if len(args) > 2 {
+		if commas, err = types.ToXBool(args[2]); err != nil {
+			return err
+		}
 	}
 
 	// build our format string
@@ -1330,11 +1336,7 @@ func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXDate(date.Native().AddDate(duration, 0, 0))
 	}
 
-<<<<<<< HEAD
-	return types.NewXErrorf("Unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
-=======
-	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, d, w, M, y", unit)
->>>>>>> funky_funcs
+	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)
 }
 
 // Weekday returns the day of the week for `date`, 0 is sunday, 1 is monday..

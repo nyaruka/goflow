@@ -599,9 +599,11 @@
 <p><a name="function:format_num"></a></p>
 <h2 id="format_numnum-places-commas">format_num(num, places, commas)</h2>
 <p>Returns <code>num</code> formatted with the passed in number of decimal <code>places</code> and optional <code>commas</code> dividing thousands separators</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_num(<span class="dv">31337</span>, <span class="dv">2</span>, true)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">@(format_num(<span class="dv">31337</span>, <span class="dv">0</span>, false)) → <span class="dv">31337</span></a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_num(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_num(<span class="dv">31337</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">@(format_num(<span class="dv">31337</span>, <span class="dv">2</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_num(<span class="dv">31337</span>, <span class="dv">2</span>, true)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">@(format_num(<span class="dv">31337</span>, <span class="dv">0</span>, false)) → <span class="dv">31337</span></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">@(format_num(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
 <p><a name="function:format_urn"></a></p>
 <h2 id="format_urnurn">format_urn(urn)</h2>
 <p>Turns <code>urn</code> into a human friendly string</p>
