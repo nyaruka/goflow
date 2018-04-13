@@ -357,6 +357,7 @@ type Session interface {
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun
+	ParentRun() RunSummary
 
 	Events() []Event
 	LogEvent(Event)
@@ -428,7 +429,7 @@ type FlowRun interface {
 
 	Snapshot() RunSummary
 	Parent() RunSummary
-	SessionParent() FlowRun
+	ParentInSession() FlowRun
 	Ancestors() []FlowRun
 
 	CreatedOn() time.Time

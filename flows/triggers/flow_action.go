@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -86,7 +87,7 @@ func ReadFlowActionTrigger(session flows.Session, envelope *utils.TypedEnvelope)
 		return nil, err
 	}
 
-	if trigger.run, err = flows.ReadRunSummary(session, e.Run); err != nil {
+	if trigger.run, err = runs.ReadRunSummary(session, e.Run); err != nil {
 		return nil, err
 	}
 

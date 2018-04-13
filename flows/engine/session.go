@@ -81,9 +81,18 @@ func (s *session) addRun(run flows.FlowRun) {
 func (s *session) GetCurrentChild(run flows.FlowRun) flows.FlowRun {
 	// the current child of a run, is the last added run which has that run as its parent
 	for r := len(s.runs) - 1; r >= 0; r-- {
-		if s.runs[r].SessionParent() == run {
+		if s.runs[r].ParentInSession() == run {
 			return s.runs[r]
 		}
+	}
+	return nil
+}
+
+// ParentRun gets the parent run of this session if it was started by a flow action
+func (s *session) ParentRun() flows.RunSummary {
+	if s.trigger != nil && s.trigger.Type() == triggers.TypeFlowAction {
+		trigger := s.trigger.(*triggers.FlowActionTrigger)
+		return trigger.Run()
 	}
 	return nil
 }
@@ -263,9 +272,9 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			}
 
 			// switch back our parent run
-			if currentRun.SessionParent() != nil {
+			if currentRun.ParentInSession() != nil {
 				childRun := currentRun
-				currentRun = currentRun.SessionParent()
+				currentRun = currentRun.ParentInSession()
 				s.flowStack.pop()
 
 				// as long as we didn't error, we can try to resume it

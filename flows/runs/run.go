@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
-	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 
 	log "github.com/sirupsen/logrus"
@@ -82,18 +81,16 @@ func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
 }
 
-// SessionParent returns the parent of the run within the same session if one exists
-func (r *flowRun) SessionParent() flows.FlowRun { return r.parent }
+// ParentInSession returns the parent of the run within the same session if one exists
+func (r *flowRun) ParentInSession() flows.FlowRun { return r.parent }
 
 // Parent returns either the same session parent or if this session was triggered from a trigger_flow action
 // in another session, that run
 func (r *flowRun) Parent() flows.RunSummary {
-	if r.parent == nil && r.session.Trigger() != nil && r.session.Trigger().Type() == triggers.TypeFlowAction {
-		runTrigger := r.session.Trigger().(*triggers.FlowActionTrigger)
-
-		return runTrigger.Run()
+	if r.parent == nil {
+		return r.session.ParentRun()
 	}
-	return r.SessionParent()
+	return r.ParentInSession()
 }
 
 func (r *flowRun) Ancestors() []flows.FlowRun {
@@ -197,8 +194,8 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 		r.expiresOn = &expiresOn
 	}
 
-	if r.SessionParent() != nil {
-		r.SessionParent().ResetExpiration(r.expiresOn)
+	if r.ParentInSession() != nil {
+		r.ParentInSession().ResetExpiration(r.expiresOn)
 	}
 }
 
@@ -289,7 +286,7 @@ func (r *flowRun) ToXJSON() types.XString {
 }
 
 func (r *flowRun) Snapshot() flows.RunSummary {
-	return flows.NewRunSummaryFromRun(r)
+	return newRunSummaryFromRun(r)
 }
 
 var _ types.XValue = (*flowRun)(nil)
