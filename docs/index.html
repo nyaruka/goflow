@@ -773,24 +773,31 @@
 <h2 id="roundnum-places">round(num [,places])</h2>
 <p>Rounds <code>num</code> to the nearest value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
 <p>If places &lt; 0, it will round the integer part to the nearest 10^(-places).</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
-<a class="sourceLine" id="cb55-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb55-6" data-line-number="6">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb55-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb55-6" data-line-number="6">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
+<a class="sourceLine" id="cb55-7" data-line-number="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_down"></a></p>
-<h2 id="round_downnum">round_down(num)</h2>
-<p>Rounds <code>num</code> down to the nearest integer value</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">@(round_down(<span class="fl">12.9</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<h2 id="round_downnum-places">round_down(num [,places])</h2>
+<p>Rounds <code>num</code> down to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">@(round_down(<span class="fl">12.6</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">@(round_down(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb56-5" data-line-number="5">@(round_down(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb56-6" data-line-number="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_up"></a></p>
-<h2 id="round_upnum">round_up(num)</h2>
-<p>Rounds <code>num</code> up to the nearest integer value, also good at fighting weeds</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<h2 id="round_upnum-places">round_up(num [,places])</h2>
+<p>Rounds <code>num</code> up to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">@(round_up(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">@(round_up(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:split"></a></p>
 <h2 id="splitstring-delimiter">split(string, delimiter)</h2>
 <p>Splits <code>string</code> based on the passed in <code>delimeter</code></p>

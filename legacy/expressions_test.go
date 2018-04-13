@@ -151,9 +151,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(POWER(2, 3))`, new: `@(2 ^ 3)`},
 		{old: `@(RAND())`, new: `@(rand())`},
 		{old: `@(RANDBETWEEN(1, 10))`, new: `@(rand_between(1, 10))`},
+		{old: `@(ROUND(9.4378))`, new: `@(round(9.4378))`},
 		{old: `@(ROUND(9.4378, 3))`, new: `@(round(9.4378, 3))`},
-		//{old: `@(ROUNDUP(9.4378))`, new: `@(round_up(9.4378, 3))`}, // TODO
-		//{old: `@(ROUNDDOWN(9.4378, 3))`, new: `@(round_down(9.4378, 3))`},  // TODO
+		{old: `@(ROUNDUP(9.4378))`, new: `@(round_up(9.4378))`},
+		{old: `@(ROUNDUP(9.4378, 3))`, new: `@(round_up(9.4378, 3))`},
+		{old: `@(ROUNDDOWN(9.4378))`, new: `@(round_down(9.4378))`},
+		{old: `@(ROUNDDOWN(9.4378, 3))`, new: `@(round_down(9.4378, 3))`},
 		{old: `@(SUM(contact.age, child.age))`, new: `@(contact.fields.age + child.results.age)`},
 		{old: `@(CHAR(10))`, new: `@(char(10))`},
 		{old: `@(CLEAN(contact.gender))`, new: `@(clean(contact.fields.gender))`},

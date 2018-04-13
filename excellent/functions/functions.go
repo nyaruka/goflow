@@ -37,9 +37,9 @@ var XFUNCTIONS = map[string]XFunction{
 
 	"legacy_add": TwoArgFunction(LegacyAdd),
 
-	"round":        Round,
-	"round_up":     OneNumberFunction(RoundUp),
-	"round_down":   OneNumberFunction(RoundDown),
+	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
+	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
+	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
 	"max":          Max,
 	"min":          Min,
 	"mean":         Mean,
@@ -325,11 +325,11 @@ func Abs(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXNumber(num.Native().Abs())
 }
 
-// Round rounds `num` to the nearest value. You can optionally pass
-// in the number of decimal places to round to as `places`.
+// Round rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
 //
 // If places < 0, it will round the integer part to the nearest 10^(-places).
 //
+//   @(round(12)) -> 12
 //   @(round(12.141)) -> 12
 //   @(round(12.6)) -> 13
 //   @(round(12.141, 2)) -> 12.14
@@ -338,47 +338,52 @@ func Abs(env utils.Environment, num types.XNumber) types.XValue {
 //   @(round("notnum", 2)) -> ERROR
 //
 // @function round(num [,places])
-func Round(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 2 {
-		return types.NewXErrorf("takes either one or two arguments")
-	}
-
-	num, err := types.ToXNumber(args[0])
-	if err != nil {
-		return types.NewXErrorf("first argument must be a number")
-	}
-
-	round := 0
-	if len(args) == 2 {
-		round, err = types.ToInteger(args[1])
-		if err != nil {
-			return types.NewXErrorf("decimal places argument must be integer")
-		}
-	}
-
-	return types.NewXNumber(num.Native().Round(int32(round)))
+func Round(env utils.Environment, num types.XNumber, places int) types.XValue {
+	return types.NewXNumber(num.Native().Round(int32(places)))
 }
 
-// RoundUp rounds `num` up to the nearest integer value, also good at fighting weeds
+// RoundUp rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 //
-//   @(round_up(12.141)) -> 13
 //   @(round_up(12)) -> 12
+//   @(round_up(12.141)) -> 13
+//   @(round_up(12.6)) -> 13
+//   @(round_up(12.141, 2)) -> 12.15
+//   @(round_up(12.146, 2)) -> 12.15
 //   @(round_up("foo")) -> ERROR
 //
-// @function round_up(num)
-func RoundUp(env utils.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Ceil())
+// @function round_up(num [,places])
+func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue {
+	dec := num.Native()
+	if dec.Round(int32(places)).Equal(dec) {
+		return num
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+	roundedDec := dec.Add(halfPrecision).Round(int32(places))
+
+	return types.NewXNumber(roundedDec)
 }
 
-// RoundDown rounds `num` down to the nearest integer value
+// RoundDown rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 //
+//   @(round_down(12)) -> 12
 //   @(round_down(12.141)) -> 12
-//   @(round_down(12.9)) -> 12
+//   @(round_down(12.6)) -> 12
+//   @(round_down(12.141, 2)) -> 12.14
+//   @(round_down(12.146, 2)) -> 12.14
 //   @(round_down("foo")) -> ERROR
 //
-// @function round_down(num)
-func RoundDown(env utils.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Floor())
+// @function round_down(num [,places])
+func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValue {
+	dec := num.Native()
+	if dec.Round(int32(places)).Equal(dec) {
+		return num
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+	roundedDec := dec.Sub(halfPrecision).Round(int32(places))
+
+	return types.NewXNumber(roundedDec)
 }
 
 // Max takes a list of `values` and returns the greatest of them

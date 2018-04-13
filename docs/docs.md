@@ -1017,13 +1017,13 @@ Returns the `count` most right characters of the passed in `string`
 
 ## round(num [,places])
 
-Rounds `num` to the nearest value. You can optionally pass
-in the number of decimal places to round to as `places`.
+Rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
 
 If places < 0, it will round the integer part to the nearest 10^(-places).
 
 
 ```objectivec
+@(round(12)) → 12
 @(round(12.141)) → 12
 @(round(12.6)) → 13
 @(round(12.141, 2)) → 12.14
@@ -1034,27 +1034,33 @@ If places < 0, it will round the integer part to the nearest 10^(-places).
 
 <a name="function:round_down"></a>
 
-## round_down(num)
+## round_down(num [,places])
 
-Rounds `num` down to the nearest integer value
+Rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 
 
 ```objectivec
+@(round_down(12)) → 12
 @(round_down(12.141)) → 12
-@(round_down(12.9)) → 12
+@(round_down(12.6)) → 12
+@(round_down(12.141, 2)) → 12.14
+@(round_down(12.146, 2)) → 12.14
 @(round_down("foo")) → ERROR
 ```
 
 <a name="function:round_up"></a>
 
-## round_up(num)
+## round_up(num [,places])
 
-Rounds `num` up to the nearest integer value, also good at fighting weeds
+Rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 
 
 ```objectivec
-@(round_up(12.141)) → 13
 @(round_up(12)) → 12
+@(round_up(12.141)) → 13
+@(round_up(12.6)) → 13
+@(round_up(12.141, 2)) → 12.15
+@(round_up(12.146, 2)) → 12.15
 @(round_up("foo")) → ERROR
 ```
 
