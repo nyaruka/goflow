@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -20,7 +21,7 @@ const TypeFlowAction string = "flow_action"
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
 //     "run": {
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//       "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+//       "flow": {"uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87", "name": "Other Flow"},
 //       "contact": {
 //         "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
 //         "name": "Bob",
@@ -86,7 +87,7 @@ func ReadFlowActionTrigger(session flows.Session, envelope *utils.TypedEnvelope)
 		return nil, err
 	}
 
-	if trigger.run, err = flows.ReadRunSummary(session, e.Run); err != nil {
+	if trigger.run, err = runs.ReadRunSummary(session, e.Run); err != nil {
 		return nil, err
 	}
 

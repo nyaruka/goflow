@@ -2161,7 +2161,10 @@ Can be used to trigger sessions for other contacts and groups
     ],
     "run": {
         "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a",
-        "flow_uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+        "flow": {
+            "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+            "name": "Registration"
+        },
         "contact": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Ryan Lewis",
@@ -2622,7 +2625,10 @@ Events are created when an action wants to start a subflow
     ],
     "run": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "flow_uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+        "flow": {
+            "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
+            "name": "Other Flow"
+        },
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
             "name": "Bob",

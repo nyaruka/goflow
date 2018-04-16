@@ -1,27 +1,28 @@
-package flows
+package runs
 
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
 
 type runSummary struct {
-	uuid    RunUUID
-	flow    Flow
-	contact *Contact
-	status  RunStatus
-	results Results
+	uuid    flows.RunUUID
+	flow    flows.Flow
+	contact *flows.Contact
+	status  flows.RunStatus
+	results flows.Results
 }
 
-func (r *runSummary) UUID() RunUUID     { return r.uuid }
-func (r *runSummary) Flow() Flow        { return r.flow }
-func (r *runSummary) Contact() *Contact { return r.contact }
-func (r *runSummary) Status() RunStatus { return r.status }
-func (r *runSummary) Results() Results  { return r.results }
+func (r *runSummary) UUID() flows.RunUUID     { return r.uuid }
+func (r *runSummary) Flow() flows.Flow        { return r.flow }
+func (r *runSummary) Contact() *flows.Contact { return r.contact }
+func (r *runSummary) Status() flows.RunStatus { return r.status }
+func (r *runSummary) Results() flows.Results  { return r.results }
 
-// NewRunSummaryFromRun creates a new run summary from the given run
-func NewRunSummaryFromRun(run FlowRun) RunSummary {
+// creates a new run summary from the given run
+func newRunSummaryFromRun(run flows.FlowRun) flows.RunSummary {
 	return &runSummary{
 		uuid:    run.UUID(),
 		flow:    run.Flow(),
@@ -31,22 +32,22 @@ func NewRunSummaryFromRun(run FlowRun) RunSummary {
 	}
 }
 
-var _ RunSummary = (*runSummary)(nil)
+var _ flows.RunSummary = (*runSummary)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID     RunUUID         `json:"uuid" validate:"uuid4"`
-	FlowUUID FlowUUID        `json:"flow_uuid" validate:"uuid4"`
-	Contact  json.RawMessage `json:"contact" validate:"required"`
-	Status   RunStatus       `json:"status" validate:"required"`
-	Results  Results         `json:"results"`
+	UUID    flows.RunUUID        `json:"uuid" validate:"uuid4"`
+	Flow    *flows.FlowReference `json:"flow" validate:"required,dive"`
+	Contact json.RawMessage      `json:"contact" validate:"required"`
+	Status  flows.RunStatus      `json:"status" validate:"required"`
+	Results flows.Results        `json:"results"`
 }
 
 // ReadRunSummary reads a run summary from the given JSON
-func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
+func ReadRunSummary(session flows.Session, data json.RawMessage) (flows.RunSummary, error) {
 	var err error
 	e := runSummaryEnvelope{}
 	if err = utils.UnmarshalAndValidate(data, &e, "runsummary"); err != nil {
@@ -60,13 +61,13 @@ func ReadRunSummary(session Session, data json.RawMessage) (RunSummary, error) {
 	}
 
 	// lookup the flow
-	if run.flow, err = session.Assets().GetFlow(e.FlowUUID); err != nil {
+	if run.flow, err = session.Assets().GetFlow(e.Flow.UUID); err != nil {
 		return nil, err
 	}
 
 	// read the contact
 	if e.Contact != nil {
-		if run.contact, err = ReadContact(session, e.Contact); err != nil {
+		if run.contact, err = flows.ReadContact(session, e.Contact); err != nil {
 			return nil, err
 		}
 	}
@@ -80,7 +81,7 @@ func (r *runSummary) MarshalJSON() ([]byte, error) {
 	var err error
 
 	envelope.UUID = r.uuid
-	envelope.FlowUUID = r.flow.UUID()
+	envelope.Flow = r.flow.Reference()
 	envelope.Status = r.status
 	envelope.Results = r.results
 
