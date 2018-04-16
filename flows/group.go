@@ -22,7 +22,7 @@ import (
 //   @contact.groups -> ["Testers","Males"]
 //   @contact.groups.0.uuid -> b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 //   @contact.groups.1.name -> Males
-//   @(to_json(contact.groups.1)) -> {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
+//   @(json(contact.groups.1)) -> {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
 //
 // @context group
 type Group struct {
@@ -91,7 +91,7 @@ func (g *Group) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (g *Group) Reduce() types.XPrimitive { return types.NewXString(g.name) }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (g *Group) ToXJSON() types.XString {
 	return types.ResolveKeys(g, "uuid", "name").ToXJSON()
 }
@@ -175,7 +175,7 @@ func (l GroupList) Reduce() types.XPrimitive {
 	return array
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (l GroupList) ToXJSON() types.XString {
 	return l.Reduce().ToXJSON()
 }

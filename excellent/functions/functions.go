@@ -52,8 +52,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"format_num": FormatNum,
 	"read_code":  OneStringFunction(ReadCode),
 
-	"to_json":    OneArgFunction(ToJSON),
-	"from_json":  OneStringFunction(FromJSON),
+	"json":       OneArgFunction(JSON),
+	"parse_json": OneStringFunction(ParseJSON),
 	"url_encode": OneStringFunction(URLEncode),
 
 	"char":              OneNumberFunction(Char),
@@ -218,27 +218,27 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// FromJSON tries to parse `string` as JSON, returning a fragment you can index into
+// ParseJSON tries to parse `string` as JSON, returning a fragment you can index into
 //
 // If the passed in value is not JSON, then an error is returned
 //
-//   @(from_json("[1,2,3,4]").2) -> 3
-//   @(from_json("invalid json")) -> ERROR
+//   @(parse_json("[1,2,3,4]").2) -> 3
+//   @(parse_json("invalid json")) -> ERROR
 //
-// @function from_json(string)
-func FromJSON(env utils.Environment, str types.XString) types.XValue {
+// @function parse_json(string)
+func ParseJSON(env utils.Environment, str types.XString) types.XValue {
 	return types.JSONToXValue([]byte(str.Native()))
 }
 
-// ToJSON tries to return a JSON representation of `value`. An error is returned if there is
+// JSON tries to return a JSON representation of `value`. An error is returned if there is
 // no JSON representation of that object.
 //
-//   @(to_json("string")) -> "string"
-//   @(to_json(10)) -> 10
-//   @(to_json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+//   @(json("string")) -> "string"
+//   @(json(10)) -> 10
+//   @(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 //
-// @function to_json(value)
-func ToJSON(env utils.Environment, value types.XValue) types.XValue {
+// @function json(value)
+func JSON(env utils.Environment, value types.XValue) types.XValue {
 	asJSON, xerr := types.ToXJSON(value)
 	if xerr != nil {
 		return xerr

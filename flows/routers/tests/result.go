@@ -32,7 +32,7 @@ func (t XTestResult) Reduce() types.XPrimitive {
 	return types.NewXBool(t.matched)
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (t XTestResult) ToXJSON() types.XString {
 	return types.ResolveKeys(t, "matched", "match").ToXJSON()
 }

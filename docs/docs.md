@@ -182,7 +182,7 @@ Examples:
 ```objectivec
 @run.input.attachments.0.content_type → image/jpeg
 @run.input.attachments.0.url → http://s3.amazon.com/bucket/test.jpg
-@(to_json(run.input.attachments.0)) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
+@(json(run.input.attachments.0)) → {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
 ```
 
 <a name="context:channel"></a>
@@ -204,7 +204,7 @@ Examples:
 @contact.channel.name → My Android Phone
 @contact.channel.address → +12345671111
 @run.input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d
-@(to_json(contact.channel)) → {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"}
+@(json(contact.channel)) → {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"}
 ```
 
 <a name="context:contact"></a>
@@ -262,7 +262,7 @@ Examples:
 @run.flow → Registration
 @child.flow → Collect Age
 @run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7
-@(to_json(run.flow)) → {"name":"Registration","uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
+@(json(run.flow)) → {"name":"Registration","uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
 ```
 
 <a name="context:group"></a>
@@ -283,7 +283,7 @@ Examples:
 @contact.groups → ["Testers","Males"]
 @contact.groups.0.uuid → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d
 @contact.groups.1.name → Males
-@(to_json(contact.groups.1)) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
+@(json(contact.groups.1)) → {"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}
 ```
 
 <a name="context:input"></a>
@@ -312,7 +312,7 @@ Examples:
 @run.input.type → msg
 @run.input.text → Hi there
 @run.input.attachments → ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
-@(to_json(run.input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+@(json(run.input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
 <a name="context:result"></a>
@@ -375,7 +375,7 @@ Examples:
 ```objectivec
 @trigger.type → flow_action
 @trigger.params → {"source": "website","address": {"state": "WA"}}
-@(to_json(trigger)) → {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
+@(json(trigger)) → {"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}
 ```
 
 <a name="context:urn"></a>
@@ -407,7 +407,7 @@ Examples:
 @contact.urns.0.path → +12065551212
 @contact.urns.1.display → nyaruka
 @(format_urn(contact.urns.0)) → (206) 555-1212
-@(to_json(contact.urns.0)) → {"display":"","path":"+12065551212","scheme":"tel"}
+@(json(contact.urns.0)) → {"display":"","path":"+12065551212","scheme":"tel"}
 ```
 
 <a name="context:webhook"></a>
@@ -703,20 +703,6 @@ Returns a new date created from `num` which represents number of nanoseconds sin
 @(from_epoch(1497286619000000000)) → 2017-06-12T16:56:59.000000Z
 ```
 
-<a name="function:from_json"></a>
-
-## from_json(string)
-
-Tries to parse `string` as JSON, returning a fragment you can index into
-
-If the passed in value is not JSON, then an error is returned
-
-
-```objectivec
-@(from_json("[1,2,3,4]").2) → 3
-@(from_json("invalid json")) → ERROR
-```
-
 <a name="function:if"></a>
 
 ## if(test, true_value, false_value)
@@ -741,6 +727,20 @@ Joins the passed in `array` of strings with the passed in `delimeter`
 ```objectivec
 @(join(array("a", "b", "c"), "|")) → a|b|c
 @(join(split("a.b.c", "."), " ")) → a b c
+```
+
+<a name="function:json"></a>
+
+## json(value)
+
+Tries to return a JSON representation of `value`. An error is returned if there is
+no JSON representation of that object.
+
+
+```objectivec
+@(json("string")) → "string"
+@(json(10)) → 10
+@(json(contact.uuid)) → "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 ```
 
 <a name="function:left"></a>
@@ -922,6 +922,20 @@ parse_date will return an error if it is unable to convert the string to a date.
 @(parse_date("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000Z
 @(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) → 2010-05-10T12:50:00.000000-07:00
 @(parse_date("NOT DATE", "YYYY-MM-DD")) → ERROR
+```
+
+<a name="function:parse_json"></a>
+
+## parse_json(string)
+
+Tries to parse `string` as JSON, returning a fragment you can index into
+
+If the passed in value is not JSON, then an error is returned
+
+
+```objectivec
+@(parse_json("[1,2,3,4]").2) → 3
+@(parse_json("invalid json")) → ERROR
 ```
 
 <a name="function:percent"></a>
@@ -1131,20 +1145,6 @@ Converts `date` to the number of nanoseconds since January 1st, 1970 GMT
 
 ```objectivec
 @(to_epoch("2017-06-12T16:56:59.000000Z")) → 1497286619000000000
-```
-
-<a name="function:to_json"></a>
-
-## to_json(value)
-
-Tries to return a JSON representation of `value`. An error is returned if there is
-no JSON representation of that object.
-
-
-```objectivec
-@(to_json("string")) → "string"
-@(to_json(10)) → 10
-@(to_json(contact.uuid)) → "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
 ```
 
 <a name="function:today"></a>

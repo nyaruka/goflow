@@ -40,7 +40,7 @@ func (v *testXObject) Resolve(key string) types.XValue {
 	}
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (v *testXObject) ToXJSON() types.XString {
 	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
 }

@@ -312,7 +312,7 @@
 <p>Examples:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" data-line-number="1">@run.input.attachments.<span class="fl">0.</span>content_type → image/jpeg</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">@run.input.attachments.<span class="fl">0.</span>url → http:<span class="co">//s3.amazon.com/bucket/test.jpg</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">@(to_json(run.input.attachments<span class="fl">.0</span>)) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb7-3" data-line-number="3">@(json(run.input.attachments<span class="fl">.0</span>)) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre></div>
 <p><a name="context:channel"></a></p>
 <h2 id="channel">Channel</h2>
 <p>Represents a means for sending and receiving input during a flow run. It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -326,7 +326,7 @@
 <a class="sourceLine" id="cb8-2" data-line-number="2">@contact.channel.name → My Android Phone</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">@contact.channel.address → +<span class="dv">12345671111</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">@run.input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">@(to_json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb8-5" data-line-number="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
 <p><a name="context:contact"></a></p>
 <h2 id="contact">Contact</h2>
 <p>Represents a person who is interacting with the flow. It renders as the person’s name (or perferred URN if name isn’t set) in a template, and has the following properties which can be accessed:</p>
@@ -368,7 +368,7 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@run.flow → Registration</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">@child.flow → Collect Age</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">@(to_json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb10-4" data-line-number="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
 <p><a name="context:group"></a></p>
 <h2 id="group">Group</h2>
 <p>Represents a grouping of contacts. It can be static (contacts are added and removed manually through <a href="#action:add_contact_groups">actions</a>) or dynamic (contacts are added automatically by a query). It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -380,7 +380,7 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb11-1" data-line-number="1">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">@contact.groups.<span class="fl">0.</span>uuid → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">@contact.groups.<span class="fl">1.</span>name → Males</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">@(to_json(contact.groups<span class="fl">.1</span>)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb11-4" data-line-number="4">@(json(contact.groups<span class="fl">.1</span>)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
 <p><a name="context:input"></a></p>
 <h2 id="input">Input</h2>
 <p>Describes input from the contact and currently we only support one type of input: <code>msg</code>. Any input has the following properties which can be accessed:</p>
@@ -401,7 +401,7 @@
 <a class="sourceLine" id="cb12-2" data-line-number="2">@run.input.type → msg</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3">@run.input.text → Hi there</a>
 <a class="sourceLine" id="cb12-4" data-line-number="4">@run.input.attachments → [<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>]</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">@(to_json(run.input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2000-01-01T00:00:00.000000Z&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb12-5" data-line-number="5">@(json(run.input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2000-01-01T00:00:00.000000Z&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
 <p>Describes a value captured during a run’s execution. It might have been implicitly created by a router, or explicitly created by a <a href="#action:set_run_result">set_run_result</a> action.It renders as its value in a template, and has the following properties which can be accessed:</p>
@@ -439,7 +439,7 @@
 <p>Examples:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb15-1" data-line-number="1">@trigger.type → flow_action</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">@trigger.params → {<span class="st">&quot;source&quot;</span>: <span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>: {<span class="st">&quot;state&quot;</span>: <span class="st">&quot;WA&quot;</span>}}</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">@(to_json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb15-3" data-line-number="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
 <p><a name="context:urn"></a></p>
 <h2 id="urn">Urn</h2>
 <p>Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:</p>
@@ -462,7 +462,7 @@
 <a class="sourceLine" id="cb16-3" data-line-number="3">@contact.urns.<span class="fl">0.</span>path → +<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb16-4" data-line-number="4">@contact.urns.<span class="fl">1.</span>display → nyaruka</a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">@(format_urn(contact.urns<span class="fl">.0</span>)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">@(to_json(contact.urns<span class="fl">.0</span>)) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb16-6" data-line-number="6">@(json(contact.urns<span class="fl">.0</span>)) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
 <p><a name="context:webhook"></a></p>
 <h2 id="webhook">Webhook</h2>
 <p>Describes a call made to an external service. It has several properties which can be accessed in expressions:</p>
@@ -619,23 +619,23 @@
 <h2 id="from_epochnum">from_epoch(num)</h2>
 <p>Returns a new date created from <code>num</code> which represents number of nanoseconds since January 1st, 1970 GMT</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb33-1" data-line-number="1">@(from_epoch(<span class="dv">1497286619000000000</span>)) → <span class="dv">2017-06</span>-12T16:<span class="dv">56</span>:<span class="fl">59.000000</span>Z</a></code></pre></div>
-<p><a name="function:from_json"></a></p>
-<h2 id="from_jsonstring">from_json(string)</h2>
-<p>Tries to parse <code>string</code> as JSON, returning a fragment you can index into</p>
-<p>If the passed in value is not JSON, then an error is returned</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" data-line-number="1">@(from_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) → <span class="dv">3</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">@(from_json(<span class="st">&quot;invalid json&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:if"></a></p>
 <h2 id="iftest-true_value-false_value">if(test, true_value, false_value)</h2>
 <p>Evaluates the <code>test</code> argument, and if truthy returns <code>true_value</code>, if not returning <code>false_value</code></p>
 <p>If the first argument is an error that error is returned</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb35-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → foo</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → foo</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:join"></a></p>
 <h2 id="joinarray-delimiter">join(array, delimiter)</h2>
 <p>Joins the passed in <code>array</code> of strings with the passed in <code>delimeter</code></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb36-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) → a b c</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb35-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) → a b c</a></code></pre></div>
+<p><a name="function:json"></a></p>
+<h2 id="jsonvalue">json(value)</h2>
+<p>Tries to return a JSON representation of <code>value</code>. An error is returned if there is no JSON representation of that object.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb36-1" data-line-number="1">@(json(<span class="st">&quot;string&quot;</span>)) → <span class="st">&quot;string&quot;</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">@(json(<span class="dv">10</span>)) → <span class="dv">10</span></a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">@(json(contact.uuid)) → <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></a></code></pre></div>
 <p><a name="function:left"></a></p>
 <h2 id="leftstring-count">left(string, count)</h2>
 <p>Returns the <code>count</code> most left characters of the passed in <code>string</code></p>
@@ -731,110 +731,110 @@
 <a class="sourceLine" id="cb47-2" data-line-number="2">@(parse_date(<span class="st">&quot;2010 5 10&quot;</span>, <span class="st">&quot;YYYY M DD&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
 <a class="sourceLine" id="cb47-3" data-line-number="3">@(parse_date(<span class="st">&quot;2010 5 10 12:50&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05</span>-10T12:<span class="dv">50</span>:<span class="fl">00.000000</span><span class="dv">-07</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb47-4" data-line-number="4">@(parse_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
+<p><a name="function:parse_json"></a></p>
+<h2 id="parse_jsonstring">parse_json(string)</h2>
+<p>Tries to parse <code>string</code> as JSON, returning a fragment you can index into</p>
+<p>If the passed in value is not JSON, then an error is returned</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(parse_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) → <span class="dv">3</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">@(parse_json(<span class="st">&quot;invalid json&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:percent"></a></p>
 <h2 id="percentnum">percent(num)</h2>
 <p>Converts <code>num</code> to a string represented as a percentage</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(percent(<span class="fl">0.54234</span>)) → <span class="dv">54</span>%</a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">@(percent(<span class="fl">1.2</span>)) → <span class="dv">120</span>%</a>
-<a class="sourceLine" id="cb48-3" data-line-number="3">@(percent(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" data-line-number="1">@(percent(<span class="fl">0.54234</span>)) → <span class="dv">54</span>%</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">@(percent(<span class="fl">1.2</span>)) → <span class="dv">120</span>%</a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">@(percent(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:rand"></a></p>
 <h2 id="rand">rand()</h2>
 <p>Returns a single random number between [0.0-1.0).</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" data-line-number="1">@(rand()) → <span class="fl">0.3849275689214193274523267973563633859157562255859375</span></a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">@(rand()) → <span class="fl">0.607552015674623913099594574305228888988494873046875</span></a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb50-1" data-line-number="1">@(rand()) → <span class="fl">0.3849275689214193274523267973563633859157562255859375</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">@(rand()) → <span class="fl">0.607552015674623913099594574305228888988494873046875</span></a></code></pre></div>
 <p><a name="function:rand_between"></a></p>
 <h2 id="rand_between">rand_between()</h2>
 <p>A single random integer in the given inclusive range.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb50-1" data-line-number="1">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">5</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb51-1" data-line-number="1">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">5</span></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
 <p><a name="function:read_code"></a></p>
 <h2 id="read_codecode">read_code(code)</h2>
 <p>Converts <code>code</code> into something that can be read by IVR systems</p>
 <p>ReadCode will split the numbers such as they are easier to understand. This includes splitting in 3s or 4s if appropriate.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb51-1" data-line-number="1">@(read_code(<span class="st">&quot;1234&quot;</span>)) → <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2">@(read_code(<span class="st">&quot;abc&quot;</span>)) → a b c</a>
-<a class="sourceLine" id="cb51-3" data-line-number="3">@(read_code(<span class="st">&quot;abcdef&quot;</span>)) → a b c , d e f</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb52-1" data-line-number="1">@(read_code(<span class="st">&quot;1234&quot;</span>)) → <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">@(read_code(<span class="st">&quot;abc&quot;</span>)) → a b c</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">@(read_code(<span class="st">&quot;abcdef&quot;</span>)) → a b c , d e f</a></code></pre></div>
 <p><a name="function:remove_first_word"></a></p>
 <h2 id="remove_first_wordstring">remove_first_word(string)</h2>
 <p>Removes the 1st word of <code>string</code></p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb52-1" data-line-number="1">@(remove_first_word(<span class="st">&quot;foo bar&quot;</span>)) → bar</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb53-1" data-line-number="1">@(remove_first_word(<span class="st">&quot;foo bar&quot;</span>)) → bar</a></code></pre></div>
 <p><a name="function:repeat"></a></p>
 <h2 id="repeatstring-count">repeat(string, count)</h2>
 <p>Return <code>string</code> repeated <code>count</code> number of times</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb53-1" data-line-number="1">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="dv">8</span>)) → ********</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb54-1" data-line-number="1">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="dv">8</span>)) → ********</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:replace"></a></p>
 <h2 id="replacestring-needle-replacement">replace(string, needle, replacement)</h2>
 <p>Replaces all occurrences of <code>needle</code> with <code>replacement</code> in <code>string</code></p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb54-1" data-line-number="1">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
 <p><a name="function:right"></a></p>
 <h2 id="rightstring-count">right(string, count)</h2>
 <p>Returns the <code>count</code> most right characters of the passed in <code>string</code></p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">2</span>)) → lo</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">7</span>)) → hello</a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">@(right(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) → 😄😁</a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">2</span>)) → lo</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">7</span>)) → hello</a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">@(right(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) → 😄😁</a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round"></a></p>
 <h2 id="roundnum-places">round(num [,places])</h2>
 <p>Rounds <code>num</code> to the nearest value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
 <p>If places &lt; 0, it will round the integer part to the nearest 10^(-places).</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb56-4" data-line-number="4">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb56-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
-<a class="sourceLine" id="cb56-6" data-line-number="6">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb56-7" data-line-number="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
+<a class="sourceLine" id="cb57-7" data-line-number="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_down"></a></p>
 <h2 id="round_downnum-places">round_down(num [,places])</h2>
 <p>Rounds <code>num</code> down to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3">@(round_down(<span class="fl">12.6</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb57-4" data-line-number="4">@(round_down(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb57-5" data-line-number="5">@(round_down(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb57-6" data-line-number="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb58-1" data-line-number="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb58-3" data-line-number="3">@(round_down(<span class="fl">12.6</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb58-4" data-line-number="4">@(round_down(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb58-5" data-line-number="5">@(round_down(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
+<a class="sourceLine" id="cb58-6" data-line-number="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_up"></a></p>
 <h2 id="round_upnum-places">round_up(num [,places])</h2>
 <p>Rounds <code>num</code> up to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb58-1" data-line-number="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb58-3" data-line-number="3">@(round_up(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
-<a class="sourceLine" id="cb58-4" data-line-number="4">@(round_up(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
-<a class="sourceLine" id="cb58-5" data-line-number="5">@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
-<a class="sourceLine" id="cb58-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb59-1" data-line-number="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb59-3" data-line-number="3">@(round_up(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
+<a class="sourceLine" id="cb59-4" data-line-number="4">@(round_up(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb59-5" data-line-number="5">@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
+<a class="sourceLine" id="cb59-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:split"></a></p>
 <h2 id="splitstring-delimiter">split(string, delimiter)</h2>
 <p>Splits <code>string</code> based on the passed in <code>delimeter</code></p>
 <p>Empty values are removed from the returned list</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb59-1" data-line-number="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>]</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;d&quot;</span>]</a>
-<a class="sourceLine" id="cb59-4" data-line-number="4">@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
-<a class="sourceLine" id="cb59-5" data-line-number="5">@(split(<span class="st">&quot;a &amp;&amp; b &amp;&amp; c&quot;</span>, <span class="st">&quot; &amp;&amp; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb60-1" data-line-number="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>]</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;d&quot;</span>]</a>
+<a class="sourceLine" id="cb60-4" data-line-number="4">@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
+<a class="sourceLine" id="cb60-5" data-line-number="5">@(split(<span class="st">&quot;a &amp;&amp; b &amp;&amp; c&quot;</span>, <span class="st">&quot; &amp;&amp; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a></code></pre></div>
 <p><a name="function:string_cmp"></a></p>
 <h2 id="string_cmpstr1-str2">string_cmp(str1, str2)</h2>
 <p>Returns the comparison between the strings <code>str1</code> and <code>str2</code>. The return value will be -1 if str1 is smaller than str2, 0 if they are equal and 1 if str1 is greater than str2</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb60-1" data-line-number="1">@(string_cmp(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;abc&quot;</span>)) → <span class="dv">0</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">@(string_cmp(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>)) → <span class="dv">-1</span></a>
-<a class="sourceLine" id="cb60-3" data-line-number="3">@(string_cmp(<span class="st">&quot;zzz&quot;</span>, <span class="st">&quot;aaa&quot;</span>)) → <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb61-1" data-line-number="1">@(string_cmp(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;abc&quot;</span>)) → <span class="dv">0</span></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2">@(string_cmp(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>)) → <span class="dv">-1</span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3">@(string_cmp(<span class="st">&quot;zzz&quot;</span>, <span class="st">&quot;aaa&quot;</span>)) → <span class="dv">1</span></a></code></pre></div>
 <p><a name="function:title"></a></p>
 <h2 id="titlestring">title(string)</h2>
 <p>Titlecases the passed in <code>string</code>, capitalizing each word</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb61-1" data-line-number="1">@(title(<span class="st">&quot;foo&quot;</span>)) → Foo</a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">@(title(<span class="st">&quot;ryan lewis&quot;</span>)) → Ryan Lewis</a>
-<a class="sourceLine" id="cb61-3" data-line-number="3">@(title(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" data-line-number="1">@(title(<span class="st">&quot;foo&quot;</span>)) → Foo</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">@(title(<span class="st">&quot;ryan lewis&quot;</span>)) → Ryan Lewis</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">@(title(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
 <p><a name="function:to_epoch"></a></p>
 <h2 id="to_epochdate">to_epoch(date)</h2>
 <p>Converts <code>date</code> to the number of nanoseconds since January 1st, 1970 GMT</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" data-line-number="1">@(to_epoch(<span class="st">&quot;2017-06-12T16:56:59.000000Z&quot;</span>)) → <span class="dv">1497286619000000000</span></a></code></pre></div>
-<p><a name="function:to_json"></a></p>
-<h2 id="to_jsonvalue">to_json(value)</h2>
-<p>Tries to return a JSON representation of <code>value</code>. An error is returned if there is no JSON representation of that object.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb63-1" data-line-number="1">@(to_json(<span class="st">&quot;string&quot;</span>)) → <span class="st">&quot;string&quot;</span></a>
-<a class="sourceLine" id="cb63-2" data-line-number="2">@(to_json(<span class="dv">10</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb63-3" data-line-number="3">@(to_json(contact.uuid)) → <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb63-1" data-line-number="1">@(to_epoch(<span class="st">&quot;2017-06-12T16:56:59.000000Z&quot;</span>)) → <span class="dv">1497286619000000000</span></a></code></pre></div>
 <p><a name="function:today"></a></p>
 <h2 id="today">today()</h2>
 <p>Returns the current date in the current timezone, time is set to midnight in the environment timezone</p>
