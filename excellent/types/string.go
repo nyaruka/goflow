@@ -34,7 +34,7 @@ func (x XString) ToXBool() XBool {
 	return NewXBool(!x.Empty() && strings.ToLower(x.Native()) != "false")
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (x XString) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type

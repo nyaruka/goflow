@@ -213,22 +213,22 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(arg1)
+	str1, xerr := types.ToXString(arg1)
 	if xerr != nil {
 		return xerr
 	}
-	num2, xerr := types.ToXNumber(arg2)
+	str2, xerr := types.ToXString(arg2)
 	if xerr != nil {
 		return xerr
 	}
 
-	cmp := num1.Compare(num2)
+	isEqual := str1.Equals(str2)
 
 	if ctx.EQ() != nil {
-		return types.NewXBool(cmp == 0)
+		return types.NewXBool(isEqual)
 	}
 
-	return types.NewXBool(cmp != 0)
+	return types.NewXBool(!isEqual)
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression

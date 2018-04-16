@@ -22,7 +22,7 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (v *testXObject) ToXJSON() types.XString {
 	return types.NewXMap(map[string]types.XValue{
 		"foo": types.NewXString(v.foo),

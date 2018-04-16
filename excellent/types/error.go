@@ -40,7 +40,7 @@ func (x xerror) ToXString() XString { return NewXString(x.Native().Error()) }
 // ToXBool converts this type to a bool
 func (x xerror) ToXBool() XBool { return XBoolFalse }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (x xerror) ToXJSON() XString { return MustMarshalToXString(x.Native().Error()) }
 
 // MarshalJSON converts this type to internal JSON

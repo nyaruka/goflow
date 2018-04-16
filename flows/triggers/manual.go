@@ -47,7 +47,7 @@ func (t *ManualTrigger) Resolve(key string) types.XValue {
 	return t.baseTrigger.Resolve(key)
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (t *ManualTrigger) ToXJSON() types.XString {
 	return types.ResolveKeys(t, "type", "params").ToXJSON()
 }

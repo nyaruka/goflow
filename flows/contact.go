@@ -182,7 +182,7 @@ func (c *Contact) Reduce() types.XPrimitive {
 	return types.NewXString(c.name)
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (c *Contact) ToXJSON() types.XString {
 	return types.ResolveKeys(c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON()
 }

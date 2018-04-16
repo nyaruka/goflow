@@ -102,7 +102,7 @@ func (f *flow) Reduce() types.XPrimitive {
 	return types.NewXString(f.name)
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (f *flow) ToXJSON() types.XString {
 	return types.ResolveKeys(f, "uuid", "name").ToXJSON()
 }

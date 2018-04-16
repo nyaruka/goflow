@@ -118,7 +118,7 @@ func TestContextToJSON(t *testing.T) {
 	run := createTestSession(t)
 
 	for _, test := range tests {
-		template := fmt.Sprintf("@(to_json(%s))", test.path)
+		template := fmt.Sprintf("@(json(%s))", test.path)
 		eval, err := run.EvaluateTemplateAsString(template, false)
 
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)

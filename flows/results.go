@@ -59,7 +59,7 @@ func (r *Result) Reduce() types.XPrimitive {
 	return types.NewXString(r.Value)
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (r *Result) ToXJSON() types.XString {
 	return types.ResolveKeys(r, "name", "value", "category", "category_localized", "created_on").ToXJSON()
 }
@@ -122,7 +122,7 @@ func (r Results) Reduce() types.XPrimitive {
 	return results
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (r Results) ToXJSON() types.XString {
 	return r.Reduce().ToXJSON()
 }

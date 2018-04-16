@@ -95,7 +95,7 @@ func (v *FieldValue) Reduce() types.XPrimitive {
 	return v.TypedValue().Reduce()
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (v *FieldValue) ToXJSON() types.XString { return v.Reduce().ToXJSON() }
 
 var _ types.XValue = (*FieldValue)(nil)
@@ -158,7 +158,7 @@ func (f FieldValues) Reduce() types.XPrimitive {
 	return values
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (f FieldValues) ToXJSON() types.XString {
 	return f.Reduce().ToXJSON()
 }

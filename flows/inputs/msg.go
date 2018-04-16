@@ -62,7 +62,7 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	return types.NewXString(strings.Join(parts, "\n"))
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (i *MsgInput) ToXJSON() types.XString {
 	return types.ResolveKeys(i, "uuid", "created_on", "channel", "type", "urn", "text", "attachments").ToXJSON()
 }

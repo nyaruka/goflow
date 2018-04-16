@@ -82,7 +82,7 @@ func (c *relatedRunContext) Reduce() types.XPrimitive {
 	return types.NewXString(c.run.UUID().String())
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (c *relatedRunContext) ToXJSON() types.XString {
 	return types.ResolveKeys(c, "uuid", "contact", "flow", "status", "results").ToXJSON()
 }
