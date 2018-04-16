@@ -18,6 +18,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var testServerPort = 49999
+
 var flowTests = []struct {
 	assets string
 	output string
@@ -141,7 +143,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 }
 
 func TestFlows(t *testing.T) {
-	server, err := test.NewTestHTTPServer()
+	server, err := test.NewTestHTTPServer(testServerPort)
 	require.NoError(t, err)
 
 	defer server.Close()

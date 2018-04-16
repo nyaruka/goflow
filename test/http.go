@@ -1,16 +1,18 @@
 package test
 
 import (
+	"fmt"
 	"net"
 	"net/http"
 	"net/http/httptest"
 )
 
 // NewTestHTTPServer sets up a mock server for webhook actions
-func NewTestHTTPServer() (*httptest.Server, error) {
+func NewTestHTTPServer(port int) (*httptest.Server, error) {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cmd := r.URL.Query().Get("cmd")
 		defer r.Body.Close()
+
 		w.Header().Set("Date", "Wed, 11 Apr 2018 18:24:30 GMT")
 
 		switch cmd {
@@ -29,7 +31,7 @@ func NewTestHTTPServer() (*httptest.Server, error) {
 		}
 	}))
 	// manually create a listener for our test server so that our output is predictable
-	l, err := net.Listen("tcp", "127.0.0.1:49999")
+	l, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
 		return nil, err
 	}
