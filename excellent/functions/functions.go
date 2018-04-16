@@ -37,6 +37,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	"legacy_add": TwoArgFunction(LegacyAdd),
 
+	"number":       OneArgFunction(Number),
 	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
 	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
 	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
@@ -202,16 +203,19 @@ func Array(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXArray(args...)
 }
 
-// FromJSON tries to parse `string` as JSON, returning a fragment you can index into
+// Number tries to convert `value` to a number. An error is returned if the value can't be converted.
 //
-// If the passed in value is not JSON, then an error is returned
+//   @(number(10)) -> 10
+//   @(number("123.45000")) -> 123.45
+//   @(number("what?")) -> ERROR
 //
-//   @(from_json("[1,2,3,4]").2) -> 3
-//   @(from_json("invalid json")) -> ERROR
-//
-// @function from_json(string)
-func FromJSON(env utils.Environment, str types.XString) types.XValue {
-	return types.JSONToXValue([]byte(str.Native()))
+// @function number(value)
+func Number(env utils.Environment, value types.XValue) types.XValue {
+	num, xerr := types.ToXNumber(value)
+	if xerr != nil {
+		return xerr
+	}
+	return num
 }
 
 // ToJSON tries to return a JSON representation of `value`. An error is returned if there is
@@ -223,11 +227,23 @@ func FromJSON(env utils.Environment, str types.XString) types.XValue {
 //
 // @function to_json(value)
 func ToJSON(env utils.Environment, value types.XValue) types.XValue {
-	asJSON, err := types.ToXJSON(value)
-	if err != nil {
-		return err
+	asJSON, xerr := types.ToXJSON(value)
+	if xerr != nil {
+		return xerr
 	}
 	return asJSON
+}
+
+// FromJSON tries to parse `string` as JSON, returning a fragment you can index into
+//
+// If the passed in value is not JSON, then an error is returned
+//
+//   @(from_json("[1,2,3,4]").2) -> 3
+//   @(from_json("invalid json")) -> ERROR
+//
+// @function from_json(string)
+func FromJSON(env utils.Environment, str types.XString) types.XValue {
+	return types.JSONToXValue([]byte(str.Native()))
 }
 
 // URLEncode URL encodes `string` for use in a URL parameter

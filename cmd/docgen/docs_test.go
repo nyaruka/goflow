@@ -17,5 +17,5 @@ func TestDocGeneration(t *testing.T) {
 	require.NoError(t, err)
 
 	// if the docs we just generated don't match the existing ones, someone needs to run docgen
-	assert.Equal(t, string(existingDocs), output, "changes have been made that require re-running docgen")
+	assert.Equal(t, string(existingDocs), output, "changes have been made that require re-running docgen (go install github.com/nyaruka/goflow/cmd/docgen; docgen)")
 }

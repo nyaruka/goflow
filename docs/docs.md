@@ -851,6 +851,19 @@ Returns the current date and time in the environment timezone
 @(now()) → 2018-04-11T13:24:30.123456-05:00
 ```
 
+<a name="function:number"></a>
+
+## number(value)
+
+Tries to convert `value` to a number. An error is returned if the value can't be converted.
+
+
+```objectivec
+@(number(10)) → 10
+@(number("123.45000")) → 123.45
+@(number("what?")) → ERROR
+```
+
 <a name="function:or"></a>
 
 ## or(tests...)

@@ -221,13 +221,27 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(4*3/4)", xi(3), false},
 		{"@(4/2*4)", xi(8), false},
 		{"@(2^2^2)", xi(16), false},
-		{"@(11=11=11)", xs(""), true},
-		{"@(1<2<3)", xs(""), true},
 		{"@(\"a\" & \"b\" & \"c\")", xs("abc"), false},
 		{"@(1+3 <= 1+4)", types.XBoolTrue, false},
 
+		// numerical equality
 		{"@((1 = 1))", types.XBoolTrue, false},
 		{"@((1 != 2))", types.XBoolTrue, false},
+		{"@(1 = 1)", types.XBoolTrue, false},
+		{"@(1 = 2)", types.XBoolFalse, false},
+		{"@(1 != 2)", types.XBoolTrue, false},
+		{"@(1 != 1)", types.XBoolFalse, false},
+		{"@(-1 = 1)", types.XBoolFalse, false},
+		{"@(11=11=11)", types.XBoolFalse, false}, // 11=11 -> TRUE, then TRUE != 11
+
+		// string equality
+		{`@("asdf" = "asdf")`, types.XBoolTrue, false},
+		{`@("asdf" = "basf")`, types.XBoolFalse, false},
+		{`@("asdf" = "ASDF")`, types.XBoolFalse, false}, // case-sensitive
+		{`@("asdf" != "asdf")`, types.XBoolFalse, false},
+		{`@("asdf" != "basf")`, types.XBoolTrue, false},
+
+		// comparsions must be numerical
 		{"@(2 > 1)", types.XBoolTrue, false},
 		{"@(1 > 2)", types.XBoolFalse, false},
 		{"@(2 >= 1)", types.XBoolTrue, false},
@@ -236,14 +250,9 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(2 <= 1)", types.XBoolFalse, false},
 		{"@(1 < 2)", types.XBoolTrue, false},
 		{"@(2 < 1)", types.XBoolFalse, false},
-		{"@(1 = 1)", types.XBoolTrue, false},
-		{"@(1 = 2)", types.XBoolFalse, false},
-		{`@("asdf" = "basf")`, nil, true},
-		{"@(1 != 2)", types.XBoolTrue, false},
-		{"@(1 != 1)", types.XBoolFalse, false},
-		{"@(-1 = 1)", types.XBoolFalse, false},
-		{"@(1 < asdf)", nil, true},
+		{`@(1 < "asdf")`, nil, true}, // can't use with strings
 		{`@("asdf" < "basf")`, nil, true},
+		{"@(1<2<3)", xs(""), true}, // can't chain
 
 		{"@(\"foo\" & \"bar\")", xs("foobar"), false},
 		{"@(missing & \"bar\")", nil, true},
