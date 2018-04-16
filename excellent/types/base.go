@@ -62,14 +62,14 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 	if utils.IsNil(x1) && utils.IsNil(x2) {
 		return 0, nil
 	} else if utils.IsNil(x1) || utils.IsNil(x2) {
-		return 0, fmt.Errorf("can't compare non-nil and nil values: %s and %s", x1, x2)
+		return 0, fmt.Errorf("can't compare non-nil and nil values: %T{%s} and %T{%s}", x1, x1, x2, x2)
 	}
 
 	x1 = x1.Reduce()
 	x2 = x2.Reduce()
 
 	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
-		return 0, fmt.Errorf("can't compare different types of %#v and %#v", x1, x2)
+		return 0, fmt.Errorf("can't compare different types of %T and %T", x1, x2)
 	}
 
 	// common types, do real comparisons
