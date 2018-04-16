@@ -232,6 +232,8 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(1 != 2)", types.XBoolTrue, false},
 		{"@(1 != 1)", types.XBoolFalse, false},
 		{"@(-1 = 1)", types.XBoolFalse, false},
+		{"@(1.0 = 1)", types.XBoolTrue, false},
+		{"@(1.1 = 1.10)", types.XBoolTrue, false},
 		{"@(11=11=11)", types.XBoolFalse, false}, // 11=11 -> TRUE, then TRUE != 11
 
 		// string equality
