@@ -11,12 +11,14 @@ type XError interface {
 }
 
 type xerror struct {
-	err error
+	baseXPrimitive
+
+	native error
 }
 
 // NewXError creates a new XError
 func NewXError(err error) XError {
-	return xerror{err: err}
+	return xerror{native: err}
 }
 
 // NewXErrorf creates a new XError
@@ -33,10 +35,10 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 func (x xerror) Reduce() XPrimitive { return x }
 
 // ToXString converts this type to a string
-func (x xerror) ToXString() XString { return XString(x.Native().Error()) }
+func (x xerror) ToXString() XString { return NewXString(x.Native().Error()) }
 
 // ToXBool converts this type to a bool
-func (x xerror) ToXBool() XBool { return XBool(false) }
+func (x xerror) ToXBool() XBool { return XBoolFalse }
 
 // ToXJSON is called when this type is passed to @(to_json(...))
 func (x xerror) ToXJSON() XString { return MustMarshalToXString(x.Native().Error()) }
@@ -47,10 +49,9 @@ func (x xerror) MarshalJSON() ([]byte, error) {
 }
 
 // Native returns the native value of this type
-func (x xerror) Native() error { return x.err }
+func (x xerror) Native() error { return x.native }
 
-func (x xerror) Error() string  { return x.err.Error() }
-func (x xerror) String() string { return x.Native().Error() }
+func (x xerror) Error() string { return x.Native().Error() }
 
 // NilXError is the nil error value
 var NilXError = NewXError(nil)

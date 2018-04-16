@@ -207,10 +207,10 @@ func TestXValueRequiredConversions(t *testing.T) {
 		asString, _ := types.ToXString(test.value)
 		asBool, _ := types.ToXBool(test.value)
 
-		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %s", test.value)
-		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %s", test.value)
-		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %s", test.value)
-		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %s", test.value)
+		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %T{%s}", test.value, test.value)
 	}
 }
 
@@ -233,10 +233,10 @@ func TestToXNumber(t *testing.T) {
 		result, err := types.ToXNumber(test.value)
 
 		if test.hasError {
-			assert.Error(t, err, "expected error for input '%s'", test.value)
+			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input '%s'", test.value)
-			assert.Equal(t, test.asNumber.Native(), result.Native(), "result mismatch for input '%+v'", test.value)
+			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.Equal(t, test.asNumber.Native(), result.Native(), "result mismatch for input %T{%s}", test.value, test.value)
 		}
 	}
 }
@@ -262,10 +262,10 @@ func TestToXDate(t *testing.T) {
 		result, err := types.ToXDate(env, test.value)
 
 		if test.hasError {
-			assert.Error(t, err, "expected error for input '%s'", test.value)
+			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)
 		} else {
-			assert.NoError(t, err, "unexpected error for input '%s'", test.value)
-			assert.Equal(t, test.asNumber.Native(), result.Native(), "result mismatch for input '%+v'", test.value)
+			assert.NoError(t, err, "unexpected error for input %T{%s}", test.value, test.value)
+			assert.Equal(t, test.asNumber.Native(), result.Native(), "result mismatch for input %T{%s}", test.value, test.value)
 		}
 	}
 }

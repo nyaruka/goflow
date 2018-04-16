@@ -15,6 +15,11 @@ func (x XJSON) ToXJSON() XString { return NewXString(string(x)) }
 
 func (x XJSON) Reduce() XPrimitive { return x.ToXJSON() }
 
+// String converts this type to native string
+func (x XJSON) String() string {
+	return string(x)
+}
+
 func (x XJSON) MarshalJSON() ([]byte, error) {
 	return []byte(x), nil
 }

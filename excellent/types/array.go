@@ -13,6 +13,8 @@ type XArray interface {
 }
 
 type xarray struct {
+	baseXPrimitive
+
 	values []XValue
 }
 
@@ -38,7 +40,7 @@ func (a *xarray) ToXString() XString {
 
 // ToXBool converts this type to a bool
 func (a *xarray) ToXBool() XBool {
-	return len(a.values) > 0
+	return NewXBool(len(a.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(to_json(...))
@@ -47,7 +49,7 @@ func (a *xarray) ToXJSON() XString {
 	for i, v := range a.values {
 		asJSON, err := ToXJSON(v)
 		if err == nil {
-			marshaled[i] = json.RawMessage(asJSON)
+			marshaled[i] = json.RawMessage(asJSON.Native())
 		}
 	}
 	return MustMarshalToXString(marshaled)

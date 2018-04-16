@@ -56,7 +56,7 @@ type FieldValue struct {
 }
 
 func (v *FieldValue) IsEmpty() bool {
-	return !(v.text != "" || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
+	return !(!v.text.Empty() || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
 }
 
 func (v *FieldValue) TypedValue() types.XValue {

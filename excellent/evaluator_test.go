@@ -2,7 +2,6 @@ package excellent
 
 import (
 	"fmt"
-	"reflect"
 	"strings"
 	"testing"
 
@@ -262,7 +261,7 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 
 	for _, test := range evaluateTests {
-		eval, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
+		result, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -271,20 +270,12 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
 		}
 
-		// first try reflect comparison
-		equal := reflect.DeepEqual(eval, test.expected)
-
-		// back down to our equality
-		if !equal {
-			cmp, err := types.Compare(eval, test.expected)
-			if err != nil {
-				t.Errorf("Actual '%#v' does not match expected '%#v' evaluating template: '%s'", eval, test.expected, test.template)
-			}
-			equal = cmp == 0
+		cmp, err := types.Compare(result, test.expected)
+		if err != nil {
+			assert.Fail(t, err.Error(), "error while comparing expected: %T{%s} with result: %T{%s}: err", test.expected, test.expected, result, result, err)
 		}
-
-		if !equal {
-			t.Errorf("Actual '%#v' does not match expected '%#v' evaluating template: '%s'", eval, test.expected, test.template)
+		if cmp != 0 {
+			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.template)
 		}
 	}
 }

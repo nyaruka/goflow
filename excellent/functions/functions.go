@@ -260,7 +260,7 @@ func And(env utils.Environment, args ...types.XValue) types.XValue {
 		if err != nil {
 			return err
 		}
-		if !asBool {
+		if !asBool.Native() {
 			return types.XBoolFalse
 		}
 	}
@@ -283,7 +283,7 @@ func Or(env utils.Environment, args ...types.XValue) types.XValue {
 		if err != nil {
 			return err
 		}
-		if asBool {
+		if asBool.Native() {
 			return types.XBoolTrue
 		}
 	}
@@ -304,7 +304,7 @@ func If(env utils.Environment, test types.XValue, arg1 types.XValue, arg2 types.
 		return err
 	}
 
-	if asBool {
+	if asBool.Native() {
 		return arg1
 	}
 	return arg2
@@ -544,7 +544,7 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 
 	// build our format string
 	formatStr := bytes.Buffer{}
-	if commas {
+	if commas.Native() {
 		formatStr.WriteString("#,###.")
 	} else {
 		formatStr.WriteString("####.")
@@ -578,7 +578,7 @@ func ReadCode(env utils.Environment, val types.XString) types.XValue {
 	// remove any leading +
 	val = types.NewXString(strings.TrimLeft(val.Native(), "+"))
 
-	length := len(val)
+	length := val.Length()
 
 	// groups of three
 	if length%3 == 0 {
@@ -604,7 +604,7 @@ func ReadCode(env utils.Environment, val types.XString) types.XValue {
 	}
 
 	// default, just do one at a time
-	for i, c := range val {
+	for i, c := range val.Native() {
 		if i > 0 {
 			output.WriteString(" , ")
 		}
@@ -1461,7 +1461,7 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	urn := urns.URN(urnString)
+	urn := urns.URN(urnString.Native())
 	err := urn.Validate()
 	if err != nil {
 		return types.NewXErrorf("%s is not a valid URN: %s", urnString, err)

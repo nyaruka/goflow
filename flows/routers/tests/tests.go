@@ -175,7 +175,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 	}
 
 	// iterate through the groups looking for one with the same UUID as passed in
-	group := contact.Groups().FindByUUID(flows.GroupUUID(groupUUID))
+	group := contact.Groups().FindByUUID(flows.GroupUUID(groupUUID.Native()))
 	if group != nil {
 		return XTestResult{true, group}
 	}
@@ -254,7 +254,7 @@ func HasText(env utils.Environment, str types.XString) types.XValue {
 	str = types.NewXString(strings.TrimSpace(str.Native()))
 
 	// if there is anything left then we have text
-	if len(str) > 0 {
+	if str.Length() > 0 {
 		return XTestResult{true, str}
 	}
 
@@ -620,7 +620,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// try without a parent state - it's ok as long as we get a single match
-	if stateText == "" {
+	if stateText.Empty() {
 		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(2), nil)
 		if err != nil {
 			return types.NewXError(err)
@@ -688,7 +688,7 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// try without a parent district - it's ok as long as we get a single match
-	if districtText == "" {
+	if districtText.Empty() {
 		wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(3), nil)
 		if err != nil {
 			return types.NewXError(err)
