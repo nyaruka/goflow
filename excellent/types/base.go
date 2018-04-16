@@ -40,6 +40,14 @@ type XIndexable interface {
 	Index(index int) XValue
 }
 
+type baseXPrimitive struct {
+	XPrimitive
+}
+
+func (x *baseXPrimitive) String() string {
+	return x.ToXString().Native()
+}
+
 // ResolveKeys is a utility function that resolves multiple keys on an XResolvable and returns the results as a map
 func ResolveKeys(resolvable XResolvable, keys ...string) XMap {
 	values := make(map[string]XValue, len(keys))
@@ -54,14 +62,14 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 	if utils.IsNil(x1) && utils.IsNil(x2) {
 		return 0, nil
 	} else if utils.IsNil(x1) || utils.IsNil(x2) {
-		return 0, fmt.Errorf("can't compare non-nil and nil values: %v and %v", x1, x2)
+		return 0, fmt.Errorf("can't compare non-nil and nil values: %T{%s} and %T{%s}", x1, x1, x2, x2)
 	}
 
 	x1 = x1.Reduce()
 	x2 = x2.Reduce()
 
 	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
-		return 0, fmt.Errorf("can't compare different types of %#v and %#v", x1, x2)
+		return 0, fmt.Errorf("can't compare different types of %T and %T", x1, x2)
 	}
 
 	// common types, do real comparisons
@@ -79,5 +87,5 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 	}
 
 	// TODO: find better fallback
-	return strings.Compare(fmt.Sprintf("%v", x1), fmt.Sprintf("%v", x2)), nil
+	return strings.Compare(x1.ToXJSON().Native(), x2.ToXJSON().Native()), nil
 }

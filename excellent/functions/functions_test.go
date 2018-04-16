@@ -338,10 +338,10 @@ func TestFunctions(t *testing.T) {
 
 		cmp, err := types.Compare(result, test.expected)
 		if err != nil {
-			assert.Fail(t, err.Error(), "error while comparing expected: '%s' with result: '%s': %v for function %s(%#v)", test.expected, result, err, test.name, test.args)
+			assert.Fail(t, err.Error(), "error while comparing expected: %T{%s} with result: %T{%s}: err", test.expected, test.expected, result, result, err)
 		}
 		if cmp != 0 {
-			assert.Fail(t, "", "unexpected value, expected '%v', got '%v' for function %s(%#v)", test.expected, result, test.name, test.args)
+			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.name, test.args)
 		}
 	}
 }

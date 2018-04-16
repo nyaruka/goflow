@@ -52,7 +52,7 @@ func ToXBool(x XValue) (XBool, XError) {
 
 	lengthable, isLengthable := x.(XLengthable)
 	if isLengthable {
-		return lengthable.Length() > 0, nil
+		return NewXBool(lengthable.Length() > 0), nil
 	}
 
 	return x.Reduce().ToXBool(), nil
@@ -101,7 +101,7 @@ func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 		}
 	}
 
-	return XDateZero, NewXErrorf("unable to convert value '%v' of type '%s' to a date", x, reflect.TypeOf(x))
+	return XDateZero, NewXErrorf("unable to convert value '%s' of type '%s' to a date", x, reflect.TypeOf(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
@@ -114,7 +114,7 @@ func ToInteger(x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", string(number.ToXString()))
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXString().Native())
 	}
 
 	return int(intPart), nil
@@ -124,9 +124,9 @@ func ToInteger(x XValue) (int, XError) {
 func MustMarshalToXString(x interface{}) XString {
 	j, err := json.Marshal(x)
 	if err != nil {
-		panic(fmt.Sprintf("unable to marshal %v to JSON", x))
+		panic(fmt.Sprintf("unable to marshal %s to JSON", x))
 	}
-	return XString(j)
+	return NewXString(string(j))
 }
 
 func parseDecimalFuzzy(val string) (decimal.Decimal, error) {

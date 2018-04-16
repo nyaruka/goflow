@@ -15,6 +15,8 @@ type XMap interface {
 }
 
 type xmap struct {
+	baseXPrimitive
+
 	values map[string]XValue
 }
 
@@ -46,7 +48,7 @@ func (m *xmap) ToXString() XString {
 
 // ToXBool converts this type to a bool
 func (m *xmap) ToXBool() XBool {
-	return len(m.values) > 0
+	return NewXBool(len(m.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(to_json(...))
@@ -55,7 +57,7 @@ func (m *xmap) ToXJSON() XString {
 	for k, v := range m.values {
 		asJSON, err := ToXJSON(v)
 		if err == nil {
-			marshaled[k] = json.RawMessage(asJSON)
+			marshaled[k] = json.RawMessage(asJSON.Native())
 		}
 	}
 	return MustMarshalToXString(marshaled)

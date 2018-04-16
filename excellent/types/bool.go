@@ -1,15 +1,20 @@
 package types
 
 import (
+	"encoding/json"
 	"strconv"
 )
 
 // XBool is a boolean true or false
-type XBool bool
+type XBool struct {
+	baseXPrimitive
+
+	native bool
+}
 
 // NewXBool creates a new XBool
 func NewXBool(value bool) XBool {
-	return XBool(value)
+	return XBool{native: value}
 }
 
 // Reduce returns the primitive version of this type (i.e. itself)
@@ -25,7 +30,7 @@ func (x XBool) ToXBool() XBool { return x }
 func (x XBool) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
-func (x XBool) Native() bool { return bool(x) }
+func (x XBool) Native() bool { return x.native }
 
 // Compare compares this bool to another
 func (x XBool) Compare(other XBool) int {
@@ -37,6 +42,16 @@ func (x XBool) Compare(other XBool) int {
 	default:
 		return 0
 	}
+}
+
+// MarshalJSON is called when a struct containing this type is marshaled
+func (x XBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.Native())
+}
+
+// UnmarshalJSON is called when a struct containing this type is unmarshaled
+func (x *XBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &x.native)
 }
 
 // XBoolFalse is the false boolean value
