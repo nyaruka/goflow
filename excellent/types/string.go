@@ -40,6 +40,11 @@ func (x XString) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 // Native returns the native value of this type
 func (x XString) Native() string { return x.native }
 
+// Equals determines equality for this type
+func (x XString) Equals(other XString) bool {
+	return x.Native() == other.Native()
+}
+
 // Compare compares this string to another
 func (x XString) Compare(other XString) int {
 	return strings.Compare(x.Native(), other.Native())

@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/shopspring/decimal"
 )
 
 type Visitor struct {
@@ -256,7 +255,7 @@ func (v *Visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 	}
 
 	// division!
-	if num2.Native().Equals(decimal.Zero) {
+	if num2.Equals(types.XNumberZero) {
 		return types.NewXErrorf("division by zero")
 	}
 

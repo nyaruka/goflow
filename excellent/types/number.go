@@ -42,13 +42,18 @@ func (x XNumber) Reduce() XPrimitive { return x }
 func (x XNumber) ToXString() XString { return NewXString(x.Native().String()) }
 
 // ToXBool converts this type to a bool
-func (x XNumber) ToXBool() XBool { return NewXBool(!x.Native().Equals(decimal.Zero)) }
+func (x XNumber) ToXBool() XBool { return NewXBool(!x.Equals(XNumberZero)) }
 
 // ToXJSON is called when this type is passed to @(to_json(...))
 func (x XNumber) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
+
+// Equals determines equality for this type
+func (x XNumber) Equals(other XNumber) bool {
+	return x.Native().Equals(other.Native())
+}
 
 // Compare compares this number to another
 func (x XNumber) Compare(other XNumber) int {

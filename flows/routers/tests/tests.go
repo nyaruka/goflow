@@ -84,7 +84,7 @@ var XTESTS = map[string]functions.XFunction{
 //
 // @test is_string_eq(string, string)
 func IsStringEQ(env utils.Environment, str1 types.XString, str2 types.XString) types.XValue {
-	if str1.Native() == str2.Native() {
+	if str1.Equals(str2) {
 		return XTestResult{true, str1}
 	}
 
