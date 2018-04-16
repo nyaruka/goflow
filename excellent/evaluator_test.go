@@ -224,6 +224,18 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(\"a\" & \"b\" & \"c\")", xs("abc"), false},
 		{"@(1+3 <= 1+4)", types.XBoolTrue, false},
 
+		// string equality
+		{`@("asdf" = "asdf")`, types.XBoolTrue, false},
+		{`@("asdf" = "basf")`, types.XBoolFalse, false},
+		{`@("asdf" = "ASDF")`, types.XBoolFalse, false}, // case-sensitive
+		{`@("asdf" != "asdf")`, types.XBoolFalse, false},
+		{`@("asdf" != "basf")`, types.XBoolTrue, false},
+
+		// bool equality
+		{"@(true = true)", types.XBoolTrue, false},
+		{"@(true = false)", types.XBoolFalse, false},
+		{"@(true = TRUE)", types.XBoolTrue, false},
+
 		// numerical equality
 		{"@((1 = 1))", types.XBoolTrue, false},
 		{"@((1 != 2))", types.XBoolTrue, false},
@@ -234,16 +246,18 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(-1 = 1)", types.XBoolFalse, false},
 		{"@(1.0 = 1)", types.XBoolTrue, false},
 		{"@(1.1 = 1.10)", types.XBoolTrue, false},
+		{"@(1.1234 = 1.10)", types.XBoolFalse, false},
+		{`@(1 = number("1.0"))`, types.XBoolTrue, false},
 		{"@(11=11=11)", types.XBoolFalse, false}, // 11=11 -> TRUE, then TRUE != 11
 
-		// string equality
-		{`@("asdf" = "asdf")`, types.XBoolTrue, false},
-		{`@("asdf" = "basf")`, types.XBoolFalse, false},
-		{`@("asdf" = "ASDF")`, types.XBoolFalse, false}, // case-sensitive
-		{`@("asdf" != "asdf")`, types.XBoolFalse, false},
-		{`@("asdf" != "basf")`, types.XBoolTrue, false},
+		// date equality
+		{`@(date("2018-04-16") = date("2018-04-16"))`, types.XBoolTrue, false},
+		{`@(date("2018-04-16") != date("2018-04-16"))`, types.XBoolFalse, false},
+		{`@(date("2018-04-16") = date("2017-03-20"))`, types.XBoolFalse, false},
+		{`@(date("2018-04-16") != date("2017-03-20"))`, types.XBoolTrue, false},
+		{`@(date("xxx") == date("2017-03-20"))`, nil, true},
 
-		// comparsions must be numerical
+		// other comparsions must be numerical
 		{"@(2 > 1)", types.XBoolTrue, false},
 		{"@(1 > 2)", types.XBoolFalse, false},
 		{"@(2 >= 1)", types.XBoolTrue, false},

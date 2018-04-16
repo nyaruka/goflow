@@ -218,6 +218,18 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
+// FromJSON tries to parse `string` as JSON, returning a fragment you can index into
+//
+// If the passed in value is not JSON, then an error is returned
+//
+//   @(from_json("[1,2,3,4]").2) -> 3
+//   @(from_json("invalid json")) -> ERROR
+//
+// @function from_json(string)
+func FromJSON(env utils.Environment, str types.XString) types.XValue {
+	return types.JSONToXValue([]byte(str.Native()))
+}
+
 // ToJSON tries to return a JSON representation of `value`. An error is returned if there is
 // no JSON representation of that object.
 //
@@ -232,18 +244,6 @@ func ToJSON(env utils.Environment, value types.XValue) types.XValue {
 		return xerr
 	}
 	return asJSON
-}
-
-// FromJSON tries to parse `string` as JSON, returning a fragment you can index into
-//
-// If the passed in value is not JSON, then an error is returned
-//
-//   @(from_json("[1,2,3,4]").2) -> 3
-//   @(from_json("invalid json")) -> ERROR
-//
-// @function from_json(string)
-func FromJSON(env utils.Environment, str types.XString) types.XValue {
-	return types.JSONToXValue([]byte(str.Native()))
 }
 
 // URLEncode URL encodes `string` for use in a URL parameter
