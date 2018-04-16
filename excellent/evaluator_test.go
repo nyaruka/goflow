@@ -40,7 +40,7 @@ func (v *testXObject) Resolve(key string) types.XValue {
 	}
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (v *testXObject) ToXJSON() types.XString {
 	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
 }
@@ -221,13 +221,43 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(4*3/4)", xi(3), false},
 		{"@(4/2*4)", xi(8), false},
 		{"@(2^2^2)", xi(16), false},
-		{"@(11=11=11)", xs(""), true},
-		{"@(1<2<3)", xs(""), true},
 		{"@(\"a\" & \"b\" & \"c\")", xs("abc"), false},
 		{"@(1+3 <= 1+4)", types.XBoolTrue, false},
 
+		// string equality
+		{`@("asdf" = "asdf")`, types.XBoolTrue, false},
+		{`@("asdf" = "basf")`, types.XBoolFalse, false},
+		{`@("asdf" = "ASDF")`, types.XBoolFalse, false}, // case-sensitive
+		{`@("asdf" != "asdf")`, types.XBoolFalse, false},
+		{`@("asdf" != "basf")`, types.XBoolTrue, false},
+
+		// bool equality
+		{"@(true = true)", types.XBoolTrue, false},
+		{"@(true = false)", types.XBoolFalse, false},
+		{"@(true = TRUE)", types.XBoolTrue, false},
+
+		// numerical equality
 		{"@((1 = 1))", types.XBoolTrue, false},
 		{"@((1 != 2))", types.XBoolTrue, false},
+		{"@(1 = 1)", types.XBoolTrue, false},
+		{"@(1 = 2)", types.XBoolFalse, false},
+		{"@(1 != 2)", types.XBoolTrue, false},
+		{"@(1 != 1)", types.XBoolFalse, false},
+		{"@(-1 = 1)", types.XBoolFalse, false},
+		{"@(1.0 = 1)", types.XBoolTrue, false},
+		{"@(1.1 = 1.10)", types.XBoolTrue, false},
+		{"@(1.1234 = 1.10)", types.XBoolFalse, false},
+		{`@(1 = number("1.0"))`, types.XBoolTrue, false},
+		{"@(11=11=11)", types.XBoolFalse, false}, // 11=11 -> TRUE, then TRUE != 11
+
+		// date equality
+		{`@(date("2018-04-16") = date("2018-04-16"))`, types.XBoolTrue, false},
+		{`@(date("2018-04-16") != date("2018-04-16"))`, types.XBoolFalse, false},
+		{`@(date("2018-04-16") = date("2017-03-20"))`, types.XBoolFalse, false},
+		{`@(date("2018-04-16") != date("2017-03-20"))`, types.XBoolTrue, false},
+		{`@(date("xxx") == date("2017-03-20"))`, nil, true},
+
+		// other comparsions must be numerical
 		{"@(2 > 1)", types.XBoolTrue, false},
 		{"@(1 > 2)", types.XBoolFalse, false},
 		{"@(2 >= 1)", types.XBoolTrue, false},
@@ -236,14 +266,9 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(2 <= 1)", types.XBoolFalse, false},
 		{"@(1 < 2)", types.XBoolTrue, false},
 		{"@(2 < 1)", types.XBoolFalse, false},
-		{"@(1 = 1)", types.XBoolTrue, false},
-		{"@(1 = 2)", types.XBoolFalse, false},
-		{`@("asdf" = "basf")`, nil, true},
-		{"@(1 != 2)", types.XBoolTrue, false},
-		{"@(1 != 1)", types.XBoolFalse, false},
-		{"@(-1 = 1)", types.XBoolFalse, false},
-		{"@(1 < asdf)", nil, true},
+		{`@(1 < "asdf")`, nil, true}, // can't use with strings
 		{`@("asdf" < "basf")`, nil, true},
+		{"@(1<2<3)", xs(""), true}, // can't chain
 
 		{"@(\"foo\" & \"bar\")", xs("foobar"), false},
 		{"@(missing & \"bar\")", nil, true},

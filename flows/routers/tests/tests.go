@@ -323,7 +323,7 @@ func (m *patternMatch) Reduce() types.XPrimitive {
 	return m.groups.Index(0).(types.XString)
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (m *patternMatch) ToXJSON() types.XString {
 	return types.ResolveKeys(m, "groups").ToXJSON()
 }

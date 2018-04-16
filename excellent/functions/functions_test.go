@@ -48,6 +48,10 @@ var funcTests = []struct {
 	{"if", []types.XValue{}, ERROR},
 	{"if", []types.XValue{errorArg, xs("10"), xs("20")}, errorArg},
 
+	{"number", []types.XValue{xn("10")}, xn("10")},
+	{"number", []types.XValue{xs("123.45000")}, xn("123.45")},
+	{"number", []types.XValue{xs("what?")}, ERROR},
+
 	{"rand", []types.XValue{}, xn("0.3849275689214193274523267973563633859157562255859375")},
 	{"rand", []types.XValue{}, xn("0.607552015674623913099594574305228888988494873046875")},
 

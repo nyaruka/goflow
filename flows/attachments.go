@@ -15,7 +15,7 @@ import (
 //
 //   @run.input.attachments.0.content_type -> image/jpeg
 //   @run.input.attachments.0.url -> http://s3.amazon.com/bucket/test.jpg
-//   @(to_json(run.input.attachments.0)) -> {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
+//   @(json(run.input.attachments.0)) -> {"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"}
 //
 // @context attachment
 type Attachment string
@@ -53,7 +53,7 @@ func (a Attachment) Resolve(key string) types.XValue {
 // Reduce is called when this object needs to be reduced to a primitive
 func (a Attachment) Reduce() types.XPrimitive { return types.NewXString(a.URL()) }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (a Attachment) ToXJSON() types.XString {
 	return types.ResolveKeys(a, "content_type", "url").ToXJSON()
 }
@@ -83,7 +83,7 @@ func (a AttachmentList) Reduce() types.XPrimitive {
 	return array
 }
 
-// ToXJSON is called when this type is passed to @(to_json(...))
+// ToXJSON is called when this type is passed to @(json(...))
 func (a AttachmentList) ToXJSON() types.XString { return a.Reduce().ToXJSON() }
 
 var _ types.XValue = (AttachmentList)(nil)
