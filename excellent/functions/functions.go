@@ -136,116 +136,6 @@ func Bool(env utils.Environment, value types.XValue) types.XValue {
 	return str
 }
 
-//------------------------------------------------------------------------------------------
-// Legacy Functions
-//------------------------------------------------------------------------------------------
-
-// LegacyAdd simulates our old + operator, which operated differently based on whether
-// one of the parameters was a date or not. If one is a date, then the other side is
-// expected to be an integer with a number of days to add to the date, otherwise a normal
-// decimal addition is attempted.
-func LegacyAdd(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-
-	// try to parse dates and decimals
-	date1, date1Err := types.ToXDate(env, arg1)
-	date2, date2Err := types.ToXDate(env, arg2)
-
-	dec1, dec1Err := types.ToXNumber(arg1)
-	dec2, dec2Err := types.ToXNumber(arg2)
-
-	// if they are both dates, that's an error
-	if date1Err == nil && date2Err == nil {
-		return types.NewXErrorf("cannot operate on two dates")
-	}
-
-	// date and int, do a day addition
-	if date1Err == nil && dec2Err == nil {
-		if dec2.Native().IntPart() < math.MinInt32 || dec2.Native().IntPart() > math.MaxInt32 {
-			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
-		}
-		return types.NewXDate(date1.Native().AddDate(0, 0, int(dec2.Native().IntPart())))
-	}
-
-	// int and date, do a day addition
-	if date2Err == nil && dec1Err == nil {
-		if dec1.Native().IntPart() < math.MinInt32 || dec1.Native().IntPart() > math.MaxInt32 {
-			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
-		}
-		return types.NewXDate(date2.Native().AddDate(0, 0, int(dec1.Native().IntPart())))
-	}
-
-	// one of these doesn't look like a valid decimal either, bail
-	if dec1Err != nil {
-		return types.NewXError(dec1Err)
-	}
-
-	if dec2Err != nil {
-		return types.NewXError(dec2Err)
-	}
-
-	// normal decimal addition
-	return types.NewXNumber(dec1.Native().Add(dec2.Native()))
-}
-
-//------------------------------------------------------------------------------------------
-// Utility Functions
-//------------------------------------------------------------------------------------------
-
-// Length returns the length of the passed in string or array.
-//
-// length will return an error if it is passed an item which doesn't have length.
-//
-//   @(length("Hello")) -> 5
-//   @(length("😀😃😄😁")) -> 4
-//   @(length(array())) -> 0
-//   @(length(array("a", "b", "c"))) -> 3
-//   @(length(1234)) -> ERROR
-//
-// @function length(value)
-func Length(env utils.Environment, value types.XValue) types.XValue {
-	// argument must be a value with length
-	lengthable, isLengthable := value.(types.XLengthable)
-	if isLengthable {
-		return types.NewXNumberFromInt(lengthable.Length())
-	}
-
-	return types.NewXErrorf("value doesn't have length")
-}
-
-// Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
-//
-//   @(default(undeclared.var, "default_value")) -> default_value
-//   @(default("10", "20")) -> 10
-//   @(default(date("invalid-date"), "today")) -> today
-//
-// @function default(test, default)
-func Default(env utils.Environment, test types.XValue, def types.XValue) types.XValue {
-	// first argument is nil, return arg2
-	if utils.IsNil(test) {
-		return def
-	}
-
-	// test whether arg1 is an error
-	_, isErr := test.(types.XError)
-	if isErr {
-		return def
-	}
-
-	return test
-}
-
-// Array takes a list of `values` and returns them as an array
-//
-//   @(array("a", "b", 356)[1]) -> b
-//   @(join(array("a", "b", "c"), "|")) -> a|b|c
-//   @(length(array())) -> 0
-//   @(length(array("a", "b"))) -> 2
-//
-// @function array(values...)
-func Array(env utils.Environment, args ...types.XValue) types.XValue {
-	return types.NewXArray(args...)
-}
-
 // Number tries to convert `value` to a number. An error is returned if the value can't be converted.
 //
 //   @(number(10)) -> 10
@@ -261,42 +151,34 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// ParseJSON tries to parse `string` as JSON, returning a fragment you can index into
+// Date turns `string` into a date according to the environment's settings
 //
-// If the passed in value is not JSON, then an error is returned
+// date will return an error if it is unable to convert the string to a date.
 //
-//   @(parse_json("[1,2,3,4]").2) -> 3
-//   @(parse_json("invalid json")) -> ERROR
+//   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000Z
+//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000Z
+//   @(date("NOT DATE")) -> ERROR
 //
-// @function parse_json(string)
-func ParseJSON(env utils.Environment, str types.XString) types.XValue {
-	return types.JSONToXValue([]byte(str.Native()))
-}
-
-// JSON tries to return a JSON representation of `value`. An error is returned if there is
-// no JSON representation of that object.
-//
-//   @(json("string")) -> "string"
-//   @(json(10)) -> 10
-//   @(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
-//
-// @function json(value)
-func JSON(env utils.Environment, value types.XValue) types.XValue {
-	asJSON, xerr := types.ToXJSON(value)
-	if xerr != nil {
-		return xerr
+// @function date(string)
+func Date(env utils.Environment, str types.XString) types.XValue {
+	date, err := utils.DateFromString(env, str.Native())
+	if err != nil {
+		return types.NewXError(err)
 	}
-	return asJSON
+
+	return types.NewXDate(date)
 }
 
-// URLEncode URL encodes `string` for use in a URL parameter
+// Array takes a list of `values` and returns them as an array
 //
-//   @(url_encode("two words")) -> two+words
-//   @(url_encode(10)) -> 10
+//   @(array("a", "b", 356)[1]) -> b
+//   @(join(array("a", "b", "c"), "|")) -> a|b|c
+//   @(length(array())) -> 0
+//   @(length(array("a", "b"))) -> 2
 //
-// @function url_encode(string)
-func URLEncode(env utils.Environment, str types.XString) types.XValue {
-	return types.NewXString(url.QueryEscape(str.Native()))
+// @function array(values...)
+func Array(env utils.Environment, args ...types.XValue) types.XValue {
+	return types.NewXArray(args...)
 }
 
 //------------------------------------------------------------------------------------------
@@ -367,310 +249,6 @@ func If(env utils.Environment, test types.XValue, arg1 types.XValue, arg2 types.
 		return arg1
 	}
 	return arg2
-}
-
-//------------------------------------------------------------------------------------------
-// Decimal Functions
-//------------------------------------------------------------------------------------------
-
-// Abs returns the absolute value of `num`
-//
-//   @(abs(-10)) -> 10
-//   @(abs(10.5)) -> 10.5
-//   @(abs("foo")) -> ERROR
-//
-// @function abs(num)
-func Abs(env utils.Environment, num types.XNumber) types.XValue {
-	return types.NewXNumber(num.Native().Abs())
-}
-
-// Round rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
-//
-// If places < 0, it will round the integer part to the nearest 10^(-places).
-//
-//   @(round(12)) -> 12
-//   @(round(12.141)) -> 12
-//   @(round(12.6)) -> 13
-//   @(round(12.141, 2)) -> 12.14
-//   @(round(12.146, 2)) -> 12.15
-//   @(round(12.146, -1)) -> 10
-//   @(round("notnum", 2)) -> ERROR
-//
-// @function round(num [,places])
-func Round(env utils.Environment, num types.XNumber, places int) types.XValue {
-	return types.NewXNumber(num.Native().Round(int32(places)))
-}
-
-// RoundUp rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
-//
-//   @(round_up(12)) -> 12
-//   @(round_up(12.141)) -> 13
-//   @(round_up(12.6)) -> 13
-//   @(round_up(12.141, 2)) -> 12.15
-//   @(round_up(12.146, 2)) -> 12.15
-//   @(round_up("foo")) -> ERROR
-//
-// @function round_up(num [,places])
-func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue {
-	dec := num.Native()
-	if dec.Round(int32(places)).Equal(dec) {
-		return num
-	}
-
-	halfPrecision := decimal.New(5, -int32(places)-1)
-	roundedDec := dec.Add(halfPrecision).Round(int32(places))
-
-	return types.NewXNumber(roundedDec)
-}
-
-// RoundDown rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
-//
-//   @(round_down(12)) -> 12
-//   @(round_down(12.141)) -> 12
-//   @(round_down(12.6)) -> 12
-//   @(round_down(12.141, 2)) -> 12.14
-//   @(round_down(12.146, 2)) -> 12.14
-//   @(round_down("foo")) -> ERROR
-//
-// @function round_down(num [,places])
-func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValue {
-	dec := num.Native()
-	if dec.Round(int32(places)).Equal(dec) {
-		return num
-	}
-
-	halfPrecision := decimal.New(5, -int32(places)-1)
-	roundedDec := dec.Sub(halfPrecision).Round(int32(places))
-
-	return types.NewXNumber(roundedDec)
-}
-
-// Max takes a list of `values` and returns the greatest of them
-//
-//   @(max(1, 2)) -> 2
-//   @(max(1, -1, 10)) -> 10
-//   @(max(1, 10, "foo")) -> ERROR
-//
-// @function max(values...)
-func Max(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("takes at least one argument")
-	}
-
-	max, xerr := types.ToXNumber(args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	for _, v := range args[1:] {
-		val, xerr := types.ToXNumber(v)
-		if xerr != nil {
-			return xerr
-		}
-
-		if val.Compare(max) > 0 {
-			max = val
-		}
-	}
-	return max
-}
-
-// Min takes a list of `values` and returns the smallest of them
-//
-//   @(min(1, 2)) -> 1
-//   @(min(2, 2, -10)) -> -10
-//   @(min(1, 2, "foo")) -> ERROR
-//
-// @function min(values)
-func Min(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("takes at least one argument")
-	}
-
-	max, xerr := types.ToXNumber(args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	for _, v := range args[1:] {
-		val, xerr := types.ToXNumber(v)
-		if xerr != nil {
-			return xerr
-		}
-
-		if val.Compare(max) < 0 {
-			max = val
-		}
-	}
-	return max
-}
-
-// Mean takes a list of `values` and returns the arithmetic mean of them
-//
-//   @(mean(1, 2)) -> 1.5
-//   @(mean(1, 2, 6)) -> 3
-//   @(mean(1, "foo")) -> ERROR
-//
-// @function mean(values)
-func Mean(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("requires at least one argument")
-	}
-
-	sum := decimal.Zero
-
-	for _, val := range args {
-		num, xerr := types.ToXNumber(val)
-		if xerr != nil {
-			return xerr
-		}
-		sum = sum.Add(num.Native())
-	}
-
-	return types.NewXNumber(sum.Div(decimal.New(int64(len(args)), 0)))
-}
-
-// Mod returns the remainder of the division of `divident` by `divisor`
-//
-//   @(mod(5, 2)) -> 1
-//   @(mod(4, 2)) -> 0
-//   @(mod(5, "foo")) -> ERROR
-//
-// @function mod(dividend, divisor)
-func Mod(env utils.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
-	return types.NewXNumber(num1.Native().Mod(num2.Native()))
-}
-
-// Rand returns a single random number between [0.0-1.0).
-//
-//   @(rand()) -> 0.3849275689214193274523267973563633859157562255859375
-//   @(rand()) -> 0.607552015674623913099594574305228888988494873046875
-//
-// @function rand()
-func Rand(env utils.Environment) types.XValue {
-	return types.NewXNumber(utils.RandDecimal())
-}
-
-// RandBetween a single random integer in the given inclusive range.
-//
-//   @(rand_between(1, 10)) -> 5
-//   @(rand_between(1, 10)) -> 10
-//
-// @function rand_between()
-func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) types.XValue {
-	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
-
-	val := utils.RandDecimal().Mul(span).Add(min.Native()).Floor()
-
-	return types.NewXNumber(val)
-}
-
-// FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
-//
-//   @(format_num(31337)) -> 31,337.00
-//   @(format_num(31337, 2)) -> 31,337.00
-//   @(format_num(31337, 2, true)) -> 31,337.00
-//   @(format_num(31337, 0, false)) -> 31337
-//   @(format_num("foo", 2, false)) -> ERROR
-//
-// @function format_num(num, places, commas)
-func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 3 {
-		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
-	}
-
-	num, err := types.ToXNumber(args[0])
-	if err != nil {
-		return err
-	}
-
-	places := 2
-	if len(args) > 1 {
-		if places, err = types.ToInteger(args[1]); err != nil {
-			return err
-		}
-		if places < 0 || places > 9 {
-			return types.NewXErrorf("must take 0-9 number of places, got %d", args[1])
-		}
-	}
-
-	commas := types.XBoolTrue
-	if len(args) > 2 {
-		if commas, err = types.ToXBool(args[2]); err != nil {
-			return err
-		}
-	}
-
-	// build our format string
-	formatStr := bytes.Buffer{}
-	if commas.Native() {
-		formatStr.WriteString("#,###.")
-	} else {
-		formatStr.WriteString("####.")
-	}
-	if places > 0 {
-		for i := 0; i < places; i++ {
-			formatStr.WriteString("#")
-		}
-	}
-	f64, _ := num.Native().Float64()
-	return types.NewXString(humanize.FormatFloat(formatStr.String(), f64))
-}
-
-//------------------------------------------------------------------------------------------
-// IVR Functions
-//------------------------------------------------------------------------------------------
-
-// ReadCode converts `code` into something that can be read by IVR systems
-//
-// ReadCode will split the numbers such as they are easier to understand. This includes
-// splitting in 3s or 4s if appropriate.
-//
-//   @(read_code("1234")) -> 1 2 3 4
-//   @(read_code("abc")) -> a b c
-//   @(read_code("abcdef")) -> a b c , d e f
-//
-// @function read_code(code)
-func ReadCode(env utils.Environment, val types.XString) types.XValue {
-	var output bytes.Buffer
-
-	// remove any leading +
-	val = types.NewXString(strings.TrimLeft(val.Native(), "+"))
-
-	length := val.Length()
-
-	// groups of three
-	if length%3 == 0 {
-		// groups of 3
-		for i := 0; i < length; i += 3 {
-			if i > 0 {
-				output.WriteString(" , ")
-			}
-			output.WriteString(strings.Join(strings.Split(val.Native()[i:i+3], ""), " "))
-		}
-		return types.NewXString(output.String())
-	}
-
-	// groups of four
-	if length%4 == 0 {
-		for i := 0; i < length; i += 4 {
-			if i > 0 {
-				output.WriteString(" , ")
-			}
-			output.WriteString(strings.Join(strings.Split(val.Native()[i:i+4], ""), " "))
-		}
-		return types.NewXString(output.String())
-	}
-
-	// default, just do one at a time
-	for i, c := range val.Native() {
-		if i > 0 {
-			output.WriteString(" , ")
-		}
-		output.WriteRune(c)
-	}
-
-	return types.NewXString(output.String())
 }
 
 //------------------------------------------------------------------------------------------
@@ -1075,8 +653,214 @@ func Percent(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXString(fmt.Sprintf("%d%%", percent.IntPart()))
 }
 
+// URLEncode URL encodes `string` for use in a URL parameter
+//
+//   @(url_encode("two words")) -> two+words
+//   @(url_encode(10)) -> 10
+//
+// @function url_encode(string)
+func URLEncode(env utils.Environment, str types.XString) types.XValue {
+	return types.NewXString(url.QueryEscape(str.Native()))
+}
+
 //------------------------------------------------------------------------------------------
-// Date & Time Functions
+// Number Functions
+//------------------------------------------------------------------------------------------
+
+// Abs returns the absolute value of `num`
+//
+//   @(abs(-10)) -> 10
+//   @(abs(10.5)) -> 10.5
+//   @(abs("foo")) -> ERROR
+//
+// @function abs(num)
+func Abs(env utils.Environment, num types.XNumber) types.XValue {
+	return types.NewXNumber(num.Native().Abs())
+}
+
+// Round rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
+//
+// If places < 0, it will round the integer part to the nearest 10^(-places).
+//
+//   @(round(12)) -> 12
+//   @(round(12.141)) -> 12
+//   @(round(12.6)) -> 13
+//   @(round(12.141, 2)) -> 12.14
+//   @(round(12.146, 2)) -> 12.15
+//   @(round(12.146, -1)) -> 10
+//   @(round("notnum", 2)) -> ERROR
+//
+// @function round(num [,places])
+func Round(env utils.Environment, num types.XNumber, places int) types.XValue {
+	return types.NewXNumber(num.Native().Round(int32(places)))
+}
+
+// RoundUp rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
+//
+//   @(round_up(12)) -> 12
+//   @(round_up(12.141)) -> 13
+//   @(round_up(12.6)) -> 13
+//   @(round_up(12.141, 2)) -> 12.15
+//   @(round_up(12.146, 2)) -> 12.15
+//   @(round_up("foo")) -> ERROR
+//
+// @function round_up(num [,places])
+func RoundUp(env utils.Environment, num types.XNumber, places int) types.XValue {
+	dec := num.Native()
+	if dec.Round(int32(places)).Equal(dec) {
+		return num
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+	roundedDec := dec.Add(halfPrecision).Round(int32(places))
+
+	return types.NewXNumber(roundedDec)
+}
+
+// RoundDown rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
+//
+//   @(round_down(12)) -> 12
+//   @(round_down(12.141)) -> 12
+//   @(round_down(12.6)) -> 12
+//   @(round_down(12.141, 2)) -> 12.14
+//   @(round_down(12.146, 2)) -> 12.14
+//   @(round_down("foo")) -> ERROR
+//
+// @function round_down(num [,places])
+func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValue {
+	dec := num.Native()
+	if dec.Round(int32(places)).Equal(dec) {
+		return num
+	}
+
+	halfPrecision := decimal.New(5, -int32(places)-1)
+	roundedDec := dec.Sub(halfPrecision).Round(int32(places))
+
+	return types.NewXNumber(roundedDec)
+}
+
+// Max takes a list of `values` and returns the greatest of them
+//
+//   @(max(1, 2)) -> 2
+//   @(max(1, -1, 10)) -> 10
+//   @(max(1, 10, "foo")) -> ERROR
+//
+// @function max(values...)
+func Max(env utils.Environment, args ...types.XValue) types.XValue {
+	if len(args) == 0 {
+		return types.NewXErrorf("takes at least one argument")
+	}
+
+	max, xerr := types.ToXNumber(args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	for _, v := range args[1:] {
+		val, xerr := types.ToXNumber(v)
+		if xerr != nil {
+			return xerr
+		}
+
+		if val.Compare(max) > 0 {
+			max = val
+		}
+	}
+	return max
+}
+
+// Min takes a list of `values` and returns the smallest of them
+//
+//   @(min(1, 2)) -> 1
+//   @(min(2, 2, -10)) -> -10
+//   @(min(1, 2, "foo")) -> ERROR
+//
+// @function min(values)
+func Min(env utils.Environment, args ...types.XValue) types.XValue {
+	if len(args) == 0 {
+		return types.NewXErrorf("takes at least one argument")
+	}
+
+	max, xerr := types.ToXNumber(args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	for _, v := range args[1:] {
+		val, xerr := types.ToXNumber(v)
+		if xerr != nil {
+			return xerr
+		}
+
+		if val.Compare(max) < 0 {
+			max = val
+		}
+	}
+	return max
+}
+
+// Mean takes a list of `values` and returns the arithmetic mean of them
+//
+//   @(mean(1, 2)) -> 1.5
+//   @(mean(1, 2, 6)) -> 3
+//   @(mean(1, "foo")) -> ERROR
+//
+// @function mean(values)
+func Mean(env utils.Environment, args ...types.XValue) types.XValue {
+	if len(args) == 0 {
+		return types.NewXErrorf("requires at least one argument")
+	}
+
+	sum := decimal.Zero
+
+	for _, val := range args {
+		num, xerr := types.ToXNumber(val)
+		if xerr != nil {
+			return xerr
+		}
+		sum = sum.Add(num.Native())
+	}
+
+	return types.NewXNumber(sum.Div(decimal.New(int64(len(args)), 0)))
+}
+
+// Mod returns the remainder of the division of `divident` by `divisor`
+//
+//   @(mod(5, 2)) -> 1
+//   @(mod(4, 2)) -> 0
+//   @(mod(5, "foo")) -> ERROR
+//
+// @function mod(dividend, divisor)
+func Mod(env utils.Environment, num1 types.XNumber, num2 types.XNumber) types.XValue {
+	return types.NewXNumber(num1.Native().Mod(num2.Native()))
+}
+
+// Rand returns a single random number between [0.0-1.0).
+//
+//   @(rand()) -> 0.3849275689214193274523267973563633859157562255859375
+//   @(rand()) -> 0.607552015674623913099594574305228888988494873046875
+//
+// @function rand()
+func Rand(env utils.Environment) types.XValue {
+	return types.NewXNumber(utils.RandDecimal())
+}
+
+// RandBetween a single random integer in the given inclusive range.
+//
+//   @(rand_between(1, 10)) -> 5
+//   @(rand_between(1, 10)) -> 10
+//
+// @function rand_between()
+func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) types.XValue {
+	span := (max.Native().Sub(min.Native())).Add(decimal.New(1, 0))
+
+	val := utils.RandDecimal().Mul(span).Add(min.Native()).Floor()
+
+	return types.NewXNumber(val)
+}
+
+//------------------------------------------------------------------------------------------
+// Date Functions
 //------------------------------------------------------------------------------------------
 
 // ParseDate turns `string` into a date according to the `format` and optional `timezone` specified
@@ -1163,110 +947,6 @@ func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXDate(parsed.In(location))
-}
-
-// FormatDate turns `date` into a string according to the `format` specified and in
-// the optional `timezone`.
-//
-// The format string can consist of the following characters. The characters
-// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
-//
-// * `YY`        - last two digits of year 0-99
-// * `YYYY`      - four digits of your 0000-9999
-// * `M`         - month 1-12
-// * `MM`        - month 01-12
-// * `D`         - day of month, 1-31
-// * `DD`        - day of month, zero padded 0-31
-// * `h`         - hour of the day 1-12
-// * `hh`        - hour of the day 01-12
-// * `tt`        - twenty four hour of the day 01-23
-// * `m`         - minute 0-59
-// * `mm`        - minute 00-59
-// * `s`         - second 0-59
-// * `ss`        - second 00-59
-// * `fff`       - milliseconds
-// * `ffffff`    - microseconds
-// * `fffffffff` - nanoseconds
-// * `aa`        - am or pm
-// * `AA`        - AM or PM
-// * `Z`         - hour and minute offset from UTC, or Z for UTC
-// * `ZZZ`       - hour and minute offset from UTC
-//
-// Timezone should be a location name as specified in the IANA Time Zone database, such
-// as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
-// environment will be used. An error will be returned if the timezone is not recognized.
-//
-//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 15:00
-//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
-//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 19:50
-//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
-//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
-//   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
-//   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
-//
-// @function format_date(date, format [,timezone])
-func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 3 {
-		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
-	}
-	date, xerr := types.ToXDate(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	format := types.NewXString(fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String()))
-	if len(args) >= 2 {
-		format, xerr = types.ToXString(args[1])
-		if xerr != nil {
-			return xerr
-		}
-	}
-
-	// try to turn it to a go format
-	goFormat, err := utils.ToGoDateFormat(format.Native())
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	// grab our location
-	location := env.Timezone()
-	if len(args) == 3 {
-		arg3, xerr := types.ToXString(args[2])
-		if xerr != nil {
-			return xerr
-		}
-
-		location, err = time.LoadLocation(arg3.Native())
-		if err != nil {
-			return types.NewXError(err)
-		}
-	}
-
-	// convert to our timezone if we have one (otherwise we remain in the date's default)
-	if location != nil {
-		date = types.NewXDate(date.Native().In(location))
-	}
-
-	// return the formatted date
-	return types.NewXString(date.Native().Format(goFormat))
-}
-
-// Date turns `string` into a date according to the environment's settings
-//
-// date will return an error if it is unable to convert the string to a date.
-//
-//   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000Z
-//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000Z
-//   @(date("NOT DATE")) -> ERROR
-//
-// @function date(string)
-func Date(env utils.Environment, str types.XString) types.XValue {
-	date, err := utils.DateFromString(env, str.Native())
-	if err != nil {
-		return types.NewXError(err)
-	}
-
-	return types.NewXDate(date)
 }
 
 // DateFromParts converts the passed in `year`, `month` and `day`
@@ -1482,9 +1162,179 @@ func Now(env utils.Environment) types.XValue {
 	return types.NewXDate(env.Now())
 }
 
+//------------------------------------------------------------------------------------------
+// JSON Functions
+//------------------------------------------------------------------------------------------
+
+// ParseJSON tries to parse `string` as JSON, returning a fragment you can index into
+//
+// If the passed in value is not JSON, then an error is returned
+//
+//   @(parse_json("[1,2,3,4]").2) -> 3
+//   @(parse_json("invalid json")) -> ERROR
+//
+// @function parse_json(string)
+func ParseJSON(env utils.Environment, str types.XString) types.XValue {
+	return types.JSONToXValue([]byte(str.Native()))
+}
+
+// JSON tries to return a JSON representation of `value`. An error is returned if there is
+// no JSON representation of that object.
+//
+//   @(json("string")) -> "string"
+//   @(json(10)) -> 10
+//   @(json(contact.uuid)) -> "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+//
+// @function json(value)
+func JSON(env utils.Environment, value types.XValue) types.XValue {
+	asJSON, xerr := types.ToXJSON(value)
+	if xerr != nil {
+		return xerr
+	}
+	return asJSON
+}
+
 //----------------------------------------------------------------------------------------
-// URN Functions
+// Formatting Functions
 //----------------------------------------------------------------------------------------
+
+// FormatDate turns `date` into a string according to the `format` specified and in
+// the optional `timezone`.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+//
+// * `YY`        - last two digits of year 0-99
+// * `YYYY`      - four digits of your 0000-9999
+// * `M`         - month 1-12
+// * `MM`        - month 01-12
+// * `D`         - day of month, 1-31
+// * `DD`        - day of month, zero padded 0-31
+// * `h`         - hour of the day 1-12
+// * `hh`        - hour of the day 01-12
+// * `tt`        - twenty four hour of the day 01-23
+// * `m`         - minute 0-59
+// * `mm`        - minute 00-59
+// * `s`         - second 0-59
+// * `ss`        - second 00-59
+// * `fff`       - milliseconds
+// * `ffffff`    - microseconds
+// * `fffffffff` - nanoseconds
+// * `aa`        - am or pm
+// * `AA`        - AM or PM
+// * `Z`         - hour and minute offset from UTC, or Z for UTC
+// * `ZZZ`       - hour and minute offset from UTC
+//
+// Timezone should be a location name as specified in the IANA Time Zone database, such
+// as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
+// environment will be used. An error will be returned if the timezone is not recognized.
+//
+//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 15:00
+//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
+//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 19:50
+//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
+//   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
+//   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
+//
+// @function format_date(date, format [,timezone])
+func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
+	if len(args) < 1 || len(args) > 3 {
+		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
+	}
+	date, xerr := types.ToXDate(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	format := types.NewXString(fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String()))
+	if len(args) >= 2 {
+		format, xerr = types.ToXString(args[1])
+		if xerr != nil {
+			return xerr
+		}
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format.Native())
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	// grab our location
+	location := env.Timezone()
+	if len(args) == 3 {
+		arg3, xerr := types.ToXString(args[2])
+		if xerr != nil {
+			return xerr
+		}
+
+		location, err = time.LoadLocation(arg3.Native())
+		if err != nil {
+			return types.NewXError(err)
+		}
+	}
+
+	// convert to our timezone if we have one (otherwise we remain in the date's default)
+	if location != nil {
+		date = types.NewXDate(date.Native().In(location))
+	}
+
+	// return the formatted date
+	return types.NewXString(date.Native().Format(goFormat))
+}
+
+// FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
+//
+//   @(format_num(31337)) -> 31,337.00
+//   @(format_num(31337, 2)) -> 31,337.00
+//   @(format_num(31337, 2, true)) -> 31,337.00
+//   @(format_num(31337, 0, false)) -> 31337
+//   @(format_num("foo", 2, false)) -> ERROR
+//
+// @function format_num(num, places, commas)
+func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
+	if len(args) < 1 || len(args) > 3 {
+		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
+	}
+
+	num, err := types.ToXNumber(args[0])
+	if err != nil {
+		return err
+	}
+
+	places := 2
+	if len(args) > 1 {
+		if places, err = types.ToInteger(args[1]); err != nil {
+			return err
+		}
+		if places < 0 || places > 9 {
+			return types.NewXErrorf("must take 0-9 number of places, got %d", args[1])
+		}
+	}
+
+	commas := types.XBoolTrue
+	if len(args) > 2 {
+		if commas, err = types.ToXBool(args[2]); err != nil {
+			return err
+		}
+	}
+
+	// build our format string
+	formatStr := bytes.Buffer{}
+	if commas.Native() {
+		formatStr.WriteString("#,###.")
+	} else {
+		formatStr.WriteString("####.")
+	}
+	if places > 0 {
+		for i := 0; i < places; i++ {
+			formatStr.WriteString("#")
+		}
+	}
+	f64, _ := num.Native().Float64()
+	return types.NewXString(humanize.FormatFloat(formatStr.String(), f64))
+}
 
 // FormatURN turns `urn` into a human friendly string
 //
@@ -1527,4 +1377,150 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	return types.NewXString(urn.Format())
+}
+
+//------------------------------------------------------------------------------------------
+// Utility Functions
+//------------------------------------------------------------------------------------------
+
+// Length returns the length of the passed in string or array.
+//
+// length will return an error if it is passed an item which doesn't have length.
+//
+//   @(length("Hello")) -> 5
+//   @(length("😀😃😄😁")) -> 4
+//   @(length(array())) -> 0
+//   @(length(array("a", "b", "c"))) -> 3
+//   @(length(1234)) -> ERROR
+//
+// @function length(value)
+func Length(env utils.Environment, value types.XValue) types.XValue {
+	// argument must be a value with length
+	lengthable, isLengthable := value.(types.XLengthable)
+	if isLengthable {
+		return types.NewXNumberFromInt(lengthable.Length())
+	}
+
+	return types.NewXErrorf("value doesn't have length")
+}
+
+// Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
+//
+//   @(default(undeclared.var, "default_value")) -> default_value
+//   @(default("10", "20")) -> 10
+//   @(default(date("invalid-date"), "today")) -> today
+//
+// @function default(test, default)
+func Default(env utils.Environment, test types.XValue, def types.XValue) types.XValue {
+	// first argument is nil, return arg2
+	if utils.IsNil(test) {
+		return def
+	}
+
+	// test whether arg1 is an error
+	_, isErr := test.(types.XError)
+	if isErr {
+		return def
+	}
+
+	return test
+}
+
+// LegacyAdd simulates our old + operator, which operated differently based on whether
+// one of the parameters was a date or not. If one is a date, then the other side is
+// expected to be an integer with a number of days to add to the date, otherwise a normal
+// decimal addition is attempted.
+func LegacyAdd(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+
+	// try to parse dates and decimals
+	date1, date1Err := types.ToXDate(env, arg1)
+	date2, date2Err := types.ToXDate(env, arg2)
+
+	dec1, dec1Err := types.ToXNumber(arg1)
+	dec2, dec2Err := types.ToXNumber(arg2)
+
+	// if they are both dates, that's an error
+	if date1Err == nil && date2Err == nil {
+		return types.NewXErrorf("cannot operate on two dates")
+	}
+
+	// date and int, do a day addition
+	if date1Err == nil && dec2Err == nil {
+		if dec2.Native().IntPart() < math.MinInt32 || dec2.Native().IntPart() > math.MaxInt32 {
+			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
+		}
+		return types.NewXDate(date1.Native().AddDate(0, 0, int(dec2.Native().IntPart())))
+	}
+
+	// int and date, do a day addition
+	if date2Err == nil && dec1Err == nil {
+		if dec1.Native().IntPart() < math.MinInt32 || dec1.Native().IntPart() > math.MaxInt32 {
+			return types.NewXErrorf("cannot operate on integers greater than 32 bit")
+		}
+		return types.NewXDate(date2.Native().AddDate(0, 0, int(dec1.Native().IntPart())))
+	}
+
+	// one of these doesn't look like a valid decimal either, bail
+	if dec1Err != nil {
+		return types.NewXError(dec1Err)
+	}
+
+	if dec2Err != nil {
+		return types.NewXError(dec2Err)
+	}
+
+	// normal decimal addition
+	return types.NewXNumber(dec1.Native().Add(dec2.Native()))
+}
+
+// ReadCode converts `code` into something that can be read by IVR systems
+//
+// ReadCode will split the numbers such as they are easier to understand. This includes
+// splitting in 3s or 4s if appropriate.
+//
+//   @(read_code("1234")) -> 1 2 3 4
+//   @(read_code("abc")) -> a b c
+//   @(read_code("abcdef")) -> a b c , d e f
+//
+// @function read_code(code)
+func ReadCode(env utils.Environment, val types.XString) types.XValue {
+	var output bytes.Buffer
+
+	// remove any leading +
+	val = types.NewXString(strings.TrimLeft(val.Native(), "+"))
+
+	length := val.Length()
+
+	// groups of three
+	if length%3 == 0 {
+		// groups of 3
+		for i := 0; i < length; i += 3 {
+			if i > 0 {
+				output.WriteString(" , ")
+			}
+			output.WriteString(strings.Join(strings.Split(val.Native()[i:i+3], ""), " "))
+		}
+		return types.NewXString(output.String())
+	}
+
+	// groups of four
+	if length%4 == 0 {
+		for i := 0; i < length; i += 4 {
+			if i > 0 {
+				output.WriteString(" , ")
+			}
+			output.WriteString(strings.Join(strings.Split(val.Native()[i:i+4], ""), " "))
+		}
+		return types.NewXString(output.String())
+	}
+
+	// default, just do one at a time
+	for i, c := range val.Native() {
+		if i > 0 {
+			output.WriteString(" , ")
+		}
+		output.WriteRune(c)
+	}
+
+	return types.NewXString(output.String())
 }
