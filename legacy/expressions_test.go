@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var testServerPort = 49997
+
 type testTemplate struct {
 	old string
 	new string
@@ -191,12 +193,12 @@ func TestMigrateTemplate(t *testing.T) {
 		tests = append(tests, testTemplate{old: "Replace " + tests[i].old + " two " + tests[i].old + " times", new: "Replace " + tests[i].new + " two " + tests[i].new + " times", extraAs: tests[i].extraAs})
 	}
 
-	server, err := test.NewTestHTTPServer()
+	server, err := test.NewTestHTTPServer(testServerPort)
 	require.NoError(t, err)
 
 	defer server.Close()
 
-	session, err := test.CreateTestSession(nil)
+	session, err := test.CreateTestSession(testServerPort, nil)
 	require.NoError(t, err)
 
 	for _, test := range tests {

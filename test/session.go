@@ -3,6 +3,7 @@ package test
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
@@ -87,7 +88,7 @@ var sessionAssets = `[
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",
-                            "url": "http://localhost:49999/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
+                            "url": "http://localhost:TEST_SERVER_PORT/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
                         }
                     ],
                     "exits": [
@@ -315,7 +316,10 @@ func (e *testEnvironment) Now() time.Time {
 }
 
 // CreateTestSession creates an example session for testing
-func CreateTestSession(actionToAdd flows.Action) (flows.Session, error) {
+func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Session, error) {
+	// different tests different ports for the test HTTP server
+	sessionAssets = strings.Replace(sessionAssets, "TEST_SERVER_PORT", fmt.Sprintf("%d", testServerPort), -1)
+
 	// read our assets
 	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {

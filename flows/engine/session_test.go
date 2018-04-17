@@ -156,7 +156,6 @@ func createTestSession(t *testing.T) flows.FlowRun {
 
 	// check for unexpected errors in the session
 	for _, event := range session.Events() {
-		fmt.Printf("event %s\n", event.Type())
 		require.NotEqual(t, event.Type(), events.TypeError)
 	}
 

@@ -16,6 +16,8 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+var testServerPort = 49998
+
 type documentedItem struct {
 	typeName    string   // actual go type name
 	tagName     string   // tag used to make this as a documented item
@@ -30,7 +32,7 @@ type handleFunc func(output *strings.Builder, item *documentedItem, session flow
 func buildDocs(baseDir string) (string, error) {
 	fmt.Println("Generating docs...")
 
-	server, err := test.NewTestHTTPServer()
+	server, err := test.NewTestHTTPServer(testServerPort)
 	if err != nil {
 		return "", fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
@@ -42,7 +44,7 @@ func buildDocs(baseDir string) (string, error) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	session, err := test.CreateTestSession(nil)
+	session, err := test.CreateTestSession(testServerPort, nil)
 	if err != nil {
 		return "", fmt.Errorf("error creating example session: %s", err)
 	}
