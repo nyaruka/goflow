@@ -482,6 +482,19 @@ Takes a list of `values` and returns them as an array
 @(length(array("a", "b"))) → 2
 ```
 
+<a name="function:bool"></a>
+
+## bool(value)
+
+Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
+
+
+```objectivec
+@(bool(array(1, 2))) → true
+@(bool("FALSE")) → false
+@(bool(1 / 0)) → ERROR
+```
+
 <a name="function:char"></a>
 
 ## char(num)
@@ -1106,19 +1119,6 @@ Empty values are removed from the returned list
 @(split("abc..d", ".")) → ["abc","d"]
 @(split("a.b.c.", ".")) → ["a","b","c"]
 @(split("a && b && c", " && ")) → ["a","b","c"]
-```
-
-<a name="function:string"></a>
-
-## string(value)
-
-Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
-
-
-```objectivec
-@(bool(array(1, 2))) → true
-@(bool("FALSE")) → false
-@(bool(1 / 0)) → ERROR
 ```
 
 <a name="function:string"></a>

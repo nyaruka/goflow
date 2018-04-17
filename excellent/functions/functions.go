@@ -127,7 +127,7 @@ func String(env utils.Environment, value types.XValue) types.XValue {
 //   @(bool("FALSE")) -> false
 //   @(bool(1 / 0)) -> ERROR
 //
-// @function string(value)
+// @function bool(value)
 func Bool(env utils.Environment, value types.XValue) types.XValue {
 	str, xerr := types.ToXBool(value)
 	if xerr != nil {
