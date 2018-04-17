@@ -74,7 +74,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"abs":          OneNumberFunction(Abs),
 
 	// date functions
-	"parse_date":      ParseDate,
+	"parse_date":      ArgCountCheck(2, 3, ParseDate),
 	"date_from_parts": DateFromParts,
 	"date_diff":       DateDiff,
 	"date_add":        DateAdd,
@@ -151,12 +151,12 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// Date turns `string` into a date according to the environment's settings
+// Date turns `string` into a date according to the environment's settings. It will return an error
+// if it is unable to convert the string to a date.
 //
-// date will return an error if it is unable to convert the string to a date.
-//
-//   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000Z
-//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000Z
+//   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
+//   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
+//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
 //   @(date("NOT DATE")) -> ERROR
 //
 // @function date(string)
@@ -899,18 +899,14 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 //
 // parse_date will return an error if it is unable to convert the string to a date.
 //
-//   @(parse_date("1979-07-18", "YYYY-MM-DD")) -> 1979-07-18T00:00:00.000000Z
-//   @(parse_date("2010 5 10", "YYYY M DD")) -> 2010-05-10T00:00:00.000000Z
+//   @(parse_date("1979-07-18", "YYYY-MM-DD")) -> 1979-07-18T00:00:00.000000-05:00
+//   @(parse_date("2010 5 10", "YYYY M DD")) -> 2010-05-10T00:00:00.000000-05:00
 //   @(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
 //   @(parse_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
 // @function parse_date(string, format [,timezone])
 func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 2 || len(args) > 3 {
-		return types.NewXErrorf("requires at least two arguments, got %d", len(args))
-	}
-
-	arg1, xerr := types.ToXString(args[0])
+	str, xerr := types.ToXString(args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -929,19 +925,19 @@ func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 	// grab our location
 	location := env.Timezone()
 	if len(args) == 3 {
-		arg3, xerr := types.ToXString(args[2])
+		tzStr, xerr := types.ToXString(args[2])
 		if xerr != nil {
 			return xerr
 		}
 
-		location, err = time.LoadLocation(arg3.Native())
+		location, err = time.LoadLocation(tzStr.Native())
 		if err != nil {
 			return types.NewXError(err)
 		}
 	}
 
 	// finally try to parse the date
-	parsed, err := time.ParseInLocation(goFormat, arg1.Native(), location)
+	parsed, err := time.ParseInLocation(goFormat, str.Native(), location)
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -951,8 +947,8 @@ func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 
 // DateFromParts converts the passed in `year`, `month` and `day`
 //
-//   @(date_from_parts(2017, 1, 15)) -> 2017-01-15T00:00:00.000000Z
-//   @(date_from_parts(2017, 2, 31)) -> 2017-03-03T00:00:00.000000Z
+//   @(date_from_parts(2017, 1, 15)) -> 2017-01-15T00:00:00.000000-05:00
+//   @(date_from_parts(2017, 2, 31)) -> 2017-03-03T00:00:00.000000-05:00
 //   @(date_from_parts(2017, 13, 15)) -> ERROR
 //
 // @function date_from_parts(year, month, day)
@@ -1039,8 +1035,8 @@ func DateDiff(env utils.Environment, args ...types.XValue) types.XValue {
 // Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds
 //
-//   @(date_add("2017-01-15", 5, "D")) -> 2017-01-20T00:00:00.000000Z
-//   @(date_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000Z
+//   @(date_add("2017-01-15", 5, "D")) -> 2017-01-20T00:00:00.000000-05:00
+//   @(date_add("2017-01-15 10:45", 30, "m")) -> 2017-01-15T11:15:00.000000-05:00
 //
 // @function date_add(date, offset, unit)
 func DateAdd(env utils.Environment, args ...types.XValue) types.XValue {
@@ -1098,9 +1094,9 @@ func Weekday(env utils.Environment, date types.XDate) types.XValue {
 // If not timezone information is present in the date, then the environment's
 // timezone will be returned
 //
-//   @(tz("2017-01-15 02:15:18PM UTC")) -> UTC
-//   @(tz("2017-01-15 02:15:18PM")) -> UTC
-//   @(tz("2017-01-15")) -> UTC
+//   @(tz("2017-01-15T02:15:18.123456Z")) -> UTC
+//   @(tz("2017-01-15 02:15:18PM")) -> America/Guayaquil
+//   @(tz("2017-01-15")) -> America/Guayaquil
 //   @(tz("foo")) -> ERROR
 //
 // @function tz(date)
@@ -1113,9 +1109,9 @@ func TZ(env utils.Environment, date types.XDate) types.XValue {
 // If no timezone information is present in the date, then the environment's
 // timezone offset will be returned
 //
-//   @(tz_offset("2017-01-15 02:15:18PM UTC")) -> +0000
-//   @(tz_offset("2017-01-15 02:15:18PM")) -> +0000
-//   @(tz_offset("2017-01-15")) -> +0000
+//   @(tz_offset("2017-01-15T02:15:18.123456Z")) -> +0000
+//   @(tz_offset("2017-01-15 02:15:18PM")) -> -0500
+//   @(tz_offset("2017-01-15")) -> -0500
 //   @(tz_offset("foo")) -> ERROR
 //
 // @function tz_offset(date)
@@ -1127,7 +1123,7 @@ func TZOffset(env utils.Environment, date types.XDate) types.XValue {
 
 // Today returns the current date in the current timezone, time is set to midnight in the environment timezone
 //
-//   @(today()) -> 2018-04-11T00:00:00.000000Z
+//   @(today()) -> 2018-04-11T00:00:00.000000-05:00
 //
 // @function today()
 func Today(env utils.Environment) types.XValue {
@@ -1137,7 +1133,7 @@ func Today(env utils.Environment) types.XValue {
 
 // FromEpoch returns a new date created from `num` which represents number of nanoseconds since January 1st, 1970 GMT
 //
-//   @(from_epoch(1497286619000000000)) -> 2017-06-12T16:56:59.000000Z
+//   @(from_epoch(1497286619000000000)) -> 2017-06-12T11:56:59.000000-05:00
 //
 // @function from_epoch(num)
 func FromEpoch(env utils.Environment, num types.XNumber) types.XValue {
@@ -1229,9 +1225,9 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
 //
-//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 15:00
+//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 10:00
 //   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
-//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 19:50
+//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
 //   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
 //   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
 //   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
