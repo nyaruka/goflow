@@ -12,6 +12,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -180,11 +181,11 @@ var startRequestTemplate = `{
 type ServerTestSuite struct {
 	suite.Suite
 	flowServer  *FlowServer
-	assetServer engine.AssetServer
+	assetServer assets.AssetServer
 }
 
 func (ts *ServerTestSuite) SetupSuite() {
-	ts.assetServer = engine.NewMockAssetServer()
+	ts.assetServer = assets.NewMockAssetServer()
 
 	ts.flowServer = NewFlowServer(NewDefaultConfig())
 	ts.flowServer.Start()
@@ -229,7 +230,7 @@ func (ts *ServerTestSuite) assertExpressionResponse(body []byte, expectedResult 
 	ts.Equal(expectedErrors, expResp.Errors)
 }
 
-func (ts *ServerTestSuite) parseSessionResponse(assetCache *engine.AssetCache, body []byte) (flows.Session, []map[string]interface{}) {
+func (ts *ServerTestSuite) parseSessionResponse(assetCache *assets.AssetCache, body []byte) (flows.Session, []map[string]interface{}) {
 	envelope := struct {
 		Session json.RawMessage
 		Log     []map[string]interface{}
@@ -253,11 +254,11 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 		ts.Require().NoError(err)
 	}
 
-	assets := json.RawMessage(assetsJSON)
-	assetServer, _ := json.Marshal(engine.NewMockAssetServer())
+	assetsData := json.RawMessage(assetsJSON)
+	assetServer, _ := json.Marshal(assets.NewMockAssetServer())
 
 	request := &resumeRequest{
-		Assets:      &assets,
+		Assets:      &assetsData,
 		AssetServer: assetServer,
 		Session:     sessionJSON,
 		Events:      eventEnvelopes,

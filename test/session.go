@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -322,13 +323,13 @@ func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Sess
 	sessionAssets = strings.Replace(sessionAssets, "TEST_SERVER_PORT", fmt.Sprintf("%d", testServerPort), -1)
 
 	// read our assets
-	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {
 		return nil, fmt.Errorf("error including assets: %s", err)
 	}
 
 	// create our engine session
-	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
 
 	// override the session environment
 	session.SetEnvironment(newTestEnvironment())

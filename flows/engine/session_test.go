@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
@@ -131,11 +132,11 @@ func createTestSession(t *testing.T) flows.FlowRun {
 	require.NoError(t, err)
 
 	// build our session
-	assetCache := NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
 	err = assetCache.Include(assetsJSON)
 	require.NoError(t, err)
 
-	session := NewSession(assetCache, NewMockAssetServer())
+	session := NewSession(assetCache, assets.NewMockAssetServer())
 	require.NoError(t, err)
 
 	// read trigger from file

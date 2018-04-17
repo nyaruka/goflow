@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -27,7 +28,7 @@ import (
 type FlowServer struct {
 	config     *Config
 	httpServer *http.Server
-	assetCache *engine.AssetCache
+	assetCache *assets.AssetCache
 }
 
 // NewFlowServer creates a new flow server instance
@@ -83,7 +84,7 @@ func NewFlowServer(config *Config) *FlowServer {
 // Start starts the flow server
 func (s *FlowServer) Start() {
 	fetchUserAgent := fmt.Sprintf("flowserver/%s", s.config.Version)
-	s.assetCache = engine.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune, fetchUserAgent)
+	s.assetCache = assets.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune, fetchUserAgent)
 
 	go func() {
 		err := s.httpServer.ListenAndServe()
@@ -165,7 +166,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// read and validate our asset server
-	assetServer, err := engine.ReadAssetServer(s.config.AssetServerToken, start.AssetServer)
+	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, start.AssetServer)
 	if err != nil {
 		return nil, err
 	}
@@ -228,7 +229,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read and validate our asset server
-	assetServer, err := engine.ReadAssetServer(s.config.AssetServerToken, resume.AssetServer)
+	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, resume.AssetServer)
 	if err != nil {
 		return nil, err
 	}

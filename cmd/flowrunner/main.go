@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -158,7 +159,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading assets file: ", err)
 	}
-	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(json.RawMessage(assetsJSON)); err != nil {
 		log.Fatal("Error reading assets: ", err)
 	}
@@ -168,7 +169,7 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env.SetTimezone(la)
 
-	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
@@ -224,7 +225,7 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = engine.ReadSession(assetCache, engine.NewMockAssetServer(), outJSON)
+		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
