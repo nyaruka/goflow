@@ -305,10 +305,7 @@ type testEnvironment struct {
 
 // creates a new test environment
 func newTestEnvironment() utils.Environment {
-	tz, err := time.LoadLocation("America/Guayaquil")
-	if err != nil {
-		panic("unabel to load location")
-	}
+	tz, _ := time.LoadLocation("America/Guayaquil")
 
 	return &testEnvironment{
 		utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
