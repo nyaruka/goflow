@@ -538,7 +538,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			// we can emulate setting only the first name with an expression
 			if a.Field == "first_name" {
 				migratedValue = strings.TrimSpace(migratedValue)
-				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 2, -1))", migratedValue)
+				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 1, -1))", migratedValue)
 			}
 
 			return &actions.SetContactPropertyAction{
