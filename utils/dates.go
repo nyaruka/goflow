@@ -121,11 +121,8 @@ func DateToString(env Environment, date time.Time) string {
 func DateFromString(env Environment, str string) (time.Time, error) {
 	// first see if we can parse in any known iso formats, if so return that
 	for _, format := range isoFormats {
-		parsed, err := time.Parse(format, strings.Trim(str, " \n\r\t"))
+		parsed, err := time.ParseInLocation(format, strings.Trim(str, " \n\r\t"), env.Timezone())
 		if err == nil {
-			if env.Timezone() != nil {
-				parsed = parsed.In(env.Timezone())
-			}
 			return parsed, nil
 		}
 	}

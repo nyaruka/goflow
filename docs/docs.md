@@ -541,14 +541,14 @@ Returns the numeric code for the first character in `string`, it is the inverse 
 
 ## date(string)
 
-Turns `string` into a date according to the environment's settings
-
-date will return an error if it is unable to convert the string to a date.
+Turns `string` into a date according to the environment's settings. It will return an error
+if it is unable to convert the string to a date.
 
 
 ```objectivec
-@(date("1979-07-18")) → 1979-07-18T00:00:00.000000Z
-@(date("2010 05 10")) → 2010-05-10T00:00:00.000000Z
+@(date("1979-07-18")) → 1979-07-18T00:00:00.000000-05:00
+@(date("1979-07-18T10:30:45.123456Z")) → 1979-07-18T10:30:45.123456Z
+@(date("2010 05 10")) → 2010-05-10T00:00:00.000000-05:00
 @(date("NOT DATE")) → ERROR
 ```
 
@@ -563,8 +563,8 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(date_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000Z
-@(date_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000Z
+@(date_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000-05:00
+@(date_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000-05:00
 ```
 
 <a name="function:date_diff"></a>
@@ -591,8 +591,8 @@ Converts the passed in `year`, `month` and `day`
 
 
 ```objectivec
-@(date_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000Z
-@(date_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000Z
+@(date_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
+@(date_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
 @(date_from_parts(2017, 13, 15)) → ERROR
 ```
 
@@ -663,9 +663,9 @@ environment will be used. An error will be returned if the timezone is not recog
 
 
 ```objectivec
-@(format_date("1979-07-18T15:00:00.000000Z")) → 1979-07-18 15:00
+@(format_date("1979-07-18T15:00:00.000000Z")) → 1979-07-18 10:00
 @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) → 1979-07-18
-@(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) → 2010 5 10 19:50
+@(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) → 2010 5 10 14:50
 @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) → 2010-05-10 12:50 PM
 @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) → 1979
 @(format_date("1979-07-18T15:00:00.000000Z", "M")) → 7
@@ -713,7 +713,7 @@ Returns a new date created from `num` which represents number of nanoseconds sin
 
 
 ```objectivec
-@(from_epoch(1497286619000000000)) → 2017-06-12T16:56:59.000000Z
+@(from_epoch(1497286619000000000)) → 2017-06-12T11:56:59.000000-05:00
 ```
 
 <a name="function:if"></a>
@@ -931,8 +931,8 @@ parse_date will return an error if it is unable to convert the string to a date.
 
 
 ```objectivec
-@(parse_date("1979-07-18", "YYYY-MM-DD")) → 1979-07-18T00:00:00.000000Z
-@(parse_date("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000Z
+@(parse_date("1979-07-18", "YYYY-MM-DD")) → 1979-07-18T00:00:00.000000-05:00
+@(parse_date("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000-05:00
 @(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) → 2010-05-10T12:50:00.000000-07:00
 @(parse_date("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
@@ -1181,7 +1181,7 @@ Returns the current date in the current timezone, time is set to midnight in the
 
 
 ```objectivec
-@(today()) → 2018-04-11T00:00:00.000000Z
+@(today()) → 2018-04-11T00:00:00.000000-05:00
 ```
 
 <a name="function:tz"></a>
@@ -1195,9 +1195,9 @@ timezone will be returned
 
 
 ```objectivec
-@(tz("2017-01-15 02:15:18PM UTC")) → UTC
-@(tz("2017-01-15 02:15:18PM")) → UTC
-@(tz("2017-01-15")) → UTC
+@(tz("2017-01-15T02:15:18.123456Z")) → UTC
+@(tz("2017-01-15 02:15:18PM")) → America/Guayaquil
+@(tz("2017-01-15")) → America/Guayaquil
 @(tz("foo")) → ERROR
 ```
 
@@ -1212,9 +1212,9 @@ timezone offset will be returned
 
 
 ```objectivec
-@(tz_offset("2017-01-15 02:15:18PM UTC")) → +0000
-@(tz_offset("2017-01-15 02:15:18PM")) → +0000
-@(tz_offset("2017-01-15")) → +0000
+@(tz_offset("2017-01-15T02:15:18.123456Z")) → +0000
+@(tz_offset("2017-01-15 02:15:18PM")) → -0500
+@(tz_offset("2017-01-15")) → -0500
 @(tz_offset("foo")) → ERROR
 ```
 
@@ -1368,7 +1368,7 @@ Tests whether `string` contains a date formatted according to our environment
 
 ```objectivec
 @(has_date("the date is 2017-01-15")) → true
-@(has_date("the date is 2017-01-15").match) → 2017-01-15T00:00:00.000000Z
+@(has_date("the date is 2017-01-15").match) → 2017-01-15T00:00:00.000000-05:00
 @(has_date("there is no date here, just a year 2017")) → false
 ```
 
@@ -1381,7 +1381,7 @@ Tests whether `string` a date equal to `date`
 
 ```objectivec
 @(has_date_eq("the date is 2017-01-15", "2017-01-15")) → true
-@(has_date_eq("the date is 2017-01-15", "2017-01-15").match) → 2017-01-15T00:00:00.000000Z
+@(has_date_eq("the date is 2017-01-15", "2017-01-15").match) → 2017-01-15T00:00:00.000000-05:00
 @(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) → false
 @(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) → false
 @(has_date_eq("there is no date here, just a year 2017", "not date")) → ERROR
@@ -1396,7 +1396,7 @@ Tests whether `string` a date after the date `min`
 
 ```objectivec
 @(has_date_gt("the date is 2017-01-15", "2017-01-01")) → true
-@(has_date_gt("the date is 2017-01-15", "2017-01-01").match) → 2017-01-15T00:00:00.000000Z
+@(has_date_gt("the date is 2017-01-15", "2017-01-01").match) → 2017-01-15T00:00:00.000000-05:00
 @(has_date_gt("the date is 2017-01-15", "2017-03-15")) → false
 @(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) → false
 @(has_date_gt("there is no date here, just a year 2017", "not date")) → ERROR
@@ -1411,7 +1411,7 @@ Tests whether `value` contains a date before the date `max`
 
 ```objectivec
 @(has_date_lt("the date is 2017-01-15", "2017-06-01")) → true
-@(has_date_lt("the date is 2017-01-15", "2017-06-01").match) → 2017-01-15T00:00:00.000000Z
+@(has_date_lt("the date is 2017-01-15", "2017-06-01").match) → 2017-01-15T00:00:00.000000-05:00
 @(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) → false
 @(has_date_lt("there is no date here, just a year 2017", "not date")) → ERROR
 ```
@@ -2208,7 +2208,7 @@ Can be used to trigger sessions for other contacts and groups
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
             "name": "Ryan Lewis",
             "language": "eng",
-            "timezone": "UTC",
+            "timezone": "",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "twitterid:54784326227#nyaruka",

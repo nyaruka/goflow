@@ -307,6 +307,7 @@ type contactEnvelope struct {
 // ReadContact decodes a contact from the passed in JSON
 func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
+	var err error
 
 	if err := utils.UnmarshalAndValidate(data, &envelope, "contact"); err != nil {
 		return nil, err
@@ -317,11 +318,11 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	c.name = envelope.Name
 	c.language = envelope.Language
 
-	tz, err := time.LoadLocation(envelope.Timezone)
-	if err != nil {
-		return nil, err
+	if envelope.Timezone != "" {
+		if c.timezone, err = time.LoadLocation(envelope.Timezone); err != nil {
+			return nil, err
+		}
 	}
-	c.timezone = tz
 
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)

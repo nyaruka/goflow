@@ -529,17 +529,17 @@
 <a class="sourceLine" id="cb24-6" data-line-number="6">@(code(<span class="st">&quot;&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:date"></a></p>
 <h2 id="datestring">date(string)</h2>
-<p>Turns <code>string</code> into a date according to the environment’s settings</p>
-<p>date will return an error if it is unable to convert the string to a date.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(date(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">@(date(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">@(date(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre></div>
+<p>Turns <code>string</code> into a date according to the environment’s settings. It will return an error if it is unable to convert the string to a date.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(date(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">@(date(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>)) → <span class="dv">1979-07</span>-18T10:<span class="dv">30</span>:<span class="fl">45.123456</span>Z</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">@(date(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">@(date(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:date_add"></a></p>
 <h2 id="date_adddate-offset-unit">date_add(date, offset, unit)</h2>
 <p>Calculates the date value arrived at by adding <code>offset</code> number of <code>unit</code> to the <code>date</code></p>
 <p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(date_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">@(date_add(<span class="st">&quot;2017-01-15 10:45&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;m&quot;</span>)) → <span class="dv">2017-01</span>-15T11:<span class="dv">15</span>:<span class="fl">00.000000</span>Z</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(date_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">@(date_add(<span class="st">&quot;2017-01-15 10:45&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;m&quot;</span>)) → <span class="dv">2017-01</span>-15T11:<span class="dv">15</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:date_diff"></a></p>
 <h2 id="date_diffdate1-date2-unit">date_diff(date1, date2, unit)</h2>
 <p>Returns the integer duration between <code>date1</code> and <code>date2</code> in the <code>unit</code> specified.</p>
@@ -550,8 +550,8 @@
 <p><a name="function:date_from_parts"></a></p>
 <h2 id="date_from_partsyear-month-day">date_from_parts(year, month, day)</h2>
 <p>Converts the passed in <code>year</code>, <code>month</code> and <code>day</code></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">1</span>, <span class="dv">15</span>)) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">2</span>, <span class="dv">31</span>)) → <span class="dv">2017-03</span>-03T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">1</span>, <span class="dv">15</span>)) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">2</span>, <span class="dv">31</span>)) → <span class="dv">2017-03</span>-03T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb28-3" data-line-number="3">@(date_from_parts(<span class="dv">2017</span>, <span class="dv">13</span>, <span class="dv">15</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:default"></a></p>
 <h2 id="defaulttest-default">default(test, default)</h2>
@@ -595,9 +595,9 @@
 <li><code>ZZZ</code> - hour and minute offset from UTC</li>
 </ul>
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span> <span class="dv">15</span>:<span class="dv">00</span></a>
+<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span> <span class="dv">10</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb31-2" data-line-number="2">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07-18</span></a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>)) → <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">19</span>:<span class="dv">50</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>)) → <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">14</span>:<span class="dv">50</span></a>
 <a class="sourceLine" id="cb31-4" data-line-number="4">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD tt:mm AA&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05-10</span> <span class="dv">12</span>:<span class="dv">50</span> PM</a>
 <a class="sourceLine" id="cb31-5" data-line-number="5">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY&quot;</span>)) → <span class="dv">1979</span></a>
 <a class="sourceLine" id="cb31-6" data-line-number="6">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">7</span></a>
@@ -624,7 +624,7 @@
 <p><a name="function:from_epoch"></a></p>
 <h2 id="from_epochnum">from_epoch(num)</h2>
 <p>Returns a new date created from <code>num</code> which represents number of nanoseconds since January 1st, 1970 GMT</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" data-line-number="1">@(from_epoch(<span class="dv">1497286619000000000</span>)) → <span class="dv">2017-06</span>-12T16:<span class="dv">56</span>:<span class="fl">59.000000</span>Z</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" data-line-number="1">@(from_epoch(<span class="dv">1497286619000000000</span>)) → <span class="dv">2017-06</span>-12T11:<span class="dv">56</span>:<span class="fl">59.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:if"></a></p>
 <h2 id="iftest-true_value-false_value">if(test, true_value, false_value)</h2>
 <p>Evaluates the <code>test</code> argument, and if truthy returns <code>true_value</code>, if not returning <code>false_value</code></p>
@@ -733,8 +733,8 @@
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
 <p>Note that fractional seconds will be parsed even without an explicit format identifier. You should only specify fractional seconds when you want to assert the number of places in the input format.</p>
 <p>parse_date will return an error if it is unable to convert the string to a date.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(parse_date(<span class="st">&quot;1979-07-18&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">@(parse_date(<span class="st">&quot;2010 5 10&quot;</span>, <span class="st">&quot;YYYY M DD&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(parse_date(<span class="st">&quot;1979-07-18&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">@(parse_date(<span class="st">&quot;2010 5 10&quot;</span>, <span class="st">&quot;YYYY M DD&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb48-3" data-line-number="3">@(parse_date(<span class="st">&quot;2010 5 10 12:50&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05</span>-10T12:<span class="dv">50</span>:<span class="fl">00.000000</span><span class="dv">-07</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb48-4" data-line-number="4">@(parse_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:parse_json"></a></p>
@@ -850,22 +850,22 @@
 <p><a name="function:today"></a></p>
 <h2 id="today">today()</h2>
 <p>Returns the current date in the current timezone, time is set to midnight in the environment timezone</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(today()) → <span class="dv">2018-04</span>-11T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(today()) → <span class="dv">2018-04</span>-11T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:tz"></a></p>
 <h2 id="tzdate">tz(date)</h2>
 <p>Returns the timezone for `date``</p>
 <p>If not timezone information is present in the date, then the environment’s timezone will be returned</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb67-1" data-line-number="1">@(tz(<span class="st">&quot;2017-01-15 02:15:18PM UTC&quot;</span>)) → UTC</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2">@(tz(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → UTC</a>
-<a class="sourceLine" id="cb67-3" data-line-number="3">@(tz(<span class="st">&quot;2017-01-15&quot;</span>)) → UTC</a>
+<div class="sourceCode" id="cb67"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb67-1" data-line-number="1">@(tz(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → UTC</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">@(tz(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → America/Guayaquil</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">@(tz(<span class="st">&quot;2017-01-15&quot;</span>)) → America/Guayaquil</a>
 <a class="sourceLine" id="cb67-4" data-line-number="4">@(tz(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:tz_offset"></a></p>
 <h2 id="tz_offsetdate">tz_offset(date)</h2>
 <p>Returns the offset for the timezone as a string +/- HHMM for <code>date</code></p>
 <p>If no timezone information is present in the date, then the environment’s timezone offset will be returned</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb68-1" data-line-number="1">@(tz_offset(<span class="st">&quot;2017-01-15 02:15:18PM UTC&quot;</span>)) → +<span class="dv">0000</span></a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">@(tz_offset(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → +<span class="dv">0000</span></a>
-<a class="sourceLine" id="cb68-3" data-line-number="3">@(tz_offset(<span class="st">&quot;2017-01-15&quot;</span>)) → +<span class="dv">0000</span></a>
+<div class="sourceCode" id="cb68"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb68-1" data-line-number="1">@(tz_offset(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → +<span class="dv">0000</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">@(tz_offset(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → <span class="dv">-0500</span></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">@(tz_offset(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">-0500</span></a>
 <a class="sourceLine" id="cb68-4" data-line-number="4">@(tz_offset(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:upper"></a></p>
 <h2 id="upperstring">upper(string)</h2>
@@ -937,13 +937,13 @@
 <h2 id="has_datestring">has_date(string)</h2>
 <p>Tests whether <code>string</code> contains a date formatted according to our environment</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb78-1" data-line-number="1">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb78-2" data-line-number="2">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<a class="sourceLine" id="cb78-2" data-line-number="2">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb78-3" data-line-number="3">@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_date_eq"></a></p>
 <h2 id="has_date_eqstring-date">has_date_eq(string, date)</h2>
 <p>Tests whether <code>string</code> a date equal to <code>date</code></p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb79-1" data-line-number="1">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb79-2" data-line-number="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb79-3" data-line-number="3">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb79-4" data-line-number="4">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb79-5" data-line-number="5">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
@@ -951,7 +951,7 @@
 <h2 id="has_date_gtstring-min">has_date_gt(string, min)</h2>
 <p>Tests whether <code>string</code> a date after the date <code>min</code></p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb80-1" data-line-number="1">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb80-2" data-line-number="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<a class="sourceLine" id="cb80-2" data-line-number="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb80-3" data-line-number="3">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-03-15&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb80-4" data-line-number="4">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb80-5" data-line-number="5">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
@@ -959,7 +959,7 @@
 <h2 id="has_date_ltstring-max">has_date_lt(string, max)</h2>
 <p>Tests whether <code>value</code> contains a date before the date <code>max</code></p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb81-1" data-line-number="1">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb81-2" data-line-number="2">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span>Z</a>
+<a class="sourceLine" id="cb81-2" data-line-number="2">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb81-3" data-line-number="3">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb81-4" data-line-number="4">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_district"></a></p>
@@ -1593,7 +1593,7 @@ Event
 <a class="sourceLine" id="cb130-22" data-line-number="22">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb130-23" data-line-number="23">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ryan Lewis&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb130-24" data-line-number="24">            <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb130-25" data-line-number="25">            <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;UTC&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb130-25" data-line-number="25">            <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb130-26" data-line-number="26">            <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb130-27" data-line-number="27">                <span class="st">&quot;tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="ot">,</span></a>
 <a class="sourceLine" id="cb130-28" data-line-number="28">                <span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span><span class="ot">,</span></a>
