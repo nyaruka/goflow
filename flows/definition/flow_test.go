@@ -44,7 +44,7 @@ func TestReadFlow(t *testing.T) {
 }
 
 func TestFlowValidation(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/assets.json")
+	assetsJSON, err := ioutil.ReadFile("testdata/flow_validation.json")
 	assert.NoError(t, err)
 
 	// build our session
@@ -93,15 +93,10 @@ func TestFlowValidation(t *testing.T) {
 	prefChannelAction := flow.Nodes()[0].Actions()[4].(*actions.SetContactChannelAction)
 	prefChannelAction.Channel.UUID = "xyx"
 
-	// TODO
-
-	// can't simulate a missing channel without the asset store trying to fetch it... but we can stuff the wrong thing in the store
-	//session.Assets().(*sessionAssets).cache.addAsset("http://testserver/assets/channel", flow)
-
 	// check that validation fails
-	//err = flow.Validate(session.Assets())
-	//assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: asset cache contains asset with wrong type")
+	err = flow.Validate(session.Assets())
+	assert.EqualError(t, err, "validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: no such channel with uuid 'xyx'")
 
 	// fix the set_contact_channel action
-	//prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"
+	prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"
 }
