@@ -15,9 +15,8 @@ import (
 // AssetServer describes the asset server we'll fetch missing assets from
 type AssetServer interface {
 	isTypeSupported(assetType) bool
-	getSetAssetURL(assetType) (string, error)
-	getItemAssetURL(assetType, string) (string, error)
-	fetchAsset(string, assetType, bool, string) (interface{}, error)
+	getAssetURL(assetType, string) (string, error)
+	fetchAsset(string, assetType, string) (interface{}, error)
 }
 
 type assetServer struct {
@@ -50,32 +49,22 @@ func (s *assetServer) isTypeSupported(itemType assetType) bool {
 	return hasTypeURL
 }
 
-// getSetAssetURL gets the URL for a set of the given asset type
-func (s *assetServer) getSetAssetURL(itemType assetType) (string, error) {
-	typeURL, typeFound := s.typeURLs[itemType]
-	if !typeFound {
+// getAssetURL gets the URL for a set of the given asset type
+func (s *assetServer) getAssetURL(itemType assetType, itemUUID string) (string, error) {
+	url, found := s.typeURLs[itemType]
+	if !found {
 		return "", fmt.Errorf("asset type '%s' not supported by asset server", itemType)
 	}
 
-	return typeURL, nil
-}
-
-// getItemAssetURL gets the URL for an item of the given asset type
-func (s *assetServer) getItemAssetURL(itemType assetType, uuid string) (string, error) {
-	setURL, err := s.getSetAssetURL(itemType)
-	if err != nil {
-		return "", err
+	if itemUUID != "" {
+		url = strings.Replace(url, "{uuid}", itemUUID, -1)
 	}
 
-	if !strings.HasSuffix(setURL, "/") {
-		setURL += "/"
-	}
-
-	return fmt.Sprintf("%s%s/", setURL, uuid), nil
+	return url, nil
 }
 
 // fetches an asset by its URL and parses it as the provided type
-func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, userAgent string) (interface{}, error) {
+func (s *assetServer) fetchAsset(url string, itemType assetType, userAgent string) (interface{}, error) {
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -108,7 +97,7 @@ func (s *assetServer) fetchAsset(url string, itemType assetType, isSet bool, use
 		return nil, err
 	}
 
-	return readAsset(buf, itemType, isSet)
+	return readAsset(buf, itemType)
 }
 
 type MockAssetServer struct {
@@ -123,11 +112,11 @@ func NewMockAssetServer() *MockAssetServer {
 	return &MockAssetServer{
 		assetServer: assetServer{
 			typeURLs: map[assetType]string{
-				assetTypeChannel:           "http://testserver/assets/channel/",
-				assetTypeField:             "http://testserver/assets/field/",
-				assetTypeFlow:              "http://testserver/assets/flow/",
-				assetTypeGroup:             "http://testserver/assets/group/",
-				assetTypeLabel:             "http://testserver/assets/label/",
+				assetTypeChannelSet:        "http://testserver/assets/channel/",
+				assetTypeFieldSet:          "http://testserver/assets/field/",
+				assetTypeFlow:              "http://testserver/assets/flow/{uuid}/",
+				assetTypeGroupSet:          "http://testserver/assets/group/",
+				assetTypeLabelSet:          "http://testserver/assets/label/",
 				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy/",
 			},
 		},
@@ -144,14 +133,14 @@ func (s *MockAssetServer) MockedRequests() []string {
 	return s.mockedRequests
 }
 
-func (s *MockAssetServer) fetchAsset(url string, itemType assetType, isSet bool, userAgent string) (interface{}, error) {
+func (s *MockAssetServer) fetchAsset(url string, itemType assetType, userAgent string) (interface{}, error) {
 	s.mockedRequests = append(s.mockedRequests, url)
 
 	assetBuf, found := s.mockResponses[url]
 	if !found {
 		return nil, fmt.Errorf("mock asset server has no mocked response for URL: %s", url)
 	}
-	return readAsset(assetBuf, itemType, isSet)
+	return readAsset(assetBuf, itemType)
 }
 
 // MarshalJSON marshals this mock asset server into JSON

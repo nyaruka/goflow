@@ -79,15 +79,14 @@ var testFlowMissingGroupAssets = `[
 		}
 	},
 	{
-		"type": "group",
+		"type": "group_set",
 		"url": "http://testserver/assets/group",
 		"content": [
 			{
 				"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
 				"name": "Survey Audience"
 			}
-		],
-		"is_set": true
+		]
 	}
 ]`
 
@@ -166,9 +165,9 @@ var startRequestTemplate = `{
 	"assets": %s,
 	"asset_server": {
 		"type_urls": {
-			"field": "http://testserver/assets/field",
-			"flow": "http://testserver/assets/flow",
-			"group": "http://testserver/assets/group"
+			"flow": "http://testserver/assets/flow/{uuid}/",
+			"field_set": "http://testserver/assets/field/",
+			"group_set": "http://testserver/assets/group/"
 		}
 	},
 	"trigger": {

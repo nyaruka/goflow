@@ -22,7 +22,7 @@
             }
         },
         {
-            "type": "field",
+            "type": "field_set",
             "url": "http://testserver/assets/field",
             "content": [
                 {
@@ -30,11 +30,10 @@
                     "label": "Gender",
                     "value_type": "text"
                 }
-            ],
-            "is_set": true
+            ]
         },
         {
-            "type": "channel",
+            "type": "channel_set",
             "url": "http://testserver/assets/channel",
             "content": [
                 {
@@ -49,15 +48,14 @@
                         "receive"
                     ]
                 }
-            ],
-            "is_set": true
+            ]
         }
     ],
     "asset_server": {
         "type_urls": {
-            "channel": "http://testserver/assets/channel",
-            "field": "http://testserver/assets/field",
-            "flow": "http://testserver/assets/flow"
+            "flow": "http://testserver/assets/flow/{uuid}/",
+            "channel_set": "http://testserver/assets/channel/",
+            "field_set": "http://testserver/assets/field/"
         }
     },
     "trigger": {
