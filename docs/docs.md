@@ -1108,6 +1108,32 @@ Empty values are removed from the returned list
 @(split("a && b && c", " && ")) → ["a","b","c"]
 ```
 
+<a name="function:string"></a>
+
+## string(value)
+
+Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
+
+
+```objectivec
+@(bool(array(1, 2))) → true
+@(bool("FALSE")) → false
+@(bool(1 / 0)) → ERROR
+```
+
+<a name="function:string"></a>
+
+## string(value)
+
+Tries to convert `value` to a string. An error is returned if the value can't be converted.
+
+
+```objectivec
+@(string(3 = 3)) → true
+@(json(string(123.45))) → "123.45"
+@(string(1 / 0)) → ERROR
+```
+
 <a name="function:string_cmp"></a>
 
 ## string_cmp(str1, str2)

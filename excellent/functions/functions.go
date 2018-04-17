@@ -27,35 +27,14 @@ func RegisterXFunction(name string, function XFunction) {
 
 // XFUNCTIONS is our map of functions available in Excellent which aren't tests
 var XFUNCTIONS = map[string]XFunction{
-	"and": And,
-	"if":  ThreeArgFunction(If),
-	"or":  Or,
+	// type conversion
+	"string": OneArgFunction(String),
+	"bool":   OneArgFunction(Bool),
+	"number": OneArgFunction(Number),
+	"date":   OneStringFunction(Date),
+	"array":  Array,
 
-	"length":  OneArgFunction(Length),
-	"default": TwoArgFunction(Default),
-	"array":   Array,
-
-	"legacy_add": TwoArgFunction(LegacyAdd),
-
-	"number":       OneArgFunction(Number),
-	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
-	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
-	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
-	"max":          Max,
-	"min":          Min,
-	"mean":         Mean,
-	"mod":          TwoNumberFunction(Mod),
-	"rand":         NoArgFunction(Rand),
-	"rand_between": TwoNumberFunction(RandBetween),
-	"abs":          OneNumberFunction(Abs),
-
-	"format_num": FormatNum,
-	"read_code":  OneStringFunction(ReadCode),
-
-	"json":       OneArgFunction(JSON),
-	"parse_json": OneStringFunction(ParseJSON),
-	"url_encode": OneStringFunction(URLEncode),
-
+	// string functions
 	"char":              OneNumberFunction(Char),
 	"code":              OneStringFunction(Code),
 	"split":             TwoStringFunction(Split),
@@ -75,10 +54,27 @@ var XFUNCTIONS = map[string]XFunction{
 	"replace":           ThreeStringFunction(Replace),
 	"upper":             OneStringFunction(Upper),
 	"percent":           OneNumberFunction(Percent),
+	"url_encode":        OneStringFunction(URLEncode),
 
-	"format_date":     FormatDate,
+	// bool functions
+	"and": And,
+	"if":  ThreeArgFunction(If),
+	"or":  Or,
+
+	// number functions
+	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
+	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
+	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
+	"max":          Max,
+	"min":          Min,
+	"mean":         Mean,
+	"mod":          TwoNumberFunction(Mod),
+	"rand":         NoArgFunction(Rand),
+	"rand_between": TwoNumberFunction(RandBetween),
+	"abs":          OneNumberFunction(Abs),
+
+	// date functions
 	"parse_date":      ParseDate,
-	"date":            OneStringFunction(Date),
 	"date_from_parts": DateFromParts,
 	"date_diff":       DateDiff,
 	"date_add":        DateAdd,
@@ -90,7 +86,54 @@ var XFUNCTIONS = map[string]XFunction{
 	"from_epoch":      OneNumberFunction(FromEpoch),
 	"to_epoch":        OneDateFunction(ToEpoch),
 
-	"format_urn": FormatURN,
+	// json functions
+	"json":       OneArgFunction(JSON),
+	"parse_json": OneStringFunction(ParseJSON),
+
+	// formatting functions
+	"format_date": FormatDate,
+	"format_num":  FormatNum,
+	"format_urn":  FormatURN,
+
+	// utility functions
+	"length":     OneArgFunction(Length),
+	"default":    TwoArgFunction(Default),
+	"legacy_add": TwoArgFunction(LegacyAdd),
+	"read_code":  OneStringFunction(ReadCode),
+}
+
+//------------------------------------------------------------------------------------------
+// Type Conversion Functions
+//------------------------------------------------------------------------------------------
+
+// String tries to convert `value` to a string. An error is returned if the value can't be converted.
+//
+//   @(string(3 = 3)) -> true
+//   @(json(string(123.45))) -> "123.45"
+//   @(string(1 / 0)) -> ERROR
+//
+// @function string(value)
+func String(env utils.Environment, value types.XValue) types.XValue {
+	str, xerr := types.ToXString(value)
+	if xerr != nil {
+		return xerr
+	}
+	return str
+}
+
+// Bool tries to convert `value` to a boolean. An error is returned if the value can't be converted.
+//
+//   @(bool(array(1, 2))) -> true
+//   @(bool("FALSE")) -> false
+//   @(bool(1 / 0)) -> ERROR
+//
+// @function string(value)
+func Bool(env utils.Environment, value types.XValue) types.XValue {
+	str, xerr := types.ToXBool(value)
+	if xerr != nil {
+		return xerr
+	}
+	return str
 }
 
 //------------------------------------------------------------------------------------------
