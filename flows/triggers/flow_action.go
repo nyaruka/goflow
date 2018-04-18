@@ -53,14 +53,14 @@ func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
 func (t *FlowActionTrigger) Resolve(key string) types.XValue {
 	switch key {
 	case "type":
-		return types.NewXString(TypeFlowAction)
+		return types.NewXText(TypeFlowAction)
 	}
 
 	return t.baseTrigger.Resolve(key)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (t *FlowActionTrigger) ToXJSON() types.XString {
+func (t *FlowActionTrigger) ToXJSON() types.XText {
 	return types.ResolveKeys(t, "type", "params").ToXJSON()
 }
 

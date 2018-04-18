@@ -66,7 +66,7 @@ func (v *Visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 	// replace "" with "
 	unquoted = strings.Replace(unquoted, "\"\"", "\"", -1)
 
-	return types.NewXString(unquoted)
+	return types.NewXText(unquoted)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
@@ -98,12 +98,12 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 
 // VisitTrue deals with the "true" literal
 func (v *Visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
-	return types.XBoolTrue
+	return types.XBooleanTrue
 }
 
 // VisitFalse deals with the "false" literal
 func (v *Visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
-	return types.XBoolFalse
+	return types.XBooleanFalse
 }
 
 // VisitArrayLookup deals with lookups such as foo[5]
@@ -115,7 +115,7 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	expression := toXValue(v.Visit(ctx.Expression()))
 
-	lookup, xerr := types.ToXString(expression)
+	lookup, xerr := types.ToXText(expression)
 	if xerr != nil {
 		return xerr
 	}
@@ -172,11 +172,11 @@ func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXString(arg1)
+	str1, xerr := types.ToXText(arg1)
 	if xerr != nil {
 		return xerr
 	}
-	str2, xerr := types.ToXString(arg2)
+	str2, xerr := types.ToXText(arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -185,7 +185,7 @@ func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 	buffer.WriteString(str1.Native())
 	buffer.WriteString(str2.Native())
 
-	return types.NewXString(buffer.String())
+	return types.NewXText(buffer.String())
 }
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
@@ -213,11 +213,11 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXString(arg1)
+	str1, xerr := types.ToXText(arg1)
 	if xerr != nil {
 		return xerr
 	}
-	str2, xerr := types.ToXString(arg2)
+	str2, xerr := types.ToXText(arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -225,10 +225,10 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	isEqual := str1.Equals(str2)
 
 	if ctx.EQ() != nil {
-		return types.NewXBool(isEqual)
+		return types.NewXBoolean(isEqual)
 	}
 
-	return types.NewXBool(!isEqual)
+	return types.NewXBoolean(!isEqual)
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression
@@ -280,13 +280,13 @@ func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 
 	switch {
 	case ctx.LT() != nil:
-		return types.NewXBool(cmp < 0)
+		return types.NewXBoolean(cmp < 0)
 	case ctx.LTE() != nil:
-		return types.NewXBool(cmp <= 0)
+		return types.NewXBoolean(cmp <= 0)
 	case ctx.GTE() != nil:
-		return types.NewXBool(cmp >= 0)
+		return types.NewXBoolean(cmp >= 0)
 	case ctx.GT() != nil:
-		return types.NewXBool(cmp > 0)
+		return types.NewXBoolean(cmp > 0)
 	}
 
 	return types.NewXErrorf("unknown comparison operator: %s", ctx.GetText())

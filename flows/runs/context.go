@@ -36,11 +36,11 @@ func (c *runContext) Resolve(key string) types.XValue {
 }
 
 func (c *runContext) Reduce() types.XPrimitive {
-	return types.NewXString(c.run.UUID().String())
+	return types.NewXText(c.run.UUID().String())
 }
 
 // ToXJSON can never actually be called on the context root
-func (c *runContext) ToXJSON() types.XString {
+func (c *runContext) ToXJSON() types.XText {
 	panic("shouldn't be possible to call ToXJSON on the context root")
 }
 
@@ -64,13 +64,13 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 func (c *relatedRunContext) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXString(string(c.run.UUID()))
+		return types.NewXText(string(c.run.UUID()))
 	case "contact":
 		return c.run.Contact()
 	case "flow":
 		return c.run.Flow()
 	case "status":
-		return types.NewXString(string(c.run.Status()))
+		return types.NewXText(string(c.run.Status()))
 	case "results":
 		return c.run.Results()
 	}
@@ -79,11 +79,11 @@ func (c *relatedRunContext) Resolve(key string) types.XValue {
 }
 
 func (c *relatedRunContext) Reduce() types.XPrimitive {
-	return types.NewXString(c.run.UUID().String())
+	return types.NewXText(c.run.UUID().String())
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *relatedRunContext) ToXJSON() types.XString {
+func (c *relatedRunContext) ToXJSON() types.XText {
 	return types.ResolveKeys(c, "uuid", "contact", "flow", "status", "results").ToXJSON()
 }
 

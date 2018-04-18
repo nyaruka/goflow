@@ -482,17 +482,17 @@ Takes a list of `values` and returns them as an array
 @(length(array("a", "b"))) → 2
 ```
 
-<a name="function:bool"></a>
+<a name="function:boolean"></a>
 
-## bool(value)
+## boolean(value)
 
 Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
 
 
 ```objectivec
-@(bool(array(1, 2))) → true
-@(bool("FALSE")) → false
-@(bool(1 / 0)) → ERROR
+@(boolean(array(1, 2))) → true
+@(boolean("FALSE")) → false
+@(boolean(1 / 0)) → ERROR
 ```
 
 <a name="function:char"></a>
@@ -510,9 +510,9 @@ Returns the rune for the passed in codepoint, `num`, which may be unicode, this 
 
 <a name="function:clean"></a>
 
-## clean(string)
+## clean(text)
 
-Strips any leading or trailing whitespace from `string``
+Strips any leading or trailing whitespace from `text`
 
 
 ```objectivec
@@ -523,9 +523,9 @@ Strips any leading or trailing whitespace from `string``
 
 <a name="function:code"></a>
 
-## code(string)
+## code(text)
 
-Returns the numeric code for the first character in `string`, it is the inverse of char
+Returns the numeric code for the first character in `text`, it is the inverse of char
 
 
 ```objectivec
@@ -539,10 +539,10 @@ Returns the numeric code for the first character in `string`, it is the inverse 
 
 <a name="function:date"></a>
 
-## date(string)
+## date(text)
 
-Turns `string` into a date according to the environment's settings. It will return an error
-if it is unable to convert the string to a date.
+Turns `text` into a date according to the environment's settings. It will return an error
+if it is unable to convert the text to a date.
 
 
 ```objectivec
@@ -552,9 +552,9 @@ if it is unable to convert the string to a date.
 @(date("NOT DATE")) → ERROR
 ```
 
-<a name="function:date_add"></a>
+<a name="function:datetime_add"></a>
 
-## date_add(date, offset, unit)
+## datetime_add(date, offset, unit)
 
 Calculates the date value arrived at by adding `offset` number of `unit` to the `date`
 
@@ -563,13 +563,13 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(date_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000-05:00
-@(date_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000-05:00
+@(datetime_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000-05:00
+@(datetime_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000-05:00
 ```
 
-<a name="function:date_diff"></a>
+<a name="function:datetime_diff"></a>
 
-## date_diff(date1, date2, unit)
+## datetime_diff(date1, date2, unit)
 
 Returns the integer duration between `date1` and `date2` in the `unit` specified.
 
@@ -578,22 +578,22 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(date_diff("2017-01-17", "2017-01-15", "D")) → 2
-@(date_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
-@(date_diff("2017-01-17", "2015-12-17", "Y")) → 2
+@(datetime_diff("2017-01-17", "2017-01-15", "D")) → 2
+@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
+@(datetime_diff("2017-01-17", "2015-12-17", "Y")) → 2
 ```
 
-<a name="function:date_from_parts"></a>
+<a name="function:datetime_from_parts"></a>
 
-## date_from_parts(year, month, day)
+## datetime_from_parts(year, month, day)
 
 Converts the passed in `year`, `month` and `day`
 
 
 ```objectivec
-@(date_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
-@(date_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
-@(date_from_parts(2017, 13, 15)) → ERROR
+@(datetime_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
+@(datetime_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
+@(datetime_from_parts(2017, 13, 15)) → ERROR
 ```
 
 <a name="function:default"></a>
@@ -611,9 +611,9 @@ Takes two arguments, returning `test` if not an error or nil, otherwise returnin
 
 <a name="function:field"></a>
 
-## field(string, offset, delimeter)
+## field(text, offset, delimeter)
 
-Splits `string` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
+Splits `text` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
 with a space, the delimiter is considered to be all whitespace.  (first field is 0)
 
 
@@ -630,7 +630,7 @@ with a space, the delimiter is considered to be all whitespace.  (first field is
 
 ## format_date(date, format [,timezone])
 
-Turns `date` into a string according to the `format` specified and in
+Turns `date` into text according to the `format` specified and in
 the optional `timezone`.
 
 The format string can consist of the following characters. The characters
@@ -672,26 +672,26 @@ environment will be used. An error will be returned if the timezone is not recog
 @(format_date("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_num"></a>
+<a name="function:format_number"></a>
 
-## format_num(num, places, commas)
+## format_number(num, places, commas)
 
 Returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 
 
 ```objectivec
-@(format_num(31337)) → 31,337.00
-@(format_num(31337, 2)) → 31,337.00
-@(format_num(31337, 2, true)) → 31,337.00
-@(format_num(31337, 0, false)) → 31337
-@(format_num("foo", 2, false)) → ERROR
+@(format_number(31337)) → 31,337.00
+@(format_number(31337, 2)) → 31,337.00
+@(format_number(31337, 2, true)) → 31,337.00
+@(format_number(31337, 0, false)) → 31337
+@(format_number("foo", 2, false)) → ERROR
 ```
 
 <a name="function:format_urn"></a>
 
 ## format_urn(urn)
 
-Turns `urn` into a human friendly string
+Turns `urn` into human friendly text
 
 
 ```objectivec
@@ -758,9 +758,9 @@ no JSON representation of that object.
 
 <a name="function:left"></a>
 
-## left(string, count)
+## left(text, count)
 
-Returns the `count` most left characters of the passed in `string`
+Returns the `count` most left characters of the passed in `text`
 
 
 ```objectivec
@@ -774,7 +774,7 @@ Returns the `count` most left characters of the passed in `string`
 
 ## length(value)
 
-Returns the length of the passed in string or array.
+Returns the length of the passed in text or array.
 
 length will return an error if it is passed an item which doesn't have length.
 
@@ -789,9 +789,9 @@ length will return an error if it is passed an item which doesn't have length.
 
 <a name="function:lower"></a>
 
-## lower(string)
+## lower(text)
 
-Lowercases the passed in `string`
+Lowercases the passed in `text`
 
 
 ```objectivec
@@ -889,11 +889,11 @@ Returns whether if any of the passed in arguments are truthy
 @(or(true, false, true)) → true
 ```
 
-<a name="function:parse_date"></a>
+<a name="function:parse_datetime"></a>
 
-## parse_date(string, format [,timezone])
+## parse_datetime(text, format [,timezone])
 
-Turns `string` into a date according to the `format` and optional `timezone` specified
+Turns `text` into a date according to the `format` and optional `timezone` specified
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -927,21 +927,21 @@ Note that fractional seconds will be parsed even without an explicit format iden
 You should only specify fractional seconds when you want to assert the number of places
 in the input format.
 
-parse_date will return an error if it is unable to convert the string to a date.
+parse_datetime will return an error if it is unable to convert the text to a datetime.
 
 
 ```objectivec
-@(parse_date("1979-07-18", "YYYY-MM-DD")) → 1979-07-18T00:00:00.000000-05:00
-@(parse_date("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000-05:00
-@(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) → 2010-05-10T12:50:00.000000-07:00
-@(parse_date("NOT DATE", "YYYY-MM-DD")) → ERROR
+@(parse_datetime("1979-07-18", "YYYY-MM-DD")) → 1979-07-18T00:00:00.000000-05:00
+@(parse_datetime("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000-05:00
+@(parse_datetime("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) → 2010-05-10T12:50:00.000000-07:00
+@(parse_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
 <a name="function:parse_json"></a>
 
-## parse_json(string)
+## parse_json(text)
 
-Tries to parse `string` as JSON, returning a fragment you can index into
+Tries to parse `text` as JSON, returning a fragment you can index into
 
 If the passed in value is not JSON, then an error is returned
 
@@ -955,7 +955,7 @@ If the passed in value is not JSON, then an error is returned
 
 ## percent(num)
 
-Converts `num` to a string represented as a percentage
+Converts `num` to text represented as a percentage
 
 
 ```objectivec
@@ -1006,9 +1006,9 @@ splitting in 3s or 4s if appropriate.
 
 <a name="function:remove_first_word"></a>
 
-## remove_first_word(string)
+## remove_first_word(text)
 
-Removes the 1st word of `string`
+Removes the 1st word of `text`
 
 
 ```objectivec
@@ -1017,9 +1017,9 @@ Removes the 1st word of `string`
 
 <a name="function:repeat"></a>
 
-## repeat(string, count)
+## repeat(text, count)
 
-Return `string` repeated `count` number of times
+Return `text` repeated `count` number of times
 
 
 ```objectivec
@@ -1029,9 +1029,9 @@ Return `string` repeated `count` number of times
 
 <a name="function:replace"></a>
 
-## replace(string, needle, replacement)
+## replace(text, needle, replacement)
 
-Replaces all occurrences of `needle` with `replacement` in `string`
+Replaces all occurrences of `needle` with `replacement` in `text`
 
 
 ```objectivec
@@ -1041,9 +1041,9 @@ Replaces all occurrences of `needle` with `replacement` in `string`
 
 <a name="function:right"></a>
 
-## right(string, count)
+## right(text, count)
 
-Returns the `count` most right characters of the passed in `string`
+Returns the `count` most right characters of the passed in `text`
 
 
 ```objectivec
@@ -1106,9 +1106,9 @@ Rounds `num` up to the nearest integer value. You can optionally pass in the num
 
 <a name="function:split"></a>
 
-## split(string, delimiter)
+## split(text, delimiter)
 
-Splits `string` based on the passed in `delimeter`
+Splits `text` based on the passed in `delimeter`
 
 Empty values are removed from the returned list
 
@@ -1121,39 +1121,39 @@ Empty values are removed from the returned list
 @(split("a && b && c", " && ")) → ["a","b","c"]
 ```
 
-<a name="function:string"></a>
+<a name="function:text"></a>
 
-## string(value)
+## text(value)
 
-Tries to convert `value` to a string. An error is returned if the value can't be converted.
+Tries to convert `value` to text. An error is returned if the value can't be converted.
 
 
 ```objectivec
-@(string(3 = 3)) → true
-@(json(string(123.45))) → "123.45"
-@(string(1 / 0)) → ERROR
+@(text(3 = 3)) → true
+@(json(text(123.45))) → "123.45"
+@(text(1 / 0)) → ERROR
 ```
 
-<a name="function:string_cmp"></a>
+<a name="function:text_compare"></a>
 
-## string_cmp(str1, str2)
+## text_compare(text1, text2)
 
-Returns the comparison between the strings `str1` and `str2`.
+Returns the comparison between the strings `text1` and `text2`.
 The return value will be -1 if str1 is smaller than str2, 0 if they
 are equal and 1 if str1 is greater than str2
 
 
 ```objectivec
-@(string_cmp("abc", "abc")) → 0
-@(string_cmp("abc", "def")) → -1
-@(string_cmp("zzz", "aaa")) → 1
+@(text_compare("abc", "abc")) → 0
+@(text_compare("abc", "def")) → -1
+@(text_compare("zzz", "aaa")) → 1
 ```
 
 <a name="function:title"></a>
 
-## title(string)
+## title(text)
 
-Titlecases the passed in `string`, capitalizing each word
+Titlecases the passed in `text`, capitalizing each word
 
 
 ```objectivec
@@ -1205,7 +1205,7 @@ timezone will be returned
 
 ## tz_offset(date)
 
-Returns the offset for the timezone as a string +/- HHMM for `date`
+Returns the offset for the timezone as text +/- HHMM for `date`
 
 If no timezone information is present in the date, then the environment's
 timezone offset will be returned
@@ -1220,9 +1220,9 @@ timezone offset will be returned
 
 <a name="function:upper"></a>
 
-## upper(string)
+## upper(text)
 
-Uppercases all characters in the passed `string`
+Uppercases all characters in the passed `text`
 
 
 ```objectivec
@@ -1232,9 +1232,9 @@ Uppercases all characters in the passed `string`
 
 <a name="function:url_encode"></a>
 
-## url_encode(string)
+## url_encode(text)
 
-URL encodes `string` for use in a URL parameter
+URL encodes `text` for use in a URL parameter
 
 
 ```objectivec
@@ -1256,9 +1256,9 @@ Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
 <a name="function:word"></a>
 
-## word(string, index)
+## word(text, index)
 
-Returns the word at the passed in `index` for the passed in `string`
+Returns the word at the passed in `index` for the passed in `text`
 
 
 ```objectivec
@@ -1272,9 +1272,9 @@ Returns the word at the passed in `index` for the passed in `string`
 
 <a name="function:word_count"></a>
 
-## word_count(string)
+## word_count(text)
 
-Returns the number of words in `string`
+Returns the number of words in `text`
 
 
 ```objectivec
@@ -1286,9 +1286,9 @@ Returns the number of words in `string`
 
 <a name="function:word_slice"></a>
 
-## word_slice(string, start, end)
+## word_slice(text, start, end)
 
-Extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 0). A negative
+Extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
 end value means that all words after the start should be returned.
 
 
@@ -1314,9 +1314,9 @@ function is used.
 <div class="tests">
 <a name="test:has_all_words"></a>
 
-## has_all_words(string, words)
+## has_all_words(text, words)
 
-Tests whether all the `words` are contained in `string`
+Tests whether all the `words` are contained in `text`
 
 The words can be in any order and may appear more than once.
 
@@ -1329,9 +1329,9 @@ The words can be in any order and may appear more than once.
 
 <a name="test:has_any_word"></a>
 
-## has_any_word(string, words)
+## has_any_word(text, words)
 
-Tests whether any of the `words` are contained in the `string`
+Tests whether any of the `words` are contained in the `text`
 
 Only one of the words needs to match and it may appear more than once.
 
@@ -1344,11 +1344,11 @@ Only one of the words needs to match and it may appear more than once.
 
 <a name="test:has_beginning"></a>
 
-## has_beginning(string, beginning)
+## has_beginning(text, beginning)
 
-Tests whether `string` starts with `beginning`
+Tests whether `text` starts with `beginning`
 
-Both strings are trimmed of surrounding whitespace, but otherwise matching is strict
+Both text values are trimmed of surrounding whitespace, but otherwise matching is strict
 without any tokenization.
 
 
@@ -1361,9 +1361,9 @@ without any tokenization.
 
 <a name="test:has_date"></a>
 
-## has_date(string)
+## has_date(text)
 
-Tests whether `string` contains a date formatted according to our environment
+Tests whether `text` contains a date formatted according to our environment
 
 
 ```objectivec
@@ -1374,9 +1374,9 @@ Tests whether `string` contains a date formatted according to our environment
 
 <a name="test:has_date_eq"></a>
 
-## has_date_eq(string, date)
+## has_date_eq(text, date)
 
-Tests whether `string` a date equal to `date`
+Tests whether `text` a date equal to `date`
 
 
 ```objectivec
@@ -1389,9 +1389,9 @@ Tests whether `string` a date equal to `date`
 
 <a name="test:has_date_gt"></a>
 
-## has_date_gt(string, min)
+## has_date_gt(text, min)
 
-Tests whether `string` a date after the date `min`
+Tests whether `text` a date after the date `min`
 
 
 ```objectivec
@@ -1404,9 +1404,9 @@ Tests whether `string` a date after the date `min`
 
 <a name="test:has_date_lt"></a>
 
-## has_date_lt(string, max)
+## has_date_lt(text, max)
 
-Tests whether `value` contains a date before the date `max`
+Tests whether `text` contains a date before the date `max`
 
 
 ```objectivec
@@ -1418,9 +1418,9 @@ Tests whether `value` contains a date before the date `max`
 
 <a name="test:has_district"></a>
 
-## has_district(string, state)
+## has_district(text, state)
 
-Tests whether a district name is contained in the `string`. If `state` is also provided
+Tests whether a district name is contained in the `text`. If `state` is also provided
 then the returned district must be within that state.
 
 
@@ -1433,9 +1433,9 @@ then the returned district must be within that state.
 
 <a name="test:has_email"></a>
 
-## has_email(string)
+## has_email(text)
 
-Tests whether an email is contained in `string`
+Tests whether an email is contained in `text`
 
 
 ```objectivec
@@ -1459,9 +1459,9 @@ Returns whether the `contact` is part of group with the passed in UUID
 
 <a name="test:has_number"></a>
 
-## has_number(string)
+## has_number(text)
 
-Tests whether `string` contains a number
+Tests whether `text` contains a number
 
 
 ```objectivec
@@ -1472,9 +1472,9 @@ Tests whether `string` contains a number
 
 <a name="test:has_number_between"></a>
 
-## has_number_between(string, min, max)
+## has_number_between(text, min, max)
 
-Tests whether `string` contains a number between `min` and `max` inclusive
+Tests whether `text` contains a number between `min` and `max` inclusive
 
 
 ```objectivec
@@ -1487,9 +1487,9 @@ Tests whether `string` contains a number between `min` and `max` inclusive
 
 <a name="test:has_number_eq"></a>
 
-## has_number_eq(string, value)
+## has_number_eq(text, value)
 
-Tests whether `strung` contains a number equal to the `value`
+Tests whether `text` contains a number equal to the `value`
 
 
 ```objectivec
@@ -1502,9 +1502,9 @@ Tests whether `strung` contains a number equal to the `value`
 
 <a name="test:has_number_gt"></a>
 
-## has_number_gt(string, min)
+## has_number_gt(text, min)
 
-Tests whether `string` contains a number greater than `min`
+Tests whether `text` contains a number greater than `min`
 
 
 ```objectivec
@@ -1517,9 +1517,9 @@ Tests whether `string` contains a number greater than `min`
 
 <a name="test:has_number_gte"></a>
 
-## has_number_gte(string, min)
+## has_number_gte(text, min)
 
-Tests whether `string` contains a number greater than or equal to `min`
+Tests whether `text` contains a number greater than or equal to `min`
 
 
 ```objectivec
@@ -1532,9 +1532,9 @@ Tests whether `string` contains a number greater than or equal to `min`
 
 <a name="test:has_number_lt"></a>
 
-## has_number_lt(string, max)
+## has_number_lt(text, max)
 
-Tests whether `string` contains a number less than `max`
+Tests whether `text` contains a number less than `max`
 
 
 ```objectivec
@@ -1547,9 +1547,9 @@ Tests whether `string` contains a number less than `max`
 
 <a name="test:has_number_lte"></a>
 
-## has_number_lte(string, max)
+## has_number_lte(text, max)
 
-Tests whether `value` contains a number less than or equal to `max`
+Tests whether `text` contains a number less than or equal to `max`
 
 
 ```objectivec
@@ -1562,11 +1562,11 @@ Tests whether `value` contains a number less than or equal to `max`
 
 <a name="test:has_only_phrase"></a>
 
-## has_only_phrase(string, phrase)
+## has_only_phrase(text, phrase)
 
-Tests whether the `string` contains only `phrase`
+Tests whether the `text` contains only `phrase`
 
-The phrase must be the only text in the string to match
+The phrase must be the only text in the text to match
 
 
 ```objectivec
@@ -1580,11 +1580,11 @@ The phrase must be the only text in the string to match
 
 <a name="test:has_pattern"></a>
 
-## has_pattern(string, pattern)
+## has_pattern(text, pattern)
 
-Tests whether `string` matches the regex `pattern`
+Tests whether `text` matches the regex `pattern`
 
-Both strings are trimmed of surrounding whitespace and matching is case-insensitive.
+Both text values are trimmed of surrounding whitespace and matching is case-insensitive.
 
 
 ```objectivec
@@ -1597,9 +1597,9 @@ Both strings are trimmed of surrounding whitespace and matching is case-insensit
 
 <a name="test:has_phone"></a>
 
-## has_phone(string, country_code)
+## has_phone(text, country_code)
 
-Tests whether a phone number (in the passed in `country_code`) is contained in the `string`
+Tests whether a phone number (in the passed in `country_code`) is contained in the `text`
 
 
 ```objectivec
@@ -1610,9 +1610,9 @@ Tests whether a phone number (in the passed in `country_code`) is contained in t
 
 <a name="test:has_phrase"></a>
 
-## has_phrase(string, phrase)
+## has_phrase(text, phrase)
 
-Tests whether `phrase` is contained in `string`
+Tests whether `phrase` is contained in `text`
 
 The words in the test phrase must appear in the same order with no other words
 in between.
@@ -1627,9 +1627,9 @@ in between.
 
 <a name="test:has_state"></a>
 
-## has_state(string)
+## has_state(text)
 
-Tests whether a state name is contained in the `string`
+Tests whether a state name is contained in the `text`
 
 
 ```objectivec
@@ -1641,9 +1641,9 @@ Tests whether a state name is contained in the `string`
 
 <a name="test:has_text"></a>
 
-## has_text(string)
+## has_text(text)
 
-Tests whether there the string has any characters in it
+Tests whether there the text has any characters in it
 
 
 ```objectivec
@@ -1685,9 +1685,9 @@ Returns whether the last wait timed out.
 
 <a name="test:has_ward"></a>
 
-## has_ward(string, district, state)
+## has_ward(text, district, state)
 
-Tests whether a ward name is contained in the `string`
+Tests whether a ward name is contained in the `text`
 
 
 ```objectivec
@@ -1718,22 +1718,22 @@ value.
 @(is_error("hello")) → false
 ```
 
-<a name="test:is_string_eq"></a>
+<a name="test:is_text_eq"></a>
 
-## is_string_eq(string, string)
+## is_text_eq(text1, text2)
 
-Returns whether two strings are equal (case sensitive). In the case that they
-are, it will return the string as the match.
+Returns whether two text values are equal (case sensitive). In the case that they
+are, it will return the text as the match.
 
 
 ```objectivec
-@(is_string_eq("foo", "foo")) → true
-@(is_string_eq("foo", "FOO")) → false
-@(is_string_eq("foo", "bar")) → false
-@(is_string_eq("foo", " foo ")) → false
-@(is_string_eq(run.status, "completed")) → true
-@(is_string_eq(run.webhook.status, "success")) → true
-@(is_string_eq(run.webhook.status, "connection_error")) → false
+@(is_text_eq("foo", "foo")) → true
+@(is_text_eq("foo", "FOO")) → false
+@(is_text_eq("foo", "bar")) → false
+@(is_text_eq("foo", " foo ")) → false
+@(is_text_eq(run.status, "completed")) → true
+@(is_text_eq(run.webhook.status, "success")) → true
+@(is_text_eq(run.webhook.status, "connection_error")) → false
 ```
 
 
@@ -2230,7 +2230,7 @@ Can be used to trigger sessions for other contacts and groups
                 },
                 "age": {
                     "text": "23",
-                    "decimal": 23
+                    "number": 23
                 },
                 "gender": {
                     "text": "Male"

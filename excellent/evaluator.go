@@ -62,7 +62,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	// if we had one, then just return our string evaluation strategy
 	if nextTT != EOF {
 		asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
-		return types.NewXString(asStr), err
+		return types.NewXText(asStr), err
 	}
 
 	switch tokenType {
@@ -71,7 +71,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 
 		// didn't find it, our value is empty string
 		if value == nil {
-			value = types.XStringEmpty
+			value = types.XTextEmpty
 		}
 
 		err, isErr := value.(error)
@@ -80,7 +80,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 		if isErr {
 			buf.WriteString("@")
 			buf.WriteString(token)
-			return types.NewXString(buf.String()), err
+			return types.NewXText(buf.String()), err
 		}
 
 		// found it, return that value
@@ -89,7 +89,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	case EXPRESSION:
 		value, err := EvaluateExpression(env, context, token)
 		if err != nil {
-			return types.NewXString(buf.String()), err
+			return types.NewXText(buf.String()), err
 		}
 
 		return value, nil
@@ -97,7 +97,7 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 
 	// different type of token, return the string representation
 	asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
-	return types.NewXString(asStr), err
+	return types.NewXText(asStr), err
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
@@ -115,16 +115,16 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 
 			// didn't find it, our value is empty string
 			if value == nil {
-				value = types.XStringEmpty
+				value = types.XTextEmpty
 			}
 
 			// we got an error, return our raw variable
 			if types.IsXError(value) {
 				errors = append(errors, value.(types.XError))
 			} else {
-				strValue, _ := types.ToXString(value)
+				strValue, _ := types.ToXText(value)
 				if urlEncode {
-					strValue = types.NewXString(url.QueryEscape(strValue.Native()))
+					strValue = types.NewXText(url.QueryEscape(strValue.Native()))
 				}
 
 				buf.WriteString(strValue.Native())
@@ -135,9 +135,9 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			if err != nil {
 				errors = append(errors, err)
 			} else {
-				strValue, _ := types.ToXString(value)
+				strValue, _ := types.ToXText(value)
 				if urlEncode {
-					strValue = types.NewXString(url.QueryEscape(strValue.Native()))
+					strValue = types.NewXText(url.QueryEscape(strValue.Native()))
 				}
 
 				buf.WriteString(strValue.Native())

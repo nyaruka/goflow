@@ -69,7 +69,7 @@ func (v *varMapper) Resolve(key string) types.XValue {
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
-		return types.NewXString(substitute)
+		return types.NewXText(substitute)
 	}
 
 	newPath := make([]string, 0, 1)
@@ -97,7 +97,7 @@ func (v *varMapper) Resolve(key string) types.XValue {
 
 		// or a simple string in which case we add to the end of the path and return that
 		newPath = append(newPath, value.(string))
-		return types.NewXString(strings.Join(newPath, "."))
+		return types.NewXText(strings.Join(newPath, "."))
 	}
 
 	// then it must be an arbitrary item
@@ -114,16 +114,16 @@ func (v *varMapper) Resolve(key string) types.XValue {
 		}
 	}
 
-	return types.NewXString(strings.Join(newPath, "."))
+	return types.NewXText(strings.Join(newPath, "."))
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *varMapper) Reduce() types.XPrimitive {
-	return types.NewXString(v.String())
+	return types.NewXText(v.String())
 }
 
 // ToXJSON won't be called on this but needs to be defined
-func (v *varMapper) ToXJSON() types.XString { return types.XStringEmpty }
+func (v *varMapper) ToXJSON() types.XText { return types.XTextEmpty }
 
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]
@@ -158,13 +158,13 @@ func (m *extraMapper) Resolve(key string) types.XValue {
 func (m *extraMapper) Reduce() types.XPrimitive {
 	switch m.extraAs {
 	case ExtraAsWebhookJSON:
-		return types.NewXString(fmt.Sprintf("run.webhook.json.%s", m.path))
+		return types.NewXText(fmt.Sprintf("run.webhook.json.%s", m.path))
 	case ExtraAsTriggerParams:
-		return types.NewXString(fmt.Sprintf("trigger.params.%s", m.path))
+		return types.NewXText(fmt.Sprintf("trigger.params.%s", m.path))
 	case ExtraAsFunction:
-		return types.NewXString(fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path))
+		return types.NewXText(fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path))
 	}
-	return types.XStringEmpty
+	return types.XTextEmpty
 }
 
 var _ types.XValue = (*extraMapper)(nil)
@@ -182,16 +182,16 @@ type functionTemplate struct {
 var functionTemplates = map[string]functionTemplate{
 	"first_word": {name: "word", params: "(%s, 0)"},
 	"datevalue":  {name: "date"},
-	"edate":      {name: "date_add", params: "(%s, %s, \"M\")"},
+	"edate":      {name: "datetime_add", params: "(%s, %s, \"M\")"},
 	"word":       {name: "word", params: "(%s, %s - 1)"},
 	"word_slice": {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
 	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
-	"datedif":    {name: "date_diff"},
+	"datedif":    {name: "datetime_diff"},
 	"date":       {name: "date", params: "(\"%s-%s-%s\")"},
-	"days":       {name: "date_diff", params: "(%s, %s, \"D\")"},
+	"days":       {name: "datetime_diff", params: "(%s, %s, \"D\")"},
 	"now":        {name: "now", params: "()"},
 	"average":    {name: "mean"},
-	"fixed":      {name: "format_num", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
+	"fixed":      {name: "format_number", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
 
 	"roundup":     {name: "round_up"},
 	"int":         {name: "round_down"},
@@ -216,7 +216,7 @@ var functionTemplates = map[string]functionTemplate{
 	"power": {params: "%s ^ %s"},
 	"sum":   {params: "%s + %s"},
 
-	// this one is a special case format, we sum these parts into seconds for date_add
+	// this one is a special case format, we sum these parts into seconds for datetime_add
 	"time": {name: "time", params: "(%s %s %s)"},
 }
 
@@ -300,8 +300,8 @@ func newMigrationBaseVars() map[string]interface{} {
 				"__default__": `now()`,
 				"now":         `now()`,
 				"today":       `today()`,
-				"tomorrow":    `date_add(today(), 1, "D")`,
-				"yesterday":   `date_add(today(), -1, "D")`,
+				"tomorrow":    `datetime_add(today(), 1, "D")`,
+				"yesterday":   `datetime_add(today(), -1, "D")`,
 			},
 		},
 	}
@@ -418,7 +418,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 func toString(params interface{}) (string, error) {
 	switch typed := params.(type) {
 	case types.XValue:
-		str, xerr := types.ToXString(typed)
+		str, xerr := types.ToXText(typed)
 		return str.Native(), xerr
 	case string:
 		return typed, nil
@@ -513,7 +513,7 @@ func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) inte
 func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	value := v.Visit(ctx.Atom(0)).(types.XValue)
 	expression := v.Visit(ctx.Atom(1)).(types.XValue)
-	lookup, err := types.ToXString(expression)
+	lookup, err := types.ToXText(expression)
 	if err != nil {
 		return err
 	}
@@ -611,7 +611,7 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	value := v.Visit(ctx.Atom()).(types.XValue)
 	expression := v.Visit(ctx.Expression()).(types.XValue)
-	lookup, err := types.ToXString(expression)
+	lookup, err := types.ToXText(expression)
 	if err != nil {
 		return err
 	}
@@ -727,9 +727,9 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 	if (firstIsDate || secondIsDate) && (firstNumberErr != nil || secondNumberErr != nil) {
 
 		// we are adding two values where we know at least one side is a date
-		template := "date_add(%s, %s, \"%s\")"
+		template := "datetime_add(%s, %s, \"%s\")"
 		if op == "-" {
-			template = "date_add(%s, -%s, \"%s\")"
+			template = "datetime_add(%s, -%s, \"%s\")"
 		}
 
 		// determine the order of our parameters

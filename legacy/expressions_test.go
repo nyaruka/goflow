@@ -64,8 +64,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@date`, new: `@(now())`},
 		{old: `@date.now`, new: `@(now())`},
 		{old: `@date.today`, new: `@(today())`},
-		{old: `@date.tomorrow`, new: `@(date_add(today(), 1, "D"))`},
-		{old: `@date.yesterday`, new: `@(date_add(today(), -1, "D"))`},
+		{old: `@date.tomorrow`, new: `@(datetime_add(today(), 1, "D"))`},
+		{old: `@date.yesterday`, new: `@(datetime_add(today(), -1, "D"))`},
 
 		// variables in parens
 		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel.0))`},
@@ -104,9 +104,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(AVERAGE(1, 2, 3, 4, 5))`, new: `@(mean(1, 2, 3, 4, 5))`},
 		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(contact.fields.age > 30, run.results.amount < 5))`},
 		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(date("2012-02-03"))`},
-		{old: `@(EDATE("2012-02-03", 1))`, new: `@(date_add("2012-02-03", 1, "M"))`},
-		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(date_diff(contact.fields.join_date, now(), "M"))`},
-		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(date_diff("2016-02-28", "2015-02-28", "D"))`},
+		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`},
+		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`},
+		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`},
 		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`},
 		{old: `@(HOUR(NOW()))`, new: `@(format_date(now(), "h"))`},
 		{old: `@(MINUTE(NOW()))`, new: `@(format_date(now(), "m"))`},
@@ -114,23 +114,23 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(NOW())`, new: `@(now())`},
 		{old: `@(SECOND(NOW()))`, new: `@(format_date(now(), "s"))`},
 
-		// date addition should get converted to date_add
-		{old: `@(date.now + 5)`, new: `@(date_add(now(), 5, "D"))`},
-		{old: `@(now() + 5)`, new: `@(date_add(now(), 5, "D"))`},
-		{old: `@(date + 5)`, new: `@(date_add(now(), 5, "D"))`},
-		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(date_add(now(), 5, "D"), contact.fields.age))`},
+		// date addition should get converted to datetime_add
+		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
+		{old: `@(now() + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
+		{old: `@(date + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
+		{old: `@(date.now + 5 + contact.age)`, new: `@(legacy_add(datetime_add(now(), 5, "D"), contact.fields.age))`},
 
 		// legacy_add permutations
 		{old: `@(contact.age + 5)`, new: `@(legacy_add(contact.fields.age, 5))`},
 		{old: `@(contact.join_date + 5 + contact.age)`, new: `@(legacy_add(legacy_add(contact.fields.join_date, 5), contact.fields.age))`},
 		{old: `@(contact.age + 100 - 5)`, new: `@(legacy_add(legacy_add(contact.fields.age, 100), -5))`},
-		{old: `@(date.yesterday - 3 + 10)`, new: `@(legacy_add(legacy_add(date_add(today(), -1, "D"), -3), 10))`},
+		{old: `@(date.yesterday - 3 + 10)`, new: `@(legacy_add(legacy_add(datetime_add(today(), -1, "D"), -3), 10))`},
 
-		{old: `@(3 + date.now)`, new: `@(date_add(now(), 3, "D"))`},
-		{old: `@(date.tomorrow - 3)`, new: `@(legacy_add(date_add(today(), 1, "D"), -3))`},
-		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(date_add(now(), 9000, "s"))`},
-		{old: `@(TIME(0, 1, 5) + contact.join_date)`, new: `@(date_add(contact.fields.join_date, 65, "s"))`},
-		{old: `@(contact.join_date - TIME(0,0,12))`, new: `@(date_add(contact.fields.join_date, -12, "s"))`},
+		{old: `@(3 + date.now)`, new: `@(datetime_add(now(), 3, "D"))`},
+		{old: `@(date.tomorrow - 3)`, new: `@(legacy_add(datetime_add(today(), 1, "D"), -3))`},
+		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(datetime_add(now(), 9000, "s"))`},
+		{old: `@(TIME(0, 1, 5) + contact.join_date)`, new: `@(datetime_add(contact.fields.join_date, 65, "s"))`},
+		{old: `@(contact.join_date - TIME(0,0,12))`, new: `@(datetime_add(contact.fields.join_date, -12, "s"))`},
 
 		// TODO: beware different org format, need a like function
 		{old: `@(DATE(2012, 12, 25))`, new: `@(date("2012-12-25"))`},
@@ -165,9 +165,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(CODE("A"))`, new: `@(code("A"))`},
 		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`},
 
-		{old: `@(FIXED(contact.age))`, new: `@(format_num(contact.fields.age))`},
-		{old: `@(FIXED(contact.age, 2))`, new: `@(format_num(contact.fields.age, 2))`},
-		{old: `@(FIXED(contact.age, 2, false))`, new: `@(format_num(contact.fields.age, 2, false))`},
+		{old: `@(FIXED(contact.age))`, new: `@(format_number(contact.fields.age))`},
+		{old: `@(FIXED(contact.age, 2))`, new: `@(format_number(contact.fields.age, 2))`},
+		{old: `@(FIXED(contact.age, 2, false))`, new: `@(format_number(contact.fields.age, 2, false))`},
 		{old: `@(INT(contact.age))`, new: `@(round_down(contact.fields.age))`},
 		{old: `@(LEFT(contact.name, 4))`, new: `@(left(contact.name, 4))`},
 		{old: `@(RIGHT(contact.name, 4))`, new: `@(right(contact.name, 4))`},
@@ -177,7 +177,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
-		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((date_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_date(now(), "h"), 7)) * 60), format_date(now(), "m"))) * 60)))`},
+		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_date(now(), "h"), 7)) * 60), format_date(now(), "m"))) * 60)))`},
 
 		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: ExtraAsWebhookJSON},
 		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: ExtraAsTriggerParams},

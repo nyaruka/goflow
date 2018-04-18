@@ -42,19 +42,19 @@ func (a Attachment) URL() string {
 func (a Attachment) Resolve(key string) types.XValue {
 	switch key {
 	case "content_type":
-		return types.NewXString(a.ContentType())
+		return types.NewXText(a.ContentType())
 	case "url":
-		return types.NewXString(a.URL())
+		return types.NewXText(a.URL())
 	}
 
 	return types.NewXResolveError(a, key)
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (a Attachment) Reduce() types.XPrimitive { return types.NewXString(a.URL()) }
+func (a Attachment) Reduce() types.XPrimitive { return types.NewXText(a.URL()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a Attachment) ToXJSON() types.XString {
+func (a Attachment) ToXJSON() types.XText {
 	return types.ResolveKeys(a, "content_type", "url").ToXJSON()
 }
 
@@ -84,7 +84,7 @@ func (a AttachmentList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a AttachmentList) ToXJSON() types.XString { return a.Reduce().ToXJSON() }
+func (a AttachmentList) ToXJSON() types.XText { return a.Reduce().ToXJSON() }
 
 var _ types.XValue = (AttachmentList)(nil)
 var _ types.XIndexable = (AttachmentList)(nil)

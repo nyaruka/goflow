@@ -20,7 +20,7 @@ func (t XTestResult) Match() types.XValue { return t.match }
 func (t XTestResult) Resolve(key string) types.XValue {
 	switch key {
 	case "matched":
-		return types.NewXBool(t.matched)
+		return types.NewXBoolean(t.matched)
 	case "match":
 		return t.match
 	}
@@ -29,11 +29,11 @@ func (t XTestResult) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (t XTestResult) Reduce() types.XPrimitive {
-	return types.NewXBool(t.matched)
+	return types.NewXBoolean(t.matched)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (t XTestResult) ToXJSON() types.XString {
+func (t XTestResult) ToXJSON() types.XText {
 	return types.ResolveKeys(t, "matched", "match").ToXJSON()
 }
 

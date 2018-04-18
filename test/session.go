@@ -148,7 +148,7 @@ var sessionAssets = `[
         "url": "http://testserver/assets/field",
         "content": [
             {"key": "gender", "label": "Gender", "value_type": "text"},
-            {"key": "age", "label": "Age", "value_type": "decimal"},
+            {"key": "age", "label": "Age", "value_type": "number"},
             {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
             {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
         ]
@@ -249,7 +249,7 @@ var sessionTrigger = `{
             "urns": [],
             "fields": {
                 "age": {
-                    "text": "33 years", "decimal": 33
+                    "text": "33 years", "number": 33
                 },
                 "gender": {
                     "text": "Female"

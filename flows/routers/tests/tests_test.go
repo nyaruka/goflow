@@ -13,17 +13,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var xs = types.NewXString
+var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
-var xt = types.NewXDate
+var xt = types.NewXDateTime
 
 type testResolvable struct{}
 
 func (r *testResolvable) Resolve(key string) types.XValue {
 	switch key {
 	case "foo":
-		return types.NewXString("bar")
+		return types.NewXText("bar")
 	case "zed":
 		return types.NewXNumberFromInt(123)
 	case "missing":
@@ -35,11 +35,11 @@ func (r *testResolvable) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *testResolvable) Reduce() types.XPrimitive {
-	return types.NewXString("hello")
+	return types.NewXText("hello")
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r *testResolvable) ToXJSON() types.XString {
+func (r *testResolvable) ToXJSON() types.XText {
 	return types.ResolveKeys(r, "foo", "zed").ToXJSON()
 }
 

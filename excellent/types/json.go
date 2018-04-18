@@ -11,7 +11,7 @@ import (
 // XJSON is the base type for XJSONObject and XJSONArray
 type XJSON []byte
 
-func (x XJSON) ToXJSON() XString { return NewXString(string(x)) }
+func (x XJSON) ToXJSON() XText { return NewXText(string(x)) }
 
 func (x XJSON) Reduce() XPrimitive { return x.ToXJSON() }
 
@@ -98,7 +98,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	case jsonparser.String:
 		strVal, err := jsonparser.ParseString(data)
 		if err == nil {
-			return NewXString(strVal)
+			return NewXText(strVal)
 		}
 	case jsonparser.Number:
 		decimalVal, err := decimal.NewFromString(string(data))
@@ -108,7 +108,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	case jsonparser.Boolean:
 		boolVal, err := jsonparser.ParseBoolean(data)
 		if err == nil {
-			return NewXBool(boolVal)
+			return NewXBoolean(boolVal)
 		}
 	case jsonparser.Array:
 		return NewXJSONArray(data)

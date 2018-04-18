@@ -74,11 +74,11 @@ func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
 func (u *ContactURN) Resolve(key string) types.XValue {
 	switch key {
 	case "scheme":
-		return types.NewXString(u.URN.Scheme())
+		return types.NewXText(u.URN.Scheme())
 	case "path":
-		return types.NewXString(u.URN.Path())
+		return types.NewXText(u.URN.Path())
 	case "display":
-		return types.NewXString(u.URN.Display())
+		return types.NewXText(u.URN.Display())
 	case "channel":
 		return u.Channel()
 	}
@@ -86,10 +86,10 @@ func (u *ContactURN) Resolve(key string) types.XValue {
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXString(string(u.URN)) }
+func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXText(string(u.URN)) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (u *ContactURN) ToXJSON() types.XString {
+func (u *ContactURN) ToXJSON() types.XText {
 	return types.ResolveKeys(u, "scheme", "path", "display").ToXJSON()
 }
 
@@ -185,7 +185,7 @@ func (l URNList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (l URNList) ToXJSON() types.XString {
+func (l URNList) ToXJSON() types.XText {
 	return l.Reduce().ToXJSON()
 }
 

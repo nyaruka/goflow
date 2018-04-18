@@ -23,9 +23,9 @@ func NewTestXObject(foo string, bar int) *testXObject {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON() types.XString {
+func (v *testXObject) ToXJSON() types.XText {
 	return types.NewXMap(map[string]types.XValue{
-		"foo": types.NewXString(v.foo),
+		"foo": types.NewXText(v.foo),
 		"bar": types.NewXNumberFromInt(v.bar),
 	}).ToXJSON()
 }
@@ -40,7 +40,7 @@ func (v *testXObject) MarshalJSON() ([]byte, error) {
 	return json.Marshal(e)
 }
 
-func (v *testXObject) Reduce() types.XPrimitive { return types.NewXString(v.foo) }
+func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 
 var _ types.XValue = &testXObject{}
 
@@ -65,19 +65,19 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString:       "",
 			asBool:         false,
 		}, {
-			value:          types.NewXString(""),
+			value:          types.NewXText(""),
 			asInternalJSON: `""`,
 			asJSON:         `""`,
 			asString:       "",
 			asBool:         false, // empty strings are false
 		}, {
-			value:          types.NewXString("FALSE"),
+			value:          types.NewXText("FALSE"),
 			asInternalJSON: `"FALSE"`,
 			asJSON:         `"FALSE"`,
 			asString:       "FALSE",
 			asBool:         false, // because it's string value is "false"
 		}, {
-			value:          types.NewXString("hello \"bob\""),
+			value:          types.NewXText("hello \"bob\""),
 			asInternalJSON: `"hello \"bob\""`,
 			asJSON:         `"hello \"bob\""`,
 			asString:       "hello \"bob\"",
@@ -107,25 +107,25 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString:       "123.45",
 			asBool:         true,
 		}, {
-			value:          types.NewXBool(false),
+			value:          types.NewXBoolean(false),
 			asInternalJSON: `false`,
 			asJSON:         `false`,
 			asString:       "false",
 			asBool:         false,
 		}, {
-			value:          types.NewXBool(true),
+			value:          types.NewXBoolean(true),
 			asInternalJSON: `true`,
 			asJSON:         `true`,
 			asString:       "true",
 			asBool:         true,
 		}, {
-			value:          types.NewXDate(date1),
+			value:          types.NewXDateTime(date1),
 			asInternalJSON: `"2017-06-23T15:30:00Z"`,
 			asJSON:         `"2017-06-23T15:30:00.000000Z"`,
 			asString:       "2017-06-23T15:30:00.000000Z",
 			asBool:         true,
 		}, {
-			value:          types.NewXDate(date2),
+			value:          types.NewXDateTime(date2),
 			asInternalJSON: `"2017-07-18T15:30:00-05:00"`,
 			asJSON:         `"2017-07-18T15:30:00.000000-05:00"`,
 			asString:       "2017-07-18T15:30:00.000000-05:00",
@@ -137,7 +137,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString:       `[]`,
 			asBool:         false,
 		}, {
-			value:          types.NewXArray(types.NewXDate(date1), types.NewXDate(date2)),
+			value:          types.NewXArray(types.NewXDateTime(date1), types.NewXDateTime(date2)),
 			asInternalJSON: `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`,
 			asJSON:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
 			asString:       `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
@@ -204,13 +204,13 @@ func TestXValueRequiredConversions(t *testing.T) {
 	for _, test := range tests {
 		asInternalJSON, _ := json.Marshal(test.value)
 		asJSON, _ := types.ToXJSON(test.value)
-		asString, _ := types.ToXString(test.value)
+		asString, _ := types.ToXText(test.value)
 		asBool, _ := types.ToXBool(test.value)
 
 		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %T{%s}", test.value, test.value)
-		assert.Equal(t, types.NewXString(test.asJSON), asJSON, "ToXJSON failed for %T{%s}", test.value, test.value)
-		assert.Equal(t, types.NewXString(test.asString), asString, "ToXString failed for %T{%s}", test.value, test.value)
-		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXText(test.asJSON), asJSON, "ToXJSON failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXText(test.asString), asString, "ToXText failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXBoolean(test.asBool), asBool, "ToXBool failed for %T{%s}", test.value, test.value)
 	}
 }
 
@@ -223,8 +223,8 @@ func TestToXNumber(t *testing.T) {
 		{nil, types.XNumberZero, false},
 		{types.NewXErrorf("Error"), types.XNumberZero, true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), false},
-		{types.NewXString("15.5"), types.RequireXNumberFromString("15.5"), false},
-		{types.NewXString("lO.5"), types.RequireXNumberFromString("10.5"), false},
+		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), false},
+		{types.NewXText("lO.5"), types.RequireXNumberFromString("10.5"), false},
 		{NewTestXObject("Hello", 123), types.XNumberZero, true},
 		{NewTestXObject("123.45000", 123), types.RequireXNumberFromString("123.45"), false},
 	}
@@ -244,16 +244,16 @@ func TestToXNumber(t *testing.T) {
 func TestToXDate(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		asNumber types.XDate
+		asNumber types.XDateTime
 		hasError bool
 	}{
-		{nil, types.XDateZero, false},
-		{types.NewXError(fmt.Errorf("Error")), types.XDateZero, true},
-		{types.NewXNumberFromInt(123), types.XDateZero, true},
-		{types.NewXString("2018-06-05"), types.NewXDate(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
-		{types.NewXString("wha?"), types.XDateZero, true},
-		{NewTestXObject("Hello", 123), types.XDateZero, true},
-		{NewTestXObject("2018/6/5", 123), types.NewXDate(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{nil, types.XDateTimeZero, false},
+		{types.NewXError(fmt.Errorf("Error")), types.XDateTimeZero, true},
+		{types.NewXNumberFromInt(123), types.XDateTimeZero, true},
+		{types.NewXText("2018-06-05"), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{types.NewXText("wha?"), types.XDateTimeZero, true},
+		{NewTestXObject("Hello", 123), types.XDateTimeZero, true},
+		{NewTestXObject("2018/6/5", 123), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
 	}
 
 	env := utils.NewDefaultEnvironment()

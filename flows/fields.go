@@ -16,7 +16,7 @@ type FieldValueType string
 // field value types
 const (
 	FieldValueTypeText     FieldValueType = "text"
-	FieldValueTypeDecimal  FieldValueType = "decimal"
+	FieldValueTypeNumber   FieldValueType = "number"
 	FieldValueTypeDatetime FieldValueType = "datetime"
 	FieldValueTypeWard     FieldValueType = "ward"
 	FieldValueTypeDistrict FieldValueType = "district"
@@ -47,16 +47,16 @@ func (f *Field) Key() FieldKey { return f.key }
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
-	text     types.XString
-	datetime *types.XDate
-	decimal  *types.XNumber
+	text     types.XText
+	datetime *types.XDateTime
+	number   *types.XNumber
 	state    *Location
 	district *Location
 	ward     *Location
 }
 
 func (v *FieldValue) IsEmpty() bool {
-	return !(!v.text.Empty() || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
+	return !(!v.text.Empty() || v.datetime != nil || v.number != nil || v.state != nil || v.district != nil || v.ward != nil)
 }
 
 func (v *FieldValue) TypedValue() types.XValue {
@@ -67,9 +67,9 @@ func (v *FieldValue) TypedValue() types.XValue {
 		if v.datetime != nil {
 			return *v.datetime
 		}
-	case FieldValueTypeDecimal:
-		if v.decimal != nil {
-			return *v.decimal
+	case FieldValueTypeNumber:
+		if v.number != nil {
+			return *v.number
 		}
 	case FieldValueTypeState:
 		return v.state
@@ -96,7 +96,7 @@ func (v *FieldValue) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *FieldValue) ToXJSON() types.XString { return v.Reduce().ToXJSON() }
+func (v *FieldValue) ToXJSON() types.XText { return v.Reduce().ToXJSON() }
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
@@ -113,8 +113,8 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XString) {
-	var asDate *types.XDate
+func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XText) {
+	var asDate *types.XDateTime
 	var asNumber *types.XNumber
 
 	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
@@ -131,7 +131,7 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue type
 		field:    field,
 		text:     rawValue,
 		datetime: asDate,
-		decimal:  asNumber,
+		number:   asNumber,
 	}
 }
 
@@ -159,7 +159,7 @@ func (f FieldValues) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (f FieldValues) ToXJSON() types.XString {
+func (f FieldValues) ToXJSON() types.XText {
 	return f.Reduce().ToXJSON()
 }
 

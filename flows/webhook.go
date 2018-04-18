@@ -100,17 +100,17 @@ func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.b
 func (w *WebhookCall) Resolve(key string) types.XValue {
 	switch key {
 	case "body":
-		return types.NewXString(w.Body())
+		return types.NewXText(w.Body())
 	case "json":
 		return w.JSON()
 	case "url":
-		return types.NewXString(w.URL())
+		return types.NewXText(w.URL())
 	case "request":
-		return types.NewXString(w.Request())
+		return types.NewXText(w.Request())
 	case "response":
-		return types.NewXString(w.Response())
+		return types.NewXText(w.Response())
 	case "status":
-		return types.NewXString(string(w.Status()))
+		return types.NewXText(string(w.Status()))
 	case "status_code":
 		return types.NewXNumberFromInt(w.StatusCode())
 	}
@@ -120,11 +120,11 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (w *WebhookCall) Reduce() types.XPrimitive {
-	return types.NewXString(w.body)
+	return types.NewXText(w.body)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (w *WebhookCall) ToXJSON() types.XString {
+func (w *WebhookCall) ToXJSON() types.XText {
 	return types.ResolveKeys(w, "body", "json", "url", "request", "response", "status", "status_code").ToXJSON()
 }
 

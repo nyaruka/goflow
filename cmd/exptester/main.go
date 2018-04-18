@@ -14,7 +14,7 @@ func main() {
 	vars := types.NewXMap(map[string]types.XValue{
 		"int1":    types.NewXNumberFromInt(1),
 		"int2":    types.NewXNumberFromInt(2),
-		"string1": types.NewXString("string1"),
+		"string1": types.NewXText("string1"),
 	})
 
 	if len(os.Args) != 2 {

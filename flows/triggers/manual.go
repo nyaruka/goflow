@@ -41,14 +41,14 @@ func (t *ManualTrigger) Type() string { return TypeManual }
 func (t *ManualTrigger) Resolve(key string) types.XValue {
 	switch key {
 	case "type":
-		return types.NewXString(TypeManual)
+		return types.NewXText(TypeManual)
 	}
 
 	return t.baseTrigger.Resolve(key)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (t *ManualTrigger) ToXJSON() types.XString {
+func (t *ManualTrigger) ToXJSON() types.XText {
 	return types.ResolveKeys(t, "type", "params").ToXJSON()
 }
 

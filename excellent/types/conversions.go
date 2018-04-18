@@ -13,49 +13,49 @@ import (
 )
 
 // ToXJSON converts the given value to a JSON string
-func ToXJSON(x XValue) (XString, XError) {
+func ToXJSON(x XValue) (XText, XError) {
 	if utils.IsNil(x) {
-		return NewXString(`null`), nil
+		return NewXText(`null`), nil
 	}
 	if IsXError(x) {
-		return XStringEmpty, x.(XError)
+		return XTextEmpty, x.(XError)
 	}
 
 	return x.ToXJSON(), nil
 }
 
-// ToXString converts the given value to a string
-func ToXString(x XValue) (XString, XError) {
+// ToXText converts the given value to a string
+func ToXText(x XValue) (XText, XError) {
 	if utils.IsNil(x) {
-		return XStringEmpty, nil
+		return XTextEmpty, nil
 	}
 	if IsXError(x) {
-		return XStringEmpty, x.(XError)
+		return XTextEmpty, x.(XError)
 	}
 
-	return x.Reduce().ToXString(), nil
+	return x.Reduce().ToXText(), nil
 }
 
 // ToXBool converts the given value to a boolean
-func ToXBool(x XValue) (XBool, XError) {
+func ToXBool(x XValue) (XBoolean, XError) {
 	if utils.IsNil(x) {
-		return XBoolFalse, nil
+		return XBooleanFalse, nil
 	}
 	if IsXError(x) {
-		return XBoolFalse, x.(XError)
+		return XBooleanFalse, x.(XError)
 	}
 
 	primitive, isPrimitive := x.(XPrimitive)
 	if isPrimitive {
-		return primitive.ToXBool(), nil
+		return primitive.ToXBoolean(), nil
 	}
 
 	lengthable, isLengthable := x.(XLengthable)
 	if isLengthable {
-		return NewXBool(lengthable.Length() > 0), nil
+		return NewXBoolean(lengthable.Length() > 0), nil
 	}
 
-	return x.Reduce().ToXBool(), nil
+	return x.Reduce().ToXBoolean(), nil
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
@@ -71,7 +71,7 @@ func ToXNumber(x XValue) (XNumber, XError) {
 		return XNumberZero, typed
 	case XNumber:
 		return typed, nil
-	case XString:
+	case XText:
 		parsed, err := parseDecimalFuzzy(typed.Native())
 		if err == nil {
 			return NewXNumber(parsed), nil
@@ -82,26 +82,26 @@ func ToXNumber(x XValue) (XNumber, XError) {
 }
 
 // ToXDate converts the given value to a time or returns an error if that isn't possible
-func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
+func ToXDate(env utils.Environment, x XValue) (XDateTime, XError) {
 	if utils.IsNil(x) {
-		return XDateZero, nil
+		return XDateTimeZero, nil
 	}
 
 	x = x.Reduce()
 
 	switch typed := x.(type) {
 	case XError:
-		return XDateZero, typed
-	case XDate:
+		return XDateTimeZero, typed
+	case XDateTime:
 		return typed, nil
-	case XString:
+	case XText:
 		parsed, err := utils.DateFromString(env, typed.Native())
 		if err == nil {
-			return NewXDate(parsed), nil
+			return NewXDateTime(parsed), nil
 		}
 	}
 
-	return XDateZero, NewXErrorf("unable to convert value '%s' of type '%s' to a date", x, reflect.TypeOf(x))
+	return XDateTimeZero, NewXErrorf("unable to convert value '%s' of type '%s' to a date", x, reflect.TypeOf(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
@@ -114,19 +114,19 @@ func ToInteger(x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXString().Native())
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText().Native())
 	}
 
 	return int(intPart), nil
 }
 
-// MustMarshalToXString calls json.Marshal in the given value and panics in the case of an error
-func MustMarshalToXString(x interface{}) XString {
+// MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error
+func MustMarshalToXText(x interface{}) XText {
 	j, err := json.Marshal(x)
 	if err != nil {
 		panic(fmt.Sprintf("unable to marshal %s to JSON", x))
 	}
-	return NewXString(string(j))
+	return NewXText(string(j))
 }
 
 func parseDecimalFuzzy(val string) (decimal.Decimal, error) {

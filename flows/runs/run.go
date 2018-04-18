@@ -251,7 +251,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 func (r *flowRun) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXString(string(r.UUID()))
+		return types.NewXText(string(r.UUID()))
 	case "contact":
 		return r.Contact()
 	case "flow":
@@ -261,14 +261,14 @@ func (r *flowRun) Resolve(key string) types.XValue {
 	case "webhook":
 		return r.Webhook()
 	case "status":
-		return types.NewXString(string(r.Status()))
+		return types.NewXText(string(r.Status()))
 	case "results":
 		return r.Results()
 	case "created_on":
-		return types.NewXDate(r.CreatedOn())
+		return types.NewXDateTime(r.CreatedOn())
 	case "exited_on":
 		if r.exitedOn != nil {
-			return types.NewXDate(*r.exitedOn)
+			return types.NewXDateTime(*r.exitedOn)
 		}
 		return nil
 	}
@@ -278,10 +278,10 @@ func (r *flowRun) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *flowRun) Reduce() types.XPrimitive {
-	return types.NewXString(string(r.uuid))
+	return types.NewXText(string(r.uuid))
 }
 
-func (r *flowRun) ToXJSON() types.XString {
+func (r *flowRun) ToXJSON() types.XText {
 	return types.ResolveKeys(r, "uuid", "contact", "flow", "input", "webhook", "status", "results", "created_on", "exited_on").ToXJSON()
 }
 

@@ -140,27 +140,27 @@ func (c *Contact) Reference() *ContactReference { return NewContactReference(c.u
 func (c *Contact) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXString(string(c.uuid))
+		return types.NewXText(string(c.uuid))
 	case "name":
-		return types.NewXString(c.name)
+		return types.NewXText(c.name)
 	case "first_name":
 		names := utils.TokenizeString(c.name)
 		if len(names) >= 1 {
-			return types.NewXString(names[0])
+			return types.NewXText(names[0])
 		}
 		return nil
 	case "language":
-		return types.NewXString(string(c.language))
+		return types.NewXText(string(c.language))
 	case "timezone":
 		if c.timezone != nil {
-			return types.NewXString(c.timezone.String())
+			return types.NewXText(c.timezone.String())
 		}
 		return nil
 	case "urns":
 		return c.urns
 	case "urn":
 		if len(c.urns) > 0 {
-			return types.NewXString(c.urns[0].Format())
+			return types.NewXText(c.urns[0].Format())
 		}
 		return nil
 	case "groups":
@@ -179,11 +179,11 @@ func (c *Contact) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (c *Contact) Reduce() types.XPrimitive {
-	return types.NewXString(c.name)
+	return types.NewXText(c.name)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *Contact) ToXJSON() types.XString {
+func (c *Contact) ToXJSON() types.XText {
 	return types.ResolveKeys(c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON()
 }
 
@@ -192,7 +192,7 @@ var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
-	c.fields.setValue(env, field, types.NewXString(rawValue))
+	c.fields.setValue(env, field, types.NewXText(rawValue))
 }
 
 // UpdatePreferredChannel updates the preferred channel
@@ -264,11 +264,11 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 				return nil
 			case *Location:
 				nativeValue = typed.Name()
-			case types.XString:
+			case types.XText:
 				nativeValue = typed.Native()
 			case types.XNumber:
 				nativeValue = typed.Native()
-			case types.XDate:
+			case types.XDateTime:
 				nativeValue = typed.Native()
 			}
 
@@ -286,12 +286,12 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Text     types.XString  `json:"text,omitempty"`
-	Datetime *types.XDate   `json:"datetime,omitempty"`
-	Decimal  *types.XNumber `json:"decimal,omitempty"`
-	State    string         `json:"state,omitempty"`
-	District string         `json:"district,omitempty"`
-	Ward     string         `json:"ward,omitempty"`
+	Text     types.XText      `json:"text,omitempty"`
+	Datetime *types.XDateTime `json:"datetime,omitempty"`
+	Number   *types.XNumber   `json:"number,omitempty"`
+	State    string           `json:"state,omitempty"`
+	District string           `json:"district,omitempty"`
+	Ward     string           `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {
@@ -358,7 +358,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 			valueEnvelope := envelope.Fields[field.key]
 			if valueEnvelope != nil {
 				value.text = valueEnvelope.Text
-				value.decimal = valueEnvelope.Decimal
+				value.number = valueEnvelope.Number
 				value.datetime = valueEnvelope.Datetime
 
 				// TODO parse locations
@@ -393,7 +393,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		if !v.IsEmpty() {
 			ce.Fields[v.field.Key()] = &fieldValueEnvelope{
 				Text:     v.text,
-				Decimal:  v.decimal,
+				Number:   v.number,
 				Datetime: v.datetime,
 				//State:    v.state,
 				//District: v.district,

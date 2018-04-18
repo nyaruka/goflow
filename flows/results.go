@@ -37,18 +37,18 @@ type Result struct {
 func (r *Result) Resolve(key string) types.XValue {
 	switch key {
 	case "name":
-		return types.NewXString(r.Name)
+		return types.NewXText(r.Name)
 	case "value":
-		return types.NewXString(r.Value)
+		return types.NewXText(r.Value)
 	case "category":
-		return types.NewXString(r.Category)
+		return types.NewXText(r.Category)
 	case "category_localized":
 		if r.CategoryLocalized == "" {
-			return types.NewXString(r.Category)
+			return types.NewXText(r.Category)
 		}
-		return types.NewXString(r.CategoryLocalized)
+		return types.NewXText(r.CategoryLocalized)
 	case "created_on":
-		return types.NewXDate(r.CreatedOn)
+		return types.NewXDateTime(r.CreatedOn)
 	}
 
 	return types.NewXResolveError(r, key)
@@ -56,11 +56,11 @@ func (r *Result) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *Result) Reduce() types.XPrimitive {
-	return types.NewXString(r.Value)
+	return types.NewXText(r.Value)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r *Result) ToXJSON() types.XString {
+func (r *Result) ToXJSON() types.XText {
 	return types.ResolveKeys(r, "name", "value", "category", "category_localized", "created_on").ToXJSON()
 }
 
@@ -123,7 +123,7 @@ func (r Results) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r Results) ToXJSON() types.XString {
+func (r Results) ToXJSON() types.XText {
 	return r.Reduce().ToXJSON()
 }
 

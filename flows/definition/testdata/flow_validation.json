@@ -119,7 +119,7 @@
             {
                 "key": "age",
                 "label": "Age",
-                "value_type": "decimal"
+                "value_type": "number"
             },
             {
                 "key": "state",

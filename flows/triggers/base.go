@@ -34,5 +34,5 @@ func (t *baseTrigger) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (t *baseTrigger) Reduce() types.XPrimitive {
-	return types.NewXString(string(t.flow.UUID()))
+	return types.NewXText(string(t.flow.UUID()))
 }

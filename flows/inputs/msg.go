@@ -39,11 +39,11 @@ func (i *MsgInput) Type() string { return TypeMsg }
 func (i *MsgInput) Resolve(key string) types.XValue {
 	switch key {
 	case "type":
-		return types.NewXString(TypeMsg)
+		return types.NewXText(TypeMsg)
 	case "urn":
 		return i.urn
 	case "text":
-		return types.NewXString(i.text)
+		return types.NewXText(i.text)
 	case "attachments":
 		return i.attachments
 	}
@@ -59,11 +59,11 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 	for _, attachment := range i.attachments {
 		parts = append(parts, attachment.URL())
 	}
-	return types.NewXString(strings.Join(parts, "\n"))
+	return types.NewXText(strings.Join(parts, "\n"))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (i *MsgInput) ToXJSON() types.XString {
+func (i *MsgInput) ToXJSON() types.XText {
 	return types.ResolveKeys(i, "uuid", "created_on", "channel", "type", "urn", "text", "attachments").ToXJSON()
 }
 

@@ -29,22 +29,22 @@ func NewXArray(values ...XValue) XArray {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (a *xarray) Reduce() XPrimitive { return a }
 
-// ToXString converts this type to a string
-func (a *xarray) ToXString() XString {
-	strs := make([]XString, len(a.values))
+// ToXText converts this type to text
+func (a *xarray) ToXText() XText {
+	strs := make([]XText, len(a.values))
 	for i := range a.values {
-		strs[i] = a.values[i].Reduce().ToXString()
+		strs[i] = a.values[i].Reduce().ToXText()
 	}
-	return MustMarshalToXString(strs)
+	return MustMarshalToXText(strs)
 }
 
-// ToXBool converts this type to a bool
-func (a *xarray) ToXBool() XBool {
-	return NewXBool(len(a.values) > 0)
+// ToXBoolean converts this type to a bool
+func (a *xarray) ToXBoolean() XBoolean {
+	return NewXBoolean(len(a.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a *xarray) ToXJSON() XString {
+func (a *xarray) ToXJSON() XText {
 	marshaled := make([]json.RawMessage, len(a.values))
 	for i, v := range a.values {
 		asJSON, err := ToXJSON(v)
@@ -52,7 +52,7 @@ func (a *xarray) ToXJSON() XString {
 			marshaled[i] = json.RawMessage(asJSON.Native())
 		}
 	}
-	return MustMarshalToXString(marshaled)
+	return MustMarshalToXText(marshaled)
 }
 
 // MarshalJSON converts this type to internal JSON
