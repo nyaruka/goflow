@@ -91,9 +91,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"parse_json": OneTextFunction(ParseJSON),
 
 	// formatting functions
-	"format_date": FormatDate,
-	"format_num":  FormatNum,
-	"format_urn":  FormatURN,
+	"format_date":   FormatDate,
+	"format_number": FormatNumber,
+	"format_urn":    FormatURN,
 
 	// utility functions
 	"length":     OneArgFunction(Length),
@@ -1280,16 +1280,16 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(date.Native().Format(goFormat))
 }
 
-// FormatNum returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
+// FormatNumber returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 //
-//   @(format_num(31337)) -> 31,337.00
-//   @(format_num(31337, 2)) -> 31,337.00
-//   @(format_num(31337, 2, true)) -> 31,337.00
-//   @(format_num(31337, 0, false)) -> 31337
-//   @(format_num("foo", 2, false)) -> ERROR
+//   @(format_number(31337)) -> 31,337.00
+//   @(format_number(31337, 2)) -> 31,337.00
+//   @(format_number(31337, 2, true)) -> 31,337.00
+//   @(format_number(31337, 0, false)) -> 31337
+//   @(format_number("foo", 2, false)) -> ERROR
 //
-// @function format_num(num, places, commas)
-func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
+// @function format_number(num, places, commas)
+func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 3 {
 		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
 	}

@@ -165,9 +165,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(CODE("A"))`, new: `@(code("A"))`},
 		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`},
 
-		{old: `@(FIXED(contact.age))`, new: `@(format_num(contact.fields.age))`},
-		{old: `@(FIXED(contact.age, 2))`, new: `@(format_num(contact.fields.age, 2))`},
-		{old: `@(FIXED(contact.age, 2, false))`, new: `@(format_num(contact.fields.age, 2, false))`},
+		{old: `@(FIXED(contact.age))`, new: `@(format_number(contact.fields.age))`},
+		{old: `@(FIXED(contact.age, 2))`, new: `@(format_number(contact.fields.age, 2))`},
+		{old: `@(FIXED(contact.age, 2, false))`, new: `@(format_number(contact.fields.age, 2, false))`},
 		{old: `@(INT(contact.age))`, new: `@(round_down(contact.fields.age))`},
 		{old: `@(LEFT(contact.name, 4))`, new: `@(left(contact.name, 4))`},
 		{old: `@(RIGHT(contact.name, 4))`, new: `@(right(contact.name, 4))`},

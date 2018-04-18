@@ -672,19 +672,19 @@ environment will be used. An error will be returned if the timezone is not recog
 @(format_date("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
-<a name="function:format_num"></a>
+<a name="function:format_number"></a>
 
-## format_num(num, places, commas)
+## format_number(num, places, commas)
 
 Returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 
 
 ```objectivec
-@(format_num(31337)) → 31,337.00
-@(format_num(31337, 2)) → 31,337.00
-@(format_num(31337, 2, true)) → 31,337.00
-@(format_num(31337, 0, false)) → 31337
-@(format_num("foo", 2, false)) → ERROR
+@(format_number(31337)) → 31,337.00
+@(format_number(31337, 2)) → 31,337.00
+@(format_number(31337, 2, true)) → 31,337.00
+@(format_number(31337, 0, false)) → 31337
+@(format_number("foo", 2, false)) → ERROR
 ```
 
 <a name="function:format_urn"></a>
