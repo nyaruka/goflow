@@ -128,7 +128,7 @@ func TextAndIntegerFunction(f func(utils.Environment, types.XText, int) types.XV
 }
 
 // TextAndDateFunction creates an XFunction from a function that takes a text and a date arg
-func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDate) types.XValue) XFunction {
+func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDateTime) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
 		str, xerr := types.ToXText(args[0])
 		if xerr != nil {
@@ -191,8 +191,8 @@ func TwoNumberFunction(f func(utils.Environment, types.XNumber, types.XNumber) t
 	})
 }
 
-// OneDateFunction creates an XFunction from a single number function
-func OneDateFunction(f func(utils.Environment, types.XDate) types.XValue) XFunction {
+// OneDateTimeFunction creates an XFunction from a single number function
+func OneDateTimeFunction(f func(utils.Environment, types.XDateTime) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
 		date, xerr := types.ToXDate(env, args[0])
 		if xerr != nil {

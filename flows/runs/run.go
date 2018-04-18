@@ -265,10 +265,10 @@ func (r *flowRun) Resolve(key string) types.XValue {
 	case "results":
 		return r.Results()
 	case "created_on":
-		return types.NewXDate(r.CreatedOn())
+		return types.NewXDateTime(r.CreatedOn())
 	case "exited_on":
 		if r.exitedOn != nil {
-			return types.NewXDate(*r.exitedOn)
+			return types.NewXDateTime(*r.exitedOn)
 		}
 		return nil
 	}

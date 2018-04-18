@@ -80,8 +80,8 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 		return typed.Compare(x2.(XNumber)), nil
 	case XBoolean:
 		return typed.Compare(x2.(XBoolean)), nil
-	case XDate:
-		return typed.Compare(x2.(XDate)), nil
+	case XDateTime:
+		return typed.Compare(x2.(XDateTime)), nil
 	case XText:
 		return typed.Compare(x2.(XText)), nil
 	}

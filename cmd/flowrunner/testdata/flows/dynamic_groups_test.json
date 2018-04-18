@@ -81,7 +81,7 @@
                 "contact": {
                     "fields": {
                         "age": {
-                            "decimal": 17,
+                            "number": 17,
                             "text": "17"
                         },
                         "first_name": {

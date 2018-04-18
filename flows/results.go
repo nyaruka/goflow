@@ -48,7 +48,7 @@ func (r *Result) Resolve(key string) types.XValue {
 		}
 		return types.NewXText(r.CategoryLocalized)
 	case "created_on":
-		return types.NewXDate(r.CreatedOn)
+		return types.NewXDateTime(r.CreatedOn)
 	}
 
 	return types.NewXResolveError(r, key)

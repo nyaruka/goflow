@@ -54,10 +54,10 @@ func (x *XBoolean) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &x.native)
 }
 
-// XBoolFalse is the false boolean value
-var XBoolFalse = NewXBoolean(false)
+// XBooleanFalse is the false boolean value
+var XBooleanFalse = NewXBoolean(false)
 
-// XBoolTrue is the true boolean value
-var XBoolTrue = NewXBoolean(true)
+// XBooleanTrue is the true boolean value
+var XBooleanTrue = NewXBoolean(true)
 
-var _ XPrimitive = XBoolFalse
+var _ XPrimitive = XBooleanFalse

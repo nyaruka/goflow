@@ -48,15 +48,15 @@ func (f *Field) Key() FieldKey { return f.key }
 type FieldValue struct {
 	field    *Field
 	text     types.XText
-	datetime *types.XDate
-	decimal  *types.XNumber
+	datetime *types.XDateTime
+	number   *types.XNumber
 	state    *Location
 	district *Location
 	ward     *Location
 }
 
 func (v *FieldValue) IsEmpty() bool {
-	return !(!v.text.Empty() || v.datetime != nil || v.decimal != nil || v.state != nil || v.district != nil || v.ward != nil)
+	return !(!v.text.Empty() || v.datetime != nil || v.number != nil || v.state != nil || v.district != nil || v.ward != nil)
 }
 
 func (v *FieldValue) TypedValue() types.XValue {
@@ -68,8 +68,8 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.datetime
 		}
 	case FieldValueTypeDecimal:
-		if v.decimal != nil {
-			return *v.decimal
+		if v.number != nil {
+			return *v.number
 		}
 	case FieldValueTypeState:
 		return v.state
@@ -114,7 +114,7 @@ func (f FieldValues) clone() FieldValues {
 }
 
 func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XText) {
-	var asDate *types.XDate
+	var asDate *types.XDateTime
 	var asNumber *types.XNumber
 
 	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {

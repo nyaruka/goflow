@@ -39,10 +39,10 @@ func ToXText(x XValue) (XText, XError) {
 // ToXBool converts the given value to a boolean
 func ToXBool(x XValue) (XBoolean, XError) {
 	if utils.IsNil(x) {
-		return XBoolFalse, nil
+		return XBooleanFalse, nil
 	}
 	if IsXError(x) {
-		return XBoolFalse, x.(XError)
+		return XBooleanFalse, x.(XError)
 	}
 
 	primitive, isPrimitive := x.(XPrimitive)
@@ -82,26 +82,26 @@ func ToXNumber(x XValue) (XNumber, XError) {
 }
 
 // ToXDate converts the given value to a time or returns an error if that isn't possible
-func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
+func ToXDate(env utils.Environment, x XValue) (XDateTime, XError) {
 	if utils.IsNil(x) {
-		return XDateZero, nil
+		return XDateTimeZero, nil
 	}
 
 	x = x.Reduce()
 
 	switch typed := x.(type) {
 	case XError:
-		return XDateZero, typed
-	case XDate:
+		return XDateTimeZero, typed
+	case XDateTime:
 		return typed, nil
 	case XText:
 		parsed, err := utils.DateFromString(env, typed.Native())
 		if err == nil {
-			return NewXDate(parsed), nil
+			return NewXDateTime(parsed), nil
 		}
 	}
 
-	return XDateZero, NewXErrorf("unable to convert value '%s' of type '%s' to a date", x, reflect.TypeOf(x))
+	return XDateTimeZero, NewXErrorf("unable to convert value '%s' of type '%s' to a date", x, reflect.TypeOf(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible

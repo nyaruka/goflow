@@ -91,7 +91,7 @@ func TestEvaluateQuery(t *testing.T) {
 		{`Gender is MALE`, true},
 		{`gender = "female"`, false},
 
-		// decimal field condition
+		// number field condition
 		{`age = 36`, true},
 		{`age is 35`, false},
 		{`age > 36`, false},
@@ -101,7 +101,7 @@ func TestEvaluateQuery(t *testing.T) {
 		{`age < 37`, true},
 		{`age <= 36`, true},
 
-		// date field condition
+		// datetime field condition
 		{`dob = 1981/05/28`, true},
 		{`dob > 1981/05/28`, false},
 		{`dob > 1981/05/27`, true},

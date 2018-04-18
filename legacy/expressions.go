@@ -182,13 +182,13 @@ type functionTemplate struct {
 var functionTemplates = map[string]functionTemplate{
 	"first_word": {name: "word", params: "(%s, 0)"},
 	"datevalue":  {name: "date"},
-	"edate":      {name: "date_add", params: "(%s, %s, \"M\")"},
+	"edate":      {name: "datetime_add", params: "(%s, %s, \"M\")"},
 	"word":       {name: "word", params: "(%s, %s - 1)"},
 	"word_slice": {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
 	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
-	"datedif":    {name: "date_diff"},
+	"datedif":    {name: "datetime_diff"},
 	"date":       {name: "date", params: "(\"%s-%s-%s\")"},
-	"days":       {name: "date_diff", params: "(%s, %s, \"D\")"},
+	"days":       {name: "datetime_diff", params: "(%s, %s, \"D\")"},
 	"now":        {name: "now", params: "()"},
 	"average":    {name: "mean"},
 	"fixed":      {name: "format_number", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
@@ -216,7 +216,7 @@ var functionTemplates = map[string]functionTemplate{
 	"power": {params: "%s ^ %s"},
 	"sum":   {params: "%s + %s"},
 
-	// this one is a special case format, we sum these parts into seconds for date_add
+	// this one is a special case format, we sum these parts into seconds for datetime_add
 	"time": {name: "time", params: "(%s %s %s)"},
 }
 
@@ -300,8 +300,8 @@ func newMigrationBaseVars() map[string]interface{} {
 				"__default__": `now()`,
 				"now":         `now()`,
 				"today":       `today()`,
-				"tomorrow":    `date_add(today(), 1, "D")`,
-				"yesterday":   `date_add(today(), -1, "D")`,
+				"tomorrow":    `datetime_add(today(), 1, "D")`,
+				"yesterday":   `datetime_add(today(), -1, "D")`,
 			},
 		},
 	}
@@ -727,9 +727,9 @@ func (v *legacyVisitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractio
 	if (firstIsDate || secondIsDate) && (firstNumberErr != nil || secondNumberErr != nil) {
 
 		// we are adding two values where we know at least one side is a date
-		template := "date_add(%s, %s, \"%s\")"
+		template := "datetime_add(%s, %s, \"%s\")"
 		if op == "-" {
-			template = "date_add(%s, -%s, \"%s\")"
+			template = "datetime_add(%s, -%s, \"%s\")"
 		}
 
 		// determine the order of our parameters

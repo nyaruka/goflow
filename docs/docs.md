@@ -552,9 +552,9 @@ if it is unable to convert the text to a date.
 @(date("NOT DATE")) → ERROR
 ```
 
-<a name="function:date_add"></a>
+<a name="function:datetime_add"></a>
 
-## date_add(date, offset, unit)
+## datetime_add(date, offset, unit)
 
 Calculates the date value arrived at by adding `offset` number of `unit` to the `date`
 
@@ -563,13 +563,13 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(date_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000-05:00
-@(date_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000-05:00
+@(datetime_add("2017-01-15", 5, "D")) → 2017-01-20T00:00:00.000000-05:00
+@(datetime_add("2017-01-15 10:45", 30, "m")) → 2017-01-15T11:15:00.000000-05:00
 ```
 
-<a name="function:date_diff"></a>
+<a name="function:datetime_diff"></a>
 
-## date_diff(date1, date2, unit)
+## datetime_diff(date1, date2, unit)
 
 Returns the integer duration between `date1` and `date2` in the `unit` specified.
 
@@ -578,22 +578,22 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(date_diff("2017-01-17", "2017-01-15", "D")) → 2
-@(date_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
-@(date_diff("2017-01-17", "2015-12-17", "Y")) → 2
+@(datetime_diff("2017-01-17", "2017-01-15", "D")) → 2
+@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
+@(datetime_diff("2017-01-17", "2015-12-17", "Y")) → 2
 ```
 
-<a name="function:date_from_parts"></a>
+<a name="function:datetime_from_parts"></a>
 
-## date_from_parts(year, month, day)
+## datetime_from_parts(year, month, day)
 
 Converts the passed in `year`, `month` and `day`
 
 
 ```objectivec
-@(date_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
-@(date_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
-@(date_from_parts(2017, 13, 15)) → ERROR
+@(datetime_from_parts(2017, 1, 15)) → 2017-01-15T00:00:00.000000-05:00
+@(datetime_from_parts(2017, 2, 31)) → 2017-03-03T00:00:00.000000-05:00
+@(datetime_from_parts(2017, 13, 15)) → ERROR
 ```
 
 <a name="function:default"></a>
@@ -889,9 +889,9 @@ Returns whether if any of the passed in arguments are truthy
 @(or(true, false, true)) → true
 ```
 
-<a name="function:parse_date"></a>
+<a name="function:parse_datetime"></a>
 
-## parse_date(text, format [,timezone])
+## parse_datetime(text, format [,timezone])
 
 Turns `text` into a date according to the `format` and optional `timezone` specified
 
@@ -927,14 +927,14 @@ Note that fractional seconds will be parsed even without an explicit format iden
 You should only specify fractional seconds when you want to assert the number of places
 in the input format.
 
-parse_date will return an error if it is unable to convert the text to a date.
+parse_datetime will return an error if it is unable to convert the text to a date.
 
 
 ```objectivec
-@(parse_date("1979-07-18", "YYYY-MM-DD")) → 1979-07-18T00:00:00.000000-05:00
-@(parse_date("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000-05:00
-@(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) → 2010-05-10T12:50:00.000000-07:00
-@(parse_date("NOT DATE", "YYYY-MM-DD")) → ERROR
+@(parse_datetime("1979-07-18", "YYYY-MM-DD")) → 1979-07-18T00:00:00.000000-05:00
+@(parse_datetime("2010 5 10", "YYYY M DD")) → 2010-05-10T00:00:00.000000-05:00
+@(parse_datetime("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) → 2010-05-10T12:50:00.000000-07:00
+@(parse_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
 <a name="function:parse_json"></a>

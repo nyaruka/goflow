@@ -475,7 +475,7 @@ func HasNumberGT(env utils.Environment, text types.XText, num types.XNumber) typ
 //
 // @test has_date(text)
 func HasDate(env utils.Environment, text types.XText) types.XValue {
-	return testDate(env, text, types.XDateZero, isDateTest)
+	return testDate(env, text, types.XDateTimeZero, isDateTest)
 }
 
 // HasDateLT tests whether `text` contains a date before the date `max`
@@ -486,7 +486,7 @@ func HasDate(env utils.Environment, text types.XText) types.XValue {
 //   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_lt(text, max)
-func HasDateLT(env utils.Environment, text types.XText, date types.XDate) types.XValue {
+func HasDateLT(env utils.Environment, text types.XText, date types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateLTTest)
 }
 
@@ -499,7 +499,7 @@ func HasDateLT(env utils.Environment, text types.XText, date types.XDate) types.
 //   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_eq(text, date)
-func HasDateEQ(env utils.Environment, text types.XText, date types.XDate) types.XValue {
+func HasDateEQ(env utils.Environment, text types.XText, date types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateEQTest)
 }
 
@@ -512,7 +512,7 @@ func HasDateEQ(env utils.Environment, text types.XText, date types.XDate) types.
 //   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
 // @test has_date_gt(text, min)
-func HasDateGT(env utils.Environment, text types.XText, date types.XDate) types.XValue {
+func HasDateGT(env utils.Environment, text types.XText, date types.XDateTime) types.XValue {
 	return testDate(env, text, date, isDateGTTest)
 }
 
@@ -869,7 +869,7 @@ func isNumberGT(value decimal.Decimal, test decimal.Decimal) bool {
 
 type dateTest func(value time.Time, test time.Time) bool
 
-func testDate(env utils.Environment, str types.XText, testDate types.XDate, testFunc dateTest) types.XValue {
+func testDate(env utils.Environment, str types.XText, testDate types.XDateTime, testFunc dateTest) types.XValue {
 	// error is if we don't find a date on our test value, that's ok but no match
 	value, xerr := types.ToXDate(env, str)
 	if xerr != nil {

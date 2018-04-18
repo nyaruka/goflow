@@ -119,13 +119,13 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString:       "true",
 			asBool:         true,
 		}, {
-			value:          types.NewXDate(date1),
+			value:          types.NewXDateTime(date1),
 			asInternalJSON: `"2017-06-23T15:30:00Z"`,
 			asJSON:         `"2017-06-23T15:30:00.000000Z"`,
 			asString:       "2017-06-23T15:30:00.000000Z",
 			asBool:         true,
 		}, {
-			value:          types.NewXDate(date2),
+			value:          types.NewXDateTime(date2),
 			asInternalJSON: `"2017-07-18T15:30:00-05:00"`,
 			asJSON:         `"2017-07-18T15:30:00.000000-05:00"`,
 			asString:       "2017-07-18T15:30:00.000000-05:00",
@@ -137,7 +137,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString:       `[]`,
 			asBool:         false,
 		}, {
-			value:          types.NewXArray(types.NewXDate(date1), types.NewXDate(date2)),
+			value:          types.NewXArray(types.NewXDateTime(date1), types.NewXDateTime(date2)),
 			asInternalJSON: `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`,
 			asJSON:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
 			asString:       `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
@@ -244,16 +244,16 @@ func TestToXNumber(t *testing.T) {
 func TestToXDate(t *testing.T) {
 	var tests = []struct {
 		value    types.XValue
-		asNumber types.XDate
+		asNumber types.XDateTime
 		hasError bool
 	}{
-		{nil, types.XDateZero, false},
-		{types.NewXError(fmt.Errorf("Error")), types.XDateZero, true},
-		{types.NewXNumberFromInt(123), types.XDateZero, true},
-		{types.NewXText("2018-06-05"), types.NewXDate(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
-		{types.NewXText("wha?"), types.XDateZero, true},
-		{NewTestXObject("Hello", 123), types.XDateZero, true},
-		{NewTestXObject("2018/6/5", 123), types.NewXDate(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{nil, types.XDateTimeZero, false},
+		{types.NewXError(fmt.Errorf("Error")), types.XDateTimeZero, true},
+		{types.NewXNumberFromInt(123), types.XDateTimeZero, true},
+		{types.NewXText("2018-06-05"), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{types.NewXText("wha?"), types.XDateTimeZero, true},
+		{NewTestXObject("Hello", 123), types.XDateTimeZero, true},
+		{NewTestXObject("2018/6/5", 123), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
 	}
 
 	env := utils.NewDefaultEnvironment()

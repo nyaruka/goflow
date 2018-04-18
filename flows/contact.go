@@ -268,7 +268,7 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 				nativeValue = typed.Native()
 			case types.XNumber:
 				nativeValue = typed.Native()
-			case types.XDate:
+			case types.XDateTime:
 				nativeValue = typed.Native()
 			}
 
@@ -286,12 +286,12 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Text     types.XText    `json:"text,omitempty"`
-	Datetime *types.XDate   `json:"datetime,omitempty"`
-	Decimal  *types.XNumber `json:"decimal,omitempty"`
-	State    string         `json:"state,omitempty"`
-	District string         `json:"district,omitempty"`
-	Ward     string         `json:"ward,omitempty"`
+	Text     types.XText      `json:"text,omitempty"`
+	Datetime *types.XDateTime `json:"datetime,omitempty"`
+	Number   *types.XNumber   `json:"number,omitempty"`
+	State    string           `json:"state,omitempty"`
+	District string           `json:"district,omitempty"`
+	Ward     string           `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {
@@ -358,7 +358,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 			valueEnvelope := envelope.Fields[field.key]
 			if valueEnvelope != nil {
 				value.text = valueEnvelope.Text
-				value.decimal = valueEnvelope.Decimal
+				value.number = valueEnvelope.Number
 				value.datetime = valueEnvelope.Datetime
 
 				// TODO parse locations

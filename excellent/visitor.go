@@ -98,12 +98,12 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 
 // VisitTrue deals with the "true" literal
 func (v *Visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
-	return types.XBoolTrue
+	return types.XBooleanTrue
 }
 
 // VisitFalse deals with the "false" literal
 func (v *Visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
-	return types.XBoolFalse
+	return types.XBooleanFalse
 }
 
 // VisitArrayLookup deals with lookups such as foo[5]

@@ -38,7 +38,7 @@ func (x xerror) Reduce() XPrimitive { return x }
 func (x xerror) ToXText() XText { return NewXText(x.Native().Error()) }
 
 // ToXBoolean converts this type to a bool
-func (x xerror) ToXBoolean() XBoolean { return XBoolFalse }
+func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x xerror) ToXJSON() XText { return MustMarshalToXText(x.Native().Error()) }
