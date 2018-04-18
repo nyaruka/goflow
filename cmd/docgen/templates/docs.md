@@ -167,7 +167,7 @@ The following types appear in the context:
  * [Webhook](#context:webhook)
 
 <div class="context">
-{{ .ContextDocs }}
+{{ .contextDocs }}
 </div>
 
 # Template Functions
@@ -178,7 +178,7 @@ Context variables referred to within functions do not need a leading `@`. Functi
 `@(length(split("1 2 3", " "))`.
 
 <div class="functions">
-{{ .FunctionDocs }}
+{{ .functionDocs }}
 </div>
 
 # Router Tests
@@ -189,7 +189,7 @@ the `match` component of the result. The flow editor builds these expressions us
 function is used.
 
 <div class="tests">
-{{ .TestDocs }}
+{{ .testDocs }}
 </div>
 
 # Action Definitions
@@ -201,7 +201,7 @@ flow execution is consistent. For example, while the engine itself does not have
 representation of a contact's state based on action performed on a flow so that later references in the flow are correct.
 
 <div class="actions">
-{{ .ActionDocs }}
+{{ .actionDocs }}
 </div>
 
 # Event Definitions
@@ -210,7 +210,7 @@ Events are the output of a flow run and represent instructions to the engine con
 All templates in events have been evaluated and can be used to create concrete messages, contact updates, emails etc by the container.
 
 <div class="events">
-{{ .EventDocs }}
+{{ .eventDocs }}
 </div>
 
 </body>

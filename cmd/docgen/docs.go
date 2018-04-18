@@ -16,6 +16,19 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+var docSets = []struct {
+	contextKey string
+	searchDirs []string
+	tag        string
+	handler    handleFunc
+}{
+	{"contextDocs", []string{"flows"}, "@context", handleContextDoc},
+	{"functionDocs", []string{"excellent/functions"}, "@function", handleFunctionDoc},
+	{"testDocs", []string{"flows/routers/tests"}, "@test", handleFunctionDoc},
+	{"actionDocs", []string{"flows/actions"}, "@action", handleActionDoc},
+	{"eventDocs", []string{"flows/events"}, "@event", handleEventDoc},
+}
+
 var testServerPort = 49998
 
 type documentedItem struct {
@@ -49,36 +62,12 @@ func buildDocs(baseDir string) (string, error) {
 		return "", fmt.Errorf("error creating example session: %s", err)
 	}
 
-	var contextDocs, functionDocs, testDocs, actionDocs, eventDocs string
+	context := make(map[string]string)
 
-	if contextDocs, err = buildDocSet(baseDir, []string{"flows"}, "@context", handleContextDoc, session); err != nil {
-		return "", err
-	}
-	if functionDocs, err = buildDocSet(baseDir, []string{"excellent/functions"}, "@function", handleFunctionDoc, session); err != nil {
-		return "", err
-	}
-	if testDocs, err = buildDocSet(baseDir, []string{"flows/routers/tests"}, "@test", handleFunctionDoc, session); err != nil {
-		return "", err
-	}
-	if actionDocs, err = buildDocSet(baseDir, []string{"flows/actions"}, "@action", handleActionDoc, session); err != nil {
-		return "", err
-	}
-	if eventDocs, err = buildDocSet(baseDir, []string{"flows/events"}, "@event", handleEventDoc, session); err != nil {
-		return "", err
-	}
-
-	context := struct {
-		ContextDocs  string
-		FunctionDocs string
-		TestDocs     string
-		ActionDocs   string
-		EventDocs    string
-	}{
-		ContextDocs:  contextDocs,
-		FunctionDocs: functionDocs,
-		TestDocs:     testDocs,
-		ActionDocs:   actionDocs,
-		EventDocs:    eventDocs,
+	for _, ds := range docSets {
+		if context[ds.contextKey], err = buildDocSet(baseDir, ds.searchDirs, ds.tag, ds.handler, session); err != nil {
+			return "", err
+		}
 	}
 
 	// generate our complete docs

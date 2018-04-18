@@ -106,7 +106,7 @@ func (v *Visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 	return types.XBooleanFalse
 }
 
-// VisitArrayLookup deals with lookups such as foo[5]
+// VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]
 func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	context := toXValue(v.Visit(ctx.Atom()))
 	if types.IsXError(context) {
@@ -144,10 +144,7 @@ func (v *Visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
 		return xerr
 	}
 
-	if ctx.MINUS() != nil {
-		return types.NewXNumber(number.Native().Neg())
-	}
-	return number
+	return types.NewXNumber(number.Native().Neg())
 }
 
 // VisitExponent deals with exponenets such as 5^5
@@ -285,11 +282,9 @@ func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 		return types.NewXBoolean(cmp <= 0)
 	case ctx.GTE() != nil:
 		return types.NewXBoolean(cmp >= 0)
-	case ctx.GT() != nil:
+	default: // ctx.GT() != nil
 		return types.NewXBoolean(cmp > 0)
 	}
-
-	return types.NewXErrorf("unknown comparison operator: %s", ctx.GetText())
 }
 
 // VisitFunctionParameters deals with the parameters to a function call

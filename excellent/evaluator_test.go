@@ -195,22 +195,22 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@string1 world", xs("foo world"), false},
 
 		{"@(-10)", xi(-10), false},
-		{"@(-asdf)", xs(""), true},
+		{"@(-asdf)", nil, true},
 
 		{"@(2^2)", xi(4), false},
-		{"@(2^asdf)", xs(""), true},
-		{"@(asdf^2)", xs(""), true},
+		{"@(2^asdf)", nil, true},
+		{"@(asdf^2)", nil, true},
 
 		{"@(1+2)", xi(3), false},
 		{"@(1-2.5)", xn("-1.5"), false},
-		{"@(1-asdf)", xs(""), true},
-		{"@(asdf+1)", xs(""), true},
+		{"@(1-asdf)", nil, true},
+		{"@(asdf+1)", nil, true},
 
 		{"@(1*2)", xi(2), false},
 		{"@(1/2)", xn("0.5"), false},
-		{"@(1/0)", xs(""), true},
-		{"@(1*asdf)", xs(""), true},
-		{"@(asdf/1)", xs(""), true},
+		{"@(1/0)", nil, true},
+		{"@(1*asdf)", nil, true},
+		{"@(asdf/1)", nil, true},
 
 		{"@(false)", types.XBooleanFalse, false},
 		{"@(TRUE)", types.XBooleanTrue, false},
@@ -268,7 +268,7 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(2 < 1)", types.XBooleanFalse, false},
 		{`@(1 < "asdf")`, nil, true}, // can't use with strings
 		{`@("asdf" < "basf")`, nil, true},
-		{"@(1<2<3)", xs(""), true}, // can't chain
+		{"@(1<2<3)", nil, true}, // can't chain
 
 		{"@(\"foo\" & \"bar\")", xs("foobar"), false},
 		{"@(missing & \"bar\")", nil, true},
@@ -278,7 +278,11 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(MISSING(string1))", nil, true},
 		{"@(TITLE(string1, string2))", nil, true},
 
-		{"@(1 = asdf)", nil, true},
+		{"@(1 = asdf)", nil, true},       // asdf isn't a valid context item
+		{"@(asdf = 1)", nil, true},       // asdf isn't a valid context item
+		{"@((1 / 0).field)", nil, true},  // can't resolve a property on an error value
+		{"@((1 / 0)[0])", nil, true},     // can't index into an error value
+		{"@(array1d[1 / 0])", nil, true}, // index expression can't be an error
 
 		{"@(split(words, \" \").0)", xs("one"), false},
 		{"@(split(words, \" \")[1])", xs("two"), false},
