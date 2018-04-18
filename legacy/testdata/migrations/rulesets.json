@@ -356,19 +356,19 @@
 		        "cases": [
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "is_string_eq",
+		                "type": "is_text_eq",
 		                "arguments": ["success"],
 		                "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
 		            },
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "is_string_eq",
+		                "type": "is_text_eq",
 		                "arguments": ["response_error"],
 		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
 		            },
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "is_string_eq",
+		                "type": "is_text_eq",
 		                "arguments": ["connection_error"],
 		                "exit_uuid": "������������������������������������"
 		            }
@@ -456,13 +456,13 @@
 		        "cases": [
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "is_string_eq",
+		                "type": "is_text_eq",
 		                "arguments": ["completed"],
 		                "exit_uuid": "d53e9ab2-8e88-4ffc-9452-eb819b50bdb2"
 		            },
 		            {
 		                "uuid": "������������������������������������",
-		                "type": "is_string_eq",
+		                "type": "is_text_eq",
 		                "arguments": ["expired"],
 		                "exit_uuid": "279a7adf-4681-4efb-a65f-34369a7a4f42"
 		            }

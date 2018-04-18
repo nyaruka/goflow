@@ -13,7 +13,7 @@
                 "cases": [
                     {
                         "uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",
-                        "type": "is_string_eq",
+                        "type": "is_text_eq",
                         "arguments": ["M"],
                         "exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b"
                     }

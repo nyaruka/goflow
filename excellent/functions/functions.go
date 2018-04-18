@@ -28,33 +28,33 @@ func RegisterXFunction(name string, function XFunction) {
 // XFUNCTIONS is our map of functions available in Excellent which aren't tests
 var XFUNCTIONS = map[string]XFunction{
 	// type conversion
-	"string": OneArgFunction(String),
+	"text":   OneArgFunction(Text),
 	"bool":   OneArgFunction(Bool),
 	"number": OneArgFunction(Number),
-	"date":   OneStringFunction(Date),
+	"date":   OneTextFunction(Date),
 	"array":  Array,
 
-	// string functions
+	// text functions
 	"char":              OneNumberFunction(Char),
-	"code":              OneStringFunction(Code),
-	"split":             TwoStringFunction(Split),
+	"code":              OneTextFunction(Code),
+	"split":             TwoTextFunction(Split),
 	"join":              TwoArgFunction(Join),
-	"title":             OneStringFunction(Title),
-	"word":              StringAndIntegerFunction(Word),
-	"remove_first_word": OneStringFunction(RemoveFirstWord),
-	"word_count":        OneStringFunction(WordCount),
+	"title":             OneTextFunction(Title),
+	"word":              TextAndIntegerFunction(Word),
+	"remove_first_word": OneTextFunction(RemoveFirstWord),
+	"word_count":        OneTextFunction(WordCount),
 	"word_slice":        ArgCountCheck(2, 3, WordSlice),
 	"field":             Field,
-	"clean":             OneStringFunction(Clean),
-	"left":              StringAndIntegerFunction(Left),
-	"lower":             OneStringFunction(Lower),
-	"right":             StringAndIntegerFunction(Right),
-	"string_cmp":        TwoStringFunction(StringCmp),
-	"repeat":            StringAndIntegerFunction(Repeat),
-	"replace":           ThreeStringFunction(Replace),
-	"upper":             OneStringFunction(Upper),
+	"clean":             OneTextFunction(Clean),
+	"left":              TextAndIntegerFunction(Left),
+	"lower":             OneTextFunction(Lower),
+	"right":             TextAndIntegerFunction(Right),
+	"text_compare":      TwoTextFunction(TextCompare),
+	"repeat":            TextAndIntegerFunction(Repeat),
+	"replace":           ThreeTextFunction(Replace),
+	"upper":             OneTextFunction(Upper),
 	"percent":           OneNumberFunction(Percent),
-	"url_encode":        OneStringFunction(URLEncode),
+	"url_encode":        OneTextFunction(URLEncode),
 
 	// bool functions
 	"and": And,
@@ -88,7 +88,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// json functions
 	"json":       OneArgFunction(JSON),
-	"parse_json": OneStringFunction(ParseJSON),
+	"parse_json": OneTextFunction(ParseJSON),
 
 	// formatting functions
 	"format_date": FormatDate,
@@ -99,21 +99,21 @@ var XFUNCTIONS = map[string]XFunction{
 	"length":     OneArgFunction(Length),
 	"default":    TwoArgFunction(Default),
 	"legacy_add": TwoArgFunction(LegacyAdd),
-	"read_code":  OneStringFunction(ReadCode),
+	"read_code":  OneTextFunction(ReadCode),
 }
 
 //------------------------------------------------------------------------------------------
 // Type Conversion Functions
 //------------------------------------------------------------------------------------------
 
-// String tries to convert `value` to a string. An error is returned if the value can't be converted.
+// Text tries to convert `value` to text. An error is returned if the value can't be converted.
 //
-//   @(string(3 = 3)) -> true
-//   @(json(string(123.45))) -> "123.45"
-//   @(string(1 / 0)) -> ERROR
+//   @(text(3 = 3)) -> true
+//   @(json(text(123.45))) -> "123.45"
+//   @(text(1 / 0)) -> ERROR
 //
-// @function string(value)
-func String(env utils.Environment, value types.XValue) types.XValue {
+// @function text(value)
+func Text(env utils.Environment, value types.XValue) types.XValue {
 	str, xerr := types.ToXText(value)
 	if xerr != nil {
 		return xerr
@@ -151,15 +151,15 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// Date turns `string` into a date according to the environment's settings. It will return an error
-// if it is unable to convert the string to a date.
+// Date turns `text` into a date according to the environment's settings. It will return an error
+// if it is unable to convert the text to a date.
 //
 //   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
 //   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
 //   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
 //   @(date("NOT DATE")) -> ERROR
 //
-// @function date(string)
+// @function date(text)
 func Date(env utils.Environment, str types.XText) types.XValue {
 	date, err := utils.DateFromString(env, str.Native())
 	if err != nil {
@@ -252,10 +252,10 @@ func If(env utils.Environment, test types.XValue, arg1 types.XValue, arg2 types.
 }
 
 //------------------------------------------------------------------------------------------
-// String Functions
+// Text Functions
 //------------------------------------------------------------------------------------------
 
-// Code returns the numeric code for the first character in `string`, it is the inverse of char
+// Code returns the numeric code for the first character in `text`, it is the inverse of char
 //
 //   @(code("a")) -> 97
 //   @(code("abc")) -> 97
@@ -264,17 +264,17 @@ func If(env utils.Environment, test types.XValue, arg1 types.XValue, arg2 types.
 //   @(code(15)) -> 49
 //   @(code("")) -> ERROR
 //
-// @function code(string)
-func Code(env utils.Environment, str types.XText) types.XValue {
-	if str.Length() == 0 {
+// @function code(text)
+func Code(env utils.Environment, text types.XText) types.XValue {
+	if text.Length() == 0 {
 		return types.NewXErrorf("requires a string of at least one character")
 	}
 
-	r, _ := utf8.DecodeRuneInString(str.Native())
+	r, _ := utf8.DecodeRuneInString(text.Native())
 	return types.NewXNumberFromInt(int(r))
 }
 
-// Split splits `string` based on the passed in `delimeter`
+// Split splits `text` based on the passed in `delimeter`
 //
 // Empty values are removed from the returned list
 //
@@ -284,10 +284,10 @@ func Code(env utils.Environment, str types.XText) types.XValue {
 //   @(split("a.b.c.", ".")) -> ["a","b","c"]
 //   @(split("a && b && c", " && ")) -> ["a","b","c"]
 //
-// @function split(string, delimiter)
-func Split(env utils.Environment, s types.XText, sep types.XText) types.XValue {
+// @function split(text, delimiter)
+func Split(env utils.Environment, text types.XText, sep types.XText) types.XValue {
 	splits := types.NewXArray()
-	allSplits := strings.Split(s.Native(), sep.Native())
+	allSplits := strings.Split(text.Native(), sep.Native())
 	for i := range allSplits {
 		if allSplits[i] != "" {
 			splits.Append(types.NewXText(allSplits[i]))
@@ -345,18 +345,18 @@ func Char(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXText(string(rune(code)))
 }
 
-// Title titlecases the passed in `string`, capitalizing each word
+// Title titlecases the passed in `text`, capitalizing each word
 //
 //   @(title("foo")) -> Foo
 //   @(title("ryan lewis")) -> Ryan Lewis
 //   @(title(123)) -> 123
 //
-// @function title(string)
-func Title(env utils.Environment, str types.XText) types.XValue {
-	return types.NewXText(strings.Title(str.Native()))
+// @function title(text)
+func Title(env utils.Environment, text types.XText) types.XValue {
+	return types.NewXText(strings.Title(text.Native()))
 }
 
-// Word returns the word at the passed in `index` for the passed in `string`
+// Word returns the word at the passed in `index` for the passed in `text`
 //
 //   @(word("bee cat dog", 0)) -> bee
 //   @(word("bee.cat,dog", 0)) -> bee
@@ -365,9 +365,9 @@ func Title(env utils.Environment, str types.XText) types.XValue {
 //   @(word("bee.cat,dog", -1)) -> dog
 //   @(word("bee.cat,dog", -2)) -> cat
 //
-// @function word(string, index)
-func Word(env utils.Environment, str types.XText, index int) types.XValue {
-	words := utils.TokenizeString(str.Native())
+// @function word(text, index)
+func Word(env utils.Environment, text types.XText, index int) types.XValue {
+	words := utils.TokenizeString(text.Native())
 
 	offset := index
 	if offset < 0 {
@@ -381,13 +381,13 @@ func Word(env utils.Environment, str types.XText, index int) types.XValue {
 	return types.NewXText(words[offset])
 }
 
-// RemoveFirstWord removes the 1st word of `string`
+// RemoveFirstWord removes the 1st word of `text`
 //
 //   @(remove_first_word("foo bar")) -> bar
 //
-// @function remove_first_word(string)
-func RemoveFirstWord(env utils.Environment, str types.XText) types.XValue {
-	words := utils.TokenizeString(str.Native())
+// @function remove_first_word(text)
+func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
+	words := utils.TokenizeString(text.Native())
 	if len(words) > 1 {
 		return types.NewXText(strings.Join(words[1:], " "))
 	}
@@ -395,7 +395,7 @@ func RemoveFirstWord(env utils.Environment, str types.XText) types.XValue {
 	return types.XTextEmpty
 }
 
-// WordSlice extracts a substring from `string` spanning from `start` up to but not-including `end`. (first word is 0). A negative
+// WordSlice extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
 // end value means that all words after the start should be returned.
 //
 //   @(word_slice("bee cat dog", 0, 1)) -> bee
@@ -405,7 +405,7 @@ func RemoveFirstWord(env utils.Environment, str types.XText) types.XValue {
 //   @(word_slice("bee cat dog", 2, 3)) -> dog
 //   @(word_slice("bee cat dog", 3, 10)) ->
 //
-// @function word_slice(string, start, end)
+// @function word_slice(text, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	str, xerr := types.ToXText(args[0])
 	if xerr != nil {
@@ -445,20 +445,20 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(strings.Join(words[start:], " "))
 }
 
-// WordCount returns the number of words in `string`
+// WordCount returns the number of words in `text`
 //
 //   @(word_count("foo bar")) -> 2
 //   @(word_count(10)) -> 1
 //   @(word_count("")) -> 0
 //   @(word_count("😀😃😄😁")) -> 4
 //
-// @function word_count(string)
-func WordCount(env utils.Environment, str types.XText) types.XValue {
-	words := utils.TokenizeString(str.Native())
+// @function word_count(text)
+func WordCount(env utils.Environment, text types.XText) types.XValue {
+	words := utils.TokenizeString(text.Native())
 	return types.NewXNumberFromInt(len(words))
 }
 
-// Field splits `string` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
+// Field splits `text` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
 // with a space, the delimiter is considered to be all whitespace.  (first field is 0)
 //
 //   @(field("a,b,c", 1, ",")) -> b
@@ -468,7 +468,7 @@ func WordCount(env utils.Environment, str types.XText) types.XValue {
 //   @(field("a\t\tb\tc\td", 1, " ")) ->
 //   @(field("a,b,c", "foo", ",")) -> ERROR
 //
-// @function field(string, offset, delimeter)
+// @function field(text, offset, delimeter)
 func Field(env utils.Environment, args ...types.XValue) types.XValue {
 	source, xerr := types.ToXText(args[0])
 	if xerr != nil {
@@ -508,26 +508,26 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(strings.TrimSpace(fields[field]))
 }
 
-// Clean strips any leading or trailing whitespace from `string``
+// Clean strips any leading or trailing whitespace from `text`
 //
 //   @(clean("\nfoo\t")) -> foo
 //   @(clean(" bar")) -> bar
 //   @(clean(123)) -> 123
 //
-// @function clean(string)
-func Clean(env utils.Environment, str types.XText) types.XValue {
-	return types.NewXText(strings.TrimSpace(str.Native()))
+// @function clean(text)
+func Clean(env utils.Environment, text types.XText) types.XValue {
+	return types.NewXText(strings.TrimSpace(text.Native()))
 }
 
-// Left returns the `count` most left characters of the passed in `string`
+// Left returns the `count` most left characters of the passed in `text`
 //
 //   @(left("hello", 2)) -> he
 //   @(left("hello", 7)) -> hello
 //   @(left("😀😃😄😁", 2)) -> 😀😃
 //   @(left("hello", -1)) -> ERROR
 //
-// @function left(string, count)
-func Left(env utils.Environment, str types.XText, count int) types.XValue {
+// @function left(text, count)
+func Left(env utils.Environment, text types.XText, count int) types.XValue {
 	if count < 0 {
 		return types.NewXErrorf("can't take a negative count")
 	}
@@ -535,7 +535,7 @@ func Left(env utils.Environment, str types.XText, count int) types.XValue {
 	// this weird construct does the right thing for multi-byte unicode
 	var output bytes.Buffer
 	i := 0
-	for _, r := range str.Native() {
+	for _, r := range text.Native() {
 		if i >= count {
 			break
 		}
@@ -546,37 +546,37 @@ func Left(env utils.Environment, str types.XText, count int) types.XValue {
 	return types.NewXText(output.String())
 }
 
-// Lower lowercases the passed in `string`
+// Lower lowercases the passed in `text`
 //
 //   @(lower("HellO")) -> hello
 //   @(lower("hello")) -> hello
 //   @(lower("123")) -> 123
 //   @(lower("😀")) -> 😀
 //
-// @function lower(string)
-func Lower(env utils.Environment, str types.XText) types.XValue {
-	return types.NewXText(strings.ToLower(str.Native()))
+// @function lower(text)
+func Lower(env utils.Environment, text types.XText) types.XValue {
+	return types.NewXText(strings.ToLower(text.Native()))
 }
 
-// Right returns the `count` most right characters of the passed in `string`
+// Right returns the `count` most right characters of the passed in `text`
 //
 //   @(right("hello", 2)) -> lo
 //   @(right("hello", 7)) -> hello
 //   @(right("😀😃😄😁", 2)) -> 😄😁
 //   @(right("hello", -1)) -> ERROR
 //
-// @function right(string, count)
-func Right(env utils.Environment, str types.XText, count int) types.XValue {
+// @function right(text, count)
+func Right(env utils.Environment, text types.XText, count int) types.XValue {
 	if count < 0 {
 		return types.NewXErrorf("can't take a negative count")
 	}
 
-	start := utf8.RuneCountInString(str.Native()) - count
+	start := utf8.RuneCountInString(text.Native()) - count
 
 	// this weird construct does the right thing for multi-byte unicode
 	var output bytes.Buffer
 	i := 0
-	for _, r := range str.Native() {
+	for _, r := range text.Native() {
 		if i >= start {
 			output.WriteRune(r)
 		}
@@ -586,59 +586,59 @@ func Right(env utils.Environment, str types.XText, count int) types.XValue {
 	return types.NewXText(output.String())
 }
 
-// StringCmp returns the comparison between the strings `str1` and `str2`.
+// TextCompare returns the comparison between the strings `text1` and `text2`.
 // The return value will be -1 if str1 is smaller than str2, 0 if they
 // are equal and 1 if str1 is greater than str2
 //
-//   @(string_cmp("abc", "abc")) -> 0
-//   @(string_cmp("abc", "def")) -> -1
-//   @(string_cmp("zzz", "aaa")) -> 1
+//   @(text_compare("abc", "abc")) -> 0
+//   @(text_compare("abc", "def")) -> -1
+//   @(text_compare("zzz", "aaa")) -> 1
 //
-// @function string_cmp(str1, str2)
-func StringCmp(env utils.Environment, str1 types.XText, str2 types.XText) types.XValue {
-	return types.NewXNumberFromInt(str1.Compare(str2))
+// @function text_compare(text1, text2)
+func TextCompare(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {
+	return types.NewXNumberFromInt(text1.Compare(text2))
 }
 
-// Repeat return `string` repeated `count` number of times
+// Repeat return `text` repeated `count` number of times
 //
 //   @(repeat("*", 8)) -> ********
 //   @(repeat("*", "foo")) -> ERROR
 //
-// @function repeat(string, count)
-func Repeat(env utils.Environment, str types.XText, count int) types.XValue {
+// @function repeat(text, count)
+func Repeat(env utils.Environment, text types.XText, count int) types.XValue {
 	if count < 0 {
 		return types.NewXErrorf("must be called with a positive integer, got %d", count)
 	}
 
 	var output bytes.Buffer
 	for j := 0; j < count; j++ {
-		output.WriteString(str.Native())
+		output.WriteString(text.Native())
 	}
 
 	return types.NewXText(output.String())
 }
 
-// Replace replaces all occurrences of `needle` with `replacement` in `string`
+// Replace replaces all occurrences of `needle` with `replacement` in `text`
 //
 //   @(replace("foo bar", "foo", "zap")) -> zap bar
 //   @(replace("foo bar", "baz", "zap")) -> foo bar
 //
-// @function replace(string, needle, replacement)
-func Replace(env utils.Environment, str types.XText, needle types.XText, replacement types.XText) types.XValue {
-	return types.NewXText(strings.Replace(str.Native(), needle.Native(), replacement.Native(), -1))
+// @function replace(text, needle, replacement)
+func Replace(env utils.Environment, text types.XText, needle types.XText, replacement types.XText) types.XValue {
+	return types.NewXText(strings.Replace(text.Native(), needle.Native(), replacement.Native(), -1))
 }
 
-// Upper uppercases all characters in the passed `string`
+// Upper uppercases all characters in the passed `text`
 //
 //   @(upper("Asdf")) -> ASDF
 //   @(upper(123)) -> 123
 //
-// @function upper(string)
-func Upper(env utils.Environment, str types.XText) types.XValue {
-	return types.NewXText(strings.ToUpper(str.Native()))
+// @function upper(text)
+func Upper(env utils.Environment, text types.XText) types.XValue {
+	return types.NewXText(strings.ToUpper(text.Native()))
 }
 
-// Percent converts `num` to a string represented as a percentage
+// Percent converts `num` to text represented as a percentage
 //
 //   @(percent(0.54234)) -> 54%
 //   @(percent(1.2)) -> 120%
@@ -653,14 +653,14 @@ func Percent(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXText(fmt.Sprintf("%d%%", percent.IntPart()))
 }
 
-// URLEncode URL encodes `string` for use in a URL parameter
+// URLEncode URL encodes `text` for use in a URL parameter
 //
 //   @(url_encode("two words")) -> two+words
 //   @(url_encode(10)) -> 10
 //
-// @function url_encode(string)
-func URLEncode(env utils.Environment, str types.XText) types.XValue {
-	return types.NewXText(url.QueryEscape(str.Native()))
+// @function url_encode(text)
+func URLEncode(env utils.Environment, text types.XText) types.XValue {
+	return types.NewXText(url.QueryEscape(text.Native()))
 }
 
 //------------------------------------------------------------------------------------------
@@ -863,7 +863,7 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 // Date Functions
 //------------------------------------------------------------------------------------------
 
-// ParseDate turns `string` into a date according to the `format` and optional `timezone` specified
+// ParseDate turns `text` into a date according to the `format` and optional `timezone` specified
 //
 // The format string can consist of the following characters. The characters
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -897,14 +897,14 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 // You should only specify fractional seconds when you want to assert the number of places
 // in the input format.
 //
-// parse_date will return an error if it is unable to convert the string to a date.
+// parse_date will return an error if it is unable to convert the text to a date.
 //
 //   @(parse_date("1979-07-18", "YYYY-MM-DD")) -> 1979-07-18T00:00:00.000000-05:00
 //   @(parse_date("2010 5 10", "YYYY M DD")) -> 2010-05-10T00:00:00.000000-05:00
 //   @(parse_date("2010 5 10 12:50", "YYYY M DD tt:mm", "America/Los_Angeles")) -> 2010-05-10T12:50:00.000000-07:00
 //   @(parse_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
-// @function parse_date(string, format [,timezone])
+// @function parse_date(text, format [,timezone])
 func ParseDate(env utils.Environment, args ...types.XValue) types.XValue {
 	str, xerr := types.ToXText(args[0])
 	if xerr != nil {
@@ -1104,7 +1104,7 @@ func TZ(env utils.Environment, date types.XDate) types.XValue {
 	return types.NewXText(date.Native().Location().String())
 }
 
-// TZOffset returns the offset for the timezone as a string +/- HHMM for `date`
+// TZOffset returns the offset for the timezone as text +/- HHMM for `date`
 //
 // If no timezone information is present in the date, then the environment's
 // timezone offset will be returned
@@ -1162,16 +1162,16 @@ func Now(env utils.Environment) types.XValue {
 // JSON Functions
 //------------------------------------------------------------------------------------------
 
-// ParseJSON tries to parse `string` as JSON, returning a fragment you can index into
+// ParseJSON tries to parse `text` as JSON, returning a fragment you can index into
 //
 // If the passed in value is not JSON, then an error is returned
 //
 //   @(parse_json("[1,2,3,4]").2) -> 3
 //   @(parse_json("invalid json")) -> ERROR
 //
-// @function parse_json(string)
-func ParseJSON(env utils.Environment, str types.XText) types.XValue {
-	return types.JSONToXValue([]byte(str.Native()))
+// @function parse_json(text)
+func ParseJSON(env utils.Environment, text types.XText) types.XValue {
+	return types.JSONToXValue([]byte(text.Native()))
 }
 
 // JSON tries to return a JSON representation of `value`. An error is returned if there is
@@ -1194,7 +1194,7 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
-// FormatDate turns `date` into a string according to the `format` specified and in
+// FormatDate turns `date` into text according to the `format` specified and in
 // the optional `timezone`.
 //
 // The format string can consist of the following characters. The characters
@@ -1332,7 +1332,7 @@ func FormatNum(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(humanize.FormatFloat(formatStr.String(), f64))
 }
 
-// FormatURN turns `urn` into a human friendly string
+// FormatURN turns `urn` into human friendly text
 //
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
@@ -1379,7 +1379,7 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 // Utility Functions
 //------------------------------------------------------------------------------------------
 
-// Length returns the length of the passed in string or array.
+// Length returns the length of the passed in text or array.
 //
 // length will return an error if it is passed an item which doesn't have length.
 //

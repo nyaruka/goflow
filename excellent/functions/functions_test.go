@@ -186,11 +186,11 @@ var funcTests = []struct {
 	{"length", []types.XValue{types.NewXArray()}, xi(0)},
 	{"length", []types.XValue{}, ERROR},
 
-	{"string_cmp", []types.XValue{xs("abc"), xs("abc")}, xi(0)},
-	{"string_cmp", []types.XValue{xs("abc"), xs("def")}, xi(-1)},
-	{"string_cmp", []types.XValue{xs("def"), xs("abc")}, xi(1)},
-	{"string_cmp", []types.XValue{xs("abc"), types.NewXErrorf("error")}, ERROR},
-	{"string_cmp", []types.XValue{}, ERROR},
+	{"text_compare", []types.XValue{xs("abc"), xs("abc")}, xi(0)},
+	{"text_compare", []types.XValue{xs("abc"), xs("def")}, xi(-1)},
+	{"text_compare", []types.XValue{xs("def"), xs("abc")}, xi(1)},
+	{"text_compare", []types.XValue{xs("abc"), types.NewXErrorf("error")}, ERROR},
+	{"text_compare", []types.XValue{}, ERROR},
 
 	{"default", []types.XValue{xs("10"), xs("20")}, xs("10")},
 	{"default", []types.XValue{nil, xs("20")}, xs("20")},

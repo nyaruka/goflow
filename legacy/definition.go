@@ -649,13 +649,13 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 		arguments = []string{string(test.Test.UUID)}
 
 	case "subflow":
-		newType = "is_string_eq"
+		newType = "is_text_eq"
 		test := subflowTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
-		newType = "is_string_eq"
+		newType = "is_text_eq"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
@@ -767,7 +767,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		exits = append(exits, connectionErrorExit)
 		cases = append(cases, routers.Case{
 			UUID:        utils.UUID(utils.NewUUID()),
-			Type:        "is_string_eq",
+			Type:        "is_text_eq",
 			Arguments:   []string{"connection_error"},
 			OmitOperand: false,
 			ExitUUID:    connectionErrorExitUUID,
