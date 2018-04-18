@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -68,7 +69,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 }
 
 type runResult struct {
-	assetCache *engine.AssetCache
+	assetCache *assets.AssetCache
 	session    flows.Session
 	outputs    []*Output
 }
@@ -87,7 +88,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	assetCache := engine.NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
 	if err := assetCache.Include(defaultAssetsJSON); err != nil {
 		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
 	}
@@ -95,7 +96,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, engine.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -118,7 +119,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
-		session, err = engine.ReadSession(assetCache, engine.NewMockAssetServer(), outJSON)
+		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), outJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -220,10 +221,10 @@ func TestFlows(t *testing.T) {
 				actualOutput := runResult.outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(runResult.assetCache, engine.NewMockAssetServer(), actualOutput.Session)
+				actualSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), actualOutput.Session)
 				require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", test.assets, err)
 
-				expectedSession, err := engine.ReadSession(runResult.assetCache, engine.NewMockAssetServer(), expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), expectedOutput.Session)
 				require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
 
 				// number of runs should be the same

@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -40,10 +41,10 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assetCache *AssetCache, assetServer AssetServer) flows.Session {
+func NewSession(assetCache *assets.AssetCache, assetServer assets.AssetServer) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
-		assets:     NewSessionAssets(assetCache, assetServer),
+		assets:     assets.NewSessionAssets(assetCache, assetServer),
 		status:     flows.SessionStatusActive,
 		newEvents:  []flows.Event{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
@@ -478,7 +479,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assetCache *AssetCache, assetServer AssetServer, data json.RawMessage) (flows.Session, error) {
+func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
