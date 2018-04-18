@@ -1,32 +1,35 @@
 package main
 
+// go install github.com/nyaruka/goflow/cmd/exptester; exptester "@(lower(contact.name))"
+
 import (
 	"fmt"
-	"log"
 	"os"
 
-	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/test"
 )
 
 func main() {
-	vars := types.NewXMap(map[string]types.XValue{
-		"int1":    types.NewXNumberFromInt(1),
-		"int2":    types.NewXNumberFromInt(2),
-		"string1": types.NewXText("string1"),
-	})
-
 	if len(os.Args) != 2 {
-		log.Fatal("usage: exptester <expression>")
+		fmt.Println("usage: exptester <expression>")
+		os.Exit(1)
 	}
 
-	env := utils.NewDefaultEnvironment()
-
-	val, err := excellent.EvaluateTemplateAsString(env, vars, os.Args[1], false, nil)
-
-	fmt.Printf("Value: %s\n", val)
+	output, err := expTester(os.Args[1])
 	if err != nil {
-		fmt.Printf("Errors: %s\n", err.Error())
+		fmt.Println(err)
+	} else {
+		fmt.Println(output)
 	}
+}
+
+func expTester(template string) (string, error) {
+	session, err := test.CreateTestSession(49995, nil)
+	if err != nil {
+		return "", err
+	}
+
+	run := session.Runs()[0]
+
+	return run.EvaluateTemplateAsString(template, false)
 }
