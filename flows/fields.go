@@ -16,7 +16,7 @@ type FieldValueType string
 // field value types
 const (
 	FieldValueTypeText     FieldValueType = "text"
-	FieldValueTypeDecimal  FieldValueType = "decimal"
+	FieldValueTypeNumber   FieldValueType = "number"
 	FieldValueTypeDatetime FieldValueType = "datetime"
 	FieldValueTypeWard     FieldValueType = "ward"
 	FieldValueTypeDistrict FieldValueType = "district"
@@ -67,7 +67,7 @@ func (v *FieldValue) TypedValue() types.XValue {
 		if v.datetime != nil {
 			return *v.datetime
 		}
-	case FieldValueTypeDecimal:
+	case FieldValueTypeNumber:
 		if v.number != nil {
 			return *v.number
 		}
@@ -131,7 +131,7 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue type
 		field:    field,
 		text:     rawValue,
 		datetime: asDate,
-		decimal:  asNumber,
+		number:   asNumber,
 	}
 }
 

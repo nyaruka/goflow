@@ -393,7 +393,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		if !v.IsEmpty() {
 			ce.Fields[v.field.Key()] = &fieldValueEnvelope{
 				Text:     v.text,
-				Decimal:  v.decimal,
+				Number:   v.number,
 				Datetime: v.datetime,
 				//State:    v.state,
 				//District: v.district,

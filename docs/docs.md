@@ -927,7 +927,7 @@ Note that fractional seconds will be parsed even without an explicit format iden
 You should only specify fractional seconds when you want to assert the number of places
 in the input format.
 
-parse_datetime will return an error if it is unable to convert the text to a date.
+parse_datetime will return an error if it is unable to convert the text to a datetime.
 
 
 ```objectivec
@@ -2230,7 +2230,7 @@ Can be used to trigger sessions for other contacts and groups
                 },
                 "age": {
                     "text": "23",
-                    "decimal": 23
+                    "number": 23
                 },
                 "gender": {
                     "text": "Male"
