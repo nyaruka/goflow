@@ -3,7 +3,6 @@ package assets
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -18,11 +17,11 @@ import (
 type assetType string
 
 const (
-	assetTypeChannel           assetType = "channel"
-	assetTypeField             assetType = "field"
+	assetTypeChannelSet        assetType = "channel_set"
+	assetTypeFieldSet          assetType = "field_set"
 	assetTypeFlow              assetType = "flow"
-	assetTypeGroup             assetType = "group"
-	assetTypeLabel             assetType = "label"
+	assetTypeGroupSet          assetType = "group_set"
+	assetTypeLabelSet          assetType = "label_set"
 	assetTypeLocationHierarchy assetType = "location_hierarchy"
 )
 
@@ -58,28 +57,18 @@ func (c *AssetCache) addAsset(url string, asset interface{}) {
 	c.cache.Set(c.normalizeURL(url), asset, time.Hour*24)
 }
 
-// getItemAsset gets an item asset from the cache if it's there or from the asset server
-func (c *AssetCache) getItemAsset(server AssetServer, itemType assetType, uuid string) (interface{}, error) {
-	url, err := server.getItemAssetURL(itemType, uuid)
+// GetAsset gets an asset from the cache if it's there or from the asset server
+func (c *AssetCache) GetAsset(server AssetServer, itemType assetType, itemUUID string) (interface{}, error) {
+	url, err := server.getAssetURL(itemType, itemUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	return c.getAsset(url, server, itemType, false)
-}
-
-// getSetAsset gets an set asset from the cache if it's there or from the asset server
-func (c *AssetCache) getSetAsset(server AssetServer, itemType assetType) (interface{}, error) {
-	url, err := server.getSetAssetURL(itemType)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.getAsset(url, server, itemType, true)
+	return c.getAsset(url, server, itemType)
 }
 
 // gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType, isSet bool) (interface{}, error) {
+func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType) (interface{}, error) {
 	item := c.cache.Get(c.normalizeURL(url))
 
 	// asset was in cache, so just return it
@@ -98,7 +87,7 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType
 	}
 
 	// actually fetch the asset from it's URL
-	fetched, err := server.fetchAsset(url, itemType, isSet, c.fetchUserAgent)
+	fetched, err := server.fetchAsset(url, itemType, c.fetchUserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,6 @@ type assetEnvelope struct {
 	URL      string          `json:"url" validate:"required,url"`
 	ItemType assetType       `json:"type" validate:"required"`
 	Content  json.RawMessage `json:"content"`
-	IsSet    bool            `json:"is_set"`
 }
 
 // Include loads assets from the given raw JSON into the cache
@@ -133,7 +121,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		asset, err := readAsset(envelope.Content, envelope.ItemType, envelope.IsSet)
+		asset, err := readAsset(envelope.Content, envelope.ItemType)
 		if err != nil {
 			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
 		}
@@ -144,31 +132,23 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 }
 
 // reads an asset from the given raw JSON data
-func readAsset(data json.RawMessage, itemType assetType, isSet bool) (interface{}, error) {
+func readAsset(data json.RawMessage, itemType assetType) (interface{}, error) {
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
-	if itemType == assetTypeLocationHierarchy && !isSet {
+	if itemType == assetTypeLocationHierarchy {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchy(data) }
-	} else if itemType == assetTypeChannel && !isSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannel(data) }
-	} else if itemType == assetTypeChannel && isSet {
+	} else if itemType == assetTypeChannelSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) }
-	} else if itemType == assetTypeField && !isSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadField(data) }
-	} else if itemType == assetTypeField && isSet {
+	} else if itemType == assetTypeFieldSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) }
-	} else if itemType == assetTypeFlow && !isSet {
+	} else if itemType == assetTypeFlow {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
-	} else if itemType == assetTypeGroup && !isSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroup(data) }
-	} else if itemType == assetTypeGroup && isSet {
+	} else if itemType == assetTypeGroupSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) }
-	} else if itemType == assetTypeLabel && !isSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabel(data) }
-	} else if itemType == assetTypeLabel && isSet {
+	} else if itemType == assetTypeLabelSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabelSet(data) }
 	} else {
-		return nil, fmt.Errorf("unsupported asset type: %s (set=%s)", itemType, strconv.FormatBool(isSet))
+		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
 	}
 
 	return assetReader(data)

@@ -16,7 +16,7 @@ import (
 
 var sessionAssets = `[
     {
-        "type": "channel",
+        "type": "channel_set",
         "url": "http://testserver/assets/channel",
         "content": [
             {
@@ -40,8 +40,7 @@ var sessionAssets = `[
                 "schemes": ["facebook"],
                 "roles": ["send", "receive"]
             }
-        ],
-        "is_set": true
+        ]
     },
     {
         "type": "flow",
@@ -145,36 +144,33 @@ var sessionAssets = `[
         }
     },
     {
-        "type": "field",
+        "type": "field_set",
         "url": "http://testserver/assets/field",
         "content": [
             {"key": "gender", "label": "Gender", "value_type": "text"},
             {"key": "age", "label": "Age", "value_type": "decimal"},
             {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
             {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
-        ],
-        "is_set": true
+        ]
     },
     {
-        "type": "group",
+        "type": "group_set",
         "url": "http://testserver/assets/group",
         "content": [
             {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
             {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
             {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
-        ],
-        "is_set": true
+        ]
     },
     {
-        "type": "label",
+        "type": "label_set",
         "url": "http://testserver/assets/label",
         "content": [
             {
                 "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
                 "name": "Spam"
             }
-        ],
-        "is_set": true
+        ]
     },
     {
         "type": "location_hierarchy",

@@ -26,7 +26,7 @@ func (s *sessionAssets) HasLocations() bool {
 
 // GetLocationHierarchy gets the location hierarchy asset for the session
 func (s *sessionAssets) GetLocationHierarchy() (*flows.LocationHierarchy, error) {
-	asset, err := s.cache.getSetAsset(s.server, assetTypeLocationHierarchy)
+	asset, err := s.cache.GetAsset(s.server, assetTypeLocationHierarchy, "")
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error
 
 // GetChannelSet gets the set of all channels asset for the session
 func (s *sessionAssets) GetChannelSet() (*flows.ChannelSet, error) {
-	asset, err := s.cache.getSetAsset(s.server, assetTypeChannel)
+	asset, err := s.cache.GetAsset(s.server, assetTypeChannelSet, "")
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (s *sessionAssets) GetField(key flows.FieldKey) (*flows.Field, error) {
 
 // GetFieldSet gets the set of all fields asset for the session
 func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
-	asset, err := s.cache.getSetAsset(s.server, assetTypeField)
+	asset, err := s.cache.GetAsset(s.server, assetTypeFieldSet, "")
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
 
 // GetFlow gets a flow asset for the session
 func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	asset, err := s.cache.getItemAsset(s.server, assetTypeFlow, string(uuid))
+	asset, err := s.cache.GetAsset(s.server, assetTypeFlow, string(uuid))
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
 
 // GetGroupSet gets the set of all groups asset for the session
 func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
-	asset, err := s.cache.getSetAsset(s.server, assetTypeGroup)
+	asset, err := s.cache.GetAsset(s.server, assetTypeGroupSet, "")
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (s *sessionAssets) GetLabel(uuid flows.LabelUUID) (*flows.Label, error) {
 }
 
 func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
-	asset, err := s.cache.getSetAsset(s.server, assetTypeLabel)
+	asset, err := s.cache.GetAsset(s.server, assetTypeLabelSet, "")
 	if err != nil {
 		return nil, err
 	}

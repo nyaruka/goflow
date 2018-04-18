@@ -98,7 +98,7 @@
         }
     },
     {
-        "type": "field",
+        "type": "field_set",
         "url": "http://testserver/assets/field",
         "content": [
             {
@@ -131,11 +131,10 @@
                 "label": "Joined On",
                 "value_type": "datetime"
             }
-        ],
-        "is_set": true
+        ]
     },
     {
-        "type": "group",
+        "type": "group_set",
         "url": "http://testserver/assets/group",
         "content": [
             {
@@ -151,11 +150,10 @@
                 "name": "Males",
                 "query": "gender = Male"
             }
-        ],
-        "is_set": true
+        ]
     },
     {
-        "type": "channel",
+        "type": "channel_set",
         "url": "http://testserver/assets/channel",
         "content": [
             {
@@ -165,11 +163,10 @@
                 "schemes": ["tel"],
                 "roles": ["send", "receive"]
             }
-        ],
-        "is_set": true
+        ]
     },
     {
-        "type": "label",
+        "type": "label_set",
         "url": "http://testserver/assets/label",
         "content": [
             {
@@ -180,7 +177,6 @@
                 "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168",
                 "name": "Azuay Messages"
             }
-        ],
-        "is_set": true
+        ]
     }
 ]

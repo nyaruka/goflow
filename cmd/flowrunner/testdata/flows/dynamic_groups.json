@@ -64,7 +64,7 @@
         }
     },
     {
-        "type": "field",
+        "type": "field_set",
         "url": "http://testserver/assets/field",
         "content": [
             {
@@ -87,11 +87,10 @@
                 "label": "State",
                 "value_type": "text"
             }
-        ],
-        "is_set": true
+        ]
     },
     {
-        "type": "group",
+        "type": "group_set",
         "url": "http://testserver/assets/group",
         "content": [
             {
@@ -119,7 +118,6 @@
                 "name": "MTN Callers",
                 "query": "tel ~ \"25078\""
             }
-        ],
-        "is_set": true
+        ]
     }
 ]
