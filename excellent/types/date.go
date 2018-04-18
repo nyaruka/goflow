@@ -21,14 +21,14 @@ func NewXDate(value time.Time) XDate {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XDate) Reduce() XPrimitive { return x }
 
-// ToXString converts this type to a string
-func (x XDate) ToXString() XString { return NewXString(utils.DateToISO(x.Native())) }
+// ToXText converts this type to text
+func (x XDate) ToXText() XText { return NewXText(utils.DateToISO(x.Native())) }
 
 // ToXBool converts this type to a bool
 func (x XDate) ToXBool() XBool { return NewXBool(!x.Native().IsZero()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XDate) ToXJSON() XString { return MustMarshalToXString(utils.DateToISO(x.Native())) }
+func (x XDate) ToXJSON() XText { return MustMarshalToXText(utils.DateToISO(x.Native())) }
 
 // Native returns the native value of this type
 func (x XDate) Native() time.Time { return x.native }

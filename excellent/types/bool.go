@@ -20,14 +20,14 @@ func NewXBool(value bool) XBool {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XBool) Reduce() XPrimitive { return x }
 
-// ToXString converts this type to a string
-func (x XBool) ToXString() XString { return NewXString(strconv.FormatBool(x.Native())) }
+// ToXText converts this type to text
+func (x XBool) ToXText() XText { return NewXText(strconv.FormatBool(x.Native())) }
 
 // ToXBool converts this type to a bool
 func (x XBool) ToXBool() XBool { return x }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XBool) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
+func (x XBool) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XBool) Native() bool { return x.native }

@@ -34,14 +34,14 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x xerror) Reduce() XPrimitive { return x }
 
-// ToXString converts this type to a string
-func (x xerror) ToXString() XString { return NewXString(x.Native().Error()) }
+// ToXText converts this type to text
+func (x xerror) ToXText() XText { return NewXText(x.Native().Error()) }
 
 // ToXBool converts this type to a bool
 func (x xerror) ToXBool() XBool { return XBoolFalse }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x xerror) ToXJSON() XString { return MustMarshalToXString(x.Native().Error()) }
+func (x xerror) ToXJSON() XText { return MustMarshalToXText(x.Native().Error()) }
 
 // MarshalJSON converts this type to internal JSON
 func (x xerror) MarshalJSON() ([]byte, error) {

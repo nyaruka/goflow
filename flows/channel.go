@@ -110,11 +110,11 @@ func (c *channel) HasRole(role ChannelRole) bool {
 func (c *channel) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXString(string(c.uuid))
+		return types.NewXText(string(c.uuid))
 	case "name":
-		return types.NewXString(c.name)
+		return types.NewXText(c.name)
 	case "address":
-		return types.NewXString(c.address)
+		return types.NewXText(c.address)
 	}
 
 	return types.NewXResolveError(c, key)
@@ -122,11 +122,11 @@ func (c *channel) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (c *channel) Reduce() types.XPrimitive {
-	return types.NewXString(c.name)
+	return types.NewXText(c.name)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *channel) ToXJSON() types.XString {
+func (c *channel) ToXJSON() types.XText {
 	return types.ResolveKeys(c, "uuid", "name", "address").ToXJSON()
 }
 

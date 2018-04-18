@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var xs = types.NewXString
+var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
 var xd = types.NewXDate
@@ -25,12 +25,12 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-func (v *testXObject) Reduce() types.XPrimitive { return types.NewXString(v.foo) }
+func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 
 func (v *testXObject) Resolve(key string) types.XValue {
 	switch key {
 	case "foo":
-		return types.NewXString("bar")
+		return types.NewXText("bar")
 	case "zed":
 		return types.NewXNumberFromInt(123)
 	case "missing":
@@ -41,7 +41,7 @@ func (v *testXObject) Resolve(key string) types.XValue {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON() types.XString {
+func (v *testXObject) ToXJSON() types.XText {
 	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
 }
 
@@ -51,15 +51,15 @@ var _ types.XResolvable = &testXObject{}
 func TestEvaluateTemplateAsString(t *testing.T) {
 
 	vars := types.NewXMap(map[string]types.XValue{
-		"string1": types.NewXString("foo"),
-		"string2": types.NewXString("bar"),
-		"汉字":      types.NewXString("simplified chinese"),
+		"string1": types.NewXText("foo"),
+		"string2": types.NewXText("bar"),
+		"汉字":      types.NewXText("simplified chinese"),
 		"int1":    types.NewXNumberFromInt(1),
 		"int2":    types.NewXNumberFromInt(2),
 		"dec1":    types.RequireXNumberFromString("1.5"),
 		"dec2":    types.RequireXNumberFromString("2.5"),
-		"words":   types.NewXString("one two three"),
-		"array":   types.NewXArray(types.NewXString("one"), types.NewXString("two"), types.NewXString("three")),
+		"words":   types.NewXText("one two three"),
+		"array":   types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
 		"thing":   NewTestXObject("hello", 123),
 		"err":     types.NewXError(fmt.Errorf("an error")),
 	})
@@ -153,18 +153,18 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 }
 
 func TestEvaluateTemplate(t *testing.T) {
-	array1d := types.NewXArray(types.NewXString("a"), types.NewXString("b"), types.NewXString("c"))
-	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXString("one"), types.NewXString("two"), types.NewXString("three")))
+	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
+	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
 
 	vars := types.NewXMap(map[string]types.XValue{
-		"string1": types.NewXString("foo"),
-		"string2": types.NewXString("bar"),
-		"key":     types.NewXString("four"),
+		"string1": types.NewXText("foo"),
+		"string2": types.NewXText("bar"),
+		"key":     types.NewXText("four"),
 		"int1":    types.NewXNumberFromInt(1),
 		"int2":    types.NewXNumberFromInt(2),
 		"dec1":    types.RequireXNumberFromString("1.5"),
 		"dec2":    types.RequireXNumberFromString("2.5"),
-		"words":   types.NewXString("one two three"),
+		"words":   types.NewXText("one two three"),
 		"array1d": array1d,
 		"array2d": array2d,
 	})

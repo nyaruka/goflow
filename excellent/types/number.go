@@ -38,14 +38,14 @@ func RequireXNumberFromString(value string) XNumber {
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XNumber) Reduce() XPrimitive { return x }
 
-// ToXString converts this type to a string
-func (x XNumber) ToXString() XString { return NewXString(x.Native().String()) }
+// ToXText converts this type to text
+func (x XNumber) ToXText() XText { return NewXText(x.Native().String()) }
 
 // ToXBool converts this type to a bool
 func (x XNumber) ToXBool() XBool { return NewXBool(!x.Equals(XNumberZero)) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XNumber) ToXJSON() XString { return MustMarshalToXString(x.Native()) }
+func (x XNumber) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }

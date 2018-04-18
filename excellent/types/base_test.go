@@ -17,12 +17,12 @@ func TestCompare(t *testing.T) {
 		hasError bool
 	}{
 		{nil, nil, 0, false},
-		{nil, types.NewXString(""), 0, true},
+		{nil, types.NewXText(""), 0, true},
 		{types.NewXError(fmt.Errorf("Error")), types.NewXError(fmt.Errorf("Error")), 0, false},
 		{types.NewXError(fmt.Errorf("Error")), types.XDateZero, 0, true}, // type mismatch
-		{types.NewXString("bob"), types.NewXString("bob"), 0, false},
-		{types.NewXString("bob"), types.NewXString("cat"), -1, false},
-		{types.NewXString("bob"), types.NewXString("ann"), 1, false},
+		{types.NewXText("bob"), types.NewXText("bob"), 0, false},
+		{types.NewXText("bob"), types.NewXText("cat"), -1, false},
+		{types.NewXText("bob"), types.NewXText("ann"), 1, false},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), 0, false},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), -1, false},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(122), 1, false},

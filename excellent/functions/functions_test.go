@@ -15,7 +15,7 @@ import (
 var errorArg = types.NewXErrorf("I am error")
 var la, _ = time.LoadLocation("America/Los_Angeles")
 
-var xs = types.NewXString
+var xs = types.NewXText
 var xn = types.RequireXNumberFromString
 var xi = types.NewXNumberFromInt
 var xd = types.NewXDate

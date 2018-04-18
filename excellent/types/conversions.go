@@ -13,27 +13,27 @@ import (
 )
 
 // ToXJSON converts the given value to a JSON string
-func ToXJSON(x XValue) (XString, XError) {
+func ToXJSON(x XValue) (XText, XError) {
 	if utils.IsNil(x) {
-		return NewXString(`null`), nil
+		return NewXText(`null`), nil
 	}
 	if IsXError(x) {
-		return XStringEmpty, x.(XError)
+		return XTextEmpty, x.(XError)
 	}
 
 	return x.ToXJSON(), nil
 }
 
-// ToXString converts the given value to a string
-func ToXString(x XValue) (XString, XError) {
+// ToXText converts the given value to a string
+func ToXText(x XValue) (XText, XError) {
 	if utils.IsNil(x) {
-		return XStringEmpty, nil
+		return XTextEmpty, nil
 	}
 	if IsXError(x) {
-		return XStringEmpty, x.(XError)
+		return XTextEmpty, x.(XError)
 	}
 
-	return x.Reduce().ToXString(), nil
+	return x.Reduce().ToXText(), nil
 }
 
 // ToXBool converts the given value to a boolean
@@ -71,7 +71,7 @@ func ToXNumber(x XValue) (XNumber, XError) {
 		return XNumberZero, typed
 	case XNumber:
 		return typed, nil
-	case XString:
+	case XText:
 		parsed, err := parseDecimalFuzzy(typed.Native())
 		if err == nil {
 			return NewXNumber(parsed), nil
@@ -94,7 +94,7 @@ func ToXDate(env utils.Environment, x XValue) (XDate, XError) {
 		return XDateZero, typed
 	case XDate:
 		return typed, nil
-	case XString:
+	case XText:
 		parsed, err := utils.DateFromString(env, typed.Native())
 		if err == nil {
 			return NewXDate(parsed), nil
@@ -114,19 +114,19 @@ func ToInteger(x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXString().Native())
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText().Native())
 	}
 
 	return int(intPart), nil
 }
 
-// MustMarshalToXString calls json.Marshal in the given value and panics in the case of an error
-func MustMarshalToXString(x interface{}) XString {
+// MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error
+func MustMarshalToXText(x interface{}) XText {
 	j, err := json.Marshal(x)
 	if err != nil {
 		panic(fmt.Sprintf("unable to marshal %s to JSON", x))
 	}
-	return NewXString(string(j))
+	return NewXText(string(j))
 }
 
 func parseDecimalFuzzy(val string) (decimal.Decimal, error) {

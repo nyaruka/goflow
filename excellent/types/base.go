@@ -10,7 +10,7 @@ import (
 
 // XValue is the base interface of all Excellent types
 type XValue interface {
-	ToXJSON() XString
+	ToXJSON() XText
 	Reduce() XPrimitive
 }
 
@@ -18,7 +18,7 @@ type XValue interface {
 type XPrimitive interface {
 	XValue
 
-	ToXString() XString
+	ToXText() XText
 	ToXBool() XBool
 }
 
@@ -45,7 +45,7 @@ type baseXPrimitive struct {
 }
 
 func (x *baseXPrimitive) String() string {
-	return x.ToXString().Native()
+	return x.ToXText().Native()
 }
 
 // ResolveKeys is a utility function that resolves multiple keys on an XResolvable and returns the results as a map
@@ -82,8 +82,8 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 		return typed.Compare(x2.(XBool)), nil
 	case XDate:
 		return typed.Compare(x2.(XDate)), nil
-	case XString:
-		return typed.Compare(x2.(XString)), nil
+	case XText:
+		return typed.Compare(x2.(XText)), nil
 	}
 
 	// TODO: find better fallback

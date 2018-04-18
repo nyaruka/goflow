@@ -66,7 +66,7 @@ func (v *Visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 	// replace "" with "
 	unquoted = strings.Replace(unquoted, "\"\"", "\"", -1)
 
-	return types.NewXString(unquoted)
+	return types.NewXText(unquoted)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
@@ -115,7 +115,7 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	expression := toXValue(v.Visit(ctx.Expression()))
 
-	lookup, xerr := types.ToXString(expression)
+	lookup, xerr := types.ToXText(expression)
 	if xerr != nil {
 		return xerr
 	}
@@ -172,11 +172,11 @@ func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXString(arg1)
+	str1, xerr := types.ToXText(arg1)
 	if xerr != nil {
 		return xerr
 	}
-	str2, xerr := types.ToXString(arg2)
+	str2, xerr := types.ToXText(arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -185,7 +185,7 @@ func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 	buffer.WriteString(str1.Native())
 	buffer.WriteString(str2.Native())
 
-	return types.NewXString(buffer.String())
+	return types.NewXText(buffer.String())
 }
 
 // VisitAdditionOrSubtraction deals with addition and subtraction like 5+5 and 5-3
@@ -213,11 +213,11 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXString(arg1)
+	str1, xerr := types.ToXText(arg1)
 	if xerr != nil {
 		return xerr
 	}
-	str2, xerr := types.ToXString(arg2)
+	str2, xerr := types.ToXText(arg2)
 	if xerr != nil {
 		return xerr
 	}

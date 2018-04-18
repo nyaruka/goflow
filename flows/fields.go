@@ -47,7 +47,7 @@ func (f *Field) Key() FieldKey { return f.key }
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
-	text     types.XString
+	text     types.XText
 	datetime *types.XDate
 	decimal  *types.XNumber
 	state    *Location
@@ -96,7 +96,7 @@ func (v *FieldValue) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *FieldValue) ToXJSON() types.XString { return v.Reduce().ToXJSON() }
+func (v *FieldValue) ToXJSON() types.XText { return v.Reduce().ToXJSON() }
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
@@ -113,7 +113,7 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XString) {
+func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XText) {
 	var asDate *types.XDate
 	var asNumber *types.XNumber
 
@@ -159,7 +159,7 @@ func (f FieldValues) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (f FieldValues) ToXJSON() types.XString {
+func (f FieldValues) ToXJSON() types.XText {
 	return f.Reduce().ToXJSON()
 }
 

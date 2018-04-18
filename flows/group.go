@@ -80,19 +80,19 @@ func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g
 func (g *Group) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXString(string(g.uuid))
+		return types.NewXText(string(g.uuid))
 	case "name":
-		return types.NewXString(g.name)
+		return types.NewXText(g.name)
 	}
 
 	return types.NewXResolveError(g, key)
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (g *Group) Reduce() types.XPrimitive { return types.NewXString(g.name) }
+func (g *Group) Reduce() types.XPrimitive { return types.NewXText(g.name) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (g *Group) ToXJSON() types.XString {
+func (g *Group) ToXJSON() types.XText {
 	return types.ResolveKeys(g, "uuid", "name").ToXJSON()
 }
 
@@ -176,7 +176,7 @@ func (l GroupList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (l GroupList) ToXJSON() types.XString {
+func (l GroupList) ToXJSON() types.XText {
 	return l.Reduce().ToXJSON()
 }
 

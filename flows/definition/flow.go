@@ -89,9 +89,9 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 func (f *flow) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXString(string(f.UUID()))
+		return types.NewXText(string(f.UUID()))
 	case "name":
-		return types.NewXString(f.name)
+		return types.NewXText(f.name)
 	}
 
 	return types.NewXResolveError(f, key)
@@ -99,11 +99,11 @@ func (f *flow) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (f *flow) Reduce() types.XPrimitive {
-	return types.NewXString(f.name)
+	return types.NewXText(f.name)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (f *flow) ToXJSON() types.XString {
+func (f *flow) ToXJSON() types.XText {
 	return types.ResolveKeys(f, "uuid", "name").ToXJSON()
 }
 

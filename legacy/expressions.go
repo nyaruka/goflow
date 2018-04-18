@@ -69,7 +69,7 @@ func (v *varMapper) Resolve(key string) types.XValue {
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
-		return types.NewXString(substitute)
+		return types.NewXText(substitute)
 	}
 
 	newPath := make([]string, 0, 1)
@@ -97,7 +97,7 @@ func (v *varMapper) Resolve(key string) types.XValue {
 
 		// or a simple string in which case we add to the end of the path and return that
 		newPath = append(newPath, value.(string))
-		return types.NewXString(strings.Join(newPath, "."))
+		return types.NewXText(strings.Join(newPath, "."))
 	}
 
 	// then it must be an arbitrary item
@@ -114,16 +114,16 @@ func (v *varMapper) Resolve(key string) types.XValue {
 		}
 	}
 
-	return types.NewXString(strings.Join(newPath, "."))
+	return types.NewXText(strings.Join(newPath, "."))
 }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *varMapper) Reduce() types.XPrimitive {
-	return types.NewXString(v.String())
+	return types.NewXText(v.String())
 }
 
 // ToXJSON won't be called on this but needs to be defined
-func (v *varMapper) ToXJSON() types.XString { return types.XStringEmpty }
+func (v *varMapper) ToXJSON() types.XText { return types.XTextEmpty }
 
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]
@@ -158,13 +158,13 @@ func (m *extraMapper) Resolve(key string) types.XValue {
 func (m *extraMapper) Reduce() types.XPrimitive {
 	switch m.extraAs {
 	case ExtraAsWebhookJSON:
-		return types.NewXString(fmt.Sprintf("run.webhook.json.%s", m.path))
+		return types.NewXText(fmt.Sprintf("run.webhook.json.%s", m.path))
 	case ExtraAsTriggerParams:
-		return types.NewXString(fmt.Sprintf("trigger.params.%s", m.path))
+		return types.NewXText(fmt.Sprintf("trigger.params.%s", m.path))
 	case ExtraAsFunction:
-		return types.NewXString(fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path))
+		return types.NewXText(fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path))
 	}
-	return types.XStringEmpty
+	return types.XTextEmpty
 }
 
 var _ types.XValue = (*extraMapper)(nil)
@@ -418,7 +418,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 func toString(params interface{}) (string, error) {
 	switch typed := params.(type) {
 	case types.XValue:
-		str, xerr := types.ToXString(typed)
+		str, xerr := types.ToXText(typed)
 		return str.Native(), xerr
 	case string:
 		return typed, nil
@@ -513,7 +513,7 @@ func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) inte
 func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	value := v.Visit(ctx.Atom(0)).(types.XValue)
 	expression := v.Visit(ctx.Atom(1)).(types.XValue)
-	lookup, err := types.ToXString(expression)
+	lookup, err := types.ToXText(expression)
 	if err != nil {
 		return err
 	}
@@ -611,7 +611,7 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 	value := v.Visit(ctx.Atom()).(types.XValue)
 	expression := v.Visit(ctx.Expression()).(types.XValue)
-	lookup, err := types.ToXString(expression)
+	lookup, err := types.ToXText(expression)
 	if err != nil {
 		return err
 	}

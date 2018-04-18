@@ -22,25 +22,25 @@ func TestXJSONResolve(t *testing.T) {
 		{[]byte(`malformed`), "key", nil, true},
 
 		// different data types in an object
-		{[]byte(`{"foo": "x", "bar": "one"}`), "bar", types.NewXString("one"), false},
+		{[]byte(`{"foo": "x", "bar": "one"}`), "bar", types.NewXText("one"), false},
 		{[]byte(`{"foo": "x", "bar": 1.23}`), "bar", types.RequireXNumberFromString("1.23"), false},
 		{[]byte(`{"foo": "x", "bar": true}`), "bar", types.NewXBool(true), false},
 		{[]byte(`{"foo": "x", "bar": null}`), "bar", nil, false},
 
 		// different data types in an array
-		{[]byte(`["foo", "one"]`), "1", types.NewXString("one"), false},
+		{[]byte(`["foo", "one"]`), "1", types.NewXText("one"), false},
 		{[]byte(`["foo", 1.23]`), "1", types.RequireXNumberFromString("1.23"), false},
 		{[]byte(`["foo", true]`), "1", types.NewXBool(true), false},
 		{[]byte(`["foo", null]`), "1", nil, false},
 
-		{[]byte(`["one", "two", "three"]`), "0", types.NewXString("one"), false},
-		{[]byte(`["escaped \"string\""]`), "0", types.NewXString(`escaped "string"`), false},
-		{[]byte(`{"1": "one"}`), "1", types.NewXString("one"), false}, // map key is numerical string
-		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", types.NewXString("two"), false},
-		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", types.NewXString("two"), false},
-		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", types.NewXString("val2"), false},
-		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, types.NewXString("val2"), false},
-		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, types.NewXString("val2"), false},
+		{[]byte(`["one", "two", "three"]`), "0", types.NewXText("one"), false},
+		{[]byte(`["escaped \"string\""]`), "0", types.NewXText(`escaped "string"`), false},
+		{[]byte(`{"1": "one"}`), "1", types.NewXText("one"), false}, // map key is numerical string
+		{[]byte(`{"arr": ["one", "two"]}`), "arr[1]", types.NewXText("two"), false},
+		{[]byte(`{"arr": ["one", "two"]}`), "arr.1", types.NewXText("two"), false},
+		{[]byte(`{"key": {"key2": "val2"}}`), "key.key2", types.NewXText("val2"), false},
+		{[]byte(`{"key": {"key-with-dash": "val2"}}`), `key["key-with-dash"]`, types.NewXText("val2"), false},
+		{[]byte(`{"key": {"key with space": "val2"}}`), `key["key with space"]`, types.NewXText("val2"), false},
 
 		{[]byte(`{"arr": ["one", "two"]}`), "arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
 		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
