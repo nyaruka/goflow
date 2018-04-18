@@ -41,8 +41,8 @@ func (x XNumber) Reduce() XPrimitive { return x }
 // ToXText converts this type to text
 func (x XNumber) ToXText() XText { return NewXText(x.Native().String()) }
 
-// ToXBool converts this type to a bool
-func (x XNumber) ToXBool() XBool { return NewXBool(!x.Equals(XNumberZero)) }
+// ToXBoolean converts this type to a bool
+func (x XNumber) ToXBoolean() XBoolean { return NewXBoolean(!x.Equals(XNumberZero)) }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x XNumber) ToXJSON() XText { return MustMarshalToXText(x.Native()) }

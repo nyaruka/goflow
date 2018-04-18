@@ -24,8 +24,8 @@ func (x XDate) Reduce() XPrimitive { return x }
 // ToXText converts this type to text
 func (x XDate) ToXText() XText { return NewXText(utils.DateToISO(x.Native())) }
 
-// ToXBool converts this type to a bool
-func (x XDate) ToXBool() XBool { return NewXBool(!x.Native().IsZero()) }
+// ToXBoolean converts this type to a bool
+func (x XDate) ToXBoolean() XBoolean { return NewXBoolean(!x.Native().IsZero()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x XDate) ToXJSON() XText { return MustMarshalToXText(utils.DateToISO(x.Native())) }

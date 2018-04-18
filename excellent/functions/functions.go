@@ -28,11 +28,11 @@ func RegisterXFunction(name string, function XFunction) {
 // XFUNCTIONS is our map of functions available in Excellent which aren't tests
 var XFUNCTIONS = map[string]XFunction{
 	// type conversion
-	"text":   OneArgFunction(Text),
-	"bool":   OneArgFunction(Bool),
-	"number": OneArgFunction(Number),
-	"date":   OneTextFunction(Date),
-	"array":  Array,
+	"text":    OneArgFunction(Text),
+	"boolean": OneArgFunction(Boolean),
+	"number":  OneArgFunction(Number),
+	"date":    OneTextFunction(Date),
+	"array":   Array,
 
 	// text functions
 	"char":              OneNumberFunction(Char),
@@ -121,14 +121,14 @@ func Text(env utils.Environment, value types.XValue) types.XValue {
 	return str
 }
 
-// Bool tries to convert `value` to a boolean. An error is returned if the value can't be converted.
+// Boolean tries to convert `value` to a boolean. An error is returned if the value can't be converted.
 //
-//   @(bool(array(1, 2))) -> true
-//   @(bool("FALSE")) -> false
-//   @(bool(1 / 0)) -> ERROR
+//   @(boolean(array(1, 2))) -> true
+//   @(boolean("FALSE")) -> false
+//   @(boolean(1 / 0)) -> ERROR
 //
-// @function bool(value)
-func Bool(env utils.Environment, value types.XValue) types.XValue {
+// @function boolean(value)
+func Boolean(env utils.Environment, value types.XValue) types.XValue {
 	str, xerr := types.ToXBool(value)
 	if xerr != nil {
 		return xerr

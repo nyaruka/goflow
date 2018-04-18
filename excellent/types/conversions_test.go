@@ -107,13 +107,13 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asString:       "123.45",
 			asBool:         true,
 		}, {
-			value:          types.NewXBool(false),
+			value:          types.NewXBoolean(false),
 			asInternalJSON: `false`,
 			asJSON:         `false`,
 			asString:       "false",
 			asBool:         false,
 		}, {
-			value:          types.NewXBool(true),
+			value:          types.NewXBoolean(true),
 			asInternalJSON: `true`,
 			asJSON:         `true`,
 			asString:       "true",
@@ -210,7 +210,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXText(test.asJSON), asJSON, "ToXJSON failed for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXText(test.asString), asString, "ToXText failed for %T{%s}", test.value, test.value)
-		assert.Equal(t, types.NewXBool(test.asBool), asBool, "ToXBool failed for %T{%s}", test.value, test.value)
+		assert.Equal(t, types.NewXBoolean(test.asBool), asBool, "ToXBool failed for %T{%s}", test.value, test.value)
 	}
 }
 

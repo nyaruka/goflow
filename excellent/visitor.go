@@ -225,10 +225,10 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	isEqual := str1.Equals(str2)
 
 	if ctx.EQ() != nil {
-		return types.NewXBool(isEqual)
+		return types.NewXBoolean(isEqual)
 	}
 
-	return types.NewXBool(!isEqual)
+	return types.NewXBoolean(!isEqual)
 }
 
 // VisitAtomReference deals with visiting a single atom in our expression
@@ -280,13 +280,13 @@ func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 
 	switch {
 	case ctx.LT() != nil:
-		return types.NewXBool(cmp < 0)
+		return types.NewXBoolean(cmp < 0)
 	case ctx.LTE() != nil:
-		return types.NewXBool(cmp <= 0)
+		return types.NewXBoolean(cmp <= 0)
 	case ctx.GTE() != nil:
-		return types.NewXBool(cmp >= 0)
+		return types.NewXBoolean(cmp >= 0)
 	case ctx.GT() != nil:
-		return types.NewXBool(cmp > 0)
+		return types.NewXBoolean(cmp > 0)
 	}
 
 	return types.NewXErrorf("unknown comparison operator: %s", ctx.GetText())

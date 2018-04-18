@@ -38,9 +38,9 @@ func (a *xarray) ToXText() XText {
 	return MustMarshalToXText(strs)
 }
 
-// ToXBool converts this type to a bool
-func (a *xarray) ToXBool() XBool {
-	return NewXBool(len(a.values) > 0)
+// ToXBoolean converts this type to a bool
+func (a *xarray) ToXBoolean() XBoolean {
+	return NewXBoolean(len(a.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))

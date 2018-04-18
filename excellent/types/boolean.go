@@ -5,35 +5,35 @@ import (
 	"strconv"
 )
 
-// XBool is a boolean true or false
-type XBool struct {
+// XBoolean is a boolean true or false
+type XBoolean struct {
 	baseXPrimitive
 
 	native bool
 }
 
-// NewXBool creates a new XBool
-func NewXBool(value bool) XBool {
-	return XBool{native: value}
+// NewXBoolean creates a new boolean value
+func NewXBoolean(value bool) XBoolean {
+	return XBoolean{native: value}
 }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (x XBool) Reduce() XPrimitive { return x }
+func (x XBoolean) Reduce() XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XBool) ToXText() XText { return NewXText(strconv.FormatBool(x.Native())) }
+func (x XBoolean) ToXText() XText { return NewXText(strconv.FormatBool(x.Native())) }
 
-// ToXBool converts this type to a bool
-func (x XBool) ToXBool() XBool { return x }
+// ToXBoolean converts this type to a bool
+func (x XBoolean) ToXBoolean() XBoolean { return x }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XBool) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
+func (x XBoolean) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
-func (x XBool) Native() bool { return x.native }
+func (x XBoolean) Native() bool { return x.native }
 
 // Compare compares this bool to another
-func (x XBool) Compare(other XBool) int {
+func (x XBoolean) Compare(other XBoolean) int {
 	switch {
 	case !x.Native() && other.Native():
 		return -1
@@ -45,19 +45,19 @@ func (x XBool) Compare(other XBool) int {
 }
 
 // MarshalJSON is called when a struct containing this type is marshaled
-func (x XBool) MarshalJSON() ([]byte, error) {
+func (x XBoolean) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.Native())
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled
-func (x *XBool) UnmarshalJSON(data []byte) error {
+func (x *XBoolean) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &x.native)
 }
 
 // XBoolFalse is the false boolean value
-var XBoolFalse = NewXBool(false)
+var XBoolFalse = NewXBoolean(false)
 
 // XBoolTrue is the true boolean value
-var XBoolTrue = NewXBool(true)
+var XBoolTrue = NewXBoolean(true)
 
 var _ XPrimitive = XBoolFalse

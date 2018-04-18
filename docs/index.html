@@ -500,12 +500,12 @@
 <a class="sourceLine" id="cb20-2" data-line-number="2">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
 <a class="sourceLine" id="cb20-3" data-line-number="3">@(length(array())) → <span class="dv">0</span></a>
 <a class="sourceLine" id="cb20-4" data-line-number="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>))) → <span class="dv">2</span></a></code></pre></div>
-<p><a name="function:bool"></a></p>
-<h2 id="boolvalue">bool(value)</h2>
+<p><a name="function:boolean"></a></p>
+<h2 id="booleanvalue">boolean(value)</h2>
 <p>Tries to convert <code>value</code> to a boolean. An error is returned if the value can’t be converted.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" data-line-number="1">@(bool(array(<span class="dv">1</span>, <span class="dv">2</span>))) → true</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">@(bool(<span class="st">&quot;FALSE&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">@(bool(<span class="dv">1</span> / <span class="dv">0</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" data-line-number="1">@(boolean(array(<span class="dv">1</span>, <span class="dv">2</span>))) → true</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">@(boolean(<span class="st">&quot;FALSE&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">@(boolean(<span class="dv">1</span> / <span class="dv">0</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:char"></a></p>
 <h2 id="charnum">char(num)</h2>
 <p>Returns the rune for the passed in codepoint, <code>num</code>, which may be unicode, this is the reverse of code</p>

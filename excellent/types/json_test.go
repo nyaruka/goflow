@@ -24,13 +24,13 @@ func TestXJSONResolve(t *testing.T) {
 		// different data types in an object
 		{[]byte(`{"foo": "x", "bar": "one"}`), "bar", types.NewXText("one"), false},
 		{[]byte(`{"foo": "x", "bar": 1.23}`), "bar", types.RequireXNumberFromString("1.23"), false},
-		{[]byte(`{"foo": "x", "bar": true}`), "bar", types.NewXBool(true), false},
+		{[]byte(`{"foo": "x", "bar": true}`), "bar", types.NewXBoolean(true), false},
 		{[]byte(`{"foo": "x", "bar": null}`), "bar", nil, false},
 
 		// different data types in an array
 		{[]byte(`["foo", "one"]`), "1", types.NewXText("one"), false},
 		{[]byte(`["foo", 1.23]`), "1", types.RequireXNumberFromString("1.23"), false},
-		{[]byte(`["foo", true]`), "1", types.NewXBool(true), false},
+		{[]byte(`["foo", true]`), "1", types.NewXBoolean(true), false},
 		{[]byte(`["foo", null]`), "1", nil, false},
 
 		{[]byte(`["one", "two", "three"]`), "0", types.NewXText("one"), false},

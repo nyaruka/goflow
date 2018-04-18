@@ -37,7 +37,7 @@ func ToXText(x XValue) (XText, XError) {
 }
 
 // ToXBool converts the given value to a boolean
-func ToXBool(x XValue) (XBool, XError) {
+func ToXBool(x XValue) (XBoolean, XError) {
 	if utils.IsNil(x) {
 		return XBoolFalse, nil
 	}
@@ -47,15 +47,15 @@ func ToXBool(x XValue) (XBool, XError) {
 
 	primitive, isPrimitive := x.(XPrimitive)
 	if isPrimitive {
-		return primitive.ToXBool(), nil
+		return primitive.ToXBoolean(), nil
 	}
 
 	lengthable, isLengthable := x.(XLengthable)
 	if isLengthable {
-		return NewXBool(lengthable.Length() > 0), nil
+		return NewXBoolean(lengthable.Length() > 0), nil
 	}
 
-	return x.Reduce().ToXBool(), nil
+	return x.Reduce().ToXBoolean(), nil
 }
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible

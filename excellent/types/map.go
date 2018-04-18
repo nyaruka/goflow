@@ -46,9 +46,9 @@ func (m *xmap) ToXText() XText {
 	return MustMarshalToXText(strs)
 }
 
-// ToXBool converts this type to a bool
-func (m *xmap) ToXBool() XBool {
-	return NewXBool(len(m.values) > 0)
+// ToXBoolean converts this type to a bool
+func (m *xmap) ToXBoolean() XBoolean {
+	return NewXBoolean(len(m.values) > 0)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))

@@ -19,7 +19,7 @@ type XPrimitive interface {
 	XValue
 
 	ToXText() XText
-	ToXBool() XBool
+	ToXBoolean() XBoolean
 }
 
 // XResolvable is the interface for types which can be keyed into, e.g. foo.bar
@@ -78,8 +78,8 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 		return strings.Compare(typed.Error(), x2.(error).Error()), nil
 	case XNumber:
 		return typed.Compare(x2.(XNumber)), nil
-	case XBool:
-		return typed.Compare(x2.(XBool)), nil
+	case XBoolean:
+		return typed.Compare(x2.(XBoolean)), nil
 	case XDate:
 		return typed.Compare(x2.(XDate)), nil
 	case XText:

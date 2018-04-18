@@ -29,9 +29,9 @@ func (x XText) String() string {
 // ToXText converts this type to text
 func (x XText) ToXText() XText { return x }
 
-// ToXBool converts this type to a bool
-func (x XText) ToXBool() XBool {
-	return NewXBool(!x.Empty() && strings.ToLower(x.Native()) != "false")
+// ToXBoolean converts this type to a bool
+func (x XText) ToXBoolean() XBoolean {
+	return NewXBoolean(!x.Empty() && strings.ToLower(x.Native()) != "false")
 }
 
 // ToXJSON is called when this type is passed to @(json(...))

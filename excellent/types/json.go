@@ -108,7 +108,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	case jsonparser.Boolean:
 		boolVal, err := jsonparser.ParseBoolean(data)
 		if err == nil {
-			return NewXBool(boolVal)
+			return NewXBoolean(boolVal)
 		}
 	case jsonparser.Array:
 		return NewXJSONArray(data)

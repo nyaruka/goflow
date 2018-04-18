@@ -482,17 +482,17 @@ Takes a list of `values` and returns them as an array
 @(length(array("a", "b"))) → 2
 ```
 
-<a name="function:bool"></a>
+<a name="function:boolean"></a>
 
-## bool(value)
+## boolean(value)
 
 Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
 
 
 ```objectivec
-@(bool(array(1, 2))) → true
-@(bool("FALSE")) → false
-@(bool(1 / 0)) → ERROR
+@(boolean(array(1, 2))) → true
+@(boolean("FALSE")) → false
+@(boolean(1 / 0)) → ERROR
 ```
 
 <a name="function:char"></a>
