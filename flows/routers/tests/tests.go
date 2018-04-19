@@ -97,7 +97,7 @@ func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types
 // to try to retrieve a value from fields or results which don't exist, rather these return an empty
 // value.
 //
-//   @(is_error(date("foo"))) -> true
+//   @(is_error(datetime("foo"))) -> true
 //   @(is_error(run.not.existing)) -> true
 //   @(is_error(contact.fields.unset)) -> true
 //   @(is_error("hello")) -> false
@@ -117,7 +117,7 @@ func IsError(env utils.Environment, value types.XValue) types.XValue {
 // to try to retrieve a value from fields or results which don't exist, rather these return an empty
 // value.
 //
-//   @(has_value(date("foo"))) -> false
+//   @(has_value(datetime("foo"))) -> false
 //   @(has_value(not.existing)) -> false
 //   @(has_value(contact.fields.unset)) -> false
 //   @(has_value("hello")) -> true

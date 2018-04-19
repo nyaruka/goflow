@@ -103,16 +103,16 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(ABS(-5))`, new: `@(abs(-5))`},
 		{old: `@(AVERAGE(1, 2, 3, 4, 5))`, new: `@(mean(1, 2, 3, 4, 5))`},
 		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(contact.fields.age > 30, run.results.amount < 5))`},
-		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(date("2012-02-03"))`},
+		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`},
 		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`},
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`},
 		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`},
-		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`},
-		{old: `@(HOUR(NOW()))`, new: `@(format_date(now(), "h"))`},
-		{old: `@(MINUTE(NOW()))`, new: `@(format_date(now(), "m"))`},
-		{old: `@(MONTH(NOW()))`, new: `@(format_date(now(), "M"))`},
+		{old: `@(DAY(contact.join_date))`, new: `@(format_datetime(contact.fields.join_date, "D"))`},
+		{old: `@(HOUR(NOW()))`, new: `@(format_datetime(now(), "h"))`},
+		{old: `@(MINUTE(NOW()))`, new: `@(format_datetime(now(), "m"))`},
+		{old: `@(MONTH(NOW()))`, new: `@(format_datetime(now(), "M"))`},
 		{old: `@(NOW())`, new: `@(now())`},
-		{old: `@(SECOND(NOW()))`, new: `@(format_date(now(), "s"))`},
+		{old: `@(SECOND(NOW()))`, new: `@(format_datetime(now(), "s"))`},
 
 		// date addition should get converted to datetime_add
 		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
@@ -133,12 +133,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(contact.join_date - TIME(0,0,12))`, new: `@(datetime_add(contact.fields.join_date, -12, "s"))`},
 
 		// TODO: beware different org format, need a like function
-		{old: `@(DATE(2012, 12, 25))`, new: `@(date("2012-12-25"))`},
+		{old: `@(DATE(2012, 12, 25))`, new: `@(datetime("2012-12-25"))`},
 		{old: `@(5 * contact.age)`, new: `@(5 * contact.fields.age)`},
 
 		{old: `@((5 + contact.age) / 2)`, new: `@((legacy_add(5, contact.fields.age)) / 2)`},
 		{old: `@(WEEKDAY(TODAY()))`, new: `@(weekday(today()))`},
-		{old: `@(YEAR(date.now))`, new: `@(format_date(now(), "YYYY"))`},
+		{old: `@(YEAR(date.now))`, new: `@(format_datetime(now(), "YYYY"))`},
 
 		// booleans and conditionals
 		// TODO
@@ -177,7 +177,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
-		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(date("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_date(now(), "h"), 7)) * 60), format_date(now(), "m"))) * 60)))`},
+		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
 		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: ExtraAsWebhookJSON},
 		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: ExtraAsTriggerParams},

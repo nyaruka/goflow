@@ -527,13 +527,13 @@
 <a class="sourceLine" id="cb24-4" data-line-number="4">@(code(<span class="st">&quot;15&quot;</span>)) → <span class="dv">49</span></a>
 <a class="sourceLine" id="cb24-5" data-line-number="5">@(code(<span class="dv">15</span>)) → <span class="dv">49</span></a>
 <a class="sourceLine" id="cb24-6" data-line-number="6">@(code(<span class="st">&quot;&quot;</span>)) → ERROR</a></code></pre></div>
-<p><a name="function:date"></a></p>
-<h2 id="datetext">date(text)</h2>
+<p><a name="function:datetime"></a></p>
+<h2 id="datetimetext">datetime(text)</h2>
 <p>Turns <code>text</code> into a date according to the environment’s settings. It will return an error if it is unable to convert the text to a date.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(date(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">@(date(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>)) → <span class="dv">1979-07</span>-18T10:<span class="dv">30</span>:<span class="fl">45.123456</span>Z</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">@(date(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">@(date(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(datetime(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">@(datetime(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>)) → <span class="dv">1979-07</span>-18T10:<span class="dv">30</span>:<span class="fl">45.123456</span>Z</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">@(datetime(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">@(datetime(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:datetime_add"></a></p>
 <h2 id="datetime_adddate-offset-unit">datetime_add(date, offset, unit)</h2>
 <p>Calculates the date value arrived at by adding <code>offset</code> number of <code>unit</code> to the <code>date</code></p>
@@ -558,7 +558,7 @@
 <p>Takes two arguments, returning <code>test</code> if not an error or nil, otherwise returning <code>default</code></p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" data-line-number="1">@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) → default_value</a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">@(<span class="kw">default</span>(<span class="st">&quot;10&quot;</span>, <span class="st">&quot;20&quot;</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">@(<span class="kw">default</span>(date(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
+<a class="sourceLine" id="cb29-3" data-line-number="3">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
 <p><a name="function:field"></a></p>
 <h2 id="fieldtext-offset-delimeter">field(text, offset, delimeter)</h2>
 <p>Splits <code>text</code> based on the passed in <code>delimiter</code> and returns the field at <code>offset</code>. When splitting with a space, the delimiter is considered to be all whitespace. (first field is 0)</p>
@@ -568,8 +568,8 @@
 <a class="sourceLine" id="cb30-4" data-line-number="4">@(field(<span class="st">&quot;a      b   c   d&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;    &quot;</span>)) →</a>
 <a class="sourceLine" id="cb30-5" data-line-number="5">@(field(<span class="st">&quot;a</span><span class="sc">\t\t</span><span class="st">b</span><span class="sc">\t</span><span class="st">c</span><span class="sc">\t</span><span class="st">d&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) →</a>
 <a class="sourceLine" id="cb30-6" data-line-number="6">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;,&quot;</span>)) → ERROR</a></code></pre></div>
-<p><a name="function:format_date"></a></p>
-<h2 id="format_datedate-format-timezone">format_date(date, format [,timezone])</h2>
+<p><a name="function:format_datetime"></a></p>
+<h2 id="format_datetimedate-format-timezone">format_datetime(date, format [,timezone])</h2>
 <p>Turns <code>date</code> into text according to the <code>format</code> specified and in the optional <code>timezone</code>.</p>
 <p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
@@ -595,13 +595,13 @@
 <li><code>ZZZ</code> - hour and minute offset from UTC</li>
 </ul>
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span> <span class="dv">10</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07-18</span></a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>)) → <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">14</span>:<span class="dv">50</span></a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD tt:mm AA&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05-10</span> <span class="dv">12</span>:<span class="dv">50</span> PM</a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY&quot;</span>)) → <span class="dv">1979</span></a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">7</span></a>
-<a class="sourceLine" id="cb31-7" data-line-number="7">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span> <span class="dv">10</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07-18</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">@(format_datetime(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>)) → <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">14</span>:<span class="dv">50</span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">@(format_datetime(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD tt:mm AA&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05-10</span> <span class="dv">12</span>:<span class="dv">50</span> PM</a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY&quot;</span>)) → <span class="dv">1979</span></a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">7</span></a>
+<a class="sourceLine" id="cb31-7" data-line-number="7">@(format_datetime(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_number"></a></p>
 <h2 id="format_numbernum-places-commas">format_number(num, places, commas)</h2>
 <p>Returns <code>num</code> formatted with the passed in number of decimal <code>places</code> and optional <code>commas</code> dividing thousands separators</p>
@@ -1087,7 +1087,7 @@
 <h2 id="has_valuevalue">has_value(value)</h2>
 <p>Returns whether <code>value</code> is non-nil and not an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(has_value(date(<span class="st">&quot;foo&quot;</span>))) → false</a>
+<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">@(has_value(not.existing)) → false</a>
 <a class="sourceLine" id="cb98-3" data-line-number="3">@(has_value(contact.fields.unset)) → false</a>
 <a class="sourceLine" id="cb98-4" data-line-number="4">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
@@ -1109,7 +1109,7 @@
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" data-line-number="1">@(is_error(date(<span class="st">&quot;foo&quot;</span>))) → true</a>
+<div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" data-line-number="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
 <a class="sourceLine" id="cb101-2" data-line-number="2">@(is_error(run.not.existing)) → true</a>
 <a class="sourceLine" id="cb101-3" data-line-number="3">@(is_error(contact.fields.unset)) → true</a>
 <a class="sourceLine" id="cb101-4" data-line-number="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre></div>

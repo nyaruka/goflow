@@ -251,11 +251,11 @@ func TestEvaluateTemplate(t *testing.T) {
 		{"@(11=11=11)", types.XBooleanFalse, false}, // 11=11 -> TRUE, then TRUE != 11
 
 		// date equality
-		{`@(date("2018-04-16") = date("2018-04-16"))`, types.XBooleanTrue, false},
-		{`@(date("2018-04-16") != date("2018-04-16"))`, types.XBooleanFalse, false},
-		{`@(date("2018-04-16") = date("2017-03-20"))`, types.XBooleanFalse, false},
-		{`@(date("2018-04-16") != date("2017-03-20"))`, types.XBooleanTrue, false},
-		{`@(date("xxx") == date("2017-03-20"))`, nil, true},
+		{`@(datetime("2018-04-16") = datetime("2018-04-16"))`, types.XBooleanTrue, false},
+		{`@(datetime("2018-04-16") != datetime("2018-04-16"))`, types.XBooleanFalse, false},
+		{`@(datetime("2018-04-16") = datetime("2017-03-20"))`, types.XBooleanFalse, false},
+		{`@(datetime("2018-04-16") != datetime("2017-03-20"))`, types.XBooleanTrue, false},
+		{`@(datetime("xxx") == datetime("2017-03-20"))`, nil, true},
 
 		// other comparsions must be numerical
 		{"@(2 > 1)", types.XBooleanTrue, false},

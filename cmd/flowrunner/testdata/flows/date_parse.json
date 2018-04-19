@@ -61,7 +61,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "Awesome, you were born on @(FORMAT_DATE(run.results.birth_date, \"MM-DD-YYYY\")) at @(FORMAT_DATE(run.results.birth_date, \"tt:mm\"))"
+                            "text": "Awesome, you were born on @(format_datetime(run.results.birth_date, \"MM-DD-YYYY\")) at @(format_datetime(run.results.birth_date, \"tt:mm\"))"
                         }
                     ]
                 }

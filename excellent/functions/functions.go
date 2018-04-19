@@ -28,11 +28,11 @@ func RegisterXFunction(name string, function XFunction) {
 // XFUNCTIONS is our map of functions available in Excellent which aren't tests
 var XFUNCTIONS = map[string]XFunction{
 	// type conversion
-	"text":    OneArgFunction(Text),
-	"boolean": OneArgFunction(Boolean),
-	"number":  OneArgFunction(Number),
-	"date":    OneTextFunction(Date),
-	"array":   Array,
+	"text":     OneArgFunction(Text),
+	"boolean":  OneArgFunction(Boolean),
+	"number":   OneArgFunction(Number),
+	"datetime": OneTextFunction(DateTime),
+	"array":    Array,
 
 	// text functions
 	"char":              OneNumberFunction(Char),
@@ -91,9 +91,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"parse_json": OneTextFunction(ParseJSON),
 
 	// formatting functions
-	"format_date":   FormatDate,
-	"format_number": FormatNumber,
-	"format_urn":    FormatURN,
+	"format_datetime": FormatDateTime,
+	"format_number":   FormatNumber,
+	"format_urn":      FormatURN,
 
 	// utility functions
 	"length":     OneArgFunction(Length),
@@ -151,16 +151,16 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 	return num
 }
 
-// Date turns `text` into a date according to the environment's settings. It will return an error
+// DateTime turns `text` into a date according to the environment's settings. It will return an error
 // if it is unable to convert the text to a date.
 //
-//   @(date("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
-//   @(date("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
-//   @(date("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
-//   @(date("NOT DATE")) -> ERROR
+//   @(datetime("1979-07-18")) -> 1979-07-18T00:00:00.000000-05:00
+//   @(datetime("1979-07-18T10:30:45.123456Z")) -> 1979-07-18T10:30:45.123456Z
+//   @(datetime("2010 05 10")) -> 2010-05-10T00:00:00.000000-05:00
+//   @(datetime("NOT DATE")) -> ERROR
 //
-// @function date(text)
-func Date(env utils.Environment, str types.XText) types.XValue {
+// @function datetime(text)
+func DateTime(env utils.Environment, str types.XText) types.XValue {
 	date, err := utils.DateFromString(env, str.Native())
 	if err != nil {
 		return types.NewXError(err)
@@ -1194,7 +1194,7 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
-// FormatDate turns `date` into text according to the `format` specified and in
+// FormatDateTime turns `date` into text according to the `format` specified and in
 // the optional `timezone`.
 //
 // The format string can consist of the following characters. The characters
@@ -1225,16 +1225,16 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
 // environment will be used. An error will be returned if the timezone is not recognized.
 //
-//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 10:00
-//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
-//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
-//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
-//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
-//   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
-//   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
+//   @(format_datetime("1979-07-18T15:00:00.000000Z")) -> 1979-07-18 10:00
+//   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
+//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) -> 2010 5 10 14:50
+//   @(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) -> 2010-05-10 12:50 PM
+//   @(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
+//   @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
+//   @(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
-// @function format_date(date, format [,timezone])
-func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
+// @function format_datetime(date, format [,timezone])
+func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 3 {
 		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
 	}
@@ -1404,7 +1404,7 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 //
 //   @(default(undeclared.var, "default_value")) -> default_value
 //   @(default("10", "20")) -> 10
-//   @(default(date("invalid-date"), "today")) -> today
+//   @(default(datetime("invalid-date"), "today")) -> today
 //
 // @function default(test, default)
 func Default(env utils.Environment, test types.XValue, def types.XValue) types.XValue {

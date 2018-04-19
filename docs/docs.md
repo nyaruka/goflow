@@ -537,19 +537,19 @@ Returns the numeric code for the first character in `text`, it is the inverse of
 @(code("")) → ERROR
 ```
 
-<a name="function:date"></a>
+<a name="function:datetime"></a>
 
-## date(text)
+## datetime(text)
 
 Turns `text` into a date according to the environment's settings. It will return an error
 if it is unable to convert the text to a date.
 
 
 ```objectivec
-@(date("1979-07-18")) → 1979-07-18T00:00:00.000000-05:00
-@(date("1979-07-18T10:30:45.123456Z")) → 1979-07-18T10:30:45.123456Z
-@(date("2010 05 10")) → 2010-05-10T00:00:00.000000-05:00
-@(date("NOT DATE")) → ERROR
+@(datetime("1979-07-18")) → 1979-07-18T00:00:00.000000-05:00
+@(datetime("1979-07-18T10:30:45.123456Z")) → 1979-07-18T10:30:45.123456Z
+@(datetime("2010 05 10")) → 2010-05-10T00:00:00.000000-05:00
+@(datetime("NOT DATE")) → ERROR
 ```
 
 <a name="function:datetime_add"></a>
@@ -606,7 +606,7 @@ Takes two arguments, returning `test` if not an error or nil, otherwise returnin
 ```objectivec
 @(default(undeclared.var, "default_value")) → default_value
 @(default("10", "20")) → 10
-@(default(date("invalid-date"), "today")) → today
+@(default(datetime("invalid-date"), "today")) → today
 ```
 
 <a name="function:field"></a>
@@ -626,9 +626,9 @@ with a space, the delimiter is considered to be all whitespace.  (first field is
 @(field("a,b,c", "foo", ",")) → ERROR
 ```
 
-<a name="function:format_date"></a>
+<a name="function:format_datetime"></a>
 
-## format_date(date, format [,timezone])
+## format_datetime(date, format [,timezone])
 
 Turns `date` into text according to the `format` specified and in
 the optional `timezone`.
@@ -663,13 +663,13 @@ environment will be used. An error will be returned if the timezone is not recog
 
 
 ```objectivec
-@(format_date("1979-07-18T15:00:00.000000Z")) → 1979-07-18 10:00
-@(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) → 1979-07-18
-@(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) → 2010 5 10 14:50
-@(format_date("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) → 2010-05-10 12:50 PM
-@(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) → 1979
-@(format_date("1979-07-18T15:00:00.000000Z", "M")) → 7
-@(format_date("NOT DATE", "YYYY-MM-DD")) → ERROR
+@(format_datetime("1979-07-18T15:00:00.000000Z")) → 1979-07-18 10:00
+@(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) → 1979-07-18
+@(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY M DD tt:mm")) → 2010 5 10 14:50
+@(format_datetime("2010-05-10T19:50:00.000000Z", "YYYY-MM-DD tt:mm AA", "America/Los_Angeles")) → 2010-05-10 12:50 PM
+@(format_datetime("1979-07-18T15:00:00.000000Z", "YYYY")) → 1979
+@(format_datetime("1979-07-18T15:00:00.000000Z", "M")) → 7
+@(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
 <a name="function:format_number"></a>
@@ -1666,7 +1666,7 @@ value.
 
 
 ```objectivec
-@(has_value(date("foo"))) → false
+@(has_value(datetime("foo"))) → false
 @(has_value(not.existing)) → false
 @(has_value(contact.fields.unset)) → false
 @(has_value("hello")) → true
@@ -1712,7 +1712,7 @@ value.
 
 
 ```objectivec
-@(is_error(date("foo"))) → true
+@(is_error(datetime("foo"))) → true
 @(is_error(run.not.existing)) → true
 @(is_error(contact.fields.unset)) → true
 @(is_error("hello")) → false

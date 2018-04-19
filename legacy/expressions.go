@@ -181,13 +181,13 @@ type functionTemplate struct {
 
 var functionTemplates = map[string]functionTemplate{
 	"first_word": {name: "word", params: "(%s, 0)"},
-	"datevalue":  {name: "date"},
+	"datevalue":  {name: "datetime"},
 	"edate":      {name: "datetime_add", params: "(%s, %s, \"M\")"},
 	"word":       {name: "word", params: "(%s, %s - 1)"},
 	"word_slice": {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
 	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
 	"datedif":    {name: "datetime_diff"},
-	"date":       {name: "date", params: "(\"%s-%s-%s\")"},
+	"date":       {name: "datetime", params: "(\"%s-%s-%s\")"},
 	"days":       {name: "datetime_diff", params: "(%s, %s, \"D\")"},
 	"now":        {name: "now", params: "()"},
 	"average":    {name: "mean"},
@@ -199,12 +199,12 @@ var functionTemplates = map[string]functionTemplate{
 	"randbetween": {name: "rand_between"},
 	"rept":        {name: "repeat"},
 
-	"year":   {name: "format_date", params: `(%s, "YYYY")`},
-	"month":  {name: "format_date", params: `(%s, "M")`},
-	"day":    {name: "format_date", params: `(%s, "D")`},
-	"hour":   {name: "format_date", params: `(%s, "h")`},
-	"minute": {name: "format_date", params: `(%s, "m")`},
-	"second": {name: "format_date", params: `(%s, "s")`},
+	"year":   {name: "format_datetime", params: `(%s, "YYYY")`},
+	"month":  {name: "format_datetime", params: `(%s, "M")`},
+	"day":    {name: "format_datetime", params: `(%s, "D")`},
+	"hour":   {name: "format_datetime", params: `(%s, "h")`},
+	"minute": {name: "format_datetime", params: `(%s, "m")`},
+	"second": {name: "format_datetime", params: `(%s, "s")`},
 
 	"proper": {name: "title"},
 
