@@ -7,7 +7,19 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	validator "gopkg.in/go-playground/validator.v9"
 )
+
+func init() {
+	Validator.RegisterValidation("date_format", ValidateDateTimeFormat)
+	Validator.RegisterValidation("time_format", ValidateDateTimeFormat)
+}
+
+func ValidateDateTimeFormat(fl validator.FieldLevel) bool {
+	_, err := ToGoDateFormat(fl.Field().String())
+	return err == nil
+}
 
 // patterns for date and time formats supported for human-entered data
 var patternDayMonthYear = regexp.MustCompile(`\b([0-9]{1,2})[-.\\/_ ]([0-9]{1,2})[-.\\/_ ]([0-9]{4}|[0-9]{2})\b`)

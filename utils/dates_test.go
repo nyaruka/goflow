@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/stretchr/testify/require"
 )
 
 var timeTests = []struct {
@@ -70,13 +72,11 @@ var timeTests = []struct {
 }
 
 func TestDateFromString(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{})
-
 	for _, test := range timeTests {
-		env.SetDateFormat(test.DateFormat)
-		env.SetTimeFormat(test.TimeFormat)
 		timezone, err := time.LoadLocation(test.Timezone)
-		env.SetTimezone(timezone)
+		require.NoError(t, err)
+
+		env := utils.NewEnvironment(test.DateFormat, test.TimeFormat, timezone, utils.LanguageList{})
 
 		if err != nil {
 			t.Errorf("Error parsing expected timezone: %s", err)
