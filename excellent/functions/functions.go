@@ -44,7 +44,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"remove_first_word": OneTextFunction(RemoveFirstWord),
 	"word_count":        OneTextFunction(WordCount),
 	"word_slice":        ArgCountCheck(2, 3, WordSlice),
-	"field":             Field,
+	"field":             ArgCountCheck(3, 3, Field),
 	"clean":             OneTextFunction(Clean),
 	"left":              TextAndIntegerFunction(Left),
 	"lower":             OneTextFunction(Lower),
@@ -57,17 +57,17 @@ var XFUNCTIONS = map[string]XFunction{
 	"url_encode":        OneTextFunction(URLEncode),
 
 	// bool functions
-	"and": And,
+	"and": ArgCountCheck(1, -1, And),
 	"if":  ThreeArgFunction(If),
-	"or":  Or,
+	"or":  ArgCountCheck(1, -1, Or),
 
 	// number functions
 	"round":        OneNumberAndOptionalIntegerFunction(Round, 0),
 	"round_up":     OneNumberAndOptionalIntegerFunction(RoundUp, 0),
 	"round_down":   OneNumberAndOptionalIntegerFunction(RoundDown, 0),
-	"max":          Max,
-	"min":          Min,
-	"mean":         Mean,
+	"max":          ArgCountCheck(1, -1, Max),
+	"min":          ArgCountCheck(1, -1, Min),
+	"mean":         ArgCountCheck(1, -1, Mean),
 	"mod":          TwoNumberFunction(Mod),
 	"rand":         NoArgFunction(Rand),
 	"rand_between": TwoNumberFunction(RandBetween),
@@ -75,7 +75,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// datetime functions
 	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
-	"datetime_from_parts": DateTimeFromParts,
+	"datetime_from_parts": ArgCountCheck(3, 3, DateTimeFromParts),
 	"datetime_diff":       DateTimeDiff,
 	"datetime_add":        DateTimeAdd,
 	"weekday":             OneDateTimeFunction(Weekday),
@@ -178,6 +178,13 @@ func DateTime(env utils.Environment, str types.XText) types.XValue {
 //
 // @function array(values...)
 func Array(env utils.Environment, args ...types.XValue) types.XValue {
+	// check none of our args are errors
+	for _, arg := range args {
+		if types.IsXError(arg) {
+			return arg
+		}
+	}
+
 	return types.NewXArray(args...)
 }
 
@@ -192,14 +199,10 @@ func Array(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function and(tests...)
 func And(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("requires at least one argument")
-	}
-
 	for _, arg := range args {
-		asBool, err := types.ToXBool(arg)
-		if err != nil {
-			return err
+		asBool, xerr := types.ToXBool(arg)
+		if xerr != nil {
+			return xerr
 		}
 		if !asBool.Native() {
 			return types.XBooleanFalse
@@ -215,14 +218,10 @@ func And(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function or(tests...)
 func Or(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("requires at least one argument")
-	}
-
 	for _, arg := range args {
-		asBool, err := types.ToXBool(arg)
-		if err != nil {
-			return err
+		asBool, xerr := types.ToXBool(arg)
+		if xerr != nil {
+			return xerr
 		}
 		if asBool.Native() {
 			return types.XBooleanTrue
@@ -308,9 +307,9 @@ func Join(env utils.Environment, array types.XValue, delimiter types.XValue) typ
 		return types.NewXErrorf("requires an indexable as its first argument")
 	}
 
-	sep, err := types.ToXText(delimiter)
-	if err != nil {
-		return err
+	sep, xerr := types.ToXText(delimiter)
+	if xerr != nil {
+		return xerr
 	}
 
 	var output bytes.Buffer
@@ -318,9 +317,9 @@ func Join(env utils.Environment, array types.XValue, delimiter types.XValue) typ
 		if i > 0 {
 			output.WriteString(sep.Native())
 		}
-		itemAsStr, err := types.ToXText(indexable.Index(i))
-		if err != nil {
-			return err
+		itemAsStr, xerr := types.ToXText(indexable.Index(i))
+		if xerr != nil {
+			return xerr
 		}
 
 		output.WriteString(itemAsStr.Native())
@@ -747,10 +746,6 @@ func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValu
 //
 // @function max(values...)
 func Max(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("takes at least one argument")
-	}
-
 	max, xerr := types.ToXNumber(args[0])
 	if xerr != nil {
 		return xerr
@@ -777,10 +772,6 @@ func Max(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function min(values)
 func Min(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("takes at least one argument")
-	}
-
 	max, xerr := types.ToXNumber(args[0])
 	if xerr != nil {
 		return xerr
@@ -807,10 +798,6 @@ func Min(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function mean(values)
 func Mean(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) == 0 {
-		return types.NewXErrorf("requires at least one argument")
-	}
-
 	sum := decimal.Zero
 
 	for _, val := range args {
@@ -953,9 +940,6 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function datetime_from_parts(year, month, day)
 func DateTimeFromParts(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 3 {
-		return types.NewXErrorf("requires three arguments, got %d", len(args))
-	}
 	year, xerr := types.ToInteger(args[0])
 	if xerr != nil {
 		return xerr

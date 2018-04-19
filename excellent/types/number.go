@@ -10,8 +10,6 @@ func init() {
 
 // XNumber is any whole or fractional number
 type XNumber struct {
-	baseXPrimitive
-
 	native decimal.Decimal
 }
 
@@ -49,6 +47,9 @@ func (x XNumber) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XNumber) Native() decimal.Decimal { return x.native }
+
+// String returns the native string representation of this type
+func (x XNumber) String() string { return x.ToXText().Native() }
 
 // Equals determines equality for this type
 func (x XNumber) Equals(other XNumber) bool {

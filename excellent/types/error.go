@@ -11,8 +11,6 @@ type XError interface {
 }
 
 type xerror struct {
-	baseXPrimitive
-
 	native error
 }
 
@@ -52,6 +50,8 @@ func (x xerror) MarshalJSON() ([]byte, error) {
 func (x xerror) Native() error { return x.native }
 
 func (x xerror) Error() string { return x.Native().Error() }
+
+func (x xerror) String() string { return x.Native().Error() }
 
 // NilXError is the nil error value
 var NilXError = NewXError(nil)

@@ -113,7 +113,7 @@ func ToInteger(x XValue) (int, XError) {
 
 	intPart := number.Native().IntPart()
 
-	if intPart < math.MinInt32 && intPart > math.MaxInt32 {
+	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
 		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText().Native())
 	}
 

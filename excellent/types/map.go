@@ -15,8 +15,6 @@ type XMap interface {
 }
 
 type xmap struct {
-	baseXPrimitive
-
 	values map[string]XValue
 }
 
@@ -94,6 +92,9 @@ func (m *xmap) Keys() []string {
 	}
 	return keys
 }
+
+// String returns the native string representation of this type
+func (m *xmap) String() string { return m.ToXText().Native() }
 
 var _ XMap = (*xmap)(nil)
 var _ json.Marshaler = (*xmap)(nil)

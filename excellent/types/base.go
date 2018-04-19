@@ -17,6 +17,7 @@ type XValue interface {
 // XPrimitive is the base interface of all Excellent primitive types
 type XPrimitive interface {
 	XValue
+	fmt.Stringer
 
 	ToXText() XText
 	ToXBoolean() XBoolean
@@ -38,14 +39,6 @@ type XIndexable interface {
 	XLengthable
 
 	Index(index int) XValue
-}
-
-type baseXPrimitive struct {
-	XPrimitive
-}
-
-func (x *baseXPrimitive) String() string {
-	return x.ToXText().Native()
 }
 
 // ResolveKeys is a utility function that resolves multiple keys on an XResolvable and returns the results as a map

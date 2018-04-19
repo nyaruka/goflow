@@ -8,8 +8,6 @@ import (
 
 // XDateTime is a datetime value
 type XDateTime struct {
-	baseXPrimitive
-
 	native time.Time
 }
 
@@ -32,6 +30,9 @@ func (x XDateTime) ToXJSON() XText { return MustMarshalToXText(utils.DateToISO(x
 
 // Native returns the native value of this type
 func (x XDateTime) Native() time.Time { return x.native }
+
+// String returns the native string representation of this type
+func (x XDateTime) String() string { return x.ToXText().Native() }
 
 // Compare compares this date to another
 func (x XDateTime) Compare(other XDateTime) int {

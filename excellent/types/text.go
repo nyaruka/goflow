@@ -8,8 +8,6 @@ import (
 
 // XText is a simple tex value
 type XText struct {
-	baseXPrimitive
-
 	native string
 }
 
@@ -20,11 +18,6 @@ func NewXText(value string) XText {
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XText) Reduce() XPrimitive { return x }
-
-// String converts this type to native string
-func (x XText) String() string {
-	return x.Native()
-}
 
 // ToXText converts this type to text
 func (x XText) ToXText() XText { return x }
@@ -39,6 +32,9 @@ func (x XText) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XText) Native() string { return x.native }
+
+// String returns the native string representation of this type
+func (x XText) String() string { return x.Native() }
 
 // Equals determines equality for this type
 func (x XText) Equals(other XText) bool {

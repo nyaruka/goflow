@@ -7,8 +7,6 @@ import (
 
 // XBoolean is a boolean true or false
 type XBoolean struct {
-	baseXPrimitive
-
 	native bool
 }
 
@@ -31,6 +29,9 @@ func (x XBoolean) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XBoolean) Native() bool { return x.native }
+
+// String returns the native string representation of this type
+func (x XBoolean) String() string { return x.ToXText().Native() }
 
 // Compare compares this bool to another
 func (x XBoolean) Compare(other XBoolean) int {

@@ -30,10 +30,21 @@ var funcTests = []struct {
 }{
 	// tests for functions A-Z
 
+	{"abs", []types.XValue{xi(33)}, xi(33)},
+	{"abs", []types.XValue{xi(-33)}, xi(33)},
+	{"abs", []types.XValue{xs("nan")}, ERROR},
+	{"abs", []types.XValue{ERROR}, ERROR},
+	{"abs", []types.XValue{}, ERROR},
+
 	{"and", []types.XValue{types.XBooleanTrue}, types.XBooleanTrue},
 	{"and", []types.XValue{types.XBooleanFalse}, types.XBooleanFalse},
 	{"and", []types.XValue{types.XBooleanTrue, types.XBooleanFalse}, types.XBooleanFalse},
+	{"and", []types.XValue{ERROR}, ERROR},
 	{"and", []types.XValue{}, ERROR},
+
+	{"array", []types.XValue{}, types.NewXArray()},
+	{"array", []types.XValue{xi(123), xs("abc")}, types.NewXArray(xi(123), xs("abc"))},
+	{"array", []types.XValue{xi(123), ERROR, xs("abc")}, ERROR},
 
 	{"boolean", []types.XValue{xs("abc")}, types.XBooleanTrue},
 	{"boolean", []types.XValue{xs("false")}, types.XBooleanFalse},
@@ -46,7 +57,15 @@ var funcTests = []struct {
 	{"char", []types.XValue{xn("33")}, xs("!")},
 	{"char", []types.XValue{xn("128513")}, xs("😁")},
 	{"char", []types.XValue{xs("not a number")}, ERROR},
+	{"char", []types.XValue{xn("12345678901234567890")}, ERROR},
 	{"char", []types.XValue{}, ERROR},
+
+	{"code", []types.XValue{xs(" ")}, xi(32)},
+	{"code", []types.XValue{xs("😁")}, xi(128513)},
+	{"code", []types.XValue{xs("abc")}, xi(97)},
+	{"code", []types.XValue{xs("")}, ERROR},
+	{"code", []types.XValue{ERROR}, ERROR},
+	{"code", []types.XValue{}, ERROR},
 
 	{"clean", []types.XValue{xs("hello")}, xs("hello")},
 	{"clean", []types.XValue{xs("  hello  world\n\t")}, xs("hello  world")},
@@ -58,6 +77,13 @@ var funcTests = []struct {
 	{"datetime", []types.XValue{xs("01.15.2017")}, ERROR}, // month out of range
 	{"datetime", []types.XValue{xs("no date")}, ERROR},    // invalid date
 	{"datetime", []types.XValue{}, ERROR},
+
+	{"datetime_from_parts", []types.XValue{xi(2018), xi(11), xi(3)}, xd(time.Date(2018, 11, 3, 0, 0, 0, 0, time.UTC))},
+	{"datetime_from_parts", []types.XValue{xi(2018), xi(15), xi(3)}, ERROR}, // month out of range
+	{"datetime_from_parts", []types.XValue{ERROR, xi(11), xi(3)}, ERROR},
+	{"datetime_from_parts", []types.XValue{xi(2018), ERROR, xi(3)}, ERROR},
+	{"datetime_from_parts", []types.XValue{xi(2018), xi(11), ERROR}, ERROR},
+	{"datetime_from_parts", []types.XValue{}, ERROR},
 
 	{"datetime_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("2"), xs("Y")}, xd(time.Date(2019, 12, 03, 22, 15, 0, 0, time.UTC))},
 	{"datetime_add", []types.XValue{xs("03-12-2017 10:15pm"), xs("-2"), xs("Y")}, xd(time.Date(2015, 12, 03, 22, 15, 0, 0, time.UTC))},
@@ -107,10 +133,15 @@ var funcTests = []struct {
 
 	{"field", []types.XValue{xs("hello,World"), xs("1"), xs(",")}, xs("World")},
 	{"field", []types.XValue{xs("hello,world"), xn("2.1"), xs(",")}, xs("")},
+	{"field", []types.XValue{xs("hello world there now"), xn("2"), xs(" ")}, xs("there")},
 	{"field", []types.XValue{xs("hello"), xi(0), xs(",")}, xs("hello")},
 	{"field", []types.XValue{xs("hello,World"), xn("-2"), xs(",")}, ERROR},
 	{"field", []types.XValue{xs(""), xs("notnum"), xs(",")}, ERROR},
 	{"field", []types.XValue{xs("hello"), xi(0), nil}, xs("h")},
+	{"field", []types.XValue{ERROR, xs("1"), xs(",")}, ERROR},
+	{"field", []types.XValue{xs("hello"), ERROR, xs(",")}, ERROR},
+	{"field", []types.XValue{xs("hello"), xs("1"), ERROR}, ERROR},
+	{"field", []types.XValue{}, ERROR},
 
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977 15:34:00")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZZZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000-07:00")},
@@ -133,6 +164,8 @@ var funcTests = []struct {
 	{"join", []types.XValue{types.NewXArray(xs("1"), xs("2"), xs("3")), xs(",")}, xs("1,2,3")},
 	{"join", []types.XValue{types.NewXArray(), xs(",")}, xs("")},
 	{"join", []types.XValue{types.NewXArray(xs("1")), xs(",")}, xs("1")},
+	{"join", []types.XValue{types.NewXArray(xs("1"), xs("2")), ERROR}, ERROR},
+	{"join", []types.XValue{types.NewXArray(xs("1"), ERROR), xs(",")}, ERROR},
 	{"join", []types.XValue{xs("1,2,3"), nil}, ERROR},
 	{"join", []types.XValue{types.NewXArray(xs("1,2,3")), nil}, xs("1,2,3")},
 	{"join", []types.XValue{types.NewXArray(xs("1"))}, ERROR},
@@ -143,6 +176,7 @@ var funcTests = []struct {
 	{"left", []types.XValue{xs("hi"), xs("0")}, xs("")},
 	{"left", []types.XValue{xs("😁hi"), xs("2")}, xs("😁h")},
 	{"left", []types.XValue{xs("hello"), nil}, xs("")},
+	{"left", []types.XValue{xs("hello"), xi(-1)}, ERROR},
 	{"left", []types.XValue{}, ERROR},
 
 	{"legacy_add", []types.XValue{xs("01-12-2017"), xi(2)}, xd(time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC))},
@@ -199,6 +233,7 @@ var funcTests = []struct {
 	{"or", []types.XValue{types.XBooleanTrue}, types.XBooleanTrue},
 	{"or", []types.XValue{types.XBooleanFalse}, types.XBooleanFalse},
 	{"or", []types.XValue{types.XBooleanTrue, types.XBooleanFalse}, types.XBooleanTrue},
+	{"or", []types.XValue{ERROR}, ERROR},
 	{"or", []types.XValue{}, ERROR},
 
 	{"parse_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 8, 34, 0, 0, la))},
@@ -206,6 +241,13 @@ var funcTests = []struct {
 	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD tt:mm"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
 	{"parse_datetime", []types.XValue{xs("1977-06-23 03:34 pm"), xs("YYYY-MM-DD tt:mm aa"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
 	{"parse_datetime", []types.XValue{xs("1977-06-23 03:34 PM"), xs("YYYY-MM-DD tt:mm AA"), xs("America/Los_Angeles")}, xd(time.Date(1977, 06, 23, 15, 34, 0, 0, la))},
+	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), xs("ttttttttt")}, ERROR},                // invalid format
+	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), xs("Cuenca")}, ERROR}, // invalid timezone
+	{"parse_datetime", []types.XValue{xs("abcd"), xs("YYYY-MM-DD")}, ERROR},                           // unparseable date
+	{"parse_datetime", []types.XValue{ERROR, xs("YYYY-MM-DD")}, ERROR},
+	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), ERROR}, ERROR},
+	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), ERROR}, ERROR},
+	{"parse_datetime", []types.XValue{}, ERROR},
 
 	{"percent", []types.XValue{xs(".54")}, xs("54%")},
 	{"percent", []types.XValue{xs("1.246")}, xs("125%")},
@@ -255,6 +297,7 @@ var funcTests = []struct {
 	{"right", []types.XValue{xs("ho😁hi"), xs("4")}, xs("o😁hi")},
 	{"right", []types.XValue{nil, xs("2")}, xs("")},
 	{"right", []types.XValue{xs("hello"), nil}, xs("")},
+	{"right", []types.XValue{xs("hello"), xi(-1)}, ERROR},
 	{"right", []types.XValue{}, ERROR},
 
 	{"round", []types.XValue{xs("10.5"), xs("0")}, xi(11)},
@@ -267,11 +310,13 @@ var funcTests = []struct {
 	{"round", []types.XValue{xs("10.5"), xs("not_num")}, ERROR},
 	{"round", []types.XValue{xs("10.5"), xs("1"), xs("30")}, ERROR},
 
+	{"round_down", []types.XValue{xs("10")}, xi(10)},
 	{"round_down", []types.XValue{xs("10.5")}, xi(10)},
 	{"round_down", []types.XValue{xs("10.7")}, xi(10)},
 	{"round_down", []types.XValue{xs("not_num")}, ERROR},
 	{"round_down", []types.XValue{}, ERROR},
 
+	{"round_up", []types.XValue{xs("10")}, xi(10)},
 	{"round_up", []types.XValue{xs("10.5")}, xi(11)},
 	{"round_up", []types.XValue{xs("10.2")}, xi(11)},
 	{"round_up", []types.XValue{xs("not_num")}, ERROR},
@@ -321,6 +366,18 @@ var funcTests = []struct {
 	{"word", []types.XValue{xs("hello World"), nil}, xs("hello")},
 	{"word", []types.XValue{}, ERROR},
 
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(0), xi(2)}, xs("hello world")},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(2)}, xs("from mars")},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(10)}, xs("")},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(3), xi(10)}, xs("mars")},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(-1), xi(2)}, ERROR},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(3), xi(1)}, ERROR},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xs("x"), xi(3)}, ERROR},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(3), xs("x")}, ERROR},
+	{"word_slice", []types.XValue{xs("hello-world from mars"), ERROR, xi(2)}, ERROR},
+	{"word_slice", []types.XValue{ERROR, xi(0), xi(2)}, ERROR},
+	{"word_slice", []types.XValue{ERROR}, ERROR},
+
 	{"word_count", []types.XValue{xs("hello World")}, xi(2)},
 	{"word_count", []types.XValue{xs("hello")}, xi(1)},
 	{"word_count", []types.XValue{xs("")}, xi(0)},
@@ -331,6 +388,10 @@ var funcTests = []struct {
 	{"weekday", []types.XValue{xs("01-12-2017 10:15pm")}, xi(5)},
 	{"weekday", []types.XValue{xs("xxx")}, ERROR},
 	{"weekday", []types.XValue{}, ERROR},
+
+	{"url_encode", []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25+%3F%2F`)},
+	{"url_encode", []types.XValue{ERROR}, ERROR},
+	{"url_encode", []types.XValue{}, ERROR},
 }
 
 func TestFunctions(t *testing.T) {
@@ -352,18 +413,15 @@ func TestFunctions(t *testing.T) {
 		}()
 
 		// don't check error equality - just check that we got an error if we expected one
-		errExpected, _ := test.expected.(types.XError)
-		errReturned, _ := result.(types.XError)
-		if errExpected != nil && errReturned != nil {
-			continue
-		}
+		if test.expected == ERROR {
+			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for function %s(%T{%s})", result, result, test.name, test.args, test.args)
+		} else {
+			cmp, err := types.Compare(result, test.expected)
+			require.NoError(t, err)
 
-		cmp, err := types.Compare(result, test.expected)
-		if err != nil {
-			assert.Fail(t, err.Error(), "error while comparing expected: %T{%s} with result: %T{%s}: err", test.expected, test.expected, result, result, err)
-		}
-		if cmp != 0 {
-			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.name, test.args)
+			if cmp != 0 {
+				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)
+			}
 		}
 	}
 }

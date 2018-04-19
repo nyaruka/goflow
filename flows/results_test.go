@@ -7,6 +7,9 @@ import (
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestResults(t *testing.T) {
@@ -35,15 +38,15 @@ func TestResults(t *testing.T) {
 		value := excellent.ResolveValue(env, results, test.lookup)
 
 		// don't check error equality - just check that we got an error if we expected one
-		errExpected, _ := test.expected.(types.XError)
-		errReturned, _ := value.(types.XError)
-		if errExpected != nil && errReturned != nil {
-			continue
-		}
+		if test.expected == ERROR {
+			assert.True(t, types.IsXError(value), "expecting error, got %T{%s} for lookup %s", value, value, test.lookup)
+		} else {
+			cmp, err := types.Compare(value, test.expected)
+			require.NoError(t, err)
 
-		cmp, _ := types.Compare(value, test.expected)
-		if cmp != 0 {
-			t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, value, test.lookup, test.JSON)
+			if cmp != 0 {
+				t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, value, test.lookup, test.JSON)
+			}
 		}
 	}
 }

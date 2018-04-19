@@ -13,8 +13,6 @@ type XArray interface {
 }
 
 type xarray struct {
-	baseXPrimitive
-
 	values []XValue
 }
 
@@ -74,6 +72,9 @@ func (a *xarray) Length() int {
 func (a *xarray) Append(value XValue) {
 	a.values = append(a.values, value)
 }
+
+// String returns the native string representation of this type
+func (a *xarray) String() string { return a.ToXText().Native() }
 
 var _ XArray = (*xarray)(nil)
 var _ json.Marshaler = (*xarray)(nil)

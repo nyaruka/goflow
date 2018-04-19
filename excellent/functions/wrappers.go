@@ -9,10 +9,17 @@ import (
 func ArgCountCheck(min int, max int, f XFunction) XFunction {
 	return func(env utils.Environment, args ...types.XValue) types.XValue {
 		if min == max {
+			// function requires a fixed number of arguments
 			if len(args) != min {
 				return types.NewXErrorf("need %d argument(s), got %d", min, len(args))
 			}
+		} else if max < 0 {
+			// function requires a minimum number of arguments
+			if len(args) < min {
+				return types.NewXErrorf("need at least %d argument(s), got %d", min, max, len(args))
+			}
 		} else {
+			// function requires the given range of arguments
 			if len(args) < min || len(args) > max {
 				return types.NewXErrorf("need %d to %d argument(s), got %d", min, max, len(args))
 			}
