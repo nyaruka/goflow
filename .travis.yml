@@ -3,16 +3,12 @@ language: go
 go:
  - "1.10"
 
-services:
- - redis-server
-
 before_script:
  - go get github.com/mattn/goveralls
 
 script:
- - go test $(go list ./... | grep -v /vendor/) -cover -covermode=count -coverprofile=profile.cov
- - go test $(go list ./... | grep -v /vendor/) -bench=. -benchmem
+ - $GOPATH/bin/goveralls -service=travis-ci
+ - go test github.com/nyaruka/goflow/... -bench=. -benchmem
 
 after_success:
- - goveralls -coverprofile=profile.cov -service=travis-ci
  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
