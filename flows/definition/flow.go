@@ -74,9 +74,24 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 func (f *flow) Validate(assets flows.SessionAssets) error {
 	var err error
 
+	// track UUIDs used by nodes and actions to ensure that they are unique
+	seenUUIDs := make(map[utils.UUID]bool)
+
 	for _, node := range f.nodes {
+		uuidAlreadySeen := seenUUIDs[utils.UUID(node.UUID())]
+		if uuidAlreadySeen {
+			return fmt.Errorf("node UUID %s isn't unique", node.UUID())
+		}
+		seenUUIDs[utils.UUID(node.UUID())] = true
+
 		// validate all the node's actions
 		for _, action := range node.Actions() {
+			uuidAlreadySeen := seenUUIDs[utils.UUID(action.UUID())]
+			if uuidAlreadySeen {
+				return fmt.Errorf("action UUID %s isn't unique", action.UUID())
+			}
+			seenUUIDs[utils.UUID(action.UUID())] = true
+
 			if err := action.Validate(assets); err != nil {
 				return fmt.Errorf("validation failed for action[uuid=%s, type=%s]: %v", action.UUID(), action.Type(), err)
 			}

@@ -62,7 +62,7 @@
                         },
                         {
                             "type": "send_msg",
-                            "uuid": "aafb505c-603d-4025-864d-471345ed237d",
+                            "uuid": "8b3ce80d-0ce7-4e17-a3e7-33e62948bde8",
                             "text": "Great, pleased to meet you @contact.fields.first_name"
                         }
                     ]
