@@ -33,7 +33,7 @@
                             ]
                         },
                         {
-                            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                            "uuid": "c97547fa-5377-43d3-ac5e-6cad9c8e05d2",
                             "type": "add_contact_groups",
                             "groups": [
                                 {
@@ -161,7 +161,7 @@
                             "value": "eng"
                         },
                         {
-                            "uuid": "7bd8b3bf-0a3c-4928-bc46-df416e77ddf4",
+                            "uuid": "3b42ceb1-454d-4f2a-a8c9-e6803dc3e3c0",
                             "type": "set_contact_field",
                             "field": {
                                 "key": "gender",

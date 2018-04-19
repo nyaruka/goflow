@@ -73,7 +73,7 @@ func TestFlowValidation(t *testing.T) {
 
 	// check that validation fails
 	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid 'xyx'")
+	assert.EqualError(t, err, "validation failed for action[uuid=09cd9762-8700-4d14-bbc9-35f75f711873, type=add_contact_groups]: no such group with uuid 'xyx'")
 
 	// fix the add_group action
 	addGroupAction.Groups[0].UUID = "2aad21f6-30b7-42c5-bd7f-1b720c154817"
