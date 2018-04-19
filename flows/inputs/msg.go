@@ -77,7 +77,7 @@ var _ flows.Input = (*MsgInput)(nil)
 
 type msgInputEnvelope struct {
 	baseInputEnvelope
-	URN         urns.URN             `json:"urn" validate:"urn"`
+	URN         urns.URN             `json:"urn" validate:"omitempty,urn"`
 	Text        string               `json:"text" validate:"required"`
 	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }

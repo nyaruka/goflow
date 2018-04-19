@@ -59,8 +59,6 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	method := strings.ToUpper(a.Method)
 	body := a.Body
 
-	fmt.Println(body)
-
 	// substitute any body variables
 	if body != "" {
 		body, err = run.EvaluateTemplateAsString(a.Body, false)

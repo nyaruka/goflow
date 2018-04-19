@@ -8,7 +8,7 @@ import (
 // BaseMsg represents a incoming or outgoing message with the session contact
 type BaseMsg struct {
 	UUID_        MsgUUID           `json:"uuid"`
-	URN_         urns.URN          `json:"urn" validate:"required"`
+	URN_         urns.URN          `json:"urn" validate:"omitempty,urn"`
 	Channel_     *ChannelReference `json:"channel,omitempty"`
 	Text_        string            `json:"text"`
 	Attachments_ []Attachment      `json:"attachments,omitempty"`
