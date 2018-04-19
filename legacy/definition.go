@@ -32,13 +32,13 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 // TODO add excellent support for JSON serialization of complex objects?
 // Need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
 var legacyWebhookBody = `{
-	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": "@contact.urns.0"},
+	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": "@contact.urn"},
 	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
 	"path": [],
-	"results": {},
+	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": {},
-	"channel": {}
+	"input": @(json(run.input)),
+	"channel": @(json(run.input.channel))
 }`
 
 // Flow is a flow in the legacy format
@@ -571,6 +571,11 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 	case "api":
 		migratedURL, _ := MigrateTemplate(a.Webhook, ExtraAsFunction)
 
+		body := ""
+		if strings.ToUpper(a.Action) == "POST" {
+			body = legacyWebhookBody
+		}
+
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		for _, header := range a.WebhookHeaders {
 			headers[header.Name] = header.Value
@@ -580,7 +585,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			BaseAction: actions.NewBaseAction(a.UUID),
 			Method:     a.Action,
 			URL:        migratedURL,
-			Body:       legacyWebhookBody,
+			Body:       body,
 			Headers:    headers,
 		}, nil
 	default:
@@ -829,12 +834,18 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			migratedHeaders[header.Name] = header.Value
 		}
 
+		body := ""
+		if strings.ToUpper(config.Action) == "POST" {
+			body = legacyWebhookBody
+		}
+
 		newActions = []flows.Action{
 			&actions.CallWebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
 				Method:     config.Action,
 				Headers:    migratedHeaders,
+				Body:       body,
 			},
 		}
 

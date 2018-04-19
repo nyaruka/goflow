@@ -56,8 +56,12 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		return nil
 	}
 
-	// substitute any body variables
+	method := strings.ToUpper(a.Method)
 	body := a.Body
+
+	fmt.Println(body)
+
+	// substitute any body variables
 	if body != "" {
 		body, err = run.EvaluateTemplateAsString(a.Body, false)
 		if err != nil {
@@ -66,13 +70,19 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	}
 
 	// build our request
-	req, err := http.NewRequest(strings.ToUpper(a.Method), url, strings.NewReader(body))
+	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 		return nil
 	}
 
-	// add our headers, substituting any template vars
+	// add the standard headers
+	req.Header.Add("User-Agent", "goflow")
+	if method == "POST" {
+		req.Header.Add("Content-Type", "application/json")
+	}
+
+	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
 		headerValue, err := run.EvaluateTemplateAsString(value, false)
 		if err != nil {
@@ -82,12 +92,12 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		req.Header.Add(key, headerValue)
 	}
 
-	rr, err := flows.MakeWebhookCall(req)
+	webhook, err := flows.MakeWebhookCall(req)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
-	run.SetWebhook(rr)
+	run.SetWebhook(webhook)
 
-	log.Add(events.NewWebhookCalledEvent(rr.URL(), rr.Status(), rr.StatusCode(), rr.Request(), rr.Response()))
+	log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 	return nil
 }

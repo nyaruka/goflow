@@ -57,6 +57,22 @@
         "legacy_action": {
             "type": "api",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "action": "GET",
+            "webhook": "http://example.com?contact=@contact.tel",
+            "webhook_headers": []
+        },
+        "expected_action": {
+            "type": "call_webhook",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "method": "GET",
+            "url": "http://example.com?contact=@(format_urn(contact.urns.tel.0))"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "api",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "action": "POST",
             "webhook": "http://example.com?contact=@contact.tel",
             "webhook_headers": [
@@ -74,7 +90,7 @@
             "headers": {
                 "User-Agent": "rapidpro"
             },
-            "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": \"@contact.urns.0\"},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": [],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": {},\n\t\"channel\": {}\n}"
+            "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": \"@contact.urn\"},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": [],\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(run.input.channel))\n}"
         },
         "expected_localization": {}
     },

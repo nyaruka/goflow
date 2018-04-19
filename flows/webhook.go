@@ -60,8 +60,7 @@ type WebhookCall struct {
 func MakeWebhookCall(req *http.Request) (*WebhookCall, error) {
 	requestTrace, err := httputil.DumpRequestOut(req, true)
 	if err != nil {
-		rr, _ := newWebhookCallFromError(req, string(requestTrace), err)
-		return rr, err
+		return nil, err
 	}
 
 	resp, err := utils.NewHTTPClient().Do(req)
