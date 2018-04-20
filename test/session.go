@@ -325,7 +325,7 @@ func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Sess
 	}
 
 	// create our engine session
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), TestHTTPClient)
 
 	// override the session environment
 	session.SetEnvironment(newTestEnvironment())

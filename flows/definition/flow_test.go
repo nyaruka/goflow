@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -52,7 +53,7 @@ func TestFlowValidation(t *testing.T) {
 	err = assetCache.Include(assetsJSON)
 	assert.NoError(t, err)
 
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), test.TestHTTPClient)
 	flow, err := session.Assets().GetFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	assert.NoError(t, err)
 

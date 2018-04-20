@@ -151,6 +151,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	httpClient := utils.NewHTTPClient("goflow-flowrunner")
+
 	assetsFilename := flag.Args()[0]
 	startFlowUUID := flows.FlowUUID(flag.Args()[1])
 
@@ -168,7 +170,7 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{})
 
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), httpClient)
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
@@ -224,7 +226,7 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), outJSON)
+		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), httpClient, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}

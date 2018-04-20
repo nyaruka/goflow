@@ -42,7 +42,7 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assetCache *assets.AssetCache, assetServer assets.AssetServer) flows.Session {
+func NewSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, httpClient *utils.HTTPClient) flows.Session {
 	return &session{
 		env:        utils.NewDefaultEnvironment(),
 		assets:     assets.NewSessionAssets(assetCache, assetServer),
@@ -50,7 +50,7 @@ func NewSession(assetCache *assets.AssetCache, assetServer assets.AssetServer) f
 		newEvents:  []flows.Event{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 		flowStack:  newFlowStack(),
-		httpClient: utils.NewHTTPClient("goflow/1.0"),
+		httpClient: httpClient,
 	}
 }
 
@@ -483,7 +483,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, data json.RawMessage) (flows.Session, error) {
+func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
@@ -491,7 +491,7 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 		return nil, err
 	}
 
-	s := NewSession(assetCache, assetServer).(*session)
+	s := NewSession(assetCache, assetServer, httpClient).(*session)
 	s.status = envelope.Status
 
 	// read our environment

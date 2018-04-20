@@ -29,6 +29,7 @@ type FlowServer struct {
 	config     *Config
 	httpServer *http.Server
 	assetCache *assets.AssetCache
+	httpClient *utils.HTTPClient
 }
 
 // NewFlowServer creates a new flow server instance
@@ -65,6 +66,7 @@ func NewFlowServer(config *Config) *FlowServer {
 			ReadTimeout:  60 * time.Second,
 			WriteTimeout: 60 * time.Second,
 		},
+		httpClient: utils.NewHTTPClient("goflow/" + config.Version),
 	}
 
 	// root page just serves our example and "postman"" interface
@@ -172,7 +174,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build our session
-	session := engine.NewSession(s.assetCache, assetServer)
+	session := engine.NewSession(s.assetCache, assetServer, s.httpClient)
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
@@ -235,7 +237,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read our session
-	session, err := engine.ReadSession(s.assetCache, assetServer, resume.Session)
+	session, err := engine.ReadSession(s.assetCache, assetServer, s.httpClient, resume.Session)
 	if err != nil {
 		return nil, err
 	}

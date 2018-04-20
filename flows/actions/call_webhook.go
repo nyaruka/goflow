@@ -90,8 +90,6 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	}
 	run.SetWebhook(webhook)
 
-	fmt.Printf("WEBHOOK BODY: %s REQUEST: %s ERR: %s\n", body, webhook.Request(), err)
-
 	log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 	return nil
 }
