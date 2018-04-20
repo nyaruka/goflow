@@ -1,4 +1,4 @@
-// Generated from Excellent2.g4 by ANTLR 4.7.
+// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -15,6 +15,9 @@ type Excellent2Visitor interface {
 
 	// Visit a parse tree produced by Excellent2Parser#dotLookup.
 	VisitDotLookup(ctx *DotLookupContext) interface{}
+
+	// Visit a parse tree produced by Excellent2Parser#null.
+	VisitNull(ctx *NullContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#stringLiteral.
 	VisitStringLiteral(ctx *StringLiteralContext) interface{}

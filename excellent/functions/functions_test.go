@@ -175,7 +175,7 @@ var funcTests = []struct {
 	{"left", []types.XValue{xs("hi"), xi(4)}, xs("hi")},
 	{"left", []types.XValue{xs("hi"), xs("0")}, xs("")},
 	{"left", []types.XValue{xs("😁hi"), xs("2")}, xs("😁h")},
-	{"left", []types.XValue{xs("hello"), nil}, xs("")},
+	{"left", []types.XValue{xs("hello"), nil}, ERROR},
 	{"left", []types.XValue{xs("hello"), xi(-1)}, ERROR},
 	{"left", []types.XValue{}, ERROR},
 
@@ -278,7 +278,7 @@ var funcTests = []struct {
 	{"repeat", []types.XValue{xs("😁"), xs("2")}, xs("😁😁")},
 	{"repeat", []types.XValue{xs("hi"), xs("0")}, xs("")},
 	{"repeat", []types.XValue{xs("hi"), xs("-1")}, ERROR},
-	{"repeat", []types.XValue{xs("hello"), nil}, xs("")},
+	{"repeat", []types.XValue{xs("hello"), nil}, ERROR},
 	{"repeat", []types.XValue{}, ERROR},
 
 	{"replace", []types.XValue{xs("hi ho"), xs("hi"), xs("bye")}, xs("bye ho")},
@@ -296,7 +296,7 @@ var funcTests = []struct {
 	{"right", []types.XValue{xs("hi"), xs("0")}, xs("")},
 	{"right", []types.XValue{xs("ho😁hi"), xs("4")}, xs("o😁hi")},
 	{"right", []types.XValue{nil, xs("2")}, xs("")},
-	{"right", []types.XValue{xs("hello"), nil}, xs("")},
+	{"right", []types.XValue{xs("hello"), nil}, ERROR},
 	{"right", []types.XValue{xs("hello"), xi(-1)}, ERROR},
 	{"right", []types.XValue{}, ERROR},
 
@@ -363,7 +363,7 @@ var funcTests = []struct {
 	{"word", []types.XValue{xs(""), xi(0)}, ERROR},
 	{"word", []types.XValue{xs("😁 hello World"), xi(0)}, xs("😁")},
 	{"word", []types.XValue{xs(" hello World"), xi(2)}, ERROR},
-	{"word", []types.XValue{xs("hello World"), nil}, xs("hello")},
+	{"word", []types.XValue{xs("hello World"), nil}, ERROR},
 	{"word", []types.XValue{}, ERROR},
 
 	{"word_slice", []types.XValue{xs("hello-world from mars"), xi(0), xi(2)}, xs("hello world")},
@@ -417,7 +417,7 @@ func TestFunctions(t *testing.T) {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for function %s(%T{%s})", result, result, test.name, test.args, test.args)
 		} else {
 			cmp, err := types.Compare(result, test.expected)
-			require.NoError(t, err)
+			require.NoError(t, err, "got err comparing result for function %s(%T{%s})", test.name, test.args, test.args)
 
 			if cmp != 0 {
 				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)

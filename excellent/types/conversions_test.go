@@ -220,7 +220,7 @@ func TestToXNumber(t *testing.T) {
 		asNumber types.XNumber
 		hasError bool
 	}{
-		{nil, types.XNumberZero, false},
+		{nil, types.XNumberZero, true},
 		{types.NewXErrorf("Error"), types.XNumberZero, true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), false},
 		{types.NewXText("15.5"), types.RequireXNumberFromString("15.5"), false},
@@ -247,7 +247,7 @@ func TestToXDate(t *testing.T) {
 		asNumber types.XDateTime
 		hasError bool
 	}{
-		{nil, types.XDateTimeZero, false},
+		{nil, types.XDateTimeZero, true},
 		{types.NewXError(fmt.Errorf("Error")), types.XDateTimeZero, true},
 		{types.NewXNumberFromInt(123), types.XDateTimeZero, true},
 		{types.NewXText("2018-06-05"), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
