@@ -85,8 +85,7 @@ func NewFlowServer(config *Config) *FlowServer {
 
 // Start starts the flow server
 func (s *FlowServer) Start() {
-	fetchUserAgent := fmt.Sprintf("flowserver/%s", s.config.Version)
-	s.assetCache = assets.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune, fetchUserAgent)
+	s.assetCache = assets.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
 
 	go func() {
 		err := s.httpServer.ListenAndServe()
@@ -168,7 +167,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// read and validate our asset server
-	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, start.AssetServer)
+	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, start.AssetServer)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +230,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read and validate our asset server
-	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, resume.AssetServer)
+	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, resume.AssetServer)
 	if err != nil {
 		return nil, err
 	}

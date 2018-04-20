@@ -161,7 +161,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading assets file: ", err)
 	}
-	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5)
 	if err := assetCache.Include(json.RawMessage(assetsJSON)); err != nil {
 		log.Fatal("Error reading assets: ", err)
 	}

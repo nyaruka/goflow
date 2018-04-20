@@ -16,12 +16,13 @@ import (
 type AssetServer interface {
 	isTypeSupported(assetType) bool
 	getAssetURL(assetType, string) (string, error)
-	fetchAsset(string, assetType, string) (interface{}, error)
+	fetchAsset(string, assetType) (interface{}, error)
 }
 
 type assetServer struct {
-	authToken string
-	typeURLs  map[assetType]string
+	authToken  string
+	typeURLs   map[assetType]string
+	httpClient *utils.HTTPClient
 }
 
 type assetServerEnvelope struct {
@@ -29,18 +30,18 @@ type assetServerEnvelope struct {
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(authToken string, data json.RawMessage) (AssetServer, error) {
+func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, data json.RawMessage) (AssetServer, error) {
 	envelope := &assetServerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope, "asset_server"); err != nil {
 		return nil, err
 	}
 
-	return NewAssetServer(authToken, envelope.TypeURLs), nil
+	return NewAssetServer(authToken, envelope.TypeURLs, httpClient), nil
 }
 
 // NewAssetServer creates a new asset server
-func NewAssetServer(authToken string, typeURLs map[assetType]string) AssetServer {
-	return &assetServer{authToken: authToken, typeURLs: typeURLs}
+func NewAssetServer(authToken string, typeURLs map[assetType]string, httpClient *utils.HTTPClient) AssetServer {
+	return &assetServer{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient}
 }
 
 // isTypeSupported returns whether the given asset item type is supported
@@ -64,18 +65,17 @@ func (s *assetServer) getAssetURL(itemType assetType, itemUUID string) (string, 
 }
 
 // fetches an asset by its URL and parses it as the provided type
-func (s *assetServer) fetchAsset(url string, itemType assetType, userAgent string) (interface{}, error) {
+func (s *assetServer) fetchAsset(url string, itemType assetType) (interface{}, error) {
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// set request headers
-	request.Header.Set("User-Agent", userAgent)
 	request.Header.Set("Authorization", fmt.Sprintf("Token %s", s.authToken))
 
 	// make the actual request
-	response, err := http.DefaultClient.Do(request)
+	response, err := s.httpClient.Do(request)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func (s *MockAssetServer) MockedRequests() []string {
 	return s.mockedRequests
 }
 
-func (s *MockAssetServer) fetchAsset(url string, itemType assetType, userAgent string) (interface{}, error) {
+func (s *MockAssetServer) fetchAsset(url string, itemType assetType) (interface{}, error) {
 	s.mockedRequests = append(s.mockedRequests, url)
 
 	assetBuf, found := s.mockResponses[url]

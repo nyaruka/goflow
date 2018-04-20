@@ -27,16 +27,14 @@ const (
 
 // AssetCache fetches and caches assets for the engine
 type AssetCache struct {
-	cache          *ccache.Cache
-	fetchUserAgent string
-	fetchMutex     sync.Mutex
+	cache      *ccache.Cache
+	fetchMutex sync.Mutex
 }
 
 // NewAssetCache creates a new asset cache
-func NewAssetCache(maxSize int64, pruneItems int, fetchUserAgent string) *AssetCache {
+func NewAssetCache(maxSize int64, pruneItems int) *AssetCache {
 	return &AssetCache{
-		cache:          ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
-		fetchUserAgent: fetchUserAgent,
+		cache: ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
 	}
 }
 
@@ -87,7 +85,7 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType
 	}
 
 	// actually fetch the asset from it's URL
-	fetched, err := server.fetchAsset(url, itemType, c.fetchUserAgent)
+	fetched, err := server.fetchAsset(url, itemType)
 	if err != nil {
 		return nil, err
 	}
