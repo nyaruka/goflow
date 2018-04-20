@@ -1384,22 +1384,18 @@ func Length(env utils.Environment, value types.XValue) types.XValue {
 	return types.NewXErrorf("value doesn't have length")
 }
 
-// Default takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
+// Default takes two arguments, returning `test` if not an error or nil or empty text, otherwise returning `default`
 //
 //   @(default(undeclared.var, "default_value")) -> default_value
 //   @(default("10", "20")) -> 10
+//   @(default("", "value")) -> value
+//   @(default(array(1, 2), "value")) -> ["1","2"]
+//   @(default(array(), "value")) -> value
 //   @(default(datetime("invalid-date"), "today")) -> today
 //
 // @function default(test, default)
 func Default(env utils.Environment, test types.XValue, def types.XValue) types.XValue {
-	// first argument is nil, return arg2
-	if utils.IsNil(test) {
-		return def
-	}
-
-	// test whether arg1 is an error
-	_, isErr := test.(types.XError)
-	if isErr {
+	if types.IsEmpty(test) || types.IsXError(test) {
 		return def
 	}
 

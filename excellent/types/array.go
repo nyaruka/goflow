@@ -29,11 +29,14 @@ func (a *xarray) Reduce() XPrimitive { return a }
 
 // ToXText converts this type to text
 func (a *xarray) ToXText() XText {
-	strs := make([]XText, len(a.values))
-	for i := range a.values {
-		strs[i] = a.values[i].Reduce().ToXText()
+	texts := make([]XText, len(a.values))
+	for i, v := range a.values {
+		asText, err := ToXText(v)
+		if err == nil {
+			texts[i] = asText
+		}
 	}
-	return MustMarshalToXText(strs)
+	return MustMarshalToXText(texts)
 }
 
 // ToXBoolean converts this type to a bool

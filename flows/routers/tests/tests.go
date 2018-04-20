@@ -120,17 +120,12 @@ func IsError(env utils.Environment, value types.XValue) types.XValue {
 //   @(has_value(datetime("foo"))) -> false
 //   @(has_value(not.existing)) -> false
 //   @(has_value(contact.fields.unset)) -> false
+//   @(has_value("")) -> false
 //   @(has_value("hello")) -> true
 //
 // @test has_value(value)
 func HasValue(env utils.Environment, value types.XValue) types.XValue {
-	// nil is not a value
-	if utils.IsNil(value) {
-		return XFalseResult
-	}
-
-	// error is not a value
-	if types.IsXError(value) {
+	if types.IsEmpty(value) || types.IsXError(value) {
 		return XFalseResult
 	}
 

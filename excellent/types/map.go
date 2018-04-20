@@ -37,11 +37,14 @@ func (m *xmap) Reduce() XPrimitive { return m }
 
 // ToXText converts this type to text
 func (m *xmap) ToXText() XText {
-	strs := make(map[string]XText, len(m.values))
+	texts := make(map[string]XText, len(m.values))
 	for k, v := range m.values {
-		strs[k] = v.Reduce().ToXText()
+		asText, err := ToXText(v)
+		if err == nil {
+			texts[k] = asText
+		}
 	}
-	return MustMarshalToXText(strs)
+	return MustMarshalToXText(texts)
 }
 
 // ToXBoolean converts this type to a bool
