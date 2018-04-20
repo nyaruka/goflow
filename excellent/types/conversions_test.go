@@ -57,6 +57,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 		asInternalJSON string
 		asText         string
 		asBool         bool
+		isEmpty        bool
 	}{
 		{
 			value:          nil,
@@ -64,108 +65,133 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asJSON:         `null`,
 			asText:         "",
 			asBool:         false,
+			isEmpty:        true,
 		}, {
 			value:          types.NewXText(""),
 			asInternalJSON: `""`,
 			asJSON:         `""`,
 			asText:         "",
 			asBool:         false, // empty strings are false
+			isEmpty:        true,
 		}, {
 			value:          types.NewXText("FALSE"),
 			asInternalJSON: `"FALSE"`,
 			asJSON:         `"FALSE"`,
 			asText:         "FALSE",
 			asBool:         false, // because it's string value is "false"
+			isEmpty:        false,
 		}, {
 			value:          types.NewXText("hello \"bob\""),
 			asInternalJSON: `"hello \"bob\""`,
 			asJSON:         `"hello \"bob\""`,
 			asText:         "hello \"bob\"",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXNumberFromInt(0),
 			asInternalJSON: `0`,
 			asJSON:         `0`,
 			asText:         "0",
 			asBool:         false, // because any decimal != 0 is true
+			isEmpty:        false,
 		}, {
 			value:          types.NewXNumberFromInt(123),
 			asInternalJSON: `123`,
 			asJSON:         `123`,
 			asText:         "123",
 			asBool:         true, // because any decimal != 0 is true
+			isEmpty:        false,
 		}, {
 			value:          types.RequireXNumberFromString("123.00"),
 			asInternalJSON: `123`,
 			asJSON:         `123`,
 			asText:         "123",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.RequireXNumberFromString("123.45"),
 			asInternalJSON: `123.45`,
 			asJSON:         `123.45`,
 			asText:         "123.45",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXBoolean(false),
 			asInternalJSON: `false`,
 			asJSON:         `false`,
 			asText:         "false",
 			asBool:         false,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXBoolean(true),
 			asInternalJSON: `true`,
 			asJSON:         `true`,
 			asText:         "true",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXDateTime(date1),
 			asInternalJSON: `"2017-06-23T15:30:00Z"`,
 			asJSON:         `"2017-06-23T15:30:00.000000Z"`,
 			asText:         "2017-06-23T15:30:00.000000Z",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXDateTime(date2),
 			asInternalJSON: `"2017-07-18T15:30:00-05:00"`,
 			asJSON:         `"2017-07-18T15:30:00.000000-05:00"`,
 			asText:         "2017-07-18T15:30:00.000000-05:00",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXArray(),
 			asInternalJSON: `[]`,
 			asJSON:         `[]`,
 			asText:         `[]`,
 			asBool:         false,
+			isEmpty:        true,
 		}, {
 			value:          types.NewXArray(types.NewXNumberFromInt(1), types.NewXNumberFromInt(2)),
 			asInternalJSON: `[1,2]`,
 			asJSON:         `[1,2]`,
 			asText:         `["1","2"]`,
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXArray(types.NewXDateTime(date1), types.NewXDateTime(date2)),
 			asInternalJSON: `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`,
 			asJSON:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
 			asText:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          NewTestXObject("Hello", 123),
 			asInternalJSON: `{"foo":"Hello"}`,
 			asJSON:         `{"bar":123,"foo":"Hello"}`,
 			asText:         "Hello",
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          NewTestXObject("", 123),
 			asInternalJSON: `{"foo":""}`,
 			asJSON:         `{"bar":123,"foo":""}`,
 			asText:         "",
 			asBool:         false, // because it reduces to a string which itself is false
+			isEmpty:        false,
 		}, {
 			value:          types.NewXArray(NewTestXObject("Hello", 123), NewTestXObject("World", 456)),
 			asInternalJSON: `[{"foo":"Hello"},{"foo":"World"}]`,
 			asJSON:         `[{"bar":123,"foo":"Hello"},{"bar":456,"foo":"World"}]`,
 			asText:         `["Hello","World"]`,
 			asBool:         true,
+			isEmpty:        false,
+		}, {
+			value:          types.NewXEmptyMap(),
+			asInternalJSON: `{}`,
+			asJSON:         `{}`,
+			asText:         `{}`,
+			asBool:         false,
+			isEmpty:        true,
 		}, {
 			value: types.NewXMap(map[string]types.XValue{
 				"first":  NewTestXObject("Hello", 123),
@@ -175,36 +201,42 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asJSON:         `{"first":{"bar":123,"foo":"Hello"},"second":{"bar":456,"foo":"World"}}`,
 			asText:         `{"first":"Hello","second":"World"}`,
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXJSONArray([]byte(`[]`)),
 			asInternalJSON: `[]`,
 			asJSON:         `[]`,
 			asText:         `[]`,
 			asBool:         false,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXJSONArray([]byte(`[5,     "x"]`)),
 			asInternalJSON: `[5,"x"]`,
 			asJSON:         `[5,     "x"]`,
 			asText:         `[5,     "x"]`,
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXJSONObject([]byte(`{}`)),
 			asInternalJSON: `{}`,
 			asJSON:         `{}`,
 			asText:         `{}`,
 			asBool:         false,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXJSONObject([]byte(`{"foo":"World","bar":456}`)),
 			asInternalJSON: `{"foo":"World","bar":456}`,
 			asJSON:         `{"foo":"World","bar":456}`,
 			asText:         `{"foo":"World","bar":456}`,
 			asBool:         true,
+			isEmpty:        false,
 		}, {
 			value:          types.NewXError(fmt.Errorf("it failed")), // once an error, always an error
 			asInternalJSON: "",
 			asJSON:         "",
 			asText:         "",
 			asBool:         false,
+			isEmpty:        false,
 		},
 	}
 	for _, test := range tests {
