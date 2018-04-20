@@ -82,3 +82,19 @@ func Compare(x1 XValue, x2 XValue) (int, error) {
 	// TODO: find better fallback
 	return strings.Compare(x1.ToXJSON().Native(), x2.ToXJSON().Native()), nil
 }
+
+// IsEmpty determines if the given value is empty
+func IsEmpty(x XValue) bool {
+	// nil is empty
+	if utils.IsNil(x) {
+		return true
+	}
+
+	// anything with length of zero is empty
+	asLengthable, isLengthable := x.(XLengthable)
+	if isLengthable && asLengthable.Length() == 0 {
+		return true
+	}
+
+	return false
+}

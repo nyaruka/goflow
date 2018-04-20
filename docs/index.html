@@ -555,10 +555,13 @@
 <a class="sourceLine" id="cb28-3" data-line-number="3">@(datetime_from_parts(<span class="dv">2017</span>, <span class="dv">13</span>, <span class="dv">15</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:default"></a></p>
 <h2 id="defaulttest-default">default(test, default)</h2>
-<p>Takes two arguments, returning <code>test</code> if not an error or nil, otherwise returning <code>default</code></p>
+<p>Takes two arguments, returning <code>test</code> if not an error or nil or empty text, otherwise returning <code>default</code></p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" data-line-number="1">@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) → default_value</a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">@(<span class="kw">default</span>(<span class="st">&quot;10&quot;</span>, <span class="st">&quot;20&quot;</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
+<a class="sourceLine" id="cb29-3" data-line-number="3">@(<span class="kw">default</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;value&quot;</span>)) → value</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">@(<span class="kw">default</span>(array(<span class="dv">1</span>, <span class="dv">2</span>), <span class="st">&quot;value&quot;</span>)) → [<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>]</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">@(<span class="kw">default</span>(array(), <span class="st">&quot;value&quot;</span>)) → value</a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
 <p><a name="function:field"></a></p>
 <h2 id="fieldtext-offset-delimeter">field(text, offset, delimeter)</h2>
 <p>Splits <code>text</code> based on the passed in <code>delimiter</code> and returns the field at <code>offset</code>. When splitting with a space, the delimiter is considered to be all whitespace. (first field is 0)</p>
@@ -1090,7 +1093,8 @@
 <div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">@(has_value(not.existing)) → false</a>
 <a class="sourceLine" id="cb98-3" data-line-number="3">@(has_value(contact.fields.unset)) → false</a>
-<a class="sourceLine" id="cb98-4" data-line-number="4">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb98-4" data-line-number="4">@(has_value(<span class="st">&quot;&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb98-5" data-line-number="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_wait_timed_out"></a></p>
 <h2 id="has_wait_timed_outrun">has_wait_timed_out(run)</h2>
 <p>Returns whether the last wait timed out.</p>
