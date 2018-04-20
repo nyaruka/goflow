@@ -441,9 +441,10 @@
 		            "method": "POST",
                     "url": "http://example.com",
                     "headers": {
+                        "Content-Type": "application/json",
 		                "User-Agent": "RapidPro"
                     },
-                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": @(json(default(run.input.urn, contact.urn)))},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": [],\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(run.input.channel))\n}"
+                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": @(if(default(run.input.urn, contact.urns.0), json(text(default(run.input.urn, contact.urns.0))), \"null\"))},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(if(run.input, json(run.input.channel), \"null\"))\n}"
 		        }
 		    ],
 		    "router": {

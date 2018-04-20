@@ -147,6 +147,7 @@ type SessionAssets interface {
 // @context flow
 type Flow interface {
 	types.XValue
+	types.XResolvable
 
 	UUID() FlowUUID
 	Name() string
