@@ -47,6 +47,10 @@ func (r *Result) Resolve(key string) types.XValue {
 			return types.NewXText(r.Category)
 		}
 		return types.NewXText(r.CategoryLocalized)
+	case "input":
+		return types.NewXText(r.Input)
+	case "node_uuid":
+		return types.NewXText(string(r.NodeUUID))
 	case "created_on":
 		return types.NewXDateTime(r.CreatedOn)
 	}
@@ -61,7 +65,7 @@ func (r *Result) Reduce() types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (r *Result) ToXJSON() types.XText {
-	return types.ResolveKeys(r, "name", "value", "category", "category_localized", "created_on").ToXJSON()
+	return types.ResolveKeys(r, "name", "value", "category", "category_localized", "input", "node_uuid", "created_on").ToXJSON()
 }
 
 var _ types.XValue = (*Result)(nil)
