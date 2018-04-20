@@ -126,7 +126,7 @@
                             },
                             "language": "",
                             "name": "Bob",
-                            "timezone": "UTC",
+                            "timezone": "",
                             "urns": [],
                             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
                         },

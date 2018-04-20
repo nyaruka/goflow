@@ -38,6 +38,7 @@ type session struct {
 	pushedFlow *pushedFlow
 	flowStack  *flowStack
 	newEvents  []flows.Event
+	httpClient *utils.HTTPClient
 }
 
 // NewSession creates a new session
@@ -49,6 +50,7 @@ func NewSession(assetCache *assets.AssetCache, assetServer assets.AssetServer) f
 		newEvents:  []flows.Event{},
 		runsByUUID: make(map[flows.RunUUID]flows.FlowRun),
 		flowStack:  newFlowStack(),
+		httpClient: utils.NewHTTPClient("goflow/1.0"),
 	}
 }
 
@@ -115,6 +117,8 @@ func (s *session) LogEvent(event flows.Event) {
 	s.newEvents = append(s.newEvents, event)
 }
 func (s *session) Events() []flows.Event { return s.newEvents }
+
+func (s *session) HTTPClient() *utils.HTTPClient { return s.httpClient }
 
 //------------------------------------------------------------------------------------------
 // Flow execution

@@ -339,6 +339,7 @@ type Step interface {
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Assets() SessionAssets
+	HTTPClient() *utils.HTTPClient
 
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)

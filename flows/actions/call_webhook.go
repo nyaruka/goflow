@@ -74,12 +74,6 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		return nil
 	}
 
-	// add the standard headers
-	req.Header.Add("User-Agent", "goflow")
-	if method == "POST" {
-		req.Header.Add("Content-Type", "application/json")
-	}
-
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
 		headerValue, err := run.EvaluateTemplateAsString(value, false)
@@ -90,11 +84,13 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		req.Header.Add(key, headerValue)
 	}
 
-	webhook, err := flows.MakeWebhookCall(req)
+	webhook, err := flows.MakeWebhookCall(run.Session(), req)
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	}
 	run.SetWebhook(webhook)
+
+	fmt.Printf("WEBHOOK BODY: %s REQUEST: %s ERR: %s\n", body, webhook.Request(), err)
 
 	log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 	return nil

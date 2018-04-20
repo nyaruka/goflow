@@ -1,46 +1,61 @@
 package utils
 
 import (
-	"crypto/tls"
 	"net/http"
-	"sync"
+	"net/http/httputil"
 	"time"
 )
+
+var httpHeaderUserAgent = "User-Agent"
 
 func init() {
 	Validator.RegisterAlias("http_method", "eq=GET|eq=HEAD|eq=POST|eq=PUT|eq=PATCH|eq=DELETE")
 }
 
-var (
-	transport *http.Transport
-	client    *http.Client
-	once      sync.Once
-)
-
-// NewHTTPClient creates a new hTTP cl.ient with our default options
-func NewHTTPClient() *http.Client {
-	once.Do(func() {
-		timeout := time.Duration(15 * time.Second)
-		transport = &http.Transport{
-			MaxIdleConns:    10,
-			IdleConnTimeout: 30 * time.Second,
-		}
-		client = &http.Client{Transport: transport, Timeout: timeout}
-	})
-
-	return client
+// HTTPClient is a client for HTTP requests
+type HTTPClient struct {
+	client           *http.Client
+	defaultUserAgent string
 }
 
-func getInsecureClient() *http.Client {
-	once.Do(func() {
-		timeout := time.Duration(15 * time.Second)
-		transport = &http.Transport{
-			MaxIdleConns:    10,
-			IdleConnTimeout: 30 * time.Second,
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-		client = &http.Client{Transport: transport, Timeout: timeout}
-	})
+// NewHTTPClient creates a new HTTP client with our default options
+func NewHTTPClient(defaultUserAgent string) *HTTPClient {
+	return &HTTPClient{
+		client: &http.Client{
+			Transport: &http.Transport{
+				MaxIdleConns:    10,
+				IdleConnTimeout: 30 * time.Second,
+			},
+			Timeout: time.Duration(15 * time.Second),
+		},
+		defaultUserAgent: defaultUserAgent,
+	}
+}
 
-	return client
+func (c *HTTPClient) prepareRequest(request *http.Request) {
+	// if user-agent isn't set, use our default
+	if request.Header.Get(httpHeaderUserAgent) == "" {
+		request.Header.Set(httpHeaderUserAgent, c.defaultUserAgent)
+	}
+}
+
+// Do does the given HTTP request
+func (c *HTTPClient) Do(request *http.Request) (*http.Response, error) {
+	c.prepareRequest(request)
+
+	return c.client.Do(request)
+}
+
+// DoWithDump does the given hTTP request and returns a dump of the entire request
+func (c *HTTPClient) DoWithDump(request *http.Request) (*http.Response, string, error) {
+	c.prepareRequest(request)
+
+	dump, err := httputil.DumpRequestOut(request, false)
+	if err != nil {
+		return nil, "", err
+	}
+
+	response, err := c.client.Do(request)
+
+	return response, string(dump), err
 }
