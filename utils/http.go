@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var httpHeaderUserAgent = "User-Agent"
@@ -50,10 +52,12 @@ func (c *HTTPClient) Do(request *http.Request) (*http.Response, error) {
 func (c *HTTPClient) DoWithDump(request *http.Request) (*http.Response, string, error) {
 	c.prepareRequest(request)
 
-	dump, err := httputil.DumpRequestOut(request, false)
+	dump, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, "", err
 	}
+
+	log.Debug(string(dump))
 
 	response, err := c.client.Do(request)
 

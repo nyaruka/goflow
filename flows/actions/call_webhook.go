@@ -74,8 +74,6 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		return nil
 	}
 
-	fmt.Println(body)
-
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
 		headerValue, err := run.EvaluateTemplateAsString(value, false)

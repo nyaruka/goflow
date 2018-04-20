@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -26,6 +27,56 @@ func (s *step) Leave(exit flows.ExitUUID) {
 	s.exitUUID = exit
 	s.leftOn = &now
 }
+
+func (s *step) Resolve(key string) types.XValue {
+	switch key {
+	case "uuid":
+		return types.NewXText(string(s.UUID()))
+	case "node_uuid":
+		return types.NewXText(string(s.NodeUUID()))
+	case "arrived_on":
+		return types.NewXDateTime(s.ArrivedOn())
+	case "exit_uuid":
+		return types.NewXText(string(s.ExitUUID()))
+	default:
+		return types.NewXResolveError(s, key)
+	}
+}
+
+func (s *step) Reduce() types.XPrimitive {
+	return types.NewXText(string(s.UUID()))
+}
+
+func (s *step) ToXJSON() types.XText {
+	return types.ResolveKeys(s, "uuid", "node_uuid", "arrived_on", "exit_uuid").ToXJSON()
+}
+
+var _ flows.Step = (*step)(nil)
+
+type Path []flows.Step
+
+func (p Path) Length() int {
+	return len(p)
+}
+
+func (p Path) Index(index int) types.XValue {
+	return p[index]
+}
+
+func (p Path) Reduce() types.XPrimitive {
+	array := types.NewXArray()
+	for _, step := range p {
+		array.Append(step)
+	}
+	return array
+}
+
+func (p Path) ToXJSON() types.XText {
+	return p.Reduce().ToXJSON()
+}
+
+var _ types.XValue = (Path)(nil)
+var _ types.XIndexable = (Path)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

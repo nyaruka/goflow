@@ -326,6 +326,9 @@ type Input interface {
 }
 
 type Step interface {
+	types.XValue
+	types.XResolvable
+
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
@@ -400,6 +403,7 @@ type RunEnvironment interface {
 // @context run
 type FlowRun interface {
 	types.XValue
+	types.XResolvable
 	RunSummary
 
 	Environment() RunEnvironment
