@@ -600,12 +600,15 @@ Converts the passed in `year`, `month` and `day`
 
 ## default(test, default)
 
-Takes two arguments, returning `test` if not an error or nil, otherwise returning `default`
+Takes two arguments, returning `test` if not an error or nil or empty text, otherwise returning `default`
 
 
 ```objectivec
 @(default(undeclared.var, "default_value")) → default_value
 @(default("10", "20")) → 10
+@(default("", "value")) → value
+@(default(array(1, 2), "value")) → ["1","2"]
+@(default(array(), "value")) → value
 @(default(datetime("invalid-date"), "today")) → today
 ```
 
@@ -1669,6 +1672,7 @@ value.
 @(has_value(datetime("foo"))) → false
 @(has_value(not.existing)) → false
 @(has_value(contact.fields.unset)) → false
+@(has_value("")) → false
 @(has_value("hello")) → true
 ```
 

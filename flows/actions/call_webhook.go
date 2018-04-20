@@ -61,7 +61,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 
 	// substitute any body variables
 	if body != "" {
-		body, err = run.EvaluateTemplateAsString(a.Body, false)
+		body, err = run.EvaluateTemplateAsString(body, false)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		}
@@ -73,6 +73,8 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		log.Add(events.NewErrorEvent(err))
 		return nil
 	}
+
+	fmt.Println(body)
 
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {

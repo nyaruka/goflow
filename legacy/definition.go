@@ -32,7 +32,7 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 // TODO add excellent support for JSON serialization of complex objects?
 // Need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
 var legacyWebhookBody = `{
-	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(default(run.input.urn, contact.urn)))},
+	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(default(string(default(run.input.urn, contact.urn)), run.input.urn)))},
 	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
 	"path": [],
 	"results": @(json(run.results)),
@@ -571,12 +571,14 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 	case "api":
 		migratedURL, _ := MigrateTemplate(a.Webhook, ExtraAsFunction)
 
+		headers := make(map[string]string, len(a.WebhookHeaders))
 		body := ""
+
 		if strings.ToUpper(a.Action) == "POST" {
+			headers["Content-Type"] = "application/json"
 			body = legacyWebhookBody
 		}
 
-		headers := make(map[string]string, len(a.WebhookHeaders))
 		for _, header := range a.WebhookHeaders {
 			headers[header.Name] = header.Value
 		}
@@ -829,14 +831,16 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		migratedURL, _ := MigrateTemplate(config.Webhook, ExtraAsFunction)
-		migratedHeaders := make(map[string]string, len(config.Headers))
-		for _, header := range config.Headers {
-			migratedHeaders[header.Name] = header.Value
+		headers := make(map[string]string, len(config.Headers))
+		body := ""
+
+		if strings.ToUpper(config.Action) == "POST" {
+			headers["Content-Type"] = "application/json"
+			body = legacyWebhookBody
 		}
 
-		body := ""
-		if strings.ToUpper(config.Action) == "POST" {
-			body = legacyWebhookBody
+		for _, header := range config.Headers {
+			headers[header.Name] = header.Value
 		}
 
 		newActions = []flows.Action{
@@ -844,7 +848,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
 				Method:     config.Action,
-				Headers:    migratedHeaders,
+				Headers:    headers,
 				Body:       body,
 			},
 		}
