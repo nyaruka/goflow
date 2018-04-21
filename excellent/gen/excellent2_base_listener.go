@@ -1,4 +1,4 @@
-// Generated from Excellent2.g4 by ANTLR 4.7.
+// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -37,6 +37,12 @@ func (s *BaseExcellent2Listener) EnterDotLookup(ctx *DotLookupContext) {}
 
 // ExitDotLookup is called when production dotLookup is exited.
 func (s *BaseExcellent2Listener) ExitDotLookup(ctx *DotLookupContext) {}
+
+// EnterNull is called when production null is entered.
+func (s *BaseExcellent2Listener) EnterNull(ctx *NullContext) {}
+
+// ExitNull is called when production null is exited.
+func (s *BaseExcellent2Listener) ExitNull(ctx *NullContext) {}
 
 // EnterStringLiteral is called when production stringLiteral is entered.
 func (s *BaseExcellent2Listener) EnterStringLiteral(ctx *StringLiteralContext) {}

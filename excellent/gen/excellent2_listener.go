@@ -1,4 +1,4 @@
-// Generated from Excellent2.g4 by ANTLR 4.7.
+// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -15,6 +15,9 @@ type Excellent2Listener interface {
 
 	// EnterDotLookup is called when entering the dotLookup production.
 	EnterDotLookup(c *DotLookupContext)
+
+	// EnterNull is called when entering the null production.
+	EnterNull(c *NullContext)
 
 	// EnterStringLiteral is called when entering the stringLiteral production.
 	EnterStringLiteral(c *StringLiteralContext)
@@ -75,6 +78,9 @@ type Excellent2Listener interface {
 
 	// ExitDotLookup is called when exiting the dotLookup production.
 	ExitDotLookup(c *DotLookupContext)
+
+	// ExitNull is called when exiting the null production.
+	ExitNull(c *NullContext)
 
 	// ExitStringLiteral is called when exiting the stringLiteral production.
 	ExitStringLiteral(c *StringLiteralContext)
