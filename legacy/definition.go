@@ -31,13 +31,13 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 
 // TODO need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
 var legacyWebhookBody = `{
-	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(if(default(run.input.urn, contact.urns.0), json(text(default(run.input.urn, contact.urns.0))), "null"))},
+	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
 	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
 	"input": @(json(run.input)),
-	"channel": @(if(run.input, json(run.input.channel), "null"))
+	"channel": @(json(if(run.input, run.input.channel, null)))
 }`
 
 // Flow is a flow in the legacy format
