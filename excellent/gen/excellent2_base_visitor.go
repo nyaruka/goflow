@@ -1,4 +1,4 @@
-// Generated from Excellent2.g4 by ANTLR 4.7.
+// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
 package gen // Excellent2
 import "github.com/antlr/antlr4/runtime/Go/antlr"
@@ -16,6 +16,10 @@ func (v *BaseExcellent2Visitor) VisitDecimalLiteral(ctx *DecimalLiteralContext) 
 }
 
 func (v *BaseExcellent2Visitor) VisitDotLookup(ctx *DotLookupContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent2Visitor) VisitNull(ctx *NullContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

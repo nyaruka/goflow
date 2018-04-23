@@ -270,6 +270,12 @@ func TestEvaluateTemplate(t *testing.T) {
 		{`@("asdf" < "basf")`, nil, true},
 		{"@(1<2<3)", nil, true}, // can't chain
 
+		// nulls
+		{"@(null)", nil, false},
+		{"@(NULL)", nil, false},
+		{"@(null = NULL)", types.XBooleanTrue, false},
+		{"@(null != NULL)", types.XBooleanFalse, false},
+
 		{"@(\"foo\" & \"bar\")", xs("foobar"), false},
 		{"@(missing & \"bar\")", nil, true},
 		{"@(\"foo\" & missing)", nil, true},

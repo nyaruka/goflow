@@ -96,14 +96,19 @@ func (v *Visitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	return val
 }
 
-// VisitTrue deals with the "true" literal
+// VisitTrue deals with the `true` reserved word
 func (v *Visitor) VisitTrue(ctx *gen.TrueContext) interface{} {
 	return types.XBooleanTrue
 }
 
-// VisitFalse deals with the "false" literal
+// VisitFalse deals with the `false` reserved word
 func (v *Visitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 	return types.XBooleanFalse
+}
+
+// VisitNull deals with the `null` reserved word
+func (v *Visitor) VisitNull(ctx *gen.NullContext) interface{} {
+	return nil
 }
 
 // VisitArrayLookup deals with lookups such as foo[5] or foo["key with spaces"]

@@ -61,7 +61,7 @@ func ToXBool(x XValue) (XBoolean, XError) {
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(x XValue) (XNumber, XError) {
 	if utils.IsNil(x) {
-		return XNumberZero, nil
+		return XNumberZero, NewXErrorf("unable to convert NULL to a number")
 	}
 
 	x = x.Reduce()
@@ -84,7 +84,7 @@ func ToXNumber(x XValue) (XNumber, XError) {
 // ToXDate converts the given value to a time or returns an error if that isn't possible
 func ToXDate(env utils.Environment, x XValue) (XDateTime, XError) {
 	if utils.IsNil(x) {
-		return XDateTimeZero, nil
+		return XDateTimeZero, NewXErrorf("unable to convert NULL to a datetime")
 	}
 
 	x = x.Reduce()
@@ -101,7 +101,7 @@ func ToXDate(env utils.Environment, x XValue) (XDateTime, XError) {
 		}
 	}
 
-	return XDateTimeZero, NewXErrorf("unable to convert value '%s' of type '%s' to a date", x, reflect.TypeOf(x))
+	return XDateTimeZero, NewXErrorf("unable to convert value '%s' of type '%s' to a datetime", x, reflect.TypeOf(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
