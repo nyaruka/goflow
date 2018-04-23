@@ -4,13 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"regexp"
-	"strings"
 	"testing"
 
-	"github.com/buger/jsonparser"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
@@ -147,11 +143,9 @@ func TestActionMigration(t *testing.T) {
 		migratedActionJSON := formatJSON(migratedActionRaw)
 		expectedActionJSON := formatJSON(test.ExpectedAction)
 
-		if !wildcardEquals(migratedActionJSON, expectedActionJSON) {
-			t.Errorf("Got action:\n%s\n\nwhen expecting:\n%s\n\n", migratedActionJSON, expectedActionJSON)
-		}
+		assert.Equal(t, expectedActionJSON, migratedActionJSON)
 
-		checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization, migratedActionRaw)
+		checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 	}
 }
 
@@ -163,7 +157,11 @@ func TestTestMigration(t *testing.T) {
 	err = json.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
 	for _, test := range tests {
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+
 		legacyFlowsJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		require.NoError(t, err)
@@ -181,11 +179,9 @@ func TestTestMigration(t *testing.T) {
 			migratedCaseJSON := formatJSON(migratedCaseRaw)
 			expectedCaseJSON := formatJSON(test.ExpectedCase)
 
-			if !wildcardEquals(migratedCaseJSON, expectedCaseJSON) {
-				t.Errorf("Got case:\n%s\n\nwhen expecting:\n%s\n\n", migratedCaseJSON, expectedCaseJSON)
-			}
+			assert.Equal(t, expectedCaseJSON, migratedCaseJSON)
 
-			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization, migratedCaseRaw)
+			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}
 	}
 }
@@ -198,7 +194,11 @@ func TestRuleSetMigration(t *testing.T) {
 	err = json.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
 	for _, test := range tests {
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+
 		legacyFlowsJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		require.NoError(t, err)
@@ -222,11 +222,9 @@ func TestRuleSetMigration(t *testing.T) {
 			migratedNodeJSON := formatJSON(migratedNodeRaw)
 			expectedNodeJSON := formatJSON(test.ExpectedNode)
 
-			if !wildcardEquals(migratedNodeJSON, expectedNodeJSON) {
-				t.Errorf("Got node:\n%s\n\nwhen expecting:\n%s\n\n", migratedNodeJSON, expectedNodeJSON)
-			}
+			assert.Equal(t, expectedNodeJSON, migratedNodeJSON)
 
-			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization, migratedNodeRaw)
+			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}
 	}
 }
@@ -237,53 +235,20 @@ func readLegacyTestFlows(flowsJSON string) ([]*legacy.Flow, error) {
 	return legacy.ReadLegacyFlows(legacyFlows)
 }
 
-func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage, substitutionSource json.RawMessage) {
+func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage) {
 	actualLocalizationRaw, _ := json.Marshal(flow.Localization())
 	actualLocalizationJSON := formatJSON(actualLocalizationRaw)
 
-	// Because localization keys are UUIDs and some of those may be generated during migration, ordering of localized
-	// items is not predicatable. So we perform substitutions based on queries into the migrated item, to get the actual
-	// UUIDs, and then re-marshal back into JSON.
-	regex := regexp.MustCompile(`{{[^}]+}}`)
-	expectedLocalizationStr := regex.ReplaceAllStringFunc(string(expectedLocalizationRaw), func(match string) string {
-		queryKeys := strings.Split(strings.TrimSpace(match[2:len(match)-2]), ".")
-
-		subValue, err := jsonparser.GetString(substitutionSource, queryKeys...)
-		if err != nil {
-			t.Fatalf("Couldn't find: '%s' in\n\n%s\n", strings.Join(queryKeys, "."), string(substitutionSource))
-		}
-
-		return subValue
-	})
-
-	// unmarshal and re-marchal expected JSON to get ordering correct after substitutions
-	expectedLocalization, _ := definition.ReadLocalization(json.RawMessage(expectedLocalizationStr))
-	expectedLocalizationRaw, _ = json.Marshal(expectedLocalization)
+	//expectedLocalization, _ := definition.ReadLocalization(expectedLocalizationRaw)
+	//expectedLocalizationRaw, _ = json.Marshal(expectedLocalization)
 	expectedLocalizationJSON := formatJSON(expectedLocalizationRaw)
 
-	if !wildcardEquals(actualLocalizationJSON, expectedLocalizationJSON) {
-		t.Errorf("Got localization:\n%s\n\nwhen expecting:\n%s\n\n", actualLocalizationJSON, expectedLocalizationJSON)
-	}
+	assert.Equal(t, expectedLocalizationJSON, actualLocalizationJSON)
 }
 
 func formatJSON(data json.RawMessage) string {
 	out, _ := json.MarshalIndent(data, "", "    ")
 	return string(out)
-}
-
-// checks if two strings are, ignoring any � characters
-func wildcardEquals(actual string, expected string) bool {
-	actualRunes := []rune(actual)
-	expectedRunes := []rune(expected)
-	substituted := make([]rune, len(expectedRunes))
-	for c, ch := range expectedRunes {
-		if ch == '�' && c < len(actualRunes) {
-			substituted[c] = actualRunes[c]
-		} else {
-			substituted[c] = expectedRunes[c]
-		}
-	}
-	return string(actualRunes) == string(substituted)
 }
 
 func TestTranslations(t *testing.T) {

@@ -242,13 +242,13 @@
                     "attachments": [
                         "image/jpeg:http://s3.amazon.com/bucket/test_fr.jpg?a=@contact.fields.age"
                     ],
-                    "text": [
-                        "Vous habitez toujours à @contact.fields.city"
-                    ],
                     "quick_replies": [
                         "Oui",
                         "Non",
                         ""
+                    ],
+                    "text": [
+                        "Vous habitez toujours à @contact.fields.city"
                     ]
                 }
             }

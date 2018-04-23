@@ -6,7 +6,7 @@
             "max": "34"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_between",
             "arguments": ["@contact.fields.age", "34"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -22,14 +22,14 @@
             }
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_all_words",
             "arguments": ["yes yeah"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
-                "������������������������������������": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "arguments": ["oui"]
                 }
             }
@@ -44,14 +44,14 @@
             }
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_any_word",
             "arguments": ["yes yeah"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
-                "������������������������������������": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "arguments": ["oui"]
                 }
             }
@@ -66,14 +66,14 @@
             }
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_only_phrase",
             "arguments": ["yes yeah"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
-                "������������������������������������": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "arguments": ["oui"]
                 }
             }
@@ -88,14 +88,14 @@
             }
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_phrase",
             "arguments": ["yes yeah"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
-                "������������������������������������": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "arguments": ["oui"]
                 }
             }
@@ -106,7 +106,7 @@
             "type": "date"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date",
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -118,7 +118,7 @@
             "test": "27-7-2017"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date_gt",
             "arguments": ["27-7-2017"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -131,7 +131,7 @@
             "test": "27-7-2017"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date_lt",
             "arguments": ["27-7-2017"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -144,7 +144,7 @@
             "test": "27-7-2017"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date_eq",
             "arguments": ["27-7-2017"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -157,7 +157,7 @@
             "test": "Kigali"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_district",
             "arguments": ["Kigali"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -169,7 +169,7 @@
             "type": "email"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_email",
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -181,7 +181,7 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_eq",
             "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -194,7 +194,7 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_gt",
             "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -207,7 +207,7 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_gte",
             "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -220,7 +220,7 @@
             "test": {"uuid": "e9963476-1751-4078-9cc8-32a01283751a", "name": "Beta"}
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_group",
             "arguments": ["e9963476-1751-4078-9cc8-32a01283751a"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -233,7 +233,7 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_lt",
             "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -246,7 +246,7 @@
             "test": "@contact.age"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_lte",
             "arguments": ["@contact.fields.age"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -258,7 +258,7 @@
             "type": "not_empty"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_text",
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -269,7 +269,7 @@
             "type": "number"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number",
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -280,7 +280,7 @@
             "type": "phone"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_phone",
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -295,14 +295,14 @@
             }
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_pattern",
             "arguments": ["[Yy]eah?"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
-                "������������������������������������": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "arguments": ["[Oo]ui"]
                 }
             }
@@ -317,14 +317,14 @@
             }
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_beginning",
             "arguments": ["yes"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
-                "������������������������������������": {
+                "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
                     "arguments": ["oui"]
                 }
             }
@@ -335,7 +335,7 @@
             "type": "state"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_state",
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -347,7 +347,7 @@
             "exit_type": "completed"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "is_text_eq",
             "arguments": ["completed"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -360,7 +360,7 @@
             "exit_type": "expired"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "is_text_eq",
             "arguments": ["expired"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -374,7 +374,7 @@
             "district": "Gasabo"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_ward",
             "arguments": ["Gasabo", "Kigali"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -387,7 +387,7 @@
             "status": "success"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "is_text_eq",
             "arguments": ["success"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
@@ -400,7 +400,7 @@
             "status": "failure"
         },
         "expected_case": {
-            "uuid": "������������������������������������",
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "is_text_eq",
             "arguments": ["response_error"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
