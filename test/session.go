@@ -319,13 +319,13 @@ func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Sess
 	sessionAssets = strings.Replace(sessionAssets, "TEST_SERVER_PORT", fmt.Sprintf("%d", testServerPort), -1)
 
 	// read our assets
-	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5)
 	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {
 		return nil, fmt.Errorf("error including assets: %s", err)
 	}
 
 	// create our engine session
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), TestHTTPClient)
 
 	// override the session environment
 	session.SetEnvironment(newTestEnvironment())

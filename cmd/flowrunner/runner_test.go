@@ -88,7 +88,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	assetCache := assets.NewAssetCache(100, 5, "testing/1.0")
+	assetCache := assets.NewAssetCache(100, 5)
 	if err := assetCache.Include(defaultAssetsJSON); err != nil {
 		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
 	}
@@ -96,7 +96,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer())
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), test.TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -119,7 +119,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
-		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), outJSON)
+		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), test.TestHTTPClient, outJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -153,15 +153,15 @@ func TestFlows(t *testing.T) {
 	// save away our server URL so we can rewrite our URLs
 	serverURL = server.URL
 
-	for _, test := range flowTests {
+	for _, tc := range flowTests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 
-		testJSON, err := readFile("flows/", test.output)
-		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", test.assets, test.output, err)
+		testJSON, err := readFile("flows/", tc.output)
+		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
 		flowTest := FlowTest{}
 		err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
-		require.NoError(t, err, "Error unmarshalling output for flow '%s' and output '%s': %s", test.assets, test.output, err)
+		require.NoError(t, err, "Error unmarshalling output for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
 		// unmarshal our caller events
 		callerEvents := make([][]flows.Event, len(flowTest.CallerEvents))
@@ -171,7 +171,7 @@ func TestFlows(t *testing.T) {
 
 			for e := range flowTest.CallerEvents[i] {
 				event, err := events.EventFromEnvelope(flowTest.CallerEvents[i][e])
-				require.NoError(t, err, "Error unmarshalling caller events for flow '%s' and output '%s': %s", test.assets, test.output, err)
+				require.NoError(t, err, "Error unmarshalling caller events for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
 				event.SetFromCaller(true)
 				callerEvents[i][e] = event
@@ -179,9 +179,9 @@ func TestFlows(t *testing.T) {
 		}
 
 		// run our flow
-		runResult, err := runFlow(test.assets, flowTest.Trigger, callerEvents)
+		runResult, err := runFlow(tc.assets, flowTest.Trigger, callerEvents)
 		if err != nil {
-			t.Errorf("Error running flow for flow '%s' and output '%s': %s", test.assets, test.output, err)
+			t.Errorf("Error running flow for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 			continue
 		}
 
@@ -197,7 +197,7 @@ func TestFlows(t *testing.T) {
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
 			// write our output
-			outputFilename := deriveFilename("flows/", test.output)
+			outputFilename := deriveFilename("flows/", tc.output)
 			err = ioutil.WriteFile(outputFilename, clearTimestamps(testJSON), 0644)
 			require.NoError(t, err, "Error writing test file to %s: %s", outputFilename, err)
 		} else {
@@ -213,7 +213,7 @@ func TestFlows(t *testing.T) {
 
 			// read our output and test that we are the same
 			if len(runResult.outputs) != len(expectedOutputs) {
-				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", runResult.outputs, expectedOutputs, test.assets)
+				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", runResult.outputs, expectedOutputs, tc.assets)
 				continue
 			}
 
@@ -221,15 +221,15 @@ func TestFlows(t *testing.T) {
 				actualOutput := runResult.outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), actualOutput.Session)
-				require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", test.assets, err)
+				actualSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), test.TestHTTPClient, actualOutput.Session)
+				require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", tc.assets, err)
 
-				expectedSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), expectedOutput.Session)
-				require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", test.assets, err)
+				expectedSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), test.TestHTTPClient, expectedOutput.Session)
+				require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", tc.assets, err)
 
 				// number of runs should be the same
 				if len(actualSession.Runs()) != len(expectedSession.Runs()) {
-					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), test.assets)
+					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), tc.assets)
 				}
 
 				// runs should have same status and flows
@@ -238,16 +238,16 @@ func TestFlows(t *testing.T) {
 					expected := expectedSession.Runs()[i]
 
 					if run.Flow() != expected.Flow() {
-						t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'", run.Flow().UUID(), expected.Flow().UUID(), test.assets)
+						t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'", run.Flow().UUID(), expected.Flow().UUID(), tc.assets)
 					}
 
 					if run.Status() != expected.Status() {
-						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), test.assets)
+						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), tc.assets)
 					}
 				}
 
 				if len(actualOutput.Events) != len(expectedOutput.Events) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, test.assets)
+					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, tc.assets)
 				}
 
 				for j := range actualOutput.Events {
@@ -256,13 +256,13 @@ func TestFlows(t *testing.T) {
 
 					// write our events as json
 					eventJSON, err := rawMessageAsJSON(event)
-					require.NoError(t, err, "Error marshalling event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
+					require.NoError(t, err, "Error marshalling event for flow '%s' and output '%s': %s\n", tc.assets, tc.output, err)
 
 					expectedJSON, err := rawMessageAsJSON(expected)
-					require.NoError(t, err, "Error marshalling expected event for flow '%s' and output '%s': %s\n", test.assets, test.output, err)
+					require.NoError(t, err, "Error marshalling expected event for flow '%s' and output '%s': %s\n", tc.assets, tc.output, err)
 
 					if eventJSON != expectedJSON {
-						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, test.assets, test.output)
+						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, tc.assets, tc.output)
 						break
 					}
 				}

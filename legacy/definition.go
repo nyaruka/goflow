@@ -29,16 +29,15 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TODO add excellent support for JSON serialization of complex objects?
-// Need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
+// TODO need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
 var legacyWebhookBody = `{
-	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": "@contact.urns.0"},
+	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
 	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
-	"path": [],
-	"results": {},
+	"path": @(json(run.path)),
+	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": {},
-	"channel": {}
+	"input": @(json(run.input)),
+	"channel": @(json(if(run.input, run.input.channel, null)))
 }`
 
 // Flow is a flow in the legacy format
@@ -572,6 +571,13 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		migratedURL, _ := MigrateTemplate(a.Webhook, ExtraAsFunction)
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
+		body := ""
+
+		if strings.ToUpper(a.Action) == "POST" {
+			headers["Content-Type"] = "application/json"
+			body = legacyWebhookBody
+		}
+
 		for _, header := range a.WebhookHeaders {
 			headers[header.Name] = header.Value
 		}
@@ -580,7 +586,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			BaseAction: actions.NewBaseAction(a.UUID),
 			Method:     a.Action,
 			URL:        migratedURL,
-			Body:       legacyWebhookBody,
+			Body:       body,
 			Headers:    headers,
 		}, nil
 	default:
@@ -824,9 +830,16 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		migratedURL, _ := MigrateTemplate(config.Webhook, ExtraAsFunction)
-		migratedHeaders := make(map[string]string, len(config.Headers))
+		headers := make(map[string]string, len(config.Headers))
+		body := ""
+
+		if strings.ToUpper(config.Action) == "POST" {
+			headers["Content-Type"] = "application/json"
+			body = legacyWebhookBody
+		}
+
 		for _, header := range config.Headers {
-			migratedHeaders[header.Name] = header.Value
+			headers[header.Name] = header.Value
 		}
 
 		newActions = []flows.Action{
@@ -834,7 +847,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
 				Method:     config.Action,
-				Headers:    migratedHeaders,
+				Headers:    headers,
+				Body:       body,
 			},
 		}
 

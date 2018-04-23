@@ -329,7 +329,104 @@
             "x": 1,
             "config": {
                 "webhook": "http://example.com", 
-                "webhook_action": "GET", 
+                "webhook_action": "GET"
+            }
+        },
+        "expected_node": {
+		    "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+		    "actions": [
+		        {
+		            "type": "call_webhook",
+		            "uuid": "������������������������������������",
+		            "method": "GET",
+                    "url": "http://example.com"
+		        }
+		    ],
+		    "router": {
+		        "type": "switch",
+		        "result_name": "Response 1",
+		        "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+		        "operand": "@run.webhook.status",
+		        "cases": [
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "is_text_eq",
+		                "arguments": ["success"],
+		                "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "is_text_eq",
+		                "arguments": ["response_error"],
+		                "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+		            },
+		            {
+		                "uuid": "������������������������������������",
+		                "type": "is_text_eq",
+		                "arguments": ["connection_error"],
+		                "exit_uuid": "������������������������������������"
+		            }
+		        ]
+		    },
+		    "exits": [
+		        {
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+		            "name": "Success"
+		        },
+		        {
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+		            "name": "Failure"
+                },
+		        {
+                    "uuid": "������������������������������������",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+		            "name": "Connection Error"
+		        }
+		    ]
+		},
+        "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16", 
+                    "test": {
+                        "status": "success", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Success"
+                    }, 
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                }, 
+                {
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                    "test": {
+                        "status": "failure", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Failure"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }
+            ],
+            "ruleset_type": "webhook", 
+            "label": "Response 1", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 100, 
+            "x": 1,
+            "config": {
+                "webhook": "http://example.com", 
+                "webhook_action": "POST", 
                 "webhook_headers": [
                     {"name": "User-Agent", "value": "RapidPro"}
                 ]
@@ -341,11 +438,13 @@
 		        {
 		            "type": "call_webhook",
 		            "uuid": "������������������������������������",
-		            "method": "GET",
+		            "method": "POST",
                     "url": "http://example.com",
                     "headers": {
+                        "Content-Type": "application/json",
 		                "User-Agent": "RapidPro"
-		            }
+                    },
+                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
 		        }
 		    ],
 		    "router": {

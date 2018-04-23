@@ -29,6 +29,7 @@ type FlowServer struct {
 	config     *Config
 	httpServer *http.Server
 	assetCache *assets.AssetCache
+	httpClient *utils.HTTPClient
 }
 
 // NewFlowServer creates a new flow server instance
@@ -65,6 +66,7 @@ func NewFlowServer(config *Config) *FlowServer {
 			ReadTimeout:  60 * time.Second,
 			WriteTimeout: 60 * time.Second,
 		},
+		httpClient: utils.NewHTTPClient("goflow/" + config.Version),
 	}
 
 	// root page just serves our example and "postman"" interface
@@ -83,8 +85,7 @@ func NewFlowServer(config *Config) *FlowServer {
 
 // Start starts the flow server
 func (s *FlowServer) Start() {
-	fetchUserAgent := fmt.Sprintf("flowserver/%s", s.config.Version)
-	s.assetCache = assets.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune, fetchUserAgent)
+	s.assetCache = assets.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
 
 	go func() {
 		err := s.httpServer.ListenAndServe()
@@ -166,13 +167,13 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// read and validate our asset server
-	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, start.AssetServer)
+	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, start.AssetServer)
 	if err != nil {
 		return nil, err
 	}
 
 	// build our session
-	session := engine.NewSession(s.assetCache, assetServer)
+	session := engine.NewSession(s.assetCache, assetServer, s.httpClient)
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
@@ -229,13 +230,13 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read and validate our asset server
-	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, resume.AssetServer)
+	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, resume.AssetServer)
 	if err != nil {
 		return nil, err
 	}
 
 	// read our session
-	session, err := engine.ReadSession(s.assetCache, assetServer, resume.Session)
+	session, err := engine.ReadSession(s.assetCache, assetServer, s.httpClient, resume.Session)
 	if err != nil {
 		return nil, err
 	}

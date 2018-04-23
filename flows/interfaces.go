@@ -147,6 +147,7 @@ type SessionAssets interface {
 // @context flow
 type Flow interface {
 	types.XValue
+	types.XResolvable
 
 	UUID() FlowUUID
 	Name() string
@@ -326,6 +327,9 @@ type Input interface {
 }
 
 type Step interface {
+	types.XValue
+	types.XResolvable
+
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
@@ -339,6 +343,7 @@ type Step interface {
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Assets() SessionAssets
+	HTTPClient() *utils.HTTPClient
 
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)
@@ -399,6 +404,7 @@ type RunEnvironment interface {
 // @context run
 type FlowRun interface {
 	types.XValue
+	types.XResolvable
 	RunSummary
 
 	Environment() RunEnvironment

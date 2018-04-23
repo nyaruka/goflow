@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/suite"
@@ -237,7 +238,7 @@ func (ts *ServerTestSuite) parseSessionResponse(assetCache *assets.AssetCache, b
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	session, err := engine.ReadSession(assetCache, ts.assetServer, envelope.Session)
+	session, err := engine.ReadSession(assetCache, ts.assetServer, test.TestHTTPClient, envelope.Session)
 	ts.Require().NoError(err)
 
 	return session, envelope.Log

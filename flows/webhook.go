@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // WebhookStatus represents the status of a WebhookRequest
@@ -57,22 +56,15 @@ type WebhookCall struct {
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
 // regardless of any errors being set
-func MakeWebhookCall(req *http.Request) (*WebhookCall, error) {
-	requestTrace, err := httputil.DumpRequestOut(req, true)
+func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, error) {
+	response, requestDump, err := session.HTTPClient().DoWithDump(request)
 	if err != nil {
-		rr, _ := newWebhookCallFromError(req, string(requestTrace), err)
-		return rr, err
-	}
-
-	resp, err := utils.NewHTTPClient().Do(req)
-	if err != nil {
-		w, _ := newWebhookCallFromError(req, string(requestTrace), err)
+		w, _ := newWebhookCallFromError(request, requestDump, err)
 		return w, err
 	}
-	defer resp.Body.Close()
+	defer response.Body.Close()
 
-	w, err := newWebhookCallFromResponse(string(requestTrace), resp)
-	return w, err
+	return newWebhookCallFromResponse(requestDump, response)
 }
 
 // URL returns the full URL

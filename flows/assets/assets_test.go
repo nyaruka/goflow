@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/flows"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,7 +16,7 @@ func TestAssetCache(t *testing.T) {
 		"uuid": "f2a3e00c-e86a-4282-a9e8-bb2275e1b9a4",
 		"name": "Spam"
 	}]`))
-	cache := NewAssetCache(100, 10, "testing/1.0")
+	cache := NewAssetCache(100, 10)
 
 	asset, err := cache.GetAsset(server, assetType("pizza"), "")
 	assert.EqualError(t, err, "asset type 'pizza' not supported by asset server")
@@ -57,7 +58,7 @@ func TestAssetServer(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "http://testserver/assets/flow/2aad21f6-30b7-42c5-bd7f-1b720c154817/", url)
 
-	asset, err := server.fetchAsset(url, assetTypeFlow, "testing/1.0")
+	asset, err := server.fetchAsset(url, assetTypeFlow)
 	assert.NoError(t, err)
 	assert.Equal(t, []string{"http://testserver/assets/flow/2aad21f6-30b7-42c5-bd7f-1b720c154817/"}, server.mockedRequests)
 
@@ -74,7 +75,7 @@ func TestSessionAssets(t *testing.T) {
 			"name": "Survey Audience"
 		}
 	]`)
-	cache := NewAssetCache(100, 10, "testing/1.0")
+	cache := NewAssetCache(100, 10)
 	sessionAssets := NewSessionAssets(cache, server)
 
 	group, err := sessionAssets.GetGroup(flows.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))

@@ -29,7 +29,7 @@ type flowRun struct {
 	parent  flows.FlowRun
 
 	results flows.Results
-	path    []flows.Step
+	path    Path
 	events  []flows.Event
 	status  flows.RunStatus
 
@@ -264,6 +264,8 @@ func (r *flowRun) Resolve(key string) types.XValue {
 		return types.NewXText(string(r.Status()))
 	case "results":
 		return r.Results()
+	case "path":
+		return r.path
 	case "created_on":
 		return types.NewXDateTime(r.CreatedOn())
 	case "exited_on":
@@ -289,8 +291,6 @@ func (r *flowRun) Snapshot() flows.RunSummary {
 	return newRunSummaryFromRun(r)
 }
 
-var _ types.XValue = (*flowRun)(nil)
-var _ types.XResolvable = (*flowRun)(nil)
 var _ flows.FlowRun = (*flowRun)(nil)
 var _ flows.RunSummary = (*flowRun)(nil)
 

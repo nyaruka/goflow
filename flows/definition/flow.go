@@ -122,8 +122,7 @@ func (f *flow) ToXJSON() types.XText {
 	return types.ResolveKeys(f, "uuid", "name").ToXJSON()
 }
 
-var _ types.XValue = (*flow)(nil)
-var _ types.XResolvable = (*flow)(nil)
+var _ flows.Flow = (*flow)(nil)
 
 func (f *flow) Reference() *flows.FlowReference {
 	return flows.NewFlowReference(f.uuid, f.name)
