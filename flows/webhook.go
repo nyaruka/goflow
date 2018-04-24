@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
@@ -110,9 +111,9 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 	return types.NewXResolveError(w, key)
 }
 
-// Reduce is called when this object needs to be reduced to a primitive
+// Reduce reduces this to a string of method and URL, e.g. "GET http://example.com/hook.php"
 func (w *WebhookCall) Reduce() types.XPrimitive {
-	return types.NewXText(w.body)
+	return types.NewXText(fmt.Sprintf("%s %s", w.method, w.url))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
