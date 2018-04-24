@@ -32,9 +32,11 @@ func init() {
 
 // XTESTS is our mapping of the excellent test names to their actual functions
 var XTESTS = map[string]functions.XFunction{
-	"is_error":           functions.OneArgFunction(IsError),
-	"has_value":          functions.OneArgFunction(HasValue),
+	"is_error":  functions.OneArgFunction(IsError),
+	"has_value": functions.OneArgFunction(HasValue),
+
 	"has_group":          functions.TwoArgFunction(HasGroup),
+	"has_webhook_status": functions.TwoArgFunction(HasWebhookStatus),
 	"has_wait_timed_out": functions.OneArgFunction(HasWaitTimedOut),
 
 	"is_text_eq":      functions.TwoTextFunction(IsTextEQ),
@@ -146,6 +148,33 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 
 	if run.Session().Wait() != nil && run.Session().Wait().HasTimedOut() {
 		return XTestResult{true, nil}
+	}
+
+	return XFalseResult
+}
+
+// HasWebhookStatus tests whether the passed in `webhook` call has the passed in `status`.
+//
+//   @(has_webhook_status(run.webhook, "success")) -> true
+//   @(has_webhook_status(run.webhook, "connection_error")) -> false
+//   @(has_webhook_status(run.webhook, "success").match) -> {"results":[{"state":"WA"},{"state":"IN"}]}
+//   @(has_webhook_status("abc", "success")) -> ERROR
+//
+// @test has_webhook_status(webhook, status)
+func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	// is the first argument a webhook call
+	webhook, isWebhook := arg1.(*flows.WebhookCall)
+	if !isWebhook {
+		return types.NewXErrorf("must have a webhook call as its first argument")
+	}
+
+	status, xerr := types.ToXText(arg2)
+	if xerr != nil {
+		return xerr
+	}
+
+	if string(webhook.Status()) == strings.ToLower(status.Native()) {
+		return XTestResult{true, types.NewXText(webhook.Body())}
 	}
 
 	return XFalseResult
