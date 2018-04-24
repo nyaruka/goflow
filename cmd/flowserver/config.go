@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/nyaruka/ezconf"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
 )
 
 // Config is our top level config for our flowserver
@@ -18,9 +17,7 @@ type Config struct {
 	Version                       string `help:"the version to use in request and response headers"`
 }
 
-func (c *Config) Engine() flows.EngineConfig {
-	return engine.NewConfig(c.EngineMaxWebhookResponseBytes)
-}
+func (c *Config) MaxWebhookResponseBytes() int { return c.EngineMaxWebhookResponseBytes }
 
 // NewDefaultConfig returns our default configuration
 func NewDefaultConfig() *Config {
@@ -46,3 +43,5 @@ func NewConfigWithPath(path string) *Config {
 	loader.MustLoad()
 	return config
 }
+
+var _ flows.EngineConfig = (*Config)(nil)
