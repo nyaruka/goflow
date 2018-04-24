@@ -48,7 +48,7 @@
                         }
                     ],
                     "router": {
-                        "operand": "@run.webhook.status",
+                        "operand": "@run.webhook",
                         "cases": [
                             {
                                 "arguments": [
@@ -56,7 +56,7 @@
                                 ],
                                 "uuid": "789b45bc-005a-46db-8331-6a966c0141c2",
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
-                                "type": "is_text_eq"
+                                "type": "has_webhook_status"
                             }
                         ],
                         "default_exit_uuid": "3699df6c-15f0-4a86-b7f8-9fe1497e7854",

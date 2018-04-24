@@ -661,7 +661,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
-		newType = "is_text_eq"
+		newType = "has_webhook_status"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
@@ -773,7 +773,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		exits = append(exits, connectionErrorExit)
 		cases = append(cases, routers.Case{
 			UUID:        utils.UUID(utils.NewUUID()),
-			Type:        "is_text_eq",
+			Type:        "has_webhook_status",
 			Arguments:   []string{"connection_error"},
 			OmitOperand: false,
 			ExitUUID:    connectionErrorExitUUID,
@@ -852,8 +852,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			},
 		}
 
-		// subflow rulesets operate on the child flow status
-		router = routers.NewSwitchRouter(defaultExit, "@run.webhook.status", cases, resultName)
+		// webhook rulesets operate on the webhook call
+		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
 
 	case "form_field":
 		var config fieldConfig

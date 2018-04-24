@@ -388,7 +388,7 @@
         },
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-            "type": "is_text_eq",
+            "type": "has_webhook_status",
             "arguments": ["success"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
@@ -401,7 +401,7 @@
         },
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-            "type": "is_text_eq",
+            "type": "has_webhook_status",
             "arguments": ["response_error"],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
