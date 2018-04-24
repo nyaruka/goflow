@@ -182,7 +182,7 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 			return nil, err
 		}
 
-		// if we have no remaining bytes, error because they body was too big
+		// if we have no remaining bytes, error because the body was too big
 		if bodyReader.(*io.LimitedReader).N <= 0 {
 			return nil, fmt.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
 		}
@@ -190,7 +190,7 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 		w.body = string(bodyBytes)
 	} else {
 		// no body for non-text responses but add it to our Response log so users know why
-		w.response = w.response + "\nNon-text body, ignoring"
+		w.response = w.response + "Non-text body, ignoring"
 	}
 
 	return w, nil

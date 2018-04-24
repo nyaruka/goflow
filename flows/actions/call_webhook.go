@@ -89,7 +89,9 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	} else {
-		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+		fullResponse := webhook.Response() + webhook.Body()
+
+		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), fullResponse))
 	}
 
 	run.SetWebhook(webhook)
