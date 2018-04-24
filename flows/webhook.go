@@ -3,13 +3,24 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/http/httputil"
-	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 )
+
+// response content-types that we'll save as @run.webhook.body
+var saveResponseContentTypes = map[string]bool{
+	"application/json":       true,
+	"application/javascript": true,
+	"application/xml":        true,
+	"text/html":              true,
+	"text/plain":             true,
+	"text/xml":               true,
+}
 
 // WebhookStatus represents the status of a WebhookRequest
 type WebhookStatus string
@@ -60,12 +71,10 @@ type WebhookCall struct {
 func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, error) {
 	response, requestDump, err := session.HTTPClient().DoWithDump(request)
 	if err != nil {
-		w, _ := newWebhookCallFromError(request, requestDump, err)
-		return w, err
+		return newWebhookCallFromError(request, requestDump, err), err
 	}
-	defer response.Body.Close()
 
-	return newWebhookCallFromResponse(requestDump, response)
+	return newWebhookCallFromResponse(requestDump, response, session.EngineConfig().MaxWebhookResponseBytes())
 }
 
 // URL returns the full URL
@@ -125,21 +134,23 @@ var _ types.XValue = (*WebhookCall)(nil)
 var _ types.XResolvable = (*WebhookCall)(nil)
 
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
-func newWebhookCallFromError(r *http.Request, requestTrace string, requestError error) (*WebhookCall, error) {
+func newWebhookCallFromError(r *http.Request, requestTrace string, requestError error) *WebhookCall {
 	return &WebhookCall{
 		url:     r.URL.String(),
 		request: requestTrace,
 		status:  WebhookStatusConnectionError,
 		body:    requestError.Error(),
-	}, nil
+	}
 }
 
 // newWebhookCallFromResponse creates a new RequestResponse based on the passed in http Response
-func newWebhookCallFromResponse(requestTrace string, r *http.Response) (*WebhookCall, error) {
-	var err error
+func newWebhookCallFromResponse(requestTrace string, response *http.Response, maxBodyBytes int) (*WebhookCall, error) {
+	defer response.Body.Close()
+
 	w := &WebhookCall{
-		url:        r.Request.URL.String(),
-		statusCode: r.StatusCode,
+		method:     response.Request.Method,
+		url:        response.Request.URL.String(),
+		statusCode: response.StatusCode,
 		request:    requestTrace,
 	}
 
@@ -150,31 +161,33 @@ func newWebhookCallFromResponse(requestTrace string, r *http.Response) (*Webhook
 		w.status = WebhookStatusResponseError
 	}
 
-	// figure out if our Response is something that looks like text from our headers
-	isText := false
-	contentType := r.Header.Get("Content-Type")
-	if strings.Contains(contentType, "text") ||
-		strings.Contains(contentType, "json") ||
-		strings.Contains(contentType, "utf") ||
-		strings.Contains(contentType, "javascript") ||
-		strings.Contains(contentType, "xml") {
-
-		isText = true
-	}
-
-	// only dump the whole body if this looks like text
-	response, err := httputil.DumpResponse(r, isText)
+	// save response dump without body which will be saved separately
+	responseDump, err := httputil.DumpResponse(response, false)
 	if err != nil {
-		return w, err
+		return nil, err
 	}
-	w.response = string(response)
+	w.response = string(responseDump)
 
-	if isText {
-		bodyBytes, err := ioutil.ReadAll(r.Body)
+	// only save response body's if we have a supported content-type
+	contentType := response.Header.Get("Content-Type")
+	mediaType, _, _ := mime.ParseMediaType(contentType)
+	saveBody := saveResponseContentTypes[mediaType]
+
+	if saveBody {
+		// only read up to our max body bytes limit
+		bodyReader := io.LimitReader(response.Body, int64(maxBodyBytes)+1)
+
+		bodyBytes, err := ioutil.ReadAll(bodyReader)
 		if err != nil {
-			return w, err
+			return nil, err
 		}
-		w.body = strings.TrimSpace(string(bodyBytes))
+
+		// if we have no remaining bytes, error because they body was too big
+		if bodyReader.(*io.LimitedReader).N <= 0 {
+			return nil, fmt.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
+		}
+
+		w.body = string(bodyBytes)
 	} else {
 		// no body for non-text responses but add it to our Response log so users know why
 		w.response = w.response + "\nNon-text body, ignoring"

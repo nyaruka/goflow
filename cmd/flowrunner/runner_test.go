@@ -96,7 +96,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), test.TestHTTPClient)
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -119,7 +119,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
 
-		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), test.TestHTTPClient, outJSON)
+		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, outJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -221,10 +221,10 @@ func TestFlows(t *testing.T) {
 				actualOutput := runResult.outputs[i]
 				expectedOutput := expectedOutputs[i]
 
-				actualSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), test.TestHTTPClient, actualOutput.Session)
+				actualSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, actualOutput.Session)
 				require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", tc.assets, err)
 
-				expectedSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), test.TestHTTPClient, expectedOutput.Session)
+				expectedSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, expectedOutput.Session)
 				require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", tc.assets, err)
 
 				// number of runs should be the same
