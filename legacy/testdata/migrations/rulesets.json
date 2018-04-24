@@ -346,11 +346,11 @@
                 "type": "switch",
                 "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@run.webhook.status",
+                "operand": "@run.webhook",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
+                        "type": "has_webhook_status",
                         "arguments": [
                             "success"
                         ],
@@ -358,7 +358,7 @@
                     },
                     {
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
+                        "type": "has_webhook_status",
                         "arguments": [
                             "response_error"
                         ],
@@ -366,7 +366,7 @@
                     },
                     {
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "is_text_eq",
+                        "type": "has_webhook_status",
                         "arguments": [
                             "connection_error"
                         ],
@@ -457,11 +457,11 @@
                 "type": "switch",
                 "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@run.webhook.status",
+                "operand": "@run.webhook",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "is_text_eq",
+                        "type": "has_webhook_status",
                         "arguments": [
                             "success"
                         ],
@@ -469,7 +469,7 @@
                     },
                     {
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "is_text_eq",
+                        "type": "has_webhook_status",
                         "arguments": [
                             "response_error"
                         ],
@@ -477,7 +477,7 @@
                     },
                     {
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "is_text_eq",
+                        "type": "has_webhook_status",
                         "arguments": [
                             "connection_error"
                         ],
