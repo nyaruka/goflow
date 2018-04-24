@@ -8,6 +8,7 @@ import (
 	"mime"
 	"net/http"
 	"net/http/httputil"
+	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 )
@@ -58,12 +59,10 @@ func (r WebhookStatus) String() string {
 // @context webhook
 type WebhookCall struct {
 	url        string
-	method     string
 	status     WebhookStatus
 	statusCode int
 	request    string
 	response   string
-	body       string
 }
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
@@ -80,6 +79,9 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 // URL returns the full URL
 func (w *WebhookCall) URL() string { return w.url }
 
+// Method returns the full HTTP method
+func (w *WebhookCall) Method() string { return w.request[:strings.IndexRune(w.request, ' ')] }
+
 // Status returns the response status message
 func (w *WebhookCall) Status() WebhookStatus { return w.status }
 
@@ -93,18 +95,20 @@ func (w *WebhookCall) Request() string { return w.request }
 func (w *WebhookCall) Response() string { return w.response }
 
 // Body returns the response body
-func (w *WebhookCall) Body() string { return w.body }
+func (w *WebhookCall) Body() string {
+	parts := strings.SplitN(w.response, "\r\n\r\n", 2)
+	if len(parts) == 2 {
+		return parts[1]
+	}
+	return ""
+}
 
 // JSON returns the response as a JSON fragment
-func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.body)) }
+func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.Body())) }
 
 // Resolve resolves the given key when this webhook is referenced in an expression
 func (w *WebhookCall) Resolve(key string) types.XValue {
 	switch key {
-	case "body":
-		return types.NewXText(w.Body())
-	case "json":
-		return w.JSON()
 	case "url":
 		return types.NewXText(w.URL())
 	case "request":
@@ -115,6 +119,8 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 		return types.NewXText(string(w.Status()))
 	case "status_code":
 		return types.NewXNumberFromInt(w.StatusCode())
+	case "json":
+		return w.JSON()
 	}
 
 	return types.NewXResolveError(w, key)
@@ -122,7 +128,7 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 
 // Reduce reduces this to a string of method and URL, e.g. "GET http://example.com/hook.php"
 func (w *WebhookCall) Reduce() types.XPrimitive {
-	return types.NewXText(fmt.Sprintf("%s %s", w.method, w.url))
+	return types.NewXText(fmt.Sprintf("%s %s", w.Method(), w.URL()))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
@@ -134,12 +140,13 @@ var _ types.XValue = (*WebhookCall)(nil)
 var _ types.XResolvable = (*WebhookCall)(nil)
 
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
-func newWebhookCallFromError(r *http.Request, requestTrace string, requestError error) *WebhookCall {
+func newWebhookCallFromError(request *http.Request, requestTrace string, requestError error) *WebhookCall {
 	return &WebhookCall{
-		url:     r.URL.String(),
-		request: requestTrace,
-		status:  WebhookStatusConnectionError,
-		body:    requestError.Error(),
+		url:        request.URL.String(),
+		status:     WebhookStatusConnectionError,
+		statusCode: 0,
+		request:    requestTrace,
+		response:   requestError.Error(),
 	}
 }
 
@@ -148,7 +155,6 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 	defer response.Body.Close()
 
 	w := &WebhookCall{
-		method:     response.Request.Method,
 		url:        response.Request.URL.String(),
 		statusCode: response.StatusCode,
 		request:    requestTrace,
@@ -161,7 +167,7 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 		w.status = WebhookStatusResponseError
 	}
 
-	// save response dump without body which will be saved separately
+	// save response dump without body which will be parsed separately
 	responseDump, err := httputil.DumpResponse(response, false)
 	if err != nil {
 		return nil, err
@@ -187,10 +193,10 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 			return nil, fmt.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
 		}
 
-		w.body = string(bodyBytes)
+		w.response += string(bodyBytes)
 	} else {
 		// no body for non-text responses but add it to our Response log so users know why
-		w.response = w.response + "Non-text body, ignoring"
+		w.response += "Non-text body, ignoring"
 	}
 
 	return w, nil
@@ -204,7 +210,6 @@ type webhookCallEnvelope struct {
 	URL        string        `json:"url"`
 	Status     WebhookStatus `json:"status"`
 	StatusCode int           `json:"status_code"`
-	Body       string        `json:"body"`
 	Request    string        `json:"request"`
 	Response   string        `json:"response"`
 }
@@ -224,7 +229,6 @@ func (w *WebhookCall) UnmarshalJSON(data []byte) error {
 	w.statusCode = envelope.StatusCode
 	w.request = envelope.Request
 	w.response = envelope.Response
-	w.body = envelope.Body
 	return nil
 }
 
@@ -236,6 +240,5 @@ func (r *WebhookCall) MarshalJSON() ([]byte, error) {
 		StatusCode: r.statusCode,
 		Request:    r.request,
 		Response:   r.response,
-		Body:       r.body,
 	})
 }
