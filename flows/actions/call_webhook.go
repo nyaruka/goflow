@@ -85,11 +85,13 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	}
 
 	webhook, err := flows.MakeWebhookCall(run.Session(), req)
+
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
+	} else {
+		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 	}
-	run.SetWebhook(webhook)
 
-	log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+	run.SetWebhook(webhook)
 	return nil
 }

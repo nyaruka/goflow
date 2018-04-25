@@ -238,7 +238,7 @@ func (ts *ServerTestSuite) parseSessionResponse(assetCache *assets.AssetCache, b
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	session, err := engine.ReadSession(assetCache, ts.assetServer, test.TestHTTPClient, envelope.Session)
+	session, err := engine.ReadSession(assetCache, ts.assetServer, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
 	ts.Require().NoError(err)
 
 	return session, envelope.Log

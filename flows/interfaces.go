@@ -340,10 +340,13 @@ type Step interface {
 	Leave(ExitUUID)
 }
 
+type EngineConfig interface {
+	MaxWebhookResponseBytes() int
+}
+
 // Session represents the session of a flow run which may contain many runs
 type Session interface {
 	Assets() SessionAssets
-	HTTPClient() *utils.HTTPClient
 
 	Environment() utils.Environment
 	SetEnvironment(utils.Environment)
@@ -366,6 +369,9 @@ type Session interface {
 
 	Events() []Event
 	LogEvent(Event)
+
+	EngineConfig() EngineConfig
+	HTTPClient() *utils.HTTPClient
 }
 
 // RunSummary represents the minimum information available about all runs (current or related) and is the
