@@ -33,6 +33,11 @@ func (x XBoolean) Native() bool { return x.native }
 // String returns the native string representation of this type
 func (x XBoolean) String() string { return x.ToXText().Native() }
 
+// Equals determines equality for this type
+func (x XBoolean) Equals(other XBoolean) bool {
+	return x.Native() == other.Native()
+}
+
 // Compare compares this bool to another
 func (x XBoolean) Compare(other XBoolean) int {
 	switch {

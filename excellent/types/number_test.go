@@ -9,7 +9,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestXNumberMarshaling(t *testing.T) {
+func TestXNumber(t *testing.T) {
+	// test creation
+	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt(123))
+	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt64(123))
+
 	// unmarshal with quotes
 	var num types.XNumber
 	err := json.Unmarshal([]byte(`"23.45"`), &num)
