@@ -10,6 +10,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestXJSON(t *testing.T) {
+	jobj := types.JSONToXValue([]byte(`{"foo": "x", "bar": null}`)).(types.XJSONObject)
+	assert.Equal(t, `{"foo": "x", "bar": null}`, jobj.String())
+
+	jarr := types.JSONToXValue([]byte(`["one", "two", "three"]`)).(types.XJSONArray)
+	assert.Equal(t, `["one", "two", "three"]`, jarr.String())
+
+	jerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
+	assert.Equal(t, `Unknown value type`, jerr.Error())
+}
+
 func TestXJSONResolve(t *testing.T) {
 	var jsonTests = []struct {
 		JSON     []byte
@@ -44,6 +55,10 @@ func TestXJSONResolve(t *testing.T) {
 
 		{[]byte(`{"arr": ["one", "two"]}`), "arr", types.NewXJSONArray([]byte(`["one", "two"]`)), false},
 		{[]byte(`{"arr": {"foo": "bar"}}`), "arr", types.NewXJSONObject([]byte(`{"foo": "bar"}`)), false},
+
+		// resolve errors
+		{[]byte(`{"foo": "x", "bar": "one"}`), "zed", nil, true},
+		{[]byte(`["foo", null]`), "3", nil, true},
 	}
 
 	env := utils.NewDefaultEnvironment()

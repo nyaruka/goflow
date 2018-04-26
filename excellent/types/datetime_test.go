@@ -12,13 +12,22 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestXDateTimeMarshaling(t *testing.T) {
+func TestXDateTime(t *testing.T) {
+	// test stringing
+	assert.Equal(t, `2018-04-09T17:01:30.000000Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).String())
+
+	// test comparisons
+	assert.Equal(t, 0, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
+	assert.Equal(t, 1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 31, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
+	assert.Equal(t, -1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 29, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
+
+	// test unmarshaling
 	var date types.XDateTime
 	err := json.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)
 	assert.NoError(t, err)
 	assert.Equal(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), date)
 
-	// marshal
+	// test marshaling
 	data, err := json.Marshal(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)))
 	assert.NoError(t, err)
 	assert.Equal(t, []byte(`"2018-04-09T17:01:30Z"`), data)
@@ -37,6 +46,7 @@ func TestToXDateTime(t *testing.T) {
 		{types.NewXText("wha?"), types.XDateTimeZero, true},
 		{NewTestXObject("Hello", 123), types.XDateTimeZero, true},
 		{NewTestXObject("2018/6/5", 123), types.NewXDateTime(time.Date(2018, 6, 5, 0, 0, 0, 0, time.UTC)), false},
+		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
 	}
 
 	env := utils.NewDefaultEnvironment()

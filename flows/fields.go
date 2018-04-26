@@ -151,7 +151,7 @@ func (f FieldValues) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (f FieldValues) Reduce() types.XPrimitive {
-	values := types.NewXEmptyMap()
+	values := types.NewEmptyXMap()
 	for k, v := range f {
 		values.Put(string(k), v)
 	}

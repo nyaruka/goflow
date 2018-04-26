@@ -119,7 +119,7 @@ func (r Results) Resolve(key string) types.XValue {
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r Results) Reduce() types.XPrimitive {
-	results := types.NewXEmptyMap()
+	results := types.NewEmptyXMap()
 	for k, v := range r {
 		results.Put(k, v)
 	}

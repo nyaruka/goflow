@@ -25,8 +25,8 @@ func NewXMap(values map[string]XValue) XMap {
 	}
 }
 
-// NewXEmptyMap returns a new empty map
-func NewXEmptyMap() XMap {
+// NewEmptyXMap returns a new empty map
+func NewEmptyXMap() XMap {
 	return &xmap{
 		values: make(map[string]XValue),
 	}

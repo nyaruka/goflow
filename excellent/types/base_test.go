@@ -21,12 +21,19 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
+func (v *testXObject) Resolve(key string) types.XValue {
+	switch key {
+	case "foo":
+		return types.NewXText(v.foo)
+	case "bar":
+		return types.NewXNumberFromInt(v.bar)
+	}
+	return types.NewXResolveError(v, key)
+}
+
 // ToXJSON is called when this type is passed to @(json(...))
 func (v *testXObject) ToXJSON() types.XText {
-	return types.NewXMap(map[string]types.XValue{
-		"foo": types.NewXText(v.foo),
-		"bar": types.NewXNumberFromInt(v.bar),
-	}).ToXJSON()
+	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
 }
 
 // MarshalJSON converts this type to its internal JSON representation which can differ from ToJSON
@@ -42,6 +49,7 @@ func (v *testXObject) MarshalJSON() ([]byte, error) {
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 
 var _ types.XValue = &testXObject{}
+var _ types.XResolvable = &testXObject{}
 
 func TestXValueRequiredConversions(t *testing.T) {
 	chi, err := time.LoadLocation("America/Chicago")
@@ -185,7 +193,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:         true,
 			isEmpty:        false,
 		}, {
-			value:          types.NewXEmptyMap(),
+			value:          types.NewEmptyXMap(),
 			asInternalJSON: `{}`,
 			asJSON:         `{}`,
 			asText:         `{}`,
@@ -280,4 +288,16 @@ func TestCompare(t *testing.T) {
 			assert.Equal(t, test.result, result, "result mismatch for inputs '%s' and '%s'", test.x1, test.x2)
 		}
 	}
+}
+
+func TestIsEmpty(t *testing.T) {
+	assert.True(t, types.IsEmpty(nil))
+	assert.True(t, types.IsEmpty(types.NewXArray()))
+	assert.True(t, types.IsEmpty(types.NewEmptyXMap()))
+	assert.True(t, types.IsEmpty(types.NewXText("")))
+	assert.False(t, types.IsEmpty(types.NewXText("a")))
+	assert.False(t, types.IsEmpty(types.XBooleanFalse))
+	assert.False(t, types.IsEmpty(types.XBooleanTrue))
+	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(0)))
+	assert.False(t, types.IsEmpty(types.NewXNumberFromInt(123)))
 }
