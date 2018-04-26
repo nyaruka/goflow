@@ -2,15 +2,15 @@ package legacy_test
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/excellent/types"
+	//"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
-	"github.com/nyaruka/goflow/utils"
+	//"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -254,7 +254,7 @@ type legacyTest struct {
 }
 
 // TestLegacyTests runs the tests from https://github.com/rapidpro/expressions,  migrating each template first
-func XTestLegacyTests(t *testing.T) {
+func TestLegacyTests(t *testing.T) {
 	legacyTestData, err := ioutil.ReadFile("testdata/legacy_tests.json")
 	require.NoError(t, err)
 
@@ -263,7 +263,7 @@ func XTestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		migratedTemplate, err := legacy.MigrateTemplate(tc.Template, legacy.ExtraAsFunction)
+		_, err := legacy.MigrateTemplate(tc.Template, legacy.ExtraAsFunction)
 
 		defer func() {
 			if r := recover(); r != nil {
@@ -273,7 +273,7 @@ func XTestLegacyTests(t *testing.T) {
 
 		assert.NoError(t, err, "error whilst migrating template '%s'", tc.Template)
 
-		if err != nil {
+		/*if err != nil {
 			variables := types.JSONToXValue(tc.Context.Variables)
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
@@ -281,6 +281,6 @@ func XTestLegacyTests(t *testing.T) {
 			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
 
 			fmt.Printf("TODO evaluate %s with vars %s and env %s", migratedTemplate, variables, env)
-		}
+		}*/
 	}
 }
