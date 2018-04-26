@@ -1,6 +1,6 @@
-grammar Excellent2;
+grammar Excellent1;
 
-// rebuild with % antlr4 -Dlanguage=Go Excellent2.g4 -o ../excellent/gen -package gen -visitor
+// rebuild with % antlr4 -Dlanguage=Go Excellent1.g4 -o ../legacy/gen -package gen -visitor
 
 import LexUnicode;
 
@@ -19,7 +19,7 @@ DIVIDE     : '/';
 EXPONENT   : '^';
 
 EQ         : '=';
-NEQ        : '!=';
+NEQ        : '<>';
 
 LTE        : '<=';
 LT         : '<';
@@ -65,7 +65,10 @@ expression : atom                                            # atomReference
            | LPAREN expression RPAREN                        # parentheses
            ;
 
-fnname     : NAME;
+fnname     : NAME
+           | TRUE
+           | FALSE
+           ;
 
 parameters : expression (COMMA expression)*               # functionParameters
            ;

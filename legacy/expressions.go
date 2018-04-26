@@ -9,9 +9,9 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
-	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/legacy/gen"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -443,9 +443,9 @@ func translateExpression(env utils.Environment, resolver types.XValue, template 
 	errors := excellent.NewErrorListener()
 
 	input := antlr.NewInputStream(template)
-	lexer := gen.NewExcellent2Lexer(input)
+	lexer := gen.NewExcellent1Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewExcellent2Parser(stream)
+	p := gen.NewExcellent1Parser(stream)
 	p.AddErrorListener(errors)
 
 	// speed up parsing
@@ -482,7 +482,7 @@ func translateExpression(env utils.Environment, resolver types.XValue, template 
 // ---------------------------------------------------------------
 
 type legacyVisitor struct {
-	gen.BaseExcellent2Visitor
+	gen.BaseExcellent1Visitor
 	env      utils.Environment
 	resolver types.XValue
 }
@@ -545,7 +545,7 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 		}
 	}
 
-	_, ignored := ignoredFunctions[template.name]
+	ignored := ignoredFunctions[template.name]
 	if !ignored {
 		_, found = functions.XFUNCTIONS[template.name]
 		if !found {
