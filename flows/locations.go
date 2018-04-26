@@ -2,135 +2,123 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
-// LocationID is the unique identifier for each location, e.g. an OSM ID
-type LocationID string
-
 // LocationLevel is a numeric level, e.g. 0 = country, 1 = state
 type LocationLevel int
 
 // Location represents a single Location
 type Location struct {
-	id       LocationID
 	level    LocationLevel
 	name     string
+	path     string
 	aliases  []string
 	parent   *Location
 	children []*Location
 }
 
 // NewLocation creates a new location object
-func NewLocation(id LocationID, level LocationLevel, name string) *Location {
-	return &Location{id: id, level: level, name: name}
+func NewLocation(level LocationLevel, name string) *Location {
+	return &Location{level: level, name: name}
 }
 
-// ID gets the id of this location
-func (b *Location) ID() LocationID { return b.id }
-
 // Level gets the level of this location
-func (b *Location) Level() LocationLevel { return b.level }
+func (l *Location) Level() LocationLevel { return l.level }
 
 // Name gets the name of this location
-func (b *Location) Name() string { return b.name }
+func (l *Location) Name() string { return l.name }
+
+// Path gets the full path of this location
+func (l *Location) Path() string { return l.path }
 
 // Aliases gets the aliases of this location
-func (b *Location) Aliases() []string { return b.aliases }
+func (l *Location) Aliases() []string { return l.aliases }
 
 // Parent gets the parent of this location
-func (b *Location) Parent() *Location { return b.parent }
+func (l *Location) Parent() *Location { return l.parent }
 
 // Children gets the children of this location
-func (b *Location) Children() []*Location { return b.children }
+func (l *Location) Children() []*Location { return l.children }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (b *Location) Reduce() types.XPrimitive { return types.NewXText(b.name) }
+func (l *Location) Reduce() types.XPrimitive { return types.NewXText(l.path) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (b *Location) ToXJSON() types.XText { return types.NewXText("TODO") }
+func (l *Location) ToXJSON() types.XText { return l.Reduce().ToXJSON() }
 
 var _ types.XValue = (*Location)(nil)
 
+// utility for traversing the location hierarchy
 type locationVisitor func(Location *Location)
 
-func (b *Location) visit(visitor locationVisitor) {
-	visitor(b)
-	for _, child := range b.children {
+func (l *Location) visit(visitor locationVisitor) {
+	visitor(l)
+	for _, child := range l.children {
 		child.visit(visitor)
 	}
 }
 
-// for each level, we maintain some maps for faster lookups
-type levelLookup struct {
-	byID   map[LocationID]*Location
-	byName map[string][]*Location
-}
+type locationNameLookup map[string][]*Location
 
-func (l *levelLookup) setIDLookup(id LocationID, location *Location) {
-	l.byID[id] = location
-}
-
-func (l *levelLookup) addNameLookup(name string, location *Location) {
+func (n locationNameLookup) addLookup(name string, location *Location) {
 	name = strings.ToLower(name)
-	l.byName[name] = append(l.byName[name], location)
+	n[name] = append(n[name], location)
 }
 
 // LocationHierarchy is a hierarical tree of locations
 type LocationHierarchy struct {
 	root         *Location
-	levelLookups []*levelLookup
+	levelLookups []locationNameLookup
 }
 
 // NewLocationHierarchy cretes a new location hierarchy
 func NewLocationHierarchy(root *Location, numLevels int) *LocationHierarchy {
-	s := &LocationHierarchy{
+	h := &LocationHierarchy{
 		root:         root,
-		levelLookups: make([]*levelLookup, numLevels),
+		levelLookups: make([]locationNameLookup, numLevels),
 	}
 
 	for l := 0; l < numLevels; l++ {
-		s.levelLookups[l] = &levelLookup{
-			byID:   make(map[LocationID]*Location),
-			byName: make(map[string][]*Location),
-		}
+		h.levelLookups[l] = make(locationNameLookup)
 	}
 
-	root.visit(func(Location *Location) { s.addLookups(Location) })
-	return s
+	// traverse the hierarchy to setup paths and lookups
+	root.visit(func(location *Location) {
+		if location.parent != nil {
+			location.path = fmt.Sprintf("%s > %s", location.parent.path, location.name)
+		} else {
+			location.path = location.name
+		}
+
+		h.addLookups(location)
+	})
+	return h
 }
 
-func (s *LocationHierarchy) addLookups(location *Location) {
-	lookups := s.levelLookups[int(location.level)]
-	lookups.setIDLookup(location.id, location)
-	lookups.addNameLookup(location.name, location)
+func (h *LocationHierarchy) addLookups(location *Location) {
+	lookups := h.levelLookups[int(location.level)]
+	lookups.addLookup(location.name, location)
 
 	// include any aliases as names too
 	for _, alias := range location.aliases {
-		lookups.addNameLookup(alias, location)
+		lookups.addLookup(alias, location)
 	}
 }
 
-// Root gets the root location of this hierarchy
-func (s *LocationHierarchy) Root() *Location {
-	return s.root
-}
-
-// FindByID looks for a location in the hierarchy with the given level and ID
-func (s *LocationHierarchy) FindByID(id LocationID, level LocationLevel) *Location {
-	if int(level) < len(s.levelLookups) {
-		return s.levelLookups[int(level)].byID[id]
-	}
-	return nil
+// Root gets the root location of this hierarchy (typically a country)
+func (h *LocationHierarchy) Root() *Location {
+	return h.root
 }
 
 // FindByName looks for all locations in the hierarchy with the given level and name or alias
-func (s *LocationHierarchy) FindByName(name string, level LocationLevel, parent *Location) []*Location {
-	if int(level) < len(s.levelLookups) {
-		matches, found := s.levelLookups[int(level)].byName[strings.ToLower(name)]
+func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent *Location) []*Location {
+	if int(level) < len(h.levelLookups) {
+		matches, found := h.levelLookups[int(level)][strings.ToLower(name)]
 		if found {
 			// if a parent is specified, filter the matches by it
 			if parent != nil {
@@ -154,7 +142,6 @@ func (s *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 //------------------------------------------------------------------------------------------
 
 type locationEnvelope struct {
-	ID       LocationID          `json:"id"`
 	Name     string              `json:"name" validate:"required"`
 	Aliases  []string            `json:"aliases,omitempty"`
 	Children []*locationEnvelope `json:"children,omitempty"`
@@ -162,7 +149,6 @@ type locationEnvelope struct {
 
 func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel, parent *Location) *Location {
 	location := &Location{
-		id:      envelope.ID,
 		level:   LocationLevel(currentLevel),
 		name:    envelope.Name,
 		aliases: envelope.Aliases,
