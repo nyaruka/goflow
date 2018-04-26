@@ -14,6 +14,15 @@ func TestXNumber(t *testing.T) {
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt(123))
 	assert.Equal(t, types.RequireXNumberFromString("123"), types.NewXNumberFromInt64(123))
 
+	// test equality
+	assert.True(t, types.NewXNumberFromInt(123).Equals(types.NewXNumberFromInt(123)))
+	assert.False(t, types.NewXNumberFromInt(123).Equals(types.NewXNumberFromInt(124)))
+
+	// test comparison
+	assert.Equal(t, 0, types.NewXNumberFromInt(123).Compare(types.NewXNumberFromInt(123)))
+	assert.Equal(t, -1, types.NewXNumberFromInt(123).Compare(types.NewXNumberFromInt(124)))
+	assert.Equal(t, 1, types.NewXNumberFromInt(124).Compare(types.NewXNumberFromInt(123)))
+
 	// unmarshal with quotes
 	var num types.XNumber
 	err := json.Unmarshal([]byte(`"23.45"`), &num)

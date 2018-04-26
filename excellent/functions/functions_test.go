@@ -8,6 +8,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -145,7 +146,7 @@ var funcTests = []struct {
 	{"field", []types.XValue{xs("hello"), xs("1"), ERROR}, ERROR},
 	{"field", []types.XValue{}, ERROR},
 
-	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977 15:34:00")},
+	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977 15:34")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZZZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000-07:00")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.123000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.123-07:00")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000000-07:00")},
@@ -176,6 +177,9 @@ var funcTests = []struct {
 	{"join", []types.XValue{types.NewXArray(xs("1,2,3")), nil}, xs("1,2,3")},
 	{"join", []types.XValue{types.NewXArray(xs("1"))}, ERROR},
 
+	{"json", []types.XValue{xs("hello")}, xs(`"hello"`)},
+	{"json", []types.XValue{ERROR}, ERROR},
+
 	{"left", []types.XValue{xs("hello"), xs("2")}, xs("he")},
 	{"left", []types.XValue{xs("  HELLO"), xs("2")}, xs("  ")},
 	{"left", []types.XValue{xs("hi"), xi(4)}, xs("hi")},
@@ -202,6 +206,8 @@ var funcTests = []struct {
 	{"length", []types.XValue{xs("😁😁")}, xi(2)},
 	{"length", []types.XValue{types.NewXArray(xs("hello"))}, xi(1)},
 	{"length", []types.XValue{types.NewXArray()}, xi(0)},
+	{"length", []types.XValue{xi(1234)}, ERROR},
+	{"length", []types.XValue{ERROR}, ERROR},
 	{"length", []types.XValue{}, ERROR},
 
 	{"lower", []types.XValue{xs("HEllo")}, xs("hello")},
@@ -234,6 +240,9 @@ var funcTests = []struct {
 	{"mod", []types.XValue{xs("9"), xs("not_num")}, ERROR},
 	{"mod", []types.XValue{}, ERROR},
 
+	{"now", []types.XValue{}, xd(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC))},
+	{"now", []types.XValue{ERROR}, ERROR},
+
 	{"number", []types.XValue{xn("10")}, xn("10")},
 	{"number", []types.XValue{xs("123.45000")}, xn("123.45")},
 	{"number", []types.XValue{xs("what?")}, ERROR},
@@ -256,6 +265,9 @@ var funcTests = []struct {
 	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), ERROR}, ERROR},
 	{"parse_datetime", []types.XValue{xs("1977-06-23 15:34"), xs("YYYY-MM-DD"), ERROR}, ERROR},
 	{"parse_datetime", []types.XValue{}, ERROR},
+
+	{"parse_json", []types.XValue{xs(`"hello"`)}, xs(`hello`)},
+	{"parse_json", []types.XValue{ERROR}, ERROR},
 
 	{"percent", []types.XValue{xs(".54")}, xs("54%")},
 	{"percent", []types.XValue{xs("1.246")}, xs("125%")},
@@ -358,6 +370,13 @@ var funcTests = []struct {
 	{"title", []types.XValue{nil}, xs("")},
 	{"title", []types.XValue{}, ERROR},
 
+	{"to_epoch", []types.XValue{xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619000000000")},
+	{"to_epoch", []types.XValue{ERROR}, ERROR},
+	{"to_epoch", []types.XValue{}, ERROR},
+
+	{"today", []types.XValue{}, xd(time.Date(2018, 4, 11, 0, 0, 0, 0, time.UTC))},
+	{"today", []types.XValue{ERROR}, ERROR},
+
 	{"tz", []types.XValue{xs("01-12-2017")}, xs("UTC")},
 	{"tz", []types.XValue{xs("01-12-2017 10:15:33pm")}, xs("UTC")},
 	{"tz", []types.XValue{xs("xxx")}, ERROR},
@@ -411,7 +430,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{})
+	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, time.UTC)
 
 	utils.SetRand(utils.NewSeededRand(123456))
 	defer utils.SetRand(utils.DefaultRand)

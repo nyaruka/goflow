@@ -300,12 +300,10 @@ type testEnvironment struct {
 	utils.Environment
 }
 
-// creates a new test environment
-func newTestEnvironment() utils.Environment {
-	tz, _ := time.LoadLocation("America/Guayaquil")
-
+// NewTestEnvironment creates a new test environment
+func NewTestEnvironment(dateFormat utils.DateFormat, tz *time.Location) utils.Environment {
 	return &testEnvironment{
-		utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
+		utils.NewEnvironment(dateFormat, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
 	}
 }
 
@@ -328,7 +326,8 @@ func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Sess
 	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), TestHTTPClient)
 
 	// override the session environment
-	session.SetEnvironment(newTestEnvironment())
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz))
 
 	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {

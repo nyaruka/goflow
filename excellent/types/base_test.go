@@ -271,8 +271,12 @@ func TestEquals(t *testing.T) {
 		{types.NewXError(fmt.Errorf("Error")), types.XDateTimeZero, false},
 		{types.NewXText("bob"), types.NewXText("bob"), true},
 		{types.NewXText("bob"), types.NewXText("abc"), false},
+		{types.XBooleanFalse, types.XBooleanFalse, true},
+		{types.XBooleanTrue, types.XBooleanFalse, false},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(123), true},
 		{types.NewXNumberFromInt(123), types.NewXNumberFromInt(124), false},
+		{types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), true},
+		{types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)), types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)), false},
 	}
 
 	for _, test := range tests {

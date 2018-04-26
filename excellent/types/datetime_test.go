@@ -16,6 +16,10 @@ func TestXDateTime(t *testing.T) {
 	// test stringing
 	assert.Equal(t, `2018-04-09T17:01:30.000000Z`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).String())
 
+	// test equality
+	assert.True(t, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Equals(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
+	assert.False(t, types.NewXDateTime(time.Date(2019, 4, 9, 17, 1, 30, 0, time.UTC)).Equals(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
+
 	// test comparisons
 	assert.Equal(t, 0, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
 	assert.Equal(t, 1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 31, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
