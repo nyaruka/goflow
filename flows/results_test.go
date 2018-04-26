@@ -9,7 +9,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestResults(t *testing.T) {
@@ -41,10 +40,7 @@ func TestResults(t *testing.T) {
 		if test.expected == ERROR {
 			assert.True(t, types.IsXError(value), "expecting error, got %T{%s} for lookup %s", value, value, test.lookup)
 		} else {
-			cmp, err := types.Compare(value, test.expected)
-			require.NoError(t, err)
-
-			if cmp != 0 {
+			if !types.Equals(value, test.expected) {
 				t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, value, test.lookup, test.JSON)
 			}
 		}

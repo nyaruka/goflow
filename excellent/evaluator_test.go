@@ -305,11 +305,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
 		}
 
-		cmp, err := types.Compare(result, test.expected)
-		if err != nil {
-			assert.Fail(t, err.Error(), "error while comparing expected: %T{%s} with result: %T{%s}: err", test.expected, test.expected, result, result, err)
-		}
-		if cmp != 0 {
+		if !types.Equals(result, test.expected) {
 			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.template)
 		}
 	}

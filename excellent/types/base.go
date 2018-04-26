@@ -3,7 +3,6 @@ package types
 import (
 	"fmt"
 	"reflect"
-	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -50,37 +49,39 @@ func ResolveKeys(resolvable XResolvable, keys ...string) XMap {
 	return NewXMap(values)
 }
 
-// Compare returns the difference between two given values
-func Compare(x1 XValue, x2 XValue) (int, error) {
+// Equals checks for equality between the two give values
+func Equals(x1 XValue, x2 XValue) bool {
+	// nil == nil
 	if utils.IsNil(x1) && utils.IsNil(x2) {
-		return 0, nil
+		return true
 	} else if utils.IsNil(x1) || utils.IsNil(x2) {
-		return 0, fmt.Errorf("can't compare non-nil and nil values: %T{%s} and %T{%s}", x1, x1, x2, x2)
+		return false
 	}
 
 	x1 = x1.Reduce()
 	x2 = x2.Reduce()
 
+	// different types aren't equal
 	if reflect.TypeOf(x1) != reflect.TypeOf(x2) {
-		return 0, fmt.Errorf("can't compare different types of %T and %T", x1, x2)
+		return false
 	}
 
 	// common types, do real comparisons
 	switch typed := x1.(type) {
-	case XError:
-		return strings.Compare(typed.Error(), x2.(error).Error()), nil
-	case XNumber:
-		return typed.Compare(x2.(XNumber)), nil
-	case XBoolean:
-		return typed.Compare(x2.(XBoolean)), nil
-	case XDateTime:
-		return typed.Compare(x2.(XDateTime)), nil
 	case XText:
-		return typed.Compare(x2.(XText)), nil
+		return typed.Equals(x2.(XText))
+	case XNumber:
+		return typed.Equals(x2.(XNumber))
+	case XBoolean:
+		return typed.Equals(x2.(XBoolean))
+	case XDateTime:
+		return typed.Equals(x2.(XDateTime))
+	case XError:
+		return typed.Equals(x2.(XError))
 	}
 
-	// TODO: find better fallback
-	return strings.Compare(x1.ToXJSON().Native(), x2.ToXJSON().Native()), nil
+	// for arrays and maps, use equality of their JSON representation
+	return x1.ToXJSON().Native() == x2.ToXJSON().Native()
 }
 
 // IsEmpty determines if the given value is empty

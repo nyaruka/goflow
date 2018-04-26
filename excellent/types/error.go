@@ -6,8 +6,9 @@ import (
 
 // XError is an error
 type XError interface {
-	XPrimitive
 	error
+	XPrimitive
+	Equals(XError) bool
 }
 
 type xerror struct {
@@ -52,6 +53,11 @@ func (x xerror) Native() error { return x.native }
 func (x xerror) Error() string { return x.Native().Error() }
 
 func (x xerror) String() string { return x.Native().Error() }
+
+// Equals determines equality for this type
+func (x xerror) Equals(other XError) bool {
+	return x.String() == other.String()
+}
 
 // NilXError is the nil error value
 var NilXError = NewXError(nil)

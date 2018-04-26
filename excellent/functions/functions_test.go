@@ -183,6 +183,8 @@ var funcTests = []struct {
 	{"left", []types.XValue{xs("😁hi"), xs("2")}, xs("😁h")},
 	{"left", []types.XValue{xs("hello"), nil}, ERROR},
 	{"left", []types.XValue{xs("hello"), xi(-1)}, ERROR},
+	{"left", []types.XValue{ERROR, xi(3)}, ERROR},
+	{"left", []types.XValue{xs("hello"), ERROR}, ERROR},
 	{"left", []types.XValue{}, ERROR},
 
 	{"legacy_add", []types.XValue{xs("01-12-2017"), xi(2)}, xd(time.Date(2017, 12, 3, 0, 0, 0, 0, time.UTC))},
@@ -294,6 +296,9 @@ var funcTests = []struct {
 	{"replace", []types.XValue{nil, xs("foo bar"), xs("foo")}, xs("")},
 	{"replace", []types.XValue{xs("foo bar"), nil, xs("foo")}, xs("fooffooofooofoo foobfooafoorfoo")},
 	{"replace", []types.XValue{xs("foo bar"), xs("foo"), nil}, xs(" bar")},
+	{"replace", []types.XValue{ERROR, xs("hi"), xs("bye")}, ERROR},
+	{"replace", []types.XValue{xs("hi ho"), ERROR, xs("bye")}, ERROR},
+	{"replace", []types.XValue{xs("hi ho"), xs("bye"), ERROR}, ERROR},
 	{"replace", []types.XValue{}, ERROR},
 
 	{"right", []types.XValue{xs("hello"), xs("2")}, xs("lo")},
@@ -304,6 +309,8 @@ var funcTests = []struct {
 	{"right", []types.XValue{nil, xs("2")}, xs("")},
 	{"right", []types.XValue{xs("hello"), nil}, ERROR},
 	{"right", []types.XValue{xs("hello"), xi(-1)}, ERROR},
+	{"right", []types.XValue{ERROR, xi(3)}, ERROR},
+	{"right", []types.XValue{xs("hello"), ERROR}, ERROR},
 	{"right", []types.XValue{}, ERROR},
 
 	{"round", []types.XValue{xs("10.5"), xs("0")}, xi(11)},
@@ -331,6 +338,8 @@ var funcTests = []struct {
 	{"split", []types.XValue{xs("1,2,3"), xs(",")}, types.NewXArray(xs("1"), xs("2"), xs("3"))},
 	{"split", []types.XValue{xs("1,2,3"), xs(".")}, types.NewXArray(xs("1,2,3"))},
 	{"split", []types.XValue{xs("1,2,3"), nil}, types.NewXArray(xs("1"), xs(","), xs("2"), xs(","), xs("3"))},
+	{"split", []types.XValue{ERROR, xs(",")}, ERROR},
+	{"split", []types.XValue{xs("1,2,3"), ERROR}, ERROR},
 	{"split", []types.XValue{}, ERROR},
 
 	{"text", []types.XValue{xs("abc")}, xs("abc")},
@@ -423,10 +432,7 @@ func TestFunctions(t *testing.T) {
 		if test.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for function %s(%T{%s})", result, result, test.name, test.args, test.args)
 		} else {
-			cmp, err := types.Compare(result, test.expected)
-			require.NoError(t, err, "got err comparing result for function %s(%T{%s})", test.name, test.args, test.args)
-
-			if cmp != 0 {
+			if !types.Equals(result, test.expected) {
 				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)
 			}
 		}
