@@ -1,6 +1,11 @@
 package types
 
 import (
+	"math"
+	"strings"
+
+	"github.com/nyaruka/goflow/utils"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -75,3 +80,50 @@ func (x *XNumber) UnmarshalJSON(data []byte) error {
 // XNumberZero is the zero number value
 var XNumberZero = NewXNumber(decimal.Zero)
 var _ XPrimitive = XNumberZero
+
+// ToXNumber converts the given value to a number or returns an error if that isn't possible
+func ToXNumber(x XValue) (XNumber, XError) {
+	if utils.IsNil(x) {
+		return XNumberZero, NewXErrorf("unable to convert NULL to a number")
+	}
+
+	x = x.Reduce()
+
+	switch typed := x.(type) {
+	case XError:
+		return XNumberZero, typed
+	case XNumber:
+		return typed, nil
+	case XText:
+		parsed, err := parseDecimalFuzzy(typed.Native())
+		if err == nil {
+			return NewXNumber(parsed), nil
+		}
+	}
+
+	return XNumberZero, NewXErrorf("unable to convert value '%s' to a number", x)
+}
+
+// ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
+func ToInteger(x XValue) (int, XError) {
+	number, err := ToXNumber(x)
+	if err != nil {
+		return 0, err
+	}
+
+	intPart := number.Native().IntPart()
+
+	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText().Native())
+	}
+
+	return int(intPart), nil
+}
+
+func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
+	// common SMS foibles
+	val = strings.ToLower(val)
+	val = strings.Replace(val, "o", "0", -1)
+	val = strings.Replace(val, "l", "1", -1)
+	return decimal.NewFromString(val)
+}

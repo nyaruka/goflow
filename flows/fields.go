@@ -121,7 +121,7 @@ func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue type
 		asNumber = &parsedNumber
 	}
 
-	if parsedDate, xerr := types.ToXDate(env, rawValue); xerr == nil {
+	if parsedDate, xerr := types.ToXDateTime(env, rawValue); xerr == nil {
 		asDate = &parsedDate
 	}
 

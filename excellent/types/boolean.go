@@ -3,6 +3,8 @@ package types
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // XBoolean is a boolean true or false
@@ -67,3 +69,25 @@ var XBooleanFalse = NewXBoolean(false)
 var XBooleanTrue = NewXBoolean(true)
 
 var _ XPrimitive = XBooleanFalse
+
+// ToXBoolean converts the given value to a boolean
+func ToXBoolean(x XValue) (XBoolean, XError) {
+	if utils.IsNil(x) {
+		return XBooleanFalse, nil
+	}
+	if IsXError(x) {
+		return XBooleanFalse, x.(XError)
+	}
+
+	primitive, isPrimitive := x.(XPrimitive)
+	if isPrimitive {
+		return primitive.ToXBoolean(), nil
+	}
+
+	lengthable, isLengthable := x.(XLengthable)
+	if isLengthable {
+		return NewXBoolean(lengthable.Length() > 0), nil
+	}
+
+	return x.Reduce().ToXBoolean(), nil
+}

@@ -103,6 +103,7 @@ var funcTests = []struct {
 	{"datetime_add", []types.XValue{xs("03-12-2017 10:15"), xs("xxx"), xs("D")}, ERROR},
 	{"datetime_add", []types.XValue{xs("03-12-2017 10:15"), xs("2"), xs("xxx")}, ERROR},
 	{"datetime_add", []types.XValue{xs("03-12-2017"), xs("2"), xs("Z")}, ERROR},
+	{"datetime_add", []types.XValue{xs("03-12-2017"), xs("2"), ERROR}, ERROR},
 	{"datetime_add", []types.XValue{xs("22-12-2017")}, ERROR},
 
 	{"datetime_diff", []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("D")}, xi(2)},
@@ -124,6 +125,7 @@ var funcTests = []struct {
 	{"datetime_diff", []types.XValue{xs("xxx"), xs("01-12-2017"), xs("Y")}, ERROR},
 	{"datetime_diff", []types.XValue{xs("01-12-2017"), xs("xxx"), xs("Y")}, ERROR},
 	{"datetime_diff", []types.XValue{xs("01-12-2017"), xs("01-12-2017"), xs("xxx")}, ERROR},
+	{"datetime_diff", []types.XValue{xs("01-12-2017"), xs("01-12-2017"), ERROR}, ERROR},
 	{"datetime_diff", []types.XValue{}, ERROR},
 
 	{"default", []types.XValue{xs("10"), xs("20")}, xs("10")},
@@ -154,6 +156,10 @@ var funcTests = []struct {
 	{"format_urn", []types.XValue{types.NewXArray(xs("tel:+250781112222"), xs("tel:+250781234567"))}, xs("0781 112 222")},
 	{"format_urn", []types.XValue{xs("twitter:134252511151#billy_bob")}, xs("billy_bob")},
 	{"format_urn", []types.XValue{xs("NOT URN")}, ERROR},
+
+	{"from_epoch", []types.XValue{xn("1497286619000000000")}, xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+	{"from_epoch", []types.XValue{ERROR}, ERROR},
+	{"from_epoch", []types.XValue{}, ERROR},
 
 	{"if", []types.XValue{types.XBooleanTrue, xs("10"), xs("20")}, xs("10")},
 	{"if", []types.XValue{types.XBooleanFalse, xs("10"), xs("20")}, xs("20")},
@@ -361,6 +367,7 @@ var funcTests = []struct {
 
 	{"word", []types.XValue{xs("hello World"), xn("1.5")}, xs("World")},
 	{"word", []types.XValue{xs(""), xi(0)}, ERROR},
+	{"word", []types.XValue{xs("cat dog bee"), xi(-1)}, xs("bee")},
 	{"word", []types.XValue{xs("😁 hello World"), xi(0)}, xs("😁")},
 	{"word", []types.XValue{xs(" hello World"), xi(2)}, ERROR},
 	{"word", []types.XValue{xs("hello World"), nil}, ERROR},

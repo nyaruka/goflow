@@ -141,7 +141,7 @@ func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDateTime)
 		if xerr != nil {
 			return xerr
 		}
-		date, xerr := types.ToXDate(env, args[1])
+		date, xerr := types.ToXDateTime(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
@@ -201,7 +201,7 @@ func TwoNumberFunction(f func(utils.Environment, types.XNumber, types.XNumber) t
 // OneDateTimeFunction creates an XFunction from a single number function
 func OneDateTimeFunction(f func(utils.Environment, types.XDateTime) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
-		date, xerr := types.ToXDate(env, args[0])
+		date, xerr := types.ToXDateTime(env, args[0])
 		if xerr != nil {
 			return xerr
 		}

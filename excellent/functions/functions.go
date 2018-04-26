@@ -129,7 +129,7 @@ func Text(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function boolean(value)
 func Boolean(env utils.Environment, value types.XValue) types.XValue {
-	str, xerr := types.ToXBool(value)
+	str, xerr := types.ToXBoolean(value)
 	if xerr != nil {
 		return xerr
 	}
@@ -200,7 +200,7 @@ func Array(env utils.Environment, args ...types.XValue) types.XValue {
 // @function and(tests...)
 func And(env utils.Environment, args ...types.XValue) types.XValue {
 	for _, arg := range args {
-		asBool, xerr := types.ToXBool(arg)
+		asBool, xerr := types.ToXBoolean(arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -219,7 +219,7 @@ func And(env utils.Environment, args ...types.XValue) types.XValue {
 // @function or(tests...)
 func Or(env utils.Environment, args ...types.XValue) types.XValue {
 	for _, arg := range args {
-		asBool, xerr := types.ToXBool(arg)
+		asBool, xerr := types.ToXBoolean(arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -239,7 +239,7 @@ func Or(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function if(test, true_value, false_value)
 func If(env utils.Environment, test types.XValue, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	asBool, err := types.ToXBool(test)
+	asBool, err := types.ToXBoolean(test)
 	if err != nil {
 		return err
 	}
@@ -975,12 +975,12 @@ func DateTimeDiff(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("takes exactly three arguments, received %d", len(args))
 	}
 
-	date1, xerr := types.ToXDate(env, args[0])
+	date1, xerr := types.ToXDateTime(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	date2, xerr := types.ToXDate(env, args[1])
+	date2, xerr := types.ToXDateTime(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
@@ -1028,7 +1028,7 @@ func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("takes exactly three arguments, received %d", len(args))
 	}
 
-	date, xerr := types.ToXDate(env, args[0])
+	date, xerr := types.ToXDateTime(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1222,7 +1222,7 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	if len(args) < 1 || len(args) > 3 {
 		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
 	}
-	date, xerr := types.ToXDate(env, args[0])
+	date, xerr := types.ToXDateTime(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -1295,7 +1295,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 
 	commas := types.XBooleanTrue
 	if len(args) > 2 {
-		if commas, err = types.ToXBool(args[2]); err != nil {
+		if commas, err = types.ToXBoolean(args[2]); err != nil {
 			return err
 		}
 	}
@@ -1409,8 +1409,8 @@ func Default(env utils.Environment, test types.XValue, def types.XValue) types.X
 func LegacyAdd(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
 
 	// try to parse dates and decimals
-	date1, date1Err := types.ToXDate(env, arg1)
-	date2, date2Err := types.ToXDate(env, arg2)
+	date1, date1Err := types.ToXDateTime(env, arg1)
+	date2, date2Err := types.ToXDateTime(env, arg2)
 
 	dec1, dec1Err := types.ToXNumber(arg1)
 	dec2, dec2Err := types.ToXNumber(arg2)

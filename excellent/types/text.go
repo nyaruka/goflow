@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // XText is a simple tex value
@@ -66,3 +68,15 @@ func (x *XText) UnmarshalJSON(data []byte) error {
 var XTextEmpty = NewXText("")
 var _ XPrimitive = XTextEmpty
 var _ XLengthable = XTextEmpty
+
+// ToXText converts the given value to a string
+func ToXText(x XValue) (XText, XError) {
+	if utils.IsNil(x) {
+		return XTextEmpty, nil
+	}
+	if IsXError(x) {
+		return XTextEmpty, x.(XError)
+	}
+
+	return x.Reduce().ToXText(), nil
+}

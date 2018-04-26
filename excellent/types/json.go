@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/utils"
+
 	"github.com/buger/jsonparser"
 	"github.com/shopspring/decimal"
 )
@@ -117,4 +119,25 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 	}
 
 	return NewXError(fmt.Errorf("unknown JSON parsing error"))
+}
+
+// ToXJSON converts the given value to a JSON string
+func ToXJSON(x XValue) (XText, XError) {
+	if utils.IsNil(x) {
+		return NewXText(`null`), nil
+	}
+	if IsXError(x) {
+		return XTextEmpty, x.(XError)
+	}
+
+	return x.ToXJSON(), nil
+}
+
+// MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error
+func MustMarshalToXText(x interface{}) XText {
+	j, err := json.Marshal(x)
+	if err != nil {
+		panic(fmt.Sprintf("unable to marshal %s to JSON", x))
+	}
+	return NewXText(string(j))
 }

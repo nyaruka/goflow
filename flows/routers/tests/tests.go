@@ -895,7 +895,7 @@ type dateTest func(value time.Time, test time.Time) bool
 
 func testDate(env utils.Environment, str types.XText, testDate types.XDateTime, testFunc dateTest) types.XValue {
 	// error is if we don't find a date on our test value, that's ok but no match
-	value, xerr := types.ToXDate(env, str)
+	value, xerr := types.ToXDateTime(env, str)
 	if xerr != nil {
 		return XFalseResult
 	}
