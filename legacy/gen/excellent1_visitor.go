@@ -16,9 +16,6 @@ type Excellent1Visitor interface {
 	// Visit a parse tree produced by Excellent1Parser#dotLookup.
 	VisitDotLookup(ctx *DotLookupContext) interface{}
 
-	// Visit a parse tree produced by Excellent1Parser#null.
-	VisitNull(ctx *NullContext) interface{}
-
 	// Visit a parse tree produced by Excellent1Parser#stringLiteral.
 	VisitStringLiteral(ctx *StringLiteralContext) interface{}
 
@@ -30,9 +27,6 @@ type Excellent1Visitor interface {
 
 	// Visit a parse tree produced by Excellent1Parser#false.
 	VisitFalse(ctx *FalseContext) interface{}
-
-	// Visit a parse tree produced by Excellent1Parser#arrayLookup.
-	VisitArrayLookup(ctx *ArrayLookupContext) interface{}
 
 	// Visit a parse tree produced by Excellent1Parser#contextReference.
 	VisitContextReference(ctx *ContextReferenceContext) interface{}

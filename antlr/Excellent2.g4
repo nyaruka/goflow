@@ -28,8 +28,8 @@ GT         : '>';
 
 AMPERSAND  : '&';
 
-DECIMAL    : [0-9]+('.'[0-9]+)?;
-STRING     : '"' (~["] | '""')* '"';
+TEXT       : '"' (~["] | '""')* '"';
+NUMBER     : [0-9]+('.'[0-9]+)?;
 
 TRUE       : [Tt][Rr][Uu][Ee];
 FALSE      : [Ff][Aa][Ll][Ss][Ee];
@@ -47,8 +47,8 @@ atom       : fnname LPAREN parameters? RPAREN             # functionCall
            | atom DOT atom                                # dotLookup
            | atom LBRACK expression RBRACK                # arrayLookup
            | NAME                                         # contextReference
-           | STRING                                       # stringLiteral
-           | DECIMAL                                      # decimalLiteral
+           | TEXT                                         # textLiteral
+           | NUMBER                                       # numberLiteral
            | TRUE                                         # true
            | FALSE                                        # false
            | NULL                                         # null

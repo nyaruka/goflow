@@ -10,17 +10,11 @@ type Excellent2Visitor interface {
 	// Visit a parse tree produced by Excellent2Parser#parse.
 	VisitParse(ctx *ParseContext) interface{}
 
-	// Visit a parse tree produced by Excellent2Parser#decimalLiteral.
-	VisitDecimalLiteral(ctx *DecimalLiteralContext) interface{}
-
 	// Visit a parse tree produced by Excellent2Parser#dotLookup.
 	VisitDotLookup(ctx *DotLookupContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#null.
 	VisitNull(ctx *NullContext) interface{}
-
-	// Visit a parse tree produced by Excellent2Parser#stringLiteral.
-	VisitStringLiteral(ctx *StringLiteralContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#functionCall.
 	VisitFunctionCall(ctx *FunctionCallContext) interface{}
@@ -36,6 +30,12 @@ type Excellent2Visitor interface {
 
 	// Visit a parse tree produced by Excellent2Parser#contextReference.
 	VisitContextReference(ctx *ContextReferenceContext) interface{}
+
+	// Visit a parse tree produced by Excellent2Parser#textLiteral.
+	VisitTextLiteral(ctx *TextLiteralContext) interface{}
+
+	// Visit a parse tree produced by Excellent2Parser#numberLiteral.
+	VisitNumberLiteral(ctx *NumberLiteralContext) interface{}
 
 	// Visit a parse tree produced by Excellent2Parser#parentheses.
 	VisitParentheses(ctx *ParenthesesContext) interface{}

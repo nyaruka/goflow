@@ -45,13 +45,11 @@ parse      : expression EOF;
 
 atom       : fnname LPAREN parameters? RPAREN             # functionCall
            | atom DOT atom                                # dotLookup
-           | atom LBRACK expression RBRACK                # arrayLookup
            | NAME                                         # contextReference
            | STRING                                       # stringLiteral
            | DECIMAL                                      # decimalLiteral
            | TRUE                                         # true
            | FALSE                                        # false
-           | NULL                                         # null
            ;
 
 expression : atom                                            # atomReference

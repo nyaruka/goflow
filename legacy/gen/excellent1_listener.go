@@ -16,9 +16,6 @@ type Excellent1Listener interface {
 	// EnterDotLookup is called when entering the dotLookup production.
 	EnterDotLookup(c *DotLookupContext)
 
-	// EnterNull is called when entering the null production.
-	EnterNull(c *NullContext)
-
 	// EnterStringLiteral is called when entering the stringLiteral production.
 	EnterStringLiteral(c *StringLiteralContext)
 
@@ -30,9 +27,6 @@ type Excellent1Listener interface {
 
 	// EnterFalse is called when entering the false production.
 	EnterFalse(c *FalseContext)
-
-	// EnterArrayLookup is called when entering the arrayLookup production.
-	EnterArrayLookup(c *ArrayLookupContext)
 
 	// EnterContextReference is called when entering the contextReference production.
 	EnterContextReference(c *ContextReferenceContext)
@@ -79,9 +73,6 @@ type Excellent1Listener interface {
 	// ExitDotLookup is called when exiting the dotLookup production.
 	ExitDotLookup(c *DotLookupContext)
 
-	// ExitNull is called when exiting the null production.
-	ExitNull(c *NullContext)
-
 	// ExitStringLiteral is called when exiting the stringLiteral production.
 	ExitStringLiteral(c *StringLiteralContext)
 
@@ -93,9 +84,6 @@ type Excellent1Listener interface {
 
 	// ExitFalse is called when exiting the false production.
 	ExitFalse(c *FalseContext)
-
-	// ExitArrayLookup is called when exiting the arrayLookup production.
-	ExitArrayLookup(c *ArrayLookupContext)
 
 	// ExitContextReference is called when exiting the contextReference production.
 	ExitContextReference(c *ContextReferenceContext)

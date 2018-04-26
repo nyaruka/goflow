@@ -38,12 +38,6 @@ func (s *BaseExcellent1Listener) EnterDotLookup(ctx *DotLookupContext) {}
 // ExitDotLookup is called when production dotLookup is exited.
 func (s *BaseExcellent1Listener) ExitDotLookup(ctx *DotLookupContext) {}
 
-// EnterNull is called when production null is entered.
-func (s *BaseExcellent1Listener) EnterNull(ctx *NullContext) {}
-
-// ExitNull is called when production null is exited.
-func (s *BaseExcellent1Listener) ExitNull(ctx *NullContext) {}
-
 // EnterStringLiteral is called when production stringLiteral is entered.
 func (s *BaseExcellent1Listener) EnterStringLiteral(ctx *StringLiteralContext) {}
 
@@ -67,12 +61,6 @@ func (s *BaseExcellent1Listener) EnterFalse(ctx *FalseContext) {}
 
 // ExitFalse is called when production false is exited.
 func (s *BaseExcellent1Listener) ExitFalse(ctx *FalseContext) {}
-
-// EnterArrayLookup is called when production arrayLookup is entered.
-func (s *BaseExcellent1Listener) EnterArrayLookup(ctx *ArrayLookupContext) {}
-
-// ExitArrayLookup is called when production arrayLookup is exited.
-func (s *BaseExcellent1Listener) ExitArrayLookup(ctx *ArrayLookupContext) {}
 
 // EnterContextReference is called when production contextReference is entered.
 func (s *BaseExcellent1Listener) EnterContextReference(ctx *ContextReferenceContext) {}

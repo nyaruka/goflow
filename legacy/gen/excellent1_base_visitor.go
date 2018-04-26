@@ -19,10 +19,6 @@ func (v *BaseExcellent1Visitor) VisitDotLookup(ctx *DotLookupContext) interface{
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent1Visitor) VisitNull(ctx *NullContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
 func (v *BaseExcellent1Visitor) VisitStringLiteral(ctx *StringLiteralContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -36,10 +32,6 @@ func (v *BaseExcellent1Visitor) VisitTrue(ctx *TrueContext) interface{} {
 }
 
 func (v *BaseExcellent1Visitor) VisitFalse(ctx *FalseContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent1Visitor) VisitArrayLookup(ctx *ArrayLookupContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

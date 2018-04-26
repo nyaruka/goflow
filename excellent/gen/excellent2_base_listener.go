@@ -26,12 +26,6 @@ func (s *BaseExcellent2Listener) EnterParse(ctx *ParseContext) {}
 // ExitParse is called when production parse is exited.
 func (s *BaseExcellent2Listener) ExitParse(ctx *ParseContext) {}
 
-// EnterDecimalLiteral is called when production decimalLiteral is entered.
-func (s *BaseExcellent2Listener) EnterDecimalLiteral(ctx *DecimalLiteralContext) {}
-
-// ExitDecimalLiteral is called when production decimalLiteral is exited.
-func (s *BaseExcellent2Listener) ExitDecimalLiteral(ctx *DecimalLiteralContext) {}
-
 // EnterDotLookup is called when production dotLookup is entered.
 func (s *BaseExcellent2Listener) EnterDotLookup(ctx *DotLookupContext) {}
 
@@ -43,12 +37,6 @@ func (s *BaseExcellent2Listener) EnterNull(ctx *NullContext) {}
 
 // ExitNull is called when production null is exited.
 func (s *BaseExcellent2Listener) ExitNull(ctx *NullContext) {}
-
-// EnterStringLiteral is called when production stringLiteral is entered.
-func (s *BaseExcellent2Listener) EnterStringLiteral(ctx *StringLiteralContext) {}
-
-// ExitStringLiteral is called when production stringLiteral is exited.
-func (s *BaseExcellent2Listener) ExitStringLiteral(ctx *StringLiteralContext) {}
 
 // EnterFunctionCall is called when production functionCall is entered.
 func (s *BaseExcellent2Listener) EnterFunctionCall(ctx *FunctionCallContext) {}
@@ -79,6 +67,18 @@ func (s *BaseExcellent2Listener) EnterContextReference(ctx *ContextReferenceCont
 
 // ExitContextReference is called when production contextReference is exited.
 func (s *BaseExcellent2Listener) ExitContextReference(ctx *ContextReferenceContext) {}
+
+// EnterTextLiteral is called when production textLiteral is entered.
+func (s *BaseExcellent2Listener) EnterTextLiteral(ctx *TextLiteralContext) {}
+
+// ExitTextLiteral is called when production textLiteral is exited.
+func (s *BaseExcellent2Listener) ExitTextLiteral(ctx *TextLiteralContext) {}
+
+// EnterNumberLiteral is called when production numberLiteral is entered.
+func (s *BaseExcellent2Listener) EnterNumberLiteral(ctx *NumberLiteralContext) {}
+
+// ExitNumberLiteral is called when production numberLiteral is exited.
+func (s *BaseExcellent2Listener) ExitNumberLiteral(ctx *NumberLiteralContext) {}
 
 // EnterParentheses is called when production parentheses is entered.
 func (s *BaseExcellent2Listener) EnterParentheses(ctx *ParenthesesContext) {}

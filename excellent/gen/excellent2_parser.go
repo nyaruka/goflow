@@ -30,7 +30,7 @@ var parserATN = []uint16{
 	2, 2, 3, 14, 3, 3, 2, 2, 2, 15, 16, 8, 3, 1, 2, 16, 17, 5, 8, 5, 2, 17,
 	19, 7, 4, 2, 2, 18, 20, 5, 10, 6, 2, 19, 18, 3, 2, 2, 2, 19, 20, 3, 2,
 	2, 2, 20, 21, 3, 2, 2, 2, 21, 22, 7, 5, 2, 2, 22, 30, 3, 2, 2, 2, 23, 30,
-	7, 26, 2, 2, 24, 30, 7, 22, 2, 2, 25, 30, 7, 21, 2, 2, 26, 30, 7, 23, 2,
+	7, 26, 2, 2, 24, 30, 7, 21, 2, 2, 25, 30, 7, 22, 2, 2, 26, 30, 7, 23, 2,
 	2, 27, 30, 7, 24, 2, 2, 28, 30, 7, 25, 2, 2, 29, 15, 3, 2, 2, 2, 29, 23,
 	3, 2, 2, 2, 29, 24, 3, 2, 2, 2, 29, 25, 3, 2, 2, 2, 29, 26, 3, 2, 2, 2,
 	29, 27, 3, 2, 2, 2, 29, 28, 3, 2, 2, 2, 30, 41, 3, 2, 2, 2, 31, 32, 12,
@@ -65,7 +65,7 @@ var literalNames = []string{
 var symbolicNames = []string{
 	"", "COMMA", "LPAREN", "RPAREN", "LBRACK", "RBRACK", "DOT", "PLUS", "MINUS",
 	"TIMES", "DIVIDE", "EXPONENT", "EQ", "NEQ", "LTE", "LT", "GTE", "GT", "AMPERSAND",
-	"DECIMAL", "STRING", "TRUE", "FALSE", "NULL", "NAME", "WS", "ERROR",
+	"TEXT", "NUMBER", "TRUE", "FALSE", "NULL", "NAME", "WS", "ERROR",
 }
 
 var ruleNames = []string{
@@ -118,8 +118,8 @@ const (
 	Excellent2ParserGTE       = 16
 	Excellent2ParserGT        = 17
 	Excellent2ParserAMPERSAND = 18
-	Excellent2ParserDECIMAL   = 19
-	Excellent2ParserSTRING    = 20
+	Excellent2ParserTEXT      = 19
+	Excellent2ParserNUMBER    = 20
 	Excellent2ParserTRUE      = 21
 	Excellent2ParserFALSE     = 22
 	Excellent2ParserNULL      = 23
@@ -302,50 +302,6 @@ func (s *AtomContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) s
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-type DecimalLiteralContext struct {
-	*AtomContext
-}
-
-func NewDecimalLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *DecimalLiteralContext {
-	var p = new(DecimalLiteralContext)
-
-	p.AtomContext = NewEmptyAtomContext()
-	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
-
-	return p
-}
-
-func (s *DecimalLiteralContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *DecimalLiteralContext) DECIMAL() antlr.TerminalNode {
-	return s.GetToken(Excellent2ParserDECIMAL, 0)
-}
-
-func (s *DecimalLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.EnterDecimalLiteral(s)
-	}
-}
-
-func (s *DecimalLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.ExitDecimalLiteral(s)
-	}
-}
-
-func (s *DecimalLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case Excellent2Visitor:
-		return t.VisitDecimalLiteral(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
 type DotLookupContext struct {
 	*AtomContext
 }
@@ -451,50 +407,6 @@ func (s *NullContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 	switch t := visitor.(type) {
 	case Excellent2Visitor:
 		return t.VisitNull(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type StringLiteralContext struct {
-	*AtomContext
-}
-
-func NewStringLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *StringLiteralContext {
-	var p = new(StringLiteralContext)
-
-	p.AtomContext = NewEmptyAtomContext()
-	p.parser = parser
-	p.CopyFrom(ctx.(*AtomContext))
-
-	return p
-}
-
-func (s *StringLiteralContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *StringLiteralContext) STRING() antlr.TerminalNode {
-	return s.GetToken(Excellent2ParserSTRING, 0)
-}
-
-func (s *StringLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.EnterStringLiteral(s)
-	}
-}
-
-func (s *StringLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(Excellent2Listener); ok {
-		listenerT.ExitStringLiteral(s)
-	}
-}
-
-func (s *StringLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case Excellent2Visitor:
-		return t.VisitStringLiteral(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -769,6 +681,94 @@ func (s *ContextReferenceContext) Accept(visitor antlr.ParseTreeVisitor) interfa
 	}
 }
 
+type TextLiteralContext struct {
+	*AtomContext
+}
+
+func NewTextLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *TextLiteralContext {
+	var p = new(TextLiteralContext)
+
+	p.AtomContext = NewEmptyAtomContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*AtomContext))
+
+	return p
+}
+
+func (s *TextLiteralContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *TextLiteralContext) TEXT() antlr.TerminalNode {
+	return s.GetToken(Excellent2ParserTEXT, 0)
+}
+
+func (s *TextLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.EnterTextLiteral(s)
+	}
+}
+
+func (s *TextLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.ExitTextLiteral(s)
+	}
+}
+
+func (s *TextLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case Excellent2Visitor:
+		return t.VisitTextLiteral(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NumberLiteralContext struct {
+	*AtomContext
+}
+
+func NewNumberLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NumberLiteralContext {
+	var p = new(NumberLiteralContext)
+
+	p.AtomContext = NewEmptyAtomContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*AtomContext))
+
+	return p
+}
+
+func (s *NumberLiteralContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NumberLiteralContext) NUMBER() antlr.TerminalNode {
+	return s.GetToken(Excellent2ParserNUMBER, 0)
+}
+
+func (s *NumberLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.EnterNumberLiteral(s)
+	}
+}
+
+func (s *NumberLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(Excellent2Listener); ok {
+		listenerT.ExitNumberLiteral(s)
+	}
+}
+
+func (s *NumberLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case Excellent2Visitor:
+		return t.VisitNumberLiteral(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 func (p *Excellent2Parser) Atom() (localctx IAtomContext) {
 	return p.atom(0)
 }
@@ -822,7 +822,7 @@ func (p *Excellent2Parser) atom(_p int) (localctx IAtomContext) {
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
-		if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent2ParserLPAREN)|(1<<Excellent2ParserMINUS)|(1<<Excellent2ParserDECIMAL)|(1<<Excellent2ParserSTRING)|(1<<Excellent2ParserTRUE)|(1<<Excellent2ParserFALSE)|(1<<Excellent2ParserNULL)|(1<<Excellent2ParserNAME))) != 0 {
+		if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<Excellent2ParserLPAREN)|(1<<Excellent2ParserMINUS)|(1<<Excellent2ParserTEXT)|(1<<Excellent2ParserNUMBER)|(1<<Excellent2ParserTRUE)|(1<<Excellent2ParserFALSE)|(1<<Excellent2ParserNULL)|(1<<Excellent2ParserNAME))) != 0 {
 			{
 				p.SetState(16)
 				p.Parameters()
@@ -844,21 +844,21 @@ func (p *Excellent2Parser) atom(_p int) (localctx IAtomContext) {
 		}
 
 	case 3:
-		localctx = NewStringLiteralContext(p, localctx)
+		localctx = NewTextLiteralContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
 			p.SetState(22)
-			p.Match(Excellent2ParserSTRING)
+			p.Match(Excellent2ParserTEXT)
 		}
 
 	case 4:
-		localctx = NewDecimalLiteralContext(p, localctx)
+		localctx = NewNumberLiteralContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
 			p.SetState(23)
-			p.Match(Excellent2ParserDECIMAL)
+			p.Match(Excellent2ParserNUMBER)
 		}
 
 	case 5:
@@ -1647,7 +1647,7 @@ func (p *Excellent2Parser) expression(_p int) (localctx IExpressionContext) {
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
-	case Excellent2ParserDECIMAL, Excellent2ParserSTRING, Excellent2ParserTRUE, Excellent2ParserFALSE, Excellent2ParserNULL, Excellent2ParserNAME:
+	case Excellent2ParserTEXT, Excellent2ParserNUMBER, Excellent2ParserTRUE, Excellent2ParserFALSE, Excellent2ParserNULL, Excellent2ParserNAME:
 		localctx = NewAtomReferenceContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx

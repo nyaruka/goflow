@@ -615,17 +615,6 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 	return "false"
 }
 
-// VisitArrayLookup deals with lookups such as foo[5]
-func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
-	value := v.Visit(ctx.Atom()).(types.XValue)
-	expression := v.Visit(ctx.Expression()).(types.XValue)
-	lookup, err := types.ToXText(expression)
-	if err != nil {
-		return err
-	}
-	return excellent.ResolveValue(v.env, value, lookup.Native())
-}
-
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
