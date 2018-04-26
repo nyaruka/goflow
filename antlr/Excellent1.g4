@@ -33,7 +33,6 @@ STRING     : '"' (~["] | '""')* '"';
 
 TRUE       : [Tt][Rr][Uu][Ee];
 FALSE      : [Ff][Aa][Ll][Ss][Ee];
-NULL       : [Nn][Uu][Ll][Ll];
 
 NAME       : UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_')*;    // variable names, e.g. contact.name or function names, e.g. SUM
 
