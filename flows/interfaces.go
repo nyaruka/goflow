@@ -116,7 +116,7 @@ type SessionAssets interface {
 	GetChannel(ChannelUUID) (Channel, error)
 	GetChannelSet() (*ChannelSet, error)
 
-	GetField(FieldKey) (*Field, error)
+	GetField(string) (*Field, error)
 	GetFieldSet() (*FieldSet, error)
 
 	GetFlow(FlowUUID) (Flow, error)

@@ -295,13 +295,13 @@ type fieldValueEnvelope struct {
 }
 
 type contactEnvelope struct {
-	UUID     ContactUUID                      `json:"uuid" validate:"required,uuid4"`
-	Name     string                           `json:"name"`
-	Language utils.Language                   `json:"language"`
-	Timezone string                           `json:"timezone"`
-	URNs     []urns.URN                       `json:"urns" validate:"dive,urn"`
-	Groups   []*GroupReference                `json:"groups,omitempty" validate:"dive"`
-	Fields   map[FieldKey]*fieldValueEnvelope `json:"fields,omitempty"`
+	UUID     ContactUUID                    `json:"uuid" validate:"required,uuid4"`
+	Name     string                         `json:"name"`
+	Language utils.Language                 `json:"language"`
+	Timezone string                         `json:"timezone"`
+	URNs     []urns.URN                     `json:"urns" validate:"dive,urn"`
+	Groups   []*GroupReference              `json:"groups,omitempty" validate:"dive"`
+	Fields   map[string]*fieldValueEnvelope `json:"fields,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -388,7 +388,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Groups[g] = group.Reference()
 	}
 
-	ce.Fields = make(map[FieldKey]*fieldValueEnvelope)
+	ce.Fields = make(map[string]*fieldValueEnvelope)
 	for _, v := range c.fields {
 		if !v.IsEmpty() {
 			ce.Fields[v.field.Key()] = &fieldValueEnvelope{

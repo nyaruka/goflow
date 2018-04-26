@@ -563,7 +563,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 
 		return &actions.SetContactFieldAction{
-			Field:      flows.NewFieldReference(flows.FieldKey(a.Field), a.Label),
+			Field:      flows.NewFieldReference(a.Field, a.Label),
 			Value:      migratedValue,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil

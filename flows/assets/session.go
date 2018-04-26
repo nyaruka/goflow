@@ -64,7 +64,7 @@ func (s *sessionAssets) GetChannelSet() (*flows.ChannelSet, error) {
 }
 
 // GetField gets a contact field asset for the session
-func (s *sessionAssets) GetField(key flows.FieldKey) (*flows.Field, error) {
+func (s *sessionAssets) GetField(key string) (*flows.Field, error) {
 	fields, err := s.GetFieldSet()
 	if err != nil {
 		return nil, err

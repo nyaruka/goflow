@@ -675,6 +675,18 @@ environment will be used. An error will be returned if the timezone is not recog
 @(format_datetime("NOT DATE", "YYYY-MM-DD")) → ERROR
 ```
 
+<a name="function:format_location"></a>
+
+## format_location(location)
+
+Formats the given location as its name
+
+
+```objectivec
+@(format_location("Rwanda")) → Rwanda
+@(format_location("Rwanda > Kigali")) → Kigali
+```
+
 <a name="function:format_number"></a>
 
 ## format_number(num, places, commas)

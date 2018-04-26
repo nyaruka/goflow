@@ -92,6 +92,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// formatting functions
 	"format_datetime": FormatDateTime,
+	"format_location": OneTextFunction(FormatLocation),
 	"format_number":   FormatNumber,
 	"format_urn":      FormatURN,
 
@@ -1314,6 +1315,17 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 	f64, _ := num.Native().Float64()
 	return types.NewXText(humanize.FormatFloat(formatStr.String(), f64))
+}
+
+// FormatLocation formats the given location as its name
+//
+//   @(format_location("Rwanda")) -> Rwanda
+//   @(format_location("Rwanda > Kigali")) -> Kigali
+//
+// @function format_location(location)
+func FormatLocation(env utils.Environment, path types.XText) types.XValue {
+	parts := strings.Split(path.Native(), ">")
+	return types.NewXText(strings.TrimSpace(parts[len(parts)-1]))
 }
 
 // FormatURN turns `urn` into human friendly text

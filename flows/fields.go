@@ -7,9 +7,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// FieldKey is the unique key for this field
-type FieldKey string
-
 // FieldValueType is the data type of values for each field
 type FieldValueType string
 
@@ -31,18 +28,18 @@ var fieldLocationLevels = map[FieldValueType]LocationLevel{
 
 // Field represents a contact field
 type Field struct {
-	key       FieldKey
+	key       string
 	name      string
 	valueType FieldValueType
 }
 
 // NewField returns a new field object with the passed in uuid, key and value type
-func NewField(key FieldKey, name string, valueType FieldValueType) *Field {
+func NewField(key string, name string, valueType FieldValueType) *Field {
 	return &Field{key: key, name: name, valueType: valueType}
 }
 
 // Key returns the key of the field
-func (f *Field) Key() FieldKey { return f.key }
+func (f *Field) Key() string { return f.key }
 
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
@@ -50,15 +47,17 @@ type FieldValue struct {
 	text     types.XText
 	datetime *types.XDateTime
 	number   *types.XNumber
-	state    *Location
-	district *Location
-	ward     *Location
+	state    types.XText
+	district types.XText
+	ward     types.XText
 }
 
+// IsEmpty returns whether this field value is set for any type
 func (v *FieldValue) IsEmpty() bool {
-	return !(!v.text.Empty() || v.datetime != nil || v.number != nil || v.state != nil || v.district != nil || v.ward != nil)
+	return v.text.Empty() && v.datetime == nil && v.number == nil && v.state.Empty() && v.district.Empty() && v.ward.Empty()
 }
 
+// TypedValue returns the value in its proper type
 func (v *FieldValue) TypedValue() types.XValue {
 	switch v.field.valueType {
 	case FieldValueTypeText:
@@ -102,7 +101,7 @@ var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
 
 // FieldValues is the set of all field values for a contact
-type FieldValues map[FieldKey]*FieldValue
+type FieldValues map[string]*FieldValue
 
 // Clone returns a clone of this set of field values
 func (f FieldValues) clone() FieldValues {
@@ -142,7 +141,7 @@ func (f FieldValues) Length() int {
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(key string) types.XValue {
-	val, exists := f[FieldKey(key)]
+	val, exists := f[key]
 	if !exists {
 		return types.NewXResolveError(f, key)
 	}
@@ -170,12 +169,15 @@ var _ types.XResolvable = (FieldValues)(nil)
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {
 	fields      []*Field
-	fieldsByKey map[FieldKey]*Field
+	fieldsByKey map[string]*Field
 }
 
 // NewFieldSet creates a new set of fields
 func NewFieldSet(fields []*Field) *FieldSet {
-	s := &FieldSet{fields: fields, fieldsByKey: make(map[FieldKey]*Field, len(fields))}
+	s := &FieldSet{
+		fields:      fields,
+		fieldsByKey: make(map[string]*Field, len(fields)),
+	}
 	for _, field := range s.fields {
 		s.fieldsByKey[field.key] = field
 	}
@@ -183,7 +185,7 @@ func NewFieldSet(fields []*Field) *FieldSet {
 }
 
 // FindByKey finds the contact field with the given key
-func (s *FieldSet) FindByKey(key FieldKey) *Field {
+func (s *FieldSet) FindByKey(key string) *Field {
 	return s.fieldsByKey[key]
 }
 
@@ -196,7 +198,7 @@ func (s *FieldSet) All() []*Field {
 //------------------------------------------------------------------------------------------
 
 type fieldEnvelope struct {
-	Key       FieldKey       `json:"key"`
+	Key       string         `json:"key"`
 	Name      string         `json:"name"`
 	ValueType FieldValueType `json:"value_type,omitempty"`
 }

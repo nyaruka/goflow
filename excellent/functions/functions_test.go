@@ -160,6 +160,11 @@ var funcTests = []struct {
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY"), xs("Cuenca")}, ERROR},
 	{"format_datetime", []types.XValue{}, ERROR},
 
+	{"format_location", []types.XValue{xs("Rwanda")}, xs("Rwanda")},
+	{"format_location", []types.XValue{xs("Rwanda > Kigali")}, xs("Kigali")},
+	{"format_location", []types.XValue{ERROR}, ERROR},
+	{"format_location", []types.XValue{}, ERROR},
+
 	{"format_number", []types.XValue{xn("31337")}, xs("31,337.00")},
 	{"format_number", []types.XValue{xn("31337"), xi(0), types.XBooleanFalse}, xs("31337")},
 	{"format_number", []types.XValue{xn("31337"), xs("xxx")}, ERROR},
