@@ -528,6 +528,14 @@ func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interf
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	functionName := strings.ToLower(ctx.Fnname().GetText())
+
+	// these become keywords
+	if functionName == "true" {
+		return "true"
+	} else if functionName == "false" {
+		return "false"
+	}
+
 	template, found := functionTemplates[functionName]
 	if !found {
 		template = functionTemplate{name: functionName, params: "(%s)"}
@@ -541,7 +549,7 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 	if !ignored {
 		_, found = functions.XFUNCTIONS[template.name]
 		if !found {
-			return fmt.Errorf("No function with name '%s'", template.name)
+			return fmt.Errorf("no function with name '%s'", template.name)
 		}
 	}
 
@@ -599,12 +607,12 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 
 // VisitTrue deals with the "true" literal
 func (v *legacyVisitor) VisitTrue(ctx *gen.TrueContext) interface{} {
-	return true
+	return "true"
 }
 
 // VisitFalse deals with the "false" literal
 func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
-	return false
+	return "false"
 }
 
 // VisitArrayLookup deals with lookups such as foo[5]

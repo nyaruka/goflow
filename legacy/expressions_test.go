@@ -1,9 +1,16 @@
-package legacy
+package legacy_test
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"testing"
+	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -15,7 +22,7 @@ type testTemplate struct {
 	old string
 	new string
 
-	extraAs ExtraVarsMapping
+	extraAs legacy.ExtraVarsMapping
 }
 
 func TestMigrateTemplate(t *testing.T) {
@@ -71,6 +78,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel.0))`},
 		{old: `@(contact.gender)`, new: `@(contact.fields.gender)`},
 		{old: `@(flow.favorite_color)`, new: `@(run.results.favorite_color)`},
+
+		// booleans
+		{old: `@(TRUE)`, new: `@(true)`},
+		{old: `@(False)`, new: `@(false)`},
+		{old: `@(TRUE())`, new: `@(true)`},
+		{old: `@(FALSE())`, new: `@(false)`},
 
 		// arithmetic
 		{old: `@(1 + 2)`, new: `@(1 + 2)`},
@@ -141,10 +154,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(YEAR(date.now))`, new: `@(format_datetime(now(), "YYYY"))`},
 
 		// booleans and conditionals
-		// TODO
-		//{old: `@(AND(contact.gender = "F", contact.age >= 18))`, new: `@(and(contact.fields.gender = "F", contact.fields.age >= 18))`},
-		//{old: `@(IF(contact.gender = "M", "Sir", "Madam"))`, new: `@(if(contact.fields.gender = "M", "Sir", "Madam"))`},
-		//{old: `@(OR(contact.state = "GA", contact.state = "WA", contact.state = "IN"))`, new: `@(or(contact.fields.state = "GA", contact.fields.state == "WA", contact.fields.state == "IN"))`},
+		{old: `@(AND(contact.gender = "F", contact.age >= 18))`, new: `@(and(contact.fields.gender = "F", contact.fields.age >= 18))`},
+		{old: `@(IF(contact.gender = "M", "Sir", "Madam"))`, new: `@(if(contact.fields.gender = "M", "Sir", "Madam"))`},
+		{old: `@(OR(contact.gender = "M", contact.gender = "F", contact.gender = "NB"))`, new: `@(or(contact.fields.gender = "M", contact.fields.gender = "F", contact.fields.gender = "NB"))`},
 
 		// math functions
 		{old: `@(ABS(-1))`, new: `@(abs(-1))`},
@@ -179,9 +191,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
-		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: ExtraAsWebhookJSON},
-		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: ExtraAsTriggerParams},
-		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: ExtraAsFunction},
+		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: legacy.ExtraAsWebhookJSON},
+		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: legacy.ExtraAsTriggerParams},
+		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: legacy.ExtraAsFunction},
 
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
@@ -204,7 +216,7 @@ func TestMigrateTemplate(t *testing.T) {
 	for _, test := range tests {
 
 		for i := 0; i < 1; i++ {
-			migratedTemplate, err := MigrateTemplate(test.old, test.extraAs)
+			migratedTemplate, err := legacy.MigrateTemplate(test.old, test.extraAs)
 
 			defer func() {
 				if r := recover(); r != nil {
@@ -220,6 +232,53 @@ func TestMigrateTemplate(t *testing.T) {
 				_, err = session.Runs()[0].EvaluateTemplate(migratedTemplate)
 				require.NoError(t, err, "unable to evaluate migrated template '%s'", migratedTemplate)
 			}
+		}
+	}
+}
+
+type legacyTestContext struct {
+	Variables json.RawMessage `json:"variables"`
+	Timezone  string          `json:"timezone"`
+	DateStyle string          `json:"date_style"`
+	Now       *time.Time      `json:"now"`
+}
+
+type legacyTest struct {
+	Template  string            `json:"template"`
+	Context   legacyTestContext `json:"context"`
+	URLEncode bool              `json:"url_encode"`
+	Output    string            `json:"output"`
+	Errors    []string          `json:"errors"`
+}
+
+// TestLegacyTests runs the tests from https://github.com/rapidpro/expressions,  migrating each template first
+func TestLegacyTests(t *testing.T) {
+	legacyTestData, err := ioutil.ReadFile("testdata/legacy_tests.json")
+	require.NoError(t, err)
+
+	var tests []legacyTest
+	err = json.Unmarshal(legacyTestData, &tests)
+	require.NoError(t, err)
+
+	for _, tc := range tests {
+		migratedTemplate, err := legacy.MigrateTemplate(tc.Template, legacy.ExtraAsFunction)
+
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("panic migrating template '%s': %#v", tc.Template, r)
+			}
+		}()
+
+		assert.NoError(t, err, "error whilst migrating template '%s'", tc.Template)
+
+		if err != nil {
+			variables := types.JSONToXValue(tc.Context.Variables)
+			tz, err := time.LoadLocation(tc.Context.Timezone)
+			require.NoError(t, err)
+
+			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
+
+			fmt.Printf("TODO evaluate %s with vars %s and env %s", migratedTemplate, variables, env)
 		}
 	}
 }

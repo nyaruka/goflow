@@ -1,0 +1,1323 @@
+[
+    {
+        "template": "Hi Bob. Nice tests!",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Hi Bob. Nice tests!",
+        "errors": []
+    },
+    {
+        "template": "My email is rowan@nyaruka.com.",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "My email is rowan@nyaruka.com.",
+        "errors": []
+    },
+    {
+        "template": "Twitter handle for Joe@Nyaruka is @@flow. @@@flow",
+        "context": {
+            "variables": {
+                "flow": "x"
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Twitter handle for Joe@Nyaruka is @flow. @x",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE) @( FALSE ) @(2) @(2.30) @(\"A\"\"a\")",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE FALSE 2 2.3 A\"a",
+        "errors": []
+    },
+    {
+        "template": "Hi @CONTACT @contact.name",
+        "context": {
+            "variables": {
+                "ConTact": {
+                    "*": "Bob",
+                    "NAME": "Bob"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Hi Bob Bob",
+        "errors": []
+    },
+    {
+        "template": "Hi @(contact.name)",
+        "context": {
+            "variables": {
+                "contact": {
+                    "*": "Bob",
+                    "name": "Bob"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Hi Bob",
+        "errors": []
+    },
+    {
+        "template": "Hi @flow.response_1.text",
+        "context": {
+            "variables": {
+                "flow": {
+                    "response_1": {
+                        "text": "Jim"
+                    }
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Hi Jim",
+        "errors": []
+    },
+    {
+        "template": "@(flow.X + flow.Y + flow.Z)",
+        "context": {
+            "variables": {
+                "flow": {
+                    "x": 1.23,
+                    "y": 2,
+                    "z": "3"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "6.23",
+        "errors": []
+    },
+    {
+        "template": "Name: @contact",
+        "context": {
+            "variables": {
+                "contact": null
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Name: ",
+        "errors": []
+    },
+    {
+        "template": "@extra",
+        "context": {
+            "variables": {
+                "extra": {
+                    "color": "RED"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "{\"color\":\"RED\"}",
+        "errors": []
+    },
+    {
+        "template": "Answer is @(4 + 3 - 1 + -2 + 3 * 2)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Answer is 10",
+        "errors": []
+    },
+    {
+        "template": "@(100 / 3) @(2 * 100 / 3)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "33.33333333 66.66666667",
+        "errors": []
+    },
+    {
+        "template": "@(contact.dob + 1) @(contact.dob - 3)",
+        "context": {
+            "variables": {
+                "contact": {
+                    "dob": "01-12-2014"
+                }
+            },
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "02-12-2014 28-11-2014",
+        "errors": []
+    },
+    {
+        "template": "@(contact.joined + 1) @(contact.joined - 3)",
+        "context": {
+            "variables": {
+                "contact": {
+                    "joined": "01-12-2014 09:00"
+                }
+            },
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "2014-12-02T09:00:00+02:00 2014-11-28T09:00:00+02:00",
+        "errors": []
+    },
+    {
+        "template": "@(DATE(2014, 7, 1) + 1) @(DATE(2014, 7, 1) - 3)",
+        "context": {
+            "variables": {},
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "02-07-2014 28-06-2014",
+        "errors": []
+    },
+    {
+        "template": "@(contact.joined + TIME(2, 30, 0)) @(contact.joined - TIME(2, 30, 0))",
+        "context": {
+            "variables": {
+                "contact": {
+                    "joined": "01-12-2014 09:00"
+                }
+            },
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "2014-12-01T11:30:00+02:00 2014-12-01T06:30:00+02:00",
+        "errors": []
+    },
+    {
+        "template": "@(contact.joined + TIME(2, 30, 0)) @(contact.joined - TIME(2, 30, 0))",
+        "context": {
+            "variables": {
+                "contact": {
+                    "joined": "01-12-2014"
+                }
+            },
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "2014-12-01T02:30:00+02:00 2014-11-30T21:30:00+02:00",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE = TRUE) @(7 = 7) @(3.2 = 3.2) @(3.0 = 3) @(\"3\" = 3) @(\"3.0\" = 3.00) @(\"ab\" = \"ab\") @(date.d1 = date.d2)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:02"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE = FALSE) @(7 = 8) @(3.2 = 2.6) @(\"3.0\" = \"3.00\") @(\"ab\" = \"cd\") @(date.d1 = date.d2)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:03"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "FALSE FALSE FALSE FALSE FALSE FALSE",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE <> FALSE) @(7 <> 8) @(3.2 <> 2.6) @(\"3.0\" <> \"3.00\") @(\"ab\" <> \"cd\") @(date.d1 <> date.d2)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:03"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE TRUE TRUE TRUE TRUE TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE <> TRUE) @(7 <> 7) @(3.2 <> 3.2) @(3.0 <> 3) @(\"3\" <> 3) @(\"3.0\" <> 3.00) @(\"ab\" <> \"AB\") @(date.d1 <> date.d2)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:02"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE",
+        "errors": []
+    },
+    {
+        "template": "@(FALSE <= TRUE) @(TRUE <= TRUE) @(7 <= 7) @(7 <= 8) @(3.2 <= 3.2) @(3.0 <= 3) @(\"3\" <= 3) @(\"3.0\" <= 3.00) @(\"ab\" <= \"ab\") @(date.d1 <= date.d2)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:03"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE <= FALSE) @(8 <= 7) @(3.3 <= 3.2) @(3.2 <= 3) @(\"4\" <= 3) @(\"3.2\" <= 3.00) @(\"ac\" <= \"ab\") @(date.d2 <= date.d1)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:03"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE",
+        "errors": []
+    },
+    {
+        "template": "@(FALSE < TRUE) @(7 < 8) @(2.8 < 3) @(\"2.0\" < 3.00) @(\"ab\" < \"ac\") @(date.d1 < date.d2)",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "14-08-2015 15:02",
+                    "d2": "14-08-2015 15:03"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE TRUE TRUE TRUE TRUE TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(ABS(1)) @(ABS(-1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 1",
+        "errors": []
+    },
+    {
+        "template": "@(AVERAGE(1)) @(AVERAGE(1, \"2\", 3)) @(AVERAGE(-1, -2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 2 -1.5",
+        "errors": []
+    },
+    {
+        "template": "@(AND(1, true, \"true\")) @(AND(1, true, \"true\", 0))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE FALSE",
+        "errors": []
+    },
+    {
+        "template": "@(CHAR(9))@(CHAR(10))@(CHAR(32))@(char(65))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "\t\n A",
+        "errors": []
+    },
+    {
+        "template": "@(CLEAN(\"Hello \nwo\tr\rld\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Hello world",
+        "errors": []
+    },
+    {
+        "template": "@(CODE(\"\t\")) @(CODE(\"\n\")) @(CODE(\"\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "9 10 @(CODE(\"\"))",
+        "errors": [
+            "Error calling function CODE with arguments \"\""
+        ]
+    },
+    {
+        "template": "@(CONCATENATE(\"A\", 1, TRUE))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "A1TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(DATE(1900, 1, 1)) @(DATE(2012, \"3\", 2.0))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "01-01-1900 02-03-2012",
+        "errors": []
+    },
+    {
+        "template": "@(DATEDIF(\"28/5/81\", \"23-11-15\", \"y\")) @(DATEDIF(\"1/1/2011\", \"31-12-2012\", \"Y\")) @(DATEDIF(\"20/9/14\", \"23/11/15\", \"m\")) @(DATEDIF(\"1/6/2001\", \"15/8/2002\", \"d\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "34 1 14 440",
+        "errors": []
+    },
+    {
+        "template": "@(DATEDIF(\"1/6/2001\", \"15/8/2002\", \"YD\")) @(DATEDIF(\"1/6/2001\", \"15/8/2002\", \"YM\")) @(DATEDIF(\"1/6/2001\", \"15/8/2002\", \"mD\")) @(DATEDIF(\"16/6/2001\", \"15/8/2002\", \"mD\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "75 2 14 30",
+        "errors": []
+    },
+    {
+        "template": "@(DATEVALUE(\"1/2/34\")) @(DATEVALUE(\"1-2-34\")) @(DATEVALUE(\"01 02 34\")) @(DATEVALUE(\"1 Feb 34\")) @(DATEVALUE(\"1. 2 '34\")) @(DATEVALUE(\"1st february 2034\")) @(DATEVALUE(\"1er février 2034\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "01-02-2034 01-02-2034 01-02-2034 01-02-2034 01-02-2034 01-02-2034 01-02-2034",
+        "errors": []
+    },
+    {
+        "template": "@(DATEVALUE(\"2/25-70\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "25-02-1970",
+        "errors": []
+    },
+    {
+        "template": "@(DATEVALUE(\"1 feb\")) @(DATEVALUE(\"Feb 1st\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first",
+            "now": "2016-02-01T13:08:12.790Z"
+        },
+        "url_encode": false,
+        "output": "01-02-2017 01-02-2017",
+        "errors": []
+    },
+    {
+        "template": "@(DAY(\"10-9-2015\")) @(DAY(\"Feb 1st\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "10 1",
+        "errors": []
+    },
+    {
+        "template": "@(DAYS(\"15/3/11\", \"1/2/11\")) @(DAYS(flow.d1, flow.d2))",
+        "context": {
+            "variables": {
+                "flow": {
+                    "d1": "2011-12-31T10:38:30.123456Z",
+                    "d2": "1/1/2011"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "42 364",
+        "errors": []
+    },
+    {
+        "template": "@(EDATE(\"10-9-2015\", 1)) @(EDATE(\"Jan 1st 2014\", -1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "10-10-2015 01-12-2013",
+        "errors": []
+    },
+    {
+        "template": "@(EXP(2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "7.389056099",
+        "errors": []
+    },
+    {
+        "template": "@(FALSE())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "FALSE",
+        "errors": []
+    },
+    {
+        "template": "@(FIELD(\"15+M+Seattle\", 1, \"+\"))|@(FIELD(\"15 M Seattle\", 2))|@(FIELD(\"15    M  Seattle\", 3))|@(FIELD(\"15 M Seattle\", 4))|@(FIELD(\"واحد اثنين ثلاثة\", 2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "15|M|Seattle||اثنين",
+        "errors": []
+    },
+    {
+        "template": "@(FIRST_WORD(\"  \"))|@(FIRST_WORD(\" abc \"))|@(FIRST_WORD(\" abc def ghi\"))|@(FIRST_WORD(\"واحد اثنين ثلاثة\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|abc|abc|واحد",
+        "errors": []
+    },
+    {
+        "template": "@(FIXED(1234.5678, 1)) @(FIXED(1234.5678, 2)) @(FIXED(1234.5678, 0)) @(FIXED(1234.5678, -1)) @(FIXED(1234.5678, -4)) @(FIXED(1234.1234, 2)) @(FIXED(1234.5678, 3, TRUE))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1,234.6 1,234.57 1,235 1,230 0 1,234.12 1234.568",
+        "errors": []
+    },
+    {
+        "template": "@(FORMAT_DATE(contact.joined)) @(FORMAT_DATE(contact.left))",
+        "context": {
+            "variables": {
+                "contact": {
+                    "joined": "2017-11-30T08:59:12.1234567+02:00",
+                    "left": "30-11-2017"
+                }
+            },
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "30-11-2017 08:59 30-11-2017 00:00",
+        "errors": []
+    },
+    {
+        "template": "@(FORMAT_LOCATION(contact.state)) @(FORMAT_LOCATION(contact.district))",
+        "context": {
+            "variables": {
+                "contact": {
+                    "state": "Kigali",
+                    "district": "Kigali > Gasabo"
+                }
+            },
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "Kigali Gasabo",
+        "errors": []
+    },
+    {
+        "template": "@(HOUR(\"10-9-2015 13:45:23\")) @(HOUR(\"Sep 9th 2:30PM\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "13 14",
+        "errors": []
+    },
+    {
+        "template": "@(IF(TRUE, 0, false)) @(IF(true, \"x\", \"y\")) @(IF(\"true\", \"x\", \"y\")) @(IF(False, 0, False)) @(IF(0, \"x\", \"y\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "0 x x FALSE y",
+        "errors": []
+    },
+    {
+        "template": "@(INT(8.9)) @(INT(-8.9))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "8 -9",
+        "errors": []
+    },
+    {
+        "template": "@(LEFT(\"abcdef\", 0))|@(LEFT(\"abcdef\", 2))|@(LEFT(\"واحد\", 2))|@(LEFT(\"err\", -1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|ab|وا|@(LEFT(\"err\", -1))",
+        "errors": [
+            "Error calling function LEFT with arguments \"err\", -1"
+        ]
+    },
+    {
+        "template": "@(LEN(\"\")) @(LEN(\" \")) @(LEN(\"qwérty\")) @(LEN(\"سلام\")) @(LEN(12345))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "0 1 6 4 5",
+        "errors": []
+    },
+    {
+        "template": "@(LOWER(\"\"))|@(LOWER(\"aBcD\"))|@(LOWER(\"Aواحد\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|abcd|aواحد",
+        "errors": []
+    },
+    {
+        "template": "@(MAX(\"1\")) @(MAX(1, 3, 2, -5)) @(MAX(-2, -5))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 3 -2",
+        "errors": []
+    },
+    {
+        "template": "@(MIN(\"1\")) @(MIN(-1, -3, -2, 5)) @(MIN(-2, -5))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 -3 -5",
+        "errors": []
+    },
+    {
+        "template": "@(MINUTE(\"10-9-2015 13:45:23\")) @(MINUTE(\"Sep 10th 2:30PM\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "45 30",
+        "errors": []
+    },
+    {
+        "template": "@(MOD(3, 2)) @(MOD(-3, 2)) @(MOD(3, -2)) @(MOD(-3, -2)) @(MOD(3, 3)) @(MOD(2.5, 2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 1 -1 -1 0 0.5",
+        "errors": []
+    },
+    {
+        "template": "@(MONTH(\"10-8-2015 13:45:23\")) @(MONTH(\"Sep 10th\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "8 9",
+        "errors": []
+    },
+    {
+        "template": "@(NOW())",
+        "context": {
+            "variables": {},
+            "timezone": "Africa/Kigali",
+            "date_style": "day_first",
+            "now": "2014-10-03T09:41:12.790Z"
+        },
+        "url_encode": false,
+        "output": "2014-10-03T11:41:12.790000+02:00",
+        "errors": []
+    },
+    {
+        "template": "@(PERCENT(\"0.25321\")) @(PERCENT(0.3333)) @(PERCENT(0.666666))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "25% 33% 67%",
+        "errors": []
+    },
+    {
+        "template": "@(POWER(\"4\", 2)) @(POWER(4, \"0.5\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "16 2",
+        "errors": []
+    },
+    {
+        "template": "@(OR(1, false, \"false\")) @(OR(0, false, \"FALSE\")) @(OR(0, true, \"false\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE FALSE TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(PROPER(\"\"))|@(PROPER(\"f1rst  sécOND-third_fourth\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|F1Rst  Sécond-Third_Fourth",
+        "errors": []
+    },
+    {
+        "template": "@(RAND())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output_regex": "0.\\d+",
+        "errors": []
+    },
+    {
+        "template": "@(RANDBETWEEN(2, 4))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output_regex": "(2|3|4)",
+        "errors": []
+    },
+    {
+        "template": "@(READ_DIGITS(\"1234567890123456\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 2 3 4 , 5 6 7 8 , 9 0 1 2 , 3 4 5 6",
+        "errors": []
+    },
+    {
+        "template": "@(READ_DIGITS(\"+123456789012\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 2 3 , 4 5 6 , 7 8 9 , 0 1 2",
+        "errors": []
+    },
+    {
+        "template": "@(READ_DIGITS(\"123456789\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 2 3 , 4 5 , 6 7 8 9",
+        "errors": []
+    },
+    {
+        "template": "@(READ_DIGITS(\"123456\"))|@(READ_DIGITS(\"12345\"))|@(READ_DIGITS(\"123\"))|@(READ_DIGITS(\"\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 2 3 , 4 5 6|1,2,3,4,5|1,2,3|",
+        "errors": []
+    },
+    {
+        "template": "@(REMOVE_FIRST_WORD(\"\"))|@(REMOVE_FIRST_WORD(\"abc\"))|@(REMOVE_FIRST_WORD(\" abc  \"))|@(REMOVE_FIRST_WORD(\" abc def-ghi \"))|@(REMOVE_FIRST_WORD(\"واحد اثنين ثلاثة\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|||def-ghi |اثنين ثلاثة",
+        "errors": []
+    },
+    {
+        "template": "@(REPT(\"abc\", 3))|@(REPT(\"واحد\", 2))|@(REPT(\"err\", -1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "abcabcabc|واحدواحد|@(REPT(\"err\", -1))",
+        "errors": [
+            "Error calling function REPT with arguments \"err\", -1"
+        ]
+    },
+    {
+        "template": "@(RIGHT(\"abcdef\", 0))|@(RIGHT(\"abcdef\", 2))|@(RIGHT(\"واحد\", 2))|@(RIGHT(\"err\", -1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|ef|حد|@(RIGHT(\"err\", -1))",
+        "errors": [
+            "Error calling function RIGHT with arguments \"err\", -1"
+        ]
+    },
+    {
+        "template": "@(ROUND(2.15, 1)) @(ROUND(2.149, 1)) @(ROUND(-1.475, 2)) @(ROUND(21.5, -1)) @(ROUND(626.3, -3)) @(ROUND(1.98, -1)) @(ROUND(-50.55, -2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "2.2 2.1 -1.48 20 1000 0 -100",
+        "errors": []
+    },
+    {
+        "template": "@(ROUNDDOWN(3.2, 0)) @(ROUNDDOWN(76.9, 0)) @(ROUNDDOWN(3.14159, 3)) @(ROUNDDOWN(-3.14159, 1)) @(ROUNDDOWN(31415.92654, -2)) @(ROUNDDOWN(31499, -2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "3 76 3.141 -3.1 31400 31400",
+        "errors": []
+    },
+    {
+        "template": "@(ROUNDUP(3.2, 0)) @(ROUNDUP(76.9, 0)) @(ROUNDUP(3.14159, 3)) @(ROUNDUP(-3.14159, 1)) @(ROUNDUP(31415.92654, -2)) @(ROUNDUP(31499, -2))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "4 77 3.142 -3.2 31500 31500",
+        "errors": []
+    },
+    {
+        "template": "@(SECOND(\"10-9-2015 13:45:23\")) @(SECOND(\"Sep 10th 2:30PM\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "23 0",
+        "errors": []
+    },
+    {
+        "template": "@(SUBSTITUTE(\"ab Ab cd\", \"ab\", \"xy\", -1))|@(SUBSTITUTE(\"ab ab cd\", \"ab\", \"xy\", -1))|@(SUBSTITUTE(\"ab ab cd\", \"ab\", \"xy\", 2))|@(SUBSTITUTE(\"واحد اثنين ثلاثة\", \"واحد\", \"ثلاثة\", -1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "xy Ab cd|xy xy cd|ab xy cd|ثلاثة اثنين ثلاثة",
+        "errors": []
+    },
+    {
+        "template": "@(SUM(1)) @(SUM(1, 2, \"3\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "1 6",
+        "errors": []
+    },
+    {
+        "template": "@(TIME(\"13\", 45, 30))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "13:45",
+        "errors": []
+    },
+    {
+        "template": "@(TIMEVALUE(\"13:45.23\")) @(TIMEVALUE(\"1345\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "13:45 13:45",
+        "errors": []
+    },
+    {
+        "template": "@(TODAY())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first",
+            "now": "2014-10-03T09:41:12.790Z"
+        },
+        "url_encode": false,
+        "output": "03-10-2014",
+        "errors": []
+    },
+    {
+        "template": "@(TRUE())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "TRUE",
+        "errors": []
+    },
+    {
+        "template": "@(TRUNC(8.9)) @(TRUNC(-8.9)) @(TRUNC(0.45))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "8 -8 0",
+        "errors": []
+    },
+    {
+        "template": "@(UNICHAR(9))@(UNICHAR(10))@(UNICHAR(32))@(UNICHAR(65))@(UNICHAR(1575))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "\t\n Aا",
+        "errors": []
+    },
+    {
+        "template": "@(UNICODE(\"\t\")) @(UNICODE(\"\n\")) @(UNICODE(\"ا\")) @(UNICODE(\"\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "9 10 1575 @(UNICODE(\"\"))",
+        "errors": [
+            "Error calling function UNICODE with arguments \"\""
+        ]
+    },
+    {
+        "template": "@(UPPER(\"\"))|@(UPPER(\"aBcD\"))|@(UPPER(\"Aواحد\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|ABCD|Aواحد",
+        "errors": []
+    },
+    {
+        "template": "@(WEEKDAY(date.d1)) @(WEEKDAY(date.d2))",
+        "context": {
+            "variables": {
+                "date": {
+                    "d1": "15-08-2015",
+                    "d2": "16-08-2015 13:45"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "7 1",
+        "errors": []
+    },
+    {
+        "template": "@(WORD(\" \", 1))|@(WORD(\" abc def ghi\", 1))|@(WORD(\"abc-def  ghi  jkl\", 3))|@(WORD(\"abc-def  ghi  jkl\", 3, TRUE))|@(WORD(\"abc-def  ghi  jkl\", \"3\", \"TRUE\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "|abc|ghi|jkl|jkl",
+        "errors": []
+    },
+    {
+        "template": "@(WORD(\"abc-def  ghi  jkl\", -1))|@(WORD(\" abc def   ghi\", 6))|@(WORD(\"واحد اثنين ثلاثة\", 1))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "jkl||واحد",
+        "errors": []
+    },
+    {
+        "template": "@(WORD_COUNT(\"\")) @(WORD_COUNT(\" abc-def  ghi  jkl\")) @(WORD_COUNT(\" abc-def  ghi  jkl\", TRUE)) @(WORD_COUNT(\"واحد اثنين ثلاثة\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "0 4 3 3",
+        "errors": []
+    },
+    {
+        "template": "@(WORD_SLICE(\" abc  def ghi-jkl \", 1, 3))|@(WORD_SLICE(\" abc  def ghi-jkl \", 3))|@(WORD_SLICE(\" abc  def ghi-jkl \", 3, 0, true))|@(WORD_SLICE(\" abc  def ghi-jkl \", \"3\", \"0\", \"true\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "abc def|ghi jkl|ghi-jkl|ghi-jkl",
+        "errors": []
+    },
+    {
+        "template": "@(WORD_SLICE(\" abc  def ghi-jkl \", 2, -1))|@(WORD_SLICE(\" abc  def ghi-jkl \", -1, 0))|@(WORD_SLICE(\"واحد اثنين ثلاثة\", 1, 3))|@(WORD_SLICE(\" abc  def ghi-jkl \", 0))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "def ghi|jkl|واحد اثنين|@(WORD_SLICE(\" abc  def ghi-jkl \", 0))",
+        "errors": [
+            "Error calling function WORD_SLICE with arguments \" abc  def ghi-jkl \", 0"
+        ]
+    },
+    {
+        "template": "@(YEAR(\"10-9-2015\")) @(YEAR(\"Feb 1st 99\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "2015 1999",
+        "errors": []
+    },
+    {
+        "template": "http://example.com/do.php?contact=@contact",
+        "context": {
+            "variables": {
+                "contact": {
+                    "*": "Joe Flow"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": true,
+        "output": "http://example.com/do.php?contact=Joe%20Flow",
+        "errors": []
+    },
+    {
+        "template": "@(5 + (1 + )",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(5 + (1 + )",
+        "errors": []
+    },
+    {
+        "template": "@(\")",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(\")",
+        "errors": []
+    },
+    {
+        "template": "@SUM(1, 2)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@SUM(1, 2)",
+        "errors": []
+    },
+    {
+        "template": "@contact.X",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@contact.X",
+        "errors": [
+            "Undefined variable: contact.X"
+        ]
+    },
+    {
+        "template": "@contact.name.something",
+        "context": {
+            "variables": {
+                "contact": {
+                    "name": "Bob"
+                }
+            },
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@contact.name.something",
+        "errors": [
+            "Undefined variable: contact.name.something"
+        ]
+    },
+    {
+        "template": "@(FOO())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(FOO())",
+        "errors": [
+            "Undefined function: FOO"
+        ]
+    },
+    {
+        "template": "@(LEN())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(LEN())",
+        "errors": [
+            "Too few arguments provided for function LEN"
+        ]
+    },
+    {
+        "template": "@(LEN(\"a\", \"b\"))",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(LEN(\"a\", \"b\"))",
+        "errors": [
+            "Too many arguments provided for function LEN"
+        ]
+    },
+    {
+        "template": "@('x')",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@('x')",
+        "errors": [
+            "Expression error at: '"
+        ]
+    },
+    {
+        "template": "@(0 / )",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(0 / )",
+        "errors": [
+            "Expression error at: )"
+        ]
+    },
+    {
+        "template": "@(1.1.0)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(1.1.0)",
+        "errors": [
+            "Expression is invalid"
+        ]
+    },
+    {
+        "template": "@(2/ 0)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(2/ 0)",
+        "errors": [
+            "Division by zero"
+        ]
+    },
+    {
+        "template": "@(0 /0)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(0 /0)",
+        "errors": [
+            "Division by zero"
+        ]
+    }
+]
