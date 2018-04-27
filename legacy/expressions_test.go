@@ -1,9 +1,18 @@
-package legacy
+package legacy_test
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"reflect"
+	"strings"
 	"testing"
+	"time"
 
+	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -15,7 +24,7 @@ type testTemplate struct {
 	old string
 	new string
 
-	extraAs ExtraVarsMapping
+	extraAs legacy.ExtraVarsMapping
 }
 
 func TestMigrateTemplate(t *testing.T) {
@@ -23,8 +32,10 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// contact variables
 		{old: `@contact`, new: `@contact`},
+		{old: `@CONTACT`, new: `@contact`},
 		{old: `@contact.uuid`, new: `@contact.uuid`},
 		{old: `@contact.name`, new: `@contact.name`},
+		{old: `@contact.NAME`, new: `@contact.name`},
 		{old: `@contact.first_name`, new: `@contact.first_name`},
 		{old: `@contact.gender`, new: `@contact.fields.gender`},
 
@@ -72,6 +83,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(contact.gender)`, new: `@(contact.fields.gender)`},
 		{old: `@(flow.favorite_color)`, new: `@(run.results.favorite_color)`},
 
+		// booleans
+		{old: `@(TRUE)`, new: `@(true)`},
+		{old: `@(False)`, new: `@(false)`},
+		{old: `@(TRUE())`, new: `@(true)`},
+		{old: `@(FALSE())`, new: `@(false)`},
+
 		// arithmetic
 		{old: `@(1 + 2)`, new: `@(1 + 2)`},
 		{old: `@(1 - 2)`, new: `@(1 - 2)`},
@@ -81,6 +98,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(2 / 4)`, new: `@(2 / 4)`},
 
 		// comparisons
+		{old: `@(1 = 4)`, new: `@(1 = 4)`},
+		{old: `@(1 <> 4)`, new: `@(1 != 4)`},
 		{old: `@(1 < 4)`, new: `@(1 < 4)`},
 		{old: `@(1 <= 4)`, new: `@(1 <= 4)`},
 		{old: `@(1 > 4)`, new: `@(1 > 4)`},
@@ -141,10 +160,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(YEAR(date.now))`, new: `@(format_datetime(now(), "YYYY"))`},
 
 		// booleans and conditionals
-		// TODO
-		//{old: `@(AND(contact.gender = "F", contact.age >= 18))`, new: `@(and(contact.fields.gender = "F", contact.fields.age >= 18))`},
-		//{old: `@(IF(contact.gender = "M", "Sir", "Madam"))`, new: `@(if(contact.fields.gender = "M", "Sir", "Madam"))`},
-		//{old: `@(OR(contact.state = "GA", contact.state = "WA", contact.state = "IN"))`, new: `@(or(contact.fields.state = "GA", contact.fields.state == "WA", contact.fields.state == "IN"))`},
+		{old: `@(AND(contact.gender = "F", contact.age >= 18))`, new: `@(and(contact.fields.gender = "F", contact.fields.age >= 18))`},
+		{old: `@(IF(contact.gender = "M", "Sir", "Madam"))`, new: `@(if(contact.fields.gender = "M", "Sir", "Madam"))`},
+		{old: `@(OR(contact.gender = "M", contact.gender = "F", contact.gender = "NB"))`, new: `@(or(contact.fields.gender = "M", contact.fields.gender = "F", contact.fields.gender = "NB"))`},
 
 		// math functions
 		{old: `@(ABS(-1))`, new: `@(abs(-1))`},
@@ -179,9 +197,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
-		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: ExtraAsWebhookJSON},
-		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: ExtraAsTriggerParams},
-		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: ExtraAsFunction},
+		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: legacy.ExtraAsWebhookJSON},
+		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: legacy.ExtraAsTriggerParams},
+		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: legacy.ExtraAsFunction},
 
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
@@ -204,7 +222,7 @@ func TestMigrateTemplate(t *testing.T) {
 	for _, test := range tests {
 
 		for i := 0; i < 1; i++ {
-			migratedTemplate, err := MigrateTemplate(test.old, test.extraAs)
+			migratedTemplate, err := legacy.MigrateTemplate(test.old, test.extraAs)
 
 			defer func() {
 				if r := recover(); r != nil {
@@ -221,5 +239,91 @@ func TestMigrateTemplate(t *testing.T) {
 				require.NoError(t, err, "unable to evaluate migrated template '%s'", migratedTemplate)
 			}
 		}
+	}
+}
+
+type legacyVariables map[string]interface{}
+
+func (v legacyVariables) Resolve(key string) types.XValue {
+	key = strings.ToLower(key)
+	for k, val := range v {
+		if strings.ToLower(k) == key {
+			return toXType(val)
+		}
+	}
+	return nil
+}
+
+func (v legacyVariables) Reduce() types.XPrimitive {
+	return toXType(v["*"]).(types.XPrimitive)
+}
+
+func (v legacyVariables) ToXJSON() types.XText { return types.NewXText("LEGACY") }
+
+func toXType(val interface{}) types.XValue {
+	if utils.IsNil(val) {
+		return nil
+	}
+
+	switch typed := val.(type) {
+	case string:
+		return types.NewXText(typed)
+	case map[string]interface{}:
+		return legacyVariables(typed)
+	}
+	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
+}
+
+type legacyTestContext struct {
+	Variables legacyVariables `json:"variables"`
+	Timezone  string          `json:"timezone"`
+	DateStyle string          `json:"date_style"`
+	Now       *time.Time      `json:"now"`
+}
+
+type legacyTest struct {
+	Template  string            `json:"template"`
+	Context   legacyTestContext `json:"context"`
+	URLEncode bool              `json:"url_encode"`
+	Output    string            `json:"output"`
+	Errors    []string          `json:"errors"`
+}
+
+// TestLegacyTests runs the tests from https://github.com/rapidpro/expressions,  migrating each template first
+func TestLegacyTests(t *testing.T) {
+	legacyTestData, err := ioutil.ReadFile("testdata/legacy_tests.json")
+	require.NoError(t, err)
+
+	var tests []legacyTest
+	err = json.Unmarshal(legacyTestData, &tests)
+	require.NoError(t, err)
+
+	for _, tc := range tests {
+		_, err := legacy.MigrateTemplate(tc.Template, legacy.ExtraAsFunction)
+
+		assert.NoError(t, err)
+
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("panic migrating template '%s': %#v", tc.Template, r)
+			}
+		}()
+
+		// TODO evaluate the migrated template? Would need to remap the provided variables, i.e. flow.x -> run.results.x
+		//
+		//if err == nil {
+		//	tz, err := time.LoadLocation(tc.Context.Timezone)
+		//	require.NoError(t, err)
+		//
+		//	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
+		//
+		//	output, err := excellent.EvaluateTemplateAsString(env, tc.Context.Variables, migratedTemplate, tc.URLEncode, legacy.ContextTopLevels)
+		//
+		//	if len(tc.Errors) > 0 {
+		//		assert.Error(t, err, "expected error for template '%s' (migrated from '%s')", migratedTemplate, tc.Template)
+		//	} else {
+		//		assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s')", migratedTemplate, tc.Template)
+		//	}
+		//}
 	}
 }

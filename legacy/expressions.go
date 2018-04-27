@@ -9,16 +9,16 @@ import (
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
-	"github.com/nyaruka/goflow/excellent/gen"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/runs"
+	"github.com/nyaruka/goflow/legacy/gen"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
-var legacyContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
+// ContextTopLevels are the allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
+var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
 
 // ExtraVarsMapping defines how @extra.* variables should be migrated
 type ExtraVarsMapping int
@@ -66,6 +66,7 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 
 // Resolve resolves the given key to a mapped expression
 func (v *varMapper) Resolve(key string) types.XValue {
+	key = strings.ToLower(key)
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
@@ -180,40 +181,45 @@ type functionTemplate struct {
 }
 
 var functionTemplates = map[string]functionTemplate{
-	"first_word": {name: "word", params: "(%s, 0)"},
-	"datevalue":  {name: "datetime"},
-	"edate":      {name: "datetime_add", params: "(%s, %s, \"M\")"},
-	"word":       {name: "word", params: "(%s, %s - 1)"},
-	"word_slice": {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
-	"field":      {name: "field", params: "(%s, %s - 1, %s)"},
-	"datedif":    {name: "datetime_diff"},
-	"date":       {name: "datetime", params: "(\"%s-%s-%s\")"},
-	"days":       {name: "datetime_diff", params: "(%s, %s, \"D\")"},
-	"now":        {name: "now", params: "()"},
-	"average":    {name: "mean"},
-	"fixed":      {name: "format_number", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
-
-	"roundup":     {name: "round_up"},
+	"average":     {name: "mean"},
+	"date":        {name: "datetime", params: "(\"%s-%s-%s\")"},
+	"datedif":     {name: "datetime_diff"},
+	"datevalue":   {name: "datetime"},
+	"day":         {name: "format_datetime", params: `(%s, "D")`},
+	"days":        {name: "datetime_diff", params: "(%s, %s, \"D\")"},
+	"edate":       {name: "datetime_add", params: "(%s, %s, \"M\")"},
+	"field":       {name: "field", params: "(%s, %s - 1, %s)"},
+	"first_word":  {name: "word", params: "(%s, 0)"},
+	"fixed":       {name: "format_number", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
+	"format_date": {name: "format_datetime"},
+	"hour":        {name: "format_datetime", params: `(%s, "h")`},
 	"int":         {name: "round_down"},
-	"rounddown":   {name: "round_down"},
+	"len":         {name: "length"},
+	"minute":      {name: "format_datetime", params: `(%s, "m")`},
+	"month":       {name: "format_datetime", params: `(%s, "M")`},
+	"now":         {name: "now"},
+	"proper":      {name: "title"},
 	"randbetween": {name: "rand_between"},
+	"read_digits": {name: "read_chars"},
 	"rept":        {name: "repeat"},
-
-	"year":   {name: "format_datetime", params: `(%s, "YYYY")`},
-	"month":  {name: "format_datetime", params: `(%s, "M")`},
-	"day":    {name: "format_datetime", params: `(%s, "D")`},
-	"hour":   {name: "format_datetime", params: `(%s, "h")`},
-	"minute": {name: "format_datetime", params: `(%s, "m")`},
-	"second": {name: "format_datetime", params: `(%s, "s")`},
-
-	"proper": {name: "title"},
+	"rounddown":   {name: "round_down"},
+	"roundup":     {name: "round_up"},
+	"second":      {name: "format_datetime", params: `(%s, "s")`},
+	"substitute":  {name: "replace"},
+	"timevalue":   {name: "parse_datetime"},
+	"trunc":       {name: "round_down"},
+	"unichar":     {name: "char"},
+	"unicode":     {name: "code"},
+	"word_slice":  {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
+	"word":        {name: "word", params: "(%s, %s - 1)"},
+	"year":        {name: "format_datetime", params: `(%s, "YYYY")`},
 
 	// we drop this function, instead joining with the cat operator
 	"concatenate": {join: " & "},
-	"len":         {name: "length"},
 
 	// translate to maths
 	"power": {params: "%s ^ %s"},
+	"exp":   {params: "2.718281828459045 ^ %s"},
 	"sum":   {params: "%s + %s"},
 
 	// this one is a special case format, we sum these parts into seconds for datetime_add
@@ -368,7 +374,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 func migrateLegacyTemplateAsString(resolver types.XValue, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors excellent.TemplateErrors
-	scanner := excellent.NewXScanner(strings.NewReader(template), legacyContextTopLevels)
+	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 
 	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -396,6 +402,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 			buf.WriteString("@(")
 			if err != nil {
 				errors = append(errors, err)
+				buf.WriteString(token)
 			} else {
 				strValue, err := toString(value)
 				if err != nil {
@@ -443,9 +450,9 @@ func translateExpression(env utils.Environment, resolver types.XValue, template 
 	errors := excellent.NewErrorListener()
 
 	input := antlr.NewInputStream(template)
-	lexer := gen.NewExcellent2Lexer(input)
+	lexer := gen.NewExcellent1Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := gen.NewExcellent2Parser(stream)
+	p := gen.NewExcellent1Parser(stream)
 	p.AddErrorListener(errors)
 
 	// speed up parsing
@@ -482,7 +489,7 @@ func translateExpression(env utils.Environment, resolver types.XValue, template 
 // ---------------------------------------------------------------
 
 type legacyVisitor struct {
-	gen.BaseExcellent2Visitor
+	gen.BaseExcellent1Visitor
 	env      utils.Environment
 	resolver types.XValue
 }
@@ -528,6 +535,14 @@ func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interf
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)
 func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	functionName := strings.ToLower(ctx.Fnname().GetText())
+
+	// these become keywords
+	if functionName == "true" {
+		return "true"
+	} else if functionName == "false" {
+		return "false"
+	}
+
 	template, found := functionTemplates[functionName]
 	if !found {
 		template = functionTemplate{name: functionName, params: "(%s)"}
@@ -537,11 +552,11 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 		}
 	}
 
-	_, ignored := ignoredFunctions[template.name]
+	ignored := ignoredFunctions[template.name]
 	if !ignored {
 		_, found = functions.XFUNCTIONS[template.name]
 		if !found {
-			return fmt.Errorf("No function with name '%s'", template.name)
+			return fmt.Errorf("no function with name '%s'", template.name)
 		}
 	}
 
@@ -599,23 +614,12 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 
 // VisitTrue deals with the "true" literal
 func (v *legacyVisitor) VisitTrue(ctx *gen.TrueContext) interface{} {
-	return true
+	return "true"
 }
 
 // VisitFalse deals with the "false" literal
 func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
-	return false
-}
-
-// VisitArrayLookup deals with lookups such as foo[5]
-func (v *legacyVisitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
-	value := v.Visit(ctx.Atom()).(types.XValue)
-	expression := v.Visit(ctx.Expression()).(types.XValue)
-	lookup, err := types.ToXText(expression)
-	if err != nil {
-		return err
-	}
-	return excellent.ResolveValue(v.env, value, lookup.Native())
+	return "false"
 }
 
 // VisitContextReference deals with references to variables in the context such as "foo"

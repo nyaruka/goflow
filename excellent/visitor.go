@@ -35,24 +35,8 @@ func (v *Visitor) VisitParse(ctx *gen.ParseContext) interface{} {
 	return v.Visit(ctx.Expression())
 }
 
-// VisitDecimalLiteral deals with decimals like 1.5
-func (v *Visitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{} {
-	return types.RequireXNumberFromString(ctx.GetText())
-}
-
-// VisitDotLookup deals with lookups like foo.0 or foo.bar
-func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	context := toXValue(v.Visit(ctx.Atom(0)))
-	if types.IsXError(context) {
-		return context
-	}
-
-	lookup := ctx.Atom(1).GetText()
-	return ResolveValue(v.env, context, lookup)
-}
-
-// VisitStringLiteral deals with string literals such as "asdf"
-func (v *Visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} {
+// VisitTextLiteral deals with string literals such as "asdf"
+func (v *Visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 	value := ctx.GetText()
 
 	// unquote, this takes care of escape sequences as well
@@ -67,6 +51,22 @@ func (v *Visitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} 
 	unquoted = strings.Replace(unquoted, "\"\"", "\"", -1)
 
 	return types.NewXText(unquoted)
+}
+
+// VisitNumberLiteral deals with numbers like 123 or 1.5
+func (v *Visitor) VisitNumberLiteral(ctx *gen.NumberLiteralContext) interface{} {
+	return types.RequireXNumberFromString(ctx.GetText())
+}
+
+// VisitDotLookup deals with lookups like foo.0 or foo.bar
+func (v *Visitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
+	context := toXValue(v.Visit(ctx.Atom(0)))
+	if types.IsXError(context) {
+		return context
+	}
+
+	lookup := ctx.Atom(1).GetText()
+	return ResolveValue(v.env, context, lookup)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)

@@ -92,6 +92,7 @@ var XFUNCTIONS = map[string]XFunction{
 
 	// formatting functions
 	"format_datetime": FormatDateTime,
+	"format_location": OneTextFunction(FormatLocation),
 	"format_number":   FormatNumber,
 	"format_urn":      FormatURN,
 
@@ -99,7 +100,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"length":     OneArgFunction(Length),
 	"default":    TwoArgFunction(Default),
 	"legacy_add": TwoArgFunction(LegacyAdd),
-	"read_code":  OneTextFunction(ReadCode),
+	"read_chars": OneTextFunction(ReadChars),
 }
 
 //------------------------------------------------------------------------------------------
@@ -1316,6 +1317,17 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(humanize.FormatFloat(formatStr.String(), f64))
 }
 
+// FormatLocation formats the given location as its name
+//
+//   @(format_location("Rwanda")) -> Rwanda
+//   @(format_location("Rwanda > Kigali")) -> Kigali
+//
+// @function format_location(location)
+func FormatLocation(env utils.Environment, path types.XText) types.XValue {
+	parts := strings.Split(path.Native(), ">")
+	return types.NewXText(strings.TrimSpace(parts[len(parts)-1]))
+}
+
 // FormatURN turns `urn` into human friendly text
 //
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
@@ -1449,17 +1461,17 @@ func LegacyAdd(env utils.Environment, arg1 types.XValue, arg2 types.XValue) type
 	return types.NewXNumber(dec1.Native().Add(dec2.Native()))
 }
 
-// ReadCode converts `code` into something that can be read by IVR systems
+// ReadChars converts `text` into something that can be read by IVR systems
 //
-// ReadCode will split the numbers such as they are easier to understand. This includes
+// ReadChars will split the numbers such as they are easier to understand. This includes
 // splitting in 3s or 4s if appropriate.
 //
-//   @(read_code("1234")) -> 1 2 3 4
-//   @(read_code("abc")) -> a b c
-//   @(read_code("abcdef")) -> a b c , d e f
+//   @(read_chars("1234")) -> 1 2 3 4
+//   @(read_chars("abc")) -> a b c
+//   @(read_chars("abcdef")) -> a b c , d e f
 //
-// @function read_code(code)
-func ReadCode(env utils.Environment, val types.XText) types.XValue {
+// @function read_chars(text)
+func ReadChars(env utils.Environment, val types.XText) types.XValue {
 	var output bytes.Buffer
 
 	// remove any leading +
