@@ -131,6 +131,7 @@ func (s *xscanner) scanIdentifier() (xToken, string) {
 	if topLevel == "" {
 		topLevel = identifier
 	}
+	topLevel = strings.ToLower(topLevel)
 
 	// if we end with a period, unread that as well
 	if len(identifier) > 1 && identifier[len(identifier)-1] == '.' {

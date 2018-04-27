@@ -1165,17 +1165,6 @@
         "errors": []
     },
     {
-        "template": "@(\")",
-        "context": {
-            "variables": {},
-            "timezone": "UTC",
-            "date_style": "day_first"
-        },
-        "url_encode": false,
-        "output": "@(\")",
-        "errors": []
-    },
-    {
         "template": "@SUM(1, 2)",
         "context": {
             "variables": {},
@@ -1217,19 +1206,6 @@
         ]
     },
     {
-        "template": "@(FOO())",
-        "context": {
-            "variables": {},
-            "timezone": "UTC",
-            "date_style": "day_first"
-        },
-        "url_encode": false,
-        "output": "@(FOO())",
-        "errors": [
-            "Undefined function: FOO"
-        ]
-    },
-    {
         "template": "@(LEN())",
         "context": {
             "variables": {},
@@ -1253,45 +1229,6 @@
         "output": "@(LEN(\"a\", \"b\"))",
         "errors": [
             "Too many arguments provided for function LEN"
-        ]
-    },
-    {
-        "template": "@('x')",
-        "context": {
-            "variables": {},
-            "timezone": "UTC",
-            "date_style": "day_first"
-        },
-        "url_encode": false,
-        "output": "@('x')",
-        "errors": [
-            "Expression error at: '"
-        ]
-    },
-    {
-        "template": "@(0 / )",
-        "context": {
-            "variables": {},
-            "timezone": "UTC",
-            "date_style": "day_first"
-        },
-        "url_encode": false,
-        "output": "@(0 / )",
-        "errors": [
-            "Expression error at: )"
-        ]
-    },
-    {
-        "template": "@(1.1.0)",
-        "context": {
-            "variables": {},
-            "timezone": "UTC",
-            "date_style": "day_first"
-        },
-        "url_encode": false,
-        "output": "@(1.1.0)",
-        "errors": [
-            "Expression is invalid"
         ]
     },
     {

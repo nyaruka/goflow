@@ -2,15 +2,17 @@ package legacy_test
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	"io/ioutil"
+	"reflect"
+	"strings"
 	"testing"
 	"time"
 
-	//"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/test"
-	//"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -30,8 +32,10 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// contact variables
 		{old: `@contact`, new: `@contact`},
+		{old: `@CONTACT`, new: `@contact`},
 		{old: `@contact.uuid`, new: `@contact.uuid`},
 		{old: `@contact.name`, new: `@contact.name`},
+		{old: `@contact.NAME`, new: `@contact.name`},
 		{old: `@contact.first_name`, new: `@contact.first_name`},
 		{old: `@contact.gender`, new: `@contact.fields.gender`},
 
@@ -238,8 +242,40 @@ func TestMigrateTemplate(t *testing.T) {
 	}
 }
 
+type legacyVariables map[string]interface{}
+
+func (v legacyVariables) Resolve(key string) types.XValue {
+	key = strings.ToLower(key)
+	for k, val := range v {
+		if strings.ToLower(k) == key {
+			return toXType(val)
+		}
+	}
+	return nil
+}
+
+func (v legacyVariables) Reduce() types.XPrimitive {
+	return toXType(v["*"]).(types.XPrimitive)
+}
+
+func (v legacyVariables) ToXJSON() types.XText { return types.NewXText("LEGACY") }
+
+func toXType(val interface{}) types.XValue {
+	if utils.IsNil(val) {
+		return nil
+	}
+
+	switch typed := val.(type) {
+	case string:
+		return types.NewXText(typed)
+	case map[string]interface{}:
+		return legacyVariables(typed)
+	}
+	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
+}
+
 type legacyTestContext struct {
-	Variables json.RawMessage `json:"variables"`
+	Variables legacyVariables `json:"variables"`
 	Timezone  string          `json:"timezone"`
 	DateStyle string          `json:"date_style"`
 	Now       *time.Time      `json:"now"`
@@ -265,22 +301,29 @@ func TestLegacyTests(t *testing.T) {
 	for _, tc := range tests {
 		_, err := legacy.MigrateTemplate(tc.Template, legacy.ExtraAsFunction)
 
+		assert.NoError(t, err)
+
 		defer func() {
 			if r := recover(); r != nil {
 				t.Errorf("panic migrating template '%s': %#v", tc.Template, r)
 			}
 		}()
 
-		assert.NoError(t, err, "error whilst migrating template '%s'", tc.Template)
-
-		/*if err != nil {
-			variables := types.JSONToXValue(tc.Context.Variables)
-			tz, err := time.LoadLocation(tc.Context.Timezone)
-			require.NoError(t, err)
-
-			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
-
-			fmt.Printf("TODO evaluate %s with vars %s and env %s", migratedTemplate, variables, env)
-		}*/
+		// TODO evaluate the migrated template? Would need to remap the provided variables, i.e. flow.x -> run.results.x
+		//
+		//if err == nil {
+		//	tz, err := time.LoadLocation(tc.Context.Timezone)
+		//	require.NoError(t, err)
+		//
+		//	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
+		//
+		//	output, err := excellent.EvaluateTemplateAsString(env, tc.Context.Variables, migratedTemplate, tc.URLEncode, legacy.ContextTopLevels)
+		//
+		//	if len(tc.Errors) > 0 {
+		//		assert.Error(t, err, "expected error for template '%s' (migrated from '%s')", migratedTemplate, tc.Template)
+		//	} else {
+		//		assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s')", migratedTemplate, tc.Template)
+		//	}
+		//}
 	}
 }

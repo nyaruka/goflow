@@ -17,8 +17,8 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
-var legacyContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
+// ContextTopLevels are the allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
+var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
 
 // ExtraVarsMapping defines how @extra.* variables should be migrated
 type ExtraVarsMapping int
@@ -66,6 +66,7 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 
 // Resolve resolves the given key to a mapped expression
 func (v *varMapper) Resolve(key string) types.XValue {
+	key = strings.ToLower(key)
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
@@ -372,7 +373,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 func migrateLegacyTemplateAsString(resolver types.XValue, template string) (string, error) {
 	var buf bytes.Buffer
 	var errors excellent.TemplateErrors
-	scanner := excellent.NewXScanner(strings.NewReader(template), legacyContextTopLevels)
+	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 
 	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -400,6 +401,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 			buf.WriteString("@(")
 			if err != nil {
 				errors = append(errors, err)
+				buf.WriteString(token)
 			} else {
 				strValue, err := toString(value)
 				if err != nil {
