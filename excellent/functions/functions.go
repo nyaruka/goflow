@@ -97,10 +97,10 @@ var XFUNCTIONS = map[string]XFunction{
 	"format_urn":      FormatURN,
 
 	// utility functions
-	"length":      OneArgFunction(Length),
-	"default":     TwoArgFunction(Default),
-	"legacy_add":  TwoArgFunction(LegacyAdd),
-	"read_digits": OneTextFunction(ReadDigits),
+	"length":     OneArgFunction(Length),
+	"default":    TwoArgFunction(Default),
+	"legacy_add": TwoArgFunction(LegacyAdd),
+	"read_chars": OneTextFunction(ReadChars),
 }
 
 //------------------------------------------------------------------------------------------
@@ -1461,17 +1461,17 @@ func LegacyAdd(env utils.Environment, arg1 types.XValue, arg2 types.XValue) type
 	return types.NewXNumber(dec1.Native().Add(dec2.Native()))
 }
 
-// ReadDigits converts `digits` into something that can be read by IVR systems
+// ReadChars converts `text` into something that can be read by IVR systems
 //
-// ReadDigits will split the numbers such as they are easier to understand. This includes
+// ReadChars will split the numbers such as they are easier to understand. This includes
 // splitting in 3s or 4s if appropriate.
 //
-//   @(read_digits("1234")) -> 1 2 3 4
-//   @(read_digits("abc")) -> a b c
-//   @(read_digits("abcdef")) -> a b c , d e f
+//   @(read_chars("1234")) -> 1 2 3 4
+//   @(read_chars("abc")) -> a b c
+//   @(read_chars("abcdef")) -> a b c , d e f
 //
-// @function read_digits(code)
-func ReadDigits(env utils.Environment, val types.XText) types.XValue {
+// @function read_chars(text)
+func ReadChars(env utils.Environment, val types.XText) types.XValue {
 	var output bytes.Buffer
 
 	// remove any leading +

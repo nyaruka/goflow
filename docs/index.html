@@ -767,13 +767,13 @@
 <p>A single random integer in the given inclusive range.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb53-1" data-line-number="1">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">5</span></a>
 <a class="sourceLine" id="cb53-2" data-line-number="2">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
-<p><a name="function:read_digits"></a></p>
-<h2 id="read_digitscode">read_digits(code)</h2>
-<p>Converts <code>digits</code> into something that can be read by IVR systems</p>
-<p>ReadDigits will split the numbers such as they are easier to understand. This includes splitting in 3s or 4s if appropriate.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb54-1" data-line-number="1">@(read_digits(<span class="st">&quot;1234&quot;</span>)) → <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">@(read_digits(<span class="st">&quot;abc&quot;</span>)) → a b c</a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">@(read_digits(<span class="st">&quot;abcdef&quot;</span>)) → a b c , d e f</a></code></pre></div>
+<p><a name="function:read_chars"></a></p>
+<h2 id="read_charstext">read_chars(text)</h2>
+<p>Converts <code>text</code> into something that can be read by IVR systems</p>
+<p>ReadChars will split the numbers such as they are easier to understand. This includes splitting in 3s or 4s if appropriate.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb54-1" data-line-number="1">@(read_chars(<span class="st">&quot;1234&quot;</span>)) → <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">@(read_chars(<span class="st">&quot;abc&quot;</span>)) → a b c</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">@(read_chars(<span class="st">&quot;abcdef&quot;</span>)) → a b c , d e f</a></code></pre></div>
 <p><a name="function:remove_first_word"></a></p>
 <h2 id="remove_first_wordtext">remove_first_word(text)</h2>
 <p>Removes the 1st word of <code>text</code></p>
