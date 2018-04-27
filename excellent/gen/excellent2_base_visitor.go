@@ -11,19 +11,11 @@ func (v *BaseExcellent2Visitor) VisitParse(ctx *ParseContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseExcellent2Visitor) VisitDecimalLiteral(ctx *DecimalLiteralContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
 func (v *BaseExcellent2Visitor) VisitDotLookup(ctx *DotLookupContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
 func (v *BaseExcellent2Visitor) VisitNull(ctx *NullContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseExcellent2Visitor) VisitStringLiteral(ctx *StringLiteralContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -44,6 +36,14 @@ func (v *BaseExcellent2Visitor) VisitArrayLookup(ctx *ArrayLookupContext) interf
 }
 
 func (v *BaseExcellent2Visitor) VisitContextReference(ctx *ContextReferenceContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent2Visitor) VisitTextLiteral(ctx *TextLiteralContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseExcellent2Visitor) VisitNumberLiteral(ctx *NumberLiteralContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

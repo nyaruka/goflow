@@ -295,22 +295,6 @@ var initialEvents = `[
     }
 ]`
 
-// an extended environment that will let us override Now() so that it's constant
-type testEnvironment struct {
-	utils.Environment
-}
-
-// NewTestEnvironment creates a new test environment
-func NewTestEnvironment(dateFormat utils.DateFormat, tz *time.Location) utils.Environment {
-	return &testEnvironment{
-		utils.NewEnvironment(dateFormat, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
-	}
-}
-
-func (e *testEnvironment) Now() time.Time {
-	return time.Date(2018, 4, 11, 13, 24, 30, 123456000, e.Timezone())
-}
-
 // CreateTestSession creates an example session for testing
 func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Session, error) {
 	// different tests different ports for the test HTTP server
@@ -327,7 +311,7 @@ func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Sess
 
 	// override the session environment
 	tz, _ := time.LoadLocation("America/Guayaquil")
-	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz))
+	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz, nil))
 
 	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {

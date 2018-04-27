@@ -1,6 +1,6 @@
-grammar Excellent2;
+grammar Excellent1;
 
-// rebuild with % antlr4 -Dlanguage=Go Excellent2.g4 -o ../excellent/gen -package gen -visitor
+// rebuild with % antlr4 -Dlanguage=Go Excellent1.g4 -o ../legacy/gen -package gen -visitor
 
 import LexUnicode;
 
@@ -19,7 +19,7 @@ DIVIDE     : '/';
 EXPONENT   : '^';
 
 EQ         : '=';
-NEQ        : '!=';
+NEQ        : '<>';
 
 LTE        : '<=';
 LT         : '<';
@@ -28,12 +28,11 @@ GT         : '>';
 
 AMPERSAND  : '&';
 
-TEXT       : '"' (~["] | '""')* '"';
-NUMBER     : [0-9]+('.'[0-9]+)?;
+DECIMAL    : [0-9]+('.'[0-9]+)?;
+STRING     : '"' (~["] | '""')* '"';
 
 TRUE       : [Tt][Rr][Uu][Ee];
 FALSE      : [Ff][Aa][Ll][Ss][Ee];
-NULL       : [Nn][Uu][Ll][Ll];
 
 NAME       : UnicodeLetter+ (UnicodeLetter | UnicodeDigit | '_')*;    // variable names, e.g. contact.name or function names, e.g. SUM
 
@@ -45,13 +44,11 @@ parse      : expression EOF;
 
 atom       : fnname LPAREN parameters? RPAREN             # functionCall
            | atom DOT atom                                # dotLookup
-           | atom LBRACK expression RBRACK                # arrayLookup
            | NAME                                         # contextReference
-           | TEXT                                         # textLiteral
-           | NUMBER                                       # numberLiteral
+           | STRING                                       # stringLiteral
+           | DECIMAL                                      # decimalLiteral
            | TRUE                                         # true
            | FALSE                                        # false
-           | NULL                                         # null
            ;
 
 expression : atom                                            # atomReference
@@ -65,7 +62,10 @@ expression : atom                                            # atomReference
            | LPAREN expression RPAREN                        # parentheses
            ;
 
-fnname     : NAME;
+fnname     : NAME
+           | TRUE
+           | FALSE
+           ;
 
 parameters : expression (COMMA expression)*               # functionParameters
            ;

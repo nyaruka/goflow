@@ -1,20 +1,23 @@
-// Code generated from Excellent2.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from Excellent1.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
-package gen // Excellent2
+package gen // Excellent1
 import "github.com/antlr/antlr4/runtime/Go/antlr"
 
-// Excellent2Listener is a complete listener for a parse tree produced by Excellent2Parser.
-type Excellent2Listener interface {
+// Excellent1Listener is a complete listener for a parse tree produced by Excellent1Parser.
+type Excellent1Listener interface {
 	antlr.ParseTreeListener
 
 	// EnterParse is called when entering the parse production.
 	EnterParse(c *ParseContext)
 
+	// EnterDecimalLiteral is called when entering the decimalLiteral production.
+	EnterDecimalLiteral(c *DecimalLiteralContext)
+
 	// EnterDotLookup is called when entering the dotLookup production.
 	EnterDotLookup(c *DotLookupContext)
 
-	// EnterNull is called when entering the null production.
-	EnterNull(c *NullContext)
+	// EnterStringLiteral is called when entering the stringLiteral production.
+	EnterStringLiteral(c *StringLiteralContext)
 
 	// EnterFunctionCall is called when entering the functionCall production.
 	EnterFunctionCall(c *FunctionCallContext)
@@ -25,17 +28,8 @@ type Excellent2Listener interface {
 	// EnterFalse is called when entering the false production.
 	EnterFalse(c *FalseContext)
 
-	// EnterArrayLookup is called when entering the arrayLookup production.
-	EnterArrayLookup(c *ArrayLookupContext)
-
 	// EnterContextReference is called when entering the contextReference production.
 	EnterContextReference(c *ContextReferenceContext)
-
-	// EnterTextLiteral is called when entering the textLiteral production.
-	EnterTextLiteral(c *TextLiteralContext)
-
-	// EnterNumberLiteral is called when entering the numberLiteral production.
-	EnterNumberLiteral(c *NumberLiteralContext)
 
 	// EnterParentheses is called when entering the parentheses production.
 	EnterParentheses(c *ParenthesesContext)
@@ -73,11 +67,14 @@ type Excellent2Listener interface {
 	// ExitParse is called when exiting the parse production.
 	ExitParse(c *ParseContext)
 
+	// ExitDecimalLiteral is called when exiting the decimalLiteral production.
+	ExitDecimalLiteral(c *DecimalLiteralContext)
+
 	// ExitDotLookup is called when exiting the dotLookup production.
 	ExitDotLookup(c *DotLookupContext)
 
-	// ExitNull is called when exiting the null production.
-	ExitNull(c *NullContext)
+	// ExitStringLiteral is called when exiting the stringLiteral production.
+	ExitStringLiteral(c *StringLiteralContext)
 
 	// ExitFunctionCall is called when exiting the functionCall production.
 	ExitFunctionCall(c *FunctionCallContext)
@@ -88,17 +85,8 @@ type Excellent2Listener interface {
 	// ExitFalse is called when exiting the false production.
 	ExitFalse(c *FalseContext)
 
-	// ExitArrayLookup is called when exiting the arrayLookup production.
-	ExitArrayLookup(c *ArrayLookupContext)
-
 	// ExitContextReference is called when exiting the contextReference production.
 	ExitContextReference(c *ContextReferenceContext)
-
-	// ExitTextLiteral is called when exiting the textLiteral production.
-	ExitTextLiteral(c *TextLiteralContext)
-
-	// ExitNumberLiteral is called when exiting the numberLiteral production.
-	ExitNumberLiteral(c *NumberLiteralContext)
 
 	// ExitParentheses is called when exiting the parentheses production.
 	ExitParentheses(c *ParenthesesContext)

@@ -1003,20 +1003,20 @@ A single random integer in the given inclusive range.
 @(rand_between(1, 10)) → 10
 ```
 
-<a name="function:read_code"></a>
+<a name="function:read_digits"></a>
 
-## read_code(code)
+## read_digits(code)
 
-Converts `code` into something that can be read by IVR systems
+Converts `digits` into something that can be read by IVR systems
 
-ReadCode will split the numbers such as they are easier to understand. This includes
+ReadDigits will split the numbers such as they are easier to understand. This includes
 splitting in 3s or 4s if appropriate.
 
 
 ```objectivec
-@(read_code("1234")) → 1 2 3 4
-@(read_code("abc")) → a b c
-@(read_code("abcdef")) → a b c , d e f
+@(read_digits("1234")) → 1 2 3 4
+@(read_digits("abc")) → a b c
+@(read_digits("abcdef")) → a b c , d e f
 ```
 
 <a name="function:remove_first_word"></a>

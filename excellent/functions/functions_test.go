@@ -303,11 +303,11 @@ var funcTests = []struct {
 	{"rand_between", []types.XValue{xn("1"), xn("10")}, xn("5")},
 	{"rand_between", []types.XValue{xn("1"), xn("10")}, xn("10")},
 
-	{"read_code", []types.XValue{xs("123456")}, xs("1 2 3 , 4 5 6")},
-	{"read_code", []types.XValue{xs("abcd")}, xs("a b c d")},
-	{"read_code", []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8")},
-	{"read_code", []types.XValue{xs("12")}, xs("1 , 2")},
-	{"read_code", []types.XValue{}, ERROR},
+	{"read_digits", []types.XValue{xs("123456")}, xs("1 2 3 , 4 5 6")},
+	{"read_digits", []types.XValue{xs("abcd")}, xs("a b c d")},
+	{"read_digits", []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8")},
+	{"read_digits", []types.XValue{xs("12")}, xs("1 , 2")},
+	{"read_digits", []types.XValue{}, ERROR},
 
 	{"remove_first_word", []types.XValue{xs("hello World")}, xs("World")},
 	{"remove_first_word", []types.XValue{xs("hello")}, xs("")},
@@ -453,7 +453,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, time.UTC)
+	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, time.UTC, nil)
 
 	utils.SetRand(utils.NewSeededRand(123456))
 	defer utils.SetRand(utils.DefaultRand)
