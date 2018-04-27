@@ -200,6 +200,7 @@ var functionTemplates = map[string]functionTemplate{
 	"now":         {name: "now"},
 	"proper":      {name: "title"},
 	"randbetween": {name: "rand_between"},
+	"read_digits": {name: "read_chars"},
 	"rept":        {name: "repeat"},
 	"rounddown":   {name: "round_down"},
 	"roundup":     {name: "round_up"},

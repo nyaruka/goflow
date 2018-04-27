@@ -303,11 +303,11 @@ var funcTests = []struct {
 	{"rand_between", []types.XValue{xn("1"), xn("10")}, xn("5")},
 	{"rand_between", []types.XValue{xn("1"), xn("10")}, xn("10")},
 
-	{"read_digits", []types.XValue{xs("123456")}, xs("1 2 3 , 4 5 6")},
-	{"read_digits", []types.XValue{xs("abcd")}, xs("a b c d")},
-	{"read_digits", []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8")},
-	{"read_digits", []types.XValue{xs("12")}, xs("1 , 2")},
-	{"read_digits", []types.XValue{}, ERROR},
+	{"read_chars", []types.XValue{xs("123456")}, xs("1 2 3 , 4 5 6")},
+	{"read_chars", []types.XValue{xs("abcd")}, xs("a b c d")},
+	{"read_chars", []types.XValue{xs("12345678")}, xs("1 2 3 4 , 5 6 7 8")},
+	{"read_chars", []types.XValue{xs("12")}, xs("1 , 2")},
+	{"read_chars", []types.XValue{}, ERROR},
 
 	{"remove_first_word", []types.XValue{xs("hello World")}, xs("World")},
 	{"remove_first_word", []types.XValue{xs("hello")}, xs("")},
