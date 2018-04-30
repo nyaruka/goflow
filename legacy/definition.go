@@ -981,8 +981,8 @@ func (f *Flow) Migrate() (flows.Flow, error) {
 		actionset := f.ActionSets[i]
 		nmd := make(map[string]interface{})
 		nmd["position"] = map[string]int{
-			"x": actionset.X,
-			"y": actionset.Y,
+			"left": actionset.X,
+			"top":  actionset.Y,
 		}
 		nodesUI[actionset.UUID] = nmd
 	}
@@ -991,8 +991,8 @@ func (f *Flow) Migrate() (flows.Flow, error) {
 		ruleset := f.RuleSets[i]
 		nmd := make(map[string]interface{})
 		nmd["position"] = map[string]int{
-			"x": ruleset.X,
-			"y": ruleset.Y,
+			"left": ruleset.X,
+			"top":  ruleset.Y,
 		}
 		nodesUI[ruleset.UUID] = nmd
 	}
