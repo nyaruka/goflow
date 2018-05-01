@@ -183,6 +183,7 @@ func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 // HasGroup returns whether the `contact` is part of group with the passed in UUID
 //
 //   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) -> true
+//   @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) -> Testers
 //   @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) -> false
 //
 // @test has_group(contact, group_uuid)
@@ -584,6 +585,7 @@ func HasPhone(env utils.Environment, text types.XText, country types.XText) type
 //   @(has_state("Kigali")) -> true
 //   @(has_state("Boston")) -> false
 //   @(has_state("¡Kigali!")) -> true
+//   @(has_state("¡Kigali!").match) -> Kigali City
 //   @(has_state("I live in Kigali")) -> true
 //
 // @test has_state(text)
@@ -605,6 +607,7 @@ func HasState(env utils.Environment, text types.XText) types.XValue {
 //
 //   @(has_district("Gasabo", "Kigali")) -> true
 //   @(has_district("I live in Gasabo", "Kigali")) -> true
+//   @(has_district("I live in Gasabo", "Kigali").match) -> Gasabo
 //   @(has_district("Gasabo", "Boston")) -> false
 //   @(has_district("Gasabo")) -> true
 //
@@ -661,6 +664,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 //
 //   @(has_ward("Gisozi", "Gasabo", "Kigali")) -> true
 //   @(has_ward("I live in Gisozi", "Gasabo", "Kigali")) -> true
+//   @(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) -> Gisozi
 //   @(has_ward("Gisozi", "Gasabo", "Brooklyn")) -> false
 //   @(has_ward("Gisozi", "Brooklyn", "Kigali")) -> false
 //   @(has_ward("Brooklyn", "Gasabo", "Kigali")) -> false
