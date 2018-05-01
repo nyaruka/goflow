@@ -47,14 +47,19 @@ type FieldValue struct {
 	text     types.XText
 	datetime *types.XDateTime
 	number   *types.XNumber
-	state    types.XText
-	district types.XText
-	ward     types.XText
+	state    string
+	district string
+	ward     string
+}
+
+// NewEmptyFieldValue creates a new empty value for the given field
+func NewEmptyFieldValue(field *Field) *FieldValue {
+	return &FieldValue{field: field}
 }
 
 // IsEmpty returns whether this field value is set for any type
 func (v *FieldValue) IsEmpty() bool {
-	return v.text.Empty() && v.datetime == nil && v.number == nil && v.state.Empty() && v.district.Empty() && v.ward.Empty()
+	return v.text.Empty() && v.datetime == nil && v.number == nil && v.state == "" && v.district == "" && v.ward == ""
 }
 
 // TypedValue returns the value in its proper type
@@ -71,11 +76,11 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.number
 		}
 	case FieldValueTypeState:
-		return v.state
+		return types.NewXText(v.state)
 	case FieldValueTypeDistrict:
-		return v.district
+		return types.NewXText(v.district)
 	case FieldValueTypeWard:
-		return v.ward
+		return types.NewXText(v.ward)
 	}
 	return nil
 }
@@ -100,6 +105,9 @@ func (v *FieldValue) ToXJSON() types.XText { return v.Reduce().ToXJSON() }
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
 
+// EmptyFieldValue is used when a contact doesn't have a value set for a field
+var EmptyFieldValue = &FieldValue{}
+
 // FieldValues is the set of all field values for a contact
 type FieldValues map[string]*FieldValue
 
@@ -113,24 +121,49 @@ func (f FieldValues) clone() FieldValues {
 }
 
 func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XText) {
-	var asDate *types.XDateTime
+	if rawValue == types.XTextEmpty {
+		f[field.key] = NewEmptyFieldValue(field)
+		return
+	}
+
+	var asText = rawValue
+	var asDateTime *types.XDateTime
 	var asNumber *types.XNumber
+	var asLocation *Location
 
 	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
 		asNumber = &parsedNumber
 	}
 
 	if parsedDate, xerr := types.ToXDateTime(env, rawValue); xerr == nil {
-		asDate = &parsedDate
+		asDateTime = &parsedDate
 	}
 
 	// TODO parse as locations
 
+	var asState, asDistrict, asWard string
+	if asLocation != nil {
+		switch int(asLocation.Level()) {
+		case 1: // state
+			asState = asLocation.Path()
+		case 2: // district
+			asState = asLocation.Parent().Path()
+			asDistrict = asLocation.Path()
+		case 3: // ward
+			asState = asLocation.Parent().Parent().Path()
+			asDistrict = asLocation.Parent().Path()
+			asWard = asLocation.Path()
+		}
+	}
+
 	f[field.key] = &FieldValue{
 		field:    field,
-		text:     rawValue,
-		datetime: asDate,
+		text:     asText,
+		datetime: asDateTime,
 		number:   asNumber,
+		state:    asState,
+		district: asDistrict,
+		ward:     asWard,
 	}
 }
 

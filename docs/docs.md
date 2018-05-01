@@ -1442,7 +1442,7 @@ then the returned district must be within that state.
 ```objectivec
 @(has_district("Gasabo", "Kigali")) → true
 @(has_district("I live in Gasabo", "Kigali")) → true
-@(has_district("I live in Gasabo", "Kigali").match) → Gasabo
+@(has_district("I live in Gasabo", "Kigali").match) → Rwanda > Kigali City > Gasabo
 @(has_district("Gasabo", "Boston")) → false
 @(has_district("Gasabo")) → true
 ```
@@ -1653,7 +1653,7 @@ Tests whether a state name is contained in the `text`
 @(has_state("Kigali")) → true
 @(has_state("Boston")) → false
 @(has_state("¡Kigali!")) → true
-@(has_state("¡Kigali!").match) → Kigali City
+@(has_state("¡Kigali!").match) → Rwanda > Kigali City
 @(has_state("I live in Kigali")) → true
 ```
 
@@ -1712,7 +1712,7 @@ Tests whether a ward name is contained in the `text`
 ```objectivec
 @(has_ward("Gisozi", "Gasabo", "Kigali")) → true
 @(has_ward("I live in Gisozi", "Gasabo", "Kigali")) → true
-@(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) → Gisozi
+@(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) → Rwanda > Kigali City > Gasabo > Gisozi
 @(has_ward("Gisozi", "Gasabo", "Brooklyn")) → false
 @(has_ward("Gisozi", "Brooklyn", "Kigali")) → false
 @(has_ward("Brooklyn", "Gasabo", "Kigali")) → false

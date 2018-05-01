@@ -217,8 +217,8 @@ func (c *Contact) UpdatePreferredChannel(channel Channel) {
 	c.urns = append(priorityURNs, otherURNs...)
 }
 
-// UpdateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) UpdateDynamicGroups(session Session) error {
+// ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
+func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 	groups, err := session.Assets().GetGroupSet()
 	if err != nil {
 		return err
@@ -286,7 +286,7 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Text     types.XText      `json:"text,omitempty"`
+	Text     types.XText      `json:"text"`
 	Datetime *types.XDateTime `json:"datetime,omitempty"`
 	Number   *types.XNumber   `json:"number,omitempty"`
 	State    string           `json:"state,omitempty"`
@@ -352,7 +352,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	c.fields = make(FieldValues, len(fieldSet.All()))
 
 	for _, field := range fieldSet.All() {
-		value := &FieldValue{field: field}
+		value := NewEmptyFieldValue(field)
 
 		if envelope.Fields != nil {
 			valueEnvelope := envelope.Fields[field.key]
@@ -360,8 +360,9 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 				value.text = valueEnvelope.Text
 				value.number = valueEnvelope.Number
 				value.datetime = valueEnvelope.Datetime
-
-				// TODO parse locations
+				value.state = valueEnvelope.State
+				value.district = valueEnvelope.District
+				value.ward = valueEnvelope.Ward
 			}
 		}
 
@@ -395,9 +396,9 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 				Text:     v.text,
 				Number:   v.number,
 				Datetime: v.datetime,
-				//State:    v.state,
-				//District: v.district,
-				//Ward:     v.ward,
+				State:    v.state,
+				District: v.district,
+				Ward:     v.ward,
 			}
 		}
 	}

@@ -28,7 +28,7 @@
                                     "name": "Spam"
                                 },
                                 {
-                                    "name_match": "@contact.fields.state Messages"
+                                    "name_match": "@(format_location(contact.fields.state)) Messages"
                                 }
                             ]
                         },
@@ -41,7 +41,7 @@
                                     "name": "Survey Audience"
                                 },
                                 {
-                                    "name_match": "@contact.fields.state State"
+                                    "name_match": "@(format_location(contact.fields.state)) State"
                                 }
                             ]
                         },
@@ -111,7 +111,7 @@
                             ],
                             "text": "Hi @contact.name, are you ready for these attachments?",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(format_location(contact.fields.state))"
                             ]
                         },
                         {
@@ -140,7 +140,7 @@
                             "type": "send_msg",
                             "text": "This is a reply with attachments and quick replies",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@contact.fields.state"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(format_location(contact.fields.state))"
                             ],
                             "quick_replies": [
                                 "Yes",

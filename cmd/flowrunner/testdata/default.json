@@ -21,7 +21,7 @@
             {
                 "key": "state",
                 "label": "State",
-                "value_type": "text"
+                "value_type": "state"
             },
             {
                 "key": "birth_date",

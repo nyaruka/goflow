@@ -26,7 +26,8 @@
                             "text": "Ben"
                         },
                         "state": {
-                            "text": "Azuay"
+                            "text": "Ecuador > Azuay",
+                            "state": "Ecuador > Azuay"
                         }
                     },
                     "language": "eng",
@@ -92,7 +93,8 @@
                                 "text": "Ben"
                             },
                             "state": {
-                                "text": "Azuay"
+                                "text": "Ecuador > Azuay",
+                                "state": "Ecuador > Azuay"
                             }
                         },
                         "language": "eng",
@@ -121,7 +123,8 @@
                         "contact": {
                             "fields": {
                                 "state": {
-                                    "text": "Esmeraldas"
+                                    "text": "Ecuador > Esmeraldas",
+                                    "state": "Ecuador > Esmeraldas"
                                 }
                             },
                             "language": "",
@@ -159,7 +162,8 @@
                     "text": "Ben"
                 },
                 "state": {
-                    "text": "Azuay"
+                    "text": "Ecuador > Azuay",
+                    "state": "Ecuador > Azuay"
                 }
             },
             "language": "eng",
@@ -188,7 +192,8 @@
             "contact": {
                 "fields": {
                     "state": {
-                        "text": "Esmeraldas"
+                        "text": "Ecuador > Esmeraldas",
+                        "state": "Ecuador > Esmeraldas"
                     }
                 },
                 "name": "Bob",
