@@ -975,8 +975,9 @@
 <p>Tests whether a district name is contained in the <code>text</code>. If <code>state</code> is also provided then the returned district must be within that state.</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb83-1" data-line-number="1">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb83-2" data-line-number="2">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb83-3" data-line-number="3">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Boston&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb83-4" data-line-number="4">@(has_district(<span class="st">&quot;Gasabo&quot;</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb83-3" data-line-number="3">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Gasabo</a>
+<a class="sourceLine" id="cb83-4" data-line-number="4">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Boston&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb83-5" data-line-number="5">@(has_district(<span class="st">&quot;Gasabo&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_email"></a></p>
 <h2 id="has_emailtext">has_email(text)</h2>
 <p>Tests whether an email is contained in <code>text</code></p>
@@ -988,7 +989,8 @@
 <h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>
 <p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
 <div class="sourceCode" id="cb85"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb85-1" data-line-number="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb85-2" data-line-number="2">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</a></code></pre></div>
+<a class="sourceLine" id="cb85-2" data-line-number="2">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → Testers</a>
+<a class="sourceLine" id="cb85-3" data-line-number="3">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_number"></a></p>
 <h2 id="has_numbertext">has_number(text)</h2>
 <p>Tests whether <code>text</code> contains a number</p>
@@ -1082,7 +1084,8 @@
 <div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb97-1" data-line-number="1">@(has_state(<span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb97-2" data-line-number="2">@(has_state(<span class="st">&quot;Boston&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb97-3" data-line-number="3">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb97-4" data-line-number="4">@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb97-4" data-line-number="4">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>).match) → Kigali City</a>
+<a class="sourceLine" id="cb97-5" data-line-number="5">@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_text"></a></p>
 <h2 id="has_texttext">has_text(text)</h2>
 <p>Tests whether there the text has any characters in it</p>
@@ -1109,11 +1112,12 @@
 <p>Tests whether a ward name is contained in the <code>text</code></p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb101-1" data-line-number="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb101-2" data-line-number="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb101-3" data-line-number="3">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-4" data-line-number="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-5" data-line-number="5">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-6" data-line-number="6">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb101-7" data-line-number="7">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb101-3" data-line-number="3">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Gisozi</a>
+<a class="sourceLine" id="cb101-4" data-line-number="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb101-5" data-line-number="5">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb101-6" data-line-number="6">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb101-7" data-line-number="7">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb101-8" data-line-number="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_webhook_status"></a></p>
 <h2 id="has_webhook_statuswebhook-status">has_webhook_status(webhook, status)</h2>
 <p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>.</p>

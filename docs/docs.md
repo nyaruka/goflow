@@ -1442,6 +1442,7 @@ then the returned district must be within that state.
 ```objectivec
 @(has_district("Gasabo", "Kigali")) → true
 @(has_district("I live in Gasabo", "Kigali")) → true
+@(has_district("I live in Gasabo", "Kigali").match) → Gasabo
 @(has_district("Gasabo", "Boston")) → false
 @(has_district("Gasabo")) → true
 ```
@@ -1469,6 +1470,7 @@ Returns whether the `contact` is part of group with the passed in UUID
 
 ```objectivec
 @(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d")) → true
+@(has_group(contact, "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d").match) → Testers
 @(has_group(contact, "97fe7029-3a15-4005-b0c7-277b884fc1d5")) → false
 ```
 
@@ -1651,6 +1653,7 @@ Tests whether a state name is contained in the `text`
 @(has_state("Kigali")) → true
 @(has_state("Boston")) → false
 @(has_state("¡Kigali!")) → true
+@(has_state("¡Kigali!").match) → Kigali City
 @(has_state("I live in Kigali")) → true
 ```
 
@@ -1709,6 +1712,7 @@ Tests whether a ward name is contained in the `text`
 ```objectivec
 @(has_ward("Gisozi", "Gasabo", "Kigali")) → true
 @(has_ward("I live in Gisozi", "Gasabo", "Kigali")) → true
+@(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) → Gisozi
 @(has_ward("Gisozi", "Gasabo", "Brooklyn")) → false
 @(has_ward("Gisozi", "Brooklyn", "Kigali")) → false
 @(has_ward("Brooklyn", "Gasabo", "Kigali")) → false
