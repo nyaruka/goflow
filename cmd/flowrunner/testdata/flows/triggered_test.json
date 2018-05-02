@@ -26,8 +26,8 @@
                             "text": "Ben"
                         },
                         "state": {
-                            "state": "Ecuador \u003e Azuay",
-                            "text": "Ecuador \u003e Azuay"
+                            "state": "Ecuador > Azuay",
+                            "text": "Ecuador > Azuay"
                         }
                     },
                     "language": "eng",
@@ -93,8 +93,8 @@
                                 "text": "Ben"
                             },
                             "state": {
-                                "state": "Ecuador \u003e Azuay",
-                                "text": "Ecuador \u003e Azuay"
+                                "state": "Ecuador > Azuay",
+                                "text": "Ecuador > Azuay"
                             }
                         },
                         "language": "eng",
@@ -123,8 +123,8 @@
                         "contact": {
                             "fields": {
                                 "state": {
-                                    "state": "Ecuador \u003e Esmeraldas",
-                                    "text": "Ecuador \u003e Esmeraldas"
+                                    "state": "Ecuador > Esmeraldas",
+                                    "text": "Ecuador > Esmeraldas"
                                 }
                             },
                             "language": "",
@@ -162,8 +162,8 @@
                     "text": "Ben"
                 },
                 "state": {
-                    "state": "Ecuador \u003e Azuay",
-                    "text": "Ecuador \u003e Azuay"
+                    "state": "Ecuador > Azuay",
+                    "text": "Ecuador > Azuay"
                 }
             },
             "language": "eng",
@@ -192,8 +192,8 @@
             "contact": {
                 "fields": {
                     "state": {
-                        "state": "Ecuador \u003e Esmeraldas",
-                        "text": "Ecuador \u003e Esmeraldas"
+                        "state": "Ecuador > Esmeraldas",
+                        "text": "Ecuador > Esmeraldas"
                     }
                 },
                 "name": "Bob",

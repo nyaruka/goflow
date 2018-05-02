@@ -32,8 +32,8 @@
                             "text": "Ben"
                         },
                         "state": {
-                            "state": "Ecuador \u003e Azuay",
-                            "text": "Ecuador \u003e Azuay"
+                            "state": "Ecuador > Azuay",
+                            "text": "Ecuador > Azuay"
                         }
                     },
                     "language": "eng",
@@ -107,8 +107,8 @@
                                 "text": "Ben"
                             },
                             "state": {
-                                "state": "Ecuador \u003e Azuay",
-                                "text": "Ecuador \u003e Azuay"
+                                "state": "Ecuador > Azuay",
+                                "text": "Ecuador > Azuay"
                             }
                         },
                         "language": "eng",
@@ -146,8 +146,8 @@
                     "text": "Ben"
                 },
                 "state": {
-                    "state": "Ecuador \u003e Azuay",
-                    "text": "Ecuador \u003e Azuay"
+                    "state": "Ecuador > Azuay",
+                    "text": "Ecuador > Azuay"
                 }
             },
             "language": "eng",
