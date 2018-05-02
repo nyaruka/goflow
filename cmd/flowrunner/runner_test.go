@@ -113,7 +113,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	// for each of our remaining caller events
 	resumeEvents := callerEvents[1:]
 	for i := range resumeEvents {
-		outJSON, err := json.MarshalIndent(session, "", "  ")
+		outJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -134,7 +134,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 	}
 
-	outJSON, err := json.MarshalIndent(session, "", "  ")
+	outJSON, err := utils.JSONMarshalPretty(session)
 	if err != nil {
 		return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 	}
@@ -193,7 +193,7 @@ func TestFlows(t *testing.T) {
 				require.NoError(t, err)
 			}
 			flowTest := FlowTest{Trigger: flowTest.Trigger, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
-			testJSON, err := json.MarshalIndent(flowTest, "", "  ")
+			testJSON, err := utils.JSONMarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
 			// write our output

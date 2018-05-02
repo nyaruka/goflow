@@ -140,10 +140,10 @@ func TestActionMigration(t *testing.T) {
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
 		migratedActionEnvelope, _ := utils.EnvelopeFromTyped(migratedAction)
 		migratedActionRaw, _ := json.Marshal(migratedActionEnvelope)
-		migratedActionJSON := formatJSON(migratedActionRaw)
-		expectedActionJSON := formatJSON(test.ExpectedAction)
+		migratedActionJSON, _ := utils.JSONMarshalPretty(migratedActionRaw)
+		expectedActionJSON, _ := utils.JSONMarshalPretty(test.ExpectedAction)
 
-		assert.Equal(t, expectedActionJSON, migratedActionJSON)
+		assert.Equal(t, string(expectedActionJSON), string(migratedActionJSON))
 
 		checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 	}
@@ -176,10 +176,10 @@ func TestTestMigration(t *testing.T) {
 		} else {
 			migratedCase := migratedRouter.Cases[0]
 			migratedCaseRaw, _ := json.Marshal(migratedCase)
-			migratedCaseJSON := formatJSON(migratedCaseRaw)
-			expectedCaseJSON := formatJSON(test.ExpectedCase)
+			migratedCaseJSON, _ := utils.JSONMarshalPretty(migratedCaseRaw)
+			expectedCaseJSON, _ := utils.JSONMarshalPretty(test.ExpectedCase)
 
-			assert.Equal(t, expectedCaseJSON, migratedCaseJSON)
+			assert.Equal(t, string(expectedCaseJSON), string(migratedCaseJSON))
 
 			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}
@@ -219,10 +219,10 @@ func TestRuleSetMigration(t *testing.T) {
 			}
 
 			migratedNodeRaw, _ := json.Marshal(migratedNode)
-			migratedNodeJSON := formatJSON(migratedNodeRaw)
-			expectedNodeJSON := formatJSON(test.ExpectedNode)
+			migratedNodeJSON, _ := utils.JSONMarshalPretty(migratedNodeRaw)
+			expectedNodeJSON, _ := utils.JSONMarshalPretty(test.ExpectedNode)
 
-			assert.Equal(t, expectedNodeJSON, migratedNodeJSON)
+			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
 
 			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}
@@ -236,19 +236,10 @@ func readLegacyTestFlows(flowsJSON string) ([]*legacy.Flow, error) {
 }
 
 func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage) {
-	actualLocalizationRaw, _ := json.Marshal(flow.Localization())
-	actualLocalizationJSON := formatJSON(actualLocalizationRaw)
+	actualLocalizationJSON, _ := utils.JSONMarshalPretty(flow.Localization())
+	expectedLocalizationJSON, _ := utils.JSONMarshalPretty(expectedLocalizationRaw)
 
-	//expectedLocalization, _ := definition.ReadLocalization(expectedLocalizationRaw)
-	//expectedLocalizationRaw, _ = json.Marshal(expectedLocalization)
-	expectedLocalizationJSON := formatJSON(expectedLocalizationRaw)
-
-	assert.Equal(t, expectedLocalizationJSON, actualLocalizationJSON)
-}
-
-func formatJSON(data json.RawMessage) string {
-	out, _ := json.MarshalIndent(data, "", "    ")
-	return string(out)
+	assert.Equal(t, string(expectedLocalizationJSON), string(actualLocalizationJSON))
 }
 
 func TestTranslations(t *testing.T) {

@@ -80,7 +80,7 @@ func writeJSONResponse(w http.ResponseWriter, r *http.Request, statusCode int, r
 	w.Header().Set("X-Version", version)
 	w.WriteHeader(statusCode)
 
-	respJSON, err := json.MarshalIndent(response, "", "  ")
+	respJSON, err := utils.JSONMarshal(response)
 	if err != nil {
 		return err
 	}

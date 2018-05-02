@@ -1,8 +1,28 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 )
+
+// JSONMarshal marshals the given object to JSON
+func JSONMarshal(v interface{}) ([]byte, error) {
+	return jsonMarshal(v, "")
+}
+
+// JSONMarshalPretty marshals the given object to pretty JSON
+func JSONMarshalPretty(v interface{}) ([]byte, error) {
+	return jsonMarshal(v, "    ")
+}
+
+func jsonMarshal(v interface{}, indent string) ([]byte, error) {
+	buffer := &bytes.Buffer{}
+	encoder := json.NewEncoder(buffer)
+	encoder.SetEscapeHTML(false) // see https://github.com/golang/go/issues/8592
+	encoder.SetIndent("", indent)
+	err := encoder.Encode(v)
+	return buffer.Bytes(), err
+}
 
 // UnmarshalAndValidate is a convenience function to unmarshal an object and validate it
 func UnmarshalAndValidate(data []byte, obj interface{}, objName string) error {
