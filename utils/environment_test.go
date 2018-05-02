@@ -2,13 +2,13 @@ package utils_test
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestEnvironmentMarshaling(t *testing.T) {
