@@ -189,7 +189,7 @@ func TestFlows(t *testing.T) {
 			// we are writing new outputs, we write new files but don't test anything
 			rawOutputs := make([]json.RawMessage, len(runResult.outputs))
 			for i := range runResult.outputs {
-				rawOutputs[i], err = json.Marshal(runResult.outputs[i])
+				rawOutputs[i], err = utils.JSONMarshal(runResult.outputs[i])
 				require.NoError(t, err)
 			}
 			flowTest := FlowTest{Trigger: flowTest.Trigger, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}

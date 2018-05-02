@@ -34,7 +34,7 @@ type FlowTest struct {
 func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 	envelopes := make([]json.RawMessage, len(eventLog))
 	for i := range eventLog {
-		envelope, err := json.Marshal(eventLog[i])
+		envelope, err := utils.JSONMarshal(eventLog[i])
 		if err != nil {
 			log.Fatalf("Error creating envelope for %s: %s", eventLog[i], err)
 		}
@@ -254,7 +254,7 @@ func main() {
 
 		rawOutputs := make([]json.RawMessage, len(outputs))
 		for i := range outputs {
-			rawOutputs[i], err = json.Marshal(outputs[i])
+			rawOutputs[i], err = utils.JSONMarshal(outputs[i])
 			if err != nil {
 				log.Fatal(err)
 			}

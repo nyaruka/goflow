@@ -38,7 +38,7 @@ func (e *TypedEnvelope) MarshalJSON() ([]byte, error) {
 	typeE := &struct {
 		Type string `json:"type"`
 	}{Type: e.Type}
-	typeBytes, err := json.Marshal(&typeE)
+	typeBytes, err := JSONMarshal(&typeE)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func EnvelopeFromTyped(typed Typed) (*TypedEnvelope, error) {
 		return nil, nil
 	}
 
-	typedData, err := json.Marshal(typed)
+	typedData, err := JSONMarshal(typed)
 	if err != nil {
 		return nil, err
 	}

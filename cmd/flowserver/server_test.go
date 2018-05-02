@@ -245,7 +245,7 @@ func (ts *ServerTestSuite) parseSessionResponse(assetCache *assets.AssetCache, b
 }
 
 func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.Session, events []flows.Event) string {
-	sessionJSON, err := json.Marshal(session)
+	sessionJSON, err := utils.JSONMarshal(session)
 	ts.Require().NoError(err)
 
 	eventEnvelopes := make([]*utils.TypedEnvelope, len(events))
@@ -255,7 +255,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	}
 
 	assetsData := json.RawMessage(assetsJSON)
-	assetServer, _ := json.Marshal(assets.NewMockAssetServer())
+	assetServer, _ := utils.JSONMarshal(assets.NewMockAssetServer())
 
 	request := &resumeRequest{
 		Assets:      &assetsData,
@@ -264,7 +264,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 		Events:      eventEnvelopes,
 	}
 
-	requestJSON, err := json.Marshal(request)
+	requestJSON, err := utils.JSONMarshal(request)
 	ts.Require().NoError(err)
 	return string(requestJSON)
 }
