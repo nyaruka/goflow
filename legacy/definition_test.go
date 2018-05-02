@@ -139,8 +139,7 @@ func TestActionMigration(t *testing.T) {
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
 		migratedActionEnvelope, _ := utils.EnvelopeFromTyped(migratedAction)
-		migratedActionRaw, _ := json.Marshal(migratedActionEnvelope)
-		migratedActionJSON, _ := utils.JSONMarshalPretty(migratedActionRaw)
+		migratedActionJSON, _ := utils.JSONMarshalPretty(migratedActionEnvelope)
 		expectedActionJSON, _ := utils.JSONMarshalPretty(test.ExpectedAction)
 
 		assert.Equal(t, string(expectedActionJSON), string(migratedActionJSON))
@@ -175,8 +174,7 @@ func TestTestMigration(t *testing.T) {
 			t.Errorf("Got no migrated case from legacy test:\n%s\n\n", string(test.LegacyTest))
 		} else {
 			migratedCase := migratedRouter.Cases[0]
-			migratedCaseRaw, _ := json.Marshal(migratedCase)
-			migratedCaseJSON, _ := utils.JSONMarshalPretty(migratedCaseRaw)
+			migratedCaseJSON, _ := utils.JSONMarshalPretty(migratedCase)
 			expectedCaseJSON, _ := utils.JSONMarshalPretty(test.ExpectedCase)
 
 			assert.Equal(t, string(expectedCaseJSON), string(migratedCaseJSON))
@@ -218,8 +216,7 @@ func TestRuleSetMigration(t *testing.T) {
 				}
 			}
 
-			migratedNodeRaw, _ := json.Marshal(migratedNode)
-			migratedNodeJSON, _ := utils.JSONMarshalPretty(migratedNodeRaw)
+			migratedNodeJSON, _ := utils.JSONMarshalPretty(migratedNode)
 			expectedNodeJSON, _ := utils.JSONMarshalPretty(test.ExpectedNode)
 
 			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
