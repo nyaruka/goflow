@@ -98,7 +98,7 @@ func handleEventDoc(output *strings.Builder, item *documentedItem, session flows
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
-	exampleJSON, err = json.MarshalIndent(typed, "", "    ")
+	exampleJSON, err = utils.JSONMarshalPretty(typed)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
@@ -139,7 +139,7 @@ func handleActionDoc(output *strings.Builder, item *documentedItem, session flow
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
 
-	exampleJSON, err = json.MarshalIndent(typed, "", "  ")
+	exampleJSON, err = utils.JSONMarshalPretty(typed)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
@@ -225,7 +225,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 		if err != nil {
 			return nil, err
 		}
-		eventJSON[i], err = json.MarshalIndent(typed, "", "    ")
+		eventJSON[i], err = utils.JSONMarshalPretty(typed)
 		if err != nil {
 			return nil, err
 		}
@@ -233,7 +233,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 	if len(eventLog) == 1 {
 		return eventJSON[0], err
 	}
-	js, err := json.MarshalIndent(eventJSON, "", "    ")
+	js, err := utils.JSONMarshalPretty(eventJSON)
 	if err != nil {
 		return nil, err
 	}

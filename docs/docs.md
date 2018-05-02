@@ -1791,14 +1791,14 @@ for the groups which the contact has been added to.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "add_contact_groups",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "groups": [
-    {
-      "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
-      "name": "Customers"
-    }
-  ]
+    "type": "add_contact_groups",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "groups": [
+        {
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
+        }
+    ]
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -1825,10 +1825,10 @@ action will be ignored.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "add_contact_urn",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "scheme": "tel",
-  "path": "@run.results.phone_number"
+    "type": "add_contact_urn",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "scheme": "tel",
+    "path": "@run.results.phone_number"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -1850,14 +1850,14 @@ no user input at that point then this action will be ignored.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "add_input_labels",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "labels": [
-    {
-      "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-      "name": "Spam"
-    }
-  ]
+    "type": "add_input_labels",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "labels": [
+        {
+            "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+            "name": "Spam"
+        }
+    ]
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -1886,13 +1886,13 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "call_webhook",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "method": "GET",
-  "url": "http://localhost:49998/?cmd=success",
-  "headers": {
-    "Authorization": "Token AAFFZZHH"
-  }
+    "type": "call_webhook",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "method": "GET",
+    "url": "http://localhost:49998/?cmd=success",
+    "headers": {
+        "Authorization": "Token AAFFZZHH"
+    }
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -1918,14 +1918,14 @@ all groups.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "remove_contact_groups",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "groups": [
-    {
-      "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-      "name": "Registered Users"
-    }
-  ]
+    "type": "remove_contact_groups",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "groups": [
+        {
+            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "name": "Registered Users"
+        }
+    ]
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -1954,13 +1954,13 @@ with the evaluated text.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "send_broadcast",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "text": "Hi @contact.name, are you ready to complete today's survey?",
-  "attachments": null,
-  "urns": [
-    "tel:+12065551212"
-  ]
+    "type": "send_broadcast",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "text": "Hi @contact.name, are you ready to complete today's survey?",
+    "attachments": null,
+    "urns": [
+        "tel:+12065551212"
+    ]
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -1991,13 +1991,13 @@ An `email_created` event will be created for each email address.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "send_email",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "addresses": [
-    "@contact.urns.mailto.0"
-  ],
-  "subject": "Here is your activation token",
-  "body": "Your activation token is @contact.fields.activation_token"
+    "type": "send_email",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "addresses": [
+        "@contact.urns.mailto.0"
+    ],
+    "subject": "Here is your activation token",
+    "body": "Your activation token is @contact.fields.activation_token"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2023,10 +2023,10 @@ A `broadcast_created` event will be created with the evaluated text.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "send_msg",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "text": "Hi @contact.name, are you ready to complete today's survey?",
-  "attachments": []
+    "type": "send_msg",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "text": "Hi @contact.name, are you ready to complete today's survey?",
+    "attachments": []
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2056,12 +2056,12 @@ A `contact_channel_changed` event will be created with the set channel.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "set_contact_channel",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "channel": {
-    "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-    "name": "FAcebook Channel"
-  }
+    "type": "set_contact_channel",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "channel": {
+        "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+        "name": "FAcebook Channel"
+    }
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2085,13 +2085,13 @@ be evaluated during the flow. A `contact_field_changed` event will be created wi
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "set_contact_field",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "field": {
-    "key": "gender",
-    "name": "Gender"
-  },
-  "value": "Male"
+    "type": "set_contact_field",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "field": {
+        "key": "gender",
+        "name": "Gender"
+    },
+    "value": "Male"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2116,10 +2116,10 @@ Can be used to update one of the built in fields for a contact of "name" or
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "set_contact_property",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "property": "language",
-  "value": "eng"
+    "type": "set_contact_property",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "property": "language",
+    "value": "eng"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2145,11 +2145,11 @@ final values.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "set_run_result",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "name": "Gender",
-  "value": "m",
-  "category": "Male"
+    "type": "set_run_result",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "name": "Gender",
+    "value": "m",
+    "category": "Male"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2174,12 +2174,12 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "start_flow",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "flow": {
-    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-    "name": "Collect Language"
-  }
+    "type": "start_flow",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Collect Language"
+    }
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -2203,18 +2203,18 @@ Can be used to trigger sessions for other contacts and groups
 
 <div class="input_action"><h3>Action</h3>```json
 {
-  "type": "start_session",
-  "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-  "groups": [
-    {
-      "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
-      "name": "Customers"
+    "type": "start_session",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "groups": [
+        {
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
+        }
+    ],
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Registration"
     }
-  ],
-  "flow": {
-    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-    "name": "Registration"
-  }
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json

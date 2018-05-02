@@ -130,7 +130,7 @@ func (r *sessionResponse) MarshalJSON() ([]byte, error) {
 		Events:  eventEnvelopes,
 	}
 
-	return json.Marshal(envelope)
+	return utils.JSONMarshal(envelope)
 }
 
 type startRequest struct {

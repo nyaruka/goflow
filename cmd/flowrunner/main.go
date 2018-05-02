@@ -20,10 +20,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-const (
-	outputIndent string = "    "
-)
-
 type Output struct {
 	Session json.RawMessage   `json:"session"`
 	Events  []json.RawMessage `json:"events"`
@@ -38,7 +34,7 @@ type FlowTest struct {
 func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 	envelopes := make([]json.RawMessage, len(eventLog))
 	for i := range eventLog {
-		envelope, err := json.Marshal(eventLog[i])
+		envelope, err := utils.JSONMarshal(eventLog[i])
 		if err != nil {
 			log.Fatalf("Error creating envelope for %s: %s", eventLog[i], err)
 		}
@@ -49,7 +45,7 @@ func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 }
 
 func rawMessageAsJSON(msg json.RawMessage) (string, error) {
-	envJSON, err := json.MarshalIndent(msg, "", outputIndent)
+	envJSON, err := utils.JSONMarshalPretty(msg)
 	if err != nil {
 		return "", err
 	}
@@ -63,7 +59,7 @@ func eventAsJSON(event flows.Event) (string, error) {
 		return "", err
 	}
 
-	envJSON, err := json.MarshalIndent(env, "", outputIndent)
+	envJSON, err := utils.JSONMarshalPretty(env)
 	if err != nil {
 		return "", err
 	}
@@ -131,7 +127,7 @@ func clearTimestamps(input []byte) []byte {
 	replaceMapFields(replacements, "", inputJSON)
 
 	// return our marshalled result
-	outputJSON, err := json.MarshalIndent(inputJSON, "", outputIndent)
+	outputJSON, err := utils.JSONMarshalPretty(inputJSON)
 	if err != nil {
 		log.Fatalf("Error marshalling: %s", err)
 	}
@@ -201,7 +197,7 @@ func main() {
 	outputs := make([]*Output, 0)
 
 	for session.Wait() != nil {
-		outJSON, err := json.MarshalIndent(session, "", outputIndent)
+		outJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			log.Fatal("Error marshalling output: ", err)
 		}
@@ -239,7 +235,7 @@ func main() {
 	}
 
 	// print out our context
-	outJSON, err := json.MarshalIndent(session, "", outputIndent)
+	outJSON, err := utils.JSONMarshalPretty(session)
 	if err != nil {
 		log.Fatal("Error marshalling output: ", err)
 	}
@@ -258,7 +254,7 @@ func main() {
 
 		rawOutputs := make([]json.RawMessage, len(outputs))
 		for i := range outputs {
-			rawOutputs[i], err = json.Marshal(outputs[i])
+			rawOutputs[i], err = utils.JSONMarshal(outputs[i])
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -270,7 +266,7 @@ func main() {
 		}
 
 		flowTest := FlowTest{Trigger: triggerEnvelope, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
-		testJSON, err := json.MarshalIndent(flowTest, "", outputIndent)
+		testJSON, err := utils.JSONMarshalPretty(flowTest)
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)
 		}

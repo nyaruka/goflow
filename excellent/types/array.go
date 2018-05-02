@@ -2,6 +2,8 @@ package types
 
 import (
 	"encoding/json"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // XArray is an array primitive in Excellent expressions
@@ -58,7 +60,7 @@ func (a *xarray) ToXJSON() XText {
 
 // MarshalJSON converts this type to internal JSON
 func (a *xarray) MarshalJSON() ([]byte, error) {
-	return json.Marshal(a.values)
+	return utils.JSONMarshal(a.values)
 }
 
 // Index is called when this object is indexed into in an expression
