@@ -264,8 +264,8 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 			switch typed := fieldValue.(type) {
 			case nil:
 				return nil
-			//case *utils.Location:
-			//	nativeValue = typed.Name()
+			case LocationPath:
+				nativeValue = typed.String()
 			case types.XText:
 				nativeValue = typed.Native()
 			case types.XNumber:
@@ -291,9 +291,9 @@ type fieldValueEnvelope struct {
 	Text     types.XText      `json:"text"`
 	Datetime *types.XDateTime `json:"datetime,omitempty"`
 	Number   *types.XNumber   `json:"number,omitempty"`
-	State    string           `json:"state,omitempty"`
-	District string           `json:"district,omitempty"`
-	Ward     string           `json:"ward,omitempty"`
+	State    LocationPath     `json:"state,omitempty"`
+	District LocationPath     `json:"district,omitempty"`
+	Ward     LocationPath     `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {

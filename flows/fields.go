@@ -36,15 +36,34 @@ func NewField(key string, name string, valueType FieldValueType) *Field {
 // Key returns the key of the field
 func (f *Field) Key() string { return f.key }
 
+// LocationPath is a location described by a path Country > State ...
+type LocationPath string
+
+func (p LocationPath) String() string {
+	return string(p)
+}
+
+// Reduce returns the primitive version of this type
+func (p LocationPath) Reduce() types.XPrimitive {
+	return types.NewXText(string(p))
+}
+
+// ToXJSON is called when this type is passed to @(json(...))
+func (p LocationPath) ToXJSON() types.XText {
+	return p.Reduce().ToXJSON()
+}
+
+var _ types.XValue = LocationPath("")
+
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
 	text     types.XText
 	datetime *types.XDateTime
 	number   *types.XNumber
-	state    string
-	district string
-	ward     string
+	state    LocationPath
+	district LocationPath
+	ward     LocationPath
 }
 
 // NewEmptyFieldValue creates a new empty value for the given field
@@ -71,11 +90,11 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.number
 		}
 	case FieldValueTypeState:
-		return types.NewXText(v.state)
+		return types.NewXText(string(v.state))
 	case FieldValueTypeDistrict:
-		return types.NewXText(v.district)
+		return types.NewXText(string(v.district))
 	case FieldValueTypeWard:
-		return types.NewXText(v.ward)
+		return types.NewXText(string(v.ward))
 	}
 	return nil
 }
@@ -150,18 +169,18 @@ func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string)
 		// TODO parse as locations
 	}
 
-	var asState, asDistrict, asWard string
+	var asState, asDistrict, asWard LocationPath
 	if asLocation != nil {
 		switch int(asLocation.Level()) {
 		case 1: // state
-			asState = asLocation.Path()
+			asState = LocationPath(asLocation.Path())
 		case 2: // district
-			asState = asLocation.Parent().Path()
-			asDistrict = asLocation.Path()
+			asState = LocationPath(asLocation.Parent().Path())
+			asDistrict = LocationPath(asLocation.Path())
 		case 3: // ward
-			asState = asLocation.Parent().Parent().Path()
-			asDistrict = asLocation.Parent().Path()
-			asWard = asLocation.Path()
+			asState = LocationPath(asLocation.Parent().Parent().Path())
+			asDistrict = LocationPath(asLocation.Parent().Path())
+			asWard = LocationPath(asLocation.Path())
 		}
 	}
 
