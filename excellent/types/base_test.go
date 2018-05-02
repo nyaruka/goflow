@@ -1,12 +1,12 @@
 package types_test
 
 import (
-	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -43,7 +43,7 @@ func (v *testXObject) MarshalJSON() ([]byte, error) {
 	}{
 		Foo: v.foo,
 	}
-	return json.Marshal(e)
+	return utils.JSONMarshal(e)
 }
 
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
@@ -247,7 +247,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		asInternalJSON, _ := json.Marshal(test.value)
+		asInternalJSON, _ := utils.JSONMarshal(test.value)
 		asJSON, _ := types.ToXJSON(test.value)
 		asText, _ := types.ToXText(test.value)
 		asBool, _ := types.ToXBoolean(test.value)
