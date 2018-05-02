@@ -192,7 +192,9 @@ var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
 func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
-	c.fields.setValue(env, field, types.NewXText(rawValue))
+	runEnv := env.(RunEnvironment)
+
+	c.fields.setValue(runEnv, field, rawValue)
 }
 
 // UpdatePreferredChannel updates the preferred channel

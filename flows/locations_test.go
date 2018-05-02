@@ -89,4 +89,9 @@ func TestLocationHierarchy(t *testing.T) {
 	assert.Equal(t, []*flows.Location{}, hierarchy.FindByName("kigari", flows.LocationLevel(8), nil))    // no such level
 	assert.Equal(t, []*flows.Location{}, hierarchy.FindByName("kigari", flows.LocationLevel(2), nil))    // wrong level
 	assert.Equal(t, []*flows.Location{}, hierarchy.FindByName("kigari", flows.LocationLevel(2), gasabo)) // wrong parent
+
+	assert.Equal(t, rwanda, hierarchy.FindByPath("RWANDA"))
+	assert.Equal(t, kigali, hierarchy.FindByPath("RWANDA > KIGALI CITY"))
+	assert.Equal(t, gasabo, hierarchy.FindByPath("rwanda > kigali city > gasabo"))
+	assert.Equal(t, ndera, hierarchy.FindByPath("rwanda > kigali city > gasabo > ndera"))
 }

@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -120,26 +121,40 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XText) {
-	if rawValue == types.XTextEmpty {
+func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string) {
+	if rawValue == "" {
 		f[field.key] = NewEmptyFieldValue(field)
 		return
 	}
 
-	var asText = rawValue
+	var asText = types.NewXText(rawValue)
 	var asDateTime *types.XDateTime
 	var asNumber *types.XNumber
-	var asLocation *Location
 
-	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
+	if parsedNumber, xerr := types.ToXNumber(asText); xerr == nil {
 		asNumber = &parsedNumber
 	}
 
-	if parsedDate, xerr := types.ToXDateTime(env, rawValue); xerr == nil {
+	if parsedDate, xerr := types.ToXDateTime(env, asText); xerr == nil {
 		asDateTime = &parsedDate
 	}
 
 	// TODO parse as locations
+	var asLocation *Location
+
+	// for locations, if it has a '>' then it is explicit, look it up that way
+	if strings.Contains(rawValue, locationPathSeparator) {
+		asLocation, _ = env.LookupLocation(rawValue)
+	} else {
+		//if field.valueType == FieldValueTypeWard {
+		//	districtField := f.getFirstFieldOfType(FieldValueTypeDistrict)
+		//	districtValue := self.get_field_value(district_field)
+		//	if district_value != nil {
+		//		loc_value = self.org.parse_location(str_value, AdminBoundary.LEVEL_WARD, district_value)
+		//	}
+		//}
+		// TODO parse as locations
+	}
 
 	var asState, asDistrict, asWard string
 	if asLocation != nil {
@@ -222,6 +237,7 @@ func (s *FieldSet) FindByKey(key string) *Field {
 	return s.fieldsByKey[key]
 }
 
+// All returns all the fields in this set
 func (s *FieldSet) All() []*Field {
 	return s.fields
 }
