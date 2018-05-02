@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
@@ -25,12 +26,12 @@ func (s *sessionAssets) HasLocations() bool {
 }
 
 // GetLocationHierarchy gets the location hierarchy asset for the session
-func (s *sessionAssets) GetLocationHierarchy() (*flows.LocationHierarchy, error) {
+func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error) {
 	asset, err := s.cache.GetAsset(s.server, assetTypeLocationHierarchy, "")
 	if err != nil {
 		return nil, err
 	}
-	hierarchy, isType := asset.(*flows.LocationHierarchy)
+	hierarchy, isType := asset.(*utils.LocationHierarchy)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}

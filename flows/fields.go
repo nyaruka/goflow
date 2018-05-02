@@ -21,12 +21,6 @@ const (
 	FieldValueTypeState    FieldValueType = "state"
 )
 
-var fieldLocationLevels = map[FieldValueType]LocationLevel{
-	FieldValueTypeState:    LocationLevel(1),
-	FieldValueTypeDistrict: LocationLevel(2),
-	FieldValueTypeWard:     LocationLevel(3),
-}
-
 // Field represents a contact field
 type Field struct {
 	key       string
@@ -140,10 +134,10 @@ func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string)
 	}
 
 	// TODO parse as locations
-	var asLocation *Location
+	var asLocation *utils.Location
 
 	// for locations, if it has a '>' then it is explicit, look it up that way
-	if strings.Contains(rawValue, locationPathSeparator) {
+	if strings.Contains(rawValue, utils.LocationPathSeparator) {
 		asLocation, _ = env.LookupLocation(rawValue)
 	} else {
 		//if field.valueType == FieldValueTypeWard {

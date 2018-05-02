@@ -1,20 +1,16 @@
-package flows
+package utils
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
-
-	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // LocationLevel is a numeric level, e.g. 0 = country, 1 = state
 type LocationLevel int
 
 const (
-	locationPathSeparator       = ">"
-	locationPaddedPathSeparator = " > "
+	LocationPathSeparator       = ">"
+	LocationPaddedPathSeparator = " > "
 )
 
 // Location represents a single Location
@@ -50,16 +46,7 @@ func (l *Location) Parent() *Location { return l.parent }
 // Children gets the children of this location
 func (l *Location) Children() []*Location { return l.children }
 
-// Reduce is called when this object needs to be reduced to a primitive
-func (l *Location) Reduce() types.XPrimitive { return types.NewXText(l.path) }
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (l *Location) ToXJSON() types.XText { return l.Reduce().ToXJSON() }
-
 func (l *Location) String() string { return l.path }
-
-var _ types.XValue = (*Location)(nil)
-var _ fmt.Stringer = (*Location)(nil)
 
 // utility for traversing the location hierarchy
 type locationVisitor func(Location *Location)
@@ -113,7 +100,7 @@ func NewLocationHierarchy(root *Location, numLevels int) *LocationHierarchy {
 	// traverse the hierarchy to setup paths and lookups
 	root.visit(func(location *Location) {
 		if location.parent != nil {
-			location.path = strings.Join([]string{location.parent.path, location.name}, locationPaddedPathSeparator)
+			location.path = strings.Join([]string{location.parent.path, location.name}, LocationPaddedPathSeparator)
 		} else {
 			location.path = location.name
 		}
@@ -143,7 +130,7 @@ func (h *LocationHierarchy) Root() *Location {
 func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent *Location) []*Location {
 
 	// try it as a path first if it looks possible
-	if level == 0 || strings.Contains(name, locationPathSeparator) {
+	if level == 0 || strings.Contains(name, LocationPathSeparator) {
 		match := h.pathLookup.lookup(name)
 		if match != nil {
 			return []*Location{match}
@@ -204,7 +191,7 @@ func locationFromEnvelope(envelope *locationEnvelope, currentLevel LocationLevel
 // ReadLocationHierarchy reads a location hierarchy from the given JSON
 func ReadLocationHierarchy(data json.RawMessage) (*LocationHierarchy, error) {
 	var le locationEnvelope
-	if err := utils.UnmarshalAndValidate(data, &le, "location"); err != nil {
+	if err := UnmarshalAndValidate(data, &le, "location"); err != nil {
 		return nil, err
 	}
 

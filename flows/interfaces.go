@@ -128,7 +128,7 @@ type SessionAssets interface {
 	GetLabelSet() (*LabelSet, error)
 
 	HasLocations() bool
-	GetLocationHierarchy() (*LocationHierarchy, error)
+	GetLocationHierarchy() (*utils.LocationHierarchy, error)
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
@@ -388,9 +388,9 @@ type RunSummary interface {
 type RunEnvironment interface {
 	utils.Environment
 
-	FindLocations(string, LocationLevel, *Location) ([]*Location, error)
-	FindLocationsFuzzy(string, LocationLevel, *Location) ([]*Location, error)
-	LookupLocation(string) (*Location, error)
+	FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
+	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
+	LookupLocation(string) (*utils.Location, error)
 }
 
 // FlowRun is a single contact's journey through a flow. It records the path they have taken, and the results that have been

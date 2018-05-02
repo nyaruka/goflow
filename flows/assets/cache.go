@@ -134,7 +134,7 @@ func readAsset(data json.RawMessage, itemType assetType) (interface{}, error) {
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
 	if itemType == assetTypeLocationHierarchy {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchy(data) }
+		assetReader = func(data json.RawMessage) (interface{}, error) { return utils.ReadLocationHierarchy(data) }
 	} else if itemType == assetTypeChannelSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) }
 	} else if itemType == assetTypeFieldSet {
