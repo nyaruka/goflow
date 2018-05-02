@@ -36,25 +36,6 @@ func NewField(key string, name string, valueType FieldValueType) *Field {
 // Key returns the key of the field
 func (f *Field) Key() string { return f.key }
 
-// LocationPath is a location described by a path Country > State ...
-type LocationPath string
-
-func (p LocationPath) String() string {
-	return string(p)
-}
-
-// Reduce returns the primitive version of this type
-func (p LocationPath) Reduce() types.XPrimitive {
-	return types.NewXText(string(p))
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (p LocationPath) ToXJSON() types.XText {
-	return p.Reduce().ToXJSON()
-}
-
-var _ types.XValue = LocationPath("")
-
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
 	field    *Field
@@ -134,9 +115,15 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string) {
+func (f FieldValues) getValue(key string) *FieldValue {
+	return f[key]
+}
+
+func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string, rawValue string) {
+	field := fieldSet.FindByKey(key)
+
 	if rawValue == "" {
-		f[field.key] = NewEmptyFieldValue(field)
+		f[key] = NewEmptyFieldValue(field)
 		return
 	}
 
@@ -152,39 +139,49 @@ func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string)
 		asDateTime = &parsedDate
 	}
 
-	// TODO parse as locations
 	var asLocation *utils.Location
 
 	// for locations, if it has a '>' then it is explicit, look it up that way
 	if strings.Contains(rawValue, utils.LocationPathSeparator) {
-		asLocation, _ = env.LookupLocation(rawValue)
+		asLocation, _ = env.LookupLocation(LocationPath(rawValue))
 	} else {
-		//if field.valueType == FieldValueTypeWard {
-		//	districtField := f.getFirstFieldOfType(FieldValueTypeDistrict)
-		//	districtValue := self.get_field_value(district_field)
-		//	if district_value != nil {
-		//		loc_value = self.org.parse_location(str_value, AdminBoundary.LEVEL_WARD, district_value)
-		//	}
-		//}
-		// TODO parse as locations
+		var matchingLocations []*utils.Location
+
+		if field.valueType == FieldValueTypeWard {
+			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeDistrict)
+			if parent != nil {
+				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
+			}
+		} else if field.valueType == FieldValueTypeDistrict {
+			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeState)
+			if parent != nil {
+				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
+			}
+		} else if field.valueType == FieldValueTypeState {
+			matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
+		}
+
+		if len(matchingLocations) > 0 {
+			asLocation = matchingLocations[0]
+		}
 	}
 
 	var asState, asDistrict, asWard LocationPath
 	if asLocation != nil {
-		switch int(asLocation.Level()) {
-		case 1: // state
+		switch asLocation.Level() {
+		case LocationLevelState:
 			asState = LocationPath(asLocation.Path())
-		case 2: // district
+		case LocationLevelDistrict:
 			asState = LocationPath(asLocation.Parent().Path())
 			asDistrict = LocationPath(asLocation.Path())
-		case 3: // ward
+		case LocationLevelWard:
 			asState = LocationPath(asLocation.Parent().Parent().Path())
 			asDistrict = LocationPath(asLocation.Parent().Path())
 			asWard = LocationPath(asLocation.Path())
 		}
 	}
 
-	f[field.key] = &FieldValue{
+	f[key] = &FieldValue{
 		field:    field,
 		text:     asText,
 		datetime: asDateTime,
@@ -193,6 +190,19 @@ func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string)
 		district: asDistrict,
 		ward:     asWard,
 	}
+}
+
+func (f FieldValues) getFirstLocationValue(env RunEnvironment, fieldSet *FieldSet, valueType FieldValueType) *utils.Location {
+	field := fieldSet.FirstOfType(FieldValueTypeDistrict)
+	if field == nil {
+		return nil
+	}
+	value := f[field.Key()].TypedValue()
+	location, err := env.LookupLocation(value.(LocationPath))
+	if err != nil {
+		return nil
+	}
+	return location
 }
 
 // Length is called to get the length of this object
@@ -248,6 +258,16 @@ func NewFieldSet(fields []*Field) *FieldSet {
 // FindByKey finds the contact field with the given key
 func (s *FieldSet) FindByKey(key string) *Field {
 	return s.fieldsByKey[key]
+}
+
+// FirstOfType returns the first field in this set with the given value type
+func (s *FieldSet) FirstOfType(valueType FieldValueType) *Field {
+	for _, field := range s.fields {
+		if field.valueType == valueType {
+			return field
+		}
+	}
+	return nil
 }
 
 // All returns all the fields in this set

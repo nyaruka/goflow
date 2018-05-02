@@ -390,7 +390,7 @@ type RunEnvironment interface {
 
 	FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
 	FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error)
-	LookupLocation(string) (*utils.Location, error)
+	LookupLocation(LocationPath) (*utils.Location, error)
 }
 
 // FlowRun is a single contact's journey through a flow. It records the path they have taken, and the results that have been
