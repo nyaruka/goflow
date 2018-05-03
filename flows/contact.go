@@ -191,8 +191,10 @@ var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, field *Field, rawValue string) {
-	c.fields.setValue(env, field, types.NewXText(rawValue))
+func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key string, rawValue string) {
+	runEnv := env.(RunEnvironment)
+
+	c.fields.setValue(runEnv, fieldSet, key, rawValue)
 }
 
 // UpdatePreferredChannel updates the preferred channel
@@ -217,8 +219,8 @@ func (c *Contact) UpdatePreferredChannel(channel Channel) {
 	c.urns = append(priorityURNs, otherURNs...)
 }
 
-// UpdateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) UpdateDynamicGroups(session Session) error {
+// ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
+func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 	groups, err := session.Assets().GetGroupSet()
 	if err != nil {
 		return err
@@ -262,7 +264,7 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 			switch typed := fieldValue.(type) {
 			case nil:
 				return nil
-			case *Location:
+			case LocationPath:
 				nativeValue = typed.Name()
 			case types.XText:
 				nativeValue = typed.Native()
@@ -286,22 +288,22 @@ var _ contactql.Queryable = (*Contact)(nil)
 //------------------------------------------------------------------------------------------
 
 type fieldValueEnvelope struct {
-	Text     types.XText      `json:"text,omitempty"`
+	Text     types.XText      `json:"text"`
 	Datetime *types.XDateTime `json:"datetime,omitempty"`
 	Number   *types.XNumber   `json:"number,omitempty"`
-	State    string           `json:"state,omitempty"`
-	District string           `json:"district,omitempty"`
-	Ward     string           `json:"ward,omitempty"`
+	State    LocationPath     `json:"state,omitempty"`
+	District LocationPath     `json:"district,omitempty"`
+	Ward     LocationPath     `json:"ward,omitempty"`
 }
 
 type contactEnvelope struct {
-	UUID     ContactUUID                      `json:"uuid" validate:"required,uuid4"`
-	Name     string                           `json:"name"`
-	Language utils.Language                   `json:"language"`
-	Timezone string                           `json:"timezone"`
-	URNs     []urns.URN                       `json:"urns" validate:"dive,urn"`
-	Groups   []*GroupReference                `json:"groups,omitempty" validate:"dive"`
-	Fields   map[FieldKey]*fieldValueEnvelope `json:"fields,omitempty"`
+	UUID     ContactUUID                    `json:"uuid" validate:"required,uuid4"`
+	Name     string                         `json:"name"`
+	Language utils.Language                 `json:"language"`
+	Timezone string                         `json:"timezone"`
+	URNs     []urns.URN                     `json:"urns" validate:"dive,urn"`
+	Groups   []*GroupReference              `json:"groups,omitempty" validate:"dive"`
+	Fields   map[string]*fieldValueEnvelope `json:"fields,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -352,7 +354,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	c.fields = make(FieldValues, len(fieldSet.All()))
 
 	for _, field := range fieldSet.All() {
-		value := &FieldValue{field: field}
+		value := NewEmptyFieldValue(field)
 
 		if envelope.Fields != nil {
 			valueEnvelope := envelope.Fields[field.key]
@@ -360,8 +362,9 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 				value.text = valueEnvelope.Text
 				value.number = valueEnvelope.Number
 				value.datetime = valueEnvelope.Datetime
-
-				// TODO parse locations
+				value.state = valueEnvelope.State
+				value.district = valueEnvelope.District
+				value.ward = valueEnvelope.Ward
 			}
 		}
 
@@ -388,16 +391,16 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Groups[g] = group.Reference()
 	}
 
-	ce.Fields = make(map[FieldKey]*fieldValueEnvelope)
+	ce.Fields = make(map[string]*fieldValueEnvelope)
 	for _, v := range c.fields {
 		if !v.IsEmpty() {
 			ce.Fields[v.field.Key()] = &fieldValueEnvelope{
 				Text:     v.text,
 				Number:   v.number,
 				Datetime: v.datetime,
-				//State:    v.state,
-				//District: v.district,
-				//Ward:     v.ward,
+				State:    v.state,
+				District: v.district,
+				Ward:     v.ward,
 			}
 		}
 	}

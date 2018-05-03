@@ -45,7 +45,8 @@
                             "text": "Ben"
                         },
                         "state": {
-                            "text": "Azuay"
+                            "state": "Ecuador > Azuay",
+                            "text": "Ecuador > Azuay"
                         }
                     },
                     "language": "eng",
@@ -120,7 +121,8 @@
                                 "text": "Ben"
                             },
                             "state": {
-                                "text": "Azuay"
+                                "state": "Ecuador > Azuay",
+                                "text": "Ecuador > Azuay"
                             }
                         },
                         "language": "eng",
@@ -192,7 +194,8 @@
                             "text": "Ryan"
                         },
                         "state": {
-                            "text": "Azuay"
+                            "state": "Ecuador > Azuay",
+                            "text": "Ecuador > Azuay"
                         }
                     },
                     "language": "eng",
@@ -351,7 +354,8 @@
                                 "text": "Ben"
                             },
                             "state": {
-                                "text": "Azuay"
+                                "state": "Ecuador > Azuay",
+                                "text": "Ecuador > Azuay"
                             }
                         },
                         "language": "eng",
@@ -384,7 +388,8 @@
                     "text": "Ben"
                 },
                 "state": {
-                    "text": "Azuay"
+                    "state": "Ecuador > Azuay",
+                    "text": "Ecuador > Azuay"
                 }
             },
             "language": "eng",

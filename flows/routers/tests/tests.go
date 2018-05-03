@@ -585,19 +585,19 @@ func HasPhone(env utils.Environment, text types.XText, country types.XText) type
 //   @(has_state("Kigali")) -> true
 //   @(has_state("Boston")) -> false
 //   @(has_state("¡Kigali!")) -> true
-//   @(has_state("¡Kigali!").match) -> Kigali City
+//   @(has_state("¡Kigali!").match) -> Rwanda > Kigali City
 //   @(has_state("I live in Kigali")) -> true
 //
 // @test has_state(text)
 func HasState(env utils.Environment, text types.XText) types.XValue {
 	runEnv, _ := env.(flows.RunEnvironment)
 
-	states, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevelState, nil)
 	if err != nil {
 		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		return XTestResult{true, states[0]}
+		return XTestResult{true, types.NewXText(states[0].Path())}
 	}
 	return XFalseResult
 }
@@ -607,7 +607,7 @@ func HasState(env utils.Environment, text types.XText) types.XValue {
 //
 //   @(has_district("Gasabo", "Kigali")) -> true
 //   @(has_district("I live in Gasabo", "Kigali")) -> true
-//   @(has_district("I live in Gasabo", "Kigali").match) -> Gasabo
+//   @(has_district("I live in Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo
 //   @(has_district("Gasabo", "Boston")) -> false
 //   @(has_district("Gasabo")) -> true
 //
@@ -632,28 +632,28 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(stateText.Native(), flows.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText.Native(), flows.LocationLevelState, nil)
 	if err != nil {
 		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevelDistrict, states[0])
 		if err != nil {
 			return types.NewXError(err)
 		}
 		if len(districts) > 0 {
-			return XTestResult{true, districts[0]}
+			return XTestResult{true, types.NewXText(districts[0].Path())}
 		}
 	}
 
 	// try without a parent state - it's ok as long as we get a single match
 	if stateText.Empty() {
-		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(2), nil)
+		districts, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevelDistrict, nil)
 		if err != nil {
 			return types.NewXError(err)
 		}
 		if len(districts) == 1 {
-			return XTestResult{true, districts[0]}
+			return XTestResult{true, types.NewXText(districts[0].Path())}
 		}
 	}
 
@@ -664,7 +664,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 //
 //   @(has_ward("Gisozi", "Gasabo", "Kigali")) -> true
 //   @(has_ward("I live in Gisozi", "Gasabo", "Kigali")) -> true
-//   @(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) -> Gisozi
+//   @(has_ward("I live in Gisozi", "Gasabo", "Kigali").match) -> Rwanda > Kigali City > Gasabo > Gisozi
 //   @(has_ward("Gisozi", "Gasabo", "Brooklyn")) -> false
 //   @(has_ward("Gisozi", "Brooklyn", "Kigali")) -> false
 //   @(has_ward("Brooklyn", "Gasabo", "Kigali")) -> false
@@ -695,34 +695,34 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	states, err := runEnv.FindLocationsFuzzy(stateText.Native(), flows.LocationLevel(1), nil)
+	states, err := runEnv.FindLocationsFuzzy(stateText.Native(), flows.LocationLevelState, nil)
 	if err != nil {
 		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		districts, err := runEnv.FindLocationsFuzzy(districtText.Native(), flows.LocationLevel(2), states[0])
+		districts, err := runEnv.FindLocationsFuzzy(districtText.Native(), flows.LocationLevelDistrict, states[0])
 		if err != nil {
 			return types.NewXError(err)
 		}
 		if len(districts) > 0 {
-			wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(3), districts[0])
+			wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevelWard, districts[0])
 			if err != nil {
 				return types.NewXError(err)
 			}
 			if len(wards) > 0 {
-				return XTestResult{true, wards[0]}
+				return XTestResult{true, types.NewXText(wards[0].Path())}
 			}
 		}
 	}
 
 	// try without a parent district - it's ok as long as we get a single match
 	if districtText.Empty() {
-		wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevel(3), nil)
+		wards, err := runEnv.FindLocationsFuzzy(text.Native(), flows.LocationLevelWard, nil)
 		if err != nil {
 			return types.NewXError(err)
 		}
 		if len(wards) == 1 {
-			return XTestResult{true, wards[0]}
+			return XTestResult{true, types.NewXText(wards[0].Path())}
 		}
 	}
 

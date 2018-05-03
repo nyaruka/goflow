@@ -7,9 +7,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// FieldKey is the unique key for this field
-type FieldKey string
-
 // FieldValueType is the data type of values for each field
 type FieldValueType string
 
@@ -23,26 +20,20 @@ const (
 	FieldValueTypeState    FieldValueType = "state"
 )
 
-var fieldLocationLevels = map[FieldValueType]LocationLevel{
-	FieldValueTypeState:    LocationLevel(1),
-	FieldValueTypeDistrict: LocationLevel(2),
-	FieldValueTypeWard:     LocationLevel(3),
-}
-
 // Field represents a contact field
 type Field struct {
-	key       FieldKey
+	key       string
 	name      string
 	valueType FieldValueType
 }
 
 // NewField returns a new field object with the passed in uuid, key and value type
-func NewField(key FieldKey, name string, valueType FieldValueType) *Field {
+func NewField(key string, name string, valueType FieldValueType) *Field {
 	return &Field{key: key, name: name, valueType: valueType}
 }
 
 // Key returns the key of the field
-func (f *Field) Key() FieldKey { return f.key }
+func (f *Field) Key() string { return f.key }
 
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
@@ -50,15 +41,22 @@ type FieldValue struct {
 	text     types.XText
 	datetime *types.XDateTime
 	number   *types.XNumber
-	state    *Location
-	district *Location
-	ward     *Location
+	state    LocationPath
+	district LocationPath
+	ward     LocationPath
 }
 
+// NewEmptyFieldValue creates a new empty value for the given field
+func NewEmptyFieldValue(field *Field) *FieldValue {
+	return &FieldValue{field: field}
+}
+
+// IsEmpty returns whether this field value is set for any type
 func (v *FieldValue) IsEmpty() bool {
-	return !(!v.text.Empty() || v.datetime != nil || v.number != nil || v.state != nil || v.district != nil || v.ward != nil)
+	return v.text.Empty() && v.datetime == nil && v.number == nil && v.state == "" && v.district == "" && v.ward == ""
 }
 
+// TypedValue returns the value in its proper type
 func (v *FieldValue) TypedValue() types.XValue {
 	switch v.field.valueType {
 	case FieldValueTypeText:
@@ -72,11 +70,11 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.number
 		}
 	case FieldValueTypeState:
-		return v.state
+		return types.NewXText(string(v.state))
 	case FieldValueTypeDistrict:
-		return v.district
+		return types.NewXText(string(v.district))
 	case FieldValueTypeWard:
-		return v.ward
+		return types.NewXText(string(v.ward))
 	}
 	return nil
 }
@@ -101,8 +99,11 @@ func (v *FieldValue) ToXJSON() types.XText { return v.Reduce().ToXJSON() }
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
 
+// EmptyFieldValue is used when a contact doesn't have a value set for a field
+var EmptyFieldValue = &FieldValue{}
+
 // FieldValues is the set of all field values for a contact
-type FieldValues map[FieldKey]*FieldValue
+type FieldValues map[string]*FieldValue
 
 // Clone returns a clone of this set of field values
 func (f FieldValues) clone() FieldValues {
@@ -113,26 +114,94 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) setValue(env utils.Environment, field *Field, rawValue types.XText) {
-	var asDate *types.XDateTime
+func (f FieldValues) getValue(key string) *FieldValue {
+	return f[key]
+}
+
+func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string, rawValue string) {
+	field := fieldSet.FindByKey(key)
+
+	if rawValue == "" {
+		f[key] = NewEmptyFieldValue(field)
+		return
+	}
+
+	var asText = types.NewXText(rawValue)
+	var asDateTime *types.XDateTime
 	var asNumber *types.XNumber
 
-	if parsedNumber, xerr := types.ToXNumber(rawValue); xerr == nil {
+	if parsedNumber, xerr := types.ToXNumber(asText); xerr == nil {
 		asNumber = &parsedNumber
 	}
 
-	if parsedDate, xerr := types.ToXDateTime(env, rawValue); xerr == nil {
-		asDate = &parsedDate
+	if parsedDate, xerr := types.ToXDateTime(env, asText); xerr == nil {
+		asDateTime = &parsedDate
 	}
 
-	// TODO parse as locations
+	var asLocation *utils.Location
 
-	f[field.key] = &FieldValue{
+	// for locations, if it has a '>' then it is explicit, look it up that way
+	if IsPossibleLocationPath(rawValue) {
+		asLocation, _ = env.LookupLocation(LocationPath(rawValue))
+	} else {
+		var matchingLocations []*utils.Location
+
+		if field.valueType == FieldValueTypeWard {
+			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeDistrict)
+			if parent != nil {
+				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
+			}
+		} else if field.valueType == FieldValueTypeDistrict {
+			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeState)
+			if parent != nil {
+				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
+			}
+		} else if field.valueType == FieldValueTypeState {
+			matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
+		}
+
+		if len(matchingLocations) > 0 {
+			asLocation = matchingLocations[0]
+		}
+	}
+
+	var asState, asDistrict, asWard LocationPath
+	if asLocation != nil {
+		switch asLocation.Level() {
+		case LocationLevelState:
+			asState = LocationPath(asLocation.Path())
+		case LocationLevelDistrict:
+			asState = LocationPath(asLocation.Parent().Path())
+			asDistrict = LocationPath(asLocation.Path())
+		case LocationLevelWard:
+			asState = LocationPath(asLocation.Parent().Parent().Path())
+			asDistrict = LocationPath(asLocation.Parent().Path())
+			asWard = LocationPath(asLocation.Path())
+		}
+	}
+
+	f[key] = &FieldValue{
 		field:    field,
-		text:     rawValue,
-		datetime: asDate,
+		text:     asText,
+		datetime: asDateTime,
 		number:   asNumber,
+		state:    asState,
+		district: asDistrict,
+		ward:     asWard,
 	}
+}
+
+func (f FieldValues) getFirstLocationValue(env RunEnvironment, fieldSet *FieldSet, valueType FieldValueType) *utils.Location {
+	field := fieldSet.FirstOfType(FieldValueTypeDistrict)
+	if field == nil {
+		return nil
+	}
+	value := f[field.Key()].TypedValue()
+	location, err := env.LookupLocation(value.(LocationPath))
+	if err != nil {
+		return nil
+	}
+	return location
 }
 
 // Length is called to get the length of this object
@@ -142,7 +211,7 @@ func (f FieldValues) Length() int {
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(key string) types.XValue {
-	val, exists := f[FieldKey(key)]
+	val, exists := f[key]
 	if !exists {
 		return types.NewXResolveError(f, key)
 	}
@@ -170,12 +239,15 @@ var _ types.XResolvable = (FieldValues)(nil)
 // FieldSet defines the unordered set of all fields for a session
 type FieldSet struct {
 	fields      []*Field
-	fieldsByKey map[FieldKey]*Field
+	fieldsByKey map[string]*Field
 }
 
 // NewFieldSet creates a new set of fields
 func NewFieldSet(fields []*Field) *FieldSet {
-	s := &FieldSet{fields: fields, fieldsByKey: make(map[FieldKey]*Field, len(fields))}
+	s := &FieldSet{
+		fields:      fields,
+		fieldsByKey: make(map[string]*Field, len(fields)),
+	}
 	for _, field := range s.fields {
 		s.fieldsByKey[field.key] = field
 	}
@@ -183,10 +255,21 @@ func NewFieldSet(fields []*Field) *FieldSet {
 }
 
 // FindByKey finds the contact field with the given key
-func (s *FieldSet) FindByKey(key FieldKey) *Field {
+func (s *FieldSet) FindByKey(key string) *Field {
 	return s.fieldsByKey[key]
 }
 
+// FirstOfType returns the first field in this set with the given value type
+func (s *FieldSet) FirstOfType(valueType FieldValueType) *Field {
+	for _, field := range s.fields {
+		if field.valueType == valueType {
+			return field
+		}
+	}
+	return nil
+}
+
+// All returns all the fields in this set
 func (s *FieldSet) All() []*Field {
 	return s.fields
 }
@@ -196,7 +279,7 @@ func (s *FieldSet) All() []*Field {
 //------------------------------------------------------------------------------------------
 
 type fieldEnvelope struct {
-	Key       FieldKey       `json:"key"`
+	Key       string         `json:"key"`
 	Name      string         `json:"name"`
 	ValueType FieldValueType `json:"value_type,omitempty"`
 }

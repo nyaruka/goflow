@@ -52,12 +52,12 @@ func NewVariableGroupReference(nameMatch string) *GroupReference {
 
 // FieldReference is a reference to field
 type FieldReference struct {
-	Key  FieldKey `json:"key" validate:"required"`
-	Name string   `json:"name"`
+	Key  string `json:"key" validate:"required"`
+	Name string `json:"name"`
 }
 
 // NewFieldReference creates a new field reference with the given key and label
-func NewFieldReference(key FieldKey, label string) *FieldReference {
+func NewFieldReference(key string, label string) *FieldReference {
 	return &FieldReference{Key: key, Name: label}
 }
 
