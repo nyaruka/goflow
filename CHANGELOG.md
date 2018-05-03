@@ -1,3 +1,7 @@
+v0.9.8
+----------
+ * Fix goreleasing from travis
+
 v0.9.7
 ----------
  * Migrate contact.groups to be a CSV list
