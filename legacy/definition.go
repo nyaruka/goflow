@@ -49,11 +49,33 @@ type Flow struct {
 	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
 }
 
+// Note is a legacy sticky note
+type Note struct {
+	X     int    `json:"x"`
+	Y     int    `json:"y"`
+	Title string `json:"title"`
+	Body  string `json:"body"`
+}
+
+// Stickie is a migrated note
+type Stickie map[string]interface{}
+
+// Migrate migrates this note to a new stickie
+func (n *Note) Migrate() Stickie {
+	return Stickie{
+		"position": map[string]interface{}{"left": n.X, "top": n.Y},
+		"title":    n.Title,
+		"body":     n.Body,
+		"color":    "yellow",
+	}
+}
+
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
 	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name    string         `json:"name"`
 	Expires int            `json:"expires"`
+	Notes   []Note         `json:"notes,omitempty"`
 }
 
 type Rule struct {
@@ -1012,7 +1034,13 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 			nodesUI[ruleset.UUID] = nmd
 		}
 
+		stickies := make(map[utils.UUID]Stickie, len(f.Metadata.Notes))
+		for _, note := range f.Metadata.Notes {
+			stickies[utils.NewUUID()] = note.Migrate()
+		}
+
 		ui["nodes"] = nodesUI
+		ui["stickies"] = stickies
 	}
 
 	return definition.NewFlow(

@@ -3,7 +3,15 @@
         "legacy": {
             "metadata": {
                 "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-                "name": "Simple"
+                "name": "Simple",
+                "notes": [
+                    {
+                        "y": 22, 
+                        "x": 37, 
+                        "body": "This is a note", 
+                        "title": "Attention"
+                    }
+                ]
             },
             "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597", 
             "base_language": "eng", 
@@ -76,6 +84,17 @@
                             "left": 1,
                             "top": 1
                         }
+                    }
+                },
+                "stickies": {
+                    "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                        "body": "This is a note",
+                        "color": "yellow",
+                        "position": {
+                            "left": 37,
+                            "top": 22
+                        },
+                        "title": "Attention"
                     }
                 }
             }
