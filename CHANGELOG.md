@@ -1,3 +1,8 @@
+v0.9.7
+----------
+ * Migrate contact.groups to be a CSV list
+ * Support channels with UUIDs which aren't UUID4
+
 v0.9.6
 ----------
  * Migrate templates in legacy HasState and HasWard tests
