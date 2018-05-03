@@ -1,3 +1,10 @@
+v0.9.9
+----------
+ * Use fuzzy number parsing for tests, stricter for type conversion
+ * Migrate endpoint of flowserver can take include_ui param
+ * Add migration of notes
+ * Include contact name on migration of contact references
+
 v0.9.8
 ----------
  * Fix goreleasing from travis
