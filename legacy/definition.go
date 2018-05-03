@@ -342,7 +342,7 @@ var testTypeMappings = map[string]string{
 	"date_before":          "has_date_lt",
 	"date_equal":           "has_date_eq",
 	"district":             "has_district",
-	"email":                "has_email",
+	"has_email":            "has_email",
 	"eq":                   "has_number_eq",
 	"gt":                   "has_number_gt",
 	"gte":                  "has_number_gte",
@@ -608,7 +608,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	switch r.Test.Type {
 
 	// tests that take no arguments
-	case "date", "email", "not_empty", "number", "phone", "state":
+	case "date", "has_email", "not_empty", "number", "phone", "state":
 		arguments = []string{}
 
 	// tests against a single numeric value

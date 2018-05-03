@@ -166,7 +166,7 @@
     },
     {
         "legacy_test": {
-            "type": "email"
+            "type": "has_email"
         },
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
