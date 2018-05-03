@@ -257,7 +257,8 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 }
 
 type migrateRequest struct {
-	Flows []json.RawMessage `json:"flows"`
+	Flows     []json.RawMessage `json:"flows"`
+	IncludeUI *bool             `json:"include_ui"`
 }
 
 func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -284,9 +285,11 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 		return nil, err
 	}
 
+	includeUI := migrate.IncludeUI == nil || *migrate.IncludeUI
+
 	flows := make([]flows.Flow, len(legacyFlows))
 	for f := range legacyFlows {
-		flows[f], err = legacyFlows[f].Migrate(true)
+		flows[f], err = legacyFlows[f].Migrate(includeUI)
 		if err != nil {
 			return nil, err
 		}
