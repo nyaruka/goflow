@@ -56,7 +56,7 @@ func (x XText) Empty() bool { return x.Native() == "" }
 
 // MarshalJSON is called when a struct containing this type is marshaled
 func (x XText) MarshalJSON() ([]byte, error) {
-	return json.Marshal(x.Native())
+	return utils.JSONMarshal(x.Native())
 }
 
 // UnmarshalJSON is called when a struct containing this type is unmarshaled

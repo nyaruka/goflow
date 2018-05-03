@@ -265,7 +265,7 @@ func (c *Contact) ResolveQueryKey(key string) []interface{} {
 			case nil:
 				return nil
 			case LocationPath:
-				nativeValue = typed.String()
+				nativeValue = typed.Name()
 			case types.XText:
 				nativeValue = typed.Native()
 			case types.XNumber:

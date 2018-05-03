@@ -135,7 +135,7 @@ func ToXJSON(x XValue) (XText, XError) {
 
 // MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error
 func MustMarshalToXText(x interface{}) XText {
-	j, err := json.Marshal(x)
+	j, err := utils.JSONMarshal(x)
 	if err != nil {
 		panic(fmt.Sprintf("unable to marshal %s to JSON", x))
 	}

@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -142,7 +141,7 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 	var asLocation *utils.Location
 
 	// for locations, if it has a '>' then it is explicit, look it up that way
-	if strings.Contains(rawValue, utils.LocationPathSeparator) {
+	if IsPossibleLocationPath(rawValue) {
 		asLocation, _ = env.LookupLocation(LocationPath(rawValue))
 	} else {
 		var matchingLocations []*utils.Location
