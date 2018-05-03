@@ -175,7 +175,7 @@ func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {
 //------------------------------------------------------------------------------------------
 
 type channelEnvelope struct {
-	UUID    ChannelUUID   `json:"uuid" validate:"required,uuid4"`
+	UUID    ChannelUUID   `json:"uuid" validate:"required,uuid"`
 	Name    string        `json:"name"`
 	Address string        `json:"address"`
 	Schemes []string      `json:"schemes" validate:"min=1"`
