@@ -2,15 +2,11 @@ package types
 
 import (
 	"math"
-	"regexp"
-	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 )
-
-var parseableNumberRegex = regexp.MustCompile(`^[$£€]?([\d,][\d,\.]*([\.,]\d+)?)\D*$`)
 
 func init() {
 	decimal.MarshalJSONWithoutQuotes = true
@@ -98,7 +94,7 @@ func ToXNumber(x XValue) (XNumber, XError) {
 	case XNumber:
 		return typed, nil
 	case XText:
-		parsed, err := parseDecimalFuzzy(typed.Native())
+		parsed, err := decimal.NewFromString(typed.Native())
 		if err == nil {
 			return NewXNumber(parsed), nil
 		}
@@ -121,26 +117,4 @@ func ToInteger(x XValue) (int, XError) {
 	}
 
 	return int(intPart), nil
-}
-
-func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
-	// common SMS foibles
-	cleaned := strings.ToLower(val)
-	cleaned = strings.Replace(cleaned, "o", "0", -1)
-	cleaned = strings.Replace(cleaned, "l", "1", -1)
-
-	num, err := decimal.NewFromString(cleaned)
-	if err == nil {
-		return num, nil
-	}
-
-	// we only try this hard if we haven't already substituted characters
-	if cleaned == val {
-		// does this start with a number? just use that part if so
-		match := parseableNumberRegex.FindStringSubmatch(val)
-		if match != nil {
-			return decimal.NewFromString(match[1])
-		}
-	}
-	return decimal.Zero, err
 }
