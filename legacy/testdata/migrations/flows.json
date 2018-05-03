@@ -1,0 +1,84 @@
+[
+    {
+        "legacy": {
+            "metadata": {
+                "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                "name": "Simple"
+            },
+            "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597", 
+            "base_language": "eng", 
+            "action_sets": [
+                {
+                    "y": 1,
+                    "x": 1,
+                    "destination": null,
+                    "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                    "exit_uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314",
+                    "actions": [
+                      {
+                        "msg": {
+                          "base": "Hello",
+                          "fre": "Bonjour"
+                        },
+                        "media": {},
+                        "send_all": false,
+                        "type": "reply",
+                        "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420"
+                      }
+                    ]
+                }
+            ],
+            "rule_sets": []
+        },
+        "expected": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Simple",
+            "language": "eng",
+            "expire_after_minutes": 0,
+            "localization": {
+                "base": {
+                    "98388930-7a0f-4eb8-9a0a-09be2f006420": {
+                        "text": [
+                            "Hello"
+                        ]
+                    }
+                },
+                "fre": {
+                    "98388930-7a0f-4eb8-9a0a-09be2f006420": {
+                        "text": [
+                            "Bonjour"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420",
+                            "text": "",
+                            "attachments": []
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314"
+                        }
+                    ]
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "d51ec25f-04e6-4349-a448-e7c4d93d4597": {
+                        "position": {
+                            "left": 1,
+                            "top": 1
+                        }
+                    }
+                }
+            }
+        }
+    }
+]

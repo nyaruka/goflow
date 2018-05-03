@@ -286,7 +286,7 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 
 	flows := make([]flows.Flow, len(legacyFlows))
 	for f := range legacyFlows {
-		flows[f], err = legacyFlows[f].Migrate()
+		flows[f], err = legacyFlows[f].Migrate(true)
 		if err != nil {
 			return nil, err
 		}

@@ -957,7 +957,7 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate() (flows.Flow, error) {
+func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	nodes := make([]flows.Node, len(f.ActionSets)+len(f.RuleSets))
 
@@ -986,27 +986,33 @@ func (f *Flow) Migrate() (flows.Flow, error) {
 		}
 	}
 
-	// convert our UI metadata
-	nodesUI := make(map[flows.NodeUUID]interface{})
+	ui := make(map[string]interface{})
 
-	for i := range f.ActionSets {
-		actionset := f.ActionSets[i]
-		nmd := make(map[string]interface{})
-		nmd["position"] = map[string]int{
-			"left": actionset.X,
-			"top":  actionset.Y,
-		}
-		nodesUI[actionset.UUID] = nmd
-	}
+	if includeUI {
+		// convert our UI metadata
+		nodesUI := make(map[flows.NodeUUID]interface{})
 
-	for i := range f.RuleSets {
-		ruleset := f.RuleSets[i]
-		nmd := make(map[string]interface{})
-		nmd["position"] = map[string]int{
-			"left": ruleset.X,
-			"top":  ruleset.Y,
+		for i := range f.ActionSets {
+			actionset := f.ActionSets[i]
+			nmd := make(map[string]interface{})
+			nmd["position"] = map[string]int{
+				"left": actionset.X,
+				"top":  actionset.Y,
+			}
+			nodesUI[actionset.UUID] = nmd
 		}
-		nodesUI[ruleset.UUID] = nmd
+
+		for i := range f.RuleSets {
+			ruleset := f.RuleSets[i]
+			nmd := make(map[string]interface{})
+			nmd["position"] = map[string]int{
+				"left": ruleset.X,
+				"top":  ruleset.Y,
+			}
+			nodesUI[ruleset.UUID] = nmd
+		}
+
+		ui["nodes"] = nodesUI
 	}
 
 	return definition.NewFlow(
@@ -1016,6 +1022,6 @@ func (f *Flow) Migrate() (flows.Flow, error) {
 		f.Metadata.Expires,
 		localization,
 		nodes,
-		map[string]interface{}{"nodes": nodesUI},
+		ui,
 	)
 }
