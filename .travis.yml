@@ -12,4 +12,5 @@ script:
  - go test github.com/nyaruka/goflow/... -bench=. -benchmem
 
 after_success:
+ - rm profile.cov
  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash

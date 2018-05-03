@@ -36,6 +36,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1.channel", "", false},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", false},
 		{"@contact.groups", `["Testers","Males"]`, false},
+		{"@(join(contact.groups, \",\"))", `Testers,Males`, false},
 		{"@(length(contact.groups))", "2", false},
 		{"@contact.fields", `{"activation_token":"AACC55","age":"23","gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"}`, false},
 		{"@contact.fields.activation_token", "AACC55", false},
