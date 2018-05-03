@@ -57,12 +57,12 @@ type Note struct {
 	Body  string `json:"body"`
 }
 
-// Stickie is a migrated note
-type Stickie map[string]interface{}
+// Sticky is a migrated note
+type Sticky map[string]interface{}
 
-// Migrate migrates this note to a new stickie
-func (n *Note) Migrate() Stickie {
-	return Stickie{
+// Migrate migrates this note to a new sticky note
+func (n *Note) Migrate() Sticky {
+	return Sticky{
 		"position": map[string]interface{}{"left": n.X, "top": n.Y},
 		"title":    n.Title,
 		"body":     n.Body,
@@ -1034,7 +1034,7 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 			nodesUI[ruleset.UUID] = nmd
 		}
 
-		stickies := make(map[utils.UUID]Stickie, len(f.Metadata.Notes))
+		stickies := make(map[utils.UUID]Sticky, len(f.Metadata.Notes))
 		for _, note := range f.Metadata.Notes {
 			stickies[utils.NewUUID()] = note.Migrate()
 		}
