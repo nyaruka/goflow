@@ -127,7 +127,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 
 type ContactReference struct {
 	UUID flows.ContactUUID `json:"uuid"`
-	Name string
+	Name string            `json:"name"`
 }
 
 func (c *ContactReference) Migrate() *flows.ContactReference {
