@@ -13,7 +13,7 @@ func init() {
 
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
-	UUID ChannelUUID `json:"uuid" validate:"required,uuid4"`
+	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
 	Name string      `json:"name"`
 }
 

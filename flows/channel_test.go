@@ -33,3 +33,12 @@ func TestChannelSetGetForURN(t *testing.T) {
 	// explicit channel with URN
 	assert.Equal(t, set.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nexmo)), nexmo)
 }
+
+func TestChannelUnmarsal(t *testing.T) {
+	// check that UUIDs aren't required to be valid UUID4s
+	channel, err := flows.ReadChannel([]byte(`{"uuid": "ffffffff-9b24-92e1-ffff-ffffb207cdb4", "name": "Old Channel", "schemes": ["tel"], "roles": ["send"]}`))
+	assert.NoError(t, err)
+	assert.Equal(t, flows.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID())
+	assert.Equal(t, "Old Channel", channel.Name())
+	assert.Equal(t, []flows.ChannelRole{flows.ChannelRoleSend}, channel.Roles())
+}
