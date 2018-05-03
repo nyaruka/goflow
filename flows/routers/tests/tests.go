@@ -417,8 +417,9 @@ func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 
 	// for each of our values, try to evaluate to a decimal
 	for _, value := range strings.Fields(str.Native()) {
-		num, xerr := types.ToXNumber(types.NewXText(value))
-		if xerr == nil {
+		parsed, err := parseDecimalFuzzy(value)
+		if err == nil {
+			num := types.NewXNumber(parsed)
 			if num.Compare(min) >= 0 && num.Compare(max) <= 0 {
 				return XTestResult{true, num}
 			}
@@ -851,15 +852,39 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestRes
 // Numerical Test Functions
 //------------------------------------------------------------------------------------------
 
+var parseableNumberRegex = regexp.MustCompile(`^[$£€]?([\d,][\d,\.]*([\.,]\d+)?)\D*$`)
+
+func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
+	// common SMS foibles
+	cleaned := strings.ToLower(val)
+	cleaned = strings.Replace(cleaned, "o", "0", -1)
+	cleaned = strings.Replace(cleaned, "l", "1", -1)
+
+	num, err := decimal.NewFromString(cleaned)
+	if err == nil {
+		return num, nil
+	}
+
+	// we only try this hard if we haven't already substituted characters
+	if cleaned == val {
+		// does this start with a number? just use that part if so
+		match := parseableNumberRegex.FindStringSubmatch(val)
+		if match != nil {
+			return decimal.NewFromString(match[1])
+		}
+	}
+	return decimal.Zero, err
+}
+
 type decimalTest func(value decimal.Decimal, test decimal.Decimal) bool
 
 func testNumber(env utils.Environment, str types.XText, testNum types.XNumber, testFunc decimalTest) types.XValue {
 	// for each of our values, try to evaluate to a decimal
 	for _, value := range strings.Fields(str.Native()) {
-		num, xerr := types.ToXNumber(types.NewXText(value))
+		num, xerr := parseDecimalFuzzy(value)
 		if xerr == nil {
-			if testFunc(num.Native(), testNum.Native()) {
-				return XTestResult{true, num}
+			if testFunc(num, testNum.Native()) {
+				return XTestResult{true, types.NewXNumber(num)}
 			}
 		}
 	}

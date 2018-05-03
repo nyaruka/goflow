@@ -105,6 +105,7 @@ var testTests = []struct {
 	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
 	{"has_number", []types.XValue{xs("the number 10")}, true, xn("10"), false},
+	{"has_number", []types.XValue{xs("24ans")}, true, xn("24"), false},
 	{"has_number", []types.XValue{xs("the number 1o")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("the number lo")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
@@ -145,6 +146,7 @@ var testTests = []struct {
 	{"has_number_gt", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
 	{"has_number_between", []types.XValue{xs("the number 10"), xs("8"), xs("12")}, true, xn("10"), false},
+	{"has_number_between", []types.XValue{xs("24ans"), xn("20"), xn("24")}, true, xn("24"), false},
 	{"has_number_between", []types.XValue{xs("another is -12.51"), xs("-12.51"), xs("-10")}, true, xn("-12.51"), false},
 	{"has_number_between", []types.XValue{xs("nothing here"), xs("10"), xs("15")}, false, nil, false},
 	{"has_number_between", []types.XValue{xs("one"), xs("two")}, false, nil, true},

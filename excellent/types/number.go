@@ -2,7 +2,6 @@ package types
 
 import (
 	"math"
-	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 
@@ -95,7 +94,7 @@ func ToXNumber(x XValue) (XNumber, XError) {
 	case XNumber:
 		return typed, nil
 	case XText:
-		parsed, err := parseDecimalFuzzy(typed.Native())
+		parsed, err := decimal.NewFromString(typed.Native())
 		if err == nil {
 			return NewXNumber(parsed), nil
 		}
@@ -118,12 +117,4 @@ func ToInteger(x XValue) (int, XError) {
 	}
 
 	return int(intPart), nil
-}
-
-func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
-	// common SMS foibles
-	val = strings.ToLower(val)
-	val = strings.Replace(val, "o", "0", -1)
-	val = strings.Replace(val, "l", "1", -1)
-	return decimal.NewFromString(val)
 }
