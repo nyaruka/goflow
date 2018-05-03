@@ -103,6 +103,11 @@ var legacyRuleSetHolderDef = `
 ]
 `
 
+type FlowMigrationTest struct {
+	Legacy   json.RawMessage `json:"legacy"`
+	Expected json.RawMessage `json:"expected"`
+}
+
 type ActionMigrationTest struct {
 	LegacyAction         json.RawMessage `json:"legacy_action"`
 	ExpectedAction       json.RawMessage `json:"expected_action"`
@@ -121,6 +126,34 @@ type RuleSetMigrationTest struct {
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
 }
 
+func TestFlowMigration(t *testing.T) {
+	data, err := ioutil.ReadFile("testdata/migrations/flows.json")
+	require.NoError(t, err)
+
+	var tests []FlowMigrationTest
+	err = json.Unmarshal(data, &tests)
+	require.NoError(t, err)
+
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
+	for _, test := range tests {
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+
+		legacyFlow, err := legacy.ReadLegacyFlow(test.Legacy)
+		require.NoError(t, err)
+
+		migratedFlow, err := legacyFlow.Migrate(true)
+		require.NoError(t, err)
+
+		migratedFlowJSON, _ := utils.JSONMarshalPretty(migratedFlow)
+		expectedFlowJSON, _ := utils.JSONMarshalPretty(test.Expected)
+
+		fmt.Println(string(migratedFlowJSON))
+
+		assert.Equal(t, string(expectedFlowJSON), string(migratedFlowJSON))
+	}
+}
+
 func TestActionMigration(t *testing.T) {
 	data, err := ioutil.ReadFile("testdata/migrations/actions.json")
 	require.NoError(t, err)
@@ -134,7 +167,7 @@ func TestActionMigration(t *testing.T) {
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlows[0].Migrate()
+		migratedFlow, err := legacyFlows[0].Migrate(false)
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
@@ -165,7 +198,7 @@ func TestTestMigration(t *testing.T) {
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlows[0].Migrate()
+		migratedFlow, err := legacyFlows[0].Migrate(false)
 		require.NoError(t, err)
 
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
@@ -201,7 +234,7 @@ func TestRuleSetMigration(t *testing.T) {
 		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlows[0].Migrate()
+		migratedFlow, err := legacyFlows[0].Migrate(false)
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations

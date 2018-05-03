@@ -49,11 +49,33 @@ type Flow struct {
 	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
 }
 
+// Note is a legacy sticky note
+type Note struct {
+	X     int    `json:"x"`
+	Y     int    `json:"y"`
+	Title string `json:"title"`
+	Body  string `json:"body"`
+}
+
+// Sticky is a migrated note
+type Sticky map[string]interface{}
+
+// Migrate migrates this note to a new sticky note
+func (n *Note) Migrate() Sticky {
+	return Sticky{
+		"position": map[string]interface{}{"left": n.X, "top": n.Y},
+		"title":    n.Title,
+		"body":     n.Body,
+		"color":    "yellow",
+	}
+}
+
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
 	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name    string         `json:"name"`
 	Expires int            `json:"expires"`
+	Notes   []Note         `json:"notes,omitempty"`
 }
 
 type Rule struct {
@@ -957,7 +979,7 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate() (flows.Flow, error) {
+func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	nodes := make([]flows.Node, len(f.ActionSets)+len(f.RuleSets))
 
@@ -986,27 +1008,39 @@ func (f *Flow) Migrate() (flows.Flow, error) {
 		}
 	}
 
-	// convert our UI metadata
-	nodesUI := make(map[flows.NodeUUID]interface{})
+	ui := make(map[string]interface{})
 
-	for i := range f.ActionSets {
-		actionset := f.ActionSets[i]
-		nmd := make(map[string]interface{})
-		nmd["position"] = map[string]int{
-			"left": actionset.X,
-			"top":  actionset.Y,
-		}
-		nodesUI[actionset.UUID] = nmd
-	}
+	if includeUI {
+		// convert our UI metadata
+		nodesUI := make(map[flows.NodeUUID]interface{})
 
-	for i := range f.RuleSets {
-		ruleset := f.RuleSets[i]
-		nmd := make(map[string]interface{})
-		nmd["position"] = map[string]int{
-			"left": ruleset.X,
-			"top":  ruleset.Y,
+		for i := range f.ActionSets {
+			actionset := f.ActionSets[i]
+			nmd := make(map[string]interface{})
+			nmd["position"] = map[string]int{
+				"left": actionset.X,
+				"top":  actionset.Y,
+			}
+			nodesUI[actionset.UUID] = nmd
 		}
-		nodesUI[ruleset.UUID] = nmd
+
+		for i := range f.RuleSets {
+			ruleset := f.RuleSets[i]
+			nmd := make(map[string]interface{})
+			nmd["position"] = map[string]int{
+				"left": ruleset.X,
+				"top":  ruleset.Y,
+			}
+			nodesUI[ruleset.UUID] = nmd
+		}
+
+		stickies := make(map[utils.UUID]Sticky, len(f.Metadata.Notes))
+		for _, note := range f.Metadata.Notes {
+			stickies[utils.NewUUID()] = note.Migrate()
+		}
+
+		ui["nodes"] = nodesUI
+		ui["stickies"] = stickies
 	}
 
 	return definition.NewFlow(
@@ -1016,6 +1050,6 @@ func (f *Flow) Migrate() (flows.Flow, error) {
 		f.Metadata.Expires,
 		localization,
 		nodes,
-		map[string]interface{}{"nodes": nodesUI},
+		ui,
 	)
 }
