@@ -677,12 +677,24 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "district":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test}
+		migratedState, err := MigrateTemplate(test.Test, ExtraAsFunction)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedState}
 
 	case "ward":
 		test := wardTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.District, test.State}
+		migratedDistrict, err := MigrateTemplate(test.District, ExtraAsFunction)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		migratedState, err := MigrateTemplate(test.State, ExtraAsFunction)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedDistrict, migratedState}
 
 	default:
 		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
