@@ -234,8 +234,10 @@ func newMigrationBaseVars() map[string]interface{} {
 			"name":       "name",
 			"first_name": "first_name",
 			"language":   "language",
-			"groups":     "groups",
 			"tel_e164":   "urns.tel.0.path",
+		},
+		substitutions: map[string]string{
+			"groups": "join(contact.groups, \",\")",
 		},
 		arbitraryNesting: "fields",
 	}
