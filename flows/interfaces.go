@@ -214,6 +214,7 @@ type Wait interface {
 	utils.Typed
 
 	Timeout() *int
+	TimeoutOn() *time.Time
 
 	Begin(FlowRun, Step)
 	CanResume([]Event) bool

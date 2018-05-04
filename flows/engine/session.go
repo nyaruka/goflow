@@ -387,6 +387,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	if wait != nil {
 		wait.Begin(run, step)
 
+		run.SetStatus(flows.RunStatusWaiting)
 		s.wait = wait
 		s.status = flows.SessionStatusWaiting
 

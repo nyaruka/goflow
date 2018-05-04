@@ -33,8 +33,18 @@ func (e *WaitTimedOutEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *WaitTimedOutEvent) Apply(run flows.FlowRun) error {
-	if run.Status() != flows.RunStatusWaiting {
-		return fmt.Errorf("wait_timed_out events can only be applied to waiting runs")
+	wait := run.Session().Wait()
+
+	if run.Status() != flows.RunStatusWaiting || wait == nil {
+		return fmt.Errorf("can only be applied to waiting runs")
+	}
+
+	if wait.Timeout() == nil || wait.TimeoutOn() == nil {
+		return fmt.Errorf("can only be applied when session wait has timeout")
+	}
+
+	if e.CreatedOn().Before(*wait.TimeoutOn()) {
+		return fmt.Errorf("can't apply before wait has timed out")
 	}
 
 	run.SetInput(nil)

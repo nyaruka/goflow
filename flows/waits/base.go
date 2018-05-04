@@ -12,34 +12,34 @@ type baseWait struct {
 }
 
 // Timeout would return the timeout of this wait for wait types that do that
-func (w *baseWait) Timeout() *int {
-	return nil
-}
+func (w *baseWait) Timeout() *int { return nil }
+
+// TimeoutOn would return when this wait times out for wait types that do that
+func (w *baseWait) TimeoutOn() *time.Time { return nil }
 
 // Begin beings waiting
-func (w *baseWait) Begin(run flows.FlowRun) {
-	run.SetStatus(flows.RunStatusWaiting)
-}
+func (w *baseWait) Begin(run flows.FlowRun) {}
 
 // base of all wait types than can timeout
 type baseTimeoutWait struct {
 	baseWait
 
-	Timeout_  *int       `json:"timeout,omitempty"`
-	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
+	Timeout_   *int       `json:"timeout,omitempty"`
+	TimeoutOn_ *time.Time `json:"timeout_on,omitempty"`
 }
 
 // Timeout returns the timeout of this wait in seconds or nil if no timeout is set
-func (w *baseTimeoutWait) Timeout() *int {
-	return w.Timeout_
-}
+func (w *baseTimeoutWait) Timeout() *int { return w.Timeout_ }
+
+// TimeoutOn returns when this wait times out
+func (w *baseTimeoutWait) TimeoutOn() *time.Time { return w.TimeoutOn_ }
 
 // Begin beings waiting at this wait
 func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
 	if w.Timeout_ != nil {
 		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout_))
 
-		w.TimeoutOn = &timeoutOn
+		w.TimeoutOn_ = &timeoutOn
 	}
 
 	w.baseWait.Begin(run)
