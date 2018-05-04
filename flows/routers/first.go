@@ -26,10 +26,10 @@ func (r *FirstRouter) Validate(exits []flows.Exit) error {
 }
 
 // PickRoute always picks the first exit if available for this router
-func (r *FirstRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (string, flows.Route, error) {
+func (r *FirstRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
 	if len(exits) == 0 {
-		return "", flows.NoRoute, nil
+		return nil, flows.NoRoute, nil
 	}
 
-	return "", flows.NewRoute(exits[0].UUID(), ""), nil
+	return nil, flows.NewRoute(exits[0].UUID(), ""), nil
 }

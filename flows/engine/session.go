@@ -402,7 +402,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.Step, flows.NodeUUID, error) {
 	var err error
 
-	var operand string
+	var operand *string
 	route := flows.NoRoute
 	router := node.Router()
 

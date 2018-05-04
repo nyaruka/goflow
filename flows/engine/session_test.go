@@ -183,5 +183,5 @@ func TestWaitTimeout(t *testing.T) {
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
 	require.Equal(t, "2018-05-04T15:02:30.000000Z", result.Value)
-	require.Equal(t, "", result.Input)
+	require.Nil(t, result.Input)
 }

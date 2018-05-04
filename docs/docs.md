@@ -326,6 +326,8 @@ properties which can be accessed:
  * `value` the value of the result
  * `category` the category of the result
  * `category_localized` the localized category of the result
+ * `input` the input associated with the result
+ * `node_uuid` the UUID of the node where the result was created
  * `created_on` the time when the result was created
 
 Examples:
@@ -2282,14 +2284,12 @@ Can be used to trigger sessions for other contacts and groups
                 "value": "red",
                 "category": "Red",
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "input": "",
                 "created_on": "2018-04-11T18:24:30.123456Z"
             },
             "phone_number": {
                 "name": "Phone Number",
                 "value": "+12344563452",
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "input": "",
                 "created_on": "2018-04-11T18:24:30.123456Z"
             }
         }
@@ -2672,7 +2672,8 @@ the result was generated.
     "value": "m",
     "category": "Male",
     "category_localized": "Homme",
-    "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+    "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+    "input": "M"
 }
 ```
 </div>

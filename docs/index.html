@@ -409,6 +409,8 @@
 <li><code>value</code> the value of the result</li>
 <li><code>category</code> the category of the result</li>
 <li><code>category_localized</code> the localized category of the result</li>
+<li><code>input</code> the input associated with the result</li>
+<li><code>node_uuid</code> the UUID of the node where the result was created</li>
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
@@ -1653,19 +1655,17 @@ Event
 <a class="sourceLine" id="cb132-62" data-line-number="62">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb132-63" data-line-number="63">                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb132-64" data-line-number="64">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-65" data-line-number="65">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-66" data-line-number="66">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
-<a class="sourceLine" id="cb132-67" data-line-number="67">            <span class="fu">},</span></a>
-<a class="sourceLine" id="cb132-68" data-line-number="68">            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb132-69" data-line-number="69">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-70" data-line-number="70">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-71" data-line-number="71">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-72" data-line-number="72">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-73" data-line-number="73">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
-<a class="sourceLine" id="cb132-74" data-line-number="74">            <span class="fu">}</span></a>
-<a class="sourceLine" id="cb132-75" data-line-number="75">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb132-76" data-line-number="76">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb132-77" data-line-number="77"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb132-65" data-line-number="65">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
+<a class="sourceLine" id="cb132-66" data-line-number="66">            <span class="fu">},</span></a>
+<a class="sourceLine" id="cb132-67" data-line-number="67">            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb132-68" data-line-number="68">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb132-69" data-line-number="69">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb132-70" data-line-number="70">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb132-71" data-line-number="71">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
+<a class="sourceLine" id="cb132-72" data-line-number="72">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb132-73" data-line-number="73">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb132-74" data-line-number="74">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb132-75" data-line-number="75"><span class="fu">}</span></a></code></pre></div>
 </div>
 </div>
 <h1 id="event-definitions">Event Definitions</h1>
@@ -2011,8 +2011,9 @@ Event
 <a class="sourceLine" id="cb151-5" data-line-number="5">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb151-6" data-line-number="6">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb151-7" data-line-number="7">    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Homme&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb151-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span></a>
-<a class="sourceLine" id="cb151-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb151-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb151-9" data-line-number="9">    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;M&quot;</span></a>
+<a class="sourceLine" id="cb151-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="event:session_triggered"></a></p>
 <h2 id="session_triggered">session_triggered</h2>

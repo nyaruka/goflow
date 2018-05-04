@@ -166,9 +166,9 @@
                 {
                     "category": "",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "Ryan Lewis",
                     "name": "Name",
                     "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                    "operand": "Ryan Lewis",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "value": "Ryan Lewis"
                 },
@@ -278,9 +278,9 @@
                             {
                                 "category": "",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "Ryan Lewis",
                                 "name": "Name",
                                 "node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
-                                "operand": "Ryan Lewis",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "Ryan Lewis"

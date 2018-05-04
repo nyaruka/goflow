@@ -28,12 +28,12 @@ func (r *RandomRouter) Validate(exits []flows.Exit) error {
 }
 
 // PickRoute picks a route randomly from our available exits
-func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (string, flows.Route, error) {
+func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
 	if len(exits) == 0 {
-		return "", flows.NoRoute, nil
+		return nil, flows.NoRoute, nil
 	}
 
 	// pick a random exit
 	exitN := utils.RandIntN(len(exits))
-	return "", flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
+	return nil, flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
 }

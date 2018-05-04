@@ -281,9 +281,9 @@
                 {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "neither",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "operand": "neither",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "value": "neither"
                 },
@@ -425,9 +425,9 @@
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "neither",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "neither",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -559,9 +559,9 @@
                 {
                     "category": "Yes",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "yes",
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                    "operand": "yes",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "value": "yes"
                 },
@@ -749,9 +749,9 @@
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "neither",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "neither",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -792,9 +792,9 @@
                             {
                                 "category": "Yes",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "yes",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "yes",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "yes"
@@ -930,9 +930,9 @@
                 {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "never",
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "operand": "never",
                     "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                     "value": "never"
                 },
@@ -1047,9 +1047,9 @@
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "never",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "operand": "never",
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "run_result_changed",
                                 "value": "never"
@@ -1185,9 +1185,9 @@
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "neither",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "neither",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -1228,9 +1228,9 @@
                             {
                                 "category": "Yes",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "yes",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "yes",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "yes"
@@ -1366,9 +1366,9 @@
                 {
                     "category": "No",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "no",
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                    "operand": "no",
                     "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                     "value": "no"
                 },
@@ -1479,9 +1479,9 @@
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "never",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "operand": "never",
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "run_result_changed",
                                 "value": "never"
@@ -1522,9 +1522,9 @@
                             {
                                 "category": "No",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "no",
                                 "name": "Answer",
                                 "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
-                                "operand": "no",
                                 "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                                 "type": "run_result_changed",
                                 "value": "no"
@@ -1664,9 +1664,9 @@
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "neither",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "neither",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -1707,9 +1707,9 @@
                             {
                                 "category": "Yes",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "yes",
                                 "name": "Answer",
                                 "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
-                                "operand": "yes",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "yes"
