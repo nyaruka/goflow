@@ -4,47 +4,58 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
-// Base of all wait types
-type BaseWait struct {
+// the base of all wait types
+type baseWait struct {
 }
 
-func (w *BaseWait) HasTimedOut() bool {
-	return false
+// Timeout would return the timeout of this wait for wait types that do that
+func (w *baseWait) Timeout() *int { return nil }
+
+// TimeoutOn would return when this wait times out for wait types that do that
+func (w *baseWait) TimeoutOn() *time.Time { return nil }
+
+// Begin beings waiting
+func (w *baseWait) Begin(run flows.FlowRun) {}
+
+// base of all wait types than can timeout
+type baseTimeoutWait struct {
+	baseWait
+
+	Timeout_   *int       `json:"timeout,omitempty"`
+	TimeoutOn_ *time.Time `json:"timeout_on,omitempty"`
 }
 
-func (w *BaseWait) Begin(run flows.FlowRun) {
-	run.SetStatus(flows.RunStatusWaiting)
-}
+// Timeout returns the timeout of this wait in seconds or nil if no timeout is set
+func (w *baseTimeoutWait) Timeout() *int { return w.Timeout_ }
 
-func (w *BaseWait) Resume(run flows.FlowRun) {
-	run.SetStatus(flows.RunStatusActive)
-}
+// TimeoutOn returns when this wait times out
+func (w *baseTimeoutWait) TimeoutOn() *time.Time { return w.TimeoutOn_ }
 
-func (w *BaseWait) ResumeByTimeOut(run flows.FlowRun) {
-	w.Resume(run)
-}
+// Begin beings waiting at this wait
+func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
+	if w.Timeout_ != nil {
+		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout_))
 
-// Base of all wait types than can timeout
-type TimeoutWait struct {
-	BaseWait
-
-	Timeout   *int       `json:"timeout,omitempty"`
-	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
-}
-
-func (w *TimeoutWait) Begin(run flows.FlowRun) {
-	if w.Timeout != nil {
-		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout))
-
-		w.TimeoutOn = &timeoutOn
-		w.Timeout = nil
+		w.TimeoutOn_ = &timeoutOn
 	}
 
-	w.BaseWait.Begin(run)
+	w.baseWait.Begin(run)
 }
 
-func (w *TimeoutWait) HasTimedOut() bool {
-	return w.TimeoutOn != nil && time.Now().After(*w.TimeoutOn)
+// CanResume returns true if a wait timed out event has been received
+func (w *baseTimeoutWait) CanResume(callerEvents []flows.Event) bool {
+	return containsEventOfType(callerEvents, events.TypeWaitTimedOut)
+}
+
+// utility function to look for an event of a given type
+func containsEventOfType(events []flows.Event, eventType string) bool {
+	for _, event := range events {
+		if event.Type() == eventType {
+			return true
+		}
+	}
+	return false
 }

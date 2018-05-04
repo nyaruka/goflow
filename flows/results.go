@@ -14,6 +14,8 @@ import (
 //  * `value` the value of the result
 //  * `category` the category of the result
 //  * `category_localized` the localized category of the result
+//  * `input` the input associated with the result
+//  * `node_uuid` the UUID of the node where the result was created
 //  * `created_on` the time when the result was created
 //
 // Examples:
@@ -29,7 +31,7 @@ type Result struct {
 	Category          string    `json:"category,omitempty"`
 	CategoryLocalized string    `json:"category_localized,omitempty"`
 	NodeUUID          NodeUUID  `json:"node_uuid"`
-	Input             string    `json:"input"`
+	Input             *string   `json:"input,omitempty"`
 	CreatedOn         time.Time `json:"created_on"`
 }
 
@@ -48,7 +50,10 @@ func (r *Result) Resolve(key string) types.XValue {
 		}
 		return types.NewXText(r.CategoryLocalized)
 	case "input":
-		return types.NewXText(r.Input)
+		if r.Input != nil {
+			return types.NewXText(*r.Input)
+		}
+		return nil
 	case "node_uuid":
 		return types.NewXText(string(r.NodeUUID))
 	case "created_on":
@@ -89,7 +94,7 @@ func (r Results) Clone() Results {
 }
 
 // Save saves a new result in our map. The key is saved in a snakified format
-func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input string, createdOn time.Time) {
+func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input *string, createdOn time.Time) {
 	r[utils.Snakify(name)] = &Result{
 		Name:              name,
 		Value:             value,
@@ -99,6 +104,10 @@ func (r Results) Save(name string, value string, category string, categoryLocali
 		Input:             input,
 		CreatedOn:         createdOn,
 	}
+}
+
+func (r Results) Get(key string) *Result {
+	return r[key]
 }
 
 // Length is called to get the length of this object

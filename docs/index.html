@@ -409,6 +409,8 @@
 <li><code>value</code> the value of the result</li>
 <li><code>category</code> the category of the result</li>
 <li><code>category_localized</code> the localized category of the result</li>
+<li><code>input</code> the input associated with the result</li>
+<li><code>node_uuid</code> the UUID of the node where the result was created</li>
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
@@ -1653,19 +1655,17 @@ Event
 <a class="sourceLine" id="cb132-62" data-line-number="62">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb132-63" data-line-number="63">                <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Red&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb132-64" data-line-number="64">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-65" data-line-number="65">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-66" data-line-number="66">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
-<a class="sourceLine" id="cb132-67" data-line-number="67">            <span class="fu">},</span></a>
-<a class="sourceLine" id="cb132-68" data-line-number="68">            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb132-69" data-line-number="69">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-70" data-line-number="70">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-71" data-line-number="71">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-72" data-line-number="72">                <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb132-73" data-line-number="73">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
-<a class="sourceLine" id="cb132-74" data-line-number="74">            <span class="fu">}</span></a>
-<a class="sourceLine" id="cb132-75" data-line-number="75">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb132-76" data-line-number="76">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb132-77" data-line-number="77"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb132-65" data-line-number="65">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
+<a class="sourceLine" id="cb132-66" data-line-number="66">            <span class="fu">},</span></a>
+<a class="sourceLine" id="cb132-67" data-line-number="67">            <span class="dt">&quot;phone_number&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb132-68" data-line-number="68">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Phone Number&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb132-69" data-line-number="69">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;+12344563452&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb132-70" data-line-number="70">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb132-71" data-line-number="71">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span></a>
+<a class="sourceLine" id="cb132-72" data-line-number="72">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb132-73" data-line-number="73">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb132-74" data-line-number="74">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb132-75" data-line-number="75"><span class="fu">}</span></a></code></pre></div>
 </div>
 </div>
 <h1 id="event-definitions">Event Definitions</h1>
@@ -2011,8 +2011,9 @@ Event
 <a class="sourceLine" id="cb151-5" data-line-number="5">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb151-6" data-line-number="6">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb151-7" data-line-number="7">    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Homme&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb151-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span></a>
-<a class="sourceLine" id="cb151-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb151-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb151-9" data-line-number="9">    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;M&quot;</span></a>
+<a class="sourceLine" id="cb151-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="event:session_triggered"></a></p>
 <h2 id="session_triggered">session_triggered</h2>
@@ -2061,6 +2062,18 @@ Event
 <a class="sourceLine" id="cb152-38" data-line-number="38">    <span class="fu">}</span></a>
 <a class="sourceLine" id="cb152-39" data-line-number="39"><span class="fu">}</span></a></code></pre></div>
 </div>
+<p><a name="event:wait_timed_out"></a></p>
+<h2 id="wait_timed_out">wait_timed_out</h2>
+<p>Events are sent by the caller when a wait has timed out - i.e. they are sent instead of the item that the wait was waiting for</p>
+<div class="output_event">
+<h3>
+Event
+</h3>
+<div class="sourceCode" id="cb153"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb153-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb153-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;wait_timed_out&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb153-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span></a>
+<a class="sourceLine" id="cb153-4" data-line-number="4"><span class="fu">}</span></a></code></pre></div>
+</div>
 <p><a name="event:webhook_called"></a></p>
 <h2 id="webhook_called">webhook_called</h2>
 <p>Events are created when a webhook is called. The event contains the status and status code of the response, as well as a full dump of the request and response.</p>
@@ -2068,15 +2081,15 @@ Event
 <h3>
 Event
 </h3>
-<div class="sourceCode" id="cb153"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb153-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb153-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb153-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb153-4" data-line-number="4">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb153-5" data-line-number="5">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb153-6" data-line-number="6">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb153-7" data-line-number="7">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb153-8" data-line-number="8">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK {</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></a>
-<a class="sourceLine" id="cb153-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb154-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb154-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb154-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb154-4" data-line-number="4">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb154-5" data-line-number="5">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb154-6" data-line-number="6">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb154-7" data-line-number="7">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb154-8" data-line-number="8">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK {</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></a>
+<a class="sourceLine" id="cb154-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
 </div>
 </div>
 </body>

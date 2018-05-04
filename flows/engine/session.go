@@ -210,15 +210,10 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 
 	// events can change run status so only proceed to the wait if we're still waiting
 	if waitingRun.Status() == flows.RunStatusWaiting {
-		waitCanResume := s.wait.CanResume(callerEvents)
-		waitHasTimedOut := s.wait.HasTimedOut()
-
-		if waitCanResume || waitHasTimedOut {
-			if waitCanResume {
-				s.wait.Resume(waitingRun)
-			} else {
-				s.wait.ResumeByTimeOut(waitingRun)
-			}
+		if s.wait.CanResume(callerEvents) {
+			s.wait = nil
+			s.status = flows.SessionStatusActive
+			waitingRun.SetStatus(flows.RunStatusActive)
 
 			destination, err = s.findResumeDestination(waitingRun)
 			if err != nil {
@@ -392,6 +387,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 	if wait != nil {
 		wait.Begin(run, step)
 
+		run.SetStatus(flows.RunStatusWaiting)
 		s.wait = wait
 		s.status = flows.SessionStatusWaiting
 
@@ -406,7 +402,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.Step) (flows.Step, flows.NodeUUID, error) {
 	var err error
 
-	var operand string
+	var operand *string
 	route := flows.NoRoute
 	router := node.Router()
 

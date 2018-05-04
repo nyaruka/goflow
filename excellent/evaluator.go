@@ -68,12 +68,6 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	switch tokenType {
 	case IDENTIFIER:
 		value := ResolveValue(env, context, token)
-
-		// didn't find it, our value is empty string
-		if value == nil {
-			value = types.XTextEmpty
-		}
-
 		err, isErr := value.(error)
 
 		// we got an error, return our raw value

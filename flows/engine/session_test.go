@@ -1,9 +1,16 @@
 package engine_test
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"testing"
+	"time"
 
+	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
@@ -119,4 +126,62 @@ func TestContextToJSON(t *testing.T) {
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
 		assert.Equal(t, test.expected, eval, "json() returned unexpected value for template '%s'", template)
 	}
+}
+
+func TestWaitTimeout(t *testing.T) {
+	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
+	require.NoError(t, err)
+
+	// create our engine session
+	session, err := test.CreateSession(json.RawMessage(sessionAssets))
+	require.NoError(t, err)
+
+	flow, err := session.Assets().GetFlow(flows.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
+	require.NoError(t, err)
+
+	contact := flows.NewContact("Joe", "eng", nil)
+	contact.AddURN(urns.URN("tel:+18005555777"))
+	trigger := triggers.NewManualTrigger(nil, contact, flow, nil, time.Now())
+
+	err = session.Start(trigger, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, 1, len(session.Runs()[0].Path()))
+	run := session.Runs()[0]
+
+	require.Equal(t, 2, len(run.Events()))
+	require.Equal(t, "msg_created", run.Events()[0].Type())
+	require.Equal(t, "msg_wait", run.Events()[1].Type())
+
+	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
+	require.NotNil(t, waitEvent.TimeoutOn)
+	timeoutOn := *waitEvent.TimeoutOn
+
+	// try to resume without any event - we should remain in waiting state
+	session.Resume([]flows.Event{})
+	require.NoError(t, err)
+
+	require.Equal(t, flows.SessionStatusWaiting, session.Status())
+	require.Equal(t, 1, len(run.Path()))
+	require.Equal(t, 2, len(run.Events()))
+
+	// mock our current time to be 10 seconds after the wait times out
+	testEnv := session.Environment().(*test.TestEnvironment)
+	testEnv.SetNow(timeoutOn.Add(time.Second * 10))
+
+	// now we should be able to resume
+	timeoutEvent := events.NewWaitTimedOutEvent()
+	timeoutEvent.CreatedOn_ = time.Date(2018, 5, 4, 15, 2, 30, 0, time.UTC)
+
+	session.Resume([]flows.Event{timeoutEvent})
+	require.NoError(t, err)
+
+	require.Equal(t, flows.SessionStatusCompleted, session.Status())
+	require.Equal(t, 2, len(run.Path()))
+	require.Equal(t, 5, len(run.Events()))
+
+	result := run.Results().Get("favorite_color")
+	require.Equal(t, "Timeout", result.Category)
+	require.Equal(t, "2018-05-04T15:02:30.000000Z", result.Value)
+	require.Nil(t, result.Input)
 }

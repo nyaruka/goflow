@@ -1,0 +1,120 @@
+[
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+        "content": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Question With Timeout",
+            "language": "eng",
+            "nodes": [
+                {
+                    "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "actions": [
+                        {
+                            "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                            "type": "send_msg",
+                            "text": "Hi @contact.name! What is your favorite color?"
+                        }
+                    ],
+                    "wait": {
+                        "type": "msg",
+                        "timeout": 600
+                    },
+                    "router": {
+                        "type": "switch",
+                        "result_name": "Favorite Color",
+                        "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                        "operand": "@run.input",
+                        "cases": [
+                            {
+                                "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "red"
+                                ],
+                                "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1"
+                            },
+                            {
+                                "uuid": "a51e5c8c-c891-401d-9c62-15fc37278c94",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "blue"
+                                ],
+                                "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
+                            },
+                            {
+                                "uuid": "7ea92692-a2c8-4add-8c84-6c74a963c198",
+                                "type": "has_wait_timed_out",
+                                "arguments": [
+                                    "@run"
+                                ],
+                                "omit_operand": true,
+                                "exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                            "name": "Red",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                        },
+                        {
+                            "uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e",
+                            "name": "Blue",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
+                        },
+                        {
+                            "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
+                            "name": "Timeout",
+                            "destination_node_uuid": "091decfb-c9b0-4dcf-954e-04927f119fc8"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                    "actions": [
+                        {
+                            "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
+                            "type": "send_msg",
+                            "text": "You said @run.results.favorite_color.category_localized. Thanks!"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "091decfb-c9b0-4dcf-954e-04927f119fc8",
+                    "actions": [
+                        {
+                            "uuid": "ec0cbd0a-0aaa-4cdd-8ce9-a0430b83d500",
+                            "type": "send_msg",
+                            "text": "Guess you're busy - catch you another time!"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "type": "group_set",
+        "url": "http://testserver/assets/group/",
+        "content": []
+    },
+    {
+        "type": "field_set",
+        "url": "http://testserver/assets/field/",
+        "content": []
+    },
+    {
+        "type": "channel_set",
+        "url": "http://testserver/assets/channel/",
+        "content": [
+            {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "Android Channel",
+                "address": "+12345671111",
+                "schemes": ["tel"],
+                "roles": ["send", "receive"]
+            }
+        ]
+    }
+]

@@ -17,7 +17,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
 	//nexmo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Nexmo", "+250961111111", []string{"tel"}, roles)
 
-	contact := flows.NewContact(flows.ContactUUID(utils.NewUUID()), "Joe", utils.NilLanguage, nil)
+	contact := flows.NewContact("Joe", utils.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"))
 	contact.AddURN(urns.URN("tel:+12345678999"))
 	contact.AddURN(urns.URN("tel:+18005555777"))

@@ -7,14 +7,18 @@ import (
 
 const TypeNothing string = "nothing"
 
+// NothingWait is a wait which waits for nothing.. i.e. a chance for the caller to do
+// something and resume immediately
 type NothingWait struct {
-	BaseWait
+	baseWait
 }
 
+// Type returns the type of this wait
 func (w *NothingWait) Type() string { return TypeNothing }
 
+// Begin beings waiting at this wait
 func (w *NothingWait) Begin(run flows.FlowRun, step flows.Step) {
-	w.BaseWait.Begin(run)
+	w.baseWait.Begin(run)
 
 	run.ApplyEvent(step, nil, events.NewNothingWait())
 }

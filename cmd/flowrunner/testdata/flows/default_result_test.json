@@ -152,9 +152,9 @@
                 {
                     "category": "All Responses",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "Ryan Lewis",
                     "name": "Contact Name",
                     "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                    "operand": "Ryan Lewis",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "value": "Ryan Lewis"
                 },
@@ -254,9 +254,9 @@
                             {
                                 "category": "All Responses",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "Ryan Lewis",
                                 "name": "Contact Name",
                                 "node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f",
-                                "operand": "Ryan Lewis",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "Ryan Lewis"
@@ -374,9 +374,6 @@
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
-                },
-                "wait": {
-                    "type": "msg"
                 }
             }
         }

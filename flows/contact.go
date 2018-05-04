@@ -53,9 +53,9 @@ type Contact struct {
 }
 
 // NewContact returns a new contact
-func NewContact(uuid ContactUUID, name string, language utils.Language, timezone *time.Location) *Contact {
+func NewContact(name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:     uuid,
+		uuid:     ContactUUID(utils.NewUUID()),
 		name:     name,
 		language: language,
 		timezone: timezone,

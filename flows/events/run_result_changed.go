@@ -33,11 +33,11 @@ type RunResultChangedEvent struct {
 	Category          string         `json:"category"`
 	CategoryLocalized string         `json:"category_localized,omitempty"`
 	NodeUUID          flows.NodeUUID `json:"node_uuid" validate:"required,uuid4"`
-	Operand           string         `json:"operand,omitempty"`
+	Input             *string        `json:"input,omitempty"`
 }
 
 // NewRunResultChangedEvent returns a new save result event for the passed in values
-func NewRunResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, operand string) *RunResultChangedEvent {
+func NewRunResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input *string) *RunResultChangedEvent {
 	return &RunResultChangedEvent{
 		baseEvent:         newBaseEvent(),
 		Name:              name,
@@ -45,7 +45,7 @@ func NewRunResultChangedEvent(name string, value string, categoryName string, ca
 		Category:          categoryName,
 		CategoryLocalized: categoryLocalized,
 		NodeUUID:          node,
-		Operand:           operand,
+		Input:             input,
 	}
 }
 
@@ -59,6 +59,6 @@ func (e *RunResultChangedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *RunResultChangedEvent) Apply(run flows.FlowRun) error {
-	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Operand, run.Session().Environment().Now().In(time.UTC))
+	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, run.Session().Environment().Now().In(time.UTC))
 	return nil
 }

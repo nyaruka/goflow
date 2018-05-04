@@ -148,6 +148,7 @@
                     "type": "manual"
                 },
                 "wait": {
+                    "timeout": 600,
                     "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
                     "type": "msg"
                 }
@@ -158,9 +159,9 @@
                 {
                     "category": "Valid",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "I was born on 1977.06.23 at 3:34 pm",
                     "name": "Birth Date",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                    "operand": "I was born on 1977.06.23 at 3:34 pm",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                 },
@@ -261,9 +262,9 @@
                             {
                                 "category": "Valid",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "I was born on 1977.06.23 at 3:34 pm",
                                 "name": "Birth Date",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "operand": "I was born on 1977.06.23 at 3:34 pm",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "run_result_changed",
                                 "value": "1977-06-23T15:34:00.000000-05:00"
@@ -375,10 +376,6 @@
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
                     "type": "manual"
-                },
-                "wait": {
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "type": "msg"
                 }
             }
         }

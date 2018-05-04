@@ -72,7 +72,7 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 
 // PickRoute evaluates each of the tests on our cases in order, returning the exit for the first case which
 // evaluates to a true. If no cases evaluate to true, then the default exit (if specified) is returned
-func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (string, flows.Route, error) {
+func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
 	env := run.Environment()
 
 	// first evaluate our operand
@@ -80,7 +80,13 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	if err != nil {
 		run.AddError(step, nil, err)
 	}
-	operandAsStr, _ := types.ToXText(operand)
+
+	var operandAsStr *string
+	if operand != nil {
+		asText, _ := types.ToXText(operand)
+		asString := asText.Native()
+		operandAsStr = &asString
+	}
 
 	// each of our cases
 	for _, c := range r.Cases {
@@ -89,7 +95,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// try to look up our function
 		xtest := tests.XTESTS[test]
 		if xtest == nil {
-			return "", flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
+			return nil, flows.NoRoute, fmt.Errorf("Unknown test '%s', taking no exit", c.Type)
 		}
 
 		// build our argument list
@@ -114,19 +120,19 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// tests have to return either errors or test results
 		switch typedResult := result.(type) {
 		case types.XError:
-			return "", flows.NoRoute, typedResult
+			return nil, flows.NoRoute, typedResult
 		case tests.XTestResult:
 			// looks truthy, lets return this exit
 			if typedResult.Matched() {
 				resultAsStr, xerr := types.ToXText(typedResult.Match())
 				if xerr != nil {
-					return "", flows.NoRoute, xerr
+					return nil, flows.NoRoute, xerr
 				}
 
-				return operandAsStr.Native(), flows.NewRoute(c.ExitUUID, resultAsStr.Native()), nil
+				return operandAsStr, flows.NewRoute(c.ExitUUID, resultAsStr.Native()), nil
 			}
 		default:
-			return "", flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
+			return nil, flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
 		}
 	}
 
@@ -138,9 +144,9 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 			run.AddError(step, nil, xerr)
 		}
 
-		return operandAsStr.Native(), flows.NewRoute(r.Default, value.Native()), nil
+		return operandAsStr, flows.NewRoute(r.Default, value.Native()), nil
 	}
 
 	// no matches, no defaults, no route
-	return operandAsStr.Native(), flows.NoRoute, nil
+	return operandAsStr, flows.NoRoute, nil
 }
