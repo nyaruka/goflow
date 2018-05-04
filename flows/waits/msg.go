@@ -27,22 +27,12 @@ func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
 	run.ApplyEvent(step, nil, events.NewMsgWait(w.TimeoutOn))
 }
 
-// CanResume returns true for a message wait if a message has now been received
+// CanResume returns true if a message event has been received
 func (w *MsgWait) CanResume(callerEvents []flows.Event) bool {
-	for _, event := range callerEvents {
-		_, isMsg := event.(*events.MsgReceivedEvent)
-		if isMsg {
-			return true
-		}
+	if containsEventOfType(callerEvents, events.TypeMsgReceived) {
+		return true
 	}
-
-	return false
-}
-
-func (w *MsgWait) ResumeByTimeOut(run flows.FlowRun) {
-	w.baseWait.ResumeByTimeOut(run)
-
-	run.SetInput(nil)
+	return w.baseTimeoutWait.CanResume(callerEvents)
 }
 
 var _ flows.Wait = (*MsgWait)(nil)

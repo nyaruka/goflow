@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/nyaruka/phonenumbers"
@@ -146,10 +147,20 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 		return types.NewXErrorf("must be called with a run as first argument")
 	}
 
-	wait := run.Session().Wait()
+	// look to see if the last input event was a message or a timeout
+	runEvents := run.Events()
+	for e := len(runEvents) - 1; e >= 0; e-- {
+		event := runEvents[e]
 
-	if wait != nil && wait.HasTimedOut() {
-		return XTestResult{true, types.NewXNumberFromInt(*wait.Timeout())}
+		_, isTimeout := event.(*events.WaitTimedOutEvent)
+		if isTimeout {
+			return XTestResult{true, types.NewXDateTime(event.CreatedOn())}
+		}
+
+		_, isInput := event.(*events.MsgReceivedEvent)
+		if isInput {
+			break
+		}
 	}
 
 	return XFalseResult

@@ -66,10 +66,12 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &RunResultChangedEvent{}
 	case TypeSessionTriggered:
 		event = &SessionTriggeredEvent{}
+	case TypeWaitTimedOut:
+		event = &WaitTimedOutEvent{}
 	case TypeWebhookCalled:
 		event = &WebhookCalledEvent{}
 	default:
-		return nil, fmt.Errorf("Unknown event type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown event type: %s", envelope.Type)
 	}
 
 	return event, utils.UnmarshalAndValidate(envelope.Data, event, fmt.Sprintf("event[type=%s]", envelope.Type))

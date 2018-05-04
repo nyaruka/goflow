@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 // the base of all wait types
@@ -15,22 +16,9 @@ func (w *baseWait) Timeout() *int {
 	return nil
 }
 
-// HasTimedOut returns whether this wait has timed out
-func (w *baseWait) HasTimedOut() bool {
-	return false
-}
-
 // Begin beings waiting
 func (w *baseWait) Begin(run flows.FlowRun) {
 	run.SetStatus(flows.RunStatusWaiting)
-}
-
-func (w *baseWait) Resume(run flows.FlowRun) {
-	run.SetStatus(flows.RunStatusActive)
-}
-
-func (w *baseWait) ResumeByTimeOut(run flows.FlowRun) {
-	w.Resume(run)
 }
 
 // base of all wait types than can timeout
@@ -57,7 +45,17 @@ func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
 	w.baseWait.Begin(run)
 }
 
-// HasTimedOut returns whether this wait has timed out
-func (w *baseTimeoutWait) HasTimedOut() bool {
-	return w.TimeoutOn != nil && time.Now().After(*w.TimeoutOn)
+// CanResume returns true if a wait timed out event has been received
+func (w *baseTimeoutWait) CanResume(callerEvents []flows.Event) bool {
+	return containsEventOfType(callerEvents, events.TypeWaitTimedOut)
+}
+
+// utility function to look for an event of a given type
+func containsEventOfType(events []flows.Event, eventType string) bool {
+	for _, event := range events {
+		if event.Type() == eventType {
+			return true
+		}
+	}
+	return false
 }

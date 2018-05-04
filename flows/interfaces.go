@@ -213,14 +213,10 @@ type Exit interface {
 type Wait interface {
 	utils.Typed
 
+	Timeout() *int
+
 	Begin(FlowRun, Step)
 	CanResume([]Event) bool
-
-	Timeout() *int
-	HasTimedOut() bool
-
-	Resume(FlowRun)
-	ResumeByTimeOut(FlowRun)
 }
 
 // Localization provide a way to get the translations for a specific language
@@ -434,6 +430,7 @@ type FlowRun interface {
 	CreateStep(Node) Step
 	Path() []Step
 	PathLocation() (Step, Node, error)
+	Events() []Event
 
 	EvaluateTemplate(template string) (types.XValue, error)
 	EvaluateTemplateAsString(template string, urlEncode bool) (string, error)

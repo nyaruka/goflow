@@ -2724,6 +2724,20 @@ Events are created when an action wants to start a subflow
 }
 ```
 </div>
+<a name="event:wait_timed_out"></a>
+
+## wait_timed_out
+
+Events are sent by the caller when a wait has timed out - i.e. they are sent instead of
+the item that the wait was waiting for
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "wait_timed_out",
+    "created_on": "2006-01-02T15:04:05Z"
+}
+```
+</div>
 <a name="event:webhook_called"></a>
 
 ## webhook_called
