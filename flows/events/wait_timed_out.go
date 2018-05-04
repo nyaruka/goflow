@@ -43,7 +43,7 @@ func (e *WaitTimedOutEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can only be applied when session wait has timeout")
 	}
 
-	if e.CreatedOn().Before(*wait.TimeoutOn()) {
+	if run.Environment().Now().Before(*wait.TimeoutOn()) {
 		return fmt.Errorf("can't apply before wait has timed out")
 	}
 
