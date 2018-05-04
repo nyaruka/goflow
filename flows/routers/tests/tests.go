@@ -146,8 +146,10 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 		return types.NewXErrorf("must be called with a run as first argument")
 	}
 
-	if run.Session().Wait() != nil && run.Session().Wait().HasTimedOut() {
-		return XTestResult{true, nil}
+	wait := run.Session().Wait()
+
+	if wait != nil && wait.HasTimedOut() {
+		return XTestResult{true, types.NewXNumberFromInt(*wait.Timeout())}
 	}
 
 	return XFalseResult
