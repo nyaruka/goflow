@@ -6,45 +6,58 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
-// Base of all wait types
-type BaseWait struct {
+// the base of all wait types
+type baseWait struct {
 }
 
-func (w *BaseWait) HasTimedOut() bool {
+// Timeout would return the timeout of this wait for wait types that do that
+func (w *baseWait) Timeout() *int {
+	return nil
+}
+
+// HasTimedOut returns whether this wait has timed out
+func (w *baseWait) HasTimedOut() bool {
 	return false
 }
 
-func (w *BaseWait) Begin(run flows.FlowRun) {
+// Begin beings waiting
+func (w *baseWait) Begin(run flows.FlowRun) {
 	run.SetStatus(flows.RunStatusWaiting)
 }
 
-func (w *BaseWait) Resume(run flows.FlowRun) {
+func (w *baseWait) Resume(run flows.FlowRun) {
 	run.SetStatus(flows.RunStatusActive)
 }
 
-func (w *BaseWait) ResumeByTimeOut(run flows.FlowRun) {
+func (w *baseWait) ResumeByTimeOut(run flows.FlowRun) {
 	w.Resume(run)
 }
 
-// Base of all wait types than can timeout
-type TimeoutWait struct {
-	BaseWait
+// base of all wait types than can timeout
+type baseTimeoutWait struct {
+	baseWait
 
-	Timeout   *int       `json:"timeout,omitempty"`
+	Timeout_  *int       `json:"timeout,omitempty"`
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
 }
 
-func (w *TimeoutWait) Begin(run flows.FlowRun) {
-	if w.Timeout != nil {
-		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout))
-
-		w.TimeoutOn = &timeoutOn
-		w.Timeout = nil
-	}
-
-	w.BaseWait.Begin(run)
+// Timeout returns the timeout of this wait in seconds or nil if no timeout is set
+func (w *baseTimeoutWait) Timeout() *int {
+	return w.Timeout_
 }
 
-func (w *TimeoutWait) HasTimedOut() bool {
+// Begin beings waiting at this wait
+func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
+	if w.Timeout_ != nil {
+		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout_))
+
+		w.TimeoutOn = &timeoutOn
+	}
+
+	w.baseWait.Begin(run)
+}
+
+// HasTimedOut returns whether this wait has timed out
+func (w *baseTimeoutWait) HasTimedOut() bool {
 	return w.TimeoutOn != nil && time.Now().After(*w.TimeoutOn)
 }

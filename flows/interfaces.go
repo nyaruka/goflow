@@ -215,6 +215,8 @@ type Wait interface {
 
 	Begin(FlowRun, Step)
 	CanResume([]Event) bool
+
+	Timeout() *int
 	HasTimedOut() bool
 
 	Resume(FlowRun)

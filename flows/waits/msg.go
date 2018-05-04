@@ -7,18 +7,22 @@ import (
 
 const TypeMsg string = "msg"
 
+// MsgWait is a wait which waits for an incoming message (i.e. a msg_received event)
 type MsgWait struct {
-	TimeoutWait
+	baseTimeoutWait
 }
 
+// NewMsgWait creates a new message wait
 func NewMsgWait(timeout *int) *MsgWait {
-	return &MsgWait{TimeoutWait{Timeout: timeout}}
+	return &MsgWait{baseTimeoutWait{Timeout_: timeout}}
 }
 
+// Type returns the type of this wait
 func (w *MsgWait) Type() string { return TypeMsg }
 
+// Begin beings waiting at this wait
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
-	w.TimeoutWait.Begin(run)
+	w.baseTimeoutWait.Begin(run)
 
 	run.ApplyEvent(step, nil, events.NewMsgWait(w.TimeoutOn))
 }
@@ -36,7 +40,7 @@ func (w *MsgWait) CanResume(callerEvents []flows.Event) bool {
 }
 
 func (w *MsgWait) ResumeByTimeOut(run flows.FlowRun) {
-	w.BaseWait.ResumeByTimeOut(run)
+	w.baseWait.ResumeByTimeOut(run)
 
 	run.SetInput(nil)
 }
