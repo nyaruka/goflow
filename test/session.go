@@ -295,23 +295,15 @@ var initialEvents = `[
     }
 ]`
 
-// CreateTestSession creates an example session for testing
+// CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Session, error) {
 	// different tests different ports for the test HTTP server
 	sessionAssets = strings.Replace(sessionAssets, "TEST_SERVER_PORT", fmt.Sprintf("%d", testServerPort), -1)
 
-	// read our assets
-	assetCache := assets.NewAssetCache(100, 5)
-	if err := assetCache.Include(json.RawMessage(sessionAssets)); err != nil {
-		return nil, fmt.Errorf("error including assets: %s", err)
+	session, err := CreateSession(json.RawMessage(sessionAssets))
+	if err != nil {
+		return nil, err
 	}
-
-	// create our engine session
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), TestHTTPClient)
-
-	// override the session environment
-	tz, _ := time.LoadLocation("America/Guayaquil")
-	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz, nil))
 
 	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {
@@ -342,4 +334,23 @@ func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Sess
 	// and start the example flow
 	err = session.Start(trigger, events)
 	return session, err
+}
+
+// CreateSession creates a session with the given assets
+func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
+	// load our assets into a cache
+	assetCache := assets.NewAssetCache(100, 5)
+	err := assetCache.Include(sessionAssets)
+	if err != nil {
+		return nil, err
+	}
+
+	// create our engine session
+	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), TestHTTPClient)
+
+	// override the session environment
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz, nil))
+
+	return session, nil
 }

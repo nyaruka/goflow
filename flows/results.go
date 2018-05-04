@@ -101,6 +101,10 @@ func (r Results) Save(name string, value string, category string, categoryLocali
 	}
 }
 
+func (r Results) Get(key string) *Result {
+	return r[key]
+}
+
 // Length is called to get the length of this object
 func (r Results) Length() int {
 	return len(r)

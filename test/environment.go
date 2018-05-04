@@ -6,8 +6,8 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// an extended environment that will let us override Now() so that it's constant
-type testEnvironment struct {
+// TestEnvironment an extended environment that will let us override Now() so that it's constant
+type TestEnvironment struct {
 	utils.Environment
 
 	now time.Time
@@ -20,12 +20,16 @@ func NewTestEnvironment(dateFormat utils.DateFormat, tz *time.Location, now *tim
 		now = &t
 	}
 
-	return &testEnvironment{
+	return &TestEnvironment{
 		Environment: utils.NewEnvironment(dateFormat, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
 		now:         *now,
 	}
 }
 
-func (e *testEnvironment) Now() time.Time {
+func (e *TestEnvironment) Now() time.Time {
 	return e.now.In(e.Timezone())
+}
+
+func (e *TestEnvironment) SetNow(now time.Time) {
+	e.now = now
 }
