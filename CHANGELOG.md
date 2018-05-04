@@ -1,3 +1,9 @@
+v0.9.10
+----------
+ * Result input should be nullable if there is no input
+ * Fix HasWaitTimedOut test
+ * Waits should retain their timeout value
+
 v0.9.9
 ----------
  * Use fuzzy number parsing for tests, stricter for type conversion
