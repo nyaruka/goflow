@@ -23,7 +23,7 @@ type TestObject struct {
 
 func TestValidate(t *testing.T) {
 	// test with valid object
-	errs := utils.ValidateAs(&TestObject{
+	errs := utils.Validate(&TestObject{
 		Foo: "hello",
 		Bar: SubObject{
 			UUID:      "ffffffff-ffff-ffff-bf1a-4186adc14195",
@@ -31,11 +31,11 @@ func TestValidate(t *testing.T) {
 			SomeValue: 2,
 		},
 		Things: []string{"GET", "POST", "PATCH"},
-	}, "")
+	})
 	assert.Nil(t, errs)
 
 	// test with invalid object
-	errs = utils.ValidateAs(&TestObject{
+	errs = utils.Validate(&TestObject{
 		Foo: "",
 		Bar: SubObject{
 			UUID:      "12345abcdefe",
@@ -43,7 +43,7 @@ func TestValidate(t *testing.T) {
 			SomeValue: 0,
 		},
 		Things: nil,
-	}, "")
+	})
 	assert.NotNil(t, errs)
 
 	// check the individual error messages

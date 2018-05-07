@@ -1,12 +1,9 @@
 package utils
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
-
-	"fmt"
-
-	"errors"
 
 	validator "gopkg.in/go-playground/validator.v9"
 )
@@ -46,15 +43,6 @@ func ValidateAs(obj interface{}, objName string) error {
 // ValidationErrors combines multiple validation errors as a single error
 type ValidationErrors []error
 
-// NewValidationErrors creates new ValidationErrors fromn the given error messages
-func NewValidationErrors(messages ...string) ValidationErrors {
-	errs := make([]error, len(messages))
-	for m, msg := range messages {
-		errs[m] = errors.New(msg)
-	}
-	return ValidationErrors(errs)
-}
-
 // Error returns a string representation of these validation errors
 func (e ValidationErrors) Error() string {
 	errs := make([]string, len(e))
@@ -62,10 +50,6 @@ func (e ValidationErrors) Error() string {
 		errs[i] = e[i].Error()
 	}
 	return strings.Join(errs, ", ")
-}
-
-func (e ValidationErrors) String() string {
-	return e.Error()
 }
 
 func validate(obj interface{}, objName string) error {
