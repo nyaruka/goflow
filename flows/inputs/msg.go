@@ -82,15 +82,11 @@ type msgInputEnvelope struct {
 	Attachments flows.AttachmentList `json:"attachments,omitempty"`
 }
 
+// ReadMsgInput reads a message input from the given JSON
 func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
-	err := json.Unmarshal(data, &i)
-	if err != nil {
-		return nil, err
-	}
-
-	err = utils.Validate(i)
+	err := utils.UnmarshalAndValidate(data, &i, "")
 	if err != nil {
 		return nil, err
 	}

@@ -22,6 +22,6 @@ func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Inpu
 		return ReadMsgInput(session, envelope.Data)
 
 	default:
-		return nil, fmt.Errorf("Unknown input type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown input type: %s", envelope.Type)
 	}
 }

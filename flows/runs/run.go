@@ -350,7 +350,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	if envelope.Input != nil {
 		if r.input, err = inputs.ReadInput(session, envelope.Input); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read input: %s", err)
 		}
 	}
 
