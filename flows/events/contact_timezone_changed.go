@@ -2,6 +2,7 @@ package events
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 )
@@ -47,7 +48,15 @@ func (e *ContactTimezoneChangedEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can't apply event in session without a contact")
 	}
 
-	// TODO
+	if e.Timezone != "" {
+		timezone, err := time.LoadLocation(e.Timezone)
+		if err != nil {
+			return err
+		}
+		run.Contact().SetTimezone(timezone)
+	} else {
+		run.Contact().SetTimezone(nil)
+	}
 
 	return nil
 }

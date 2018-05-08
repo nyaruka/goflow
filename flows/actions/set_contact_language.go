@@ -12,8 +12,9 @@ import (
 // TypeSetContactLanguage is the type for the set contact Language action
 const TypeSetContactLanguage string = "set_contact_language"
 
-// SetContactLanguageAction can be used to update the name of the contact. A `contact_language_changed`
-// event will be created with the corresponding value.
+// SetContactLanguageAction can be used to update the name of the contact. The language is a localizable
+// template and white space is trimmed from the final value. An empty string clears the language.
+// A `contact_language_changed` event will be created with the corresponding value.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -32,12 +33,6 @@ func (a *SetContactLanguageAction) Type() string { return TypeSetContactLanguage
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets) error {
-	// check language is valid if specified
-	if a.Language != "" {
-		if _, err := utils.ParseLanguage(a.Language); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -48,15 +43,21 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 		return nil
 	}
 
-	// get our localized value if any
-	template := run.GetText(utils.UUID(a.UUID()), "language", a.Language)
-	language, err := run.EvaluateTemplateAsString(template, false)
+	language, err := a.evaluateLocalizableTemplate(run, "language", a.Language)
 	language = strings.TrimSpace(language)
 
 	// if we received an error, log it
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 		return nil
+	}
+
+	// language must be empty or valid language code
+	if language != "" {
+		if _, err := utils.ParseLanguage(language); err != nil {
+			log.Add(events.NewErrorEvent(err))
+			return nil
+		}
 	}
 
 	log.Add(events.NewContactLanguageChangedEvent(language))

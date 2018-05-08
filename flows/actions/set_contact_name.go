@@ -6,14 +6,14 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSetContactName is the type for the set contact name action
 const TypeSetContactName string = "set_contact_name"
 
-// SetContactNameAction can be used to update the name of the contact. A `contact_name_changed`
-// event will be created with the corresponding value.
+// SetContactNameAction can be used to update the name of the contact. The name is a localizable
+// template and white space is trimmed from the final value. An empty string clears the name.
+// A `contact_name_changed` event will be created with the corresponding value.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -42,9 +42,7 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, log f
 		return nil
 	}
 
-	// get our localized value if any
-	template := run.GetText(utils.UUID(a.UUID()), "name", a.Name)
-	name, err := run.EvaluateTemplateAsString(template, false)
+	name, err := a.evaluateLocalizableTemplate(run, "name", a.Name)
 	name = strings.TrimSpace(name)
 
 	// if we received an error, log it

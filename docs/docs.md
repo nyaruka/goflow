@@ -2082,8 +2082,9 @@ A `contact_channel_changed` event will be created with the set channel.
 
 ## set_contact_field
 
-Can be used to save a value to a contact. The value can be a template and will
-be evaluated during the flow. A `contact_field_changed` event will be created with the corresponding value.
+Can be used to update a field value on the contact. The value is a localizable
+template and white space is trimmed from the final value. An empty string clears the value.
+A `contact_field_changed` event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2113,8 +2114,9 @@ be evaluated during the flow. A `contact_field_changed` event will be created wi
 
 ## set_contact_language
 
-Can be used to update the name of the contact. A `contact_language_changed`
-event will be created with the corresponding value.
+Can be used to update the name of the contact. The language is a localizable
+template and white space is trimmed from the final value. An empty string clears the language.
+A `contact_language_changed` event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2136,8 +2138,9 @@ event will be created with the corresponding value.
 
 ## set_contact_name
 
-Can be used to update the name of the contact. A `contact_name_changed`
-event will be created with the corresponding value.
+Can be used to update the name of the contact. The name is a localizable
+template and white space is trimmed from the final value. An empty string clears the name.
+A `contact_name_changed` event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2159,8 +2162,9 @@ event will be created with the corresponding value.
 
 ## set_contact_timezone
 
-Can be used to update the timezone of the contact. A `contact_timezone_changed`
-event will be created with the corresponding value.
+Can be used to update the timezone of the contact. The timezone is a localizable
+template and white space is trimmed from the final value. An empty string clears the timezone.
+A `contact_timezone_changed` event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {

@@ -3,17 +3,18 @@ package actions
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSetContactTimezone is the type for the set contact timezone action
 const TypeSetContactTimezone string = "set_contact_timezone"
 
-// SetContactTimezoneAction can be used to update the timezone of the contact. A `contact_timezone_changed`
-// event will be created with the corresponding value.
+// SetContactTimezoneAction can be used to update the timezone of the contact. The timezone is a localizable
+// template and white space is trimmed from the final value. An empty string clears the timezone.
+// A `contact_timezone_changed` event will be created with the corresponding value.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -42,15 +43,21 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 		return nil
 	}
 
-	// get our localized value if any
-	template := run.GetText(utils.UUID(a.UUID()), "timezone", a.Timezone)
-	timezone, err := run.EvaluateTemplateAsString(template, false)
+	timezone, err := a.evaluateLocalizableTemplate(run, "timezone", a.Timezone)
 	timezone = strings.TrimSpace(timezone)
 
 	// if we received an error, log it
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 		return nil
+	}
+
+	// timezone must be empty or valid timezone name
+	if timezone != "" {
+		if _, err := time.LoadLocation(timezone); err != nil {
+			log.Add(events.NewErrorEvent(err))
+			return nil
+		}
 	}
 
 	log.Add(events.NewContactTimezoneChangedEvent(timezone))

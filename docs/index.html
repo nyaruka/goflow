@@ -1447,7 +1447,7 @@ Event
 </div>
 <p><a name="action:set_contact_field"></a></p>
 <h2 id="set_contact_field">set_contact_field</h2>
-<p>Can be used to save a value to a contact. The value can be a template and will be evaluated during the flow. A <code>contact_field_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update a field value on the contact. The value is a localizable template and white space is trimmed from the final value. An empty string clears the value. A <code>contact_field_changed</code> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1479,7 +1479,7 @@ Event
 </div>
 <p><a name="action:set_contact_language"></a></p>
 <h2 id="set_contact_language">set_contact_language</h2>
-<p>Can be used to update the name of the contact. A <code>contact_language_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update the name of the contact. The language is a localizable template and white space is trimmed from the final value. An empty string clears the language. A <code>contact_language_changed</code> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1503,7 +1503,7 @@ Event
 </div>
 <p><a name="action:set_contact_name"></a></p>
 <h2 id="set_contact_name">set_contact_name</h2>
-<p>Can be used to update the name of the contact. A <code>contact_name_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update the name of the contact. The name is a localizable template and white space is trimmed from the final value. An empty string clears the name. A <code>contact_name_changed</code> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1527,7 +1527,7 @@ Event
 </div>
 <p><a name="action:set_contact_timezone"></a></p>
 <h2 id="set_contact_timezone">set_contact_timezone</h2>
-<p>Can be used to update the timezone of the contact. A <code>contact_timezone_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update the timezone of the contact. The timezone is a localizable template and white space is trimmed from the final value. An empty string clears the timezone. A <code>contact_timezone_changed</code> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
