@@ -1,3 +1,11 @@
+v0.10.0
+----------
+ * Empty/blank values should clear name/fields/language/timezone
+ * Split SetContactAProperty into new actions for name, language and timezone
+ * Improve error messages from struct validation
+ * Result input should be nullable if there is no input
+ * Timeout rule should use timeout as value
+
 v0.9.10
 ----------
  * Result input should be nullable if there is no input
