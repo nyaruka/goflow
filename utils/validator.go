@@ -1,18 +1,26 @@
 package utils
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
-
-	"fmt"
-
-	"errors"
 
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // Validator is our system validator, it can be shared across threads
 var Validator = validator.New()
+
+func init() {
+	// use JSON tags as field names in validation error messages
+	Validator.RegisterTagNameFunc(func(fld reflect.StructField) string {
+		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+		if name == "-" {
+			return ""
+		}
+		return name
+	})
+}
 
 // Validate will run validation on the given object and return a set of field specific errors in the format:
 // field <fieldname> <tag specific message>
@@ -34,15 +42,6 @@ func ValidateAs(obj interface{}, objName string) error {
 
 // ValidationErrors combines multiple validation errors as a single error
 type ValidationErrors []error
-
-// NewValidationErrors creates new ValidationErrors fromn the given error messages
-func NewValidationErrors(messages ...string) ValidationErrors {
-	errs := make([]error, len(messages))
-	for m, msg := range messages {
-		errs[m] = errors.New(msg)
-	}
-	return ValidationErrors(errs)
-}
 
 // Error returns a string representation of these validation errors
 func (e ValidationErrors) Error() string {
@@ -66,20 +65,25 @@ func validate(obj interface{}, objName string) error {
 	newErrors := make([]error, len(validationErrs))
 
 	for v, fieldErr := range validationErrs {
-		fieldName := getFieldName(obj, fieldErr.Field())
-		var location string
-		var problem string
+		location := fieldErr.Namespace()
 
-		location = fmt.Sprintf("'%s'", fieldName)
+		// the first part of the namespace is always the struct name so either replace that with
+		// the provided path or remove it
+		parts := strings.SplitN(location, ".", 2)
 		if objName != "" {
-			location = fmt.Sprintf("'%s' on '%s'", fieldName, objName)
+			parts[0] = objName
+			location = strings.Join(parts, ".")
 		} else {
-			location = fmt.Sprintf("'%s'", fieldName)
+			location = strings.Join(parts[1:], ".")
 		}
 
+		// generate a more user friendly description of the problem
+		var problem string
 		switch fieldErr.Tag() {
 		case "required":
 			problem = "is required"
+		case "uuid":
+			problem = "must be a valid UUID"
 		case "uuid4":
 			problem = "must be a valid UUID4"
 		case "min":
@@ -94,24 +98,7 @@ func validate(obj interface{}, objName string) error {
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
 
-		newErrors[v] = fmt.Errorf("field %s %s", location, problem)
+		newErrors[v] = fmt.Errorf("field '%s' %s", location, problem)
 	}
 	return ValidationErrors(newErrors)
-}
-
-// utilty to get the name used when marshaling a field to JSON. Returns an empty string if field has no json tag
-func getFieldName(obj interface{}, fieldName string) string {
-	objType := reflect.TypeOf(obj)
-	if objType.Kind() == reflect.Ptr {
-		objType = objType.Elem()
-	}
-
-	field, _ := objType.FieldByName(fieldName)
-	jsonTag, found := field.Tag.Lookup("json")
-	if !found {
-		return fieldName
-	}
-
-	tagParts := strings.Split(jsonTag, ",")
-	return tagParts[0]
 }

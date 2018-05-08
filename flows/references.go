@@ -98,8 +98,8 @@ func NewVariableLabelReference(nameMatch string) *LabelReference {
 func GroupReferenceValidation(sl validator.StructLevel) {
 	ref := sl.Current().Interface().(GroupReference)
 	if neitherOrBoth(string(ref.UUID), ref.NameMatch) {
-		sl.ReportError(ref.UUID, "UUID", "uuid", "mutually_exclusive", "name_match")
-		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "mutually_exclusive", "uuid")
+		sl.ReportError(ref.UUID, "uuid", "UUID", "mutually_exclusive", "name_match")
+		sl.ReportError(ref.NameMatch, "name_match", "NameMatch", "mutually_exclusive", "uuid")
 	}
 }
 
@@ -108,8 +108,8 @@ func GroupReferenceValidation(sl validator.StructLevel) {
 func LabelReferenceValidation(sl validator.StructLevel) {
 	ref := sl.Current().Interface().(LabelReference)
 	if neitherOrBoth(string(ref.UUID), ref.NameMatch) {
-		sl.ReportError(ref.UUID, "UUID", "uuid", "mutually_exclusive", "name_match")
-		sl.ReportError(ref.NameMatch, "NameMatch", "name_match", "mutually_exclusive", "uuid")
+		sl.ReportError(ref.UUID, "uuid", "UUID", "mutually_exclusive", "name_match")
+		sl.ReportError(ref.NameMatch, "name_match", "NameMatch", "mutually_exclusive", "uuid")
 	}
 }
 

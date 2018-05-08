@@ -325,7 +325,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	// try POSTing an incomplete trigger to the start endpoint
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", `{"asset_server": {}, "trigger": {"type": "manual"}}`)
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"field 'flow' on 'trigger[type=manual]' is required", "field 'triggered_on' on 'trigger[type=manual]' is required"})
+	ts.assertErrorResponse(body, []string{"field 'trigger[type=manual].flow' is required", "field 'trigger[type=manual].triggered_on' is required"})
 
 	// try POSTing to the start endpoint a structurally invalid flow asset
 	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets)

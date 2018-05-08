@@ -497,20 +497,20 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 	// read our environment
 	s.env, err = utils.ReadEnvironment(envelope.Environment)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to read environment: %s", err)
 	}
 
 	// read our trigger
 	if envelope.Trigger != nil {
 		if s.trigger, err = triggers.ReadTrigger(s, envelope.Trigger); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read trigger: %s", err)
 		}
 	}
 
 	// read our contact
 	if envelope.Contact != nil {
 		if s.contact, err = flows.ReadContact(s, *envelope.Contact); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read contact: %s", err)
 		}
 	}
 
@@ -518,7 +518,7 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 	for i := range envelope.Runs {
 		run, err := runs.ReadRun(s, envelope.Runs[i])
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read run: %s", err)
 		}
 		s.addRun(run)
 	}
@@ -527,7 +527,7 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 	if envelope.Wait != nil {
 		s.wait, err = waits.WaitFromEnvelope(envelope.Wait)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read wait: %s", err)
 		}
 	}
 
