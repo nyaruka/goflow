@@ -170,10 +170,9 @@
             "name": "French"
         },
         "expected_action": {
-            "type": "set_contact_property",
+            "type": "set_contact_language",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "property": "language",
-            "value": "fra"
+            "language": "fra"
         },
         "expected_localization": {}
     },
@@ -263,10 +262,9 @@
             "value": "Bob @step.value"
         },
         "expected_action": {
-            "type": "set_contact_property",
+            "type": "set_contact_name",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "property": "name",
-            "value": "Bob @run.input"
+            "name": "Bob @run.input"
         },
         "expected_localization": {}
     },
@@ -279,10 +277,9 @@
             "value": "@step.value"
         },
         "expected_action": {
-            "type": "set_contact_property",
+            "type": "set_contact_name",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "property": "name",
-            "value": "@run.input @(word_slice(contact.name, 1, -1))"
+            "name": "@run.input @(word_slice(contact.name, 1, -1))"
         },
         "expected_localization": {}
     },

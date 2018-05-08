@@ -2109,28 +2109,72 @@ be evaluated during the flow. A `contact_field_changed` event will be created wi
 }
 ```
 </div>
-<a name="action:set_contact_property"></a>
+<a name="action:set_contact_language"></a>
 
-## set_contact_property
+## set_contact_language
 
-Can be used to update one of the built in fields for a contact of "name" or
-"language". An `contact_property_changed` event will be created with the corresponding values.
+Can be used to update the name of the contact. A `contact_language_changed`
+event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
-    "type": "set_contact_property",
+    "type": "set_contact_language",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-    "property": "language",
-    "value": "eng"
+    "language": "eng"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_property_changed",
+    "type": "contact_language_changed",
     "created_on": "2018-04-11T13:24:30.123456-05:00",
     "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
-    "property": "language",
-    "value": "eng"
+    "language": "eng"
+}
+```
+</div>
+<a name="action:set_contact_name"></a>
+
+## set_contact_name
+
+Can be used to update the name of the contact. A `contact_name_changed`
+event will be created with the corresponding value.
+
+<div class="input_action"><h3>Action</h3>```json
+{
+    "type": "set_contact_name",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "name": "Bob Smith"
+}
+```
+</div><div class="output_event"><h3>Event</h3>```json
+{
+    "type": "contact_name_changed",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
+    "name": "Bob Smith"
+}
+```
+</div>
+<a name="action:set_contact_timezone"></a>
+
+## set_contact_timezone
+
+Can be used to update the timezone of the contact. A `contact_timezone_changed`
+event will be created with the corresponding value.
+
+<div class="input_action"><h3>Action</h3>```json
+{
+    "type": "set_contact_timezone",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "timezone": "Africa/Kigali"
+}
+```
+</div><div class="output_event"><h3>Event</h3>```json
+{
+    "type": "contact_timezone_changed",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
+    "timezone": "Africa/Kigali"
 }
 ```
 </div>
@@ -2158,7 +2202,7 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T13:24:30.123456-05:00",
-    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
+    "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
     "name": "Gender",
     "value": "m",
     "category": "Male",
@@ -2188,12 +2232,12 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 {
     "type": "flow_triggered",
     "created_on": "2018-04-11T13:24:30.123456-05:00",
-    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
+    "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "c62762c3-d95c-477b-9869-2c286badfdad"
+    "parent_run_uuid": "92ca859f-acf5-4e09-8742-c1eff0201012"
 }
 ```
 </div>
@@ -2223,7 +2267,7 @@ Can be used to trigger sessions for other contacts and groups
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T13:24:30.123456-05:00",
-    "step_uuid": "43bdd132-957b-464b-bdca-2ca05d3bc6b3",
+    "step_uuid": "95dc7ae3-0788-4fb7-b19f-d98753239d65",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -2235,7 +2279,7 @@ Can be used to trigger sessions for other contacts and groups
         }
     ],
     "run": {
-        "uuid": "5cbbdb8e-6807-4d7c-90a5-61a502fc0a9a",
+        "uuid": "1265aa33-e472-440a-b4b7-2e34e644276e",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"
@@ -2439,18 +2483,45 @@ groups.
 }
 ```
 </div>
-<a name="event:contact_property_changed"></a>
+<a name="event:contact_language_changed"></a>
 
-## contact_property_changed
+## contact_language_changed
 
-Events are created when a property of a contact has been changed
+Events are created when a Language of a contact has been changed
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_property_changed",
+    "type": "contact_language_changed",
     "created_on": "2006-01-02T15:04:05Z",
-    "property": "language",
-    "value": "eng"
+    "language": "eng"
+}
+```
+</div>
+<a name="event:contact_name_changed"></a>
+
+## contact_name_changed
+
+Events are created when a name of a contact has been changed
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "contact_name_changed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "name": "Bob Smith"
+}
+```
+</div>
+<a name="event:contact_timezone_changed"></a>
+
+## contact_timezone_changed
+
+Events are created when a timezone of a contact has been changed
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "contact_timezone_changed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "timezone": "Africa/Kigali"
 }
 ```
 </div>

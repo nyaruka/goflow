@@ -31,8 +31,12 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &SetContactChannelAction{}
 	case TypeSetContactField:
 		action = &SetContactFieldAction{}
-	case TypeSetContactProperty:
-		action = &SetContactPropertyAction{}
+	case TypeSetContactLanguage:
+		action = &SetContactLanguageAction{}
+	case TypeSetContactName:
+		action = &SetContactNameAction{}
+	case TypeSetContactTimezone:
+		action = &SetContactTimezoneAction{}
 	case TypeSetRunResult:
 		action = &SetRunResultAction{}
 	case TypeStartFlow:

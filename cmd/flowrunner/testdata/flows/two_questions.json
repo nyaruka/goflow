@@ -136,9 +136,8 @@
                     "actions": [
                         {
                             "uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
-                            "type": "set_contact_property",
-                            "property": "language",
-                            "value": "fra"
+                            "type": "set_contact_language",
+                            "language": "fra"
                         },
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",

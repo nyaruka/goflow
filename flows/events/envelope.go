@@ -38,8 +38,12 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &ContactGroupsAddedEvent{}
 	case TypeContactGroupsRemoved:
 		event = &ContactGroupsRemovedEvent{}
-	case TypeContactPropertyChanged:
-		event = &ContactPropertyChangedEvent{}
+	case TypeContactLanguageChanged:
+		event = &ContactLanguageChangedEvent{}
+	case TypeContactNameChanged:
+		event = &ContactNameChangedEvent{}
+	case TypeContactTimezoneChanged:
+		event = &ContactTimezoneChangedEvent{}
 	case TypeContactURNAdded:
 		event = &ContactURNAddedEvent{}
 	case TypeEmailCreated:
