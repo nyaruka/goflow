@@ -156,9 +156,13 @@
                         },
                         {
                             "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
-                            "type": "set_contact_property",
-                            "property": "language",
-                            "value": "eng"
+                            "type": "set_contact_name",
+                            "name": "Jeff"
+                        },
+                        {
+                            "uuid": "e0ae5679-5145-4bdd-9737-3481932bf095",
+                            "type": "set_contact_language",
+                            "language": "eng"
                         },
                         {
                             "uuid": "3b42ceb1-454d-4f2a-a8c9-e6803dc3e3c0",

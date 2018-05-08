@@ -160,9 +160,8 @@
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "property": "name",
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "value": "Ryan Lewis"
+                    "name": "Ryan Lewis",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -263,10 +262,9 @@
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "property": "name",
+                                "name": "Ryan Lewis",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "type": "contact_property_changed",
-                                "value": "Ryan Lewis"
+                                "type": "contact_name_changed"
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",

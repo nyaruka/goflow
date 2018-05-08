@@ -182,9 +182,8 @@
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "property": "language",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "value": "fra"
+                    "language": "fra",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -284,10 +283,9 @@
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "property": "language",
+                                "language": "fra",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "contact_property_changed",
-                                "value": "fra"
+                                "type": "contact_language_changed"
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -512,10 +510,9 @@
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "property": "language",
+                                "language": "fra",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "type": "contact_property_changed",
-                                "value": "fra"
+                                "type": "contact_language_changed"
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",

@@ -418,9 +418,8 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}, nil
 
 	case "lang":
-		return &actions.SetContactPropertyAction{
-			Property:   "language",
-			Value:      string(a.Language),
+		return &actions.SetContactLanguageAction{
+			Language:   string(a.Language),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "channel":
@@ -563,9 +562,8 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 1, -1))", migratedValue)
 			}
 
-			return &actions.SetContactPropertyAction{
-				Property:   "name",
-				Value:      migratedValue,
+			return &actions.SetContactNameAction{
+				Name:       migratedValue,
 				BaseAction: actions.NewBaseAction(a.UUID),
 			}, nil
 		}

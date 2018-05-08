@@ -2,17 +2,18 @@ package actions
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeSetContactField is the type for the set contact field action
 const TypeSetContactField string = "set_contact_field"
 
-// SetContactFieldAction can be used to save a value to a contact. The value can be a template and will
-// be evaluated during the flow. A `contact_field_changed` event will be created with the corresponding value.
+// SetContactFieldAction can be used to update a field value on the contact. The value is a localizable
+// template and white space is trimmed from the final value. An empty string clears the value.
+// A `contact_field_changed` event will be created with the corresponding value.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -44,9 +45,8 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	// get our localized value if any
-	template := run.GetText(utils.UUID(a.UUID()), "value", a.Value)
-	value, err := run.EvaluateTemplateAsString(template, false)
+	value, err := a.evaluateLocalizableTemplate(run, "value", a.Value)
+	value = strings.TrimSpace(value)
 
 	// if we received an error, log it
 	if err != nil {
