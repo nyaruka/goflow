@@ -160,7 +160,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 		key, rest = popNextVariable(rest)
 
 		if utils.IsNil(variable) {
-			return types.NewXErrorf("%s has no property '%s'", types.Repr(variable), key)
+			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
 		}
 
 		// is our key numeric?
@@ -190,7 +190,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 			}
 
 		} else {
-			return types.NewXErrorf("%s has no property '%s'", types.Repr(variable), key)
+			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
 		}
 	}
 

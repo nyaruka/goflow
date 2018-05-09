@@ -101,8 +101,8 @@ func IsEmpty(x XValue) bool {
 	return false
 }
 
-// Repr returns the representation of the given value
-func Repr(x XValue) string {
+// Describe returns a representation of the given value for use in error messages
+func Describe(x XValue) string {
 	if utils.IsNil(x) {
 		return "null"
 	}

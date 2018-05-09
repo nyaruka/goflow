@@ -101,7 +101,7 @@ func ToXNumber(x XValue) (XNumber, XError) {
 		}
 	}
 
-	return XNumberZero, NewXErrorf("unable to convert %s to a number", Repr(x))
+	return XNumberZero, NewXErrorf("unable to convert %s to a number", Describe(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible

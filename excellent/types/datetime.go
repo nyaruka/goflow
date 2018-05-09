@@ -87,5 +87,5 @@ func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
 		}
 	}
 
-	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Repr(x))
+	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Describe(x))
 }
