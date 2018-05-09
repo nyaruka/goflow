@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/utils"
+
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
@@ -54,26 +56,15 @@ func NewErrorListener(expression string) *errorListener {
 	return &errorListener{expression: expression}
 }
 
-func (l *errorListener) HasErrors() bool {
-	return len(l.errors) > 0
-}
-
-func (l *errorListener) FirstError() error {
-	return l.errors[0]
+func (l *errorListener) Errors() []error {
+	return l.errors
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
 	// extract the part of the original expression where this error has occured
 	lines := strings.Split(l.expression, "\n")
 	lineOfError := lines[line-1]
-	contextOfError := lineOfError[column:min(column+10, len(lineOfError))]
+	contextOfError := lineOfError[column:utils.MinInt(column+10, len(lineOfError))]
 
 	l.errors = append(l.errors, fmt.Errorf("syntax error at %s", contextOfError))
-}
-
-func min(x, y int) int {
-	if x < y {
-		return x
-	}
-	return y
 }

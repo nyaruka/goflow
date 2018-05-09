@@ -20,3 +20,11 @@ func IsNil(v interface{}) bool {
 
 	return false
 }
+
+// MinInt returns the minimum of two integers
+func MinInt(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}

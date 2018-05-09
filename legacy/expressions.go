@@ -452,13 +452,13 @@ func toString(params interface{}) (string, error) {
 
 // translateExpression will turn an old expression into a new format expression
 func translateExpression(env utils.Environment, resolver types.XValue, expression string) (interface{}, error) {
-	errors := excellent.NewErrorListener(expression)
+	errListener := excellent.NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
 	lexer := gen.NewExcellent1Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewExcellent1Parser(stream)
-	p.AddErrorListener(errors)
+	p.AddErrorListener(errListener)
 
 	// speed up parsing
 	p.SetErrorHandler(antlr.NewBailErrorStrategy())
@@ -471,9 +471,9 @@ func translateExpression(env utils.Environment, resolver types.XValue, expressio
 	tree := p.Parse()
 	// timeTrack(start, "Parsing")
 
-	// if we ran into errors parsing, bail
-	if errors.HasErrors() {
-		return nil, errors.FirstError()
+	// if we ran into errors parsing, return the first one
+	if len(errListener.Errors()) > 0 {
+		return nil, errListener.Errors()[0]
 	}
 
 	visitor := newLegacyVisitor(env, resolver)

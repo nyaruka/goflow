@@ -23,12 +23,11 @@ func EvaluateExpression(env utils.Environment, context types.XValue, expression 
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewExcellent2Parser(stream)
 	p.AddErrorListener(errListener)
-	//p.SetErrorHandler(antlr.NewBailErrorStrategy())
 	tree := p.Parse()
 
-	// if we ran into errors parsing, bail
-	if errListener.HasErrors() {
-		return nil, errListener.FirstError()
+	// if we ran into errors parsing, return the first one
+	if len(errListener.Errors()) > 0 {
+		return nil, errListener.Errors()[0]
 	}
 
 	visitor := NewVisitor(env, context)
