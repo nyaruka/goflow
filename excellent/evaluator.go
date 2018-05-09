@@ -2,8 +2,8 @@ package excellent
 
 import (
 	"bytes"
+	"fmt"
 	"net/url"
-	"reflect"
 	"strconv"
 	"strings"
 
@@ -107,9 +107,8 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		case IDENTIFIER:
 			value := ResolveValue(env, context, token)
 
-			// we got an error, return our raw variable
 			if types.IsXError(value) {
-				errors.Add(token, value.(error).Error())
+				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(value)
 				if urlEncode {
@@ -122,7 +121,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			value, err := EvaluateExpression(env, context, token)
 
 			if err != nil {
-				errors.Add(token, err.Error())
+				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 			} else {
 				strValue, _ := types.ToXText(value)
 				if urlEncode {
@@ -162,7 +161,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 		key, rest = popNextVariable(rest)
 
 		if utils.IsNil(variable) {
-			return types.NewXErrorf("can't resolve key '%s' of nil", key)
+			return types.NewXErrorf("%s has no property '%s'", types.Repr(variable), key)
 		}
 
 		// is our key numeric?
@@ -192,7 +191,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 			}
 
 		} else {
-			return types.NewXErrorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
+			return types.NewXErrorf("%s has no property '%s'", types.Repr(variable), key)
 		}
 	}
 

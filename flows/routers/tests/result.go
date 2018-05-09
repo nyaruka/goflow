@@ -27,6 +27,9 @@ func (t XTestResult) Resolve(key string) types.XValue {
 	return types.NewXResolveError(t, key)
 }
 
+// Repr returns the representation of this type
+func (t XTestResult) Repr() string { return "test result" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (t XTestResult) Reduce() types.XPrimitive {
 	return types.NewXBoolean(t.matched)

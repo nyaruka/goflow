@@ -32,6 +32,9 @@ func (p LocationPath) String() string {
 	return string(p)
 }
 
+// Repr returns the representation of this type
+func (p LocationPath) Repr() string { return "location" }
+
 // Reduce returns the primitive version of this type
 func (p LocationPath) Reduce() types.XPrimitive {
 	return types.NewXText(string(p))

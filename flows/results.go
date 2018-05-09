@@ -63,6 +63,9 @@ func (r *Result) Resolve(key string) types.XValue {
 	return types.NewXResolveError(r, key)
 }
 
+// Repr returns the representation of this type
+func (r *Result) Repr() string { return "run result" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *Result) Reduce() types.XPrimitive {
 	return types.NewXText(r.Value)
@@ -125,6 +128,9 @@ func (r Results) Resolve(key string) types.XValue {
 	}
 	return result
 }
+
+// Repr returns the representation of this type
+func (r Results) Repr() string { return "run results" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r Results) Reduce() types.XPrimitive {

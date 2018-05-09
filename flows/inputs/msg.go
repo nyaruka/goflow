@@ -50,6 +50,9 @@ func (i *MsgInput) Resolve(key string) types.XValue {
 	return i.baseInput.Resolve(key)
 }
 
+// Repr returns the representation of this type
+func (i *MsgInput) Repr() string { return "input" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (i *MsgInput) Reduce() types.XPrimitive {
 	var parts []string

@@ -46,6 +46,9 @@ func (v *testXObject) MarshalJSON() ([]byte, error) {
 	return utils.JSONMarshal(e)
 }
 
+// Repr returns the representation of this type
+func (v *testXObject) Repr() string { return "test" }
+
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 
 var _ types.XValue = &testXObject{}

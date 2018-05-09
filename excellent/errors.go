@@ -14,7 +14,7 @@ type TemplateError struct {
 }
 
 func (e TemplateError) Error() string {
-	return fmt.Sprintf("error evaluating '%s': %s", e.expression, e.message)
+	return fmt.Sprintf("error evaluating %s: %s", e.expression, e.message)
 }
 
 // TemplateErrors represents the list of all errors encountered during evaluation of a template

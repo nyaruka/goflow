@@ -25,6 +25,9 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
+// Repr returns the representation of this type
+func (v *testXObject) Repr() string { return "test" }
+
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 
 func (v *testXObject) Resolve(key string) types.XValue {
@@ -311,11 +314,10 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 }
 
-func TestExpressionErrors(t *testing.T) {
+func TestEvaluationErrors(t *testing.T) {
 
 	vars := types.NewXMap(map[string]types.XValue{
-		"string1": types.NewXText("foo"),
-		"string2": types.NewXText("bar"),
+		"foo": types.NewXText("bar"),
 	})
 	env := utils.NewDefaultEnvironment()
 
@@ -323,17 +325,34 @@ func TestExpressionErrors(t *testing.T) {
 		template string
 		errorMsg string
 	}{
-		{`@(")`, `error evaluating '"': syntax error at "`},
-		{`@('x')`, `error evaluating ''x'': syntax error at 'x'`},
-		{`@(")@('x')`, `error evaluating '"': syntax error at ", error evaluating ''x'': syntax error at 'x'`},
-		{`@(0 / )`, `error evaluating '0 / ': syntax error at `},
-		{`@(1.1.0)`, `error evaluating '1.1.0': can't resolve key '0' of type types.XNumber`},
-		{`@(1 + true)`, `error evaluating '1 + true': unable to convert value 'true' to a number`},
-		{`@("a" + 2)`, `error evaluating '"a" + 2': unable to convert value 'a' to a number`},
-		{`@(length(1))`, `error evaluating 'length(1)': error calling LENGTH: value doesn't have length`},
-		{`@(FOO())`, `error evaluating 'FOO()': no function with name 'foo'`},
-		{`@(word_count())`, `error evaluating 'word_count()': error calling WORD_COUNT: need 1 argument(s), got 0`},
-		{`@(word_count("a", "b", "c"))`, `error evaluating 'word_count("a", "b", "c")': error calling WORD_COUNT: need 1 argument(s), got 3`},
+		// parser errors
+		{`@(")`, `error evaluating @("): syntax error at "`},
+		{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
+		{`@(")@('x')`, `error evaluating @("): syntax error at ", error evaluating @('x'): syntax error at 'x'`},
+		{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
+
+		// resolver errors
+		{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},
+		{`@("abc".v)`, `error evaluating @("abc".v): "abc" has no property 'v'`},
+		{`@(False.g)`, `error evaluating @(False.g): false has no property 'g'`},
+		{`@(1.1.0)`, `error evaluating @(1.1.0): 1.1 has no property '0'`},
+		{`@(hello)`, `error evaluating @(hello): map has no property 'hello'`}, // this context is a map
+		{`@(foo.x)`, `error evaluating @(foo.x): "bar" has no property 'x'`},
+		{`@foo.x`, `error evaluating @foo.x: "bar" has no property 'x'`},
+		{`@(array(1, 2)[5])`, `error evaluating @(array(1, 2)[5]): index 5 out of range for 2 items`},
+
+		// conversion errors
+		{`@(1 + null)`, `error evaluating @(1 + null): unable to convert null to a number`},
+		{`@(1 + true)`, `error evaluating @(1 + true): unable to convert true to a number`},
+		{`@("a" + 2)`, `error evaluating @("a" + 2): unable to convert "a" to a number`},
+		{`@(format_datetime("x"))`, `error evaluating @(format_datetime("x")): error calling FORMAT_DATETIME: unable to convert "x" to a datetime`},
+		{`@(format_datetime(3))`, `error evaluating @(format_datetime(3)): error calling FORMAT_DATETIME: unable to convert 3 to a datetime`},
+
+		// function call errors
+		{`@(FOO())`, `error evaluating @(FOO()): no function with name 'foo'`},
+		{`@(length(1))`, `error evaluating @(length(1)): error calling LENGTH: value doesn't have length`},
+		{`@(word_count())`, `error evaluating @(word_count()): error calling WORD_COUNT: need 1 argument(s), got 0`},
+		{`@(word_count("a", "b", "c"))`, `error evaluating @(word_count("a", "b", "c")): error calling WORD_COUNT: need 1 argument(s), got 3`},
 	}
 	for _, tc := range errorTests {
 		result, err := EvaluateTemplateAsString(env, vars, tc.template, false, vars.Keys())

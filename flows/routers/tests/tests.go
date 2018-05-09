@@ -356,6 +356,9 @@ func (m *patternMatch) Resolve(key string) types.XValue {
 	return types.NewXResolveError(m, key)
 }
 
+// Repr returns the representation of this type
+func (m *patternMatch) Repr() string { return "regex match" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (m *patternMatch) Reduce() types.XPrimitive {
 	return m.groups.Index(0).(types.XText)

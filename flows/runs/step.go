@@ -43,6 +43,9 @@ func (s *step) Resolve(key string) types.XValue {
 	}
 }
 
+// Repr returns the representation of this type
+func (s *step) Repr() string { return "step" }
+
 func (s *step) Reduce() types.XPrimitive {
 	return types.NewXText(string(s.UUID()))
 }
@@ -62,6 +65,9 @@ func (p Path) Length() int {
 func (p Path) Index(index int) types.XValue {
 	return p[index]
 }
+
+// Repr returns the representation of this type
+func (p Path) Repr() string { return "path" }
 
 func (p Path) Reduce() types.XPrimitive {
 	array := types.NewXArray()

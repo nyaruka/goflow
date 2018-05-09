@@ -85,6 +85,9 @@ func (u *ContactURN) Resolve(key string) types.XValue {
 	return types.NewXResolveError(u, key)
 }
 
+// Repr returns the representation of this type
+func (u *ContactURN) Repr() string { return "URN" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXText(string(u.URN)) }
 
@@ -174,6 +177,9 @@ func (l URNList) Resolve(key string) types.XValue {
 
 	return l.WithScheme(scheme)
 }
+
+// Repr returns the representation of this type
+func (l URNList) Repr() string { return "URNs" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (l URNList) Reduce() types.XPrimitive {

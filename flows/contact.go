@@ -177,6 +177,9 @@ func (c *Contact) Resolve(key string) types.XValue {
 	return types.NewXResolveError(c, key)
 }
 
+// Repr returns the representation of this type
+func (c *Contact) Repr() string { return "contact" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (c *Contact) Reduce() types.XPrimitive {
 	return types.NewXText(c.name)
