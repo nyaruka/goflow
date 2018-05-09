@@ -1,46 +1,79 @@
 package excellent
 
 import (
-	"bytes"
 	"fmt"
-	"strconv"
+	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// TemplateErrors represents the list of errors we may have received during execution
-type TemplateErrors []error
+// TemplateError is an error which occurs during evaluation of an expression
+type TemplateError struct {
+	expression string
+	message    string
+}
+
+func (e TemplateError) Error() string {
+	return fmt.Sprintf("error evaluating '%s': %s", e.expression, e.message)
+}
+
+// TemplateErrors represents the list of all errors encountered during evaluation of a template
+type TemplateErrors struct {
+	errors []*TemplateError
+}
+
+func NewTemplateErrors() *TemplateErrors {
+	return &TemplateErrors{}
+}
+
+func (e *TemplateErrors) Add(expression, message string) {
+	e.errors = append(e.errors, &TemplateError{expression: expression, message: message})
+}
+
+func (e *TemplateErrors) HasErrors() bool {
+	return len(e.errors) > 0
+}
 
 // Error returns a single string describing all the errors encountered
-func (e TemplateErrors) Error() string {
-	if len(e) == 1 {
-		return e[0].Error()
+func (e *TemplateErrors) Error() string {
+	messages := make([]string, len(e.errors))
+	for i, err := range e.errors {
+		messages[i] = err.Error()
 	}
-
-	msg := "multiple errors:"
-	for _, err := range e {
-		msg += "\n" + err.Error()
-	}
-	return msg
+	return strings.Join(messages, ", ")
 }
 
 type errorListener struct {
-	errors bytes.Buffer
 	*antlr.DefaultErrorListener
+
+	expression string
+	errors     []error
 }
 
-func NewErrorListener() *errorListener {
-	return &errorListener{}
+func NewErrorListener(expression string) *errorListener {
+	return &errorListener{expression: expression}
 }
 
 func (l *errorListener) HasErrors() bool {
-	return l.errors.Len() > 0
+	return len(l.errors) > 0
 }
 
-func (l *errorListener) Errors() string {
-	return l.errors.String()
+func (l *errorListener) FirstError() error {
+	return l.errors[0]
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
-	l.errors.WriteString(fmt.Sprintln("line " + strconv.Itoa(line) + ":" + strconv.Itoa(column) + " " + msg))
+	// extract the part of the original expression where this error has occured
+	lines := strings.Split(l.expression, "\n")
+	lineOfError := lines[line-1]
+	contextOfError := lineOfError[column:min(column+10, len(lineOfError))]
+
+	l.errors = append(l.errors, fmt.Errorf("syntax error at %s", contextOfError))
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
 }

@@ -311,6 +311,41 @@ func TestEvaluateTemplate(t *testing.T) {
 	}
 }
 
+func TestExpressionErrors(t *testing.T) {
+
+	vars := types.NewXMap(map[string]types.XValue{
+		"string1": types.NewXText("foo"),
+		"string2": types.NewXText("bar"),
+	})
+	env := utils.NewDefaultEnvironment()
+
+	errorTests := []struct {
+		template string
+		errorMsg string
+	}{
+		{`@(")`, `error evaluating '"': syntax error at "`},
+		{`@('x')`, `error evaluating ''x'': syntax error at 'x'`},
+		{`@(")@('x')`, `error evaluating '"': syntax error at ", error evaluating ''x'': syntax error at 'x'`},
+		{`@(0 / )`, `error evaluating '0 / ': syntax error at `},
+		{`@(1.1.0)`, `error evaluating '1.1.0': can't resolve key '0' of type types.XNumber`},
+		{`@(1 + true)`, `error evaluating '1 + true': unable to convert value 'true' to a number`},
+		{`@("a" + 2)`, `error evaluating '"a" + 2': unable to convert value 'a' to a number`},
+		{`@(length(1))`, `error evaluating 'length(1)': error calling LENGTH: value doesn't have length`},
+		{`@(FOO())`, `error evaluating 'FOO()': no function with name 'foo'`},
+		{`@(word_count())`, `error evaluating 'word_count()': error calling WORD_COUNT: need 1 argument(s), got 0`},
+		{`@(word_count("a", "b", "c"))`, `error evaluating 'word_count("a", "b", "c")': error calling WORD_COUNT: need 1 argument(s), got 3`},
+	}
+	for _, tc := range errorTests {
+		result, err := EvaluateTemplateAsString(env, vars, tc.template, false, vars.Keys())
+		assert.Equal(t, "", result)
+		assert.NotNil(t, err)
+
+		if err != nil {
+			assert.Equal(t, tc.errorMsg, err.Error(), "error message mismatch for template '%s'", tc.template)
+		}
+	}
+}
+
 func TestScanner(t *testing.T) {
 	scanner := NewXScanner(strings.NewReader("12"), []string{})
 
