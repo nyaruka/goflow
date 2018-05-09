@@ -216,7 +216,7 @@ func (f FieldValues) Length() int {
 func (f FieldValues) Resolve(key string) types.XValue {
 	val, exists := f[key]
 	if !exists {
-		return types.NewXResolveError(f, key)
+		return types.NewXErrorf("no such contact field '%s'", key)
 	}
 	return val
 }

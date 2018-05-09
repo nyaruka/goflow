@@ -124,7 +124,7 @@ func (r Results) Resolve(key string) types.XValue {
 
 	result, exists := r[key]
 	if !exists {
-		return types.NewXResolveError(r, key)
+		return types.NewXErrorf("no such run result '%s'", key)
 	}
 	return result
 }

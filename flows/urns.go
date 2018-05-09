@@ -172,7 +172,7 @@ func (l URNList) Resolve(key string) types.XValue {
 
 	// if this isn't a valid scheme, bail
 	if !urns.IsValidScheme(scheme) {
-		return types.NewXResolveError(l, key)
+		return types.NewXErrorf("no such URN scheme '%s'", key)
 	}
 
 	return l.WithScheme(scheme)
