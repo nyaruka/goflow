@@ -34,8 +34,8 @@ func NewXJSONObject(data []byte) XJSONObject {
 	return XJSONObject{XJSON: data}
 }
 
-// Repr returns the representation of this type
-func (x XJSONObject) Repr() string { return "json object" }
+// Describe returns a representation of this type for error messages
+func (x XJSONObject) Describe() string { return "json object" }
 
 func (x XJSONObject) Length() int {
 	length := 0
@@ -68,8 +68,8 @@ func NewXJSONArray(data []byte) XJSONArray {
 	return XJSONArray{XJSON: data}
 }
 
-// Repr returns the representation of this type
-func (x XJSONArray) Repr() string { return "json array" }
+// Describe returns a representation of this type for error messages
+func (x XJSONArray) Describe() string { return "json array" }
 
 func (x XJSONArray) Length() int {
 	length := 0

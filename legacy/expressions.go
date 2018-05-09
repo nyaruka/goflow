@@ -118,8 +118,8 @@ func (v *varMapper) Resolve(key string) types.XValue {
 	return types.NewXText(strings.Join(newPath, "."))
 }
 
-// Repr returns the representation of this type
-func (v *varMapper) Repr() string { return "legacy vars" }
+// Describe returns a representation of this type for error messages
+func (v *varMapper) Describe() string { return "legacy vars" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *varMapper) Reduce() types.XPrimitive {

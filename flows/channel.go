@@ -120,8 +120,8 @@ func (c *channel) Resolve(key string) types.XValue {
 	return types.NewXResolveError(c, key)
 }
 
-// Repr returns the representation of this type
-func (c *channel) Repr() string { return "channel" }
+// Describe returns a representation of this type for error messages
+func (c *channel) Describe() string { return "channel" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (c *channel) Reduce() types.XPrimitive {

@@ -32,8 +32,8 @@ func (t *baseTrigger) Resolve(key string) types.XValue {
 	return types.NewXResolveError(t, key)
 }
 
-// Repr returns the representation of this type
-func (t *baseTrigger) Repr() string { return "trigger" }
+// Describe returns a representation of this type for error messages
+func (t *baseTrigger) Describe() string { return "trigger" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (t *baseTrigger) Reduce() types.XPrimitive {

@@ -19,8 +19,8 @@ func NewXText(value string) XText {
 	return XText{native: value}
 }
 
-// Repr returns the representation of this type
-func (x XText) Repr() string { return fmt.Sprintf(`"%s"`, x.native) }
+// Describe returns a representation of this type for error messages
+func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XText) Reduce() XPrimitive { return x }

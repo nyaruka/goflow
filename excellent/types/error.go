@@ -31,8 +31,8 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 	return NewXError(fmt.Errorf("%s has no property '%s'", Repr(val), key))
 }
 
-// Repr returns the representation of this type
-func (x xerror) Repr() string { return "error" }
+// Describe returns a representation of this type for error messages
+func (x xerror) Describe() string { return "error" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x xerror) Reduce() XPrimitive { return x }

@@ -255,7 +255,7 @@ func (v legacyVariables) Resolve(key string) types.XValue {
 	return nil
 }
 
-func (v legacyVariables) Repr() string {
+func (v legacyVariables) Describe() string {
 	return "legacy vars"
 }
 

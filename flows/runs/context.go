@@ -35,8 +35,8 @@ func (c *runContext) Resolve(key string) types.XValue {
 	return types.NewXResolveError(c, key)
 }
 
-// Repr returns the representation of this type
-func (c *runContext) Repr() string { return "context" }
+// Describe returns a representation of this type for error messages
+func (c *runContext) Describe() string { return "context" }
 
 func (c *runContext) Reduce() types.XPrimitive {
 	return types.NewXText(c.run.UUID().String())
@@ -81,8 +81,8 @@ func (c *relatedRunContext) Resolve(key string) types.XValue {
 	return types.NewXResolveError(c, key)
 }
 
-// Repr returns the representation of this type
-func (c *relatedRunContext) Repr() string { return "related run" }
+// Describe returns a representation of this type for error messages
+func (c *relatedRunContext) Describe() string { return "related run" }
 
 func (c *relatedRunContext) Reduce() types.XPrimitive {
 	return types.NewXText(c.run.UUID().String())

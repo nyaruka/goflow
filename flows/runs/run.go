@@ -278,8 +278,8 @@ func (r *flowRun) Resolve(key string) types.XValue {
 	return types.NewXResolveError(r, key)
 }
 
-// Repr returns the representation of this type
-func (r *flowRun) Repr() string { return "run" }
+// Describe returns a representation of this type for error messages
+func (r *flowRun) Describe() string { return "run" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *flowRun) Reduce() types.XPrimitive {

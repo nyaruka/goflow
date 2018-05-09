@@ -32,8 +32,8 @@ func (p LocationPath) String() string {
 	return string(p)
 }
 
-// Repr returns the representation of this type
-func (p LocationPath) Repr() string { return "location" }
+// Describe returns a representation of this type for error messages
+func (p LocationPath) Describe() string { return "location" }
 
 // Reduce returns the primitive version of this type
 func (p LocationPath) Reduce() types.XPrimitive {

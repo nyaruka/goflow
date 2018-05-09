@@ -37,8 +37,8 @@ func RequireXNumberFromString(value string) XNumber {
 	return NewXNumber(decimal.RequireFromString(value))
 }
 
-// Repr returns the representation of this type
-func (x XNumber) Repr() string { return x.ToXText().Native() }
+// Describe returns a representation of this type for error messages
+func (x XNumber) Describe() string { return x.ToXText().Native() }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XNumber) Reduce() XPrimitive { return x }

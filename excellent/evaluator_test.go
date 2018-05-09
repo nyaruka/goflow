@@ -25,8 +25,8 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-// Repr returns the representation of this type
-func (v *testXObject) Repr() string { return "test" }
+// Describe returns a representation of this type for error messages
+func (v *testXObject) Describe() string { return "test" }
 
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 

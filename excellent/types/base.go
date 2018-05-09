@@ -9,7 +9,7 @@ import (
 
 // XValue is the base interface of all Excellent types
 type XValue interface {
-	Repr() string
+	Describe() string
 	ToXJSON() XText
 	Reduce() XPrimitive
 }
@@ -106,5 +106,5 @@ func Repr(x XValue) string {
 	if utils.IsNil(x) {
 		return "null"
 	}
-	return x.Repr()
+	return x.Describe()
 }

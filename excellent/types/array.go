@@ -26,8 +26,8 @@ func NewXArray(values ...XValue) XArray {
 	return &xarray{values: values}
 }
 
-// Repr returns the representation of this type
-func (a *xarray) Repr() string { return "array" }
+// Describe returns a representation of this type for error messages
+func (a *xarray) Describe() string { return "array" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (a *xarray) Reduce() XPrimitive { return a }

@@ -17,8 +17,8 @@ func NewXBoolean(value bool) XBoolean {
 	return XBoolean{native: value}
 }
 
-// Repr returns the representation of this type
-func (x XBoolean) Repr() string { return strconv.FormatBool(x.Native()) }
+// Describe returns a representation of this type for error messages
+func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XBoolean) Reduce() XPrimitive { return x }

@@ -88,8 +88,8 @@ func (v *FieldValue) Resolve(key string) types.XValue {
 	return types.NewXResolveError(v, key)
 }
 
-// Repr returns the representation of this type
-func (v *FieldValue) Repr() string { return "field value" }
+// Describe returns a representation of this type for error messages
+func (v *FieldValue) Describe() string { return "field value" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Reduce() types.XPrimitive {
@@ -221,8 +221,8 @@ func (f FieldValues) Resolve(key string) types.XValue {
 	return val
 }
 
-// Repr returns the representation of this type
-func (f FieldValues) Repr() string { return "field values" }
+// Describe returns a representation of this type for error messages
+func (f FieldValues) Describe() string { return "field values" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (f FieldValues) Reduce() types.XPrimitive {

@@ -88,8 +88,8 @@ func (g *Group) Resolve(key string) types.XValue {
 	return types.NewXResolveError(g, key)
 }
 
-// Repr returns the representation of this type
-func (g *Group) Repr() string { return "group" }
+// Describe returns a representation of this type for error messages
+func (g *Group) Describe() string { return "group" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (g *Group) Reduce() types.XPrimitive { return types.NewXText(g.name) }
@@ -169,8 +169,8 @@ func (l *GroupList) Length() int {
 	return len(l.groups)
 }
 
-// Repr returns the representation of this type
-func (l GroupList) Repr() string { return "groups" }
+// Describe returns a representation of this type for error messages
+func (l GroupList) Describe() string { return "groups" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (l GroupList) Reduce() types.XPrimitive {

@@ -16,8 +16,8 @@ func NewXDateTime(value time.Time) XDateTime {
 	return XDateTime{native: value}
 }
 
-// Repr returns the representation of this type
-func (x XDateTime) Repr() string { return "datetime" }
+// Describe returns a representation of this type for error messages
+func (x XDateTime) Describe() string { return "datetime" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XDateTime) Reduce() XPrimitive { return x }
