@@ -32,6 +32,9 @@ func NewEmptyXMap() XMap {
 	}
 }
 
+// Describe returns a representation of this type for error messages
+func (m *xmap) Describe() string { return "map" }
+
 // Reduce returns the primitive version of this type (i.e. itself)
 func (m *xmap) Reduce() XPrimitive { return m }
 

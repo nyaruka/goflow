@@ -1,7 +1,6 @@
 package types
 
 import (
-	"reflect"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
@@ -16,6 +15,9 @@ type XDateTime struct {
 func NewXDateTime(value time.Time) XDateTime {
 	return XDateTime{native: value}
 }
+
+// Describe returns a representation of this type for error messages
+func (x XDateTime) Describe() string { return "datetime" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XDateTime) Reduce() XPrimitive { return x }
@@ -69,23 +71,21 @@ var _ XPrimitive = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
 func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
-	if utils.IsNil(x) {
-		return XDateTimeZero, NewXErrorf("unable to convert NULL to a datetime")
-	}
+	if !utils.IsNil(x) {
+		x = x.Reduce()
 
-	x = x.Reduce()
-
-	switch typed := x.(type) {
-	case XError:
-		return XDateTimeZero, typed
-	case XDateTime:
-		return typed, nil
-	case XText:
-		parsed, err := utils.DateFromString(env, typed.Native())
-		if err == nil {
-			return NewXDateTime(parsed), nil
+		switch typed := x.(type) {
+		case XError:
+			return XDateTimeZero, typed
+		case XDateTime:
+			return typed, nil
+		case XText:
+			parsed, err := utils.DateFromString(env, typed.Native())
+			if err == nil {
+				return NewXDateTime(parsed), nil
+			}
 		}
 	}
 
-	return XDateTimeZero, NewXErrorf("unable to convert value '%s' of type '%s' to a datetime", x, reflect.TypeOf(x))
+	return XDateTimeZero, NewXErrorf("unable to convert %s to a datetime", Describe(x))
 }

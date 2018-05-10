@@ -255,6 +255,10 @@ func (v legacyVariables) Resolve(key string) types.XValue {
 	return nil
 }
 
+func (v legacyVariables) Describe() string {
+	return "legacy vars"
+}
+
 func (v legacyVariables) Reduce() types.XPrimitive {
 	return toXType(v["*"]).(types.XPrimitive)
 }

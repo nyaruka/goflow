@@ -32,6 +32,9 @@ func (t *baseTrigger) Resolve(key string) types.XValue {
 	return types.NewXResolveError(t, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (t *baseTrigger) Describe() string { return "trigger" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (t *baseTrigger) Reduce() types.XPrimitive {
 	return types.NewXText(string(t.flow.UUID()))

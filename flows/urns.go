@@ -85,6 +85,9 @@ func (u *ContactURN) Resolve(key string) types.XValue {
 	return types.NewXResolveError(u, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (u *ContactURN) Describe() string { return "URN" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXText(string(u.URN)) }
 
@@ -169,11 +172,14 @@ func (l URNList) Resolve(key string) types.XValue {
 
 	// if this isn't a valid scheme, bail
 	if !urns.IsValidScheme(scheme) {
-		return types.NewXResolveError(l, key)
+		return types.NewXErrorf("no such URN scheme '%s'", key)
 	}
 
 	return l.WithScheme(scheme)
 }
+
+// Describe returns a representation of this type for error messages
+func (l URNList) Describe() string { return "URNs" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (l URNList) Reduce() types.XPrimitive {

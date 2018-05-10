@@ -118,6 +118,9 @@ func (v *varMapper) Resolve(key string) types.XValue {
 	return types.NewXText(strings.Join(newPath, "."))
 }
 
+// Describe returns a representation of this type for error messages
+func (v *varMapper) Describe() string { return "legacy vars" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *varMapper) Reduce() types.XPrimitive {
 	return types.NewXText(v.String())
@@ -375,8 +378,8 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 
 func migrateLegacyTemplateAsString(resolver types.XValue, template string) (string, error) {
 	var buf bytes.Buffer
-	var errors excellent.TemplateErrors
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
+	errors := excellent.NewTemplateErrors()
 
 	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -385,7 +388,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 		case excellent.IDENTIFIER:
 			value := excellent.ResolveValue(nil, resolver, token)
 			if value == nil {
-				errors = append(errors, fmt.Errorf("Invalid key: '%s'", token))
+				errors.Add(fmt.Sprintf("@%s", token), "unable to map")
 				buf.WriteString("@")
 				buf.WriteString(token)
 			} else {
@@ -403,13 +406,13 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 			value, err := translateExpression(nil, resolver, token)
 			buf.WriteString("@(")
 			if err != nil {
-				errors = append(errors, err)
+				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 				buf.WriteString(token)
 			} else {
 				strValue, err := toString(value)
 				if err != nil {
 					buf.WriteString(token)
-					errors = append(errors, err)
+					errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 				} else {
 					buf.WriteString(strValue)
 				}
@@ -418,7 +421,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 		}
 	}
 
-	if len(errors) > 0 {
+	if errors.HasErrors() {
 		return buf.String(), errors
 	}
 	return buf.String(), nil
@@ -448,14 +451,14 @@ func toString(params interface{}) (string, error) {
 }
 
 // translateExpression will turn an old expression into a new format expression
-func translateExpression(env utils.Environment, resolver types.XValue, template string) (interface{}, error) {
-	errors := excellent.NewErrorListener()
+func translateExpression(env utils.Environment, resolver types.XValue, expression string) (interface{}, error) {
+	errListener := excellent.NewErrorListener(expression)
 
-	input := antlr.NewInputStream(template)
+	input := antlr.NewInputStream(expression)
 	lexer := gen.NewExcellent1Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewExcellent1Parser(stream)
-	p.AddErrorListener(errors)
+	p.AddErrorListener(errListener)
 
 	// speed up parsing
 	p.SetErrorHandler(antlr.NewBailErrorStrategy())
@@ -468,9 +471,9 @@ func translateExpression(env utils.Environment, resolver types.XValue, template 
 	tree := p.Parse()
 	// timeTrack(start, "Parsing")
 
-	// if we ran into errors parsing, bail
-	if errors.HasErrors() {
-		return nil, fmt.Errorf(errors.Errors())
+	// if we ran into errors parsing, return the first one
+	if len(errListener.Errors()) > 0 {
+		return nil, errListener.Errors()[0]
 	}
 
 	visitor := newLegacyVisitor(env, resolver)

@@ -37,6 +37,9 @@ func RequireXNumberFromString(value string) XNumber {
 	return NewXNumber(decimal.RequireFromString(value))
 }
 
+// Describe returns a representation of this type for error messages
+func (x XNumber) Describe() string { return x.ToXText().Native() }
+
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XNumber) Reduce() XPrimitive { return x }
 
@@ -82,25 +85,23 @@ var _ XPrimitive = XNumberZero
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
 func ToXNumber(x XValue) (XNumber, XError) {
-	if utils.IsNil(x) {
-		return XNumberZero, NewXErrorf("unable to convert NULL to a number")
-	}
+	if !utils.IsNil(x) {
+		x = x.Reduce()
 
-	x = x.Reduce()
-
-	switch typed := x.(type) {
-	case XError:
-		return XNumberZero, typed
-	case XNumber:
-		return typed, nil
-	case XText:
-		parsed, err := decimal.NewFromString(typed.Native())
-		if err == nil {
-			return NewXNumber(parsed), nil
+		switch typed := x.(type) {
+		case XError:
+			return XNumberZero, typed
+		case XNumber:
+			return typed, nil
+		case XText:
+			parsed, err := decimal.NewFromString(typed.Native())
+			if err == nil {
+				return NewXNumber(parsed), nil
+			}
 		}
 	}
 
-	return XNumberZero, NewXErrorf("unable to convert value '%s' to a number", x)
+	return XNumberZero, NewXErrorf("unable to convert %s to a number", Describe(x))
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible

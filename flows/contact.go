@@ -177,6 +177,9 @@ func (c *Contact) Resolve(key string) types.XValue {
 	return types.NewXResolveError(c, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (c *Contact) Describe() string { return "contact" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (c *Contact) Reduce() types.XPrimitive {
 	return types.NewXText(c.name)

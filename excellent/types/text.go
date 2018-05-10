@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 	"unicode/utf8"
 
@@ -17,6 +18,9 @@ type XText struct {
 func NewXText(value string) XText {
 	return XText{native: value}
 }
+
+// Describe returns a representation of this type for error messages
+func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x XText) Reduce() XPrimitive { return x }

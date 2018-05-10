@@ -9,6 +9,7 @@ import (
 
 // XValue is the base interface of all Excellent types
 type XValue interface {
+	Describe() string
 	ToXJSON() XText
 	Reduce() XPrimitive
 }
@@ -98,4 +99,12 @@ func IsEmpty(x XValue) bool {
 	}
 
 	return false
+}
+
+// Describe returns a representation of the given value for use in error messages
+func Describe(x XValue) string {
+	if utils.IsNil(x) {
+		return "null"
+	}
+	return x.Describe()
 }

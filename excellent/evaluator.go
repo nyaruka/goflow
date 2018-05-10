@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
-	"reflect"
 	"strconv"
 	"strings"
 
@@ -16,19 +15,19 @@ import (
 )
 
 // EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
-func EvaluateExpression(env utils.Environment, context types.XValue, template string) (types.XValue, error) {
-	errors := NewErrorListener()
+func EvaluateExpression(env utils.Environment, context types.XValue, expression string) (types.XValue, error) {
+	errListener := NewErrorListener(expression)
 
-	input := antlr.NewInputStream(template)
+	input := antlr.NewInputStream(expression)
 	lexer := gen.NewExcellent2Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewExcellent2Parser(stream)
-	p.AddErrorListener(errors)
+	p.AddErrorListener(errListener)
 	tree := p.Parse()
 
-	// if we ran into errors parsing, bail
-	if errors.HasErrors() {
-		return nil, fmt.Errorf(errors.Errors())
+	// if we ran into errors parsing, return the first one
+	if len(errListener.Errors()) > 0 {
+		return nil, errListener.Errors()[0]
 	}
 
 	visitor := NewVisitor(env, context)
@@ -97,8 +96,8 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
 func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
 	var buf bytes.Buffer
-	var errors TemplateErrors
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
+	errors := NewTemplateErrors()
 
 	for tokenType, token := scanner.Scan(); tokenType != EOF; tokenType, token = scanner.Scan() {
 		switch tokenType {
@@ -107,14 +106,8 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		case IDENTIFIER:
 			value := ResolveValue(env, context, token)
 
-			// didn't find it, our value is empty string
-			if value == nil {
-				value = types.XTextEmpty
-			}
-
-			// we got an error, return our raw variable
 			if types.IsXError(value) {
-				errors = append(errors, value.(types.XError))
+				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(value)
 				if urlEncode {
@@ -127,7 +120,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			value, err := EvaluateExpression(env, context, token)
 
 			if err != nil {
-				errors = append(errors, err)
+				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 			} else {
 				strValue, _ := types.ToXText(value)
 				if urlEncode {
@@ -139,7 +132,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 		}
 	}
 
-	if len(errors) > 0 {
+	if errors.HasErrors() {
 		return buf.String(), errors
 	}
 	return buf.String(), nil
@@ -167,7 +160,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 		key, rest = popNextVariable(rest)
 
 		if utils.IsNil(variable) {
-			return types.NewXErrorf("can't resolve key '%s' of nil", key)
+			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
 		}
 
 		// is our key numeric?
@@ -197,7 +190,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 			}
 
 		} else {
-			return types.NewXErrorf("can't resolve key '%s' of type %s", key, reflect.TypeOf(variable))
+			return types.NewXErrorf("%s has no property '%s'", types.Describe(variable), key)
 		}
 	}
 

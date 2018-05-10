@@ -112,6 +112,9 @@ func (f *flow) Resolve(key string) types.XValue {
 	return types.NewXResolveError(f, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (f *flow) Describe() string { return "flow" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (f *flow) Reduce() types.XPrimitive {
 	return types.NewXText(f.name)

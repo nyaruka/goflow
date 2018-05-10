@@ -50,6 +50,9 @@ func (a Attachment) Resolve(key string) types.XValue {
 	return types.NewXResolveError(a, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (a Attachment) Describe() string { return "attachment" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (a Attachment) Reduce() types.XPrimitive { return types.NewXText(a.URL()) }
 
@@ -73,6 +76,9 @@ func (a AttachmentList) Index(index int) types.XValue {
 func (a AttachmentList) Length() int {
 	return len(a)
 }
+
+// Describe returns a representation of this type for error messages
+func (a AttachmentList) Describe() string { return "attachments" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (a AttachmentList) Reduce() types.XPrimitive {

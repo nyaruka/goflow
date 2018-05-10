@@ -33,6 +33,8 @@ func (r *testResolvable) Resolve(key string) types.XValue {
 	}
 }
 
+func (r *testResolvable) Describe() string { return "test" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *testResolvable) Reduce() types.XPrimitive {
 	return types.NewXText("hello")

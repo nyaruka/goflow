@@ -32,6 +32,9 @@ func (p LocationPath) String() string {
 	return string(p)
 }
 
+// Describe returns a representation of this type for error messages
+func (p LocationPath) Describe() string { return "location" }
+
 // Reduce returns the primitive version of this type
 func (p LocationPath) Reduce() types.XPrimitive {
 	return types.NewXText(string(p))

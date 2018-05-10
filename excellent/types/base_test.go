@@ -46,6 +46,9 @@ func (v *testXObject) MarshalJSON() ([]byte, error) {
 	return utils.JSONMarshal(e)
 }
 
+// Describe returns a representation of this type for error messages
+func (v *testXObject) Describe() string { return "test" }
+
 func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
 
 var _ types.XValue = &testXObject{}

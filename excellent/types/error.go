@@ -27,8 +27,12 @@ func NewXErrorf(format string, a ...interface{}) XError {
 
 // NewXResolveError creates a new XError when a key can't be resolved on an XResolvable
 func NewXResolveError(resolvable XResolvable, key string) XError {
-	return NewXError(fmt.Errorf("unable to resolve '%s'", key))
+	val, _ := resolvable.(XValue)
+	return NewXError(fmt.Errorf("%s has no property '%s'", Describe(val), key))
 }
+
+// Describe returns a representation of this type for error messages
+func (x xerror) Describe() string { return "error" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
 func (x xerror) Reduce() XPrimitive { return x }

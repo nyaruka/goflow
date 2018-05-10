@@ -88,6 +88,9 @@ func (v *FieldValue) Resolve(key string) types.XValue {
 	return types.NewXResolveError(v, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (v *FieldValue) Describe() string { return "field value" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Reduce() types.XPrimitive {
 	return v.TypedValue().Reduce()
@@ -213,10 +216,13 @@ func (f FieldValues) Length() int {
 func (f FieldValues) Resolve(key string) types.XValue {
 	val, exists := f[key]
 	if !exists {
-		return types.NewXResolveError(f, key)
+		return types.NewXErrorf("no such contact field '%s'", key)
 	}
 	return val
 }
+
+// Describe returns a representation of this type for error messages
+func (f FieldValues) Describe() string { return "field values" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (f FieldValues) Reduce() types.XPrimitive {

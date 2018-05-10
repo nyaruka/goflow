@@ -126,6 +126,9 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 	return types.NewXResolveError(w, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (w *WebhookCall) Describe() string { return "webhook" }
+
 // Reduce reduces this to a string of method and URL, e.g. "GET http://example.com/hook.php"
 func (w *WebhookCall) Reduce() types.XPrimitive {
 	return types.NewXText(fmt.Sprintf("%s %s", w.Method(), w.URL()))

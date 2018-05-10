@@ -34,6 +34,9 @@ func NewXJSONObject(data []byte) XJSONObject {
 	return XJSONObject{XJSON: data}
 }
 
+// Describe returns a representation of this type for error messages
+func (x XJSONObject) Describe() string { return "json object" }
+
 func (x XJSONObject) Length() int {
 	length := 0
 	jsonparser.ObjectEach(x.XJSON, func(key []byte, value []byte, dataType jsonparser.ValueType, offset int) error {
@@ -64,6 +67,9 @@ type XJSONArray struct {
 func NewXJSONArray(data []byte) XJSONArray {
 	return XJSONArray{XJSON: data}
 }
+
+// Describe returns a representation of this type for error messages
+func (x XJSONArray) Describe() string { return "json array" }
 
 func (x XJSONArray) Length() int {
 	length := 0

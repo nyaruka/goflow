@@ -303,7 +303,7 @@ func (ts *ServerTestSuite) TestExpression() {
 	// try the expression endpoint with a missing variable
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/expression", `{"expression": "@(foo + 2)", "context": {}}`)
 	ts.Equal(200, status)
-	ts.assertExpressionResponse(body, "", []string{"unable to resolve 'foo'"})
+	ts.assertExpressionResponse(body, "", []string{"error evaluating @(foo + 2): json object has no property 'foo'"})
 }
 
 func (ts *ServerTestSuite) TestFlowStartAndResume() {

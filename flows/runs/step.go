@@ -43,6 +43,9 @@ func (s *step) Resolve(key string) types.XValue {
 	}
 }
 
+// Describe returns a representation of this type for error messages
+func (s *step) Describe() string { return "step" }
+
 func (s *step) Reduce() types.XPrimitive {
 	return types.NewXText(string(s.UUID()))
 }
@@ -62,6 +65,9 @@ func (p Path) Length() int {
 func (p Path) Index(index int) types.XValue {
 	return p[index]
 }
+
+// Describe returns a representation of this type for error messages
+func (p Path) Describe() string { return "path" }
 
 func (p Path) Reduce() types.XPrimitive {
 	array := types.NewXArray()

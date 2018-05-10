@@ -63,6 +63,9 @@ func (r *Result) Resolve(key string) types.XValue {
 	return types.NewXResolveError(r, key)
 }
 
+// Describe returns a representation of this type for error messages
+func (r *Result) Describe() string { return "run result" }
+
 // Reduce is called when this object needs to be reduced to a primitive
 func (r *Result) Reduce() types.XPrimitive {
 	return types.NewXText(r.Value)
@@ -121,10 +124,13 @@ func (r Results) Resolve(key string) types.XValue {
 
 	result, exists := r[key]
 	if !exists {
-		return types.NewXResolveError(r, key)
+		return types.NewXErrorf("no such run result '%s'", key)
 	}
 	return result
 }
+
+// Describe returns a representation of this type for error messages
+func (r Results) Describe() string { return "run results" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (r Results) Reduce() types.XPrimitive {
