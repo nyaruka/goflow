@@ -1,3 +1,8 @@
+v0.10.1
+----------
+ * Improve parser error messages and add tests for error messages
+ * Update to latest gocommon which fixes tel URN which are shortcodes failing validation
+
 v0.10.0
 ----------
  * Empty/blank values should clear name/fields/language/timezone
