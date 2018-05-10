@@ -92,7 +92,7 @@
   branch = "master"
   name = "github.com/nyaruka/gocommon"
   packages = ["urns"]
-  revision = "981b096d6b246fb4ab880c7c061cc04019b80f02"
+  revision = "f1650051add81823d0048193839beab1f3201cd6"
 
 [[projects]]
   branch = "master"
@@ -119,10 +119,10 @@
   version = "v1.2.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/shopspring/decimal"
   packages = ["."]
-  revision = "69b3a8ad1f5f2c8bd855cb6506d18593064a346b"
-  version = "1.0.1"
+  revision = "2df3e6ddaf6e9531dd02d7b6337f2d310f5e4f22"
 
 [[projects]]
   name = "github.com/sirupsen/logrus"
