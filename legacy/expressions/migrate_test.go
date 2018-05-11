@@ -291,15 +291,35 @@ func (v legacyVariables) Migrate() legacyVariables {
 	migrated := make(map[string]interface{})
 
 	for key, val := range v {
-
+		key = strings.ToLower(key)
 		switch key {
 		case "flow":
 			migrated["run"] = map[string]interface{}{"results": val}
+		case "contact":
+			asMap, isMap := val.(map[string]interface{})
+			if isMap {
+				migrated["contact"] = migrateContact(asMap)
+			} else {
+				migrated["contact"] = val
+			}
 		default:
 			migrated[key] = val
 		}
 	}
+	return migrated
+}
 
+func migrateContact(contact map[string]interface{}) map[string]interface{} {
+	fields := make(map[string]interface{})
+	migrated := map[string]interface{}{"fields": fields}
+	for key, val := range contact {
+		key = strings.ToLower(key)
+		if key == "*" || key == "name" {
+			migrated[key] = val
+		} else {
+			fields[key] = val
+		}
+	}
 	return migrated
 }
 
@@ -352,6 +372,7 @@ func TestLegacyTests(t *testing.T) {
 
 			excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, tc.URLEncode, runs.RunContextTopLevels)
 
+			// TODO enforce equality
 			//assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
 		}
 	}
