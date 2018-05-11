@@ -42,7 +42,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 		case excellent.IDENTIFIER:
 			value := excellent.ResolveValue(nil, resolver, token)
 			if value == nil {
-				errors.Add(fmt.Sprintf("@%s", token), "unable to map")
+				errors.Add(fmt.Sprintf("@%s", token), "unable to migrate variable")
 				buf.WriteString("@")
 				buf.WriteString(token)
 			} else {
@@ -115,7 +115,6 @@ func migrateExpression(env utils.Environment, resolver types.XValue, expression 
 	p.AddErrorListener(errListener)
 
 	// speed up parsing
-	p.SetErrorHandler(antlr.NewBailErrorStrategy())
 	p.GetInterpreter().SetPredictionMode(antlr.PredictionModeSLL)
 	// TODO: add second stage - https://github.com/antlr/antlr4/issues/192
 

@@ -1256,5 +1256,16 @@
         "errors": [
             "Division by zero"
         ]
+    },
+    {
+        "template": "@(\")",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(\")",
+        "errors": []
     }
 ]

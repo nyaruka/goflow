@@ -92,6 +92,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"1 + 2", "1 + 2", false},
 		{"@(1 + 2)", "3", false},
 		{"@@string1", "@string1", false},
+		{"@@@string1", "@foo", false},
 
 		{"@string1@string2", "foobar", false},
 		{"@(string1 & string2)", "foobar", false},

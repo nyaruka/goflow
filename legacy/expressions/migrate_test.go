@@ -3,12 +3,14 @@ package expressions_test
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/flows/runs"
 	"io/ioutil"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
@@ -279,6 +281,22 @@ func toXType(val interface{}) types.XValue {
 	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
 }
 
+func (v legacyVariables) Migrate() legacyVariables {
+	migrated := make(map[string]interface{})
+
+	for key, val := range v {
+
+		switch key {
+		case "flow":
+			migrated["run"] = map[string]interface{}{"results": val}
+		default:
+			migrated[key] = val
+		}
+	}
+
+	return migrated
+}
+
 type legacyTestContext struct {
 	Variables legacyVariables `json:"variables"`
 	Timezone  string          `json:"timezone"`
@@ -304,15 +322,30 @@ func TestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		_, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
-
-		assert.NoError(t, err)
+		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
 
 		defer func() {
 			if r := recover(); r != nil {
 				t.Errorf("panic migrating template '%s': %#v", tc.Template, r)
 			}
 		}()
+
+		if err != nil {
+			assert.Equal(t, tc.Output, migratedTemplate, "migrated template should match input on error")
+		} else {
+			// evaluate the migrated template
+			tz, err := time.LoadLocation(tc.Context.Timezone)
+			require.NoError(t, err)
+
+			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
+
+			migratedVars := tc.Context.Variables.Migrate()
+			migratedVarsJSON, _ := json.Marshal(migratedVars)
+
+			output, _ := excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, tc.URLEncode, runs.RunContextTopLevels)
+
+			assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
+		}
 
 		// TODO evaluate the migrated template? Would need to remap the provided variables, i.e. flow.x -> run.results.x
 		//
