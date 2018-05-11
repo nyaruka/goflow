@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/legacy/gen"
 	"github.com/nyaruka/goflow/utils"
@@ -30,7 +29,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 	return migrateLegacyTemplateAsString(migrationVarMapper, template)
 }
 
-func migrateLegacyTemplateAsString(resolver types.XValue, template string) (string, error) {
+func migrateLegacyTemplateAsString(resolver Resolvable, template string) (string, error) {
 	var buf bytes.Buffer
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 	scanner.SetUnescapeBody(false)
@@ -41,7 +40,7 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := excellent.ResolveValue(nil, resolver, token)
+			value := resolveValue(nil, resolver, token)
 			if value == nil {
 				errors.Add(fmt.Sprintf("@%s", token), "unable to migrate variable")
 				buf.WriteString("@")
@@ -84,12 +83,12 @@ func migrateLegacyTemplateAsString(resolver types.XValue, template string) (stri
 
 func toString(params interface{}) (string, error) {
 	switch typed := params.(type) {
-	case types.XValue:
-		str, xerr := types.ToXText(typed)
-		return str.Native(), xerr
+	case error:
+		return "", typed
 	case string:
 		return typed, nil
-
+	case Resolvable:
+		return typed.String(), nil
 	case []interface{}:
 		strArr := make([]string, len(typed))
 		for i := range strArr {
@@ -101,12 +100,12 @@ func toString(params interface{}) (string, error) {
 		}
 		return strings.Join(strArr, ", "), nil
 	default:
-		panic(fmt.Sprintf("can't toString a %s", typed))
+		panic(fmt.Sprintf("can't toString a %T %s", typed, typed))
 	}
 }
 
 // migrates an old expression into a new format expression
-func migrateExpression(env utils.Environment, resolver types.XValue, expression string) (interface{}, error) {
+func migrateExpression(env utils.Environment, resolver interface{}, expression string) (interface{}, error) {
 	errListener := excellent.NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
@@ -141,6 +140,76 @@ func migrateExpression(env utils.Environment, resolver types.XValue, expression 
 
 	// all is good, return our value
 	return value, nil
+}
+
+// ResolveValue will resolve the passed in string variable given in dot notation and return
+// the value as defined by the Resolvable passed in.
+//
+// Example syntaxes:
+//      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
+//      foo.bar[0] - same as above
+func resolveValue(env utils.Environment, variable interface{}, key string) interface{} {
+	// self referencing
+	if key == "" {
+		return variable
+	}
+
+	// strip leading '.'
+	if key[0] == '.' {
+		key = key[1:]
+	}
+
+	rest := key
+	for rest != "" {
+		key, rest = popNextVariable(rest)
+
+		if utils.IsNil(variable) {
+			return fmt.Errorf("%s has no property '%s'", variable, key)
+		}
+
+		resolver, isResolver := variable.(Resolvable)
+
+		// look it up in our resolver
+		if isResolver {
+			variable = resolver.Resolve(key)
+
+			_, isErr := variable.(error)
+			if isErr {
+				return variable
+			}
+
+		} else {
+			return fmt.Errorf("%s has no property '%s'", variable, key)
+		}
+	}
+
+	return variable
+}
+
+// popNextVariable pops the next variable off our string:
+//     foo.bar.baz -> "foo", "bar.baz"
+//     foo.0.bar -> "foo", "0.baz"
+func popNextVariable(input string) (string, string) {
+	var keyStart = 0
+	var keyEnd = -1
+	var restStart = -1
+
+	for i, c := range input {
+		if c == '.' {
+			keyEnd = i
+			restStart = i + 1
+			break
+		}
+	}
+
+	if keyEnd == -1 {
+		return input, ""
+	}
+
+	key := strings.Trim(input[keyStart:keyEnd], "\"")
+	rest := input[restStart:]
+
+	return key, rest
 }
 
 func isDate(operand string) bool {

@@ -6,9 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/functions"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/legacy/gen"
 	"github.com/nyaruka/goflow/utils"
 
@@ -18,10 +16,10 @@ import (
 type legacyVisitor struct {
 	gen.BaseExcellent1Visitor
 	env      utils.Environment
-	resolver types.XValue
+	resolver interface{}
 }
 
-func newLegacyVisitor(env utils.Environment, resolver types.XValue) *legacyVisitor {
+func newLegacyVisitor(env utils.Environment, resolver interface{}) *legacyVisitor {
 	return &legacyVisitor{env: env, resolver: resolver}
 }
 
@@ -39,19 +37,19 @@ func (v *legacyVisitor) VisitParse(ctx *gen.ParseContext) interface{} {
 
 // VisitDecimalLiteral deals with decimals like 1.5
 func (v *legacyVisitor) VisitDecimalLiteral(ctx *gen.DecimalLiteralContext) interface{} {
-	dec, _ := toString(ctx.GetText())
-	return dec
+	decStr, _ := toString(ctx.GetText())
+	return decStr
 }
 
 // VisitDotLookup deals with lookups like foo.0 or foo.bar
 func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
-	value := v.Visit(ctx.Atom(0)).(types.XValue)
-	expression := v.Visit(ctx.Atom(1)).(types.XValue)
-	lookup, err := types.ToXText(expression)
+	value := v.Visit(ctx.Atom(0))
+	expression := v.Visit(ctx.Atom(1))
+	lookup, err := toString(expression)
 	if err != nil {
 		return err
 	}
-	return excellent.ResolveValue(v.env, value, lookup.Native())
+	return resolveValue(v.env, value, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -152,7 +150,7 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := excellent.ResolveValue(v.env, v.resolver, key)
+	val := resolveValue(v.env, v.resolver, key)
 	if val == nil {
 		return fmt.Errorf("Invalid key: '%s'", key)
 	}

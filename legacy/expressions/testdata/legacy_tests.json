@@ -1267,5 +1267,44 @@
         "url_encode": false,
         "output": "@(\")",
         "errors": []
+    },
+    {
+        "template": "@('x')",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@('x')",
+        "errors": [
+            "Expression error at: '"
+        ]
+    },
+    {
+        "template": "@(0 / )",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(0 / )",
+        "errors": [
+            "Expression error at: )"
+        ]
+    },
+    {
+        "template": "@(1.1.0)",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(1.1.0)",
+        "errors": [
+            "Expression is invalid"
+        ]
     }
 ]

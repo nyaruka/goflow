@@ -5,8 +5,12 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/excellent/types"
 )
+
+type Resolvable interface {
+	Resolve(key string) interface{}
+	String() string
+}
 
 // ContextTopLevels are the allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
 var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
@@ -56,12 +60,12 @@ func (v *varMapper) rebase(prefix string) *varMapper {
 }
 
 // Resolve resolves the given key to a mapped expression
-func (v *varMapper) Resolve(key string) types.XValue {
+func (v *varMapper) Resolve(key string) interface{} {
 	key = strings.ToLower(key)
 
 	// is this a complete substitution?
 	if substitute, ok := v.substitutions[key]; ok {
-		return types.NewXText(substitute)
+		return substitute
 	}
 
 	newPath := make([]string, 0, 1)
@@ -89,7 +93,7 @@ func (v *varMapper) Resolve(key string) types.XValue {
 
 		// or a simple string in which case we add to the end of the path and return that
 		newPath = append(newPath, value.(string))
-		return types.NewXText(strings.Join(newPath, "."))
+		return strings.Join(newPath, ".")
 	}
 
 	// then it must be an arbitrary item
@@ -106,19 +110,8 @@ func (v *varMapper) Resolve(key string) types.XValue {
 		}
 	}
 
-	return types.NewXText(strings.Join(newPath, "."))
+	return strings.Join(newPath, ".")
 }
-
-// Describe returns a representation of this type for error messages
-func (v *varMapper) Describe() string { return "legacy vars" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (v *varMapper) Reduce() types.XPrimitive {
-	return types.NewXText(v.String())
-}
-
-// ToXJSON won't be called on this but needs to be defined
-func (v *varMapper) ToXJSON() types.XText { return types.XTextEmpty }
 
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]
@@ -128,8 +121,7 @@ func (v *varMapper) String() string {
 	return v.base
 }
 
-var _ types.XValue = (*varMapper)(nil)
-var _ types.XResolvable = (*varMapper)(nil)
+var _ Resolvable = (*varMapper)(nil)
 
 // Migration of @extra requires its own mapper because it can map differently depending on the containing flow
 type extraMapper struct {
@@ -140,7 +132,7 @@ type extraMapper struct {
 }
 
 // Resolve resolves the given key to a new expression
-func (m *extraMapper) Resolve(key string) types.XValue {
+func (m *extraMapper) Resolve(key string) interface{} {
 	newPath := []string{}
 	if m.path != "" {
 		newPath = append(newPath, m.path)
@@ -149,21 +141,19 @@ func (m *extraMapper) Resolve(key string) types.XValue {
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
 }
 
-// Reduce is called when this object needs to be reduced to a primitive
-func (m *extraMapper) Reduce() types.XPrimitive {
+func (m *extraMapper) String() string {
 	switch m.extraAs {
 	case ExtraAsWebhookJSON:
-		return types.NewXText(fmt.Sprintf("run.webhook.json.%s", m.path))
+		return fmt.Sprintf("run.webhook.json.%s", m.path)
 	case ExtraAsTriggerParams:
-		return types.NewXText(fmt.Sprintf("trigger.params.%s", m.path))
+		return fmt.Sprintf("trigger.params.%s", m.path)
 	case ExtraAsFunction:
-		return types.NewXText(fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path))
+		return fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path)
 	}
-	return types.XTextEmpty
+	return ""
 }
 
-var _ types.XValue = (*extraMapper)(nil)
-var _ types.XResolvable = (*extraMapper)(nil)
+var _ Resolvable = (*extraMapper)(nil)
 
 func newMigrationBaseVars() map[string]interface{} {
 	contact := &varMapper{
