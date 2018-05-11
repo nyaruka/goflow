@@ -1,3 +1,7 @@
+v0.10.2
+----------
+ * Drop requirement for input.uuid to be a valid UUIDv4 since it comes from msg.uuid which isn't always valid UUID4
+
 v0.10.1
 ----------
  * Improve parser error messages and add tests for error messages
