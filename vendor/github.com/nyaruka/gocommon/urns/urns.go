@@ -47,6 +47,9 @@ const (
 	// WhatsAppScheme is the scheme used for WhatsApp identifiers
 	WhatsAppScheme string = "whatsapp"
 
+	// WeChatScheme is the scheme used for WeChat identifiers
+	WeChatScheme string = "wechat"
+
 	// FacebookRefPrefix is the path prefix used for facebook referral URNs
 	FacebookRefPrefix string = "ref:"
 )
@@ -65,6 +68,7 @@ var ValidSchemes = map[string]bool{
 	TwitterScheme:   true,
 	ViberScheme:     true,
 	WhatsAppScheme:  true,
+	WeChatScheme:    true,
 }
 
 // IsValidScheme checks whether the provided scheme is valid
