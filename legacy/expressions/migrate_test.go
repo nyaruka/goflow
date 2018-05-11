@@ -207,6 +207,9 @@ func TestMigrateTemplate(t *testing.T) {
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
 		{old: `@twitter_handle`, new: `@twitter_handle`},
+
+		{old: `@`, new: `@`},
+		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@run.results.favorite_color @@flow.favorite_color @run.results.favorite_color @nyaruka @ @`},
 	}
 
 	for i := range tests {

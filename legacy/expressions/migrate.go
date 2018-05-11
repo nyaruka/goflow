@@ -33,6 +33,7 @@ func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) 
 func migrateLegacyTemplateAsString(resolver types.XValue, template string) (string, error) {
 	var buf bytes.Buffer
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
+	scanner.SetUnescapeBody(false)
 	errors := excellent.NewTemplateErrors()
 
 	for tokenType, token := scanner.Scan(); tokenType != excellent.EOF; tokenType, token = scanner.Scan() {
