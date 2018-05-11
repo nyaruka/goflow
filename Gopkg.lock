@@ -92,7 +92,7 @@
   branch = "master"
   name = "github.com/nyaruka/gocommon"
   packages = ["urns"]
-  revision = "f1650051add81823d0048193839beab1f3201cd6"
+  revision = "bc2f2eb770fbf625b50efe550c9652b9291d8992"
 
 [[projects]]
   branch = "master"
