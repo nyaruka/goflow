@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -129,7 +130,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = MigrateTemplate(nameExpression, ExtraAsFunction)
+			nameExpression, _ = expressions.MigrateTemplate(nameExpression, expressions.ExtraAsFunction)
 		}
 
 		l.Name = nameExpression
@@ -179,7 +180,7 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = MigrateTemplate(nameExpression, ExtraAsFunction)
+			nameExpression, _ = expressions.MigrateTemplate(nameExpression, expressions.ExtraAsFunction)
 		}
 
 		g.Name = nameExpression
@@ -305,7 +306,7 @@ type wardTest struct {
 func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language]string, uuid utils.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
-		expression, _ := MigrateTemplate(item, ExtraAsFunction)
+		expression, _ := expressions.MigrateTemplate(item, expressions.ExtraAsFunction)
 		if language != baseLanguage {
 			localization.AddItemTranslation(language, uuid, property, []string{expression})
 		} else {
@@ -319,15 +320,15 @@ func addTranslationMap(baseLanguage utils.Language, localization flows.Localizat
 func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language][]string, uuid utils.UUID, property string) []string {
 	var inBaseLanguage []string
 	for language, items := range mapped {
-		expressions := make([]string, len(items))
+		templates := make([]string, len(items))
 		for i := range items {
-			expression, _ := MigrateTemplate(items[i], ExtraAsFunction)
-			expressions[i] = expression
+			expression, _ := expressions.MigrateTemplate(items[i], expressions.ExtraAsFunction)
+			templates[i] = expression
 		}
 		if language != baseLanguage {
-			localization.AddItemTranslation(language, uuid, property, expressions)
+			localization.AddItemTranslation(language, uuid, property, templates)
 		} else {
-			inBaseLanguage = expressions
+			inBaseLanguage = templates
 		}
 	}
 	return inBaseLanguage
@@ -403,11 +404,11 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			return nil, err
 		}
 
-		migratedSubject, _ := MigrateTemplate(a.Subject, ExtraAsFunction)
-		migratedBody, _ := MigrateTemplate(msg, ExtraAsFunction)
+		migratedSubject, _ := expressions.MigrateTemplate(a.Subject, expressions.ExtraAsFunction)
+		migratedBody, _ := expressions.MigrateTemplate(msg, expressions.ExtraAsFunction)
 		migratedEmails := make([]string, len(a.Emails))
 		for e, email := range a.Emails {
-			migratedEmails[e], _ = MigrateTemplate(email, ExtraAsFunction)
+			migratedEmails[e], _ = expressions.MigrateTemplate(email, expressions.ExtraAsFunction)
 		}
 
 		return &actions.SendEmailAction{
@@ -447,7 +448,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			if variable.ID == "@new_contact" {
 				createContact = true
 			} else {
-				migratedVar, _ := MigrateTemplate(variable.ID, ExtraAsFunction)
+				migratedVar, _ := expressions.MigrateTemplate(variable.ID, expressions.ExtraAsFunction)
 				variables = append(variables, migratedVar)
 			}
 		}
@@ -517,7 +518,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 		variables := make([]string, 0, len(a.Variables))
 		for _, variable := range a.Variables {
-			migratedVar, _ := MigrateTemplate(variable.ID, ExtraAsFunction)
+			migratedVar, _ := expressions.MigrateTemplate(variable.ID, expressions.ExtraAsFunction)
 			variables = append(variables, migratedVar)
 		}
 
@@ -552,7 +553,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":
-		migratedValue, _ := MigrateTemplate(a.Value, ExtraAsFunction)
+		migratedValue, _ := expressions.MigrateTemplate(a.Value, expressions.ExtraAsFunction)
 
 		// flows now have different action for name changing
 		if a.Field == "name" || a.Field == "first_name" {
@@ -589,7 +590,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "api":
-		migratedURL, _ := MigrateTemplate(a.Webhook, ExtraAsFunction)
+		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, expressions.ExtraAsFunction)
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		body := ""
@@ -636,7 +637,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "eq", "gt", "gte", "lt", "lte":
 		test := numericTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := MigrateTemplate(string(test.Test), ExtraAsFunction)
+		migratedTest, err := expressions.MigrateTemplate(string(test.Test), expressions.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -645,11 +646,11 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedMin, err := MigrateTemplate(test.Min, ExtraAsFunction)
+		migratedMin, err := expressions.MigrateTemplate(test.Min, expressions.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
-		migratedMax, err := MigrateTemplate(test.Max, ExtraAsFunction)
+		migratedMax, err := expressions.MigrateTemplate(test.Max, expressions.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -698,7 +699,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "district":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedState, err := MigrateTemplate(test.Test, ExtraAsFunction)
+		migratedState, err := expressions.MigrateTemplate(test.Test, expressions.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -707,11 +708,11 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "ward":
 		test := wardTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedDistrict, err := MigrateTemplate(test.District, ExtraAsFunction)
+		migratedDistrict, err := expressions.MigrateTemplate(test.District, expressions.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
-		migratedState, err := MigrateTemplate(test.State, ExtraAsFunction)
+		migratedState, err := expressions.MigrateTemplate(test.State, expressions.ExtraAsFunction)
 		if err != nil {
 			return routers.Case{}, err
 		}
@@ -862,7 +863,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			return nil, err
 		}
 
-		migratedURL, _ := MigrateTemplate(config.Webhook, ExtraAsFunction)
+		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, expressions.ExtraAsFunction)
 		headers := make(map[string]string, len(config.Headers))
 		body := ""
 
@@ -892,7 +893,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		var config fieldConfig
 		json.Unmarshal(r.Config, &config)
 
-		operand, _ := MigrateTemplate(r.Operand, ExtraAsFunction)
+		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
@@ -923,7 +924,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	case "contact_field":
 		fallthrough
 	case "expression":
-		operand, _ := MigrateTemplate(r.Operand, ExtraAsFunction)
+		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction)
 		if operand == "" {
 			operand = "@run.input"
 		}

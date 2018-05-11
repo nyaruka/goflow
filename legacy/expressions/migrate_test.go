@@ -1,4 +1,4 @@
-package legacy_test
+package expressions_test
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/legacy"
+	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -24,7 +24,7 @@ type testTemplate struct {
 	old string
 	new string
 
-	extraAs legacy.ExtraVarsMapping
+	extraAs expressions.ExtraVarsMapping
 }
 
 func TestMigrateTemplate(t *testing.T) {
@@ -198,9 +198,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
-		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: legacy.ExtraAsWebhookJSON},
-		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: legacy.ExtraAsTriggerParams},
-		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: legacy.ExtraAsFunction},
+		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: expressions.ExtraAsWebhookJSON},
+		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: expressions.ExtraAsTriggerParams},
+		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: expressions.ExtraAsFunction},
 
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
@@ -223,7 +223,7 @@ func TestMigrateTemplate(t *testing.T) {
 	for _, test := range tests {
 
 		for i := 0; i < 1; i++ {
-			migratedTemplate, err := legacy.MigrateTemplate(test.old, test.extraAs)
+			migratedTemplate, err := expressions.MigrateTemplate(test.old, test.extraAs)
 
 			defer func() {
 				if r := recover(); r != nil {
@@ -304,7 +304,7 @@ func TestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		_, err := legacy.MigrateTemplate(tc.Template, legacy.ExtraAsFunction)
+		_, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
 
 		assert.NoError(t, err)
 
