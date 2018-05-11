@@ -20,6 +20,21 @@
                     "destination_type": "A"
                 },
                 {
+                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
+                    "test": {
+                        "test": {
+                            "eng": "affirmative"
+                        },
+                        "type": "contains_any"
+                    },
+                    "category": {
+                        "eng": "Yes",
+                        "fra": "Oui"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A"
+                },
+                {
                     "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8", 
                     "test": {
                         "test": "true", 
@@ -54,6 +69,12 @@
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "type": "has_any_word",
                         "arguments": ["yeah yes"],
+                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                    },
+                    {
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "arguments": ["affirmative"],
                         "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
                     }
                 ]
