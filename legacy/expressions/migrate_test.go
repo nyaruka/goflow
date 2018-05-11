@@ -352,11 +352,11 @@ func TestLegacyTests(t *testing.T) {
 	for _, tc := range tests {
 		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
 
-		//defer func() {
-		//	if r := recover(); r != nil {
-		//		t.Errorf("panic migrating template '%s': %#v", tc.Template, r)
-		//	}
-		//}()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("panic migrating template '%s': %#v", tc.Template, r)
+			}
+		}()
 
 		if err != nil {
 			assert.Equal(t, tc.Output, migratedTemplate, "migrated template should match input on error")
@@ -368,12 +368,16 @@ func TestLegacyTests(t *testing.T) {
 			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
 
 			migratedVars := tc.Context.Variables.Migrate()
-			//migratedVarsJSON, _ := json.Marshal(migratedVars)
+			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, tc.URLEncode, runs.RunContextTopLevels)
+			_, err = excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, tc.URLEncode, runs.RunContextTopLevels)
 
-			// TODO enforce equality
-			//assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
+			if len(tc.Errors) > 0 {
+				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
+			} else {
+				// TODO enable checking of output
+				//assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
+			}
 		}
 	}
 }

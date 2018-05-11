@@ -1306,5 +1306,18 @@
         "errors": [
             "Expression is invalid"
         ]
+    },
+    {
+        "template": "@(FOO())",
+        "context": {
+            "variables": {},
+            "timezone": "UTC",
+            "date_style": "day_first"
+        },
+        "url_encode": false,
+        "output": "@(FOO())",
+        "errors": [
+            "Undefined function: FOO"
+        ]
     }
 ]

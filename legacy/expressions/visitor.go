@@ -49,7 +49,7 @@ func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 	if err != nil {
 		return err
 	}
-	return resolveValue(v.env, value, lookup)
+	return resolveLookup(v.env, value, lookup)
 }
 
 // VisitStringLiteral deals with string literals such as "asdf"
@@ -150,7 +150,7 @@ func (v *legacyVisitor) VisitFalse(ctx *gen.FalseContext) interface{} {
 // VisitContextReference deals with references to variables in the context such as "foo"
 func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) interface{} {
 	key := strings.ToLower(ctx.GetText())
-	val := resolveValue(v.env, v.resolver, key)
+	val := resolveLookup(v.env, v.resolver, key)
 	if val == nil {
 		return fmt.Errorf("Invalid key: '%s'", key)
 	}

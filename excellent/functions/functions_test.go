@@ -69,7 +69,7 @@ var funcTests = []struct {
 	{"code", []types.XValue{}, ERROR},
 
 	{"clean", []types.XValue{xs("hello")}, xs("hello")},
-	{"clean", []types.XValue{xs("  hello  world\n\t")}, xs("hello  world")},
+	{"clean", []types.XValue{xs("😃 Hello \nwo\tr\rld")}, xs("😃 Hello world")},
 	{"clean", []types.XValue{xs("")}, xs("")},
 	{"clean", []types.XValue{}, ERROR},
 

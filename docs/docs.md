@@ -514,12 +514,11 @@ Returns the rune for the passed in codepoint, `num`, which may be unicode, this 
 
 ## clean(text)
 
-Strips any leading or trailing whitespace from `text`
+Strips any non-printable characters from `text`
 
 
 ```objectivec
-@(clean("\nfoo\t")) → foo
-@(clean(" bar")) → bar
+@(clean("😃 Hello \nwo\tr\rld")) → 😃 Hello world
 @(clean(123)) → 123
 ```
 

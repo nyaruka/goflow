@@ -516,10 +516,9 @@
 <a class="sourceLine" id="cb22-3" data-line-number="3">@(<span class="dt">char</span>(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:clean"></a></p>
 <h2 id="cleantext">clean(text)</h2>
-<p>Strips any leading or trailing whitespace from <code>text</code></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" data-line-number="1">@(clean(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">foo</span><span class="sc">\t</span><span class="st">&quot;</span>)) → foo</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">@(clean(<span class="st">&quot; bar&quot;</span>)) → bar</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">@(clean(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
+<p>Strips any non-printable characters from <code>text</code></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" data-line-number="1">@(clean(<span class="st">&quot;😃 Hello </span><span class="sc">\n</span><span class="st">wo</span><span class="sc">\t</span><span class="st">r</span><span class="sc">\r</span><span class="st">ld&quot;</span>)) → 😃 Hello world</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">@(clean(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
 <p><a name="function:code"></a></p>
 <h2 id="codetext">code(text)</h2>
 <p>Returns the numeric code for the first character in <code>text</code>, it is the inverse of char</p>

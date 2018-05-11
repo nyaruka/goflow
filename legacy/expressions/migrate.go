@@ -40,7 +40,7 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string) (string
 		case excellent.BODY:
 			buf.WriteString(token)
 		case excellent.IDENTIFIER:
-			value := resolveValue(nil, resolver, token)
+			value := resolveLookup(nil, resolver, token)
 			if value == nil {
 				errors.Add(fmt.Sprintf("@%s", token), "unable to migrate variable")
 				buf.WriteString("@")
@@ -142,13 +142,7 @@ func migrateExpression(env utils.Environment, resolver interface{}, expression s
 	return value, nil
 }
 
-// ResolveValue will resolve the passed in string variable given in dot notation and return
-// the value as defined by the Resolvable passed in.
-//
-// Example syntaxes:
-//      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
-//      foo.bar[0] - same as above
-func resolveValue(env utils.Environment, variable interface{}, key string) interface{} {
+func resolveLookup(env utils.Environment, variable interface{}, key string) interface{} {
 	// self referencing
 	if key == "" {
 		return variable
@@ -208,7 +202,6 @@ func popNextVariable(input string) (string, string) {
 
 	key := strings.Trim(input[keyStart:keyEnd], "\"")
 	rest := input[restStart:]
-
 	return key, rest
 }
 
