@@ -1,3 +1,10 @@
+v0.10.3
+----------
+ * Allow webhook calls to be mocked and add tests
+ * Don't blow up if legacy stickies have floating point positions
+ * Update CLEAN() to match legacy behaviour
+ * More fixes when evaluating migrated legacy template tests
+
 v0.10.2
 ----------
  * Drop requirement for input.uuid to be a valid UUIDv4 since it comes from msg.uuid which isn't always valid UUID4
