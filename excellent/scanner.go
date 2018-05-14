@@ -37,6 +37,7 @@ type xscanner struct {
 	unreadRunes         []rune
 	unreadCount         int
 	identifierTopLevels []string
+	unescapeBody        bool // unescape @@ sequences in the body
 }
 
 // NewXScanner returns a new instance of our excellent scanner
@@ -45,7 +46,12 @@ func NewXScanner(r io.Reader, identifierTopLevels []string) *xscanner {
 		reader:              bufio.NewReader(r),
 		unreadRunes:         make([]rune, 4),
 		identifierTopLevels: identifierTopLevels,
+		unescapeBody:        true,
 	}
+}
+
+func (s *xscanner) SetUnescapeBody(unescape bool) {
+	s.unescapeBody = unescape
 }
 
 // gets the next rune or EOF if we are at the end of the string
@@ -175,11 +181,19 @@ func (s *xscanner) scanBody() (xToken, string) {
 			} else if peek == '@' {
 				buf.WriteRune('@')
 
+				if !s.unescapeBody {
+					buf.WriteRune('@')
+				}
+
 				// this is an identifier
 			} else if isIdentifierChar(peek) {
 				s.unread(peek)
 				s.unread('@')
 				break
+
+				// @ at the end of the input
+			} else if peek == eof {
+				buf.WriteRune('@')
 
 				// @ followed by non-letter
 			} else {

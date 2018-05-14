@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"regexp"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -16,6 +17,8 @@ import (
 	humanize "github.com/dustin/go-humanize"
 	"github.com/shopspring/decimal"
 )
+
+var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
 // XFunction defines the interface that Excellent functions must implement
 type XFunction func(env utils.Environment, args ...types.XValue) types.XValue
@@ -508,15 +511,14 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(strings.TrimSpace(fields[field]))
 }
 
-// Clean strips any leading or trailing whitespace from `text`
+// Clean strips any non-printable characters from `text`
 //
-//   @(clean("\nfoo\t")) -> foo
-//   @(clean(" bar")) -> bar
+//   @(clean("😃 Hello \nwo\tr\rld")) -> 😃 Hello world
 //   @(clean(123)) -> 123
 //
 // @function clean(text)
 func Clean(env utils.Environment, text types.XText) types.XValue {
-	return types.NewXText(strings.TrimSpace(text.Native()))
+	return types.NewXText(nonPrintableRegex.ReplaceAllString(text.Native(), ""))
 }
 
 // Left returns the `count` most left characters of the passed in `text`

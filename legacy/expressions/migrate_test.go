@@ -1,6 +1,7 @@
 package expressions_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -9,7 +10,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -205,6 +208,9 @@ func TestMigrateTemplate(t *testing.T) {
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
 		{old: `@twitter_handle`, new: `@twitter_handle`},
+
+		{old: `@`, new: `@`},
+		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@run.results.favorite_color @@flow.favorite_color @run.results.favorite_color @nyaruka @ @`},
 	}
 
 	for i := range tests {
@@ -273,10 +279,48 @@ func toXType(val interface{}) types.XValue {
 	switch typed := val.(type) {
 	case string:
 		return types.NewXText(typed)
+	case json.Number:
+		return types.RequireXNumberFromString(string(typed))
 	case map[string]interface{}:
 		return legacyVariables(typed)
 	}
 	panic(fmt.Sprintf("unsupported type: %s", reflect.TypeOf(val)))
+}
+
+func (v legacyVariables) Migrate() legacyVariables {
+	migrated := make(map[string]interface{})
+
+	for key, val := range v {
+		key = strings.ToLower(key)
+		switch key {
+		case "flow":
+			migrated["run"] = map[string]interface{}{"results": val}
+		case "contact":
+			asMap, isMap := val.(map[string]interface{})
+			if isMap {
+				migrated["contact"] = migrateContact(asMap)
+			} else {
+				migrated["contact"] = val
+			}
+		default:
+			migrated[key] = val
+		}
+	}
+	return migrated
+}
+
+func migrateContact(contact map[string]interface{}) map[string]interface{} {
+	fields := make(map[string]interface{})
+	migrated := map[string]interface{}{"fields": fields}
+	for key, val := range contact {
+		key = strings.ToLower(key)
+		if key == "*" || key == "name" {
+			migrated[key] = val
+		} else {
+			fields[key] = val
+		}
+	}
+	return migrated
 }
 
 type legacyTestContext struct {
@@ -300,13 +344,13 @@ func TestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	var tests []legacyTest
-	err = json.Unmarshal(legacyTestData, &tests)
+	d := json.NewDecoder(bytes.NewReader(legacyTestData))
+	d.UseNumber()
+	err = d.Decode(&tests)
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		_, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
-
-		assert.NoError(t, err)
+		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
 
 		defer func() {
 			if r := recover(); r != nil {
@@ -314,21 +358,26 @@ func TestLegacyTests(t *testing.T) {
 			}
 		}()
 
-		// TODO evaluate the migrated template? Would need to remap the provided variables, i.e. flow.x -> run.results.x
-		//
-		//if err == nil {
-		//	tz, err := time.LoadLocation(tc.Context.Timezone)
-		//	require.NoError(t, err)
-		//
-		//	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
-		//
-		//	output, err := excellent.EvaluateTemplateAsString(env, tc.Context.Variables, migratedTemplate, tc.URLEncode, legacy.ContextTopLevels)
-		//
-		//	if len(tc.Errors) > 0 {
-		//		assert.Error(t, err, "expected error for template '%s' (migrated from '%s')", migratedTemplate, tc.Template)
-		//	} else {
-		//		assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s')", migratedTemplate, tc.Template)
-		//	}
-		//}
+		if err != nil {
+			assert.Equal(t, tc.Output, migratedTemplate, "migrated template should match input on error")
+		} else {
+			// evaluate the migrated template
+			tz, err := time.LoadLocation(tc.Context.Timezone)
+			require.NoError(t, err)
+
+			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
+
+			migratedVars := tc.Context.Variables.Migrate()
+			migratedVarsJSON, _ := json.Marshal(migratedVars)
+
+			_, err = excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, tc.URLEncode, runs.RunContextTopLevels)
+
+			if len(tc.Errors) > 0 {
+				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
+			} else {
+				// TODO enable checking of output
+				//assert.Equal(t, tc.Output, output, "output mismatch for template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)
+			}
+		}
 	}
 }
