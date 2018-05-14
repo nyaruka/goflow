@@ -7,8 +7,8 @@ import (
 
 // the configuration options for the flow engine
 type config struct {
-	disableWebhooks         bool `json:"disable_webhooks"`
-	maxWebhookResponseBytes int  `json:"max_webhook_response_bytes"`
+	disableWebhooks         bool
+	maxWebhookResponseBytes int
 }
 
 // NewConfig returns a new engine configuration
