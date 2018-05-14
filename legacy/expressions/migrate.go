@@ -112,6 +112,7 @@ func migrateExpression(env utils.Environment, resolver interface{}, expression s
 	lexer := gen.NewExcellent1Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewExcellent1Parser(stream)
+	p.RemoveErrorListeners()
 	p.AddErrorListener(errListener)
 
 	// speed up parsing

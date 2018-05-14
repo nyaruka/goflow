@@ -22,6 +22,7 @@ func EvaluateExpression(env utils.Environment, context types.XValue, expression 
 	lexer := gen.NewExcellent2Lexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewExcellent2Parser(stream)
+	p.RemoveErrorListeners()
 	p.AddErrorListener(errListener)
 	tree := p.Parse()
 
