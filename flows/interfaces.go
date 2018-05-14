@@ -340,6 +340,7 @@ type Step interface {
 }
 
 type EngineConfig interface {
+	DisableWebhooks() bool
 	MaxWebhookResponseBytes() int
 }
 

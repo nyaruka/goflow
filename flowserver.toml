@@ -24,4 +24,5 @@ asset_cache_prune = 100
 asset_server_token = "missing_auth_token"
 
 # engine settings
+engine_disable_webhooks = false
 engine_max_webhook_response_bytes = 10000

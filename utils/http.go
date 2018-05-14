@@ -2,6 +2,7 @@ package utils
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"net/http/httputil"
 	"time"
 
@@ -48,7 +49,7 @@ func (c *HTTPClient) Do(request *http.Request) (*http.Response, error) {
 	return c.client.Do(request)
 }
 
-// DoWithDump does the given hTTP request and returns a dump of the entire request
+// DoWithDump does the given HTTP request and returns a dump of the entire request
 func (c *HTTPClient) DoWithDump(request *http.Request) (*http.Response, string, error) {
 	c.prepareRequest(request)
 
@@ -62,4 +63,25 @@ func (c *HTTPClient) DoWithDump(request *http.Request) (*http.Response, string, 
 	response, err := c.client.Do(request)
 
 	return response, string(dump), err
+}
+
+// MockWithDump mocks the given HTTP request and returns a dump of the entire request
+func (c *HTTPClient) MockWithDump(request *http.Request, mockResponse string) (*http.Response, string, error) {
+	c.prepareRequest(request)
+
+	dump, err := httputil.DumpRequestOut(request, true)
+	if err != nil {
+		return nil, "", err
+	}
+
+	log.Debug(string(dump))
+
+	recorder := httptest.NewRecorder()
+	recorder.WriteString(mockResponse)
+	recorder.Code = 200
+
+	response := recorder.Result()
+	response.Request = request
+
+	return response, string(dump), nil
 }
