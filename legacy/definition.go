@@ -13,6 +13,8 @@ import (
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 // represents a decimal value which may be provided as a string or floating point value
@@ -52,10 +54,10 @@ type Flow struct {
 
 // Note is a legacy sticky note
 type Note struct {
-	X     int    `json:"x"`
-	Y     int    `json:"y"`
-	Title string `json:"title"`
-	Body  string `json:"body"`
+	X     decimal.Decimal `json:"x"`
+	Y     decimal.Decimal `json:"y"`
+	Title string          `json:"title"`
+	Body  string          `json:"body"`
 }
 
 // Sticky is a migrated note
@@ -64,7 +66,7 @@ type Sticky map[string]interface{}
 // Migrate migrates this note to a new sticky note
 func (n *Note) Migrate() Sticky {
 	return Sticky{
-		"position": map[string]interface{}{"left": n.X, "top": n.Y},
+		"position": map[string]interface{}{"left": n.X.IntPart(), "top": n.Y.IntPart()},
 		"title":    n.Title,
 		"body":     n.Body,
 		"color":    "yellow",
