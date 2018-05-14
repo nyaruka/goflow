@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/nyaruka/ezconf"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 )
 
 // Config is our top level config for our flowserver
@@ -13,11 +14,14 @@ type Config struct {
 	AssetCacheSize                int64  `help:"the maximum size of our asset cache"`
 	AssetCachePrune               int    `help:"the number of assets to prune when we reach our max size"`
 	AssetServerToken              string `help:"the token to use when authentication to the asset server"`
+	EngineDisableWebhooks         bool   `help:"whether to disable webhook calls from the engine"`
 	EngineMaxWebhookResponseBytes int    `help:"the maximum allowed byte size of webhook responses"`
 	Version                       string `help:"the version to use in request and response headers"`
 }
 
-func (c *Config) MaxWebhookResponseBytes() int { return c.EngineMaxWebhookResponseBytes }
+func (c *Config) Engine() flows.EngineConfig {
+	return engine.NewConfig(c.EngineDisableWebhooks, c.EngineMaxWebhookResponseBytes)
+}
 
 // NewDefaultConfig returns our default configuration
 func NewDefaultConfig() *Config {
@@ -27,6 +31,7 @@ func NewDefaultConfig() *Config {
 		AssetCacheSize:                1000,
 		AssetCachePrune:               100,
 		AssetServerToken:              "missing_temba_token",
+		EngineDisableWebhooks:         false,
 		EngineMaxWebhookResponseBytes: 10000,
 		Version: "Dev",
 	}
@@ -43,5 +48,3 @@ func NewConfigWithPath(path string) *Config {
 	loader.MustLoad()
 	return config
 }
-
-var _ flows.EngineConfig = (*Config)(nil)

@@ -23,6 +23,7 @@ type startRequest struct {
 	AssetServer json.RawMessage        `json:"asset_server" validate:"required"`
 	Trigger     *utils.TypedEnvelope   `json:"trigger" validate:"required"`
 	Events      []*utils.TypedEnvelope `json:"events"`
+	Config      *json.RawMessage       `json:"config"`
 }
 
 func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -57,8 +58,14 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 		return nil, err
 	}
 
+	// build the configuration for this request
+	config := s.config.Engine()
+	if start.Config != nil {
+		config, err = engine.ReadConfig(*start.Config, config)
+	}
+
 	// build our session
-	session := engine.NewSession(s.assetCache, assetServer, s.config, s.httpClient)
+	session := engine.NewSession(s.assetCache, assetServer, config, s.httpClient)
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
@@ -86,6 +93,7 @@ type resumeRequest struct {
 	AssetServer json.RawMessage        `json:"asset_server" validate:"required"`
 	Session     json.RawMessage        `json:"session" validate:"required"`
 	Events      []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
+	Config      *json.RawMessage       `json:"config"`
 }
 
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -120,8 +128,14 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 		return nil, err
 	}
 
+	// build the configuration for this request
+	config := s.config.Engine()
+	if resume.Config != nil {
+		config, err = engine.ReadConfig(*resume.Config, config)
+	}
+
 	// read our session
-	session, err := engine.ReadSession(s.assetCache, assetServer, s.config, s.httpClient, resume.Session)
+	session, err := engine.ReadSession(s.assetCache, assetServer, config, s.httpClient, resume.Session)
 	if err != nil {
 		return nil, err
 	}

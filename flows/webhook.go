@@ -68,7 +68,16 @@ type WebhookCall struct {
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
 // regardless of any errors being set
 func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, error) {
-	response, requestDump, err := session.HTTPClient().DoWithDump(request)
+	var response *http.Response
+	var requestDump string
+	var err error
+
+	if session.EngineConfig().DisableWebhooks() {
+		response, requestDump, err = session.HTTPClient().MockWithDump(request, "MOCKED")
+	} else {
+		response, requestDump, err = session.HTTPClient().DoWithDump(request)
+	}
+
 	if err != nil {
 		return newWebhookCallFromError(request, requestDump, err), err
 	}

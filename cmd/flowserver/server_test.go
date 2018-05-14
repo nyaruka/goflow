@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
@@ -162,6 +163,38 @@ var testValidFlowWithWaitAssets = `[
 	}
 ]`
 
+var testValidFlowWithWebhook = `[
+	{
+		"type": "flow",
+		"url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+		"content": {
+			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+			"name": "Webhook Flow",
+			"language": "eng",
+			"nodes": [
+				{
+					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+					"actions": [
+						{
+                            "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
+                            "type": "call_webhook",
+                            "method": "GET",
+                            "url": "http://localhost:49993/?cmd=success"
+                        }
+					],
+					"exits": [
+						{
+							"uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+							"label": "Default",
+							"destination_node_uuid": null
+						}
+					]
+				}
+			]
+		}
+	}
+]`
+
 var startRequestTemplate = `{
 	"assets": %s,
 	"asset_server": {
@@ -175,13 +208,17 @@ var startRequestTemplate = `{
 		"type": "manual",
 		"flow": {"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02", "name": "Test Flow"},
 		"triggered_on": "2000-01-01T00:00:00.000000000-00:00"
-	}
+	},
+	"config": %s
 }`
+
+var testServerPort = 49993
 
 type ServerTestSuite struct {
 	suite.Suite
 	flowServer  *FlowServer
 	assetServer assets.AssetServer
+	httpServer  *httptest.Server
 }
 
 func (ts *ServerTestSuite) SetupSuite() {
@@ -192,10 +229,14 @@ func (ts *ServerTestSuite) SetupSuite() {
 
 	// wait for server to come up
 	time.Sleep(100 * time.Millisecond)
+
+	ts.httpServer, _ = test.NewTestHTTPServer(testServerPort)
 }
 
 func (ts *ServerTestSuite) TearDownSuite() {
 	ts.flowServer.Stop()
+
+	ts.httpServer.Close()
 }
 
 func (ts *ServerTestSuite) testHTTPRequest(method string, url string, data string) (int, []byte) {
@@ -328,19 +369,19 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"field 'trigger[type=manual].flow' is required", "field 'trigger[type=manual].triggered_on' is required"})
 
 	// try POSTing to the start endpoint a structurally invalid flow asset
-	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets)
+	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"unable to read asset[url=http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try POSTing to the start endpoint a flow asset that references a non-existent group asset
-	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets)
+	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// POST to the start endpoint with a valid flow with no wait (it should complete)
-	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets)
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(200, status)
 
@@ -362,7 +403,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"only waiting sessions can be resumed"})
 
 	// start another session on a flow that will wait for input
-	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWaitAssets)
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWaitAssets, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(200, status)
 
@@ -406,6 +447,41 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	// check we got back an errored session
 	erroredSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
 	ts.Equal(flows.SessionStatus("errored"), erroredSession.Status())
+}
+
+func (ts *ServerTestSuite) TestWebhookMocking() {
+	// POST to the start endpoint with a flow with a webhook call, with webhooks disabled
+	requestBody := fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{"disable_webhooks": true}`)
+	status, body := ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
+	ts.Equal(200, status)
+
+	session, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	run := session.Runs()[0]
+
+	ts.NotNil(run.Webhook())
+	ts.Equal("MOCKED", run.Webhook().Body())
+
+	// run same flow again, this time with webhooks enabled
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{"disable_webhooks": false}`)
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
+	ts.Equal(200, status)
+
+	session, _ = ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	run = session.Runs()[0]
+
+	ts.NotNil(run.Webhook())
+	ts.Equal(`{ "ok": "true" }`, run.Webhook().Body())
+
+	// and again, this time with the default config
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{}`)
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
+	ts.Equal(200, status)
+
+	session, _ = ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	run = session.Runs()[0]
+
+	ts.NotNil(run.Webhook())
+	ts.Equal(`{ "ok": "true" }`, run.Webhook().Body())
 }
 
 func TestServerSuite(t *testing.T) {
