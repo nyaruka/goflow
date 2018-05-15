@@ -1,3 +1,7 @@
+v0.10.4
+----------
+ * run.input.text should be optional
+
 v0.10.3
 ----------
  * Allow webhook calls to be mocked and add tests
