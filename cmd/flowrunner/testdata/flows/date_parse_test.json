@@ -66,6 +66,7 @@
                     "languages": [
                         "eng"
                     ],
+                    "redaction_policy": "none",
                     "time_format": "h:mm aa",
                     "timezone": "America/Los_Angeles"
                 },
@@ -139,6 +140,7 @@
                         "languages": [
                             "eng"
                         ],
+                        "redaction_policy": "none",
                         "time_format": "h:mm aa",
                         "timezone": "America/Los_Angeles"
                     },
@@ -221,6 +223,7 @@
                     "languages": [
                         "eng"
                     ],
+                    "redaction_policy": "none",
                     "time_format": "h:mm aa",
                     "timezone": "America/Los_Angeles"
                 },
@@ -371,6 +374,7 @@
                         "languages": [
                             "eng"
                         ],
+                        "redaction_policy": "none",
                         "time_format": "h:mm aa",
                         "timezone": "America/Los_Angeles"
                     },

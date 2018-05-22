@@ -124,6 +124,7 @@
                 "environment": {
                     "date_format": "YYYY-MM-DD",
                     "languages": [],
+                    "redaction_policy": "none",
                     "time_format": "tt:mm",
                     "timezone": "UTC"
                 },

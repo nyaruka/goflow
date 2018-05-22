@@ -200,7 +200,7 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{})
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{}, utils.RedactionPolicyNone)
 
 	for _, test := range testTests {
 		testFunc := tests.XTESTS[test.name]
