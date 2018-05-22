@@ -14,6 +14,7 @@ import (
 // (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
 //
 //  * `uuid` the UUID of the contact
+//  * `id` the numeric ID of the contact
 //  * `name` the full name of the contact
 //  * `first_name` the first name of the contact
 //  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
@@ -44,6 +45,7 @@ import (
 // @context contact
 type Contact struct {
 	uuid     ContactUUID
+	id       int
 	name     string
 	language utils.Language
 	timezone *time.Location
@@ -71,6 +73,7 @@ func (c *Contact) Clone() *Contact {
 
 	return &Contact{
 		uuid:     c.uuid,
+		id:       c.id,
 		name:     c.name,
 		language: c.language,
 		timezone: c.timezone,
@@ -82,6 +85,9 @@ func (c *Contact) Clone() *Contact {
 
 // UUID returns the UUID of this contact
 func (c *Contact) UUID() ContactUUID { return c.uuid }
+
+// UUID returns the numeric ID of this contact
+func (c *Contact) ID() int { return c.id }
 
 // SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
@@ -141,6 +147,8 @@ func (c *Contact) Resolve(key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
+	case "id":
+		return types.NewXNumberFromInt(c.id)
 	case "name":
 		return types.NewXText(c.name)
 	case "first_name":
@@ -301,6 +309,7 @@ type fieldValueEnvelope struct {
 
 type contactEnvelope struct {
 	UUID     ContactUUID                    `json:"uuid" validate:"required,uuid4"`
+	ID       int                            `json:"id"`
 	Name     string                         `json:"name"`
 	Language utils.Language                 `json:"language"`
 	Timezone string                         `json:"timezone"`
@@ -318,10 +327,12 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		return nil, err
 	}
 
-	c := &Contact{}
-	c.uuid = envelope.UUID
-	c.name = envelope.Name
-	c.language = envelope.Language
+	c := &Contact{
+		uuid:     envelope.UUID,
+		id:       envelope.ID,
+		name:     envelope.Name,
+		language: envelope.Language,
+	}
 
 	if envelope.Timezone != "" {
 		if c.timezone, err = time.LoadLocation(envelope.Timezone); err != nil {
@@ -379,11 +390,13 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 
 // MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
-	var ce contactEnvelope
+	ce := &contactEnvelope{
+		Name:     c.name,
+		UUID:     c.uuid,
+		ID:       c.id,
+		Language: c.language,
+	}
 
-	ce.Name = c.name
-	ce.UUID = c.uuid
-	ce.Language = c.language
 	ce.URNs = c.urns.RawURNs(true)
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()

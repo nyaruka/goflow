@@ -217,6 +217,7 @@ var sessionTrigger = `{
     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+        "id": 1234567,
         "name": "Ryan Lewis",
         "language": "eng",
         "urns": [

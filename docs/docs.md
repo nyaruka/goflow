@@ -215,6 +215,7 @@ Represents a person who is interacting with the flow. It renders as the person's
 (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
 
  * `uuid` the UUID of the contact
+ * `id` the numeric ID of the contact
  * `name` the full name of the contact
  * `first_name` the first name of the contact
  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
@@ -2289,6 +2290,7 @@ Can be used to trigger sessions for other contacts and groups
         },
         "contact": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "id": 1234567,
             "name": "Ryan Lewis",
             "language": "eng",
             "timezone": "",
