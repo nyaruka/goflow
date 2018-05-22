@@ -12,6 +12,8 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
+var REDACTED_URN = types.NewXText("********")
+
 func init() {
 	utils.Validator.RegisterValidation("urn", ValidateURN)
 	utils.Validator.RegisterValidation("urnscheme", ValidateURNScheme)
@@ -76,8 +78,14 @@ func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
 	case "scheme":
 		return types.NewXText(u.URN.Scheme())
 	case "path":
+		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
+			return REDACTED_URN
+		}
 		return types.NewXText(u.URN.Path())
 	case "display":
+		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
+			return REDACTED_URN
+		}
 		return types.NewXText(u.URN.Display())
 	case "channel":
 		return u.Channel()
@@ -90,6 +98,9 @@ func (u *ContactURN) Describe() string { return "URN" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Reduce(env utils.Environment) types.XPrimitive {
+	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
+		return REDACTED_URN
+	}
 	return types.NewXText(string(u.URN))
 }
 
