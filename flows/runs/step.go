@@ -47,7 +47,7 @@ func (s *step) Resolve(env utils.Environment, key string) types.XValue {
 // Describe returns a representation of this type for error messages
 func (s *step) Describe() string { return "step" }
 
-func (s *step) Reduce() types.XPrimitive {
+func (s *step) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(s.UUID()))
 }
 
@@ -70,7 +70,7 @@ func (p Path) Index(index int) types.XValue {
 // Describe returns a representation of this type for error messages
 func (p Path) Describe() string { return "path" }
 
-func (p Path) Reduce() types.XPrimitive {
+func (p Path) Reduce(env utils.Environment) types.XPrimitive {
 	array := types.NewXArray()
 	for _, step := range p {
 		array.Append(step)
@@ -79,7 +79,7 @@ func (p Path) Reduce() types.XPrimitive {
 }
 
 func (p Path) ToXJSON(env utils.Environment) types.XText {
-	return p.Reduce().ToXJSON(env)
+	return p.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = (Path)(nil)

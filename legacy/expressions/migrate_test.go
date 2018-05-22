@@ -265,7 +265,7 @@ func (v legacyVariables) Describe() string {
 	return "legacy vars"
 }
 
-func (v legacyVariables) Reduce() types.XPrimitive {
+func (v legacyVariables) Reduce(env utils.Environment) types.XPrimitive {
 	return toXType(v["*"]).(types.XPrimitive)
 }
 

@@ -54,7 +54,7 @@ func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
 func (i *MsgInput) Describe() string { return "input" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (i *MsgInput) Reduce() types.XPrimitive {
+func (i *MsgInput) Reduce(env utils.Environment) types.XPrimitive {
 	var parts []string
 	if i.text != "" {
 		parts = append(parts, i.text)

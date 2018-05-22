@@ -189,7 +189,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 func (c *Contact) Describe() string { return "contact" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (c *Contact) Reduce() types.XPrimitive {
+func (c *Contact) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(c.name)
 }
 

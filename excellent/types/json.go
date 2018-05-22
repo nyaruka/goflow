@@ -15,7 +15,7 @@ type XJSON []byte
 
 func (x XJSON) ToXJSON(env utils.Environment) XText { return NewXText(string(x)) }
 
-func (x XJSON) Reduce() XPrimitive { return x.ToXJSON(nil) }
+func (x XJSON) Reduce(env utils.Environment) XPrimitive { return x.ToXJSON(env) }
 
 // String converts this type to native string
 func (x XJSON) String() string {

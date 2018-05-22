@@ -36,6 +36,6 @@ func (t *baseTrigger) Resolve(env utils.Environment, key string) types.XValue {
 func (t *baseTrigger) Describe() string { return "trigger" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (t *baseTrigger) Reduce() types.XPrimitive {
+func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(t.flow.UUID()))
 }

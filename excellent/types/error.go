@@ -37,13 +37,13 @@ func NewXResolveError(resolvable XResolvable, key string) XError {
 func (x xerror) Describe() string { return "error" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (x xerror) Reduce() XPrimitive { return x }
+func (x xerror) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x xerror) ToXText() XText { return NewXText(x.Native().Error()) }
+func (x xerror) ToXText(env utils.Environment) XText { return NewXText(x.Native().Error()) }
 
 // ToXBoolean converts this type to a bool
-func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
+func (x xerror) ToXBoolean(env utils.Environment) XBoolean { return XBooleanFalse }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x xerror) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native().Error()) }

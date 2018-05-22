@@ -28,7 +28,7 @@ func NewTestXObject(foo string, bar int) *testXObject {
 // Describe returns a representation of this type for error messages
 func (v *testXObject) Describe() string { return "test" }
 
-func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
+func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(v.foo) }
 
 func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {

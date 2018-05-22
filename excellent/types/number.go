@@ -38,16 +38,18 @@ func RequireXNumberFromString(value string) XNumber {
 }
 
 // Describe returns a representation of this type for error messages
-func (x XNumber) Describe() string { return x.ToXText().Native() }
+func (x XNumber) Describe() string { return x.ToXText(nil).Native() }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (x XNumber) Reduce() XPrimitive { return x }
+func (x XNumber) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XNumber) ToXText() XText { return NewXText(x.Native().String()) }
+func (x XNumber) ToXText(env utils.Environment) XText { return NewXText(x.Native().String()) }
 
 // ToXBoolean converts this type to a bool
-func (x XNumber) ToXBoolean() XBoolean { return NewXBoolean(!x.Equals(XNumberZero)) }
+func (x XNumber) ToXBoolean(env utils.Environment) XBoolean {
+	return NewXBoolean(!x.Equals(XNumberZero))
+}
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x XNumber) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
@@ -56,7 +58,7 @@ func (x XNumber) ToXJSON(env utils.Environment) XText { return MustMarshalToXTex
 func (x XNumber) Native() decimal.Decimal { return x.native }
 
 // String returns the native string representation of this type
-func (x XNumber) String() string { return x.ToXText().Native() }
+func (x XNumber) String() string { return x.ToXText(nil).Native() }
 
 // Equals determines equality for this type
 func (x XNumber) Equals(other XNumber) bool {
@@ -84,9 +86,9 @@ var XNumberZero = NewXNumber(decimal.Zero)
 var _ XPrimitive = XNumberZero
 
 // ToXNumber converts the given value to a number or returns an error if that isn't possible
-func ToXNumber(x XValue) (XNumber, XError) {
+func ToXNumber(env utils.Environment, x XValue) (XNumber, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce()
+		x = x.Reduce(env)
 
 		switch typed := x.(type) {
 		case XError:
@@ -105,8 +107,8 @@ func ToXNumber(x XValue) (XNumber, XError) {
 }
 
 // ToInteger tries to convert the passed in value to an integer or returns an error if that isn't possible
-func ToInteger(x XValue) (int, XError) {
-	number, err := ToXNumber(x)
+func ToInteger(env utils.Environment, x XValue) (int, XError) {
+	number, err := ToXNumber(env, x)
 	if err != nil {
 		return 0, err
 	}
@@ -114,7 +116,7 @@ func ToInteger(x XValue) (int, XError) {
 	intPart := number.Native().IntPart()
 
 	if intPart < math.MinInt32 || intPart > math.MaxInt32 {
-		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText().Native())
+		return 0, NewXErrorf("number value %s is out of range for an integer", number.ToXText(env).Native())
 	}
 
 	return int(intPart), nil

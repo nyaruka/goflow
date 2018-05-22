@@ -110,7 +110,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			if types.IsXError(value) {
 				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
 			} else {
-				strValue, _ := types.ToXText(value)
+				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
 					strValue = types.NewXText(url.QueryEscape(strValue.Native()))
 				}
@@ -123,7 +123,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			if err != nil {
 				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
 			} else {
-				strValue, _ := types.ToXText(value)
+				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
 					strValue = types.NewXText(url.QueryEscape(strValue.Native()))
 				}

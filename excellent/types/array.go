@@ -30,13 +30,13 @@ func NewXArray(values ...XValue) XArray {
 func (a *xarray) Describe() string { return "array" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (a *xarray) Reduce() XPrimitive { return a }
+func (a *xarray) Reduce(env utils.Environment) XPrimitive { return a }
 
 // ToXText converts this type to text
-func (a *xarray) ToXText() XText {
+func (a *xarray) ToXText(env utils.Environment) XText {
 	texts := make([]XText, len(a.values))
 	for i, v := range a.values {
-		asText, err := ToXText(v)
+		asText, err := ToXText(env, v)
 		if err == nil {
 			texts[i] = asText
 		}
@@ -45,7 +45,7 @@ func (a *xarray) ToXText() XText {
 }
 
 // ToXBoolean converts this type to a bool
-func (a *xarray) ToXBoolean() XBoolean {
+func (a *xarray) ToXBoolean(env utils.Environment) XBoolean {
 	return NewXBoolean(len(a.values) > 0)
 }
 
@@ -82,7 +82,7 @@ func (a *xarray) Append(value XValue) {
 }
 
 // String returns the native string representation of this type
-func (a *xarray) String() string { return a.ToXText().Native() }
+func (a *xarray) String() string { return a.ToXText(nil).Native() }
 
 var _ XArray = (*xarray)(nil)
 var _ json.Marshaler = (*xarray)(nil)

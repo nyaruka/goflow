@@ -89,7 +89,9 @@ func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
 func (u *ContactURN) Describe() string { return "URN" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXText(string(u.URN)) }
+func (u *ContactURN) Reduce(env utils.Environment) types.XPrimitive {
+	return types.NewXText(string(u.URN))
+}
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (u *ContactURN) ToXJSON(env utils.Environment) types.XText {
@@ -182,7 +184,7 @@ func (l URNList) Resolve(env utils.Environment, key string) types.XValue {
 func (l URNList) Describe() string { return "URNs" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (l URNList) Reduce() types.XPrimitive {
+func (l URNList) Reduce(env utils.Environment) types.XPrimitive {
 	array := types.NewXArray()
 	for _, urn := range l {
 		array.Append(urn)
@@ -192,7 +194,7 @@ func (l URNList) Reduce() types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (l URNList) ToXJSON(env utils.Environment) types.XText {
-	return l.Reduce().ToXJSON(env)
+	return l.Reduce(env).ToXJSON(env)
 }
 
 // Index is called when this object is indexed into in an expression

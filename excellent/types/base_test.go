@@ -49,7 +49,7 @@ func (v *testXObject) MarshalJSON() ([]byte, error) {
 // Describe returns a representation of this type for error messages
 func (v *testXObject) Describe() string { return "test" }
 
-func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
+func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(v.foo) }
 
 var _ types.XValue = &testXObject{}
 var _ types.XResolvable = &testXObject{}
@@ -254,8 +254,8 @@ func TestXValueRequiredConversions(t *testing.T) {
 	for _, test := range tests {
 		asInternalJSON, _ := utils.JSONMarshal(test.value)
 		asJSON, _ := types.ToXJSON(env, test.value)
-		asText, _ := types.ToXText(test.value)
-		asBool, _ := types.ToXBoolean(test.value)
+		asText, _ := types.ToXText(env, test.value)
+		asBool, _ := types.ToXBoolean(env, test.value)
 
 		assert.Equal(t, test.asInternalJSON, string(asInternalJSON), "json.Marshal failed for %T{%s}", test.value, test.value)
 		assert.Equal(t, types.NewXText(test.asJSON), asJSON, "ToXJSON failed for %T{%s}", test.value, test.value)

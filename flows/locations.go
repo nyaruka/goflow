@@ -36,13 +36,13 @@ func (p LocationPath) String() string {
 func (p LocationPath) Describe() string { return "location" }
 
 // Reduce returns the primitive version of this type
-func (p LocationPath) Reduce() types.XPrimitive {
+func (p LocationPath) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(p))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (p LocationPath) ToXJSON(env utils.Environment) types.XText {
-	return p.Reduce().ToXJSON(env)
+	return p.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = LocationPath("")

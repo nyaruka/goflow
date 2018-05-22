@@ -32,7 +32,7 @@ func (t XTestResult) Resolve(env utils.Environment, key string) types.XValue {
 func (t XTestResult) Describe() string { return "test result" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (t XTestResult) Reduce() types.XPrimitive {
+func (t XTestResult) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXBoolean(t.matched)
 }
 

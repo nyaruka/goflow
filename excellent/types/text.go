@@ -23,13 +23,13 @@ func NewXText(value string) XText {
 func (x XText) Describe() string { return fmt.Sprintf(`"%s"`, x.native) }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (x XText) Reduce() XPrimitive { return x }
+func (x XText) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XText) ToXText() XText { return x }
+func (x XText) ToXText(env utils.Environment) XText { return x }
 
 // ToXBoolean converts this type to a bool
-func (x XText) ToXBoolean() XBoolean {
+func (x XText) ToXBoolean(env utils.Environment) XBoolean {
 	return NewXBoolean(!x.Empty() && strings.ToLower(x.Native()) != "false")
 }
 
@@ -74,7 +74,7 @@ var _ XPrimitive = XTextEmpty
 var _ XLengthable = XTextEmpty
 
 // ToXText converts the given value to a string
-func ToXText(x XValue) (XText, XError) {
+func ToXText(env utils.Environment, x XValue) (XText, XError) {
 	if utils.IsNil(x) {
 		return XTextEmpty, nil
 	}
@@ -82,5 +82,5 @@ func ToXText(x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	return x.Reduce().ToXText(), nil
+	return x.Reduce(env).ToXText(env), nil
 }

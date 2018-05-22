@@ -20,13 +20,15 @@ func NewXDateTime(value time.Time) XDateTime {
 func (x XDateTime) Describe() string { return "datetime" }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (x XDateTime) Reduce() XPrimitive { return x }
+func (x XDateTime) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XDateTime) ToXText() XText { return NewXText(utils.DateToISO(x.Native())) }
+func (x XDateTime) ToXText(env utils.Environment) XText { return NewXText(utils.DateToISO(x.Native())) }
 
 // ToXBoolean converts this type to a bool
-func (x XDateTime) ToXBoolean() XBoolean { return NewXBoolean(!x.Native().IsZero()) }
+func (x XDateTime) ToXBoolean(env utils.Environment) XBoolean {
+	return NewXBoolean(!x.Native().IsZero())
+}
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x XDateTime) ToXJSON(env utils.Environment) XText {
@@ -37,7 +39,7 @@ func (x XDateTime) ToXJSON(env utils.Environment) XText {
 func (x XDateTime) Native() time.Time { return x.native }
 
 // String returns the native string representation of this type
-func (x XDateTime) String() string { return x.ToXText().Native() }
+func (x XDateTime) String() string { return x.ToXText(nil).Native() }
 
 // Equals determines equality for this type
 func (x XDateTime) Equals(other XDateTime) bool {
@@ -74,7 +76,7 @@ var _ XPrimitive = XDateTimeZero
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
 func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
 	if !utils.IsNil(x) {
-		x = x.Reduce()
+		x = x.Reduce(env)
 
 		switch typed := x.(type) {
 		case XError:

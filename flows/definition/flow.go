@@ -116,7 +116,7 @@ func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
 func (f *flow) Describe() string { return "flow" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (f *flow) Reduce() types.XPrimitive {
+func (f *flow) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(f.name)
 }
 

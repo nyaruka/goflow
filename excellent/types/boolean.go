@@ -21,13 +21,15 @@ func NewXBoolean(value bool) XBoolean {
 func (x XBoolean) Describe() string { return strconv.FormatBool(x.Native()) }
 
 // Reduce returns the primitive version of this type (i.e. itself)
-func (x XBoolean) Reduce() XPrimitive { return x }
+func (x XBoolean) Reduce(env utils.Environment) XPrimitive { return x }
 
 // ToXText converts this type to text
-func (x XBoolean) ToXText() XText { return NewXText(strconv.FormatBool(x.Native())) }
+func (x XBoolean) ToXText(env utils.Environment) XText {
+	return NewXText(strconv.FormatBool(x.Native()))
+}
 
 // ToXBoolean converts this type to a bool
-func (x XBoolean) ToXBoolean() XBoolean { return x }
+func (x XBoolean) ToXBoolean(env utils.Environment) XBoolean { return x }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (x XBoolean) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
@@ -36,7 +38,7 @@ func (x XBoolean) ToXJSON(env utils.Environment) XText { return MustMarshalToXTe
 func (x XBoolean) Native() bool { return x.native }
 
 // String returns the native string representation of this type
-func (x XBoolean) String() string { return x.ToXText().Native() }
+func (x XBoolean) String() string { return x.ToXText(nil).Native() }
 
 // Equals determines equality for this type
 func (x XBoolean) Equals(other XBoolean) bool {
@@ -74,7 +76,7 @@ var XBooleanTrue = NewXBoolean(true)
 var _ XPrimitive = XBooleanFalse
 
 // ToXBoolean converts the given value to a boolean
-func ToXBoolean(x XValue) (XBoolean, XError) {
+func ToXBoolean(env utils.Environment, x XValue) (XBoolean, XError) {
 	if utils.IsNil(x) {
 		return XBooleanFalse, nil
 	}
@@ -84,7 +86,7 @@ func ToXBoolean(x XValue) (XBoolean, XError) {
 
 	primitive, isPrimitive := x.(XPrimitive)
 	if isPrimitive {
-		return primitive.ToXBoolean(), nil
+		return primitive.ToXBoolean(env), nil
 	}
 
 	lengthable, isLengthable := x.(XLengthable)
@@ -92,5 +94,5 @@ func ToXBoolean(x XValue) (XBoolean, XError) {
 		return NewXBoolean(lengthable.Length() > 0), nil
 	}
 
-	return x.Reduce().ToXBoolean(), nil
+	return x.Reduce(env).ToXBoolean(env), nil
 }

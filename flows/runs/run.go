@@ -282,7 +282,7 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 func (r *flowRun) Describe() string { return "run" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (r *flowRun) Reduce() types.XPrimitive {
+func (r *flowRun) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(r.uuid))
 }
 

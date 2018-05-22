@@ -39,7 +39,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 // Describe returns a representation of this type for error messages
 func (c *runContext) Describe() string { return "context" }
 
-func (c *runContext) Reduce() types.XPrimitive {
+func (c *runContext) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(c.run.UUID().String())
 }
 
@@ -85,7 +85,7 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 // Describe returns a representation of this type for error messages
 func (c *relatedRunContext) Describe() string { return "related run" }
 
-func (c *relatedRunContext) Reduce() types.XPrimitive {
+func (c *relatedRunContext) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(c.run.UUID().String())
 }
 

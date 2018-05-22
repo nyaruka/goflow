@@ -124,7 +124,7 @@ func (c *channel) Resolve(env utils.Environment, key string) types.XValue {
 func (c *channel) Describe() string { return "channel" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (c *channel) Reduce() types.XPrimitive {
+func (c *channel) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(c.name)
 }
 

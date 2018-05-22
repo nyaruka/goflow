@@ -92,7 +92,7 @@ func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
 func (g *Group) Describe() string { return "group" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (g *Group) Reduce() types.XPrimitive { return types.NewXText(g.name) }
+func (g *Group) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(g.name) }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (g *Group) ToXJSON(env utils.Environment) types.XText {
@@ -173,7 +173,7 @@ func (l *GroupList) Length() int {
 func (l GroupList) Describe() string { return "groups" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (l GroupList) Reduce() types.XPrimitive {
+func (l GroupList) Reduce(env utils.Environment) types.XPrimitive {
 	array := types.NewXArray()
 	for _, group := range l.groups {
 		array.Append(group)
@@ -183,7 +183,7 @@ func (l GroupList) Reduce() types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (l GroupList) ToXJSON(env utils.Environment) types.XText {
-	return l.Reduce().ToXJSON(env)
+	return l.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = (*GroupList)(nil)

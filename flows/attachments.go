@@ -55,7 +55,7 @@ func (a Attachment) Resolve(env utils.Environment, key string) types.XValue {
 func (a Attachment) Describe() string { return "attachment" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (a Attachment) Reduce() types.XPrimitive { return types.NewXText(a.URL()) }
+func (a Attachment) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(a.URL()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (a Attachment) ToXJSON(env utils.Environment) types.XText {
@@ -82,7 +82,7 @@ func (a AttachmentList) Length() int {
 func (a AttachmentList) Describe() string { return "attachments" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (a AttachmentList) Reduce() types.XPrimitive {
+func (a AttachmentList) Reduce(env utils.Environment) types.XPrimitive {
 	array := types.NewXArray()
 	for _, attachment := range a {
 		array.Append(attachment)
@@ -91,7 +91,7 @@ func (a AttachmentList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a AttachmentList) ToXJSON(env utils.Environment) types.XText { return a.Reduce().ToXJSON(env) }
+func (a AttachmentList) ToXJSON(env utils.Environment) types.XText { return a.Reduce(env).ToXJSON(env) }
 
 var _ types.XValue = (AttachmentList)(nil)
 var _ types.XIndexable = (AttachmentList)(nil)

@@ -140,7 +140,7 @@ func (w *WebhookCall) Resolve(env utils.Environment, key string) types.XValue {
 func (w *WebhookCall) Describe() string { return "webhook" }
 
 // Reduce reduces this to a string of method and URL, e.g. "GET http://example.com/hook.php"
-func (w *WebhookCall) Reduce() types.XPrimitive {
+func (w *WebhookCall) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(fmt.Sprintf("%s %s", w.Method(), w.URL()))
 }
 

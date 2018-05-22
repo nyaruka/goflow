@@ -60,7 +60,7 @@ func ThreeArgFunction(f func(utils.Environment, types.XValue, types.XValue, type
 // OneTextFunction creates an XFunction from a function that takes a single text arg
 func OneTextFunction(f func(utils.Environment, types.XText) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str, xerr := types.ToXText(args[0])
+		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
@@ -71,11 +71,11 @@ func OneTextFunction(f func(utils.Environment, types.XText) types.XValue) XFunct
 // TwoTextFunction creates an XFunction from a function that takes two text args
 func TwoTextFunction(f func(utils.Environment, types.XText, types.XText) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str1, xerr := types.ToXText(args[0])
+		str1, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
-		str2, xerr := types.ToXText(args[1])
+		str2, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
@@ -86,15 +86,15 @@ func TwoTextFunction(f func(utils.Environment, types.XText, types.XText) types.X
 // ThreeTextFunction creates an XFunction from a function that takes three text args
 func ThreeTextFunction(f func(utils.Environment, types.XText, types.XText, types.XText) types.XValue) XFunction {
 	return ArgCountCheck(3, 3, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str1, xerr := types.ToXText(args[0])
+		str1, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
-		str2, xerr := types.ToXText(args[1])
+		str2, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
-		str3, xerr := types.ToXText(args[2])
+		str3, xerr := types.ToXText(env, args[2])
 		if xerr != nil {
 			return xerr
 		}
@@ -105,11 +105,11 @@ func ThreeTextFunction(f func(utils.Environment, types.XText, types.XText, types
 // TextAndNumberFunction creates an XFunction from a function that takes a text and a number arg
 func TextAndNumberFunction(f func(utils.Environment, types.XText, types.XNumber) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str, xerr := types.ToXText(args[0])
+		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
-		num, xerr := types.ToXNumber(args[1])
+		num, xerr := types.ToXNumber(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
@@ -121,11 +121,11 @@ func TextAndNumberFunction(f func(utils.Environment, types.XText, types.XNumber)
 // TextAndIntegerFunction creates an XFunction from a function that takes a text and an integer arg
 func TextAndIntegerFunction(f func(utils.Environment, types.XText, int) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str, xerr := types.ToXText(args[0])
+		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
-		num, xerr := types.ToInteger(args[1])
+		num, xerr := types.ToInteger(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
@@ -137,7 +137,7 @@ func TextAndIntegerFunction(f func(utils.Environment, types.XText, int) types.XV
 // TextAndDateFunction creates an XFunction from a function that takes a text and a date arg
 func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDateTime) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
-		str, xerr := types.ToXText(args[0])
+		str, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
@@ -153,7 +153,7 @@ func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDateTime)
 // OneNumberFunction creates an XFunction from a single number function
 func OneNumberFunction(f func(utils.Environment, types.XNumber) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {
-		num, xerr := types.ToXNumber(args[0])
+		num, xerr := types.ToXNumber(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
@@ -165,14 +165,14 @@ func OneNumberFunction(f func(utils.Environment, types.XNumber) types.XValue) XF
 // OneNumberAndOptionalIntegerFunction creates an XFunction from a function that takes a number and an optional integer
 func OneNumberAndOptionalIntegerFunction(f func(utils.Environment, types.XNumber, int) types.XValue, defaultVal int) XFunction {
 	return ArgCountCheck(1, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
-		num, xerr := types.ToXNumber(args[0])
+		num, xerr := types.ToXNumber(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
 
 		intVal := defaultVal
 		if len(args) == 2 {
-			intVal, xerr = types.ToInteger(args[1])
+			intVal, xerr = types.ToInteger(env, args[1])
 			if xerr != nil {
 				return xerr
 			}
@@ -185,11 +185,11 @@ func OneNumberAndOptionalIntegerFunction(f func(utils.Environment, types.XNumber
 // TwoNumberFunction creates an XFunction from a function that takes two numbers
 func TwoNumberFunction(f func(utils.Environment, types.XNumber, types.XNumber) types.XValue) XFunction {
 	return ArgCountCheck(2, 2, func(env utils.Environment, args ...types.XValue) types.XValue {
-		num1, xerr := types.ToXNumber(args[0])
+		num1, xerr := types.ToXNumber(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
-		num2, xerr := types.ToXNumber(args[1])
+		num2, xerr := types.ToXNumber(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
