@@ -251,7 +251,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 type legacyVariables map[string]interface{}
 
-func (v legacyVariables) Resolve(key string) types.XValue {
+func (v legacyVariables) Resolve(env utils.Environment, key string) types.XValue {
 	key = strings.ToLower(key)
 	for k, val := range v {
 		if strings.ToLower(k) == key {
@@ -269,7 +269,7 @@ func (v legacyVariables) Reduce() types.XPrimitive {
 	return toXType(v["*"]).(types.XPrimitive)
 }
 
-func (v legacyVariables) ToXJSON() types.XText { return types.NewXText("LEGACY") }
+func (v legacyVariables) ToXJSON(env utils.Environment) types.XText { return types.NewXText("LEGACY") }
 
 func toXType(val interface{}) types.XValue {
 	if utils.IsNil(val) {

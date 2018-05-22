@@ -50,10 +50,10 @@ func (a *xarray) ToXBoolean() XBoolean {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a *xarray) ToXJSON() XText {
+func (a *xarray) ToXJSON(env utils.Environment) XText {
 	marshaled := make([]json.RawMessage, len(a.values))
 	for i, v := range a.values {
-		asJSON, err := ToXJSON(v)
+		asJSON, err := ToXJSON(env, v)
 		if err == nil {
 			marshaled[i] = json.RawMessage(asJSON.Native())
 		}

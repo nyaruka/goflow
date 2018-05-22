@@ -20,7 +20,7 @@ var xt = types.NewXDateTime
 
 type testResolvable struct{}
 
-func (r *testResolvable) Resolve(key string) types.XValue {
+func (r *testResolvable) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "foo":
 		return types.NewXText("bar")
@@ -41,8 +41,8 @@ func (r *testResolvable) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r *testResolvable) ToXJSON() types.XText {
-	return types.ResolveKeys(r, "foo", "zed").ToXJSON()
+func (r *testResolvable) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, r, "foo", "zed").ToXJSON(env)
 }
 
 var testTests = []struct {

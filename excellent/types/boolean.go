@@ -30,7 +30,7 @@ func (x XBoolean) ToXText() XText { return NewXText(strconv.FormatBool(x.Native(
 func (x XBoolean) ToXBoolean() XBoolean { return x }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XBoolean) ToXJSON() XText { return MustMarshalToXText(x.Native()) }
+func (x XBoolean) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native()) }
 
 // Native returns the native value of this type
 func (x XBoolean) Native() bool { return x.native }

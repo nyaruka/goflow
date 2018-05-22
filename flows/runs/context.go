@@ -3,6 +3,7 @@ package runs
 import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // RunContextTopLevels are the allowed top-level variables for expression evaluations
@@ -18,7 +19,7 @@ func newRunContext(run flows.FlowRun) types.XValue {
 }
 
 // Resolve resolves the given top-level key in an expression
-func (c *runContext) Resolve(key string) types.XValue {
+func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "contact":
 		return c.run.Contact()
@@ -43,7 +44,7 @@ func (c *runContext) Reduce() types.XPrimitive {
 }
 
 // ToXJSON can never actually be called on the context root
-func (c *runContext) ToXJSON() types.XText {
+func (c *runContext) ToXJSON(env utils.Environment) types.XText {
 	panic("shouldn't be possible to call ToXJSON on the context root")
 }
 
@@ -64,7 +65,7 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 }
 
 // Resolve resolves the given key when this related run is referenced in an expression
-func (c *relatedRunContext) Resolve(key string) types.XValue {
+func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(c.run.UUID()))
@@ -89,8 +90,8 @@ func (c *relatedRunContext) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *relatedRunContext) ToXJSON() types.XText {
-	return types.ResolveKeys(c, "uuid", "contact", "flow", "status", "results").ToXJSON()
+func (c *relatedRunContext) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, c, "uuid", "contact", "flow", "status", "results").ToXJSON(env)
 }
 
 var _ types.XValue = (*relatedRunContext)(nil)

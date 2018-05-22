@@ -71,7 +71,7 @@ func (u *ContactURN) Channel() Channel { return u.channel }
 func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
 
 // Resolve resolves the given key when this URN is referenced in an expression
-func (u *ContactURN) Resolve(key string) types.XValue {
+func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "scheme":
 		return types.NewXText(u.URN.Scheme())
@@ -92,8 +92,8 @@ func (u *ContactURN) Describe() string { return "URN" }
 func (u *ContactURN) Reduce() types.XPrimitive { return types.NewXText(string(u.URN)) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (u *ContactURN) ToXJSON() types.XText {
-	return types.ResolveKeys(u, "scheme", "path", "display").ToXJSON()
+func (u *ContactURN) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, u, "scheme", "path", "display").ToXJSON(env)
 }
 
 var _ types.XValue = (*ContactURN)(nil)
@@ -167,7 +167,7 @@ func (l URNList) WithScheme(scheme string) URNList {
 }
 
 // Resolve resolves the given key when this URN list is referenced in an expression
-func (l URNList) Resolve(key string) types.XValue {
+func (l URNList) Resolve(env utils.Environment, key string) types.XValue {
 	scheme := strings.ToLower(key)
 
 	// if this isn't a valid scheme, bail
@@ -191,8 +191,8 @@ func (l URNList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (l URNList) ToXJSON() types.XText {
-	return l.Reduce().ToXJSON()
+func (l URNList) ToXJSON(env utils.Environment) types.XText {
+	return l.Reduce().ToXJSON(env)
 }
 
 // Index is called when this object is indexed into in an expression

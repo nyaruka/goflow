@@ -2,6 +2,8 @@ package types
 
 import (
 	"encoding/json"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // XMap is a map primitive in Excellent expressions
@@ -56,10 +58,10 @@ func (m *xmap) ToXBoolean() XBoolean {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (m *xmap) ToXJSON() XText {
+func (m *xmap) ToXJSON(env utils.Environment) XText {
 	marshaled := make(map[string]json.RawMessage, len(m.values))
 	for k, v := range m.values {
-		asJSON, err := ToXJSON(v)
+		asJSON, err := ToXJSON(env, v)
 		if err == nil {
 			marshaled[k] = json.RawMessage(asJSON.Native())
 		}
@@ -77,7 +79,7 @@ func (m *xmap) Length() int {
 	return len(m.values)
 }
 
-func (m *xmap) Resolve(key string) XValue {
+func (m *xmap) Resolve(env utils.Environment, key string) XValue {
 	val, found := m.values[key]
 	if !found {
 		return NewXResolveError(m, key)

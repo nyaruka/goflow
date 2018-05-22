@@ -248,7 +248,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 }
 
 // Resolve resolves the given key when this run is referenced in an expression
-func (r *flowRun) Resolve(key string) types.XValue {
+func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(r.UUID()))
@@ -286,8 +286,8 @@ func (r *flowRun) Reduce() types.XPrimitive {
 	return types.NewXText(string(r.uuid))
 }
 
-func (r *flowRun) ToXJSON() types.XText {
-	return types.ResolveKeys(r, "uuid", "contact", "flow", "input", "webhook", "status", "results", "created_on", "exited_on").ToXJSON()
+func (r *flowRun) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, r, "uuid", "contact", "flow", "input", "webhook", "status", "results", "created_on", "exited_on").ToXJSON(env)
 }
 
 func (r *flowRun) Snapshot() flows.RunSummary {

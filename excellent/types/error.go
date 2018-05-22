@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 // XError is an error
@@ -44,7 +46,7 @@ func (x xerror) ToXText() XText { return NewXText(x.Native().Error()) }
 func (x xerror) ToXBoolean() XBoolean { return XBooleanFalse }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x xerror) ToXJSON() XText { return MustMarshalToXText(x.Native().Error()) }
+func (x xerror) ToXJSON(env utils.Environment) XText { return MustMarshalToXText(x.Native().Error()) }
 
 // MarshalJSON converts this type to internal JSON
 func (x xerror) MarshalJSON() ([]byte, error) {

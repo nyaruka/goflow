@@ -18,8 +18,8 @@ func TestXMap(t *testing.T) {
 
 	map1.Put("zed", types.XBooleanFalse)
 	assert.Equal(t, 3, map1.Length())
-	assert.Equal(t, types.NewXNumberFromInt(123), map1.Resolve("bar"))
-	assert.True(t, types.IsXError(map1.Resolve("xxxx")))
+	assert.Equal(t, types.NewXNumberFromInt(123), map1.Resolve(nil, "bar"))
+	assert.True(t, types.IsXError(map1.Resolve(nil, "xxxx")))
 
 	assert.Equal(t, `{"bar":"123","foo":"abc","zed":"false"}`, map1.String())
 

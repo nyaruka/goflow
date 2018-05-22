@@ -40,7 +40,7 @@ func TestResults(t *testing.T) {
 		if test.expected == ERROR {
 			assert.True(t, types.IsXError(value), "expecting error, got %T{%s} for lookup %s", value, value, test.lookup)
 		} else {
-			if !types.Equals(value, test.expected) {
+			if !types.Equals(env, value, test.expected) {
 				t.Errorf("Expected: '%s' Got: '%s' for lookup: '%s' and Results:\n%s", test.expected, value, test.lookup, test.JSON)
 			}
 		}

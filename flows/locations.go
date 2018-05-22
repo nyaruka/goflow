@@ -41,8 +41,8 @@ func (p LocationPath) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (p LocationPath) ToXJSON() types.XText {
-	return p.Reduce().ToXJSON()
+func (p LocationPath) ToXJSON(env utils.Environment) types.XText {
+	return p.Reduce().ToXJSON(env)
 }
 
 var _ types.XValue = LocationPath("")

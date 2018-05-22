@@ -184,7 +184,7 @@ func ResolveValue(env utils.Environment, variable types.XValue, key string) type
 
 		// look it up in our resolver
 		if isResolver {
-			variable = resolver.Resolve(key)
+			variable = resolver.Resolve(env, key)
 
 			if types.IsXError(variable) {
 				return variable

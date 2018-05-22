@@ -143,7 +143,7 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 // Resolve resolves the given key when this contact is referenced in an expression
-func (c *Contact) Resolve(key string) types.XValue {
+func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
@@ -194,8 +194,8 @@ func (c *Contact) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *Contact) ToXJSON() types.XText {
-	return types.ResolveKeys(c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON()
+func (c *Contact) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON(env)
 }
 
 var _ types.XValue = (*Contact)(nil)

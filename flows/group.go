@@ -77,7 +77,7 @@ func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool,
 func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
 
 // Resolve resolves the given key when this group is referenced in an expression
-func (g *Group) Resolve(key string) types.XValue {
+func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(g.uuid))
@@ -95,8 +95,8 @@ func (g *Group) Describe() string { return "group" }
 func (g *Group) Reduce() types.XPrimitive { return types.NewXText(g.name) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (g *Group) ToXJSON() types.XText {
-	return types.ResolveKeys(g, "uuid", "name").ToXJSON()
+func (g *Group) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, g, "uuid", "name").ToXJSON(env)
 }
 
 var _ types.XValue = (*Group)(nil)
@@ -182,8 +182,8 @@ func (l GroupList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (l GroupList) ToXJSON() types.XText {
-	return l.Reduce().ToXJSON()
+func (l GroupList) ToXJSON(env utils.Environment) types.XText {
+	return l.Reduce().ToXJSON(env)
 }
 
 var _ types.XValue = (*GroupList)(nil)

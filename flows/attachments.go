@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // Attachment is a media attachment on a message, and it has the following properties which can be accessed:
@@ -39,7 +40,7 @@ func (a Attachment) URL() string {
 }
 
 // Resolve resolves the given key when this attachment is referenced in an expression
-func (a Attachment) Resolve(key string) types.XValue {
+func (a Attachment) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "content_type":
 		return types.NewXText(a.ContentType())
@@ -57,8 +58,8 @@ func (a Attachment) Describe() string { return "attachment" }
 func (a Attachment) Reduce() types.XPrimitive { return types.NewXText(a.URL()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a Attachment) ToXJSON() types.XText {
-	return types.ResolveKeys(a, "content_type", "url").ToXJSON()
+func (a Attachment) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, a, "content_type", "url").ToXJSON(env)
 }
 
 var _ types.XValue = (Attachment)("")
@@ -90,7 +91,7 @@ func (a AttachmentList) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (a AttachmentList) ToXJSON() types.XText { return a.Reduce().ToXJSON() }
+func (a AttachmentList) ToXJSON(env utils.Environment) types.XText { return a.Reduce().ToXJSON(env) }
 
 var _ types.XValue = (AttachmentList)(nil)
 var _ types.XIndexable = (AttachmentList)(nil)

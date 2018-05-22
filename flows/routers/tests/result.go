@@ -2,6 +2,7 @@ package tests
 
 import (
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // XTestResult encapsulates not only if the test was true but what the match was
@@ -17,7 +18,7 @@ func (t XTestResult) Matched() bool { return t.matched }
 func (t XTestResult) Match() types.XValue { return t.match }
 
 // Resolve resolves the given key when this result is referenced in an expression
-func (t XTestResult) Resolve(key string) types.XValue {
+func (t XTestResult) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "matched":
 		return types.NewXBoolean(t.matched)
@@ -36,8 +37,8 @@ func (t XTestResult) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (t XTestResult) ToXJSON() types.XText {
-	return types.ResolveKeys(t, "matched", "match").ToXJSON()
+func (t XTestResult) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, t, "matched", "match").ToXJSON(env)
 }
 
 // XFalseResult can be used as a singleton for false result values

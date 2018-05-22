@@ -80,7 +80,7 @@ func (v *FieldValue) TypedValue() types.XValue {
 }
 
 // Resolve resolves the given key when this field value is referenced in an expression
-func (v *FieldValue) Resolve(key string) types.XValue {
+func (v *FieldValue) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "text":
 		return v.text
@@ -97,7 +97,7 @@ func (v *FieldValue) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *FieldValue) ToXJSON() types.XText { return v.Reduce().ToXJSON() }
+func (v *FieldValue) ToXJSON(env utils.Environment) types.XText { return v.Reduce().ToXJSON(env) }
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
@@ -213,7 +213,7 @@ func (f FieldValues) Length() int {
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
-func (f FieldValues) Resolve(key string) types.XValue {
+func (f FieldValues) Resolve(env utils.Environment, key string) types.XValue {
 	val, exists := f[key]
 	if !exists {
 		return types.NewXErrorf("no such contact field '%s'", key)
@@ -234,8 +234,8 @@ func (f FieldValues) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (f FieldValues) ToXJSON() types.XText {
-	return f.Reduce().ToXJSON()
+func (f FieldValues) ToXJSON(env utils.Environment) types.XText {
+	return f.Reduce().ToXJSON(env)
 }
 
 var _ types.XValue = (FieldValues)(nil)

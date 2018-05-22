@@ -50,18 +50,18 @@ func (t *FlowActionTrigger) Type() string { return TypeFlowAction }
 func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
 
 // Resolve resolves the given key when this trigger is referenced in an expression
-func (t *FlowActionTrigger) Resolve(key string) types.XValue {
+func (t *FlowActionTrigger) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "type":
 		return types.NewXText(TypeFlowAction)
 	}
 
-	return t.baseTrigger.Resolve(key)
+	return t.baseTrigger.Resolve(env, key)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (t *FlowActionTrigger) ToXJSON() types.XText {
-	return types.ResolveKeys(t, "type", "params").ToXJSON()
+func (t *FlowActionTrigger) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
 }
 
 var _ flows.Trigger = (*FlowActionTrigger)(nil)

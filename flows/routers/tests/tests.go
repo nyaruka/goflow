@@ -347,7 +347,7 @@ func newPatternMatch(matches []string) *patternMatch {
 }
 
 // Resolve resolves the given key when this match is referenced in an expression
-func (m *patternMatch) Resolve(key string) types.XValue {
+func (m *patternMatch) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "groups":
 		return m.groups
@@ -365,8 +365,8 @@ func (m *patternMatch) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (m *patternMatch) ToXJSON() types.XText {
-	return types.ResolveKeys(m, "groups").ToXJSON()
+func (m *patternMatch) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, m, "groups").ToXJSON(env)
 }
 
 var _ types.XValue = (*patternMatch)(nil)

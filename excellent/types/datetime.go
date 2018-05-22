@@ -29,7 +29,9 @@ func (x XDateTime) ToXText() XText { return NewXText(utils.DateToISO(x.Native())
 func (x XDateTime) ToXBoolean() XBoolean { return NewXBoolean(!x.Native().IsZero()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (x XDateTime) ToXJSON() XText { return MustMarshalToXText(utils.DateToISO(x.Native())) }
+func (x XDateTime) ToXJSON(env utils.Environment) XText {
+	return MustMarshalToXText(utils.DateToISO(x.Native()))
+}
 
 // Native returns the native value of this type
 func (x XDateTime) Native() time.Time { return x.native }

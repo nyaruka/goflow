@@ -1170,7 +1170,7 @@ func ParseJSON(env utils.Environment, text types.XText) types.XValue {
 //
 // @function json(value)
 func JSON(env utils.Environment, value types.XValue) types.XValue {
-	asJSON, xerr := types.ToXJSON(value)
+	asJSON, xerr := types.ToXJSON(env, value)
 	if xerr != nil {
 		return xerr
 	}

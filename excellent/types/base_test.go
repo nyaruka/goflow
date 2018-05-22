@@ -21,7 +21,7 @@ func NewTestXObject(foo string, bar int) *testXObject {
 	return &testXObject{foo: foo, bar: bar}
 }
 
-func (v *testXObject) Resolve(key string) types.XValue {
+func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "foo":
 		return types.NewXText(v.foo)
@@ -32,8 +32,8 @@ func (v *testXObject) Resolve(key string) types.XValue {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON() types.XText {
-	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
+func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, v, "foo", "bar").ToXJSON(env)
 }
 
 // MarshalJSON converts this type to its internal JSON representation which can differ from ToJSON
@@ -60,6 +60,8 @@ func TestXValueRequiredConversions(t *testing.T) {
 
 	date1 := time.Date(2017, 6, 23, 15, 30, 0, 0, time.UTC)
 	date2 := time.Date(2017, 7, 18, 15, 30, 0, 0, chi)
+
+	env := utils.NewDefaultEnvironment()
 
 	tests := []struct {
 		value          types.XValue
@@ -251,7 +253,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 	}
 	for _, test := range tests {
 		asInternalJSON, _ := utils.JSONMarshal(test.value)
-		asJSON, _ := types.ToXJSON(test.value)
+		asJSON, _ := types.ToXJSON(env, test.value)
 		asText, _ := types.ToXText(test.value)
 		asBool, _ := types.ToXBoolean(test.value)
 
@@ -263,6 +265,8 @@ func TestXValueRequiredConversions(t *testing.T) {
 }
 
 func TestEquals(t *testing.T) {
+	env := utils.NewDefaultEnvironment()
+
 	var tests = []struct {
 		x1     types.XValue
 		x2     types.XValue
@@ -283,7 +287,7 @@ func TestEquals(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		assert.Equal(t, test.result, types.Equals(test.x1, test.x2), "equality mismatch for inputs '%s' and '%s'", test.x1, test.x2)
+		assert.Equal(t, test.result, types.Equals(env, test.x1, test.x2), "equality mismatch for inputs '%s' and '%s'", test.x1, test.x2)
 	}
 }
 
