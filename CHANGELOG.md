@@ -1,3 +1,8 @@
+v0.10.5
+----------
+ * Implement redacting URNs
+ * Add numeric ID to contacts
+
 v0.10.4
 ----------
  * run.input.text should be optional
