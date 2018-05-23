@@ -44,29 +44,6 @@ func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 	return marshaled
 }
 
-func rawMessageAsJSON(msg json.RawMessage) (string, error) {
-	envJSON, err := utils.JSONMarshalPretty(msg)
-	if err != nil {
-		return "", err
-	}
-
-	return string(clearTimestamps(envJSON)), nil
-}
-
-func eventAsJSON(event flows.Event) (string, error) {
-	env, err := utils.EnvelopeFromTyped(event)
-	if err != nil {
-		return "", err
-	}
-
-	envJSON, err := utils.JSONMarshalPretty(env)
-	if err != nil {
-		return "", err
-	}
-
-	return string(clearTimestamps(envJSON)), nil
-}
-
 func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
 	for _, e := range arrFields {
 		switch child := e.(type) {
