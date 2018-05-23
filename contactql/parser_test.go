@@ -48,7 +48,7 @@ func TestParseQuery(t *testing.T) {
 
 type TestQueryable struct{}
 
-func (t *TestQueryable) ResolveQueryKey(key string) []interface{} {
+func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []interface{} {
 	switch key {
 	case "tel":
 		return []interface{}{"+59313145145"}

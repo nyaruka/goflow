@@ -215,7 +215,6 @@ Represents a person who is interacting with the flow. It renders as the person's
 (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
 
  * `uuid` the UUID of the contact
- * `id` the numeric ID of the contact
  * `name` the full name of the contact
  * `first_name` the first name of the contact
  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact

@@ -14,7 +14,6 @@ import (
 // (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
 //
 //  * `uuid` the UUID of the contact
-//  * `id` the numeric ID of the contact
 //  * `name` the full name of the contact
 //  * `first_name` the first name of the contact
 //  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
@@ -255,15 +254,19 @@ func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 }
 
 // ResolveQueryKey resolves a contact query search key for this contact
-func (c *Contact) ResolveQueryKey(key string) []interface{} {
+func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface{} {
 	// try as a URN scheme
 	if urns.IsValidScheme(key) {
-		urnsWithScheme := c.urns.WithScheme(key)
-		vals := make([]interface{}, len(urnsWithScheme))
-		for u := range urnsWithScheme {
-			vals[u] = string(urnsWithScheme[u].URN)
+		if env.RedactionPolicy() != utils.RedactionPolicyURNs {
+			urnsWithScheme := c.urns.WithScheme(key)
+			vals := make([]interface{}, len(urnsWithScheme))
+			for u := range urnsWithScheme {
+				vals[u] = string(urnsWithScheme[u].URN)
+			}
+			return vals
+		} else {
+			return nil
 		}
-		return vals
 	}
 
 	// try as a contact field
