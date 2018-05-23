@@ -119,6 +119,12 @@
   version = "v1.2.0"
 
 [[projects]]
+  name = "github.com/sergi/go-diff"
+  packages = ["diffmatchpatch"]
+  revision = "1744e2970ca51c86172c8190fadad617561ed6e7"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/shopspring/decimal"
   packages = ["."]
@@ -175,6 +181,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7ec798f195be26f1119450b60187920f975d7a763b0fca9f3d62f9bfb83d7cf6"
+  inputs-digest = "abe75c221c888a30389118d168bbfed545e3c39d0a8c7ba37dfccf94983513fa"
   solver-name = "gps-cdcl"
   solver-version = 1
