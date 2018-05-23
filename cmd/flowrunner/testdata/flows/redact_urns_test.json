@@ -16,7 +16,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -25,6 +26,7 @@
                     "status": "success",
                     "status_code": 200,
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 }
             ],

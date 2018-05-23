@@ -46,12 +46,14 @@
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00"
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -182,12 +184,14 @@
                     "name": "Favorite Color",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "run_result_changed",
                     "value": "blue"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "language": "fra",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "contact_language_changed"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -200,12 +204,14 @@
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00"
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -414,6 +420,7 @@
                     "name": "Soda",
                     "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "run_result_changed",
                     "value": "Coke"
                 },
                 {
@@ -423,6 +430,7 @@
                     "status": "success",
                     "status_code": 200,
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 },
                 {
@@ -436,7 +444,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "msg_created"
                 }
             ],
             "session": {

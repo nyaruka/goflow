@@ -31,12 +31,14 @@
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00"
+                    "timeout_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -167,6 +169,7 @@
                     "name": "Birth Date",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "run_result_changed",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                 },
                 {
@@ -176,6 +179,7 @@
                         "name": "Birth Date"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "contact_field_changed",
                     "value": "1977-06-23T15:34:00.000000-05:00"
                 },
                 {
@@ -189,7 +193,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "msg_created"
                 }
             ],
             "session": {

@@ -114,13 +114,13 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	// for each of our remaining caller events
 	resumeEvents := callerEvents[1:]
 	for i := range resumeEvents {
-		outJSON, err := utils.JSONMarshalPretty(session)
+		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
+		outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
 
-		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, outJSON)
+		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, sessionJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -135,11 +135,11 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 	}
 
-	outJSON, err := utils.JSONMarshalPretty(session)
+	sessionJSON, err := utils.JSONMarshalPretty(session)
 	if err != nil {
 		return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 	}
-	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
+	outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
 
 	return runResult{assetCache, session, outputs}, nil
 }
@@ -219,55 +219,56 @@ func TestFlows(t *testing.T) {
 			}
 
 			for i := range runResult.outputs {
-				actualOutput := runResult.outputs[i]
-				expectedOutput := expectedOutputs[i]
-
-				actualSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, actualOutput.Session)
-				require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", tc.assets, err)
-
-				expectedSession, err := engine.ReadSession(runResult.assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, expectedOutput.Session)
-				require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", tc.assets, err)
-
-				// number of runs should be the same
-				if len(actualSession.Runs()) != len(expectedSession.Runs()) {
-					t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), tc.assets)
-				}
-
-				// runs should have same status and flows
-				for i := range actualSession.Runs() {
-					run := actualSession.Runs()[i]
-					expected := expectedSession.Runs()[i]
-
-					if run.Flow() != expected.Flow() {
-						t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'", run.Flow().UUID(), expected.Flow().UUID(), tc.assets)
-					}
-
-					if run.Status() != expected.Status() {
-						t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'", run.Status(), expected.Status(), tc.assets)
-					}
-				}
-
-				if len(actualOutput.Events) != len(expectedOutput.Events) {
-					t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualOutput.Events, expectedOutput.Events, tc.assets)
-				}
-
-				for j := range actualOutput.Events {
-					event := actualOutput.Events[j]
-					expected := expectedOutput.Events[j]
-
-					// write our events as json
-					eventJSON, err := rawMessageAsJSON(event)
-					require.NoError(t, err, "Error marshalling event for flow '%s' and output '%s': %s\n", tc.assets, tc.output, err)
-
-					expectedJSON, err := rawMessageAsJSON(expected)
-					require.NoError(t, err, "Error marshalling expected event for flow '%s' and output '%s': %s\n", tc.assets, tc.output, err)
-
-					if eventJSON != expectedJSON {
-						t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s' and output '%s\n", eventJSON, expectedJSON, tc.assets, tc.output)
-						break
-					}
-				}
+				compareOutputs(t, tc.assets, expectedOutputs[i], runResult.outputs[i], runResult.assetCache)
 			}
+		}
+	}
+}
+
+func compareOutputs(t *testing.T, assetsFile string, expected *Output, actual *Output, assetCache *assets.AssetCache) {
+	actualSession, err := engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, actual.Session)
+	require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", assetsFile, err)
+
+	expectedSession, err := engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, expected.Session)
+	require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", assetsFile, err)
+
+	// number of runs should be the same
+	if len(actualSession.Runs()) != len(expectedSession.Runs()) {
+		t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), assetsFile)
+	}
+
+	// runs should have same status and flows
+	for i := range actualSession.Runs() {
+		run := actualSession.Runs()[i]
+		expected := expectedSession.Runs()[i]
+
+		if run.Flow() != expected.Flow() {
+			t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'\n", run.Flow().UUID(), expected.Flow().UUID(), assetsFile)
+		}
+
+		if run.Status() != expected.Status() {
+			t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'\n", run.Status(), expected.Status(), assetsFile)
+		}
+	}
+
+	if len(actual.Events) != len(expected.Events) {
+		t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actual.Events, expected.Events, assetsFile)
+	}
+
+	for j := range actual.Events {
+		event := actual.Events[j]
+		expected := expected.Events[j]
+
+		// write our events as json
+		eventJSON, err := rawMessageAsJSON(event)
+		require.NoError(t, err, "Error marshalling event for flow '%s': %s\n", assetsFile, err)
+
+		expectedJSON, err := rawMessageAsJSON(expected)
+		require.NoError(t, err, "Error marshalling expected event for flow '%s': %s\n", assetsFile, err)
+
+		if eventJSON != expectedJSON {
+			t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s'\n", eventJSON, expectedJSON, assetsFile)
+			break
 		}
 	}
 }

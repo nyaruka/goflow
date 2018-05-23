@@ -76,7 +76,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -85,7 +86,8 @@
                         "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
                     },
                     "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "flow_triggered"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -98,11 +100,13 @@
                         "urn": "tel:+12065551212",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
-                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -289,6 +293,7 @@
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "run_result_changed",
                     "value": "neither"
                 },
                 {
@@ -302,11 +307,13 @@
                         "urn": "tel:+12065551212",
                         "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
                     },
-                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c"
+                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -571,6 +578,7 @@
                     "name": "Answer",
                     "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "type": "run_result_changed",
                     "value": "yes"
                 },
                 {
@@ -584,7 +592,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
                     },
-                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034"
+                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -597,11 +606,13 @@
                         "urn": "tel:+12065551212",
                         "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
                     },
-                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459"
+                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae"
+                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -946,6 +957,7 @@
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
+                    "type": "run_result_changed",
                     "value": "never"
                 },
                 {
@@ -959,11 +971,13 @@
                         "urn": "tel:+12065551212",
                         "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
                     },
-                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da"
+                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005"
+                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
+                    "type": "msg_wait"
                 }
             ],
             "session": {
@@ -1386,6 +1400,7 @@
                     "name": "Answer",
                     "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
+                    "type": "run_result_changed",
                     "value": "no"
                 },
                 {
@@ -1399,7 +1414,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
                     },
-                    "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f"
+                    "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
+                    "type": "msg_created"
                 }
             ],
             "session": {

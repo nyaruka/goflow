@@ -32,7 +32,8 @@
                             "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168"
                         }
                     ],
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "input_labels_added"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -46,11 +47,13 @@
                             "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
                         }
                     ],
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_groups_added"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_urn_added",
                     "urn": "twitter:ben_haggerty"
                 },
                 {
@@ -60,6 +63,7 @@
                         "name": "Activation Token"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_field_changed",
                     "value": "XXX-YYY-ZZZ"
                 },
                 {
@@ -70,7 +74,8 @@
                     "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "subject": "Here is your activation token"
+                    "subject": "Here is your activation token",
+                    "type": "email_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -79,7 +84,8 @@
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
                     "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "flow_triggered"
                 },
                 {
                     "contacts": [
@@ -133,7 +139,8 @@
                         "status": "active",
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "session_triggered"
                 },
                 {
                     "base_language": "eng",
@@ -147,6 +154,7 @@
                             "text": "Hola Ben Haggerty, ¿estás listo?"
                         }
                     },
+                    "type": "broadcast_created",
                     "urns": [
                         "tel:+12065551212"
                     ]
@@ -174,7 +182,8 @@
                             ],
                             "text": "Hi Ben Haggerty, are you ready for these attachments?"
                         }
-                    }
+                    },
+                    "type": "broadcast_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -184,7 +193,8 @@
                             "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                         }
                     ],
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_groups_removed"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -197,7 +207,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -210,7 +221,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -223,7 +235,8 @@
                         "urn": "facebook:1122334455667788",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -236,7 +249,8 @@
                         "urn": "twitter:ben_haggerty",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -256,7 +270,8 @@
                         "urn": "tel:+12065551212",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
                 },
                 {
                     "category": "Male",
@@ -264,17 +279,20 @@
                     "name": "Gender",
                     "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "run_result_changed",
                     "value": "m"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "name": "Jeff",
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_name_changed"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "language": "eng",
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_language_changed"
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -283,6 +301,7 @@
                         "name": "Gender"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_field_changed",
                     "value": "Male"
                 },
                 {
@@ -292,6 +311,7 @@
                     "status": "success",
                     "status_code": 200,
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 }
             ],
