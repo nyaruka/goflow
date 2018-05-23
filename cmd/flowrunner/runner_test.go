@@ -39,6 +39,7 @@ var flowTests = []struct {
 	{"dynamic_groups.json", "dynamic_groups_test.json"},
 	{"triggered.json", "triggered_test.json"},
 	{"no_contact.json", "no_contact_test.json"},
+	{"redact_urns.json", "redact_urns_test.json"},
 }
 
 var writeOutput bool

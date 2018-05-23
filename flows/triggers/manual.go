@@ -38,18 +38,18 @@ func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow flows.
 func (t *ManualTrigger) Type() string { return TypeManual }
 
 // Resolve resolves the given key when this trigger is referenced in an expression
-func (t *ManualTrigger) Resolve(key string) types.XValue {
+func (t *ManualTrigger) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "type":
 		return types.NewXText(TypeManual)
 	}
 
-	return t.baseTrigger.Resolve(key)
+	return t.baseTrigger.Resolve(env, key)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (t *ManualTrigger) ToXJSON() types.XText {
-	return types.ResolveKeys(t, "type", "params").ToXJSON()
+func (t *ManualTrigger) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
 }
 
 var _ flows.Trigger = (*ManualTrigger)(nil)

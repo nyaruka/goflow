@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // response content-types that we'll save as @run.webhook.body
@@ -116,7 +117,7 @@ func (w *WebhookCall) Body() string {
 func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.Body())) }
 
 // Resolve resolves the given key when this webhook is referenced in an expression
-func (w *WebhookCall) Resolve(key string) types.XValue {
+func (w *WebhookCall) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "url":
 		return types.NewXText(w.URL())
@@ -139,13 +140,13 @@ func (w *WebhookCall) Resolve(key string) types.XValue {
 func (w *WebhookCall) Describe() string { return "webhook" }
 
 // Reduce reduces this to a string of method and URL, e.g. "GET http://example.com/hook.php"
-func (w *WebhookCall) Reduce() types.XPrimitive {
+func (w *WebhookCall) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(fmt.Sprintf("%s %s", w.Method(), w.URL()))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (w *WebhookCall) ToXJSON() types.XText {
-	return types.ResolveKeys(w, "body", "json", "url", "request", "response", "status", "status_code").ToXJSON()
+func (w *WebhookCall) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, w, "body", "json", "url", "request", "response", "status", "status_code").ToXJSON(env)
 }
 
 var _ types.XValue = (*WebhookCall)(nil)

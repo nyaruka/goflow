@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type baseInput struct {
@@ -18,7 +19,7 @@ func (i *baseInput) Channel() flows.Channel { return i.channel }
 func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
 
 // Resolve resolves the given key when this input is referenced in an expression
-func (i *baseInput) Resolve(key string) types.XValue {
+func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(i.uuid))

@@ -120,7 +120,7 @@ func (v *Visitor) VisitArrayLookup(ctx *gen.ArrayLookupContext) interface{} {
 
 	expression := toXValue(v.Visit(ctx.Expression()))
 
-	lookup, xerr := types.ToXText(expression)
+	lookup, xerr := types.ToXText(v.env, expression)
 	if xerr != nil {
 		return xerr
 	}
@@ -144,7 +144,7 @@ func (v *Visitor) VisitParentheses(ctx *gen.ParenthesesContext) interface{} {
 func (v *Visitor) VisitNegation(ctx *gen.NegationContext) interface{} {
 	arg := toXValue(v.Visit(ctx.Expression()))
 
-	number, xerr := types.ToXNumber(arg)
+	number, xerr := types.ToXNumber(v.env, arg)
 	if xerr != nil {
 		return xerr
 	}
@@ -157,11 +157,11 @@ func (v *Visitor) VisitExponent(ctx *gen.ExponentContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(arg1)
+	num1, xerr := types.ToXNumber(v.env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	num2, xerr := types.ToXNumber(arg2)
+	num2, xerr := types.ToXNumber(v.env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -174,11 +174,11 @@ func (v *Visitor) VisitConcatenation(ctx *gen.ConcatenationContext) interface{} 
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXText(arg1)
+	str1, xerr := types.ToXText(v.env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	str2, xerr := types.ToXText(arg2)
+	str2, xerr := types.ToXText(v.env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -195,11 +195,11 @@ func (v *Visitor) VisitAdditionOrSubtraction(ctx *gen.AdditionOrSubtractionConte
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(arg1)
+	num1, xerr := types.ToXNumber(v.env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	num2, xerr := types.ToXNumber(arg2)
+	num2, xerr := types.ToXNumber(v.env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -215,11 +215,11 @@ func (v *Visitor) VisitEquality(ctx *gen.EqualityContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	str1, xerr := types.ToXText(arg1)
+	str1, xerr := types.ToXText(v.env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	str2, xerr := types.ToXText(arg2)
+	str2, xerr := types.ToXText(v.env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -243,11 +243,11 @@ func (v *Visitor) VisitMultiplicationOrDivision(ctx *gen.MultiplicationOrDivisio
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(arg1)
+	num1, xerr := types.ToXNumber(v.env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	num2, xerr := types.ToXNumber(arg2)
+	num2, xerr := types.ToXNumber(v.env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -269,11 +269,11 @@ func (v *Visitor) VisitComparison(ctx *gen.ComparisonContext) interface{} {
 	arg1 := toXValue(v.Visit(ctx.Expression(0)))
 	arg2 := toXValue(v.Visit(ctx.Expression(1)))
 
-	num1, xerr := types.ToXNumber(arg1)
+	num1, xerr := types.ToXNumber(v.env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	num2, xerr := types.ToXNumber(arg2)
+	num2, xerr := types.ToXNumber(v.env, arg2)
 	if xerr != nil {
 		return xerr
 	}

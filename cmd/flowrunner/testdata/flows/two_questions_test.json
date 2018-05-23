@@ -65,6 +65,7 @@
                             "text": "Ecuador > Azuay"
                         }
                     },
+                    "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
                     "timezone": "America/Guayaquil",
@@ -80,6 +81,7 @@
                     "languages": [
                         "eng"
                     ],
+                    "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -137,6 +139,7 @@
                                 "text": "Ecuador > Azuay"
                             }
                         },
+                        "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
                         "timezone": "America/Guayaquil",
@@ -152,6 +155,7 @@
                         "languages": [
                             "eng"
                         ],
+                        "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -215,6 +219,7 @@
                             "text": "Ecuador > Azuay"
                         }
                     },
+                    "id": 1234567,
                     "language": "fra",
                     "name": "Ben Haggerty",
                     "timezone": "America/Guayaquil",
@@ -230,6 +235,7 @@
                     "languages": [
                         "eng"
                     ],
+                    "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -365,6 +371,7 @@
                                 "text": "Ecuador > Azuay"
                             }
                         },
+                        "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
                         "timezone": "America/Guayaquil",
@@ -380,6 +387,7 @@
                         "languages": [
                             "eng"
                         ],
+                        "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -442,6 +450,7 @@
                             "text": "Ecuador > Azuay"
                         }
                     },
+                    "id": 1234567,
                     "language": "fra",
                     "name": "Ben Haggerty",
                     "timezone": "America/Guayaquil",
@@ -457,6 +466,7 @@
                     "languages": [
                         "eng"
                     ],
+                    "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -663,6 +673,7 @@
                                 "text": "Ecuador > Azuay"
                             }
                         },
+                        "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
                         "timezone": "America/Guayaquil",
@@ -678,6 +689,7 @@
                         "languages": [
                             "eng"
                         ],
+                        "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -702,6 +714,7 @@
                     "text": "Ecuador > Azuay"
                 }
             },
+            "id": 1234567,
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",

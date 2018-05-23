@@ -113,6 +113,7 @@
                                     "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                                 }
                             ],
+                            "id": 1234567,
                             "language": "eng",
                             "name": "Ben Haggerty",
                             "timezone": "America/Guayaquil",
@@ -317,6 +318,7 @@
                             "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
                         }
                     ],
+                    "id": 1234567,
                     "language": "eng",
                     "name": "Jeff",
                     "timezone": "America/Guayaquil",
@@ -334,6 +336,7 @@
                         "eng",
                         "spa"
                     ],
+                    "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
@@ -455,6 +458,7 @@
                                                 "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                                             }
                                         ],
+                                        "id": 1234567,
                                         "language": "eng",
                                         "name": "Ben Haggerty",
                                         "timezone": "America/Guayaquil",
@@ -720,6 +724,7 @@
                                 "text": "Ecuador > Azuay"
                             }
                         },
+                        "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
                         "timezone": "America/Guayaquil",
@@ -736,6 +741,7 @@
                             "eng",
                             "spa"
                         ],
+                        "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
                     },
@@ -768,6 +774,7 @@
                     "text": "Ecuador > Azuay"
                 }
             },
+            "id": 1234567,
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",

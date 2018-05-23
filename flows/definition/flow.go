@@ -101,7 +101,7 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 }
 
 // Resolve resolves the given key when this flow is referenced in an expression
-func (f *flow) Resolve(key string) types.XValue {
+func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(f.UUID()))
@@ -116,13 +116,13 @@ func (f *flow) Resolve(key string) types.XValue {
 func (f *flow) Describe() string { return "flow" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (f *flow) Reduce() types.XPrimitive {
+func (f *flow) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(f.name)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (f *flow) ToXJSON() types.XText {
-	return types.ResolveKeys(f, "uuid", "name").ToXJSON()
+func (f *flow) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, f, "uuid", "name").ToXJSON(env)
 }
 
 var _ flows.Flow = (*flow)(nil)

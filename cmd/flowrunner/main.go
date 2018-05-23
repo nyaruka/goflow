@@ -164,7 +164,7 @@ func main() {
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{})
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{}, utils.RedactionPolicyNone)
 
 	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), httpClient)
 

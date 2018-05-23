@@ -6,6 +6,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type step struct {
@@ -28,7 +29,7 @@ func (s *step) Leave(exit flows.ExitUUID) {
 	s.leftOn = &now
 }
 
-func (s *step) Resolve(key string) types.XValue {
+func (s *step) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(s.UUID()))
@@ -46,12 +47,12 @@ func (s *step) Resolve(key string) types.XValue {
 // Describe returns a representation of this type for error messages
 func (s *step) Describe() string { return "step" }
 
-func (s *step) Reduce() types.XPrimitive {
+func (s *step) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(s.UUID()))
 }
 
-func (s *step) ToXJSON() types.XText {
-	return types.ResolveKeys(s, "uuid", "node_uuid", "arrived_on", "exit_uuid").ToXJSON()
+func (s *step) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, s, "uuid", "node_uuid", "arrived_on", "exit_uuid").ToXJSON(env)
 }
 
 var _ flows.Step = (*step)(nil)
@@ -69,7 +70,7 @@ func (p Path) Index(index int) types.XValue {
 // Describe returns a representation of this type for error messages
 func (p Path) Describe() string { return "path" }
 
-func (p Path) Reduce() types.XPrimitive {
+func (p Path) Reduce(env utils.Environment) types.XPrimitive {
 	array := types.NewXArray()
 	for _, step := range p {
 		array.Append(step)
@@ -77,8 +78,8 @@ func (p Path) Reduce() types.XPrimitive {
 	return array
 }
 
-func (p Path) ToXJSON() types.XText {
-	return p.Reduce().ToXJSON()
+func (p Path) ToXJSON(env utils.Environment) types.XText {
+	return p.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = (Path)(nil)

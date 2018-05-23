@@ -43,7 +43,7 @@ func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, 
 	}
 
 	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
-	vals := queryable.ResolveQueryKey(c.key)
+	vals := queryable.ResolveQueryKey(env, c.key)
 
 	// is this an existence check?
 	if c.value == "" {

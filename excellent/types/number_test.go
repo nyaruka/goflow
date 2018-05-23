@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -56,9 +57,11 @@ func TestToXNumberAndInteger(t *testing.T) {
 		{NewTestXObject("123.45000", 123), types.RequireXNumberFromString("123.45"), 123, false},
 	}
 
+	env := utils.NewDefaultEnvironment()
+
 	for _, test := range tests {
-		number, err := types.ToXNumber(test.value)
-		integer, err := types.ToInteger(test.value)
+		number, err := types.ToXNumber(env, test.value)
+		integer, err := types.ToInteger(env, test.value)
 
 		if test.hasError {
 			assert.Error(t, err, "expected error for input %T{%s}", test.value, test.value)

@@ -21,7 +21,7 @@ func NewTestEnvironment(dateFormat utils.DateFormat, tz *time.Location, now *tim
 	}
 
 	return &TestEnvironment{
-		Environment: utils.NewEnvironment(dateFormat, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}),
+		Environment: utils.NewEnvironment(dateFormat, utils.TimeFormatHourMinute, tz, utils.LanguageList{"eng", "spa"}, utils.RedactionPolicyNone),
 		now:         *now,
 	}
 }

@@ -1,0 +1,36 @@
+[
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+        "content": {
+            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+            "name": "Redacted URNs",
+            "language": "eng",
+            "nodes": [
+                {
+                    "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "actions": [
+                        {
+                            "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
+                            "type": "send_msg",
+                            "text": "Hi @contact.id! Your number is @contact.urns.0"
+                        },
+                        {
+                            "uuid": "ce2b5142-453b-4e43-868e-abdafafaa878",
+                            "type": "call_webhook",
+                            "url": "http://localhost/?cmd=success",
+                            "method": "POST",
+                            "body": "{ \"phone\": @(json(contact.urns.tel))) }"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
+                            "destination_node_uuid": null
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

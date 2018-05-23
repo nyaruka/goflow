@@ -36,7 +36,7 @@ func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Tim
 func (i *MsgInput) Type() string { return TypeMsg }
 
 // Resolve resolves the given key when this input is referenced in an expression
-func (i *MsgInput) Resolve(key string) types.XValue {
+func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "type":
 		return types.NewXText(TypeMsg)
@@ -47,14 +47,14 @@ func (i *MsgInput) Resolve(key string) types.XValue {
 	case "attachments":
 		return i.attachments
 	}
-	return i.baseInput.Resolve(key)
+	return i.baseInput.Resolve(env, key)
 }
 
 // Describe returns a representation of this type for error messages
 func (i *MsgInput) Describe() string { return "input" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (i *MsgInput) Reduce() types.XPrimitive {
+func (i *MsgInput) Reduce(env utils.Environment) types.XPrimitive {
 	var parts []string
 	if i.text != "" {
 		parts = append(parts, i.text)
@@ -66,8 +66,8 @@ func (i *MsgInput) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (i *MsgInput) ToXJSON() types.XText {
-	return types.ResolveKeys(i, "uuid", "created_on", "channel", "type", "urn", "text", "attachments").ToXJSON()
+func (i *MsgInput) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, i, "uuid", "created_on", "channel", "type", "urn", "text", "attachments").ToXJSON(env)
 }
 
 var _ types.XValue = (*MsgInput)(nil)

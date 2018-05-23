@@ -83,7 +83,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 
 	var operandAsStr *string
 	if operand != nil {
-		asText, _ := types.ToXText(operand)
+		asText, _ := types.ToXText(env, operand)
 		asString := asText.Native()
 		operandAsStr = &asString
 	}
@@ -124,7 +124,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		case tests.XTestResult:
 			// looks truthy, lets return this exit
 			if typedResult.Matched() {
-				resultAsStr, xerr := types.ToXText(typedResult.Match())
+				resultAsStr, xerr := types.ToXText(env, typedResult.Match())
 				if xerr != nil {
 					return nil, flows.NoRoute, xerr
 				}
@@ -139,7 +139,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 	// we have a default exit, use that
 	if r.Default != "" {
 		// evaluate our operand as a string
-		value, xerr := types.ToXText(operand)
+		value, xerr := types.ToXText(env, operand)
 		if xerr != nil {
 			run.AddError(step, nil, xerr)
 		}

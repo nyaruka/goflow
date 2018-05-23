@@ -80,7 +80,7 @@ func (v *FieldValue) TypedValue() types.XValue {
 }
 
 // Resolve resolves the given key when this field value is referenced in an expression
-func (v *FieldValue) Resolve(key string) types.XValue {
+func (v *FieldValue) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "text":
 		return v.text
@@ -92,12 +92,12 @@ func (v *FieldValue) Resolve(key string) types.XValue {
 func (v *FieldValue) Describe() string { return "field value" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (v *FieldValue) Reduce() types.XPrimitive {
-	return v.TypedValue().Reduce()
+func (v *FieldValue) Reduce(env utils.Environment) types.XPrimitive {
+	return v.TypedValue().Reduce(env)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *FieldValue) ToXJSON() types.XText { return v.Reduce().ToXJSON() }
+func (v *FieldValue) ToXJSON(env utils.Environment) types.XText { return v.Reduce(env).ToXJSON(env) }
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
@@ -133,7 +133,7 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 	var asDateTime *types.XDateTime
 	var asNumber *types.XNumber
 
-	if parsedNumber, xerr := types.ToXNumber(asText); xerr == nil {
+	if parsedNumber, xerr := types.ToXNumber(env, asText); xerr == nil {
 		asNumber = &parsedNumber
 	}
 
@@ -213,7 +213,7 @@ func (f FieldValues) Length() int {
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
-func (f FieldValues) Resolve(key string) types.XValue {
+func (f FieldValues) Resolve(env utils.Environment, key string) types.XValue {
 	val, exists := f[key]
 	if !exists {
 		return types.NewXErrorf("no such contact field '%s'", key)
@@ -225,7 +225,7 @@ func (f FieldValues) Resolve(key string) types.XValue {
 func (f FieldValues) Describe() string { return "field values" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (f FieldValues) Reduce() types.XPrimitive {
+func (f FieldValues) Reduce(env utils.Environment) types.XPrimitive {
 	values := types.NewEmptyXMap()
 	for k, v := range f {
 		values.Put(string(k), v)
@@ -234,8 +234,8 @@ func (f FieldValues) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (f FieldValues) ToXJSON() types.XText {
-	return f.Reduce().ToXJSON()
+func (f FieldValues) ToXJSON(env utils.Environment) types.XText {
+	return f.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = (FieldValues)(nil)

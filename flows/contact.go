@@ -44,6 +44,7 @@ import (
 // @context contact
 type Contact struct {
 	uuid     ContactUUID
+	id       int
 	name     string
 	language utils.Language
 	timezone *time.Location
@@ -71,6 +72,7 @@ func (c *Contact) Clone() *Contact {
 
 	return &Contact{
 		uuid:     c.uuid,
+		id:       c.id,
 		name:     c.name,
 		language: c.language,
 		timezone: c.timezone,
@@ -82,6 +84,9 @@ func (c *Contact) Clone() *Contact {
 
 // UUID returns the UUID of this contact
 func (c *Contact) UUID() ContactUUID { return c.uuid }
+
+// UUID returns the numeric ID of this contact
+func (c *Contact) ID() int { return c.id }
 
 // SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
@@ -137,10 +142,12 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
 // Resolve resolves the given key when this contact is referenced in an expression
-func (c *Contact) Resolve(key string) types.XValue {
+func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
+	case "id":
+		return types.NewXNumberFromInt(c.id)
 	case "name":
 		return types.NewXText(c.name)
 	case "first_name":
@@ -181,13 +188,13 @@ func (c *Contact) Resolve(key string) types.XValue {
 func (c *Contact) Describe() string { return "contact" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (c *Contact) Reduce() types.XPrimitive {
+func (c *Contact) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(c.name)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *Contact) ToXJSON() types.XText {
-	return types.ResolveKeys(c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON()
+func (c *Contact) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON(env)
 }
 
 var _ types.XValue = (*Contact)(nil)
@@ -247,15 +254,19 @@ func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 }
 
 // ResolveQueryKey resolves a contact query search key for this contact
-func (c *Contact) ResolveQueryKey(key string) []interface{} {
+func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface{} {
 	// try as a URN scheme
 	if urns.IsValidScheme(key) {
-		urnsWithScheme := c.urns.WithScheme(key)
-		vals := make([]interface{}, len(urnsWithScheme))
-		for u := range urnsWithScheme {
-			vals[u] = string(urnsWithScheme[u].URN)
+		if env.RedactionPolicy() != utils.RedactionPolicyURNs {
+			urnsWithScheme := c.urns.WithScheme(key)
+			vals := make([]interface{}, len(urnsWithScheme))
+			for u := range urnsWithScheme {
+				vals[u] = string(urnsWithScheme[u].URN)
+			}
+			return vals
+		} else {
+			return nil
 		}
-		return vals
 	}
 
 	// try as a contact field
@@ -301,6 +312,7 @@ type fieldValueEnvelope struct {
 
 type contactEnvelope struct {
 	UUID     ContactUUID                    `json:"uuid" validate:"required,uuid4"`
+	ID       int                            `json:"id"`
 	Name     string                         `json:"name"`
 	Language utils.Language                 `json:"language"`
 	Timezone string                         `json:"timezone"`
@@ -318,10 +330,12 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 		return nil, err
 	}
 
-	c := &Contact{}
-	c.uuid = envelope.UUID
-	c.name = envelope.Name
-	c.language = envelope.Language
+	c := &Contact{
+		uuid:     envelope.UUID,
+		id:       envelope.ID,
+		name:     envelope.Name,
+		language: envelope.Language,
+	}
 
 	if envelope.Timezone != "" {
 		if c.timezone, err = time.LoadLocation(envelope.Timezone); err != nil {
@@ -379,11 +393,13 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 
 // MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
-	var ce contactEnvelope
+	ce := &contactEnvelope{
+		Name:     c.name,
+		UUID:     c.uuid,
+		ID:       c.id,
+		Language: c.language,
+	}
 
-	ce.Name = c.name
-	ce.UUID = c.uuid
-	ce.Language = c.language
 	ce.URNs = c.urns.RawURNs(true)
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()

@@ -118,7 +118,7 @@ var XFUNCTIONS = map[string]XFunction{
 //
 // @function text(value)
 func Text(env utils.Environment, value types.XValue) types.XValue {
-	str, xerr := types.ToXText(value)
+	str, xerr := types.ToXText(env, value)
 	if xerr != nil {
 		return xerr
 	}
@@ -133,7 +133,7 @@ func Text(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function boolean(value)
 func Boolean(env utils.Environment, value types.XValue) types.XValue {
-	str, xerr := types.ToXBoolean(value)
+	str, xerr := types.ToXBoolean(env, value)
 	if xerr != nil {
 		return xerr
 	}
@@ -148,7 +148,7 @@ func Boolean(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function number(value)
 func Number(env utils.Environment, value types.XValue) types.XValue {
-	num, xerr := types.ToXNumber(value)
+	num, xerr := types.ToXNumber(env, value)
 	if xerr != nil {
 		return xerr
 	}
@@ -204,7 +204,7 @@ func Array(env utils.Environment, args ...types.XValue) types.XValue {
 // @function and(tests...)
 func And(env utils.Environment, args ...types.XValue) types.XValue {
 	for _, arg := range args {
-		asBool, xerr := types.ToXBoolean(arg)
+		asBool, xerr := types.ToXBoolean(env, arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -223,7 +223,7 @@ func And(env utils.Environment, args ...types.XValue) types.XValue {
 // @function or(tests...)
 func Or(env utils.Environment, args ...types.XValue) types.XValue {
 	for _, arg := range args {
-		asBool, xerr := types.ToXBoolean(arg)
+		asBool, xerr := types.ToXBoolean(env, arg)
 		if xerr != nil {
 			return xerr
 		}
@@ -243,7 +243,7 @@ func Or(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function if(test, true_value, false_value)
 func If(env utils.Environment, test types.XValue, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	asBool, err := types.ToXBoolean(test)
+	asBool, err := types.ToXBoolean(env, test)
 	if err != nil {
 		return err
 	}
@@ -311,7 +311,7 @@ func Join(env utils.Environment, array types.XValue, delimiter types.XValue) typ
 		return types.NewXErrorf("requires an indexable as its first argument")
 	}
 
-	sep, xerr := types.ToXText(delimiter)
+	sep, xerr := types.ToXText(env, delimiter)
 	if xerr != nil {
 		return xerr
 	}
@@ -321,7 +321,7 @@ func Join(env utils.Environment, array types.XValue, delimiter types.XValue) typ
 		if i > 0 {
 			output.WriteString(sep.Native())
 		}
-		itemAsStr, xerr := types.ToXText(indexable.Index(i))
+		itemAsStr, xerr := types.ToXText(env, indexable.Index(i))
 		if xerr != nil {
 			return xerr
 		}
@@ -340,7 +340,7 @@ func Join(env utils.Environment, array types.XValue, delimiter types.XValue) typ
 //
 // @function char(num)
 func Char(env utils.Environment, num types.XNumber) types.XValue {
-	code, xerr := types.ToInteger(num)
+	code, xerr := types.ToInteger(env, num)
 	if xerr != nil {
 		return xerr
 	}
@@ -410,12 +410,12 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 //
 // @function word_slice(text, start, end)
 func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
-	str, xerr := types.ToXText(args[0])
+	str, xerr := types.ToXText(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	start, xerr := types.ToInteger(args[1])
+	start, xerr := types.ToInteger(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
@@ -425,7 +425,7 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 
 	end := -1
 	if len(args) == 3 {
-		if end, xerr = types.ToInteger(args[2]); xerr != nil {
+		if end, xerr = types.ToInteger(env, args[2]); xerr != nil {
 			return xerr
 		}
 	}
@@ -473,12 +473,12 @@ func WordCount(env utils.Environment, text types.XText) types.XValue {
 //
 // @function field(text, offset, delimeter)
 func Field(env utils.Environment, args ...types.XValue) types.XValue {
-	source, xerr := types.ToXText(args[0])
+	source, xerr := types.ToXText(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	field, xerr := types.ToInteger(args[1])
+	field, xerr := types.ToInteger(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
@@ -487,7 +487,7 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("cannot use a negative index to FIELD")
 	}
 
-	sep, xerr := types.ToXText(args[2])
+	sep, xerr := types.ToXText(env, args[2])
 	if xerr != nil {
 		return xerr
 	}
@@ -749,13 +749,13 @@ func RoundDown(env utils.Environment, num types.XNumber, places int) types.XValu
 //
 // @function max(values...)
 func Max(env utils.Environment, args ...types.XValue) types.XValue {
-	max, xerr := types.ToXNumber(args[0])
+	max, xerr := types.ToXNumber(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
 	for _, v := range args[1:] {
-		val, xerr := types.ToXNumber(v)
+		val, xerr := types.ToXNumber(env, v)
 		if xerr != nil {
 			return xerr
 		}
@@ -775,13 +775,13 @@ func Max(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function min(values)
 func Min(env utils.Environment, args ...types.XValue) types.XValue {
-	max, xerr := types.ToXNumber(args[0])
+	max, xerr := types.ToXNumber(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
 	for _, v := range args[1:] {
-		val, xerr := types.ToXNumber(v)
+		val, xerr := types.ToXNumber(env, v)
 		if xerr != nil {
 			return xerr
 		}
@@ -804,7 +804,7 @@ func Mean(env utils.Environment, args ...types.XValue) types.XValue {
 	sum := decimal.Zero
 
 	for _, val := range args {
-		num, xerr := types.ToXNumber(val)
+		num, xerr := types.ToXNumber(env, val)
 		if xerr != nil {
 			return xerr
 		}
@@ -896,12 +896,12 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 //
 // @function parse_datetime(text, format [,timezone])
 func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
-	str, xerr := types.ToXText(args[0])
+	str, xerr := types.ToXText(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	format, xerr := types.ToXText(args[1])
+	format, xerr := types.ToXText(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
@@ -915,7 +915,7 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	// grab our location
 	location := env.Timezone()
 	if len(args) == 3 {
-		tzStr, xerr := types.ToXText(args[2])
+		tzStr, xerr := types.ToXText(env, args[2])
 		if xerr != nil {
 			return xerr
 		}
@@ -943,11 +943,11 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 //
 // @function datetime_from_parts(year, month, day)
 func DateTimeFromParts(env utils.Environment, args ...types.XValue) types.XValue {
-	year, xerr := types.ToInteger(args[0])
+	year, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
-	month, xerr := types.ToInteger(args[1])
+	month, xerr := types.ToInteger(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
@@ -955,7 +955,7 @@ func DateTimeFromParts(env utils.Environment, args ...types.XValue) types.XValue
 		return types.NewXErrorf("invalid value for month, must be 1-12")
 	}
 
-	day, xerr := types.ToInteger(args[2])
+	day, xerr := types.ToInteger(env, args[2])
 	if xerr != nil {
 		return xerr
 	}
@@ -988,7 +988,7 @@ func DateTimeDiff(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	unit, xerr := types.ToXText(args[2])
+	unit, xerr := types.ToXText(env, args[2])
 	if xerr != nil {
 		return xerr
 	}
@@ -1036,12 +1036,12 @@ func DateTimeAdd(env utils.Environment, args ...types.XValue) types.XValue {
 		return xerr
 	}
 
-	duration, xerr := types.ToInteger(args[1])
+	duration, xerr := types.ToInteger(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
 
-	unit, xerr := types.ToXText(args[2])
+	unit, xerr := types.ToXText(env, args[2])
 	if xerr != nil {
 		return xerr
 	}
@@ -1170,7 +1170,7 @@ func ParseJSON(env utils.Environment, text types.XText) types.XValue {
 //
 // @function json(value)
 func JSON(env utils.Environment, value types.XValue) types.XValue {
-	asJSON, xerr := types.ToXJSON(value)
+	asJSON, xerr := types.ToXJSON(env, value)
 	if xerr != nil {
 		return xerr
 	}
@@ -1232,7 +1232,7 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 
 	format := types.NewXText(fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String()))
 	if len(args) >= 2 {
-		format, xerr = types.ToXText(args[1])
+		format, xerr = types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
@@ -1247,7 +1247,7 @@ func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	// grab our location
 	location := env.Timezone()
 	if len(args) == 3 {
-		arg3, xerr := types.ToXText(args[2])
+		arg3, xerr := types.ToXText(env, args[2])
 		if xerr != nil {
 			return xerr
 		}
@@ -1281,14 +1281,14 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("takes 1 to 3 arguments, got %d", len(args))
 	}
 
-	num, err := types.ToXNumber(args[0])
+	num, err := types.ToXNumber(env, args[0])
 	if err != nil {
 		return err
 	}
 
 	places := 2
 	if len(args) > 1 {
-		if places, err = types.ToInteger(args[1]); err != nil {
+		if places, err = types.ToInteger(env, args[1]); err != nil {
 			return err
 		}
 		if places < 0 || places > 9 {
@@ -1298,7 +1298,7 @@ func FormatNumber(env utils.Environment, args ...types.XValue) types.XValue {
 
 	commas := types.XBooleanTrue
 	if len(args) > 2 {
-		if commas, err = types.ToXBoolean(args[2]); err != nil {
+		if commas, err = types.ToXBoolean(env, args[2]); err != nil {
 			return err
 		}
 	}
@@ -1359,7 +1359,7 @@ func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
 		}
 	}
 
-	urnString, xerr := types.ToXText(urnArg)
+	urnString, xerr := types.ToXText(env, urnArg)
 	if xerr != nil {
 		return xerr
 	}
@@ -1426,8 +1426,8 @@ func LegacyAdd(env utils.Environment, arg1 types.XValue, arg2 types.XValue) type
 	date1, date1Err := types.ToXDateTime(env, arg1)
 	date2, date2Err := types.ToXDateTime(env, arg2)
 
-	dec1, dec1Err := types.ToXNumber(arg1)
-	dec2, dec2Err := types.ToXNumber(arg2)
+	dec1, dec1Err := types.ToXNumber(env, arg1)
+	dec2, dec2Err := types.ToXNumber(env, arg2)
 
 	// if they are both dates, that's an error
 	if date1Err == nil && date2Err == nil {

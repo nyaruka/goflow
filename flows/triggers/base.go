@@ -23,7 +23,7 @@ func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
 // Resolve resolves the given key when this trigger is referenced in an expression
-func (t *baseTrigger) Resolve(key string) types.XValue {
+func (t *baseTrigger) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "params":
 		return t.params
@@ -36,6 +36,6 @@ func (t *baseTrigger) Resolve(key string) types.XValue {
 func (t *baseTrigger) Describe() string { return "trigger" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (t *baseTrigger) Reduce() types.XPrimitive {
+func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(t.flow.UUID()))
 }

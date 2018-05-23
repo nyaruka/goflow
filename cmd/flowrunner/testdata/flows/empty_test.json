@@ -16,6 +16,7 @@
                             "text": "Ecuador > Azuay"
                         }
                     },
+                    "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
                     "timezone": "America/Guayaquil",
@@ -29,6 +30,7 @@
                 "environment": {
                     "date_format": "YYYY-MM-DD",
                     "languages": [],
+                    "redaction_policy": "none",
                     "time_format": "tt:mm",
                     "timezone": "UTC"
                 },
@@ -58,6 +60,7 @@
                                 "text": "Ecuador > Azuay"
                             }
                         },
+                        "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
                         "timezone": "America/Guayaquil",
@@ -89,6 +92,7 @@
                     "text": "Ecuador > Azuay"
                 }
             },
+            "id": 1234567,
             "language": "eng",
             "name": "Ben Haggerty",
             "timezone": "America/Guayaquil",

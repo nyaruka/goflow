@@ -20,7 +20,7 @@ var xt = types.NewXDateTime
 
 type testResolvable struct{}
 
-func (r *testResolvable) Resolve(key string) types.XValue {
+func (r *testResolvable) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "foo":
 		return types.NewXText("bar")
@@ -36,13 +36,13 @@ func (r *testResolvable) Resolve(key string) types.XValue {
 func (r *testResolvable) Describe() string { return "test" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (r *testResolvable) Reduce() types.XPrimitive {
+func (r *testResolvable) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText("hello")
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r *testResolvable) ToXJSON() types.XText {
-	return types.ResolveKeys(r, "foo", "zed").ToXJSON()
+func (r *testResolvable) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, r, "foo", "zed").ToXJSON(env)
 }
 
 var testTests = []struct {
@@ -200,7 +200,7 @@ var testTests = []struct {
 }
 
 func TestTests(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{})
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.LanguageList{}, utils.RedactionPolicyNone)
 
 	for _, test := range testTests {
 		testFunc := tests.XTESTS[test.name]

@@ -107,7 +107,7 @@ func (c *channel) HasRole(role ChannelRole) bool {
 }
 
 // Resolve resolves the given key when this channel is referenced in an expression
-func (c *channel) Resolve(key string) types.XValue {
+func (c *channel) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
@@ -124,13 +124,13 @@ func (c *channel) Resolve(key string) types.XValue {
 func (c *channel) Describe() string { return "channel" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (c *channel) Reduce() types.XPrimitive {
+func (c *channel) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(c.name)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (c *channel) ToXJSON() types.XText {
-	return types.ResolveKeys(c, "uuid", "name", "address").ToXJSON()
+func (c *channel) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, c, "uuid", "name", "address").ToXJSON(env)
 }
 
 var _ Channel = (*channel)(nil)

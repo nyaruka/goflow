@@ -474,7 +474,7 @@ func TestFunctions(t *testing.T) {
 		if test.expected == ERROR {
 			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} for function %s(%T{%s})", result, result, test.name, test.args, test.args)
 		} else {
-			if !types.Equals(result, test.expected) {
+			if !types.Equals(env, result, test.expected) {
 				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)
 			}
 		}

@@ -28,9 +28,9 @@ func NewTestXObject(foo string, bar int) *testXObject {
 // Describe returns a representation of this type for error messages
 func (v *testXObject) Describe() string { return "test" }
 
-func (v *testXObject) Reduce() types.XPrimitive { return types.NewXText(v.foo) }
+func (v *testXObject) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(v.foo) }
 
-func (v *testXObject) Resolve(key string) types.XValue {
+func (v *testXObject) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "foo":
 		return types.NewXText("bar")
@@ -44,8 +44,8 @@ func (v *testXObject) Resolve(key string) types.XValue {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *testXObject) ToXJSON() types.XText {
-	return types.ResolveKeys(v, "foo", "bar").ToXJSON()
+func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, v, "foo", "bar").ToXJSON(env)
 }
 
 var _ types.XValue = &testXObject{}
@@ -312,7 +312,7 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
 		}
 
-		if !types.Equals(result, test.expected) {
+		if !types.Equals(env, result, test.expected) {
 			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.template)
 		}
 	}

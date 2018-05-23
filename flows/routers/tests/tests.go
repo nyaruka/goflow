@@ -181,7 +181,7 @@ func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 		return types.NewXErrorf("must have a webhook call as its first argument")
 	}
 
-	status, xerr := types.ToXText(arg2)
+	status, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -207,7 +207,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 		return types.NewXErrorf("must have a contact as its first argument")
 	}
 
-	groupUUID, xerr := types.ToXText(arg2)
+	groupUUID, xerr := types.ToXText(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
@@ -347,7 +347,7 @@ func newPatternMatch(matches []string) *patternMatch {
 }
 
 // Resolve resolves the given key when this match is referenced in an expression
-func (m *patternMatch) Resolve(key string) types.XValue {
+func (m *patternMatch) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "groups":
 		return m.groups
@@ -360,13 +360,13 @@ func (m *patternMatch) Resolve(key string) types.XValue {
 func (m *patternMatch) Describe() string { return "regex match" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (m *patternMatch) Reduce() types.XPrimitive {
+func (m *patternMatch) Reduce(env utils.Environment) types.XPrimitive {
 	return m.groups.Index(0).(types.XText)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (m *patternMatch) ToXJSON() types.XText {
-	return types.ResolveKeys(m, "groups").ToXJSON()
+func (m *patternMatch) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, m, "groups").ToXJSON(env)
 }
 
 var _ types.XValue = (*patternMatch)(nil)
@@ -418,15 +418,15 @@ func HasNumber(env utils.Environment, text types.XText) types.XValue {
 //
 // @test has_number_between(text, min, max)
 func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValue, arg3 types.XValue) types.XValue {
-	str, xerr := types.ToXText(arg1)
+	str, xerr := types.ToXText(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
-	min, xerr := types.ToXNumber(arg2)
+	min, xerr := types.ToXNumber(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
-	max, xerr := types.ToXNumber(arg3)
+	max, xerr := types.ToXNumber(env, arg3)
 	if xerr != nil {
 		return xerr
 	}
@@ -640,11 +640,11 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 	var xerr types.XError
 
 	// grab the text we will search and the parent state name
-	if text, xerr = types.ToXText(args[0]); xerr != nil {
+	if text, xerr = types.ToXText(env, args[0]); xerr != nil {
 		return xerr
 	}
 	if len(args) == 2 {
-		if stateText, xerr = types.ToXText(args[1]); xerr != nil {
+		if stateText, xerr = types.ToXText(env, args[1]); xerr != nil {
 			return xerr
 		}
 	}
@@ -700,14 +700,14 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 	var xerr types.XError
 
 	// grab the text we will search, as well as the parent district and state names
-	if text, xerr = types.ToXText(args[0]); xerr != nil {
+	if text, xerr = types.ToXText(env, args[0]); xerr != nil {
 		return xerr
 	}
 	if len(args) == 3 {
-		if districtText, xerr = types.ToXText(args[1]); xerr != nil {
+		if districtText, xerr = types.ToXText(env, args[1]); xerr != nil {
 			return xerr
 		}
-		if stateText, xerr = types.ToXText(args[2]); xerr != nil {
+		if stateText, xerr = types.ToXText(env, args[2]); xerr != nil {
 			return xerr
 		}
 	}

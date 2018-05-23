@@ -15,7 +15,7 @@ const (
 )
 
 type Queryable interface {
-	ResolveQueryKey(string) []interface{}
+	ResolveQueryKey(utils.Environment, string) []interface{}
 }
 
 func EvaluateQuery(env utils.Environment, query *ContactQuery, queryable Queryable) (bool, error) {

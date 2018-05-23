@@ -2289,6 +2289,7 @@ Can be used to trigger sessions for other contacts and groups
         },
         "contact": {
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+            "id": 1234567,
             "name": "Ryan Lewis",
             "language": "eng",
             "timezone": "",

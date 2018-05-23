@@ -13,9 +13,9 @@ import (
 // XJSON is the base type for XJSONObject and XJSONArray
 type XJSON []byte
 
-func (x XJSON) ToXJSON() XText { return NewXText(string(x)) }
+func (x XJSON) ToXJSON(env utils.Environment) XText { return NewXText(string(x)) }
 
-func (x XJSON) Reduce() XPrimitive { return x.ToXJSON() }
+func (x XJSON) Reduce(env utils.Environment) XPrimitive { return x.ToXJSON(env) }
 
 // String converts this type to native string
 func (x XJSON) String() string {
@@ -46,7 +46,7 @@ func (x XJSONObject) Length() int {
 	return length
 }
 
-func (x XJSONObject) Resolve(key string) XValue {
+func (x XJSONObject) Resolve(env utils.Environment, key string) XValue {
 	val, valType, _, err := jsonparser.Get(x.XJSON, key)
 	if err != nil {
 		return NewXResolveError(x, key)
@@ -128,7 +128,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 }
 
 // ToXJSON converts the given value to a JSON string
-func ToXJSON(x XValue) (XText, XError) {
+func ToXJSON(env utils.Environment, x XValue) (XText, XError) {
 	if utils.IsNil(x) {
 		return NewXText(`null`), nil
 	}
@@ -136,7 +136,7 @@ func ToXJSON(x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	return x.ToXJSON(), nil
+	return x.ToXJSON(env), nil
 }
 
 // MustMarshalToXText calls json.Marshal in the given value and panics in the case of an error

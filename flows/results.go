@@ -36,7 +36,7 @@ type Result struct {
 }
 
 // Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
-func (r *Result) Resolve(key string) types.XValue {
+func (r *Result) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "name":
 		return types.NewXText(r.Name)
@@ -67,13 +67,13 @@ func (r *Result) Resolve(key string) types.XValue {
 func (r *Result) Describe() string { return "run result" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (r *Result) Reduce() types.XPrimitive {
+func (r *Result) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(r.Value)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r *Result) ToXJSON() types.XText {
-	return types.ResolveKeys(r, "name", "value", "category", "category_localized", "input", "node_uuid", "created_on").ToXJSON()
+func (r *Result) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, r, "name", "value", "category", "category_localized", "input", "node_uuid", "created_on").ToXJSON(env)
 }
 
 var _ types.XValue = (*Result)(nil)
@@ -119,7 +119,7 @@ func (r Results) Length() int {
 }
 
 // Resolve resolves the passed in key, which is snakified before lookup
-func (r Results) Resolve(key string) types.XValue {
+func (r Results) Resolve(env utils.Environment, key string) types.XValue {
 	key = utils.Snakify(key)
 
 	result, exists := r[key]
@@ -133,7 +133,7 @@ func (r Results) Resolve(key string) types.XValue {
 func (r Results) Describe() string { return "run results" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (r Results) Reduce() types.XPrimitive {
+func (r Results) Reduce(env utils.Environment) types.XPrimitive {
 	results := types.NewEmptyXMap()
 	for k, v := range r {
 		results.Put(k, v)
@@ -142,8 +142,8 @@ func (r Results) Reduce() types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (r Results) ToXJSON() types.XText {
-	return r.Reduce().ToXJSON()
+func (r Results) ToXJSON(env utils.Environment) types.XText {
+	return r.Reduce(env).ToXJSON(env)
 }
 
 var _ types.XValue = (Results)(nil)
