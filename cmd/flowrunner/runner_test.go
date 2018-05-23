@@ -16,6 +16,8 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
+	diff "github.com/sergi/go-diff/diffmatchpatch"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -202,73 +204,56 @@ func TestFlows(t *testing.T) {
 			err = ioutil.WriteFile(outputFilename, clearTimestamps(testJSON), 0644)
 			require.NoError(t, err, "Error writing test file to %s: %s", outputFilename, err)
 		} else {
-			// unmarshal our expected outputs
-			expectedOutputs := make([]*Output, len(flowTest.Outputs))
-			for i := range expectedOutputs {
-				output := &Output{}
-				err := json.Unmarshal(flowTest.Outputs[i], output)
-				require.NoError(t, err, "Error unmarshalling output: %s", err)
-
-				expectedOutputs[i] = output
-			}
-
-			// read our output and test that we are the same
-			if len(runResult.outputs) != len(expectedOutputs) {
-				t.Errorf("Actual outputs:\n%s\n do not match expected:\n%s\n for flow '%s'", runResult.outputs, expectedOutputs, tc.assets)
+			// start by checking we have the expected number of outputs
+			if !assert.Equal(t, len(flowTest.Outputs), len(runResult.outputs), "wrong number of outputs for flow test %s", tc.assets) {
 				continue
 			}
 
-			for i := range runResult.outputs {
-				compareOutputs(t, tc.assets, expectedOutputs[i], runResult.outputs[i], runResult.assetCache)
+			// then check each output
+			for i, actual := range runResult.outputs {
+				// unmarshal our expected outputsinto session+events
+				expected := &Output{}
+				err := json.Unmarshal(flowTest.Outputs[i], expected)
+				require.NoError(t, err, "error unmarshalling output")
+
+				// first the session
+				if !assertEqualJSON(t, expected.Session, actual.Session, fmt.Sprintf("session is different in output[%d] for flow test %s", i, tc.assets)) {
+					break
+				}
+
+				// and then each event
+				for e := range actual.Events {
+					if !assertEqualJSON(t, expected.Events[e], actual.Events[e], fmt.Sprintf("event[%d] is different in output[%d] for flow test %s", e, i, tc.assets)) {
+						break
+					}
+				}
 			}
 		}
 	}
 }
 
-func compareOutputs(t *testing.T, assetsFile string, expected *Output, actual *Output, assetCache *assets.AssetCache) {
-	actualSession, err := engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, actual.Session)
-	require.NoError(t, err, "Error unmarshalling session running flow '%s': %s\n", assetsFile, err)
+// asserts that the given JSON fragments are equal
+func assertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMessage, message string) bool {
+	expectedNormalized, _ := normalizeJSON(expected)
+	actualNormalized, _ := normalizeJSON(actual)
 
-	expectedSession, err := engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, expected.Session)
-	require.NoError(t, err, "Error unmarshalling expected session running flow '%s': %s\n", assetsFile, err)
+	differ := diff.New()
+	diffs := differ.DiffMain(string(expectedNormalized), string(actualNormalized), false)
 
-	// number of runs should be the same
-	if len(actualSession.Runs()) != len(expectedSession.Runs()) {
-		t.Errorf("Actual runs:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actualSession.Runs(), expectedSession.Runs(), assetsFile)
+	if len(diffs) != 1 || diffs[0].Type != diff.DiffEqual {
+		assert.Fail(t, message, differ.DiffPrettyText(diffs))
+		return false
+	}
+	return true
+}
+
+func normalizeJSON(data json.RawMessage) ([]byte, error) {
+	data = clearTimestamps(data)
+
+	var asMap map[string]interface{}
+	if err := json.Unmarshal(data, &asMap); err != nil {
+		return nil, err
 	}
 
-	// runs should have same status and flows
-	for i := range actualSession.Runs() {
-		run := actualSession.Runs()[i]
-		expected := expectedSession.Runs()[i]
-
-		if run.Flow() != expected.Flow() {
-			t.Errorf("Actual run flow: %s does not match expected: %s for flow '%s'\n", run.Flow().UUID(), expected.Flow().UUID(), assetsFile)
-		}
-
-		if run.Status() != expected.Status() {
-			t.Errorf("Actual run status: %s does not match expected: %s for flow '%s'\n", run.Status(), expected.Status(), assetsFile)
-		}
-	}
-
-	if len(actual.Events) != len(expected.Events) {
-		t.Errorf("Actual events:\n%#v\n do not match expected:\n%#v\n for flow '%s'\n", actual.Events, expected.Events, assetsFile)
-	}
-
-	for j := range actual.Events {
-		event := actual.Events[j]
-		expected := expected.Events[j]
-
-		// write our events as json
-		eventJSON, err := rawMessageAsJSON(event)
-		require.NoError(t, err, "Error marshalling event for flow '%s': %s\n", assetsFile, err)
-
-		expectedJSON, err := rawMessageAsJSON(expected)
-		require.NoError(t, err, "Error marshalling expected event for flow '%s': %s\n", assetsFile, err)
-
-		if eventJSON != expectedJSON {
-			t.Errorf("Got event:\n'%s'\n\nwhen expecting:\n'%s'\n\n for flow '%s'\n", eventJSON, expectedJSON, assetsFile)
-			break
-		}
-	}
+	return utils.JSONMarshalPretty(asMap)
 }

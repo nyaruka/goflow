@@ -85,6 +85,10 @@
   name = "gopkg.in/go-playground/validator.v9"
   version = "9.12.0"
 
+[[constraint]]
+  name = "github.com/sergi/go-diff"
+  version = "1.0.0"
+
 [prune]
   go-tests = true
   unused-packages = true
