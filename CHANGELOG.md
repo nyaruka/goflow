@@ -1,3 +1,7 @@
+v0.10.6
+----------
+ * Fix panic when field value is nil
+
 v0.10.5
 ----------
  * Implement redacting URNs
