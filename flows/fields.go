@@ -93,7 +93,11 @@ func (v *FieldValue) Describe() string { return "field value" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Reduce(env utils.Environment) types.XPrimitive {
-	return v.TypedValue().Reduce(env)
+	typed := v.TypedValue()
+	if typed != nil {
+		return typed.Reduce(env)
+	}
+	return nil
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
