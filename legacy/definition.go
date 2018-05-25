@@ -17,21 +17,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// represents a decimal value which may be provided as a string or floating point value
-type decimalString string
-
-// UnmarshalJSON unmarshals a decimal string from the given JSON
-func (s *decimalString) UnmarshalJSON(data []byte) error {
-	if data[0] == '"' {
-		// data is a quoted string
-		*s = decimalString(data[1 : len(data)-1])
-	} else {
-		// data is JSON float
-		*s = decimalString(data)
-	}
-	return nil
-}
-
 var legacyWebhookBody = `{
 	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
 	"flow": @(json(run.flow)),
@@ -49,30 +34,6 @@ type Flow struct {
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
 	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
-}
-
-// Translations is an inline translation map used for localization
-type Translations map[utils.Language]string
-
-// UnmarshalJSON unmarshals legacy translations from the given JSON
-func (t *Translations) UnmarshalJSON(data []byte) error {
-	// sometimes legacy flows have a single string instead of a map
-	if data[0] == '"' {
-		var asString string
-		if err := json.Unmarshal(data, &asString); err != nil {
-			return err
-		}
-		*t = Translations{"base": asString}
-		return nil
-	}
-
-	asMap := make(map[utils.Language]string)
-	if err := json.Unmarshal(data, &asMap); err != nil {
-		return err
-	}
-
-	*t = asMap
-	return nil
 }
 
 // Note is a legacy sticky note
@@ -308,7 +269,7 @@ type stringTest struct {
 }
 
 type numericTest struct {
-	Test decimalString `json:"test"`
+	Test DecimalString `json:"test"`
 }
 
 type betweenTest struct {
@@ -333,7 +294,7 @@ func addTranslationMap(baseLanguage utils.Language, localization flows.Localizat
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := expressions.MigrateTemplate(item, expressions.ExtraAsFunction)
-		if language != baseLanguage {
+		if language != baseLanguage && language != "base" {
 			localization.AddItemTranslation(language, uuid, property, []string{expression})
 		} else {
 			inBaseLanguage = expression
@@ -644,7 +605,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 // migrates the given legacy rule to a router case
 func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r Rule, localization flows.Localization) (routers.Case, error) {
-	category := r.Category[baseLanguage]
+	category := r.Category.Base(baseLanguage)
 
 	newType, _ := testTypeMappings[r.Test.Type]
 	var omitOperand bool
@@ -686,7 +647,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test[baseLanguage]}
+		arguments = []string{test.Test.Base(baseLanguage)}
 
 		addTranslationMap(baseLanguage, localization, test.Test, caseUUID, "arguments")
 
@@ -775,7 +736,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 	categoryMap := make(map[string]categoryName)
 	order := 0
 	for i := range r.Rules {
-		category := r.Rules[i].Category[baseLanguage]
+		category := r.Rules[i].Category.Base(baseLanguage)
 		_, ok := categoryMap[category]
 		if !ok {
 			categoryMap[category] = categoryName{
@@ -806,7 +767,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		if r.Rules[i].Test.Type == "true" {
 			// take the first true rule as our default exit
 			if defaultExit == "" {
-				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
+				defaultExit = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
 			}
 			continue
 		}
@@ -820,7 +781,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 
 		if r.Rules[i].Test.Type == "webhook_status" {
 			// webhook failures don't have a case, instead they are the default
-			defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
+			defaultExit = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
 		}
 	}
 
