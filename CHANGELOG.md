@@ -1,3 +1,7 @@
+v0.10.9
+----------
+ * Fix migrating legacy @flow.foo.text/time expressions
+
 v0.10.8
 ----------
  * Handle legacy flows where things which are supposed to be translation dicts aren't
