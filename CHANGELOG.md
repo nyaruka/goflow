@@ -1,3 +1,7 @@
+v0.10.7
+----------
+ * Expose flow.revision in context and webhook payloads
+
 v0.10.6
 ----------
  * Fix panic when field value is nil
