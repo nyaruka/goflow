@@ -75,10 +75,11 @@ func (n *Note) Migrate() Sticky {
 
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
-	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name    string         `json:"name"`
-	Expires int            `json:"expires"`
-	Notes   []Note         `json:"notes,omitempty"`
+	UUID     flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name     string         `json:"name"`
+	Revision int            `json:"revision"`
+	Expires  int            `json:"expires"`
+	Notes    []Note         `json:"notes,omitempty"`
 }
 
 type Rule struct {
@@ -1048,6 +1049,7 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	return definition.NewFlow(
 		f.Metadata.UUID,
 		f.Metadata.Name,
+		f.Metadata.Revision,
 		f.BaseLanguage,
 		f.Metadata.Expires,
 		localization,

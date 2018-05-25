@@ -4,6 +4,7 @@
             "metadata": {
                 "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
                 "name": "Simple",
+                "revision": 123,
                 "notes": [
                     {
                         "y": 22.3435, 
@@ -41,6 +42,7 @@
         "expected": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Simple",
+            "revision": 123,
             "language": "eng",
             "expire_after_minutes": 0,
             "localization": {
