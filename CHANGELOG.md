@@ -1,3 +1,7 @@
+v0.10.8
+----------
+ * Handle legacy flows where things which are supposed to be translation dicts aren't
+
 v0.10.7
 ----------
  * Expose flow.revision in context and webhook payloads
