@@ -51,6 +51,30 @@ type Flow struct {
 	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
 }
 
+// Translations is an inline translation map used for localization
+type Translations map[utils.Language]string
+
+// UnmarshalJSON unmarshals legacy translations from the given JSON
+func (t *Translations) UnmarshalJSON(data []byte) error {
+	// sometimes legacy flows have a single string instead of a map
+	if data[0] == '"' {
+		var asString string
+		if err := json.Unmarshal(data, &asString); err != nil {
+			return err
+		}
+		*t = Translations{"base": asString}
+		return nil
+	}
+
+	asMap := make(map[utils.Language]string)
+	if err := json.Unmarshal(data, &asMap); err != nil {
+		return err
+	}
+
+	*t = asMap
+	return nil
+}
+
 // Note is a legacy sticky note
 type Note struct {
 	X     decimal.Decimal `json:"x"`
@@ -82,11 +106,11 @@ type Metadata struct {
 }
 
 type Rule struct {
-	UUID            flows.ExitUUID            `json:"uuid" validate:"required,uuid4"`
-	Destination     flows.NodeUUID            `json:"destination" validate:"omitempty,uuid4"`
-	DestinationType string                    `json:"destination_type" validate:"eq=A|eq=R"`
-	Test            utils.TypedEnvelope       `json:"test"`
-	Category        map[utils.Language]string `json:"category"`
+	UUID            flows.ExitUUID      `json:"uuid" validate:"required,uuid4"`
+	Destination     flows.NodeUUID      `json:"destination" validate:"omitempty,uuid4"`
+	DestinationType string              `json:"destination_type" validate:"eq=A|eq=R"`
+	Test            utils.TypedEnvelope `json:"test"`
+	Category        Translations        `json:"category"`
 }
 
 type RuleSet struct {
@@ -276,7 +300,7 @@ type webhookTest struct {
 }
 
 type localizedStringTest struct {
-	Test map[utils.Language]string `json:"test"`
+	Test Translations `json:"test"`
 }
 
 type stringTest struct {
@@ -305,7 +329,7 @@ type wardTest struct {
 	District string `json:"district"`
 }
 
-func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language]string, uuid utils.UUID, property string) string {
+func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped Translations, uuid utils.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := expressions.MigrateTemplate(item, expressions.ExtraAsFunction)
@@ -340,7 +364,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Loca
 //
 // [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
 //
-func TransformTranslations(items []map[utils.Language]string) map[utils.Language][]string {
+func TransformTranslations(items []Translations) map[utils.Language][]string {
 	// re-organize into a map of arrays
 	transformed := make(map[utils.Language][]string)
 
@@ -465,8 +489,8 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			CreateContact: createContact,
 		}, nil
 	case "reply", "send":
-		msg := make(map[utils.Language]string)
-		media := make(map[utils.Language]string)
+		msg := make(Translations)
+		media := make(Translations)
 		var quickReplies map[utils.Language][]string
 
 		err := json.Unmarshal(a.Msg, &msg)
@@ -481,7 +505,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 		}
 		if a.QuickReplies != nil {
-			legacyQuickReplies := make([]map[utils.Language]string, 0)
+			legacyQuickReplies := make([]Translations, 0)
 
 			err := json.Unmarshal(a.QuickReplies, &legacyQuickReplies)
 			if err != nil {
@@ -741,7 +765,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 type categoryName struct {
 	uuid         flows.ExitUUID
 	destination  flows.NodeUUID
-	translations map[utils.Language]string
+	translations Translations
 	order        int
 }
 
