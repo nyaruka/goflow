@@ -254,6 +254,7 @@ properties which can be accessed:
 
  * `uuid` the UUID of the flow
  * `name` the name of the flow
+ * `revision` the revision number of the flow
 
 Examples:
 
@@ -262,7 +263,7 @@ Examples:
 @run.flow → Registration
 @child.flow → Collect Age
 @run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7
-@(json(run.flow)) → {"name":"Registration","uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
+@(json(run.flow)) → {"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"}
 ```
 
 <a name="context:group"></a>

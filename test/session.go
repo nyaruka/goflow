@@ -48,6 +48,7 @@ var sessionAssets = `[
         "content": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration",
+            "revision": 123,
             "nodes": [
                 {
                     "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",

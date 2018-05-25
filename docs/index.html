@@ -363,12 +363,13 @@
 <ul>
 <li><code>uuid</code> the UUID of the flow</li>
 <li><code>name</code> the name of the flow</li>
+<li><code>revision</code> the revision number of the flow</li>
 </ul>
 <p>Examples:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@run.flow → Registration</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">@child.flow → Collect Age</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
+<a class="sourceLine" id="cb10-4" data-line-number="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
 <p><a name="context:group"></a></p>
 <h2 id="group">Group</h2>
 <p>Represents a grouping of contacts. It can be static (contacts are added and removed manually through <a href="#action:add_contact_groups">actions</a>) or dynamic (contacts are added automatically by a query). It renders as its name in a template, and has the following properties which can be accessed:</p>

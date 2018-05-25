@@ -12,6 +12,7 @@ import (
 type flow struct {
 	uuid               flows.FlowUUID
 	name               string
+	revision           int
 	language           utils.Language
 	expireAfterMinutes int
 
@@ -26,10 +27,11 @@ type flow struct {
 
 type FlowObj = flow
 
-func NewFlow(uuid flows.FlowUUID, name string, language utils.Language, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
+func NewFlow(uuid flows.FlowUUID, name string, revision int, language utils.Language, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
+		revision:           revision,
 		language:           language,
 		expireAfterMinutes: expireAfterMinutes,
 		localization:       localization,
@@ -63,6 +65,7 @@ func NewFlow(uuid flows.FlowUUID, name string, language utils.Language, expireAf
 
 func (f *flow) UUID() flows.FlowUUID                   { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
+func (f *flow) Revision() int                          { return f.revision }
 func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
@@ -107,6 +110,8 @@ func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
 		return types.NewXText(string(f.UUID()))
 	case "name":
 		return types.NewXText(f.name)
+	case "revision":
+		return types.NewXNumberFromInt(f.revision)
 	}
 
 	return types.NewXResolveError(f, key)
@@ -122,7 +127,7 @@ func (f *flow) Reduce(env utils.Environment) types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (f *flow) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, f, "uuid", "name").ToXJSON(env)
+	return types.ResolveKeys(env, f, "uuid", "name", "revision").ToXJSON(env)
 }
 
 var _ flows.Flow = (*flow)(nil)
@@ -151,6 +156,7 @@ func (f *flow) buildNodeMap() error {
 type flowEnvelope struct {
 	UUID               flows.FlowUUID `json:"uuid"               validate:"required,uuid4"`
 	Name               string         `json:"name"               validate:"required"`
+	Revision           int            `json:"revision"`
 	Language           utils.Language `json:"language"`
 	ExpireAfterMinutes int            `json:"expire_after_minutes"`
 	Localization       localization   `json:"localization"`
@@ -173,7 +179,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		nodes[n] = envelope.Nodes[n]
 	}
 
-	return NewFlow(envelope.UUID, envelope.Name, envelope.Language, envelope.ExpireAfterMinutes, envelope.Localization, nodes, nil)
+	return NewFlow(envelope.UUID, envelope.Name, envelope.Revision, envelope.Language, envelope.ExpireAfterMinutes, envelope.Localization, nodes, nil)
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -182,6 +188,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		flowEnvelope: flowEnvelope{
 			UUID:               f.uuid,
 			Name:               f.name,
+			Revision:           f.revision,
 			Language:           f.language,
 			ExpireAfterMinutes: f.expireAfterMinutes,
 		},

@@ -32,10 +32,9 @@ func (s *decimalString) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TODO need to match what we generate at https://github.com/nyaruka/rapidpro/blob/master/temba/api/models.py#L217
 var legacyWebhookBody = `{
 	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
-	"flow": {"uuid": "@run.flow.uuid", "name": "@run.flow.name"},
+	"flow": @(json(run.flow)),
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
@@ -75,10 +74,11 @@ func (n *Note) Migrate() Sticky {
 
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
-	UUID    flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	Name    string         `json:"name"`
-	Expires int            `json:"expires"`
-	Notes   []Note         `json:"notes,omitempty"`
+	UUID     flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name     string         `json:"name"`
+	Revision int            `json:"revision"`
+	Expires  int            `json:"expires"`
+	Notes    []Note         `json:"notes,omitempty"`
 }
 
 type Rule struct {
@@ -1048,6 +1048,7 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	return definition.NewFlow(
 		f.Metadata.UUID,
 		f.Metadata.Name,
+		f.Metadata.Revision,
 		f.BaseLanguage,
 		f.Metadata.Expires,
 		localization,
