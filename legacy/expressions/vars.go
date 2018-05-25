@@ -190,6 +190,8 @@ func newMigrationBaseVars() map[string]interface{} {
 			base: "run.results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
+				"text":     "input",
+				"time":     "created_on",
 			},
 		},
 		"parent": &varMapper{
