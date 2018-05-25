@@ -91,7 +91,7 @@
                 "Content-Type": "application/json",
                 "User-Agent": "rapidpro"
             },
-            "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": {\"uuid\": \"@run.flow.uuid\", \"name\": \"@run.flow.name\"},\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
+            "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": \"@contact.name\", \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
         },
         "expected_localization": {}
     },

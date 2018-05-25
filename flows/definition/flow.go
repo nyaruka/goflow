@@ -110,6 +110,8 @@ func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
 		return types.NewXText(string(f.UUID()))
 	case "name":
 		return types.NewXText(f.name)
+	case "revision":
+		return types.NewXNumberFromInt(f.revision)
 	}
 
 	return types.NewXResolveError(f, key)
@@ -125,7 +127,7 @@ func (f *flow) Reduce(env utils.Environment) types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (f *flow) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, f, "uuid", "name").ToXJSON(env)
+	return types.ResolveKeys(env, f, "uuid", "name", "revision").ToXJSON(env)
 }
 
 var _ flows.Flow = (*flow)(nil)
