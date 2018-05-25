@@ -148,8 +148,6 @@ func TestFlowMigration(t *testing.T) {
 		migratedFlowJSON, _ := utils.JSONMarshalPretty(migratedFlow)
 		expectedFlowJSON, _ := utils.JSONMarshalPretty(test.Expected)
 
-		fmt.Println(string(migratedFlowJSON))
-
 		assert.Equal(t, string(expectedFlowJSON), string(migratedFlowJSON))
 	}
 }
@@ -172,8 +170,8 @@ func TestActionMigration(t *testing.T) {
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
 		migratedActionEnvelope, _ := utils.EnvelopeFromTyped(migratedAction)
-		migratedActionJSON, _ := utils.JSONMarshalPretty(migratedActionEnvelope)
-		expectedActionJSON, _ := utils.JSONMarshalPretty(test.ExpectedAction)
+		migratedActionJSON, _ := utils.JSONMarshal(migratedActionEnvelope)
+		expectedActionJSON, _ := utils.JSONMarshal(test.ExpectedAction)
 
 		assert.Equal(t, string(expectedActionJSON), string(migratedActionJSON))
 
@@ -207,8 +205,8 @@ func TestTestMigration(t *testing.T) {
 			t.Errorf("Got no migrated case from legacy test:\n%s\n\n", string(test.LegacyTest))
 		} else {
 			migratedCase := migratedRouter.Cases[0]
-			migratedCaseJSON, _ := utils.JSONMarshalPretty(migratedCase)
-			expectedCaseJSON, _ := utils.JSONMarshalPretty(test.ExpectedCase)
+			migratedCaseJSON, _ := utils.JSONMarshal(migratedCase)
+			expectedCaseJSON, _ := utils.JSONMarshal(test.ExpectedCase)
 
 			assert.Equal(t, string(expectedCaseJSON), string(migratedCaseJSON))
 
@@ -249,8 +247,8 @@ func TestRuleSetMigration(t *testing.T) {
 				}
 			}
 
-			migratedNodeJSON, _ := utils.JSONMarshalPretty(migratedNode)
-			expectedNodeJSON, _ := utils.JSONMarshalPretty(test.ExpectedNode)
+			migratedNodeJSON, _ := utils.JSONMarshal(migratedNode)
+			expectedNodeJSON, _ := utils.JSONMarshal(test.ExpectedNode)
 
 			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
 
@@ -266,21 +264,8 @@ func readLegacyTestFlows(flowsJSON string) ([]*legacy.Flow, error) {
 }
 
 func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage) {
-	actualLocalizationJSON, _ := utils.JSONMarshalPretty(flow.Localization())
-	expectedLocalizationJSON, _ := utils.JSONMarshalPretty(expectedLocalizationRaw)
+	actualLocalizationJSON, _ := utils.JSONMarshal(flow.Localization())
+	expectedLocalizationJSON, _ := utils.JSONMarshal(expectedLocalizationRaw)
 
 	assert.Equal(t, string(expectedLocalizationJSON), string(actualLocalizationJSON))
-}
-
-func TestTranslations(t *testing.T) {
-	translations := []map[utils.Language]string{
-		{"eng": "Yes", "fra": "Oui"},
-		{"eng": "No", "fra": "Non"},
-		{"eng": "Maybe"},
-		{"eng": "Never", "fra": "Jamas"},
-	}
-	assert.Equal(t, map[utils.Language][]string{
-		"eng": {"Yes", "No", "Maybe", "Never"},
-		"fra": {"Oui", "Non", "", "Jamas"},
-	}, legacy.TransformTranslations(translations))
 }

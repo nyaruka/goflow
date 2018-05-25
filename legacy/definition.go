@@ -17,21 +17,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// represents a decimal value which may be provided as a string or floating point value
-type decimalString string
-
-// UnmarshalJSON unmarshals a decimal string from the given JSON
-func (s *decimalString) UnmarshalJSON(data []byte) error {
-	if data[0] == '"' {
-		// data is a quoted string
-		*s = decimalString(data[1 : len(data)-1])
-	} else {
-		// data is JSON float
-		*s = decimalString(data)
-	}
-	return nil
-}
-
 var legacyWebhookBody = `{
 	"contact": {"uuid": "@contact.uuid", "name": "@contact.name", "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
 	"flow": @(json(run.flow)),
@@ -82,11 +67,11 @@ type Metadata struct {
 }
 
 type Rule struct {
-	UUID            flows.ExitUUID            `json:"uuid" validate:"required,uuid4"`
-	Destination     flows.NodeUUID            `json:"destination" validate:"omitempty,uuid4"`
-	DestinationType string                    `json:"destination_type" validate:"eq=A|eq=R"`
-	Test            utils.TypedEnvelope       `json:"test"`
-	Category        map[utils.Language]string `json:"category"`
+	UUID            flows.ExitUUID      `json:"uuid" validate:"required,uuid4"`
+	Destination     flows.NodeUUID      `json:"destination" validate:"omitempty,uuid4"`
+	DestinationType string              `json:"destination_type" validate:"eq=A|eq=R"`
+	Test            utils.TypedEnvelope `json:"test"`
+	Category        Translations        `json:"category"`
 }
 
 type RuleSet struct {
@@ -276,7 +261,7 @@ type webhookTest struct {
 }
 
 type localizedStringTest struct {
-	Test map[utils.Language]string `json:"test"`
+	Test Translations `json:"test"`
 }
 
 type stringTest struct {
@@ -284,7 +269,7 @@ type stringTest struct {
 }
 
 type numericTest struct {
-	Test decimalString `json:"test"`
+	Test DecimalString `json:"test"`
 }
 
 type betweenTest struct {
@@ -305,11 +290,11 @@ type wardTest struct {
 	District string `json:"district"`
 }
 
-func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped map[utils.Language]string, uuid utils.UUID, property string) string {
+func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped Translations, uuid utils.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
 		expression, _ := expressions.MigrateTemplate(item, expressions.ExtraAsFunction)
-		if language != baseLanguage {
+		if language != baseLanguage && language != "base" {
 			localization.AddItemTranslation(language, uuid, property, []string{expression})
 		} else {
 			inBaseLanguage = expression
@@ -340,7 +325,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Loca
 //
 // [{"eng": "yes", "fra": "oui"}, {"eng": "no", "fra": "non"}] becomes {"eng": ["yes", "no"], "fra": ["oui", "non"]}
 //
-func TransformTranslations(items []map[utils.Language]string) map[utils.Language][]string {
+func TransformTranslations(items []Translations) map[utils.Language][]string {
 	// re-organize into a map of arrays
 	transformed := make(map[utils.Language][]string)
 
@@ -465,8 +450,8 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			CreateContact: createContact,
 		}, nil
 	case "reply", "send":
-		msg := make(map[utils.Language]string)
-		media := make(map[utils.Language]string)
+		msg := make(Translations)
+		media := make(Translations)
 		var quickReplies map[utils.Language][]string
 
 		err := json.Unmarshal(a.Msg, &msg)
@@ -481,7 +466,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 		}
 		if a.QuickReplies != nil {
-			legacyQuickReplies := make([]map[utils.Language]string, 0)
+			legacyQuickReplies := make([]Translations, 0)
 
 			err := json.Unmarshal(a.QuickReplies, &legacyQuickReplies)
 			if err != nil {
@@ -620,7 +605,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 // migrates the given legacy rule to a router case
 func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r Rule, localization flows.Localization) (routers.Case, error) {
-	category := r.Category[baseLanguage]
+	category := r.Category.Base(baseLanguage)
 
 	newType, _ := testTypeMappings[r.Test.Type]
 	var omitOperand bool
@@ -662,7 +647,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test[baseLanguage]}
+		arguments = []string{test.Test.Base(baseLanguage)}
 
 		addTranslationMap(baseLanguage, localization, test.Test, caseUUID, "arguments")
 
@@ -741,7 +726,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 type categoryName struct {
 	uuid         flows.ExitUUID
 	destination  flows.NodeUUID
-	translations map[utils.Language]string
+	translations Translations
 	order        int
 }
 
@@ -751,7 +736,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 	categoryMap := make(map[string]categoryName)
 	order := 0
 	for i := range r.Rules {
-		category := r.Rules[i].Category[baseLanguage]
+		category := r.Rules[i].Category.Base(baseLanguage)
 		_, ok := categoryMap[category]
 		if !ok {
 			categoryMap[category] = categoryName{
@@ -782,7 +767,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		if r.Rules[i].Test.Type == "true" {
 			// take the first true rule as our default exit
 			if defaultExit == "" {
-				defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
+				defaultExit = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
 			}
 			continue
 		}
@@ -796,7 +781,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 
 		if r.Rules[i].Test.Type == "webhook_status" {
 			// webhook failures don't have a case, instead they are the default
-			defaultExit = exitMap[r.Rules[i].Category[baseLanguage]].UUID()
+			defaultExit = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
 		}
 	}
 
