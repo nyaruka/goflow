@@ -48,3 +48,17 @@ func TestGroupListResolve(t *testing.T) {
 		}
 	}
 }
+
+func TestGroupSet(t *testing.T) {
+	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Customers", "")
+	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Testers", "")
+	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Males", "gender = \"M\"")
+
+	set := flows.NewGroupSet([]*flows.Group{customers, testers, males})
+
+	assert.Equal(t, []*flows.Group{customers, testers, males}, set.All())
+	assert.Equal(t, []*flows.Group{customers, testers}, set.Static())
+	assert.Equal(t, []*flows.Group{males}, set.Dynamic())
+	assert.Equal(t, customers, set.FindByUUID(customers.UUID()))
+	assert.Equal(t, testers, set.FindByName("TESTERS"))
+}
