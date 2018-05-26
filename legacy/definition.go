@@ -537,6 +537,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return &actions.RemoveContactGroupsAction{
 			Groups:     groups,
+			AllGroups:  len(groups) == 0,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "save":

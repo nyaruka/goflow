@@ -135,7 +135,21 @@
                 {
                     "name_match": "@contact.fields.district"
                 }
-            ]
+            ],
+            "all_groups": false
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "del_group",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "groups": []
+        },
+        "expected_action": {
+            "type": "remove_contact_groups",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "all_groups": true
         },
         "expected_localization": {}
     },

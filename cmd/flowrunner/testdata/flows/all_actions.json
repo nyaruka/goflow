@@ -125,6 +125,21 @@
                             ]
                         },
                         {
+                            "uuid": "72b5c1d9-943e-449a-aee6-92101c85268f",
+                            "type": "add_contact_groups",
+                            "groups": [
+                                {
+                                    "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+                                    "name": "Survey Audience"
+                                }
+                            ]
+                        },
+                        {
+                            "uuid": "095f2ef5-c044-4dbb-a925-c474ac6d8e0f",
+                            "type": "remove_contact_groups",
+                            "all_groups": true
+                        },
+                        {
                             "uuid": "f01d693b-2af2-49fb-9e38-146eb00937e9",
                             "type": "send_msg",
                             "text": "Hi @contact.name, are you ready to complete today's survey?"

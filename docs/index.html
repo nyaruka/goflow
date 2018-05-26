@@ -1278,7 +1278,7 @@ Event
 </div>
 <p><a name="action:remove_contact_groups"></a></p>
 <h2 id="remove_contact_groups">remove_contact_groups</h2>
-<p>Can be used to remove a contact from one or more groups. A <code>contact_groups_removed</code> event will be created for the groups which the contact is removed from. If no groups are specified, then the contact will be removed from all groups.</p>
+<p>Can be used to remove a contact from one or more groups. A <code>contact_groups_removed</code> event will be created for the groups which the contact is removed from. Groups can either be explicitly provided or <code>all_groups</code> can be set to true to remove the contact from all non-dynamic groups.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1291,8 +1291,9 @@ Action
 <a class="sourceLine" id="cb113-6" data-line-number="6">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb113-7" data-line-number="7">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registered Users&quot;</span></a>
 <a class="sourceLine" id="cb113-8" data-line-number="8">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb113-9" data-line-number="9">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb113-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb113-9" data-line-number="9">    <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-10" data-line-number="10">    <span class="dt">&quot;all_groups&quot;</span><span class="fu">:</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb113-11" data-line-number="11"><span class="fu">}</span></a></code></pre></div>
 </div>
 <div class="output_event">
 <h3>

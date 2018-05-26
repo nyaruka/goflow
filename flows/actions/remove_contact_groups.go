@@ -11,8 +11,8 @@ import (
 const TypeRemoveContactGroups string = "remove_contact_groups"
 
 // RemoveContactGroupsAction can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
-// for the groups which the contact is removed from. If no groups are specified, then the contact will be removed from
-// all groups.
+// for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
+// the contact from all non-dynamic groups.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -26,7 +26,8 @@ const TypeRemoveContactGroups string = "remove_contact_groups"
 // @action remove_contact_groups
 type RemoveContactGroupsAction struct {
 	BaseAction
-	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups    []*flows.GroupReference `json:"groups,omitempty" validate:"dive"`
+	AllGroups bool                    `json:"all_groups"`
 }
 
 // Type returns the type of this action
@@ -34,7 +35,11 @@ func (a *RemoveContactGroupsAction) Type() string { return TypeRemoveContactGrou
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets) error {
-	// check we have all groups
+	if a.AllGroups && len(a.Groups) > 0 {
+		return fmt.Errorf("can't specify specific groups when all_groups=true")
+	}
+
+	// check we have all specified groups
 	return a.validateGroups(assets, a.Groups)
 }
 
@@ -46,9 +51,19 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 		return nil
 	}
 
-	groups, err := a.resolveGroups(run, step, a.Groups, log)
-	if err != nil {
-		return err
+	var groups []*flows.Group
+	var err error
+
+	if a.AllGroups {
+		groupSet, err := run.Session().Assets().GetGroupSet()
+		if err != nil {
+			return err
+		}
+		groups = groupSet.Static()
+	} else {
+		if groups, err = a.resolveGroups(run, step, a.Groups, log); err != nil {
+			return err
+		}
 	}
 
 	groupRefs := make([]*flows.GroupReference, 0, len(groups))

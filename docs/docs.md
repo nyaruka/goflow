@@ -1915,8 +1915,8 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 ## remove_contact_groups
 
 Can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
-for the groups which the contact is removed from. If no groups are specified, then the contact will be removed from
-all groups.
+for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
+the contact from all non-dynamic groups.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -1927,7 +1927,8 @@ all groups.
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Registered Users"
         }
-    ]
+    ],
+    "all_groups": false
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
