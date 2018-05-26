@@ -236,17 +236,15 @@ func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 		return err
 	}
 
-	for _, group := range groups.All() {
-		if group.IsDynamic() {
-			qualifies, err := group.CheckDynamicMembership(session, c)
-			if err != nil {
-				return err
-			}
-			if qualifies {
-				c.groups.Add(group)
-			} else {
-				c.groups.Remove(group)
-			}
+	for _, group := range groups.Dynamic() {
+		qualifies, err := group.CheckDynamicMembership(session, c)
+		if err != nil {
+			return err
+		}
+		if qualifies {
+			c.groups.Add(group)
+		} else {
+			c.groups.Remove(group)
 		}
 	}
 

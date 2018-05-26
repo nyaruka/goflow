@@ -191,22 +191,47 @@ var _ types.XIndexable = (*GroupList)(nil)
 
 // GroupSet defines the unordered set of all groups for a session
 type GroupSet struct {
-	groups       []*Group
-	groupsByUUID map[GroupUUID]*Group
+	groups        []*Group
+	staticGroups  []*Group
+	dynamicGroups []*Group
+	groupsByUUID  map[GroupUUID]*Group
 }
 
 // NewGroupSet creates a new group set from the given list of groups
 func NewGroupSet(groups []*Group) *GroupSet {
-	s := &GroupSet{groups: groups, groupsByUUID: make(map[GroupUUID]*Group, len(groups))}
+	s := &GroupSet{
+		groups:        groups,
+		staticGroups:  make([]*Group, 0),
+		dynamicGroups: make([]*Group, 0),
+		groupsByUUID:  make(map[GroupUUID]*Group, len(groups)),
+	}
+
 	for _, group := range s.groups {
+		if group.IsDynamic() {
+			s.dynamicGroups = append(s.dynamicGroups, group)
+		} else {
+			s.staticGroups = append(s.staticGroups, group)
+		}
+
 		s.groupsByUUID[group.uuid] = group
 	}
+
 	return s
 }
 
 // All returns all groups in this group set
 func (s *GroupSet) All() []*Group {
 	return s.groups
+}
+
+// Static returns all the static groups in this group set
+func (s *GroupSet) Static() []*Group {
+	return s.staticGroups
+}
+
+// Dynamic returns all the dynamic groups in this group set
+func (s *GroupSet) Dynamic() []*Group {
+	return s.dynamicGroups
 }
 
 // FindByUUID finds the group with the given UUID

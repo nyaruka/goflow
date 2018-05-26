@@ -198,6 +198,28 @@
                 },
                 {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "groups": [
+                        {
+                            "name": "Survey Audience",
+                            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                        }
+                    ],
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_groups_added"
+                },
+                {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "groups": [
+                        {
+                            "name": "Survey Audience",
+                            "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                        }
+                    ],
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_groups_removed"
+                },
+                {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -543,6 +565,28 @@
                                     }
                                 },
                                 "type": "broadcast_created"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "groups": [
+                                    {
+                                        "name": "Survey Audience",
+                                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                                    }
+                                ],
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "contact_groups_removed"
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "groups": [
+                                    {
+                                        "name": "Survey Audience",
+                                        "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
+                                    }
+                                ],
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "contact_groups_added"
                             },
                             {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
