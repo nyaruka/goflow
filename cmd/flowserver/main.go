@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/evalphobia/logrus_sentry"
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
 	"github.com/nyaruka/goflow/utils"
 	log "github.com/sirupsen/logrus"
@@ -33,13 +34,27 @@ func main() {
 
 	fmt.Printf("%s  --- version: %s ---\n", splash, config.Version)
 
+	// configure logging
 	level, err := log.ParseLevel(config.LogLevel)
 	if err != nil {
 		log.Fatalf("Invalid log level '%s'", level)
 	}
-
 	log.SetLevel(level)
 
+	// configure error reporting to Sentry if we have a DSN
+	if config.SentryDSN != "" {
+		hook, err := logrus_sentry.NewSentryHook(config.SentryDSN, []log.Level{log.PanicLevel, log.FatalLevel, log.ErrorLevel})
+		hook.Timeout = 0
+		hook.StacktraceConfiguration.Enable = true
+		hook.StacktraceConfiguration.Skip = 4
+		hook.StacktraceConfiguration.Context = 5
+		if err != nil {
+			log.Fatalf("Invalid sentry DSN: '%s': %s", config.SentryDSN, err)
+		}
+		log.StandardLogger().Hooks.Add(hook)
+	}
+
+	// start the server
 	flowServer := NewFlowServer(config)
 	flowServer.Start()
 

@@ -16,6 +16,7 @@ type Config struct {
 	AssetServerToken              string `help:"the token to use when authentication to the asset server"`
 	EngineDisableWebhooks         bool   `help:"whether to disable webhook calls from the engine"`
 	EngineMaxWebhookResponseBytes int    `help:"the maximum allowed byte size of webhook responses"`
+	SentryDSN                     string `help:"the DSN for reporting errors to Sentry"`
 	Version                       string `help:"the version to use in request and response headers"`
 }
 
