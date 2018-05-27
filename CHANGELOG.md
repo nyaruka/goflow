@@ -1,3 +1,8 @@
+v0.10.10
+----------
+ * Add all_groups flag to remove_contact_groups action
+ * Add sentry for reporting errors
+
 v0.10.9
 ----------
  * Fix migrating legacy @flow.foo.text/time expressions
