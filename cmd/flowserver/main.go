@@ -73,7 +73,6 @@ type errorResponse struct {
 
 // writeError writes a JSON response for the passed in error
 func writeError(w http.ResponseWriter, r *http.Request, status int, err error) error {
-	log.WithError(err).Error()
 	var errors []string
 
 	vErrs, isValidation := err.(utils.ValidationErrors)
