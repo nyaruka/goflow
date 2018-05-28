@@ -1,3 +1,7 @@
+v0.10.11
+----------
+ * Don't log errors twice
+
 v0.10.10
 ----------
  * Add all_groups flag to remove_contact_groups action
