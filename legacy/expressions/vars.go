@@ -187,7 +187,10 @@ func newMigrationBaseVars() map[string]interface{} {
 	return map[string]interface{}{
 		"contact": contact,
 		"flow": &varMapper{
-			base: "run.results",
+			baseVars: map[string]interface{}{
+				"contact": contact,
+			},
+			arbitraryNesting: "run.results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 				"text":     "input",

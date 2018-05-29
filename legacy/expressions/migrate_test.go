@@ -59,9 +59,13 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@flow.favorite_color.text`, new: `@run.results.favorite_color.input`},
 		{old: `@flow.favorite_color.time`, new: `@run.results.favorite_color.created_on`},
 		{old: `@flow.favorite_color.value`, new: `@run.results.favorite_color.value`},
+		{old: `@flow.contact`, new: `@contact`},
+		{old: `@flow.contact.name`, new: `@contact.name`},
+
 		{old: `@child.age`, new: `@child.results.age`},
 		{old: `@child.contact`, new: `@child.contact`},
 		{old: `@child.contact.age`, new: `@child.contact.fields.age`},
+
 		{old: `@parent.role`, new: `@parent.results.role`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
 		{old: `@parent.contact`, new: `@parent.contact`},
