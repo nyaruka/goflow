@@ -450,38 +450,40 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 }
 
 func (ts *ServerTestSuite) TestWebhookMocking() {
-	// POST to the start endpoint with a flow with a webhook call, with webhooks disabled
-	requestBody := fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{"disable_webhooks": true}`)
-	status, body := ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
-	ts.Equal(200, status)
+	testCases := []struct {
+		config         string
+		expectedStatus int
+		expectedBody   string
+	}{
+		// default config is make webhook calls
+		{`{}`, 200, `{ "ok": "true" }`},
 
-	session, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
-	run := session.Runs()[0]
+		// explicitly disabled or enabled
+		{`{"disable_webhooks": false}`, 200, `{ "ok": "true" }`},
+		{`{"disable_webhooks": true}`, 200, "DISABLED"},
 
-	ts.NotNil(run.Webhook())
-	ts.Equal("DISABLED", run.Webhook().Body())
+		// a matching mock will always be used and matching is case-insensitive
+		{`{"webhook_mocks":[{"method":"GET","url":"http://localhost:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, 201, "I'm mocked"},
+		{`{"webhook_mocks":[{"method":"get","url":"http://LOCALHOST:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, 201, "I'm mocked"},
 
-	// run same flow again, this time with webhooks enabled
-	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{"disable_webhooks": false}`)
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
-	ts.Equal(200, status)
+		// no matching mock means we fall back to whether disable_webhooks is set
+		{`{"webhook_mocks":[{"method":"POST","url":"http://xxxxxx/?cmd=success","status":201,"body":"I'm mocked"}]}`, 200, `{ "ok": "true" }`},
+		{`{"disable_webhooks": true, "webhook_mocks":[{"method":"POST","url":"http://xxxxxx/?cmd=success","status":201,"body":"I'm mocked"}]}`, 200, "DISABLED"},
+	}
 
-	session, _ = ts.parseSessionResponse(ts.flowServer.assetCache, body)
-	run = session.Runs()[0]
+	for _, tc := range testCases {
+		// POST to the start endpoint with a flow with a webhook call, with webhooks disabled
+		requestBody := fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, tc.config)
+		status, body := ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
+		ts.Equal(200, status)
 
-	ts.NotNil(run.Webhook())
-	ts.Equal(`{ "ok": "true" }`, run.Webhook().Body())
+		session, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+		run := session.Runs()[0]
 
-	// and again, this time with the default config
-	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{}`)
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
-	ts.Equal(200, status)
-
-	session, _ = ts.parseSessionResponse(ts.flowServer.assetCache, body)
-	run = session.Runs()[0]
-
-	ts.NotNil(run.Webhook())
-	ts.Equal(`{ "ok": "true" }`, run.Webhook().Body())
+		ts.NotNil(run.Webhook())
+		ts.Equal(tc.expectedStatus, run.Webhook().StatusCode())
+		ts.Equal(tc.expectedBody, run.Webhook().Body())
+	}
 }
 
 func TestServerSuite(t *testing.T) {
