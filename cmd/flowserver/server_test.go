@@ -459,7 +459,7 @@ func (ts *ServerTestSuite) TestWebhookMocking() {
 	run := session.Runs()[0]
 
 	ts.NotNil(run.Webhook())
-	ts.Equal("MOCKED", run.Webhook().Body())
+	ts.Equal("DISABLED", run.Webhook().Body())
 
 	// run same flow again, this time with webhooks enabled
 	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, `{"disable_webhooks": false}`)
