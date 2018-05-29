@@ -138,6 +138,18 @@ func (m *extraMapper) Resolve(key string) interface{} {
 		newPath = append(newPath, m.path)
 	}
 	newPath = append(newPath, key)
+
+	if m.path == "" && key == "flow" {
+		return &varMapper{
+			base: "parent.results",
+			arbitraryVars: map[string]interface{}{
+				"category": "category_localized",
+				"text":     "input",
+				"time":     "created_on",
+			},
+		}
+	}
+
 	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
 }
 

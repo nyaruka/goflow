@@ -89,6 +89,12 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@date.tomorrow`, new: `@(datetime_add(today(), 1, "D"))`},
 		{old: `@date.yesterday`, new: `@(datetime_add(today(), -1, "D"))`},
 
+		// extra
+		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: expressions.ExtraAsWebhookJSON},
+		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: expressions.ExtraAsTriggerParams},
+		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: expressions.ExtraAsFunction},
+		{old: `@extra.flow.role`, new: `@parent.results.role`},
+
 		// variables in parens
 		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel.0))`},
 		{old: `@(contact.gender)`, new: `@(contact.fields.gender)`},
@@ -207,10 +213,6 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
-
-		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: expressions.ExtraAsWebhookJSON},
-		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: expressions.ExtraAsTriggerParams},
-		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: expressions.ExtraAsFunction},
 
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
