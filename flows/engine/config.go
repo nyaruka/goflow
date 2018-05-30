@@ -32,9 +32,9 @@ func (c *config) WebhookMocks() []*flows.WebhookMock { return c.webhookMocks }
 func (c *config) MaxWebhookResponseBytes() int       { return c.maxWebhookResponseBytes }
 
 type configEnvelope struct {
-	DisableWebhooks         *bool                 `json:"disable_webhooks"`
-	WebhookMocks            *[]*flows.WebhookMock `json:"webhook_mocks"`
-	MaxWebhookResponseBytes *int                  `json:"max_webhook_response_bytes"`
+	DisableWebhooks         *bool                `json:"disable_webhooks"`
+	WebhookMocks            []*flows.WebhookMock `json:"webhook_mocks"`
+	MaxWebhookResponseBytes *int                 `json:"max_webhook_response_bytes"`
 }
 
 func ReadConfig(data json.RawMessage, base flows.EngineConfig) (flows.EngineConfig, error) {
@@ -49,7 +49,7 @@ func ReadConfig(data json.RawMessage, base flows.EngineConfig) (flows.EngineConf
 		config.disableWebhooks = *envelope.DisableWebhooks
 	}
 	if envelope.WebhookMocks != nil {
-		config.webhookMocks = *envelope.WebhookMocks
+		config.webhookMocks = envelope.WebhookMocks
 	}
 	if envelope.MaxWebhookResponseBytes != nil {
 		config.maxWebhookResponseBytes = *envelope.MaxWebhookResponseBytes
