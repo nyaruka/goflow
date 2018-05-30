@@ -66,7 +66,7 @@ func (c *HTTPClient) DoWithDump(request *http.Request) (*http.Response, string, 
 }
 
 // MockWithDump mocks the given HTTP request and returns a dump of the entire request
-func (c *HTTPClient) MockWithDump(request *http.Request, mockResponse string) (*http.Response, string, error) {
+func (c *HTTPClient) MockWithDump(request *http.Request, mockStatus int, mockResponse string) (*http.Response, string, error) {
 	c.prepareRequest(request)
 
 	dump, err := httputil.DumpRequestOut(request, true)
@@ -78,7 +78,7 @@ func (c *HTTPClient) MockWithDump(request *http.Request, mockResponse string) (*
 
 	recorder := httptest.NewRecorder()
 	recorder.WriteString(mockResponse)
-	recorder.Code = 200
+	recorder.Code = mockStatus
 
 	response := recorder.Result()
 	response.Request = request

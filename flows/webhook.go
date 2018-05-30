@@ -73,10 +73,16 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 	var requestDump string
 	var err error
 
-	if session.EngineConfig().DisableWebhooks() {
-		response, requestDump, err = session.HTTPClient().MockWithDump(request, "MOCKED")
+	// if our config has mocks, look for a matching one
+	mock := findMockedRequest(session, request)
+	if mock != nil {
+		response, requestDump, err = session.HTTPClient().MockWithDump(request, mock.Status, mock.Body)
 	} else {
-		response, requestDump, err = session.HTTPClient().DoWithDump(request)
+		if session.EngineConfig().DisableWebhooks() {
+			response, requestDump, err = session.HTTPClient().MockWithDump(request, 200, "DISABLED")
+		} else {
+			response, requestDump, err = session.HTTPClient().DoWithDump(request)
+		}
 	}
 
 	if err != nil {
@@ -213,6 +219,26 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 	}
 
 	return w, nil
+}
+
+//------------------------------------------------------------------------------------------
+// Request Mocking
+//------------------------------------------------------------------------------------------
+
+type WebhookMock struct {
+	Method string `json:"method"`
+	URL    string `json:"url"`
+	Status int    `json:"status"`
+	Body   string `json:"body"`
+}
+
+func findMockedRequest(session Session, request *http.Request) *WebhookMock {
+	for _, mock := range session.EngineConfig().WebhookMocks() {
+		if strings.EqualFold(mock.Method, request.Method) && strings.EqualFold(mock.URL, request.URL.String()) {
+			return mock
+		}
+	}
+	return nil
 }
 
 //------------------------------------------------------------------------------------------

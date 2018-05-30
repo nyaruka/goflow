@@ -21,7 +21,7 @@ type Config struct {
 }
 
 func (c *Config) Engine() flows.EngineConfig {
-	return engine.NewConfig(c.EngineDisableWebhooks, c.EngineMaxWebhookResponseBytes)
+	return engine.NewConfig(c.EngineDisableWebhooks, nil, c.EngineMaxWebhookResponseBytes)
 }
 
 // NewDefaultConfig returns our default configuration
