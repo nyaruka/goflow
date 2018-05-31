@@ -44,14 +44,14 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.groups`, new: `@(join(contact.groups, ","))`},
 
 		// contact URN variables
-		{old: `@contact.tel`, new: `@(format_urn(contact.urns.tel.0))`},
-		{old: `@contact.tel.display`, new: `@(format_urn(contact.urns.tel.0))`},
+		{old: `@contact.tel`, new: `@(format_urn(contact.urns.tel))`},
+		{old: `@contact.tel.display`, new: `@(format_urn(contact.urns.tel))`},
 		{old: `@contact.tel.scheme`, new: `@contact.urns.tel.0.scheme`},
 		{old: `@contact.tel.path`, new: `@contact.urns.tel.0.path`},
 		{old: `@contact.tel.urn`, new: `@contact.urns.tel.0`},
 		{old: `@contact.tel_e164`, new: `@contact.urns.tel.0.path`},
-		{old: `@contact.twitterid`, new: `@(format_urn(contact.urns.twitterid.0))`},
-		{old: `@contact.mailto`, new: `@(format_urn(contact.urns.mailto.0))`},
+		{old: `@contact.twitterid`, new: `@(format_urn(contact.urns.twitterid))`},
+		{old: `@contact.mailto`, new: `@(format_urn(contact.urns.mailto))`},
 
 		// run variables
 		{old: `@flow.favorite_color`, new: `@run.results.favorite_color`},
@@ -96,7 +96,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 		// variables in parens
-		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel.0))`},
+		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel))`},
 		{old: `@(contact.gender)`, new: `@(contact.fields.gender)`},
 		{old: `@(flow.favorite_color)`, new: `@(run.results.favorite_color)`},
 

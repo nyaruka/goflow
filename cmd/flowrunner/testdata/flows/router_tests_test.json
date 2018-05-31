@@ -6,13 +6,6 @@
         {
             "events": [
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "fatal": false,
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "text": "error calling FORMAT_URN: index 0 out of range for 0 items",
-                    "type": "error"
-                },
-                {
                     "category": "Other",
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "input": "",
@@ -72,13 +65,6 @@
                     {
                         "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "events": [
-                            {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "fatal": false,
-                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "text": "error calling FORMAT_URN: index 0 out of range for 0 items",
-                                "type": "error"
-                            },
                             {
                                 "category": "Other",
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
