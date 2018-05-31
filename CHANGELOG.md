@@ -1,3 +1,10 @@
+v0.10.12
+----------
+ * Merge pull request #308 from nyaruka/mock_webhooks
+ * Add webhook mocks to engine config and check when making webhook calls if there is a matching mock
+ * Fix migration of @extra.flow in legacy expressions
+ * Fix mapping of @flow.contact in legacy expressions
+
 v0.10.11
 ----------
  * Don't log errors twice
