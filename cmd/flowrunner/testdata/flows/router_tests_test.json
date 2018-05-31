@@ -1,0 +1,221 @@
+{
+    "caller_events": [
+        []
+    ],
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "fatal": false,
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "text": "error calling FORMAT_URN: index 0 out of range for 0 items",
+                    "type": "error"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "input": "",
+                    "name": "URN Check",
+                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "run_result_changed",
+                    "value": ""
+                },
+                {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "URN Check: ",
+                        "urn": "tel:+12065551212",
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                    },
+                    "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "type": "msg_created"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "fields": {
+                        "first_name": {
+                            "text": "Ben"
+                        },
+                        "state": {
+                            "state": "Ecuador > Azuay",
+                            "text": "Ecuador > Azuay"
+                        }
+                    },
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "date_format": "YYYY-MM-DD",
+                    "languages": [
+                        "eng"
+                    ],
+                    "redaction_policy": "none",
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "events": [
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "fatal": false,
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "text": "error calling FORMAT_URN: index 0 out of range for 0 items",
+                                "type": "error"
+                            },
+                            {
+                                "category": "Other",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "",
+                                "name": "URN Check",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "run_result_changed",
+                                "value": ""
+                            },
+                            {
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "URN Check: ",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
+                                },
+                                "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                                "type": "msg_created"
+                            }
+                        ],
+                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "flow": {
+                            "name": "Router Test",
+                            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                        },
+                        "path": [
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "exit_uuid": "85038c16-0060-486c-97be-898c65587658",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            },
+                            {
+                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                            }
+                        ],
+                        "results": {
+                            "urn_check": {
+                                "category": "Other",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "input": "",
+                                "name": "URN Check",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "value": ""
+                            }
+                        },
+                        "status": "completed",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "fields": {
+                            "first_name": {
+                                "text": "Ben"
+                            },
+                            "state": {
+                                "state": "Ecuador > Azuay",
+                                "text": "Ecuador > Azuay"
+                            }
+                        },
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "date_format": "YYYY-MM-DD",
+                        "languages": [
+                            "eng"
+                        ],
+                        "redaction_policy": "none",
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Router Test",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                }
+            }
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "fields": {
+                "first_name": {
+                    "text": "Ben"
+                },
+                "state": {
+                    "state": "Ecuador > Azuay",
+                    "text": "Ecuador > Azuay"
+                }
+            },
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "date_format": "YYYY-MM-DD",
+            "languages": [
+                "eng"
+            ],
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Router Test",
+            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+        },
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "type": "manual"
+    }
+}

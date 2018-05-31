@@ -634,5 +634,73 @@
 		        }
 		    }
         }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "9e4078de-2304-4751-b6e7-35532cc5ab8f",
+            "x": 708,
+            "y": 1611,
+            "label": "Response 14",
+            "rules": [
+                {
+                    "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                    "category": {
+                        "eng": "Telegram"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "not_empty"
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "85038c16-0060-486c-97be-898c65587658",
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "true"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "contact_field",
+            "response_type": "",
+            "operand": "@contact.telegram",
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "9e4078de-2304-4751-b6e7-35532cc5ab8f",
+            "router": {
+                "type": "switch",
+                "result_name": "Response 14",
+                "default_exit_uuid": "85038c16-0060-486c-97be-898c65587658",
+                "operand": "@(format_urn(contact.urns.telegram.0))",
+                "cases": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_text",
+                        "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "name": "Telegram"
+                },
+                {
+                    "uuid": "85038c16-0060-486c-97be-898c65587658",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "name": "Other"
+                }
+            ]
+        },
+        "expected_localization": {}
     }
 ]

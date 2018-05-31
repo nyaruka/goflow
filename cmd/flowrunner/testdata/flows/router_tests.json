@@ -1,0 +1,52 @@
+[
+    {
+        "type": "flow",
+        "url": "http://testserver/assets/flow/615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+        "content": {
+            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+            "name": "Router Test",
+            "language": "eng",
+            "localization": {},
+            "nodes": [
+                {
+                    "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                    "router": {
+                        "type": "switch",
+                        "result_name": "URN Check",
+                        "default_exit_uuid": "85038c16-0060-486c-97be-898c65587658",
+                        "operand": "@(format_urn(contact.urns.telegram.0))",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_text",
+                                "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "name": "Telegram"
+                        },
+                        {
+                            "uuid": "85038c16-0060-486c-97be-898c65587658",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "name": "Other"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                    "actions": [
+                        {
+                            "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
+                            "type": "send_msg",
+                            "text": "URN Check: @run.results.urn_check"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
