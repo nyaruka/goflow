@@ -26,11 +26,42 @@
                     "exits": [
                         {
                             "uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "destination_node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                             "name": "Telegram"
                         },
                         {
                             "uuid": "85038c16-0060-486c-97be-898c65587658",
+                            "destination_node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
+                            "name": "Other"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
+                    "router": {
+                        "type": "switch",
+                        "result_name": "Group Check",
+                        "default_exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                        "operand": "@contact",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_group",
+                                "arguments": [
+                                    "ade39253-0371-4dde-9df4-95245fe6a3a8"
+                                ],
+                                "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "name": "Testers"
+                        },
+                        {
+                            "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
                             "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                             "name": "Other"
                         }
@@ -42,7 +73,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "URN Check: @run.results.urn_check"
+                            "text": "URN Check: @run.results.urn_check\nGroup Check: @run.results.group_check"
                         }
                     ]
                 }
