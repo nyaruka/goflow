@@ -172,6 +172,7 @@ func newMigrationBaseVars() map[string]interface{} {
 		base: "contact",
 		baseVars: map[string]interface{}{
 			"uuid":       "uuid",
+			"id":         "id",
 			"name":       "name",
 			"first_name": "first_name",
 			"language":   "language",

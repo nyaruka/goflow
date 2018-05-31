@@ -37,6 +37,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact`, new: `@contact`},
 		{old: `@CONTACT`, new: `@contact`},
 		{old: `@contact.uuid`, new: `@contact.uuid`},
+		{old: `@contact.id`, new: `@contact.id`},
 		{old: `@contact.name`, new: `@contact.name`},
 		{old: `@contact.NAME`, new: `@contact.name`},
 		{old: `@contact.first_name`, new: `@contact.first_name`},
