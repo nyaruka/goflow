@@ -1,3 +1,7 @@
+v0.10.14
+----------
+ * Fix @contact.id not being migrated in legacy flows
+
 v0.10.13
 ----------
  * Migrate @contact.<scheme> expressions to @(format_urn(contact.urns.<scheme>)) so there's no error if such a URN doesn't exist
