@@ -1,3 +1,8 @@
+v0.10.13
+----------
+ * Migrate @contact.<scheme> expressions to @(format_urn(contact.urns.<scheme>)) so there's no error if such a URN doesn't exist
+ * Fix not saving a result when router takes default exit
+
 v0.10.12
 ----------
  * Merge pull request #308 from nyaruka/mock_webhooks
