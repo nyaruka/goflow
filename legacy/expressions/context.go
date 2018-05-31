@@ -186,8 +186,8 @@ func newMigrationBaseVars() map[string]interface{} {
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
 			substitutions: map[string]string{
-				"__default__": fmt.Sprintf("format_urn(contact.urns.%s.0)", scheme),
-				"display":     fmt.Sprintf("format_urn(contact.urns.%s.0)", scheme),
+				"__default__": fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
+				"display":     fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
 				"scheme":      fmt.Sprintf("contact.urns.%s.0.scheme", scheme),
 				"path":        fmt.Sprintf("contact.urns.%s.0.path", scheme),
 				"urn":         fmt.Sprintf("contact.urns.%s.0", scheme),

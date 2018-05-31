@@ -447,7 +447,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 	}
 
 	// save our results if appropriate
-	if router != nil && router.ResultName() != "" && route.Match() != "" {
+	if router != nil && router.ResultName() != "" {
 		event := events.NewRunResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, node.UUID(), operand)
 		run.ApplyEvent(step, nil, event)
 	}
