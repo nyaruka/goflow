@@ -234,6 +234,105 @@
     },
     {
         "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2", 
+                    "test": {
+                        "test": {
+                            "eng": "this"
+                        }, 
+                        "type": "contains_any"
+                    }, 
+                    "category": {
+                        "eng": "This"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                },
+                {
+                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
+                    "test": {
+                        "test": {
+                            "eng": "other"
+                        },
+                        "type": "contains_any"
+                    },
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8", 
+                    "test": {
+                        "test": "true", 
+                        "type": "true"
+                    }, 
+                    "category": {
+                        "eng": "Other"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }
+            ], 
+            "ruleset_type": "wait_message", 
+            "label": "Beer", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 0, 
+            "x": 100, 
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "router": {
+                "type": "switch",
+                "result_name": "Beer",
+                "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                "operand": "@run.input",
+                "cases": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "arguments": ["this"],
+                        "exit_uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2"
+                    },
+                    {
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "arguments": ["other"],
+                        "exit_uuid": "633dfe67-988e-4190-a95f-70f477494032"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "ea304225-332e-49d4-9768-1e804cd0b6c2",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "name": "This"
+                },
+                {
+                    "uuid": "633dfe67-988e-4190-a95f-70f477494032",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "name": "Other"
+                },
+                {
+                    "uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "name": "Other"
+                }
+            ],
+            "wait": {
+                "type": "msg"
+            }
+		},
+        "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
             "uuid": "bd531ace-911e-4722-8e53-6730d6122fe1", 
             "rules": [
                 {
