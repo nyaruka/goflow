@@ -724,6 +724,7 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	}, err
 }
 
+// temporary struct for migrating categories to cases and exits
 type categoryName struct {
 	uuid         flows.ExitUUID
 	destination  flows.NodeUUID
@@ -733,20 +734,34 @@ type categoryName struct {
 
 func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
 
-	// find our discrete categories
+	// find our discrete categories and Other category (which uses the true rule)
 	categoryMap := make(map[string]categoryName)
+	var otherCategory *categoryName
+	var otherCategoryBaseName string
+
 	order := 0
-	for i := range r.Rules {
-		category := r.Rules[i].Category.Base(baseLanguage)
-		_, ok := categoryMap[category]
-		if !ok {
-			categoryMap[category] = categoryName{
-				uuid:         r.Rules[i].UUID,
-				destination:  r.Rules[i].Destination,
-				translations: r.Rules[i].Category,
-				order:        order,
+	for _, rule := range r.Rules {
+		categoryBaseName := rule.Category.Base(baseLanguage)
+
+		if rule.Test.Type == "true" {
+			otherCategoryBaseName = categoryBaseName
+			otherCategory = &categoryName{
+				uuid:         rule.UUID,
+				destination:  rule.Destination,
+				translations: rule.Category,
+				order:        -1,
 			}
-			order++
+		} else {
+			_, ok := categoryMap[categoryBaseName]
+			if !ok {
+				categoryMap[categoryBaseName] = categoryName{
+					uuid:         rule.UUID,
+					destination:  rule.Destination,
+					translations: rule.Category,
+					order:        order,
+				}
+				order++
+			}
 		}
 	}
 
@@ -760,16 +775,21 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		exitMap[k] = exits[category.order]
 	}
 
-	var defaultExit flows.ExitUUID
+	var defaultExitUUID flows.ExitUUID
+
+	if otherCategory != nil {
+		addTranslationMap(baseLanguage, localization, otherCategory.translations, utils.UUID(otherCategory.uuid), "name")
+		defaultExit := definition.NewExit(otherCategory.uuid, otherCategory.destination, otherCategoryBaseName)
+		exits = append(exits, defaultExit)
+
+		defaultExitUUID = defaultExit.UUID()
+	}
 
 	// create any cases to map to our new exits
 	var cases []routers.Case
 	for i := range r.Rules {
+		// skip Other rules
 		if r.Rules[i].Test.Type == "true" {
-			// take the first true rule as our default exit
-			if defaultExit == "" {
-				defaultExit = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
-			}
 			continue
 		}
 
@@ -781,8 +801,8 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		cases = append(cases, c)
 
 		if r.Rules[i].Test.Type == "webhook_status" {
-			// webhook failures don't have a case, instead they are the default
-			defaultExit = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
+			// webhook failures don't have a case, instead they become the default
+			defaultExitUUID = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
 		}
 	}
 
@@ -802,7 +822,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 		})
 	}
 
-	return exits, cases, defaultExit, nil
+	return exits, cases, defaultExitUUID, nil
 }
 
 type fieldConfig struct {
