@@ -28,7 +28,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.name", "Ryan Lewis", ""},
 		{"@contact.first_name", "Ryan", ""},
 		{"@contact.language", "eng", ""},
-		{"@contact.timezone", "", ""},
+		{"@contact.timezone", "America/Guayaquil", ""},
 		{"@contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},
 		{"@contact.urns.tel", `["tel:+12065551212"]`, ""},
 		{"@contact.urns.xxx", "", "error evaluating @contact.urns.xxx: no such URN scheme 'xxx'"},
@@ -108,7 +108,7 @@ func TestContextToJSON(t *testing.T) {
 		{"contact.urns.0", `{"display":"","path":"+12065551212","scheme":"tel"}`},
 		{"contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"}`},
 		{"contact.fields.age", `23`},
-		{"contact", `{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":null,"urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"}`},
+		{"contact", `{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"}`},
 		{"run.input", `{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}`},
 
 		// TODO add way to mock call calls to Now() so we can have deterministic tests without doing text substitution of dates?

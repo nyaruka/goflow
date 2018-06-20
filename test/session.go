@@ -221,6 +221,8 @@ var sessionTrigger = `{
         "id": 1234567,
         "name": "Ryan Lewis",
         "language": "eng",
+        "timezone": "America/Guayaquil",
+        "created_on": "2018-06-20T11:40:30.123456789-00:00",
         "urns": [
             "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
             "twitterid:54784326227#nyaruka",

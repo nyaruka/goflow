@@ -43,6 +43,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.first_name`, new: `@contact.first_name`},
 		{old: `@contact.gender`, new: `@contact.fields.gender`},
 		{old: `@contact.groups`, new: `@(join(contact.groups, ","))`},
+		{old: `@contact.language`, new: `@contact.language`},
+		{old: `@contact.created_on`, new: `@contact.created_on`},
 
 		// contact URN variables
 		{old: `@contact.tel`, new: `@(format_urn(contact.urns.tel))`},

@@ -17,6 +17,8 @@ import (
 //  * `name` the full name of the contact
 //  * `first_name` the first name of the contact
 //  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
+//  * `timezone` the timezone name of the contact
+//  * `created_on` the datetime when the contact was created
 //  * `urns` all [URNs](#context:urn) the contact has set
 //  * `urns.[scheme]` all the [URNs](#context:urn) the contact has set for the particular URN scheme
 //  * `urn` shorthand for `@(format_urn(c.urns.0))`, i.e. the contact's preferred [URN](#context:urn) in friendly formatting
@@ -31,6 +33,8 @@ import (
 //   @contact.name -> Ryan Lewis
 //   @contact.first_name -> Ryan
 //   @contact.language -> eng
+//   @contact.timezone -> America/Guayaquil
+//   @contact.created_on -> 2018-06-20T11:40:30.123456Z
 //   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
 //   @contact.urns.0 -> tel:+12065551212
 //   @contact.urns.tel -> ["tel:+12065551212"]
@@ -43,24 +47,26 @@ import (
 //
 // @context contact
 type Contact struct {
-	uuid     ContactUUID
-	id       int
-	name     string
-	language utils.Language
-	timezone *time.Location
-	urns     URNList
-	groups   *GroupList
-	fields   FieldValues
+	uuid      ContactUUID
+	id        int
+	name      string
+	language  utils.Language
+	timezone  *time.Location
+	createdOn time.Time
+	urns      URNList
+	groups    *GroupList
+	fields    FieldValues
 }
 
 // NewContact returns a new contact
 func NewContact(name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
-		uuid:     ContactUUID(utils.NewUUID()),
-		name:     name,
-		language: language,
-		timezone: timezone,
-		groups:   NewGroupList([]*Group{}),
+		uuid:      ContactUUID(utils.NewUUID()),
+		name:      name,
+		language:  language,
+		timezone:  timezone,
+		createdOn: time.Now(),
+		groups:    NewGroupList([]*Group{}),
 	}
 }
 
@@ -71,14 +77,15 @@ func (c *Contact) Clone() *Contact {
 	}
 
 	return &Contact{
-		uuid:     c.uuid,
-		id:       c.id,
-		name:     c.name,
-		language: c.language,
-		timezone: c.timezone,
-		urns:     c.urns.clone(),
-		groups:   c.groups.clone(),
-		fields:   c.fields.clone(),
+		uuid:      c.uuid,
+		id:        c.id,
+		name:      c.name,
+		language:  c.language,
+		timezone:  c.timezone,
+		createdOn: c.createdOn,
+		urns:      c.urns.clone(),
+		groups:    c.groups.clone(),
+		fields:    c.fields.clone(),
 	}
 }
 
@@ -163,6 +170,8 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 			return types.NewXText(c.timezone.String())
 		}
 		return nil
+	case "created_on":
+		return types.NewXDateTime(c.createdOn)
 	case "urns":
 		return c.urns
 	case "urn":
@@ -194,7 +203,7 @@ func (c *Contact) Reduce(env utils.Environment) types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (c *Contact) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, c, "uuid", "name", "language", "timezone", "urns", "groups", "fields", "channel").ToXJSON(env)
+	return types.ResolveKeys(env, c, "uuid", "name", "language", "timezone", "created_on", "urns", "groups", "fields", "channel").ToXJSON(env)
 }
 
 var _ types.XValue = (*Contact)(nil)
@@ -309,14 +318,15 @@ type fieldValueEnvelope struct {
 }
 
 type contactEnvelope struct {
-	UUID     ContactUUID                    `json:"uuid" validate:"required,uuid4"`
-	ID       int                            `json:"id"`
-	Name     string                         `json:"name"`
-	Language utils.Language                 `json:"language"`
-	Timezone string                         `json:"timezone"`
-	URNs     []urns.URN                     `json:"urns" validate:"dive,urn"`
-	Groups   []*GroupReference              `json:"groups,omitempty" validate:"dive"`
-	Fields   map[string]*fieldValueEnvelope `json:"fields,omitempty"`
+	UUID      ContactUUID                    `json:"uuid" validate:"required,uuid4"`
+	ID        int                            `json:"id"`
+	Name      string                         `json:"name"`
+	Language  utils.Language                 `json:"language"`
+	Timezone  string                         `json:"timezone"`
+	CreatedOn time.Time                      `json:"created_on"`
+	URNs      []urns.URN                     `json:"urns" validate:"dive,urn"`
+	Groups    []*GroupReference              `json:"groups,omitempty" validate:"dive"`
+	Fields    map[string]*fieldValueEnvelope `json:"fields,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -329,10 +339,11 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	}
 
 	c := &Contact{
-		uuid:     envelope.UUID,
-		id:       envelope.ID,
-		name:     envelope.Name,
-		language: envelope.Language,
+		uuid:      envelope.UUID,
+		id:        envelope.ID,
+		name:      envelope.Name,
+		language:  envelope.Language,
+		createdOn: envelope.CreatedOn,
 	}
 
 	if envelope.Timezone != "" {
@@ -392,10 +403,11 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 // MarshalJSON marshals this contact into JSON
 func (c *Contact) MarshalJSON() ([]byte, error) {
 	ce := &contactEnvelope{
-		Name:     c.name,
-		UUID:     c.uuid,
-		ID:       c.id,
-		Language: c.language,
+		Name:      c.name,
+		UUID:      c.uuid,
+		ID:        c.id,
+		Language:  c.language,
+		CreatedOn: c.createdOn,
 	}
 
 	ce.URNs = c.urns.RawURNs(true)
