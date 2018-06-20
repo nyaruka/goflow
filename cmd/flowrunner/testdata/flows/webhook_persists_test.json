@@ -66,6 +66,7 @@
             ],
             "session": {
                 "contact": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -191,6 +192,7 @@
                 "status": "waiting",
                 "trigger": {
                     "contact": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
@@ -251,6 +253,7 @@
             ],
             "session": {
                 "contact": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -424,6 +427,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
@@ -465,6 +469,7 @@
     ],
     "trigger": {
         "contact": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "fields": {
                 "first_name": {
                     "text": "Ben"

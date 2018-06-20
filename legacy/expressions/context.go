@@ -176,6 +176,7 @@ func newMigrationBaseVars() map[string]interface{} {
 			"name":       "name",
 			"first_name": "first_name",
 			"language":   "language",
+			"created_on": "created_on",
 			"tel_e164":   "urns.tel.0.path",
 		},
 		substitutions: map[string]string{
