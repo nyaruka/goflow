@@ -3,6 +3,7 @@ package test
 import (
 	"time"
 
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -33,3 +34,17 @@ func (e *TestEnvironment) Now() time.Time {
 func (e *TestEnvironment) SetNow(now time.Time) {
 	e.now = now
 }
+
+func (e *TestEnvironment) FindLocations(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error) {
+	return nil, nil
+}
+
+func (e *TestEnvironment) FindLocationsFuzzy(string, utils.LocationLevel, *utils.Location) ([]*utils.Location, error) {
+	return nil, nil
+}
+
+func (e *TestEnvironment) LookupLocation(flows.LocationPath) (*utils.Location, error) {
+	return nil, nil
+}
+
+var _ flows.RunEnvironment = &TestEnvironment{}
