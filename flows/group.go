@@ -61,7 +61,7 @@ func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
 func (g *Group) IsDynamic() bool { return g.query != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
-func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool, error) {
+func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) (bool, error) {
 	if !g.IsDynamic() {
 		return false, fmt.Errorf("can't check membership on a non-dynamic group")
 	}
@@ -70,7 +70,7 @@ func (g *Group) CheckDynamicMembership(session Session, contact *Contact) (bool,
 		return false, err
 	}
 
-	return contactql.EvaluateQuery(session.Environment(), parsedQuery, contact)
+	return contactql.EvaluateQuery(env, parsedQuery, contact)
 }
 
 // Reference returns a reference to this group

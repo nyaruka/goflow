@@ -67,6 +67,7 @@ func NewContact(name string, language utils.Language, timezone *time.Location) *
 		timezone:  timezone,
 		createdOn: time.Now(),
 		groups:    NewGroupList([]*Group{}),
+		fields:    make(FieldValues),
 	}
 }
 
@@ -108,6 +109,14 @@ func (c *Contact) SetTimezone(tz *time.Location) {
 
 // Timezone returns the timezone of this contact
 func (c *Contact) Timezone() *time.Location { return c.timezone }
+
+// SetCreatedOn sets the created on time of this contact
+func (c *Contact) SetCreatedOn(createdOn time.Time) {
+	c.createdOn = createdOn
+}
+
+// CreatedOn returns the created on time of this contact
+func (c *Contact) CreatedOn() time.Time { return c.createdOn }
 
 // SetName sets the name of this contact
 func (c *Contact) SetName(name string) { c.name = name }
@@ -210,10 +219,10 @@ var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key string, rawValue string) {
+func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key string, rawValue string) error {
 	runEnv := env.(RunEnvironment)
 
-	c.fields.setValue(runEnv, fieldSet, key, rawValue)
+	return c.fields.setValue(runEnv, fieldSet, key, rawValue)
 }
 
 // UpdatePreferredChannel updates the preferred channel
@@ -246,7 +255,7 @@ func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 	}
 
 	for _, group := range groups.Dynamic() {
-		qualifies, err := group.CheckDynamicMembership(session, c)
+		qualifies, err := group.CheckDynamicMembership(session.Environment(), c)
 		if err != nil {
 			return err
 		}
@@ -262,6 +271,16 @@ func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 
 // ResolveQueryKey resolves a contact query search key for this contact
 func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface{} {
+	if key == "language" {
+		if c.language != utils.NilLanguage {
+			return []interface{}{string(c.language)}
+		} else {
+			return nil
+		}
+	} else if key == "created_on" {
+		return []interface{}{c.createdOn}
+	}
+
 	// try as a URN scheme
 	if urns.IsValidScheme(key) {
 		if env.RedactionPolicy() != utils.RedactionPolicyURNs {
