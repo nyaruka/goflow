@@ -554,7 +554,8 @@
                 "webhook": "http://example.com", 
                 "webhook_action": "POST", 
                 "webhook_headers": [
-                    {"name": "User-Agent", "value": "RapidPro"}
+                    {"name": "User-Agent", "value": "RapidPro"},
+                    {"name": "Auth-Token", "value": "@contact.auth_token"}
                 ]
             }
         },
@@ -567,6 +568,7 @@
                     "method": "POST",
                     "url": "http://example.com",
                     "headers": {
+                        "Auth-Token": "@contact.fields.auth_token",
                         "Content-Type": "application/json",
                         "User-Agent": "RapidPro"
                     },

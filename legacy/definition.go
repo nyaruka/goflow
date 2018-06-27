@@ -881,7 +881,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		for _, header := range config.Headers {
-			headers[header.Name] = header.Value
+			headers[header.Name], _ = expressions.MigrateTemplate(header.Value, expressions.ExtraAsFunction)
 		}
 
 		newActions = []flows.Action{
