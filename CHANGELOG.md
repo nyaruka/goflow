@@ -1,3 +1,7 @@
+v0.10.16
+----------
+ * Don't log 400 responses to sentry
+
 v0.10.15
 ----------
  * Migrate expressions in webhook header values
