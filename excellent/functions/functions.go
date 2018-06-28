@@ -43,9 +43,9 @@ var XFUNCTIONS = map[string]XFunction{
 	"split":             TwoTextFunction(Split),
 	"join":              TwoArgFunction(Join),
 	"title":             OneTextFunction(Title),
-	"word":              TextAndIntegerFunction(Word),
+	"word":              ArgCountCheck(2, 3, Word),
 	"remove_first_word": OneTextFunction(RemoveFirstWord),
-	"word_count":        OneTextFunction(WordCount),
+	"word_count":        ArgCountCheck(1, 2, WordCount),
 	"word_slice":        ArgCountCheck(2, 3, WordSlice),
 	"field":             ArgCountCheck(3, 3, Field),
 	"clean":             OneTextFunction(Clean),
@@ -277,7 +277,7 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXNumberFromInt(int(r))
 }
 
-// Split splits `text` based on the passed in `delimeter`
+// Split splits `text` based on the passed in `delimiter`
 //
 // Empty values are removed from the returned list
 //
@@ -359,7 +359,8 @@ func Title(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(strings.Title(text.Native()))
 }
 
-// Word returns the word at the passed in `index` for the passed in `text`
+// Word returns the word at the passed in `index` for the passed in `text`. There is an optional third
+// parameter `delimiters` which is string of characters used to split the text into words.
 //
 //   @(word("bee cat dog", 0)) -> bee
 //   @(word("bee.cat,dog", 0)) -> bee
@@ -367,10 +368,31 @@ func Title(env utils.Environment, text types.XText) types.XValue {
 //   @(word("bee.cat,dog", 2)) -> dog
 //   @(word("bee.cat,dog", -1)) -> dog
 //   @(word("bee.cat,dog", -2)) -> cat
+//   @(word("bee.*cat,dog", 1, ".*=|")) -> cat,dog
+//   @(word("O'Grady O'Flaggerty", 1, " ")) -> O'Flaggerty
 //
-// @function word(text, index)
-func Word(env utils.Environment, text types.XText, index int) types.XValue {
-	words := utils.TokenizeString(text.Native())
+// @function word(text, index [,delimiters])
+func Word(env utils.Environment, args ...types.XValue) types.XValue {
+	text, xerr := types.ToXText(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	index, xerr := types.ToInteger(env, args[1])
+	if xerr != nil {
+		return xerr
+	}
+
+	var words []string
+	if len(args) == 2 {
+		words = utils.TokenizeString(text.Native())
+	} else {
+		delimiters, xerr := types.ToXText(env, args[2])
+		if xerr != nil {
+			return xerr
+		}
+		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	}
 
 	offset := index
 	if offset < 0 {
@@ -448,16 +470,34 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(strings.Join(words[start:], " "))
 }
 
-// WordCount returns the number of words in `text`
+// WordCount returns the number of words in `text`. There is an optional second parameter `delimiters`
+// which is string of characters used to split the text into words.
 //
 //   @(word_count("foo bar")) -> 2
 //   @(word_count(10)) -> 1
 //   @(word_count("")) -> 0
 //   @(word_count("😀😃😄😁")) -> 4
+//   @(word_count("bee.*cat,dog", ".*=|")) -> 2
+//   @(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
-// @function word_count(text)
-func WordCount(env utils.Environment, text types.XText) types.XValue {
-	words := utils.TokenizeString(text.Native())
+// @function word_count(text [,delimiters])
+func WordCount(env utils.Environment, args ...types.XValue) types.XValue {
+	text, xerr := types.ToXText(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	var words []string
+	if len(args) == 1 {
+		words = utils.TokenizeString(text.Native())
+	} else {
+		delimiters, xerr := types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	}
+
 	return types.NewXNumberFromInt(len(words))
 }
 

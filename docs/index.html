@@ -832,7 +832,7 @@
 <a class="sourceLine" id="cb61-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:split"></a></p>
 <h2 id="splittext-delimiter">split(text, delimiter)</h2>
-<p>Splits <code>text</code> based on the passed in <code>delimeter</code></p>
+<p>Splits <code>text</code> based on the passed in <code>delimiter</code></p>
 <p>Empty values are removed from the returned list</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" data-line-number="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
 <a class="sourceLine" id="cb62-2" data-line-number="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>]</a>
@@ -897,21 +897,25 @@
 <div class="sourceCode" id="cb72"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb72-1" data-line-number="1">@(weekday(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">0</span></a>
 <a class="sourceLine" id="cb72-2" data-line-number="2">@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:word"></a></p>
-<h2 id="wordtext-index">word(text, index)</h2>
-<p>Returns the word at the passed in <code>index</code> for the passed in <code>text</code></p>
+<h2 id="wordtext-index-delimiters">word(text, index [,delimiters])</h2>
+<p>Returns the word at the passed in <code>index</code> for the passed in <code>text</code>. There is an optional third parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb73-1" data-line-number="1">@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
 <a class="sourceLine" id="cb73-2" data-line-number="2">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
 <a class="sourceLine" id="cb73-3" data-line-number="3">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">1</span>)) → cat</a>
 <a class="sourceLine" id="cb73-4" data-line-number="4">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">2</span>)) → dog</a>
 <a class="sourceLine" id="cb73-5" data-line-number="5">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-1</span>)) → dog</a>
-<a class="sourceLine" id="cb73-6" data-line-number="6">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-2</span>)) → cat</a></code></pre></div>
+<a class="sourceLine" id="cb73-6" data-line-number="6">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-2</span>)) → cat</a>
+<a class="sourceLine" id="cb73-7" data-line-number="7">@(word(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;.*=|&quot;</span>)) → cat,dog</a>
+<a class="sourceLine" id="cb73-8" data-line-number="8">@(word(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre></div>
 <p><a name="function:word_count"></a></p>
-<h2 id="word_counttext">word_count(text)</h2>
-<p>Returns the number of words in <code>text</code></p>
+<h2 id="word_counttext-delimiters">word_count(text [,delimiters])</h2>
+<p>Returns the number of words in <code>text</code>. There is an optional second parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb74-1" data-line-number="1">@(word_count(<span class="st">&quot;foo bar&quot;</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb74-2" data-line-number="2">@(word_count(<span class="dv">10</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb74-3" data-line-number="3">@(word_count(<span class="st">&quot;&quot;</span>)) → <span class="dv">0</span></a>
-<a class="sourceLine" id="cb74-4" data-line-number="4">@(word_count(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a></code></pre></div>
+<a class="sourceLine" id="cb74-4" data-line-number="4">@(word_count(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a>
+<a class="sourceLine" id="cb74-5" data-line-number="5">@(word_count(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="st">&quot;.*=|&quot;</span>)) → <span class="dv">2</span></a>
+<a class="sourceLine" id="cb74-6" data-line-number="6">@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:word_slice"></a></p>
 <h2 id="word_slicetext-start-end">word_slice(text, start, end)</h2>
 <p>Extracts a substring from <code>text</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 0). A negative end value means that all words after the start should be returned.</p>
