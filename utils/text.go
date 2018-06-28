@@ -20,3 +20,17 @@ var wordTokenRegex = regexp.MustCompile("((\\pL|\\pN|[\u20A0-\u20CF]|[\u2600-\u2
 func TokenizeString(str string) []string {
 	return wordTokenRegex.FindAllString(str, -1)
 }
+
+// TokenizeStringByChars returns the words in the passed in string, split by the chars in the given string
+func TokenizeStringByChars(str string, chars string) []string {
+	runes := []rune(chars)
+	f := func(c rune) bool {
+		for _, r := range runes {
+			if c == r {
+				return true
+			}
+		}
+		return false
+	}
+	return strings.FieldsFunc(str, f)
+}
