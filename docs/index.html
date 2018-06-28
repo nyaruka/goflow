@@ -569,7 +569,7 @@
 <a class="sourceLine" id="cb29-5" data-line-number="5">@(<span class="kw">default</span>(array(), <span class="st">&quot;value&quot;</span>)) → value</a>
 <a class="sourceLine" id="cb29-6" data-line-number="6">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
 <p><a name="function:field"></a></p>
-<h2 id="fieldtext-offset-delimeter">field(text, offset, delimeter)</h2>
+<h2 id="fieldtext-offset-delimiter">field(text, offset, delimiter)</h2>
 <p>Splits <code>text</code> based on the passed in <code>delimiter</code> and returns the field at <code>offset</code>. When splitting with a space, the delimiter is considered to be all whitespace. (first field is 0)</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb30-1" data-line-number="1">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;,&quot;</span>)) → b</a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">@(field(<span class="st">&quot;a,,b,c&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;,&quot;</span>)) →</a>
@@ -647,7 +647,7 @@
 <a class="sourceLine" id="cb36-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:join"></a></p>
 <h2 id="joinarray-delimiter">join(array, delimiter)</h2>
-<p>Joins the passed in <code>array</code> of strings with the passed in <code>delimeter</code></p>
+<p>Joins the passed in <code>array</code> of strings with the passed in <code>delimiter</code></p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb37-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
 <a class="sourceLine" id="cb37-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) → a b c</a></code></pre></div>
 <p><a name="function:json"></a></p>

@@ -620,7 +620,7 @@ Takes two arguments, returning `test` if not an error or nil or empty text, othe
 
 <a name="function:field"></a>
 
-## field(text, offset, delimeter)
+## field(text, offset, delimiter)
 
 Splits `text` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
 with a space, the delimiter is considered to be all whitespace.  (first field is 0)
@@ -755,7 +755,7 @@ If the first argument is an error that error is returned
 
 ## join(array, delimiter)
 
-Joins the passed in `array` of strings with the passed in `delimeter`
+Joins the passed in `array` of strings with the passed in `delimiter`
 
 
 ```objectivec

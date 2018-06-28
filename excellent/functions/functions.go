@@ -43,11 +43,11 @@ var XFUNCTIONS = map[string]XFunction{
 	"split":             TwoTextFunction(Split),
 	"join":              TwoArgFunction(Join),
 	"title":             OneTextFunction(Title),
-	"word":              ArgCountCheck(2, 3, Word),
+	"word":              InitialTextFunction(1, 2, Word),
 	"remove_first_word": OneTextFunction(RemoveFirstWord),
-	"word_count":        ArgCountCheck(1, 2, WordCount),
-	"word_slice":        ArgCountCheck(2, 3, WordSlice),
-	"field":             ArgCountCheck(3, 3, Field),
+	"word_count":        InitialTextFunction(0, 1, WordCount),
+	"word_slice":        InitialTextFunction(1, 3, WordSlice),
+	"field":             InitialTextFunction(2, 2, Field),
 	"clean":             OneTextFunction(Clean),
 	"left":              TextAndIntegerFunction(Left),
 	"lower":             OneTextFunction(Lower),
@@ -299,7 +299,7 @@ func Split(env utils.Environment, text types.XText, sep types.XText) types.XValu
 	return splits
 }
 
-// Join joins the passed in `array` of strings with the passed in `delimeter`
+// Join joins the passed in `array` of strings with the passed in `delimiter`
 //
 //   @(join(array("a", "b", "c"), "|")) -> a|b|c
 //   @(join(split("a.b.c", "."), " ")) -> a b c
@@ -372,22 +372,17 @@ func Title(env utils.Environment, text types.XText) types.XValue {
 //   @(word("O'Grady O'Flaggerty", 1, " ")) -> O'Flaggerty
 //
 // @function word(text, index [,delimiters])
-func Word(env utils.Environment, args ...types.XValue) types.XValue {
-	text, xerr := types.ToXText(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	index, xerr := types.ToInteger(env, args[1])
+func Word(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	index, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
 	var words []string
-	if len(args) == 2 {
+	if len(args) == 1 {
 		words = utils.TokenizeString(text.Native())
 	} else {
-		delimiters, xerr := types.ToXText(env, args[2])
+		delimiters, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
@@ -431,13 +426,8 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 //   @(word_slice("bee cat dog", 3, 10)) ->
 //
 // @function word_slice(text, start, end)
-func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
-	str, xerr := types.ToXText(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	start, xerr := types.ToInteger(env, args[1])
+func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	start, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -446,8 +436,8 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	end := -1
-	if len(args) == 3 {
-		if end, xerr = types.ToInteger(env, args[2]); xerr != nil {
+	if len(args) == 2 {
+		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
 			return xerr
 		}
 	}
@@ -455,7 +445,7 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("must have a end which is greater than the start")
 	}
 
-	words := utils.TokenizeString(str.Native())
+	words := utils.TokenizeString(text.Native())
 
 	if start >= len(words) {
 		return types.XTextEmpty
@@ -481,17 +471,12 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
 // @function word_count(text [,delimiters])
-func WordCount(env utils.Environment, args ...types.XValue) types.XValue {
-	text, xerr := types.ToXText(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
+func WordCount(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
 	var words []string
-	if len(args) == 1 {
+	if len(args) == 0 {
 		words = utils.TokenizeString(text.Native())
 	} else {
-		delimiters, xerr := types.ToXText(env, args[1])
+		delimiters, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
@@ -511,14 +496,9 @@ func WordCount(env utils.Environment, args ...types.XValue) types.XValue {
 //   @(field("a\t\tb\tc\td", 1, " ")) ->
 //   @(field("a,b,c", "foo", ",")) -> ERROR
 //
-// @function field(text, offset, delimeter)
-func Field(env utils.Environment, args ...types.XValue) types.XValue {
-	source, xerr := types.ToXText(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	field, xerr := types.ToInteger(env, args[1])
+// @function field(text, offset, delimiter)
+func Field(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	field, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -527,12 +507,12 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("cannot use a negative index to FIELD")
 	}
 
-	sep, xerr := types.ToXText(env, args[2])
+	sep, xerr := types.ToXText(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
 
-	fields := strings.Split(source.Native(), sep.Native())
+	fields := strings.Split(text.Native(), sep.Native())
 	if field >= len(fields) {
 		return types.XTextEmpty
 	}
