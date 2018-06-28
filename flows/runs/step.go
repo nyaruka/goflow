@@ -14,19 +14,15 @@ type step struct {
 	nodeUUID  flows.NodeUUID
 	exitUUID  flows.ExitUUID
 	arrivedOn time.Time
-	leftOn    *time.Time
 }
 
 func (s *step) UUID() flows.StepUUID     { return s.stepUUID }
 func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
 func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
 func (s *step) ArrivedOn() time.Time     { return s.arrivedOn }
-func (s *step) LeftOn() *time.Time       { return s.leftOn }
 
 func (s *step) Leave(exit flows.ExitUUID) {
-	now := time.Now().UTC()
 	s.exitUUID = exit
-	s.leftOn = &now
 }
 
 func (s *step) Resolve(env utils.Environment, key string) types.XValue {
@@ -94,7 +90,6 @@ type stepEnvelope struct {
 	NodeUUID  flows.NodeUUID `json:"node_uuid" validate:"required,uuid4"`
 	ExitUUID  flows.ExitUUID `json:"exit_uuid,omitempty" validate:"omitempty,uuid4"`
 	ArrivedOn time.Time      `json:"arrived_on"`
-	LeftOn    *time.Time     `json:"left_on,omitempty"`
 }
 
 // UnmarshalJSON unmarshals a run step from the given JSON
@@ -111,7 +106,6 @@ func (s *step) UnmarshalJSON(data []byte) error {
 	s.nodeUUID = se.NodeUUID
 	s.exitUUID = se.ExitUUID
 	s.arrivedOn = se.ArrivedOn
-	s.leftOn = se.LeftOn
 	return err
 }
 
@@ -122,6 +116,5 @@ func (s *step) MarshalJSON() ([]byte, error) {
 		NodeUUID:  s.nodeUUID,
 		ExitUUID:  s.exitUUID,
 		ArrivedOn: s.arrivedOn,
-		LeftOn:    s.leftOn,
 	})
 }

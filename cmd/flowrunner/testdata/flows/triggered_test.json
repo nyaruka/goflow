@@ -22,6 +22,7 @@
             ],
             "session": {
                 "contact": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -79,7 +80,6 @@
                         "path": [
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
@@ -91,6 +91,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
@@ -126,6 +127,7 @@
                     },
                     "run": {
                         "contact": {
+                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
                             "fields": {
                                 "state": {
                                     "state": "Ecuador > Esmeraldas",
@@ -162,6 +164,7 @@
     ],
     "trigger": {
         "contact": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "fields": {
                 "first_name": {
                     "text": "Ben"

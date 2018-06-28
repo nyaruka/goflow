@@ -66,6 +66,7 @@
             ],
             "session": {
                 "contact": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -184,6 +185,7 @@
                 "status": "waiting",
                 "trigger": {
                     "contact": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
@@ -268,6 +270,7 @@
             ],
             "session": {
                 "contact": {
+                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -350,13 +353,11 @@
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "exit_uuid": "2ce7eeea-ee70-4e1a-b8f4-84d8102a8aef",
-                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "e97a43c1-a15b-4566-bb6d-dfd2b18408e1",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             }
@@ -447,13 +448,11 @@
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "exit_uuid": "58743fc9-6b4c-41dd-a844-8568f093e65b",
-                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "9f7632ee-6e35-4247-9235-c4c7663fd601",
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
                                 "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "left_on": "2000-01-01T00:00:00.000000000-00:00",
                                 "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }
@@ -475,6 +474,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
+                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
@@ -516,6 +516,7 @@
     ],
     "trigger": {
         "contact": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
             "fields": {
                 "first_name": {
                     "text": "Ben"

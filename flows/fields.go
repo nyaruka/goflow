@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -125,12 +126,15 @@ func (f FieldValues) getValue(key string) *FieldValue {
 	return f[key]
 }
 
-func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string, rawValue string) {
+func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string, rawValue string) error {
 	field := fieldSet.FindByKey(key)
+	if field == nil {
+		return fmt.Errorf("no such field: %s", key)
+	}
 
 	if rawValue == "" {
 		f[key] = NewEmptyFieldValue(field)
-		return
+		return nil
 	}
 
 	var asText = types.NewXText(rawValue)
@@ -196,6 +200,8 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 		district: asDistrict,
 		ward:     asWard,
 	}
+
+	return nil
 }
 
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fieldSet *FieldSet, valueType FieldValueType) *utils.Location {

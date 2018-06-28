@@ -1,3 +1,14 @@
+v0.10.16
+----------
+ * Don't log 400 responses to sentry
+
+v0.10.15
+----------
+ * Migrate expressions in webhook header values
+ * Allow dynamic searches to query language and created_on
+ * Expose contact.created_on in expressions
+ * Migrate rulesets where there is an explicit Other category
+
 v0.10.14
 ----------
  * Fix @contact.id not being migrated in legacy flows

@@ -334,9 +334,7 @@ type Step interface {
 	UUID() StepUUID
 	NodeUUID() NodeUUID
 	ExitUUID() ExitUUID
-
 	ArrivedOn() time.Time
-	LeftOn() *time.Time
 
 	Leave(ExitUUID)
 }

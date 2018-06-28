@@ -25,7 +25,7 @@ const TypeAddContactGroups string = "add_contact_groups"
 // @action add_contact_groups
 type AddContactGroupsAction struct {
 	BaseAction
-	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups []*flows.GroupReference `json:"groups" validate:"required,dive"`
 }
 
 // Type returns the type of this action

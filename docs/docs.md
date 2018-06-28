@@ -218,6 +218,8 @@ Represents a person who is interacting with the flow. It renders as the person's
  * `name` the full name of the contact
  * `first_name` the first name of the contact
  * `language` the [ISO-639-3](http://www-01.sil.org/iso639-3/) language code of the contact
+ * `timezone` the timezone name of the contact
+ * `created_on` the datetime when the contact was created
  * `urns` all [URNs](#context:urn) the contact has set
  * `urns.[scheme]` all the [URNs](#context:urn) the contact has set for the particular URN scheme
  * `urn` shorthand for `@(format_urn(c.urns.0))`, i.e. the contact's preferred [URN](#context:urn) in friendly formatting
@@ -234,6 +236,8 @@ Examples:
 @contact.name → Ryan Lewis
 @contact.first_name → Ryan
 @contact.language → eng
+@contact.timezone → America/Guayaquil
+@contact.created_on → 2018-06-20T11:40:30.123456Z
 @contact.urns → ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
 @contact.urns.0 → tel:+12065551212
 @contact.urns.tel → ["tel:+12065551212"]
@@ -2294,7 +2298,8 @@ Can be used to trigger sessions for other contacts and groups
             "id": 1234567,
             "name": "Ryan Lewis",
             "language": "eng",
-            "timezone": "",
+            "timezone": "America/Guayaquil",
+            "created_on": "2018-06-20T11:40:30.123456789Z",
             "urns": [
                 "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "twitterid:54784326227#nyaruka",
