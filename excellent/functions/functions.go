@@ -359,7 +359,7 @@ func Title(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(strings.Title(text.Native()))
 }
 
-// Word returns the word at the passed in `index` for the passed in `text`. There is an optional third
+// Word returns the word at the passed in `index` for the passed in `text`. There is an optional final
 // parameter `delimiters` which is string of characters used to split the text into words.
 //
 //   @(word("bee cat dog", 0)) -> bee
@@ -379,14 +379,14 @@ func Word(env utils.Environment, text types.XText, args ...types.XValue) types.X
 	}
 
 	var words []string
-	if len(args) == 1 {
-		words = utils.TokenizeString(text.Native())
-	} else {
+	if len(args) == 2 {
 		delimiters, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
 		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		words = utils.TokenizeString(text.Native())
 	}
 
 	offset := index
@@ -416,7 +416,8 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 }
 
 // WordSlice extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
-// end value means that all words after the start should be returned.
+// end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
+// which is string of characters used to split the text into words.
 //
 //   @(word_slice("bee cat dog", 0, 1)) -> bee
 //   @(word_slice("bee cat dog", 0, 2)) -> bee cat
@@ -424,6 +425,8 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 //   @(word_slice("bee cat dog", 1)) -> cat dog
 //   @(word_slice("bee cat dog", 2, 3)) -> dog
 //   @(word_slice("bee cat dog", 3, 10)) ->
+//   @(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) -> cat dog
+//   @(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) -> O'Flaggerty
 //
 // @function word_slice(text, start, end)
 func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
@@ -445,7 +448,16 @@ func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 		return types.NewXErrorf("must have a end which is greater than the start")
 	}
 
-	words := utils.TokenizeString(text.Native())
+	var words []string
+	if len(args) == 3 {
+		delimiters, xerr := types.ToXText(env, args[2])
+		if xerr != nil {
+			return xerr
+		}
+		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		words = utils.TokenizeString(text.Native())
+	}
 
 	if start >= len(words) {
 		return types.XTextEmpty
@@ -460,7 +472,7 @@ func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 	return types.NewXText(strings.Join(words[start:], " "))
 }
 
-// WordCount returns the number of words in `text`. There is an optional second parameter `delimiters`
+// WordCount returns the number of words in `text`. There is an optional final parameter `delimiters`
 // which is string of characters used to split the text into words.
 //
 //   @(word_count("foo bar")) -> 2
@@ -473,14 +485,14 @@ func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 // @function word_count(text [,delimiters])
 func WordCount(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
 	var words []string
-	if len(args) == 0 {
-		words = utils.TokenizeString(text.Native())
-	} else {
+	if len(args) == 1 {
 		delimiters, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr
 		}
 		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		words = utils.TokenizeString(text.Native())
 	}
 
 	return types.NewXNumberFromInt(len(words))
