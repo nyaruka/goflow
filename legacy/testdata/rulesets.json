@@ -803,5 +803,80 @@
             ]
         },
         "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
+            "x": 428,
+            "y": 374,
+            "label": "Group Check",
+            "rules": [
+                {
+                    "category": {
+                        "eng": "Testers"
+                    },
+                    "uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
+                    "destination_type": "A",
+                    "test": {
+                        "test": {
+                            "uuid": "ade39253-0371-4dde-9df4-95245fe6a3a8",
+                            "name": "Testers"
+                        },
+                        "type": "in_group"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "label": null
+                },
+                {
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "true"
+                    },
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "group",
+            "response_type": "",
+            "operand": "@step.value",
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
+            "router": {
+                "type": "switch",
+                "result_name": "Group Check",
+                "default_exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                "operand": "@contact",
+                "cases": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_group",
+                        "arguments": [
+                            "ade39253-0371-4dde-9df4-95245fe6a3a8"
+                        ],
+                        "exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "name": "Testers"
+                },
+                {
+                    "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "name": "Other"
+                }
+            ]
+        },
+        "expected_localization": {}
     }
 ]
