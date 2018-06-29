@@ -379,7 +379,7 @@ func Word(env utils.Environment, text types.XText, args ...types.XValue) types.X
 	}
 
 	var words []string
-	if len(args) == 2 {
+	if len(args) == 2 && args[1] != nil {
 		delimiters, xerr := types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
@@ -449,7 +449,7 @@ func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 	}
 
 	var words []string
-	if len(args) == 3 {
+	if len(args) == 3 && args[2] != nil {
 		delimiters, xerr := types.ToXText(env, args[2])
 		if xerr != nil {
 			return xerr
@@ -485,7 +485,7 @@ func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) ty
 // @function word_count(text [,delimiters])
 func WordCount(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
 	var words []string
-	if len(args) == 1 {
+	if len(args) == 1 && args[0] != nil {
 		delimiters, xerr := types.ToXText(env, args[0])
 		if xerr != nil {
 			return xerr

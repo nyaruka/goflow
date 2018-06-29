@@ -2,69 +2,97 @@ package expressions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
+// migrates a parameter value in an legacy expression
+type paramMigrator func(param string) string
+
 // migrates a function call in an legacy expression
-type callMigrator func(funcName string, params []interface{}) (string, error)
+type callMigrator func(funcName string, params []string) (string, error)
 
 // leaves a function call as is
 func asIs() callMigrator {
-	return func(funcName string, params []interface{}) (string, error) {
+	return func(funcName string, params []string) (string, error) {
 		return renderCall(funcName, params)
 	}
 }
 
 // migrates a function call as a simple rename of the function
 func asRename(newName string) callMigrator {
-	return func(funcName string, params []interface{}) (string, error) {
+	return func(funcName string, params []string) (string, error) {
 		return renderCall(newName, params)
 	}
 }
 
 // migrates a function call using a template
 func asTemplate(template string) callMigrator {
-	return func(funcName string, params []interface{}) (string, error) {
+	return func(funcName string, params []string) (string, error) {
 		numParamPlaceholders := strings.Count(template, "%s") + strings.Count(template, "%v")
 		if numParamPlaceholders > len(params) {
 			return "", fmt.Errorf("expecting %d params whilst migrating call to %s but got %d", numParamPlaceholders, funcName, len(params))
 		}
-		renderedParams, err := renderParams(params)
-		if err != nil {
-			return "", err
-		}
 
-		paramsAsInterfaces := make([]interface{}, len(renderedParams))
-		for p := range renderedParams {
-			paramsAsInterfaces[p] = renderedParams[p]
+		paramsAsInterfaces := make([]interface{}, len(params))
+		for p := range params {
+			paramsAsInterfaces[p] = params[p]
 		}
 
 		return fmt.Sprintf(template, paramsAsInterfaces...), nil
 	}
 }
 
-// migrates a function call using a template based on the number of provided params
-func asParamTemplates(newName string, templates map[int]string) callMigrator {
-	return func(funcName string, params []interface{}) (string, error) {
-		paramsTemplate, hasTemplate := templates[len(params)]
-		if !hasTemplate {
-			return "", fmt.Errorf("don't know how to migrate call to %s with %d parameters", funcName, len(params))
-		}
-
-		template := fmt.Sprintf("%s(%s)", newName, paramsTemplate)
-
-		return asTemplate(template)(funcName, params)
+// migrates a function call by joining its parameters with the given delimiter
+func asJoin(delimiter string) callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		return strings.Join(params, delimiter), nil
 	}
 }
 
-// migrates a function call by joining its parameters with the given delimiter
-func asJoin(delimiter string) callMigrator {
-	return func(funcName string, params []interface{}) (string, error) {
-		renderedParams, err := renderParams(params)
-		if err != nil {
-			return "", err
+// migrates a function call using migrators for each parameter
+func asParamMigrators(newName string, paramMigrators ...paramMigrator) callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		if len(params) > len(paramMigrators) {
+			return "", fmt.Errorf("don't know how to migrate call to %s with %d parameters", funcName, len(params))
 		}
-		return strings.Join(renderedParams, delimiter), nil
+
+		newParams := make([]string, len(params))
+
+		for p := range params {
+			newParams[p] = paramMigrators[p](params[p])
+		}
+
+		return renderCall(newName, newParams)
+	}
+}
+
+// migrates a parameter as is
+func paramAsIs() paramMigrator {
+	return func(param string) string { return param }
+}
+
+// migrates a parameter to it decremented by one
+func paramDecremented() paramMigrator {
+	return func(param string) string {
+		// if param is a number literal then we can do the decrementing now
+		asInt, err := strconv.Atoi(param)
+		if err == nil {
+			return strconv.Itoa(asInt - 1)
+		}
+
+		// if not return a decrementing expression
+		return fmt.Sprintf("%s - 1", param)
+	}
+}
+
+// migrates the by_spaces param used by several string tokenizing functions
+func paramBySpaces() paramMigrator {
+	return func(param string) string {
+		if strings.TrimSpace(strings.ToLower(param)) == "true" {
+			return `" \t"`
+		}
+		return `NULL`
 	}
 }
 
@@ -84,9 +112,9 @@ var callMigrators = map[string]callMigrator{
 	"edate":             asTemplate(`datetime_add(%s, %s, "M")`),
 	"exp":               asTemplate(`2.718281828459045 ^ %s`),
 	"false":             asTemplate(`false`), // becomes just a keyword
-	"field":             asParamTemplates(`field`, map[int]string{2: `%s, %s - 1`, 3: `%s, %s - 1, %s`}),
+	"field":             asParamMigrators(`field`, paramAsIs(), paramDecremented(), paramAsIs()),
 	"first_word":        asTemplate(`word(%s, 0)`),
-	"fixed":             asParamTemplates(`format_number`, map[int]string{1: `%s`, 2: `%s, %s`, 3: `%s, %s, %s`}),
+	"fixed":             asParamMigrators(`format_number`, paramAsIs(), paramAsIs(), paramAsIs()),
 	"format_date":       asRename(`format_datetime`),
 	"format_location":   asIs(),
 	"hour":              asTemplate(`format_datetime(%s, "h")`),
@@ -127,13 +155,13 @@ var callMigrators = map[string]callMigrator{
 	"unicode":           asRename(`code`),
 	"upper":             asIs(),
 	"weekday":           asIs(),
-	"word_count":        asIs(),
-	"word_slice":        asParamTemplates("word_slice", map[int]string{2: `%s, %s - 1`, 3: `%s, %s - 1, %s - 1`, 4: `%s, %s - 1, %s - 1`}),
-	"word":              asTemplate(`word(%s, %s - 1)`),
+	"word_count":        asParamMigrators(`word_count`, paramAsIs(), paramBySpaces()),
+	"word_slice":        asParamMigrators(`word_slice`, paramAsIs(), paramDecremented(), paramDecremented(), paramBySpaces()),
+	"word":              asParamMigrators(`word`, paramAsIs(), paramDecremented(), paramBySpaces()),
 	"year":              asTemplate(`format_datetime(%s, "YYYY")`),
 }
 
-func migrateFunctionCall(funcName string, params []interface{}) (string, error) {
+func migrateFunctionCall(funcName string, params []string) (string, error) {
 	migrator, hasMigrator := callMigrators[funcName]
 	if hasMigrator {
 		return migrator(funcName, params)
@@ -143,25 +171,7 @@ func migrateFunctionCall(funcName string, params []interface{}) (string, error) 
 	return renderCall(funcName, params)
 }
 
-func renderParams(params []interface{}) ([]string, error) {
-	rendered := make([]string, len(params))
-	var err error
-
-	for p := range params {
-		rendered[p], err = toString(params[p])
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return rendered, nil
-}
-
 // renders a function call from the given function name and parameters
-func renderCall(funcName string, params []interface{}) (string, error) {
-	renderedParams, err := renderParams(params)
-	if err != nil {
-		return "", err
-	}
-	return fmt.Sprintf("%s(%s)", funcName, strings.Join(renderedParams, ", ")), nil
+func renderCall(funcName string, params []string) (string, error) {
+	return fmt.Sprintf("%s(%s)", funcName, strings.Join(params, ", ")), nil
 }

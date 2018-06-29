@@ -71,7 +71,16 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 		}
 	}
 
-	rewrittenFuncCall, err := migrateFunctionCall(functionName, params)
+	paramsAsStrs := make([]string, len(params))
+	var err error
+	for p := range params {
+		paramsAsStrs[p], err = toString(params[p])
+		if err != nil {
+			return err
+		}
+	}
+
+	rewrittenFuncCall, err := migrateFunctionCall(functionName, paramsAsStrs)
 	if err != nil {
 		return err
 	}
