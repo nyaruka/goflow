@@ -831,14 +831,14 @@
 <a class="sourceLine" id="cb61-5" data-line-number="5">@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
 <a class="sourceLine" id="cb61-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:split"></a></p>
-<h2 id="splittext-delimiter">split(text, delimiter)</h2>
-<p>Splits <code>text</code> based on the passed in <code>delimiter</code></p>
+<h2 id="splittext-delimiters">split(text, delimiters)</h2>
+<p>Splits <code>text</code> based on the characters in <code>delimiters</code></p>
 <p>Empty values are removed from the returned list</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" data-line-number="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
 <a class="sourceLine" id="cb62-2" data-line-number="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>]</a>
 <a class="sourceLine" id="cb62-3" data-line-number="3">@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;d&quot;</span>]</a>
 <a class="sourceLine" id="cb62-4" data-line-number="4">@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
-<a class="sourceLine" id="cb62-5" data-line-number="5">@(split(<span class="st">&quot;a &amp;&amp; b &amp;&amp; c&quot;</span>, <span class="st">&quot; &amp;&amp; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a></code></pre></div>
+<a class="sourceLine" id="cb62-5" data-line-number="5">@(split(<span class="st">&quot;a|b,c  d&quot;</span>, <span class="st">&quot; .|,&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>]</a></code></pre></div>
 <p><a name="function:text"></a></p>
 <h2 id="textvalue">text(value)</h2>
 <p>Tries to convert <code>value</code> to text. An error is returned if the value can’t be converted.</p>
@@ -917,7 +917,7 @@
 <a class="sourceLine" id="cb74-5" data-line-number="5">@(word_count(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="st">&quot;.*=|&quot;</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb74-6" data-line-number="6">@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:word_slice"></a></p>
-<h2 id="word_slicetext-start-end">word_slice(text, start, end)</h2>
+<h2 id="word_slicetext-start-end-delimiters">word_slice(text, start, end [,delimiters])</h2>
 <p>Extracts a substring from <code>text</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 0). A negative end value means that all words after the start should be returned. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb75-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
 <a class="sourceLine" id="cb75-2" data-line-number="2">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</a>

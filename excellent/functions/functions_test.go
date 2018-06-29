@@ -372,7 +372,7 @@ var funcTests = []struct {
 
 	{"split", []types.XValue{xs("1,2,3"), xs(",")}, types.NewXArray(xs("1"), xs("2"), xs("3"))},
 	{"split", []types.XValue{xs("1,2,3"), xs(".")}, types.NewXArray(xs("1,2,3"))},
-	{"split", []types.XValue{xs("1,2,3"), nil}, types.NewXArray(xs("1"), xs(","), xs("2"), xs(","), xs("3"))},
+	{"split", []types.XValue{xs("1,2,3"), nil}, types.NewXArray(xs("1,2,3"))},
 	{"split", []types.XValue{ERROR, xs(",")}, ERROR},
 	{"split", []types.XValue{xs("1,2,3"), ERROR}, ERROR},
 	{"split", []types.XValue{}, ERROR},

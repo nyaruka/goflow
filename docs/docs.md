@@ -1127,9 +1127,9 @@ Rounds `num` up to the nearest integer value. You can optionally pass in the num
 
 <a name="function:split"></a>
 
-## split(text, delimiter)
+## split(text, delimiters)
 
-Splits `text` based on the passed in `delimiter`
+Splits `text` based on the characters in `delimiters`
 
 Empty values are removed from the returned list
 
@@ -1139,7 +1139,7 @@ Empty values are removed from the returned list
 @(split("a", " ")) → ["a"]
 @(split("abc..d", ".")) → ["abc","d"]
 @(split("a.b.c.", ".")) → ["a","b","c"]
-@(split("a && b && c", " && ")) → ["a","b","c"]
+@(split("a|b,c  d", " .|,")) → ["a","b","c","d"]
 ```
 
 <a name="function:text"></a>
@@ -1313,7 +1313,7 @@ which is string of characters used to split the text into words.
 
 <a name="function:word_slice"></a>
 
-## word_slice(text, start, end)
+## word_slice(text, start, end [,delimiters])
 
 Extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
 end value means that all words after the start should be returned. There is an optional final parameter `delimiters`

@@ -277,7 +277,7 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXNumberFromInt(int(r))
 }
 
-// Split splits `text` based on the passed in `delimiter`
+// Split splits `text` based on the characters in `delimiters`
 //
 // Empty values are removed from the returned list
 //
@@ -285,16 +285,14 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //   @(split("a", " ")) -> ["a"]
 //   @(split("abc..d", ".")) -> ["abc","d"]
 //   @(split("a.b.c.", ".")) -> ["a","b","c"]
-//   @(split("a && b && c", " && ")) -> ["a","b","c"]
+//   @(split("a|b,c  d", " .|,")) -> ["a","b","c","d"]
 //
-// @function split(text, delimiter)
-func Split(env utils.Environment, text types.XText, sep types.XText) types.XValue {
+// @function split(text, delimiters)
+func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
 	splits := types.NewXArray()
-	allSplits := strings.Split(text.Native(), sep.Native())
+	allSplits := utils.TokenizeStringByChars(text.Native(), delimiters.Native())
 	for i := range allSplits {
-		if allSplits[i] != "" {
-			splits.Append(types.NewXText(allSplits[i]))
-		}
+		splits.Append(types.NewXText(allSplits[i]))
 	}
 	return splits
 }
@@ -428,7 +426,7 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 //   @(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) -> cat dog
 //   @(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) -> O'Flaggerty
 //
-// @function word_slice(text, start, end)
+// @function word_slice(text, start, end [,delimiters])
 func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
 	start, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
