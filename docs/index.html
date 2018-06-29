@@ -898,7 +898,7 @@
 <a class="sourceLine" id="cb72-2" data-line-number="2">@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:word"></a></p>
 <h2 id="wordtext-index-delimiters">word(text, index [,delimiters])</h2>
-<p>Returns the word at the passed in <code>index</code> for the passed in <code>text</code>. There is an optional third parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
+<p>Returns the word at the passed in <code>index</code> for the passed in <code>text</code>. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb73-1" data-line-number="1">@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
 <a class="sourceLine" id="cb73-2" data-line-number="2">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
 <a class="sourceLine" id="cb73-3" data-line-number="3">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">1</span>)) → cat</a>
@@ -909,7 +909,7 @@
 <a class="sourceLine" id="cb73-8" data-line-number="8">@(word(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre></div>
 <p><a name="function:word_count"></a></p>
 <h2 id="word_counttext-delimiters">word_count(text [,delimiters])</h2>
-<p>Returns the number of words in <code>text</code>. There is an optional second parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
+<p>Returns the number of words in <code>text</code>. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb74-1" data-line-number="1">@(word_count(<span class="st">&quot;foo bar&quot;</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb74-2" data-line-number="2">@(word_count(<span class="dv">10</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb74-3" data-line-number="3">@(word_count(<span class="st">&quot;&quot;</span>)) → <span class="dv">0</span></a>
@@ -918,13 +918,15 @@
 <a class="sourceLine" id="cb74-6" data-line-number="6">@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:word_slice"></a></p>
 <h2 id="word_slicetext-start-end">word_slice(text, start, end)</h2>
-<p>Extracts a substring from <code>text</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 0). A negative end value means that all words after the start should be returned.</p>
+<p>Extracts a substring from <code>text</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 0). A negative end value means that all words after the start should be returned. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb75-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
 <a class="sourceLine" id="cb75-2" data-line-number="2">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</a>
 <a class="sourceLine" id="cb75-3" data-line-number="3">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</a>
 <a class="sourceLine" id="cb75-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>)) → cat dog</a>
 <a class="sourceLine" id="cb75-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
-<a class="sourceLine" id="cb75-6" data-line-number="6">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a></code></pre></div>
+<a class="sourceLine" id="cb75-6" data-line-number="6">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a>
+<a class="sourceLine" id="cb75-7" data-line-number="7">@(word_slice(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>, <span class="st">&quot;.*=|,&quot;</span>)) → cat dog</a>
+<a class="sourceLine" id="cb75-8" data-line-number="8">@(word_slice(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre></div>
 </div>
 <h1 id="router-tests">Router Tests</h1>
 <p>Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using the <code>match</code> component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template function is used.</p>

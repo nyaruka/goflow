@@ -1279,7 +1279,7 @@ Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
 ## word(text, index [,delimiters])
 
-Returns the word at the passed in `index` for the passed in `text`. There is an optional third
+Returns the word at the passed in `index` for the passed in `text`. There is an optional final
 parameter `delimiters` which is string of characters used to split the text into words.
 
 
@@ -1298,7 +1298,7 @@ parameter `delimiters` which is string of characters used to split the text into
 
 ## word_count(text [,delimiters])
 
-Returns the number of words in `text`. There is an optional second parameter `delimiters`
+Returns the number of words in `text`. There is an optional final parameter `delimiters`
 which is string of characters used to split the text into words.
 
 
@@ -1316,7 +1316,8 @@ which is string of characters used to split the text into words.
 ## word_slice(text, start, end)
 
 Extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
-end value means that all words after the start should be returned.
+end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
+which is string of characters used to split the text into words.
 
 
 ```objectivec
@@ -1326,6 +1327,8 @@ end value means that all words after the start should be returned.
 @(word_slice("bee cat dog", 1)) → cat dog
 @(word_slice("bee cat dog", 2, 3)) → dog
 @(word_slice("bee cat dog", 3, 10)) →
+@(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) → cat dog
+@(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) → O'Flaggerty
 ```
 
 

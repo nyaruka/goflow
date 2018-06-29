@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/legacy/gen"
 	"github.com/nyaruka/goflow/utils"
 
@@ -61,30 +60,6 @@ func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interf
 func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interface{} {
 	functionName := strings.ToLower(ctx.Fnname().GetText())
 
-	// these become keywords
-	if functionName == "true" {
-		return "true"
-	} else if functionName == "false" {
-		return "false"
-	}
-
-	template, found := functionTemplates[functionName]
-	if !found {
-		template = functionTemplate{name: functionName, params: "(%s)"}
-	} else {
-		if template.params == "" {
-			template.params = "(%s)"
-		}
-	}
-
-	ignored := ignoredFunctions[template.name]
-	if !ignored {
-		_, found = functions.XFUNCTIONS[template.name]
-		if !found {
-			return fmt.Errorf("no function with name '%s'", template.name)
-		}
-	}
-
 	var params []interface{}
 	if ctx.Parameters() != nil {
 		funcParams := v.Visit(ctx.Parameters())
@@ -96,45 +71,11 @@ func (v *legacyVisitor) VisitFunctionCall(ctx *gen.FunctionCallContext) interfac
 		}
 	}
 
-	// special case options for 3 or 4 parameters
-	paramTemplate := template.params
-	if len(params) == 3 && template.three != "" {
-		paramTemplate = template.three
+	rewrittenFuncCall, err := migrateFunctionCall(functionName, params)
+	if err != nil {
+		return err
 	}
-
-	if len(params) == 4 && template.four != "" {
-		paramTemplate = template.four
-	}
-
-	if template.join != "" {
-		// if our template wants a join, do that instead
-		toJoin := make([]string, len(params))
-		for i := range params {
-			p, err := toString(params[i])
-			if err == nil {
-				toJoin[i] = p
-			}
-		}
-
-		paramTemplate = "%s"
-		params = make([]interface{}, 1)
-		params[0] = strings.Join(toJoin, template.join)
-	} else {
-		// how many replacements we are expecting
-		replacementCount := strings.Count(paramTemplate, "%s") + strings.Count(paramTemplate, "%v")
-
-		if replacementCount != len(params) {
-			// if our params don't match our template, turn stringify it
-			p, err := toString(params)
-			if err != nil {
-				return err
-			}
-			params = make([]interface{}, 1)
-			params[0] = p
-		}
-	}
-
-	return fmt.Sprintf("%s%s", template.name, fmt.Sprintf(paramTemplate, params...))
+	return rewrittenFuncCall
 }
 
 // VisitTrue deals with the "true" literal
