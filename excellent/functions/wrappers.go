@@ -150,6 +150,17 @@ func TextAndDateFunction(f func(utils.Environment, types.XText, types.XDateTime)
 	})
 }
 
+// InitialTextFunction creates an XFunction from a function that takes an initial text arg followed by other args
+func InitialTextFunction(minOtherArgs int, maxOtherArgs int, f func(utils.Environment, types.XText, ...types.XValue) types.XValue) XFunction {
+	return ArgCountCheck(minOtherArgs+1, maxOtherArgs+1, func(env utils.Environment, args ...types.XValue) types.XValue {
+		str, xerr := types.ToXText(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+		return f(env, str, args[1:]...)
+	})
+}
+
 // OneNumberFunction creates an XFunction from a single number function
 func OneNumberFunction(f func(utils.Environment, types.XNumber) types.XValue) XFunction {
 	return ArgCountCheck(1, 1, func(env utils.Environment, args ...types.XValue) types.XValue {

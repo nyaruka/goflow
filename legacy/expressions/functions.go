@@ -1,65 +1,177 @@
 package expressions
 
-type functionTemplate struct {
-	name   string
-	params string
-	join   string
-	two    string
-	three  string
-	four   string
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+// migrates a parameter value in an legacy expression
+type paramMigrator func(param string) string
+
+// migrates a function call in an legacy expression
+type callMigrator func(funcName string, params []string) (string, error)
+
+// leaves a function call as is
+func asIs() callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		return renderCall(funcName, params)
+	}
 }
 
-var functionTemplates = map[string]functionTemplate{
-	"average":     {name: "mean"},
-	"date":        {name: "datetime", params: "(\"%s-%s-%s\")"},
-	"datedif":     {name: "datetime_diff"},
-	"datevalue":   {name: "datetime"},
-	"day":         {name: "format_datetime", params: `(%s, "D")`},
-	"days":        {name: "datetime_diff", params: "(%s, %s, \"D\")"},
-	"edate":       {name: "datetime_add", params: "(%s, %s, \"M\")"},
-	"field":       {name: "field", params: "(%s, %s - 1, %s)"},
-	"first_word":  {name: "word", params: "(%s, 0)"},
-	"fixed":       {name: "format_number", params: "(%s)", two: "(%s, %s)", three: "(%s, %s, %v)"},
-	"format_date": {name: "format_datetime"},
-	"hour":        {name: "format_datetime", params: `(%s, "h")`},
-	"int":         {name: "round_down"},
-	"len":         {name: "length"},
-	"minute":      {name: "format_datetime", params: `(%s, "m")`},
-	"month":       {name: "format_datetime", params: `(%s, "M")`},
-	"now":         {name: "now"},
-	"proper":      {name: "title"},
-	"randbetween": {name: "rand_between"},
-	"read_digits": {name: "read_chars"},
-	"rept":        {name: "repeat"},
-	"rounddown":   {name: "round_down"},
-	"roundup":     {name: "round_up"},
-	"second":      {name: "format_datetime", params: `(%s, "s")`},
-	"substitute":  {name: "replace"},
-	"timevalue":   {name: "parse_datetime"},
-	"trunc":       {name: "round_down"},
-	"unichar":     {name: "char"},
-	"unicode":     {name: "code"},
-	"word_slice":  {name: "word_slice", params: "(%s, %s - 1)", three: "(%s, %s - 1, %s - 1)"},
-	"word":        {name: "word", params: "(%s, %s - 1)"},
-	"year":        {name: "format_datetime", params: `(%s, "YYYY")`},
-
-	// we drop this function, instead joining with the cat operator
-	"concatenate": {join: " & "},
-
-	// translate to maths
-	"power": {params: "%s ^ %s"},
-	"exp":   {params: "2.718281828459045 ^ %s"},
-	"sum":   {params: "%s + %s"},
-
-	// this one is a special case format, we sum these parts into seconds for datetime_add
-	"time": {name: "time", params: "(%s %s %s)"},
+// migrates a function call as a simple rename of the function
+func asRename(newName string) callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		return renderCall(newName, params)
+	}
 }
 
-var ignoredFunctions = map[string]bool{
-	"time": true,
-	"sum":  true,
+// migrates a function call using a template
+func asTemplate(template string) callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		numParamPlaceholders := strings.Count(template, "%s") + strings.Count(template, "%v")
+		if numParamPlaceholders > len(params) {
+			return "", fmt.Errorf("expecting %d params whilst migrating call to %s but got %d", numParamPlaceholders, funcName, len(params))
+		}
 
-	// in some cases we actually remove function names
-	// such add switching CONCAT to a simple operator expression
-	"": true,
+		paramsAsInterfaces := make([]interface{}, len(params))
+		for p := range params {
+			paramsAsInterfaces[p] = params[p]
+		}
+
+		return fmt.Sprintf(template, paramsAsInterfaces...), nil
+	}
+}
+
+// migrates a function call by joining its parameters with the given delimiter
+func asJoin(delimiter string) callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		return strings.Join(params, delimiter), nil
+	}
+}
+
+// migrates a function call using migrators for each parameter
+func asParamMigrators(newName string, paramMigrators ...paramMigrator) callMigrator {
+	return func(funcName string, params []string) (string, error) {
+		if len(params) > len(paramMigrators) {
+			return "", fmt.Errorf("don't know how to migrate call to %s with %d parameters", funcName, len(params))
+		}
+
+		newParams := make([]string, len(params))
+
+		for p := range params {
+			newParams[p] = paramMigrators[p](params[p])
+		}
+
+		return renderCall(newName, newParams)
+	}
+}
+
+// migrates a parameter as is
+func paramAsIs() paramMigrator {
+	return func(param string) string { return param }
+}
+
+// migrates a parameter to it decremented by one
+func paramDecremented() paramMigrator {
+	return func(param string) string {
+		// if param is a number literal then we can do the decrementing now
+		asInt, err := strconv.Atoi(param)
+		if err == nil {
+			return strconv.Itoa(asInt - 1)
+		}
+
+		// if not return a decrementing expression
+		return fmt.Sprintf("%s - 1", param)
+	}
+}
+
+// migrates the by_spaces param used by several string tokenizing functions
+func paramBySpaces() paramMigrator {
+	return func(param string) string {
+		if strings.TrimSpace(strings.ToLower(param)) == "true" {
+			return `" \t"`
+		}
+		return `NULL`
+	}
+}
+
+var callMigrators = map[string]callMigrator{
+	"abs":               asIs(),
+	"and":               asIs(),
+	"average":           asRename(`mean`),
+	"char":              asIs(),
+	"clean":             asIs(),
+	"code":              asIs(),
+	"concatenate":       asJoin(` & `),
+	"date":              asTemplate(`datetime("%s-%s-%s")`),
+	"datedif":           asRename(`datetime_diff`),
+	"datevalue":         asRename(`datetime`),
+	"day":               asTemplate(`format_datetime(%s, "D")`),
+	"days":              asTemplate(`datetime_diff(%s, %s, "D")`),
+	"edate":             asTemplate(`datetime_add(%s, %s, "M")`),
+	"exp":               asTemplate(`2.718281828459045 ^ %s`),
+	"false":             asTemplate(`false`), // becomes just a keyword
+	"field":             asParamMigrators(`field`, paramAsIs(), paramDecremented(), paramAsIs()),
+	"first_word":        asTemplate(`word(%s, 0)`),
+	"fixed":             asParamMigrators(`format_number`, paramAsIs(), paramAsIs(), paramAsIs()),
+	"format_date":       asRename(`format_datetime`),
+	"format_location":   asIs(),
+	"hour":              asTemplate(`format_datetime(%s, "h")`),
+	"if":                asIs(),
+	"int":               asRename(`round_down`),
+	"left":              asIs(),
+	"len":               asRename(`length`),
+	"lower":             asIs(),
+	"max":               asIs(),
+	"min":               asIs(),
+	"minute":            asTemplate(`format_datetime(%s, "m")`),
+	"mod":               asIs(),
+	"month":             asTemplate(`format_datetime(%s, "M")`),
+	"now":               asIs(),
+	"or":                asIs(),
+	"percent":           asIs(),
+	"power":             asTemplate(`%s ^ %s`),
+	"proper":            asRename(`title`),
+	"rand":              asIs(),
+	"randbetween":       asRename(`rand_between`),
+	"read_digits":       asRename(`read_chars`),
+	"regex_group":       asIs(),
+	"remove_first_word": asIs(),
+	"rept":              asRename(`repeat`),
+	"right":             asIs(),
+	"round":             asIs(),
+	"rounddown":         asRename(`round_down`),
+	"roundup":           asRename(`round_up`),
+	"second":            asTemplate(`format_datetime(%s, "s")`),
+	"substitute":        asRename(`replace`),
+	"sum":               asJoin(` + `),
+	"time":              asTemplate(`time(%s %s %s)`), // special case format, we sum these parts into seconds for datetime_add
+	"timevalue":         asRename(`parse_datetime`),
+	"today":             asIs(),
+	"true":              asTemplate(`true`), // becomes just a keyword
+	"trunc":             asRename(`round_down`),
+	"unichar":           asRename(`char`),
+	"unicode":           asRename(`code`),
+	"upper":             asIs(),
+	"weekday":           asIs(),
+	"word_count":        asParamMigrators(`word_count`, paramAsIs(), paramBySpaces()),
+	"word_slice":        asParamMigrators(`word_slice`, paramAsIs(), paramDecremented(), paramDecremented(), paramBySpaces()),
+	"word":              asParamMigrators(`word`, paramAsIs(), paramDecremented(), paramBySpaces()),
+	"year":              asTemplate(`format_datetime(%s, "YYYY")`),
+}
+
+func migrateFunctionCall(funcName string, params []string) (string, error) {
+	migrator, hasMigrator := callMigrators[funcName]
+	if hasMigrator {
+		return migrator(funcName, params)
+	}
+
+	// if we don't recognize this function, return it as it is
+	return renderCall(funcName, params)
+}
+
+// renders a function call from the given function name and parameters
+func renderCall(funcName string, params []string) (string, error) {
+	return fmt.Sprintf("%s(%s)", funcName, strings.Join(params, ", ")), nil
 }

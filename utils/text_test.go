@@ -1,10 +1,11 @@
 package utils_test
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSnakify(t *testing.T) {
@@ -42,9 +43,24 @@ func TestTokenizeString(t *testing.T) {
 		{" one ", []string{"one"}},
 	}
 	for _, test := range tokenizerTests {
-		result := utils.TokenizeString(test.text)
-		if !reflect.DeepEqual(result, test.result) {
-			t.Errorf("Unexpected result tokenizing '%s', got: %s expected: %v", test.text, result, test.result)
-		}
+		assert.Equal(t, test.result, utils.TokenizeString(test.text), "unexpected result tokenizing '%s'", test.text)
+	}
+}
+
+func TestTokenizeStringByChars(t *testing.T) {
+	tokenizerTests := []struct {
+		text   string
+		chars  string
+		result []string
+	}{
+		{"one   two three", " ", []string{"one", "two", "three"}},
+		{"Jim O'Grady", " ", []string{"Jim", "O'Grady"}},
+		{"one.βήταa/three", "./", []string{"one", "βήταa", "three"}},
+		{"one😄three", "😄", []string{"one", "three"}},
+		{"  one.two.*@three ", " .*@", []string{"one", "two", "three"}},
+		{" one ", " ", []string{"one"}},
+	}
+	for _, test := range tokenizerTests {
+		assert.Equal(t, test.result, utils.TokenizeStringByChars(test.text, test.chars), "unexpected result tokenizing '%s'", test.text)
 	}
 }

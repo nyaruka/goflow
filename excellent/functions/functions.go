@@ -43,11 +43,11 @@ var XFUNCTIONS = map[string]XFunction{
 	"split":             TwoTextFunction(Split),
 	"join":              TwoArgFunction(Join),
 	"title":             OneTextFunction(Title),
-	"word":              TextAndIntegerFunction(Word),
+	"word":              InitialTextFunction(1, 2, Word),
 	"remove_first_word": OneTextFunction(RemoveFirstWord),
-	"word_count":        OneTextFunction(WordCount),
-	"word_slice":        ArgCountCheck(2, 3, WordSlice),
-	"field":             ArgCountCheck(3, 3, Field),
+	"word_count":        InitialTextFunction(0, 1, WordCount),
+	"word_slice":        InitialTextFunction(1, 3, WordSlice),
+	"field":             InitialTextFunction(2, 2, Field),
 	"clean":             OneTextFunction(Clean),
 	"left":              TextAndIntegerFunction(Left),
 	"lower":             OneTextFunction(Lower),
@@ -277,7 +277,7 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXNumberFromInt(int(r))
 }
 
-// Split splits `text` based on the passed in `delimeter`
+// Split splits `text` based on the characters in `delimiters`
 //
 // Empty values are removed from the returned list
 //
@@ -285,21 +285,19 @@ func Code(env utils.Environment, text types.XText) types.XValue {
 //   @(split("a", " ")) -> ["a"]
 //   @(split("abc..d", ".")) -> ["abc","d"]
 //   @(split("a.b.c.", ".")) -> ["a","b","c"]
-//   @(split("a && b && c", " && ")) -> ["a","b","c"]
+//   @(split("a|b,c  d", " .|,")) -> ["a","b","c","d"]
 //
-// @function split(text, delimiter)
-func Split(env utils.Environment, text types.XText, sep types.XText) types.XValue {
+// @function split(text, delimiters)
+func Split(env utils.Environment, text types.XText, delimiters types.XText) types.XValue {
 	splits := types.NewXArray()
-	allSplits := strings.Split(text.Native(), sep.Native())
+	allSplits := utils.TokenizeStringByChars(text.Native(), delimiters.Native())
 	for i := range allSplits {
-		if allSplits[i] != "" {
-			splits.Append(types.NewXText(allSplits[i]))
-		}
+		splits.Append(types.NewXText(allSplits[i]))
 	}
 	return splits
 }
 
-// Join joins the passed in `array` of strings with the passed in `delimeter`
+// Join joins the passed in `array` of strings with the passed in `delimiter`
 //
 //   @(join(array("a", "b", "c"), "|")) -> a|b|c
 //   @(join(split("a.b.c", "."), " ")) -> a b c
@@ -359,7 +357,8 @@ func Title(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(strings.Title(text.Native()))
 }
 
-// Word returns the word at the passed in `index` for the passed in `text`
+// Word returns the word at the passed in `index` for the passed in `text`. There is an optional final
+// parameter `delimiters` which is string of characters used to split the text into words.
 //
 //   @(word("bee cat dog", 0)) -> bee
 //   @(word("bee.cat,dog", 0)) -> bee
@@ -367,10 +366,26 @@ func Title(env utils.Environment, text types.XText) types.XValue {
 //   @(word("bee.cat,dog", 2)) -> dog
 //   @(word("bee.cat,dog", -1)) -> dog
 //   @(word("bee.cat,dog", -2)) -> cat
+//   @(word("bee.*cat,dog", 1, ".*=|")) -> cat,dog
+//   @(word("O'Grady O'Flaggerty", 1, " ")) -> O'Flaggerty
 //
-// @function word(text, index)
-func Word(env utils.Environment, text types.XText, index int) types.XValue {
-	words := utils.TokenizeString(text.Native())
+// @function word(text, index [,delimiters])
+func Word(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	index, xerr := types.ToInteger(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	var words []string
+	if len(args) == 2 && args[1] != nil {
+		delimiters, xerr := types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		words = utils.TokenizeString(text.Native())
+	}
 
 	offset := index
 	if offset < 0 {
@@ -399,7 +414,8 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 }
 
 // WordSlice extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
-// end value means that all words after the start should be returned.
+// end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
+// which is string of characters used to split the text into words.
 //
 //   @(word_slice("bee cat dog", 0, 1)) -> bee
 //   @(word_slice("bee cat dog", 0, 2)) -> bee cat
@@ -407,15 +423,12 @@ func RemoveFirstWord(env utils.Environment, text types.XText) types.XValue {
 //   @(word_slice("bee cat dog", 1)) -> cat dog
 //   @(word_slice("bee cat dog", 2, 3)) -> dog
 //   @(word_slice("bee cat dog", 3, 10)) ->
+//   @(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) -> cat dog
+//   @(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) -> O'Flaggerty
 //
-// @function word_slice(text, start, end)
-func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
-	str, xerr := types.ToXText(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	start, xerr := types.ToInteger(env, args[1])
+// @function word_slice(text, start, end [,delimiters])
+func WordSlice(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	start, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -424,8 +437,8 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	end := -1
-	if len(args) == 3 {
-		if end, xerr = types.ToInteger(env, args[2]); xerr != nil {
+	if len(args) == 2 {
+		if end, xerr = types.ToInteger(env, args[1]); xerr != nil {
 			return xerr
 		}
 	}
@@ -433,7 +446,16 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("must have a end which is greater than the start")
 	}
 
-	words := utils.TokenizeString(str.Native())
+	var words []string
+	if len(args) == 3 && args[2] != nil {
+		delimiters, xerr := types.ToXText(env, args[2])
+		if xerr != nil {
+			return xerr
+		}
+		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		words = utils.TokenizeString(text.Native())
+	}
 
 	if start >= len(words) {
 		return types.XTextEmpty
@@ -448,16 +470,29 @@ func WordSlice(env utils.Environment, args ...types.XValue) types.XValue {
 	return types.NewXText(strings.Join(words[start:], " "))
 }
 
-// WordCount returns the number of words in `text`
+// WordCount returns the number of words in `text`. There is an optional final parameter `delimiters`
+// which is string of characters used to split the text into words.
 //
 //   @(word_count("foo bar")) -> 2
 //   @(word_count(10)) -> 1
 //   @(word_count("")) -> 0
 //   @(word_count("😀😃😄😁")) -> 4
+//   @(word_count("bee.*cat,dog", ".*=|")) -> 2
+//   @(word_count("O'Grady O'Flaggerty", " ")) -> 2
 //
-// @function word_count(text)
-func WordCount(env utils.Environment, text types.XText) types.XValue {
-	words := utils.TokenizeString(text.Native())
+// @function word_count(text [,delimiters])
+func WordCount(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	var words []string
+	if len(args) == 1 && args[0] != nil {
+		delimiters, xerr := types.ToXText(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+		words = utils.TokenizeStringByChars(text.Native(), delimiters.Native())
+	} else {
+		words = utils.TokenizeString(text.Native())
+	}
+
 	return types.NewXNumberFromInt(len(words))
 }
 
@@ -471,14 +506,9 @@ func WordCount(env utils.Environment, text types.XText) types.XValue {
 //   @(field("a\t\tb\tc\td", 1, " ")) ->
 //   @(field("a,b,c", "foo", ",")) -> ERROR
 //
-// @function field(text, offset, delimeter)
-func Field(env utils.Environment, args ...types.XValue) types.XValue {
-	source, xerr := types.ToXText(env, args[0])
-	if xerr != nil {
-		return xerr
-	}
-
-	field, xerr := types.ToInteger(env, args[1])
+// @function field(text, offset, delimiter)
+func Field(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	field, xerr := types.ToInteger(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
@@ -487,12 +517,12 @@ func Field(env utils.Environment, args ...types.XValue) types.XValue {
 		return types.NewXErrorf("cannot use a negative index to FIELD")
 	}
 
-	sep, xerr := types.ToXText(env, args[2])
+	sep, xerr := types.ToXText(env, args[1])
 	if xerr != nil {
 		return xerr
 	}
 
-	fields := strings.Split(source.Native(), sep.Native())
+	fields := strings.Split(text.Native(), sep.Native())
 	if field >= len(fields) {
 		return types.XTextEmpty
 	}

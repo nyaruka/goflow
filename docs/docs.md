@@ -620,7 +620,7 @@ Takes two arguments, returning `test` if not an error or nil or empty text, othe
 
 <a name="function:field"></a>
 
-## field(text, offset, delimeter)
+## field(text, offset, delimiter)
 
 Splits `text` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
 with a space, the delimiter is considered to be all whitespace.  (first field is 0)
@@ -755,7 +755,7 @@ If the first argument is an error that error is returned
 
 ## join(array, delimiter)
 
-Joins the passed in `array` of strings with the passed in `delimeter`
+Joins the passed in `array` of strings with the passed in `delimiter`
 
 
 ```objectivec
@@ -1127,9 +1127,9 @@ Rounds `num` up to the nearest integer value. You can optionally pass in the num
 
 <a name="function:split"></a>
 
-## split(text, delimiter)
+## split(text, delimiters)
 
-Splits `text` based on the passed in `delimeter`
+Splits `text` based on the characters in `delimiters`
 
 Empty values are removed from the returned list
 
@@ -1139,7 +1139,7 @@ Empty values are removed from the returned list
 @(split("a", " ")) → ["a"]
 @(split("abc..d", ".")) → ["abc","d"]
 @(split("a.b.c.", ".")) → ["a","b","c"]
-@(split("a && b && c", " && ")) → ["a","b","c"]
+@(split("a|b,c  d", " .|,")) → ["a","b","c","d"]
 ```
 
 <a name="function:text"></a>
@@ -1277,9 +1277,10 @@ Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
 <a name="function:word"></a>
 
-## word(text, index)
+## word(text, index [,delimiters])
 
-Returns the word at the passed in `index` for the passed in `text`
+Returns the word at the passed in `index` for the passed in `text`. There is an optional final
+parameter `delimiters` which is string of characters used to split the text into words.
 
 
 ```objectivec
@@ -1289,13 +1290,16 @@ Returns the word at the passed in `index` for the passed in `text`
 @(word("bee.cat,dog", 2)) → dog
 @(word("bee.cat,dog", -1)) → dog
 @(word("bee.cat,dog", -2)) → cat
+@(word("bee.*cat,dog", 1, ".*=|")) → cat,dog
+@(word("O'Grady O'Flaggerty", 1, " ")) → O'Flaggerty
 ```
 
 <a name="function:word_count"></a>
 
-## word_count(text)
+## word_count(text [,delimiters])
 
-Returns the number of words in `text`
+Returns the number of words in `text`. There is an optional final parameter `delimiters`
+which is string of characters used to split the text into words.
 
 
 ```objectivec
@@ -1303,14 +1307,17 @@ Returns the number of words in `text`
 @(word_count(10)) → 1
 @(word_count("")) → 0
 @(word_count("😀😃😄😁")) → 4
+@(word_count("bee.*cat,dog", ".*=|")) → 2
+@(word_count("O'Grady O'Flaggerty", " ")) → 2
 ```
 
 <a name="function:word_slice"></a>
 
-## word_slice(text, start, end)
+## word_slice(text, start, end [,delimiters])
 
 Extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
-end value means that all words after the start should be returned.
+end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
+which is string of characters used to split the text into words.
 
 
 ```objectivec
@@ -1320,6 +1327,8 @@ end value means that all words after the start should be returned.
 @(word_slice("bee cat dog", 1)) → cat dog
 @(word_slice("bee cat dog", 2, 3)) → dog
 @(word_slice("bee cat dog", 3, 10)) →
+@(word_slice("bee.*cat,dog", 1, -1, ".*=|,")) → cat dog
+@(word_slice("O'Grady O'Flaggerty", 1, 2, " ")) → O'Flaggerty
 ```
 
 
