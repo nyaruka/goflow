@@ -3,7 +3,6 @@ package excellent
 import (
 	"bytes"
 	"fmt"
-	"net/url"
 	"strconv"
 	"strings"
 
@@ -112,7 +111,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			} else {
 				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
-					strValue = types.NewXText(url.PathEscape(strValue.Native()))
+					strValue = types.NewXText(utils.URLEscape(strValue.Native()))
 				}
 
 				buf.WriteString(strValue.Native())
@@ -125,7 +124,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			} else {
 				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
-					strValue = types.NewXText(url.PathEscape(strValue.Native()))
+					strValue = types.NewXText(utils.URLEscape(strValue.Native()))
 				}
 
 				buf.WriteString(strValue.Native())

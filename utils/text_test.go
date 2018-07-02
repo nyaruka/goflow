@@ -22,11 +22,22 @@ func TestSnakify(t *testing.T) {
 	}
 
 	for _, test := range snakeTests {
-		value := utils.Snakify(test.input)
+		assert.Equal(t, test.expected, utils.Snakify(test.input), "unexpected result snakifying '%s'", test.input)
+	}
+}
 
-		if value != test.expected {
-			t.Errorf("Expected: '%s' Got: '%s' for input: '%s'", test.expected, value, test.input)
-		}
+func TestURLEscape(t *testing.T) {
+	var urlTests = []struct {
+		input    string
+		expected string
+	}{
+		{"", ""},
+		{"hello_world-there", "hello_world-there"},
+		{"foo: bar ? & some/thing", "foo%3A%20bar%20%3F%20%26%20some%2Fthing"},
+	}
+
+	for _, test := range urlTests {
+		assert.Equal(t, test.expected, utils.URLEscape(test.input), "unexpected result URL escaping '%s'", test.input)
 	}
 }
 

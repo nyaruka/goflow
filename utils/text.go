@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"net/url"
 	"regexp"
 	"strings"
 )
@@ -11,6 +12,11 @@ var snakedChars = regexp.MustCompile(`[^\p{L}\d_]+`)
 // characters with _ and replace any duplicate underscores
 func Snakify(text string) string {
 	return strings.Trim(strings.ToLower(snakedChars.ReplaceAllString(text, "_")), "_")
+}
+
+// URLEscape escapes spaces as %20 matching urllib.quote(s, safe="") in Python
+func URLEscape(s string) string {
+	return strings.Replace(url.QueryEscape(s), "+", "%20", -1)
 }
 
 // see: https://en.wikipedia.org/wiki/Emoji for emoji ranges
