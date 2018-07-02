@@ -1,3 +1,9 @@
+v0.10.17
+----------
+ * Add proper migrations for when word_* functions have final by_spaces param, and also collapse decremented values if they are literals (e.g. 2- 1)
+ * Update word(), word_slice() and word_count() to take a final optional param called delimiters
+ * Don't throw validation error if add_input_labels or add_contact_groups has zero groups/labels
+
 v0.10.16
 ----------
  * Don't log 400 responses to sentry
