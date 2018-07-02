@@ -112,7 +112,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			} else {
 				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
-					strValue = types.NewXText(url.QueryEscape(strValue.Native()))
+					strValue = types.NewXText(url.PathEscape(strValue.Native()))
 				}
 
 				buf.WriteString(strValue.Native())
@@ -125,7 +125,7 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 			} else {
 				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
-					strValue = types.NewXText(url.QueryEscape(strValue.Native()))
+					strValue = types.NewXText(url.PathEscape(strValue.Native()))
 				}
 
 				buf.WriteString(strValue.Native())
