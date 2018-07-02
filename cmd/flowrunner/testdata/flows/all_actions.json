@@ -172,7 +172,7 @@
                         {
                             "uuid": "f3581032-e122-45ee-8be7-4f3c955d97f8",
                             "type": "set_contact_name",
-                            "name": "Jeff"
+                            "name": "Jeff Jefferson"
                         },
                         {
                             "uuid": "e0ae5679-5145-4bdd-9737-3481932bf095",
@@ -192,7 +192,7 @@
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",
-                            "url": "http://localhost/?cmd=success"
+                            "url": "http://localhost/?cmd=success&name=@contact.name"
                         }
                     ]
                 }
