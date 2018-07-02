@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"strconv"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -93,7 +94,10 @@ func (c *Contact) Clone() *Contact {
 // UUID returns the UUID of this contact
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 
-// UUID returns the numeric ID of this contact
+// SetID sets the numeric ID of this contact
+func (c *Contact) SetID(id int) { c.id = id }
+
+// ID returns the numeric ID of this contact
 func (c *Contact) ID() int { return c.id }
 
 // SetLanguage sets the language for this contact
@@ -157,6 +161,24 @@ func (c *Contact) Fields() FieldValues { return c.fields }
 // Reference returns a reference to this contact
 func (c *Contact) Reference() *ContactReference { return NewContactReference(c.uuid, c.name) }
 
+// Format returns a friendly string version of this contact depending on what fields are set
+func (c *Contact) Format(env utils.Environment) string {
+	// if contact has a name set, use that
+	if c.name != "" {
+		return c.name
+	}
+
+	// otherwise use either id or the higest priority URN depending on the env
+	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
+		return strconv.Itoa(c.id)
+	}
+	if len(c.urns) > 0 {
+		return c.urns[0].Format()
+	}
+
+	return ""
+}
+
 // Resolve resolves the given key when this contact is referenced in an expression
 func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
@@ -207,7 +229,7 @@ func (c *Contact) Describe() string { return "contact" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (c *Contact) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(c.name)
+	return types.NewXText(c.Format(env))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
