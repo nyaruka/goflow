@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi/middleware"
@@ -36,6 +40,26 @@ func requestLogger() func(next http.Handler) http.Handler {
 				"uri":               uri,
 				"user_agent":        r.UserAgent(),
 			}).Info("request completed")
+		}
+		return http.HandlerFunc(fn)
+	}
+}
+
+func traceErrors() func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		fn := func(w http.ResponseWriter, r *http.Request) {
+			body := bytes.Buffer{}
+			r.Body = ioutil.NopCloser(io.TeeReader(r.Body, &body))
+			ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+			next.ServeHTTP(ww, r)
+
+			// we are returning a system error of some kind, log the incoming request body
+			if ww.Status() >= 500 && strings.ToLower(r.Method) == "post" {
+				log.WithFields(log.Fields{
+					"request_body": body.String(),
+					"resp_status":  ww.Status(),
+					"req_id":       r.Context().Value(middleware.RequestIDKey)}).Error()
+			}
 		}
 		return http.HandlerFunc(fn)
 	}
