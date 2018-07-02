@@ -12,6 +12,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestContactFormat(t *testing.T) {
+	env := test.NewTestEnvironment(utils.DateFormatYearMonthDay, time.UTC, nil)
+
+	// name takes precedence if set
+	contact := flows.NewContact("Joe", utils.NilLanguage, nil)
+	contact.AddURN(urns.URN("twitter:joey"))
+	assert.Equal(t, "Joe", contact.Format(env))
+
+	// if not we fallback to URN
+	contact = flows.NewContact("", utils.NilLanguage, nil)
+	contact.AddURN(urns.URN("twitter:joey"))
+	contact.SetID(12345)
+	assert.Equal(t, "joey", contact.Format(env))
+
+	anonEnv := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyURNs)
+
+	// unless URNs are redacted
+	assert.Equal(t, "12345", contact.Format(anonEnv))
+
+	// if we don't have name or URNs, then empty string
+	contact = flows.NewContact("", utils.NilLanguage, nil)
+	assert.Equal(t, "", contact.Format(env))
+}
+
 func TestContactSetPreferredChannel(t *testing.T) {
 	roles := []flows.ChannelRole{flows.ChannelRoleSend}
 
