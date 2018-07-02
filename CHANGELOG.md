@@ -1,3 +1,8 @@
+v0.10.18
+----------
+ * Encode spaces as %20 in URL expressions
+ * Match legacy behavior for @contact
+
 v0.10.17
 ----------
  * Add proper migrations for when word_* functions have final by_spaces param, and also collapse decremented values if they are literals (e.g. 2- 1)
