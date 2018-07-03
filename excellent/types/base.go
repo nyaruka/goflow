@@ -101,6 +101,11 @@ func IsEmpty(x XValue) bool {
 	return false
 }
 
+func IsPrimitive(x XValue) bool {
+	_, isPrimitive := x.(XPrimitive)
+	return isPrimitive
+}
+
 // Describe returns a representation of the given value for use in error messages
 func Describe(x XValue) string {
 	if utils.IsNil(x) {

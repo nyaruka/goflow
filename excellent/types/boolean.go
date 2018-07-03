@@ -94,5 +94,5 @@ func ToXBoolean(env utils.Environment, x XValue) (XBoolean, XError) {
 		return NewXBoolean(lengthable.Length() > 0), nil
 	}
 
-	return x.Reduce(env).ToXBoolean(env), nil
+	return ToXBoolean(env, x.Reduce(env))
 }
