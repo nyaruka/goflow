@@ -43,6 +43,7 @@ var flowTests = []struct {
 	{"no_contact.json", "no_contact_test.json"},
 	{"redact_urns.json", "redact_urns_test.json"},
 	{"router_tests.json", "router_tests_test.json"},
+	{"webhook_migrated.json", "webhook_migrated_test.json"},
 }
 
 var writeOutput bool
