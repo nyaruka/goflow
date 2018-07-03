@@ -1,3 +1,9 @@
+v0.10.19
+----------
+ * Add format_date function which only takes date (non-time) formatting chars
+ * Fix encoding of contact name in webhook payloads
+ * Fix logging of panics to sentry
+
 v0.10.18
 ----------
  * Encode spaces as %20 in URL expressions
