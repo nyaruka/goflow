@@ -890,7 +890,7 @@ func RandBetween(env utils.Environment, min types.XNumber, max types.XNumber) ty
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
 // * `YY`        - last two digits of year 0-99
-// * `YYYY`      - four digits of your 0000-9999
+// * `YYYY`      - four digits of year 0000-9999
 // * `M`         - month 1-12
 // * `MM`        - month 01-12
 // * `D`         - day of month, 1-31
@@ -1218,7 +1218,7 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
 // * `YY`        - last two digits of year 0-99
-// * `YYYY`      - four digits of your 0000-9999
+// * `YYYY`      - four digits of year 0000-9999
 // * `M`         - month 1-12
 // * `MM`        - month 01-12
 // * `D`         - day of month, 1-31
@@ -1270,7 +1270,7 @@ func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
 // ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 //
 // * `YY`        - last two digits of year 0-99
-// * `YYYY`      - four digits of your 0000-9999
+// * `YYYY`      - four digits of year 0000-9999
 // * `M`         - month 1-12
 // * `MM`        - month 01-12
 // * `D`         - day of month, 1-31

@@ -645,7 +645,7 @@ The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
-* `YYYY`      - four digits of your 0000-9999
+* `YYYY`      - four digits of year 0000-9999
 * `M`         - month 1-12
 * `MM`        - month 01-12
 * `D`         - day of month, 1-31
@@ -672,7 +672,7 @@ The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
-* `YYYY`      - four digits of your 0000-9999
+* `YYYY`      - four digits of year 0000-9999
 * `M`         - month 1-12
 * `MM`        - month 01-12
 * `D`         - day of month, 1-31
@@ -946,7 +946,7 @@ The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
-* `YYYY`      - four digits of your 0000-9999
+* `YYYY`      - four digits of year 0000-9999
 * `M`         - month 1-12
 * `MM`        - month 01-12
 * `D`         - day of month, 1-31
