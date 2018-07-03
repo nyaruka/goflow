@@ -31,8 +31,8 @@ func NewFlowServer(config *Config) *FlowServer {
 	r.Use(middleware.StripSlashes)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	r.Use(middleware.Recoverer)
-	r.Use(requestLogger())
+	r.Use(panicRecovery)
+	r.Use(requestLogger)
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	// no static dir passed in? serve from statik
