@@ -81,7 +81,7 @@ func Equals(env utils.Environment, x1 XValue, x2 XValue) bool {
 		return typed.Equals(x2.(XError))
 	}
 
-	// for arrays and maps, use equality of their JSON representation
+	// for complex objects, use equality of their JSON representation
 	return x1.ToXJSON(env).Native() == x2.ToXJSON(env).Native()
 }
 

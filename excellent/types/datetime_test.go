@@ -25,6 +25,10 @@ func TestXDateTime(t *testing.T) {
 	assert.Equal(t, 1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 31, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
 	assert.Equal(t, -1, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 29, 0, time.UTC)).Compare(types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))))
 
+	d1 := types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC))
+	assert.Equal(t, d1, d1.Reduce(utils.NewDefaultEnvironment()))
+	assert.Equal(t, `datetime`, types.NewXDateTime(time.Date(2018, 4, 9, 17, 1, 30, 0, time.UTC)).Describe())
+
 	// test unmarshaling
 	var date types.XDateTime
 	err := json.Unmarshal([]byte(`"2018-04-09T17:01:30Z"`), &date)

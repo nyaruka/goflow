@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -22,6 +23,8 @@ func TestXMap(t *testing.T) {
 	assert.True(t, types.IsXError(map1.Resolve(nil, "xxxx")))
 
 	assert.Equal(t, `{"bar":"123","foo":"abc","zed":"false"}`, map1.String())
+	assert.Equal(t, map1, map1.Reduce(utils.NewDefaultEnvironment()))
+	assert.Equal(t, "map", map1.Describe())
 
 	// test equality
 	assert.Equal(t, map1, types.NewXMap(map[string]types.XValue{

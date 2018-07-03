@@ -24,6 +24,9 @@ func TestXBoolean(t *testing.T) {
 	assert.Equal(t, "false", types.XBooleanFalse.String())
 	assert.Equal(t, "true", types.XBooleanTrue.String())
 
+	assert.Equal(t, "true", types.XBooleanTrue.Describe())
+	assert.Equal(t, "false", types.XBooleanFalse.Describe())
+
 	// unmarshal
 	var val types.XBoolean
 	err := json.Unmarshal([]byte(`true`), &val)
