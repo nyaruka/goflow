@@ -82,9 +82,9 @@ func ToXText(env utils.Environment, x XValue) (XText, XError) {
 		return XTextEmpty, x.(XError)
 	}
 
-	asPrimitive, isPrimitive := x.(XPrimitive)
+	primitive, isPrimitive := x.(XPrimitive)
 	if isPrimitive {
-		return asPrimitive.ToXText(env), nil
+		return primitive.ToXText(env), nil
 	}
 
 	return ToXText(env, x.Reduce(env))
