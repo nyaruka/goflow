@@ -146,6 +146,16 @@ var funcTests = []struct {
 	{"field", []types.XValue{xs("hello"), xs("1"), ERROR}, ERROR},
 	{"field", []types.XValue{}, ERROR},
 
+	{"format_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977")},
+	{"format_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DD")}, xs("1977-06-23")},
+	{"format_date", []types.XValue{xs("1977-06-23"), xs("YYYY/MM/DD")}, xs("1977/06/23")},
+	{"format_date", []types.XValue{xs("NOT DATE")}, ERROR},
+	{"format_date", []types.XValue{ERROR}, ERROR},
+	{"format_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), ERROR}, ERROR},
+	{"format_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYYYYY")}, ERROR},
+	{"format_date", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY"), ERROR}, ERROR},
+	{"format_date", []types.XValue{}, ERROR},
+
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z")}, xs("23-06-1977 15:34")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZZZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000-07:00")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.123000Z"), xs("YYYY-MM-DDTtt:mm:ss.fffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.123-07:00")},

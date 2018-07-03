@@ -635,9 +635,35 @@ with a space, the delimiter is considered to be all whitespace.  (first field is
 @(field("a,b,c", "foo", ",")) → ERROR
 ```
 
+<a name="function:format_date"></a>
+
+## format_date(date, [,format])
+
+Turns `date` into text according to the `format` specified.
+
+The format string can consist of the following characters. The characters
+' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+
+* `YY`        - last two digits of year 0-99
+* `YYYY`      - four digits of year 0000-9999
+* `M`         - month 1-12
+* `MM`        - month 01-12
+* `D`         - day of month, 1-31
+* `DD`        - day of month, zero padded 0-31
+
+
+```objectivec
+@(format_date("1979-07-18T15:00:00.000000Z")) → 1979-07-18
+@(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) → 1979-07-18
+@(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD")) → 2010 5 10
+@(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) → 1979
+@(format_date("1979-07-18T15:00:00.000000Z", "M")) → 7
+@(format_date("NOT DATE", "YYYY-MM-DD")) → ERROR
+```
+
 <a name="function:format_datetime"></a>
 
-## format_datetime(date, format [,timezone])
+## format_datetime(date [,format [,timezone]])
 
 Turns `date` into text according to the `format` specified and in
 the optional `timezone`.
@@ -646,7 +672,7 @@ The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
-* `YYYY`      - four digits of your 0000-9999
+* `YYYY`      - four digits of year 0000-9999
 * `M`         - month 1-12
 * `MM`        - month 01-12
 * `D`         - day of month, 1-31
@@ -920,7 +946,7 @@ The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
 
 * `YY`        - last two digits of year 0-99
-* `YYYY`      - four digits of your 0000-9999
+* `YYYY`      - four digits of year 0000-9999
 * `M`         - month 1-12
 * `MM`        - month 01-12
 * `D`         - day of month, 1-31

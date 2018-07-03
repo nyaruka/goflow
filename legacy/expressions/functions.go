@@ -107,7 +107,7 @@ var callMigrators = map[string]callMigrator{
 	"date":              asTemplate(`datetime("%s-%s-%s")`),
 	"datedif":           asRename(`datetime_diff`),
 	"datevalue":         asRename(`datetime`),
-	"day":               asTemplate(`format_datetime(%s, "D")`),
+	"day":               asTemplate(`format_date(%s, "D")`),
 	"days":              asTemplate(`datetime_diff(%s, %s, "D")`),
 	"edate":             asTemplate(`datetime_add(%s, %s, "M")`),
 	"exp":               asTemplate(`2.718281828459045 ^ %s`),
@@ -127,7 +127,7 @@ var callMigrators = map[string]callMigrator{
 	"min":               asIs(),
 	"minute":            asTemplate(`format_datetime(%s, "m")`),
 	"mod":               asIs(),
-	"month":             asTemplate(`format_datetime(%s, "M")`),
+	"month":             asTemplate(`format_date(%s, "M")`),
 	"now":               asIs(),
 	"or":                asIs(),
 	"percent":           asIs(),
@@ -158,7 +158,7 @@ var callMigrators = map[string]callMigrator{
 	"word_count":        asParamMigrators(`word_count`, paramAsIs(), paramBySpaces()),
 	"word_slice":        asParamMigrators(`word_slice`, paramAsIs(), paramDecremented(), paramDecremented(), paramBySpaces()),
 	"word":              asParamMigrators(`word`, paramAsIs(), paramDecremented(), paramBySpaces()),
-	"year":              asTemplate(`format_datetime(%s, "YYYY")`),
+	"year":              asTemplate(`format_date(%s, "YYYY")`),
 }
 
 func migrateFunctionCall(funcName string, params []string) (string, error) {

@@ -94,6 +94,10 @@ func validate(obj interface{}, objName string) error {
 			problem = fmt.Sprintf("is mutually exclusive with '%s'", fieldErr.Param())
 		case "http_method":
 			problem = "is not a valid HTTP method"
+		case "date_format":
+			problem = "is not a valid date format"
+		case "time_format":
+			problem = "is not a valid time format"
 		default:
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}

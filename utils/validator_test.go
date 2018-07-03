@@ -16,9 +16,11 @@ type SubObject struct {
 }
 
 type TestObject struct {
-	Foo    string    `json:"foo" validate:"required"`
-	Bar    SubObject `json:"bar" validate:"required"`
-	Things []string  `json:"things" validate:"min=1,max=3,dive,http_method"`
+	Foo        string    `json:"foo" validate:"required"`
+	Bar        SubObject `json:"bar" validate:"required"`
+	Things     []string  `json:"things" validate:"min=1,max=3,dive,http_method"`
+	DateFormat string    `json:"date_format" validate:"date_format"`
+	TimeFormat string    `json:"time_format" validate:"time_format"`
 }
 
 func TestValidate(t *testing.T) {
@@ -30,7 +32,9 @@ func TestValidate(t *testing.T) {
 			UUID4:     "f0a26027-9ae9-422a-bf1a-4186adc14195",
 			SomeValue: 2,
 		},
-		Things: []string{"GET", "POST", "PATCH"},
+		Things:     []string{"GET", "POST", "PATCH"},
+		DateFormat: "DD-MM-YYYY",
+		TimeFormat: "hh:mm:ss",
 	})
 	assert.Nil(t, errs)
 
@@ -42,7 +46,9 @@ func TestValidate(t *testing.T) {
 			UUID4:     "ffffffff-ffff-ffff-bf1a-4186adc14195",
 			SomeValue: 0,
 		},
-		Things: nil,
+		Things:     nil,
+		DateFormat: "hh:mm",
+		TimeFormat: "DD-MM",
 	})
 	assert.NotNil(t, errs)
 
@@ -54,6 +60,8 @@ func TestValidate(t *testing.T) {
 		`field 'bar.uuid4' must be a valid UUID4`,
 		`field 'bar.some_value' failed tag 'eq=2|eq=3'`,
 		`field 'things' must have a minimum of 1 items`,
+		`field 'date_format' is not a valid date format`,
+		`field 'time_format' is not a valid time format`,
 	}, msgs)
 
 	// test with another invalid object and an explicit object path

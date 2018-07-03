@@ -179,7 +179,7 @@ func TestDateFormat(t *testing.T) {
 	}
 
 	for _, test := range formatTests {
-		actual, err := utils.ToGoDateFormat(test.input)
+		actual, err := utils.ToGoDateFormat(test.input, utils.DateTimeFormatting)
 		if actual != test.expected {
 			t.Errorf("Date format invalid for '%s'  Expected: '%s' Got: '%s'", test.input, test.expected, actual)
 		}
