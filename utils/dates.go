@@ -12,18 +12,14 @@ import (
 )
 
 func init() {
-	Validator.RegisterValidation("date_format", ValidateDateFormat)
-	Validator.RegisterValidation("time_format", ValidateTimeFormat)
-}
-
-func ValidateDateFormat(fl validator.FieldLevel) bool {
-	_, err := ToGoDateFormat(fl.Field().String(), DateOnlyFormatting)
-	return err == nil
-}
-
-func ValidateTimeFormat(fl validator.FieldLevel) bool {
-	_, err := ToGoDateFormat(fl.Field().String(), TimeOnlyFormatting)
-	return err == nil
+	Validator.RegisterValidation("date_format", func(fl validator.FieldLevel) bool {
+		_, err := ToGoDateFormat(fl.Field().String(), DateOnlyFormatting)
+		return err == nil
+	})
+	Validator.RegisterValidation("time_format", func(fl validator.FieldLevel) bool {
+		_, err := ToGoDateFormat(fl.Field().String(), TimeOnlyFormatting)
+		return err == nil
+	})
 }
 
 // patterns for date and time formats supported for human-entered data
