@@ -94,7 +94,8 @@ var XFUNCTIONS = map[string]XFunction{
 	"parse_json": OneTextFunction(ParseJSON),
 
 	// formatting functions
-	"format_datetime": FormatDateTime,
+	"format_date":     ArgCountCheck(1, 2, FormatDate),
+	"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
 	"format_location": OneTextFunction(FormatLocation),
 	"format_number":   FormatNumber,
 	"format_urn":      FormatURN,
@@ -937,7 +938,7 @@ func ParseDateTime(env utils.Environment, args ...types.XValue) types.XValue {
 	}
 
 	// try to turn it to a go format
-	goFormat, err := utils.ToGoDateFormat(format.Native())
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.DateTimeFormatting)
 	if err != nil {
 		return types.NewXError(err)
 	}
@@ -1211,6 +1212,57 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 // Formatting Functions
 //----------------------------------------------------------------------------------------
 
+// FormatDate turns `date` into text according to the `format` specified.
+//
+// The format string can consist of the following characters. The characters
+// ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
+//
+// * `YY`        - last two digits of year 0-99
+// * `YYYY`      - four digits of your 0000-9999
+// * `M`         - month 1-12
+// * `MM`        - month 01-12
+// * `D`         - day of month, 1-31
+// * `DD`        - day of month, zero padded 0-31
+//
+//   @(format_date("1979-07-18T15:00:00.000000Z")) -> 1979-07-18
+//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY-MM-DD")) -> 1979-07-18
+//   @(format_date("2010-05-10T19:50:00.000000Z", "YYYY M DD")) -> 2010 5 10
+//   @(format_date("1979-07-18T15:00:00.000000Z", "YYYY")) -> 1979
+//   @(format_date("1979-07-18T15:00:00.000000Z", "M")) -> 7
+//   @(format_date("NOT DATE", "YYYY-MM-DD")) -> ERROR
+//
+// @function format_date(date, [,format])
+func FormatDate(env utils.Environment, args ...types.XValue) types.XValue {
+	date, xerr := types.ToXDateTime(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	var format types.XText
+	if len(args) >= 2 {
+		format, xerr = types.ToXText(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+	} else {
+		format = types.NewXText(env.DateFormat().String())
+	}
+
+	// try to turn it to a go format
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.DateOnlyFormatting)
+	if err != nil {
+		return types.NewXError(err)
+	}
+
+	// convert to our timezone if we have one (otherwise we remain in the date's default)
+	if env.Timezone() != nil {
+		date = types.NewXDateTime(date.Native().In(env.Timezone()))
+	}
+
+	// return the formatted date
+	return types.NewXText(date.Native().Format(goFormat))
+}
+
 // FormatDateTime turns `date` into text according to the `format` specified and in
 // the optional `timezone`.
 //
@@ -1250,26 +1302,25 @@ func JSON(env utils.Environment, value types.XValue) types.XValue {
 //   @(format_datetime("1979-07-18T15:00:00.000000Z", "M")) -> 7
 //   @(format_datetime("NOT DATE", "YYYY-MM-DD")) -> ERROR
 //
-// @function format_datetime(date, format [,timezone])
+// @function format_datetime(date [,format [,timezone]])
 func FormatDateTime(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) < 1 || len(args) > 3 {
-		return types.NewXErrorf("takes one or two arguments, got %d", len(args))
-	}
 	date, xerr := types.ToXDateTime(env, args[0])
 	if xerr != nil {
 		return xerr
 	}
 
-	format := types.NewXText(fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String()))
+	var format types.XText
 	if len(args) >= 2 {
 		format, xerr = types.ToXText(env, args[1])
 		if xerr != nil {
 			return xerr
 		}
+	} else {
+		format = types.NewXText(fmt.Sprintf("%s %s", env.DateFormat().String(), env.TimeFormat().String()))
 	}
 
 	// try to turn it to a go format
-	goFormat, err := utils.ToGoDateFormat(format.Native())
+	goFormat, err := utils.ToGoDateFormat(format.Native(), utils.DateTimeFormatting)
 	if err != nil {
 		return types.NewXError(err)
 	}
