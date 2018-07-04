@@ -46,6 +46,8 @@ func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+	run.SetWebhook(nil)
+
 	// substitute any variables in our url
 	url, err := run.EvaluateTemplateAsString(a.URL, true)
 	if err != nil {

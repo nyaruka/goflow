@@ -118,6 +118,7 @@ func NewMockAssetServer() *MockAssetServer {
 				assetTypeGroupSet:          "http://testserver/assets/group/",
 				assetTypeLabelSet:          "http://testserver/assets/label/",
 				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy/",
+				assetTypeResthookSet:       "http://testserver/assets/resthook/",
 			},
 		},
 		mockResponses:  map[string]json.RawMessage{},

@@ -1922,7 +1922,8 @@ no user input at that point then this action will be ignored.
 
 Can be used to call a resthook.
 
-A `resthook_called` event will be created based on the results of the HTTP call.
+A `resthook_subscriber_called` event will be created based on the results of the HTTP call
+to each subscriber of the resthook.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -1932,7 +1933,16 @@ A `resthook_called` event will be created based on the results of the HTTP call.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-[]
+{
+    "type": "resthook_subscriber_called",
+    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
+    "resthook": "new-registration",
+    "url": "https://api.ipify.org?format=json",
+    "status": "response_error",
+    "status_code": 405,
+    "request": "POST /?format=json HTTP/1.1\r\nHost: api.ipify.org\r\nUser-Agent: goflow-testing\r\nContent-Length: 459\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
+}
 ```
 </div>
 <a name="action:call_webhook"></a>
@@ -2775,6 +2785,26 @@ waiting for anything from the caller.
 {
     "type": "nothing_wait",
     "created_on": "2006-01-02T15:04:05.234532Z"
+}
+```
+</div>
+<a name="event:resthook_subscriber_called"></a>
+
+## resthook_subscriber_called
+
+Events are created a webhook call is made to a resthook subscriber.
+The event contains the status and status code of the response, as well as a full dump of the
+request.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "resthook_subscriber_called",
+    "created_on": "2006-01-02T15:04:05Z",
+    "resthook": "new-registration",
+    "url": "https://api.ipify.org?format=json",
+    "status": "success",
+    "status_code": 200,
+    "request": "POST https://api.ipify.org?format=json"
 }
 ```
 </div>

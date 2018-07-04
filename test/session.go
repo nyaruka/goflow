@@ -209,6 +209,18 @@ var sessionAssets = `[
                 }
             ]
         }
+    },
+    {
+        "type": "resthook_set",
+        "url": "http://testserver/assets/resthook",
+        "content": [
+            {
+                "slug": "new-registration", 
+                "subscribers": [
+                    "https://api.ipify.org?format=json"
+                ]
+            }
+        ]
     }
 ]`
 

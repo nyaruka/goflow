@@ -129,6 +129,9 @@ type SessionAssets interface {
 
 	HasLocations() bool
 	GetLocationHierarchy() (*utils.LocationHierarchy, error)
+
+	GetResthook(slug string) (*Resthook, error)
+	GetResthookSet() (*ResthookSet, error)
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following

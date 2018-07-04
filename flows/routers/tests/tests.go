@@ -175,15 +175,21 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 //
 // @test has_webhook_status(webhook, status)
 func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
+	status, xerr := types.ToXText(env, arg2)
+	if xerr != nil {
+		return xerr
+	}
+
+	// if there is no webhook (e.g. a previous resthook action ended up calling no URLs), that is considered
+	// equivalent to a connection error
+	if arg1 == nil && flows.WebhookStatus(status.Native()) == flows.WebhookStatusConnectionError {
+		return XTestResult{true, types.NewXText("")}
+	}
+
 	// is the first argument a webhook call
 	webhook, isWebhook := arg1.(*flows.WebhookCall)
 	if !isWebhook {
 		return types.NewXErrorf("must have a webhook call as its first argument")
-	}
-
-	status, xerr := types.ToXText(env, arg2)
-	if xerr != nil {
-		return xerr
 	}
 
 	if string(webhook.Status()) == strings.ToLower(status.Native()) {
