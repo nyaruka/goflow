@@ -125,7 +125,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(1 > 4)`, new: `@(1 > 4)`},
 		{old: `@(1 >= 4)`, new: `@(1 >= 4)`},
 
-		// string concatenation
+		// strings
+		{old: `@("")`, new: `@("")`},
+		{old: `@(" "" ")`, new: `@(" \" ")`},
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 
 		// functions
