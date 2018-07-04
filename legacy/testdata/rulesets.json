@@ -174,7 +174,7 @@
                 "type": "switch",
                 "result_name": "Response 1",
                 "default_exit_uuid": "496dbfc3-d2f9-4f0f-9f8f-6a1db139c035",
-                "operand": "@contact.fields.gender",
+                "operand": "@(if(is_error(contact.fields.gender), \"@contact.gender\", contact.fields.gender))",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

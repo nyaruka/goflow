@@ -927,12 +927,15 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		wait = waits.NewMsgWait(timeout)
 
 		fallthrough
-	case "flow_field":
-		fallthrough
-	case "contact_field":
-		fallthrough
-	case "expression":
-		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction, false)
+	case "flow_field", "contact_field", "expression":
+		// unlike other templates, operands for expression rulesets need to be wrapped in such a way that if
+		// they error, they evaluate to the original expression
+		var defaultToSelf bool
+		if r.Type == "expression" {
+			defaultToSelf = true
+		}
+
+		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction, defaultToSelf)
 		if operand == "" {
 			operand = "@run.input"
 		}
