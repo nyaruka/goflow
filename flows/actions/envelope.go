@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// ActionFromEnvelope unmarshals an action from the given typed envelope
 func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	var action flows.Action
 
@@ -17,6 +18,8 @@ func ActionFromEnvelope(envelope *utils.TypedEnvelope) (flows.Action, error) {
 		action = &AddContactGroupsAction{}
 	case TypeAddContactURN:
 		action = &AddContactURNAction{}
+	case TypeCallResthook:
+		action = &CallResthookAction{}
 	case TypeCallWebhook:
 		action = &CallWebhookAction{}
 	case TypeRemoveContactGroups:

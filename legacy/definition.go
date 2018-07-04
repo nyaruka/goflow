@@ -17,16 +17,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-var legacyWebhookBody = `{
-	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
-	"flow": @(json(run.flow)),
-	"path": @(json(run.path)),
-	"results": @(json(run.results)),
-	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": @(json(run.input)),
-	"channel": @(json(if(run.input, run.input.channel, null)))
-}`
-
 // Flow is a flow in the legacy format
 type Flow struct {
 	BaseLanguage utils.Language `json:"base_language"`
@@ -198,10 +188,15 @@ func (f *FlowReference) Migrate() *flows.FlowReference {
 	return flows.NewFlowReference(f.UUID, f.Name)
 }
 
-type WebhookConfig struct {
-	Webhook string          `json:"webhook"`
-	Action  string          `json:"webhook_action"`
-	Headers []WebhookHeader `json:"webhook_headers"`
+// RulesetConfig holds the config dictionary for a legacy ruleset
+type RulesetConfig struct {
+	Flow           *flows.FlowReference `json:"flow"`
+	FieldDelimiter string               `json:"field_delimiter"`
+	FieldIndex     int                  `json:"field_index"`
+	Webhook        string               `json:"webhook"`
+	WebhookAction  string               `json:"webhook_action"`
+	WebhookHeaders []WebhookHeader      `json:"webhook_headers"`
+	Resthook       string               `json:"resthook"`
 }
 
 type WebhookHeader struct {
@@ -585,7 +580,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		if strings.ToUpper(a.Action) == "POST" {
 			headers["Content-Type"] = "application/json"
-			body = legacyWebhookBody
+			body = flows.DefaultWebhookPayload
 		}
 
 		for _, header := range a.WebhookHeaders {
@@ -807,7 +802,7 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 	}
 
 	// for webhook rulesets we need to map 2 rules (success/failure) to 3 cases and exits (success/response_error/connection_error)
-	if r.Type == "webhook" {
+	if r.Type == "webhook" || r.Type == "resthook" {
 		connectionErrorCategory := "Connection Error"
 		connectionErrorExitUUID := flows.ExitUUID(utils.NewUUID())
 		connectionErrorExit := definition.NewExit(connectionErrorExitUUID, exits[1].DestinationNodeUUID(), connectionErrorCategory)
@@ -825,11 +820,6 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 	return exits, cases, defaultExitUUID, nil
 }
 
-type fieldConfig struct {
-	FieldDelimiter string `json:"field_delimiter"`
-	FieldIndex     int    `json:"field_index"`
-}
-
 // migrates the given legacy rulset to a node with a router
 func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, error) {
 	var newActions []flows.Action
@@ -843,21 +833,21 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	resultName := r.Label
 
-	switch r.Type {
-	case "subflow":
-		config := make(map[string]map[string]string)
+	// load the config for this ruleset
+	var config RulesetConfig
+	if r.Config != nil {
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
 			return nil, err
 		}
+	}
 
-		flowUUID := flows.FlowUUID(config["flow"]["uuid"])
-		flowName := config["flow"]["name"]
-
+	switch r.Type {
+	case "subflow":
 		newActions = []flows.Action{
 			&actions.StartFlowAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
-				Flow:       flows.NewFlowReference(flowUUID, flowName),
+				Flow:       config.Flow,
 			},
 		}
 
@@ -865,22 +855,16 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
 
 	case "webhook":
-		var config WebhookConfig
-		err := json.Unmarshal(r.Config, &config)
-		if err != nil {
-			return nil, err
-		}
-
 		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, expressions.ExtraAsFunction)
-		headers := make(map[string]string, len(config.Headers))
+		headers := make(map[string]string, len(config.WebhookHeaders))
 		body := ""
 
-		if strings.ToUpper(config.Action) == "POST" {
+		if strings.ToUpper(config.WebhookAction) == "POST" {
 			headers["Content-Type"] = "application/json"
-			body = legacyWebhookBody
+			body = flows.DefaultWebhookPayload
 		}
 
-		for _, header := range config.Headers {
+		for _, header := range config.WebhookHeaders {
 			headers[header.Name], _ = expressions.MigrateTemplate(header.Value, expressions.ExtraAsFunction)
 		}
 
@@ -888,7 +872,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&actions.CallWebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
-				Method:     config.Action,
+				Method:     config.WebhookAction,
 				Headers:    headers,
 				Body:       body,
 			},
@@ -897,10 +881,18 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		// webhook rulesets operate on the webhook call
 		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
 
-	case "form_field":
-		var config fieldConfig
-		json.Unmarshal(r.Config, &config)
+	case "resthook":
+		newActions = []flows.Action{
+			&actions.CallResthookAction{
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
+				Resthook:   config.Resthook,
+			},
+		}
 
+		// webhook rulesets operate on the webhook call
+		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+
+	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)

@@ -629,6 +629,107 @@
     },
     {
         "legacy_ruleset": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+            "rules": [
+                {
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16", 
+                    "test": {
+                        "status": "success", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Success"
+                    }, 
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f", 
+                    "destination_type": "A"
+                }, 
+                {
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                    "test": {
+                        "status": "failure", 
+                        "type": "webhook_status"
+                    },
+                    "category": {
+                        "eng": "Failure"
+                    }, 
+                    "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4", 
+                    "destination_type": "A"
+                }
+            ],
+            "ruleset_type": "resthook", 
+            "label": "Response 1", 
+            "operand": "@step.value", 
+            "finished_key": null, 
+            "response_type": "", 
+            "y": 100, 
+            "x": 1,
+            "config": {
+                "resthook": "new-registration"
+            }
+        },
+        "expected_node": {
+            "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+            "actions": [
+                {
+                    "type": "call_resthook",
+                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "resthook": "new-registration"
+                }
+            ],
+            "router": {
+                "type": "switch",
+                "result_name": "Response 1",
+                "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                "operand": "@run.webhook",
+                "cases": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_webhook_status",
+                        "arguments": [
+                            "success"
+                        ],
+                        "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
+                    },
+                    {
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_webhook_status",
+                        "arguments": [
+                            "response_error"
+                        ],
+                        "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
+                    },
+                    {
+                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                        "type": "has_webhook_status",
+                        "arguments": [
+                            "connection_error"
+                        ],
+                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "name": "Success"
+                },
+                {
+                    "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "name": "Failure"
+                },
+                {
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                    "name": "Connection Error"
+                }
+            ]
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
             "uuid": "a040f89e-534e-4e5d-9e94-a8b639c426c8", 
             "rules": [
                 {
