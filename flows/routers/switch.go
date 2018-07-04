@@ -120,7 +120,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// tests have to return either errors or test results
 		switch typedResult := result.(type) {
 		case types.XError:
-			return nil, flows.NoRoute, typedResult
+			return nil, flows.NoRoute, types.NewXErrorf("error calling %s: %s", strings.ToUpper(test), typedResult.(types.XError).Error())
 		case tests.XTestResult:
 			// looks truthy, lets return this exit
 			if typedResult.Matched() {
