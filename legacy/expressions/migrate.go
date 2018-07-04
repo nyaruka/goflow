@@ -3,6 +3,7 @@ package expressions
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -23,13 +24,13 @@ var datePrefixes = []string{
 }
 
 // MigrateTemplate will take a legacy expression and translate it to the new syntax
-func MigrateTemplate(template string, extraAs ExtraVarsMapping) (string, error) {
+func MigrateTemplate(template string, extraAs ExtraVarsMapping, defaultToSelf bool) (string, error) {
 	migrationVarMapper := newMigrationVarMapper(extraAs)
 
-	return migrateLegacyTemplateAsString(migrationVarMapper, template)
+	return migrateLegacyTemplateAsString(migrationVarMapper, template, defaultToSelf)
 }
 
-func migrateLegacyTemplateAsString(resolver Resolvable, template string) (string, error) {
+func migrateLegacyTemplateAsString(resolver Resolvable, template string, defaultToSelf bool) (string, error) {
 	var buf bytes.Buffer
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 	scanner.SetUnescapeBody(false)
@@ -48,30 +49,33 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string) (string
 			} else {
 				strValue, _ := toString(value)
 
-				if strValue == token {
-					buf.WriteString("@" + token)
-				} else {
-					// if expression has been changed, then it might need to be wrapped in @(...)
-					buf.WriteString(wrapRawExpression(strValue))
+				var errorAs string
+				if defaultToSelf {
+					errorAs = "@" + token
 				}
+
+				// expression might need to be wrapped in @(...) or call to @(default(...))
+				buf.WriteString(wrapRawExpression(strValue, errorAs))
 			}
 
 		case excellent.EXPRESSION:
 			value, err := migrateExpression(nil, resolver, token)
-			buf.WriteString("@(")
 			if err != nil {
 				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
+				buf.WriteString("@(")
 				buf.WriteString(token)
+				buf.WriteString(")")
 			} else {
-				strValue, err := toString(value)
-				if err != nil {
-					buf.WriteString(token)
-					errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
-				} else {
-					buf.WriteString(strValue)
+				strValue, _ := toString(value)
+
+				var errorAs string
+				if defaultToSelf {
+					errorAs = "@(" + token + ")"
 				}
+
+				// expression might need to be wrapped in @(...) or call to @(default(...))
+				buf.WriteString(wrapRawExpression(strValue, errorAs))
 			}
-			buf.WriteString(")")
 		}
 	}
 
@@ -215,13 +219,33 @@ func isDate(operand string) bool {
 	return false
 }
 
-func wrapRawExpression(raw string) string {
+var identifierRegex = regexp.MustCompile(`^\pL+[\pL\pN_.]*$`)
+
+func isValidIdentifier(expression string) bool {
+	if !identifierRegex.MatchString(expression) {
+		return false
+	}
+
 	for _, topLevel := range runs.RunContextTopLevels {
-		if strings.HasPrefix(raw, topLevel+".") || raw == topLevel {
-			return "@" + raw
+		if strings.HasPrefix(expression, topLevel+".") || expression == topLevel {
+			return true
 		}
 	}
-	return fmt.Sprintf("@(%s)", raw)
+
+	return false
+}
+
+// takes a raw expression and wraps it for inclusion in a template, e.g. now() -> @(now())
+func wrapRawExpression(expression string, errorAs string) string {
+	if errorAs != "" {
+		expression = fmt.Sprintf(`if(is_error(%s), %s, %s)`, expression, strconv.Quote(errorAs), expression)
+	}
+
+	if !isValidIdentifier(expression) {
+		expression = "(" + expression + ")"
+	}
+
+	return "@" + expression
 }
 
 // convertTimeToSeconds takes a old TIME(0,2,5) like expression
