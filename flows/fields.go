@@ -102,7 +102,10 @@ func (v *FieldValue) Reduce(env utils.Environment) types.XPrimitive {
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
-func (v *FieldValue) ToXJSON(env utils.Environment) types.XText { return v.Reduce(env).ToXJSON(env) }
+func (v *FieldValue) ToXJSON(env utils.Environment) types.XText {
+	j, _ := types.ToXJSON(env, v.Reduce(env))
+	return j
+}
 
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
