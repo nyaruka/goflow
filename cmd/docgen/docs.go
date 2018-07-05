@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -56,6 +57,10 @@ func buildDocs(baseDir string) (string, error) {
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
+	tz, _ := time.LoadLocation("America/Guayaquil")
+	utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, tz)))
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	session, err := test.CreateTestSession(testServerPort, nil)
 	if err != nil {

@@ -400,7 +400,11 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, tz, tc.Context.Now)
+			env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, tz, nil, utils.RedactionPolicyNone)
+			if tc.Context.Now != nil {
+				utils.SetTimeSource(utils.NewFixedTimeSource(*tc.Context.Now))
+				defer utils.SetTimeSource(utils.DefaultTimeSource)
+			}
 
 			migratedVars := tc.Context.Variables.Migrate()
 			migratedVarsJSON, _ := json.Marshal(migratedVars)

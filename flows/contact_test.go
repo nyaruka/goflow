@@ -10,10 +10,11 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestContactFormat(t *testing.T) {
-	env := test.NewTestEnvironment(utils.DateFormatYearMonthDay, time.UTC, nil)
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyNone)
 
 	// name takes precedence if set
 	contact := flows.NewContact("Joe", utils.NilLanguage, nil)
@@ -73,7 +74,10 @@ func TestContactSetPreferredChannel(t *testing.T) {
 }
 
 func TestReevaluateDynamicGroups(t *testing.T) {
-	env := test.NewTestEnvironment(utils.DateFormatYearMonthDay, time.UTC, nil)
+	session, err := test.CreateTestSession(40000, nil)
+	require.NoError(t, err)
+
+	env := session.Runs()[0].Environment()
 
 	fieldSet := flows.NewFieldSet([]*flows.Field{
 		flows.NewField("gender", "Gender", flows.FieldValueTypeText),

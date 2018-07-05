@@ -47,7 +47,7 @@ func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, pare
 		contact:   contact,
 		results:   flows.NewResults(),
 		status:    flows.RunStatusActive,
-		createdOn: time.Now().UTC(),
+		createdOn: utils.Now(),
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
@@ -73,7 +73,7 @@ func (r *flowRun) Events() []flows.Event  { return r.events }
 
 func (r *flowRun) Exit(status flows.RunStatus) {
 	r.SetStatus(status)
-	now := time.Now().UTC()
+	now := utils.Now()
 	r.exitedOn = &now
 }
 func (r *flowRun) Status() flows.RunStatus { return r.status }
@@ -154,7 +154,7 @@ func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error)
 
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
-	now := time.Now().UTC()
+	now := utils.Now()
 	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	return step
@@ -184,7 +184,7 @@ func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
 	if r.Flow().ExpireAfterMinutes() >= 0 {
 		if from == nil {
-			now := time.Now().UTC()
+			now := utils.Now()
 			from = &now
 		}
 

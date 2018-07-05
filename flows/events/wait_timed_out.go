@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // TypeWaitTimedOut is the type of our wait timed out events
@@ -48,7 +49,7 @@ func (e *WaitTimedOutEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can only be applied when session wait has timeout")
 	}
 
-	if run.Environment().Now().Before(*wait.TimeoutOn()) {
+	if utils.Now().Before(*wait.TimeoutOn()) {
 		return fmt.Errorf("can't apply before wait has timed out")
 	}
 

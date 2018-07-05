@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/assets"
@@ -276,6 +275,16 @@ var sessionTrigger = `{
         },
         "status": "active"
     },
+    "environment": {
+        "date_format": "YYYY-MM-DD",
+        "languages": [
+            "eng",
+            "spa"
+        ],
+        "redaction_policy": "none",
+        "time_format": "hh:mm",
+        "timezone": "America/Guayaquil"
+    },
     "params": {"source": "website","address": {"state": "WA"}}
 }`
 
@@ -351,10 +360,5 @@ func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 
 	// create our engine session
 	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), TestHTTPClient)
-
-	// override the session environment
-	tz, _ := time.LoadLocation("America/Guayaquil")
-	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz, nil))
-
 	return session, nil
 }

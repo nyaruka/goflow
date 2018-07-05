@@ -219,7 +219,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 		}
 
 		// give all our example events a fixed created on time
-		event.SetCreatedOn(session.Environment().Now())
+		event.SetCreatedOn(utils.Now())
 
 		typed, err := utils.EnvelopeFromTyped(event)
 		if err != nil {

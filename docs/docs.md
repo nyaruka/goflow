@@ -2374,13 +2374,13 @@ Can be used to trigger sessions for other contacts and groups
                 "value": "red",
                 "category": "Red",
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "created_on": "2018-04-11T18:24:30.123456Z"
+                "created_on": "2018-04-11T13:24:30.123456-05:00"
             },
             "phone_number": {
                 "name": "Phone Number",
                 "value": "+12344563452",
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "created_on": "2018-04-11T18:24:30.123456Z"
+                "created_on": "2018-04-11T13:24:30.123456-05:00"
             }
         }
     }

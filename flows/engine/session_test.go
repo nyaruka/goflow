@@ -170,13 +170,9 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, 1, len(run.Path()))
 	require.Equal(t, 2, len(run.Events()))
 
-	// mock our current time to be 10 seconds after the wait times out
-	testEnv := session.Environment().(*test.TestEnvironment)
-	testEnv.SetNow(timeoutOn.Add(time.Second * 10))
-
-	// now we should be able to resume
+	// should be able to resume with a timed out event in the future
 	timeoutEvent := events.NewWaitTimedOutEvent()
-	timeoutEvent.CreatedOn_ = time.Date(2018, 5, 4, 15, 2, 30, 0, time.UTC)
+	timeoutEvent.CreatedOn_ = timeoutOn.Add(time.Second * 60)
 
 	session.Resume([]flows.Event{timeoutEvent})
 	require.NoError(t, err)

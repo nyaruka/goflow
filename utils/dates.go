@@ -142,7 +142,7 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 
 	// otherwise, try to parse according to their env settings
 	parsed := ZeroTime
-	currentYear := time.Now().Year()
+	currentYear := Now().Year()
 	var err error
 
 	switch env.DateFormat() {
