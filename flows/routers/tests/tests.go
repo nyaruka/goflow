@@ -182,7 +182,7 @@ func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 
 	// is the first argument a webhook call?
 	webhook, isWebhook := arg1.(*flows.WebhookCall)
-	if webhook != nil && !isWebhook {
+	if arg1 != nil && !isWebhook {
 		return types.NewXErrorf("must have a webhook call as its first argument")
 	}
 
