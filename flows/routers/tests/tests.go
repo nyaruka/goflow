@@ -180,16 +180,19 @@ func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 		return xerr
 	}
 
-	// if there is no webhook (e.g. a previous resthook action ended up calling no URLs), that is considered
-	// equivalent to a connection error
-	if arg1 == nil && flows.WebhookStatus(status.Native()) == flows.WebhookStatusConnectionError {
-		return XTestResult{true, types.NewXText("")}
+	// is the first argument a webhook call?
+	webhook, isWebhook := arg1.(*flows.WebhookCall)
+	if webhook != nil && !isWebhook {
+		return types.NewXErrorf("must have a webhook call as its first argument")
 	}
 
-	// is the first argument a webhook call
-	webhook, isWebhook := arg1.(*flows.WebhookCall)
-	if !isWebhook {
-		return types.NewXErrorf("must have a webhook call as its first argument")
+	// if there is no webhook (e.g. a previous resthook action ended up calling no URLs), that is considered
+	// equivalent to a connection error
+	if webhook == nil {
+		if flows.WebhookStatus(status.Native()) == flows.WebhookStatusConnectionError {
+			return XTestResult{true, types.NewXText("")}
+		}
+		return XFalseResult
 	}
 
 	if string(webhook.Status()) == strings.ToLower(status.Native()) {
