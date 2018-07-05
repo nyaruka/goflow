@@ -53,7 +53,15 @@ func (v *legacyVisitor) VisitDotLookup(ctx *gen.DotLookupContext) interface{} {
 
 // VisitStringLiteral deals with string literals such as "asdf"
 func (v *legacyVisitor) VisitStringLiteral(ctx *gen.StringLiteralContext) interface{} {
-	return ctx.GetText()
+	// strip surrounding quotes
+	value := ctx.GetText()
+	unquoted := value[1 : len(value)-1]
+
+	// replace any escaped quotes
+	unquoted = strings.Replace(unquoted, `""`, `"`, -1)
+
+	// re-escape
+	return strconv.Quote(unquoted)
 }
 
 // VisitFunctionCall deals with function calls like TITLE(foo.bar)

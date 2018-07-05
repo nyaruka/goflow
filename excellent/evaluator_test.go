@@ -72,14 +72,15 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		expected string
 		hasError bool
 	}{
-		{"hello world", "hello world", false},
-		{"@(\"hello\\nworld\")", "hello\nworld", false},
-		{"@(\"hello😁world\")", "hello😁world", false},
-		{"@(\"hello\\U0001F601world\")", "hello😁world", false},
-		{"@(title(\"hello\"))", "Hello", false},
-		{"@(title(hello))", "", true},
-		{"Hello @(title(string1))", "Hello Foo", false},
-		{"Hello @@string1", "Hello @string1", false},
+		{`hello world`, "hello world", false},
+		{`@("hello\nworld")`, "hello\nworld", false},
+		{`@("\"hello\nworld\"")`, "\"hello\nworld\"", false},
+		{`@("hello😁world")`, "hello😁world", false},
+		{`@("hello\U0001F601world")`, "hello😁world", false},
+		{`@(title("hello"))`, "Hello", false},
+		{`@(title(hello))`, "", true},
+		{`Hello @(title(string1))`, "Hello Foo", false},
+		{`Hello @@string1`, "Hello @string1", false},
 
 		// an identifier which isn't valid top-level is ignored completely
 		{"@hello", "@hello", false},
