@@ -47,9 +47,6 @@ func (v *Visitor) VisitTextLiteral(ctx *gen.TextLiteralContext) interface{} {
 		unquoted = value[1 : len(value)-1]
 	}
 
-	// replace "" with "
-	unquoted = strings.Replace(unquoted, "\"\"", "\"", -1)
-
 	return types.NewXText(unquoted)
 }
 
