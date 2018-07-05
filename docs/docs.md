@@ -1941,7 +1941,8 @@ to each subscriber of the resthook.
     "url": "https://api.ipify.org?format=json",
     "status": "response_error",
     "status_code": 405,
-    "request": "POST /?format=json HTTP/1.1\r\nHost: api.ipify.org\r\nUser-Agent: goflow-testing\r\nContent-Length: 459\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
+    "request": "POST /?format=json HTTP/1.1\r\nHost: api.ipify.org\r\nUser-Agent: goflow-testing\r\nContent-Length: 459\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}",
+    "response": "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\nConnection: keep-alive\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Thu, 05 Jul 2018 16:51:22 GMT\r\nServer: Cowboy\r\nVary: Origin\r\nVia: 1.1 vegur\r\n\r\n"
 }
 ```
 </div>
@@ -1949,8 +1950,8 @@ to each subscriber of the resthook.
 
 ## call_webhook
 
-Can be used to call an external service and insert the results in @run.webhook
-context variable. The body, header and url fields may be templates and will be evaluated at runtime.
+Can be used to call an external service. The body, header and url fields may be
+templates and will be evaluated at runtime.
 
 A `webhook_called` event will be created based on the results of the HTTP call.
 
@@ -2794,7 +2795,7 @@ waiting for anything from the caller.
 
 Events are created a webhook call is made to a resthook subscriber.
 The event contains the status and status code of the response, as well as a full dump of the
-request.
+request and response. Applying this event updates @run.webhook in the context.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -2804,7 +2805,8 @@ request.
     "url": "https://api.ipify.org?format=json",
     "status": "success",
     "status_code": 200,
-    "request": "POST https://api.ipify.org?format=json"
+    "request": "POST https://api.ipify.org?format=json",
+    "response": ""
 }
 ```
 </div>
@@ -2911,7 +2913,7 @@ the item that the wait was waiting for
 
 Events are created when a webhook is called. The event contains
 the status and status code of the response, as well as a full dump of the
-request and response.
+request and response. Applying this event updates @run.webhook in the context.
 
 <div class="output_event"><h3>Event</h3>```json
 {
