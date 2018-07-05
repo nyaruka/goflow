@@ -18,6 +18,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var testServerPort = 49992
+
 func TestEvaluateTemplateAsString(t *testing.T) {
 	tests := []struct {
 		template string
@@ -117,13 +119,17 @@ func TestContextToJSON(t *testing.T) {
 		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},
 	}
 
+	server, err := test.NewTestHTTPServer(testServerPort)
+	require.NoError(t, err)
+
+	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
-	session, err := test.CreateTestSession(49996, nil)
+	session, err := test.CreateTestSession(testServerPort, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
