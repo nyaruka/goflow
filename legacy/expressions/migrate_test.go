@@ -24,10 +24,10 @@ import (
 var testServerPort = 49997
 
 type testTemplate struct {
-	old string
-	new string
-
-	extraAs expressions.ExtraVarsMapping
+	old           string
+	new           string
+	extraAs       expressions.ExtraVarsMapping
+	defaultToSelf bool
 }
 
 func TestMigrateTemplate(t *testing.T) {
@@ -100,8 +100,8 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// variables in parens
 		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel))`},
-		{old: `@(contact.gender)`, new: `@(contact.fields.gender)`},
-		{old: `@(flow.favorite_color)`, new: `@(run.results.favorite_color)`},
+		{old: `@(contact.gender)`, new: `@contact.fields.gender`},
+		{old: `@(flow.favorite_color)`, new: `@run.results.favorite_color`},
 
 		// booleans
 		{old: `@(TRUE)`, new: `@(true)`},
@@ -226,6 +226,10 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
+		// expressions that should default to themselves on error
+		{old: `@("hello")`, new: `@(if(is_error("hello"), "@(\"hello\")", "hello"))`, defaultToSelf: true},
+		{old: `@extra.exists`, new: `@(if(is_error(run.webhook.json.exists), "@extra.exists", run.webhook.json.exists))`, extraAs: expressions.ExtraAsWebhookJSON, defaultToSelf: true},
+
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
 		{old: `@twitter_handle`, new: `@twitter_handle`},
@@ -234,9 +238,19 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@run.results.favorite_color @@flow.favorite_color @run.results.favorite_color @nyaruka @ @`},
 	}
 
-	for i := range tests {
-		tests = append(tests, testTemplate{old: "Embedded " + tests[i].old + " text", new: "Embedded " + tests[i].new + " text", extraAs: tests[i].extraAs})
-		tests = append(tests, testTemplate{old: "Replace " + tests[i].old + " two " + tests[i].old + " times", new: "Replace " + tests[i].new + " two " + tests[i].new + " times", extraAs: tests[i].extraAs})
+	for _, tc := range tests {
+		tests = append(tests, testTemplate{
+			old:           "Embedded " + tc.old + " text",
+			new:           "Embedded " + tc.new + " text",
+			extraAs:       tc.extraAs,
+			defaultToSelf: tc.defaultToSelf,
+		})
+		tests = append(tests, testTemplate{
+			old:           "Replace " + tc.old + " two " + tc.old + " times",
+			new:           "Replace " + tc.new + " two " + tc.new + " times",
+			extraAs:       tc.extraAs,
+			defaultToSelf: tc.defaultToSelf,
+		})
 	}
 
 	server, err := test.NewTestHTTPServer(testServerPort)
@@ -247,21 +261,21 @@ func TestMigrateTemplate(t *testing.T) {
 	session, err := test.CreateTestSession(testServerPort, nil)
 	require.NoError(t, err)
 
-	for _, test := range tests {
+	for _, tc := range tests {
 
 		for i := 0; i < 1; i++ {
-			migratedTemplate, err := expressions.MigrateTemplate(test.old, test.extraAs)
+			migratedTemplate, err := expressions.MigrateTemplate(tc.old, tc.extraAs, tc.defaultToSelf)
 
 			defer func() {
 				if r := recover(); r != nil {
-					t.Errorf("panic migrating template '%s': %#v", test.old, r)
+					t.Errorf("panic migrating template '%s': %#v", tc.old, r)
 				}
 			}()
 
-			assert.NoError(t, err, "error migrating template '%s'", test.old)
-			assert.Equal(t, test.new, migratedTemplate, "migrating template '%s' failed", test.old)
+			assert.NoError(t, err, "error migrating template '%s'", tc.old)
+			assert.Equal(t, tc.new, migratedTemplate, "migrating template '%s' failed", tc.old)
 
-			if migratedTemplate == test.new {
+			if migratedTemplate == tc.new {
 				// check that the migrated template can be evaluated
 				_, err = session.Runs()[0].EvaluateTemplate(migratedTemplate)
 				require.NoError(t, err, "unable to evaluate migrated template '%s'", migratedTemplate)
@@ -371,7 +385,7 @@ func TestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction)
+		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction, false)
 
 		defer func() {
 			if r := recover(); r != nil {
