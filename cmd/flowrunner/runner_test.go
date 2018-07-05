@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/assets"
@@ -154,12 +155,14 @@ func TestFlows(t *testing.T) {
 
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	// save away our server URL so we can rewrite our URLs
 	serverURL = server.URL
 
 	for _, tc := range flowTests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+		utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 
 		testJSON, err := readFile("flows/", tc.output)
 		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
@@ -201,9 +204,11 @@ func TestFlows(t *testing.T) {
 			testJSON, err := utils.JSONMarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
+			testJSON, _ = normalizeJSON(testJSON)
+
 			// write our output
 			outputFilename := deriveFilename("flows/", tc.output)
-			err = ioutil.WriteFile(outputFilename, clearTimestamps(testJSON), 0644)
+			err = ioutil.WriteFile(outputFilename, testJSON, 0644)
 			require.NoError(t, err, "Error writing test file to %s: %s", outputFilename, err)
 		} else {
 			// start by checking we have the expected number of outputs
@@ -247,15 +252,4 @@ func assertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMess
 		return false
 	}
 	return true
-}
-
-func normalizeJSON(data json.RawMessage) ([]byte, error) {
-	data = clearTimestamps(data)
-
-	var asMap map[string]interface{}
-	if err := json.Unmarshal(data, &asMap); err != nil {
-		return nil, err
-	}
-
-	return utils.JSONMarshalPretty(asMap)
 }

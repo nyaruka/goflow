@@ -52,15 +52,13 @@ func buildDocs(baseDir string) (string, error) {
 	}
 	defer server.Close()
 
-	utils.SetRand(utils.NewSeededRand(123456))
 	defer utils.SetRand(utils.DefaultRand)
-
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
-
-	tz, _ := time.LoadLocation("America/Guayaquil")
-	utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, tz)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	utils.SetRand(utils.NewSeededRand(123456))
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
 
 	session, err := test.CreateTestSession(testServerPort, nil)
 	if err != nil {

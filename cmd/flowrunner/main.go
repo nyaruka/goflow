@@ -31,6 +31,15 @@ type FlowTest struct {
 	Outputs      []json.RawMessage        `json:"outputs"`
 }
 
+func normalizeJSON(data json.RawMessage) ([]byte, error) {
+	var asMap map[string]interface{}
+	if err := json.Unmarshal(data, &asMap); err != nil {
+		return nil, err
+	}
+
+	return utils.JSONMarshalPretty(asMap)
+}
+
 func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 	envelopes, err := events.EventsToEnvelopes(eventLog)
 	marshaled := make([]json.RawMessage, len(envelopes))
@@ -42,73 +51,6 @@ func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
 		}
 	}
 	return marshaled
-}
-
-func replaceArrayFields(replacements map[string]interface{}, parent string, arrFields []interface{}) {
-	for _, e := range arrFields {
-		switch child := e.(type) {
-		case map[string]interface{}:
-			replaceMapFields(replacements, parent, child)
-		case []interface{}:
-			replaceArrayFields(replacements, parent, child)
-		}
-	}
-}
-
-func replaceMapFields(replacements map[string]interface{}, parent string, mapFields map[string]interface{}) {
-	for k, v := range mapFields {
-		replacement, found := replacements[k]
-		if found {
-			mapFields[k] = replacement
-			continue
-		}
-
-		if parent != "" {
-			parentKey := parent + "." + k
-			replacement, found = replacements[parentKey]
-			if found {
-				mapFields[k] = replacement
-				continue
-			}
-		}
-
-		switch child := v.(type) {
-		case map[string]interface{}:
-			replaceMapFields(replacements, k, child)
-		case []interface{}:
-			replaceArrayFields(replacements, k, child)
-		}
-	}
-}
-
-func clearTimestamps(input []byte) []byte {
-	placeholder := "2000-01-01T00:00:00.000000000-00:00"
-
-	replacements := map[string]interface{}{
-		"arrived_on":  placeholder,
-		"left_on":     placeholder,
-		"exited_on":   placeholder,
-		"created_on":  placeholder,
-		"modified_on": placeholder,
-		"expires_on":  placeholder,
-		"timeout_on":  placeholder,
-	}
-
-	// unmarshal to arbitrary json
-	inputJSON := make(map[string]interface{})
-	err := json.Unmarshal(input, &inputJSON)
-	if err != nil {
-		log.Fatalf("Error unmarshalling: %s", err)
-	}
-
-	replaceMapFields(replacements, "", inputJSON)
-
-	// return our marshalled result
-	outputJSON, err := utils.JSONMarshalPretty(inputJSON)
-	if err != nil {
-		log.Fatalf("Error marshalling: %s", err)
-	}
-	return outputJSON
 }
 
 func main() {
@@ -243,13 +185,15 @@ func main() {
 		}
 
 		flowTest := FlowTest{Trigger: triggerEnvelope, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
-		testJSON, err := utils.JSONMarshalPretty(flowTest)
+		testJSON, err := utils.JSONMarshal(flowTest)
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)
 		}
 
+		testJSON, _ = normalizeJSON(testJSON)
+
 		// write our output
-		err = ioutil.WriteFile(testFilename, clearTimestamps(testJSON), 0644)
+		err = ioutil.WriteFile(testFilename, testJSON, 0644)
 		if err != nil {
 			log.Fatalf("Error writing test file to %s: %s\n", testFilename, err)
 		}

@@ -464,11 +464,11 @@ var funcTests = []struct {
 func TestFunctions(t *testing.T) {
 	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyNone)
 
-	utils.SetRand(utils.NewSeededRand(123456))
 	defer utils.SetRand(utils.DefaultRand)
-
-	utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	utils.SetRand(utils.NewSeededRand(123456))
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, test := range funcTests {
 		xFunc, exists := functions.XFUNCTIONS[test.name]

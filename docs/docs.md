@@ -1845,7 +1845,7 @@ for the groups which the contact has been added to.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_added",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
     "groups": [
         {
@@ -1875,7 +1875,7 @@ action will be ignored.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_urn_added",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
     "urn": "tel:+12344563452"
 }
@@ -1904,7 +1904,7 @@ no user input at that point then this action will be ignored.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "input_labels_added",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
     "labels": [
@@ -1939,7 +1939,7 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "webhook_called",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
     "url": "http://localhost:49998/?cmd=success",
     "status": "success",
@@ -1973,7 +1973,7 @@ the contact from all non-dynamic groups.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_removed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
     "groups": [
         {
@@ -2008,7 +2008,7 @@ with the evaluated text.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "broadcast_created",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
     "translations": {
         "": {
@@ -2045,7 +2045,7 @@ An `email_created` event will be created for each email address.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "email_created",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
     "addresses": [
         "foo@bar.com"
@@ -2074,7 +2074,7 @@ A `broadcast_created` event will be created with the evaluated text.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_created",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
     "msg": {
         "uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14",
@@ -2109,7 +2109,7 @@ A `contact_channel_changed` event will be created with the set channel.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_channel_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
@@ -2140,7 +2140,7 @@ A `contact_field_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_field_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
     "field": {
         "key": "gender",
@@ -2168,7 +2168,7 @@ A `contact_language_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_language_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
     "language": "eng"
 }
@@ -2192,7 +2192,7 @@ A `contact_name_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_name_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
     "name": "Bob Smith"
 }
@@ -2216,7 +2216,7 @@ A `contact_timezone_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_timezone_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
     "timezone": "Africa/Kigali"
 }
@@ -2245,7 +2245,7 @@ final values.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "run_result_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
     "name": "Gender",
     "value": "m",
@@ -2275,7 +2275,7 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "flow_triggered",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -2310,7 +2310,7 @@ Can be used to trigger sessions for other contacts and groups
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "session_triggered",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "95dc7ae3-0788-4fb7-b19f-d98753239d65",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -2374,13 +2374,13 @@ Can be used to trigger sessions for other contacts and groups
                 "value": "red",
                 "category": "Red",
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "created_on": "2018-04-11T13:24:30.123456-05:00"
+                "created_on": "2018-04-11T18:24:30.123456Z"
             },
             "phone_number": {
                 "name": "Phone Number",
                 "value": "+12344563452",
                 "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "created_on": "2018-04-11T13:24:30.123456-05:00"
+                "created_on": "2018-04-11T18:24:30.123456Z"
             }
         }
     }

@@ -21,7 +21,7 @@ type fixedTimeSource struct {
 	now time.Time
 }
 
-func (s fixedTimeSource) Now() time.Time {
+func (s *fixedTimeSource) Now() time.Time {
 	return s.now
 }
 
@@ -35,9 +35,9 @@ type sequentialTimeSource struct {
 	current time.Time
 }
 
-func (s sequentialTimeSource) Now() time.Time {
+func (s *sequentialTimeSource) Now() time.Time {
 	now := s.current
-	s.current.Add(time.Second * 1)
+	s.current = s.current.Add(time.Second * 1)
 	return now
 }
 
