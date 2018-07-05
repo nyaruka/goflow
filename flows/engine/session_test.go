@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -134,6 +135,12 @@ func TestContextToJSON(t *testing.T) {
 }
 
 func TestWaitTimeout(t *testing.T) {
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
+	t2 := t1.Add(time.Minute * 10)
+	utils.SetTimeSource(utils.NewFixedTimeSource(t1))
+
 	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)
 
@@ -159,7 +166,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "msg_wait", run.Events()[1].Type())
 
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
-	require.NotNil(t, waitEvent.TimeoutOn)
+	require.Equal(t, &t2, waitEvent.TimeoutOn)
 	timeoutOn := *waitEvent.TimeoutOn
 
 	// try to resume without any event - we should remain in waiting state
@@ -169,6 +176,9 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
 	require.Equal(t, 1, len(run.Path()))
 	require.Equal(t, 2, len(run.Events()))
+
+	// mock our current time to be 10 seconds after the wait times out
+	utils.SetTimeSource(utils.NewFixedTimeSource(t2.Add(time.Second * 10)))
 
 	// should be able to resume with a timed out event in the future
 	timeoutEvent := events.NewWaitTimedOutEvent()
@@ -183,6 +193,6 @@ func TestWaitTimeout(t *testing.T) {
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
-	require.Equal(t, "2018-05-04T15:02:30.000000Z", result.Value)
+	require.Equal(t, "2018-04-11T13:35:30.123456Z", result.Value)
 	require.Nil(t, result.Input)
 }
