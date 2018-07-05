@@ -68,8 +68,13 @@
                 },
                 {
                     "uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "type": "send_msg",
-                    "text": "Resthook: @(json(run.webhook))"
+                    "actions": [
+                        {
+                            "uuid": "945db2dd-690c-4eb6-98a0-4681415d51d8",
+                            "type": "send_msg",
+                            "text": "Resthook: @(json(run.webhook))"
+                        }
+                    ]
                 }
             ]
         }
