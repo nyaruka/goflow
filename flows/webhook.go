@@ -76,6 +76,17 @@ type WebhookCall struct {
 	response   string
 }
 
+// NewWebhookCall creates a new webhook call
+func NewWebhookCall(url string, status WebhookStatus, statusCode int, request string, response string) *WebhookCall {
+	return &WebhookCall{
+		url:        url,
+		status:     status,
+		statusCode: statusCode,
+		request:    request,
+		response:   response,
+	}
+}
+
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
 // regardless of any errors being set
 func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, error) {

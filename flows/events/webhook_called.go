@@ -9,7 +9,7 @@ const TypeWebhookCalled string = "webhook_called"
 
 // WebhookCalledEvent events are created when a webhook is called. The event contains
 // the status and status code of the response, as well as a full dump of the
-// request and response.
+// request and response. Applying this event updates @run.webhook in the context.
 //
 //   {
 //     "type": "webhook_called",
@@ -50,5 +50,6 @@ func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
 
 // Apply applies this event to the given run
 func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
+	run.SetWebhook(flows.NewWebhookCall(e.URL, e.Status, e.StatusCode, e.Request, e.Response))
 	return nil
 }

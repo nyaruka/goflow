@@ -39,8 +39,7 @@ func (a *CallResthookAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
-	run.SetWebhook(nil)
-
+	// lookup our resthook asset
 	resthook, err := run.Session().Assets().GetResthook(a.Resthook)
 	if err != nil {
 		return err
@@ -59,11 +58,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		} else {
-			log.Add(events.NewResthookSubscriberCalledEvent(a.Resthook, webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request()))
-
-			if run.Webhook() == nil {
-				run.SetWebhook(webhook)
-			}
+			log.Add(events.NewResthookSubscriberCalledEvent(a.Resthook, webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 		}
 	}
 	return nil
