@@ -45,21 +45,31 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		return err
 	}
 
-	// make a request for each URL
+	// build our payload
+	payload, err := run.EvaluateTemplateAsString(flows.DefaultWebhookPayload, false)
+	if err != nil {
+		log.Add(events.NewErrorEvent(err))
+	}
+
+	// make a call to each subscriber URL
+	calls := make([]*events.ResthookSubscriberCall, 0, len(resthook.Subscribers()))
+
 	for _, url := range resthook.Subscribers() {
-		req, err := http.NewRequest("POST", url, strings.NewReader(flows.DefaultWebhookPayload))
+		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 			return nil
 		}
 
 		webhook, err := flows.MakeWebhookCall(run.Session(), req)
-
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		} else {
-			log.Add(events.NewResthookSubscriberCalledEvent(a.Resthook, webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+			calls = append(calls, &events.ResthookSubscriberCall{URL: webhook.URL(), Status: webhook.Status(), StatusCode: webhook.StatusCode()})
 		}
 	}
+
+	log.Add(events.NewResthookCalledEvent(a.Resthook, payload, calls))
+
 	return nil
 }

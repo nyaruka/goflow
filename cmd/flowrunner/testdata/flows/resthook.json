@@ -86,6 +86,7 @@
             {
                 "slug": "new-registration", 
                 "subscribers": [
+                    "http://localhost/",
                     "http://localhost/?cmd=success"
                 ]
             }

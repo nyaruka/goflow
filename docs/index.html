@@ -1150,11 +1150,12 @@
 <a class="sourceLine" id="cb102-8" data-line-number="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_webhook_status"></a></p>
 <h2 id="has_webhook_statuswebhook-status">has_webhook_status(webhook, status)</h2>
-<p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" data-line-number="1">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb103-2" data-line-number="2">@(has_webhook_status(run.webhook, <span class="st">&quot;connection_error&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb103-3" data-line-number="3">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>).match) → {<span class="st">&quot;results&quot;</span>:[{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;IN&quot;</span>}]}</a>
-<a class="sourceLine" id="cb103-4" data-line-number="4">@(has_webhook_status(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;success&quot;</span>)) → ERROR</a></code></pre></div>
+<p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>. If there is webhook set, then “success” will still match.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" data-line-number="1">@(has_webhook_status(NULL, <span class="st">&quot;success&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb103-2" data-line-number="2">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb103-3" data-line-number="3">@(has_webhook_status(run.webhook, <span class="st">&quot;connection_error&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb103-4" data-line-number="4">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>).match) → {<span class="st">&quot;results&quot;</span>:[{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;IN&quot;</span>}]}</a>
+<a class="sourceLine" id="cb103-5" data-line-number="5">@(has_webhook_status(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;success&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:is_error"></a></p>
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
@@ -1290,16 +1291,19 @@ Action
 Event
 </h3>
 <div class="sourceCode" id="cb113"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb113-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_subscriber_called&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb113-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T13:24:30.123456-05:00&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb113-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;229bd432-dac7-4a3f-ba91-c48ad8c50e6b&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb113-5" data-line-number="5">    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-6" data-line-number="6">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-7" data-line-number="7">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;response_error&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-8" data-line-number="8">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">405</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-9" data-line-number="9">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /?format=json HTTP/1.1</span><span class="ch">\r\n</span><span class="st">Host: api.ipify.org</span><span class="ch">\r\n</span><span class="st">User-Agent: goflow-testing</span><span class="ch">\r\n</span><span class="st">Content-Length: 459</span><span class="ch">\r\n</span><span class="st">Accept-Encoding: gzip</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\n\t\&quot;</span><span class="st">contact</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">@contact.uuid</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">name</span><span class="ch">\&quot;</span><span class="st">: @(json(contact.name)), </span><span class="ch">\&quot;</span><span class="st">urn</span><span class="ch">\&quot;</span><span class="st">: @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},</span><span class="ch">\n\t\&quot;</span><span class="st">flow</span><span class="ch">\&quot;</span><span class="st">: @(json(run.flow)),</span><span class="ch">\n\t\&quot;</span><span class="st">path</span><span class="ch">\&quot;</span><span class="st">: @(json(run.path)),</span><span class="ch">\n\t\&quot;</span><span class="st">results</span><span class="ch">\&quot;</span><span class="st">: @(json(run.results)),</span><span class="ch">\n\t\&quot;</span><span class="st">run</span><span class="ch">\&quot;</span><span class="st">: {</span><span class="ch">\&quot;</span><span class="st">uuid</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">@run.uuid</span><span class="ch">\&quot;</span><span class="st">, </span><span class="ch">\&quot;</span><span class="st">created_on</span><span class="ch">\&quot;</span><span class="st">: </span><span class="ch">\&quot;</span><span class="st">@run.created_on</span><span class="ch">\&quot;</span><span class="st">},</span><span class="ch">\n\t\&quot;</span><span class="st">input</span><span class="ch">\&quot;</span><span class="st">: @(json(run.input)),</span><span class="ch">\n\t\&quot;</span><span class="st">channel</span><span class="ch">\&quot;</span><span class="st">: @(json(if(run.input, run.input.channel, null)))</span><span class="ch">\n</span><span class="st">}&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb113-10" data-line-number="10">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 405 Method Not Allowed</span><span class="ch">\r\n</span><span class="st">Content-Length: 0</span><span class="ch">\r\n</span><span class="st">Connection: keep-alive</span><span class="ch">\r\n</span><span class="st">Content-Type: text/plain; charset=utf-8</span><span class="ch">\r\n</span><span class="st">Date: Thu, 05 Jul 2018 17:02:25 GMT</span><span class="ch">\r\n</span><span class="st">Server: Cowboy</span><span class="ch">\r\n</span><span class="st">Vary: Origin</span><span class="ch">\r\n</span><span class="st">Via: 1.1 vegur</span><span class="ch">\r\n\r\n</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb113-11" data-line-number="11"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb113-6" data-line-number="6">    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-7" data-line-number="7">    <span class="dt">&quot;calls&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb113-8" data-line-number="8">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb113-9" data-line-number="9">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-10" data-line-number="10">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;response_error&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb113-11" data-line-number="11">            <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">405</span></a>
+<a class="sourceLine" id="cb113-12" data-line-number="12">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb113-13" data-line-number="13">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb113-14" data-line-number="14"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="action:call_webhook"></a></p>
 <h2 id="call_webhook">call_webhook</h2>
@@ -2116,23 +2120,31 @@ Event
 <a class="sourceLine" id="cb158-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05.234532Z&quot;</span></a>
 <a class="sourceLine" id="cb158-4" data-line-number="4"><span class="fu">}</span></a></code></pre></div>
 </div>
-<p><a name="event:resthook_subscriber_called"></a></p>
-<h2 id="resthook_subscriber_called">resthook_subscriber_called</h2>
-<p>Events are created a webhook call is made to a resthook subscriber. The event contains the status and status code of the response, as well as a full dump of the request and response. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context.</p>
+<p><a name="event:resthook_called"></a></p>
+<h2 id="resthook_called">resthook_called</h2>
+<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context.</p>
 <div class="output_event">
 <h3>
 Event
 </h3>
 <div class="sourceCode" id="cb159"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb159-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb159-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_subscriber_called&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb159-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb159-4" data-line-number="4">    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb159-5" data-line-number="5">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb159-6" data-line-number="6">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb159-7" data-line-number="7">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb159-8" data-line-number="8">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb159-9" data-line-number="9">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span></a>
-<a class="sourceLine" id="cb159-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb159-5" data-line-number="5">    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-6" data-line-number="6">    <span class="dt">&quot;calls&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb159-7" data-line-number="7">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb159-8" data-line-number="8">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-9" data-line-number="9">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-10" data-line-number="10">            <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span></a>
+<a class="sourceLine" id="cb159-11" data-line-number="11">        <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb159-12" data-line-number="12">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb159-13" data-line-number="13">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-14" data-line-number="14">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-15" data-line-number="15">            <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">410</span></a>
+<a class="sourceLine" id="cb159-16" data-line-number="16">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb159-17" data-line-number="17">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb159-18" data-line-number="18"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="event:run_expired"></a></p>
 <h2 id="run_expired">run_expired</h2>

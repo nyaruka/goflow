@@ -1765,10 +1765,12 @@ Tests whether a ward name is contained in the `text`
 
 ## has_webhook_status(webhook, status)
 
-Tests whether the passed in `webhook` call has the passed in `status`.
+Tests whether the passed in `webhook` call has the passed in `status`. If there is
+webhook set, then "success" will still match.
 
 
 ```objectivec
+@(has_webhook_status(NULL, "success")) → true
 @(has_webhook_status(run.webhook, "success")) → true
 @(has_webhook_status(run.webhook, "connection_error")) → false
 @(has_webhook_status(run.webhook, "success").match) → {"results":[{"state":"WA"},{"state":"IN"}]}
@@ -1934,15 +1936,18 @@ to each subscriber of the resthook.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "resthook_subscriber_called",
+    "type": "resthook_called",
     "created_on": "2018-04-11T13:24:30.123456-05:00",
     "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
     "resthook": "new-registration",
-    "url": "https://api.ipify.org?format=json",
-    "status": "response_error",
-    "status_code": 405,
-    "request": "POST /?format=json HTTP/1.1\r\nHost: api.ipify.org\r\nUser-Agent: goflow-testing\r\nContent-Length: 459\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}",
-    "response": "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\nConnection: keep-alive\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Thu, 05 Jul 2018 17:02:25 GMT\r\nServer: Cowboy\r\nVary: Origin\r\nVia: 1.1 vegur\r\n\r\n"
+    "payload": "",
+    "calls": [
+        {
+            "url": "https://api.ipify.org?format=json",
+            "status": "response_error",
+            "status_code": 405
+        }
+    ]
 }
 ```
 </div>
@@ -2789,24 +2794,31 @@ waiting for anything from the caller.
 }
 ```
 </div>
-<a name="event:resthook_subscriber_called"></a>
+<a name="event:resthook_called"></a>
 
-## resthook_subscriber_called
+## resthook_called
 
-Events are created a webhook call is made to a resthook subscriber.
-The event contains the status and status code of the response, as well as a full dump of the
-request and response. Applying this event updates @run.webhook in the context.
+Events are created when a resthook is called. The event contains the status and status code
+of each call to the resthook's subscribers. Applying this event updates @run.webhook in the context.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "resthook_subscriber_called",
+    "type": "resthook_called",
     "created_on": "2006-01-02T15:04:05Z",
     "resthook": "new-registration",
-    "url": "https://api.ipify.org?format=json",
-    "status": "success",
-    "status_code": 200,
-    "request": "POST https://api.ipify.org?format=json",
-    "response": ""
+    "payload": "",
+    "calls": [
+        {
+            "url": "http://localhost:49998/?cmd=success",
+            "status": "success",
+            "status_code": 200
+        },
+        {
+            "url": "https://api.ipify.org?format=json",
+            "status": "success",
+            "status_code": 410
+        }
+    ]
 }
 ```
 </div>
