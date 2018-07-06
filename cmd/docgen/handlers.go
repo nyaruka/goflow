@@ -194,7 +194,7 @@ func checkExample(session flows.Session, line string) error {
 }
 
 func eventsForAction(action flows.Action) (json.RawMessage, error) {
-	session, err := test.CreateTestSession(49998, action)
+	session, err := test.CreateTestSession("http://localhost:49998", action)
 	if err != nil {
 		return nil, err
 	}

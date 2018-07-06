@@ -12,8 +12,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var testServerPort = 49994
-
 type call struct {
 	method string
 	url    string
@@ -29,11 +27,11 @@ type webhook struct {
 }
 
 func TestWebhookParsing(t *testing.T) {
-	server, err := test.NewTestHTTPServer(testServerPort)
+	server, err := test.NewTestHTTPServer(49994)
 	require.NoError(t, err)
 	defer server.Close()
 
-	session, err := test.CreateTestSession(testServerPort, nil)
+	session, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
 	testCases := []struct {

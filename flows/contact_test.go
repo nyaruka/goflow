@@ -74,7 +74,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 }
 
 func TestReevaluateDynamicGroups(t *testing.T) {
-	session, err := test.CreateTestSession(40000, nil)
+	session, err := test.CreateTestSession("http://localhost", nil)
 	require.NoError(t, err)
 
 	env := session.Runs()[0].Environment()
