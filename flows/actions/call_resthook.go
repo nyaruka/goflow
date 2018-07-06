@@ -66,6 +66,8 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 			return nil
 		}
 
+		req.Header.Add("Content-Type", "application/json")
+
 		webhook, err := flows.MakeWebhookCall(run.Session(), req)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
