@@ -13,8 +13,6 @@ import (
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 // Flow is a flow in the legacy format
@@ -24,27 +22,6 @@ type Flow struct {
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
 	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
-}
-
-// Note is a legacy sticky note
-type Note struct {
-	X     decimal.Decimal `json:"x"`
-	Y     decimal.Decimal `json:"y"`
-	Title string          `json:"title"`
-	Body  string          `json:"body"`
-}
-
-// Sticky is a migrated note
-type Sticky map[string]interface{}
-
-// Migrate migrates this note to a new sticky note
-func (n *Note) Migrate() Sticky {
-	return Sticky{
-		"position": map[string]interface{}{"left": n.X.IntPart(), "top": n.Y.IntPart()},
-		"title":    n.Title,
-		"body":     n.Body,
-		"color":    "yellow",
-	}
 }
 
 // Metadata is the metadata section of a legacy flow
@@ -821,14 +798,15 @@ func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Local
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, UINodeType, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
+	var uiType UINodeType
 
 	exits, cases, defaultExit, err := parseRules(lang, r, localization)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	resultName := r.Label
@@ -838,7 +816,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	if r.Config != nil {
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 	}
 
@@ -853,6 +831,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// subflow rulesets operate on the child flow status
 		router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
+		uiType = UINodeTypeSubflow
 
 	case "webhook":
 		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, expressions.ExtraAsFunction, false)
@@ -880,6 +859,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// webhook rulesets operate on the webhook call
 		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+		uiType = UINodeTypeWebhook
 
 	case "resthook":
 		newActions = []flows.Action{
@@ -896,10 +876,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction, false)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
+		uiType = UINodeTypeSplitByRunResultDelimited
 
 	case "group":
 		// in legacy flows these rulesets have their operand as @step.value but it's not used
 		router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
+		uiType = UINodeTypeSplitByGroups
 
 	case "wait_message":
 		// look for timeout test on the legacy ruleset
@@ -908,7 +890,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			if rule.Test.Type == "timeout" {
 				test := timeoutTest{}
 				if err := json.Unmarshal(rule.Test.Data, &test); err != nil {
-					return nil, err
+					return nil, "", err
 				}
 				t := 60 * test.Minutes
 				timeout = &t
@@ -917,14 +899,21 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		wait = waits.NewMsgWait(timeout)
+		uiType = UINodeTypeWaitForResponse
 
 		fallthrough
 	case "flow_field", "contact_field", "expression":
 		// unlike other templates, operands for expression rulesets need to be wrapped in such a way that if
 		// they error, they evaluate to the original expression
 		var defaultToSelf bool
-		if r.Type == "expression" {
+		switch r.Type {
+		case "flow_field":
+			uiType = UINodeTypeSplitByRunResult
+		case "contact_field":
+			uiType = UINodeTypeSplitByContactField
+		case "expression":
 			defaultToSelf = true
+			uiType = UINodeTypeSplitByExpression
 		}
 
 		operand, _ := expressions.MigrateTemplate(r.Operand, expressions.ExtraAsFunction, defaultToSelf)
@@ -935,11 +924,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 	case "random":
 		router = routers.NewRandomRouter(resultName)
+		uiType = UINodeTypeSplitByRandom
 	default:
-		return nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
+		return nil, "", fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
-	return definition.NewNode(r.UUID, newActions, router, exits, wait), nil
+	return definition.NewNode(r.UUID, newActions, router, exits, wait), uiType, nil
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
@@ -984,7 +974,9 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 // Migrate migrates this legacy flow to the new format
 func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	localization := definition.NewLocalization()
-	nodes := make([]flows.Node, len(f.ActionSets)+len(f.RuleSets))
+	numNodes := len(f.ActionSets) + len(f.RuleSets)
+	nodes := make([]flows.Node, numNodes)
+	nodeUITypes := make(map[flows.NodeUUID]UINodeType, numNodes)
 
 	for i := range f.ActionSets {
 		node, err := migateActionSet(f.BaseLanguage, f.ActionSets[i], localization)
@@ -995,11 +987,12 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	}
 
 	for i := range f.RuleSets {
-		node, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization)
+		node, uiType, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization)
 		if err != nil {
 			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
 		}
 		nodes[len(f.ActionSets)+i] = node
+		nodeUITypes[node.UUID()] = uiType
 	}
 
 	// make sure our entry node is first
@@ -1011,39 +1004,20 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 		}
 	}
 
-	ui := make(map[string]interface{})
+	var ui UI
 
 	if includeUI {
-		// convert our UI metadata
-		nodesUI := make(map[flows.NodeUUID]interface{})
+		ui = NewUI()
 
-		for i := range f.ActionSets {
-			actionset := f.ActionSets[i]
-			nmd := make(map[string]interface{})
-			nmd["position"] = map[string]int{
-				"left": actionset.X,
-				"top":  actionset.Y,
-			}
-			nodesUI[actionset.UUID] = nmd
+		for _, actionSet := range f.ActionSets {
+			ui.AddNode(actionSet.UUID, actionSet.X, actionSet.Y, "")
 		}
-
-		for i := range f.RuleSets {
-			ruleset := f.RuleSets[i]
-			nmd := make(map[string]interface{})
-			nmd["position"] = map[string]int{
-				"left": ruleset.X,
-				"top":  ruleset.Y,
-			}
-			nodesUI[ruleset.UUID] = nmd
+		for _, ruleSet := range f.RuleSets {
+			ui.AddNode(ruleSet.UUID, ruleSet.X, ruleSet.Y, nodeUITypes[ruleSet.UUID])
 		}
-
-		stickies := make(map[utils.UUID]Sticky, len(f.Metadata.Notes))
 		for _, note := range f.Metadata.Notes {
-			stickies[utils.NewUUID()] = note.Migrate()
+			ui.AddSticky(note.Migrate())
 		}
-
-		ui["nodes"] = nodesUI
-		ui["stickies"] = stickies
 	}
 
 	return definition.NewFlow(
