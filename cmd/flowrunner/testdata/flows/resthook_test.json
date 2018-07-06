@@ -18,15 +18,15 @@
                             "url": "http://127.0.0.1:49999/?cmd=success"
                         }
                     ],
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "payload": "{\n\t\"contact\": {\"uuid\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"name\": \"Ben Haggerty\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\n\t\"path\": [{\"arrived_on\":\"2018-07-05T19:08:20.233937Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\", \"created_on\": \"2018-07-05T19:08:20.233935Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
+                    "payload": "{\n\t\"contact\": {\"uuid\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"name\": \"Ben Haggerty\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\n\t\"path\": [{\"arrived_on\":\"2018-07-06T12:30:02.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\", \"created_on\": \"2018-07-06T12:30:00.123456Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
                     "resthook": "new-registration",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "resthook_called"
                 },
                 {
                     "category": "Failure",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "input": "POST http://127.0.0.1:49999/",
                     "name": "Response 1",
                     "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
@@ -35,13 +35,13 @@
                     "value": ""
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Resthook: {\"request\":\"POST http://127.0.0.1:49999/\\r\\n\\r\\n{\\n\\t\\\"contact\\\": {\\\"uuid\\\": \\\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\\\", \\\"name\\\": \\\"Ben Haggerty\\\", \\\"urn\\\": \\\"tel:+12065551212\\\"},\\n\\t\\\"flow\\\": {\\\"name\\\":\\\"Resthook\\\",\\\"revision\\\":0,\\\"uuid\\\":\\\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\\\"},\\n\\t\\\"path\\\": [{\\\"arrived_on\\\":\\\"2018-07-05T19:08:20.233937Z\\\",\\\"exit_uuid\\\":\\\"\\\",\\\"node_uuid\\\":\\\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\\\",\\\"uuid\\\":\\\"692926ea-09d6-4942-bd38-d266ec8d3716\\\"}],\\n\\t\\\"results\\\": {},\\n\\t\\\"run\\\": {\\\"uuid\\\": \\\"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\\\", \\\"created_on\\\": \\\"2018-07-05T19:08:20.233935Z\\\"},\\n\\t\\\"input\\\": null,\\n\\t\\\"channel\\\": null\\n}\",\"response\":\"\",\"status\":\"response_error\",\"status_code\":400,\"url\":\"http://127.0.0.1:49999/\"}",
+                        "text": "Resthook: {\"request\":\"POST http://127.0.0.1:49999/\\r\\n\\r\\n{\\n\\t\\\"contact\\\": {\\\"uuid\\\": \\\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\\\", \\\"name\\\": \\\"Ben Haggerty\\\", \\\"urn\\\": \\\"tel:+12065551212\\\"},\\n\\t\\\"flow\\\": {\\\"name\\\":\\\"Resthook\\\",\\\"revision\\\":0,\\\"uuid\\\":\\\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\\\"},\\n\\t\\\"path\\\": [{\\\"arrived_on\\\":\\\"2018-07-06T12:30:02.123456Z\\\",\\\"exit_uuid\\\":\\\"\\\",\\\"node_uuid\\\":\\\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\\\",\\\"uuid\\\":\\\"692926ea-09d6-4942-bd38-d266ec8d3716\\\"}],\\n\\t\\\"results\\\": {},\\n\\t\\\"run\\\": {\\\"uuid\\\": \\\"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\\\", \\\"created_on\\\": \\\"2018-07-06T12:30:00.123456Z\\\"},\\n\\t\\\"input\\\": null,\\n\\t\\\"channel\\\": null\\n}\",\"response\":\"\",\"status\":\"response_error\",\"status_code\":400,\"url\":\"http://127.0.0.1:49999/\"}",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
@@ -51,7 +51,7 @@
             ],
             "session": {
                 "contact": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2000-01-01T00:00:00Z",
                     "id": 1234567,
                     "language": "eng",
                     "name": "Ben Haggerty",
@@ -70,7 +70,7 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
                                 "calls": [
@@ -85,15 +85,15 @@
                                         "url": "http://127.0.0.1:49999/?cmd=success"
                                     }
                                 ],
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "payload": "{\n\t\"contact\": {\"uuid\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"name\": \"Ben Haggerty\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\n\t\"path\": [{\"arrived_on\":\"2018-07-05T19:08:20.233937Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\", \"created_on\": \"2018-07-05T19:08:20.233935Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
+                                "created_on": "2018-07-06T12:30:03.123456789Z",
+                                "payload": "{\n\t\"contact\": {\"uuid\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"name\": \"Ben Haggerty\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\n\t\"path\": [{\"arrived_on\":\"2018-07-06T12:30:02.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\", \"created_on\": \"2018-07-06T12:30:00.123456Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
                                 "resthook": "new-registration",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "resthook_called"
                             },
                             {
                                 "category": "Failure",
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "input": "POST http://127.0.0.1:49999/",
                                 "name": "Response 1",
                                 "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
@@ -102,13 +102,13 @@
                                 "value": ""
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Resthook: {\"request\":\"POST http://127.0.0.1:49999/\\r\\n\\r\\n{\\n\\t\\\"contact\\\": {\\\"uuid\\\": \\\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\\\", \\\"name\\\": \\\"Ben Haggerty\\\", \\\"urn\\\": \\\"tel:+12065551212\\\"},\\n\\t\\\"flow\\\": {\\\"name\\\":\\\"Resthook\\\",\\\"revision\\\":0,\\\"uuid\\\":\\\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\\\"},\\n\\t\\\"path\\\": [{\\\"arrived_on\\\":\\\"2018-07-05T19:08:20.233937Z\\\",\\\"exit_uuid\\\":\\\"\\\",\\\"node_uuid\\\":\\\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\\\",\\\"uuid\\\":\\\"692926ea-09d6-4942-bd38-d266ec8d3716\\\"}],\\n\\t\\\"results\\\": {},\\n\\t\\\"run\\\": {\\\"uuid\\\": \\\"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\\\", \\\"created_on\\\": \\\"2018-07-05T19:08:20.233935Z\\\"},\\n\\t\\\"input\\\": null,\\n\\t\\\"channel\\\": null\\n}\",\"response\":\"\",\"status\":\"response_error\",\"status_code\":400,\"url\":\"http://127.0.0.1:49999/\"}",
+                                    "text": "Resthook: {\"request\":\"POST http://127.0.0.1:49999/\\r\\n\\r\\n{\\n\\t\\\"contact\\\": {\\\"uuid\\\": \\\"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\\\", \\\"name\\\": \\\"Ben Haggerty\\\", \\\"urn\\\": \\\"tel:+12065551212\\\"},\\n\\t\\\"flow\\\": {\\\"name\\\":\\\"Resthook\\\",\\\"revision\\\":0,\\\"uuid\\\":\\\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\\\"},\\n\\t\\\"path\\\": [{\\\"arrived_on\\\":\\\"2018-07-06T12:30:02.123456Z\\\",\\\"exit_uuid\\\":\\\"\\\",\\\"node_uuid\\\":\\\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\\\",\\\"uuid\\\":\\\"692926ea-09d6-4942-bd38-d266ec8d3716\\\"}],\\n\\t\\\"results\\\": {},\\n\\t\\\"run\\\": {\\\"uuid\\\": \\\"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\\\", \\\"created_on\\\": \\\"2018-07-06T12:30:00.123456Z\\\"},\\n\\t\\\"input\\\": null,\\n\\t\\\"channel\\\": null\\n}\",\"response\":\"\",\"status\":\"response_error\",\"status_code\":400,\"url\":\"http://127.0.0.1:49999/\"}",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
@@ -116,21 +116,21 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2018-07-06T12:30:08.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Resthook",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                         },
                         "path": [
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                                 "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:06.123456789Z",
                                 "node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
@@ -138,7 +138,7 @@
                         "results": {
                             "response_1": {
                                 "category": "Failure",
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "input": "POST http://127.0.0.1:49999/",
                                 "name": "Response 1",
                                 "node_uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
@@ -148,7 +148,7 @@
                         "status": "completed",
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "webhook": {
-                            "request": "POST http://127.0.0.1:49999/\r\n\r\n{\n\t\"contact\": {\"uuid\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"name\": \"Ben Haggerty\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\n\t\"path\": [{\"arrived_on\":\"2018-07-05T19:08:20.233937Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\", \"created_on\": \"2018-07-05T19:08:20.233935Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
+                            "request": "POST http://127.0.0.1:49999/\r\n\r\n{\n\t\"contact\": {\"uuid\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"name\": \"Ben Haggerty\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Resthook\",\"revision\":0,\"uuid\":\"76f0a02f-3b75-4b86-9064-e9195e1b3a02\"},\n\t\"path\": [{\"arrived_on\":\"2018-07-06T12:30:02.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"10e483a8-5ffb-4c4f-917b-d43ce86c1d65\",\"uuid\":\"692926ea-09d6-4942-bd38-d266ec8d3716\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5\", \"created_on\": \"2018-07-06T12:30:00.123456Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
                             "response": "",
                             "status": "response_error",
                             "status_code": 400,
@@ -159,7 +159,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2000-01-01T00:00:00Z",
                         "id": 1234567,
                         "language": "eng",
                         "name": "Ben Haggerty",
