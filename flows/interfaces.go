@@ -130,7 +130,6 @@ type SessionAssets interface {
 	HasLocations() bool
 	GetLocationHierarchy() (*utils.LocationHierarchy, error)
 
-	GetResthook(slug string) (*Resthook, error)
 	GetResthookSet() (*ResthookSet, error)
 }
 

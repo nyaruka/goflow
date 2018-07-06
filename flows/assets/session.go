@@ -154,19 +154,6 @@ func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
 	return set, nil
 }
 
-// GetResthook gets a resthook asset for the session
-func (s *sessionAssets) GetResthook(slug string) (*flows.Resthook, error) {
-	set, err := s.GetResthookSet()
-	if err != nil {
-		return nil, err
-	}
-	resthook := set.FindBySlug(slug)
-	if resthook == nil {
-		return nil, fmt.Errorf("no such resthook with slug '%s'", slug)
-	}
-	return resthook, nil
-}
-
 func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {
 	asset, err := s.cache.GetAsset(s.server, assetTypeResthookSet, "")
 	if err != nil {
