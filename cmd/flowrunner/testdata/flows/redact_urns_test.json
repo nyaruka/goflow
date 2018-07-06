@@ -6,7 +6,7 @@
         {
             "events": [
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -20,7 +20,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 71\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": [{\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}]) }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
@@ -32,7 +32,7 @@
             ],
             "session": {
                 "contact": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2000-01-01T00:00:00Z",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -64,10 +64,10 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:03.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -81,7 +81,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 71\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": [{\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}]) }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
@@ -91,15 +91,15 @@
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             }
                         ],
-                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2018-07-06T12:30:05.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Redacted URNs",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
                         "path": [
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "exit_uuid": "598ae7a5-2f81-48f1-afac-595262514aa1",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
@@ -119,7 +119,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2000-01-01T00:00:00Z",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"

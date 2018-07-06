@@ -60,7 +60,7 @@ func (e *environment) Timezone() *time.Location         { return e.timezone }
 func (e *environment) Languages() LanguageList          { return e.languages }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 
-func (e *environment) Now() time.Time { return time.Now().In(e.Timezone()) }
+func (e *environment) Now() time.Time { return Now().In(e.Timezone()) }
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

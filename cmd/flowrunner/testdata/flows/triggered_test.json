@@ -6,7 +6,7 @@
         {
             "events": [
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -22,7 +22,7 @@
             ],
             "session": {
                 "contact": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2000-01-01T00:00:00Z",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -54,10 +54,10 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:03.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -71,15 +71,15 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2018-07-06T12:30:04.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Triggered Flow",
                             "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
                         },
                         "path": [
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
@@ -91,7 +91,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2000-01-01T00:00:00Z",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
@@ -127,7 +127,7 @@
                     },
                     "run": {
                         "contact": {
-                            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                            "created_on": "0001-01-01T00:00:00Z",
                             "fields": {
                                 "state": {
                                     "state": "Ecuador > Esmeraldas",
@@ -147,7 +147,7 @@
                         },
                         "results": {
                             "age": {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2000-01-01T00:00:00Z",
                                 "name": "",
                                 "node_uuid": "",
                                 "value": "33"

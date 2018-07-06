@@ -7,7 +7,7 @@
             "events": [
                 {
                     "category": "Other",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
                     "input": "",
                     "name": "URN Check",
                     "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -17,7 +17,7 @@
                 },
                 {
                     "category": "Other",
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:06.123456789Z",
                     "input": "Ben Haggerty",
                     "name": "Group Check",
                     "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
@@ -26,7 +26,7 @@
                     "value": "Ben Haggerty"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -42,7 +42,7 @@
             ],
             "session": {
                 "contact": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2000-01-01T00:00:00Z",
                     "fields": {
                         "first_name": {
                             "text": "Ben"
@@ -74,11 +74,11 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
                                 "category": "Other",
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:03.123456789Z",
                                 "input": "",
                                 "name": "URN Check",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -88,7 +88,7 @@
                             },
                             {
                                 "category": "Other",
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input": "Ben Haggerty",
                                 "name": "Group Check",
                                 "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
@@ -97,7 +97,7 @@
                                 "value": "Ben Haggerty"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -111,27 +111,27 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2018-07-06T12:30:10.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Router Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
                         "path": [
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "exit_uuid": "85038c16-0060-486c-97be-898c65587658",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:05.123456789Z",
                                 "exit_uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
                                 "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             },
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:08.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
@@ -139,7 +139,7 @@
                         "results": {
                             "group_check": {
                                 "category": "Other",
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "input": "Ben Haggerty",
                                 "name": "Group Check",
                                 "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
@@ -147,7 +147,7 @@
                             },
                             "urn_check": {
                                 "category": "Other",
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "input": "",
                                 "name": "URN Check",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -161,7 +161,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2000-01-01T00:00:00Z",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"

@@ -6,7 +6,7 @@
         {
             "events": [
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
                     "field": {
                         "key": "gender",
                         "name": "Gender"
@@ -16,7 +16,7 @@
                     "value": "MALE"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
                     "field": {
                         "key": "age",
                         "name": "Age"
@@ -26,7 +26,7 @@
                     "value": "64"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -40,13 +40,13 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_urn_added",
                     "urn": "tel:+250781234567"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -60,7 +60,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:10.123456789Z",
                     "field": {
                         "key": "age",
                         "name": ""
@@ -70,7 +70,7 @@
                     "value": "17"
                 },
                 {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2018-07-06T12:30:12.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -86,7 +86,7 @@
             ],
             "session": {
                 "contact": {
-                    "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                    "created_on": "2000-01-01T00:00:00Z",
                     "fields": {
                         "age": {
                             "number": 17,
@@ -138,10 +138,10 @@
                 },
                 "runs": [
                     {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:03.123456789Z",
                                 "field": {
                                     "key": "gender",
                                     "name": "Gender"
@@ -151,7 +151,7 @@
                                 "value": "MALE"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "field": {
                                     "key": "age",
                                     "name": "Age"
@@ -161,7 +161,7 @@
                                 "value": "64"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -175,13 +175,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_urn_added",
                                 "urn": "tel:+250781234567"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -195,7 +195,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "field": {
                                     "key": "age",
                                     "name": ""
@@ -205,7 +205,7 @@
                                 "value": "17"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -219,15 +219,15 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2000-01-01T00:00:00.000000000-00:00",
-                        "expires_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "exited_on": "2018-07-06T12:30:13.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Dynamic Groups",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                         },
                         "path": [
                             {
-                                "arrived_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
@@ -239,7 +239,7 @@
                 "status": "completed",
                 "trigger": {
                     "contact": {
-                        "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                        "created_on": "2000-01-01T00:00:00Z",
                         "fields": {
                             "first_name": {
                                 "text": "Ben"

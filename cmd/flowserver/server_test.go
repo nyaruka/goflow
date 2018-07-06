@@ -212,8 +212,6 @@ var startRequestTemplate = `{
 	"config": %s
 }`
 
-var testServerPort = 49993
-
 type ServerTestSuite struct {
 	suite.Suite
 	flowServer  *FlowServer
@@ -230,7 +228,7 @@ func (ts *ServerTestSuite) SetupSuite() {
 	// wait for server to come up
 	time.Sleep(100 * time.Millisecond)
 
-	ts.httpServer, _ = test.NewTestHTTPServer(testServerPort)
+	ts.httpServer, _ = test.NewTestHTTPServer(49993)
 }
 
 func (ts *ServerTestSuite) TearDownSuite() {

@@ -24,7 +24,7 @@ func main() {
 }
 
 func expTester(template string) (string, error) {
-	session, err := test.CreateTestSession(49995, nil)
+	session, err := test.CreateTestSession("http://localhost:49995", nil)
 	if err != nil {
 		return "", err
 	}

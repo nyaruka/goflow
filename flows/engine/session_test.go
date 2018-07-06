@@ -12,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -79,7 +80,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@twitter_handle", "@twitter_handle", ""},
 	}
 
-	session, err := test.CreateTestSession(49995, nil)
+	session, err := test.CreateTestSession("http://localhost", nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -110,16 +111,23 @@ func TestContextToJSON(t *testing.T) {
 		{"contact.fields.age", `23`},
 		{"contact", `{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"}`},
 		{"run.input", `{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}`},
-
-		// TODO add way to mock call calls to Now() so we can have deterministic tests without doing text substitution of dates?
-		//{"run", `{"contact":{"channel":{"address":"+12345671111","name":"Nexmo","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"fields":{"activation_token":"","age":23,"first_name":"Bob","gender":"","joined":"2018-03-27T10:30:00.123456+02:00","state":"Azuay"},"groups":[{"name":"Azuay State","uuid":"d7ff4872-9238-452f-9d38-2f558fea89e0"},{"name":"Survey Audience","uuid":"2aad21f6-30b7-42c5-bd7f-1b720c154817"}],"language":"eng","name":"Ben Haggerty","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"","path":"1122334455667788","scheme":"facebook"},{"display":"","path":"ben@macklemore","scheme":"mailto"}],"uuid":"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"},"created_on":"2018-04-12T16:46:45.641842Z","exited_on":null,"flow":{"name":"Test Flow","uuid":"76f0a02f-3b75-4b86-9064-e9195e1b3a02"},"input":{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"}],"channel":{"address":"+12345671111","name":"Nexmo","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"84f8a3cf-0f2c-4881-9502-2d7b114bf01f"},"results":{"favorite_color":{"category":"Red","category_localized":"Red","created_on":"2018-04-12T16:46:45.641921Z","name":"Favorite Color","value":"red"}},"status":"waiting","uuid":"a5c743ed-1373-44c2-905a-3df24d418889","webhook":null}`},
-		//{"child", `{"contact":{"channel":{"address":"+12345671111","name":"Nexmo","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"fields":{"activation_token":"","age":23,"first_name":"Bob","gender":"","joined":"2018-03-27T10:30:00.123456+02:00","state":"Azuay"},"groups":[{"name":"Azuay State","uuid":"d7ff4872-9238-452f-9d38-2f558fea89e0"},{"name":"Survey Audience","uuid":"2aad21f6-30b7-42c5-bd7f-1b720c154817"}],"language":"eng","name":"Ben Haggerty","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"","path":"1122334455667788","scheme":"facebook"},{"display":"","path":"ben@macklemore","scheme":"mailto"}],"uuid":"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"},"flow":{"name":"Collect Language","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},"results":{},"status":"completed","uuid":"9ec74122-b46f-47de-b232-dc82c51a6808"}`},
-		//{"parent", `null`},
-
+		{"run", `{"contact":{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"},"created_on":"2018-04-11T13:24:30.123456Z","exited_on":"2018-04-11T13:24:30.123456Z","flow":{"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"},"input":{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"},"results":{"favorite_color":{"category":"Red","category_localized":"Red","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"},"phone_number":{"category":"","category_localized":"","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Phone Number","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"+12344563452"}},"status":"completed","uuid":"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5","webhook":{"json":{"results":[{"state":"WA"},{"state":"IN"}]},"request":"GET /?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D HTTP/1.1\r\nHost: 127.0.0.1:49992\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n","response":"HTTP/1.1 200 OK\r\nContent-Length: 43\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{\"results\":[{\"state\":\"WA\"},{\"state\":\"IN\"}]}","status":"success","status_code":200,"url":"http://127.0.0.1:49992/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"}}`},
+		{"child", `{"contact":{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"},"flow":{"name":"Collect Age","revision":0,"uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},"results":{"age":{"category":"Youth","category_localized":"Youth","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Age","node_uuid":"d9dba561-b5ee-4f62-ba44-60c4dc242b84","value":"23"}},"status":"completed","uuid":"8720f157-ca1c-432f-9c0b-2014ddc77094"}`},
+		{"parent", `{"contact":{"channel":null,"created_on":"0001-01-01T00:00:00.000000Z","fields":{"activation_token":"","age":33,"gender":"Female","join_date":null},"groups":[],"language":"spa","name":"Jasmine","timezone":null,"urns":[],"uuid":"c59b0033-e748-4240-9d4c-e85eb6800151"},"flow":{"name":"Parent","revision":0,"uuid":"fece6eac-9127-4343-9269-56e88f391562"},"results":{"role":{"category":"Reporter","category_localized":"Reporter","created_on":"2000-01-01T00:00:00.000000Z","input":"a reporter","name":"Role","node_uuid":"385cb848-5043-448e-9123-05cbcf26ad74","value":"reporter"}},"status":"active","uuid":"4213ac47-93fd-48c4-af12-7da8218ef09d"}`},
 		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},
 	}
 
-	session, err := test.CreateTestSession(49996, nil)
+	server, err := test.NewTestHTTPServer(49992)
+	require.NoError(t, err)
+
+	defer server.Close()
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
+
+	session, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -134,6 +142,12 @@ func TestContextToJSON(t *testing.T) {
 }
 
 func TestWaitTimeout(t *testing.T) {
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+
+	t1 := time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)
+	t2 := t1.Add(time.Minute * 10)
+	utils.SetTimeSource(utils.NewFixedTimeSource(t1))
+
 	sessionAssets, err := ioutil.ReadFile("testdata/timeout_test.json")
 	require.NoError(t, err)
 
@@ -159,7 +173,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, "msg_wait", run.Events()[1].Type())
 
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
-	require.NotNil(t, waitEvent.TimeoutOn)
+	require.Equal(t, &t2, waitEvent.TimeoutOn)
 	timeoutOn := *waitEvent.TimeoutOn
 
 	// try to resume without any event - we should remain in waiting state
@@ -171,12 +185,11 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, 2, len(run.Events()))
 
 	// mock our current time to be 10 seconds after the wait times out
-	testEnv := session.Environment().(*test.TestEnvironment)
-	testEnv.SetNow(timeoutOn.Add(time.Second * 10))
+	utils.SetTimeSource(utils.NewFixedTimeSource(t2.Add(time.Second * 10)))
 
-	// now we should be able to resume
+	// should be able to resume with a timed out event in the future
 	timeoutEvent := events.NewWaitTimedOutEvent()
-	timeoutEvent.CreatedOn_ = time.Date(2018, 5, 4, 15, 2, 30, 0, time.UTC)
+	timeoutEvent.CreatedOn_ = timeoutOn.Add(time.Second * 60)
 
 	session.Resume([]flows.Event{timeoutEvent})
 	require.NoError(t, err)
@@ -187,6 +200,6 @@ func TestWaitTimeout(t *testing.T) {
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
-	require.Equal(t, "2018-05-04T15:02:30.000000Z", result.Value)
+	require.Equal(t, "2018-04-11T13:35:30.123456Z", result.Value)
 	require.Nil(t, result.Input)
 }

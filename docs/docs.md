@@ -1847,7 +1847,7 @@ for the groups which the contact has been added to.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_added",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
     "groups": [
         {
@@ -1877,7 +1877,7 @@ action will be ignored.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_urn_added",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
     "urn": "tel:+12344563452"
 }
@@ -1906,7 +1906,7 @@ no user input at that point then this action will be ignored.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "input_labels_added",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
     "labels": [
@@ -1937,10 +1937,10 @@ to each subscriber of the resthook.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "resthook_called",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
     "resthook": "new-registration",
-    "payload": "",
+    "payload": "{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"347b55be-7be1-4e68-aaa3-04d3fbce5f9a\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"}},\n\t\"run\": {\"uuid\": \"4c9abf31-d821-4e97-ba7e-53c2263e32f8\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2000-01-01T00:00:00.000000Z\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
     "calls": [
         {
             "url": "https://api.ipify.org?format=json",
@@ -1974,7 +1974,7 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "webhook_called",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
     "url": "http://localhost:49998/?cmd=success",
     "status": "success",
@@ -2008,7 +2008,7 @@ the contact from all non-dynamic groups.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_removed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
     "groups": [
         {
@@ -2043,7 +2043,7 @@ with the evaluated text.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "broadcast_created",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
     "translations": {
         "": {
@@ -2080,7 +2080,7 @@ An `email_created` event will be created for each email address.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "email_created",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
     "addresses": [
         "foo@bar.com"
@@ -2109,7 +2109,7 @@ A `broadcast_created` event will be created with the evaluated text.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_created",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
     "msg": {
         "uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
@@ -2144,7 +2144,7 @@ A `contact_channel_changed` event will be created with the set channel.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_channel_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
@@ -2175,7 +2175,7 @@ A `contact_field_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_field_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
     "field": {
         "key": "gender",
@@ -2203,7 +2203,7 @@ A `contact_language_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_language_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
     "language": "eng"
 }
@@ -2227,7 +2227,7 @@ A `contact_name_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_name_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
     "name": "Bob Smith"
 }
@@ -2251,7 +2251,7 @@ A `contact_timezone_changed` event will be created with the corresponding value.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_timezone_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
     "timezone": "Africa/Kigali"
 }
@@ -2280,7 +2280,7 @@ final values.
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "run_result_changed",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
     "name": "Gender",
     "value": "m",
@@ -2310,7 +2310,7 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "flow_triggered",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -2345,7 +2345,7 @@ Can be used to trigger sessions for other contacts and groups
 </div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "session_triggered",
-    "created_on": "2018-04-11T13:24:30.123456-05:00",
+    "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "636bcfe8-1dd9-4bbd-a2a5-6b6ffeeada26",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",

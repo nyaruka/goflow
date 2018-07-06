@@ -8,7 +8,6 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
@@ -463,10 +462,13 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := test.NewTestEnvironment(utils.DateFormatDayMonthYear, time.UTC, nil)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyNone)
+
+	defer utils.SetRand(utils.DefaultRand)
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	utils.SetRand(utils.NewSeededRand(123456))
-	defer utils.SetRand(utils.DefaultRand)
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
 	for _, test := range funcTests {
 		xFunc, exists := functions.XFUNCTIONS[test.name]
