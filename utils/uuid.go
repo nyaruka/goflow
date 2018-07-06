@@ -22,18 +22,18 @@ func (g defaultUUID4Generator) Next() UUID {
 	return UUID(uuid.NewV4().String())
 }
 
-// SeededUUID4Generator generates a seedable random v4 UUID using math/rand
-type SeededUUID4Generator struct {
+// generates a seedable random v4 UUID using math/rand
+type seededUUID4Generator struct {
 	rnd *rand.Rand
 }
 
 // NewSeededUUID4Generator creates a new SeededUUID4Generator from the given seed
-func NewSeededUUID4Generator(seed int64) *SeededUUID4Generator {
-	return &SeededUUID4Generator{rnd: NewSeededRand(seed)}
+func NewSeededUUID4Generator(seed int64) UUIDGenerator {
+	return &seededUUID4Generator{rnd: NewSeededRand(seed)}
 }
 
 // Next returns the next random UUID
-func (g *SeededUUID4Generator) Next() UUID {
+func (g *seededUUID4Generator) Next() UUID {
 	u := uuid.UUID{}
 	if _, err := g.rnd.Read(u[:]); err != nil {
 		panic(err)

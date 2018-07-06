@@ -5,6 +5,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // the base of all wait types
@@ -37,7 +38,7 @@ func (w *baseTimeoutWait) TimeoutOn() *time.Time { return w.TimeoutOn_ }
 // Begin beings waiting at this wait
 func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
 	if w.Timeout_ != nil {
-		timeoutOn := time.Now().UTC().Add(time.Second * time.Duration(*w.Timeout_))
+		timeoutOn := utils.Now().Add(time.Second * time.Duration(*w.Timeout_))
 
 		w.TimeoutOn_ = &timeoutOn
 	}

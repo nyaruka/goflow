@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/assets"
@@ -89,7 +88,7 @@ var sessionAssets = `[
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",
-                            "url": "http://localhost:TEST_SERVER_PORT/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
+                            "url": "http://localhost/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
                         }
                     ],
                     "exits": [
@@ -276,6 +275,16 @@ var sessionTrigger = `{
         },
         "status": "active"
     },
+    "environment": {
+        "date_format": "YYYY-MM-DD",
+        "languages": [
+            "eng",
+            "spa"
+        ],
+        "redaction_policy": "none",
+        "time_format": "hh:mm",
+        "timezone": "America/Guayaquil"
+    },
     "params": {"source": "website","address": {"state": "WA"}}
 }`
 
@@ -300,9 +309,9 @@ var initialEvents = `[
 ]`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerPort int, actionToAdd flows.Action) (flows.Session, error) {
+func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, error) {
 	// different tests different ports for the test HTTP server
-	sessionAssets = strings.Replace(sessionAssets, "TEST_SERVER_PORT", fmt.Sprintf("%d", testServerPort), -1)
+	sessionAssets = strings.Replace(sessionAssets, "http://localhost", testServerURL, -1)
 
 	session, err := CreateSession(json.RawMessage(sessionAssets))
 	if err != nil {
@@ -351,10 +360,5 @@ func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 
 	// create our engine session
 	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), TestHTTPClient)
-
-	// override the session environment
-	tz, _ := time.LoadLocation("America/Guayaquil")
-	session.SetEnvironment(NewTestEnvironment(utils.DateFormatYearMonthDay, tz, nil))
-
 	return session, nil
 }

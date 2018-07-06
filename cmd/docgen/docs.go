@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -29,8 +30,6 @@ var docSets = []struct {
 	{"eventDocs", []string{"flows/events"}, "@event", handleEventDoc},
 }
 
-var testServerPort = 49998
-
 type documentedItem struct {
 	typeName    string   // actual go type name
 	tagName     string   // tag used to make this as a documented item
@@ -45,19 +44,21 @@ type handleFunc func(output *strings.Builder, item *documentedItem, session flow
 func buildDocs(baseDir string) (string, error) {
 	fmt.Println("Generating docs...")
 
-	server, err := test.NewTestHTTPServer(testServerPort)
+	server, err := test.NewTestHTTPServer(49998)
 	if err != nil {
 		return "", fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
 	defer server.Close()
 
-	utils.SetRand(utils.NewSeededRand(123456))
 	defer utils.SetRand(utils.DefaultRand)
-
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	session, err := test.CreateTestSession(testServerPort, nil)
+	utils.SetRand(utils.NewSeededRand(123456))
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
+	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 18, 24, 30, 123456000, time.UTC)))
+
+	session, err := test.CreateTestSession(server.URL, nil)
 	if err != nil {
 		return "", fmt.Errorf("error creating example session: %s", err)
 	}

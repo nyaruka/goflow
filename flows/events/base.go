@@ -1,8 +1,10 @@
 package events
 
 import (
-	"github.com/nyaruka/goflow/flows"
 	"time"
+
+	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 type baseEvent struct {
@@ -12,7 +14,7 @@ type baseEvent struct {
 }
 
 func newBaseEvent() baseEvent {
-	return baseEvent{CreatedOn_: time.Now().UTC()}
+	return baseEvent{CreatedOn_: utils.Now()}
 }
 
 func (e *baseEvent) CreatedOn() time.Time        { return e.CreatedOn_ }
