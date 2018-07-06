@@ -33,16 +33,21 @@ func (a *CallResthookAction) Type() string { return TypeCallResthook }
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *CallResthookAction) Validate(assets flows.SessionAssets) error {
-	_, err := assets.GetResthook(a.Resthook)
-	return err
+	return nil
 }
 
 // Execute runs this action
 func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	// lookup our resthook asset
-	resthook, err := run.Session().Assets().GetResthook(a.Resthook)
+	resthookSet, err := run.Session().Assets().GetResthookSet()
 	if err != nil {
 		return err
+	}
+
+	// if resthook doesn't exist, treat it like an existing one with no subscribers
+	resthook := resthookSet.FindBySlug(a.Resthook)
+	if resthook == nil {
+		resthook = flows.NewResthook(a.Resthook, nil)
 	}
 
 	// build our payload
