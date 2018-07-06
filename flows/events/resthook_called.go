@@ -13,6 +13,17 @@ type ResthookSubscriberCall struct {
 	URL        string              `json:"url" validate:"required"`
 	Status     flows.WebhookStatus `json:"status" validate:"required"`
 	StatusCode int                 `json:"status_code" validate:"required"`
+	Response   string              `json:"response"`
+}
+
+// NewResthookSubscriberCall creates a new subscriber call from the given webhook call
+func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCall {
+	return &ResthookSubscriberCall{
+		URL:        webhook.URL(),
+		Status:     webhook.Status(),
+		StatusCode: webhook.StatusCode(),
+		Response:   webhook.Response(),
+	}
 }
 
 // ResthookCalledEvent events are created when a resthook is called. The event contains the status and status code
@@ -29,11 +40,13 @@ type ResthookSubscriberCall struct {
 //       {
 //         "url": "http://localhost:49998/?cmd=success",
 //         "status": "success",
-//         "status_code": 200
+//         "status_code": 200,
+//         "response": "{\"errors\":[]}"
 //       },{
 //         "url": "https://api.ipify.org?format=json",
 //         "status": "success",
-//         "status_code": 410
+//         "status_code": 410,
+//         "response": "{\"errors\":[\"Unsubscribe\"]}"
 //       }
 //     ]
 //   }
@@ -86,7 +99,7 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 		}
 
 		request := fmt.Sprintf("POST %s\r\n\r\n%s", asWebhook.URL, e.Payload)
-		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, status, asWebhook.StatusCode, request, ""))
+		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, status, asWebhook.StatusCode, request, asWebhook.Response))
 	} else {
 		run.SetWebhook(nil)
 	}

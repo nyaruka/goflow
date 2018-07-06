@@ -65,7 +65,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		} else {
-			calls = append(calls, &events.ResthookSubscriberCall{URL: webhook.URL(), Status: webhook.Status(), StatusCode: webhook.StatusCode()})
+			calls = append(calls, events.NewResthookSubscriberCall(webhook))
 		}
 	}
 

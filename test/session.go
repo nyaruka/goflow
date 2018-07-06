@@ -216,7 +216,7 @@ var sessionAssets = `[
             {
                 "slug": "new-registration", 
                 "subscribers": [
-                    "https://api.ipify.org?format=json"
+                    "http://localhost/?cmd=success"
                 ]
             }
         ]
