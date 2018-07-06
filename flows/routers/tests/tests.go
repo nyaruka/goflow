@@ -166,7 +166,7 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 	return XFalseResult
 }
 
-// HasWebhookStatus tests whether the passed in `webhook` call has the passed in `status`. If there is
+// HasWebhookStatus tests whether the passed in `webhook` call has the passed in `status`. If there is no
 // webhook set, then "success" will still match.
 //
 //   @(has_webhook_status(NULL, "success")) -> true

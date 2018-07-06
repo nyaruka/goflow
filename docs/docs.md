@@ -1765,7 +1765,7 @@ Tests whether a ward name is contained in the `text`
 
 ## has_webhook_status(webhook, status)
 
-Tests whether the passed in `webhook` call has the passed in `status`. If there is
+Tests whether the passed in `webhook` call has the passed in `status`. If there is no
 webhook set, then "success" will still match.
 
 
@@ -2799,14 +2799,16 @@ waiting for anything from the caller.
 ## resthook_called
 
 Events are created when a resthook is called. The event contains the status and status code
-of each call to the resthook's subscribers. Applying this event updates @run.webhook in the context.
+of each call to the resthook's subscribers, as well as the payload sent to each subscriber. Applying this event
+updates @run.webhook in the context to the results of the last subscriber call. However if one of the subscriber
+calls fails, then it is used to update @run.webhook instead.
 
 <div class="output_event"><h3>Event</h3>```json
 {
     "type": "resthook_called",
     "created_on": "2006-01-02T15:04:05Z",
     "resthook": "new-registration",
-    "payload": "",
+    "payload": "{...}",
     "calls": [
         {
             "url": "http://localhost:49998/?cmd=success",

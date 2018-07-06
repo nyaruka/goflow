@@ -1150,7 +1150,7 @@
 <a class="sourceLine" id="cb102-8" data-line-number="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_webhook_status"></a></p>
 <h2 id="has_webhook_statuswebhook-status">has_webhook_status(webhook, status)</h2>
-<p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>. If there is webhook set, then “success” will still match.</p>
+<p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>. If there is no webhook set, then “success” will still match.</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb103-1" data-line-number="1">@(has_webhook_status(NULL, <span class="st">&quot;success&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb103-2" data-line-number="2">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb103-3" data-line-number="3">@(has_webhook_status(run.webhook, <span class="st">&quot;connection_error&quot;</span>)) → false</a>
@@ -2122,7 +2122,7 @@ Event
 </div>
 <p><a name="event:resthook_called"></a></p>
 <h2 id="resthook_called">resthook_called</h2>
-<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context.</p>
+<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers, as well as the payload sent to each subscriber. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context to the results of the last subscriber call. However if one of the subscriber calls fails, then it is used to update <span class="citation" data-cites="run.webhook">@run.webhook</span> instead.</p>
 <div class="output_event">
 <h3>
 Event
@@ -2131,7 +2131,7 @@ Event
 <a class="sourceLine" id="cb159-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb159-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb159-4" data-line-number="4">    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb159-5" data-line-number="5">    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb159-5" data-line-number="5">    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="st">&quot;{...}&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb159-6" data-line-number="6">    <span class="dt">&quot;calls&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb159-7" data-line-number="7">        <span class="fu">{</span></a>
 <a class="sourceLine" id="cb159-8" data-line-number="8">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></a>

@@ -16,13 +16,15 @@ type ResthookSubscriberCall struct {
 }
 
 // ResthookCalledEvent events are created when a resthook is called. The event contains the status and status code
-// of each call to the resthook's subscribers. Applying this event updates @run.webhook in the context.
+// of each call to the resthook's subscribers, as well as the payload sent to each subscriber. Applying this event
+// updates @run.webhook in the context to the results of the last subscriber call. However if one of the subscriber
+// calls fails, then it is used to update @run.webhook instead.
 //
 //   {
 //     "type": "resthook_called",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "resthook": "new-registration",
-//     "payload": "",
+//     "payload": "{...}",
 //     "calls": [
 //       {
 //         "url": "http://localhost:49998/?cmd=success",
