@@ -208,6 +208,18 @@ var sessionAssets = `[
                 }
             ]
         }
+    },
+    {
+        "type": "resthook_set",
+        "url": "http://testserver/assets/resthook",
+        "content": [
+            {
+                "slug": "new-registration", 
+                "subscribers": [
+                    "http://localhost/?cmd=success"
+                ]
+            }
+        ]
     }
 ]`
 

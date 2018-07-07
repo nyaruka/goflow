@@ -40,11 +40,11 @@ func (s *sessionAssets) GetLocationHierarchy() (*utils.LocationHierarchy, error)
 
 // GetChannel gets a channel asset for the session
 func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	channels, err := s.GetChannelSet()
+	set, err := s.GetChannelSet()
 	if err != nil {
 		return nil, err
 	}
-	channel := channels.FindByUUID(uuid)
+	channel := set.FindByUUID(uuid)
 	if channel == nil {
 		return nil, fmt.Errorf("no such channel with uuid '%s'", uuid)
 	}
@@ -57,20 +57,20 @@ func (s *sessionAssets) GetChannelSet() (*flows.ChannelSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	channels, isType := asset.(*flows.ChannelSet)
+	set, isType := asset.(*flows.ChannelSet)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
-	return channels, nil
+	return set, nil
 }
 
 // GetField gets a contact field asset for the session
 func (s *sessionAssets) GetField(key string) (*flows.Field, error) {
-	fields, err := s.GetFieldSet()
+	set, err := s.GetFieldSet()
 	if err != nil {
 		return nil, err
 	}
-	field := fields.FindByKey(key)
+	field := set.FindByKey(key)
 	if field == nil {
 		return nil, fmt.Errorf("no such field with key '%s'", key)
 	}
@@ -83,11 +83,11 @@ func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	fields, isType := asset.(*flows.FieldSet)
+	set, isType := asset.(*flows.FieldSet)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
-	return fields, nil
+	return set, nil
 }
 
 // GetFlow gets a flow asset for the session
@@ -105,11 +105,11 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 
 // GetGroup gets a contact group asset for the session
 func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
-	groups, err := s.GetGroupSet()
+	set, err := s.GetGroupSet()
 	if err != nil {
 		return nil, err
 	}
-	group := groups.FindByUUID(uuid)
+	group := set.FindByUUID(uuid)
 	if group == nil {
 		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
 	}
@@ -122,20 +122,20 @@ func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	groups, isType := asset.(*flows.GroupSet)
+	set, isType := asset.(*flows.GroupSet)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
-	return groups, nil
+	return set, nil
 }
 
 // GetLabel gets a message label asset for the session
 func (s *sessionAssets) GetLabel(uuid flows.LabelUUID) (*flows.Label, error) {
-	labels, err := s.GetLabelSet()
+	set, err := s.GetLabelSet()
 	if err != nil {
 		return nil, err
 	}
-	label := labels.FindByUUID(uuid)
+	label := set.FindByUUID(uuid)
 	if label == nil {
 		return nil, fmt.Errorf("no such label with uuid '%s'", uuid)
 	}
@@ -147,9 +147,21 @@ func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	labels, isType := asset.(*flows.LabelSet)
+	set, isType := asset.(*flows.LabelSet)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
-	return labels, nil
+	return set, nil
+}
+
+func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {
+	asset, err := s.cache.GetAsset(s.server, assetTypeResthookSet, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.(*flows.ResthookSet)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
 }

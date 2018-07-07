@@ -12,8 +12,8 @@ import (
 // TypeCallWebhook is the type for the call webhook action
 const TypeCallWebhook string = "call_webhook"
 
-// CallWebhookAction can be used to call an external service and insert the results in @run.webhook
-// context variable. The body, header and url fields may be templates and will be evaluated at runtime.
+// CallWebhookAction can be used to call an external service. The body, header and url fields may be
+// templates and will be evaluated at runtime.
 //
 // A `webhook_called` event will be created based on the results of the HTTP call.
 //
@@ -46,6 +46,7 @@ func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 
 // Execute runs this action
 func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+
 	// substitute any variables in our url
 	url, err := run.EvaluateTemplateAsString(a.URL, true)
 	if err != nil {
@@ -92,6 +93,5 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 	}
 
-	run.SetWebhook(webhook)
 	return nil
 }

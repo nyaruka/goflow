@@ -23,6 +23,7 @@ const (
 	assetTypeGroupSet          assetType = "group_set"
 	assetTypeLabelSet          assetType = "label_set"
 	assetTypeLocationHierarchy assetType = "location_hierarchy"
+	assetTypeResthookSet       assetType = "resthook_set"
 )
 
 // AssetCache fetches and caches assets for the engine
@@ -145,6 +146,8 @@ func readAsset(data json.RawMessage, itemType assetType) (interface{}, error) {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) }
 	} else if itemType == assetTypeLabelSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabelSet(data) }
+	} else if itemType == assetTypeResthookSet {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) }
 	} else {
 		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
 	}

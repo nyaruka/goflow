@@ -166,8 +166,10 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 	return XFalseResult
 }
 
-// HasWebhookStatus tests whether the passed in `webhook` call has the passed in `status`.
+// HasWebhookStatus tests whether the passed in `webhook` call has the passed in `status`. If there is no
+// webhook set, then "success" will still match.
 //
+//   @(has_webhook_status(NULL, "success")) -> true
 //   @(has_webhook_status(run.webhook, "success")) -> true
 //   @(has_webhook_status(run.webhook, "connection_error")) -> false
 //   @(has_webhook_status(run.webhook, "success").match) -> {"results":[{"state":"WA"},{"state":"IN"}]}
@@ -177,7 +179,7 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
 	// is the first argument a webhook call
 	webhook, isWebhook := arg1.(*flows.WebhookCall)
-	if !isWebhook {
+	if arg1 != nil && !isWebhook {
 		return types.NewXErrorf("must have a webhook call as its first argument")
 	}
 
@@ -186,8 +188,12 @@ func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 		return xerr
 	}
 
-	if string(webhook.Status()) == strings.ToLower(status.Native()) {
-		return XTestResult{true, types.NewXText(webhook.Body())}
+	if webhook != nil {
+		if string(webhook.Status()) == strings.ToLower(status.Native()) {
+			return XTestResult{true, types.NewXText(webhook.Body())}
+		}
+	} else if status.Native() == string(flows.WebhookStatusSuccess) {
+		return XTestResult{true, types.XTextEmpty}
 	}
 
 	return XFalseResult

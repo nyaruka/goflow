@@ -64,6 +64,8 @@ func EventFromEnvelope(envelope *utils.TypedEnvelope) (flows.Event, error) {
 		event = &MsgWaitEvent{}
 	case TypeNothingWait:
 		event = &NothingWaitEvent{}
+	case TypeResthookCalled:
+		event = &ResthookCalledEvent{}
 	case TypeRunExpired:
 		event = &RunExpiredEvent{}
 	case TypeRunResultChanged:

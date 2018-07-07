@@ -1765,10 +1765,12 @@ Tests whether a ward name is contained in the `text`
 
 ## has_webhook_status(webhook, status)
 
-Tests whether the passed in `webhook` call has the passed in `status`.
+Tests whether the passed in `webhook` call has the passed in `status`. If there is no
+webhook set, then "success" will still match.
 
 
 ```objectivec
+@(has_webhook_status(NULL, "success")) → true
 @(has_webhook_status(run.webhook, "success")) → true
 @(has_webhook_status(run.webhook, "connection_error")) → false
 @(has_webhook_status(run.webhook, "success").match) → {"results":[{"state":"WA"},{"state":"IN"}]}
@@ -1916,12 +1918,46 @@ no user input at that point then this action will be ignored.
 }
 ```
 </div>
+<a name="action:call_resthook"></a>
+
+## call_resthook
+
+Can be used to call a resthook.
+
+A `resthook_subscriber_called` event will be created based on the results of the HTTP call
+to each subscriber of the resthook.
+
+<div class="input_action"><h3>Action</h3>```json
+{
+    "type": "call_resthook",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "resthook": "new-registration"
+}
+```
+</div><div class="output_event"><h3>Event</h3>```json
+{
+    "type": "resthook_called",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
+    "resthook": "new-registration",
+    "payload": "{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"347b55be-7be1-4e68-aaa3-04d3fbce5f9a\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"}},\n\t\"run\": {\"uuid\": \"4c9abf31-d821-4e97-ba7e-53c2263e32f8\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2000-01-01T00:00:00.000000Z\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
+    "calls": [
+        {
+            "url": "http://127.0.0.1:49998/?cmd=success",
+            "status": "success",
+            "status_code": 200,
+            "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
+        }
+    ]
+}
+```
+</div>
 <a name="action:call_webhook"></a>
 
 ## call_webhook
 
-Can be used to call an external service and insert the results in @run.webhook
-context variable. The body, header and url fields may be templates and will be evaluated at runtime.
+Can be used to call an external service. The body, header and url fields may be
+templates and will be evaluated at runtime.
 
 A `webhook_called` event will be created based on the results of the HTTP call.
 
@@ -1940,7 +1976,7 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 {
     "type": "webhook_called",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
+    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
     "url": "http://localhost:49998/?cmd=success",
     "status": "success",
     "status_code": 200,
@@ -1974,7 +2010,7 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_removed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
     "groups": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -2009,7 +2045,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
+    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
     "translations": {
         "": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -2046,7 +2082,7 @@ An `email_created` event will be created for each email address.
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
+    "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
     "addresses": [
         "foo@bar.com"
     ],
@@ -2075,9 +2111,9 @@ A `broadcast_created` event will be created with the evaluated text.
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
+    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
     "msg": {
-        "uuid": "40c152ee-c9ed-46ff-9c02-6222e1badc14",
+        "uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
         "urn": "tel:+12065551212",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -2110,7 +2146,7 @@ A `contact_channel_changed` event will be created with the set channel.
 {
     "type": "contact_channel_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
+    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
         "name": "FAcebook Channel"
@@ -2141,7 +2177,7 @@ A `contact_field_changed` event will be created with the corresponding value.
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
+    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -2169,7 +2205,7 @@ A `contact_language_changed` event will be created with the corresponding value.
 {
     "type": "contact_language_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
+    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
     "language": "eng"
 }
 ```
@@ -2193,7 +2229,7 @@ A `contact_name_changed` event will be created with the corresponding value.
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
+    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
     "name": "Bob Smith"
 }
 ```
@@ -2217,7 +2253,7 @@ A `contact_timezone_changed` event will be created with the corresponding value.
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
+    "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
     "timezone": "Africa/Kigali"
 }
 ```
@@ -2246,7 +2282,7 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
+    "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
     "name": "Gender",
     "value": "m",
     "category": "Male",
@@ -2276,12 +2312,12 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 {
     "type": "flow_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
+    "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "92ca859f-acf5-4e09-8742-c1eff0201012"
+    "parent_run_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8"
 }
 ```
 </div>
@@ -2311,7 +2347,7 @@ Can be used to trigger sessions for other contacts and groups
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "95dc7ae3-0788-4fb7-b19f-d98753239d65",
+    "step_uuid": "636bcfe8-1dd9-4bbd-a2a5-6b6ffeeada26",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -2323,7 +2359,7 @@ Can be used to trigger sessions for other contacts and groups
         }
     ],
     "run": {
-        "uuid": "1265aa33-e472-440a-b4b7-2e34e644276e",
+        "uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"
@@ -2759,6 +2795,38 @@ waiting for anything from the caller.
 }
 ```
 </div>
+<a name="event:resthook_called"></a>
+
+## resthook_called
+
+Events are created when a resthook is called. The event contains the status and status code
+of each call to the resthook's subscribers, as well as the payload sent to each subscriber. Applying this event
+updates @run.webhook in the context to the results of the last subscriber call. However if one of the subscriber
+calls fails, then it is used to update @run.webhook instead.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "resthook_called",
+    "created_on": "2006-01-02T15:04:05Z",
+    "resthook": "new-registration",
+    "payload": "{...}",
+    "calls": [
+        {
+            "url": "http://localhost:49998/?cmd=success",
+            "status": "success",
+            "status_code": 200,
+            "response": "{\"errors\":[]}"
+        },
+        {
+            "url": "https://api.ipify.org?format=json",
+            "status": "success",
+            "status_code": 410,
+            "response": "{\"errors\":[\"Unsubscribe\"]}"
+        }
+    ]
+}
+```
+</div>
 <a name="event:run_expired"></a>
 
 ## run_expired
@@ -2862,7 +2930,7 @@ the item that the wait was waiting for
 
 Events are created when a webhook is called. The event contains
 the status and status code of the response, as well as a full dump of the
-request and response.
+request and response. Applying this event updates @run.webhook in the context.
 
 <div class="output_event"><h3>Event</h3>```json
 {

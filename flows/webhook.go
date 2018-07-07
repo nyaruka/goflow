@@ -14,6 +14,16 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+var DefaultWebhookPayload = `{
+	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
+	"flow": @(json(run.flow)),
+	"path": @(json(run.path)),
+	"results": @(json(run.results)),
+	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
+	"input": @(json(run.input)),
+	"channel": @(json(if(run.input, run.input.channel, null)))
+}`
+
 // response content-types that we'll save as @run.webhook.body
 var saveResponseContentTypes = map[string]bool{
 	"application/json":       true,
@@ -64,6 +74,17 @@ type WebhookCall struct {
 	statusCode int
 	request    string
 	response   string
+}
+
+// NewWebhookCall creates a new webhook call
+func NewWebhookCall(url string, status WebhookStatus, statusCode int, request string, response string) *WebhookCall {
+	return &WebhookCall{
+		url:        url,
+		status:     status,
+		statusCode: statusCode,
+		request:    request,
+		response:   response,
+	}
 }
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
