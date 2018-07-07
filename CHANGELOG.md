@@ -1,3 +1,13 @@
+v0.10.20
+----------
+ * Migrate ruleset_types to editor types in _ui
+ * Use a sequential time source for flow tests instead of replacing time values with placeholders
+ * Add call_resthook action type and migrate from legacy resthook rulesets
+ * Improve error message when switch router test function returns error
+ * Add support for making expressions evaluate to themselves on error
+ * Migrate "" escape sequences in string literals in legacy expressions to \"
+ * Add support for \n \" sequences in Excellent string literals
+
 v0.10.19
 ----------
  * Add format_date function which only takes date (non-time) formatting chars
