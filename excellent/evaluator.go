@@ -145,16 +145,6 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 //      foo.bar.0  - 0th element of bar slice within foo, could also be "0" key in bar map within foo
 //      foo.bar[0] - same as above
 func ResolveValue(env utils.Environment, variable types.XValue, key string) types.XValue {
-	// self referencing
-	if key == "" {
-		return variable
-	}
-
-	// strip leading '.'
-	if key[0] == '.' {
-		key = key[1:]
-	}
-
 	rest := key
 	for rest != "" {
 		key, rest = popNextVariable(rest)

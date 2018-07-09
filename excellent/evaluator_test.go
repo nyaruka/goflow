@@ -51,115 +51,6 @@ func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = &testXObject{}
 var _ types.XResolvable = &testXObject{}
 
-func TestEvaluateTemplateAsString(t *testing.T) {
-
-	vars := types.NewXMap(map[string]types.XValue{
-		"string1": types.NewXText("foo"),
-		"string2": types.NewXText("bar"),
-		"汉字":      types.NewXText("simplified chinese"),
-		"int1":    types.NewXNumberFromInt(1),
-		"int2":    types.NewXNumberFromInt(2),
-		"dec1":    types.RequireXNumberFromString("1.5"),
-		"dec2":    types.RequireXNumberFromString("2.5"),
-		"words":   types.NewXText("one two three"),
-		"array":   types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
-		"thing":   NewTestXObject("hello", 123),
-		"err":     types.NewXError(fmt.Errorf("an error")),
-	})
-
-	evaluateAsStringTests := []struct {
-		template string
-		expected string
-		hasError bool
-	}{
-		{`hello world`, "hello world", false},
-		{`@("hello\nworld")`, "hello\nworld", false},
-		{`@("\"hello\nworld\"")`, "\"hello\nworld\"", false},
-		{`@("hello😁world")`, "hello😁world", false},
-		{`@("hello\U0001F601world")`, "hello😁world", false},
-		{`@(title("hello"))`, "Hello", false},
-		{`@(title(hello))`, "", true},
-		{`Hello @(title(string1))`, "Hello Foo", false},
-		{`Hello @@string1`, "Hello @string1", false},
-
-		// an identifier which isn't valid top-level is ignored completely
-		{"@hello", "@hello", false},
-		{"@hello.bar", "@hello.bar", false},
-		{"My email is foo@bar.com", "My email is foo@bar.com", false},
-
-		// identifier which is valid top-level, errors and isn't echo'ed back
-		{"@string1.xxx", "", true},
-
-		{"1 + 2", "1 + 2", false},
-		{"@(1 + 2)", "3", false},
-
-		{"@", "@", false},
-		{"@@", "@", false},
-		{"@@string1", "@string1", false},
-		{"@@@string1", "@foo", false},
-
-		{"@string1@string2", "foobar", false},
-		{"@(string1 & string2)", "foobar", false},
-		{"@string1.@string2", "foo.bar", false},
-		{"@string1.@string2.@string3", "foo.bar.@string3", false},
-
-		{"@(汉字)", "simplified chinese", false},
-		{"@(string1", "@(string1", false},
-		{"@ (string1", "@ (string1", false},
-		{"@ (string1)", "@ (string1)", false},
-
-		{"@(int1 + int2)", "3", false},
-		{"@(1 + \"asdf\")", "", true},
-
-		{"@(int1 + string1)", "", true},
-
-		{"@(dec1 + dec2)", "4", false},
-
-		{"@(TITLE(missing))", "", true},
-		{"@(TITLE(string1.xxx))", "", true},
-
-		{"@array", `["one","two","three"]`, false},
-		{"@array[0]", `["one","two","three"][0]`, false}, // [n] notation not supported outside expression
-		{"@array.0", "one", false},                       // works as dot notation however
-		{"@(array [0])", "one", false},
-		{"@(array[0])", "one", false},
-		{"@(array.0)", "one", false},
-		{"@(array[-1])", "three", false}, // negative index
-		{"@(array.-1)", "", true},        // invalid negative index
-
-		{"@(split(words, \" \").0)", "one", false},
-		{"@(split(words, \" \")[1])", "two", false},
-		{"@(split(words, \" \")[-1])", "three", false},
-
-		{"@(thing.foo)", "bar", false},
-		{"@(thing.zed)", "123", false},
-		{"@(thing.missing)", "", false},    // missing is nil which becomes empty string
-		{"@(thing.missing.xxx)", "", true}, // but can't look up a property on nil
-		{"@(thing.xxx)", "", true},
-	}
-
-	env := utils.NewDefaultEnvironment()
-	for _, test := range evaluateAsStringTests {
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("panic evaluating template %s", test.template)
-			}
-		}()
-
-		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
-
-		if test.hasError {
-			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
-		} else {
-			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
-
-			if eval != test.expected {
-				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
-			}
-		}
-	}
-}
-
 func TestEvaluateTemplate(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
@@ -317,6 +208,130 @@ func TestEvaluateTemplate(t *testing.T) {
 			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.template)
 		}
 	}
+}
+
+func TestEvaluateTemplateAsString(t *testing.T) {
+
+	vars := types.NewXMap(map[string]types.XValue{
+		"string1": types.NewXText("foo"),
+		"string2": types.NewXText("bar"),
+		"汉字":      types.NewXText("simplified chinese"),
+		"int1":    types.NewXNumberFromInt(1),
+		"int2":    types.NewXNumberFromInt(2),
+		"dec1":    types.RequireXNumberFromString("1.5"),
+		"dec2":    types.RequireXNumberFromString("2.5"),
+		"words":   types.NewXText("one two three"),
+		"array":   types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
+		"thing":   NewTestXObject("hello", 123),
+		"err":     types.NewXError(fmt.Errorf("an error")),
+	})
+
+	evaluateAsStringTests := []struct {
+		template string
+		expected string
+		hasError bool
+	}{
+		{`hello world`, "hello world", false},
+		{`@("hello\nworld")`, "hello\nworld", false},
+		{`@("\"hello\nworld\"")`, "\"hello\nworld\"", false},
+		{`@("hello😁world")`, "hello😁world", false},
+		{`@("hello\U0001F601world")`, "hello😁world", false},
+		{`@(title("hello"))`, "Hello", false},
+		{`@(title(hello))`, "", true},
+		{`Hello @(title(string1))`, "Hello Foo", false},
+		{`Hello @@string1`, "Hello @string1", false},
+
+		// an identifier which isn't valid top-level is ignored completely
+		{"@hello", "@hello", false},
+		{"@hello.bar", "@hello.bar", false},
+		{"My email is foo@bar.com", "My email is foo@bar.com", false},
+
+		// identifier which is valid top-level, errors and isn't echo'ed back
+		{"@string1.xxx", "", true},
+
+		{"1 + 2", "1 + 2", false},
+		{"@(1 + 2)", "3", false},
+
+		{"@", "@", false},
+		{"@@", "@", false},
+		{"@@string1", "@string1", false},
+		{"@@@string1", "@foo", false},
+
+		{"@string1@string2", "foobar", false},
+		{"@(string1 & string2)", "foobar", false},
+		{"@string1.@string2", "foo.bar", false},
+		{"@string1.@string2.@string3", "foo.bar.@string3", false},
+
+		{"@(汉字)", "simplified chinese", false},
+		{"@(string1", "@(string1", false},
+		{"@ (string1", "@ (string1", false},
+		{"@ (string1)", "@ (string1)", false},
+
+		{"@(int1 + int2)", "3", false},
+		{"@(1 + \"asdf\")", "", true},
+
+		{"@(int1 + string1)", "", true},
+
+		{"@(dec1 + dec2)", "4", false},
+
+		{"@(TITLE(missing))", "", true},
+		{"@(TITLE(string1.xxx))", "", true},
+
+		{"@array", `["one","two","three"]`, false},
+		{"@array[0]", `["one","two","three"][0]`, false}, // [n] notation not supported outside expression
+		{"@array.0", "one", false},                       // works as dot notation however
+		{"@(array [0])", "one", false},
+		{"@(array[0])", "one", false},
+		{"@(array.0)", "one", false},
+		{"@(array[-1])", "three", false}, // negative index
+		{"@(array.-1)", "", true},        // invalid negative index
+
+		{"@(split(words, \" \").0)", "one", false},
+		{"@(split(words, \" \")[1])", "two", false},
+		{"@(split(words, \" \")[-1])", "three", false},
+
+		{"@(thing.foo)", "bar", false},
+		{"@(thing.zed)", "123", false},
+		{"@(thing.missing)", "", false},    // missing is nil which becomes empty string
+		{"@(thing.missing.xxx)", "", true}, // but can't look up a property on nil
+		{"@(thing.xxx)", "", true},
+	}
+
+	env := utils.NewDefaultEnvironment()
+	for _, test := range evaluateAsStringTests {
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("panic evaluating template %s", test.template)
+			}
+		}()
+
+		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
+
+		if test.hasError {
+			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
+		} else {
+			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
+
+			if eval != test.expected {
+				t.Errorf("Actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
+			}
+		}
+	}
+}
+
+func TestURLEncoding(t *testing.T) {
+	vars := types.NewXMap(map[string]types.XValue{
+		"foo": types.NewXText("hello & world?"),
+	})
+	env := utils.NewDefaultEnvironment()
+
+	eval, err := EvaluateTemplateAsString(env, vars, `@foo`, true, vars.Keys())
+	assert.NoError(t, err)
+	assert.Equal(t, "hello%20%26%20world%3F", eval)
+
+	eval, err = EvaluateTemplateAsString(env, vars, `@(foo)`, true, vars.Keys())
+	assert.NoError(t, err)
+	assert.Equal(t, "hello%20%26%20world%3F", eval)
 }
 
 var errorTests = []struct {
