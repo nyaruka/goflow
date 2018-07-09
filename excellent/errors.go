@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -45,26 +46,30 @@ func (e *TemplateErrors) Error() string {
 	return strings.Join(messages, ", ")
 }
 
-type errorListener struct {
+// XErrorListener records synatx errors as XErrors
+type XErrorListener struct {
 	*antlr.DefaultErrorListener
 
 	expression string
-	errors     []error
+	errors     []types.XError
 }
 
-func NewErrorListener(expression string) *errorListener {
-	return &errorListener{expression: expression}
+// NewErrorListener creates a new error listener
+func NewErrorListener(expression string) *XErrorListener {
+	return &XErrorListener{expression: expression}
 }
 
-func (l *errorListener) Errors() []error {
+// Errors returns the errors encountered so far
+func (l *XErrorListener) Errors() []types.XError {
 	return l.errors
 }
 
-func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+// SyntaxError handles a new syntax error encountered by the recognizer
+func (l *XErrorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
 	// extract the part of the original expression where this error has occured
 	lines := strings.Split(l.expression, "\n")
 	lineOfError := lines[line-1]
 	contextOfError := lineOfError[column:utils.MinInt(column+10, len(lineOfError))]
 
-	l.errors = append(l.errors, fmt.Errorf("syntax error at %s", contextOfError))
+	l.errors = append(l.errors, types.NewXErrorf("syntax error at %s", contextOfError))
 }

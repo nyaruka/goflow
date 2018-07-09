@@ -51,6 +51,8 @@ func (v *testXObject) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = &testXObject{}
 var _ types.XResolvable = &testXObject{}
 
+var ERROR = types.NewXErrorf("any error")
+
 func TestEvaluateTemplate(t *testing.T) {
 	array1d := types.NewXArray(types.NewXText("a"), types.NewXText("b"), types.NewXText("c"))
 	array2d := types.NewXArray(array1d, types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")))
@@ -73,139 +75,139 @@ func TestEvaluateTemplate(t *testing.T) {
 	evaluateTests := []struct {
 		template string
 		expected types.XValue
-		hasError bool
 	}{
-		{"hello world", xs("hello world"), false},
-		{"@hello", xs("@hello"), false},
-		{"@(title(\"hello\"))", xs("Hello"), false},
+		{"hello world", xs("hello world")},
+		{"@hello", xs("@hello")},
+		{"@(title(\"hello\"))", xs("Hello")},
 
-		{"@dec1", xn("1.5"), false},
-		{"@(dec1 + dec2)", xn("4.0"), false},
+		{"@dec1", xn("1.5")},
+		{"@(dec1 + dec2)", xn("4.0")},
 
-		{"@array1d", array1d, false},
-		{"@array1d.0", xs("a"), false},
-		{"@array1d.1", xs("b"), false},
-		{"@array2d.0.2", xs("c"), false},
-		{"@(array1d[0])", xs("a"), false},
-		{"@(array1d[1])", xs("b"), false},
-		{"@(array2d[0])", array1d, false},
-		{"@(array2d[0][2])", xs("c"), false},
+		{"@array1d", array1d},
+		{"@array1d.0", xs("a")},
+		{"@array1d.1", xs("b")},
+		{"@array2d.0.2", xs("c")},
+		{"@(array1d[0])", xs("a")},
+		{"@(array1d[1])", xs("b")},
+		{"@(array2d[0])", array1d},
+		{"@(array2d[0][2])", xs("c")},
 
-		{"@string1 world", xs("foo world"), false},
+		{"@string1 world", xs("foo world")},
 
-		{"@(-10)", xi(-10), false},
-		{"@(-asdf)", nil, true},
+		{"@(-10)", xi(-10)},
+		{"@(-asdf)", ERROR},
 
-		{"@(2^2)", xi(4), false},
-		{"@(2^asdf)", nil, true},
-		{"@(asdf^2)", nil, true},
+		{"@(2^2)", xi(4)},
+		{"@(2^asdf)", ERROR},
+		{"@(asdf^2)", ERROR},
 
-		{"@(1+2)", xi(3), false},
-		{"@(1-2.5)", xn("-1.5"), false},
-		{"@(1-asdf)", nil, true},
-		{"@(asdf+1)", nil, true},
+		{"@(1+2)", xi(3)},
+		{"@(1-2.5)", xn("-1.5")},
+		{"@(1-asdf)", ERROR},
+		{"@(asdf+1)", ERROR},
 
-		{"@(1*2)", xi(2), false},
-		{"@(1/2)", xn("0.5"), false},
-		{"@(1/0)", nil, true},
-		{"@(1*asdf)", nil, true},
-		{"@(asdf/1)", nil, true},
+		{"@(1*2)", xi(2)},
+		{"@(1/2)", xn("0.5")},
+		{"@(1/0)", ERROR},
+		{"@(1*asdf)", ERROR},
+		{"@(asdf/1)", ERROR},
 
-		{"@(false)", types.XBooleanFalse, false},
-		{"@(TRUE)", types.XBooleanTrue, false},
+		{"@(false)", types.XBooleanFalse},
+		{"@(TRUE)", types.XBooleanTrue},
 
-		{"@(1+1+1)", xi(3), false},
-		{"@(5-2+1)", xi(4), false},
-		{"@(2*3*4+2)", xi(26), false},
-		{"@(4*3/4)", xi(3), false},
-		{"@(4/2*4)", xi(8), false},
-		{"@(2^2^2)", xi(16), false},
-		{"@(\"a\" & \"b\" & \"c\")", xs("abc"), false},
-		{"@(1+3 <= 1+4)", types.XBooleanTrue, false},
+		{"@(1+1+1)", xi(3)},
+		{"@(5-2+1)", xi(4)},
+		{"@(2*3*4+2)", xi(26)},
+		{"@(4*3/4)", xi(3)},
+		{"@(4/2*4)", xi(8)},
+		{"@(2^2^2)", xi(16)},
+		{"@(\"a\" & \"b\" & \"c\")", xs("abc")},
+		{"@(1+3 <= 1+4)", types.XBooleanTrue},
 
 		// string equality
-		{`@("asdf" = "asdf")`, types.XBooleanTrue, false},
-		{`@("asdf" = "basf")`, types.XBooleanFalse, false},
-		{`@("asdf" = "ASDF")`, types.XBooleanFalse, false}, // case-sensitive
-		{`@("asdf" != "asdf")`, types.XBooleanFalse, false},
-		{`@("asdf" != "basf")`, types.XBooleanTrue, false},
+		{`@("asdf" = "asdf")`, types.XBooleanTrue},
+		{`@("asdf" = "basf")`, types.XBooleanFalse},
+		{`@("asdf" = "ASDF")`, types.XBooleanFalse}, // case-sensitive
+		{`@("asdf" != "asdf")`, types.XBooleanFalse},
+		{`@("asdf" != "basf")`, types.XBooleanTrue},
 
 		// bool equality
-		{"@(true = true)", types.XBooleanTrue, false},
-		{"@(true = false)", types.XBooleanFalse, false},
-		{"@(true = TRUE)", types.XBooleanTrue, false},
+		{"@(true = true)", types.XBooleanTrue},
+		{"@(true = false)", types.XBooleanFalse},
+		{"@(true = TRUE)", types.XBooleanTrue},
 
 		// numerical equality
-		{"@((1 = 1))", types.XBooleanTrue, false},
-		{"@((1 != 2))", types.XBooleanTrue, false},
-		{"@(1 = 1)", types.XBooleanTrue, false},
-		{"@(1 = 2)", types.XBooleanFalse, false},
-		{"@(1 != 2)", types.XBooleanTrue, false},
-		{"@(1 != 1)", types.XBooleanFalse, false},
-		{"@(-1 = 1)", types.XBooleanFalse, false},
-		{"@(1.0 = 1)", types.XBooleanTrue, false},
-		{"@(1.1 = 1.10)", types.XBooleanTrue, false},
-		{"@(1.1234 = 1.10)", types.XBooleanFalse, false},
-		{`@(1 = number("1.0"))`, types.XBooleanTrue, false},
-		{"@(11=11=11)", types.XBooleanFalse, false}, // 11=11 -> TRUE, then TRUE != 11
+		{"@((1 = 1))", types.XBooleanTrue},
+		{"@((1 != 2))", types.XBooleanTrue},
+		{"@(1 = 1)", types.XBooleanTrue},
+		{"@(1 = 2)", types.XBooleanFalse},
+		{"@(1 != 2)", types.XBooleanTrue},
+		{"@(1 != 1)", types.XBooleanFalse},
+		{"@(-1 = 1)", types.XBooleanFalse},
+		{"@(1.0 = 1)", types.XBooleanTrue},
+		{"@(1.1 = 1.10)", types.XBooleanTrue},
+		{"@(1.1234 = 1.10)", types.XBooleanFalse},
+		{`@(1 = number("1.0"))`, types.XBooleanTrue},
+		{"@(11=11=11)", types.XBooleanFalse}, // 11=11 -> TRUE, then TRUE != 11
 
 		// date equality
-		{`@(datetime("2018-04-16") = datetime("2018-04-16"))`, types.XBooleanTrue, false},
-		{`@(datetime("2018-04-16") != datetime("2018-04-16"))`, types.XBooleanFalse, false},
-		{`@(datetime("2018-04-16") = datetime("2017-03-20"))`, types.XBooleanFalse, false},
-		{`@(datetime("2018-04-16") != datetime("2017-03-20"))`, types.XBooleanTrue, false},
-		{`@(datetime("xxx") == datetime("2017-03-20"))`, nil, true},
+		{`@(datetime("2018-04-16") = datetime("2018-04-16"))`, types.XBooleanTrue},
+		{`@(datetime("2018-04-16") != datetime("2018-04-16"))`, types.XBooleanFalse},
+		{`@(datetime("2018-04-16") = datetime("2017-03-20"))`, types.XBooleanFalse},
+		{`@(datetime("2018-04-16") != datetime("2017-03-20"))`, types.XBooleanTrue},
+		{`@(datetime("xxx") == datetime("2017-03-20"))`, ERROR},
 
 		// other comparsions must be numerical
-		{"@(2 > 1)", types.XBooleanTrue, false},
-		{"@(1 > 2)", types.XBooleanFalse, false},
-		{"@(2 >= 1)", types.XBooleanTrue, false},
-		{"@(1 >= 2)", types.XBooleanFalse, false},
-		{"@(1 <= 2)", types.XBooleanTrue, false},
-		{"@(2 <= 1)", types.XBooleanFalse, false},
-		{"@(1 < 2)", types.XBooleanTrue, false},
-		{"@(2 < 1)", types.XBooleanFalse, false},
-		{`@(1 < "asdf")`, nil, true}, // can't use with strings
-		{`@("asdf" < "basf")`, nil, true},
-		{"@(1<2<3)", nil, true}, // can't chain
+		{"@(2 > 1)", types.XBooleanTrue},
+		{"@(1 > 2)", types.XBooleanFalse},
+		{"@(2 >= 1)", types.XBooleanTrue},
+		{"@(1 >= 2)", types.XBooleanFalse},
+		{"@(1 <= 2)", types.XBooleanTrue},
+		{"@(2 <= 1)", types.XBooleanFalse},
+		{"@(1 < 2)", types.XBooleanTrue},
+		{"@(2 < 1)", types.XBooleanFalse},
+		{`@(1 < "asdf")`, ERROR}, // can't use with strings
+		{`@("asdf" < "basf")`, ERROR},
+		{"@(1<2<3)", ERROR}, // can't chain
 
 		// nulls
-		{"@(null)", nil, false},
-		{"@(NULL)", nil, false},
-		{"@(null = NULL)", types.XBooleanTrue, false},
-		{"@(null != NULL)", types.XBooleanFalse, false},
+		{"@(null)", nil},
+		{"@(NULL)", nil},
+		{"@(null = NULL)", types.XBooleanTrue},
+		{"@(null != NULL)", types.XBooleanFalse},
 
-		{"@(\"foo\" & \"bar\")", xs("foobar"), false},
-		{"@(missing & \"bar\")", nil, true},
-		{"@(\"foo\" & missing)", nil, true},
+		{"@(\"foo\" & \"bar\")", xs("foobar")},
+		{"@(missing & \"bar\")", ERROR},
+		{"@(\"foo\" & missing)", ERROR},
 
-		{"@(TITLE(string1))", xs("Foo"), false},
-		{"@(MISSING(string1))", nil, true},
-		{"@(TITLE(string1, string2))", nil, true},
+		{"@(TITLE(string1))", xs("Foo")},
+		{"@(MISSING(string1))", ERROR},
+		{"@(TITLE(string1, string2))", ERROR},
 
-		{"@(1 = asdf)", nil, true},       // asdf isn't a valid context item
-		{"@(asdf = 1)", nil, true},       // asdf isn't a valid context item
-		{"@((1 / 0).field)", nil, true},  // can't resolve a property on an error value
-		{"@((1 / 0)[0])", nil, true},     // can't index into an error value
-		{"@(array1d[1 / 0])", nil, true}, // index expression can't be an error
+		{"@(1 = asdf)", ERROR},       // asdf isn't a valid context item
+		{"@(asdf = 1)", ERROR},       // asdf isn't a valid context item
+		{"@((1 / 0).field)", ERROR},  // can't resolve a property on an error value
+		{"@((1 / 0)[0])", ERROR},     // can't index into an error value
+		{"@(array1d[1 / 0])", ERROR}, // index expression can't be an error
 
-		{"@(split(words, \" \").0)", xs("one"), false},
-		{"@(split(words, \" \")[1])", xs("two"), false},
-		{"@(split(words, \" \")[-1])", xs("three"), false},
+		{"@(split(words, \" \").0)", xs("one")},
+		{"@(split(words, \" \")[1])", xs("two")},
+		{"@(split(words, \" \")[-1])", xs("three")},
+
+		{"@string1 @string2", xs("foo bar")}, // falls back to template evaluation if necessary
 	}
 
 	for _, test := range evaluateTests {
 		result, err := EvaluateTemplate(env, vars, test.template, vars.Keys())
+		assert.NoError(t, err)
 
-		if test.hasError {
-			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
-			continue
+		// don't check error equality - just check that we got an error if we expected one
+		if test.expected == ERROR {
+			assert.True(t, types.IsXError(result), "expecting error, got %T{%s} evaluating template '%s'", result, result, test.template)
 		} else {
-			assert.NoError(t, err, "unexpected error evaluating template '%s'", test.template)
-		}
-
-		if !types.Equals(env, result, test.expected) {
-			assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%#v)", test.expected, test.expected, result, result, test.template)
+			if !types.Equals(env, result, test.expected) {
+				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} evaluating template '%s'", test.expected, test.expected, result, result, test.expected)
+			}
 		}
 	}
 }

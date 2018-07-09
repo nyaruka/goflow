@@ -13,8 +13,8 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// EvaluateExpression evalutes the passed in template, returning the raw value it evaluates to
-func EvaluateExpression(env utils.Environment, context types.XValue, expression string) (types.XValue, error) {
+// EvaluateExpression evalutes the passed in template, returning the typed value it evaluates to, which might be an error
+func EvaluateExpression(env utils.Environment, context types.XValue, expression string) types.XValue {
 	errListener := NewErrorListener(expression)
 
 	input := antlr.NewInputStream(expression)
@@ -27,28 +27,17 @@ func EvaluateExpression(env utils.Environment, context types.XValue, expression 
 
 	// if we ran into errors parsing, return the first one
 	if len(errListener.Errors()) > 0 {
-		return nil, errListener.Errors()[0]
+		return errListener.Errors()[0]
 	}
 
 	visitor := NewVisitor(env, context)
-	value := toXValue(visitor.Visit(tree))
-
-	err, isErr := value.(types.XError)
-
-	// did our evaluation result in an error? return that
-	if isErr {
-		return nil, err
-	}
-
-	// all is good, return our value
-	return value, nil
+	return toXValue(visitor.Visit(tree))
 }
 
 // EvaluateTemplate tries to evaluate the passed in template into an object, this only works if the template
 // is a single identifier or expression, ie: "@contact" or "@(first(contact.urns))". In cases
 // which are not a single identifier or expression, we return the stringified value
 func EvaluateTemplate(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (types.XValue, error) {
-	var buf bytes.Buffer
 	template = strings.TrimSpace(template)
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
 
@@ -58,37 +47,17 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	// try to scan to our next token
 	nextTT, _ := scanner.Scan()
 
-	// if we had one, then just return our string evaluation strategy
-	if nextTT != EOF {
-		asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
-		return types.NewXText(asStr), err
+	// if we only have an identifier or an expression, evaluate it on its own
+	if nextTT == EOF {
+		switch tokenType {
+		case IDENTIFIER:
+			return ResolveValue(env, context, token), nil
+		case EXPRESSION:
+			return EvaluateExpression(env, context, token), nil
+		}
 	}
 
-	switch tokenType {
-	case IDENTIFIER:
-		value := ResolveValue(env, context, token)
-		err, isErr := value.(error)
-
-		// we got an error, return our raw value
-		if isErr {
-			buf.WriteString("@")
-			buf.WriteString(token)
-			return types.NewXText(buf.String()), err
-		}
-
-		// found it, return that value
-		return value, nil
-
-	case EXPRESSION:
-		value, err := EvaluateExpression(env, context, token)
-		if err != nil {
-			return types.NewXText(buf.String()), err
-		}
-
-		return value, nil
-	}
-
-	// different type of token, return the string representation
+	// otherwise fallback to full template evaluation
 	asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
 	return types.NewXText(asStr), err
 }
@@ -117,10 +86,10 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 				buf.WriteString(strValue.Native())
 			}
 		case EXPRESSION:
-			value, err := EvaluateExpression(env, context, token)
+			value := EvaluateExpression(env, context, token)
 
-			if err != nil {
-				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
+			if types.IsXError(value) {
+				errors.Add(fmt.Sprintf("@(%s)", token), value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(env, value)
 				if urlEncode {
