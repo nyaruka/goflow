@@ -2,6 +2,8 @@ package events
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -18,9 +20,16 @@ type ResthookSubscriberCall struct {
 
 // NewResthookSubscriberCall creates a new subscriber call from the given webhook call
 func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCall {
+	// An HTTP 410 has a special meaning for resthook and should be considered a success within the run.
+	// The onus is on the caller to remove the subscriber from the resthook.
+	status := webhook.Status()
+	if webhook.StatusCode() == http.StatusGone {
+		status = flows.WebhookStatusSuccess
+	}
+
 	return &ResthookSubscriberCall{
 		URL:        webhook.URL(),
-		Status:     webhook.Status(),
+		Status:     status,
 		StatusCode: webhook.StatusCode(),
 		Response:   webhook.Response(),
 	}
@@ -79,7 +88,7 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 	var lastFailure, asWebhook *ResthookSubscriberCall
 
 	for _, call := range e.Calls {
-		if (call.StatusCode >= 200 && call.StatusCode < 300) || call.StatusCode == 410 {
+		if call.Status == flows.WebhookStatusSuccess {
 			asWebhook = call
 		} else {
 			lastFailure = call
@@ -91,15 +100,10 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 	}
 
 	if asWebhook != nil {
-		// An HTTP 410 has a special meaning for resthook and should be considered a success within the run.
-		// The onus is on the caller to remove the subscriber from the resthook.
-		status := asWebhook.Status
-		if asWebhook.StatusCode == 410 {
-			status = flows.WebhookStatusSuccess
-		}
-
+		// reconstruct the request dump
 		request := fmt.Sprintf("POST %s\r\n\r\n%s", asWebhook.URL, e.Payload)
-		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, status, asWebhook.StatusCode, request, asWebhook.Response))
+
+		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response))
 	} else {
 		run.SetWebhook(nil)
 	}
