@@ -21,8 +21,13 @@ func TestAttachment(t *testing.T) {
 
 	assert.Equal(t, types.NewXText("image/jpeg"), attachment.Resolve(env, "content_type"))
 	assert.Equal(t, types.NewXText("https://example.com/test.jpg"), attachment.Resolve(env, "url"))
+	assert.Equal(t, types.NewXResolveError(attachment, "xxx"), attachment.Resolve(env, "xxx"))
 	assert.Equal(t, types.NewXText("https://example.com/test.jpg"), attachment.Reduce(env))
 	assert.Equal(t, types.NewXText(`{"content_type":"image/jpeg","url":"https://example.com/test.jpg"}`), attachment.ToXJSON(env))
+
+	// be leniant with invalid attachments
+	assert.Equal(t, "", flows.Attachment("foo").ContentType())
+	assert.Equal(t, "foo", flows.Attachment("foo").URL())
 }
 
 func TestAttachmentList(t *testing.T) {

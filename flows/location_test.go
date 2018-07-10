@@ -19,4 +19,5 @@ func TestLocationPaths(t *testing.T) {
 	assert.Equal(t, "", flows.LocationPath("").Name())
 	assert.Equal(t, "Ireland > Antrim", flows.LocationPath("Ireland > Antrim").String())
 	assert.Equal(t, types.NewXText(`"Ireland > Antrim"`), flows.LocationPath("Ireland > Antrim").ToXJSON(nil))
+	assert.Equal(t, "location", flows.LocationPath("Ireland > Antrim").Describe())
 }
