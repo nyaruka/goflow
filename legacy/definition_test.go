@@ -252,6 +252,10 @@ func TestRuleSetMigration(t *testing.T) {
 
 			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
 
+			if string(expectedNodeJSON) != string(migratedNodeJSON) {
+				fmt.Println(string(migratedNodeJSON))
+			}
+
 			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}
 	}

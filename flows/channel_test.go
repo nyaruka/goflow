@@ -29,6 +29,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, types.NewXText("Android"), ch.Resolve(env, "name"))
 	assert.Equal(t, types.NewXText("+250961111111"), ch.Resolve(env, "address"))
 	assert.Equal(t, types.NewXResolveError(ch, "xxx"), ch.Resolve(env, "xxx"))
+	assert.Equal(t, types.NewXText("Android"), ch.Reduce(env))
 	assert.Equal(t, types.NewXText(`{"address":"+250961111111","name":"Android","uuid":"821fe776-b97d-4046-b1dc-a7d9d3b3b9c7"}`), ch.ToXJSON(env))
 
 	assert.Equal(t, flows.NewChannelReference(uuid, "Android"), ch.Reference())

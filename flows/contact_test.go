@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -12,6 +13,50 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestContact(t *testing.T) {
+	env := utils.NewDefaultEnvironment()
+
+	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
+	contact := flows.NewContact("Joe Bloggs", utils.Language("eng"), nil)
+	contact.SetTimezone(env.Timezone())
+	contact.SetID(12345)
+	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
+	contact.AddURN(urns.URN("tel:+16364646466"))
+	contact.AddURN(urns.URN("twitter:joey"))
+
+	assert.Equal(t, "Joe Bloggs", contact.Name())
+	assert.Equal(t, 12345, contact.ID())
+	assert.Equal(t, env.Timezone(), contact.Timezone())
+	assert.Equal(t, utils.Language("eng"), contact.Language())
+
+	clone := contact.Clone()
+	assert.Equal(t, "Joe Bloggs", clone.Name())
+	assert.Equal(t, 12345, clone.ID())
+	assert.Equal(t, env.Timezone(), clone.Timezone())
+	assert.Equal(t, utils.Language("eng"), clone.Language())
+
+	// can also clone a null contact!
+	mrNil := (*flows.Contact)(nil)
+	assert.Nil(t, mrNil.Clone())
+
+	assert.Equal(t, types.NewXText(string(contact.UUID())), contact.Resolve(env, "uuid"))
+	assert.Equal(t, types.NewXNumberFromInt(12345), contact.Resolve(env, "id"))
+	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Resolve(env, "name"))
+	assert.Equal(t, types.NewXText("Joe"), contact.Resolve(env, "first_name"))
+	assert.Equal(t, types.NewXDateTime(contact.CreatedOn()), contact.Resolve(env, "created_on"))
+	assert.Equal(t, contact.URNs(), contact.Resolve(env, "urns"))
+	assert.Equal(t, types.NewXText("(636) 464-6466"), contact.Resolve(env, "urn"))
+	assert.Equal(t, contact.Fields(), contact.Resolve(env, "fields"))
+	assert.Equal(t, contact.Groups(), contact.Resolve(env, "groups"))
+	assert.Nil(t, contact.Resolve(env, "channel"))
+	assert.Equal(t, types.NewXResolveError(contact, "xxx"), contact.Resolve(env, "xxx"))
+	assert.Equal(t, types.NewXText("Joe Bloggs"), contact.Reduce(env))
+	assert.Equal(t, "contact", contact.Describe())
+	assert.Equal(t, types.NewXText(`{"channel":null,"created_on":"2017-12-15T10:00:00.000000Z","fields":{},"groups":[],"language":"eng","name":"Joe Bloggs","timezone":"UTC","urns":[{"display":"","path":"+16364646466","scheme":"tel"},{"display":"","path":"joey","scheme":"twitter"}],"uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), contact.ToXJSON(env))
+}
 
 func TestContactFormat(t *testing.T) {
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyNone)
