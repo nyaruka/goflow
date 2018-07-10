@@ -20,7 +20,7 @@ func ParseLanguage(lang string) (Language, error) {
 
 	base, err := language.ParseBase(lang)
 	if err != nil {
-		return NilLanguage, err
+		return NilLanguage, fmt.Errorf("unrecognized language code: %s", lang)
 	}
 
 	return Language(base.ISO3()), nil
