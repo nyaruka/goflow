@@ -1,10 +1,8 @@
 package contactql
 
 import (
-	"bytes"
 	"fmt"
 	"reflect"
-	"strconv"
 	"strings"
 	"time"
 
@@ -166,18 +164,21 @@ func (q *ContactQuery) String() string {
 	return q.root.String()
 }
 
+// ParseQuery parses a ContactQL query from the given input
 func ParseQuery(text string) (*ContactQuery, error) {
-	errors := NewErrorListener()
+	errListener := NewErrorListener()
 
 	input := antlr.NewInputStream(text)
 	lexer := gen.NewContactQLLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := gen.NewContactQLParser(stream)
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errListener)
 	tree := p.Parse()
 
 	// if we ran into errors parsing, bail
-	if errors.HasErrors() {
-		return nil, fmt.Errorf(errors.Errors())
+	if errListener.HasErrors() {
+		return nil, errListener.Error()
 	}
 
 	visitor := NewVisitor()
@@ -187,8 +188,9 @@ func ParseQuery(text string) (*ContactQuery, error) {
 }
 
 type errorListener struct {
-	errors bytes.Buffer
 	*antlr.DefaultErrorListener
+
+	messages []string
 }
 
 func NewErrorListener() *errorListener {
@@ -196,13 +198,13 @@ func NewErrorListener() *errorListener {
 }
 
 func (l *errorListener) HasErrors() bool {
-	return l.errors.Len() > 0
+	return len(l.messages) > 0
 }
 
-func (l *errorListener) Errors() string {
-	return l.errors.String()
+func (l *errorListener) Error() error {
+	return fmt.Errorf(strings.Join(l.messages, "\n"))
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
-	l.errors.WriteString(fmt.Sprintln("line " + strconv.Itoa(line) + ":" + strconv.Itoa(column) + " " + msg))
+	l.messages = append(l.messages, msg)
 }

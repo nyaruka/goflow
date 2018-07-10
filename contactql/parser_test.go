@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParseQuery(t *testing.T) {
@@ -36,13 +37,8 @@ func TestParseQuery(t *testing.T) {
 
 	for _, test := range tests {
 		parsed, err := ParseQuery(test.text)
-		if err != nil {
-			t.Errorf("Error parsing query '%s'\n  Error: %s\n", test.text, err.Error())
-			continue
-		}
-		if parsed.String() != test.parsed {
-			t.Errorf("Error parsing query '%s'\n  Expected: %s\n  Got: %s\n", test.text, test.parsed, parsed.String())
-		}
+		assert.NoError(t, err)
+		assert.Equal(t, test.parsed, parsed.String(), "error parsing query '%s'", test.text)
 	}
 }
 
@@ -54,6 +50,8 @@ func (t *TestQueryable) ResolveQueryKey(env utils.Environment, key string) []int
 		return []interface{}{"+59313145145"}
 	case "twitter":
 		return []interface{}{"bob_smith"}
+	case "whatsapp":
+		return []interface{}{}
 	case "gender":
 		return []interface{}{"male"}
 	case "age":
@@ -85,6 +83,7 @@ func TestEvaluateQuery(t *testing.T) {
 		{`TWITTER IS bob_smith`, true},
 		{`twitter = jim_smith`, false},
 		{`twitter ~ smith`, true},
+		{`whatsapp = 4533343`, false},
 
 		// text field condition
 		{`Gender = male`, true},
@@ -156,4 +155,20 @@ func TestEvaluateQuery(t *testing.T) {
 			t.Errorf("Error evaluating query '%s'\n  Expected: %s  Got: %s\n", test.text, strconv.FormatBool(test.result), strconv.FormatBool(actualResult))
 		}
 	}
+}
+
+func TestQueryErrors(t *testing.T) {
+	env := utils.NewDefaultEnvironment()
+	testObj := &TestQueryable{}
+
+	// a syntax eror
+	_, err := ParseQuery("name = ")
+	assert.EqualError(t, err, "mismatched input '<EOF>' expecting {TEXT, STRING}")
+
+	// an evaluation error
+	parsed, err := ParseQuery("Bob")
+	assert.NoError(t, err)
+
+	_, err = EvaluateQuery(env, parsed, testObj)
+	assert.EqualError(t, err, "dynamic group queries can't contain implicit conditions")
 }
