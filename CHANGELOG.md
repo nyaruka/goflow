@@ -1,3 +1,7 @@
+v0.10.21
+----------
+ * Tweak resthook_called events so the event itself has status=success for HTTP 410 responses
+
 v0.10.20
 ----------
  * Migrate ruleset_types to editor types in _ui
