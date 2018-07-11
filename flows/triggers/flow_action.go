@@ -83,7 +83,7 @@ func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.T
 	var err error
 	trigger := &FlowActionTrigger{}
 	e := flowActionTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e, "trigger[type=flow_action]"); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &e, ""); err != nil {
 		return nil, err
 	}
 

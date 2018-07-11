@@ -63,7 +63,11 @@ func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Tr
 	if f == nil {
 		return nil, fmt.Errorf("unknown trigger type: %s", envelope.Type)
 	}
-	return f(session, envelope.Data)
+	trigger, err := f(session, envelope.Data)
+	if err != nil {
+		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", envelope.Type, err)
+	}
+	return trigger, nil
 }
 
 func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTriggerEnvelope) error {

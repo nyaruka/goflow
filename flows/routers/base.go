@@ -30,5 +30,8 @@ func RouterFromEnvelope(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	}
 
 	router := initFunc()
-	return router, utils.UnmarshalAndValidate(envelope.Data, router, fmt.Sprintf("router[type=%s]", envelope.Type))
+	if err := utils.UnmarshalAndValidate(envelope.Data, router, ""); err != nil {
+		return nil, fmt.Errorf("unable to read router[type=%s]: %s", envelope.Type, err)
+	}
+	return router, nil
 }

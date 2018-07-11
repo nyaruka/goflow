@@ -54,5 +54,9 @@ func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Inpu
 	if f == nil {
 		return nil, fmt.Errorf("unknown input type: %s", envelope.Type)
 	}
-	return f(session, envelope.Data)
+	input, err := f(session, envelope.Data)
+	if err != nil {
+		return nil, fmt.Errorf("unable to read input[type=%s]: %s", envelope.Type, err)
+	}
+	return input, nil
 }
