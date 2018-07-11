@@ -9,6 +9,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	registerType(TypeFlowAction, ReadFlowActionTrigger)
+}
+
 // TypeFlowAction is a constant for sessions triggered by flow actions in other sessions
 const TypeFlowAction string = "flow_action"
 
@@ -75,11 +79,11 @@ type flowActionTriggerEnvelope struct {
 	Run json.RawMessage `json:"run"`
 }
 
-func ReadFlowActionTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
+func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
 	var err error
 	trigger := &FlowActionTrigger{}
 	e := flowActionTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(envelope.Data, &e, "trigger[type=flow_action]"); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &e, "trigger[type=flow_action]"); err != nil {
 		return nil, err
 	}
 

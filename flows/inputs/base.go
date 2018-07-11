@@ -1,12 +1,22 @@
 package inputs
 
 import (
+	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
+
+type readFunc func(session flows.Session, data json.RawMessage) (flows.Input, error)
+
+var registeredTypes = map[string]readFunc{}
+
+func registerType(name string, f readFunc) {
+	registeredTypes[name] = f
+}
 
 type baseInput struct {
 	uuid      flows.InputUUID
@@ -30,4 +40,19 @@ func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 	}
 
 	return types.NewXResolveError(i, key)
+}
+
+type baseInputEnvelope struct {
+	UUID      flows.InputUUID         `json:"uuid"`
+	Channel   *flows.ChannelReference `json:"channel,omitempty" validate:"omitempty,dive"`
+	CreatedOn time.Time               `json:"created_on" validate:"required"`
+}
+
+// ReadInput reads an input from the given typed envelope
+func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Input, error) {
+	f := registeredTypes[envelope.Type]
+	if f == nil {
+		return nil, fmt.Errorf("unknown input type: %s", envelope.Type)
+	}
+	return f(session, envelope.Data)
 }

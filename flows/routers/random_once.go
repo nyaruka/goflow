@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	registerType(TypeRandomOnce, func() flows.Router { return &RandomOnceRouter{} })
+}
+
 // TypeRandomOnce is the constant for our random once router
 const TypeRandomOnce string = "random_once"
 
