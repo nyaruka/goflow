@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	registerType(TypeMsg, ReadMsgInput)
+	RegisterType(TypeMsg, ReadMsgInput)
 }
 
 // TypeMsg is a constant for incoming messages

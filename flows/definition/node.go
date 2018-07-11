@@ -79,7 +79,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 
 	// instantiate the right kind of router
 	if envelope.Router != nil {
-		n.router, err = routers.RouterFromEnvelope(envelope.Router)
+		n.router, err = routers.ReadRouter(envelope.Router)
 		if err != nil {
 			return err
 		}
@@ -87,7 +87,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 
 	// and the right kind of wait
 	if envelope.Wait != nil {
-		n.wait, err = waits.WaitFromEnvelope(envelope.Wait)
+		n.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
 			return err
 		}

@@ -525,7 +525,7 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 
 	// and our wait
 	if envelope.Wait != nil {
-		s.wait, err = waits.WaitFromEnvelope(envelope.Wait)
+		s.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
 			return nil, fmt.Errorf("unable to read wait: %s", err)
 		}

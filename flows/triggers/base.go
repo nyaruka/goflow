@@ -14,7 +14,8 @@ type readFunc func(session flows.Session, data json.RawMessage) (flows.Trigger, 
 
 var registeredTypes = map[string]readFunc{}
 
-func registerType(name string, f readFunc) {
+// RegisterType registers a new type of trigger
+func RegisterType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 
@@ -58,6 +59,7 @@ type baseTriggerEnvelope struct {
 	TriggeredOn time.Time            `json:"triggered_on" validate:"required"`
 }
 
+// ReadTrigger reads a trigger from the given typed envelope
 func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {

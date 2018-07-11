@@ -14,7 +14,8 @@ type readFunc func(session flows.Session, data json.RawMessage) (flows.Input, er
 
 var registeredTypes = map[string]readFunc{}
 
-func registerType(name string, f readFunc) {
+// RegisterType registers a new type of input
+func RegisterType(name string, f readFunc) {
 	registeredTypes[name] = f
 }
 

@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	registerType(TypeRandom, func() flows.Router { return &RandomRouter{} })
+	RegisterType(TypeRandom, func() flows.Router { return &RandomRouter{} })
 }
 
 // TypeRandom is the type for a random router

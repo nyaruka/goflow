@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	registerType(TypeFlowAction, ReadFlowActionTrigger)
+	RegisterType(TypeFlowAction, ReadFlowActionTrigger)
 }
 
 // TypeFlowAction is a constant for sessions triggered by flow actions in other sessions

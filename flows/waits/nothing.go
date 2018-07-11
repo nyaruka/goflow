@@ -5,6 +5,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeNothing, func() flows.Wait { return &NothingWait{} })
+}
+
 const TypeNothing string = "nothing"
 
 // NothingWait is a wait which waits for nothing.. i.e. a chance for the caller to do

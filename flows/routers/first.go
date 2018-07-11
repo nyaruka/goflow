@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	registerType(TypeFirst, func() flows.Router { return &FirstRouter{} })
+	RegisterType(TypeFirst, func() flows.Router { return &FirstRouter{} })
 }
 
 // TypeFirst is the type for FirstRouters

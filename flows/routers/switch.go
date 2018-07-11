@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	registerType(TypeSwitch, func() flows.Router { return &SwitchRouter{} })
+	RegisterType(TypeSwitch, func() flows.Router { return &SwitchRouter{} })
 }
 
 // TypeSwitch is the constant for our switch router

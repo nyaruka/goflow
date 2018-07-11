@@ -5,6 +5,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeMsg, func() flows.Wait { return &MsgWait{} })
+}
+
 const TypeMsg string = "msg"
 
 // MsgWait is a wait which waits for an incoming message (i.e. a msg_received event)

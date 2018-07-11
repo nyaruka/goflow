@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	registerType(TypeManual, ReadManualTrigger)
+	RegisterType(TypeManual, ReadManualTrigger)
 }
 
 // TypeManual is the type for manually triggered sessions
