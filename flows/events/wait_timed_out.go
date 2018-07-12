@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeWaitTimedOut, func() flows.Event { return &WaitTimedOutEvent{} })
+}
+
 // TypeWaitTimedOut is the type of our wait timed out events
 const TypeWaitTimedOut string = "wait_timed_out"
 

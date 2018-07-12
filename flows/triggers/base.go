@@ -51,6 +51,10 @@ func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(t.flow.UUID()))
 }
 
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
 type baseTriggerEnvelope struct {
 	Environment json.RawMessage      `json:"environment,omitempty"`
 	Flow        *flows.FlowReference `json:"flow" validate:"required"`

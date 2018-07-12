@@ -8,6 +8,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeCallResthook, func() flows.Action { return &CallResthookAction{} })
+}
+
 // TypeCallResthook is the type for the call resthook action
 const TypeCallResthook string = "call_resthook"
 

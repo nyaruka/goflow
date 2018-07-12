@@ -1,7 +1,14 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/nyaruka/goflow/flows"
+)
+
+func init() {
+	RegisterType(TypeContactChanged, func() flows.Event { return &ContactChangedEvent{} })
+}
 
 // TypeContactChanged is the type of our set contact event
 const TypeContactChanged string = "contact_changed"

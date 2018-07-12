@@ -10,6 +10,13 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+var registeredTypes = map[string](func() flows.Action){}
+
+// RegisterType registers a new type of router
+func RegisterType(name string, initFunc func() flows.Action) {
+	registeredTypes[name] = initFunc
+}
+
 var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
 
 type eventLog struct {
@@ -241,4 +248,22 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	}
 
 	return urnList, contactRefs, groupRefs, nil
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+// ReadAction reads an action from the given typed envelope
+func ReadAction(envelope *utils.TypedEnvelope) (flows.Action, error) {
+	f := registeredTypes[envelope.Type]
+	if f == nil {
+		return nil, fmt.Errorf("unknown action type: %s", envelope.Type)
+	}
+
+	action := f()
+	if err := utils.UnmarshalAndValidate(envelope.Data, action, ""); err != nil {
+		return nil, fmt.Errorf("unable to read action[type=%s]: %s", envelope.Type, err)
+	}
+	return action, nil
 }

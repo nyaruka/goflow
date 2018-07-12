@@ -8,6 +8,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeStartSession, func() flows.Action { return &StartSessionAction{} })
+}
+
 // TypeStartSession is the type for the start session action
 const TypeStartSession string = "start_session"
 

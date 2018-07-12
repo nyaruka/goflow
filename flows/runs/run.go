@@ -372,7 +372,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	// read in our events
 	r.events = make([]flows.Event, len(envelope.Events))
 	for i := range r.events {
-		if r.events[i], err = events.EventFromEnvelope(envelope.Events[i]); err != nil {
+		if r.events[i], err = events.ReadEvent(envelope.Events[i]); err != nil {
 			return nil, err
 		}
 	}

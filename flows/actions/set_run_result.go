@@ -6,6 +6,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeSetRunResult, func() flows.Action { return &SetRunResultAction{} })
+}
+
 // TypeSetRunResult is the type for the set run result action
 const TypeSetRunResult string = "set_run_result"
 

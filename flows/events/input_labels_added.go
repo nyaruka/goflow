@@ -1,6 +1,12 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/goflow/flows"
+)
+
+func init() {
+	RegisterType(TypeInputLabelsAdded, func() flows.Event { return &InputLabelsAddedEvent{} })
+}
 
 // TypeInputLabelsAdded is the type of our add label action
 const TypeInputLabelsAdded string = "input_labels_added"

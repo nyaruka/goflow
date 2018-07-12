@@ -69,6 +69,10 @@ func containsEventOfType(events []flows.Event, eventType string) bool {
 	return false
 }
 
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
 // ReadWait reads a wait from the given typed envelope
 func ReadWait(envelope *utils.TypedEnvelope) (flows.Wait, error) {
 	f := registeredTypes[envelope.Type]

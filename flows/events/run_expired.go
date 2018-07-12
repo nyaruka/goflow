@@ -6,6 +6,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeRunExpired, func() flows.Event { return &RunExpiredEvent{} })
+}
+
 // TypeRunExpired is the type of our flow expired event
 const TypeRunExpired string = "run_expired"
 

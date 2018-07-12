@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeRemoveContactGroups, func() flows.Action { return &RemoveContactGroupsAction{} })
+}
+
 // TypeRemoveContactGroups is the type for the remove from groups action
 const TypeRemoveContactGroups string = "remove_contact_groups"
 

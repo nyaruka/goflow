@@ -23,6 +23,10 @@ type BaseRouter struct {
 // ResultName returns the name which the result of this router should be saved as (if any)
 func (r *BaseRouter) ResultName() string { return r.ResultName_ }
 
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
 // ReadRouter reads a router from the given typed envelope
 func ReadRouter(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	f := registeredTypes[envelope.Type]

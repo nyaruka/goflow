@@ -5,6 +5,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeRunResultChanged, func() flows.Event { return &RunResultChangedEvent{} })
+}
+
 // TypeRunResultChanged is the type of our run result event
 const TypeRunResultChanged string = "run_result_changed"
 

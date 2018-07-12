@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeContactTimezoneChanged, func() flows.Event { return &ContactTimezoneChangedEvent{} })
+}
+
 // TypeContactTimezoneChanged is the type of our contact timezone changed event
 const TypeContactTimezoneChanged string = "contact_timezone_changed"
 

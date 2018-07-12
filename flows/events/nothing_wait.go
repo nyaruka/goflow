@@ -1,6 +1,12 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/goflow/flows"
+)
+
+func init() {
+	RegisterType(TypeNothingWait, func() flows.Event { return &NothingWaitEvent{} })
+}
 
 // TypeNothingWait is the type of our nothing wait event
 const TypeNothingWait string = "nothing_wait"

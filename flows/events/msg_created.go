@@ -4,6 +4,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeMsgCreated, func() flows.Event { return &MsgCreatedEvent{} })
+}
+
 // TypeMsgCreated is a constant for incoming messages
 const TypeMsgCreated string = "msg_created"
 

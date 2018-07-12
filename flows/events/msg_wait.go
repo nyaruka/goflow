@@ -6,6 +6,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeMsgWait, func() flows.Event { return &MsgWaitEvent{} })
+}
+
 // TypeMsgWait is the type of our msg wait event
 const TypeMsgWait string = "msg_wait"
 

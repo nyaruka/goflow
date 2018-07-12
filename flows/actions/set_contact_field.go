@@ -8,6 +8,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeSetContactField, func() flows.Action { return &SetContactFieldAction{} })
+}
+
 // TypeSetContactField is the type for the set contact field action
 const TypeSetContactField string = "set_contact_field"
 

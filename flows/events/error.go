@@ -1,6 +1,12 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/goflow/flows"
+)
+
+func init() {
+	RegisterType(TypeError, func() flows.Event { return &ErrorEvent{} })
+}
 
 // TypeError is the type of our error events
 const TypeError string = "error"

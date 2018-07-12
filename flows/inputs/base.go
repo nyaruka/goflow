@@ -43,6 +43,10 @@ func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 	return types.NewXResolveError(i, key)
 }
 
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
 type baseInputEnvelope struct {
 	UUID      flows.InputUUID         `json:"uuid"`
 	Channel   *flows.ChannelReference `json:"channel,omitempty" validate:"omitempty,dive"`
