@@ -64,14 +64,11 @@ func (e *callerOrEngineEvent) AllowedOrigin() flows.EventOrigin {
 func ReadEvent(envelope *utils.TypedEnvelope) (flows.Event, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {
-		return nil, fmt.Errorf("unknown event type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
 	}
 
 	event := f()
-	if err := utils.UnmarshalAndValidate(envelope.Data, event, ""); err != nil {
-		return nil, fmt.Errorf("unable to read event[type=%s]: %s", envelope.Type, err)
-	}
-	return event, nil
+	return event, utils.UnmarshalAndValidate(envelope.Data, event)
 }
 
 // ReadEvents reads the events from the given envelopes
@@ -80,7 +77,7 @@ func ReadEvents(envelopes []*utils.TypedEnvelope) ([]flows.Event, error) {
 	for e, envelope := range envelopes {
 		event, err := ReadEvent(envelope)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read event[type=%s]: %s", envelope.Type, err)
 		}
 		event.SetFromCaller(true)
 		events[e] = event

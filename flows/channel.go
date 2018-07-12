@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -188,8 +189,8 @@ type channelEnvelope struct {
 // ReadChannel decodes a channel from the passed in JSON
 func ReadChannel(data json.RawMessage) (Channel, error) {
 	ce := channelEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &ce, "channel"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &ce); err != nil {
+		return nil, fmt.Errorf("unable to read channel: %s", err)
 	}
 
 	return &channel{

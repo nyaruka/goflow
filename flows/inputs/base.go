@@ -57,11 +57,7 @@ type baseInputEnvelope struct {
 func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Input, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {
-		return nil, fmt.Errorf("unknown input type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
 	}
-	input, err := f(session, envelope.Data)
-	if err != nil {
-		return nil, fmt.Errorf("unable to read input[type=%s]: %s", envelope.Type, err)
-	}
-	return input, nil
+	return f(session, envelope.Data)
 }

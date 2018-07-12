@@ -2,6 +2,7 @@ package definition
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -70,9 +71,9 @@ type nodeEnvelope struct {
 // UnmarshalJSON unmarshals a flow node from the given JSON
 func (n *node) UnmarshalJSON(data []byte) error {
 	var envelope nodeEnvelope
-	err := utils.UnmarshalAndValidate(data, &envelope, "node")
+	err := utils.UnmarshalAndValidate(data, &envelope)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to read node: %s", err)
 	}
 
 	n.uuid = envelope.UUID
@@ -81,7 +82,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	if envelope.Router != nil {
 		n.router, err = routers.ReadRouter(envelope.Router)
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to read router[type=%s]: %s", envelope.Router.Type, err)
 		}
 	}
 
@@ -89,7 +90,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	if envelope.Wait != nil {
 		n.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Wait.Type, err)
 		}
 	}
 
@@ -98,7 +99,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	for i := range envelope.Actions {
 		n.actions[i], err = actions.ReadAction(envelope.Actions[i])
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to read action[type=%s]: %s", envelope.Actions[i], err)
 		}
 	}
 
@@ -154,9 +155,9 @@ type exitEnvelope struct {
 // UnmarshalJSON unmarshals a node exit from the given JSON
 func (e *exit) UnmarshalJSON(data []byte) error {
 	var envelope exitEnvelope
-	err := utils.UnmarshalAndValidate(data, &envelope, "exit")
+	err := utils.UnmarshalAndValidate(data, &envelope)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to read exit: %s", err)
 	}
 
 	e.uuid = envelope.UUID

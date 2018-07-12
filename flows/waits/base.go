@@ -77,12 +77,9 @@ func containsEventOfType(events []flows.Event, eventType string) bool {
 func ReadWait(envelope *utils.TypedEnvelope) (flows.Wait, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {
-		return nil, fmt.Errorf("unknown wait type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
 	}
 
 	wait := f()
-	if err := utils.UnmarshalAndValidate(envelope.Data, wait, ""); err != nil {
-		return nil, fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Type, err)
-	}
-	return wait, nil
+	return wait, utils.UnmarshalAndValidate(envelope.Data, wait)
 }

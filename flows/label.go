@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/utils"
@@ -70,8 +71,8 @@ type labelEnvelope struct {
 // ReadLabel reads a label from the given JSON
 func ReadLabel(data json.RawMessage) (*Label, error) {
 	var le labelEnvelope
-	if err := utils.UnmarshalAndValidate(data, &le, "label"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &le); err != nil {
+		return nil, fmt.Errorf("unable to read label: %s", err)
 	}
 
 	return NewLabel(le.UUID, le.Name), nil

@@ -50,7 +50,7 @@ type runSummaryEnvelope struct {
 func ReadRunSummary(session flows.Session, data json.RawMessage) (flows.RunSummary, error) {
 	var err error
 	e := runSummaryEnvelope{}
-	if err = utils.UnmarshalAndValidate(data, &e, "runsummary"); err != nil {
+	if err = utils.UnmarshalAndValidate(data, &e); err != nil {
 		return nil, err
 	}
 

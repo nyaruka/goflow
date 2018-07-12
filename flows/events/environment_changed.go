@@ -2,6 +2,7 @@ package events
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -47,7 +48,7 @@ func (e *EnvironmentChangedEvent) Validate(assets flows.SessionAssets) error {
 func (e *EnvironmentChangedEvent) Apply(run flows.FlowRun) error {
 	env, err := utils.ReadEnvironment(e.Environment)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to read environment: %s", err)
 	}
 
 	run.Session().SetEnvironment(env)

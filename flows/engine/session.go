@@ -487,8 +487,8 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 	var envelope sessionEnvelope
 	var err error
 
-	if err = utils.UnmarshalAndValidate(data, &envelope, "session"); err != nil {
-		return nil, err
+	if err = utils.UnmarshalAndValidate(data, &envelope); err != nil {
+		return nil, fmt.Errorf("unable to read session: %s", err)
 	}
 
 	s := NewSession(assetCache, assetServer, engineConfig, httpClient).(*session)
@@ -503,7 +503,7 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 	// read our trigger
 	if envelope.Trigger != nil {
 		if s.trigger, err = triggers.ReadTrigger(s, envelope.Trigger); err != nil {
-			return nil, fmt.Errorf("unable to read trigger: %s", err)
+			return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", envelope.Trigger.Type, err)
 		}
 	}
 
@@ -527,7 +527,7 @@ func ReadSession(assetCache *assets.AssetCache, assetServer assets.AssetServer, 
 	if envelope.Wait != nil {
 		s.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
-			return nil, fmt.Errorf("unable to read wait: %s", err)
+			return nil, fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Wait.Type, err)
 		}
 	}
 

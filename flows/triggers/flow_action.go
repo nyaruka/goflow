@@ -2,6 +2,7 @@ package triggers
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -83,7 +84,7 @@ func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.T
 	var err error
 	trigger := &FlowActionTrigger{}
 	e := flowActionTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e, ""); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
 		return nil, err
 	}
 
@@ -92,7 +93,7 @@ func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.T
 	}
 
 	if trigger.run, err = runs.ReadRunSummary(session, e.Run); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to read run summary: %s", err)
 	}
 
 	return trigger, nil

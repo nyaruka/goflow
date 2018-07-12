@@ -326,8 +326,8 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	var envelope runEnvelope
 	var err error
 
-	if err = utils.UnmarshalAndValidate(data, &envelope, "run"); err != nil {
-		return nil, err
+	if err = utils.UnmarshalAndValidate(data, &envelope); err != nil {
+		return nil, fmt.Errorf("unable to read run: %s", err)
 	}
 
 	r.session = session
@@ -353,7 +353,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	if envelope.Input != nil {
 		if r.input, err = inputs.ReadInput(session, envelope.Input); err != nil {
-			return nil, fmt.Errorf("unable to read input: %s", err)
+			return nil, fmt.Errorf("unable to read input[type=%s]: %s", envelope.Input.Type, err)
 		}
 	}
 
@@ -373,7 +373,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.events = make([]flows.Event, len(envelope.Events))
 	for i := range r.events {
 		if r.events[i], err = events.ReadEvent(envelope.Events[i]); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("unable to read event[type=%s]: %s", envelope.Events[i].Type, err)
 		}
 	}
 

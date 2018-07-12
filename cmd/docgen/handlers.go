@@ -85,7 +85,7 @@ func handleEventDoc(output *strings.Builder, item *documentedItem, session flows
 
 	event, err := events.ReadEvent(typed)
 	if err != nil {
-		return fmt.Errorf("unable to parse example: %s", err)
+		return fmt.Errorf("unable to read event[type=%s]: %s", typed.Type, err)
 	}
 
 	// validate it
@@ -125,7 +125,7 @@ func handleActionDoc(output *strings.Builder, item *documentedItem, session flow
 	err := json.Unmarshal(exampleJSON, typed)
 	action, err := actions.ReadAction(typed)
 	if err != nil {
-		return fmt.Errorf("unable to parse example: %s", err)
+		return fmt.Errorf("unable to read action[type=%s]: %s", typed.Type, err)
 	}
 
 	// validate it

@@ -65,7 +65,7 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
 	trigger := ManualTrigger{}
 	e := baseTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e, ""); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
 		return nil, err
 	}
 

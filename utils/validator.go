@@ -22,24 +22,6 @@ func init() {
 	})
 }
 
-// Validate will run validation on the given object and return a set of field specific errors in the format:
-// field <fieldname> <tag specific message>
-//
-// For example: "field 'flows' is required"
-//
-func Validate(obj interface{}) error {
-	return validate(obj, "")
-}
-
-// ValidateAs will run validation on the given object and return a set of field specific errors in the format:
-// field <fieldname> [on <objName>] <tag specific message>
-//
-// For example: "field 'flows' on 'assets' is required"
-//
-func ValidateAs(obj interface{}, objName string) error {
-	return validate(obj, objName)
-}
-
 // ValidationErrors combines multiple validation errors as a single error
 type ValidationErrors []error
 
@@ -52,7 +34,12 @@ func (e ValidationErrors) Error() string {
 	return strings.Join(errs, ", ")
 }
 
-func validate(obj interface{}, objName string) error {
+// Validate will run validation on the given object and return a set of field specific errors in the format:
+// field <fieldname> <tag specific message>
+//
+// For example: "field 'flows' is required"
+//
+func Validate(obj interface{}) error {
 	err := Validator.Struct(obj)
 	if err == nil {
 		return nil
@@ -67,15 +54,9 @@ func validate(obj interface{}, objName string) error {
 	for v, fieldErr := range validationErrs {
 		location := fieldErr.Namespace()
 
-		// the first part of the namespace is always the struct name so either replace that with
-		// the provided path or remove it
+		// the first part of the namespace is always the struct name so we remove it
 		parts := strings.SplitN(location, ".", 2)
-		if objName != "" {
-			parts[0] = objName
-			location = strings.Join(parts, ".")
-		} else {
-			location = strings.Join(parts[1:], ".")
-		}
+		location = strings.Join(parts[1:], ".")
 
 		// generate a more user friendly description of the problem
 		var problem string

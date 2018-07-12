@@ -114,8 +114,8 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 
 	envelopes := make([]assetEnvelope, len(raw))
 	for e := range raw {
-		if err := utils.UnmarshalAndValidate(raw[e], &envelopes[e], "asset"); err != nil {
-			return err
+		if err := utils.UnmarshalAndValidate(raw[e], &envelopes[e]); err != nil {
+			return fmt.Errorf("unable to read asset: %s", err)
 		}
 	}
 

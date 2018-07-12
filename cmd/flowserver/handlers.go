@@ -70,7 +70,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", start.Trigger.Type, err)
 	}
 
 	// read our caller events

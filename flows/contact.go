@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -375,8 +376,8 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
-	if err := utils.UnmarshalAndValidate(data, &envelope, "contact"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &envelope); err != nil {
+		return nil, fmt.Errorf("unable to read contact: %s", err)
 	}
 
 	c := &Contact{

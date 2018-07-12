@@ -79,7 +79,7 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env := NewDefaultEnvironment().(*environment)
 
 	var envelope envEnvelope
-	if err := UnmarshalAndValidate(data, &envelope, "environment"); err != nil {
+	if err := UnmarshalAndValidate(data, &envelope); err != nil {
 		return nil, err
 	}
 

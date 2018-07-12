@@ -171,8 +171,8 @@ type flowEnvelopeWithUI struct {
 // ReadFlow reads a single flow definition from the passed in byte array
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	envelope := flowEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &envelope, "flow"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &envelope); err != nil {
+		return nil, fmt.Errorf("unable to read flow: %s", err)
 	}
 	nodes := make([]flows.Node, len(envelope.Nodes))
 	for n := range envelope.Nodes {

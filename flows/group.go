@@ -263,8 +263,8 @@ type groupEnvelope struct {
 // ReadGroup reads a group from the given JSON
 func ReadGroup(data json.RawMessage) (*Group, error) {
 	var ge groupEnvelope
-	if err := utils.UnmarshalAndValidate(data, &ge, "group"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &ge); err != nil {
+		return nil, fmt.Errorf("unable to read group: %s", err)
 	}
 
 	return NewGroup(ge.UUID, ge.Name, ge.Query), nil

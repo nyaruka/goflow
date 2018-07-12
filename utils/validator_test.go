@@ -64,8 +64,8 @@ func TestValidate(t *testing.T) {
 		`field 'time_format' is not a valid time format`,
 	}, msgs)
 
-	// test with another invalid object and an explicit object path
-	errs = utils.ValidateAs(&TestObject{
+	// test with another invalid object
+	errs = utils.Validate(&TestObject{
 		Foo: "hello",
 		Bar: SubObject{
 			UUID:      "ffffffff-ffff-ffff-bf1a-4186adc14195",
@@ -73,12 +73,12 @@ func TestValidate(t *testing.T) {
 			SomeValue: 2,
 		},
 		Things: []string{"UGHHH"},
-	}, "blob.thing.test_object")
+	})
 	assert.NotNil(t, errs)
 
 	// check the individual error messages
 	msgs = strings.Split(errs.Error(), ", ")
 	assert.Equal(t, []string{
-		`field 'blob.thing.test_object.things[0]' is not a valid HTTP method`,
+		`field 'things[0]' is not a valid HTTP method`,
 	}, msgs)
 }

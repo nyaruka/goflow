@@ -67,13 +67,9 @@ type baseTriggerEnvelope struct {
 func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {
-		return nil, fmt.Errorf("unknown trigger type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
 	}
-	trigger, err := f(session, envelope.Data)
-	if err != nil {
-		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", envelope.Type, err)
-	}
-	return trigger, nil
+	return f(session, envelope.Data)
 }
 
 func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTriggerEnvelope) error {
@@ -87,12 +83,12 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 
 	if envelope.Environment != nil {
 		if base.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
-			return err
+			return fmt.Errorf("unable to read environment: %s", err)
 		}
 	}
 	if envelope.Contact != nil {
 		if base.contact, err = flows.ReadContact(session, envelope.Contact); err != nil {
-			return err
+			return fmt.Errorf("unable to read contact: %s", err)
 		}
 	}
 	if envelope.Params != nil {

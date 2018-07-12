@@ -965,7 +965,7 @@ func ReadLegacyFlows(data []json.RawMessage) ([]*Flow, error) {
 // ReadLegacyFlow reads a single legacy formatted flow
 func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 	flow := &Flow{}
-	if err := utils.UnmarshalAndValidate(data, flow, ""); err != nil {
+	if err := utils.UnmarshalAndValidate(data, flow); err != nil {
 		return nil, err
 	}
 	return flow, nil

@@ -258,12 +258,9 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 func ReadAction(envelope *utils.TypedEnvelope) (flows.Action, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {
-		return nil, fmt.Errorf("unknown action type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
 	}
 
 	action := f()
-	if err := utils.UnmarshalAndValidate(envelope.Data, action, ""); err != nil {
-		return nil, fmt.Errorf("unable to read action[type=%s]: %s", envelope.Type, err)
-	}
-	return action, nil
+	return action, utils.UnmarshalAndValidate(envelope.Data, action)
 }

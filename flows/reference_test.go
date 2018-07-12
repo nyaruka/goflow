@@ -50,7 +50,7 @@ func TestReferenceValidation(t *testing.T) {
 func TestChannelReferenceUnmarsal(t *testing.T) {
 	// check that UUIDs aren't required to be valid UUID4s
 	channel := &flows.ChannelReference{}
-	err := utils.UnmarshalAndValidate([]byte(`{"uuid": "ffffffff-9b24-92e1-ffff-ffffb207cdb4", "name": "Old Channel"}`), channel, "channel")
+	err := utils.UnmarshalAndValidate([]byte(`{"uuid": "ffffffff-9b24-92e1-ffff-ffffb207cdb4", "name": "Old Channel"}`), channel)
 	assert.NoError(t, err)
 	assert.Equal(t, flows.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID)
 	assert.Equal(t, "Old Channel", channel.Name)

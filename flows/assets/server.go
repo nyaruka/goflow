@@ -32,8 +32,8 @@ type assetServerEnvelope struct {
 // ReadAssetServer reads an asset server fronm the given JSON
 func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, data json.RawMessage) (AssetServer, error) {
 	envelope := &assetServerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, envelope, "asset_server"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
+		return nil, fmt.Errorf("unable to read asset server: %s", err)
 	}
 
 	return NewAssetServer(authToken, envelope.TypeURLs, httpClient), nil

@@ -32,13 +32,13 @@ func jsonMarshal(v interface{}, indent string) ([]byte, error) {
 }
 
 // UnmarshalAndValidate is a convenience function to unmarshal an object and validate it
-func UnmarshalAndValidate(data []byte, obj interface{}, objName string) error {
+func UnmarshalAndValidate(data []byte, obj interface{}) error {
 	err := json.Unmarshal(data, obj)
 	if err != nil {
 		return err
 	}
 
-	err = ValidateAs(obj, objName)
+	err = Validate(obj)
 	if err != nil {
 		return err
 	}

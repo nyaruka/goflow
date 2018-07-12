@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -58,8 +59,8 @@ type resthookEnvelope struct {
 // ReadResthook reads a resthook from the given JSON
 func ReadResthook(data json.RawMessage) (*Resthook, error) {
 	var e resthookEnvelope
-	if err := utils.UnmarshalAndValidate(data, &e, "resthook"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+		return nil, fmt.Errorf("unable to read resthook: %s", err)
 	}
 
 	return NewResthook(e.Slug, e.Subscribers), nil

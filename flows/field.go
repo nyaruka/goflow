@@ -306,8 +306,8 @@ type fieldEnvelope struct {
 // ReadField reads a contact field from the given JSON
 func ReadField(data json.RawMessage) (*Field, error) {
 	var fe fieldEnvelope
-	if err := utils.UnmarshalAndValidate(data, &fe, "field"); err != nil {
-		return nil, err
+	if err := utils.UnmarshalAndValidate(data, &fe); err != nil {
+		return nil, fmt.Errorf("unable to read field: %s", err)
 	}
 
 	return NewField(fe.Key, fe.Name, fe.ValueType), nil

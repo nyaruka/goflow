@@ -93,7 +93,7 @@ type msgInputEnvelope struct {
 func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
-	err := utils.UnmarshalAndValidate(data, &i, "")
+	err := utils.UnmarshalAndValidate(data, &i)
 	if err != nil {
 		return nil, err
 	}

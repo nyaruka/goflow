@@ -31,12 +31,9 @@ func (r *BaseRouter) ResultName() string { return r.ResultName_ }
 func ReadRouter(envelope *utils.TypedEnvelope) (flows.Router, error) {
 	f := registeredTypes[envelope.Type]
 	if f == nil {
-		return nil, fmt.Errorf("unknown router type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
 	}
 
 	router := f()
-	if err := utils.UnmarshalAndValidate(envelope.Data, router, ""); err != nil {
-		return nil, fmt.Errorf("unable to read router[type=%s]: %s", envelope.Type, err)
-	}
-	return router, nil
+	return router, utils.UnmarshalAndValidate(envelope.Data, router)
 }
