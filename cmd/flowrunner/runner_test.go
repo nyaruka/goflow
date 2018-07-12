@@ -177,7 +177,7 @@ func TestFlows(t *testing.T) {
 			callerEvents[i] = make([]flows.Event, len(flowTest.CallerEvents[i]))
 
 			for e := range flowTest.CallerEvents[i] {
-				event, err := events.EventFromEnvelope(flowTest.CallerEvents[i][e])
+				event, err := events.ReadEvent(flowTest.CallerEvents[i][e])
 				require.NoError(t, err, "Error unmarshalling caller events for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
 				event.SetFromCaller(true)

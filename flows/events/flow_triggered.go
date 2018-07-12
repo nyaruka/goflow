@@ -4,6 +4,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeFlowTriggered, func() flows.Event { return &FlowTriggeredEvent{} })
+}
+
 // TypeFlowTriggered is the type of our flow triggered event
 const TypeFlowTriggered string = "flow_triggered"
 

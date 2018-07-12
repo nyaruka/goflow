@@ -8,6 +8,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeAddContactURN, func() flows.Action { return &AddContactURNAction{} })
+}
+
 // TypeAddContactURN is our type for the add URN action
 const TypeAddContactURN string = "add_contact_urn"
 

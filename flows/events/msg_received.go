@@ -5,6 +5,10 @@ import (
 	"github.com/nyaruka/goflow/flows/inputs"
 )
 
+func init() {
+	RegisterType(TypeMsgReceived, func() flows.Event { return &MsgReceivedEvent{} })
+}
+
 // TypeMsgReceived is a constant for incoming messages
 const TypeMsgReceived string = "msg_received"
 

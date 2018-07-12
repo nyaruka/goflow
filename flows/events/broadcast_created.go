@@ -6,6 +6,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeBroadcastCreated, func() flows.Event { return &BroadcastCreatedEvent{} })
+}
+
 // TypeBroadcastCreated is a constant for outgoing message events
 const TypeBroadcastCreated string = "broadcast_created"
 

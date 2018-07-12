@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeStartFlow, func() flows.Action { return &StartFlowAction{} })
+}
+
 // TypeStartFlow is the type for the start flow action
 const TypeStartFlow string = "start_flow"
 

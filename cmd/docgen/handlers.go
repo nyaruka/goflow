@@ -83,7 +83,7 @@ func handleEventDoc(output *strings.Builder, item *documentedItem, session flows
 		return fmt.Errorf("unable to parse example: %s", err)
 	}
 
-	event, err := events.EventFromEnvelope(typed)
+	event, err := events.ReadEvent(typed)
 	if err != nil {
 		return fmt.Errorf("unable to parse example: %s", err)
 	}
@@ -123,7 +123,7 @@ func handleActionDoc(output *strings.Builder, item *documentedItem, session flow
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
-	action, err := actions.ActionFromEnvelope(typed)
+	action, err := actions.ReadAction(typed)
 	if err != nil {
 		return fmt.Errorf("unable to parse example: %s", err)
 	}

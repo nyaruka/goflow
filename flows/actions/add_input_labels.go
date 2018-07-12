@@ -5,6 +5,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeAddInputLabels, func() flows.Action { return &AddInputLabelsAction{} })
+}
+
 // TypeAddInputLabels is the type for the add label action
 const TypeAddInputLabels string = "add_input_labels"
 

@@ -11,6 +11,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeMsg, ReadMsgInput)
+}
+
 // TypeMsg is a constant for incoming messages
 const TypeMsg string = "msg"
 
@@ -86,7 +90,7 @@ type msgInputEnvelope struct {
 }
 
 // ReadMsgInput reads a message input from the given JSON
-func ReadMsgInput(session flows.Session, data json.RawMessage) (*MsgInput, error) {
+func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
 	input := MsgInput{}
 	i := msgInputEnvelope{}
 	err := utils.UnmarshalAndValidate(data, &i, "")

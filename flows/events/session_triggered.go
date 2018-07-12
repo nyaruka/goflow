@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeSessionTriggered, func() flows.Event { return &SessionTriggeredEvent{} })
+}
+
 // TypeSessionTriggered is the type of our session triggered event
 const TypeSessionTriggered string = "session_triggered"
 

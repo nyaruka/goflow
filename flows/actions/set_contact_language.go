@@ -9,6 +9,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeSetContactLanguage, func() flows.Action { return &SetContactLanguageAction{} })
+}
+
 // TypeSetContactLanguage is the type for the set contact Language action
 const TypeSetContactLanguage string = "set_contact_language"
 

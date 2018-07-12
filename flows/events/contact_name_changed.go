@@ -6,6 +6,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeContactNameChanged, func() flows.Event { return &ContactNameChangedEvent{} })
+}
+
 // TypeContactNameChanged is the type of our contact name changed event
 const TypeContactNameChanged string = "contact_name_changed"
 

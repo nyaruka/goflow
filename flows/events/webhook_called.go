@@ -4,6 +4,10 @@ import (
 	"github.com/nyaruka/goflow/flows"
 )
 
+func init() {
+	RegisterType(TypeWebhookCalled, func() flows.Event { return &WebhookCalledEvent{} })
+}
+
 // TypeWebhookCalled is the type for our webhook events
 const TypeWebhookCalled string = "webhook_called"
 

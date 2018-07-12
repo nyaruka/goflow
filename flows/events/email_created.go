@@ -1,6 +1,12 @@
 package events
 
-import "github.com/nyaruka/goflow/flows"
+import (
+	"github.com/nyaruka/goflow/flows"
+)
+
+func init() {
+	RegisterType(TypeEmailCreated, func() flows.Event { return &EmailCreatedEvent{} })
+}
 
 // TypeEmailCreated is our type for the email event
 const TypeEmailCreated string = "email_created"

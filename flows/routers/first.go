@@ -5,6 +5,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeFirst, func() flows.Router { return &FirstRouter{} })
+}
+
 // TypeFirst is the type for FirstRouters
 const TypeFirst string = "first"
 

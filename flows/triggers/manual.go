@@ -9,6 +9,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeManual, ReadManualTrigger)
+}
+
 // TypeManual is the type for manually triggered sessions
 const TypeManual string = "manual"
 
@@ -58,10 +62,10 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-func ReadManualTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
+func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
 	trigger := ManualTrigger{}
 	e := baseTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(envelope.Data, &e, "trigger[type=manual]"); err != nil {
+	if err := utils.UnmarshalAndValidate(data, &e, ""); err != nil {
 		return nil, err
 	}
 

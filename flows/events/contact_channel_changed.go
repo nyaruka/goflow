@@ -2,8 +2,13 @@ package events
 
 import (
 	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 )
+
+func init() {
+	RegisterType(TypeContactChannelChanged, func() flows.Event { return &ContactChannelChangedEvent{} })
+}
 
 // TypeContactChannelChanged is the type of our set preferred channel event
 const TypeContactChannelChanged string = "contact_channel_changed"

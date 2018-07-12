@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeEnvironmentChanged, func() flows.Event { return &EnvironmentChangedEvent{} })
+}
+
 // TypeEnvironmentChanged is the type of our environment changed event
 const TypeEnvironmentChanged string = "environment_changed"
 

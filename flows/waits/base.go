@@ -1,12 +1,20 @@
 package waits
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
+
+var registeredTypes = map[string](func() flows.Wait){}
+
+// RegisterType registers a new type of wait
+func RegisterType(name string, initFunc func() flows.Wait) {
+	registeredTypes[name] = initFunc
+}
 
 // the base of all wait types
 type baseWait struct {
@@ -59,4 +67,22 @@ func containsEventOfType(events []flows.Event, eventType string) bool {
 		}
 	}
 	return false
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+// ReadWait reads a wait from the given typed envelope
+func ReadWait(envelope *utils.TypedEnvelope) (flows.Wait, error) {
+	f := registeredTypes[envelope.Type]
+	if f == nil {
+		return nil, fmt.Errorf("unknown wait type: %s", envelope.Type)
+	}
+
+	wait := f()
+	if err := utils.UnmarshalAndValidate(envelope.Data, wait, ""); err != nil {
+		return nil, fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Type, err)
+	}
+	return wait, nil
 }

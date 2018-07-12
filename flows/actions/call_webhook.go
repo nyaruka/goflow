@@ -9,6 +9,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeCallWebhook, func() flows.Action { return &CallWebhookAction{} })
+}
+
 // TypeCallWebhook is the type for the call webhook action
 const TypeCallWebhook string = "call_webhook"
 

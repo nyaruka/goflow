@@ -10,6 +10,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeSwitch, func() flows.Router { return &SwitchRouter{} })
+}
+
 // TypeSwitch is the constant for our switch router
 const TypeSwitch string = "switch"
 

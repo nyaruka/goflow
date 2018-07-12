@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeAddContactGroups, func() flows.Action { return &AddContactGroupsAction{} })
+}
+
 // TypeAddContactGroups is our type for the add to groups action
 const TypeAddContactGroups string = "add_contact_groups"
 

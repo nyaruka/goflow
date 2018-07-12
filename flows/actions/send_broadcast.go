@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func init() {
+	RegisterType(TypeSendBroadcast, func() flows.Action { return &SendBroadcastAction{} })
+}
+
 // TypeSendBroadcast is the type for the send broadcast action
 const TypeSendBroadcast string = "send_broadcast"
 

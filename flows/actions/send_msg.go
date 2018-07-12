@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeSendMsg, func() flows.Action { return &SendMsgAction{} })
+}
+
 // TypeSendMsg is the type for the send message action
 const TypeSendMsg string = "send_msg"
 

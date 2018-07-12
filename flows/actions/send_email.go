@@ -9,6 +9,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeSendEmail, func() flows.Action { return &SendEmailAction{} })
+}
+
 // TypeSendEmail is the type for the send email action
 const TypeSendEmail string = "send_email"
 

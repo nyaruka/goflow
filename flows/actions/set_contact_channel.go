@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 )
 
+func init() {
+	RegisterType(TypeSetContactChannel, func() flows.Action { return &SetContactChannelAction{} })
+}
+
 // TypeSetContactChannel is the type for the set contact channel action
 const TypeSetContactChannel string = "set_contact_channel"
 
