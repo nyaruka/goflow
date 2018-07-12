@@ -1,6 +1,7 @@
 package utils_test
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
@@ -24,4 +25,11 @@ func TestJSONMarshaling(t *testing.T) {
 	j, err = utils.JSONMarshalPretty(map[string]string{"foo": "bar"})
 	assert.NoError(t, err)
 	assert.Equal(t, []byte("{\n    \"foo\": \"bar\"\n}"), j)
+}
+
+func TestUnmarshalArray(t *testing.T) {
+	// test empty array
+	msgs, err := utils.UnmarshalArray([]byte(`[]`))
+	assert.NoError(t, err)
+	assert.Equal(t, []json.RawMessage{}, msgs)
 }

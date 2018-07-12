@@ -37,6 +37,7 @@ type configEnvelope struct {
 	MaxWebhookResponseBytes *int                 `json:"max_webhook_response_bytes"`
 }
 
+// ReadConfig reads an engine configuration from the given JSON, using the provided config as a base
 func ReadConfig(data json.RawMessage, base flows.EngineConfig) (flows.EngineConfig, error) {
 	var envelope configEnvelope
 	if err := json.Unmarshal(data, &envelope); err != nil {

@@ -38,12 +38,7 @@ func UnmarshalAndValidate(data []byte, obj interface{}) error {
 		return err
 	}
 
-	err = Validate(obj)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return Validate(obj)
 }
 
 // UnmarshalArray unmarshals an array of objects from the given JSON
