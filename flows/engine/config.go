@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 // the configuration options for the flow engine
@@ -11,6 +12,7 @@ type config struct {
 	disableWebhooks         bool
 	webhookMocks            []*flows.WebhookMock
 	maxWebhookResponseBytes int
+	extra                   map[string]interface{}
 }
 
 // NewConfig returns a new engine configuration
@@ -19,6 +21,7 @@ func NewConfig(disableWebhooks bool, webhookMocks []*flows.WebhookMock, maxWebho
 		disableWebhooks:         disableWebhooks,
 		webhookMocks:            webhookMocks,
 		maxWebhookResponseBytes: maxWebhookResponseBytes,
+		extra: make(map[string]interface{}),
 	}
 }
 
@@ -30,6 +33,7 @@ func NewDefaultConfig() flows.EngineConfig {
 func (c *config) DisableWebhooks() bool              { return c.disableWebhooks }
 func (c *config) WebhookMocks() []*flows.WebhookMock { return c.webhookMocks }
 func (c *config) MaxWebhookResponseBytes() int       { return c.maxWebhookResponseBytes }
+func (c *config) Extra(name string) interface{}      { return c.extra[name] }
 
 type configEnvelope struct {
 	DisableWebhooks         *bool                `json:"disable_webhooks"`
@@ -54,6 +58,16 @@ func ReadConfig(data json.RawMessage, base flows.EngineConfig) (flows.EngineConf
 	}
 	if envelope.MaxWebhookResponseBytes != nil {
 		config.maxWebhookResponseBytes = *envelope.MaxWebhookResponseBytes
+	}
+
+	// unmarshal again as a map to get non-core properies we don't know about
+	if err := json.Unmarshal(data, &config.extra); err != nil {
+		return nil, err
+	}
+
+	// remove the core properties from the map so they're not duplicated
+	for _, prop := range utils.GetJSONFields(envelope) {
+		delete(config.extra, prop)
 	}
 
 	return config, nil

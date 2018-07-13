@@ -33,3 +33,14 @@ func TestUnmarshalArray(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, []json.RawMessage{}, msgs)
 }
+
+func TestGetJSONFields(t *testing.T) {
+	thing := struct {
+		Foo int    `json:"foo"`
+		Bar string `json:"bar"`
+	}{
+		Foo: 123,
+		Bar: "hello",
+	}
+	assert.Equal(t, []string{"foo", "bar"}, utils.GetJSONFields(thing))
+}

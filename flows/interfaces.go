@@ -345,6 +345,7 @@ type EngineConfig interface {
 	DisableWebhooks() bool
 	WebhookMocks() []*WebhookMock
 	MaxWebhookResponseBytes() int
+	Extra(name string) interface{}
 }
 
 // Session represents the session of a flow run which may contain many runs

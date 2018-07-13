@@ -22,4 +22,12 @@ func TestReadConfig(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, config.DisableWebhooks())
 	assert.Equal(t, 1234, config.MaxWebhookResponseBytes())
+
+	// or add extra properties
+	config, err = engine.ReadConfig([]byte(`{"disable_webhooks":true,"max_webhook_response_bytes":1234,"foo":"bar"}`), base)
+	assert.NoError(t, err)
+	assert.True(t, config.DisableWebhooks())
+	assert.Equal(t, 1234, config.MaxWebhookResponseBytes())
+	assert.Equal(t, "bar", config.Extra("foo"))
+	assert.Equal(t, nil, config.Extra("disable_webhooks")) // core properties aren't duplicated here
 }
