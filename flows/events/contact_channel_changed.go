@@ -23,7 +23,7 @@ const TypeContactChannelChanged string = "contact_channel_changed"
 //
 // @event contact_channel_changed
 type ContactChannelChangedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Channel *flows.ChannelReference `json:"channel" validate:"required"`
@@ -32,7 +32,7 @@ type ContactChannelChangedEvent struct {
 // NewContactChannelChangedEvent returns a new preferred channel event
 func NewContactChannelChangedEvent(channel *flows.ChannelReference) *ContactChannelChangedEvent {
 	return &ContactChannelChangedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Channel:   channel,
 	}
 }

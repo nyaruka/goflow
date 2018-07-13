@@ -21,13 +21,13 @@ const TypeNothingWait string = "nothing_wait"
 //
 // @event nothing_wait
 type NothingWaitEvent struct {
-	baseEvent
+	BaseEvent
 	engineOnlyEvent
 }
 
 // NewNothingWait returns a new nothing wait
 func NewNothingWait() *NothingWaitEvent {
-	return &NothingWaitEvent{baseEvent: newBaseEvent()}
+	return &NothingWaitEvent{BaseEvent: NewBaseEvent()}
 }
 
 // Type returns the type of this event

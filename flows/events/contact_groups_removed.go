@@ -24,7 +24,7 @@ const TypeContactGroupsRemoved string = "contact_groups_removed"
 //
 // @event contact_groups_removed
 type ContactGroupsRemovedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
@@ -33,7 +33,7 @@ type ContactGroupsRemovedEvent struct {
 // NewContactGroupsRemovedEvent returns a new remove from group event
 func NewContactGroupsRemovedEvent(groups []*flows.GroupReference) *ContactGroupsRemovedEvent {
 	return &ContactGroupsRemovedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Groups:    groups,
 	}
 }

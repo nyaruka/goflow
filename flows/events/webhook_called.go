@@ -27,7 +27,7 @@ const TypeWebhookCalled string = "webhook_called"
 //
 // @event webhook_called
 type WebhookCalledEvent struct {
-	baseEvent
+	BaseEvent
 	engineOnlyEvent
 
 	URL        string              `json:"url"         validate:"required"`
@@ -40,7 +40,7 @@ type WebhookCalledEvent struct {
 // NewWebhookCalledEvent returns a new webhook called event
 func NewWebhookCalledEvent(url string, status flows.WebhookStatus, statusCode int, request string, response string) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
-		baseEvent:  newBaseEvent(),
+		BaseEvent:  NewBaseEvent(),
 		URL:        url,
 		Status:     status,
 		StatusCode: statusCode,

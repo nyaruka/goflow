@@ -23,7 +23,7 @@ const TypeContactNameChanged string = "contact_name_changed"
 //
 // @event contact_name_changed
 type ContactNameChangedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Name string `json:"name"`
@@ -32,7 +32,7 @@ type ContactNameChangedEvent struct {
 // NewContactNameChangedEvent returns a new contact name changed event
 func NewContactNameChangedEvent(name string) *ContactNameChangedEvent {
 	return &ContactNameChangedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Name:      name,
 	}
 }

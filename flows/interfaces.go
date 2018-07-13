@@ -275,7 +275,6 @@ const (
 // Event describes a state change
 type Event interface {
 	CreatedOn() time.Time
-	SetCreatedOn(time.Time)
 
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)

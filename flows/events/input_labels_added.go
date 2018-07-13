@@ -22,7 +22,7 @@ const TypeInputLabelsAdded string = "input_labels_added"
 //
 // @event input_labels_added
 type InputLabelsAddedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	InputUUID flows.InputUUID         `json:"input_uuid" validate:"required,uuid4"`
@@ -32,7 +32,7 @@ type InputLabelsAddedEvent struct {
 // NewInputLabelsAddedEvent returns a new add to group event
 func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*flows.LabelReference) *InputLabelsAddedEvent {
 	return &InputLabelsAddedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		InputUUID: inputUUID,
 		Labels:    labels,
 	}

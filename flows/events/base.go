@@ -15,30 +15,40 @@ func RegisterType(name string, initFunc func() flows.Event) {
 	registeredTypes[name] = initFunc
 }
 
-type baseEvent struct {
+// BaseEvent is the base of all event types
+type BaseEvent struct {
 	CreatedOn_  time.Time      `json:"created_on" validate:"required"`
 	StepUUID_   flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
 	FromCaller_ bool           `json:"-"`
 }
 
-func newBaseEvent() baseEvent {
-	return baseEvent{CreatedOn_: utils.Now()}
+// NewBaseEvent creates a new base event
+func NewBaseEvent() BaseEvent {
+	return BaseEvent{CreatedOn_: utils.Now()}
 }
 
-func (e *baseEvent) CreatedOn() time.Time        { return e.CreatedOn_ }
-func (e *baseEvent) SetCreatedOn(time time.Time) { e.CreatedOn_ = time }
+// CreatedOn returns the created on time of this event
+func (e *BaseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
 
-func (e *baseEvent) StepUUID() flows.StepUUID            { return e.StepUUID_ }
-func (e *baseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
+// StepUUID returns the UUID of the step in the path where this event occured
+func (e *BaseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 
-func (e *baseEvent) FromCaller() bool              { return e.FromCaller_ }
-func (e *baseEvent) SetFromCaller(fromCaller bool) { e.FromCaller_ = fromCaller }
+// SetStepUUID sets the UUID of the step in the path where this event occured
+func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
+// FromCaller returns whether this event originated from the caller
+func (e *BaseEvent) FromCaller() bool { return e.FromCaller_ }
+
+// SetFromCaller sets whether this event originated from the caller
+func (e *BaseEvent) SetFromCaller(fromCaller bool) { e.FromCaller_ = fromCaller }
+
+// utility struct which sets the allowed origin of an event to "caller-only"
 type callerOnlyEvent struct{}
 
 // AllowedOrigin determines where this event type can originate
 func (e *callerOnlyEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginCaller }
 
+// utility struct which sets the allowed origin of an event to "engine-only"
 type engineOnlyEvent struct{}
 
 // AllowedOrigin determines where this event type can originate
@@ -49,6 +59,7 @@ func (e *engineOnlyEvent) Validate(assets flows.SessionAssets) error {
 	return nil
 }
 
+// utility struct which sets the allowed origin of an event to "engine or caller"
 type callerOrEngineEvent struct{}
 
 // AllowedOrigin determines where this event type can originate

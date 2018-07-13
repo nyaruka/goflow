@@ -66,7 +66,7 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 //
 // @event resthook_called
 type ResthookCalledEvent struct {
-	baseEvent
+	BaseEvent
 	engineOnlyEvent
 
 	Resthook string                    `json:"resthook" validate:"required"`
@@ -77,7 +77,7 @@ type ResthookCalledEvent struct {
 // NewResthookCalledEvent returns a new resthook called event
 func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSubscriberCall) *ResthookCalledEvent {
 	return &ResthookCalledEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Resthook:  resthook,
 		Payload:   payload,
 		Calls:     calls,
