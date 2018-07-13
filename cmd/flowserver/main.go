@@ -9,9 +9,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/evalphobia/logrus_sentry"
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
+	_ "github.com/nyaruka/goflow/contrib/transferto"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/evalphobia/logrus_sentry"
 	log "github.com/sirupsen/logrus"
 )
 

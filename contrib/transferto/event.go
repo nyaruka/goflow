@@ -16,12 +16,29 @@ const TypeAirtimeTransfered string = "airtime_transferred"
 //
 //   {
 //     "type": "airtime_transferred",
-//     "created_on": "2006-01-02T15:04:05Z"
+//     "created_on": "2006-01-02T15:04:05Z",
+//     "currency": "RWF",
+//     "amount": 100,
+//     "status": "success"
 //   }
 //
 // @event airtime_transferred
 type AirtimeTransferedEvent struct {
 	events.BaseEvent
+
+	Currency string `json:"currency"`
+	Amount   int    `json:"amount"`
+	Status   string `json:"status"`
+}
+
+// NewAirtimeTransferedEvent creates a new airtime transferred event
+func NewAirtimeTransferedEvent(currency string, amount int, status string) *AirtimeTransferedEvent {
+	return &AirtimeTransferedEvent{
+		BaseEvent: events.NewBaseEvent(),
+		Currency:  currency,
+		Amount:    amount,
+		Status:    status,
+	}
 }
 
 // Type returns the type of this event
