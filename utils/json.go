@@ -3,8 +3,6 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"reflect"
-	"strings"
 )
 
 // JSONMarshal marshals the given object to JSON
@@ -48,15 +46,4 @@ func UnmarshalArray(data json.RawMessage) ([]json.RawMessage, error) {
 	var items []json.RawMessage
 	err := json.Unmarshal(data, &items)
 	return items, err
-}
-
-// GetJSONFields gets the json field names of the given struct
-func GetJSONFields(s interface{}) []string {
-	t := reflect.ValueOf(s).Type()
-	names := make([]string, t.NumField())
-	for i := 0; i < t.NumField(); i++ {
-		jsonTag := t.Field(i).Tag.Get("json")
-		names[i] = strings.SplitN(jsonTag, ",", 1)[0]
-	}
-	return names
 }

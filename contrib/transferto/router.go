@@ -10,6 +10,13 @@ func init() {
 	routers.RegisterType(TypeAirtimeRouter, func() flows.Router { return &AirtimeRouter{} })
 }
 
+type transferToConfig struct {
+	APIToken string `mapstructure:"transferto.api_token"`
+	Account  string `mapstructure:"transferto.account"`
+	Currency string `mapstructure:"transferto.currency"`
+	Disabled bool   `mapstructure:"transferto.disabled"`
+}
+
 // TypeAirtimeRouter is the type constant for our airtime router
 var TypeAirtimeRouter = "airtime"
 
@@ -31,5 +38,10 @@ func (r *AirtimeRouter) Validate(exits []flows.Exit) error {
 }
 
 func (r *AirtimeRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flows.Step) (*string, flows.Route, error) {
+	config := &transferToConfig{}
+	if err := run.Session().EngineConfig().ReadInto(config); err != nil {
+		return nil, flows.NoRoute, fmt.Errorf("unable to read transferto config: %s", err)
+	}
+
 	return nil, flows.NoRoute, nil
 }

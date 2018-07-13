@@ -59,9 +59,15 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build the configuration for this request
-	config := s.config.Engine()
+	var configData json.RawMessage
 	if start.Config != nil {
-		config, err = engine.ReadConfig(*start.Config, config)
+		configData = *start.Config
+	} else {
+		configData = json.RawMessage(`{}`)
+	}
+	config, err := engine.ReadConfig(configData, s.config.EngineDefaults())
+	if err != nil {
+		return nil, err
 	}
 
 	// build our session
@@ -129,9 +135,15 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// build the configuration for this request
-	config := s.config.Engine()
+	var configData json.RawMessage
 	if resume.Config != nil {
-		config, err = engine.ReadConfig(*resume.Config, config)
+		configData = *resume.Config
+	} else {
+		configData = json.RawMessage(`{}`)
+	}
+	config, err := engine.ReadConfig(configData, s.config.EngineDefaults())
+	if err != nil {
+		return nil, err
 	}
 
 	// read our session

@@ -2,11 +2,11 @@ package transferto
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	//"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/events"
 )
 
 func init() {
-	//events.RegisterType(TypeEnvironmentChanged, func() flows.Event { return &EnvironmentChangedEvent{} })
+	events.RegisterType(TypeAirtimeTransfered, func() flows.Event { return &AirtimeTransferedEvent{} })
 }
 
 // TypeAirtimeTransfered is the type of our airtime transferred event
@@ -21,8 +21,7 @@ const TypeAirtimeTransfered string = "airtime_transferred"
 //
 // @event airtime_transferred
 type AirtimeTransferedEvent struct {
-	//baseEvent
-	//callerOnlyEvent
+	events.BaseEvent
 }
 
 // Type returns the type of this event
@@ -32,6 +31,9 @@ func (e *AirtimeTransferedEvent) Type() string { return TypeAirtimeTransfered }
 func (e *AirtimeTransferedEvent) Validate(assets flows.SessionAssets) error {
 	return nil
 }
+
+// AllowedOrigin determines where this event type can originate
+func (e *AirtimeTransferedEvent) AllowedOrigin() flows.EventOrigin { return flows.EventOriginEngine }
 
 // Apply applies this event to the given run
 func (e *AirtimeTransferedEvent) Apply(run flows.FlowRun) error {

@@ -4,71 +4,67 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
+
+	"github.com/mitchellh/mapstructure"
 )
+
+type coreConfig struct {
+	DisableWebhooks         bool                 `mapstructure:"disable_webhooks"`
+	WebhookMocks            []*flows.WebhookMock `mapstructure:"webhook_mocks"`
+	MaxWebhookResponseBytes int                  `mapstructure:"max_webhook_response_bytes"`
+}
 
 // the configuration options for the flow engine
 type config struct {
-	disableWebhooks         bool
-	webhookMocks            []*flows.WebhookMock
-	maxWebhookResponseBytes int
-	extra                   map[string]interface{}
+	core coreConfig
+	raw  map[string]interface{}
 }
 
 // NewConfig returns a new engine configuration
 func NewConfig(disableWebhooks bool, webhookMocks []*flows.WebhookMock, maxWebhookResponseBytes int) flows.EngineConfig {
 	return &config{
-		disableWebhooks:         disableWebhooks,
-		webhookMocks:            webhookMocks,
-		maxWebhookResponseBytes: maxWebhookResponseBytes,
-		extra: make(map[string]interface{}),
+		core: coreConfig{
+			DisableWebhooks:         disableWebhooks,
+			WebhookMocks:            webhookMocks,
+			MaxWebhookResponseBytes: maxWebhookResponseBytes,
+		},
 	}
 }
 
 // NewDefaultConfig returns the default engine configuration
 func NewDefaultConfig() flows.EngineConfig {
-	return &config{disableWebhooks: false, webhookMocks: nil, maxWebhookResponseBytes: 10000}
+	return NewConfig(false, nil, 10000)
 }
 
-func (c *config) DisableWebhooks() bool              { return c.disableWebhooks }
-func (c *config) WebhookMocks() []*flows.WebhookMock { return c.webhookMocks }
-func (c *config) MaxWebhookResponseBytes() int       { return c.maxWebhookResponseBytes }
-func (c *config) Extra(name string) interface{}      { return c.extra[name] }
+func (c *config) DisableWebhooks() bool              { return c.core.DisableWebhooks }
+func (c *config) WebhookMocks() []*flows.WebhookMock { return c.core.WebhookMocks }
+func (c *config) MaxWebhookResponseBytes() int       { return c.core.MaxWebhookResponseBytes }
 
-type configEnvelope struct {
-	DisableWebhooks         *bool                `json:"disable_webhooks"`
-	WebhookMocks            []*flows.WebhookMock `json:"webhook_mocks"`
-	MaxWebhookResponseBytes *int                 `json:"max_webhook_response_bytes"`
+func (c *config) ReadInto(s interface{}) error {
+	return mapstructure.Decode(c.raw, s)
 }
 
 // ReadConfig reads an engine configuration from the given JSON, using the provided config as a base
-func ReadConfig(data json.RawMessage, base flows.EngineConfig) (flows.EngineConfig, error) {
-	var envelope configEnvelope
-	if err := json.Unmarshal(data, &envelope); err != nil {
+func ReadConfig(data json.RawMessage, defaults map[string]interface{}) (flows.EngineConfig, error) {
+	// unmarshal as map initially
+	var raw map[string]interface{}
+	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
 	}
 
-	config := base.(*config)
-
-	if envelope.DisableWebhooks != nil {
-		config.disableWebhooks = *envelope.DisableWebhooks
-	}
-	if envelope.WebhookMocks != nil {
-		config.webhookMocks = envelope.WebhookMocks
-	}
-	if envelope.MaxWebhookResponseBytes != nil {
-		config.maxWebhookResponseBytes = *envelope.MaxWebhookResponseBytes
+	// add any missing values from our defaults
+	for key, val := range defaults {
+		_, defined := raw[key]
+		if !defined {
+			raw[key] = val
+		}
 	}
 
-	// unmarshal again as a map to get non-core properies we don't know about
-	if err := json.Unmarshal(data, &config.extra); err != nil {
+	// now unmarshall that into the core config
+	c := &config{core: coreConfig{}, raw: raw}
+	if err := mapstructure.Decode(raw, &c.core); err != nil {
 		return nil, err
 	}
 
-	// remove the core properties from the map so they're not duplicated
-	for _, prop := range utils.GetJSONFields(envelope) {
-		delete(config.extra, prop)
-	}
-
-	return config, nil
+	return c, nil
 }

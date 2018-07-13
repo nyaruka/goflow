@@ -86,6 +86,12 @@
   version = "v2.0.2"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/mitchellh/mapstructure"
+  packages = ["."]
+  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
+
+[[projects]]
   name = "github.com/naoina/go-stringutil"
   packages = ["."]
   revision = "6b638e95a32d0c1131db0e7fe83775cbea4a0d0b"
@@ -205,6 +211,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1855301cf84d4d64fcdcf090f82767377f77a2f852fef8293ba436c9e64c6693"
+  inputs-digest = "3b29af309be25a6521122b5f8a94c38866ce9588bea5e2317088b8f09c07fa94"
   solver-name = "gps-cdcl"
   solver-version = 1
