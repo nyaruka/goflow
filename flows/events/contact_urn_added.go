@@ -24,7 +24,7 @@ const TypeContactURNAdded string = "contact_urn_added"
 //
 // @event contact_urn_added
 type ContactURNAddedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	URN urns.URN `json:"urn" validate:"urn"`
@@ -32,7 +32,7 @@ type ContactURNAddedEvent struct {
 
 // NewURNAddedEvent returns a new add URN event
 func NewURNAddedEvent(urn urns.URN) *ContactURNAddedEvent {
-	return &ContactURNAddedEvent{baseEvent: newBaseEvent(), URN: urn}
+	return &ContactURNAddedEvent{BaseEvent: NewBaseEvent(), URN: urn}
 }
 
 // Type returns the type of this event

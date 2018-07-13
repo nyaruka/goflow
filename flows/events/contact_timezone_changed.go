@@ -24,7 +24,7 @@ const TypeContactTimezoneChanged string = "contact_timezone_changed"
 //
 // @event contact_timezone_changed
 type ContactTimezoneChangedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Timezone string `json:"timezone"`
@@ -33,7 +33,7 @@ type ContactTimezoneChangedEvent struct {
 // NewContactTimezoneChangedEvent returns a new contact timezone changed event
 func NewContactTimezoneChangedEvent(timezone string) *ContactTimezoneChangedEvent {
 	return &ContactTimezoneChangedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Timezone:  timezone,
 	}
 }

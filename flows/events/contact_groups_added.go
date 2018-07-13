@@ -23,7 +23,7 @@ const TypeContactGroupsAdded string = "contact_groups_added"
 //
 // @event contact_groups_added
 type ContactGroupsAddedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
@@ -32,7 +32,7 @@ type ContactGroupsAddedEvent struct {
 // NewContactGroupsAddedEvent returns a new contact_groups_added event
 func NewContactGroupsAddedEvent(groups []*flows.GroupReference) *ContactGroupsAddedEvent {
 	return &ContactGroupsAddedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Groups:    groups,
 	}
 }

@@ -218,9 +218,6 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 			return nil, fmt.Errorf("error event generated: %s", errEvent.Text)
 		}
 
-		// give all our example events a fixed created on time
-		event.SetCreatedOn(utils.Now())
-
 		typed, err := utils.EnvelopeFromTyped(event)
 		if err != nil {
 			return nil, err

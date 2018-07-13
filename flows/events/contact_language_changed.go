@@ -24,7 +24,7 @@ const TypeContactLanguageChanged string = "contact_language_changed"
 //
 // @event contact_language_changed
 type ContactLanguageChangedEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Language string `json:"language"`
@@ -33,7 +33,7 @@ type ContactLanguageChangedEvent struct {
 // NewContactLanguageChangedEvent returns a new contact language changed event
 func NewContactLanguageChangedEvent(language string) *ContactLanguageChangedEvent {
 	return &ContactLanguageChangedEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Language:  language,
 	}
 }

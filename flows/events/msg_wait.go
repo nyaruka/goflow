@@ -25,7 +25,7 @@ const TypeMsgWait string = "msg_wait"
 //
 // @event msg_wait
 type MsgWaitEvent struct {
-	baseEvent
+	BaseEvent
 	engineOnlyEvent
 
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
@@ -34,7 +34,7 @@ type MsgWaitEvent struct {
 // NewMsgWait returns a new msg wait with the passed in timeout
 func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
 	return &MsgWaitEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		TimeoutOn: timeoutOn,
 	}
 }

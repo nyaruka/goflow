@@ -22,7 +22,7 @@ const TypeError string = "error"
 //
 // @event error
 type ErrorEvent struct {
-	baseEvent
+	BaseEvent
 	callerOrEngineEvent
 
 	Text  string `json:"text" validate:"required"`
@@ -32,7 +32,7 @@ type ErrorEvent struct {
 // NewErrorEvent returns a new error event for the passed in error
 func NewErrorEvent(err error) *ErrorEvent {
 	return &ErrorEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Text:      err.Error(),
 	}
 }
@@ -40,7 +40,7 @@ func NewErrorEvent(err error) *ErrorEvent {
 // NewFatalErrorEvent returns a new fatal error event for the passed in error
 func NewFatalErrorEvent(err error) *ErrorEvent {
 	return &ErrorEvent{
-		baseEvent: newBaseEvent(),
+		BaseEvent: NewBaseEvent(),
 		Text:      err.Error(),
 		Fatal:     true,
 	}

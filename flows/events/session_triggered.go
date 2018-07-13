@@ -44,7 +44,7 @@ const TypeSessionTriggered string = "session_triggered"
 //
 // @event session_triggered
 type SessionTriggeredEvent struct {
-	baseEvent
+	BaseEvent
 	engineOnlyEvent
 
 	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
@@ -58,7 +58,7 @@ type SessionTriggeredEvent struct {
 // NewSessionTriggeredEvent returns a new session triggered event
 func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference, createContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
-		baseEvent:     newBaseEvent(),
+		BaseEvent:     NewBaseEvent(),
 		Flow:          flow,
 		URNs:          urns,
 		Contacts:      contacts,

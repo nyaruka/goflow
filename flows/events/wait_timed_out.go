@@ -24,13 +24,13 @@ const TypeWaitTimedOut string = "wait_timed_out"
 //
 // @event wait_timed_out
 type WaitTimedOutEvent struct {
-	baseEvent
+	BaseEvent
 	callerOnlyEvent
 }
 
 // NewWaitTimedOutEvent creates a new wait timed out event
 func NewWaitTimedOutEvent() *WaitTimedOutEvent {
-	return &WaitTimedOutEvent{baseEvent: newBaseEvent()}
+	return &WaitTimedOutEvent{BaseEvent: NewBaseEvent()}
 }
 
 // Type returns the type of this event
