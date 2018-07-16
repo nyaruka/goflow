@@ -2,8 +2,6 @@ package main
 
 import (
 	"github.com/nyaruka/ezconf"
-	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/engine"
 )
 
 // Config is our top level config for our flowserver
@@ -20,8 +18,12 @@ type Config struct {
 	Version                       string `help:"the version to use in request and response headers"`
 }
 
-func (c *Config) Engine() flows.EngineConfig {
-	return engine.NewConfig(c.EngineDisableWebhooks, nil, c.EngineMaxWebhookResponseBytes)
+func (c *Config) EngineDefaults() map[string]interface{} {
+	return map[string]interface{}{
+		"disable_webhooks":           c.EngineDisableWebhooks,
+		"webhook_mocks":              nil,
+		"max_webhook_response_bytes": c.EngineMaxWebhookResponseBytes,
+	}
 }
 
 // NewDefaultConfig returns our default configuration
