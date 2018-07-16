@@ -9,6 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type BaseObject struct {
+	Foo string `json:"foo" validate:"required"`
+}
+
 type SubObject struct {
 	UUID      string `json:"uuid" validate:"uuid"`
 	UUID4     string `json:"uuid4" validate:"uuid4"`
@@ -16,7 +20,7 @@ type SubObject struct {
 }
 
 type TestObject struct {
-	Foo        string    `json:"foo" validate:"required"`
+	BaseObject
 	Bar        SubObject `json:"bar" validate:"required"`
 	Things     []string  `json:"things" validate:"min=1,max=3,dive,http_method"`
 	DateFormat string    `json:"date_format" validate:"date_format"`
@@ -26,7 +30,7 @@ type TestObject struct {
 func TestValidate(t *testing.T) {
 	// test with valid object
 	errs := utils.Validate(&TestObject{
-		Foo: "hello",
+		BaseObject: BaseObject{Foo: "hello"},
 		Bar: SubObject{
 			UUID:      "ffffffff-ffff-ffff-bf1a-4186adc14195",
 			UUID4:     "f0a26027-9ae9-422a-bf1a-4186adc14195",
@@ -40,7 +44,7 @@ func TestValidate(t *testing.T) {
 
 	// test with invalid object
 	errs = utils.Validate(&TestObject{
-		Foo: "",
+		BaseObject: BaseObject{Foo: ""},
 		Bar: SubObject{
 			UUID:      "12345abcdefe",
 			UUID4:     "ffffffff-ffff-ffff-bf1a-4186adc14195",
@@ -66,7 +70,7 @@ func TestValidate(t *testing.T) {
 
 	// test with another invalid object
 	errs = utils.Validate(&TestObject{
-		Foo: "hello",
+		BaseObject: BaseObject{Foo: "hello"},
 		Bar: SubObject{
 			UUID:      "ffffffff-ffff-ffff-bf1a-4186adc14195",
 			UUID4:     "f0a26027-9ae9-422a-bf1a-4186adc14195",

@@ -297,10 +297,12 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	assetServer, _ := utils.JSONMarshal(assets.NewMockAssetServer())
 
 	request := &resumeRequest{
-		Assets:      &assetsData,
-		AssetServer: assetServer,
-		Session:     sessionJSON,
-		Events:      eventEnvelopes,
+		sessionRequest: sessionRequest{
+			Assets:      &assetsData,
+			AssetServer: assetServer,
+		},
+		Session: sessionJSON,
+		Events:  eventEnvelopes,
 	}
 
 	requestJSON, err := utils.JSONMarshal(request)

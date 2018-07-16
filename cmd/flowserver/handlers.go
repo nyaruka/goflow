@@ -18,42 +18,47 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type startRequest struct {
-	Assets      *json.RawMessage       `json:"assets"`
-	AssetServer json.RawMessage        `json:"asset_server" validate:"required"`
-	Trigger     *utils.TypedEnvelope   `json:"trigger" validate:"required"`
-	Events      []*utils.TypedEnvelope `json:"events"`
-	Config      *json.RawMessage       `json:"config"`
+type sessionRequest struct {
+	Assets      *json.RawMessage `json:"assets"`
+	AssetServer json.RawMessage  `json:"asset_server" validate:"required"`
+	Config      *json.RawMessage `json:"config"`
 }
 
-func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	start := startRequest{}
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		return nil, err
-	}
-	if err := r.Body.Close(); err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(body, &start); err != nil {
-		return nil, err
-	}
+type startRequest struct {
+	sessionRequest
 
-	// validate our input
-	err = utils.Validate(start)
-	if err != nil {
-		return nil, err
-	}
+	Trigger *utils.TypedEnvelope   `json:"trigger" validate:"required"`
+	Events  []*utils.TypedEnvelope `json:"events"`
+}
 
+type resumeRequest struct {
+	sessionRequest
+
+	Session json.RawMessage        `json:"session" validate:"required"`
+	Events  []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
+}
+
+// reads the assets and asset_server section of a request
+func (s *FlowServer) readAssets(request *sessionRequest) (assets.AssetServer, error) {
 	// include any embedded assets
-	if start.Assets != nil {
-		if err = s.assetCache.Include(*start.Assets); err != nil {
+	if request.Assets != nil {
+		if err := s.assetCache.Include(*request.Assets); err != nil {
 			return nil, err
 		}
 	}
 
 	// read and validate our asset server
-	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, start.AssetServer)
+	return assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, request.AssetServer)
+}
+
+// handles a request to /start
+func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	start := &startRequest{}
+	if err := unmarshalWithLimit(r.Body, start); err != nil {
+		return nil, err
+	}
+
+	assetServer, err := s.readAssets(&start.sessionRequest)
 	if err != nil {
 		return nil, err
 	}
@@ -88,42 +93,14 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	return &sessionResponse{Session: session, Events: session.Events()}, nil
 }
 
-type resumeRequest struct {
-	Assets      *json.RawMessage       `json:"assets"`
-	AssetServer json.RawMessage        `json:"asset_server" validate:"required"`
-	Session     json.RawMessage        `json:"session" validate:"required"`
-	Events      []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
-	Config      *json.RawMessage       `json:"config"`
-}
-
+// handles a request to /resume
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	resume := resumeRequest{}
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		return nil, err
-	}
-	if err := r.Body.Close(); err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(body, &resume); err != nil {
+	resume := &resumeRequest{}
+	if err := unmarshalWithLimit(r.Body, resume); err != nil {
 		return nil, err
 	}
 
-	// validate our input
-	err = utils.Validate(resume)
-	if err != nil {
-		return nil, err
-	}
-
-	// include any embedded assets
-	if resume.Assets != nil {
-		if err = s.assetCache.Include(*resume.Assets); err != nil {
-			return nil, err
-		}
-	}
-
-	// read and validate our asset server
-	assetServer, err := assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, resume.AssetServer)
+	assetServer, err := s.readAssets(&resume.sessionRequest)
 	if err != nil {
 		return nil, err
 	}
@@ -233,4 +210,21 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 	}
 
 	return expressionResponse{Result: result, Errors: []string{}}, nil
+}
+
+// utility method to read and unmarsmal with a limit on how many bytes can be read
+func unmarshalWithLimit(reader io.ReadCloser, s interface{}) error {
+	body, err := ioutil.ReadAll(io.LimitReader(reader, 1048576))
+	if err != nil {
+		return err
+	}
+	if err := reader.Close(); err != nil {
+		return err
+	}
+	if err := json.Unmarshal(body, &s); err != nil {
+		return err
+	}
+
+	// validate the request
+	return utils.Validate(s)
 }
