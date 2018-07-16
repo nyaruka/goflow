@@ -15,8 +15,8 @@ func init() {
 	// use JSON tags as field names in validation error messages
 	Validator.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
-		if name == "-" {
-			return ""
+		if name == "" {
+			return "-"
 		}
 		return name
 	})
@@ -55,8 +55,17 @@ func Validate(obj interface{}) error {
 		location := fieldErr.Namespace()
 
 		// the first part of the namespace is always the struct name so we remove it
-		parts := strings.SplitN(location, ".", 2)
-		location = strings.Join(parts[1:], ".")
+		parts := strings.Split(location, ".")[1:]
+
+		// and ignore any parts called - as these come from composition
+		newParts := make([]string, 0)
+		for _, part := range parts {
+			if part != "-" {
+				newParts = append(newParts, part)
+			}
+		}
+
+		location = strings.Join(newParts, ".")
 
 		// generate a more user friendly description of the problem
 		var problem string
