@@ -35,7 +35,7 @@ func HasAirtimeStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 	for e := len(runEvents) - 1; e >= 0; e-- {
 		event := runEvents[e]
 
-		asTransfer, isTransfer := event.(*AirtimeTransferedEvent)
+		asTransfer, isTransfer := event.(*AirtimeTransferredEvent)
 		if isTransfer {
 			if status.Native() == asTransfer.Status {
 				return tests.NewTrueResult(types.NewXText(asTransfer.Status))

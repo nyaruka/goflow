@@ -42,6 +42,6 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 
 	// TODO
 
-	log.Add(NewAirtimeTransferedEvent("RWF", 100, "success"))
+	log.Add(NewAirtimeTransferredEvent("RWF", 100, "success"))
 	return nil
 }
