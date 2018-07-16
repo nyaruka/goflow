@@ -51,6 +51,18 @@ func (s *FlowServer) readAssets(request *sessionRequest) (assets.AssetServer, er
 	return assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, request.AssetServer)
 }
 
+// reads the configuration section of a request
+func (s *FlowServer) readConfig(request *sessionRequest) (flows.EngineConfig, error) {
+	var configData json.RawMessage
+	if request.Config != nil {
+		configData = *request.Config
+	} else {
+		configData = json.RawMessage(`{}`)
+	}
+
+	return engine.ReadConfig(configData, s.config.EngineDefaults())
+}
+
 // handles a request to /start
 func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	start := &startRequest{}
@@ -64,13 +76,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build the configuration for this request
-	var configData json.RawMessage
-	if start.Config != nil {
-		configData = *start.Config
-	} else {
-		configData = json.RawMessage(`{}`)
-	}
-	config, err := engine.ReadConfig(configData, s.config.EngineDefaults())
+	config, err := s.readConfig(&start.sessionRequest)
 	if err != nil {
 		return nil, err
 	}
@@ -112,13 +118,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// build the configuration for this request
-	var configData json.RawMessage
-	if resume.Config != nil {
-		configData = *resume.Config
-	} else {
-		configData = json.RawMessage(`{}`)
-	}
-	config, err := engine.ReadConfig(configData, s.config.EngineDefaults())
+	config, err := s.readConfig(&resume.sessionRequest)
 	if err != nil {
 		return nil, err
 	}

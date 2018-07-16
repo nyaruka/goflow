@@ -10,7 +10,7 @@ import (
 	"syscall"
 
 	_ "github.com/nyaruka/goflow/cmd/flowserver/statik"
-	_ "github.com/nyaruka/goflow/contrib/transferto"
+	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/evalphobia/logrus_sentry"
