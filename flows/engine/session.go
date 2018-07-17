@@ -354,7 +354,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 			eventLog := actions.NewEventLog()
 
 			if err := action.Execute(run, step, eventLog); err != nil {
-				return nil, noDestination, err
+				return nil, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
 			}
 
 			if log.GetLevel() >= log.DebugLevel {

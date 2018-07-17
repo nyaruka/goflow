@@ -3,6 +3,8 @@ package transferto
 import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/shopspring/decimal"
 )
 
 func init() {
@@ -26,18 +28,27 @@ const TypeAirtimeTransfered string = "airtime_transferred"
 type AirtimeTransferredEvent struct {
 	events.BaseEvent
 
-	Currency string `json:"currency"`
-	Amount   int    `json:"amount"`
-	Status   string `json:"status"`
+	Currency string          `json:"currency"`
+	Amount   decimal.Decimal `json:"amount"`
+	Status   string          `json:"status"`
 }
 
 // NewAirtimeTransferredEvent creates a new airtime transferred event
-func NewAirtimeTransferredEvent(currency string, amount int, status string) *AirtimeTransferredEvent {
+func NewAirtimeTransferredEvent(currency string, amount decimal.Decimal) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
 		BaseEvent: events.NewBaseEvent(),
 		Currency:  currency,
 		Amount:    amount,
-		Status:    status,
+		Status:    "success",
+	}
+}
+
+// NewFailedAirtimeTransferredEvent creates a new failed airtime transferred event
+func NewFailedAirtimeTransferredEvent() *AirtimeTransferredEvent {
+	return &AirtimeTransferredEvent{
+		BaseEvent: events.NewBaseEvent(),
+		Amount:    decimal.Zero,
+		Status:    "failed",
 	}
 }
 
