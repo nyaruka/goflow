@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/shopspring/decimal"
 )
@@ -26,11 +27,18 @@ type transferToConfig struct {
 // TypeTransferAirtime is the type constant for our airtime action
 var TypeTransferAirtime = "transfer_airtime"
 
+type CountryConfig struct {
+	Name         string          `json:"name"`
+	CurrencyName string          `json:"currency_name"`
+	CurrencyCode string          `json:"currency_code"`
+	Amount       decimal.Decimal `json:"amount"`
+}
+
 // TransferAirtimeAction attempts to make a TransferTo airtime transfer to the contact
 type TransferAirtimeAction struct {
 	actions.BaseAction
 
-	Amounts map[string]decimal.Decimal `json:"amounts"`
+	Countries map[string]*CountryConfig `json:"countries"`
 }
 
 // Type returns the type of this router
@@ -76,7 +84,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	amount, err := attemptTransfer(run.Session(), config, telURNs[0].Path())
+	amount, err := attemptTransfer(run.Session(), config, a.Countries, telURNs[0].Path())
 
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
@@ -89,11 +97,21 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 }
 
 // attempts to make the transfer, returning the amount transfered or an error
-func attemptTransfer(session flows.Session, config *transferToConfig, recipient string) (decimal.Decimal, error) {
+func attemptTransfer(session flows.Session, config *transferToConfig, countryConfigs map[string]*CountryConfig, recipient string) (decimal.Decimal, error) {
 	client := NewTransferToClient(config.Account, config.APIToken, session.HTTPClient())
-	client.MSISDNInfo(recipient, config.Currency)
 
-	// TODO
+	info, err := client.MSISDNInfo(recipient, config.Currency, "1")
+	if err != nil {
+		return decimal.Zero, err
+	}
+
+	countryCode := utils.CountryCodeFromName(info.Country)
+	countryConfig := countryConfigs[countryCode]
+	if countryConfig == nil {
+		return decimal.Zero, fmt.Errorf("no configured for transfers to %s (%s)", info.Country, countryCode)
+	}
+
+	//amount := countryConfig.Amount
 
 	return decimal.Zero, nil
 }
