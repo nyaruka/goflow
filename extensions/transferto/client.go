@@ -55,7 +55,7 @@ func NewTransferToClient(login string, token string, httpClient *utils.HTTPClien
 }
 
 // Ping just verifies the credentials
-func (c *Client) Ping() (bool, error) {
+func (c *Client) Ping() error {
 	request := url.Values{}
 	request.Add("action", "ping")
 
@@ -63,10 +63,7 @@ func (c *Client) Ping() (bool, error) {
 		baseResponse
 		InfoTxt string `json:"info_txt"`
 	}{}
-	if err := c.request(request, response); err != nil {
-		return false, err
-	}
-	return response.InfoTxt == "pong", nil
+	return c.request(request, response)
 }
 
 // MSISDNInfo fetches information about the given MSISDN
