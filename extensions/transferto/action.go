@@ -107,6 +107,7 @@ func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts ma
 
 	if info.OpenRange {
 		// TODO add support for open-range topups once we can find numbers to test this with
+		// see https://shop.transferto.com/shop/v3/doc/TransferTo_API_OR.pdf
 		return decimal.Zero, fmt.Errorf("transferto account is configured for open-range which is not yet supported")
 	}
 

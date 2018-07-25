@@ -23,12 +23,14 @@ const (
 )
 
 // Client is a TransferTo client
+// see https://shop.transferto.com/shop/v3/doc/TransferTo_API.pdf for API docs
 type Client struct {
 	login      string
 	token      string
 	httpClient *utils.HTTPClient
 }
 
+// Response is a base interface for all responses
 type Response interface {
 	ErrorCode() int
 	ErrorTxt() string
