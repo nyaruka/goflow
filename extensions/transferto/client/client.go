@@ -28,6 +28,7 @@ type Client struct {
 	login      string
 	token      string
 	httpClient *utils.HTTPClient
+	apiURL     string
 }
 
 // Response is a base interface for all responses
@@ -46,7 +47,12 @@ func (r *baseResponse) ErrorTxt() string { return r.ErrorTxt_ }
 
 // NewTransferToClient creates a new TransferTo client
 func NewTransferToClient(login string, token string, httpClient *utils.HTTPClient) *Client {
-	return &Client{login: login, token: token, httpClient: httpClient}
+	return &Client{login: login, token: token, httpClient: httpClient, apiURL: apiURL}
+}
+
+// SetAPIURL sets the API URL used by this client
+func (c *Client) SetAPIURL(url string) {
+	c.apiURL = url
 }
 
 // Ping just verifies the credentials
@@ -160,10 +166,11 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 	data.Add("key", key)
 	data.Add("md5", hash)
 
-	req, err := http.NewRequest("POST", apiURL, strings.NewReader(data.Encode()))
+	req, err := http.NewRequest("POST", c.apiURL, strings.NewReader(data.Encode()))
 	if err != nil {
 		return err
 	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	response, _, err := c.httpClient.DoWithDump(req)
 	if err != nil {
