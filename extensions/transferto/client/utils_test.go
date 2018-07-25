@@ -21,7 +21,7 @@ func TestCSVStrings(t *testing.T) {
 	assert.Equal(t, client.CSVStrings{"foo", "bar"}, s.List2)
 
 	// try with invalid JSON
-	err = json.Unmarshal([]byte(`{,`), s)
+	err = json.Unmarshal([]byte(`{"list1":true}`), s)
 	assert.Error(t, err)
 }
 
@@ -36,6 +36,6 @@ func TestCSVDecimals(t *testing.T) {
 	assert.Equal(t, client.CSVDecimals{decimal.RequireFromString("12.34"), decimal.RequireFromString("56.78")}, s.List2)
 
 	// try with invalid JSON
-	err = json.Unmarshal([]byte(`{,`), s)
+	err = json.Unmarshal([]byte(`{"list1":true}`), s)
 	assert.Error(t, err)
 }

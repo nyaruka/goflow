@@ -68,6 +68,7 @@ func NewContact(name string, language utils.Language, timezone *time.Location) *
 		language:  language,
 		timezone:  timezone,
 		createdOn: utils.Now(),
+		urns:      URNList{},
 		groups:    NewGroupList([]*Group{}),
 		fields:    make(FieldValues),
 	}

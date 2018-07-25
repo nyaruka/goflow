@@ -21,6 +21,10 @@ func TestContact(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	contact := flows.NewContact("Joe Bloggs", utils.Language("eng"), nil)
+
+	assert.Equal(t, flows.URNList{}, contact.URNs())
+	assert.Nil(t, contact.PreferredChannel())
+
 	contact.SetTimezone(env.Timezone())
 	contact.SetID(12345)
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
@@ -31,12 +35,14 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, 12345, contact.ID())
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, utils.Language("eng"), contact.Language())
+	assert.Nil(t, contact.PreferredChannel())
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
 	assert.Equal(t, 12345, clone.ID())
 	assert.Equal(t, env.Timezone(), clone.Timezone())
 	assert.Equal(t, utils.Language("eng"), clone.Language())
+	assert.Nil(t, contact.PreferredChannel())
 
 	// can also clone a null contact!
 	mrNil := (*flows.Contact)(nil)
