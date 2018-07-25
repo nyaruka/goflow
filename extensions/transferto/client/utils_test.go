@@ -1,4 +1,4 @@
-package transferto_test
+package client_test
 
 import (
 	"encoding/json"

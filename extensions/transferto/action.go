@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/extensions/transferto/client"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
@@ -77,7 +78,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	amount, err := attemptTransfer(run.Session(), config, a.Amounts, telURNs[0].Path())
+	amount, err := attemptTransfer(run.Session(), run.Contact().PreferredChannel(), config, a.Amounts, telURNs[0].Path())
 
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
@@ -90,10 +91,10 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 }
 
 // attempts to make the transfer, returning the amount transfered or an error
-func attemptTransfer(session flows.Session, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string) (decimal.Decimal, error) {
-	client := NewTransferToClient(config.Account, config.APIToken, session.HTTPClient())
+func attemptTransfer(session flows.Session, channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string) (decimal.Decimal, error) {
+	cl := client.NewTransferToClient(config.Account, config.APIToken, session.HTTPClient())
 
-	info, err := client.MSISDNInfo(recipient, config.Currency, "1")
+	info, err := cl.MSISDNInfo(recipient, config.Currency, "1")
 	if err != nil {
 		return decimal.Zero, err
 	}
@@ -104,7 +105,33 @@ func attemptTransfer(session flows.Session, config *transferToConfig, amounts ma
 		return decimal.Zero, fmt.Errorf("no amount configured for transfers to %s (%s)", info.Country, countryCode)
 	}
 
-	// TODO
+	// find the product closest to our desired amount
+	var useProduct string
+	for p, product := range info.ProductList {
+		price := info.LocalInfoValueList[p]
+		if price <= amount {
+			useProduct = product
+		} else {
+			break
+		}
+	}
+
+	// TODO complicated product/skuid stuff
+
+	reservedID, err := cl.ReserveID()
+	if err != nil {
+		return decimal.Zero, err
+	}
+
+	var fromMSISDN string
+	if channel != nil {
+		fromMSISDN = channel.Address()
+	}
+
+	_, err = cl.Topup(reservedID, fromMSISDN, recipient, config.Currency, "", "")
+	if err != nil {
+		return decimal.Zero, err
+	}
 
 	return amount, nil
 }

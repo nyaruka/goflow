@@ -1,4 +1,4 @@
-package transferto
+package client
 
 import (
 	"crypto/md5"
@@ -29,25 +29,18 @@ type Client struct {
 	httpClient *utils.HTTPClient
 }
 
-type baseResponse struct {
-	ErrorCode int    `json:"error_code"`
-	ErrorTxt  string `json:"error_txt"`
+type Response interface {
+	ErrorCode() int
+	ErrorTxt() string
 }
 
-// MSISDNInfo holds information about an MSISDN
-type MSISDNInfo struct {
-	baseResponse
-	Country             string  `json:"country"`
-	CountryID           int     `json:"country_id"`
-	Operator            string  `json:"operator"`
-	OperatorID          int     `json:"operator_id"`
-	ConnectionStatus    int     `json:"connection_status"`
-	DestinationCurrency string  `json:"destination_currency"`
-	ProductList         CSVList `json:"product_list"`
-	ServiceFeeList      CSVList `json:"service_fee_list"`
-	SKUIDList           CSVList `json:"skuid_list"`
-	LocalInfoValueList  CSVList `json:"local_info_value_list"`
+type baseResponse struct {
+	ErrorCode_ int    `json:"error_code,string"`
+	ErrorTxt_  string `json:"error_txt"`
 }
+
+func (r *baseResponse) ErrorCode() int   { return r.ErrorCode_ }
+func (r *baseResponse) ErrorTxt() string { return r.ErrorTxt_ }
 
 // NewTransferToClient creates a new TransferTo client
 func NewTransferToClient(login string, token string, httpClient *utils.HTTPClient) *Client {
@@ -64,6 +57,21 @@ func (c *Client) Ping() error {
 		InfoTxt string `json:"info_txt"`
 	}{}
 	return c.request(request, response)
+}
+
+// MSISDNInfo holds information about an MSISDN
+type MSISDNInfo struct {
+	baseResponse
+	Country             string         `json:"country"`
+	CountryID           int            `json:"country_id,string"`
+	Operator            string         `json:"operator"`
+	OperatorID          int            `json:"operator_id,string"`
+	ConnectionStatus    int            `json:"connection_status,string"`
+	DestinationCurrency string         `json:"destination_currency"`
+	ProductList         CSVStringList  `json:"product_list"`
+	ServiceFeeList      CSVDecimalList `json:"service_fee_list"`
+	SKUIDList           CSVStringList  `json:"skuid_list"`
+	LocalInfoValueList  CSVDecimalList `json:"local_info_value_list"`
 }
 
 // MSISDNInfo fetches information about the given MSISDN
@@ -88,7 +96,7 @@ func (c *Client) ReserveID() (int, error) {
 
 	response := &struct {
 		baseResponse
-		ReservedID int `json:"reserved_id"`
+		ReservedID int `json:"reserved_id,string"`
 	}{}
 	if err := c.request(request, response); err != nil {
 		return 0, err
@@ -97,10 +105,17 @@ func (c *Client) ReserveID() (int, error) {
 }
 
 // Topup makes an actual airtime transfer
-func (c *Client) Topup(reservedID int) (decimal.Decimal, error) {
+func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, currency string, product string, skuid string) (decimal.Decimal, error) {
 	request := url.Values{}
 	request.Add("action", "topup")
 	request.Add("reserved_id", strconv.Itoa(reservedID))
+	request.Add("msisdn", msisdn)
+	request.Add("destination_msisdn", destinationMSISDN)
+	request.Add("currency", currency)
+	request.Add("product", product)
+	if skuid != "" {
+		request.Add("skuid", skuid)
+	}
 
 	response := &struct {
 		baseResponse
@@ -129,7 +144,7 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 		return err
 	}
 
-	response, err := c.httpClient.Do(req)
+	response, _, err := c.httpClient.DoWithDump(req)
 	if err != nil {
 		return err
 	}
@@ -140,12 +155,12 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 
 	defer response.Body.Close()
 	if err := c.parseResponse(response.Body, dest); err != nil {
-		return fmt.Errorf("transferto API call returned an unparseable response")
+		return fmt.Errorf("transferto API call returned an unparseable response: %s", err)
 	}
 
-	baseResp := dest.(*baseResponse)
-	if baseResp.ErrorCode != 0 {
-		return fmt.Errorf("transferto API call returned an error: %s (%d)", baseResp.ErrorTxt, baseResp.ErrorCode)
+	baseResp := dest.(Response)
+	if baseResp.ErrorCode() != 0 {
+		return fmt.Errorf("transferto API call returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
 	}
 	return nil
 }
@@ -167,7 +182,10 @@ func (c *Client) parseResponse(body io.Reader, dest interface{}) error {
 	data := make(map[string]string)
 	for _, line := range strings.Split(string(asBytes), "\r\n") {
 		parts := strings.SplitN(line, "=", 2)
-		data[parts[0]] = parts[1]
+
+		if len(parts) == 2 {
+			data[parts[0]] = parts[1]
+		}
 	}
 
 	// marshal to JSON and then into the destination struct
