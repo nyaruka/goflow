@@ -78,7 +78,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	amount, err := attemptTransfer(run.Contact().PreferredChannel(), config, a.Amounts, telURNs[0].Path(), run.Session().HTTPClient())
+	currency, amount, err := attemptTransfer(run.Contact().PreferredChannel(), config, a.Amounts, telURNs[0].Path(), run.Session().HTTPClient())
 
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
@@ -86,29 +86,29 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	log.Add(NewAirtimeTransferredEvent(config.Currency, amount))
+	log.Add(NewAirtimeTransferredEvent(currency, amount))
 	return nil
 }
 
 // attempts to make the transfer, returning the actual amount transfered or an error
-func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string, httpClient *utils.HTTPClient) (decimal.Decimal, error) {
+func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string, httpClient *utils.HTTPClient) (string, decimal.Decimal, error) {
 	cl := client.NewTransferToClient(config.Login, config.APIToken, httpClient)
 
 	info, err := cl.MSISDNInfo(recipient, config.Currency, "1")
 	if err != nil {
-		return decimal.Zero, err
+		return "", decimal.Zero, err
 	}
 
 	// look up the amount to send in this currency
 	amount, hasAmount := amounts[info.DestinationCurrency]
 	if !hasAmount {
-		return decimal.Zero, fmt.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
+		return "", decimal.Zero, fmt.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
 	}
 
 	if info.OpenRange {
 		// TODO add support for open-range topups once we can find numbers to test this with
 		// see https://shop.transferto.com/shop/v3/doc/TransferTo_API_OR.pdf
-		return decimal.Zero, fmt.Errorf("transferto account is configured for open-range which is not yet supported")
+		return "", decimal.Zero, fmt.Errorf("transferto account is configured for open-range which is not yet supported")
 	}
 
 	// find the product closest to our desired amount
@@ -124,7 +124,7 @@ func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts ma
 
 	reservedID, err := cl.ReserveID()
 	if err != nil {
-		return decimal.Zero, err
+		return "", decimal.Zero, err
 	}
 
 	var fromMSISDN string
@@ -134,8 +134,8 @@ func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts ma
 
 	topup, err := cl.Topup(reservedID, fromMSISDN, recipient, useProduct, "")
 	if err != nil {
-		return decimal.Zero, err
+		return "", decimal.Zero, err
 	}
 
-	return topup.ActualProductSent, nil
+	return topup.DestinationCurrency, topup.ActualProductSent, nil
 }

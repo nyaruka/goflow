@@ -122,6 +122,7 @@ func (c *Client) ReserveID() (int, error) {
 // Topup is a response to a topup request
 type Topup struct {
 	baseResponse
+	DestinationCurrency string          `json:"destination_currency"`
 	OriginatingCurrency string          `json:"originating_currency"`
 	ProductRequested    decimal.Decimal `json:"product_requested"`
 	ActualProductSent   decimal.Decimal `json:"actual_product_sent"`
