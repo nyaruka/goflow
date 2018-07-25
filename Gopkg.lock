@@ -119,12 +119,6 @@
   revision = "15aafd6b263c911e93b4422194eac7d03b2675cd"
 
 [[projects]]
-  name = "github.com/pariz/gountries"
-  packages = ["."]
-  revision = "adb00f6513a307f9f7a4ee57eca79a703b8a7272"
-  version = "0.1.3"
-
-[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -208,15 +202,9 @@
   revision = "1b8c8e19cd250435025214492d9a08411d760fdd"
   version = "v9.12.0"
 
-[[projects]]
-  name = "gopkg.in/yaml.v2"
-  packages = ["."]
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cbda0ad82b8914a660a3e191bd8ced64653948cc4a7ae3ff47bfad0249a55b79"
+  inputs-digest = "dcc96e725dbe44381303866af1b477b2a12f5c587fc1a9fc2409c238f1df5695"
   solver-name = "gps-cdcl"
   solver-version = 1

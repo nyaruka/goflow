@@ -936,20 +936,27 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	case "airtime":
 		countryConfigs := map[string]struct {
-			Amount decimal.Decimal `json:"amount"`
+			CurrencyCode string          `json:"currency_code"`
+			Amount       decimal.Decimal `json:"amount"`
 		}{}
 		if err := json.Unmarshal(r.Config, &countryConfigs); err != nil {
 			return nil, "", err
 		}
-		countryAmounts := make(map[string]decimal.Decimal, len(countryConfigs))
-		for code, countryCfg := range countryConfigs {
-			countryAmounts[code] = countryCfg.Amount
+		currencyAmounts := make(map[string]decimal.Decimal, len(countryConfigs))
+		for _, countryCfg := range countryConfigs {
+			// check if we already have a configuration for this currency
+			existingAmount, alreadyDefined := currencyAmounts[countryCfg.CurrencyCode]
+			if alreadyDefined && existingAmount != countryCfg.Amount {
+				return nil, "", fmt.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
+			}
+
+			currencyAmounts[countryCfg.CurrencyCode] = countryCfg.Amount
 		}
 
 		newActions = []flows.Action{
 			&transferto.TransferAirtimeAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
-				Amounts:    countryAmounts,
+				Amounts:    currencyAmounts,
 			},
 		}
 

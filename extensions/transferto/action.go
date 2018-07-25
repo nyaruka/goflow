@@ -20,7 +20,7 @@ func init() {
 
 type transferToConfig struct {
 	APIToken string `json:"api_token"`
-	Account  string `json:"account"`
+	Login    string `json:"login"`
 	Currency string `json:"currency"`
 	Disabled bool   `json:"disabled"`
 }
@@ -92,17 +92,17 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 
 // attempts to make the transfer, returning the actual amount transfered or an error
 func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string, httpClient *utils.HTTPClient) (decimal.Decimal, error) {
-	cl := client.NewTransferToClient(config.Account, config.APIToken, httpClient)
+	cl := client.NewTransferToClient(config.Login, config.APIToken, httpClient)
 
 	info, err := cl.MSISDNInfo(recipient, config.Currency, "1")
 	if err != nil {
 		return decimal.Zero, err
 	}
 
-	countryCode := utils.CountryCodeFromName(info.Country)
-	amount, hasAmount := amounts[countryCode]
+	// look up the amount to send in this currency
+	amount, hasAmount := amounts[info.DestinationCurrency]
 	if !hasAmount {
-		return decimal.Zero, fmt.Errorf("no amount configured for transfers to %s (%s)", info.Country, countryCode)
+		return decimal.Zero, fmt.Errorf("no amount configured for transfers in %s", info.DestinationCurrency)
 	}
 
 	if info.OpenRange {
