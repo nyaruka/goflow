@@ -78,7 +78,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	amount, err := attemptTransfer(run.Session(), run.Contact().PreferredChannel(), config, a.Amounts, telURNs[0].Path())
+	amount, err := attemptTransfer(run.Contact().PreferredChannel(), config, a.Amounts, telURNs[0].Path(), run.Session().HTTPClient())
 
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
@@ -90,9 +90,9 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 	return nil
 }
 
-// attempts to make the transfer, returning the amount transfered or an error
-func attemptTransfer(session flows.Session, channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string) (decimal.Decimal, error) {
-	cl := client.NewTransferToClient(config.Account, config.APIToken, session.HTTPClient())
+// attempts to make the transfer, returning the actual amount transfered or an error
+func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string, httpClient *utils.HTTPClient) (decimal.Decimal, error) {
+	cl := client.NewTransferToClient(config.Account, config.APIToken, httpClient)
 
 	info, err := cl.MSISDNInfo(recipient, config.Currency, "1")
 	if err != nil {
@@ -105,18 +105,21 @@ func attemptTransfer(session flows.Session, channel flows.Channel, config *trans
 		return decimal.Zero, fmt.Errorf("no amount configured for transfers to %s (%s)", info.Country, countryCode)
 	}
 
-	// find the product closest to our desired amount
-	var useProduct string
-	for p, product := range info.ProductList {
-		price := info.LocalInfoValueList[p]
-		if price <= amount {
-			useProduct = product
-		} else {
-			break
-		}
+	if info.OpenRange {
+		// TODO add support for open-range topups once we can find numbers to test this with
+		return decimal.Zero, fmt.Errorf("transferto account is configured for open-range which is not yet supported")
 	}
 
-	// TODO complicated product/skuid stuff
+	// find the product closest to our desired amount
+	var useProduct string
+	useAmount := decimal.Zero
+	for p, product := range info.ProductList {
+		price := info.LocalInfoValueList[p]
+		if price.GreaterThan(useAmount) && price.LessThanOrEqual(amount) {
+			useProduct = product
+			useAmount = price
+		}
+	}
 
 	reservedID, err := cl.ReserveID()
 	if err != nil {
@@ -128,10 +131,10 @@ func attemptTransfer(session flows.Session, channel flows.Channel, config *trans
 		fromMSISDN = channel.Address()
 	}
 
-	_, err = cl.Topup(reservedID, fromMSISDN, recipient, config.Currency, "", "")
+	topup, err := cl.Topup(reservedID, fromMSISDN, recipient, useProduct, "")
 	if err != nil {
 		return decimal.Zero, err
 	}
 
-	return amount, nil
+	return topup.ActualProductSent, nil
 }

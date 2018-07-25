@@ -7,11 +7,11 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// CSVStringList is a list of strings which can be automatically unmarshalled from a CSV list
-type CSVStringList []string
+// CSVStrings is a list of strings which can be automatically unmarshalled from a CSV list
+type CSVStrings []string
 
 // UnmarshalJSON unmarshals this list from a CSV string
-func (l *CSVList) UnmarshalJSON(data []byte) error {
+func (l *CSVStrings) UnmarshalJSON(data []byte) error {
 	var asString string
 	if err := json.Unmarshal(data, &asString); err != nil {
 		return err
@@ -20,17 +20,18 @@ func (l *CSVList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CSVDecimalList is a list of decimals which can be automatically unmarshalled from a CSV list
-type CSVDecimalList []decimal.Decimal
+// CSVDecimals is a list of decimals which can be automatically unmarshalled from a CSV list
+type CSVDecimals []decimal.Decimal
 
 // UnmarshalJSON unmarshals this list from a CSV string
-func (l *CSVDecimalList) UnmarshalJSON(data []byte) error {
-	var asStrings CSVStringList
+func (l *CSVDecimals) UnmarshalJSON(data []byte) error {
+	var asStrings CSVStrings
 	if err := json.Unmarshal(data, &asStrings); err != nil {
 		return err
 	}
 
 	vals := make([]decimal.Decimal, len(asStrings))
+	var err error
 	for v := range asStrings {
 		vals[v], err = decimal.NewFromString(asStrings[v])
 		if err != nil {

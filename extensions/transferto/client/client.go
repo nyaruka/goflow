@@ -59,19 +59,26 @@ func (c *Client) Ping() error {
 	return c.request(request, response)
 }
 
-// MSISDNInfo holds information about an MSISDN
+// MSISDNInfo is a response to a msisdn_info request
 type MSISDNInfo struct {
 	baseResponse
-	Country             string         `json:"country"`
-	CountryID           int            `json:"country_id,string"`
-	Operator            string         `json:"operator"`
-	OperatorID          int            `json:"operator_id,string"`
-	ConnectionStatus    int            `json:"connection_status,string"`
-	DestinationCurrency string         `json:"destination_currency"`
-	ProductList         CSVStringList  `json:"product_list"`
-	ServiceFeeList      CSVDecimalList `json:"service_fee_list"`
-	SKUIDList           CSVStringList  `json:"skuid_list"`
-	LocalInfoValueList  CSVDecimalList `json:"local_info_value_list"`
+	Country             string      `json:"country"`
+	CountryID           int         `json:"country_id,string"`
+	Operator            string      `json:"operator"`
+	OperatorID          int         `json:"operator_id,string"`
+	ConnectionStatus    int         `json:"connection_status,string"`
+	DestinationCurrency string      `json:"destination_currency"`
+	ProductList         CSVStrings  `json:"product_list"`
+	ServiceFeeList      CSVDecimals `json:"service_fee_list"`
+	SKUIDList           CSVStrings  `json:"skuid_list"`
+	LocalInfoValueList  CSVDecimals `json:"local_info_value_list"`
+
+	// if operator supports open-range transfers...
+	OpenRange                           bool            `json:"open_range"`
+	SKUID                               string          `json:"skuid"`
+	OpenRangeMinimumAmountLocalCurrency decimal.Decimal `json:"open_range_minimum_amount_local_currency"`
+	OpenRangeMaximumAmountLocalCurrency decimal.Decimal `json:"open_range_maximum_amount_local_currency"`
+	OpenRangeIncrementLocalCurrency     decimal.Decimal `json:"open_range_increment_local_currency"`
 }
 
 // MSISDNInfo fetches information about the given MSISDN
@@ -104,27 +111,39 @@ func (c *Client) ReserveID() (int, error) {
 	return response.ReservedID, nil
 }
 
+// Topup is a response to a topup request
+type Topup struct {
+	baseResponse
+	OriginatingCurrency string          `json:"originating_currency"`
+	ProductRequested    decimal.Decimal `json:"product_requested"`
+	ActualProductSent   decimal.Decimal `json:"actual_product_sent"`
+	SMSSent             string          `json:"sms_sent"`
+	SMS                 string          `json:"sms"`
+	WholesalePrice      decimal.Decimal `json:"wholesale_price"`
+	ServiceFee          decimal.Decimal `json:"service_fee"`
+	RetailPrice         decimal.Decimal `json:"retail_price"`
+	LocalInfoAmount     decimal.Decimal `json:"local_info_amount"`
+	LocalInfoValue      decimal.Decimal `json:"local_info_value"`
+	Balance             decimal.Decimal `json:"balance"`
+}
+
 // Topup makes an actual airtime transfer
-func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, currency string, product string, skuid string) (decimal.Decimal, error) {
+func (c *Client) Topup(reservedID int, msisdn string, destinationMSISDN string, product string, skuid string) (*Topup, error) {
 	request := url.Values{}
 	request.Add("action", "topup")
 	request.Add("reserved_id", strconv.Itoa(reservedID))
 	request.Add("msisdn", msisdn)
 	request.Add("destination_msisdn", destinationMSISDN)
-	request.Add("currency", currency)
 	request.Add("product", product)
 	if skuid != "" {
 		request.Add("skuid", skuid)
 	}
 
-	response := &struct {
-		baseResponse
-		Balance decimal.Decimal `json:"balance"`
-	}{}
+	response := &Topup{}
 	if err := c.request(request, response); err != nil {
-		return decimal.Zero, err
+		return nil, err
 	}
-	return response.Balance, nil
+	return response, nil
 }
 
 // makes a request with the given data and parses the response into the destination struct
@@ -148,10 +167,6 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 	if err != nil {
 		return err
 	}
-
-	//if response.StatusCode < 200 || response.StatusCode >= 300 {
-	//	return nil, fmt.Errorf("transferto API call return non-2XX response (%d)", response.StatusCode)
-	//}
 
 	defer response.Body.Close()
 	if err := c.parseResponse(response.Body, dest); err != nil {
