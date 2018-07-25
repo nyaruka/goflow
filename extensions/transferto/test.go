@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	functions.RegisterXFunction("has_airtime_status", functions.TwoArgFunction(HasAirtimeStatus))
+	tests.RegisterXTest("has_airtime_status", functions.TwoArgFunction(HasAirtimeStatus))
 }
 
 // HasAirtimeStatus returns whether the last airtime transfer has the given status. If there

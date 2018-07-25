@@ -18,7 +18,6 @@ import (
 // TODO:
 // InterruptTest
 // TimeoutTest
-// AirtimeStatusTest
 
 //------------------------------------------------------------------------------------------
 // Mapping
@@ -29,6 +28,12 @@ func init() {
 	for name, testFunc := range XTESTS {
 		functions.RegisterXFunction(name, testFunc)
 	}
+}
+
+// RegisterXTest registers a new router test (and Excellent function)
+func RegisterXTest(name string, function functions.XFunction) {
+	XTESTS[name] = function
+	functions.RegisterXFunction(name, function)
 }
 
 // XTESTS is our mapping of the excellent test names to their actual functions
