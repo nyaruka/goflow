@@ -17,13 +17,13 @@ import (
 type assetType string
 
 const (
-	assetTypeChannelSet        assetType = "channel_set"
-	assetTypeFieldSet          assetType = "field_set"
-	assetTypeFlow              assetType = "flow"
-	assetTypeGroupSet          assetType = "group_set"
-	assetTypeLabelSet          assetType = "label_set"
-	assetTypeLocationHierarchy assetType = "location_hierarchy"
-	assetTypeResthookSet       assetType = "resthook_set"
+	assetTypeChannelSet           assetType = "channel_set"
+	assetTypeFieldSet             assetType = "field_set"
+	assetTypeFlow                 assetType = "flow"
+	assetTypeGroupSet             assetType = "group_set"
+	assetTypeLabelSet             assetType = "label_set"
+	assetTypeLocationHierarchySet assetType = "location_hierarchy_set"
+	assetTypeResthookSet          assetType = "resthook_set"
 )
 
 // AssetCache fetches and caches assets for the engine
@@ -134,8 +134,8 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 func readAsset(data json.RawMessage, itemType assetType) (interface{}, error) {
 	var assetReader func(data json.RawMessage) (interface{}, error)
 
-	if itemType == assetTypeLocationHierarchy {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return utils.ReadLocationHierarchy(data) }
+	if itemType == assetTypeLocationHierarchySet {
+		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) }
 	} else if itemType == assetTypeChannelSet {
 		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) }
 	} else if itemType == assetTypeFieldSet {

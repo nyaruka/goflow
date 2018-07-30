@@ -128,7 +128,7 @@ type SessionAssets interface {
 	GetLabelSet() (*LabelSet, error)
 
 	HasLocations() bool
-	GetLocationHierarchy() (*utils.LocationHierarchy, error)
+	GetLocationHierarchySet() (*LocationHierarchySet, error)
 
 	GetResthookSet() (*ResthookSet, error)
 }

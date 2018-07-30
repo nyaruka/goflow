@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -46,3 +47,39 @@ func (p LocationPath) ToXJSON(env utils.Environment) types.XText {
 }
 
 var _ types.XValue = LocationPath("")
+
+// LocationHierarchySet defines the unordered set of all location hierarchies for a session
+type LocationHierarchySet struct {
+	hierarchies []*utils.LocationHierarchy
+}
+
+// NewLocationHierarchySet creates a new location hierarchy set from the given list of hierarchies
+func NewLocationHierarchySet(hierarchies []*utils.LocationHierarchy) *LocationHierarchySet {
+	return &LocationHierarchySet{hierarchies: hierarchies}
+}
+
+// All returns all hierarchies in this location hierarchy set
+func (s *LocationHierarchySet) All() []*utils.LocationHierarchy {
+	return s.hierarchies
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+// ReadLocationHierarchySet reads a location hierarchy set from the given JSON
+func ReadLocationHierarchySet(data json.RawMessage) (*LocationHierarchySet, error) {
+	items, err := utils.UnmarshalArray(data)
+	if err != nil {
+		return nil, err
+	}
+
+	hierarchies := make([]*utils.LocationHierarchy, len(items))
+	for d := range items {
+		if hierarchies[d], err = utils.ReadLocationHierarchy(items[d]); err != nil {
+			return nil, err
+		}
+	}
+
+	return NewLocationHierarchySet(hierarchies), nil
+}

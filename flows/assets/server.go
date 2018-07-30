@@ -112,13 +112,13 @@ func NewMockAssetServer() *MockAssetServer {
 	return &MockAssetServer{
 		assetServer: assetServer{
 			typeURLs: map[assetType]string{
-				assetTypeChannelSet:        "http://testserver/assets/channel/",
-				assetTypeFieldSet:          "http://testserver/assets/field/",
-				assetTypeFlow:              "http://testserver/assets/flow/{uuid}/",
-				assetTypeGroupSet:          "http://testserver/assets/group/",
-				assetTypeLabelSet:          "http://testserver/assets/label/",
-				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy/",
-				assetTypeResthookSet:       "http://testserver/assets/resthook/",
+				assetTypeChannelSet:           "http://testserver/assets/channel/",
+				assetTypeFieldSet:             "http://testserver/assets/field/",
+				assetTypeFlow:                 "http://testserver/assets/flow/{uuid}/",
+				assetTypeGroupSet:             "http://testserver/assets/group/",
+				assetTypeLabelSet:             "http://testserver/assets/label/",
+				assetTypeLocationHierarchySet: "http://testserver/assets/location_hierarchy/",
+				assetTypeResthookSet:          "http://testserver/assets/resthook/",
 			},
 		},
 		mockResponses:  map[string]json.RawMessage{},
