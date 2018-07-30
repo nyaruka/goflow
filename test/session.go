@@ -15,7 +15,7 @@ import (
 
 var sessionAssets = `[
     {
-        "type": "channel_set",
+        "type": "channel",
         "url": "http://testserver/assets/channel",
         "content": [
             {
@@ -144,7 +144,7 @@ var sessionAssets = `[
         }
     },
     {
-        "type": "field_set",
+        "type": "field",
         "url": "http://testserver/assets/field",
         "content": [
             {"key": "gender", "label": "Gender", "value_type": "text"},
@@ -154,7 +154,7 @@ var sessionAssets = `[
         ]
     },
     {
-        "type": "group_set",
+        "type": "group",
         "url": "http://testserver/assets/group",
         "content": [
             {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -163,7 +163,7 @@ var sessionAssets = `[
         ]
     },
     {
-        "type": "label_set",
+        "type": "label",
         "url": "http://testserver/assets/label",
         "content": [
             {
@@ -173,7 +173,7 @@ var sessionAssets = `[
         ]
     },
     {
-        "type": "location_hierarchy_set",
+        "type": "location_hierarchy",
         "url": "http://testserver/assets/location_hierarchy",
         "content": [
             {
@@ -212,7 +212,7 @@ var sessionAssets = `[
         ]
     },
     {
-        "type": "resthook_set",
+        "type": "resthook",
         "url": "http://testserver/assets/resthook",
         "content": [
             {

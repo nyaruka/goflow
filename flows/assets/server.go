@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
 	"github.com/nyaruka/goflow/utils"
 
@@ -58,7 +57,7 @@ func (s *assetServer) getAssetURL(itemType assetType, itemUUID string) (string, 
 	}
 
 	if itemUUID != "" {
-		url = strings.Replace(url, "{uuid}", itemUUID, -1)
+		url = fmt.Sprintf("%s%s/", url, itemUUID)
 	}
 
 	return url, nil
@@ -112,13 +111,13 @@ func NewMockAssetServer() *MockAssetServer {
 	return &MockAssetServer{
 		assetServer: assetServer{
 			typeURLs: map[assetType]string{
-				assetTypeChannelSet:           "http://testserver/assets/channel/",
-				assetTypeFieldSet:             "http://testserver/assets/field/",
-				assetTypeFlow:                 "http://testserver/assets/flow/{uuid}/",
-				assetTypeGroupSet:             "http://testserver/assets/group/",
-				assetTypeLabelSet:             "http://testserver/assets/label/",
-				assetTypeLocationHierarchySet: "http://testserver/assets/location_hierarchy/",
-				assetTypeResthookSet:          "http://testserver/assets/resthook/",
+				assetTypeChannel:           "http://testserver/assets/channel/",
+				assetTypeField:             "http://testserver/assets/field/",
+				assetTypeFlow:              "http://testserver/assets/flow/",
+				assetTypeGroup:             "http://testserver/assets/group/",
+				assetTypeLabel:             "http://testserver/assets/label/",
+				assetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy/",
+				assetTypeResthook:          "http://testserver/assets/resthook/",
 			},
 		},
 		mockResponses:  map[string]json.RawMessage{},

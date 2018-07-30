@@ -80,7 +80,7 @@
         }
     },
     {
-        "type": "resthook_set",
+        "type": "resthook",
         "url": "http://testserver/assets/resthook",
         "content": [
             {

@@ -21,7 +21,7 @@ func TestAssetCache(t *testing.T) {
 	asset, err := cache.GetAsset(server, assetType("pizza"), "")
 	assert.EqualError(t, err, "asset type 'pizza' not supported by asset server")
 
-	asset, err = cache.GetAsset(server, assetTypeLabelSet, "")
+	asset, err = cache.GetAsset(server, assetTypeLabel, "")
 	assert.NoError(t, err)
 	assert.Equal(t, server.MockedRequests(), []string{"http://testserver/assets/label/"})
 
@@ -30,7 +30,7 @@ func TestAssetCache(t *testing.T) {
 	assert.NotNil(t, labelSet.FindByName("Spam"))
 
 	// check that we can refetch without making another server request
-	asset, err = cache.GetAsset(server, assetTypeLabelSet, "")
+	asset, err = cache.GetAsset(server, assetTypeLabel, "")
 	assert.NoError(t, err)
 	assert.Equal(t, server.MockedRequests(), []string{"http://testserver/assets/label/"})
 }
@@ -50,7 +50,7 @@ func TestAssetServer(t *testing.T) {
 	url, err := server.getAssetURL(assetType("pizza"), "")
 	assert.EqualError(t, err, "asset type 'pizza' not supported by asset server")
 
-	url, err = server.getAssetURL(assetTypeGroupSet, "")
+	url, err = server.getAssetURL(assetTypeGroup, "")
 	assert.NoError(t, err)
 	assert.Equal(t, "http://testserver/assets/group/", url)
 
