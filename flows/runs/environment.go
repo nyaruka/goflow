@@ -46,7 +46,14 @@ func (e *runEnvironment) Languages() utils.LanguageList {
 func (e *runEnvironment) Locations() (*utils.LocationHierarchy, error) {
 	sessionAssets := e.run.Session().Assets()
 	if sessionAssets.HasLocations() {
-		return sessionAssets.GetLocationHierarchy()
+		hierarchies, err := sessionAssets.GetLocationHierarchySet()
+		if err != nil {
+			return nil, err
+		}
+
+		// in the future we might support more than one hiearchy per session,
+		// but for now we only use the first one
+		return hierarchies.All()[0], nil
 	}
 
 	return nil, nil

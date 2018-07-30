@@ -173,41 +173,43 @@ var sessionAssets = `[
         ]
     },
     {
-        "type": "location_hierarchy",
+        "type": "location_hierarchy_set",
         "url": "http://testserver/assets/location_hierarchy",
-        "content": {
-            "id": "2342",
-            "name": "Rwanda",
-            "aliases": ["Ruanda"],		
-            "children": [
-                {
-                    "id": "234521",
-                    "name": "Kigali City",
-                    "aliases": ["Kigali", "Kigari"],
-                    "children": [
-                        {
-                            "id": "57735322",
-                            "name": "Gasabo",
-                            "children": [
-                                {
-                                    "id": "575743222",
-                                    "name": "Gisozi"
-                                },
-                                {
-                                    "id": "457378732",
-                                    "name": "Ndera"
-                                }
-                            ]
-                        },
-                        {
-                            "id": "46547322",
-                            "name": "Nyarugenge",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
-        }
+        "content": [
+            {
+                "id": "2342",
+                "name": "Rwanda",
+                "aliases": ["Ruanda"],		
+                "children": [
+                    {
+                        "id": "234521",
+                        "name": "Kigali City",
+                        "aliases": ["Kigali", "Kigari"],
+                        "children": [
+                            {
+                                "id": "57735322",
+                                "name": "Gasabo",
+                                "children": [
+                                    {
+                                        "id": "575743222",
+                                        "name": "Gisozi"
+                                    },
+                                    {
+                                        "id": "457378732",
+                                        "name": "Ndera"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "46547322",
+                                "name": "Nyarugenge",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     },
     {
         "type": "resthook_set",
