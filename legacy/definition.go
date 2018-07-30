@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
@@ -13,6 +14,8 @@ import (
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 // Flow is a flow in the legacy format
@@ -232,6 +235,10 @@ type webhookTest struct {
 	Status string `json:"status"`
 }
 
+type airtimeTest struct {
+	ExitStatus string `json:"exit_status"`
+}
+
 type localizedStringTest struct {
 	Test Translations `json:"test"`
 }
@@ -340,6 +347,8 @@ var testTypeMappings = map[string]string{
 	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
+	"webhook_status":       "has_webhook_status",
+	"airtime_status":       "has_airtime_status",
 }
 
 // migrates the given legacy action to a new action
@@ -643,7 +652,6 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
-		newType = "has_webhook_status"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
@@ -651,6 +659,11 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 		} else {
 			arguments = []string{"response_error"}
 		}
+
+	case "airtime_status":
+		test := airtimeTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.ExitStatus}
 
 	case "timeout":
 		omitOperand = true
@@ -681,11 +694,6 @@ func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r R
 	default:
 		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
-
-	// TODO
-	// airtime_status
-	// ward / district / state
-	// interrupted_status
 
 	return routers.Case{
 		UUID:        caseUUID,
@@ -925,6 +933,35 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	case "random":
 		router = routers.NewRandomRouter(resultName)
 		uiType = UINodeTypeSplitByRandom
+
+	case "airtime":
+		countryConfigs := map[string]struct {
+			CurrencyCode string          `json:"currency_code"`
+			Amount       decimal.Decimal `json:"amount"`
+		}{}
+		if err := json.Unmarshal(r.Config, &countryConfigs); err != nil {
+			return nil, "", err
+		}
+		currencyAmounts := make(map[string]decimal.Decimal, len(countryConfigs))
+		for _, countryCfg := range countryConfigs {
+			// check if we already have a configuration for this currency
+			existingAmount, alreadyDefined := currencyAmounts[countryCfg.CurrencyCode]
+			if alreadyDefined && existingAmount != countryCfg.Amount {
+				return nil, "", fmt.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
+			}
+
+			currencyAmounts[countryCfg.CurrencyCode] = countryCfg.Amount
+		}
+
+		newActions = []flows.Action{
+			&transferto.TransferAirtimeAction{
+				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
+				Amounts:    currencyAmounts,
+			},
+		}
+
+		router = routers.NewSwitchRouter(defaultExit, "@run", cases, resultName)
+
 	default:
 		return nil, "", fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}

@@ -1091,5 +1091,99 @@
             }
         },
         "expected_localization": {}
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
+            "x": 240,
+            "y": 430,
+            "label": "Transfer",
+            "rules": [
+              {
+                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                "category": {
+                  "eng": "Success"
+                },
+                "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                "destination_type": "A",
+                "test": {
+                  "type": "airtime_status",
+                  "exit_status": "success"
+                },
+                "label": null
+              },
+              {
+                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                "category": {
+                  "eng": "Failure"
+                },
+                "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                "destination_type": "A",
+                "test": {
+                  "type": "airtime_status",
+                  "exit_status": "failed"
+                },
+                "label": null
+              }
+            ],
+            "finished_key": null,
+            "ruleset_type": "airtime",
+            "response_type": "",
+            "operand": "@step.value",
+            "config": {
+              "EC": {
+                "currency_name": "US Dollar",
+                "amount": 3,
+                "code": "EC",
+                "name": "Ecuador",
+                "currency_code": "USD"
+              },
+              "BR": {
+                "currency_name": "Brazilian Real",
+                "amount": 2.5,
+                "code": "BR",
+                "name": "Brazil",
+                "currency_code": "BRL"
+              }
+            }
+        },
+        "expected_node": {
+            "uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
+            "actions": [{
+                "type": "transfer_airtime",
+                "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                "amounts": {
+                    "BRL": 2.5,
+                    "USD": 3
+                }
+            }],
+            "router": {
+                "type": "switch",
+                "result_name": "Transfer",
+                "default_exit_uuid": "",
+                "operand": "@run",
+                "cases": [{
+                    "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                    "type": "has_airtime_status",
+                    "arguments": ["success"],
+                    "exit_uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0"
+                }, {
+                    "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "has_airtime_status",
+                    "arguments": ["failed"],
+                    "exit_uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a"
+                }]
+            },
+            "exits": [{
+                "uuid": "6103fa71-6ca9-4300-aec6-929f50fa1ae0",
+                "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                "name": "Success"
+            }, {
+                "uuid": "bcb18434-1932-4a38-a4cd-a2c4a70b8e9a",
+                "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+                "name": "Failure"
+            }]
+        },
+        "expected_localization": {}
     }
 ]

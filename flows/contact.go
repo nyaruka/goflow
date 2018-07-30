@@ -68,6 +68,7 @@ func NewContact(name string, language utils.Language, timezone *time.Location) *
 		language:  language,
 		timezone:  timezone,
 		createdOn: utils.Now(),
+		urns:      URNList{},
 		groups:    NewGroupList([]*Group{}),
 		fields:    make(FieldValues),
 	}
@@ -216,10 +217,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "fields":
 		return c.fields
 	case "channel":
-		if len(c.urns) > 0 {
-			return c.urns[0].Channel()
-		}
-		return nil
+		return c.PreferredChannel()
 	}
 
 	return types.NewXResolveError(c, key)
@@ -246,6 +244,14 @@ func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key s
 	runEnv := env.(RunEnvironment)
 
 	return c.fields.setValue(runEnv, fieldSet, key, rawValue)
+}
+
+// PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
+func (c *Contact) PreferredChannel() Channel {
+	if len(c.urns) > 0 {
+		return c.urns[0].Channel()
+	}
+	return nil
 }
 
 // UpdatePreferredChannel updates the preferred channel

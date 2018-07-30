@@ -11,6 +11,11 @@ type XTestResult struct {
 	match   types.XValue
 }
 
+// NewTrueResult creates a new matched result
+func NewTrueResult(match types.XValue) XTestResult {
+	return XTestResult{true, match}
+}
+
 // Matched returns whether the test matched
 func (t XTestResult) Matched() bool { return t.matched }
 

@@ -31,15 +31,20 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca"}`))
 	assert.Error(t, err)
 
+	// can't create with non-map extensions field
+	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca", "extensions": []}`))
+	assert.Error(t, err)
+
 	// can create with valid values
-	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali"}`))
+	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
 	assert.NoError(t, err)
 	assert.Equal(t, utils.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, utils.TimeFormatHourMinuteSecond, env.TimeFormat())
 	assert.Equal(t, kgl, env.Timezone())
 	assert.Equal(t, utils.LanguageList{}, env.Languages())
+	assert.Equal(t, json.RawMessage(`{"bar":1234}`), env.Extension("foo"))
 
 	data, err := json.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","languages":[],"redaction_policy":"none"}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","languages":[],"redaction_policy":"none","extensions":{"foo":{"bar":1234}}}`)
 }
