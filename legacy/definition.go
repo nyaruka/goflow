@@ -24,7 +24,7 @@ type Flow struct {
 	Metadata     Metadata       `json:"metadata"`
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
-	Entry        flows.NodeUUID `json:"entry" validate:"required,uuid4"`
+	Entry        flows.NodeUUID `json:"entry" validate:"omitempty,uuid4"`
 }
 
 // Metadata is the metadata section of a legacy flow
@@ -1033,11 +1033,13 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	}
 
 	// make sure our entry node is first
-	for i := range nodes {
-		if nodes[i].UUID() == f.Entry {
-			firstNode := nodes[0]
-			nodes[0] = nodes[i]
-			nodes[i] = firstNode
+	if f.Entry != "" {
+		for i := range nodes {
+			if nodes[i].UUID() == f.Entry {
+				firstNode := nodes[0]
+				nodes[0] = nodes[i]
+				nodes[i] = firstNode
+			}
 		}
 	}
 
