@@ -64,7 +64,7 @@
         }
     },
     {
-        "type": "field_set",
+        "type": "field",
         "url": "http://testserver/assets/field",
         "content": [
             {
@@ -90,7 +90,7 @@
         ]
     },
     {
-        "type": "group_set",
+        "type": "group",
         "url": "http://testserver/assets/group",
         "content": [
             {

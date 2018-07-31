@@ -7,23 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/karlseguin/ccache"
-)
-
-type assetType string
-
-const (
-	assetTypeChannelSet           assetType = "channel_set"
-	assetTypeFieldSet             assetType = "field_set"
-	assetTypeFlow                 assetType = "flow"
-	assetTypeGroupSet             assetType = "group_set"
-	assetTypeLabelSet             assetType = "label_set"
-	assetTypeLocationHierarchySet assetType = "location_hierarchy_set"
-	assetTypeResthookSet          assetType = "resthook_set"
 )
 
 // AssetCache fetches and caches assets for the engine
@@ -132,25 +118,10 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 
 // reads an asset from the given raw JSON data
 func readAsset(data json.RawMessage, itemType assetType) (interface{}, error) {
-	var assetReader func(data json.RawMessage) (interface{}, error)
-
-	if itemType == assetTypeLocationHierarchySet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) }
-	} else if itemType == assetTypeChannelSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) }
-	} else if itemType == assetTypeFieldSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) }
-	} else if itemType == assetTypeFlow {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) }
-	} else if itemType == assetTypeGroupSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) }
-	} else if itemType == assetTypeLabelSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadLabelSet(data) }
-	} else if itemType == assetTypeResthookSet {
-		assetReader = func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) }
-	} else {
+	cfg := typeConfigs[itemType]
+	if cfg == nil {
 		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
 	}
 
-	return assetReader(data)
+	return cfg.reader(data)
 }

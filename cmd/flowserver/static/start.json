@@ -22,7 +22,7 @@
             }
         },
         {
-            "type": "field_set",
+            "type": "field",
             "url": "http://testserver/assets/field",
             "content": [
                 {
@@ -33,7 +33,7 @@
             ]
         },
         {
-            "type": "channel_set",
+            "type": "channel",
             "url": "http://testserver/assets/channel",
             "content": [
                 {
@@ -53,9 +53,9 @@
     ],
     "asset_server": {
         "type_urls": {
-            "flow": "http://testserver/assets/flow/{uuid}/",
-            "channel_set": "http://testserver/assets/channel/",
-            "field_set": "http://testserver/assets/field/"
+            "flow": "http://testserver/assets/flow/",
+            "channel": "http://testserver/assets/channel/",
+            "field": "http://testserver/assets/field/"
         }
     },
     "trigger": {

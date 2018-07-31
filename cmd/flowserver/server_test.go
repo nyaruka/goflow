@@ -81,7 +81,7 @@ var testFlowMissingGroupAssets = `[
 		}
 	},
 	{
-		"type": "group_set",
+		"type": "group",
 		"url": "http://testserver/assets/group",
 		"content": [
 			{
@@ -199,9 +199,9 @@ var startRequestTemplate = `{
 	"assets": %s,
 	"asset_server": {
 		"type_urls": {
-			"flow": "http://testserver/assets/flow/{uuid}/",
-			"field_set": "http://testserver/assets/field/",
-			"group_set": "http://testserver/assets/group/"
+			"flow": "http://testserver/assets/flow/",
+			"field": "http://testserver/assets/field/",
+			"group": "http://testserver/assets/group/"
 		}
 	},
 	"trigger": {

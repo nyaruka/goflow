@@ -98,7 +98,7 @@
         }
     },
     {
-        "type": "field_set",
+        "type": "field",
         "url": "http://testserver/assets/field",
         "content": [
             {
@@ -134,7 +134,7 @@
         ]
     },
     {
-        "type": "group_set",
+        "type": "group",
         "url": "http://testserver/assets/group",
         "content": [
             {
@@ -153,7 +153,7 @@
         ]
     },
     {
-        "type": "channel_set",
+        "type": "channel",
         "url": "http://testserver/assets/channel",
         "content": [
             {
@@ -166,7 +166,7 @@
         ]
     },
     {
-        "type": "label_set",
+        "type": "label",
         "url": "http://testserver/assets/label",
         "content": [
             {

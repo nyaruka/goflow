@@ -90,7 +90,7 @@
         }
     },
     {
-        "type": "group_set",
+        "type": "group",
         "url": "http://testserver/assets/group",
         "content": [
             {
