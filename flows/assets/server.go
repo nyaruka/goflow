@@ -84,11 +84,11 @@ func (s *assetServer) fetchAsset(url string, itemType assetType) (interface{}, e
 	log.WithField("asset_type", string(itemType)).WithField("url", url).Debugf("asset requested")
 
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("asset request returned non-200 response (%d)", response.StatusCode)
+		return nil, fmt.Errorf("asset request (%s) returned non-200 response (%d)", url, response.StatusCode)
 	}
 
 	if response.Header.Get("Content-Type") != "application/json" {
-		return nil, fmt.Errorf("asset request returned non-JSON response")
+		return nil, fmt.Errorf("asset request (%s) returned non-JSON response", url)
 	}
 
 	buf, err := ioutil.ReadAll(response.Body)
