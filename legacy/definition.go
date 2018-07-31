@@ -985,20 +985,6 @@ func migateActionSet(lang utils.Language, a ActionSet, localization flows.Locali
 	return definition.NewNode(a.UUID, actions, nil, []flows.Exit{definition.NewExit(a.ExitUUID, a.Destination, "")}, nil), nil
 }
 
-// ReadLegacyFlows reads in legacy formatted flows
-func ReadLegacyFlows(data []json.RawMessage) ([]*Flow, error) {
-	var err error
-	flows := make([]*Flow, len(data))
-	for f := range data {
-		flows[f], err = ReadLegacyFlow(data[f])
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return flows, nil
-}
-
 // ReadLegacyFlow reads a single legacy formatted flow
 func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 	flow := &Flow{}

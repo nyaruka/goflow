@@ -15,92 +15,86 @@ import (
 )
 
 var legacyActionHolderDef = `
-[
-	{
-		"base_language": "eng",
-		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
-		"action_sets": [{
-			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-			"y": 100, 
-            "x": 100, 
-			"destination": null, 
-			"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
-			"actions": [%s]
-		}],
-		"metadata": {
-			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-			"name": "TestFlow"
-		}
+{
+	"base_language": "eng",
+	"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65", 
+	"action_sets": [{
+		"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+		"y": 100, 
+		"x": 100, 
+		"destination": null, 
+		"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
+		"actions": [%s]
+	}],
+	"metadata": {
+		"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+		"name": "TestFlow"
 	}
-]
+}
 `
 
 var legacyTestHolderDef = `
-[
-	{
-		"base_language": "eng",
-		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-		"rule_sets": [{
-			"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-			"rules": [{
-				"test": %s, 
-				"category": {"eng": "All Responses"}, 
-				"destination": null, 
-				"uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783", 
-				"destination_type": null
-			}],
-			"ruleset_type": "wait_message", 
-			"label": "Name", 
-			"operand": "@step.value", 
-			"finished_key": null, 
-			"response_type": "", 
-			"y": 0, 
-			"x": 100, 
-			"config": {}
+{
+	"base_language": "eng",
+	"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+	"rule_sets": [{
+		"uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+		"rules": [{
+			"test": %s, 
+			"category": {"eng": "All Responses"}, 
+			"destination": null, 
+			"uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783", 
+			"destination_type": null
 		}],
-		"metadata": {
-			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-			"name": "TestFlow"
-		}
+		"ruleset_type": "wait_message", 
+		"label": "Name", 
+		"operand": "@step.value", 
+		"finished_key": null, 
+		"response_type": "", 
+		"y": 0, 
+		"x": 100, 
+		"config": {}
+	}],
+	"metadata": {
+		"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+		"name": "TestFlow"
 	}
-]
+}
 `
 
 var legacyRuleSetHolderDef = `
-[
-	{
-		"base_language": "eng",
-		"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
-		"rule_sets": [%s],
-		"action_sets": [
-			{
-				"uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-				"x": 0, "y": 200, 
-				"destination": null, 
-				"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
-				"actions": []
-			},
-			{
-				"uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-				"x": 0, "y": 400, 
-				"destination": null, 
-				"exit_uuid": "da3e7eaf-c087-4e80-97b5-0b2e217fcc93",
-				"actions": []
-			},
-			{
-				"uuid": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd",
-				"x": 0, "y": 600, 
-				"destination": null, 
-				"exit_uuid": "6a8cb81b-1b59-4cfb-b00e-575ccbafd3ba",
-				"actions": []
-			}
-		],
-		"metadata": {
-			"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-			"name": "TestFlow"
+{
+	"base_language": "eng",
+	"entry": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
+	"rule_sets": [%s],
+	"action_sets": [
+		{
+			"uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+			"x": 0, "y": 200, 
+			"destination": null, 
+			"exit_uuid": "cfcf5cef-49f9-41a6-886b-f466575a3045",
+			"actions": []
+		},
+		{
+			"uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
+			"x": 0, "y": 400, 
+			"destination": null, 
+			"exit_uuid": "da3e7eaf-c087-4e80-97b5-0b2e217fcc93",
+			"actions": []
+		},
+		{
+			"uuid": "42ff72d3-5f4d-4dbf-89c9-8a97864dabcd",
+			"x": 0, "y": 600, 
+			"destination": null, 
+			"exit_uuid": "6a8cb81b-1b59-4cfb-b00e-575ccbafd3ba",
+			"actions": []
 		}
+	],
+	"metadata": {
+		"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+		"name": "TestFlow"
 	}
-]
+}
 `
 
 type FlowMigrationTest struct {
@@ -161,11 +155,11 @@ func TestActionMigration(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, test := range tests {
-		legacyFlowsJSON := fmt.Sprintf(legacyActionHolderDef, string(test.LegacyAction))
-		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
+		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, string(test.LegacyAction))
+		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlows[0].Migrate(false)
+		migratedFlow, err := legacyFlow.Migrate(false)
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
@@ -192,11 +186,11 @@ func TestTestMigration(t *testing.T) {
 	for _, test := range tests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 
-		legacyFlowsJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
-		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
+		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
+		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlows[0].Migrate(false)
+		migratedFlow, err := legacyFlow.Migrate(false)
 		require.NoError(t, err)
 
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
@@ -228,11 +222,11 @@ func TestRuleSetMigration(t *testing.T) {
 	for _, test := range tests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 
-		legacyFlowsJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
-		legacyFlows, err := readLegacyTestFlows(legacyFlowsJSON)
+		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
+		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlows[0].Migrate(false)
+		migratedFlow, err := legacyFlow.Migrate(false)
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations
@@ -259,12 +253,6 @@ func TestRuleSetMigration(t *testing.T) {
 			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}
 	}
-}
-
-func readLegacyTestFlows(flowsJSON string) ([]*legacy.Flow, error) {
-	var legacyFlows []json.RawMessage
-	json.Unmarshal(json.RawMessage(flowsJSON), &legacyFlows)
-	return legacy.ReadLegacyFlows(legacyFlows)
 }
 
 func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage) {

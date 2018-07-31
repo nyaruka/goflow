@@ -9,7 +9,6 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -133,8 +132,8 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 }
 
 type migrateRequest struct {
-	Flows     []json.RawMessage `json:"flows"`
-	IncludeUI *bool             `json:"include_ui"`
+	Flow      json.RawMessage `json:"flow"`
+	IncludeUI *bool           `json:"include_ui"`
 }
 
 func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -152,26 +151,18 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 		return nil, err
 	}
 
-	if migrate.Flows == nil {
-		return nil, fmt.Errorf("missing flows element")
+	if migrate.Flow == nil {
+		return nil, fmt.Errorf("missing flow element")
 	}
 
-	legacyFlows, err := legacy.ReadLegacyFlows(migrate.Flows)
+	legacyFlow, err := legacy.ReadLegacyFlow(migrate.Flow)
 	if err != nil {
 		return nil, err
 	}
 
 	includeUI := migrate.IncludeUI == nil || *migrate.IncludeUI
 
-	flows := make([]flows.Flow, len(legacyFlows))
-	for f := range legacyFlows {
-		flows[f], err = legacyFlows[f].Migrate(includeUI)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return flows, err
+	return legacyFlow.Migrate(includeUI)
 }
 
 type expressionResponse struct {
