@@ -1,3 +1,7 @@
+v0.12.1
+----------
+ * Improve error messages when trigger can't be read due to asset load failure
+
 v0.12.0
 ----------
  * Migrate flows individually
