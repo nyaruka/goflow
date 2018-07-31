@@ -1,3 +1,13 @@
+v0.11.0
+----------
+ * Rework assets so whether or not they are managed as sets is configured at the type level
+ * LocationHiearchy assets should be managed like a set like other asset types
+ * Migrate empty flows
+ * TransferTo airtime transfer action
+ * Simplify server handler methods and improve validation errors involving fields on composed types
+ * Dynamic type for actions, events, routers etc
+ * Make func names more consistent and implement same typing system for waits
+
 v0.10.21
 ----------
  * Tweak resthook_called events so the event itself has status=success for HTTP 410 responses
