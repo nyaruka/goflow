@@ -1,3 +1,7 @@
+v0.12.0
+----------
+ * Migrate flows individually
+
 v0.11.0
 ----------
  * Rework assets so whether or not they are managed as sets is configured at the type level
