@@ -21,23 +21,32 @@ type Campaign struct {
 	Name string `json:"name" validate:"required"`
 }
 
+// CampaignEvent describes the specific event in the campaign that triggered the session
+type CampaignEvent struct {
+	UUID     string   `json:"uuid" validate:"required,uuid4"`
+	Campaign Campaign `json:"campaign" validate:"required,dive"`
+}
+
 // CampaignTrigger is used when a session was triggered by a campaign event
 //
-// ```
 //   {
 //     "type": "campaign",
-//     "flow": {"uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721", "name": "Registration"},
+//     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //     "contact": {
 //       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
 //       "name": "Bob"
 //     },
-//     "campaign": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "New Mothers"},
+//     "event": {
+//         "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
+//         "campaign": {"uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe", "name": "New Mothers"}
+//     },
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
-// ```
+//
+// @trigger campaign
 type CampaignTrigger struct {
 	baseTrigger
-	Campaign *Campaign
+	Event *CampaignEvent
 }
 
 // Type returns the type of this trigger
@@ -66,7 +75,7 @@ var _ flows.Trigger = (*CampaignTrigger)(nil)
 
 type campaignTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Campaign *Campaign `json:"campaign" validate:"required,dive"`
+	Event *CampaignEvent `json:"event" validate:"required,dive"`
 }
 
 // ReadCampaignTrigger reads a campaign trigger
@@ -81,7 +90,7 @@ func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Tri
 		return nil, err
 	}
 
-	trigger.Campaign = e.Campaign
+	trigger.Event = e.Event
 
 	return trigger, nil
 }
@@ -94,7 +103,7 @@ func (t *CampaignTrigger) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	envelope.Campaign = t.Campaign
+	envelope.Event = t.Event
 
 	return json.Marshal(envelope)
 }

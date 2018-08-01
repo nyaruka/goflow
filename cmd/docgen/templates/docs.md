@@ -213,6 +213,14 @@ All templates in events have been evaluated and can be used to create concrete m
 {{ .eventDocs }}
 </div>
 
+# Trigger Types
+
+Triggers are the entities which can trigger a new session with the flow engine.
+
+<div class="triggers">
+{{ .triggerDocs }}
+</div>
+
 </body>
 </html>
 
