@@ -839,7 +839,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// subflow rulesets operate on the child flow status
 		router = routers.NewSwitchRouter(defaultExit, "@child.status", cases, resultName)
-		uiType = UINodeTypeSubflow
+		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":
 		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, expressions.ExtraAsFunction, false)
@@ -867,7 +867,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// webhook rulesets operate on the webhook call
 		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
-		uiType = UINodeTypeWebhook
+		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
 		newActions = []flows.Action{

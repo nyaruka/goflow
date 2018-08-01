@@ -13,9 +13,9 @@ type UINodeType string
 // the different node types supported by the editor
 const (
 	UINodeTypeWaitForResponse           UINodeType = "wait_for_response"
-	UINodeTypeSubflow                   UINodeType = "subflow"
-	UINodeTypeWebhook                   UINodeType = "webhook"
-	UINodeTypeResthook                  UINodeType = "resthook"
+	UINodeTypeSplitBySubflow            UINodeType = "split_by_subflow"
+	UINodeTypeSplitByWebhook            UINodeType = "split_by_webhook"
+	UINodeTypeSplitByResthook           UINodeType = "split_by_resthook"
 	UINodeTypeSplitByGroups             UINodeType = "split_by_groups"
 	UINodeTypeSplitByExpression         UINodeType = "split_by_expression"
 	UINodeTypeSplitByContactField       UINodeType = "split_by_contact_field"
