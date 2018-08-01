@@ -52,6 +52,7 @@ type FlowActionTrigger struct {
 // Type returns the type of this trigger
 func (t *FlowActionTrigger) Type() string { return TypeFlowAction }
 
+// Run returns the summary of the run that triggered this session
 func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
 
 // Resolve resolves the given key when this trigger is referenced in an expression
@@ -80,6 +81,7 @@ type flowActionTriggerEnvelope struct {
 	Run json.RawMessage `json:"run"`
 }
 
+// ReadFlowActionTrigger reads a flow action trigger
 func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
 	var err error
 	trigger := &FlowActionTrigger{}

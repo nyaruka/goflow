@@ -62,6 +62,7 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+// ReadManualTrigger reads a manual trigger
 func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
 	trigger := ManualTrigger{}
 	e := baseTriggerEnvelope{}
