@@ -1,3 +1,7 @@
+v0.13.0
+----------
+ * Wrap multiple asset responses in a results object
+
 v0.12.2
 ----------
  * Update UI node type names
