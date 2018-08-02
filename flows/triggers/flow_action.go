@@ -19,14 +19,13 @@ const TypeFlowAction string = "flow_action"
 
 // FlowActionTrigger is used when another session triggered this run using a trigger_flow action.
 //
-// ```
 //   {
 //     "type": "flow_action",
-//     "flow": {"uuid": "ea7d8b6b-a4b2-42c1-b9cf-c0370a95a721", "name": "Registration"},
+//     "flow": {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Collect Age"},
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
 //     "run": {
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-//       "flow": {"uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87", "name": "Other Flow"},
+//       "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //       "contact": {
 //         "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
 //         "name": "Bob",
@@ -43,7 +42,8 @@ const TypeFlowAction string = "flow_action"
 //       }
 //     }
 //   }
-// ```
+//
+// @trigger flow_action
 type FlowActionTrigger struct {
 	baseTrigger
 	run flows.RunSummary
@@ -52,6 +52,7 @@ type FlowActionTrigger struct {
 // Type returns the type of this trigger
 func (t *FlowActionTrigger) Type() string { return TypeFlowAction }
 
+// Run returns the summary of the run that triggered this session
 func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
 
 // Resolve resolves the given key when this trigger is referenced in an expression
@@ -80,6 +81,7 @@ type flowActionTriggerEnvelope struct {
 	Run json.RawMessage `json:"run"`
 }
 
+// ReadFlowActionTrigger reads a flow action trigger
 func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
 	var err error
 	trigger := &FlowActionTrigger{}

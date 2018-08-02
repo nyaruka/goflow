@@ -28,6 +28,7 @@ var docSets = []struct {
 	{"testDocs", []string{"flows/routers/tests"}, "@test", handleFunctionDoc},
 	{"actionDocs", []string{"flows/actions"}, "@action", handleActionDoc},
 	{"eventDocs", []string{"flows/events"}, "@event", handleEventDoc},
+	{"triggerDocs", []string{"flows/triggers"}, "@trigger", handleTriggerDoc},
 }
 
 type documentedItem struct {

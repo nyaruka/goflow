@@ -176,6 +176,7 @@
  <li><a href="#router-tests">Router Tests</a></li>
  <li><a href="#action-definitions">Action Definitions</a></li>
  <li><a href="#event-definitions">Event Definitions</a></li>
+ <li><a href="#trigger-types">Trigger Types</a></li>
  </ul>  
     
 <h1 id="container">Container</h1>
@@ -2256,6 +2257,93 @@ Event
 <a class="sourceLine" id="cb164-8" data-line-number="8">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK {</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></a>
 <a class="sourceLine" id="cb164-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
 </div>
+</div>
+<h1 id="trigger-types">Trigger Types</h1>
+<p>Triggers are the entities which can trigger a new session with the flow engine.</p>
+<div class="triggers">
+<p><a name="trigger:campaign"></a></p>
+<h2 id="campaign">campaign</h2>
+<p>Is used when a session was triggered by a campaign event</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb165-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb165-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;campaign&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-3" data-line-number="3">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb165-4" data-line-number="4">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-5" data-line-number="5">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></a>
+<a class="sourceLine" id="cb165-6" data-line-number="6">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb165-7" data-line-number="7">    <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb165-8" data-line-number="8">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9f7ede93-4b16-4692-80ad-b7dc54a1cd81&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-9" data-line-number="9">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-10" data-line-number="10">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-11" data-line-number="11">        <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-12" data-line-number="12">        <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-13" data-line-number="13">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;0001-01-01T00:00:00Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-14" data-line-number="14">        <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
+<a class="sourceLine" id="cb165-15" data-line-number="15">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb165-16" data-line-number="16">    <span class="dt">&quot;triggered_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-17" data-line-number="17">    <span class="dt">&quot;event&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb165-18" data-line-number="18">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;34d16dbd-476d-4b77-bac3-9f3d597848cc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-19" data-line-number="19">        <span class="dt">&quot;campaign&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb165-20" data-line-number="20">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;58e9b092-fe42-4173-876c-ff45a14a24fe&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb165-21" data-line-number="21">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;New Mothers&quot;</span></a>
+<a class="sourceLine" id="cb165-22" data-line-number="22">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb165-23" data-line-number="23">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb165-24" data-line-number="24"><span class="fu">}</span></a></code></pre></div>
+<p><a name="trigger:flow_action"></a></p>
+<h2 id="flow_action">flow_action</h2>
+<p>Is used when another session triggered this run using a trigger_flow action.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb166-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;flow_action&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-3" data-line-number="3">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-4" data-line-number="4">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-5" data-line-number="5">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Collect Age&quot;</span></a>
+<a class="sourceLine" id="cb166-6" data-line-number="6">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb166-7" data-line-number="7">    <span class="dt">&quot;triggered_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-8" data-line-number="8">    <span class="dt">&quot;run&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-9" data-line-number="9">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-10" data-line-number="10">        <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-11" data-line-number="11">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-12" data-line-number="12">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></a>
+<a class="sourceLine" id="cb166-13" data-line-number="13">        <span class="fu">},</span></a>
+<a class="sourceLine" id="cb166-14" data-line-number="14">        <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-15" data-line-number="15">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;c59b0033-e748-4240-9d4c-e85eb6800151&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-16" data-line-number="16">            <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-17" data-line-number="17">            <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-18" data-line-number="18">            <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-19" data-line-number="19">            <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-20" data-line-number="20">            <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;0001-01-01T00:00:00Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-21" data-line-number="21">            <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
+<a class="sourceLine" id="cb166-22" data-line-number="22">        <span class="fu">},</span></a>
+<a class="sourceLine" id="cb166-23" data-line-number="23">        <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;active&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-24" data-line-number="24">        <span class="dt">&quot;results&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-25" data-line-number="25">            <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb166-26" data-line-number="26">                <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-27" data-line-number="27">                <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;33&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-28" data-line-number="28">                <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb166-29" data-line-number="29">                <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00Z&quot;</span></a>
+<a class="sourceLine" id="cb166-30" data-line-number="30">            <span class="fu">}</span></a>
+<a class="sourceLine" id="cb166-31" data-line-number="31">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb166-32" data-line-number="32">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb166-33" data-line-number="33"><span class="fu">}</span></a></code></pre></div>
+<p><a name="trigger:manual"></a></p>
+<h2 id="manual">manual</h2>
+<p>Is used when a session was triggered manually by a user</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb167-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb167-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;manual&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-3" data-line-number="3">    <span class="dt">&quot;flow&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb167-4" data-line-number="4">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-5" data-line-number="5">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Registration&quot;</span></a>
+<a class="sourceLine" id="cb167-6" data-line-number="6">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb167-7" data-line-number="7">    <span class="dt">&quot;contact&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb167-8" data-line-number="8">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9f7ede93-4b16-4692-80ad-b7dc54a1cd81&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-9" data-line-number="9">        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-10" data-line-number="10">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Bob&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-11" data-line-number="11">        <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-12" data-line-number="12">        <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-13" data-line-number="13">        <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;0001-01-01T00:00:00Z&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb167-14" data-line-number="14">        <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
+<a class="sourceLine" id="cb167-15" data-line-number="15">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb167-16" data-line-number="16">    <span class="dt">&quot;triggered_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2000-01-01T00:00:00Z&quot;</span></a>
+<a class="sourceLine" id="cb167-17" data-line-number="17"><span class="fu">}</span></a></code></pre></div>
 </div>
 </body>
 </html> 

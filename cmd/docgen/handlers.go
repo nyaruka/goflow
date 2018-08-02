@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -165,6 +166,44 @@ func handleActionDoc(output *strings.Builder, item *documentedItem, session flow
 	output.WriteString(fmt.Sprintf("%s\n", events))
 	output.WriteString("```\n")
 	output.WriteString(`</div>`)
+	output.WriteString("\n")
+
+	return nil
+}
+
+func handleTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	// try to parse our example
+	exampleJSON := []byte(strings.Join(item.examples, "\n"))
+	typed := &utils.TypedEnvelope{}
+	err := json.Unmarshal(exampleJSON, typed)
+	trigger, err := triggers.ReadTrigger(session, typed)
+	if err != nil {
+		return fmt.Errorf("unable to read trigger[type=%s]: %s", typed.Type, err)
+	}
+
+	// validate it
+	err = utils.Validate(trigger)
+	if err != nil {
+		return fmt.Errorf("unable to validate example: %s", err)
+	}
+
+	typed, err = utils.EnvelopeFromTyped(trigger)
+	if err != nil {
+		return fmt.Errorf("unable to marshal example: %s", err)
+	}
+
+	exampleJSON, err = utils.JSONMarshalPretty(typed)
+	if err != nil {
+		return fmt.Errorf("unable to marshal example: %s", err)
+	}
+
+	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(strings.Join(item.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```json\n")
+	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
+	output.WriteString("```\n")
 	output.WriteString("\n")
 
 	return nil

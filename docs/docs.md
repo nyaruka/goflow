@@ -2947,6 +2947,118 @@ request and response. Applying this event updates @run.webhook in the context.
 
 </div>
 
+# Trigger Types
+
+Triggers are the entities which can trigger a new session with the flow engine.
+
+<div class="triggers">
+<a name="trigger:campaign"></a>
+
+## campaign
+
+Is used when a session was triggered by a campaign event
+
+
+```json
+{
+    "type": "campaign",
+    "flow": {
+        "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "id": 0,
+        "name": "Bob",
+        "language": "",
+        "timezone": "",
+        "created_on": "0001-01-01T00:00:00Z",
+        "urns": []
+    },
+    "triggered_on": "2000-01-01T00:00:00Z",
+    "event": {
+        "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
+        "campaign": {
+            "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+            "name": "New Mothers"
+        }
+    }
+}
+```
+
+<a name="trigger:flow_action"></a>
+
+## flow_action
+
+Is used when another session triggered this run using a trigger_flow action.
+
+
+```json
+{
+    "type": "flow_action",
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Collect Age"
+    },
+    "triggered_on": "2000-01-01T00:00:00Z",
+    "run": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "flow": {
+            "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+            "name": "Registration"
+        },
+        "contact": {
+            "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
+            "id": 0,
+            "name": "Bob",
+            "language": "",
+            "timezone": "",
+            "created_on": "0001-01-01T00:00:00Z",
+            "urns": []
+        },
+        "status": "active",
+        "results": {
+            "age": {
+                "name": "",
+                "value": "33",
+                "node_uuid": "",
+                "created_on": "2000-01-01T00:00:00Z"
+            }
+        }
+    }
+}
+```
+
+<a name="trigger:manual"></a>
+
+## manual
+
+Is used when a session was triggered manually by a user
+
+
+```json
+{
+    "type": "manual",
+    "flow": {
+        "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "id": 0,
+        "name": "Bob",
+        "language": "",
+        "timezone": "",
+        "created_on": "0001-01-01T00:00:00Z",
+        "urns": []
+    },
+    "triggered_on": "2000-01-01T00:00:00Z"
+}
+```
+
+
+</div>
+
 </body>
 </html>
 
