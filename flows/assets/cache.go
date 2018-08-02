@@ -74,7 +74,7 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType
 	// actually fetch the asset from it's URL
 	fetched, err := server.fetchAsset(url, itemType)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error fetching asset %s: %s", url, err)
 	}
 
 	c.addAsset(url, fetched)
@@ -106,7 +106,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		asset, err := readAsset(envelope.Content, envelope.ItemType)
+		asset, err := readAsset(envelope.Content, envelope.ItemType, false)
 		if err != nil {
 			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
 		}
@@ -117,10 +117,20 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 }
 
 // reads an asset from the given raw JSON data
-func readAsset(data json.RawMessage, itemType assetType) (interface{}, error) {
+func readAsset(data json.RawMessage, itemType assetType, fromRequest bool) (interface{}, error) {
 	cfg := typeConfigs[itemType]
 	if cfg == nil {
 		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
+	}
+
+	if cfg.manageAsSet && fromRequest {
+		listResponse := &struct {
+			Results json.RawMessage `json:"results"`
+		}{}
+		if err := json.Unmarshal(data, listResponse); err != nil {
+			return nil, fmt.Errorf("expected result set")
+		}
+		data = listResponse.Results
 	}
 
 	return cfg.reader(data)

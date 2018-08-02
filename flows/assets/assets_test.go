@@ -12,10 +12,14 @@ import (
 
 func TestAssetCache(t *testing.T) {
 	server := NewMockAssetServer()
-	server.MockResponse("http://testserver/assets/label/", json.RawMessage(`[{
-		"uuid": "f2a3e00c-e86a-4282-a9e8-bb2275e1b9a4",
-		"name": "Spam"
-	}]`))
+	server.MockResponse("http://testserver/assets/label/", json.RawMessage(`{
+		"results": [
+			{
+				"uuid": "f2a3e00c-e86a-4282-a9e8-bb2275e1b9a4",
+				"name": "Spam"
+			}
+		]
+	}`))
 	cache := NewAssetCache(100, 10)
 
 	asset, err := cache.GetAsset(server, assetType("pizza"), "")
@@ -37,10 +41,14 @@ func TestAssetCache(t *testing.T) {
 
 func TestAssetServer(t *testing.T) {
 	server := NewMockAssetServer()
-	server.MockResponse("http://testserver/assets/group/", json.RawMessage(`[{
-		"uuid": "da310302-2340-4cee-b5bb-5ee37a24a122",
-		"name": "Survey Audience"
-	}]`))
+	server.MockResponse("http://testserver/assets/group/", json.RawMessage(`{
+		"results": [
+			{
+				"uuid": "da310302-2340-4cee-b5bb-5ee37a24a122",
+				"name": "Survey Audience"
+			}
+		]
+	}`))
 	server.MockResponse("http://testserver/assets/flow/2aad21f6-30b7-42c5-bd7f-1b720c154817/", json.RawMessage(`{
 		"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
 		"name": "Registration",
@@ -69,12 +77,14 @@ func TestAssetServer(t *testing.T) {
 
 func TestSessionAssets(t *testing.T) {
 	server := NewMockAssetServer()
-	server.mockResponses["http://testserver/assets/group/"] = json.RawMessage(`[
-		{
-			"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
-			"name": "Survey Audience"
-		}
-	]`)
+	server.mockResponses["http://testserver/assets/group/"] = json.RawMessage(`{
+		"results": [
+			{
+				"uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817",
+				"name": "Survey Audience"
+			}
+		]
+	}`)
 	cache := NewAssetCache(100, 10)
 	sessionAssets := NewSessionAssets(cache, server)
 

@@ -84,11 +84,11 @@ func (s *assetServer) fetchAsset(url string, itemType assetType) (interface{}, e
 	log.WithField("asset_type", string(itemType)).WithField("url", url).Debugf("asset requested")
 
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("asset request (%s) returned non-200 response (%d)", url, response.StatusCode)
+		return nil, fmt.Errorf("request returned non-200 response (%d)", response.StatusCode)
 	}
 
 	if response.Header.Get("Content-Type") != "application/json" {
-		return nil, fmt.Errorf("asset request (%s) returned non-JSON response", url)
+		return nil, fmt.Errorf("request returned non-JSON response")
 	}
 
 	buf, err := ioutil.ReadAll(response.Body)
@@ -96,7 +96,12 @@ func (s *assetServer) fetchAsset(url string, itemType assetType) (interface{}, e
 		return nil, err
 	}
 
-	return readAsset(buf, itemType)
+	cfg := typeConfigs[itemType]
+	if cfg == nil {
+		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
+	}
+
+	return readAsset(buf, itemType, true)
 }
 
 type MockAssetServer struct {
@@ -140,7 +145,7 @@ func (s *MockAssetServer) fetchAsset(url string, itemType assetType) (interface{
 	if !found {
 		return nil, fmt.Errorf("mock asset server has no mocked response for URL: %s", url)
 	}
-	return readAsset(assetBuf, itemType)
+	return readAsset(assetBuf, itemType, true)
 }
 
 // MarshalJSON marshals this mock asset server into JSON
