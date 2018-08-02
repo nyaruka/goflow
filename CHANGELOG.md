@@ -1,3 +1,9 @@
+v0.12.2
+----------
+ * Update UI node type names
+ * Add all trigger types to docs so that we test parsing of the examples
+ * Add campaign as a trigger type
+
 v0.12.1
 ----------
  * Improve error messages when trigger can't be read due to asset load failure
