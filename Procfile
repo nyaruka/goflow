@@ -1,1 +1,1 @@
-web: flowserver
+web: flowserver --port=$PORT
