@@ -101,3 +101,6 @@
   root-package = "github.com/nyaruka/goflow"
   go-version = "1.10.3"
   install = [ "./..." ]
+[[constraint]]
+  name = "github.com/go-chi/cors"
+  version = "1.0.0"
