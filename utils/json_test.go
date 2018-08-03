@@ -1,7 +1,9 @@
 package utils_test
 
 import (
+	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"testing"
 
 	"github.com/nyaruka/goflow/utils"
@@ -32,4 +34,25 @@ func TestUnmarshalArray(t *testing.T) {
 	msgs, err := utils.UnmarshalArray([]byte(`[]`))
 	assert.NoError(t, err)
 	assert.Equal(t, []json.RawMessage{}, msgs)
+}
+
+func TestUnmarshalAndValidateWithLimit(t *testing.T) {
+	data := []byte(`{"foo": "Hello"}`)
+	buffer := ioutil.NopCloser(bytes.NewReader(data))
+
+	// try with sufficiently large limit
+	s := &struct {
+		Foo string `json:"foo"`
+	}{}
+	err := utils.UnmarshalAndValidateWithLimit(buffer, s, 1000)
+	assert.NoError(t, err)
+	assert.Equal(t, "Hello", s.Foo)
+
+	// try with limit that's smaller than the input
+	buffer = ioutil.NopCloser(bytes.NewReader(data))
+	s = &struct {
+		Foo string `json:"foo"`
+	}{}
+	err = utils.UnmarshalAndValidateWithLimit(buffer, s, 5)
+	assert.EqualError(t, err, "unexpected end of JSON input")
 }

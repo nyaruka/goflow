@@ -7,7 +7,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,7 +24,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, "+250961111111", ch.Address())
 	assert.Equal(t, "channel", ch.Describe())
 
-	assert.Equal(t, types.NewXText(uuid.String()), ch.Resolve(env, "uuid"))
+	assert.Equal(t, types.NewXText(string(uuid)), ch.Resolve(env, "uuid"))
 	assert.Equal(t, types.NewXText("Android"), ch.Resolve(env, "name"))
 	assert.Equal(t, types.NewXText("+250961111111"), ch.Resolve(env, "address"))
 	assert.Equal(t, types.NewXResolveError(ch, "xxx"), ch.Resolve(env, "xxx"))

@@ -9,6 +9,7 @@ import (
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -17,24 +18,52 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+const (
+	maxRequestBytes int64 = 1048576
+)
+
 type sessionRequest struct {
 	Assets      *json.RawMessage `json:"assets"`
 	AssetServer json.RawMessage  `json:"asset_server" validate:"required"`
 	Config      *json.RawMessage `json:"config"`
 }
 
+type sessionResponse struct {
+	Session flows.Session
+	Events  []flows.Event
+}
+
+// MarshalJSON marshals this session response into JSON
+func (r *sessionResponse) MarshalJSON() ([]byte, error) {
+	eventEnvelopes, err := events.EventsToEnvelopes(r.Session.Events())
+	if err != nil {
+		return nil, err
+	}
+	envelope := struct {
+		Session flows.Session          `json:"session"`
+		Events  []*utils.TypedEnvelope `json:"events"`
+	}{
+		Session: r.Session,
+		Events:  eventEnvelopes,
+	}
+
+	return utils.JSONMarshal(envelope)
+}
+
+// Starts a new engine session
+//
+//   {
+//     "assets": [...],
+//     "asset_server": {...},
+//     "trigger": {...},
+//     "events": [...]
+//   }
+//
 type startRequest struct {
 	sessionRequest
 
 	Trigger *utils.TypedEnvelope   `json:"trigger" validate:"required"`
 	Events  []*utils.TypedEnvelope `json:"events"`
-}
-
-type resumeRequest struct {
-	sessionRequest
-
-	Session json.RawMessage        `json:"session" validate:"required"`
-	Events  []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
 }
 
 // reads the assets and asset_server section of a request
@@ -53,7 +82,7 @@ func (s *FlowServer) readAssets(request *sessionRequest) (assets.AssetServer, er
 // handles a request to /start
 func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	start := &startRequest{}
-	if err := unmarshalWithLimit(r.Body, start); err != nil {
+	if err := utils.UnmarshalAndValidateWithLimit(r.Body, start, maxRequestBytes); err != nil {
 		return nil, err
 	}
 
@@ -92,10 +121,25 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	return &sessionResponse{Session: session, Events: session.Events()}, nil
 }
 
-// handles a request to /resume
+// Resumes an existing engine session
+//
+//   {
+//     "assets": [...],
+//     "asset_server": {...},
+//     "session": {"uuid": "468621a8-32e6-4cd2-afc1-04416f7151f0", "runs": [...], ...},
+//     "events": [...]
+//   }
+//
+type resumeRequest struct {
+	sessionRequest
+
+	Session json.RawMessage        `json:"session" validate:"required"`
+	Events  []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
+}
+
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	resume := &resumeRequest{}
-	if err := unmarshalWithLimit(r.Body, resume); err != nil {
+	if err := utils.UnmarshalAndValidateWithLimit(r.Body, resume, maxRequestBytes); err != nil {
 		return nil, err
 	}
 
@@ -131,6 +175,13 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	return &sessionResponse{Session: session, Events: session.Events()}, nil
 }
 
+// Migrates a legacy flow to the new flow definition specification
+//
+//   {
+//     "flow": {"uuid": "468621a8-32e6-4cd2-afc1-04416f7151f0", "action_sets": [], ...},
+//     "include_ui": false
+//   }
+//
 type migrateRequest struct {
 	Flow      json.RawMessage `json:"flow"`
 	IncludeUI *bool           `json:"include_ui"`
@@ -165,14 +216,21 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 	return legacyFlow.Migrate(includeUI)
 }
 
-type expressionResponse struct {
-	Result string   `json:"result"`
-	Errors []string `json:"errors"`
-}
-
+// Evaluates an expression
+//
+//   {
+//     "expression": "@(upper(foo.bar))",
+//     "context": {"foo": {"bar": "Hello!"}}
+//   }
+//
 type expressionRequest struct {
 	Expression string          `json:"expression"`
 	Context    json.RawMessage `json:"context"`
+}
+
+type expressionResponse struct {
+	Result string   `json:"result"`
+	Errors []string `json:"errors"`
 }
 
 func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -203,19 +261,10 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 	return expressionResponse{Result: result, Errors: []string{}}, nil
 }
 
-// utility method to read and unmarsmal with a limit on how many bytes can be read
-func unmarshalWithLimit(reader io.ReadCloser, s interface{}) error {
-	body, err := ioutil.ReadAll(io.LimitReader(reader, 1048576))
-	if err != nil {
-		return err
+// Returns the current version number
+func (s *FlowServer) handleVersion(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	response := map[string]string{
+		"version": version,
 	}
-	if err := reader.Close(); err != nil {
-		return err
-	}
-	if err := json.Unmarshal(body, &s); err != nil {
-		return err
-	}
-
-	// validate the request
-	return utils.Validate(s)
+	return response, nil
 }

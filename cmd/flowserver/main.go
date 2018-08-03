@@ -54,15 +54,22 @@ func main() {
 		log.StandardLogger().Hooks.Add(hook)
 	}
 
+	runServerUntilInterrupt(config)
+}
+
+func runServerUntilInterrupt(config *Config) {
 	// start the server
 	flowServer := NewFlowServer(config)
 	flowServer.Start()
 
 	log.WithField("comp", "server").WithField("port", config.Port).WithField("version", version).Info("listening")
 
-	ch := make(chan os.Signal)
+	// create a channel that will receive interrupt signals and wait for a signal
+	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-	log.WithField("comp", "server").WithField("signal", <-ch).Info("stopping")
+	sig := <-ch
+
+	log.WithField("comp", "server").WithField("signal", sig).Info("stopping")
 
 	flowServer.Stop()
 }

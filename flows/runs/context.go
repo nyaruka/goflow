@@ -40,7 +40,7 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 func (c *runContext) Describe() string { return "context" }
 
 func (c *runContext) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(c.run.UUID().String())
+	return types.NewXText(string(c.run.UUID()))
 }
 
 // ToXJSON can never actually be called on the context root
@@ -86,7 +86,7 @@ func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XVa
 func (c *relatedRunContext) Describe() string { return "related run" }
 
 func (c *relatedRunContext) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(c.run.UUID().String())
+	return types.NewXText(string(c.run.UUID()))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))

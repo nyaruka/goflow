@@ -10,62 +10,38 @@ import (
 // NodeUUID is a UUID of a flow node
 type NodeUUID utils.UUID
 
-func (u NodeUUID) String() string { return string(u) }
-
 // ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
-
-func (u ExitUUID) String() string { return string(u) }
 
 // FlowUUID is the UUID of a flow
 type FlowUUID utils.UUID
 
-func (u FlowUUID) String() string { return string(u) }
-
 // ActionUUID is the UUID of an action
 type ActionUUID utils.UUID
-
-func (u ActionUUID) String() string { return string(u) }
 
 // ContactUUID is the UUID of a contact
 type ContactUUID utils.UUID
 
-func (u ContactUUID) String() string { return string(u) }
-
 // ChannelUUID is the UUID of a channel
 type ChannelUUID utils.UUID
-
-func (u ChannelUUID) String() string { return string(u) }
 
 // RunUUID is the UUID of a flow run
 type RunUUID utils.UUID
 
-func (u RunUUID) String() string { return string(u) }
-
 // StepUUID is the UUID of a run step
 type StepUUID utils.UUID
-
-func (u StepUUID) String() string { return string(u) }
 
 // LabelUUID is the UUID of a label
 type LabelUUID utils.UUID
 
-func (u LabelUUID) String() string { return string(u) }
-
 // GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
-
-func (u GroupUUID) String() string { return string(u) }
 
 // InputUUID is the UUID of an input
 type InputUUID utils.UUID
 
-func (u InputUUID) String() string { return string(u) }
-
 // MsgUUID is the UUID of a message
 type MsgUUID utils.UUID
-
-func (u MsgUUID) String() string { return string(u) }
 
 // SessionStatus represents the current status of the engine session
 type SessionStatus string
@@ -83,8 +59,6 @@ const (
 	// SessionStatusErrored represents a session that encountered an error
 	SessionStatusErrored SessionStatus = "errored"
 )
-
-func (r SessionStatus) String() string { return string(r) }
 
 // RunStatus represents the current status of the flow run
 type RunStatus string
@@ -108,8 +82,6 @@ const (
 	// RunStatusInterrupted represents a run that was interrupted by another flow
 	RunStatusInterrupted RunStatus = "interrupted"
 )
-
-func (r RunStatus) String() string { return string(r) }
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
@@ -192,20 +164,6 @@ type Router interface {
 	Validate([]Exit) error
 	ResultName() string
 	utils.Typed
-}
-
-type Route struct {
-	exit  ExitUUID
-	match string
-}
-
-func (r Route) Exit() ExitUUID { return r.exit }
-func (r Route) Match() string  { return r.match }
-
-var NoRoute = Route{}
-
-func NewRoute(exit ExitUUID, match string) Route {
-	return Route{exit, match}
 }
 
 type Exit interface {
