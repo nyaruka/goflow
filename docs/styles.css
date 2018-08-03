@@ -8,24 +8,19 @@ body {
     -webkit-print-color-adjust: exact;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h7 {
     font-family: "Roboto Slab", "ff-tisa-web-pro", "Georgia", Arial, sans-serif;
     margin: 20px 0 10px;
     padding: 0;
     font-weight: bold;
 }
 
-h2 {
+h1 {
     font-size: 24px;
     color: #333;
 }
 
-h3 {
+h2 {
     font-size: 18px;
     color: white;
     border: 1px solid #444;
@@ -33,50 +28,40 @@ h3 {
     padding: 5px;
 }
 
-.context h3 {
+.context h2 {
     background-color: rgb(153, 130, 30);
     border: 1px solid rgb(107, 79, 17);
 }
 
-.functions h3 {
+.functions h2 {
     background-color: #2B823A;
     border: 1px solid #10621E;
 }
 
-.tests h3 {
+.tests h2 {
     background-color: #8b257e;
     border: 1px solid rgb(78, 14, 64);
 }
 
-.actions h3 {
+.actions h2 {
     background-color: #246068;
     border: 1px solid #0E464E;
 }
 
-.events h3 {
+.events h2 {
     background-color: #AA4139;
     border: 1px solid #801D15;
 }
 
-h4 {
+h3 {
     font-size: 16px;
     margin: 10px 0px 0px 0px;
     color: #333;
 }
 
-h5 {
-    font-size: 16px;
-    color: #333
-}
-
-h6 {
-    font-size: 14px;
-    color: #333
-}
-
 h7 {
-    color: #777;
-    font-size: 14px
+    color: #333;
+    font-size: 24px
 }
 
 .highlight pre {
@@ -106,7 +91,7 @@ code .st {
     color: #458;
 }
 
-.actions h2 {
+.actions h1 {
     color: #333;
 }
 
@@ -114,7 +99,7 @@ code .st {
     position: relative;
 }
 
-.input_action h3 {
+.input_action h2 {
     position: absolute;
     right: 15px;
     color: #888;
@@ -124,7 +109,7 @@ code .st {
     position: relative;
 }
 
-.output_event h3 {
+.output_event h2 {
     position: absolute;
     right: 15px;
     color: #888;

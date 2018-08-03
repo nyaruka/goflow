@@ -1,4 +1,4 @@
-## Container
+# Container
 
 Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) can be defined as follows and includes only the UUID of the flow, its name and the authoring language for the flow:
 
@@ -11,9 +11,9 @@ Flow definitions are defined as a list of nodes, the first node being the entry 
 }
 ```
 
-## Nodes
+# Nodes
 
-Flow definitions are composed of zero or more Nodes, the first node is always the entry node.
+Flow definitions are composed of zero or more nodes, the first node is always the entry node.
 
 A Node consists of:
 
@@ -58,9 +58,9 @@ An exit consists of:
 }
 ```
 
-## Routers
+# Routers
 
-### Switch
+## Switch
 
 If a node wishes to route differently based on some state, it can add a `switch` router which defines one or more `cases`. Each case defines a `type` which is the name 
 of an expression function that is run by passing the evaluation of `operand` as the first argument. Cases may define additional arguments using the `arguments` array on a case.
@@ -109,11 +109,11 @@ Each case consists of:
 }
 ```
 
-## Waits
+# Waits
 
 A node can indicate that it needs more information to continue by containing a wait.
 
-### Msg
+## Msg
 
 This wait type indicates that flow execution should pause until an incoming message is received and also gives an optional timeout in seconds as to when the flow 
 should continue even if there is no reply:
@@ -125,7 +125,7 @@ should continue even if there is no reply:
 }
 ```
 
-### Nothing
+## Nothing
 
 This wait type indicates that the caller can resume the session immediately with no incoming message or any other input. This type of
 wait enables the caller to commit changes in the session up to that point in the flow.
@@ -136,7 +136,7 @@ wait enables the caller to commit changes in the session up to that point in the
 }
 ```
 
-## Context
+# Context
 
 Flows do not describe data flow but rather actions and logic branching. As such, variables collected in a flow and the state of the flow are accessed through
 what is called the context. The context contains variables representing the current contact in a flow, the last input from that contact
@@ -169,7 +169,7 @@ The following types appear in the context:
 <div class="context">
 <a name="context:attachment"></a>
 
-### Attachment
+## Attachment
 
 Is a media attachment on a message, and it has the following properties which can be accessed:
 
@@ -187,7 +187,7 @@ Examples:
 
 <a name="context:channel"></a>
 
-### Channel
+## Channel
 
 Represents a means for sending and receiving input during a flow run. It renders as its name in a template,
 and has the following properties which can be accessed:
@@ -209,7 +209,7 @@ Examples:
 
 <a name="context:contact"></a>
 
-### Contact
+## Contact
 
 Represents a person who is interacting with the flow. It renders as the person's name
 (or perferred URN if name isn't set) in a template, and has the following properties which can be accessed:
@@ -251,7 +251,7 @@ Examples:
 
 <a name="context:flow"></a>
 
-### Flow
+## Flow
 
 Describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
 properties which can be accessed:
@@ -272,7 +272,7 @@ Examples:
 
 <a name="context:group"></a>
 
-### Group
+## Group
 
 Represents a grouping of contacts. It can be static (contacts are added and removed manually through
 [actions](#action:add_contact_groups)) or dynamic (contacts are added automatically by a query). It renders as its name in a
@@ -293,7 +293,7 @@ Examples:
 
 <a name="context:input"></a>
 
-### Input
+## Input
 
 Describes input from the contact and currently we only support one type of input: `msg`. Any input has the following
 properties which can be accessed:
@@ -322,7 +322,7 @@ Examples:
 
 <a name="context:result"></a>
 
-### Result
+## Result
 
 Describes a value captured during a run's execution. It might have been implicitly created by a router, or explicitly
 created by a [set_run_result](#action:set_run_result) action.It renders as its value in a template, and has the following
@@ -346,7 +346,7 @@ Examples:
 
 <a name="context:run"></a>
 
-### Run
+## Run
 
 Is a single contact's journey through a flow. It records the path they have taken, and the results that have been
 collected. It has several properties which can be accessed in expressions:
@@ -368,7 +368,7 @@ Examples:
 
 <a name="context:trigger"></a>
 
-### Trigger
+## Trigger
 
 Represents something which can initiate a session with the flow engine. It has several properties which can be
 accessed in expressions:
@@ -387,7 +387,7 @@ Examples:
 
 <a name="context:urn"></a>
 
-### Urn
+## Urn
 
 Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3
 components: scheme, path, and display (optional). For example:
@@ -419,7 +419,7 @@ Examples:
 
 <a name="context:webhook"></a>
 
-### Webhook
+## Webhook
 
 Describes a call made to an external service. It has several properties which can be accessed in expressions:
 
@@ -442,7 +442,7 @@ Examples:
 
 </div>
 
-## Template Functions
+# Template Functions
 
 In addition to simple substitutions, flows also have access to a set of functions which can be used in templates to further manipulate the context.
 Functions are called using the `@(function_name(args..))` syntax. For example, to title case a contact's name in a message, you can use `@(title(contact.name))`. 
@@ -452,7 +452,7 @@ Context variables referred to within functions do not need a leading `@`. Functi
 <div class="functions">
 <a name="function:abs"></a>
 
-### abs(num)
+## abs(num)
 
 Returns the absolute value of `num`
 
@@ -465,7 +465,7 @@ Returns the absolute value of `num`
 
 <a name="function:and"></a>
 
-### and(tests...)
+## and(tests...)
 
 Returns whether all the passed in arguments are truthy
 
@@ -477,7 +477,7 @@ Returns whether all the passed in arguments are truthy
 
 <a name="function:array"></a>
 
-### array(values...)
+## array(values...)
 
 Takes a list of `values` and returns them as an array
 
@@ -491,7 +491,7 @@ Takes a list of `values` and returns them as an array
 
 <a name="function:boolean"></a>
 
-### boolean(value)
+## boolean(value)
 
 Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
 
@@ -504,7 +504,7 @@ Tries to convert `value` to a boolean. An error is returned if the value can't b
 
 <a name="function:char"></a>
 
-### char(num)
+## char(num)
 
 Returns the rune for the passed in codepoint, `num`, which may be unicode, this is the reverse of code
 
@@ -517,7 +517,7 @@ Returns the rune for the passed in codepoint, `num`, which may be unicode, this 
 
 <a name="function:clean"></a>
 
-### clean(text)
+## clean(text)
 
 Strips any non-printable characters from `text`
 
@@ -529,7 +529,7 @@ Strips any non-printable characters from `text`
 
 <a name="function:code"></a>
 
-### code(text)
+## code(text)
 
 Returns the numeric code for the first character in `text`, it is the inverse of char
 
@@ -545,7 +545,7 @@ Returns the numeric code for the first character in `text`, it is the inverse of
 
 <a name="function:datetime"></a>
 
-### datetime(text)
+## datetime(text)
 
 Turns `text` into a date according to the environment's settings. It will return an error
 if it is unable to convert the text to a date.
@@ -560,7 +560,7 @@ if it is unable to convert the text to a date.
 
 <a name="function:datetime_add"></a>
 
-### datetime_add(date, offset, unit)
+## datetime_add(date, offset, unit)
 
 Calculates the date value arrived at by adding `offset` number of `unit` to the `date`
 
@@ -575,7 +575,7 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 <a name="function:datetime_diff"></a>
 
-### datetime_diff(date1, date2, unit)
+## datetime_diff(date1, date2, unit)
 
 Returns the integer duration between `date1` and `date2` in the `unit` specified.
 
@@ -591,7 +591,7 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 <a name="function:datetime_from_parts"></a>
 
-### datetime_from_parts(year, month, day)
+## datetime_from_parts(year, month, day)
 
 Converts the passed in `year`, `month` and `day`
 
@@ -604,7 +604,7 @@ Converts the passed in `year`, `month` and `day`
 
 <a name="function:default"></a>
 
-### default(test, default)
+## default(test, default)
 
 Takes two arguments, returning `test` if not an error or nil or empty text, otherwise returning `default`
 
@@ -620,7 +620,7 @@ Takes two arguments, returning `test` if not an error or nil or empty text, othe
 
 <a name="function:field"></a>
 
-### field(text, offset, delimiter)
+## field(text, offset, delimiter)
 
 Splits `text` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
 with a space, the delimiter is considered to be all whitespace.  (first field is 0)
@@ -637,7 +637,7 @@ with a space, the delimiter is considered to be all whitespace.  (first field is
 
 <a name="function:format_date"></a>
 
-### format_date(date, [,format])
+## format_date(date, [,format])
 
 Turns `date` into text according to the `format` specified.
 
@@ -663,7 +663,7 @@ The format string can consist of the following characters. The characters
 
 <a name="function:format_datetime"></a>
 
-### format_datetime(date [,format [,timezone]])
+## format_datetime(date [,format [,timezone]])
 
 Turns `date` into text according to the `format` specified and in
 the optional `timezone`.
@@ -709,7 +709,7 @@ environment will be used. An error will be returned if the timezone is not recog
 
 <a name="function:format_location"></a>
 
-### format_location(location)
+## format_location(location)
 
 Formats the given location as its name
 
@@ -721,7 +721,7 @@ Formats the given location as its name
 
 <a name="function:format_number"></a>
 
-### format_number(num, places, commas)
+## format_number(num, places, commas)
 
 Returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
 
@@ -736,7 +736,7 @@ Returns `num` formatted with the passed in number of decimal `places` and option
 
 <a name="function:format_urn"></a>
 
-### format_urn(urn)
+## format_urn(urn)
 
 Turns `urn` into human friendly text
 
@@ -754,7 +754,7 @@ Turns `urn` into human friendly text
 
 <a name="function:from_epoch"></a>
 
-### from_epoch(num)
+## from_epoch(num)
 
 Returns a new date created from `num` which represents number of nanoseconds since January 1st, 1970 GMT
 
@@ -765,7 +765,7 @@ Returns a new date created from `num` which represents number of nanoseconds sin
 
 <a name="function:if"></a>
 
-### if(test, true_value, false_value)
+## if(test, true_value, false_value)
 
 Evaluates the `test` argument, and if truthy returns `true_value`, if not returning `false_value`
 
@@ -779,7 +779,7 @@ If the first argument is an error that error is returned
 
 <a name="function:join"></a>
 
-### join(array, delimiter)
+## join(array, delimiter)
 
 Joins the passed in `array` of strings with the passed in `delimiter`
 
@@ -791,7 +791,7 @@ Joins the passed in `array` of strings with the passed in `delimiter`
 
 <a name="function:json"></a>
 
-### json(value)
+## json(value)
 
 Tries to return a JSON representation of `value`. An error is returned if there is
 no JSON representation of that object.
@@ -805,7 +805,7 @@ no JSON representation of that object.
 
 <a name="function:left"></a>
 
-### left(text, count)
+## left(text, count)
 
 Returns the `count` most left characters of the passed in `text`
 
@@ -819,7 +819,7 @@ Returns the `count` most left characters of the passed in `text`
 
 <a name="function:length"></a>
 
-### length(value)
+## length(value)
 
 Returns the length of the passed in text or array.
 
@@ -836,7 +836,7 @@ length will return an error if it is passed an item which doesn't have length.
 
 <a name="function:lower"></a>
 
-### lower(text)
+## lower(text)
 
 Lowercases the passed in `text`
 
@@ -850,7 +850,7 @@ Lowercases the passed in `text`
 
 <a name="function:max"></a>
 
-### max(values...)
+## max(values...)
 
 Takes a list of `values` and returns the greatest of them
 
@@ -863,7 +863,7 @@ Takes a list of `values` and returns the greatest of them
 
 <a name="function:mean"></a>
 
-### mean(values)
+## mean(values)
 
 Takes a list of `values` and returns the arithmetic mean of them
 
@@ -876,7 +876,7 @@ Takes a list of `values` and returns the arithmetic mean of them
 
 <a name="function:min"></a>
 
-### min(values)
+## min(values)
 
 Takes a list of `values` and returns the smallest of them
 
@@ -889,7 +889,7 @@ Takes a list of `values` and returns the smallest of them
 
 <a name="function:mod"></a>
 
-### mod(dividend, divisor)
+## mod(dividend, divisor)
 
 Returns the remainder of the division of `divident` by `divisor`
 
@@ -902,7 +902,7 @@ Returns the remainder of the division of `divident` by `divisor`
 
 <a name="function:now"></a>
 
-### now()
+## now()
 
 Returns the current date and time in the environment timezone
 
@@ -913,7 +913,7 @@ Returns the current date and time in the environment timezone
 
 <a name="function:number"></a>
 
-### number(value)
+## number(value)
 
 Tries to convert `value` to a number. An error is returned if the value can't be converted.
 
@@ -926,7 +926,7 @@ Tries to convert `value` to a number. An error is returned if the value can't be
 
 <a name="function:or"></a>
 
-### or(tests...)
+## or(tests...)
 
 Returns whether if any of the passed in arguments are truthy
 
@@ -938,7 +938,7 @@ Returns whether if any of the passed in arguments are truthy
 
 <a name="function:parse_datetime"></a>
 
-### parse_datetime(text, format [,timezone])
+## parse_datetime(text, format [,timezone])
 
 Turns `text` into a date according to the `format` and optional `timezone` specified
 
@@ -986,7 +986,7 @@ parse_datetime will return an error if it is unable to convert the text to a dat
 
 <a name="function:parse_json"></a>
 
-### parse_json(text)
+## parse_json(text)
 
 Tries to parse `text` as JSON, returning a fragment you can index into
 
@@ -1000,7 +1000,7 @@ If the passed in value is not JSON, then an error is returned
 
 <a name="function:percent"></a>
 
-### percent(num)
+## percent(num)
 
 Converts `num` to text represented as a percentage
 
@@ -1013,7 +1013,7 @@ Converts `num` to text represented as a percentage
 
 <a name="function:rand"></a>
 
-### rand()
+## rand()
 
 Returns a single random number between [0.0-1.0).
 
@@ -1025,7 +1025,7 @@ Returns a single random number between [0.0-1.0).
 
 <a name="function:rand_between"></a>
 
-### rand_between()
+## rand_between()
 
 A single random integer in the given inclusive range.
 
@@ -1037,7 +1037,7 @@ A single random integer in the given inclusive range.
 
 <a name="function:read_chars"></a>
 
-### read_chars(text)
+## read_chars(text)
 
 Converts `text` into something that can be read by IVR systems
 
@@ -1053,7 +1053,7 @@ splitting in 3s or 4s if appropriate.
 
 <a name="function:remove_first_word"></a>
 
-### remove_first_word(text)
+## remove_first_word(text)
 
 Removes the 1st word of `text`
 
@@ -1064,7 +1064,7 @@ Removes the 1st word of `text`
 
 <a name="function:repeat"></a>
 
-### repeat(text, count)
+## repeat(text, count)
 
 Return `text` repeated `count` number of times
 
@@ -1076,7 +1076,7 @@ Return `text` repeated `count` number of times
 
 <a name="function:replace"></a>
 
-### replace(text, needle, replacement)
+## replace(text, needle, replacement)
 
 Replaces all occurrences of `needle` with `replacement` in `text`
 
@@ -1088,7 +1088,7 @@ Replaces all occurrences of `needle` with `replacement` in `text`
 
 <a name="function:right"></a>
 
-### right(text, count)
+## right(text, count)
 
 Returns the `count` most right characters of the passed in `text`
 
@@ -1102,7 +1102,7 @@ Returns the `count` most right characters of the passed in `text`
 
 <a name="function:round"></a>
 
-### round(num [,places])
+## round(num [,places])
 
 Rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
 
@@ -1121,7 +1121,7 @@ If places < 0, it will round the integer part to the nearest 10^(-places).
 
 <a name="function:round_down"></a>
 
-### round_down(num [,places])
+## round_down(num [,places])
 
 Rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 
@@ -1137,7 +1137,7 @@ Rounds `num` down to the nearest integer value. You can optionally pass in the n
 
 <a name="function:round_up"></a>
 
-### round_up(num [,places])
+## round_up(num [,places])
 
 Rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
 
@@ -1153,7 +1153,7 @@ Rounds `num` up to the nearest integer value. You can optionally pass in the num
 
 <a name="function:split"></a>
 
-### split(text, delimiters)
+## split(text, delimiters)
 
 Splits `text` based on the characters in `delimiters`
 
@@ -1170,7 +1170,7 @@ Empty values are removed from the returned list
 
 <a name="function:text"></a>
 
-### text(value)
+## text(value)
 
 Tries to convert `value` to text. An error is returned if the value can't be converted.
 
@@ -1183,7 +1183,7 @@ Tries to convert `value` to text. An error is returned if the value can't be con
 
 <a name="function:text_compare"></a>
 
-### text_compare(text1, text2)
+## text_compare(text1, text2)
 
 Returns the comparison between the strings `text1` and `text2`.
 The return value will be -1 if str1 is smaller than str2, 0 if they
@@ -1198,7 +1198,7 @@ are equal and 1 if str1 is greater than str2
 
 <a name="function:title"></a>
 
-### title(text)
+## title(text)
 
 Titlecases the passed in `text`, capitalizing each word
 
@@ -1211,7 +1211,7 @@ Titlecases the passed in `text`, capitalizing each word
 
 <a name="function:to_epoch"></a>
 
-### to_epoch(date)
+## to_epoch(date)
 
 Converts `date` to the number of nanoseconds since January 1st, 1970 GMT
 
@@ -1222,7 +1222,7 @@ Converts `date` to the number of nanoseconds since January 1st, 1970 GMT
 
 <a name="function:today"></a>
 
-### today()
+## today()
 
 Returns the current date in the current timezone, time is set to midnight in the environment timezone
 
@@ -1233,7 +1233,7 @@ Returns the current date in the current timezone, time is set to midnight in the
 
 <a name="function:tz"></a>
 
-### tz(date)
+## tz(date)
 
 Returns the timezone for `date``
 
@@ -1250,7 +1250,7 @@ timezone will be returned
 
 <a name="function:tz_offset"></a>
 
-### tz_offset(date)
+## tz_offset(date)
 
 Returns the offset for the timezone as text +/- HHMM for `date`
 
@@ -1267,7 +1267,7 @@ timezone offset will be returned
 
 <a name="function:upper"></a>
 
-### upper(text)
+## upper(text)
 
 Uppercases all characters in the passed `text`
 
@@ -1279,7 +1279,7 @@ Uppercases all characters in the passed `text`
 
 <a name="function:url_encode"></a>
 
-### url_encode(text)
+## url_encode(text)
 
 URL encodes `text` for use in a URL parameter
 
@@ -1291,7 +1291,7 @@ URL encodes `text` for use in a URL parameter
 
 <a name="function:weekday"></a>
 
-### weekday(date)
+## weekday(date)
 
 Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
@@ -1303,7 +1303,7 @@ Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
 <a name="function:word"></a>
 
-### word(text, index [,delimiters])
+## word(text, index [,delimiters])
 
 Returns the word at the passed in `index` for the passed in `text`. There is an optional final
 parameter `delimiters` which is string of characters used to split the text into words.
@@ -1322,7 +1322,7 @@ parameter `delimiters` which is string of characters used to split the text into
 
 <a name="function:word_count"></a>
 
-### word_count(text [,delimiters])
+## word_count(text [,delimiters])
 
 Returns the number of words in `text`. There is an optional final parameter `delimiters`
 which is string of characters used to split the text into words.
@@ -1339,7 +1339,7 @@ which is string of characters used to split the text into words.
 
 <a name="function:word_slice"></a>
 
-### word_slice(text, start, end [,delimiters])
+## word_slice(text, start, end [,delimiters])
 
 Extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
 end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
@@ -1360,7 +1360,7 @@ which is string of characters used to split the text into words.
 
 </div>
 
-## Router Tests
+# Router Tests
 
 Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but 
 all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using
@@ -1370,7 +1370,7 @@ function is used.
 <div class="tests">
 <a name="test:has_all_words"></a>
 
-### has_all_words(text, words)
+## has_all_words(text, words)
 
 Tests whether all the `words` are contained in `text`
 
@@ -1385,7 +1385,7 @@ The words can be in any order and may appear more than once.
 
 <a name="test:has_any_word"></a>
 
-### has_any_word(text, words)
+## has_any_word(text, words)
 
 Tests whether any of the `words` are contained in the `text`
 
@@ -1400,7 +1400,7 @@ Only one of the words needs to match and it may appear more than once.
 
 <a name="test:has_beginning"></a>
 
-### has_beginning(text, beginning)
+## has_beginning(text, beginning)
 
 Tests whether `text` starts with `beginning`
 
@@ -1417,7 +1417,7 @@ without any tokenization.
 
 <a name="test:has_date"></a>
 
-### has_date(text)
+## has_date(text)
 
 Tests whether `text` contains a date formatted according to our environment
 
@@ -1430,7 +1430,7 @@ Tests whether `text` contains a date formatted according to our environment
 
 <a name="test:has_date_eq"></a>
 
-### has_date_eq(text, date)
+## has_date_eq(text, date)
 
 Tests whether `text` a date equal to `date`
 
@@ -1445,7 +1445,7 @@ Tests whether `text` a date equal to `date`
 
 <a name="test:has_date_gt"></a>
 
-### has_date_gt(text, min)
+## has_date_gt(text, min)
 
 Tests whether `text` a date after the date `min`
 
@@ -1460,7 +1460,7 @@ Tests whether `text` a date after the date `min`
 
 <a name="test:has_date_lt"></a>
 
-### has_date_lt(text, max)
+## has_date_lt(text, max)
 
 Tests whether `text` contains a date before the date `max`
 
@@ -1474,7 +1474,7 @@ Tests whether `text` contains a date before the date `max`
 
 <a name="test:has_district"></a>
 
-### has_district(text, state)
+## has_district(text, state)
 
 Tests whether a district name is contained in the `text`. If `state` is also provided
 then the returned district must be within that state.
@@ -1490,7 +1490,7 @@ then the returned district must be within that state.
 
 <a name="test:has_email"></a>
 
-### has_email(text)
+## has_email(text)
 
 Tests whether an email is contained in `text`
 
@@ -1504,7 +1504,7 @@ Tests whether an email is contained in `text`
 
 <a name="test:has_group"></a>
 
-### has_group(contact, group_uuid)
+## has_group(contact, group_uuid)
 
 Returns whether the `contact` is part of group with the passed in UUID
 
@@ -1517,7 +1517,7 @@ Returns whether the `contact` is part of group with the passed in UUID
 
 <a name="test:has_number"></a>
 
-### has_number(text)
+## has_number(text)
 
 Tests whether `text` contains a number
 
@@ -1530,7 +1530,7 @@ Tests whether `text` contains a number
 
 <a name="test:has_number_between"></a>
 
-### has_number_between(text, min, max)
+## has_number_between(text, min, max)
 
 Tests whether `text` contains a number between `min` and `max` inclusive
 
@@ -1545,7 +1545,7 @@ Tests whether `text` contains a number between `min` and `max` inclusive
 
 <a name="test:has_number_eq"></a>
 
-### has_number_eq(text, value)
+## has_number_eq(text, value)
 
 Tests whether `text` contains a number equal to the `value`
 
@@ -1560,7 +1560,7 @@ Tests whether `text` contains a number equal to the `value`
 
 <a name="test:has_number_gt"></a>
 
-### has_number_gt(text, min)
+## has_number_gt(text, min)
 
 Tests whether `text` contains a number greater than `min`
 
@@ -1575,7 +1575,7 @@ Tests whether `text` contains a number greater than `min`
 
 <a name="test:has_number_gte"></a>
 
-### has_number_gte(text, min)
+## has_number_gte(text, min)
 
 Tests whether `text` contains a number greater than or equal to `min`
 
@@ -1590,7 +1590,7 @@ Tests whether `text` contains a number greater than or equal to `min`
 
 <a name="test:has_number_lt"></a>
 
-### has_number_lt(text, max)
+## has_number_lt(text, max)
 
 Tests whether `text` contains a number less than `max`
 
@@ -1605,7 +1605,7 @@ Tests whether `text` contains a number less than `max`
 
 <a name="test:has_number_lte"></a>
 
-### has_number_lte(text, max)
+## has_number_lte(text, max)
 
 Tests whether `text` contains a number less than or equal to `max`
 
@@ -1620,7 +1620,7 @@ Tests whether `text` contains a number less than or equal to `max`
 
 <a name="test:has_only_phrase"></a>
 
-### has_only_phrase(text, phrase)
+## has_only_phrase(text, phrase)
 
 Tests whether the `text` contains only `phrase`
 
@@ -1638,7 +1638,7 @@ The phrase must be the only text in the text to match
 
 <a name="test:has_pattern"></a>
 
-### has_pattern(text, pattern)
+## has_pattern(text, pattern)
 
 Tests whether `text` matches the regex `pattern`
 
@@ -1655,7 +1655,7 @@ Both text values are trimmed of surrounding whitespace and matching is case-inse
 
 <a name="test:has_phone"></a>
 
-### has_phone(text, country_code)
+## has_phone(text, country_code)
 
 Tests whether a phone number (in the passed in `country_code`) is contained in the `text`
 
@@ -1668,7 +1668,7 @@ Tests whether a phone number (in the passed in `country_code`) is contained in t
 
 <a name="test:has_phrase"></a>
 
-### has_phrase(text, phrase)
+## has_phrase(text, phrase)
 
 Tests whether `phrase` is contained in `text`
 
@@ -1685,7 +1685,7 @@ in between.
 
 <a name="test:has_state"></a>
 
-### has_state(text)
+## has_state(text)
 
 Tests whether a state name is contained in the `text`
 
@@ -1700,7 +1700,7 @@ Tests whether a state name is contained in the `text`
 
 <a name="test:has_text"></a>
 
-### has_text(text)
+## has_text(text)
 
 Tests whether there the text has any characters in it
 
@@ -1715,7 +1715,7 @@ Tests whether there the text has any characters in it
 
 <a name="test:has_value"></a>
 
-### has_value(value)
+## has_value(value)
 
 Returns whether `value` is non-nil and not an error
 
@@ -1734,7 +1734,7 @@ value.
 
 <a name="test:has_wait_timed_out"></a>
 
-### has_wait_timed_out(run)
+## has_wait_timed_out(run)
 
 Returns whether the last wait timed out.
 
@@ -1745,7 +1745,7 @@ Returns whether the last wait timed out.
 
 <a name="test:has_ward"></a>
 
-### has_ward(text, district, state)
+## has_ward(text, district, state)
 
 Tests whether a ward name is contained in the `text`
 
@@ -1763,7 +1763,7 @@ Tests whether a ward name is contained in the `text`
 
 <a name="test:has_webhook_status"></a>
 
-### has_webhook_status(webhook, status)
+## has_webhook_status(webhook, status)
 
 Tests whether the passed in `webhook` call has the passed in `status`. If there is no
 webhook set, then "success" will still match.
@@ -1779,7 +1779,7 @@ webhook set, then "success" will still match.
 
 <a name="test:is_error"></a>
 
-### is_error(value)
+## is_error(value)
 
 Returns whether `value` is an error
 
@@ -1797,7 +1797,7 @@ value.
 
 <a name="test:is_text_eq"></a>
 
-### is_text_eq(text1, text2)
+## is_text_eq(text1, text2)
 
 Returns whether two text values are equal (case sensitive). In the case that they
 are, it will return the text as the match.
@@ -1816,7 +1816,7 @@ are, it will return the text as the match.
 
 </div>
 
-## Action Definitions
+# Actions
 
 Actions on a node generate events which can then be ingested by the engine container. In some cases the actions cause an immediate action, such 
 as calling a webhook, in others the engine container is responsible for taking the action based on the event that is output, such as sending 
@@ -1827,12 +1827,12 @@ representation of a contact's state based on action performed on a flow so that 
 <div class="actions">
 <a name="action:add_contact_groups"></a>
 
-### add_contact_groups
+## add_contact_groups
 
 Can be used to add a contact to one or more groups. An `contact_groups_added` event will be created
 for the groups which the contact has been added to.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "add_contact_groups",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -1844,7 +1844,7 @@ for the groups which the contact has been added to.
     ]
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -1860,13 +1860,13 @@ for the groups which the contact has been added to.
 </div>
 <a name="action:add_contact_urn"></a>
 
-### add_contact_urn
+## add_contact_urn
 
 Can be used to add a URN to the current contact. An `contact_urn_added` event
 will be created when this action is encountered. If there is no contact then this
 action will be ignored.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "add_contact_urn",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -1874,7 +1874,7 @@ action will be ignored.
     "path": "@run.results.phone_number"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_urn_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -1885,13 +1885,13 @@ action will be ignored.
 </div>
 <a name="action:add_input_labels"></a>
 
-### add_input_labels
+## add_input_labels
 
 Can be used to add labels to the last user input on a flow. An `input_labels_added` event
 will be created with the labels added when this action is encountered. If there is
 no user input at that point then this action will be ignored.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "add_input_labels",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -1903,7 +1903,7 @@ no user input at that point then this action will be ignored.
     ]
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "input_labels_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -1920,21 +1920,21 @@ no user input at that point then this action will be ignored.
 </div>
 <a name="action:call_resthook"></a>
 
-### call_resthook
+## call_resthook
 
 Can be used to call a resthook.
 
 A `resthook_subscriber_called` event will be created based on the results of the HTTP call
 to each subscriber of the resthook.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "call_resthook",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "resthook": "new-registration"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "resthook_called",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -1954,14 +1954,14 @@ to each subscriber of the resthook.
 </div>
 <a name="action:call_webhook"></a>
 
-### call_webhook
+## call_webhook
 
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime.
 
 A `webhook_called` event will be created based on the results of the HTTP call.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "call_webhook",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -1972,7 +1972,7 @@ A `webhook_called` event will be created based on the results of the HTTP call.
     }
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "webhook_called",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -1987,13 +1987,13 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 </div>
 <a name="action:remove_contact_groups"></a>
 
-### remove_contact_groups
+## remove_contact_groups
 
 Can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 the contact from all non-dynamic groups.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "remove_contact_groups",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2006,7 +2006,7 @@ the contact from all non-dynamic groups.
     "all_groups": false
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_removed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2022,7 +2022,7 @@ the contact from all non-dynamic groups.
 </div>
 <a name="action:send_broadcast"></a>
 
-### send_broadcast
+## send_broadcast
 
 Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 and a list of contacts.
@@ -2030,7 +2030,7 @@ and a list of contacts.
 The URNs and text fields may be templates. A `send_broadcast` event will be created for each unique urn, contact and group
 with the evaluated text.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "send_broadcast",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2041,7 +2041,7 @@ with the evaluated text.
     ]
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2060,14 +2060,14 @@ with the evaluated text.
 </div>
 <a name="action:send_email"></a>
 
-### send_email
+## send_email
 
 Can be used to send an email to one or more recipients. The subject, body and addresses
 can all contain expressions.
 
 An `email_created` event will be created for each email address.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "send_email",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2078,7 +2078,7 @@ An `email_created` event will be created for each email address.
     "body": "Your activation token is @contact.fields.activation_token"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2093,13 +2093,13 @@ An `email_created` event will be created for each email address.
 </div>
 <a name="action:send_msg"></a>
 
-### send_msg
+## send_msg
 
 Can be used to reply to the current contact in a flow. The text field may contain templates.
 
 A `broadcast_created` event will be created with the evaluated text.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "send_msg",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2107,7 +2107,7 @@ A `broadcast_created` event will be created with the evaluated text.
     "attachments": []
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2126,13 +2126,13 @@ A `broadcast_created` event will be created with the evaluated text.
 </div>
 <a name="action:set_contact_channel"></a>
 
-### set_contact_channel
+## set_contact_channel
 
 Can be used to update the preferred channel of the current contact.
 
 A `contact_channel_changed` event will be created with the set channel.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "set_contact_channel",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2142,7 +2142,7 @@ A `contact_channel_changed` event will be created with the set channel.
     }
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_channel_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2156,13 +2156,13 @@ A `contact_channel_changed` event will be created with the set channel.
 </div>
 <a name="action:set_contact_field"></a>
 
-### set_contact_field
+## set_contact_field
 
 Can be used to update a field value on the contact. The value is a localizable
 template and white space is trimmed from the final value. An empty string clears the value.
 A `contact_field_changed` event will be created with the corresponding value.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "set_contact_field",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2173,7 +2173,7 @@ A `contact_field_changed` event will be created with the corresponding value.
     "value": "Male"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2188,20 +2188,20 @@ A `contact_field_changed` event will be created with the corresponding value.
 </div>
 <a name="action:set_contact_language"></a>
 
-### set_contact_language
+## set_contact_language
 
 Can be used to update the name of the contact. The language is a localizable
 template and white space is trimmed from the final value. An empty string clears the language.
 A `contact_language_changed` event will be created with the corresponding value.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "set_contact_language",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "language": "eng"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_language_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2212,20 +2212,20 @@ A `contact_language_changed` event will be created with the corresponding value.
 </div>
 <a name="action:set_contact_name"></a>
 
-### set_contact_name
+## set_contact_name
 
 Can be used to update the name of the contact. The name is a localizable
 template and white space is trimmed from the final value. An empty string clears the name.
 A `contact_name_changed` event will be created with the corresponding value.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "set_contact_name",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "name": "Bob Smith"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2236,20 +2236,20 @@ A `contact_name_changed` event will be created with the corresponding value.
 </div>
 <a name="action:set_contact_timezone"></a>
 
-### set_contact_timezone
+## set_contact_timezone
 
 Can be used to update the timezone of the contact. The timezone is a localizable
 template and white space is trimmed from the final value. An empty string clears the timezone.
 A `contact_timezone_changed` event will be created with the corresponding value.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "set_contact_timezone",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
     "timezone": "Africa/Kigali"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2260,7 +2260,7 @@ A `contact_timezone_changed` event will be created with the corresponding value.
 </div>
 <a name="action:set_run_result"></a>
 
-### set_run_result
+## set_run_result
 
 Can be used to save a result for a flow. The result will be available in the context
 for the run as @run.results.[name]. The optional category can be used as a way of categorizing results,
@@ -2269,7 +2269,7 @@ this can be useful for reporting or analytics.
 Both the value and category fields may be templates. A `run_result_changed` event will be created with the
 final values.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "set_run_result",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2278,7 +2278,7 @@ final values.
     "category": "Male"
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2292,13 +2292,13 @@ final values.
 </div>
 <a name="action:start_flow"></a>
 
-### start_flow
+## start_flow
 
 Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 
 A `flow_entered` event will be created when the flow is started, a `flow_exited` event will be created upon the subflows exit.
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "start_flow",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2308,7 +2308,7 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
     }
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "flow_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2323,11 +2323,11 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 </div>
 <a name="action:start_session"></a>
 
-### start_session
+## start_session
 
 Can be used to trigger sessions for other contacts and groups
 
-<div class="input_action"><h4>Action</h4>```json
+<div class="input_action"><h3>Action</h3>```json
 {
     "type": "start_session",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -2343,7 +2343,7 @@ Can be used to trigger sessions for other contacts and groups
     }
 }
 ```
-</div><div class="output_event"><h4>Event</h4>```json
+</div><div class="output_event"><h3>Event</h3>```json
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
@@ -2425,5 +2425,3 @@ Can be used to trigger sessions for other contacts and groups
 </div>
 
 </div>
-
-

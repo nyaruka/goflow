@@ -1,4 +1,4 @@
-## Event Definitions
+# Events
 
 Events are the output of a flow run and represent instructions to the engine container on what actions should be taken due to the flow execution.
 All templates in events have been evaluated and can be used to create concrete messages, contact updates, emails etc by the container.
@@ -6,11 +6,11 @@ All templates in events have been evaluated and can be used to create concrete m
 <div class="events">
 <a name="event:broadcast_created"></a>
 
-### broadcast_created
+## broadcast_created
 
 Events are created for outgoing broadcasts.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "broadcast_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -45,11 +45,11 @@ Events are created for outgoing broadcasts.
 </div>
 <a name="event:contact_changed"></a>
 
-### contact_changed
+## contact_changed
 
 Events are created to set a contact on a session
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -65,11 +65,11 @@ Events are created to set a contact on a session
 </div>
 <a name="event:contact_channel_changed"></a>
 
-### contact_channel_changed
+## contact_channel_changed
 
 Events are created when a contact's preferred channel is changed.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_channel_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -82,11 +82,11 @@ Events are created when a contact's preferred channel is changed.
 </div>
 <a name="event:contact_field_changed"></a>
 
-### contact_field_changed
+## contact_field_changed
 
 Events are created when a contact field is updated.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_field_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -100,11 +100,11 @@ Events are created when a contact field is updated.
 </div>
 <a name="event:contact_groups_added"></a>
 
-### contact_groups_added
+## contact_groups_added
 
 Events will be created with the groups a contact was added to.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_added",
     "created_on": "2006-01-02T15:04:05Z",
@@ -119,12 +119,12 @@ Events will be created with the groups a contact was added to.
 </div>
 <a name="event:contact_groups_removed"></a>
 
-### contact_groups_removed
+## contact_groups_removed
 
 Events are created when a contact has been removed from one or more
 groups.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_groups_removed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -139,11 +139,11 @@ groups.
 </div>
 <a name="event:contact_language_changed"></a>
 
-### contact_language_changed
+## contact_language_changed
 
 Events are created when a Language of a contact has been changed
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_language_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -153,11 +153,11 @@ Events are created when a Language of a contact has been changed
 </div>
 <a name="event:contact_name_changed"></a>
 
-### contact_name_changed
+## contact_name_changed
 
 Events are created when a name of a contact has been changed
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_name_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -167,11 +167,11 @@ Events are created when a name of a contact has been changed
 </div>
 <a name="event:contact_timezone_changed"></a>
 
-### contact_timezone_changed
+## contact_timezone_changed
 
 Events are created when a timezone of a contact has been changed
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_timezone_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -181,11 +181,11 @@ Events are created when a timezone of a contact has been changed
 </div>
 <a name="event:contact_urn_added"></a>
 
-### contact_urn_added
+## contact_urn_added
 
 Events will be created with the URN that should be added to the current contact.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "contact_urn_added",
     "created_on": "2006-01-02T15:04:05Z",
@@ -195,11 +195,11 @@ Events will be created with the URN that should be added to the current contact.
 </div>
 <a name="event:email_created"></a>
 
-### email_created
+## email_created
 
 Events are created for each recipient which should receive an email.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "email_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -213,11 +213,11 @@ Events are created for each recipient which should receive an email.
 </div>
 <a name="event:environment_changed"></a>
 
-### environment_changed
+## environment_changed
 
 Events are created to set the environment on a session
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "environment_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -235,12 +235,12 @@ Events are created to set the environment on a session
 </div>
 <a name="event:error"></a>
 
-### error
+## error
 
 Events will be created whenever an error is encountered during flow execution. This
 can vary from template evaluation errors to invalid actions.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "error",
     "created_on": "2006-01-02T15:04:05Z",
@@ -251,11 +251,11 @@ can vary from template evaluation errors to invalid actions.
 </div>
 <a name="event:flow_triggered"></a>
 
-### flow_triggered
+## flow_triggered
 
 Events are created when an action wants to start a subflow
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "flow_triggered",
     "created_on": "2006-01-02T15:04:05Z",
@@ -269,11 +269,11 @@ Events are created when an action wants to start a subflow
 </div>
 <a name="event:input_labels_added"></a>
 
-### input_labels_added
+## input_labels_added
 
 Events will be created with the labels that were applied to the given input.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "input_labels_added",
     "created_on": "2006-01-02T15:04:05Z",
@@ -289,11 +289,11 @@ Events will be created with the labels that were applied to the given input.
 </div>
 <a name="event:msg_created"></a>
 
-### msg_created
+## msg_created
 
 Events are used for replies to the session contact.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_created",
     "created_on": "2006-01-02T15:04:05Z",
@@ -314,12 +314,12 @@ Events are used for replies to the session contact.
 </div>
 <a name="event:msg_received"></a>
 
-### msg_received
+## msg_received
 
 Events are used for starting flows or resuming flows which are waiting for a message.
 They represent an incoming message for a contact.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_received",
     "created_on": "2006-01-02T15:04:05Z",
@@ -340,13 +340,13 @@ They represent an incoming message for a contact.
 </div>
 <a name="event:msg_wait"></a>
 
-### msg_wait
+## msg_wait
 
 Events are created when a flow pauses waiting for a response from
 a contact. If a timeout is set, then the caller should resume the flow after
 the number of seconds in the timeout to resume it.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "msg_wait",
     "created_on": "2006-01-02T15:04:05Z"
@@ -355,12 +355,12 @@ the number of seconds in the timeout to resume it.
 </div>
 <a name="event:nothing_wait"></a>
 
-### nothing_wait
+## nothing_wait
 
 Events are created when a flow requests to hand back control to the caller but isn't
 waiting for anything from the caller.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "nothing_wait",
     "created_on": "2006-01-02T15:04:05.234532Z"
@@ -369,14 +369,14 @@ waiting for anything from the caller.
 </div>
 <a name="event:resthook_called"></a>
 
-### resthook_called
+## resthook_called
 
 Events are created when a resthook is called. The event contains the status and status code
 of each call to the resthook's subscribers, as well as the payload sent to each subscriber. Applying this event
 updates @run.webhook in the context to the results of the last subscriber call. However if one of the subscriber
 calls fails, then it is used to update @run.webhook instead.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "resthook_called",
     "created_on": "2006-01-02T15:04:05Z",
@@ -401,11 +401,11 @@ calls fails, then it is used to update @run.webhook instead.
 </div>
 <a name="event:run_expired"></a>
 
-### run_expired
+## run_expired
 
 Events are sent by the caller to notify the engine that a run has expired
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "run_expired",
     "created_on": "2006-01-02T15:04:05Z",
@@ -415,13 +415,13 @@ Events are sent by the caller to notify the engine that a run has expired
 </div>
 <a name="event:run_result_changed"></a>
 
-### run_result_changed
+## run_result_changed
 
 Events are created when a result is saved. They contain not only
 the name, value and category of the result, but also the UUID of the node where
 the result was generated.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "run_result_changed",
     "created_on": "2006-01-02T15:04:05Z",
@@ -436,11 +436,11 @@ the result was generated.
 </div>
 <a name="event:session_triggered"></a>
 
-### session_triggered
+## session_triggered
 
 Events are created when an action wants to start a subflow
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "session_triggered",
     "created_on": "2006-01-02T15:04:05Z",
@@ -484,12 +484,12 @@ Events are created when an action wants to start a subflow
 </div>
 <a name="event:wait_timed_out"></a>
 
-### wait_timed_out
+## wait_timed_out
 
 Events are sent by the caller when a wait has timed out - i.e. they are sent instead of
 the item that the wait was waiting for
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "wait_timed_out",
     "created_on": "2006-01-02T15:04:05Z"
@@ -498,13 +498,13 @@ the item that the wait was waiting for
 </div>
 <a name="event:webhook_called"></a>
 
-### webhook_called
+## webhook_called
 
 Events are created when a webhook is called. The event contains
 the status and status code of the response, as well as a full dump of the
 request and response. Applying this event updates @run.webhook in the context.
 
-<div class="output_event"><h4>Event</h4>```json
+<div class="output_event"><h3>Event</h3>```json
 {
     "type": "webhook_called",
     "created_on": "2006-01-02T15:04:05Z",
@@ -519,14 +519,14 @@ request and response. Applying this event updates @run.webhook in the context.
 
 </div>
 
-## Trigger Types
+# Triggers
 
 Triggers are the entities which can trigger a new session with the flow engine.
 
 <div class="triggers">
 <a name="trigger:campaign"></a>
 
-### campaign
+## campaign
 
 Is used when a session was triggered by a campaign event
 
@@ -560,7 +560,7 @@ Is used when a session was triggered by a campaign event
 
 <a name="trigger:flow_action"></a>
 
-### flow_action
+## flow_action
 
 Is used when another session triggered this run using a trigger_flow action.
 
@@ -603,7 +603,7 @@ Is used when another session triggered this run using a trigger_flow action.
 
 <a name="trigger:manual"></a>
 
-### manual
+## manual
 
 Is used when a session was triggered manually by a user
 
