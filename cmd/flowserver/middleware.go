@@ -6,15 +6,17 @@ import (
 	"net/http"
 	"runtime/debug"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/getsentry/raven-go"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
 	log "github.com/sirupsen/logrus"
 )
 
 func requestLogger(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
 		start := time.Now()
 
@@ -38,13 +40,12 @@ func requestLogger(next http.Handler) http.Handler {
 			"uri":               uri,
 			"user_agent":        r.UserAgent(),
 		}).Info("request completed")
-	}
-	return http.HandlerFunc(fn)
+	})
 }
 
 // recovers from panics, logs them to sentry and returns an HTTP 500 response
 func panicRecovery(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rvr := recover(); rvr != nil {
 				debug.PrintStack()
@@ -57,7 +58,21 @@ func panicRecovery(next http.Handler) http.Handler {
 		}()
 
 		next.ServeHTTP(w, r)
+	})
+}
+
+// generates a CORS middleware which allows requests from the allowed_origins config setting
+func corsAllowedOrigins(config *Config) func(http.Handler) http.Handler {
+	var origins []string
+	if config.AllowedOrigins != "" {
+		origins = strings.Split(config.AllowedOrigins, ",")
+	} else {
+		origins = []string{"*"}
 	}
 
-	return http.HandlerFunc(fn)
+	return cors.New(cors.Options{
+		AllowedOrigins: origins,
+		AllowedMethods: []string{"GET", "POST"},
+		MaxAge:         300, // maximum value not ignored by any of major browsers
+	}).Handler
 }

@@ -11,7 +11,6 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/go-chi/cors"
 	"github.com/rakyll/statik/fs"
 	log "github.com/sirupsen/logrus"
 )
@@ -34,14 +33,7 @@ func NewFlowServer(config *Config) *FlowServer {
 	r.Use(panicRecovery)
 	r.Use(requestLogger)
 	r.Use(middleware.Timeout(60 * time.Second))
-
-	// configure CORS
-	cors := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		MaxAge:         300, // Maximum value not ignored by any of major browsers
-	})
-	r.Use(cors.Handler)
+	r.Use(corsAllowedOrigins(config))
 
 	// no static dir passed in? serve from statik
 	var staticDir http.FileSystem
