@@ -29,7 +29,7 @@ func handleContextDoc(output *strings.Builder, item *documentedItem, session flo
 	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
 
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(fmt.Sprintf("### %s\n\n", strings.Title(item.tagValue)))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
@@ -64,7 +64,7 @@ func handleFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
 
 	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, name))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("### %s\n\n", item.tagValue))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
@@ -105,10 +105,10 @@ func handleEventDoc(output *strings.Builder, item *documentedItem, session flows
 	}
 
 	output.WriteString(fmt.Sprintf("<a name=\"event:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("### %s\n\n", item.tagValue))
 	output.WriteString(strings.Join(item.description, "\n"))
 
-	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString(`<div class="output_event"><h4>Event</h4>`)
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
 	output.WriteString("```\n")
@@ -152,16 +152,16 @@ func handleActionDoc(output *strings.Builder, item *documentedItem, session flow
 	}
 
 	output.WriteString(fmt.Sprintf("<a name=\"action:%s\"></a>\n\n", item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("### %s\n\n", item.tagValue))
 	output.WriteString(strings.Join(item.description, "\n"))
 
-	output.WriteString(`<div class="input_action"><h3>Action</h3>`)
+	output.WriteString(`<div class="input_action"><h4>Action</h4>`)
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
 	output.WriteString("```\n")
 	output.WriteString(`</div>`)
 
-	output.WriteString(`<div class="output_event"><h3>Event</h3>`)
+	output.WriteString(`<div class="output_event"><h4>Event</h4>`)
 	output.WriteString("```json\n")
 	output.WriteString(fmt.Sprintf("%s\n", events))
 	output.WriteString("```\n")
@@ -198,7 +198,7 @@ func handleTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 	}
 
 	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("### %s\n\n", item.tagValue))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```json\n")

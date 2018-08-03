@@ -1,0 +1,147 @@
+body {
+    margin: 0;
+    background-color: #fcfcfc;
+    font-family: "Roboto Slab", "ff-tisa-web-pro", "Georgia", Arial, sans-serif;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-print-color-adjust: exact;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Roboto Slab", "ff-tisa-web-pro", "Georgia", Arial, sans-serif;
+    margin: 20px 0 10px;
+    padding: 0;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+h3 {
+    font-size: 18px;
+    color: white;
+    border: 1px solid #444;
+    background-color: #555;
+    padding: 5px;
+}
+
+.context h3 {
+    background-color: rgb(153, 130, 30);
+    border: 1px solid rgb(107, 79, 17);
+}
+
+.functions h3 {
+    background-color: #2B823A;
+    border: 1px solid #10621E;
+}
+
+.tests h3 {
+    background-color: #8b257e;
+    border: 1px solid rgb(78, 14, 64);
+}
+
+.actions h3 {
+    background-color: #246068;
+    border: 1px solid #0E464E;
+}
+
+.events h3 {
+    background-color: #AA4139;
+    border: 1px solid #801D15;
+}
+
+h4 {
+    font-size: 16px;
+    margin: 10px 0px 0px 0px;
+    color: #333;
+}
+
+h5 {
+    font-size: 16px;
+    color: #333
+}
+
+h6 {
+    font-size: 14px;
+    color: #333
+}
+
+h7 {
+    color: #777;
+    font-size: 14px
+}
+
+.highlight pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
+code .dt {
+    color: #333;
+    font-weight: bold;
+}
+
+code .st {
+    color: #458;
+}
+
+.actions h2 {
+    color: #333;
+}
+
+.input_action {
+    position: relative;
+}
+
+.input_action h3 {
+    position: absolute;
+    right: 15px;
+    color: #888;
+}
+
+.output_event {
+    position: relative;
+}
+
+.output_event h3 {
+    position: absolute;
+    right: 15px;
+    color: #888;
+}
+
+p code,
+li code {
+    color: white;
+    background-color: #444;
+    border-radius: 3px;
+    padding: 0px 4px 1px 4px;
+}
+
+.excellent_functions ul {
+    padding-left: 15px;
+}
+
+.excellent_functions ul li {
+    list-style-type: none;
+}

@@ -1,4 +1,4 @@
-# Container
+## Container
 
 Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) can be defined as follows and includes only the UUID of the flow, its name and the authoring language for the flow:
 
@@ -11,7 +11,7 @@ Flow definitions are defined as a list of nodes, the first node being the entry 
 }
 ```
 
-# Nodes
+## Nodes
 
 Flow definitions are composed of zero or more Nodes, the first node is always the entry node.
 
@@ -58,9 +58,9 @@ An exit consists of:
 }
 ```
 
-# Routers
+## Routers
 
-## Switch
+### Switch
 
 If a node wishes to route differently based on some state, it can add a `switch` router which defines one or more `cases`. Each case defines a `type` which is the name 
 of an expression function that is run by passing the evaluation of `operand` as the first argument. Cases may define additional arguments using the `arguments` array on a case.
@@ -109,11 +109,11 @@ Each case consists of:
 }
 ```
 
-# Waits
+## Waits
 
 A node can indicate that it needs more information to continue by containing a wait.
 
-## Msg
+### Msg
 
 This wait type indicates that flow execution should pause until an incoming message is received and also gives an optional timeout in seconds as to when the flow 
 should continue even if there is no reply:
@@ -125,7 +125,7 @@ should continue even if there is no reply:
 }
 ```
 
-## Nothing
+### Nothing
 
 This wait type indicates that the caller can resume the session immediately with no incoming message or any other input. This type of
 wait enables the caller to commit changes in the session up to that point in the flow.
@@ -136,7 +136,7 @@ wait enables the caller to commit changes in the session up to that point in the
 }
 ```
 
-# Context
+## Context
 
 Flows do not describe data flow but rather actions and logic branching. As such, variables collected in a flow and the state of the flow are accessed through
 what is called the context. The context contains variables representing the current contact in a flow, the last input from that contact
@@ -170,7 +170,7 @@ The following types appear in the context:
 {{ .contextDocs }}
 </div>
 
-# Template Functions
+## Template Functions
 
 In addition to simple substitutions, flows also have access to a set of functions which can be used in templates to further manipulate the context.
 Functions are called using the `@(function_name(args..))` syntax. For example, to title case a contact's name in a message, you can use `@(title(contact.name))`. 
@@ -181,7 +181,7 @@ Context variables referred to within functions do not need a leading `@`. Functi
 {{ .functionDocs }}
 </div>
 
-# Router Tests
+## Router Tests
 
 Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but 
 all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using
@@ -192,7 +192,7 @@ function is used.
 {{ .testDocs }}
 </div>
 
-# Action Definitions
+## Action Definitions
 
 Actions on a node generate events which can then be ingested by the engine container. In some cases the actions cause an immediate action, such 
 as calling a webhook, in others the engine container is responsible for taking the action based on the event that is output, such as sending 
@@ -203,25 +203,5 @@ representation of a contact's state based on action performed on a flow so that 
 <div class="actions">
 {{ .actionDocs }}
 </div>
-
-# Event Definitions
-
-Events are the output of a flow run and represent instructions to the engine container on what actions should be taken due to the flow execution.
-All templates in events have been evaluated and can be used to create concrete messages, contact updates, emails etc by the container.
-
-<div class="events">
-{{ .eventDocs }}
-</div>
-
-# Trigger Types
-
-Triggers are the entities which can trigger a new session with the flow engine.
-
-<div class="triggers">
-{{ .triggerDocs }}
-</div>
-
-</body>
-</html>
 
 
