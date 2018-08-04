@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"go/doc"
 	"go/parser"
@@ -9,7 +8,6 @@ import (
 	"path"
 	"sort"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
@@ -23,12 +21,12 @@ var docSets = []struct {
 	tag        string
 	handler    handleFunc
 }{
-	{"contextDocs", []string{"flows"}, "@context", handleContextDoc},
-	{"functionDocs", []string{"excellent/functions"}, "@function", handleFunctionDoc},
-	{"testDocs", []string{"flows/routers/tests"}, "@test", handleFunctionDoc},
-	{"actionDocs", []string{"flows/actions"}, "@action", handleActionDoc},
-	{"eventDocs", []string{"flows/events"}, "@event", handleEventDoc},
-	{"triggerDocs", []string{"flows/triggers"}, "@trigger", handleTriggerDoc},
+	{"contextDocs", []string{"flows"}, "@context", renderContextDoc},
+	{"functionDocs", []string{"excellent/functions"}, "@function", renderFunctionDoc},
+	{"testDocs", []string{"flows/routers/tests"}, "@test", renderFunctionDoc},
+	{"actionDocs", []string{"flows/actions"}, "@action", renderActionDoc},
+	{"eventDocs", []string{"flows/events"}, "@event", renderEventDoc},
+	{"triggerDocs", []string{"flows/triggers"}, "@trigger", renderTriggerDoc},
 }
 
 type documentedItem struct {
@@ -41,13 +39,13 @@ type documentedItem struct {
 
 type handleFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
 
-// builds all documentation from the given base directory
-func buildDocs(baseDir string) (string, error) {
+// builds the documentation generation context from the given base directory
+func buildDocsContext(baseDir string) (map[string]string, error) {
 	fmt.Println("Generating docs...")
 
 	server, err := test.NewTestHTTPServer(49998)
 	if err != nil {
-		return "", fmt.Errorf("error starting mock HTTP server: %s", err)
+		return nil, fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
 	defer server.Close()
 
@@ -61,30 +59,18 @@ func buildDocs(baseDir string) (string, error) {
 
 	session, err := test.CreateTestSession(server.URL, nil)
 	if err != nil {
-		return "", fmt.Errorf("error creating example session: %s", err)
+		return nil, fmt.Errorf("error creating example session: %s", err)
 	}
 
 	context := make(map[string]string)
 
 	for _, ds := range docSets {
 		if context[ds.contextKey], err = buildDocSet(baseDir, ds.searchDirs, ds.tag, ds.handler, session); err != nil {
-			return "", err
+			return nil, err
 		}
 	}
 
-	// generate our complete docs
-	docTpl, err := template.ParseFiles(path.Join(baseDir, "cmd/docgen/templates/docs.md"))
-	if err != nil {
-		return "", fmt.Errorf("Error reading template file: %s", err)
-	}
-
-	output := bytes.Buffer{}
-	err = docTpl.Execute(&output, context)
-	if err != nil {
-		return "", fmt.Errorf("Error executing template: %s", err)
-	}
-
-	return output.String(), nil
+	return context, nil
 }
 
 func buildDocSet(baseDir string, searchDirs []string, tag string, handler handleFunc, session flows.Session) (string, error) {
@@ -100,7 +86,7 @@ func buildDocSet(baseDir string, searchDirs []string, tag string, handler handle
 	// sort documented items by their tag value
 	sort.SliceStable(items, func(i, j int) bool { return items[i].tagValue < items[j].tagValue })
 
-	fmt.Printf(" > found %d documented items with tag %s\n", len(items), tag)
+	fmt.Printf(" > Found %d documented items with tag %s\n", len(items), tag)
 
 	buffer := &strings.Builder{}
 

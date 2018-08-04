@@ -13,7 +13,7 @@ Flow definitions are defined as a list of nodes, the first node being the entry 
 
 # Nodes
 
-Flow definitions are composed of zero or more Nodes, the first node is always the entry node.
+Flow definitions are composed of zero or more nodes, the first node is always the entry node.
 
 A Node consists of:
 
@@ -192,7 +192,7 @@ function is used.
 {{ .testDocs }}
 </div>
 
-# Action Definitions
+# Actions
 
 Actions on a node generate events which can then be ingested by the engine container. In some cases the actions cause an immediate action, such 
 as calling a webhook, in others the engine container is responsible for taking the action based on the event that is output, such as sending 
@@ -203,25 +203,3 @@ representation of a contact's state based on action performed on a flow so that 
 <div class="actions">
 {{ .actionDocs }}
 </div>
-
-# Event Definitions
-
-Events are the output of a flow run and represent instructions to the engine container on what actions should be taken due to the flow execution.
-All templates in events have been evaluated and can be used to create concrete messages, contact updates, emails etc by the container.
-
-<div class="events">
-{{ .eventDocs }}
-</div>
-
-# Trigger Types
-
-Triggers are the entities which can trigger a new session with the flow engine.
-
-<div class="triggers">
-{{ .triggerDocs }}
-</div>
-
-</body>
-</html>
-
-

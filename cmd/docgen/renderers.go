@@ -14,7 +14,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-func handleContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return fmt.Errorf("no examples found for context item %s/%s", item.tagValue, item.typeName)
 	}
@@ -40,7 +40,7 @@ func handleContextDoc(output *strings.Builder, item *documentedItem, session flo
 	return nil
 }
 
-func handleFunctionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderFunctionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
 		return fmt.Errorf("no examples found for function %s", item.tagValue)
 	}
@@ -75,7 +75,7 @@ func handleFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 	return nil
 }
 
-func handleEventDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderEventDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
@@ -119,7 +119,7 @@ func handleEventDoc(output *strings.Builder, item *documentedItem, session flows
 	return nil
 }
 
-func handleActionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderActionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
@@ -171,7 +171,7 @@ func handleActionDoc(output *strings.Builder, item *documentedItem, session flow
 	return nil
 }
 
-func handleTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
