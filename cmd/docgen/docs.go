@@ -21,12 +21,12 @@ var docSets = []struct {
 	tag        string
 	handler    handleFunc
 }{
-	{"contextDocs", []string{"flows"}, "@context", handleContextDoc},
-	{"functionDocs", []string{"excellent/functions"}, "@function", handleFunctionDoc},
-	{"testDocs", []string{"flows/routers/tests"}, "@test", handleFunctionDoc},
-	{"actionDocs", []string{"flows/actions"}, "@action", handleActionDoc},
-	{"eventDocs", []string{"flows/events"}, "@event", handleEventDoc},
-	{"triggerDocs", []string{"flows/triggers"}, "@trigger", handleTriggerDoc},
+	{"contextDocs", []string{"flows"}, "@context", renderContextDoc},
+	{"functionDocs", []string{"excellent/functions"}, "@function", renderFunctionDoc},
+	{"testDocs", []string{"flows/routers/tests"}, "@test", renderFunctionDoc},
+	{"actionDocs", []string{"flows/actions"}, "@action", renderActionDoc},
+	{"eventDocs", []string{"flows/events"}, "@event", renderEventDoc},
+	{"triggerDocs", []string{"flows/triggers"}, "@trigger", renderTriggerDoc},
 }
 
 type documentedItem struct {

@@ -30,13 +30,14 @@ var templates = []struct {
 }
 
 func main() {
-	if err := generateDocs(".", outputDir); err != nil {
+	if err := GenerateDocs(".", outputDir); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 }
 
-func generateDocs(baseDir string, outputDir string) error {
+// GenerateDocs generates out HTML documentation
+func GenerateDocs(baseDir string, outputDir string) error {
 	context, err := buildDocsContext(baseDir)
 	if err != nil {
 		return fmt.Errorf("error building docs context: %s", err)

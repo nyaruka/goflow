@@ -6,7 +6,7 @@ import (
 	"path"
 	"testing"
 
-	//"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,7 +18,7 @@ func TestDocGeneration(t *testing.T) {
 	defer os.RemoveAll(outputDir)
 
 	// tests run from the same working directory as the test file, so two directories up is our goflow root
-	err = generateDocs("../../", outputDir)
+	err = GenerateDocs("../../", outputDir)
 	require.NoError(t, err)
 
 	// check each rendered template for changes
@@ -32,4 +32,9 @@ func TestDocGeneration(t *testing.T) {
 		// if the docs we just generated don't match the existing ones, someone needs to run docgen
 		require.Equal(t, string(existing), string(generated), "changes have been made that require re-running docgen (go install github.com/nyaruka/goflow/cmd/docgen; docgen)")
 	}
+}
+
+func TestRemoveTypeNamePrefix(t *testing.T) {
+	assert.Equal(t, "Is a contact\nHere's an example...", removeTypeNamePrefix("Contact is a contact\nHere's an example...", "Contact"))
+	assert.Equal(t, "Non-standard comment...", removeTypeNamePrefix("Non-standard comment...", "Contact"))
 }
