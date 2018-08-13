@@ -401,7 +401,7 @@ It has several properties which can be accessed in expressions:
  * `scheme` the scheme of the URN, e.g. "tel", "twitter"
  * `path` the path of the URN, e.g. "+16303524567"
  * `display` the display portion of the URN, e.g. "+16303524567"
- * `channel` the preferred [channel](flows.html#context:channel) of the URN
+ * `channel` the preferred [channel](#context:channel) of the URN
 
 To render a URN in a human friendly format, use the [format_urn](flows.html#function:format_urn) function.
 
@@ -1829,7 +1829,7 @@ representation of a contact's state based on action performed on a flow so that 
 
 ## add_contact_groups
 
-Can be used to add a contact to one or more groups. An [contact_groups_added](sessions.html#event:contact_groups_added) event will be created
+Can be used to add a contact to one or more groups. A [contact_groups_added](sessions.html#event:contact_groups_added) event will be created
 for the groups which the contact has been added to.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -1862,7 +1862,7 @@ for the groups which the contact has been added to.
 
 ## add_contact_urn
 
-Can be used to add a URN to the current contact. An [contact_urn_added](sessions.html#event:contact_urn_added) event
+Can be used to add a URN to the current contact. A [contact_urn_added](sessions.html#event:contact_urn_added) event
 will be created when this action is encountered. If there is no contact then this
 action will be ignored.
 
