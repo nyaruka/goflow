@@ -44,7 +44,7 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //  * `display` the display portion of the URN, e.g. "+16303524567"
 //  * `channel` the preferred [channel](#context:channel) of the URN
 //
-// To render a URN in a human friendly format, use the [format_urn](#function:format_urn) function.
+// To render a URN in a human friendly format, use the [function:format_urn] function.
 //
 // Examples:
 //

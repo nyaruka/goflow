@@ -136,62 +136,6 @@ wait enables the caller to commit changes in the session up to that point in the
 }
 ```
 
-# Context
-
-Flows do not describe data flow but rather actions and logic branching. As such, variables collected in a flow and the state of the flow are accessed through
-what is called the context. The context contains variables representing the current contact in a flow, the last input from that contact
-as well as the results collected in a flow and any webhook requests made during the flow. Variables in the context may be referred to 
-within actions by using the `@` symbol. For example, to greet a contact by their name in a [send_msg](#action:send_msg) action, the text of the action can be `Hi @contact.name!`.
-
-The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` would output `Hi @twitter`.
-
-The context contains the following top-level variables:
-
- * `contact` the [contact](#context:contact) of the current flow run
- * `run` the current [run](#context:run)
- * `parent` the parent of the current [run](#context:run), i.e. the run that started the current run
- * `child` the child of the current [run](#context:run), i.e. the last subflow
- * `trigger` the [trigger](#context:trigger) that initiated this session
-
-The following types appear in the context:
-
- * [Channel](#context:channel)
- * [Contact](#context:contact)
- * [Flow](#context:flow)
- * [Group](#context:group)
- * [Input](#context:input)
- * [Result](#context:result)
- * [Run](#context:run)
- * [Trigger](#context:trigger)
- * [URN](#context:urn)
- * [Webhook](#context:webhook)
-
-<div class="context">
-{{ .contextDocs }}
-</div>
-
-# Template Functions
-
-In addition to simple substitutions, flows also have access to a set of functions which can be used in templates to further manipulate the context.
-Functions are called using the `@(function_name(args..))` syntax. For example, to title case a contact's name in a message, you can use `@(title(contact.name))`. 
-Context variables referred to within functions do not need a leading `@`. Functions can also use literal numbers or strings as arguments, for example
-`@(length(split("1 2 3", " "))`.
-
-<div class="functions">
-{{ .functionDocs }}
-</div>
-
-# Router Tests
-
-Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but 
-all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using
-the `match` component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template
-function is used.
-
-<div class="tests">
-{{ .testDocs }}
-</div>
-
 # Actions
 
 Actions on a node generate events which can then be ingested by the engine container. In some cases the actions cause an immediate action, such 

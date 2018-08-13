@@ -12,7 +12,7 @@ func init() {
 // TypeAddInputLabels is the type for the add label action
 const TypeAddInputLabels string = "add_input_labels"
 
-// AddInputLabelsAction can be used to add labels to the last user input on a flow. An `input_labels_added` event
+// AddInputLabelsAction can be used to add labels to the last user input on a flow. An [event:input_labels_added] event
 // will be created with the labels added when this action is encountered. If there is
 // no user input at that point then this action will be ignored.
 //

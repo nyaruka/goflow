@@ -17,7 +17,7 @@ const TypeSetRunResult string = "set_run_result"
 // for the run as @run.results.[name]. The optional category can be used as a way of categorizing results,
 // this can be useful for reporting or analytics.
 //
-// Both the value and category fields may be templates. A `run_result_changed` event will be created with the
+// Both the value and category fields may be templates. A [event:run_result_changed] event will be created with the
 // final values.
 //
 //   {

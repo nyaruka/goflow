@@ -45,11 +45,8 @@ func renderFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 		return fmt.Errorf("no examples found for function %s", item.tagValue)
 	}
 
-	// get name of function from signature to use as our anchor
-	name := item.tagValue[0:strings.Index(item.tagValue, "(")]
-
 	// check the function name is a registered function
-	_, exists := functions.XFUNCTIONS[name]
+	_, exists := functions.XFUNCTIONS[item.tagValue]
 	if !exists {
 		return fmt.Errorf("docstring function tag %s isn't a registered function", item.tagValue)
 	}
@@ -63,8 +60,8 @@ func renderFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 
 	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
 
-	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, name))
-	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s%s\n\n", item.tagValue, item.tagExtra))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")

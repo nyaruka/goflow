@@ -6,6 +6,7 @@ import (
 	"go/parser"
 	"go/token"
 	"path"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -15,37 +16,40 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+var tagLineRegex = regexp.MustCompile(`@\w+\s+(?P<value>\w+)(?P<extra>.+)?`)
+
 var docSets = []struct {
 	contextKey string
 	searchDirs []string
 	tag        string
-	handler    handleFunc
+	handler    renderFunc
 }{
-	{"contextDocs", []string{"flows"}, "@context", renderContextDoc},
-	{"functionDocs", []string{"excellent/functions"}, "@function", renderFunctionDoc},
-	{"testDocs", []string{"flows/routers/tests"}, "@test", renderFunctionDoc},
-	{"actionDocs", []string{"flows/actions"}, "@action", renderActionDoc},
-	{"eventDocs", []string{"flows/events"}, "@event", renderEventDoc},
-	{"triggerDocs", []string{"flows/triggers"}, "@trigger", renderTriggerDoc},
+	{"contextDocs", []string{"flows"}, "context", renderContextDoc},
+	{"functionDocs", []string{"excellent/functions"}, "function", renderFunctionDoc},
+	{"testDocs", []string{"flows/routers/tests"}, "test", renderFunctionDoc},
+	{"actionDocs", []string{"flows/actions"}, "action", renderActionDoc},
+	{"eventDocs", []string{"flows/events"}, "event", renderEventDoc},
+	{"triggerDocs", []string{"flows/triggers"}, "trigger", renderTriggerDoc},
 }
 
 type documentedItem struct {
 	typeName    string   // actual go type name
 	tagName     string   // tag used to make this as a documented item
-	tagValue    string   // value after @tag
+	tagValue    string   // identifier value after @tag
+	tagExtra    string   // additional text after tag value
 	examples    []string // any indented line
 	description []string // any other line
 }
 
-type handleFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
+type renderFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
 
 // builds the documentation generation context from the given base directory
-func buildDocsContext(baseDir string) (map[string]string, error) {
+func buildDocsContext(baseDir string) (map[string]string, map[string]bool, error) {
 	fmt.Println("Generating docs...")
 
 	server, err := test.NewTestHTTPServer(49998)
 	if err != nil {
-		return nil, fmt.Errorf("error starting mock HTTP server: %s", err)
+		return nil, nil, fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
 	defer server.Close()
 
@@ -59,26 +63,31 @@ func buildDocsContext(baseDir string) (map[string]string, error) {
 
 	session, err := test.CreateTestSession(server.URL, nil)
 	if err != nil {
-		return nil, fmt.Errorf("error creating example session: %s", err)
+		return nil, nil, fmt.Errorf("error creating example session: %s", err)
 	}
 
-	context := make(map[string]string)
+	context := make(map[string]string, len(docSets))
+	linkTargets := make(map[string]bool)
 
 	for _, ds := range docSets {
-		if context[ds.contextKey], err = buildDocSet(baseDir, ds.searchDirs, ds.tag, ds.handler, session); err != nil {
-			return nil, err
+		var tagValues []string
+		if context[ds.contextKey], tagValues, err = buildDocSet(baseDir, ds.searchDirs, ds.tag, ds.handler, session); err != nil {
+			return nil, nil, err
+		}
+		for _, tagValue := range tagValues {
+			linkTargets[ds.tag+":"+tagValue] = true
 		}
 	}
 
-	return context, nil
+	return context, linkTargets, nil
 }
 
-func buildDocSet(baseDir string, searchDirs []string, tag string, handler handleFunc, session flows.Session) (string, error) {
+func buildDocSet(baseDir string, searchDirs []string, tag string, renderer renderFunc, session flows.Session) (string, []string, error) {
 	items := make([]*documentedItem, 0)
 	for _, searchDir := range searchDirs {
 		fromDir, err := findDocumentedItems(baseDir, searchDir, tag)
 		if err != nil {
-			return "", err
+			return "", nil, err
 		}
 		items = append(items, fromDir...)
 	}
@@ -89,14 +98,17 @@ func buildDocSet(baseDir string, searchDirs []string, tag string, handler handle
 	fmt.Printf(" > Found %d documented items with tag %s\n", len(items), tag)
 
 	buffer := &strings.Builder{}
+	tagValues := make([]string, len(items))
 
-	for _, item := range items {
-		if err := handler(buffer, item, session); err != nil {
-			return "", fmt.Errorf("error parsing %s:%s: %s", item.tagName, item.tagValue, err)
+	for i, item := range items {
+		tagValues[i] = item.tagValue
+
+		if err := renderer(buffer, item, session); err != nil {
+			return "", nil, fmt.Errorf("error rendering %s:%s: %s", item.tagName, item.tagValue, err)
 		}
 	}
 
-	return buffer.String(), nil
+	return buffer.String(), tagValues, nil
 }
 
 // finds all documented items in go files in the given directory
@@ -108,6 +120,8 @@ func findDocumentedItems(baseDir string, searchDir string, tag string) ([]*docum
 	if err != nil {
 		return nil, err
 	}
+
+	tag = "@" + tag
 
 	for _, f := range pkgs {
 		p := doc.New(f, "./", 0)
@@ -127,7 +141,7 @@ func findDocumentedItems(baseDir string, searchDir string, tag string) ([]*docum
 }
 
 func parseDocString(tag string, docString string, typeName string) *documentedItem {
-	var tagValue string
+	var tagValue, tagExtra string
 	examples := make([]string, 0)
 	description := make([]string, 0)
 
@@ -137,7 +151,9 @@ func parseDocString(tag string, docString string, typeName string) *documentedIt
 		trimmed := strings.TrimSpace(l)
 
 		if strings.HasPrefix(l, tag) {
-			tagValue = l[len(tag)+1:]
+			parts := tagLineRegex.FindStringSubmatch(l)
+			tagValue = parts[1]
+			tagExtra = parts[2]
 		} else if strings.HasPrefix(l, "  ") { // examples are indented by at least two spaces
 			examples = append(examples, trimmed)
 		} else {
@@ -145,7 +161,7 @@ func parseDocString(tag string, docString string, typeName string) *documentedIt
 		}
 	}
 
-	return &documentedItem{typeName: typeName, tagName: tag[1:], tagValue: tagValue, examples: examples, description: description}
+	return &documentedItem{typeName: typeName, tagName: tag[1:], tagValue: tagValue, tagExtra: tagExtra, examples: examples, description: description}
 }
 
 // Golang convention is to start all docstrings with the type name, but the actual type name can differ from how the type is

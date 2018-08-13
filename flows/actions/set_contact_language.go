@@ -18,7 +18,7 @@ const TypeSetContactLanguage string = "set_contact_language"
 
 // SetContactLanguageAction can be used to update the name of the contact. The language is a localizable
 // template and white space is trimmed from the final value. An empty string clears the language.
-// A `contact_language_changed` event will be created with the corresponding value.
+// A [event:contact_language_changed] event will be created with the corresponding value.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

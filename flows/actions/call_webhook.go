@@ -19,7 +19,7 @@ const TypeCallWebhook string = "call_webhook"
 // CallWebhookAction can be used to call an external service. The body, header and url fields may be
 // templates and will be evaluated at runtime.
 //
-// A `webhook_called` event will be created based on the results of the HTTP call.
+// A [event:webhook_called] event will be created based on the results of the HTTP call.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

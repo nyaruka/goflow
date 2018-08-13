@@ -17,7 +17,7 @@ const TypeSendBroadcast string = "send_broadcast"
 // SendBroadcastAction can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 // and a list of contacts.
 //
-// The URNs and text fields may be templates. A `send_broadcast` event will be created for each unique urn, contact and group
+// The URNs and text fields may be templates. A [event:broadcast_created] event will be created for each unique urn, contact and group
 // with the evaluated text.
 //
 //   {

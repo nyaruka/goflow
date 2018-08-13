@@ -16,7 +16,7 @@ const TypeStartFlow string = "start_flow"
 
 // StartFlowAction can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 //
-// A `flow_entered` event will be created when the flow is started, a `flow_exited` event will be created upon the subflows exit.
+// A [event:flow_triggered] event will be created to record that the flow was started.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

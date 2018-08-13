@@ -19,7 +19,7 @@ const TypeSendEmail string = "send_email"
 // SendEmailAction can be used to send an email to one or more recipients. The subject, body and addresses
 // can all contain expressions.
 //
-// An `email_created` event will be created for each email address.
+// An [event:email_created] event will be created for each email address.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
