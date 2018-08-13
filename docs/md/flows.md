@@ -401,7 +401,7 @@ It has several properties which can be accessed in expressions:
  * `scheme` the scheme of the URN, e.g. "tel", "twitter"
  * `path` the path of the URN, e.g. "+16303524567"
  * `display` the display portion of the URN, e.g. "+16303524567"
- * `channel` the preferred no link template for type context of the URN
+ * `channel` the preferred [channel](flows.html#context:channel) of the URN
 
 To render a URN in a human friendly format, use the [format_urn](flows.html#function:format_urn) function.
 

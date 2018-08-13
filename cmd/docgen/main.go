@@ -28,7 +28,7 @@ var templates = []struct {
 	containsTypes []string
 }{
 	{"Flow Specification", "index.md", nil},
-	{"Flows", "flows.md", []string{"action", "function", "router", "wait"}},
+	{"Flows", "flows.md", []string{"action", "context", "function", "router", "wait"}},
 	{"Sessions", "sessions.md", []string{"event", "trigger"}},
 }
 
@@ -41,7 +41,7 @@ func main() {
 
 // GenerateDocs generates out HTML documentation
 func GenerateDocs(baseDir string, outputDir string) error {
-	context, err := buildDocsContext(baseDir)
+	context, linkTargets, err := buildDocsContext(baseDir)
 	if err != nil {
 		return fmt.Errorf("error building docs context: %s", err)
 	}
@@ -49,7 +49,7 @@ func GenerateDocs(baseDir string, outputDir string) error {
 	// post-process context values to resolve links between templates
 	linkResolver := createLinkResolver()
 	for k, v := range context {
-		context[k] = resolveLinks(v, linkResolver)
+		context[k] = resolveLinks(v, linkResolver, linkTargets)
 	}
 
 	// ensure our output directory exists
@@ -151,13 +151,18 @@ func createLinkResolver() func(string, string) (string, error) {
 	}
 }
 
-func resolveLinks(s string, urlResolver func(string, string) (string, error)) string {
+func resolveLinks(s string, urlResolver func(string, string) (string, error), targets map[string]bool) string {
 	r := regexp.MustCompile(`\[\w+:\w+\]`)
 	return r.ReplaceAllStringFunc(s, func(old string) string {
-		groups := strings.Split(old[1:len(old)-1], ":")
+		target := old[1 : len(old)-1]
+		if !targets[target] {
+			panic(fmt.Sprintf("found link to %s which is not a valid target", target))
+		}
+
+		groups := strings.Split(target, ":")
 		url, err := urlResolver(groups[0], groups[1])
 		if err != nil {
-			return err.Error()
+			panic(err.Error())
 		}
 		return fmt.Sprintf("[%s](%s)", groups[1], url)
 	})
