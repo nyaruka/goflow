@@ -14,7 +14,7 @@ func init() {
 // TypeRemoveContactGroups is the type for the remove from groups action
 const TypeRemoveContactGroups string = "remove_contact_groups"
 
-// RemoveContactGroupsAction can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
+// RemoveContactGroupsAction can be used to remove a contact from one or more groups. A [event:contact_groups_removed] event will be created
 // for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 // the contact from all non-dynamic groups.
 //

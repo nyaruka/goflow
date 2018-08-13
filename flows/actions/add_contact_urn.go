@@ -15,7 +15,7 @@ func init() {
 // TypeAddContactURN is our type for the add URN action
 const TypeAddContactURN string = "add_contact_urn"
 
-// AddContactURNAction can be used to add a URN to the current contact. An `contact_urn_added` event
+// AddContactURNAction can be used to add a URN to the current contact. An [event:contact_urn_added] event
 // will be created when this action is encountered. If there is no contact then this
 // action will be ignored.
 //

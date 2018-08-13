@@ -17,7 +17,7 @@ const TypeSetContactName string = "set_contact_name"
 
 // SetContactNameAction can be used to update the name of the contact. The name is a localizable
 // template and white space is trimmed from the final value. An empty string clears the name.
-// A `contact_name_changed` event will be created with the corresponding value.
+// A [event:contact_name_changed] event will be created with the corresponding value.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

@@ -16,7 +16,7 @@ const TypeSetContactChannel string = "set_contact_channel"
 
 // SetContactChannelAction can be used to update the preferred channel of the current contact.
 //
-// A `contact_channel_changed` event will be created with the set channel.
+// A [event:contact_channel_changed] event will be created with the set channel.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

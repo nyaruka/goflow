@@ -115,8 +115,7 @@ code .st {
     color: #888;
 }
 
-p code,
-li code {
+p code, li code {
     color: white;
     background-color: #444;
     border-radius: 3px;

@@ -19,14 +19,14 @@ var docSets = []struct {
 	contextKey string
 	searchDirs []string
 	tag        string
-	handler    handleFunc
+	handler    renderFunc
 }{
-	{"contextDocs", []string{"flows"}, "@context", renderContextDoc},
-	{"functionDocs", []string{"excellent/functions"}, "@function", renderFunctionDoc},
-	{"testDocs", []string{"flows/routers/tests"}, "@test", renderFunctionDoc},
-	{"actionDocs", []string{"flows/actions"}, "@action", renderActionDoc},
-	{"eventDocs", []string{"flows/events"}, "@event", renderEventDoc},
-	{"triggerDocs", []string{"flows/triggers"}, "@trigger", renderTriggerDoc},
+	{"contextDocs", []string{"flows"}, "context", renderContextDoc},
+	{"functionDocs", []string{"excellent/functions"}, "function", renderFunctionDoc},
+	{"testDocs", []string{"flows/routers/tests"}, "test", renderFunctionDoc},
+	{"actionDocs", []string{"flows/actions"}, "action", renderActionDoc},
+	{"eventDocs", []string{"flows/events"}, "event", renderEventDoc},
+	{"triggerDocs", []string{"flows/triggers"}, "trigger", renderTriggerDoc},
 }
 
 type documentedItem struct {
@@ -37,7 +37,7 @@ type documentedItem struct {
 	description []string // any other line
 }
 
-type handleFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
+type renderFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
 
 // builds the documentation generation context from the given base directory
 func buildDocsContext(baseDir string) (map[string]string, error) {
@@ -62,7 +62,7 @@ func buildDocsContext(baseDir string) (map[string]string, error) {
 		return nil, fmt.Errorf("error creating example session: %s", err)
 	}
 
-	context := make(map[string]string)
+	context := make(map[string]string, len(docSets))
 
 	for _, ds := range docSets {
 		if context[ds.contextKey], err = buildDocSet(baseDir, ds.searchDirs, ds.tag, ds.handler, session); err != nil {
@@ -73,7 +73,7 @@ func buildDocsContext(baseDir string) (map[string]string, error) {
 	return context, nil
 }
 
-func buildDocSet(baseDir string, searchDirs []string, tag string, handler handleFunc, session flows.Session) (string, error) {
+func buildDocSet(baseDir string, searchDirs []string, tag string, renderer renderFunc, session flows.Session) (string, error) {
 	items := make([]*documentedItem, 0)
 	for _, searchDir := range searchDirs {
 		fromDir, err := findDocumentedItems(baseDir, searchDir, tag)
@@ -91,8 +91,8 @@ func buildDocSet(baseDir string, searchDirs []string, tag string, handler handle
 	buffer := &strings.Builder{}
 
 	for _, item := range items {
-		if err := handler(buffer, item, session); err != nil {
-			return "", fmt.Errorf("error parsing %s:%s: %s", item.tagName, item.tagValue, err)
+		if err := renderer(buffer, item, session); err != nil {
+			return "", fmt.Errorf("error rendering %s:%s: %s", item.tagName, item.tagValue, err)
 		}
 	}
 
@@ -108,6 +108,8 @@ func findDocumentedItems(baseDir string, searchDir string, tag string) ([]*docum
 	if err != nil {
 		return nil, err
 	}
+
+	tag = "@" + tag
 
 	for _, f := range pkgs {
 		p := doc.New(f, "./", 0)

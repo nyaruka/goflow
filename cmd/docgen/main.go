@@ -11,6 +11,8 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
+	"strings"
 	"text/template"
 )
 
@@ -21,12 +23,13 @@ const (
 
 var resources = []string{"styles.css"}
 var templates = []struct {
-	title string
-	path  string
+	title         string
+	path          string
+	containsTypes []string
 }{
-	{"Flow Specification", "index.md"},
-	{"Flows", "flows.md"},
-	{"Sessions", "sessions.md"},
+	{"Flow Specification", "index.md", nil},
+	{"Flows", "flows.md", []string{"action", "function", "router", "wait"}},
+	{"Sessions", "sessions.md", []string{"event", "trigger"}},
 }
 
 func main() {
@@ -41,6 +44,12 @@ func GenerateDocs(baseDir string, outputDir string) error {
 	context, err := buildDocsContext(baseDir)
 	if err != nil {
 		return fmt.Errorf("error building docs context: %s", err)
+	}
+
+	// post-process context values to resolve links between templates
+	linkResolver := createLinkResolver()
+	for k, v := range context {
+		context[k] = resolveLinks(v, linkResolver)
 	}
 
 	// ensure our output directory exists
@@ -122,6 +131,36 @@ func renderHTML(src, dst, htmlTemplate string, variables map[string]string) erro
 
 	panDocArgs = append(panDocArgs, src)
 	return exec.Command("pandoc", panDocArgs...).Run()
+}
+
+func createLinkResolver() func(string, string) (string, error) {
+	typeTemplates := make(map[string]string)
+
+	for _, template := range templates {
+		for _, typeTag := range template.containsTypes {
+			typeTemplates[typeTag] = fmt.Sprintf("%s.html#%s:%%s", template.path[0:len(template.path)-3], typeTag)
+		}
+	}
+
+	return func(tag string, val string) (string, error) {
+		linkTpl := typeTemplates[tag]
+		if linkTpl == "" {
+			return "", fmt.Errorf("no link template for type %s", tag)
+		}
+		return fmt.Sprintf(linkTpl, val), nil
+	}
+}
+
+func resolveLinks(s string, urlResolver func(string, string) (string, error)) string {
+	r := regexp.MustCompile(`\[\w+:\w+\]`)
+	return r.ReplaceAllStringFunc(s, func(old string) string {
+		groups := strings.Split(old[1:len(old)-1], ":")
+		url, err := urlResolver(groups[0], groups[1])
+		if err != nil {
+			return err.Error()
+		}
+		return fmt.Sprintf("[%s](%s)", groups[1], url)
+	})
 }
 
 // copies a file from one path to another

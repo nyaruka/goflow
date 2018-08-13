@@ -302,9 +302,9 @@
 <li><code>scheme</code> the scheme of the URN, e.g. “tel”, “twitter”</li>
 <li><code>path</code> the path of the URN, e.g. “+16303524567”</li>
 <li><code>display</code> the display portion of the URN, e.g. “+16303524567”</li>
-<li><code>channel</code> the preferred <a href="#context:channel">channel</a> of the URN</li>
+<li><code>channel</code> the preferred no link template for type context of the URN</li>
 </ul>
-<p>To render a URN in a human friendly format, use the <a href="#function:format_urn">format_urn</a> function.</p>
+<p>To render a URN in a human friendly format, use the <a href="flows.html#function:format_urn">format_urn</a> function.</p>
 <p>Examples:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb16-1" data-line-number="1">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">@contact.urns.<span class="fl">0.</span>scheme → tel</a>
@@ -1022,7 +1022,7 @@
 <div class="actions">
 <p><a name="action:add_contact_groups"></a></p>
 <h2 id="add_contact_groups">add_contact_groups</h2>
-<p>Can be used to add a contact to one or more groups. An <code>contact_groups_added</code> event will be created for the groups which the contact has been added to.</p>
+<p>Can be used to add a contact to one or more groups. An <a href="sessions.html#event:contact_groups_added">contact_groups_added</a> event will be created for the groups which the contact has been added to.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1056,7 +1056,7 @@ Event
 </div>
 <p><a name="action:add_contact_urn"></a></p>
 <h2 id="add_contact_urn">add_contact_urn</h2>
-<p>Can be used to add a URN to the current contact. An <code>contact_urn_added</code> event will be created when this action is encountered. If there is no contact then this action will be ignored.</p>
+<p>Can be used to add a URN to the current contact. An <a href="sessions.html#event:contact_urn_added">contact_urn_added</a> event will be created when this action is encountered. If there is no contact then this action will be ignored.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1081,7 +1081,7 @@ Event
 </div>
 <p><a name="action:add_input_labels"></a></p>
 <h2 id="add_input_labels">add_input_labels</h2>
-<p>Can be used to add labels to the last user input on a flow. An <code>input_labels_added</code> event will be created with the labels added when this action is encountered. If there is no user input at that point then this action will be ignored.</p>
+<p>Can be used to add labels to the last user input on a flow. An <a href="sessions.html#event:input_labels_added">input_labels_added</a> event will be created with the labels added when this action is encountered. If there is no user input at that point then this action will be ignored.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1117,7 +1117,7 @@ Event
 <p><a name="action:call_resthook"></a></p>
 <h2 id="call_resthook">call_resthook</h2>
 <p>Can be used to call a resthook.</p>
-<p>A <code>resthook_subscriber_called</code> event will be created based on the results of the HTTP call to each subscriber of the resthook.</p>
+<p>A <a href="sessions.html#event:resthook_called">resthook_called</a> event will be created based on the results of the HTTP call to each subscriber of the resthook.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1151,7 +1151,7 @@ Event
 <p><a name="action:call_webhook"></a></p>
 <h2 id="call_webhook">call_webhook</h2>
 <p>Can be used to call an external service. The body, header and url fields may be templates and will be evaluated at runtime.</p>
-<p>A <code>webhook_called</code> event will be created based on the results of the HTTP call.</p>
+<p>A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created based on the results of the HTTP call.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1183,7 +1183,7 @@ Event
 </div>
 <p><a name="action:remove_contact_groups"></a></p>
 <h2 id="remove_contact_groups">remove_contact_groups</h2>
-<p>Can be used to remove a contact from one or more groups. A <code>contact_groups_removed</code> event will be created for the groups which the contact is removed from. Groups can either be explicitly provided or <code>all_groups</code> can be set to true to remove the contact from all non-dynamic groups.</p>
+<p>Can be used to remove a contact from one or more groups. A <a href="sessions.html#event:contact_groups_removed">contact_groups_removed</a> event will be created for the groups which the contact is removed from. Groups can either be explicitly provided or <code>all_groups</code> can be set to true to remove the contact from all non-dynamic groups.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1219,7 +1219,7 @@ Event
 <p><a name="action:send_broadcast"></a></p>
 <h2 id="send_broadcast">send_broadcast</h2>
 <p>Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups and a list of contacts.</p>
-<p>The URNs and text fields may be templates. A <code>send_broadcast</code> event will be created for each unique urn, contact and group with the evaluated text.</p>
+<p>The URNs and text fields may be templates. A <a href="sessions.html#event:broadcast_created">broadcast_created</a> event will be created for each unique urn, contact and group with the evaluated text.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1256,7 +1256,7 @@ Event
 <p><a name="action:send_email"></a></p>
 <h2 id="send_email">send_email</h2>
 <p>Can be used to send an email to one or more recipients. The subject, body and addresses can all contain expressions.</p>
-<p>An <code>email_created</code> event will be created for each email address.</p>
+<p>An <a href="sessions.html#event:email_created">email_created</a> event will be created for each email address.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1289,7 +1289,7 @@ Event
 <p><a name="action:send_msg"></a></p>
 <h2 id="send_msg">send_msg</h2>
 <p>Can be used to reply to the current contact in a flow. The text field may contain templates.</p>
-<p>A <code>broadcast_created</code> event will be created with the evaluated text.</p>
+<p>A <a href="sessions.html#event:msg_created">msg_created</a> event will be created with the evaluated text.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1323,7 +1323,7 @@ Event
 <p><a name="action:set_contact_channel"></a></p>
 <h2 id="set_contact_channel">set_contact_channel</h2>
 <p>Can be used to update the preferred channel of the current contact.</p>
-<p>A <code>contact_channel_changed</code> event will be created with the set channel.</p>
+<p>A <a href="sessions.html#event:contact_channel_changed">contact_channel_changed</a> event will be created with the set channel.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1353,7 +1353,7 @@ Event
 </div>
 <p><a name="action:set_contact_field"></a></p>
 <h2 id="set_contact_field">set_contact_field</h2>
-<p>Can be used to update a field value on the contact. The value is a localizable template and white space is trimmed from the final value. An empty string clears the value. A <code>contact_field_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update a field value on the contact. The value is a localizable template and white space is trimmed from the final value. An empty string clears the value. A <a href="sessions.html#event:contact_field_changed">contact_field_changed</a> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1385,7 +1385,7 @@ Event
 </div>
 <p><a name="action:set_contact_language"></a></p>
 <h2 id="set_contact_language">set_contact_language</h2>
-<p>Can be used to update the name of the contact. The language is a localizable template and white space is trimmed from the final value. An empty string clears the language. A <code>contact_language_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update the name of the contact. The language is a localizable template and white space is trimmed from the final value. An empty string clears the language. A <a href="sessions.html#event:contact_language_changed">contact_language_changed</a> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1409,7 +1409,7 @@ Event
 </div>
 <p><a name="action:set_contact_name"></a></p>
 <h2 id="set_contact_name">set_contact_name</h2>
-<p>Can be used to update the name of the contact. The name is a localizable template and white space is trimmed from the final value. An empty string clears the name. A <code>contact_name_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update the name of the contact. The name is a localizable template and white space is trimmed from the final value. An empty string clears the name. A <a href="sessions.html#event:contact_name_changed">contact_name_changed</a> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1433,7 +1433,7 @@ Event
 </div>
 <p><a name="action:set_contact_timezone"></a></p>
 <h2 id="set_contact_timezone">set_contact_timezone</h2>
-<p>Can be used to update the timezone of the contact. The timezone is a localizable template and white space is trimmed from the final value. An empty string clears the timezone. A <code>contact_timezone_changed</code> event will be created with the corresponding value.</p>
+<p>Can be used to update the timezone of the contact. The timezone is a localizable template and white space is trimmed from the final value. An empty string clears the timezone. A <a href="sessions.html#event:contact_timezone_changed">contact_timezone_changed</a> event will be created with the corresponding value.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1458,7 +1458,7 @@ Event
 <p><a name="action:set_run_result"></a></p>
 <h2 id="set_run_result">set_run_result</h2>
 <p>Can be used to save a result for a flow. The result will be available in the context for the run as <span class="citation" data-cites="run.results">@run.results</span>.[name]. The optional category can be used as a way of categorizing results, this can be useful for reporting or analytics.</p>
-<p>Both the value and category fields may be templates. A <code>run_result_changed</code> event will be created with the final values.</p>
+<p>Both the value and category fields may be templates. A <a href="sessions.html#event:run_result_changed">run_result_changed</a> event will be created with the final values.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1488,7 +1488,7 @@ Event
 <p><a name="action:start_flow"></a></p>
 <h2 id="start_flow">start_flow</h2>
 <p>Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.</p>
-<p>A <code>flow_entered</code> event will be created when the flow is started, a <code>flow_exited</code> event will be created upon the subflows exit.</p>
+<p>A <a href="sessions.html#event:flow_triggered">flow_triggered</a> event will be created to record that the flow was started.</p>
 <div class="input_action">
 <h3>
 Action
@@ -1519,7 +1519,7 @@ Event
 </div>
 <p><a name="action:start_session"></a></p>
 <h2 id="start_session">start_session</h2>
-<p>Can be used to trigger sessions for other contacts and groups</p>
+<p>Can be used to trigger sessions for other contacts and groups. A <a href="sessions.html#event:session_triggered">session_triggered</a> event will be created and it’s the responsibility of the caller to act on that by initiating a new session with the flow engine.</p>
 <div class="input_action">
 <h3>
 Action

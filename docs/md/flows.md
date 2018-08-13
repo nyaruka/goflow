@@ -401,9 +401,9 @@ It has several properties which can be accessed in expressions:
  * `scheme` the scheme of the URN, e.g. "tel", "twitter"
  * `path` the path of the URN, e.g. "+16303524567"
  * `display` the display portion of the URN, e.g. "+16303524567"
- * `channel` the preferred [channel](#context:channel) of the URN
+ * `channel` the preferred no link template for type context of the URN
 
-To render a URN in a human friendly format, use the [format_urn](#function:format_urn) function.
+To render a URN in a human friendly format, use the [format_urn](flows.html#function:format_urn) function.
 
 Examples:
 
@@ -1829,7 +1829,7 @@ representation of a contact's state based on action performed on a flow so that 
 
 ## add_contact_groups
 
-Can be used to add a contact to one or more groups. An `contact_groups_added` event will be created
+Can be used to add a contact to one or more groups. An [contact_groups_added](sessions.html#event:contact_groups_added) event will be created
 for the groups which the contact has been added to.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -1862,7 +1862,7 @@ for the groups which the contact has been added to.
 
 ## add_contact_urn
 
-Can be used to add a URN to the current contact. An `contact_urn_added` event
+Can be used to add a URN to the current contact. An [contact_urn_added](sessions.html#event:contact_urn_added) event
 will be created when this action is encountered. If there is no contact then this
 action will be ignored.
 
@@ -1887,7 +1887,7 @@ action will be ignored.
 
 ## add_input_labels
 
-Can be used to add labels to the last user input on a flow. An `input_labels_added` event
+Can be used to add labels to the last user input on a flow. An [input_labels_added](sessions.html#event:input_labels_added) event
 will be created with the labels added when this action is encountered. If there is
 no user input at that point then this action will be ignored.
 
@@ -1924,7 +1924,7 @@ no user input at that point then this action will be ignored.
 
 Can be used to call a resthook.
 
-A `resthook_subscriber_called` event will be created based on the results of the HTTP call
+A [resthook_called](sessions.html#event:resthook_called) event will be created based on the results of the HTTP call
 to each subscriber of the resthook.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -1959,7 +1959,7 @@ to each subscriber of the resthook.
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime.
 
-A `webhook_called` event will be created based on the results of the HTTP call.
+A [webhook_called](sessions.html#event:webhook_called) event will be created based on the results of the HTTP call.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -1989,7 +1989,7 @@ A `webhook_called` event will be created based on the results of the HTTP call.
 
 ## remove_contact_groups
 
-Can be used to remove a contact from one or more groups. A `contact_groups_removed` event will be created
+Can be used to remove a contact from one or more groups. A [contact_groups_removed](sessions.html#event:contact_groups_removed) event will be created
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 the contact from all non-dynamic groups.
 
@@ -2027,7 +2027,7 @@ the contact from all non-dynamic groups.
 Can be used to send a message to one or more contacts. It accepts a list of URNs, a list of groups
 and a list of contacts.
 
-The URNs and text fields may be templates. A `send_broadcast` event will be created for each unique urn, contact and group
+The URNs and text fields may be templates. A [broadcast_created](sessions.html#event:broadcast_created) event will be created for each unique urn, contact and group
 with the evaluated text.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -2065,7 +2065,7 @@ with the evaluated text.
 Can be used to send an email to one or more recipients. The subject, body and addresses
 can all contain expressions.
 
-An `email_created` event will be created for each email address.
+An [email_created](sessions.html#event:email_created) event will be created for each email address.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2097,7 +2097,7 @@ An `email_created` event will be created for each email address.
 
 Can be used to reply to the current contact in a flow. The text field may contain templates.
 
-A `broadcast_created` event will be created with the evaluated text.
+A [msg_created](sessions.html#event:msg_created) event will be created with the evaluated text.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2130,7 +2130,7 @@ A `broadcast_created` event will be created with the evaluated text.
 
 Can be used to update the preferred channel of the current contact.
 
-A `contact_channel_changed` event will be created with the set channel.
+A [contact_channel_changed](sessions.html#event:contact_channel_changed) event will be created with the set channel.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2160,7 +2160,7 @@ A `contact_channel_changed` event will be created with the set channel.
 
 Can be used to update a field value on the contact. The value is a localizable
 template and white space is trimmed from the final value. An empty string clears the value.
-A `contact_field_changed` event will be created with the corresponding value.
+A [contact_field_changed](sessions.html#event:contact_field_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2192,7 +2192,7 @@ A `contact_field_changed` event will be created with the corresponding value.
 
 Can be used to update the name of the contact. The language is a localizable
 template and white space is trimmed from the final value. An empty string clears the language.
-A `contact_language_changed` event will be created with the corresponding value.
+A [contact_language_changed](sessions.html#event:contact_language_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2216,7 +2216,7 @@ A `contact_language_changed` event will be created with the corresponding value.
 
 Can be used to update the name of the contact. The name is a localizable
 template and white space is trimmed from the final value. An empty string clears the name.
-A `contact_name_changed` event will be created with the corresponding value.
+A [contact_name_changed](sessions.html#event:contact_name_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2240,7 +2240,7 @@ A `contact_name_changed` event will be created with the corresponding value.
 
 Can be used to update the timezone of the contact. The timezone is a localizable
 template and white space is trimmed from the final value. An empty string clears the timezone.
-A `contact_timezone_changed` event will be created with the corresponding value.
+A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event will be created with the corresponding value.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2266,7 +2266,7 @@ Can be used to save a result for a flow. The result will be available in the con
 for the run as @run.results.[name]. The optional category can be used as a way of categorizing results,
 this can be useful for reporting or analytics.
 
-Both the value and category fields may be templates. A `run_result_changed` event will be created with the
+Both the value and category fields may be templates. A [run_result_changed](sessions.html#event:run_result_changed) event will be created with the
 final values.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -2296,7 +2296,7 @@ final values.
 
 Can be used to start a contact down another flow. The current flow will pause until the subflow exits or expires.
 
-A `flow_entered` event will be created when the flow is started, a `flow_exited` event will be created upon the subflows exit.
+A [flow_triggered](sessions.html#event:flow_triggered) event will be created to record that the flow was started.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -2325,7 +2325,8 @@ A `flow_entered` event will be created when the flow is started, a `flow_exited`
 
 ## start_session
 
-Can be used to trigger sessions for other contacts and groups
+Can be used to trigger sessions for other contacts and groups. A [session_triggered](sessions.html#event:session_triggered) event
+will be created and it's the responsibility of the caller to act on that by initiating a new session with the flow engine.
 
 <div class="input_action"><h3>Action</h3>```json
 {

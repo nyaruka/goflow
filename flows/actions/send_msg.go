@@ -16,7 +16,7 @@ const TypeSendMsg string = "send_msg"
 
 // SendMsgAction can be used to reply to the current contact in a flow. The text field may contain templates.
 //
-// A `broadcast_created` event will be created with the evaluated text.
+// A [event:msg_created] event will be created with the evaluated text.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
