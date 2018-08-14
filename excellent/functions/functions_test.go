@@ -402,9 +402,9 @@ var funcTests = []struct {
 	{"title", []types.XValue{nil}, xs("")},
 	{"title", []types.XValue{}, ERROR},
 
-	{"to_epoch", []types.XValue{xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619000000000")},
-	{"to_epoch", []types.XValue{ERROR}, ERROR},
-	{"to_epoch", []types.XValue{}, ERROR},
+	{"epoch", []types.XValue{xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))}, xn("1497286619")},
+	{"epoch", []types.XValue{ERROR}, ERROR},
+	{"epoch", []types.XValue{}, ERROR},
 
 	{"today", []types.XValue{}, xd(time.Date(2018, 4, 11, 0, 0, 0, 0, time.UTC))},
 	{"today", []types.XValue{ERROR}, ERROR},

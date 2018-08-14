@@ -129,6 +129,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 
 		// functions
+		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},
 		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(run.results.favorite_color))`},
 		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(run.results.favorite_color, 1))`},
 		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(run.results.favorite_color, 1, 3))`},

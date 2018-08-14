@@ -484,6 +484,20 @@ Takes two arguments, returning `test` if not an error or nil or empty text, othe
 @(default(datetime("invalid-date"), "today")) → today
 ```
 
+<a name="function:epoch"></a>
+
+## epoch(date)
+
+Converts `date` to the number of seconds since January 1st, 1970 GMT
+
+
+```objectivec
+@(epoch("2017-06-12T16:56:59.000000Z")) → 1497286619
+@(epoch("2017-06-12T18:56:59.000000+02:00")) → 1497286619
+@(epoch("2017-06-12T16:56:59.123456Z")) → 1497286619.123456
+@(round_down(epoch("2017-06-12T16:56:59.123456Z"))) → 1497286619
+```
+
 <a name="function:field"></a>
 
 ## field(text, offset, delimiter)
@@ -1073,17 +1087,6 @@ Titlecases the passed in `text`, capitalizing each word
 @(title("foo")) → Foo
 @(title("ryan lewis")) → Ryan Lewis
 @(title(123)) → 123
-```
-
-<a name="function:to_epoch"></a>
-
-## to_epoch(date)
-
-Converts `date` to the number of nanoseconds since January 1st, 1970 GMT
-
-
-```objectivec
-@(to_epoch("2017-06-12T16:56:59.000000Z")) → 1497286619000000000
 ```
 
 <a name="function:today"></a>
