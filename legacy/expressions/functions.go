@@ -110,6 +110,7 @@ var callMigrators = map[string]callMigrator{
 	"day":               asTemplate(`format_date(%s, "D")`),
 	"days":              asTemplate(`datetime_diff(%s, %s, "D")`),
 	"edate":             asTemplate(`datetime_add(%s, %s, "M")`),
+	"epoch":             asIs(),
 	"exp":               asTemplate(`2.718281828459045 ^ %s`),
 	"false":             asTemplate(`false`), // becomes just a keyword
 	"field":             asParamMigrators(`field`, paramAsIs(), paramDecremented(), paramAsIs()),

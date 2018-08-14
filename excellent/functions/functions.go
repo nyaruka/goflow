@@ -18,6 +18,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+var nanosPerSecond = decimal.RequireFromString("1000000000")
 var nonPrintableRegex = regexp.MustCompile(`[\p{Cc}\p{C}]`)
 
 // XFunction defines the interface that Excellent functions must implement
@@ -87,7 +88,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"today":               NoArgFunction(Today),
 	"now":                 NoArgFunction(Now),
 	"from_epoch":          OneNumberFunction(FromEpoch),
-	"to_epoch":            OneDateTimeFunction(ToEpoch),
+	"epoch":               OneDateTimeFunction(Epoch),
 
 	// json functions
 	"json":       OneArgFunction(JSON),
@@ -1158,13 +1159,17 @@ func FromEpoch(env utils.Environment, num types.XNumber) types.XValue {
 	return types.NewXDateTime(time.Unix(0, num.Native().IntPart()).In(env.Timezone()))
 }
 
-// ToEpoch converts `date` to the number of nanoseconds since January 1st, 1970 GMT
+// Epoch converts `date` to the number of seconds since January 1st, 1970 GMT
 //
-//   @(to_epoch("2017-06-12T16:56:59.000000Z")) -> 1497286619000000000
+//   @(epoch("2017-06-12T16:56:59.000000Z")) -> 1497286619
+//   @(epoch("2017-06-12T18:56:59.000000+02:00")) -> 1497286619
+//   @(epoch("2017-06-12T16:56:59.123456Z")) -> 1497286619.123456
+//   @(round_down(epoch("2017-06-12T16:56:59.123456Z"))) -> 1497286619
 //
-// @function to_epoch(date)
-func ToEpoch(env utils.Environment, date types.XDateTime) types.XValue {
-	return types.NewXNumberFromInt64(date.Native().UnixNano())
+// @function epoch(date)
+func Epoch(env utils.Environment, date types.XDateTime) types.XValue {
+	nanos := decimal.New(date.Native().UnixNano(), 0)
+	return types.NewXNumber(nanos.Div(nanosPerSecond))
 }
 
 // Now returns the current date and time in the environment timezone
