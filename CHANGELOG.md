@@ -1,3 +1,9 @@
+v0.13.1
+----------
+ * to_epoch() becomes epoch() and returns fractional seconds
+ * Improved docuentation
+ * Add Heroku deployment support
+
 v0.13.0
 ----------
  * Wrap multiple asset responses in a results object
