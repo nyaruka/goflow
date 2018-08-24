@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -102,7 +102,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient)
+	session := engine.NewSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), test.TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -125,7 +125,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 		outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
 
-		session, err = engine.ReadSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), test.TestHTTPClient, sessionJSON)
+		session, err = engine.ReadSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), test.TestHTTPClient, sessionJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}

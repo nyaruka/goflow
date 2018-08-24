@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/nyaruka/goflow/flows/assets"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/go-chi/chi"

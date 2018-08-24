@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -373,6 +373,6 @@ func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 	}
 
 	// create our engine session
-	session := engine.NewSession(assetCache, assets.NewMockAssetServer(), engine.NewDefaultConfig(), TestHTTPClient)
+	session := engine.NewSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), TestHTTPClient)
 	return session, nil
 }

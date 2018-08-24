@@ -187,7 +187,7 @@ func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {
 	return set, nil
 }
 
-// NewMockAssetServer creates a new mocked asset server for testing
+// NewMockAssetServer creates a new mocked asset server with URLs for all flow engine types already configured
 func NewMockAssetServer(cache *assets.AssetCache) *assets.MockAssetServer {
 	return assets.NewMockAssetServer(map[assets.AssetType]string{
 		assetTypeChannel:           "http://testserver/assets/channel/",
