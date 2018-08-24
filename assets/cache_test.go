@@ -27,12 +27,11 @@ func readFooAssets(data json.RawMessage) ([]*fooAsset, error) {
 }
 
 func TestAssetCache(t *testing.T) {
-	cache := assets.NewAssetCache(100, 10)
-	cache.RegisterType(fooAssetType, true, func(data json.RawMessage) (interface{}, error) { return readFooAssets(data) })
+	assets.RegisterType(fooAssetType, true, func(data json.RawMessage) (interface{}, error) { return readFooAssets(data) })
 
 	server := assets.NewMockAssetServer(map[assets.AssetType]string{
 		fooAssetType: "http://testserver/assets/foo/",
-	})
+	}, assets.NewAssetCache(100, 10))
 	server.MockResponse("http://testserver/assets/foo/", json.RawMessage(`{
 		"results": [
 			{"value": 123},
@@ -41,11 +40,11 @@ func TestAssetCache(t *testing.T) {
 	}`))
 
 	// can't get an non-registered asset type
-	asset, err := cache.GetAsset(server, assets.AssetType("pizza"), "")
+	asset, err := server.GetAsset(assets.AssetType("pizza"), "")
 	assert.EqualError(t, err, "asset type 'pizza' not supported by asset server")
 
 	// try to get all foos
-	asset, err = cache.GetAsset(server, fooAssetType, "")
+	asset, err = server.GetAsset(fooAssetType, "")
 	assert.NoError(t, err)
 	assert.Equal(t, server.MockedRequests(), []string{"http://testserver/assets/foo/"})
 
@@ -56,7 +55,7 @@ func TestAssetCache(t *testing.T) {
 	assert.Equal(t, 123, foos[0].Value)
 
 	// check that we can refetch without making another server request
-	asset, err = cache.GetAsset(server, fooAssetType, "")
+	asset, err = server.GetAsset(fooAssetType, "")
 	assert.NoError(t, err)
 	assert.Equal(t, server.MockedRequests(), []string{"http://testserver/assets/foo/"})
 }

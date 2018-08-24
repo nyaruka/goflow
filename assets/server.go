@@ -13,40 +13,54 @@ import (
 
 // AssetServer describes the asset server we'll fetch missing assets from
 type AssetServer interface {
-	isTypeSupported(AssetType) bool
-	getAssetURL(AssetType, string) (string, error)
-	fetchAsset(string, AssetType) ([]byte, error)
+	IsTypeSupported(AssetType) bool
+	GetAsset(AssetType, string) (interface{}, error)
 }
 
 type assetServer struct {
 	authToken  string
 	typeURLs   map[AssetType]string
 	httpClient *utils.HTTPClient
+	cache      *AssetCache
 }
+
+var _ assetFetcher = (*assetServer)(nil)
 
 type assetServerEnvelope struct {
 	TypeURLs map[AssetType]string `json:"type_urls"`
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, data json.RawMessage) (AssetServer, error) {
+func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, cache *AssetCache, data json.RawMessage) (AssetServer, error) {
 	envelope := &assetServerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, fmt.Errorf("unable to read asset server: %s", err)
 	}
 
-	return NewAssetServer(authToken, envelope.TypeURLs, httpClient), nil
+	return NewAssetServer(authToken, envelope.TypeURLs, httpClient, cache), nil
 }
 
 // NewAssetServer creates a new asset server
-func NewAssetServer(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient) AssetServer {
-	return &assetServer{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient}
+func NewAssetServer(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient, cache *AssetCache) AssetServer {
+	// TODO validate typeURLs are for registered types?
+
+	return &assetServer{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient, cache: cache}
 }
 
-// isTypeSupported returns whether the given asset item type is supported
-func (s *assetServer) isTypeSupported(itemType AssetType) bool {
+// IsTypeSupported returns whether the given asset item type is supported
+func (s *assetServer) IsTypeSupported(itemType AssetType) bool {
 	_, hasTypeURL := s.typeURLs[itemType]
 	return hasTypeURL
+}
+
+// GetAsset returns either a single item or the set of items
+func (s *assetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
+	url, err := s.getAssetURL(itemType, itemUUID)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.cache.getAsset(url, s, itemType)
 }
 
 // getAssetURL gets the URL for a set of the given asset type
@@ -102,9 +116,9 @@ type MockAssetServer struct {
 }
 
 // NewMockAssetServer creates a new mocked asset server for testing
-func NewMockAssetServer(typeURLs map[AssetType]string) *MockAssetServer {
+func NewMockAssetServer(typeURLs map[AssetType]string, cache *AssetCache) *MockAssetServer {
 	return &MockAssetServer{
-		assetServer:    assetServer{typeURLs: typeURLs},
+		assetServer:    assetServer{typeURLs: typeURLs, cache: cache},
 		mockResponses:  map[string]json.RawMessage{},
 		mockedRequests: []string{},
 	}
@@ -116,6 +130,16 @@ func (s *MockAssetServer) MockResponse(url string, response json.RawMessage) {
 
 func (s *MockAssetServer) MockedRequests() []string {
 	return s.mockedRequests
+}
+
+// GetAsset returns either a single item or the set of items
+func (s *MockAssetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
+	url, err := s.getAssetURL(itemType, itemUUID)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.cache.getAsset(url, s, itemType)
 }
 
 func (s *MockAssetServer) fetchAsset(url string, itemType AssetType) ([]byte, error) {

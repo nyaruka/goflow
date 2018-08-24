@@ -23,39 +23,34 @@ type assetTypeConfig struct {
 	reader      AssetReader
 }
 
+var typeConfigs = map[AssetType]*assetTypeConfig{}
+
+// RegisterType registers a new asset type for use with this cache
+func RegisterType(name AssetType, manageAsSet bool, reader AssetReader) {
+	typeConfigs[name] = &assetTypeConfig{manageAsSet: manageAsSet, reader: reader}
+}
+
+// anything which the cache can use to fetch missing items
+type assetFetcher interface {
+	fetchAsset(url string, itemType AssetType) ([]byte, error)
+}
+
 // AssetCache fetches and caches assets for the engine
 type AssetCache struct {
-	cache       *ccache.Cache
-	fetchMutex  sync.Mutex
-	typeConfigs map[AssetType]*assetTypeConfig
+	cache      *ccache.Cache
+	fetchMutex sync.Mutex
 }
 
 // NewAssetCache creates a new asset cache
 func NewAssetCache(maxSize int64, pruneItems int) *AssetCache {
 	return &AssetCache{
-		cache:       ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
-		typeConfigs: make(map[AssetType]*assetTypeConfig),
+		cache: ccache.New(ccache.Configure().MaxSize(maxSize).ItemsToPrune(uint32(pruneItems))),
 	}
-}
-
-// RegisterType registers a new asset type for use with this cache
-func (c *AssetCache) RegisterType(name AssetType, manageAsSet bool, reader AssetReader) {
-	c.typeConfigs[name] = &assetTypeConfig{manageAsSet: manageAsSet, reader: reader}
 }
 
 // Shutdown shuts down this asset cache
 func (c *AssetCache) Shutdown() {
 	c.cache.Stop()
-}
-
-// GetAsset gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) GetAsset(server AssetServer, itemType AssetType, itemUUID string) (interface{}, error) {
-	url, err := server.getAssetURL(itemType, itemUUID)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.getAsset(url, server, itemType)
 }
 
 func (c *AssetCache) normalizeURL(url string) string {
@@ -71,7 +66,7 @@ func (c *AssetCache) addAsset(url string, asset interface{}) {
 }
 
 // gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) getAsset(url string, server AssetServer, itemType AssetType) (interface{}, error) {
+func (c *AssetCache) getAsset(url string, fetcher assetFetcher, itemType AssetType) (interface{}, error) {
 	item := c.cache.Get(c.normalizeURL(url))
 
 	// asset was in cache, so just return it
@@ -90,12 +85,12 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType AssetType
 	}
 
 	// actually fetch the asset from it's URL
-	data, err := server.fetchAsset(url, itemType)
+	data, err := fetcher.fetchAsset(url, itemType)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching asset %s: %s", url, err)
 	}
 
-	cfg := c.typeConfigs[itemType]
+	cfg := typeConfigs[itemType]
 	if cfg == nil {
 		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
 	}
@@ -146,7 +141,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 
 // reads an asset from the given raw JSON data
 func (c *AssetCache) readAsset(data json.RawMessage, itemType AssetType, fromRequest bool) (interface{}, error) {
-	cfg := c.typeConfigs[itemType]
+	cfg := typeConfigs[itemType]
 	if cfg == nil {
 		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
 	}
