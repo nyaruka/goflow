@@ -1,3 +1,7 @@
+v0.13.2
+----------
+ * Refactor assets functionality
+
 v0.13.1
 ----------
  * to_epoch() becomes epoch() and returns fractional seconds
