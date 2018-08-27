@@ -13,7 +13,6 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
@@ -215,13 +214,10 @@ var startRequestTemplate = `{
 type ServerTestSuite struct {
 	suite.Suite
 	flowServer  *FlowServer
-	assetServer assets.AssetServer
 	httpServer  *httptest.Server
 }
 
 func (ts *ServerTestSuite) SetupSuite() {
-	ts.assetServer = assets.NewMockAssetServer()
-
 	ts.flowServer = NewFlowServer(NewDefaultConfig())
 	ts.flowServer.Start()
 
@@ -269,7 +265,7 @@ func (ts *ServerTestSuite) assertExpressionResponse(body []byte, expectedResult 
 	ts.Equal(expectedErrors, expResp.Errors)
 }
 
-func (ts *ServerTestSuite) parseSessionResponse(assetCache *assets.AssetCache, body []byte) (flows.Session, []map[string]interface{}) {
+func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []map[string]interface{}) {
 	envelope := struct {
 		Session json.RawMessage
 		Log     []map[string]interface{}
@@ -277,7 +273,7 @@ func (ts *ServerTestSuite) parseSessionResponse(assetCache *assets.AssetCache, b
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	session, err := engine.ReadSession(assetCache, ts.assetServer, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
+	session, err := engine.ReadSession(engine.NewMockAssetServer(ts.flowServer.assetCache), engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
 	ts.Require().NoError(err)
 
 	return session, envelope.Log
@@ -294,7 +290,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	}
 
 	assetsData := json.RawMessage(assetsJSON)
-	assetServer, _ := utils.JSONMarshal(assets.NewMockAssetServer())
+	assetServer, _ := utils.JSONMarshal(engine.NewMockAssetServer(nil))
 
 	request := &resumeRequest{
 		sessionRequest: sessionRequest{
@@ -385,7 +381,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(200, status)
 
-	session, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	session, _ := ts.parseSessionResponse(body)
 	ts.Equal(flows.SessionStatus("completed"), session.Status())
 
 	// try to resume this completed session but with no caller events
@@ -407,7 +403,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(200, status)
 
-	waitingSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	waitingSession, _ := ts.parseSessionResponse(body)
 	ts.Equal(flows.SessionStatus("waiting"), waitingSession.Status())
 
 	// try to resume this session with a structurally invalid version of the flow passed as an asset
@@ -431,7 +427,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.Equal(200, status)
 
 	// check we got back a completed session
-	completedSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	completedSession, _ := ts.parseSessionResponse(body)
 	ts.Equal(flows.SessionStatus("completed"), completedSession.Status())
 
 	// mess with our waiting session JSON so we appear to be waiting on a node that doesn't exist in the flow
@@ -445,7 +441,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.Equal(200, status)
 
 	// check we got back an errored session
-	erroredSession, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+	erroredSession, _ := ts.parseSessionResponse(body)
 	ts.Equal(flows.SessionStatus("errored"), erroredSession.Status())
 }
 
@@ -477,7 +473,7 @@ func (ts *ServerTestSuite) TestWebhookMocking() {
 		status, body := ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 		ts.Equal(200, status)
 
-		session, _ := ts.parseSessionResponse(ts.flowServer.assetCache, body)
+		session, _ := ts.parseSessionResponse(body)
 		run := session.Runs()[0]
 
 		ts.NotNil(run.Webhook())

@@ -7,10 +7,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/assets"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -67,7 +67,7 @@ type startRequest struct {
 }
 
 // reads the assets and asset_server section of a request
-func (s *FlowServer) readAssets(request *sessionRequest) (assets.AssetServer, error) {
+func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (assets.AssetServer, error) {
 	// include any embedded assets
 	if request.Assets != nil {
 		if err := s.assetCache.Include(*request.Assets); err != nil {
@@ -76,7 +76,7 @@ func (s *FlowServer) readAssets(request *sessionRequest) (assets.AssetServer, er
 	}
 
 	// read and validate our asset server
-	return assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, request.AssetServer)
+	return assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
 }
 
 // handles a request to /start
@@ -86,7 +86,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 		return nil, err
 	}
 
-	assetServer, err := s.readAssets(&start.sessionRequest)
+	assetServer, err := s.readAssets(&start.sessionRequest, s.assetCache)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build our session
-	session := engine.NewSession(s.assetCache, assetServer, config, s.httpClient)
+	session := engine.NewSession(assetServer, config, s.httpClient)
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
@@ -143,7 +143,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 		return nil, err
 	}
 
-	assetServer, err := s.readAssets(&resume.sessionRequest)
+	assetServer, err := s.readAssets(&resume.sessionRequest, s.assetCache)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +155,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read our session
-	session, err := engine.ReadSession(s.assetCache, assetServer, config, s.httpClient, resume.Session)
+	session, err := engine.ReadSession(assetServer, config, s.httpClient, resume.Session)
 	if err != nil {
 		return nil, err
 	}

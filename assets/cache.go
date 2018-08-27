@@ -12,6 +12,29 @@ import (
 	"github.com/karlseguin/ccache"
 )
 
+// AssetType is the unique slug for an asset type
+type AssetType string
+
+// AssetReader is a function capable of reading an asset type from JSON
+type AssetReader func(data json.RawMessage) (interface{}, error)
+
+type assetTypeConfig struct {
+	manageAsSet bool
+	reader      AssetReader
+}
+
+var typeConfigs = map[AssetType]*assetTypeConfig{}
+
+// RegisterType registers a new asset type for use with this cache
+func RegisterType(name AssetType, manageAsSet bool, reader AssetReader) {
+	typeConfigs[name] = &assetTypeConfig{manageAsSet: manageAsSet, reader: reader}
+}
+
+// anything which the cache can use to fetch missing items
+type assetFetcher interface {
+	fetchAsset(url string, itemType AssetType) ([]byte, error)
+}
+
 // AssetCache fetches and caches assets for the engine
 type AssetCache struct {
 	cache      *ccache.Cache
@@ -42,18 +65,8 @@ func (c *AssetCache) addAsset(url string, asset interface{}) {
 	c.cache.Set(c.normalizeURL(url), asset, time.Hour*24)
 }
 
-// GetAsset gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) GetAsset(server AssetServer, itemType assetType, itemUUID string) (interface{}, error) {
-	url, err := server.getAssetURL(itemType, itemUUID)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.getAsset(url, server, itemType)
-}
-
 // gets an asset from the cache if it's there or from the asset server
-func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType) (interface{}, error) {
+func (c *AssetCache) getAsset(url string, fetcher assetFetcher, itemType AssetType) (interface{}, error) {
 	item := c.cache.Get(c.normalizeURL(url))
 
 	// asset was in cache, so just return it
@@ -72,13 +85,23 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType
 	}
 
 	// actually fetch the asset from it's URL
-	fetched, err := server.fetchAsset(url, itemType)
+	data, err := fetcher.fetchAsset(url, itemType)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching asset %s: %s", url, err)
 	}
 
-	c.addAsset(url, fetched)
-	return fetched, nil
+	cfg := typeConfigs[itemType]
+	if cfg == nil {
+		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
+	}
+
+	a, err := c.readAsset(data, itemType, true)
+	if err != nil {
+		return nil, err
+	}
+
+	c.addAsset(url, a)
+	return a, nil
 }
 
 //------------------------------------------------------------------------------------------
@@ -87,7 +110,7 @@ func (c *AssetCache) getAsset(url string, server AssetServer, itemType assetType
 
 type assetEnvelope struct {
 	URL      string          `json:"url" validate:"required,url"`
-	ItemType assetType       `json:"type" validate:"required"`
+	ItemType AssetType       `json:"type" validate:"required"`
 	Content  json.RawMessage `json:"content"`
 }
 
@@ -106,7 +129,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	}
 
 	for _, envelope := range envelopes {
-		asset, err := readAsset(envelope.Content, envelope.ItemType, false)
+		asset, err := c.readAsset(envelope.Content, envelope.ItemType, false)
 		if err != nil {
 			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
 		}
@@ -117,7 +140,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 }
 
 // reads an asset from the given raw JSON data
-func readAsset(data json.RawMessage, itemType assetType, fromRequest bool) (interface{}, error) {
+func (c *AssetCache) readAsset(data json.RawMessage, itemType AssetType, fromRequest bool) (interface{}, error) {
 	cfg := typeConfigs[itemType]
 	if cfg == nil {
 		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
