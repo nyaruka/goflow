@@ -22,6 +22,9 @@ func TestXJSON(t *testing.T) {
 	assert.True(t, types.IsXError(jarr.Index(7)))
 	assert.Equal(t, `json array`, jarr.Describe())
 
+	num := types.JSONToXValue([]byte(`37.27903`)).(types.XNumber)
+	assert.Equal(t, num, types.RequireXNumberFromString(`37.27903`))
+
 	jerr := types.JSONToXValue([]byte(`fish`)).(types.XError)
 	assert.Equal(t, `Unknown value type`, jerr.Error())
 }
