@@ -340,10 +340,9 @@ var errorTests = []struct {
 	errorMsg string
 }{
 	// parser errors
-	{`@(")`, `error evaluating @("): syntax error at "`},
 	{`@('x')`, `error evaluating @('x'): syntax error at 'x'`},
-	{`@(")@('x')`, `error evaluating @("): syntax error at ", error evaluating @('x'): syntax error at 'x'`},
 	{`@(0 / )`, `error evaluating @(0 / ): syntax error at `},
+	{`@(0 / )@('x')`, `error evaluating @(0 / ): syntax error at , error evaluating @('x'): syntax error at 'x'`},
 
 	// resolver errors
 	{`@(NULL.x)`, `error evaluating @(NULL.x): null has no property 'x'`},

@@ -19,10 +19,15 @@ func TestScanner(t *testing.T) {
 		input  string
 		tokens []scannedToken
 	}{
-		{"@contact", []scannedToken{{excellent.IDENTIFIER, "contact"}}},
-		{"Hi @contact how are you?", []scannedToken{{excellent.BODY, "Hi "}, {excellent.IDENTIFIER, "contact"}, {excellent.BODY, " how are you?"}}},
-		{"@contact...?", []scannedToken{{excellent.IDENTIFIER, "contact"}, {excellent.BODY, "...?"}}},
-		{"My Twitter is @bob", []scannedToken{{excellent.BODY, "My Twitter is "}, {excellent.BODY, "@bob"}}},
+		{`@contact`, []scannedToken{{excellent.IDENTIFIER, "contact"}}},
+		{`Hi @contact how are you?`, []scannedToken{{excellent.BODY, "Hi "}, {excellent.IDENTIFIER, "contact"}, {excellent.BODY, " how are you?"}}},
+		{`@contact...?`, []scannedToken{{excellent.IDENTIFIER, "contact"}, {excellent.BODY, "...?"}}},
+		{`My Twitter is @bob`, []scannedToken{{excellent.BODY, "My Twitter is "}, {excellent.BODY, "@bob"}}},
+		{`@(upper("abc"))`, []scannedToken{{excellent.EXPRESSION, `upper("abc")`}}},
+		{` @(upper("abc")) `, []scannedToken{{excellent.BODY, " "}, {excellent.EXPRESSION, `upper("abc")`}, {excellent.BODY, " "}}},
+		{`@(")")`, []scannedToken{{excellent.EXPRESSION, `")"`}}},
+		{`@(`, []scannedToken{{excellent.BODY, `@(`}}},
+		{`@(")`, []scannedToken{{excellent.BODY, `@(")`}}},
 	}
 
 	for _, test := range tests {

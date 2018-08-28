@@ -59,15 +59,18 @@ func (s *xscanner) SetUnescapeBody(unescape bool) {
 // scanExpression consumes the current rune and all contiguous pieces until the end of the expression
 // our read should be after the '('
 func (s *xscanner) scanExpression() (XTokenType, string) {
-	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
+	// create a buffer and read the current character into it.
+	buf := &bytes.Buffer{}
 
 	// our parentheses depth
 	parens := 1
 
-	// Read every subsequent character until we reach the end of the expression
+	// read every subsequent character until we reach the end of the expression
 	for ch := s.input.read(); ch != eof; ch = s.input.read() {
-		if ch == '(' {
+		if ch == '"' {
+			buf.WriteRune(ch)
+			s.readTextLiteral(buf)
+		} else if ch == '(' {
 			buf.WriteRune(ch)
 			parens++
 		} else if ch == ')' {
@@ -90,11 +93,27 @@ func (s *xscanner) scanExpression() (XTokenType, string) {
 	return BODY, strings.Join([]string{"@(", buf.String()}, "")
 }
 
+// reads the remainder of a " quoted text literal
+func (s *xscanner) readTextLiteral(buf *bytes.Buffer) {
+	escaped := false
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
+		buf.WriteRune(ch)
+
+		if ch == '"' && !escaped {
+			break
+		} else if ch == '\\' {
+			escaped = true
+		} else {
+			escaped = false
+		}
+	}
+}
+
 // scanIdentifier consumes the current rune and all contiguous pieces until the end of the identifer
 // our read should be after the '@'
 func (s *xscanner) scanIdentifier() (XTokenType, string) {
 	// Create a buffer and read the current character into it.
-	var buf strings.Builder
+	buf := &strings.Builder{}
 	var topLevel string
 
 	// Read every subsequent character until we reach the end of the identifier
@@ -148,7 +167,7 @@ func (s *xscanner) scanIdentifier() (XTokenType, string) {
 // scanBody consumes the current body until we reach the end of the file or the start of an expression
 func (s *xscanner) scanBody() (XTokenType, string) {
 	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
+	buf := &strings.Builder{}
 
 	// read characters until we reach the end of the file or the start of an expression or identifier
 	for ch := s.input.read(); ch != eof; ch = s.input.read() {

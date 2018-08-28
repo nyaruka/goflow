@@ -6,7 +6,7 @@ import (
 
 const eof rune = rune(0)
 
-// provides functionality for reading and unreading from a buffered xinput
+// provides functionality for reading and unreading from a buffered source
 type xinput struct {
 	base        *bufio.Reader
 	unreadRunes []rune
