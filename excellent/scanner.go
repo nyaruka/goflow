@@ -9,11 +9,12 @@ import (
 	"unicode"
 )
 
-type xToken int
+// XTokenType is a set of types than can be scanned
+type XTokenType int
 
 const (
 	// BODY - Not in expression
-	BODY xToken = iota
+	BODY XTokenType = iota
 
 	// IDENTIFIER - 'contact.age' in '@contact.age'
 	IDENTIFIER
@@ -25,26 +26,27 @@ const (
 	EOF
 )
 
-const eof rune = rune(0)
+func isNameChar(ch rune) bool {
+	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '_'
+}
 
-func isIdentifierChar(ch rune) bool {
-	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '.' || ch == '_'
+// Scanner is something which can scan tokens from input
+type Scanner interface {
+	Scan() (XTokenType, string)
+	SetUnescapeBody(bool)
 }
 
 // xscanner represents a lexical scanner.
 type xscanner struct {
-	reader              *bufio.Reader
-	unreadRunes         []rune
-	unreadCount         int
+	input               *xinput
 	identifierTopLevels []string
 	unescapeBody        bool // unescape @@ sequences in the body
 }
 
 // NewXScanner returns a new instance of our excellent scanner
-func NewXScanner(r io.Reader, identifierTopLevels []string) *xscanner {
+func NewXScanner(r io.Reader, identifierTopLevels []string) Scanner {
 	return &xscanner{
-		reader:              bufio.NewReader(r),
-		unreadRunes:         make([]rune, 4),
+		input:               newInput(bufio.NewReader(r)),
 		identifierTopLevels: identifierTopLevels,
 		unescapeBody:        true,
 	}
@@ -54,41 +56,21 @@ func (s *xscanner) SetUnescapeBody(unescape bool) {
 	s.unescapeBody = unescape
 }
 
-// gets the next rune or EOF if we are at the end of the string
-func (s *xscanner) read() rune {
-	// first see if we have any unread runes to return
-	if s.unreadCount > 0 {
-		ch := s.unreadRunes[s.unreadCount-1]
-		s.unreadCount--
-		return ch
-	}
-
-	// otherwise, read the next run
-	ch, _, err := s.reader.ReadRune()
-	if err != nil {
-		return eof
-	}
-	return ch
-}
-
-// pops the passed in rune as the next rune to be returned
-func (s *xscanner) unread(ch rune) {
-	s.unreadRunes[s.unreadCount] = ch
-	s.unreadCount++
-}
-
 // scanExpression consumes the current rune and all contiguous pieces until the end of the expression
 // our read should be after the '('
-func (s *xscanner) scanExpression() (xToken, string) {
-	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
+func (s *xscanner) scanExpression() (XTokenType, string) {
+	// create a buffer and read the current character into it.
+	buf := &bytes.Buffer{}
 
 	// our parentheses depth
 	parens := 1
 
-	// Read every subsequent character until we reach the end of the expression
-	for ch := s.read(); ch != eof; ch = s.read() {
-		if ch == '(' {
+	// read every subsequent character until we reach the end of the expression
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
+		if ch == '"' {
+			buf.WriteRune(ch)
+			s.readTextLiteral(buf)
+		} else if ch == '(' {
 			buf.WriteRune(ch)
 			parens++
 		} else if ch == ')' {
@@ -111,23 +93,51 @@ func (s *xscanner) scanExpression() (xToken, string) {
 	return BODY, strings.Join([]string{"@(", buf.String()}, "")
 }
 
+// reads the remainder of a " quoted text literal
+func (s *xscanner) readTextLiteral(buf *bytes.Buffer) {
+	escaped := false
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
+		buf.WriteRune(ch)
+
+		if ch == '"' && !escaped {
+			break
+		} else if ch == '\\' {
+			escaped = true
+		} else {
+			escaped = false
+		}
+	}
+}
+
 // scanIdentifier consumes the current rune and all contiguous pieces until the end of the identifer
 // our read should be after the '@'
-func (s *xscanner) scanIdentifier() (xToken, string) {
+func (s *xscanner) scanIdentifier() (XTokenType, string) {
 	// Create a buffer and read the current character into it.
-	var buf strings.Builder
+	buf := &strings.Builder{}
 	var topLevel string
 
 	// Read every subsequent character until we reach the end of the identifier
-	for ch := s.read(); ch != eof; ch = s.read() {
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
 		if ch == '.' && topLevel == "" {
 			topLevel = buf.String()
 		}
 
-		if isIdentifierChar(ch) {
+		// only include period if it's followed by a valid name char
+		if ch == '.' {
+			peek := s.input.read()
+			if isNameChar(peek) {
+				buf.WriteRune(ch)
+				buf.WriteRune(peek)
+			} else {
+				// this period actually signifies the end of the indentifier
+				s.input.unread(peek)
+				s.input.unread('.')
+				break
+			}
+		} else if isNameChar(ch) {
 			buf.WriteRune(ch)
 		} else {
-			s.unread(ch)
+			s.input.unread(ch)
 			break
 		}
 	}
@@ -138,12 +148,6 @@ func (s *xscanner) scanIdentifier() (xToken, string) {
 		topLevel = identifier
 	}
 	topLevel = strings.ToLower(topLevel)
-
-	// if we end with a period, unread that as well
-	if len(identifier) > 1 && identifier[len(identifier)-1] == '.' {
-		s.unread('.')
-		identifier = identifier[:len(identifier)-1]
-	}
 
 	// only return as an identifier if the toplevel scope is valid
 	if s.identifierTopLevels != nil {
@@ -161,20 +165,20 @@ func (s *xscanner) scanIdentifier() (xToken, string) {
 }
 
 // scanBody consumes the current body until we reach the end of the file or the start of an expression
-func (s *xscanner) scanBody() (xToken, string) {
+func (s *xscanner) scanBody() (XTokenType, string) {
 	// Create a buffer and read the current character into it.
-	var buf bytes.Buffer
+	buf := &strings.Builder{}
 
 	// read characters until we reach the end of the file or the start of an expression or identifier
-	for ch := s.read(); ch != eof; ch = s.read() {
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
 		// could be start of an expression
 		if ch == '@' {
-			peek := s.read()
+			peek := s.input.read()
 
 			// start of an expression
 			if peek == '(' {
-				s.unread(peek)
-				s.unread('@')
+				s.input.unread(peek)
+				s.input.unread('@')
 				break
 
 				// @@, means literal @
@@ -186,9 +190,9 @@ func (s *xscanner) scanBody() (xToken, string) {
 				}
 
 				// this is an identifier
-			} else if isIdentifierChar(peek) {
-				s.unread(peek)
-				s.unread('@')
+			} else if isNameChar(peek) {
+				s.input.unread(peek)
+				s.input.unread('@')
 				break
 
 				// @ at the end of the input
@@ -209,11 +213,11 @@ func (s *xscanner) scanBody() (xToken, string) {
 }
 
 // Scan returns the next token and literal value.
-func (s *xscanner) Scan() (xToken, string) {
-	for ch := s.read(); ch != eof; ch = s.read() {
+func (s *xscanner) Scan() (XTokenType, string) {
+	for ch := s.input.read(); ch != eof; ch = s.input.read() {
 		switch ch {
 		case '@':
-			peek := s.read()
+			peek := s.input.read()
 
 			// start of an expression
 			if peek == '(' {
@@ -221,24 +225,24 @@ func (s *xscanner) Scan() (xToken, string) {
 
 				// @@, means literal @
 			} else if peek == '@' {
-				s.unread('@')
-				s.unread('@')
+				s.input.unread('@')
+				s.input.unread('@')
 				return s.scanBody()
 
 				// this is an identifier
-			} else if isIdentifierChar(peek) {
-				s.unread(peek)
+			} else if isNameChar(peek) {
+				s.input.unread(peek)
 				return s.scanIdentifier()
 
 				// '@' followed by non-letter, plain body
 			}
 
-			s.unread(peek)
-			s.unread('@')
+			s.input.unread(peek)
+			s.input.unread('@')
 			return s.scanBody()
 
 		default:
-			s.unread(ch)
+			s.input.unread(ch)
 			return s.scanBody()
 		}
 	}
