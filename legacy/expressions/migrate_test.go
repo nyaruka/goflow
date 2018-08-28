@@ -233,7 +233,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
 		{old: `@twitter_handle`, new: `@twitter_handle`},
 
+		//misc edge cases
 		{old: `@`, new: `@`},
+		{old: `@contact.first_name...?`, new: `@contact.first_name...?`},
 		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@run.results.favorite_color @@flow.favorite_color @run.results.favorite_color @nyaruka @ @`},
 	}
 

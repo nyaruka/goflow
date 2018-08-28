@@ -21,7 +21,7 @@ func TestScanner(t *testing.T) {
 	}{
 		{"@contact", []scannedToken{{excellent.IDENTIFIER, "contact"}}},
 		{"Hi @contact how are you?", []scannedToken{{excellent.BODY, "Hi "}, {excellent.IDENTIFIER, "contact"}, {excellent.BODY, " how are you?"}}},
-		//{"@contact...?", []scannedToken{{excellent.IDENTIFIER, "contact"}, {excellent.BODY, "...?"}}},
+		{"@contact...?", []scannedToken{{excellent.IDENTIFIER, "contact"}, {excellent.BODY, "...?"}}},
 		{"My Twitter is @bob", []scannedToken{{excellent.BODY, "My Twitter is "}, {excellent.BODY, "@bob"}}},
 	}
 

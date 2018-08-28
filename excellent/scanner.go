@@ -26,8 +26,8 @@ const (
 	EOF
 )
 
-func isIdentifierChar(ch rune) bool {
-	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '.' || ch == '_'
+func isNameChar(ch rune) bool {
+	return unicode.IsLetter(ch) || unicode.IsNumber(ch) || ch == '_'
 }
 
 // Scanner is something which can scan tokens from input
@@ -103,7 +103,19 @@ func (s *xscanner) scanIdentifier() (XTokenType, string) {
 			topLevel = buf.String()
 		}
 
-		if isIdentifierChar(ch) {
+		// only include period if it's followed by a valid name char
+		if ch == '.' {
+			peek := s.input.read()
+			if isNameChar(peek) {
+				buf.WriteRune(ch)
+				buf.WriteRune(peek)
+			} else {
+				// this period actually signifies the end of the indentifier
+				s.input.unread(peek)
+				s.input.unread('.')
+				break
+			}
+		} else if isNameChar(ch) {
 			buf.WriteRune(ch)
 		} else {
 			s.input.unread(ch)
@@ -117,12 +129,6 @@ func (s *xscanner) scanIdentifier() (XTokenType, string) {
 		topLevel = identifier
 	}
 	topLevel = strings.ToLower(topLevel)
-
-	// if we end with a period, unread that as well
-	if len(identifier) > 1 && identifier[len(identifier)-1] == '.' {
-		s.input.unread('.')
-		identifier = identifier[:len(identifier)-1]
-	}
 
 	// only return as an identifier if the toplevel scope is valid
 	if s.identifierTopLevels != nil {
@@ -165,7 +171,7 @@ func (s *xscanner) scanBody() (XTokenType, string) {
 				}
 
 				// this is an identifier
-			} else if isIdentifierChar(peek) {
+			} else if isNameChar(peek) {
 				s.input.unread(peek)
 				s.input.unread('@')
 				break
@@ -205,7 +211,7 @@ func (s *xscanner) Scan() (XTokenType, string) {
 				return s.scanBody()
 
 				// this is an identifier
-			} else if isIdentifierChar(peek) {
+			} else if isNameChar(peek) {
 				s.input.unread(peek)
 				return s.scanIdentifier()
 
