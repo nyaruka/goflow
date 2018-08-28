@@ -25,9 +25,10 @@ func TestScanner(t *testing.T) {
 		{`My Twitter is @bob`, []scannedToken{{excellent.BODY, "My Twitter is "}, {excellent.BODY, "@bob"}}},
 		{`@(upper("abc"))`, []scannedToken{{excellent.EXPRESSION, `upper("abc")`}}},
 		{` @(upper("abc")) `, []scannedToken{{excellent.BODY, " "}, {excellent.EXPRESSION, `upper("abc")`}, {excellent.BODY, " "}}},
-		{`@(")")`, []scannedToken{{excellent.EXPRESSION, `")"`}}},
 		{`@(`, []scannedToken{{excellent.BODY, `@(`}}},
 		{`@(")`, []scannedToken{{excellent.BODY, `@(")`}}},
+		{`@(")")`, []scannedToken{{excellent.EXPRESSION, `")"`}}},
+		{`@("zz\"zz")`, []scannedToken{{excellent.EXPRESSION, `"zz\"zz"`}}},
 	}
 
 	for _, test := range tests {
