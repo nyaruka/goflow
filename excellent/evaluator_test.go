@@ -2,7 +2,6 @@ package excellent
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -397,23 +396,5 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		for _, tc := range errorTests {
 			EvaluateTemplateAsString(env, vars, tc.template, false, vars.Keys())
 		}
-	}
-}
-
-func TestScanner(t *testing.T) {
-	scanner := NewXScanner(strings.NewReader("12"), []string{})
-
-	if scanner.read() != '1' {
-		t.Errorf("Expected '1'")
-	}
-	scanner.unread('1')
-	if scanner.read() != '1' {
-		t.Errorf("Expected '1'")
-	}
-	if scanner.read() != '2' {
-		t.Errorf("Expected '2'")
-	}
-	if scanner.read() != eof {
-		t.Errorf("Expected eof")
 	}
 }
