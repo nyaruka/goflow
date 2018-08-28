@@ -1,3 +1,9 @@
+v0.13.3
+----------
+ * Fix scanner treating parentheses inside string literals as expression boundaries
+ * Fix not correctly scanning excellent identifiers followed by periods
+ * Add migrate tab to flowserver index page for easy flow migration testing
+
 v0.13.2
 ----------
  * Refactor assets functionality
