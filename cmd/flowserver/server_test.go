@@ -213,8 +213,8 @@ var startRequestTemplate = `{
 
 type ServerTestSuite struct {
 	suite.Suite
-	flowServer  *FlowServer
-	httpServer  *httptest.Server
+	flowServer *FlowServer
+	httpServer *httptest.Server
 }
 
 func (ts *ServerTestSuite) SetupSuite() {
@@ -310,10 +310,11 @@ func (ts *ServerTestSuite) TestHomePages() {
 	// hit our home page
 	status, body := ts.testHTTPRequest("GET", "http://localhost:8800/", "")
 	ts.Equal(200, status)
-	ts.Contains(string(body), "Echo Flow")
+	ts.Contains(string(body), "Start")
+	ts.Contains(string(body), "Resume")
 
-	// test the example start request on the home page
-	startJSON, err := ioutil.ReadFile("static/start.json")
+	// test an example start request on the home page
+	startJSON, err := ioutil.ReadFile("testdata/start.json")
 	ts.Require().NoError(err)
 
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", string(startJSON))
