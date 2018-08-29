@@ -21,6 +21,7 @@ import (
 // Flow is a flow in the legacy format
 type Flow struct {
 	BaseLanguage utils.Language `json:"base_language"`
+	FlowType     string         `json:"flow_type"`
 	Metadata     Metadata       `json:"metadata"`
 	RuleSets     []RuleSet      `json:"rule_sets" validate:"dive"`
 	ActionSets   []ActionSet    `json:"action_sets" validate:"dive"`
@@ -267,6 +268,13 @@ type groupTest struct {
 type wardTest struct {
 	State    string `json:"state"`
 	District string `json:"district"`
+}
+
+var flowTypeMapping = map[string]flows.FlowType{
+	"F": flows.FlowTypeMessaging,
+	"M": flows.FlowTypeMessaging,
+	"V": flows.FlowTypeVoice,
+	"S": flows.FlowTypeMessagingOffline,
 }
 
 func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped Translations, uuid utils.UUID, property string) string {
@@ -1050,6 +1058,7 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 		f.Metadata.Name,
 		f.Metadata.Revision,
 		f.BaseLanguage,
+		flowTypeMapping[f.FlowType],
 		f.Metadata.Expires,
 		localization,
 		nodes,

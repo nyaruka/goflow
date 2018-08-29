@@ -6,6 +6,7 @@
             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0",
             "name": "Node Loop",
             "language": "eng",
+            "type": "messaging",
             "nodes": [
                 {
                     "uuid": "32bc60ad-5c86-465e-a6b8-049c44ecce49",

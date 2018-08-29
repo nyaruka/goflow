@@ -6,6 +6,7 @@
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Migrated Webhook",
             "language": "base",
+            "type": "messaging",
             "nodes": [
                 {
                     "uuid": "5b5abbf2-5f12-4f83-a804-90695e6c4302",
