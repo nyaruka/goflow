@@ -7,6 +7,7 @@
                 "revision": 1
             },
             "base_language": "eng", 
+            "flow_type": "F",
             "action_sets": [],
             "rule_sets": []
         },
@@ -15,6 +16,7 @@
             "name": "Empty",
             "revision": 1,
             "language": "eng",
+            "type": "messaging",
             "expire_after_minutes": 0,
             "localization": {},
             "nodes": [],
@@ -37,7 +39,8 @@
                 ]
             },
             "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597", 
-            "base_language": "eng", 
+            "base_language": "eng",
+            "flow_type": "M", 
             "action_sets": [
                 {
                     "y": 1,
@@ -66,6 +69,7 @@
             "name": "Simple",
             "revision": 123,
             "language": "eng",
+            "type": "messaging",
             "expire_after_minutes": 0,
             "localization": {
                 "fre": {

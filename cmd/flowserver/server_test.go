@@ -29,6 +29,7 @@ var testStructurallyInvalidFlowAssets = `[
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Test Flow",
 			"language": "eng",
+			"type": "messaging",
 			"nodes": [
 				{
 					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -53,6 +54,7 @@ var testFlowMissingGroupAssets = `[
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Test Flow",
 			"language": "eng",
+			"type": "messaging",
 			"nodes": [
 				{
 					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -99,6 +101,7 @@ var testValidFlowWithNoWaitAssets = `[
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Test Flow",
 			"language": "eng",
+			"type": "messaging",
 			"nodes": [
 				{
 					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -124,6 +127,7 @@ var testValidFlowWithWaitAssets = `[
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Test Flow",
 			"language": "eng",
+			"type": "messaging",
 			"nodes": [
 				{
 					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -170,6 +174,7 @@ var testValidFlowWithWebhook = `[
 			"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
 			"name": "Webhook Flow",
 			"language": "eng",
+			"type": "messaging",
 			"nodes": [
 				{
 					"uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",

@@ -14,6 +14,7 @@ type flow struct {
 	name               string
 	revision           int
 	language           utils.Language
+	flowType           flows.FlowType
 	expireAfterMinutes int
 
 	localization flows.Localization
@@ -27,12 +28,13 @@ type flow struct {
 
 type FlowObj = flow
 
-func NewFlow(uuid flows.FlowUUID, name string, revision int, language utils.Language, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
+func NewFlow(uuid flows.FlowUUID, name string, revision int, language utils.Language, flowType flows.FlowType, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
 		revision:           revision,
 		language:           language,
+		flowType:           flowType,
 		expireAfterMinutes: expireAfterMinutes,
 		localization:       localization,
 		nodes:              nodes,
@@ -89,6 +91,19 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 
 		// validate all the node's actions
 		for _, action := range node.Actions() {
+
+			// check that this action is valid for this flow type
+			isValidInType := false
+			for _, allowedType := range action.AllowedFlowTypes() {
+				if f.flowType == allowedType {
+					isValidInType = true
+					break
+				}
+			}
+			if !isValidInType {
+				return fmt.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), f.flowType)
+			}
+
 			uuidAlreadySeen := seenUUIDs[utils.UUID(action.UUID())]
 			if uuidAlreadySeen {
 				return fmt.Errorf("action UUID %s isn't unique", action.UUID())
@@ -154,10 +169,11 @@ func (f *flow) buildNodeMap() error {
 //------------------------------------------------------------------------------------------
 
 type flowEnvelope struct {
-	UUID               flows.FlowUUID `json:"uuid"               validate:"required,uuid4"`
-	Name               string         `json:"name"               validate:"required"`
+	UUID               flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name               string         `json:"name" validate:"required"`
 	Revision           int            `json:"revision"`
 	Language           utils.Language `json:"language"`
+	Type               flows.FlowType `json:"type" validate:"required"`
 	ExpireAfterMinutes int            `json:"expire_after_minutes"`
 	Localization       localization   `json:"localization"`
 	Nodes              []*node        `json:"nodes"`
@@ -170,16 +186,16 @@ type flowEnvelopeWithUI struct {
 
 // ReadFlow reads a single flow definition from the passed in byte array
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
-	envelope := flowEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &envelope); err != nil {
+	e := &flowEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, fmt.Errorf("unable to read flow: %s", err)
 	}
-	nodes := make([]flows.Node, len(envelope.Nodes))
-	for n := range envelope.Nodes {
-		nodes[n] = envelope.Nodes[n]
+	nodes := make([]flows.Node, len(e.Nodes))
+	for n := range e.Nodes {
+		nodes[n] = e.Nodes[n]
 	}
 
-	return NewFlow(envelope.UUID, envelope.Name, envelope.Revision, envelope.Language, envelope.ExpireAfterMinutes, envelope.Localization, nodes, nil)
+	return NewFlow(e.UUID, e.Name, e.Revision, e.Language, e.Type, e.ExpireAfterMinutes, e.Localization, nodes, nil)
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -190,6 +206,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 			Name:               f.name,
 			Revision:           f.revision,
 			Language:           f.language,
+			Type:               f.flowType,
 			ExpireAfterMinutes: f.expireAfterMinutes,
 		},
 		UI: f.ui,

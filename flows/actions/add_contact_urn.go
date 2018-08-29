@@ -29,6 +29,8 @@ const TypeAddContactURN string = "add_contact_urn"
 // @action add_contact_urn
 type AddContactURNAction struct {
 	BaseAction
+	universalAction
+
 	Scheme string `json:"scheme" validate:"urnscheme"`
 	Path   string `json:"path" validate:"required"`
 }

@@ -31,6 +31,8 @@ const TypeSetRunResult string = "set_run_result"
 // @action set_run_result
 type SetRunResultAction struct {
 	BaseAction
+	universalAction
+
 	Name     string `json:"name" validate:"required"`
 	Value    string `json:"value" validate:"required"`
 	Category string `json:"category"`

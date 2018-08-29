@@ -29,6 +29,8 @@ const TypeSendMsg string = "send_msg"
 // @action send_msg
 type SendMsgAction struct {
 	BaseAction
+	universalAction
+
 	Text         string   `json:"text"`
 	Attachments  []string `json:"attachments"`
 	QuickReplies []string `json:"quick_replies,omitempty"`

@@ -30,6 +30,8 @@ const TypeRemoveContactGroups string = "remove_contact_groups"
 // @action remove_contact_groups
 type RemoveContactGroupsAction struct {
 	BaseAction
+	universalAction
+
 	Groups    []*flows.GroupReference `json:"groups,omitempty" validate:"dive"`
 	AllGroups bool                    `json:"all_groups"`
 }

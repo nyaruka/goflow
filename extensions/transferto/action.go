@@ -43,6 +43,11 @@ func (a *TransferAirtimeAction) Validate(assets flows.SessionAssets) error {
 	return nil
 }
 
+// AllowedFlowTypes returns the flow types which this action is allowed to occur in
+func (a *TransferAirtimeAction) AllowedFlowTypes() []flows.FlowType {
+	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeVoice}
+}
+
 // Execute runs this action
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	contact := run.Contact()

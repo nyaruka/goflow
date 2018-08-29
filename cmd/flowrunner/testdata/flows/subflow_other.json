@@ -5,6 +5,7 @@
         "content": {
             "name": "Parent Flow",
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
+            "type": "messaging",
             "nodes": [
                 {
                     "uuid": "9166f3f9-da13-41c9-8346-44802a73cbdf",
@@ -165,6 +166,7 @@
         "content": {
             "name": "Rules",
             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
+            "type": "messaging",
             "nodes": [
                 {
                     "uuid": "8a9101ba-d8a9-43ef-a926-7e050d188937",

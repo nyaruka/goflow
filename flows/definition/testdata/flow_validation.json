@@ -6,6 +6,7 @@
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Test Flow",
             "language": "eng",
+            "type": "messaging",
             "nodes": [
                 {
                     "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
@@ -91,6 +92,7 @@
         "content": {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Language",
+            "type": "messaging",
             "nodes": [{
                 "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
                 "actions": []

@@ -43,6 +43,20 @@ type InputUUID utils.UUID
 // MsgUUID is the UUID of a message
 type MsgUUID utils.UUID
 
+// FlowType represents the different types of flows
+type FlowType string
+
+const (
+	// FlowTypeMessaging is a flow that is run over a messaging channel
+	FlowTypeMessaging FlowType = "messaging"
+
+	// FlowTypeMessagingOffline is a flow which is run over an offline messaging client like Surveyor
+	FlowTypeMessagingOffline FlowType = "messaging_offline"
+
+	// FlowTypeVoice is a flow which is run over IVR
+	FlowTypeVoice FlowType = "voice"
+)
+
 // SessionStatus represents the current status of the engine session
 type SessionStatus string
 
@@ -156,6 +170,7 @@ type Action interface {
 
 	Execute(FlowRun, Step, EventLog) error
 	Validate(SessionAssets) error
+	AllowedFlowTypes() []FlowType
 	utils.Typed
 }
 

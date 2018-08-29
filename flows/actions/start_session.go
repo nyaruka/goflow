@@ -30,6 +30,8 @@ const TypeStartSession string = "start_session"
 // @action start_session
 type StartSessionAction struct {
 	BaseAction
+	onlineAction
+
 	URNs          []urns.URN                `json:"urns,omitempty"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups        []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`

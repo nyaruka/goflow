@@ -6,6 +6,7 @@
             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c",
             "name": "Dynamic Groups",
             "language": "eng",
+            "type": "messaging",
             "nodes": [
                 {
                     "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
