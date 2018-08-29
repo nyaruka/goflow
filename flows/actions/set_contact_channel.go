@@ -27,7 +27,7 @@ const TypeSetContactChannel string = "set_contact_channel"
 // @action set_contact_channel
 type SetContactChannelAction struct {
 	BaseAction
-	universalAction
+	onlineAction
 
 	Channel *flows.ChannelReference `json:"channel"`
 }

@@ -30,7 +30,7 @@ const TypeSendBroadcast string = "send_broadcast"
 // @action send_broadcast
 type SendBroadcastAction struct {
 	BaseAction
-	universalAction
+	onlineAction
 
 	Text         string                    `json:"text"`
 	Attachments  []string                  `json:"attachments"`
