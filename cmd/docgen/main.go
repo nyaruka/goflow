@@ -5,7 +5,6 @@ package main
 // go install github.com/nyaruka/goflow/cmd/docgen; docgen
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -20,6 +19,8 @@ const (
 	templateDir string = "cmd/docgen/templates"
 	outputDir          = "docs"
 )
+
+type urlResolver func(string, string) (string, error)
 
 var resources = []string{"styles.css"}
 var templates = []struct {
@@ -48,11 +49,8 @@ func GenerateDocs(baseDir string, outputDir string) error {
 		return fmt.Errorf("error building docs context: %s", err)
 	}
 
-	// post-process context values to resolve links between templates
+	// to post-process templates to resolve links between templates
 	linkResolver := createLinkResolver()
-	for k, v := range context {
-		context[k] = resolveLinks(v, linkResolver, linkTargets)
-	}
 
 	// ensure our output directory exists
 	if err := os.MkdirAll(path.Join(outputDir), 0777); err != nil {
@@ -69,7 +67,7 @@ func GenerateDocs(baseDir string, outputDir string) error {
 		renderedPath := path.Join(outputDir, "md", template.path)
 		htmlPath := path.Join(outputDir, template.path[0:len(template.path)-3]+".html")
 
-		if err := renderTemplate(templatePath, renderedPath, context); err != nil {
+		if err := renderTemplate(templatePath, renderedPath, context, linkResolver, linkTargets); err != nil {
 			return fmt.Errorf("error rendering template %s: %s", templatePath, err)
 		}
 
@@ -100,19 +98,21 @@ func GenerateDocs(baseDir string, outputDir string) error {
 }
 
 // renders a markdown template
-func renderTemplate(src, dst string, context map[string]string) error {
+func renderTemplate(src, dst string, context map[string]string, resolver urlResolver, linkTargets map[string]bool) error {
 	// generate our complete docs
 	docTpl, err := template.ParseFiles(src)
 	if err != nil {
 		return fmt.Errorf("error reading template file: %s", err)
 	}
 
-	output := &bytes.Buffer{}
+	output := &strings.Builder{}
 	if err := docTpl.Execute(output, context); err != nil {
 		return fmt.Errorf("error executing template: %s", err)
 	}
 
-	return ioutil.WriteFile(dst, output.Bytes(), 0666)
+	processed := resolveLinks(output.String(), resolver, linkTargets)
+
+	return ioutil.WriteFile(dst, []byte(processed), 0666)
 }
 
 // converts a markdown file to HTML
@@ -135,7 +135,7 @@ func renderHTML(src, dst, htmlTemplate string, variables map[string]string) erro
 	return exec.Command("pandoc", panDocArgs...).Run()
 }
 
-func createLinkResolver() func(string, string) (string, error) {
+func createLinkResolver() urlResolver {
 	typeTemplates := make(map[string]string)
 
 	for _, template := range templates {
@@ -153,7 +153,7 @@ func createLinkResolver() func(string, string) (string, error) {
 	}
 }
 
-func resolveLinks(s string, urlResolver func(string, string) (string, error), targets map[string]bool) string {
+func resolveLinks(s string, resolver urlResolver, targets map[string]bool) string {
 	r := regexp.MustCompile(`\[\w+:\w+\]`)
 	return r.ReplaceAllStringFunc(s, func(old string) string {
 		target := old[1 : len(old)-1]
@@ -162,7 +162,7 @@ func resolveLinks(s string, urlResolver func(string, string) (string, error), ta
 		}
 
 		groups := strings.Split(target, ":")
-		url, err := urlResolver(groups[0], groups[1])
+		url, err := resolver(groups[0], groups[1])
 		if err != nil {
 			panic(err.Error())
 		}

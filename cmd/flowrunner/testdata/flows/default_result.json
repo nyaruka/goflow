@@ -5,6 +5,7 @@
         "content": {
             "name": "Another Flow",
             "uuid": "c37ae862-4802-447a-a783-1fe029a170e9",
+            "language": "eng",
             "type": "messaging",
             "nodes": [
                 {

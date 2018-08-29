@@ -10,14 +10,14 @@ import (
 )
 
 type flow struct {
-	uuid               flows.FlowUUID
-	name               string
-	revision           int
-	language           utils.Language
-	flowType           flows.FlowType
-	expireAfterMinutes int
+	uuid     flows.FlowUUID
+	name     string
+	language utils.Language
+	flowType flows.FlowType
 
-	localization flows.Localization
+	revision           int
+	expireAfterMinutes int
+	localization       flows.Localization
 
 	nodes   []flows.Node
 	nodeMap map[flows.NodeUUID]flows.Node
@@ -28,13 +28,13 @@ type flow struct {
 
 type FlowObj = flow
 
-func NewFlow(uuid flows.FlowUUID, name string, revision int, language utils.Language, flowType flows.FlowType, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
+func NewFlow(uuid flows.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
-		revision:           revision,
 		language:           language,
 		flowType:           flowType,
+		revision:           revision,
 		expireAfterMinutes: expireAfterMinutes,
 		localization:       localization,
 		nodes:              nodes,
@@ -171,9 +171,9 @@ func (f *flow) buildNodeMap() error {
 type flowEnvelope struct {
 	UUID               flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name               string         `json:"name" validate:"required"`
-	Revision           int            `json:"revision"`
-	Language           utils.Language `json:"language"`
+	Language           utils.Language `json:"language" validate:"required"`
 	Type               flows.FlowType `json:"type" validate:"required"`
+	Revision           int            `json:"revision"`
 	ExpireAfterMinutes int            `json:"expire_after_minutes"`
 	Localization       localization   `json:"localization"`
 	Nodes              []*node        `json:"nodes"`
@@ -195,7 +195,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		nodes[n] = e.Nodes[n]
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Revision, e.Language, e.Type, e.ExpireAfterMinutes, e.Localization, nodes, nil)
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil)
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -204,9 +204,9 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		flowEnvelope: flowEnvelope{
 			UUID:               f.uuid,
 			Name:               f.name,
-			Revision:           f.revision,
 			Language:           f.language,
 			Type:               f.flowType,
+			Revision:           f.revision,
 			ExpireAfterMinutes: f.expireAfterMinutes,
 		},
 		UI: f.ui,

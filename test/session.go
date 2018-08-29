@@ -47,8 +47,9 @@ var sessionAssets = `[
         "content": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration",
-            "revision": 123,
+            "language": "eng",
             "type": "messaging",
+            "revision": 123,
             "nodes": [
                 {
                     "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
@@ -112,6 +113,7 @@ var sessionAssets = `[
         "content": {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Age",
+            "language": "eng",
             "type": "messaging",
             "nodes": [{
                 "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
@@ -142,6 +144,7 @@ var sessionAssets = `[
         "content": {
             "uuid": "fece6eac-9127-4343-9269-56e88f391562",
             "name": "Parent",
+            "language": "eng",
             "type": "messaging",
             "nodes": []
         }

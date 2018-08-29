@@ -92,6 +92,7 @@
         "content": {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Language",
+            "language": "eng",
             "type": "messaging",
             "nodes": [{
                 "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",

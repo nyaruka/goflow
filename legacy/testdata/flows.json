@@ -14,9 +14,9 @@
         "expected": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Empty",
-            "revision": 1,
             "language": "eng",
             "type": "messaging",
+            "revision": 1,
             "expire_after_minutes": 0,
             "localization": {},
             "nodes": [],
@@ -67,9 +67,9 @@
         "expected": {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Simple",
-            "revision": 123,
             "language": "eng",
             "type": "messaging",
+            "revision": 123,
             "expire_after_minutes": 0,
             "localization": {
                 "fre": {

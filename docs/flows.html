@@ -18,20 +18,30 @@
  </ul>  
 
 <h1 id="container">Container</h1>
-<p>Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) can be defined as follows and includes only the UUID of the flow, its name and the authoring language for the flow:</p>
+<p>Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) contains the following fields:</p>
+<ul>
+<li><code>uuid</code> the UUID</li>
+<li><code>name</code> the name</li>
+<li><code>language</code> the base authoring language used for localization</li>
+<li><code>type</code> the type, one of <code>messaging</code>, <code>messaging_offline</code>, <code>voice</code> whcih determines which actions are allowed in the flow</li>
+<li><code>nodes</code> the nodes (may be empty)</li>
+</ul>
+<p>For example:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Empty Flow&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7bb5e7c-ad49-4e65-9e24-bf7f1e4ff00a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7bb5e7c-ad49-4e65-9e24-bf7f1e4ff00a&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Empty Flow&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">    <span class="dt">&quot;language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;messaging&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">    <span class="dt">&quot;nodes&quot;</span><span class="fu">:</span> <span class="ot">[]</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="fu">}</span></a></code></pre></div>
 <h1 id="nodes">Nodes</h1>
 <p>Flow definitions are composed of zero or more nodes, the first node is always the entry node.</p>
 <p>A Node consists of:</p>
 <ul>
-<li><code>actions</code> a list of 0-n actions which will be executed upon first entering a Node</li>
+<li><code>uuid</code> the UUID</li>
+<li><code>actions</code> a list of 0-n actions which will be executed upon first entering a node</li>
 <li><code>wait</code> an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing</li>
-<li><code>exit</code> a list of 0-n exits which can be used to link to other Nodes</li>
+<li><code>exit</code> a list of 0-n exits which can be used to link to other nodes</li>
 <li><code>router</code> an optional router which determines which exit to take</li>
 </ul>
 <p>At its simplest, a node can be just a single action with no exits, wait or router, such as:</p>
@@ -46,7 +56,7 @@
 <p>If a node wishes to route to another node, it can do so by defining one or more exits, each with the UUID of the node that is next. Without a router defined, the first exit will always be taken.</p>
 <p>An exit consists of:</p>
 <ul>
-<li><code>uuid</code> the uuid of this exit</li>
+<li><code>uuid</code> the UUID</li>
 <li><code>destination_node_uuid</code> the uuid of the node that should be visited if this exit is chosen by the router (optional)</li>
 <li><code>name</code> a name for this exit (optional)</li>
 </ul>
@@ -75,7 +85,7 @@
 </ul>
 <p>Each case consists of:</p>
 <ul>
-<li><code>uuid</code> a unique uuid for this case</li>
+<li><code>uuid</code> the UUID</li>
 <li><code>type</code> the type of this test, this must be an excellent test (see below) and will be passed the value of the switch’s operand as its first value</li>
 <li><code>arguments</code> an optional list of templates which can be passed as extra parameters to the test (after the initial operand)</li>
 <li><code>exit_uuid</code> the uuid of the exit that should be taken if this case evaluated to true</li>
@@ -342,11 +352,11 @@ Event
 <a class="sourceLine" id="cb20-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb20-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8e64b588-d46e-4016-a5ef-59cf4d9d7a5b&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5">    <span class="dt">&quot;translations&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6">        <span class="dt">&quot;&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">        <span class="dt">&quot;eng&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb20-7" data-line-number="7">            <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;Hi Ryan Lewis, are you ready to complete today&#39;s survey?&quot;</span></a>
 <a class="sourceLine" id="cb20-8" data-line-number="8">        <span class="fu">}</span></a>
 <a class="sourceLine" id="cb20-9" data-line-number="9">    <span class="fu">},</span></a>
-<a class="sourceLine" id="cb20-10" data-line-number="10">    <span class="dt">&quot;base_language&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb20-10" data-line-number="10">    <span class="dt">&quot;base_language&quot;</span><span class="fu">:</span> <span class="st">&quot;eng&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb20-11" data-line-number="11">    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb20-12" data-line-number="12">        <span class="st">&quot;tel:+12065551212&quot;</span></a>
 <a class="sourceLine" id="cb20-13" data-line-number="13">    <span class="ot">]</span></a>

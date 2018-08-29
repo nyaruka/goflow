@@ -1,12 +1,21 @@
 # Container
 
-Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) can be defined as follows and includes only the UUID of the flow, its name and the authoring language for the flow:
+Flow definitions are defined as a list of nodes, the first node being the entry into the flow. The simplest possible flow containing no nodes whatsoever (and therefore being a no-op) contains the following fields:
+
+ * `uuid` the UUID
+ * `name` the name
+ * `language` the base authoring language used for localization
+ * `type` the type, one of `messaging`, `messaging_offline`, `voice` whcih determines which actions are allowed in the flow
+ * `nodes` the nodes (may be empty)
+
+For example:
 
 ```json
 {
-    "name": "Empty Flow",
     "uuid": "b7bb5e7c-ad49-4e65-9e24-bf7f1e4ff00a",
+    "name": "Empty Flow",
     "language": "eng",
+    "type": "messaging",
     "nodes": []
 }
 ```
@@ -17,9 +26,10 @@ Flow definitions are composed of zero or more nodes, the first node is always th
 
 A Node consists of:
 
- * `actions` a list of 0-n actions which will be executed upon first entering a Node
+ * `uuid` the UUID
+ * `actions` a list of 0-n actions which will be executed upon first entering a node
  * `wait` an optional pause in the flow waiting for some event to occur, such as a contact responding, a timeout for that response or a subflow completing
- * `exit` a list of 0-n exits which can be used to link to other Nodes
+ * `exit` a list of 0-n exits which can be used to link to other nodes
  * `router` an optional router which determines which exit to take
 
 At its simplest, a node can be just a single action with no exits, wait or router, such as:
@@ -39,7 +49,7 @@ If a node wishes to route to another node, it can do so by defining one or more 
 
 An exit consists of:
 
- * `uuid` the uuid of this exit 
+ * `uuid` the UUID
  * `destination_node_uuid` the uuid of the node that should be visited if this exit is chosen by the router (optional)
  * `name` a name for this exit (optional)
 
@@ -62,9 +72,10 @@ An exit consists of:
 
 ## Switch
 
-If a node wishes to route differently based on some state, it can add a `switch` router which defines one or more `cases`. Each case defines a `type` which is the name 
-of an expression function that is run by passing the evaluation of `operand` as the first argument. Cases may define additional arguments using the `arguments` array on a case.
-If no case evaluates to true, then the `default_exit_uuid` will be used otherwise flow execution will stop.
+If a node wishes to route differently based on some state, it can add a `switch` router which defines one or more `cases`. 
+Each case defines a `type` which is the name of an expression function that is run by passing the evaluation of `operand` 
+as the first argument. Cases may define additional arguments using the `arguments` array on a case. If no case evaluates 
+to true, then the `default_exit_uuid` will be used otherwise flow execution will stop.
 
 A switch router may also define a `result_name` parameters which will save the result of the case which evaluated as true.
 
@@ -77,7 +88,7 @@ A switch router consists of:
 
 Each case consists of:
 
- * `uuid` a unique uuid for this case
+ * `uuid` the UUID
  * `type` the type of this test, this must be an excellent test (see below) and will be passed the value of the switch's operand as its first value
  * `arguments` an optional list of templates which can be passed as extra parameters to the test (after the initial operand)
  * `exit_uuid` the uuid of the exit that should be taken if this case evaluated to true
@@ -367,11 +378,11 @@ with the evaluated text.
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
     "translations": {
-        "": {
+        "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
         }
     },
-    "base_language": "",
+    "base_language": "eng",
     "urns": [
         "tel:+12065551212"
     ]

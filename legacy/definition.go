@@ -1056,9 +1056,9 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	return definition.NewFlow(
 		f.Metadata.UUID,
 		f.Metadata.Name,
-		f.Metadata.Revision,
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],
+		f.Metadata.Revision,
 		f.Metadata.Expires,
 		localization,
 		nodes,
