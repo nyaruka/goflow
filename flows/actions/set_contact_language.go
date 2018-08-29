@@ -29,6 +29,8 @@ const TypeSetContactLanguage string = "set_contact_language"
 // @action set_contact_language
 type SetContactLanguageAction struct {
 	BaseAction
+	universalAction
+
 	Language string `json:"language"`
 }
 

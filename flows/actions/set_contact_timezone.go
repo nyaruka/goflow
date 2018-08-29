@@ -29,6 +29,8 @@ const TypeSetContactTimezone string = "set_contact_timezone"
 // @action set_contact_timezone
 type SetContactTimezoneAction struct {
 	BaseAction
+	universalAction
+
 	Timezone string `json:"timezone"`
 }
 

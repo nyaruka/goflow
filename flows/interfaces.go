@@ -170,6 +170,7 @@ type Action interface {
 
 	Execute(FlowRun, Step, EventLog) error
 	Validate(SessionAssets) error
+	AllowedFlowTypes() []FlowType
 	utils.Typed
 }
 

@@ -27,6 +27,8 @@ const TypeStartFlow string = "start_flow"
 // @action start_flow
 type StartFlowAction struct {
 	BaseAction
+	universalAction
+
 	Flow *flows.FlowReference `json:"flow" validate:"required"`
 }
 

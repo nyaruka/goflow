@@ -29,6 +29,8 @@ const TypeCallResthook string = "call_resthook"
 // @action call_resthook
 type CallResthookAction struct {
 	BaseAction
+	onlineAction
+
 	Resthook string `json:"resthook" validate:"required"`
 }
 

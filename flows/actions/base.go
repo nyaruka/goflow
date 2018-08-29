@@ -250,6 +250,22 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	return urnList, contactRefs, groupRefs, nil
 }
 
+// utility struct which sets the allowed flow types to any
+type universalAction struct{}
+
+// AllowedFlowTypes returns the flow types which this action is allowed to occur in
+func (a *universalAction) AllowedFlowTypes() []flows.FlowType {
+	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeMessagingOffline, flows.FlowTypeVoice}
+}
+
+// utility struct which sets the allowed flow types to any which run online
+type onlineAction struct{}
+
+// AllowedFlowTypes returns the flow types which this action is allowed to occur in
+func (a *onlineAction) AllowedFlowTypes() []flows.FlowType {
+	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeVoice}
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

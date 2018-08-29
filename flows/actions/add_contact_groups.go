@@ -29,6 +29,8 @@ const TypeAddContactGroups string = "add_contact_groups"
 // @action add_contact_groups
 type AddContactGroupsAction struct {
 	BaseAction
+	universalAction
+
 	Groups []*flows.GroupReference `json:"groups" validate:"required,dive"`
 }
 

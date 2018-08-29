@@ -34,6 +34,8 @@ const TypeCallWebhook string = "call_webhook"
 // @action call_webhook
 type CallWebhookAction struct {
 	BaseAction
+	onlineAction
+
 	Method  string            `json:"method"             validate:"required,http_method"`
 	URL     string            `json:"url"                validate:"required"`
 	Headers map[string]string `json:"headers,omitempty"`

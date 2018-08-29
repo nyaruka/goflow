@@ -91,6 +91,19 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 
 		// validate all the node's actions
 		for _, action := range node.Actions() {
+
+			// check that this action is valid for this flow type
+			isValidInType := false
+			for _, allowedType := range action.AllowedFlowTypes() {
+				if f.flowType == allowedType {
+					isValidInType = true
+					break
+				}
+			}
+			if !isValidInType {
+				return fmt.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), f.flowType)
+			}
+
 			uuidAlreadySeen := seenUUIDs[utils.UUID(action.UUID())]
 			if uuidAlreadySeen {
 				return fmt.Errorf("action UUID %s isn't unique", action.UUID())

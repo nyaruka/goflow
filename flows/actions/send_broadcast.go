@@ -30,6 +30,8 @@ const TypeSendBroadcast string = "send_broadcast"
 // @action send_broadcast
 type SendBroadcastAction struct {
 	BaseAction
+	universalAction
+
 	Text         string                    `json:"text"`
 	Attachments  []string                  `json:"attachments"`
 	QuickReplies []string                  `json:"quick_replies,omitempty"`

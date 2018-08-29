@@ -29,6 +29,8 @@ const TypeSetContactField string = "set_contact_field"
 // @action set_contact_field
 type SetContactFieldAction struct {
 	BaseAction
+	universalAction
+
 	Field *flows.FieldReference `json:"field" validate:"required"`
 	Value string                `json:"value"`
 }

@@ -28,6 +28,8 @@ const TypeSetContactName string = "set_contact_name"
 // @action set_contact_name
 type SetContactNameAction struct {
 	BaseAction
+	universalAction
+
 	Name string `json:"name"`
 }
 

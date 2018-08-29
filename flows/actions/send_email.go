@@ -32,6 +32,8 @@ const TypeSendEmail string = "send_email"
 // @action send_email
 type SendEmailAction struct {
 	BaseAction
+	onlineAction
+
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`
 	Body      string   `json:"body" validate:"required"`
