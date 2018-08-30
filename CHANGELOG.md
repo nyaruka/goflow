@@ -1,3 +1,8 @@
+v0.14.0
+----------
+ * Documentation improvements and make language required in flow definition
+ * Add flow type and validate that actions only occur in supported flow types
+
 v0.13.3
 ----------
  * Fix scanner treating parentheses inside string literals as expression boundaries
