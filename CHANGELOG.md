@@ -1,3 +1,8 @@
+v0.14.1
+----------
+ * Fix sentry integration
+ * Fix FIELD() blowing up when using space as separator
+
 v0.14.0
 ----------
  * Documentation improvements and make language required in flow definition
