@@ -136,6 +136,8 @@ var funcTests = []struct {
 	{"field", []types.XValue{xs("hello,World"), xs("1"), xs(",")}, xs("World")},
 	{"field", []types.XValue{xs("hello,world"), xn("2.1"), xs(",")}, xs("")},
 	{"field", []types.XValue{xs("hello world there now"), xn("2"), xs(" ")}, xs("there")},
+	{"field", []types.XValue{xs("hello   world    there     now"), xn("1"), xs(" ")}, xs("world")},
+	{"field", []types.XValue{xs("hello   world    there     now"), xn("5"), xs(" ")}, xs("")},
 	{"field", []types.XValue{xs("hello"), xi(0), xs(",")}, xs("hello")},
 	{"field", []types.XValue{xs("hello,World"), xn("-2"), xs(",")}, ERROR},
 	{"field", []types.XValue{xs(""), xs("notnum"), xs(",")}, ERROR},
