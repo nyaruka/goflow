@@ -6,7 +6,7 @@
                 "name": "Empty",
                 "revision": 1
             },
-            "base_language": "eng", 
+            "base_language": "eng",
             "flow_type": "F",
             "action_sets": [],
             "rule_sets": []
@@ -20,7 +20,10 @@
             "expire_after_minutes": 0,
             "localization": {},
             "nodes": [],
-            "_ui": {"nodes": {}, "stickies": {}}
+            "_ui": {
+                "nodes": {},
+                "stickies": {}
+            }
         }
     },
     {
@@ -31,16 +34,16 @@
                 "revision": 123,
                 "notes": [
                     {
-                        "y": 22.3435, 
-                        "x": 37, 
-                        "body": "This is a note", 
+                        "y": 22.3435,
+                        "x": 37,
+                        "body": "This is a note",
                         "title": "Attention"
                     }
                 ]
             },
-            "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597", 
+            "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
             "base_language": "eng",
-            "flow_type": "M", 
+            "flow_type": "M",
             "action_sets": [
                 {
                     "y": 1,
@@ -49,16 +52,16 @@
                     "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
                     "exit_uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314",
                     "actions": [
-                      {
-                        "msg": {
-                          "eng": "Hello",
-                          "fre": "Bonjour"
-                        },
-                        "media": {},
-                        "send_all": false,
-                        "type": "reply",
-                        "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420"
-                      }
+                        {
+                            "msg": {
+                                "eng": "Hello",
+                                "fre": "Bonjour"
+                            },
+                            "media": {},
+                            "send_all": false,
+                            "type": "reply",
+                            "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420"
+                        }
                     ]
                 }
             ],

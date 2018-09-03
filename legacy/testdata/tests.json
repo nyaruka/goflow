@@ -8,7 +8,10 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_between",
-            "arguments": ["@contact.fields.age", "34"],
+            "arguments": [
+                "@contact.fields.age",
+                "34"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -24,17 +27,21 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_all_words",
-            "arguments": ["yes yeah"],
+            "arguments": [
+                "yes yeah"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
                 "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": ["oui"]
+                    "arguments": [
+                        "oui"
+                    ]
                 }
             }
         }
-    }, 
+    },
     {
         "legacy_test": {
             "type": "contains_any",
@@ -46,13 +53,17 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_any_word",
-            "arguments": ["yes yeah"],
+            "arguments": [
+                "yes yeah"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
                 "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": ["oui"]
+                    "arguments": [
+                        "oui"
+                    ]
                 }
             }
         }
@@ -65,7 +76,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_any_word",
-            "arguments": ["oops not a dict"],
+            "arguments": [
+                "oops not a dict"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -81,13 +94,17 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_only_phrase",
-            "arguments": ["yes yeah"],
+            "arguments": [
+                "yes yeah"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
                 "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": ["oui"]
+                    "arguments": [
+                        "oui"
+                    ]
                 }
             }
         }
@@ -103,13 +120,17 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_phrase",
-            "arguments": ["yes yeah"],
+            "arguments": [
+                "yes yeah"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
                 "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": ["oui"]
+                    "arguments": [
+                        "oui"
+                    ]
                 }
             }
         }
@@ -133,7 +154,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date_gt",
-            "arguments": ["27-7-2017"],
+            "arguments": [
+                "27-7-2017"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -146,7 +169,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date_lt",
-            "arguments": ["27-7-2017"],
+            "arguments": [
+                "27-7-2017"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -159,7 +184,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_date_eq",
-            "arguments": ["27-7-2017"],
+            "arguments": [
+                "27-7-2017"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -172,7 +199,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_district",
-            "arguments": ["@run.results.state"],
+            "arguments": [
+                "@run.results.state"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -196,7 +225,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_eq",
-            "arguments": ["@contact.fields.age"],
+            "arguments": [
+                "@contact.fields.age"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -209,7 +240,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_gt",
-            "arguments": ["@contact.fields.age"],
+            "arguments": [
+                "@contact.fields.age"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -222,7 +255,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_gte",
-            "arguments": ["@contact.fields.age"],
+            "arguments": [
+                "@contact.fields.age"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -230,12 +265,17 @@
     {
         "legacy_test": {
             "type": "in_group",
-            "test": {"uuid": "e9963476-1751-4078-9cc8-32a01283751a", "name": "Beta"}
+            "test": {
+                "uuid": "e9963476-1751-4078-9cc8-32a01283751a",
+                "name": "Beta"
+            }
         },
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_group",
-            "arguments": ["e9963476-1751-4078-9cc8-32a01283751a"],
+            "arguments": [
+                "e9963476-1751-4078-9cc8-32a01283751a"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -248,7 +288,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_lt",
-            "arguments": ["@contact.fields.age"],
+            "arguments": [
+                "@contact.fields.age"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -261,7 +303,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_number_lte",
-            "arguments": ["@contact.fields.age"],
+            "arguments": [
+                "@contact.fields.age"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -310,13 +354,17 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_pattern",
-            "arguments": ["[Yy]eah?"],
+            "arguments": [
+                "[Yy]eah?"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
                 "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": ["[Oo]ui"]
+                    "arguments": [
+                        "[Oo]ui"
+                    ]
                 }
             }
         }
@@ -332,13 +380,17 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_beginning",
-            "arguments": ["yes"],
+            "arguments": [
+                "yes"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {
             "fra": {
                 "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-                    "arguments": ["oui"]
+                    "arguments": [
+                        "oui"
+                    ]
                 }
             }
         }
@@ -362,7 +414,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "is_text_eq",
-            "arguments": ["completed"],
+            "arguments": [
+                "completed"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -375,7 +429,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "is_text_eq",
-            "arguments": ["expired"],
+            "arguments": [
+                "expired"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -389,7 +445,10 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_ward",
-            "arguments": ["@run.results.district", "@run.results.state"],
+            "arguments": [
+                "@run.results.district",
+                "@run.results.state"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -402,7 +461,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_webhook_status",
-            "arguments": ["success"],
+            "arguments": [
+                "success"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
@@ -415,7 +476,9 @@
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_webhook_status",
-            "arguments": ["response_error"],
+            "arguments": [
+                "response_error"
+            ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },
         "expected_localization": {}
