@@ -183,8 +183,9 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 //   }
 //
 type migrateRequest struct {
-	Flow      json.RawMessage `json:"flow"`
-	IncludeUI *bool           `json:"include_ui"`
+	Flow          json.RawMessage `json:"flow"`
+	CollapseExits *bool           `json:"collapse_exits"`
+	IncludeUI     *bool           `json:"include_ui"`
 }
 
 func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -211,9 +212,10 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 		return nil, err
 	}
 
+	collapseExits := migrate.CollapseExits == nil || *migrate.CollapseExits
 	includeUI := migrate.IncludeUI == nil || *migrate.IncludeUI
 
-	return legacyFlow.Migrate(includeUI)
+	return legacyFlow.Migrate(collapseExits, includeUI)
 }
 
 // Evaluates an expression

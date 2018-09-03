@@ -116,6 +116,7 @@ type TestMigrationTest struct {
 
 type RuleSetMigrationTest struct {
 	LegacyRuleSet        json.RawMessage `json:"legacy_ruleset"`
+	CollapseExits        bool            `json:"collapse_exits"`
 	ExpectedNode         json.RawMessage `json:"expected_node"`
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
 }
@@ -136,7 +137,7 @@ func TestFlowMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(test.Legacy)
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(true)
+		migratedFlow, err := legacyFlow.Migrate(true, true)
 		require.NoError(t, err)
 
 		migratedFlowJSON, _ := utils.JSONMarshalPretty(migratedFlow)
@@ -159,7 +160,7 @@ func TestActionMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(false)
+		migratedFlow, err := legacyFlow.Migrate(true, false)
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
@@ -190,7 +191,7 @@ func TestTestMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(false)
+		migratedFlow, err := legacyFlow.Migrate(true, false)
 		require.NoError(t, err)
 
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
@@ -226,7 +227,7 @@ func TestRuleSetMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(false)
+		migratedFlow, err := legacyFlow.Migrate(test.CollapseExits, false)
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations
