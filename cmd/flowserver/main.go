@@ -52,6 +52,7 @@ func main() {
 			log.Fatalf("Invalid sentry DSN: '%s': %s", config.SentryDSN, err)
 		}
 		log.StandardLogger().Hooks.Add(hook)
+		log.Info("error reporting to sentry configured")
 	}
 
 	runServerUntilInterrupt(config)

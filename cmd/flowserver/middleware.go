@@ -4,12 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"runtime/debug"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/getsentry/raven-go"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 	log "github.com/sirupsen/logrus"
@@ -48,10 +46,7 @@ func panicRecovery(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rvr := recover(); rvr != nil {
-				debug.PrintStack()
-				asString := fmt.Sprint(rvr)
-				packet := raven.NewPacket(asString, raven.NewException(errors.New(asString), raven.GetOrNewStacktrace(rvr.(error), 2, 3, nil)), raven.NewHttp(r))
-				raven.Capture(packet, nil)
+				log.WithError(errors.New(fmt.Sprint(rvr))).Error("recovered from panic")
 
 				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			}
