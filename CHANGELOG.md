@@ -1,3 +1,7 @@
+v0.14.2
+----------
+ * Small refactor of how we migrate rules to cases/exits that fixes an ordering bug and add option to not collapse exits
+
 v0.14.1
 ----------
  * Fix sentry integration
