@@ -1,3 +1,8 @@
+v0.14.2
+----------
+ * Fix sentry integration
+ * Fix FIELD() blowing up when using " " as separator
+
 v0.14.1
 ----------
  * Fix sentry integration
