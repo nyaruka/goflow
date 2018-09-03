@@ -525,19 +525,20 @@ func Field(env utils.Environment, text types.XText, args ...types.XValue) types.
 	}
 
 	fields := strings.Split(text.Native(), sep.Native())
-	if field >= len(fields) {
-		return types.XTextEmpty
-	}
 
 	// when using a space as a delimiter, we consider it splitting on whitespace, so remove empty values
 	if sep.Native() == " " {
 		var newFields []string
-		for _, field := range fields {
-			if field != "" {
-				newFields = append(newFields, field)
+		for _, f := range fields {
+			if f != "" {
+				newFields = append(newFields, f)
 			}
 		}
 		fields = newFields
+	}
+
+	if field >= len(fields) {
+		return types.XTextEmpty
 	}
 
 	return types.NewXText(strings.TrimSpace(fields[field]))
