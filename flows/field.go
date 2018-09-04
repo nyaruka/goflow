@@ -71,11 +71,11 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.number
 		}
 	case FieldValueTypeState:
-		return types.NewXText(string(v.state))
+		return v.state
 	case FieldValueTypeDistrict:
-		return types.NewXText(string(v.district))
+		return v.district
 	case FieldValueTypeWard:
-		return types.NewXText(string(v.ward))
+		return v.ward
 	}
 	return nil
 }

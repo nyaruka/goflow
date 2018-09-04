@@ -19,6 +19,11 @@
                 "value_type": "text"
             },
             {
+                "key": "raw_district",
+                "label": "Raw District",
+                "value_type": "text"
+            },
+            {
                 "key": "state",
                 "label": "State",
                 "value_type": "state"
