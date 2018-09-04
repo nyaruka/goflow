@@ -10,6 +10,9 @@ import (
 // UINodeType tells the editor how to render a particular node
 type UINodeType string
 
+// UINodeConfig contains config unique to its type
+type UINodeConfig map[string]string
+
 // the different node types supported by the editor
 const (
 	UINodeTypeWaitForResponse           UINodeType = "wait_for_response"
@@ -57,14 +60,19 @@ func NewUI() UI {
 }
 
 // AddNode adds information about a node
-func (u UI) AddNode(uuid flows.NodeUUID, x, y int, uiType UINodeType) {
+func (u UI) AddNode(uuid flows.NodeUUID, x, y int, nodeConf uiConfig) {
 	node := make(map[string]interface{})
 	node["position"] = map[string]int{
 		"left": x,
 		"top":  y,
 	}
-	if uiType != "" {
-		node["type"] = uiType
+
+	if nodeConf.nodeType != "" {
+		node["type"] = nodeConf.nodeType
+	}
+
+	if nodeConf.uiNodeConfig != nil {
+		node["config"] = nodeConf.uiNodeConfig
 	}
 
 	u["nodes"].(map[flows.NodeUUID]interface{})[uuid] = node
