@@ -19,6 +19,16 @@
                 "value_type": "text"
             },
             {
+                "key": "raw_district",
+                "label": "Raw District",
+                "value_type": "text"
+            },
+            {
+                "key": "district",
+                "label": "District",
+                "value_type": "district"
+            },
+            {
                 "key": "state",
                 "label": "State",
                 "value_type": "state"
@@ -40,7 +50,7 @@
             },
             {
                 "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
-                "name": "Azuay State"
+                "name": "Kigali City Members"
             },
             {
                 "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
@@ -86,7 +96,40 @@
             },
             {
                 "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168",
-                "name": "Azuay Messages"
+                "name": "Kigali City Messages"
+            }
+        ]
+    },
+    {
+        "type": "location_hierarchy",
+        "url": "http://testserver/assets/location_hierarchy/",
+        "content": [
+            {
+                "name": "Rwanda",
+                "aliases": ["Ruanda"],		
+                "children": [
+                    {
+                        "name": "Kigali City",
+                        "aliases": ["Kigali", "Kigari"],
+                        "children": [
+                            {
+                                "name": "Gasabo",
+                                "children": [
+                                    {
+                                        "name": "Gisozi"
+                                    },
+                                    {
+                                        "name": "Ndera"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Nyarugenge",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }
