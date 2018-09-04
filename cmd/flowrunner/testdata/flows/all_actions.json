@@ -42,7 +42,7 @@
                                     "name": "Survey Audience"
                                 },
                                 {
-                                    "name_match": "@(format_location(contact.fields.state)) State"
+                                    "name_match": "@(format_location(contact.fields.state)) Members"
                                 }
                             ]
                         },
