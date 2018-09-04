@@ -594,11 +594,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-<<<<<<< HEAD
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, UINodeType, UINodeConfig, error) {
-=======
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, UINodeType, error) {
->>>>>>> 7826ce8deab82d64201615e1a2fcd0d9f20edbe1
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, UINodeType, UINodeConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
@@ -1025,11 +1021,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	}
 
 	for i := range f.RuleSets {
-<<<<<<< HEAD
-		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization)
-=======
-		node, uiType, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization, collapseExits)
->>>>>>> 7826ce8deab82d64201615e1a2fcd0d9f20edbe1
+		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization, collapseExits)
 		if err != nil {
 			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
 		}
