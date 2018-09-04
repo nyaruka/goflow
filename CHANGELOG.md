@@ -1,7 +1,16 @@
+v0.14.3
+----------
+ * Fix message attachment expressions not being URL encoded
+ * Fix parsing of locations
+
+v0.14.2
+----------
+ * Small refactor of how we migrate rules to cases/exits that fixes an ordering bug and add option to not collapse exits
+
 v0.14.1
 ----------
  * Fix sentry integration
- * Fix FIELD() blowing up when using " " as separator
+ * Fix FIELD() blowing up when using space as separator
 
 v0.14.0
 ----------

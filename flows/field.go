@@ -71,11 +71,11 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.number
 		}
 	case FieldValueTypeState:
-		return types.NewXText(string(v.state))
+		return v.state
 	case FieldValueTypeDistrict:
-		return types.NewXText(string(v.district))
+		return v.district
 	case FieldValueTypeWard:
-		return types.NewXText(string(v.ward))
+		return v.ward
 	}
 	return nil
 }
@@ -208,7 +208,7 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 }
 
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fieldSet *FieldSet, valueType FieldValueType) *utils.Location {
-	field := fieldSet.FirstOfType(FieldValueTypeDistrict)
+	field := fieldSet.FirstOfType(valueType)
 	if field == nil {
 		return nil
 	}

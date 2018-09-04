@@ -58,13 +58,42 @@
                     "exits": [
                         {
                             "uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "destination_node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                             "name": "Testers"
                         },
                         {
                             "uuid": "b8922464-5343-43c9-ad92-09e01c4c9a2f",
-                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "destination_node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                             "name": "Other"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
+                    "router": {
+                        "type": "switch",
+                        "result_name": "District Check",
+                        "default_exit_uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
+                        "operand": "@contact.fields.raw_district",
+                        "cases": [
+                            {
+                                "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "type": "has_district",
+                                "arguments": [],
+                                "exit_uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "96119ebb-8c08-47bd-bbff-6cd94adf64b5",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "name": "Valid"
+                        },
+                        {
+                            "uuid": "86dbcb84-0ad0-4736-80c6-44b50d5568c8",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
+                            "name": "Invalid"
                         }
                     ]
                 },
@@ -75,6 +104,12 @@
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
                             "text": "URN Check: @run.results.urn_check\nGroup Check: @run.results.group_check"
+                        },
+                        {
+                            "uuid": "e9bf771c-9972-4870-ac0e-8f635dba91e0",
+                            "type": "set_contact_field",
+                            "field": {"key": "district", "name": "District"},
+                            "value": "@run.results.district_check"
                         }
                     ]
                 }

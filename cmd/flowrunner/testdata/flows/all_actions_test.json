@@ -28,7 +28,7 @@
                             "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
                         },
                         {
-                            "name": "Azuay Messages",
+                            "name": "Kigali City Messages",
                             "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168"
                         }
                     ],
@@ -43,7 +43,7 @@
                             "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                         },
                         {
-                            "name": "Azuay State",
+                            "name": "Kigali City Members",
                             "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
                         }
                     ],
@@ -109,9 +109,12 @@
                                 "first_name": {
                                     "text": "Ben"
                                 },
+                                "raw_district": {
+                                    "text": "I live in gasabo"
+                                },
                                 "state": {
-                                    "state": "Ecuador > Azuay",
-                                    "text": "Ecuador > Azuay"
+                                    "state": "Rwanda > Kigali City",
+                                    "text": "Rwanda > Kigali City"
                                 }
                             },
                             "groups": [
@@ -173,13 +176,13 @@
                     "translations": {
                         "eng": {
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
                             ],
                             "text": "Hi Ben Haggerty, are you ready for these attachments?"
                         },
                         "spa": {
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
                             ],
                             "text": "Hi Ben Haggerty, are you ready for these attachments?"
                         }
@@ -279,7 +282,7 @@
                     "created_on": "2018-07-06T12:30:21.123456789Z",
                     "msg": {
                         "attachments": [
-                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
                         ],
                         "channel": {
                             "name": "Android Channel",
@@ -329,6 +332,16 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "field": {
+                        "key": "district",
+                        "name": "District"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_field_changed",
+                    "value": "I live in gasabo"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:30.123456789Z",
                     "request": "GET /?cmd=success&name=Jeff%20Jefferson HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
@@ -345,15 +358,23 @@
                         "activation_token": {
                             "text": "XXX-YYY-ZZZ"
                         },
+                        "district": {
+                            "district": "Rwanda > Kigali City > Gasabo",
+                            "state": "Rwanda > Kigali City",
+                            "text": "I live in gasabo"
+                        },
                         "first_name": {
                             "text": "Ben"
                         },
                         "gender": {
                             "text": "Male"
                         },
+                        "raw_district": {
+                            "text": "I live in gasabo"
+                        },
                         "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
+                            "state": "Rwanda > Kigali City",
+                            "text": "Rwanda > Kigali City"
                         }
                     },
                     "groups": [
@@ -411,7 +432,7 @@
                                         "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
                                     },
                                     {
-                                        "name": "Azuay Messages",
+                                        "name": "Kigali City Messages",
                                         "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168"
                                     }
                                 ],
@@ -426,7 +447,7 @@
                                         "uuid": "2aad21f6-30b7-42c5-bd7f-1b720c154817"
                                     },
                                     {
-                                        "name": "Azuay State",
+                                        "name": "Kigali City Members",
                                         "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
                                     }
                                 ],
@@ -492,9 +513,12 @@
                                             "first_name": {
                                                 "text": "Ben"
                                             },
+                                            "raw_district": {
+                                                "text": "I live in gasabo"
+                                            },
                                             "state": {
-                                                "state": "Ecuador > Azuay",
-                                                "text": "Ecuador > Azuay"
+                                                "state": "Rwanda > Kigali City",
+                                                "text": "Rwanda > Kigali City"
                                             }
                                         },
                                         "groups": [
@@ -556,13 +580,13 @@
                                 "translations": {
                                     "eng": {
                                         "attachments": [
-                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
                                         ],
                                         "text": "Hi Ben Haggerty, are you ready for these attachments?"
                                     },
                                     "spa": {
                                         "attachments": [
-                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
                                         ],
                                         "text": "Hi Ben Haggerty, are you ready for these attachments?"
                                     }
@@ -662,7 +686,7 @@
                                 "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
                                     "attachments": [
-                                        "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Azuay"
+                                        "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
                                     ],
                                     "channel": {
                                         "name": "Android Channel",
@@ -712,6 +736,16 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "field": {
+                                    "key": "district",
+                                    "name": "District"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "contact_field_changed",
+                                "value": "I live in gasabo"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "request": "GET /?cmd=success&name=Jeff%20Jefferson HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
@@ -721,8 +755,8 @@
                                 "url": "http://127.0.0.1:49999/?cmd=success&name=Jeff%20Jefferson"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:32.123456789Z",
-                        "expires_on": "2018-07-06T12:30:30.123456789Z",
+                        "exited_on": "2018-07-06T12:30:34.123456789Z",
+                        "expires_on": "2018-07-06T12:30:32.123456789Z",
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
@@ -765,9 +799,9 @@
                         }
                     },
                     {
-                        "created_on": "2018-07-06T12:30:29.123456789Z",
-                        "exited_on": "2018-07-06T12:30:31.123456789Z",
-                        "expires_on": "2018-07-06T12:30:30.123456789Z",
+                        "created_on": "2018-07-06T12:30:31.123456789Z",
+                        "exited_on": "2018-07-06T12:30:33.123456789Z",
+                        "expires_on": "2018-07-06T12:30:32.123456789Z",
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -786,9 +820,12 @@
                             "first_name": {
                                 "text": "Ben"
                             },
+                            "raw_district": {
+                                "text": "I live in gasabo"
+                            },
                             "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
+                                "state": "Rwanda > Kigali City",
+                                "text": "Rwanda > Kigali City"
                             }
                         },
                         "id": 1234567,
@@ -837,9 +874,12 @@
                 "first_name": {
                     "text": "Ben"
                 },
+                "raw_district": {
+                    "text": "I live in gasabo"
+                },
                 "state": {
-                    "state": "Ecuador > Azuay",
-                    "text": "Ecuador > Azuay"
+                    "state": "Rwanda > Kigali City",
+                    "text": "Rwanda > Kigali City"
                 }
             },
             "id": 1234567,

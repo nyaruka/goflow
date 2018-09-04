@@ -593,235 +593,19 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 	}
 }
 
-// migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, exitMap map[string]flows.Exit, r Rule, localization flows.Localization) (routers.Case, error) {
-	category := r.Category.Base(baseLanguage)
-
-	newType, _ := testTypeMappings[r.Test.Type]
-	var omitOperand bool
-	var arguments []string
-	var err error
-
-	caseUUID := utils.UUID(utils.NewUUID())
-
-	switch r.Test.Type {
-
-	// tests that take no arguments
-	case "date", "has_email", "not_empty", "number", "phone", "state":
-		arguments = []string{}
-
-	// tests against a single numeric value
-	case "eq", "gt", "gte", "lt", "lte":
-		test := numericTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := expressions.MigrateTemplate(string(test.Test), expressions.ExtraAsFunction, false)
-		if err != nil {
-			return routers.Case{}, err
-		}
-		arguments = []string{migratedTest}
-
-	case "between":
-		test := betweenTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		migratedMin, err := expressions.MigrateTemplate(test.Min, expressions.ExtraAsFunction, false)
-		if err != nil {
-			return routers.Case{}, err
-		}
-		migratedMax, err := expressions.MigrateTemplate(test.Max, expressions.ExtraAsFunction, false)
-		if err != nil {
-			return routers.Case{}, err
-		}
-		arguments = []string{migratedMin, migratedMax}
-
-	// tests against a single localized string
-	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
-		test := localizedStringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test.Base(baseLanguage)}
-
-		addTranslationMap(baseLanguage, localization, test.Test, caseUUID, "arguments")
-
-	// tests against a single date value
-	case "date_equal", "date_after", "date_before":
-		test := stringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test}
-
-	// tests against a single group value
-	case "in_group":
-		test := groupTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{string(test.Test.UUID)}
-
-	case "subflow":
-		newType = "is_text_eq"
-		test := subflowTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.ExitType}
-
-	case "webhook_status":
-		test := webhookTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		if test.Status == "success" {
-			arguments = []string{"success"}
-		} else {
-			arguments = []string{"response_error"}
-		}
-
-	case "airtime_status":
-		test := airtimeTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.ExitStatus}
-
-	case "timeout":
-		omitOperand = true
-		arguments = []string{"@run"}
-
-	case "district":
-		test := stringTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		migratedState, err := expressions.MigrateTemplate(test.Test, expressions.ExtraAsFunction, false)
-		if err != nil {
-			return routers.Case{}, err
-		}
-		arguments = []string{migratedState}
-
-	case "ward":
-		test := wardTest{}
-		err = json.Unmarshal(r.Test.Data, &test)
-		migratedDistrict, err := expressions.MigrateTemplate(test.District, expressions.ExtraAsFunction, false)
-		if err != nil {
-			return routers.Case{}, err
-		}
-		migratedState, err := expressions.MigrateTemplate(test.State, expressions.ExtraAsFunction, false)
-		if err != nil {
-			return routers.Case{}, err
-		}
-		arguments = []string{migratedDistrict, migratedState}
-
-	default:
-		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
-	}
-
-	return routers.Case{
-		UUID:        caseUUID,
-		Type:        newType,
-		Arguments:   arguments,
-		OmitOperand: omitOperand,
-		ExitUUID:    exitMap[category].UUID(),
-	}, err
-}
-
-// temporary struct for migrating categories to cases and exits
-type categoryName struct {
-	uuid         flows.ExitUUID
-	destination  flows.NodeUUID
-	translations Translations
-	order        int
-}
-
-func parseRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization) ([]flows.Exit, []routers.Case, flows.ExitUUID, error) {
-
-	// find our discrete categories and Other category (which uses the true rule)
-	categoryMap := make(map[string]categoryName)
-	var otherCategory *categoryName
-	var otherCategoryBaseName string
-
-	order := 0
-	for _, rule := range r.Rules {
-		categoryBaseName := rule.Category.Base(baseLanguage)
-
-		if rule.Test.Type == "true" {
-			otherCategoryBaseName = categoryBaseName
-			otherCategory = &categoryName{
-				uuid:         rule.UUID,
-				destination:  rule.Destination,
-				translations: rule.Category,
-				order:        -1,
-			}
-		} else {
-			_, ok := categoryMap[categoryBaseName]
-			if !ok {
-				categoryMap[categoryBaseName] = categoryName{
-					uuid:         rule.UUID,
-					destination:  rule.Destination,
-					translations: rule.Category,
-					order:        order,
-				}
-				order++
-			}
-		}
-	}
-
-	// create exits for each category
-	exits := make([]flows.Exit, len(categoryMap))
-	exitMap := make(map[string]flows.Exit)
-	for k, category := range categoryMap {
-		addTranslationMap(baseLanguage, localization, category.translations, utils.UUID(category.uuid), "name")
-
-		exits[category.order] = definition.NewExit(category.uuid, category.destination, k)
-		exitMap[k] = exits[category.order]
-	}
-
-	var defaultExitUUID flows.ExitUUID
-
-	if otherCategory != nil {
-		addTranslationMap(baseLanguage, localization, otherCategory.translations, utils.UUID(otherCategory.uuid), "name")
-		defaultExit := definition.NewExit(otherCategory.uuid, otherCategory.destination, otherCategoryBaseName)
-		exits = append(exits, defaultExit)
-
-		defaultExitUUID = defaultExit.UUID()
-	}
-
-	// create any cases to map to our new exits
-	var cases []routers.Case
-	for i := range r.Rules {
-		// skip Other rules
-		if r.Rules[i].Test.Type == "true" {
-			continue
-		}
-
-		c, err := migrateRule(baseLanguage, exitMap, r.Rules[i], localization)
-		if err != nil {
-			return nil, nil, "", err
-		}
-
-		cases = append(cases, c)
-
-		if r.Rules[i].Test.Type == "webhook_status" {
-			// webhook failures don't have a case, instead they become the default
-			defaultExitUUID = exitMap[r.Rules[i].Category.Base(baseLanguage)].UUID()
-		}
-	}
-
-	// for webhook rulesets we need to map 2 rules (success/failure) to 3 cases and exits (success/response_error/connection_error)
-	if r.Type == "webhook" || r.Type == "resthook" {
-		connectionErrorCategory := "Connection Error"
-		connectionErrorExitUUID := flows.ExitUUID(utils.NewUUID())
-		connectionErrorExit := definition.NewExit(connectionErrorExitUUID, exits[1].DestinationNodeUUID(), connectionErrorCategory)
-
-		exits = append(exits, connectionErrorExit)
-		cases = append(cases, routers.Case{
-			UUID:        utils.UUID(utils.NewUUID()),
-			Type:        "has_webhook_status",
-			Arguments:   []string{"connection_error"},
-			OmitOperand: false,
-			ExitUUID:    connectionErrorExitUUID,
-		})
-	}
-
-	return exits, cases, defaultExitUUID, nil
-}
-
 // migrates the given legacy rulset to a node with a router
+<<<<<<< HEAD
 func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization) (flows.Node, UINodeType, UINodeConfig, error) {
+=======
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, UINodeType, error) {
+>>>>>>> 7826ce8deab82d64201615e1a2fcd0d9f20edbe1
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
 	var uiType UINodeType
 	var uiNodeConfig UINodeConfig
 
-	exits, cases, defaultExit, err := parseRules(lang, r, localization)
+	cases, exits, defaultExit, err := migrateRules(lang, r, localization, collapseExits)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -1010,6 +794,191 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	return definition.NewNode(r.UUID, newActions, router, exits, wait), uiType, uiNodeConfig, nil
 }
 
+// migrates a set of legacy rules to sets of cases and exits
+func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) ([]routers.Case, []flows.Exit, flows.ExitUUID, error) {
+	cases := make([]routers.Case, 0, len(r.Rules))
+	exits := make([]flows.Exit, 0, len(r.Rules))
+	var defaultExitUUID flows.ExitUUID
+
+	ruleUUIDsToExits := make(map[flows.ExitUUID]flows.Exit, len(r.Rules))
+	categoriesToExits := make(map[string]flows.Exit, len(r.Rules))
+
+	// creating exits from the rules
+	for _, rule := range r.Rules {
+		baseName := rule.Category.Base(baseLanguage)
+		var exit flows.Exit
+
+		// if we're collapsing exits, then we can use the exit previously created for this category
+		if collapseExits && rule.Test.Type != "true" {
+			exit = categoriesToExits[baseName]
+		}
+		if exit == nil {
+			exit = definition.NewExit(rule.UUID, rule.Destination, baseName)
+			exits = append(exits, exit)
+		}
+
+		ruleUUIDsToExits[rule.UUID] = exit
+		categoriesToExits[baseName] = exit
+
+		addTranslationMap(baseLanguage, localization, rule.Category, utils.UUID(exit.UUID()), "name")
+	}
+
+	// and then a case for each rule
+	for _, rule := range r.Rules {
+		// implicit Other rules don't become cases
+		if rule.Test.Type == "true" {
+			defaultExitUUID = rule.UUID
+			continue
+		} else if rule.Test.Type == "webhook_status" {
+			// default case for a webhook ruleset is the last migrated rule (failure)
+			defaultExitUUID = rule.UUID
+		}
+
+		exit := ruleUUIDsToExits[rule.UUID]
+
+		kase, err := migrateRule(baseLanguage, rule, exit, localization)
+		if err != nil {
+			return nil, nil, "", err
+		}
+
+		cases = append(cases, kase)
+	}
+
+	// for webhook rulesets we need to add an additional case/error pair for connection errors
+	if r.Type == "webhook" || r.Type == "resthook" {
+		connectionErrorCategory := "Connection Error"
+		connectionErrorExit := definition.NewExit(flows.ExitUUID(utils.NewUUID()), exits[1].DestinationNodeUUID(), connectionErrorCategory)
+
+		cases = append(cases, routers.Case{
+			UUID:        utils.UUID(utils.NewUUID()),
+			Type:        "has_webhook_status",
+			Arguments:   []string{"connection_error"},
+			OmitOperand: false,
+			ExitUUID:    connectionErrorExit.UUID(),
+		})
+		exits = append(exits, connectionErrorExit)
+	}
+
+	return cases, exits, defaultExitUUID, nil
+}
+
+// migrates the given legacy rule to a router case
+func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localization flows.Localization) (routers.Case, error) {
+	newType, _ := testTypeMappings[r.Test.Type]
+	var omitOperand bool
+	var arguments []string
+	var err error
+
+	caseUUID := utils.UUID(utils.NewUUID())
+
+	switch r.Test.Type {
+
+	// tests that take no arguments
+	case "date", "has_email", "not_empty", "number", "phone", "state":
+		arguments = []string{}
+
+	// tests against a single numeric value
+	case "eq", "gt", "gte", "lt", "lte":
+		test := numericTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		migratedTest, err := expressions.MigrateTemplate(string(test.Test), expressions.ExtraAsFunction, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedTest}
+
+	case "between":
+		test := betweenTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		migratedMin, err := expressions.MigrateTemplate(test.Min, expressions.ExtraAsFunction, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		migratedMax, err := expressions.MigrateTemplate(test.Max, expressions.ExtraAsFunction, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedMin, migratedMax}
+
+	// tests against a single localized string
+	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
+		test := localizedStringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test.Base(baseLanguage)}
+
+		addTranslationMap(baseLanguage, localization, test.Test, caseUUID, "arguments")
+
+	// tests against a single date value
+	case "date_equal", "date_after", "date_before":
+		test := stringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.Test}
+
+	// tests against a single group value
+	case "in_group":
+		test := groupTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{string(test.Test.UUID)}
+
+	case "subflow":
+		newType = "is_text_eq"
+		test := subflowTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.ExitType}
+
+	case "webhook_status":
+		test := webhookTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		if test.Status == "success" {
+			arguments = []string{"success"}
+		} else {
+			arguments = []string{"response_error"}
+		}
+
+	case "airtime_status":
+		test := airtimeTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		arguments = []string{test.ExitStatus}
+
+	case "timeout":
+		omitOperand = true
+		arguments = []string{"@run"}
+
+	case "district":
+		test := stringTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		migratedState, err := expressions.MigrateTemplate(test.Test, expressions.ExtraAsFunction, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedState}
+
+	case "ward":
+		test := wardTest{}
+		err = json.Unmarshal(r.Test.Data, &test)
+		migratedDistrict, err := expressions.MigrateTemplate(test.District, expressions.ExtraAsFunction, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		migratedState, err := expressions.MigrateTemplate(test.State, expressions.ExtraAsFunction, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedDistrict, migratedState}
+
+	default:
+		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
+	}
+
+	return routers.Case{
+		UUID:        caseUUID,
+		Type:        newType,
+		Arguments:   arguments,
+		OmitOperand: omitOperand,
+		ExitUUID:    exit.UUID(),
+	}, err
+}
+
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit
 func migateActionSet(lang utils.Language, a ActionSet, localization flows.Localization) (flows.Node, error) {
 	actions := make([]flows.Action, len(a.Actions))
@@ -1041,7 +1010,7 @@ type uiConfig struct {
 }
 
 // Migrate migrates this legacy flow to the new format
-func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
+func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
@@ -1056,7 +1025,11 @@ func (f *Flow) Migrate(includeUI bool) (flows.Flow, error) {
 	}
 
 	for i := range f.RuleSets {
+<<<<<<< HEAD
 		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization)
+=======
+		node, uiType, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization, collapseExits)
+>>>>>>> 7826ce8deab82d64201615e1a2fcd0d9f20edbe1
 		if err != nil {
 			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
 		}
