@@ -104,43 +104,16 @@
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
                             "text": "URN Check: @run.results.urn_check\nGroup Check: @run.results.group_check"
+                        },
+                        {
+                            "uuid": "e9bf771c-9972-4870-ac0e-8f635dba91e0",
+                            "type": "set_contact_field",
+                            "field": {"key": "district", "name": "District"},
+                            "value": "@run.results.district_check"
                         }
                     ]
                 }
             ]
         }
-    },
-    {
-        "type": "location_hierarchy",
-        "url": "http://testserver/assets/location_hierarchy/",
-        "content": [
-            {
-                "name": "Rwanda",
-                "aliases": ["Ruanda"],		
-                "children": [
-                    {
-                        "name": "Kigali City",
-                        "aliases": ["Kigali", "Kigari"],
-                        "children": [
-                            {
-                                "name": "Gasabo",
-                                "children": [
-                                    {
-                                        "name": "Gisozi"
-                                    },
-                                    {
-                                        "name": "Ndera"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Nyarugenge",
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
     }
 ]

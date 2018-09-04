@@ -24,6 +24,11 @@
                 "value_type": "text"
             },
             {
+                "key": "district",
+                "label": "District",
+                "value_type": "district"
+            },
+            {
                 "key": "state",
                 "label": "State",
                 "value_type": "state"
@@ -92,6 +97,39 @@
             {
                 "uuid": "b017c07a-d35b-4da4-8917-3bf8bff80168",
                 "name": "Azuay Messages"
+            }
+        ]
+    },
+    {
+        "type": "location_hierarchy",
+        "url": "http://testserver/assets/location_hierarchy/",
+        "content": [
+            {
+                "name": "Rwanda",
+                "aliases": ["Ruanda"],		
+                "children": [
+                    {
+                        "name": "Kigali City",
+                        "aliases": ["Kigali", "Kigari"],
+                        "children": [
+                            {
+                                "name": "Gasabo",
+                                "children": [
+                                    {
+                                        "name": "Gisozi"
+                                    },
+                                    {
+                                        "name": "Ndera"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Nyarugenge",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

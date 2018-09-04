@@ -190,6 +190,12 @@
                             "value": "@run.results.gender.category"
                         },
                         {
+                            "uuid": "f5650691-b046-4fc7-8b11-359e9d8d02a1",
+                            "type": "set_contact_field",
+                            "field": {"key": "district", "name": "District"},
+                            "value": "@contact.fields.raw_district"
+                        },
+                        {
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",

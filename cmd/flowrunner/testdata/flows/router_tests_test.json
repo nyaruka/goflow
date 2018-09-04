@@ -48,12 +48,27 @@
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "field": {
+                        "key": "district",
+                        "name": "District"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "contact_field_changed",
+                    "value": "Rwanda > Kigali City > Gasabo"
                 }
             ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
                     "fields": {
+                        "district": {
+                            "district": "Rwanda > Kigali City > Gasabo",
+                            "state": "Rwanda > Kigali City",
+                            "text": "Rwanda > Kigali City > Gasabo"
+                        },
                         "first_name": {
                             "text": "Ben"
                         },
@@ -132,9 +147,19 @@
                                 },
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "field": {
+                                    "key": "district",
+                                    "name": "District"
+                                },
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "contact_field_changed",
+                                "value": "Rwanda > Kigali City > Gasabo"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:13.123456789Z",
+                        "exited_on": "2018-07-06T12:30:15.123456789Z",
                         "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Router Test",

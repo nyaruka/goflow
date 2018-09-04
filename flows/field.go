@@ -130,6 +130,8 @@ func (f FieldValues) getValue(key string) *FieldValue {
 }
 
 func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string, rawValue string) error {
+	fmt.Printf("==========setValue(%s, %s)\n", key, rawValue)
+
 	field := fieldSet.FindByKey(key)
 	if field == nil {
 		return fmt.Errorf("no such field: %s", key)
@@ -167,6 +169,7 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 			}
 		} else if field.valueType == FieldValueTypeDistrict {
 			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeState)
+			fmt.Printf(" > field is district, parent=%s\n", parent)
 			if parent != nil {
 				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
 			}
@@ -208,7 +211,7 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 }
 
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fieldSet *FieldSet, valueType FieldValueType) *utils.Location {
-	field := fieldSet.FirstOfType(FieldValueTypeDistrict)
+	field := fieldSet.FirstOfType(valueType)
 	if field == nil {
 		return nil
 	}
