@@ -87,7 +87,7 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 		}
 	}
 	if envelope.Contact != nil {
-		if base.contact, err = flows.ReadContact(session, envelope.Contact); err != nil {
+		if base.contact, err = flows.ReadContact(session.Assets(), envelope.Contact); err != nil {
 			return fmt.Errorf("unable to read contact: %s", err)
 		}
 	}
