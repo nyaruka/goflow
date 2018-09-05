@@ -51,7 +51,8 @@ func TestTokenizeString(t *testing.T) {
 		{"one.two.three", []string{"one", "two", "three"}},
 		{"O'Grady can't foo_bar", []string{"O'Grady", "can't", "foo_bar"}}, // single quotes and underscores don't split tokens
 		{"öne.βήταa.thé", []string{"öne", "βήταa", "thé"}},                 // non-latin letters allowed in tokens
-		{"  one(two!*@three ", []string{"one", "two", "three"}},            // other punctuation ignored
+		{"واحد اثنين ثلاثة", []string{"واحد", "اثنين", "ثلاثة"}},           // RTL scripts
+		{"  \t\none(two!*@three ", []string{"one", "two", "three"}},        // other punctuation ignored
 		{"spend$£€₠₣₪", []string{"spend", "$", "£", "€", "₠", "₣", "₪"}},   // currency symbols treated as individual tokens
 		{"math+=×÷√∊", []string{"math", "+", "=", "×", "÷", "√", "∊"}},     // math symbols treated as individual tokens
 		{"emoji😄🏥👪👰😟🧟", []string{"emoji", "😄", "🏥", "👪", "👰", "😟", "🧟"}},   // emojis treated as individual tokens
