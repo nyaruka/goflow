@@ -378,7 +378,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
+func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -403,7 +403,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		if c.urns, err = ReadURNList(session, envelope.URNs); err != nil {
+		if c.urns, err = ReadURNList(assets, envelope.URNs); err != nil {
 			return nil, err
 		}
 	}
@@ -413,14 +413,14 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	} else {
 		groups := make([]*Group, len(envelope.Groups))
 		for g := range envelope.Groups {
-			if groups[g], err = session.Assets().GetGroup(envelope.Groups[g].UUID); err != nil {
+			if groups[g], err = assets.GetGroup(envelope.Groups[g].UUID); err != nil {
 				return nil, err
 			}
 		}
 		c.groups = NewGroupList(groups)
 	}
 
-	fieldSet, err := session.Assets().GetFieldSet()
+	fieldSet, err := assets.GetFieldSet()
 	if err != nil {
 		return nil, err
 	}

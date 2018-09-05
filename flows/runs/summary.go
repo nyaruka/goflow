@@ -67,7 +67,7 @@ func ReadRunSummary(session flows.Session, data json.RawMessage) (flows.RunSumma
 
 	// read the contact
 	if e.Contact != nil {
-		if run.contact, err = flows.ReadContact(session, e.Contact); err != nil {
+		if run.contact, err = flows.ReadContact(session.Assets(), e.Contact); err != nil {
 			return nil, err
 		}
 	}

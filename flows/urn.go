@@ -116,7 +116,7 @@ var _ types.XResolvable = (*ContactURN)(nil)
 type URNList []*ContactURN
 
 // ReadURNList parses contact URN list from the given list of raw URNs
-func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
+func ReadURNList(assets SessionAssets, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
 	for u := range rawURNs {
@@ -136,7 +136,7 @@ func ReadURNList(session Session, rawURNs []urns.URN) (URNList, error) {
 		var channel Channel
 		channelUUID := parsedQuery.Get("channel")
 		if channelUUID != "" {
-			if channel, err = session.Assets().GetChannel(ChannelUUID(channelUUID)); err != nil {
+			if channel, err = assets.GetChannel(ChannelUUID(channelUUID)); err != nil {
 				return nil, err
 			}
 		}

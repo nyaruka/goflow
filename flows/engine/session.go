@@ -509,7 +509,7 @@ func ReadSession(assetServer assets.AssetServer, engineConfig flows.EngineConfig
 
 	// read our contact
 	if envelope.Contact != nil {
-		if s.contact, err = flows.ReadContact(s, *envelope.Contact); err != nil {
+		if s.contact, err = flows.ReadContact(s.Assets(), *envelope.Contact); err != nil {
 			return nil, fmt.Errorf("unable to read contact: %s", err)
 		}
 	}
