@@ -86,7 +86,8 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{}, utils.RedactionPolicyNone)
 
-	session := engine.NewSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), httpClient)
+	assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+	session := engine.NewSession(assets, engine.NewDefaultConfig(), httpClient)
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
@@ -142,7 +143,8 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = engine.ReadSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), httpClient, outJSON)
+		assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), httpClient, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
