@@ -98,7 +98,8 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build our session
-	session := engine.NewSession(assetServer, config, s.httpClient)
+	assets := engine.NewSessionAssets(assetServer)
+	session := engine.NewSession(assets, config, s.httpClient)
 
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, start.Trigger)
@@ -155,7 +156,8 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read our session
-	session, err := engine.ReadSession(assetServer, config, s.httpClient, resume.Session)
+	assets := engine.NewSessionAssets(assetServer)
+	session, err := engine.ReadSession(assets, config, s.httpClient, resume.Session)
 	if err != nil {
 		return nil, err
 	}

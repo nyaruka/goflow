@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
@@ -44,10 +43,10 @@ type session struct {
 }
 
 // NewSession creates a new session
-func NewSession(assetServer assets.AssetServer, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient) flows.Session {
+func NewSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient) flows.Session {
 	return &session{
 		env:          utils.NewDefaultEnvironment(),
-		assets:       NewSessionAssets(assetServer),
+		assets:       assets,
 		status:       flows.SessionStatusActive,
 		newEvents:    []flows.Event{},
 		runsByUUID:   make(map[flows.RunUUID]flows.FlowRun),
@@ -483,7 +482,7 @@ type sessionEnvelope struct {
 }
 
 // ReadSession decodes a session from the passed in JSON
-func ReadSession(assetServer assets.AssetServer, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
+func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, httpClient *utils.HTTPClient, data json.RawMessage) (flows.Session, error) {
 	var envelope sessionEnvelope
 	var err error
 
@@ -491,7 +490,7 @@ func ReadSession(assetServer assets.AssetServer, engineConfig flows.EngineConfig
 		return nil, fmt.Errorf("unable to read session: %s", err)
 	}
 
-	s := NewSession(assetServer, engineConfig, httpClient).(*session)
+	s := NewSession(assets, engineConfig, httpClient).(*session)
 	s.status = envelope.Status
 
 	// read our environment
