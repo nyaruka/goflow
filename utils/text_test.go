@@ -46,12 +46,17 @@ func TestTokenizeString(t *testing.T) {
 		text   string
 		result []string
 	}{
+		{" one ", []string{"one"}},
 		{"one   two three", []string{"one", "two", "three"}},
 		{"one.two.three", []string{"one", "two", "three"}},
-		{"one.βήταa.three", []string{"one", "βήταa", "three"}},
-		{"one😄three", []string{"one", "😄", "three"}},
-		{"  one.two.*@three ", []string{"one", "two", "three"}},
-		{" one ", []string{"one"}},
+		{"O'Grady can't foo_bar", []string{"O'Grady", "can't", "foo_bar"}}, // single quotesand underscores don't split tokens
+		{"one.βήταa.thé", []string{"one", "βήταa", "thé"}},                 // non-latin letters allowed in tokens
+		{"  one(two!*@three ", []string{"one", "two", "three"}},            // other punctuation ignored
+		{"spend$£€₠₣₪", []string{"spend", "$", "£", "€", "₠", "₣", "₪"}},   // currency symbols treated as individual tokens
+		{"math+=×÷√∊", []string{"math", "+", "=", "×", "÷", "√", "∊"}},     // math symbols treated as individual tokens
+		{"emoji😄🏥👪👰😟🧟", []string{"emoji", "😄", "🏥", "👪", "👰", "😟", "🧟"}},   // emojis treated as individual tokens
+		{"👍🏿 👨🏼", []string{"👍", "🏿", "👨", "🏼"}},                            // tone modifiers treated as individual tokens
+		{"ℹ︎ ℹ️", []string{"ℹ", "ℹ"}},                                      // variation selectors ignored
 	}
 	for _, test := range tokenizerTests {
 		assert.Equal(t, test.result, utils.TokenizeString(test.text), "unexpected result tokenizing '%s'", test.text)
