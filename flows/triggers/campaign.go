@@ -2,6 +2,7 @@ package triggers
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -47,6 +48,19 @@ type CampaignEvent struct {
 type CampaignTrigger struct {
 	baseTrigger
 	Event *CampaignEvent
+}
+
+// NewCampaignTrigger creates a new campaign trigger with the passed in values
+func NewCampaignTrigger(env utils.Environment, flow flows.Flow, contact *flows.Contact, event *CampaignEvent, triggeredOn time.Time) *CampaignTrigger {
+	return &CampaignTrigger{
+		baseTrigger: baseTrigger{
+			environment: env,
+			flow:        flow,
+			contact:     contact,
+			triggeredOn: triggeredOn,
+		},
+		Event: event,
+	}
 }
 
 // Type returns the type of this trigger
