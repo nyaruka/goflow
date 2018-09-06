@@ -1,3 +1,7 @@
+v0.14.4
+----------
+ * Simplify string tokenization and add more tests
+
 v0.14.3
 ----------
  * Fix message attachment expressions not being URL encoded
