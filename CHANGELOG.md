@@ -1,3 +1,7 @@
+v0.14.6
+----------
+ * Don't strip URN params when parsing
+
 v0.14.5
 ----------
  * Migrate legacy webhook calls to POST if they don't have a method set
