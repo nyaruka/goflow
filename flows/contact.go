@@ -147,7 +147,7 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	urn = urn.Normalize("")
 
 	for _, u := range c.urns {
-		if u.URN == urn {
+		if u.URN.Identity() == urn.Identity() {
 			return true
 		}
 	}
