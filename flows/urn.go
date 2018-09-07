@@ -48,7 +48,7 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //
 // Examples:
 //
-//   @contact.urns.0 -> tel:+12065551212
+//   @contact.urns.0 -> tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d
 //   @contact.urns.0.scheme -> tel
 //   @contact.urns.0.path -> +12065551212
 //   @contact.urns.1.display -> nyaruka
@@ -120,13 +120,7 @@ func ReadURNList(assets SessionAssets, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
 	for u := range rawURNs {
-		scheme, path, query, display := rawURNs[u].ToParts()
-
-		// re-create the URN without the query component
-		queryLess, err := urns.NewURNFromParts(scheme, path, "", display)
-		if err != nil {
-			return nil, err
-		}
+		_, _, query, _ := rawURNs[u].ToParts()
 
 		parsedQuery, err := url.ParseQuery(query)
 		if err != nil {
@@ -141,7 +135,7 @@ func ReadURNList(assets SessionAssets, rawURNs []urns.URN) (URNList, error) {
 			}
 		}
 
-		l[u] = &ContactURN{URN: queryLess, channel: channel}
+		l[u] = &ContactURN{URN: rawURNs[u], channel: channel}
 	}
 	return l, nil
 }

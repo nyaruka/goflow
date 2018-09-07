@@ -28,7 +28,7 @@ func TestContact(t *testing.T) {
 	contact.SetTimezone(env.Timezone())
 	contact.SetID(12345)
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
-	contact.AddURN(urns.URN("tel:+16364646466"))
+	contact.AddURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"))
 	contact.AddURN(urns.URN("twitter:joey"))
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
@@ -36,6 +36,8 @@ func TestContact(t *testing.T) {
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, utils.Language("eng"), contact.Language())
 	assert.Nil(t, contact.PreferredChannel())
+	assert.True(t, contact.HasURN("tel:+16364646466"))
+	assert.False(t, contact.HasURN("tel:+16300000000"))
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())

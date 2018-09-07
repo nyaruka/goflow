@@ -104,9 +104,9 @@ Examples:
 @contact.language → eng
 @contact.timezone → America/Guayaquil
 @contact.created_on → 2018-06-20T11:40:30.123456Z
-@contact.urns → ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-@contact.urns.0 → tel:+12065551212
-@contact.urns.tel → ["tel:+12065551212"]
+@contact.urns → ["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
+@contact.urns.0 → tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d
+@contact.urns.tel → ["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"]
 @contact.urns.mailto.0 → mailto:foo@bar.com
 @contact.urn → (206) 555-1212
 @contact.groups → ["Testers","Males"]
@@ -275,7 +275,7 @@ Examples:
 
 
 ```objectivec
-@contact.urns.0 → tel:+12065551212
+@contact.urns.0 → tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d
 @contact.urns.0.scheme → tel
 @contact.urns.0.path → +12065551212
 @contact.urns.1.display → nyaruka
