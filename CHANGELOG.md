@@ -1,3 +1,7 @@
+v0.14.5
+----------
+ * Migrate legacy webhook calls to POST if they don't have a method set
+
 v0.14.4
 ----------
  * Simplify string tokenization and add more tests
