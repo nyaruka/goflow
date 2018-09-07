@@ -571,8 +571,12 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		body := ""
+		method := strings.ToUpper(a.Action)
+		if method == "" {
+			method = "POST"
+		}
 
-		if strings.ToUpper(a.Action) == "POST" {
+		if method == "POST" {
 			headers["Content-Type"] = "application/json"
 			body = flows.DefaultWebhookPayload
 		}
@@ -583,7 +587,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return &actions.CallWebhookAction{
 			BaseAction: actions.NewBaseAction(a.UUID),
-			Method:     a.Action,
+			Method:     method,
 			URL:        migratedURL,
 			Body:       body,
 			Headers:    headers,
@@ -633,8 +637,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, expressions.ExtraAsFunction, false)
 		headers := make(map[string]string, len(config.WebhookHeaders))
 		body := ""
+		method := strings.ToUpper(config.WebhookAction)
+		if method == "" {
+			method = "POST"
+		}
 
-		if strings.ToUpper(config.WebhookAction) == "POST" {
+		if method == "POST" {
 			headers["Content-Type"] = "application/json"
 			body = flows.DefaultWebhookPayload
 		}
@@ -647,7 +655,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&actions.CallWebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
-				Method:     config.WebhookAction,
+				Method:     method,
 				Headers:    headers,
 				Body:       body,
 			},
