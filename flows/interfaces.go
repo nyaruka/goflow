@@ -61,6 +61,9 @@ type InputUUID utils.UUID
 // MsgID is the ID of a message
 type MsgID int64
 
+// NilMsgID is our constant for nil message ids
+const NilMsgID = MsgID(0)
+
 // MsgUUID is the UUID of a message
 type MsgUUID utils.UUID
 

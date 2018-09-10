@@ -137,7 +137,7 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.MsgID(0), contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
+		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
 		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
