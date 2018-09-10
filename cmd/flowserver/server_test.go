@@ -398,7 +398,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 
 	// try to resume this completed session
 	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
-	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), tgURN, nil, "hello", []flows.Attachment{})
+	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.MsgID(1), tgURN, nil, "hello", []flows.Attachment{})
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))

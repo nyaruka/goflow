@@ -50,7 +50,7 @@ import (
 // @context contact
 type Contact struct {
 	uuid      ContactUUID
-	id        int
+	id        ContactID
 	name      string
 	language  utils.Language
 	timezone  *time.Location
@@ -62,7 +62,7 @@ type Contact struct {
 
 // NewContact creates a new contact with the passed in attributes
 func NewContact(
-	uuid ContactUUID, id int, name string, language utils.Language, timezone *time.Location, createdOn time.Time,
+	uuid ContactUUID, id ContactID, name string, language utils.Language, timezone *time.Location, createdOn time.Time,
 	urns URNList, groups *GroupList, fields FieldValues) *Contact {
 	return &Contact{
 		uuid:      uuid,
@@ -113,11 +113,8 @@ func (c *Contact) Clone() *Contact {
 // UUID returns the UUID of this contact
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 
-// SetID sets the numeric ID of this contact
-func (c *Contact) SetID(id int) { c.id = id }
-
 // ID returns the numeric ID of this contact
-func (c *Contact) ID() int { return c.id }
+func (c *Contact) ID() ContactID { return c.id }
 
 // SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
@@ -189,7 +186,7 @@ func (c *Contact) Format(env utils.Environment) string {
 
 	// otherwise use either id or the higest priority URN depending on the env
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-		return strconv.Itoa(c.id)
+		return strconv.Itoa(int(c.id))
 	}
 	if len(c.urns) > 0 {
 		return c.urns[0].Format()
@@ -204,7 +201,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
 	case "id":
-		return types.NewXNumberFromInt(c.id)
+		return types.NewXNumberFromInt(int(c.id))
 	case "name":
 		return types.NewXText(c.name)
 	case "first_name":
@@ -384,7 +381,7 @@ type fieldValueEnvelope struct {
 
 type contactEnvelope struct {
 	UUID      ContactUUID                    `json:"uuid" validate:"required,uuid4"`
-	ID        int                            `json:"id"`
+	ID        ContactID                      `json:"id"`
 	Name      string                         `json:"name"`
 	Language  utils.Language                 `json:"language"`
 	Timezone  string                         `json:"timezone"`

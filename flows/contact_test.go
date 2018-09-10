@@ -20,19 +20,20 @@ func TestContact(t *testing.T) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	contact := flows.NewEmptyContact("Joe Bloggs", utils.Language("eng"), nil)
+	contact := flows.NewContact(
+		flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", utils.Language("eng"),
+		nil, time.Now(), flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues))
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
 	assert.Nil(t, contact.PreferredChannel())
 
 	contact.SetTimezone(env.Timezone())
-	contact.SetID(12345)
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 	contact.AddURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"))
 	contact.AddURN(urns.URN("twitter:joey"))
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
-	assert.Equal(t, 12345, contact.ID())
+	assert.Equal(t, flows.ContactID(12345), contact.ID())
 	assert.Equal(t, env.Timezone(), contact.Timezone())
 	assert.Equal(t, utils.Language("eng"), contact.Language())
 	assert.Nil(t, contact.PreferredChannel())
@@ -41,7 +42,7 @@ func TestContact(t *testing.T) {
 
 	clone := contact.Clone()
 	assert.Equal(t, "Joe Bloggs", clone.Name())
-	assert.Equal(t, 12345, clone.ID())
+	assert.Equal(t, flows.ContactID(12345), clone.ID())
 	assert.Equal(t, env.Timezone(), clone.Timezone())
 	assert.Equal(t, utils.Language("eng"), clone.Language())
 	assert.Nil(t, contact.PreferredChannel())
@@ -75,15 +76,16 @@ func TestContactFormat(t *testing.T) {
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
-	contact = flows.NewEmptyContact("", utils.NilLanguage, nil)
+	contact = flows.NewContact(
+		flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
+		flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues))
 	contact.AddURN(urns.URN("twitter:joey"))
-	contact.SetID(12345)
 	assert.Equal(t, "joey", contact.Format(env))
 
 	anonEnv := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyURNs)
 
 	// unless URNs are redacted
-	assert.Equal(t, "12345", contact.Format(anonEnv))
+	assert.Equal(t, "1234", contact.Format(anonEnv))
 
 	// if we don't have name or URNs, then empty string
 	contact = flows.NewEmptyContact("", utils.NilLanguage, nil)
@@ -93,8 +95,8 @@ func TestContactFormat(t *testing.T) {
 func TestContactSetPreferredChannel(t *testing.T) {
 	roles := []flows.ChannelRole{flows.ChannelRoleSend}
 
-	android := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Android", "+250961111111", roles, nil, "RW", nil)
-	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
+	android := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), flows.ChannelID(1), "Android", "+250961111111", roles, nil, "RW", nil)
+	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), flows.ChannelID(2), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
 	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"))
@@ -136,13 +138,13 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		flows.NewField("age", "Age", flows.FieldValueTypeNumber),
 	})
 
-	males := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Males", `gender="M"`)
-	old := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Old", `age>30`)
-	english := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "English", `language=eng`)
-	spanish := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Español", `language=spa`)
-	lastYear := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Old", `created_on <= 2017-12-31`)
-	tel1800 := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Tel with 1800", `tel ~ 1800`)
-	twitterCrazies := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Twitter Crazies", `twitter ~ crazy`)
+	males := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Males", `gender="M"`)
+	old := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Old", `age>30`)
+	english := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "English", `language=eng`)
+	spanish := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Español", `language=spa`)
+	lastYear := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Old", `created_on <= 2017-12-31`)
+	tel1800 := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Tel with 1800", `tel ~ 1800`)
+	twitterCrazies := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Twitter Crazies", `twitter ~ crazy`)
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
 	contact := flows.NewEmptyContact("Joe", "eng", nil)

@@ -11,13 +11,21 @@ import (
 // Label represents a message label
 type Label struct {
 	uuid LabelUUID
+	id   LabelID
 	name string
 }
 
 // NewLabel creates a new label given the passed in uuid and name
-func NewLabel(uuid LabelUUID, name string) *Label {
-	return &Label{uuid, name}
+func NewLabel(uuid LabelUUID, id LabelID, name string) *Label {
+	return &Label{
+		uuid: uuid,
+		id:   id,
+		name: name,
+	}
 }
+
+// ID returns the ID of this label
+func (l *Label) ID() LabelID { return l.id }
 
 // UUID returns the UUID of this label
 func (l *Label) UUID() LabelUUID { return l.uuid }
@@ -65,6 +73,7 @@ func (s *LabelSet) FindByName(name string) *Label {
 
 type labelEnvelope struct {
 	UUID LabelUUID `json:"uuid" validate:"required,uuid4"`
+	ID   LabelID   `json:"id,omitempty"`
 	Name string    `json:"name"`
 }
 
@@ -75,7 +84,7 @@ func ReadLabel(data json.RawMessage) (*Label, error) {
 		return nil, fmt.Errorf("unable to read label: %s", err)
 	}
 
-	return NewLabel(le.UUID, le.Name), nil
+	return NewLabel(le.UUID, le.ID, le.Name), nil
 }
 
 // ReadLabelSet reads a label set from the given JSON
