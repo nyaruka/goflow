@@ -51,9 +51,9 @@
 <li><code>url</code> the URL of the attachment</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb1"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" data-line-number="1">@run.input.attachments.<span class="fl">0.</span>content_type → image/jpeg</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" data-line-number="1">@run.input.attachments.<span class="fl">0.</span>content_type → image/jpeg</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">@run.input.attachments.<span class="fl">0.</span>url → http:<span class="co">//s3.amazon.com/bucket/test.jpg</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">@(json(run.input.attachments<span class="fl">.0</span>)) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb1-3" data-line-number="3">@(json(run.input.attachments<span class="fl">.0</span>)) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre></div>
 <p><a name="context:channel"></a></p>
 <h2 id="channel">Channel</h2>
 <p>Represents a means for sending and receiving input during a flow run. It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -63,11 +63,11 @@
 <li><code>address</code> the address of the channel</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb2"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" data-line-number="1">@contact.channel → My Android Phone</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" data-line-number="1">@contact.channel → My Android Phone</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">@contact.channel.name → My Android Phone</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">@contact.channel.address → +<span class="dv">12345671111</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">@run.input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb2-5" data-line-number="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
 <p><a name="context:contact"></a></p>
 <h2 id="contact">Contact</h2>
 <p>Represents a person who is interacting with the flow. It renders as the person’s name (or perferred URN if name isn’t set) in a template, and has the following properties which can be accessed:</p>
@@ -87,7 +87,7 @@
 <li><code>channel</code> shorthand for <code>contact.urns.0.channel</code>, i.e. the <a href="#context:channel">channel</a> of the contact’s preferred URN</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb3"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" data-line-number="1">@contact → Ryan Lewis</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" data-line-number="1">@contact → Ryan Lewis</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">@contact.name → Ryan Lewis</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">@contact.first_name → Ryan</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">@contact.language → eng</a>
@@ -101,7 +101,7 @@
 <a class="sourceLine" id="cb3-12" data-line-number="12">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="st">&quot;23&quot;</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00.000000-02:00&quot;</span>}</a>
 <a class="sourceLine" id="cb3-14" data-line-number="14">@contact.fields.activation_token → AACC55</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">@contact.fields.gender → Male</a></code></pre>
+<a class="sourceLine" id="cb3-15" data-line-number="15">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
 <h2 id="flow">Flow</h2>
 <p>Describes the ordered logic of actions and routers. It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -111,10 +111,10 @@
 <li><code>revision</code> the revision number of the flow</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb4"><code class="sourceCode objectivec"><a class="sourceLine" id="cb4-1" data-line-number="1">@run.flow → Registration</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb4-1" data-line-number="1">@run.flow → Registration</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">@child.flow → Collect Age</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">@run.flow.uuid → 50c3706e-fedb-42c0-8eab-dda3335714b7</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb4-4" data-line-number="4">@(json(run.flow)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Registration&quot;</span>,<span class="st">&quot;revision&quot;</span>:<span class="dv">123</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;50c3706e-fedb-42c0-8eab-dda3335714b7&quot;</span>}</a></code></pre></div>
 <p><a name="context:group"></a></p>
 <h2 id="group">Group</h2>
 <p>Represents a grouping of contacts. It can be static (contacts are added and removed manually through <a href="#action:add_contact_groups">actions</a>) or dynamic (contacts are added automatically by a query). It renders as its name in a template, and has the following properties which can be accessed:</p>
@@ -123,10 +123,10 @@
 <li><code>name</code> the name of the group</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb5"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" data-line-number="1">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" data-line-number="1">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">@contact.groups.<span class="fl">0.</span>uuid → b7cf0d83-f1c9-411c-96fd-c511a4cfa86d</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">@contact.groups.<span class="fl">1.</span>name → Males</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">@(json(contact.groups<span class="fl">.1</span>)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb5-4" data-line-number="4">@(json(contact.groups<span class="fl">.1</span>)) → {<span class="st">&quot;name&quot;</span>:<span class="st">&quot;Males&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;4f1f98fc-27a7-4a69-bbdb-24744ba739a9&quot;</span>}</a></code></pre></div>
 <p><a name="context:input"></a></p>
 <h2 id="input">Input</h2>
 <p>Describes input from the contact and currently we only support one type of input: <code>msg</code>. Any input has the following properties which can be accessed:</p>
@@ -143,11 +143,11 @@
 <li><code>urn</code> the <a href="#context:urn">URN</a> that the input was received on</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb6"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" data-line-number="1">@run.input → Hi there\nhttp:<span class="co">//s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3</span></a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" data-line-number="1">@run.input → Hi there\nhttp:<span class="co">//s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">@run.input.type → msg</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">@run.input.text → Hi there</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">@run.input.attachments → [<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>]</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">@(json(run.input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2000-01-01T00:00:00.000000Z&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb6-5" data-line-number="5">@(json(run.input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2000-01-01T00:00:00.000000Z&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
 <p>Describes a value captured during a run’s execution. It might have been implicitly created by a router, or explicitly created by a <a href="#action:set_run_result">set_run_result</a> action.It renders as its value in a template, and has the following properties which can be accessed:</p>
@@ -160,9 +160,9 @@
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb7"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" data-line-number="1">@run.results.favorite_color → red</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" data-line-number="1">@run.results.favorite_color → red</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">@run.results.favorite_color.value → red</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">@run.results.favorite_color.category → Red</a></code></pre>
+<a class="sourceLine" id="cb7-3" data-line-number="3">@run.results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
@@ -176,7 +176,7 @@
 <li><code>webhook</code> the last <a href="#context:webhook">webhook</a> call made in the current run</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb8"><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" data-line-number="1">@run.flow.name → Registration</a></code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" data-line-number="1">@run.flow.name → Registration</a></code></pre></div>
 <p><a name="context:trigger"></a></p>
 <h2 id="trigger">Trigger</h2>
 <p>Represents something which can initiate a session with the flow engine. It has several properties which can be accessed in expressions:</p>
@@ -185,9 +185,9 @@
 <li><code>params</code> the parameters passed to the trigger</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb9"><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" data-line-number="1">@trigger.type → flow_action</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" data-line-number="1">@trigger.type → flow_action</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">@trigger.params → {<span class="st">&quot;source&quot;</span>: <span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>: {<span class="st">&quot;state&quot;</span>: <span class="st">&quot;WA&quot;</span>}}</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb9-3" data-line-number="3">@(json(trigger)) → {<span class="st">&quot;params&quot;</span>:{<span class="st">&quot;source&quot;</span>:<span class="st">&quot;website&quot;</span>,<span class="st">&quot;address&quot;</span>:{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>}},<span class="st">&quot;type&quot;</span>:<span class="st">&quot;flow_action&quot;</span>}</a></code></pre></div>
 <p><a name="context:urn"></a></p>
 <h2 id="urn">Urn</h2>
 <p>Represents a destination for an outgoing message or a source of an incoming message. It is string composed of 3 components: scheme, path, and display (optional). For example:</p>
@@ -205,12 +205,12 @@
 </ul>
 <p>To render a URN in a human friendly format, use the <a href="expressions.html#function:format_urn">format_urn</a> function.</p>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb10"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span>?channel=57f1078f-88aa-46f4-a59a-948a5739c03d</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span>?channel=57f1078f-88aa-46f4-a59a-948a5739c03d</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">@contact.urns.<span class="fl">0.</span>scheme → tel</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">@contact.urns.<span class="fl">0.</span>path → +<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">@contact.urns.<span class="fl">1.</span>display → nyaruka</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5">@(format_urn(contact.urns<span class="fl">.0</span>)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">@(json(contact.urns<span class="fl">.0</span>)) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre>
+<a class="sourceLine" id="cb10-6" data-line-number="6">@(json(contact.urns<span class="fl">.0</span>)) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
 <p><a name="context:webhook"></a></p>
 <h2 id="webhook">Webhook</h2>
 <p>Describes a call made to an external service. It has several properties which can be accessed in expressions:</p>
@@ -224,8 +224,8 @@
 <li><code>response</code> the raw response received, including headers</li>
 </ul>
 <p>Examples:</p>
-<pre class="sourceCode objectivec" id="cb11"><code class="sourceCode objectivec"><a class="sourceLine" id="cb11-1" data-line-number="1">@run.webhook.status_code → <span class="dv">200</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">@run.webhook.json.results.<span class="fl">0.</span>state → WA</a></code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb11-1" data-line-number="1">@run.webhook.status_code → <span class="dv">200</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">@run.webhook.json.results.<span class="fl">0.</span>state → WA</a></code></pre></div>
 </div>
 <h1 id="functions">Functions</h1>
 <p>Templates also have access to a set of functions which can be used to further manipulate the context. Functions are called using the <code>@(function_name(args..))</code> syntax. For example, to title-case a contact’s name in a message, you can use <code>@(title(contact.name))</code>. Context variables referred to within functions do not need a leading <code>@</code>. Functions can also use literal numbers or strings as arguments, for example <code>@(length(split(&quot;1 2 3&quot;, &quot; &quot;))</code>.</p>
@@ -233,102 +233,102 @@
 <p><a name="function:abs"></a></p>
 <h2 id="absnum">abs(num)</h2>
 <p>Returns the absolute value of <code>num</code></p>
-<pre class="sourceCode objectivec" id="cb12"><code class="sourceCode objectivec"><a class="sourceLine" id="cb12-1" data-line-number="1">@(abs(-<span class="dv">10</span>)) → <span class="dv">10</span></a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb12-1" data-line-number="1">@(abs(-<span class="dv">10</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">@(abs(<span class="fl">10.5</span>)) → <span class="fl">10.5</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">@(abs(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb12-3" data-line-number="3">@(abs(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:and"></a></p>
 <h2 id="andtests">and(tests…)</h2>
 <p>Returns whether all the passed in arguments are truthy</p>
-<pre class="sourceCode objectivec" id="cb13"><code class="sourceCode objectivec"><a class="sourceLine" id="cb13-1" data-line-number="1">@(and(true)) → true</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">@(and(true, false, true)) → false</a></code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb13-1" data-line-number="1">@(and(true)) → true</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">@(and(true, false, true)) → false</a></code></pre></div>
 <p><a name="function:array"></a></p>
 <h2 id="arrayvalues">array(values…)</h2>
 <p>Takes a list of <code>values</code> and returns them as an array</p>
-<pre class="sourceCode objectivec" id="cb14"><code class="sourceCode objectivec"><a class="sourceLine" id="cb14-1" data-line-number="1">@(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="dv">356</span>)[<span class="dv">1</span>]) → b</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb14-1" data-line-number="1">@(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="dv">356</span>)[<span class="dv">1</span>]) → b</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">@(length(array())) → <span class="dv">0</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>))) → <span class="dv">2</span></a></code></pre>
+<a class="sourceLine" id="cb14-4" data-line-number="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>))) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:boolean"></a></p>
 <h2 id="booleanvalue">boolean(value)</h2>
 <p>Tries to convert <code>value</code> to a boolean. An error is returned if the value can’t be converted.</p>
-<pre class="sourceCode objectivec" id="cb15"><code class="sourceCode objectivec"><a class="sourceLine" id="cb15-1" data-line-number="1">@(boolean(array(<span class="dv">1</span>, <span class="dv">2</span>))) → true</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb15-1" data-line-number="1">@(boolean(array(<span class="dv">1</span>, <span class="dv">2</span>))) → true</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">@(boolean(<span class="st">&quot;FALSE&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">@(boolean(<span class="dv">1</span> / <span class="dv">0</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb15-3" data-line-number="3">@(boolean(<span class="dv">1</span> / <span class="dv">0</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:char"></a></p>
 <h2 id="charnum">char(num)</h2>
 <p>Returns the rune for the passed in codepoint, <code>num</code>, which may be unicode, this is the reverse of code</p>
-<pre class="sourceCode objectivec" id="cb16"><code class="sourceCode objectivec"><a class="sourceLine" id="cb16-1" data-line-number="1">@(<span class="dt">char</span>(<span class="dv">33</span>)) → !</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb16-1" data-line-number="1">@(<span class="dt">char</span>(<span class="dv">33</span>)) → !</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">@(<span class="dt">char</span>(<span class="dv">128512</span>)) → 😀</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">@(<span class="dt">char</span>(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb16-3" data-line-number="3">@(<span class="dt">char</span>(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:clean"></a></p>
 <h2 id="cleantext">clean(text)</h2>
 <p>Strips any non-printable characters from <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb17"><code class="sourceCode objectivec"><a class="sourceLine" id="cb17-1" data-line-number="1">@(clean(<span class="st">&quot;😃 Hello </span><span class="sc">\n</span><span class="st">wo</span><span class="sc">\t</span><span class="st">r</span><span class="sc">\r</span><span class="st">ld&quot;</span>)) → 😃 Hello world</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">@(clean(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb17-1" data-line-number="1">@(clean(<span class="st">&quot;😃 Hello </span><span class="sc">\n</span><span class="st">wo</span><span class="sc">\t</span><span class="st">r</span><span class="sc">\r</span><span class="st">ld&quot;</span>)) → 😃 Hello world</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">@(clean(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
 <p><a name="function:code"></a></p>
 <h2 id="codetext">code(text)</h2>
 <p>Returns the numeric code for the first character in <code>text</code>, it is the inverse of char</p>
-<pre class="sourceCode objectivec" id="cb18"><code class="sourceCode objectivec"><a class="sourceLine" id="cb18-1" data-line-number="1">@(code(<span class="st">&quot;a&quot;</span>)) → <span class="dv">97</span></a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb18-1" data-line-number="1">@(code(<span class="st">&quot;a&quot;</span>)) → <span class="dv">97</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">@(code(<span class="st">&quot;abc&quot;</span>)) → <span class="dv">97</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">@(code(<span class="st">&quot;😀&quot;</span>)) → <span class="dv">128512</span></a>
 <a class="sourceLine" id="cb18-4" data-line-number="4">@(code(<span class="st">&quot;15&quot;</span>)) → <span class="dv">49</span></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5">@(code(<span class="dv">15</span>)) → <span class="dv">49</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6">@(code(<span class="st">&quot;&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb18-6" data-line-number="6">@(code(<span class="st">&quot;&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:datetime"></a></p>
 <h2 id="datetimetext">datetime(text)</h2>
 <p>Turns <code>text</code> into a date according to the environment’s settings. It will return an error if it is unable to convert the text to a date.</p>
-<pre class="sourceCode objectivec" id="cb19"><code class="sourceCode objectivec"><a class="sourceLine" id="cb19-1" data-line-number="1">@(datetime(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<div class="sourceCode" id="cb19"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb19-1" data-line-number="1">@(datetime(<span class="st">&quot;1979-07-18&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb19-2" data-line-number="2">@(datetime(<span class="st">&quot;1979-07-18T10:30:45.123456Z&quot;</span>)) → <span class="dv">1979-07</span>-18T10:<span class="dv">30</span>:<span class="fl">45.123456</span>Z</a>
 <a class="sourceLine" id="cb19-3" data-line-number="3">@(datetime(<span class="st">&quot;2010 05 10&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">@(datetime(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb19-4" data-line-number="4">@(datetime(<span class="st">&quot;NOT DATE&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:datetime_add"></a></p>
 <h2 id="datetime_adddate-offset-unit">datetime_add(date, offset, unit)</h2>
 <p>Calculates the date value arrived at by adding <code>offset</code> number of <code>unit</code> to the <code>date</code></p>
 <p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds</p>
-<pre class="sourceCode objectivec" id="cb20"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(datetime_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">@(datetime_add(<span class="st">&quot;2017-01-15 10:45&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;m&quot;</span>)) → <span class="dv">2017-01</span>-15T11:<span class="dv">15</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(datetime_add(<span class="st">&quot;2017-01-15&quot;</span>, <span class="dv">5</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2017-01</span>-20T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">@(datetime_add(<span class="st">&quot;2017-01-15 10:45&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;m&quot;</span>)) → <span class="dv">2017-01</span>-15T11:<span class="dv">15</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:datetime_diff"></a></p>
 <h2 id="datetime_diffdate1-date2-unit">datetime_diff(date1, date2, unit)</h2>
 <p>Returns the integer duration between <code>date1</code> and <code>date2</code> in the <code>unit</code> specified.</p>
 <p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds</p>
-<pre class="sourceCode objectivec" id="cb21"><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" data-line-number="1">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" data-line-number="1">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb21-2" data-line-number="2">@(datetime_diff(<span class="st">&quot;2017-01-17 10:50&quot;</span>, <span class="st">&quot;2017-01-17 12:30&quot;</span>, <span class="st">&quot;h&quot;</span>)) → <span class="dv">-1</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">2</span></a></code></pre>
+<a class="sourceLine" id="cb21-3" data-line-number="3">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:datetime_from_parts"></a></p>
 <h2 id="datetime_from_partsyear-month-day">datetime_from_parts(year, month, day)</h2>
 <p>Converts the passed in <code>year</code>, <code>month</code> and <code>day</code></p>
-<pre class="sourceCode objectivec" id="cb22"><code class="sourceCode objectivec"><a class="sourceLine" id="cb22-1" data-line-number="1">@(datetime_from_parts(<span class="dv">2017</span>, <span class="dv">1</span>, <span class="dv">15</span>)) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<div class="sourceCode" id="cb22"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb22-1" data-line-number="1">@(datetime_from_parts(<span class="dv">2017</span>, <span class="dv">1</span>, <span class="dv">15</span>)) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb22-2" data-line-number="2">@(datetime_from_parts(<span class="dv">2017</span>, <span class="dv">2</span>, <span class="dv">31</span>)) → <span class="dv">2017-03</span>-03T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">@(datetime_from_parts(<span class="dv">2017</span>, <span class="dv">13</span>, <span class="dv">15</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb22-3" data-line-number="3">@(datetime_from_parts(<span class="dv">2017</span>, <span class="dv">13</span>, <span class="dv">15</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:default"></a></p>
 <h2 id="defaulttest-default">default(test, default)</h2>
 <p>Takes two arguments, returning <code>test</code> if not an error or nil or empty text, otherwise returning <code>default</code></p>
-<pre class="sourceCode objectivec" id="cb23"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" data-line-number="1">@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) → default_value</a>
+<div class="sourceCode" id="cb23"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" data-line-number="1">@(<span class="kw">default</span>(undeclared.var, <span class="st">&quot;default_value&quot;</span>)) → default_value</a>
 <a class="sourceLine" id="cb23-2" data-line-number="2">@(<span class="kw">default</span>(<span class="st">&quot;10&quot;</span>, <span class="st">&quot;20&quot;</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb23-3" data-line-number="3">@(<span class="kw">default</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;value&quot;</span>)) → value</a>
 <a class="sourceLine" id="cb23-4" data-line-number="4">@(<span class="kw">default</span>(array(<span class="dv">1</span>, <span class="dv">2</span>), <span class="st">&quot;value&quot;</span>)) → [<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>]</a>
 <a class="sourceLine" id="cb23-5" data-line-number="5">@(<span class="kw">default</span>(array(), <span class="st">&quot;value&quot;</span>)) → value</a>
-<a class="sourceLine" id="cb23-6" data-line-number="6">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre>
+<a class="sourceLine" id="cb23-6" data-line-number="6">@(<span class="kw">default</span>(datetime(<span class="st">&quot;invalid-date&quot;</span>), <span class="st">&quot;today&quot;</span>)) → today</a></code></pre></div>
 <p><a name="function:epoch"></a></p>
 <h2 id="epochdate">epoch(date)</h2>
 <p>Converts <code>date</code> to the number of seconds since January 1st, 1970 GMT</p>
-<pre class="sourceCode objectivec" id="cb24"><code class="sourceCode objectivec"><a class="sourceLine" id="cb24-1" data-line-number="1">@(epoch(<span class="st">&quot;2017-06-12T16:56:59.000000Z&quot;</span>)) → <span class="dv">1497286619</span></a>
+<div class="sourceCode" id="cb24"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb24-1" data-line-number="1">@(epoch(<span class="st">&quot;2017-06-12T16:56:59.000000Z&quot;</span>)) → <span class="dv">1497286619</span></a>
 <a class="sourceLine" id="cb24-2" data-line-number="2">@(epoch(<span class="st">&quot;2017-06-12T18:56:59.000000+02:00&quot;</span>)) → <span class="dv">1497286619</span></a>
 <a class="sourceLine" id="cb24-3" data-line-number="3">@(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>)) → <span class="fl">1497286619.123456</span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4">@(round_down(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>))) → <span class="dv">1497286619</span></a></code></pre>
+<a class="sourceLine" id="cb24-4" data-line-number="4">@(round_down(epoch(<span class="st">&quot;2017-06-12T16:56:59.123456Z&quot;</span>))) → <span class="dv">1497286619</span></a></code></pre></div>
 <p><a name="function:field"></a></p>
 <h2 id="fieldtext-offset-delimiter">field(text, offset, delimiter)</h2>
 <p>Splits <code>text</code> based on the passed in <code>delimiter</code> and returns the field at <code>offset</code>. When splitting with a space, the delimiter is considered to be all whitespace. (first field is 0)</p>
-<pre class="sourceCode objectivec" id="cb25"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;,&quot;</span>)) → b</a>
+<div class="sourceCode" id="cb25"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" data-line-number="1">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;,&quot;</span>)) → b</a>
 <a class="sourceLine" id="cb25-2" data-line-number="2">@(field(<span class="st">&quot;a,,b,c&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;,&quot;</span>)) →</a>
 <a class="sourceLine" id="cb25-3" data-line-number="3">@(field(<span class="st">&quot;a   b c&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → b</a>
 <a class="sourceLine" id="cb25-4" data-line-number="4">@(field(<span class="st">&quot;a      b   c   d&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;    &quot;</span>)) →</a>
 <a class="sourceLine" id="cb25-5" data-line-number="5">@(field(<span class="st">&quot;a</span><span class="sc">\t\t</span><span class="st">b</span><span class="sc">\t</span><span class="st">c</span><span class="sc">\t</span><span class="st">d&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) →</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;,&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb25-6" data-line-number="6">@(field(<span class="st">&quot;a,b,c&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;,&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_date"></a></p>
 <h2 id="format_datedate-format">format_date(date, [,format])</h2>
 <p>Turns <code>date</code> into text according to the <code>format</code> specified.</p>
-<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
 <li><code>YYYY</code> - four digits of year 0000-9999</li>
@@ -337,16 +337,16 @@
 <li><code>D</code> - day of month, 1-31</li>
 <li><code>DD</code> - day of month, zero padded 0-31</li>
 </ul>
-<pre class="sourceCode objectivec" id="cb26"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span></a>
+<div class="sourceCode" id="cb26"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb26-1" data-line-number="1">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span></a>
 <a class="sourceLine" id="cb26-2" data-line-number="2">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07-18</span></a>
 <a class="sourceLine" id="cb26-3" data-line-number="3">@(format_date(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD&quot;</span>)) → <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span></a>
 <a class="sourceLine" id="cb26-4" data-line-number="4">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY&quot;</span>)) → <span class="dv">1979</span></a>
 <a class="sourceLine" id="cb26-5" data-line-number="5">@(format_date(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">7</span></a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb26-6" data-line-number="6">@(format_date(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_datetime"></a></p>
 <h2 id="format_datetimedate-format-timezone">format_datetime(date [,format [,timezone]])</h2>
 <p>Turns <code>date</code> into text according to the <code>format</code> specified and in the optional <code>timezone</code>.</p>
-<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
 <li><code>YYYY</code> - four digits of year 0000-9999</li>
@@ -370,124 +370,124 @@
 <li><code>ZZZ</code> - hour and minute offset from UTC</li>
 </ul>
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
-<pre class="sourceCode objectivec" id="cb27"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" data-line-number="1">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span> <span class="dv">10</span>:<span class="dv">00</span></a>
+<div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" data-line-number="1">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>)) → <span class="dv">1979-07-18</span> <span class="dv">10</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07-18</span></a>
 <a class="sourceLine" id="cb27-3" data-line-number="3">@(format_datetime(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>)) → <span class="dv">2010</span> <span class="dv">5</span> <span class="dv">10</span> <span class="dv">14</span>:<span class="dv">50</span></a>
 <a class="sourceLine" id="cb27-4" data-line-number="4">@(format_datetime(<span class="st">&quot;2010-05-10T19:50:00.000000Z&quot;</span>, <span class="st">&quot;YYYY-MM-DD tt:mm AA&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05-10</span> <span class="dv">12</span>:<span class="dv">50</span> PM</a>
 <a class="sourceLine" id="cb27-5" data-line-number="5">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;YYYY&quot;</span>)) → <span class="dv">1979</span></a>
 <a class="sourceLine" id="cb27-6" data-line-number="6">@(format_datetime(<span class="st">&quot;1979-07-18T15:00:00.000000Z&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">7</span></a>
-<a class="sourceLine" id="cb27-7" data-line-number="7">@(format_datetime(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb27-7" data-line-number="7">@(format_datetime(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:format_location"></a></p>
 <h2 id="format_locationlocation">format_location(location)</h2>
 <p>Formats the given location as its name</p>
-<pre class="sourceCode objectivec" id="cb28"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(format_location(<span class="st">&quot;Rwanda&quot;</span>)) → Rwanda</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">@(format_location(<span class="st">&quot;Rwanda &gt; Kigali&quot;</span>)) → Kigali</a></code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(format_location(<span class="st">&quot;Rwanda&quot;</span>)) → Rwanda</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">@(format_location(<span class="st">&quot;Rwanda &gt; Kigali&quot;</span>)) → Kigali</a></code></pre></div>
 <p><a name="function:format_number"></a></p>
 <h2 id="format_numbernum-places-commas">format_number(num, places, commas)</h2>
 <p>Returns <code>num</code> formatted with the passed in number of decimal <code>places</code> and optional <code>commas</code> dividing thousands separators</p>
-<pre class="sourceCode objectivec" id="cb29"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" data-line-number="1">@(format_number(<span class="dv">31337</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
+<div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" data-line-number="1">@(format_number(<span class="dv">31337</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">@(format_number(<span class="dv">31337</span>, <span class="dv">2</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
 <a class="sourceLine" id="cb29-3" data-line-number="3">@(format_number(<span class="dv">31337</span>, <span class="dv">2</span>, true)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
 <a class="sourceLine" id="cb29-4" data-line-number="4">@(format_number(<span class="dv">31337</span>, <span class="dv">0</span>, false)) → <span class="dv">31337</span></a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">@(format_number(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb29-5" data-line-number="5">@(format_number(<span class="st">&quot;foo&quot;</span>, <span class="dv">2</span>, false)) → ERROR</a></code></pre></div>
 <p><a name="function:format_urn"></a></p>
 <h2 id="format_urnurn">format_urn(urn)</h2>
 <p>Turns <code>urn</code> into human friendly text</p>
-<pre class="sourceCode objectivec" id="cb30"><code class="sourceCode objectivec"><a class="sourceLine" id="cb30-1" data-line-number="1">@(format_urn(<span class="st">&quot;tel:+250781234567&quot;</span>)) → <span class="dv">0781</span> <span class="dv">234</span> <span class="dv">567</span></a>
+<div class="sourceCode" id="cb30"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb30-1" data-line-number="1">@(format_urn(<span class="st">&quot;tel:+250781234567&quot;</span>)) → <span class="dv">0781</span> <span class="dv">234</span> <span class="dv">567</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">@(format_urn(<span class="st">&quot;twitter:134252511151#billy_bob&quot;</span>)) → billy_bob</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">@(format_urn(contact.urns)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
 <a class="sourceLine" id="cb30-4" data-line-number="4">@(format_urn(contact.urns<span class="fl">.2</span>)) → foo@bar.com</a>
 <a class="sourceLine" id="cb30-5" data-line-number="5">@(format_urn(contact.urns.mailto)) → foo@bar.com</a>
 <a class="sourceLine" id="cb30-6" data-line-number="6">@(format_urn(contact.urns.mailto<span class="fl">.0</span>)) → foo@bar.com</a>
 <a class="sourceLine" id="cb30-7" data-line-number="7">@(format_urn(contact.urns.telegram)) →</a>
-<a class="sourceLine" id="cb30-8" data-line-number="8">@(format_urn(<span class="st">&quot;NOT URN&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb30-8" data-line-number="8">@(format_urn(<span class="st">&quot;NOT URN&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:from_epoch"></a></p>
 <h2 id="from_epochnum">from_epoch(num)</h2>
 <p>Returns a new date created from <code>num</code> which represents number of nanoseconds since January 1st, 1970 GMT</p>
-<pre class="sourceCode objectivec" id="cb31"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(from_epoch(<span class="dv">1497286619000000000</span>)) → <span class="dv">2017-06</span>-12T11:<span class="dv">56</span>:<span class="fl">59.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" data-line-number="1">@(from_epoch(<span class="dv">1497286619000000000</span>)) → <span class="dv">2017-06</span>-12T11:<span class="dv">56</span>:<span class="fl">59.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:if"></a></p>
 <h2 id="iftest-true_value-false_value">if(test, true_value, false_value)</h2>
 <p>Evaluates the <code>test</code> argument, and if truthy returns <code>true_value</code>, if not returning <code>false_value</code></p>
 <p>If the first argument is an error that error is returned</p>
-<pre class="sourceCode objectivec" id="cb32"><code class="sourceCode objectivec"><a class="sourceLine" id="cb32-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → foo</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb32-1" data-line-number="1">@(<span class="kw">if</span>(<span class="dv">1</span> = <span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → foo</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">@(<span class="kw">if</span>(<span class="st">&quot;foo&quot;</span> &gt; <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:join"></a></p>
 <h2 id="joinarray-delimiter">join(array, delimiter)</h2>
 <p>Joins the passed in <code>array</code> of strings with the passed in <code>delimiter</code></p>
-<pre class="sourceCode objectivec" id="cb33"><code class="sourceCode objectivec"><a class="sourceLine" id="cb33-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
-<a class="sourceLine" id="cb33-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) → a b c</a></code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb33-1" data-line-number="1">@(join(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="st">&quot;|&quot;</span>)) → a|b|c</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">@(join(split(<span class="st">&quot;a.b.c&quot;</span>, <span class="st">&quot;.&quot;</span>), <span class="st">&quot; &quot;</span>)) → a b c</a></code></pre></div>
 <p><a name="function:json"></a></p>
 <h2 id="jsonvalue">json(value)</h2>
 <p>Tries to return a JSON representation of <code>value</code>. An error is returned if there is no JSON representation of that object.</p>
-<pre class="sourceCode objectivec" id="cb34"><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" data-line-number="1">@(json(<span class="st">&quot;string&quot;</span>)) → <span class="st">&quot;string&quot;</span></a>
+<div class="sourceCode" id="cb34"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" data-line-number="1">@(json(<span class="st">&quot;string&quot;</span>)) → <span class="st">&quot;string&quot;</span></a>
 <a class="sourceLine" id="cb34-2" data-line-number="2">@(json(<span class="dv">10</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">@(json(contact.uuid)) → <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></a></code></pre>
+<a class="sourceLine" id="cb34-3" data-line-number="3">@(json(contact.uuid)) → <span class="st">&quot;5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f&quot;</span></a></code></pre></div>
 <p><a name="function:left"></a></p>
 <h2 id="lefttext-count">left(text, count)</h2>
 <p>Returns the <code>count</code> most left characters of the passed in <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb35"><code class="sourceCode objectivec"><a class="sourceLine" id="cb35-1" data-line-number="1">@(left(<span class="st">&quot;hello&quot;</span>, <span class="dv">2</span>)) → he</a>
+<div class="sourceCode" id="cb35"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb35-1" data-line-number="1">@(left(<span class="st">&quot;hello&quot;</span>, <span class="dv">2</span>)) → he</a>
 <a class="sourceLine" id="cb35-2" data-line-number="2">@(left(<span class="st">&quot;hello&quot;</span>, <span class="dv">7</span>)) → hello</a>
 <a class="sourceLine" id="cb35-3" data-line-number="3">@(left(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) → 😀😃</a>
-<a class="sourceLine" id="cb35-4" data-line-number="4">@(left(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb35-4" data-line-number="4">@(left(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:length"></a></p>
 <h2 id="lengthvalue">length(value)</h2>
 <p>Returns the length of the passed in text or array.</p>
 <p>length will return an error if it is passed an item which doesn’t have length.</p>
-<pre class="sourceCode objectivec" id="cb36"><code class="sourceCode objectivec"><a class="sourceLine" id="cb36-1" data-line-number="1">@(length(<span class="st">&quot;Hello&quot;</span>)) → <span class="dv">5</span></a>
+<div class="sourceCode" id="cb36"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb36-1" data-line-number="1">@(length(<span class="st">&quot;Hello&quot;</span>)) → <span class="dv">5</span></a>
 <a class="sourceLine" id="cb36-2" data-line-number="2">@(length(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a>
 <a class="sourceLine" id="cb36-3" data-line-number="3">@(length(array())) → <span class="dv">0</span></a>
 <a class="sourceLine" id="cb36-4" data-line-number="4">@(length(array(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>))) → <span class="dv">3</span></a>
-<a class="sourceLine" id="cb36-5" data-line-number="5">@(length(<span class="dv">1234</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb36-5" data-line-number="5">@(length(<span class="dv">1234</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:lower"></a></p>
 <h2 id="lowertext">lower(text)</h2>
 <p>Lowercases the passed in <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb37"><code class="sourceCode objectivec"><a class="sourceLine" id="cb37-1" data-line-number="1">@(lower(<span class="st">&quot;HellO&quot;</span>)) → hello</a>
+<div class="sourceCode" id="cb37"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb37-1" data-line-number="1">@(lower(<span class="st">&quot;HellO&quot;</span>)) → hello</a>
 <a class="sourceLine" id="cb37-2" data-line-number="2">@(lower(<span class="st">&quot;hello&quot;</span>)) → hello</a>
 <a class="sourceLine" id="cb37-3" data-line-number="3">@(lower(<span class="st">&quot;123&quot;</span>)) → <span class="dv">123</span></a>
-<a class="sourceLine" id="cb37-4" data-line-number="4">@(lower(<span class="st">&quot;😀&quot;</span>)) → 😀</a></code></pre>
+<a class="sourceLine" id="cb37-4" data-line-number="4">@(lower(<span class="st">&quot;😀&quot;</span>)) → 😀</a></code></pre></div>
 <p><a name="function:max"></a></p>
 <h2 id="maxvalues">max(values…)</h2>
 <p>Takes a list of <code>values</code> and returns the greatest of them</p>
-<pre class="sourceCode objectivec" id="cb38"><code class="sourceCode objectivec"><a class="sourceLine" id="cb38-1" data-line-number="1">@(max(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="dv">2</span></a>
+<div class="sourceCode" id="cb38"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb38-1" data-line-number="1">@(max(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb38-2" data-line-number="2">@(max(<span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">@(max(<span class="dv">1</span>, <span class="dv">10</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb38-3" data-line-number="3">@(max(<span class="dv">1</span>, <span class="dv">10</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:mean"></a></p>
 <h2 id="meanvalues">mean(values)</h2>
 <p>Takes a list of <code>values</code> and returns the arithmetic mean of them</p>
-<pre class="sourceCode objectivec" id="cb39"><code class="sourceCode objectivec"><a class="sourceLine" id="cb39-1" data-line-number="1">@(mean(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="fl">1.5</span></a>
+<div class="sourceCode" id="cb39"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb39-1" data-line-number="1">@(mean(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="fl">1.5</span></a>
 <a class="sourceLine" id="cb39-2" data-line-number="2">@(mean(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>)) → <span class="dv">3</span></a>
-<a class="sourceLine" id="cb39-3" data-line-number="3">@(mean(<span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb39-3" data-line-number="3">@(mean(<span class="dv">1</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:min"></a></p>
 <h2 id="minvalues">min(values)</h2>
 <p>Takes a list of <code>values</code> and returns the smallest of them</p>
-<pre class="sourceCode objectivec" id="cb40"><code class="sourceCode objectivec"><a class="sourceLine" id="cb40-1" data-line-number="1">@(min(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="dv">1</span></a>
+<div class="sourceCode" id="cb40"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb40-1" data-line-number="1">@(min(<span class="dv">1</span>, <span class="dv">2</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb40-2" data-line-number="2">@(min(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">-10</span>)) → <span class="dv">-10</span></a>
-<a class="sourceLine" id="cb40-3" data-line-number="3">@(min(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb40-3" data-line-number="3">@(min(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:mod"></a></p>
 <h2 id="moddividend-divisor">mod(dividend, divisor)</h2>
 <p>Returns the remainder of the division of <code>divident</code> by <code>divisor</code></p>
-<pre class="sourceCode objectivec" id="cb41"><code class="sourceCode objectivec"><a class="sourceLine" id="cb41-1" data-line-number="1">@(mod(<span class="dv">5</span>, <span class="dv">2</span>)) → <span class="dv">1</span></a>
+<div class="sourceCode" id="cb41"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb41-1" data-line-number="1">@(mod(<span class="dv">5</span>, <span class="dv">2</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb41-2" data-line-number="2">@(mod(<span class="dv">4</span>, <span class="dv">2</span>)) → <span class="dv">0</span></a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">@(mod(<span class="dv">5</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb41-3" data-line-number="3">@(mod(<span class="dv">5</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:now"></a></p>
 <h2 id="now">now()</h2>
 <p>Returns the current date and time in the environment timezone</p>
-<pre class="sourceCode objectivec" id="cb42"><code class="sourceCode objectivec"><a class="sourceLine" id="cb42-1" data-line-number="1">@(now()) → <span class="dv">2018-04</span>-11T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb42-1" data-line-number="1">@(now()) → <span class="dv">2018-04</span>-11T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:number"></a></p>
 <h2 id="numbervalue">number(value)</h2>
 <p>Tries to convert <code>value</code> to a number. An error is returned if the value can’t be converted.</p>
-<pre class="sourceCode objectivec" id="cb43"><code class="sourceCode objectivec"><a class="sourceLine" id="cb43-1" data-line-number="1">@(number(<span class="dv">10</span>)) → <span class="dv">10</span></a>
+<div class="sourceCode" id="cb43"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb43-1" data-line-number="1">@(number(<span class="dv">10</span>)) → <span class="dv">10</span></a>
 <a class="sourceLine" id="cb43-2" data-line-number="2">@(number(<span class="st">&quot;123.45000&quot;</span>)) → <span class="fl">123.45</span></a>
-<a class="sourceLine" id="cb43-3" data-line-number="3">@(number(<span class="st">&quot;what?&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb43-3" data-line-number="3">@(number(<span class="st">&quot;what?&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:or"></a></p>
 <h2 id="ortests">or(tests…)</h2>
 <p>Returns whether if any of the passed in arguments are truthy</p>
-<pre class="sourceCode objectivec" id="cb44"><code class="sourceCode objectivec"><a class="sourceLine" id="cb44-1" data-line-number="1">@(or(true)) → true</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">@(or(true, false, true)) → true</a></code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb44-1" data-line-number="1">@(or(true)) → true</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2">@(or(true, false, true)) → true</a></code></pre></div>
 <p><a name="function:parse_datetime"></a></p>
 <h2 id="parse_datetimetext-format-timezone">parse_datetime(text, format [,timezone])</h2>
 <p>Turns <code>text</code> into a date according to the <code>format</code> and optional <code>timezone</code> specified</p>
-<p>The format string can consist of the following characters. The characters ‘’, ‘:’, ‘,’, ‘T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
+<p>The format string can consist of the following characters. The characters ’ ‘,’:‘,’,‘, ’T’, ‘-’ and ’_’ are ignored. Any other character is an error.</p>
 <ul>
 <li><code>YY</code> - last two digits of year 0-99</li>
 <li><code>YYYY</code> - four digits of year 0000-9999</li>
@@ -513,182 +513,182 @@
 <p>Timezone should be a location name as specified in the IANA Time Zone database, such as “America/Guayaquil” or “America/Los_Angeles”. If not specified the timezone of your environment will be used. An error will be returned if the timezone is not recognized.</p>
 <p>Note that fractional seconds will be parsed even without an explicit format identifier. You should only specify fractional seconds when you want to assert the number of places in the input format.</p>
 <p>parse_datetime will return an error if it is unable to convert the text to a datetime.</p>
-<pre class="sourceCode objectivec" id="cb45"><code class="sourceCode objectivec"><a class="sourceLine" id="cb45-1" data-line-number="1">@(parse_datetime(<span class="st">&quot;1979-07-18&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<div class="sourceCode" id="cb45"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb45-1" data-line-number="1">@(parse_datetime(<span class="st">&quot;1979-07-18&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → <span class="dv">1979-07</span>-18T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb45-2" data-line-number="2">@(parse_datetime(<span class="st">&quot;2010 5 10&quot;</span>, <span class="st">&quot;YYYY M DD&quot;</span>)) → <span class="dv">2010-05</span>-10T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb45-3" data-line-number="3">@(parse_datetime(<span class="st">&quot;2010 5 10 12:50&quot;</span>, <span class="st">&quot;YYYY M DD tt:mm&quot;</span>, <span class="st">&quot;America/Los_Angeles&quot;</span>)) → <span class="dv">2010-05</span>-10T12:<span class="dv">50</span>:<span class="fl">00.000000</span><span class="dv">-07</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb45-4" data-line-number="4">@(parse_datetime(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb45-4" data-line-number="4">@(parse_datetime(<span class="st">&quot;NOT DATE&quot;</span>, <span class="st">&quot;YYYY-MM-DD&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:parse_json"></a></p>
 <h2 id="parse_jsontext">parse_json(text)</h2>
 <p>Tries to parse <code>text</code> as JSON, returning a fragment you can index into</p>
 <p>If the passed in value is not JSON, then an error is returned</p>
-<pre class="sourceCode objectivec" id="cb46"><code class="sourceCode objectivec"><a class="sourceLine" id="cb46-1" data-line-number="1">@(parse_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) → <span class="dv">3</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">@(parse_json(<span class="st">&quot;invalid json&quot;</span>)) → ERROR</a></code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb46-1" data-line-number="1">@(parse_json(<span class="st">&quot;[1,2,3,4]&quot;</span>).<span class="dv">2</span>) → <span class="dv">3</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">@(parse_json(<span class="st">&quot;invalid json&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:percent"></a></p>
 <h2 id="percentnum">percent(num)</h2>
 <p>Converts <code>num</code> to text represented as a percentage</p>
-<pre class="sourceCode objectivec" id="cb47"><code class="sourceCode objectivec"><a class="sourceLine" id="cb47-1" data-line-number="1">@(percent(<span class="fl">0.54234</span>)) → <span class="dv">54</span>%</a>
+<div class="sourceCode" id="cb47"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb47-1" data-line-number="1">@(percent(<span class="fl">0.54234</span>)) → <span class="dv">54</span>%</a>
 <a class="sourceLine" id="cb47-2" data-line-number="2">@(percent(<span class="fl">1.2</span>)) → <span class="dv">120</span>%</a>
-<a class="sourceLine" id="cb47-3" data-line-number="3">@(percent(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb47-3" data-line-number="3">@(percent(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:rand"></a></p>
 <h2 id="rand">rand()</h2>
 <p>Returns a single random number between [0.0-1.0).</p>
-<pre class="sourceCode objectivec" id="cb48"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(rand()) → <span class="fl">0.3849275689214193274523267973563633859157562255859375</span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">@(rand()) → <span class="fl">0.607552015674623913099594574305228888988494873046875</span></a></code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb48-1" data-line-number="1">@(rand()) → <span class="fl">0.3849275689214193274523267973563633859157562255859375</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">@(rand()) → <span class="fl">0.607552015674623913099594574305228888988494873046875</span></a></code></pre></div>
 <p><a name="function:rand_between"></a></p>
 <h2 id="rand_between">rand_between()</h2>
 <p>A single random integer in the given inclusive range.</p>
-<pre class="sourceCode objectivec" id="cb49"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" data-line-number="1">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">5</span></a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb49-1" data-line-number="1">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">5</span></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">@(rand_between(<span class="dv">1</span>, <span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
 <p><a name="function:read_chars"></a></p>
 <h2 id="read_charstext">read_chars(text)</h2>
 <p>Converts <code>text</code> into something that can be read by IVR systems</p>
 <p>ReadChars will split the numbers such as they are easier to understand. This includes splitting in 3s or 4s if appropriate.</p>
-<pre class="sourceCode objectivec" id="cb50"><code class="sourceCode objectivec"><a class="sourceLine" id="cb50-1" data-line-number="1">@(read_chars(<span class="st">&quot;1234&quot;</span>)) → <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
+<div class="sourceCode" id="cb50"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb50-1" data-line-number="1">@(read_chars(<span class="st">&quot;1234&quot;</span>)) → <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span></a>
 <a class="sourceLine" id="cb50-2" data-line-number="2">@(read_chars(<span class="st">&quot;abc&quot;</span>)) → a b c</a>
-<a class="sourceLine" id="cb50-3" data-line-number="3">@(read_chars(<span class="st">&quot;abcdef&quot;</span>)) → a b c , d e f</a></code></pre>
+<a class="sourceLine" id="cb50-3" data-line-number="3">@(read_chars(<span class="st">&quot;abcdef&quot;</span>)) → a b c , d e f</a></code></pre></div>
 <p><a name="function:remove_first_word"></a></p>
 <h2 id="remove_first_wordtext">remove_first_word(text)</h2>
 <p>Removes the 1st word of <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb51"><code class="sourceCode objectivec"><a class="sourceLine" id="cb51-1" data-line-number="1">@(remove_first_word(<span class="st">&quot;foo bar&quot;</span>)) → bar</a></code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb51-1" data-line-number="1">@(remove_first_word(<span class="st">&quot;foo bar&quot;</span>)) → bar</a></code></pre></div>
 <p><a name="function:repeat"></a></p>
 <h2 id="repeattext-count">repeat(text, count)</h2>
 <p>Return <code>text</code> repeated <code>count</code> number of times</p>
-<pre class="sourceCode objectivec" id="cb52"><code class="sourceCode objectivec"><a class="sourceLine" id="cb52-1" data-line-number="1">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="dv">8</span>)) → ********</a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb52-1" data-line-number="1">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="dv">8</span>)) → ********</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">@(repeat(<span class="st">&quot;*&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:replace"></a></p>
 <h2 id="replacetext-needle-replacement">replace(text, needle, replacement)</h2>
 <p>Replaces all occurrences of <code>needle</code> with <code>replacement</code> in <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb53"><code class="sourceCode objectivec"><a class="sourceLine" id="cb53-1" data-line-number="1">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb53-1" data-line-number="1">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → zap bar</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">@(replace(<span class="st">&quot;foo bar&quot;</span>, <span class="st">&quot;baz&quot;</span>, <span class="st">&quot;zap&quot;</span>)) → foo bar</a></code></pre></div>
 <p><a name="function:right"></a></p>
 <h2 id="righttext-count">right(text, count)</h2>
 <p>Returns the <code>count</code> most right characters of the passed in <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb54"><code class="sourceCode objectivec"><a class="sourceLine" id="cb54-1" data-line-number="1">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">2</span>)) → lo</a>
+<div class="sourceCode" id="cb54"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb54-1" data-line-number="1">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">2</span>)) → lo</a>
 <a class="sourceLine" id="cb54-2" data-line-number="2">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">7</span>)) → hello</a>
 <a class="sourceLine" id="cb54-3" data-line-number="3">@(right(<span class="st">&quot;😀😃😄😁&quot;</span>, <span class="dv">2</span>)) → 😄😁</a>
-<a class="sourceLine" id="cb54-4" data-line-number="4">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb54-4" data-line-number="4">@(right(<span class="st">&quot;hello&quot;</span>, <span class="dv">-1</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round"></a></p>
 <h2 id="roundnum-places">round(num [,places])</h2>
 <p>Rounds <code>num</code> to the nearest value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
 <p>If places &lt; 0, it will round the integer part to the nearest 10^(-places).</p>
-<pre class="sourceCode objectivec" id="cb55"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<div class="sourceCode" id="cb55"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb55-1" data-line-number="1">@(round(<span class="dv">12</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb55-2" data-line-number="2">@(round(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb55-3" data-line-number="3">@(round(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
 <a class="sourceLine" id="cb55-4" data-line-number="4">@(round(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
 <a class="sourceLine" id="cb55-5" data-line-number="5">@(round(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
 <a class="sourceLine" id="cb55-6" data-line-number="6">@(round(<span class="fl">12.146</span>, <span class="dv">-1</span>)) → <span class="dv">10</span></a>
-<a class="sourceLine" id="cb55-7" data-line-number="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb55-7" data-line-number="7">@(round(<span class="st">&quot;notnum&quot;</span>, <span class="dv">2</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_down"></a></p>
 <h2 id="round_downnum-places">round_down(num [,places])</h2>
 <p>Rounds <code>num</code> down to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
-<pre class="sourceCode objectivec" id="cb56"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<div class="sourceCode" id="cb56"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb56-1" data-line-number="1">@(round_down(<span class="dv">12</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb56-2" data-line-number="2">@(round_down(<span class="fl">12.141</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb56-3" data-line-number="3">@(round_down(<span class="fl">12.6</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb56-4" data-line-number="4">@(round_down(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
 <a class="sourceLine" id="cb56-5" data-line-number="5">@(round_down(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.14</span></a>
-<a class="sourceLine" id="cb56-6" data-line-number="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb56-6" data-line-number="6">@(round_down(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:round_up"></a></p>
 <h2 id="round_upnum-places">round_up(num [,places])</h2>
 <p>Rounds <code>num</code> up to the nearest integer value. You can optionally pass in the number of decimal places to round to as <code>places</code>.</p>
-<pre class="sourceCode objectivec" id="cb57"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
+<div class="sourceCode" id="cb57"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb57-1" data-line-number="1">@(round_up(<span class="dv">12</span>)) → <span class="dv">12</span></a>
 <a class="sourceLine" id="cb57-2" data-line-number="2">@(round_up(<span class="fl">12.141</span>)) → <span class="dv">13</span></a>
 <a class="sourceLine" id="cb57-3" data-line-number="3">@(round_up(<span class="fl">12.6</span>)) → <span class="dv">13</span></a>
 <a class="sourceLine" id="cb57-4" data-line-number="4">@(round_up(<span class="fl">12.141</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
 <a class="sourceLine" id="cb57-5" data-line-number="5">@(round_up(<span class="fl">12.146</span>, <span class="dv">2</span>)) → <span class="fl">12.15</span></a>
-<a class="sourceLine" id="cb57-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb57-6" data-line-number="6">@(round_up(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:split"></a></p>
 <h2 id="splittext-delimiters">split(text, delimiters)</h2>
 <p>Splits <code>text</code> based on the characters in <code>delimiters</code></p>
 <p>Empty values are removed from the returned list</p>
-<pre class="sourceCode objectivec" id="cb58"><code class="sourceCode objectivec"><a class="sourceLine" id="cb58-1" data-line-number="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
+<div class="sourceCode" id="cb58"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb58-1" data-line-number="1">@(split(<span class="st">&quot;a b c&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
 <a class="sourceLine" id="cb58-2" data-line-number="2">@(split(<span class="st">&quot;a&quot;</span>, <span class="st">&quot; &quot;</span>)) → [<span class="st">&quot;a&quot;</span>]</a>
 <a class="sourceLine" id="cb58-3" data-line-number="3">@(split(<span class="st">&quot;abc..d&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;abc&quot;</span>,<span class="st">&quot;d&quot;</span>]</a>
 <a class="sourceLine" id="cb58-4" data-line-number="4">@(split(<span class="st">&quot;a.b.c.&quot;</span>, <span class="st">&quot;.&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>]</a>
-<a class="sourceLine" id="cb58-5" data-line-number="5">@(split(<span class="st">&quot;a|b,c  d&quot;</span>, <span class="st">&quot; .|,&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>]</a></code></pre>
+<a class="sourceLine" id="cb58-5" data-line-number="5">@(split(<span class="st">&quot;a|b,c  d&quot;</span>, <span class="st">&quot; .|,&quot;</span>)) → [<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;c&quot;</span>,<span class="st">&quot;d&quot;</span>]</a></code></pre></div>
 <p><a name="function:text"></a></p>
 <h2 id="textvalue">text(value)</h2>
 <p>Tries to convert <code>value</code> to text. An error is returned if the value can’t be converted.</p>
-<pre class="sourceCode objectivec" id="cb59"><code class="sourceCode objectivec"><a class="sourceLine" id="cb59-1" data-line-number="1">@(text(<span class="dv">3</span> = <span class="dv">3</span>)) → true</a>
+<div class="sourceCode" id="cb59"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb59-1" data-line-number="1">@(text(<span class="dv">3</span> = <span class="dv">3</span>)) → true</a>
 <a class="sourceLine" id="cb59-2" data-line-number="2">@(json(text(<span class="fl">123.45</span>))) → <span class="st">&quot;123.45&quot;</span></a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">@(text(<span class="dv">1</span> / <span class="dv">0</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb59-3" data-line-number="3">@(text(<span class="dv">1</span> / <span class="dv">0</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:text_compare"></a></p>
 <h2 id="text_comparetext1-text2">text_compare(text1, text2)</h2>
 <p>Returns the comparison between the strings <code>text1</code> and <code>text2</code>. The return value will be -1 if str1 is smaller than str2, 0 if they are equal and 1 if str1 is greater than str2</p>
-<pre class="sourceCode objectivec" id="cb60"><code class="sourceCode objectivec"><a class="sourceLine" id="cb60-1" data-line-number="1">@(text_compare(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;abc&quot;</span>)) → <span class="dv">0</span></a>
+<div class="sourceCode" id="cb60"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb60-1" data-line-number="1">@(text_compare(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;abc&quot;</span>)) → <span class="dv">0</span></a>
 <a class="sourceLine" id="cb60-2" data-line-number="2">@(text_compare(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>)) → <span class="dv">-1</span></a>
-<a class="sourceLine" id="cb60-3" data-line-number="3">@(text_compare(<span class="st">&quot;zzz&quot;</span>, <span class="st">&quot;aaa&quot;</span>)) → <span class="dv">1</span></a></code></pre>
+<a class="sourceLine" id="cb60-3" data-line-number="3">@(text_compare(<span class="st">&quot;zzz&quot;</span>, <span class="st">&quot;aaa&quot;</span>)) → <span class="dv">1</span></a></code></pre></div>
 <p><a name="function:title"></a></p>
 <h2 id="titletext">title(text)</h2>
 <p>Titlecases the passed in <code>text</code>, capitalizing each word</p>
-<pre class="sourceCode objectivec" id="cb61"><code class="sourceCode objectivec"><a class="sourceLine" id="cb61-1" data-line-number="1">@(title(<span class="st">&quot;foo&quot;</span>)) → Foo</a>
+<div class="sourceCode" id="cb61"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb61-1" data-line-number="1">@(title(<span class="st">&quot;foo&quot;</span>)) → Foo</a>
 <a class="sourceLine" id="cb61-2" data-line-number="2">@(title(<span class="st">&quot;ryan lewis&quot;</span>)) → Ryan Lewis</a>
-<a class="sourceLine" id="cb61-3" data-line-number="3">@(title(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre>
+<a class="sourceLine" id="cb61-3" data-line-number="3">@(title(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
 <p><a name="function:today"></a></p>
 <h2 id="today">today()</h2>
 <p>Returns the current date in the current timezone, time is set to midnight in the environment timezone</p>
-<pre class="sourceCode objectivec" id="cb62"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" data-line-number="1">@(today()) → <span class="dv">2018-04</span>-11T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb62-1" data-line-number="1">@(today()) → <span class="dv">2018-04</span>-11T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a></code></pre></div>
 <p><a name="function:tz"></a></p>
 <h2 id="tzdate">tz(date)</h2>
 <p>Returns the timezone for `date``</p>
 <p>If not timezone information is present in the date, then the environment’s timezone will be returned</p>
-<pre class="sourceCode objectivec" id="cb63"><code class="sourceCode objectivec"><a class="sourceLine" id="cb63-1" data-line-number="1">@(tz(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → UTC</a>
+<div class="sourceCode" id="cb63"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb63-1" data-line-number="1">@(tz(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → UTC</a>
 <a class="sourceLine" id="cb63-2" data-line-number="2">@(tz(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → America/Guayaquil</a>
 <a class="sourceLine" id="cb63-3" data-line-number="3">@(tz(<span class="st">&quot;2017-01-15&quot;</span>)) → America/Guayaquil</a>
-<a class="sourceLine" id="cb63-4" data-line-number="4">@(tz(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb63-4" data-line-number="4">@(tz(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:tz_offset"></a></p>
 <h2 id="tz_offsetdate">tz_offset(date)</h2>
 <p>Returns the offset for the timezone as text +/- HHMM for <code>date</code></p>
 <p>If no timezone information is present in the date, then the environment’s timezone offset will be returned</p>
-<pre class="sourceCode objectivec" id="cb64"><code class="sourceCode objectivec"><a class="sourceLine" id="cb64-1" data-line-number="1">@(tz_offset(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → +<span class="dv">0000</span></a>
+<div class="sourceCode" id="cb64"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb64-1" data-line-number="1">@(tz_offset(<span class="st">&quot;2017-01-15T02:15:18.123456Z&quot;</span>)) → +<span class="dv">0000</span></a>
 <a class="sourceLine" id="cb64-2" data-line-number="2">@(tz_offset(<span class="st">&quot;2017-01-15 02:15:18PM&quot;</span>)) → <span class="dv">-0500</span></a>
 <a class="sourceLine" id="cb64-3" data-line-number="3">@(tz_offset(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">-0500</span></a>
-<a class="sourceLine" id="cb64-4" data-line-number="4">@(tz_offset(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb64-4" data-line-number="4">@(tz_offset(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:upper"></a></p>
 <h2 id="uppertext">upper(text)</h2>
 <p>Uppercases all characters in the passed <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb65"><code class="sourceCode objectivec"><a class="sourceLine" id="cb65-1" data-line-number="1">@(upper(<span class="st">&quot;Asdf&quot;</span>)) → ASDF</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">@(upper(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb65-1" data-line-number="1">@(upper(<span class="st">&quot;Asdf&quot;</span>)) → ASDF</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">@(upper(<span class="dv">123</span>)) → <span class="dv">123</span></a></code></pre></div>
 <p><a name="function:url_encode"></a></p>
 <h2 id="url_encodetext">url_encode(text)</h2>
 <p>URL encodes <code>text</code> for use in a URL parameter</p>
-<pre class="sourceCode objectivec" id="cb66"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(url_encode(<span class="st">&quot;two words&quot;</span>)) → two+words</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2">@(url_encode(<span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(url_encode(<span class="st">&quot;two words&quot;</span>)) → two+words</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">@(url_encode(<span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
 <p><a name="function:weekday"></a></p>
 <h2 id="weekdaydate">weekday(date)</h2>
 <p>Returns the day of the week for <code>date</code>, 0 is sunday, 1 is monday..</p>
-<pre class="sourceCode objectivec" id="cb67"><code class="sourceCode objectivec"><a class="sourceLine" id="cb67-1" data-line-number="1">@(weekday(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">0</span></a>
-<a class="sourceLine" id="cb67-2" data-line-number="2">@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb67-1" data-line-number="1">@(weekday(<span class="st">&quot;2017-01-15&quot;</span>)) → <span class="dv">0</span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">@(weekday(<span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:word"></a></p>
 <h2 id="wordtext-index-delimiters">word(text, index [,delimiters])</h2>
 <p>Returns the word at the passed in <code>index</code> for the passed in <code>text</code>. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
-<pre class="sourceCode objectivec" id="cb68"><code class="sourceCode objectivec"><a class="sourceLine" id="cb68-1" data-line-number="1">@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
+<div class="sourceCode" id="cb68"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb68-1" data-line-number="1">@(word(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
 <a class="sourceLine" id="cb68-2" data-line-number="2">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">0</span>)) → bee</a>
 <a class="sourceLine" id="cb68-3" data-line-number="3">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">1</span>)) → cat</a>
 <a class="sourceLine" id="cb68-4" data-line-number="4">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">2</span>)) → dog</a>
 <a class="sourceLine" id="cb68-5" data-line-number="5">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-1</span>)) → dog</a>
 <a class="sourceLine" id="cb68-6" data-line-number="6">@(word(<span class="st">&quot;bee.cat,dog&quot;</span>, <span class="dv">-2</span>)) → cat</a>
 <a class="sourceLine" id="cb68-7" data-line-number="7">@(word(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="st">&quot;.*=|&quot;</span>)) → cat,dog</a>
-<a class="sourceLine" id="cb68-8" data-line-number="8">@(word(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre>
+<a class="sourceLine" id="cb68-8" data-line-number="8">@(word(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre></div>
 <p><a name="function:word_count"></a></p>
 <h2 id="word_counttext-delimiters">word_count(text [,delimiters])</h2>
 <p>Returns the number of words in <code>text</code>. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
-<pre class="sourceCode objectivec" id="cb69"><code class="sourceCode objectivec"><a class="sourceLine" id="cb69-1" data-line-number="1">@(word_count(<span class="st">&quot;foo bar&quot;</span>)) → <span class="dv">2</span></a>
+<div class="sourceCode" id="cb69"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb69-1" data-line-number="1">@(word_count(<span class="st">&quot;foo bar&quot;</span>)) → <span class="dv">2</span></a>
 <a class="sourceLine" id="cb69-2" data-line-number="2">@(word_count(<span class="dv">10</span>)) → <span class="dv">1</span></a>
 <a class="sourceLine" id="cb69-3" data-line-number="3">@(word_count(<span class="st">&quot;&quot;</span>)) → <span class="dv">0</span></a>
 <a class="sourceLine" id="cb69-4" data-line-number="4">@(word_count(<span class="st">&quot;😀😃😄😁&quot;</span>)) → <span class="dv">4</span></a>
 <a class="sourceLine" id="cb69-5" data-line-number="5">@(word_count(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="st">&quot;.*=|&quot;</span>)) → <span class="dv">2</span></a>
-<a class="sourceLine" id="cb69-6" data-line-number="6">@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></a></code></pre>
+<a class="sourceLine" id="cb69-6" data-line-number="6">@(word_count(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="st">&quot; &quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
 <p><a name="function:word_slice"></a></p>
 <h2 id="word_slicetext-start-end-delimiters">word_slice(text, start, end [,delimiters])</h2>
 <p>Extracts a substring from <code>text</code> spanning from <code>start</code> up to but not-including <code>end</code>. (first word is 0). A negative end value means that all words after the start should be returned. There is an optional final parameter <code>delimiters</code> which is string of characters used to split the text into words.</p>
-<pre class="sourceCode objectivec" id="cb70"><code class="sourceCode objectivec"><a class="sourceLine" id="cb70-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
+<div class="sourceCode" id="cb70"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb70-1" data-line-number="1">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)) → bee</a>
 <a class="sourceLine" id="cb70-2" data-line-number="2">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">0</span>, <span class="dv">2</span>)) → bee cat</a>
 <a class="sourceLine" id="cb70-3" data-line-number="3">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>)) → cat dog</a>
 <a class="sourceLine" id="cb70-4" data-line-number="4">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">1</span>)) → cat dog</a>
 <a class="sourceLine" id="cb70-5" data-line-number="5">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">2</span>, <span class="dv">3</span>)) → dog</a>
 <a class="sourceLine" id="cb70-6" data-line-number="6">@(word_slice(<span class="st">&quot;bee cat dog&quot;</span>, <span class="dv">3</span>, <span class="dv">10</span>)) →</a>
 <a class="sourceLine" id="cb70-7" data-line-number="7">@(word_slice(<span class="st">&quot;bee.*cat,dog&quot;</span>, <span class="dv">1</span>, <span class="dv">-1</span>, <span class="st">&quot;.*=|,&quot;</span>)) → cat dog</a>
-<a class="sourceLine" id="cb70-8" data-line-number="8">@(word_slice(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre>
+<a class="sourceLine" id="cb70-8" data-line-number="8">@(word_slice(<span class="st">&quot;O&#39;Grady O&#39;Flaggerty&quot;</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot; &quot;</span>)) → O&#39;Flaggerty</a></code></pre></div>
 </div>
 <h1 id="router-tests">Router Tests</h1>
 <p>Router tests are a special class of functions which are used within the switch router. They are called in the same way as normal functions, but all return a test result object which by default evalutes to true or false, but can also be used to find the matching portion of the test by using the <code>match</code> component of the result. The flow editor builds these expressions using UI widgets, but they can be used anywhere a normal template function is used.</p>
@@ -697,227 +697,227 @@
 <h2 id="has_all_wordstext-words">has_all_words(text, words)</h2>
 <p>Tests whether all the <code>words</code> are contained in <code>text</code></p>
 <p>The words can be in any order and may appear more than once.</p>
-<pre class="sourceCode objectivec" id="cb71"><code class="sourceCode objectivec"><a class="sourceLine" id="cb71-1" data-line-number="1">@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb71"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb71-1" data-line-number="1">@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb71-2" data-line-number="2">@(has_all_words(<span class="st">&quot;the quick brown FOX&quot;</span>, <span class="st">&quot;the fox&quot;</span>).match) → the FOX</a>
-<a class="sourceLine" id="cb71-3" data-line-number="3">@(has_all_words(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb71-3" data-line-number="3">@(has_all_words(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_any_word"></a></p>
 <h2 id="has_any_wordtext-words">has_any_word(text, words)</h2>
 <p>Tests whether any of the <code>words</code> are contained in the <code>text</code></p>
 <p>Only one of the words needs to match and it may appear more than once.</p>
-<pre class="sourceCode objectivec" id="cb72"><code class="sourceCode objectivec"><a class="sourceLine" id="cb72-1" data-line-number="1">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;fox quick&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb72"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb72-1" data-line-number="1">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;fox quick&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb72-2" data-line-number="2">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb72-3" data-line-number="3">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>).match) → Fox</a></code></pre>
+<a class="sourceLine" id="cb72-3" data-line-number="3">@(has_any_word(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>).match) → Fox</a></code></pre></div>
 <p><a name="test:has_beginning"></a></p>
 <h2 id="has_beginningtext-beginning">has_beginning(text, beginning)</h2>
 <p>Tests whether <code>text</code> starts with <code>beginning</code></p>
 <p>Both text values are trimmed of surrounding whitespace, but otherwise matching is strict without any tokenization.</p>
-<pre class="sourceCode objectivec" id="cb73"><code class="sourceCode objectivec"><a class="sourceLine" id="cb73-1" data-line-number="1">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb73"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb73-1" data-line-number="1">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb73-2" data-line-number="2">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the quick&quot;</span>).match) → The Quick</a>
 <a class="sourceLine" id="cb73-3" data-line-number="3">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;the   quick&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb73-4" data-line-number="4">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb73-4" data-line-number="4">@(has_beginning(<span class="st">&quot;The Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_date"></a></p>
 <h2 id="has_datetext">has_date(text)</h2>
 <p>Tests whether <code>text</code> contains a date formatted according to our environment</p>
-<pre class="sourceCode objectivec" id="cb74"><code class="sourceCode objectivec"><a class="sourceLine" id="cb74-1" data-line-number="1">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb74"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb74-1" data-line-number="1">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb74-2" data-line-number="2">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb74-3" data-line-number="3">@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb74-3" data-line-number="3">@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_date_eq"></a></p>
 <h2 id="has_date_eqtext-date">has_date_eq(text, date)</h2>
 <p>Tests whether <code>text</code> a date equal to <code>date</code></p>
-<pre class="sourceCode objectivec" id="cb75"><code class="sourceCode objectivec"><a class="sourceLine" id="cb75-1" data-line-number="1">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb75"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb75-1" data-line-number="1">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb75-2" data-line-number="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb75-3" data-line-number="3">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb75-4" data-line-number="4">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb75-5" data-line-number="5">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb75-5" data-line-number="5">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_date_gt"></a></p>
 <h2 id="has_date_gttext-min">has_date_gt(text, min)</h2>
 <p>Tests whether <code>text</code> a date after the date <code>min</code></p>
-<pre class="sourceCode objectivec" id="cb76"><code class="sourceCode objectivec"><a class="sourceLine" id="cb76-1" data-line-number="1">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb76"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb76-1" data-line-number="1">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb76-2" data-line-number="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb76-3" data-line-number="3">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-03-15&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb76-4" data-line-number="4">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb76-5" data-line-number="5">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb76-5" data-line-number="5">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_date_lt"></a></p>
 <h2 id="has_date_lttext-max">has_date_lt(text, max)</h2>
 <p>Tests whether <code>text</code> contains a date before the date <code>max</code></p>
-<pre class="sourceCode objectivec" id="cb77"><code class="sourceCode objectivec"><a class="sourceLine" id="cb77-1" data-line-number="1">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb77"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb77-1" data-line-number="1">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb77-2" data-line-number="2">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb77-3" data-line-number="3">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb77-4" data-line-number="4">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb77-4" data-line-number="4">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_district"></a></p>
 <h2 id="has_districttext-state">has_district(text, state)</h2>
 <p>Tests whether a district name is contained in the <code>text</code>. If <code>state</code> is also provided then the returned district must be within that state.</p>
-<pre class="sourceCode objectivec" id="cb78"><code class="sourceCode objectivec"><a class="sourceLine" id="cb78-1" data-line-number="1">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb78"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb78-1" data-line-number="1">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb78-2" data-line-number="2">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb78-3" data-line-number="3">@(has_district(<span class="st">&quot;I live in Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo</a>
 <a class="sourceLine" id="cb78-4" data-line-number="4">@(has_district(<span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Boston&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb78-5" data-line-number="5">@(has_district(<span class="st">&quot;Gasabo&quot;</span>)) → true</a></code></pre>
+<a class="sourceLine" id="cb78-5" data-line-number="5">@(has_district(<span class="st">&quot;Gasabo&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_email"></a></p>
 <h2 id="has_emailtext">has_email(text)</h2>
 <p>Tests whether an email is contained in <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb79"><code class="sourceCode objectivec"><a class="sourceLine" id="cb79-1" data-line-number="1">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb79"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb79-1" data-line-number="1">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb79-2" data-line-number="2">@(has_email(<span class="st">&quot;my email is foo1@bar.com, please respond&quot;</span>).match) → foo1@bar.com</a>
 <a class="sourceLine" id="cb79-3" data-line-number="3">@(has_email(<span class="st">&quot;my email is &lt;foo@bar2.com&gt;&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb79-4" data-line-number="4">@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb79-4" data-line-number="4">@(has_email(<span class="st">&quot;i&#39;m not sharing my email&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_group"></a></p>
 <h2 id="has_groupcontact-group_uuid">has_group(contact, group_uuid)</h2>
 <p>Returns whether the <code>contact</code> is part of group with the passed in UUID</p>
-<pre class="sourceCode objectivec" id="cb80"><code class="sourceCode objectivec"><a class="sourceLine" id="cb80-1" data-line-number="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb80"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb80-1" data-line-number="1">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb80-2" data-line-number="2">@(has_group(contact, <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span>).match) → Testers</a>
-<a class="sourceLine" id="cb80-3" data-line-number="3">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb80-3" data-line-number="3">@(has_group(contact, <span class="st">&quot;97fe7029-3a15-4005-b0c7-277b884fc1d5&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_number"></a></p>
 <h2 id="has_numbertext">has_number(text)</h2>
 <p>Tests whether <code>text</code> contains a number</p>
-<pre class="sourceCode objectivec" id="cb81"><code class="sourceCode objectivec"><a class="sourceLine" id="cb81-1" data-line-number="1">@(has_number(<span class="st">&quot;the number is 42&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb81"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb81-1" data-line-number="1">@(has_number(<span class="st">&quot;the number is 42&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb81-2" data-line-number="2">@(has_number(<span class="st">&quot;the number is 42&quot;</span>).match) → <span class="dv">42</span></a>
-<a class="sourceLine" id="cb81-3" data-line-number="3">@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb81-3" data-line-number="3">@(has_number(<span class="st">&quot;the number is forty two&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_number_between"></a></p>
 <h2 id="has_number_betweentext-min-max">has_number_between(text, min, max)</h2>
 <p>Tests whether <code>text</code> contains a number between <code>min</code> and <code>max</code> inclusive</p>
-<pre class="sourceCode objectivec" id="cb82"><code class="sourceCode objectivec"><a class="sourceLine" id="cb82-1" data-line-number="1">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>)) → true</a>
+<div class="sourceCode" id="cb82"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb82-1" data-line-number="1">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>)) → true</a>
 <a class="sourceLine" id="cb82-2" data-line-number="2">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></a>
 <a class="sourceLine" id="cb82-3" data-line-number="3">@(has_number_between(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) → false</a>
 <a class="sourceLine" id="cb82-4" data-line-number="4">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">50</span>, <span class="dv">60</span>)) → false</a>
-<a class="sourceLine" id="cb82-5" data-line-number="5">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="dv">60</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb82-5" data-line-number="5">@(has_number_between(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>, <span class="dv">60</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_eq"></a></p>
 <h2 id="has_number_eqtext-value">has_number_eq(text, value)</h2>
 <p>Tests whether <code>text</code> contains a number equal to the <code>value</code></p>
-<pre class="sourceCode objectivec" id="cb83"><code class="sourceCode objectivec"><a class="sourceLine" id="cb83-1" data-line-number="1">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
+<div class="sourceCode" id="cb83"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb83-1" data-line-number="1">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
 <a class="sourceLine" id="cb83-2" data-line-number="2">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></a>
 <a class="sourceLine" id="cb83-3" data-line-number="3">@(has_number_eq(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → false</a>
 <a class="sourceLine" id="cb83-4" data-line-number="4">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</a>
-<a class="sourceLine" id="cb83-5" data-line-number="5">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb83-5" data-line-number="5">@(has_number_eq(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_gt"></a></p>
 <h2 id="has_number_gttext-min">has_number_gt(text, min)</h2>
 <p>Tests whether <code>text</code> contains a number greater than <code>min</code></p>
-<pre class="sourceCode objectivec" id="cb84"><code class="sourceCode objectivec"><a class="sourceLine" id="cb84-1" data-line-number="1">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → true</a>
+<div class="sourceCode" id="cb84"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb84-1" data-line-number="1">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → true</a>
 <a class="sourceLine" id="cb84-2" data-line-number="2">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>).match) → <span class="dv">42</span></a>
 <a class="sourceLine" id="cb84-3" data-line-number="3">@(has_number_gt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → false</a>
 <a class="sourceLine" id="cb84-4" data-line-number="4">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</a>
-<a class="sourceLine" id="cb84-5" data-line-number="5">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb84-5" data-line-number="5">@(has_number_gt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_gte"></a></p>
 <h2 id="has_number_gtetext-min">has_number_gte(text, min)</h2>
 <p>Tests whether <code>text</code> contains a number greater than or equal to <code>min</code></p>
-<pre class="sourceCode objectivec" id="cb85"><code class="sourceCode objectivec"><a class="sourceLine" id="cb85-1" data-line-number="1">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
+<div class="sourceCode" id="cb85"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb85-1" data-line-number="1">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
 <a class="sourceLine" id="cb85-2" data-line-number="2">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>).match) → <span class="dv">42</span></a>
 <a class="sourceLine" id="cb85-3" data-line-number="3">@(has_number_gte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">45</span>)) → false</a>
 <a class="sourceLine" id="cb85-4" data-line-number="4">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</a>
-<a class="sourceLine" id="cb85-5" data-line-number="5">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb85-5" data-line-number="5">@(has_number_gte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_lt"></a></p>
 <h2 id="has_number_lttext-max">has_number_lt(text, max)</h2>
 <p>Tests whether <code>text</code> contains a number less than <code>max</code></p>
-<pre class="sourceCode objectivec" id="cb86"><code class="sourceCode objectivec"><a class="sourceLine" id="cb86-1" data-line-number="1">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>)) → true</a>
+<div class="sourceCode" id="cb86"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb86-1" data-line-number="1">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>)) → true</a>
 <a class="sourceLine" id="cb86-2" data-line-number="2">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></a>
 <a class="sourceLine" id="cb86-3" data-line-number="3">@(has_number_lt(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → false</a>
 <a class="sourceLine" id="cb86-4" data-line-number="4">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</a>
-<a class="sourceLine" id="cb86-5" data-line-number="5">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb86-5" data-line-number="5">@(has_number_lt(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_number_lte"></a></p>
 <h2 id="has_number_ltetext-max">has_number_lte(text, max)</h2>
 <p>Tests whether <code>text</code> contains a number less than or equal to <code>max</code></p>
-<pre class="sourceCode objectivec" id="cb87"><code class="sourceCode objectivec"><a class="sourceLine" id="cb87-1" data-line-number="1">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
+<div class="sourceCode" id="cb87"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb87-1" data-line-number="1">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">42</span>)) → true</a>
 <a class="sourceLine" id="cb87-2" data-line-number="2">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">44</span>).match) → <span class="dv">42</span></a>
 <a class="sourceLine" id="cb87-3" data-line-number="3">@(has_number_lte(<span class="st">&quot;the number is 42&quot;</span>, <span class="dv">40</span>)) → false</a>
 <a class="sourceLine" id="cb87-4" data-line-number="4">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="dv">40</span>)) → false</a>
-<a class="sourceLine" id="cb87-5" data-line-number="5">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb87-5" data-line-number="5">@(has_number_lte(<span class="st">&quot;the number is not there&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_only_phrase"></a></p>
 <h2 id="has_only_phrasetext-phrase">has_only_phrase(text, phrase)</h2>
 <p>Tests whether the <code>text</code> contains only <code>phrase</code></p>
 <p>The phrase must be the only text in the text to match</p>
-<pre class="sourceCode objectivec" id="cb88"><code class="sourceCode objectivec"><a class="sourceLine" id="cb88-1" data-line-number="1">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</a>
+<div class="sourceCode" id="cb88"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb88-1" data-line-number="1">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb88-2" data-line-number="2">@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb88-3" data-line-number="3">@(has_only_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb88-4" data-line-number="4">@(has_only_phrase(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb88-5" data-line-number="5">@(has_only_phrase(<span class="st">&quot;Quick Brown&quot;</span>, <span class="st">&quot;quick brown&quot;</span>).match) → Quick Brown</a>
-<a class="sourceLine" id="cb88-6" data-line-number="6">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb88-6" data-line-number="6">@(has_only_phrase(<span class="st">&quot;The Quick Brown Fox&quot;</span>, <span class="st">&quot;red fox&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_pattern"></a></p>
 <h2 id="has_patterntext-pattern">has_pattern(text, pattern)</h2>
 <p>Tests whether <code>text</code> matches the regex <code>pattern</code></p>
 <p>Both text values are trimmed of surrounding whitespace and matching is case-insensitive.</p>
-<pre class="sourceCode objectivec" id="cb89"><code class="sourceCode objectivec"><a class="sourceLine" id="cb89-1" data-line-number="1">@(has_pattern(<span class="st">&quot;Sell cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → false</a>
+<div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb89-1" data-line-number="1">@(has_pattern(<span class="st">&quot;Sell cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb89-2" data-line-number="2">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb89-3" data-line-number="3">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</a>
 <a class="sourceLine" id="cb89-4" data-line-number="4">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match.groups[<span class="dv">0</span>]) → Buy cheese</a>
-<a class="sourceLine" id="cb89-5" data-line-number="5">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match.groups[<span class="dv">1</span>]) → cheese</a></code></pre>
+<a class="sourceLine" id="cb89-5" data-line-number="5">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match.groups[<span class="dv">1</span>]) → cheese</a></code></pre></div>
 <p><a name="test:has_phone"></a></p>
 <h2 id="has_phonetext-country_code">has_phone(text, country_code)</h2>
 <p>Tests whether a phone number (in the passed in <code>country_code</code>) is contained in the <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb90"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" data-line-number="1">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" data-line-number="1">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb90-2" data-line-number="2">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></a>
-<a class="sourceLine" id="cb90-3" data-line-number="3">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb90-3" data-line-number="3">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_phrase"></a></p>
 <h2 id="has_phrasetext-phrase">has_phrase(text, phrase)</h2>
 <p>Tests whether <code>phrase</code> is contained in <code>text</code></p>
 <p>The words in the test phrase must appear in the same order with no other words in between.</p>
-<pre class="sourceCode objectivec" id="cb91"><code class="sourceCode objectivec"><a class="sourceLine" id="cb91-1" data-line-number="1">@(has_phrase(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;brown fox&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb91"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb91-1" data-line-number="1">@(has_phrase(<span class="st">&quot;the quick brown fox&quot;</span>, <span class="st">&quot;brown fox&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb91-2" data-line-number="2">@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;quick fox&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb91-3" data-line-number="3">@(has_phrase(<span class="st">&quot;the Quick Brown fox&quot;</span>, <span class="st">&quot;&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb91-4" data-line-number="4">@(has_phrase(<span class="st">&quot;the.quick.brown.fox&quot;</span>, <span class="st">&quot;the quick&quot;</span>).match) → the quick</a></code></pre>
+<a class="sourceLine" id="cb91-4" data-line-number="4">@(has_phrase(<span class="st">&quot;the.quick.brown.fox&quot;</span>, <span class="st">&quot;the quick&quot;</span>).match) → the quick</a></code></pre></div>
 <p><a name="test:has_state"></a></p>
 <h2 id="has_statetext">has_state(text)</h2>
 <p>Tests whether a state name is contained in the <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb92"><code class="sourceCode objectivec"><a class="sourceLine" id="cb92-1" data-line-number="1">@(has_state(<span class="st">&quot;Kigali&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb92"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb92-1" data-line-number="1">@(has_state(<span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb92-2" data-line-number="2">@(has_state(<span class="st">&quot;Boston&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb92-3" data-line-number="3">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb92-4" data-line-number="4">@(has_state(<span class="st">&quot;¡Kigali!&quot;</span>).match) → Rwanda &gt; Kigali City</a>
-<a class="sourceLine" id="cb92-5" data-line-number="5">@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>)) → true</a></code></pre>
+<a class="sourceLine" id="cb92-5" data-line-number="5">@(has_state(<span class="st">&quot;I live in Kigali&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_text"></a></p>
 <h2 id="has_texttext">has_text(text)</h2>
 <p>Tests whether there the text has any characters in it</p>
-<pre class="sourceCode objectivec" id="cb93"><code class="sourceCode objectivec"><a class="sourceLine" id="cb93-1" data-line-number="1">@(has_text(<span class="st">&quot;quick brown&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb93"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb93-1" data-line-number="1">@(has_text(<span class="st">&quot;quick brown&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb93-2" data-line-number="2">@(has_text(<span class="st">&quot;quick brown&quot;</span>).match) → quick brown</a>
 <a class="sourceLine" id="cb93-3" data-line-number="3">@(has_text(<span class="st">&quot;&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb93-4" data-line-number="4">@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb93-5" data-line-number="5">@(has_text(<span class="dv">123</span>)) → true</a></code></pre>
+<a class="sourceLine" id="cb93-5" data-line-number="5">@(has_text(<span class="dv">123</span>)) → true</a></code></pre></div>
 <p><a name="test:has_value"></a></p>
 <h2 id="has_valuevalue">has_value(value)</h2>
 <p>Returns whether <code>value</code> is non-nil and not an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<pre class="sourceCode objectivec" id="cb94"><code class="sourceCode objectivec"><a class="sourceLine" id="cb94-1" data-line-number="1">@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</a>
+<div class="sourceCode" id="cb94"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb94-1" data-line-number="1">@(has_value(datetime(<span class="st">&quot;foo&quot;</span>))) → false</a>
 <a class="sourceLine" id="cb94-2" data-line-number="2">@(has_value(not.existing)) → false</a>
 <a class="sourceLine" id="cb94-3" data-line-number="3">@(has_value(contact.fields.unset)) → false</a>
 <a class="sourceLine" id="cb94-4" data-line-number="4">@(has_value(<span class="st">&quot;&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb94-5" data-line-number="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre>
+<a class="sourceLine" id="cb94-5" data-line-number="5">@(has_value(<span class="st">&quot;hello&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_wait_timed_out"></a></p>
 <h2 id="has_wait_timed_outrun">has_wait_timed_out(run)</h2>
 <p>Returns whether the last wait timed out.</p>
-<pre class="sourceCode objectivec" id="cb95"><code class="sourceCode objectivec"><a class="sourceLine" id="cb95-1" data-line-number="1">@(has_wait_timed_out(run)) → false</a></code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb95-1" data-line-number="1">@(has_wait_timed_out(run)) → false</a></code></pre></div>
 <p><a name="test:has_ward"></a></p>
 <h2 id="has_wardtext-district-state">has_ward(text, district, state)</h2>
 <p>Tests whether a ward name is contained in the <code>text</code></p>
-<pre class="sourceCode objectivec" id="cb96"><code class="sourceCode objectivec"><a class="sourceLine" id="cb96-1" data-line-number="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb96"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb96-1" data-line-number="1">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb96-2" data-line-number="2">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb96-3" data-line-number="3">@(has_ward(<span class="st">&quot;I live in Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>).match) → Rwanda &gt; Kigali City &gt; Gasabo &gt; Gisozi</a>
 <a class="sourceLine" id="cb96-4" data-line-number="4">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb96-5" data-line-number="5">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>, <span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb96-6" data-line-number="6">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb96-7" data-line-number="7">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb96-8" data-line-number="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre>
+<a class="sourceLine" id="cb96-8" data-line-number="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
 <p><a name="test:has_webhook_status"></a></p>
 <h2 id="has_webhook_statuswebhook-status">has_webhook_status(webhook, status)</h2>
 <p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>. If there is no webhook set, then “success” will still match.</p>
-<pre class="sourceCode objectivec" id="cb97"><code class="sourceCode objectivec"><a class="sourceLine" id="cb97-1" data-line-number="1">@(has_webhook_status(NULL, <span class="st">&quot;success&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb97-1" data-line-number="1">@(has_webhook_status(NULL, <span class="st">&quot;success&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb97-2" data-line-number="2">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb97-3" data-line-number="3">@(has_webhook_status(run.webhook, <span class="st">&quot;connection_error&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb97-4" data-line-number="4">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>).match) → {<span class="st">&quot;results&quot;</span>:[{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;IN&quot;</span>}]}</a>
-<a class="sourceLine" id="cb97-5" data-line-number="5">@(has_webhook_status(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;success&quot;</span>)) → ERROR</a></code></pre>
+<a class="sourceLine" id="cb97-5" data-line-number="5">@(has_webhook_status(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;success&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:is_error"></a></p>
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<pre class="sourceCode objectivec" id="cb98"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
+<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">@(is_error(run.not.existing)) → true</a>
 <a class="sourceLine" id="cb98-3" data-line-number="3">@(is_error(contact.fields.unset)) → true</a>
-<a class="sourceLine" id="cb98-4" data-line-number="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb98-4" data-line-number="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:is_text_eq"></a></p>
 <h2 id="is_text_eqtext1-text2">is_text_eq(text1, text2)</h2>
 <p>Returns whether two text values are equal (case sensitive). In the case that they are, it will return the text as the match.</p>
-<pre class="sourceCode objectivec" id="cb99"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" data-line-number="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
+<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" data-line-number="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb99-2" data-line-number="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb99-3" data-line-number="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb99-4" data-line-number="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
 <a class="sourceLine" id="cb99-5" data-line-number="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb99-6" data-line-number="6">@(is_text_eq(run.webhook.status, <span class="st">&quot;success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb99-7" data-line-number="7">@(is_text_eq(run.webhook.status, <span class="st">&quot;connection_error&quot;</span>)) → false</a></code></pre>
+<a class="sourceLine" id="cb99-7" data-line-number="7">@(is_text_eq(run.webhook.status, <span class="st">&quot;connection_error&quot;</span>)) → false</a></code></pre></div>
 </div>
 
     </body>
