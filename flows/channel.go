@@ -3,9 +3,9 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nyaruka/gocommon/urns"
 	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -171,7 +171,7 @@ func (c *channel) ToXJSON(env utils.Environment) types.XText {
 }
 
 func (c *channel) String() string {
-	return c.name
+	return fmt.Sprintf("%s (%s)", c.address, c.name)
 }
 
 var _ Channel = (*channel)(nil)
@@ -278,8 +278,8 @@ type channelEnvelope struct {
 	Roles   []ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
 	Parent  *ChannelReference `json:"parent" validate:"omitempty,dive"`
 
-	Country       string   `json:"country"`
-	MatchPrefixes []string `json:"match_prefixes"`
+	Country       string   `json:"country,omitempty"`
+	MatchPrefixes []string `json:"match_prefixes,omitempty"`
 }
 
 // ReadChannel decodes a channel from the passed in JSON

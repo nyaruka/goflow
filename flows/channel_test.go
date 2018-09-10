@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -23,6 +24,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, []string{"tel"}, ch.Schemes())
 	assert.Equal(t, "+250961111111", ch.Address())
 	assert.Equal(t, "channel", ch.Describe())
+	assert.Equal(t, "+250961111111 (Android)", fmt.Sprintf("%s", ch))
 
 	assert.Equal(t, types.NewXText(string(uuid)), ch.Resolve(env, "uuid"))
 	assert.Equal(t, types.NewXText("Android"), ch.Resolve(env, "name"))
