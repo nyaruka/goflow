@@ -93,9 +93,9 @@ func TestContactFormat(t *testing.T) {
 func TestContactSetPreferredChannel(t *testing.T) {
 	roles := []flows.ChannelRole{flows.ChannelRoleSend}
 
-	android := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Android", "+250961111111", []string{"tel"}, roles)
-	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
-	//nexmo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Nexmo", "+250961111111", []string{"tel"}, roles)
+	android := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Android", "+250961111111", []string{"tel"}, roles, nil)
+	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
+	//nexmo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Nexmo", "+250961111111", []string{"tel"}, roles, nil)
 
 	contact := flows.NewContact("Joe", utils.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"))

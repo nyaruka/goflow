@@ -51,8 +51,9 @@ type Channel interface {
 	HasRole(ChannelRole) bool
 	Parent() *ChannelReference
 
-	MatchCountry() string
-	MatchPrefixes() []string
+	MatchTelCountry() string
+	MatchTelPrefixes() []string
+	SetTelMatching(string, []string)
 
 	Reference() *ChannelReference
 }
@@ -65,18 +66,19 @@ type channel struct {
 	roles   []ChannelRole
 	parent  *ChannelReference
 
-	matchCountry  string
-	matchPrefixes []string
+	matchTelCountry  string
+	matchTelPrefixes []string
 }
 
 // NewChannel creates a new channel
-func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole) Channel {
+func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole, parent *ChannelReference) Channel {
 	return &channel{
 		uuid:    uuid,
 		name:    name,
 		address: address,
 		schemes: schemes,
 		roles:   roles,
+		parent:  parent,
 	}
 }
 
@@ -121,11 +123,16 @@ func (c *channel) HasRole(role ChannelRole) bool {
 	return false
 }
 
-// MatchCountry returns this channel's associated country code (if any)
-func (c *channel) MatchCountry() string { return c.matchCountry }
+// MatchTelCountry returns this channel's associated country code (if any)
+func (c *channel) MatchTelCountry() string { return c.matchTelCountry }
 
-// MatchPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
-func (c *channel) MatchPrefixes() []string { return c.matchPrefixes }
+// MatchTelPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
+func (c *channel) MatchTelPrefixes() []string { return c.matchTelPrefixes }
+
+func (c *channel) SetTelMatching(country string, prefixes []string) {
+	c.matchTelCountry = country
+	c.matchTelPrefixes = prefixes
+}
 
 // Resolve resolves the given key when this channel is referenced in an expression
 func (c *channel) Resolve(env utils.Environment, key string) types.XValue {
@@ -154,6 +161,10 @@ func (c *channel) ToXJSON(env utils.Environment) types.XText {
 	return types.ResolveKeys(env, c, "uuid", "name", "address").ToXJSON(env)
 }
 
+func (c *channel) String() string {
+	return c.name
+}
+
 var _ Channel = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
@@ -172,10 +183,10 @@ func NewChannelSet(channels []Channel) *ChannelSet {
 }
 
 // GetForURN returns the best channel for the given URN
-func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
+func (s *ChannelSet) GetForURN(urn *ContactURN, role ChannelRole) Channel {
 	// if caller has told us which channel to use for this URN, use that
 	if urn.Channel() != nil {
-		return s.getDelegate(urn.Channel(), ChannelRoleSend)
+		return s.getDelegate(urn.Channel(), role)
 	}
 
 	// tel is a special case because we do number based matching
@@ -184,7 +195,7 @@ func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
 		candidates := make([]Channel, 0)
 
 		for _, ch := range s.channels {
-			if ch.HasRole(ChannelRoleSend) && ch.SupportsScheme(urns.TelScheme) && (countryCode == "" || countryCode == ch.MatchCountry()) && ch.Parent() == nil {
+			if ch.HasRole(role) && ch.SupportsScheme(urns.TelScheme) && (countryCode == "" || countryCode == ch.MatchTelCountry()) && ch.Parent() == nil {
 				candidates = append(candidates, ch)
 			}
 		}
@@ -196,7 +207,7 @@ func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
 			contactNumber := strings.TrimPrefix(urn.URN.Path(), "+")
 			prefix := 1
 			for _, candidate := range candidates {
-				candidatePrefixes := candidate.MatchPrefixes()
+				candidatePrefixes := candidate.MatchTelPrefixes()
 				if len(candidatePrefixes) == 0 {
 					candidatePrefixes = []string{strings.TrimPrefix(candidate.Address(), "+")}
 				}
@@ -213,18 +224,16 @@ func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
 				}
 			}
 
-			channel = candidates[0]
-
 		} else if len(candidates) == 1 {
 			channel = candidates[0]
 		}
 
 		if channel != nil {
-			return s.getDelegate(urn.Channel(), ChannelRoleSend)
+			return s.getDelegate(channel, role)
 		}
 	}
 
-	return s.getForSchemeAndRole(urn.Scheme(), ChannelRoleSend)
+	return s.getForSchemeAndRole(urn.Scheme(), role)
 }
 
 func (s *ChannelSet) getForSchemeAndRole(scheme string, role ChannelRole) Channel {
@@ -275,14 +284,14 @@ func ReadChannel(data json.RawMessage) (Channel, error) {
 	}
 
 	return &channel{
-		uuid:          ce.UUID,
-		name:          ce.Name,
-		address:       ce.Address,
-		schemes:       ce.Schemes,
-		roles:         ce.Roles,
-		parent:        ce.Parent,
-		matchCountry:  ce.MatchCountry,
-		matchPrefixes: ce.MatchPrefixes,
+		uuid:             ce.UUID,
+		name:             ce.Name,
+		address:          ce.Address,
+		schemes:          ce.Schemes,
+		roles:            ce.Roles,
+		parent:           ce.Parent,
+		matchTelCountry:  ce.MatchCountry,
+		matchTelPrefixes: ce.MatchPrefixes,
 	}, nil
 }
 
