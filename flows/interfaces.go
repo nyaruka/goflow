@@ -163,6 +163,7 @@ type Flow interface {
 	types.XResolvable
 
 	UUID() FlowUUID
+	ID() FlowID
 	Name() string
 	Revision() int
 	Language() utils.Language
