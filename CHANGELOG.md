@@ -1,3 +1,7 @@
+v0.14.7
+----------
+ * Replicate channel matching logic from RP
+
 v0.14.6
 ----------
  * Don't strip URN params when parsing
