@@ -67,7 +67,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 	destinations := []msgDestination{}
 
 	for _, u := range run.Contact().URNs() {
-		channel := channelSet.GetForURN(u)
+		channel := channelSet.GetForURN(u, flows.ChannelRoleSend)
 		if channel != nil {
 			destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
 

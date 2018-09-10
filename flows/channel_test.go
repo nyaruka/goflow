@@ -1,6 +1,7 @@
 package flows_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -16,13 +17,14 @@ func TestChannel(t *testing.T) {
 	rolesDefault := []flows.ChannelRole{flows.ChannelRoleSend, flows.ChannelRoleReceive}
 	uuid := flows.ChannelUUID("821fe776-b97d-4046-b1dc-a7d9d3b3b9c7")
 
-	ch := flows.NewChannel(uuid, "Android", "+250961111111", []string{"tel"}, rolesDefault)
+	ch := flows.NewChannel(uuid, "Android", "+250961111111", []string{"tel"}, rolesDefault, nil)
 
 	assert.Equal(t, uuid, ch.UUID())
 	assert.Equal(t, "Android", ch.Name())
 	assert.Equal(t, []string{"tel"}, ch.Schemes())
 	assert.Equal(t, "+250961111111", ch.Address())
 	assert.Equal(t, "channel", ch.Describe())
+	assert.Equal(t, "+250961111111 (Android)", fmt.Sprintf("%s", ch))
 
 	assert.Equal(t, types.NewXText(string(uuid)), ch.Resolve(env, "uuid"))
 	assert.Equal(t, types.NewXText("Android"), ch.Resolve(env, "name"))
@@ -40,24 +42,52 @@ func TestChannelSetGetForURN(t *testing.T) {
 	rolesSend := []flows.ChannelRole{flows.ChannelRoleSend}
 	rolesDefault := []flows.ChannelRole{flows.ChannelRoleSend, flows.ChannelRoleReceive}
 
-	android := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Android", "+250961111111", []string{"tel"}, rolesDefault)
-	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault)
-	nexmo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Nexmo", "+250961111111", []string{"tel"}, rolesSend)
+	claro := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Claro", "+593971111111", rolesDefault, nil, "EC", nil)
+	mtn := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "MTN", "+250782222222", rolesDefault, nil, "RW", nil)
+	tigo := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Tigo", "+250723333333", rolesDefault, nil, "RW", nil)
+	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
+	all := flows.NewChannelSet([]flows.Channel{claro, mtn, tigo, twitter})
 
+	// nil if no channel
 	emptySet := flows.NewChannelSet([]flows.Channel{})
-	set := flows.NewChannelSet([]flows.Channel{android, twitter, nexmo})
+	assert.Nil(t, emptySet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil), flows.ChannelRoleSend))
 
-	// no channel
-	assert.Nil(t, emptySet.GetForURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil)))
+	// nil if no channel with correct scheme
+	assert.Nil(t, all.GetForURN(flows.NewContactURN(urns.URN("mailto:rowan@foo.bar"), nil), flows.ChannelRoleSend))
 
-	// no channel with correct scheme
-	assert.Nil(t, set.GetForURN(flows.NewContactURN(urns.URN("mailto:rowan@foo.bar"), nil)))
+	// if URN has a preferred channel, that is always used
+	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), tigo), flows.ChannelRoleSend))
 
-	// first channel that supports scheme
-	assert.Equal(t, set.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nil)), android)
+	// if there's only one channel for that scheme, it's used
+	assert.Equal(t, twitter, all.GetForURN(flows.NewContactURN(urns.URN("twitter:nyaruka2"), nil), flows.ChannelRoleSend))
 
-	// explicit channel with URN
-	assert.Equal(t, set.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nexmo)), nexmo)
+	// if there's only one channel for that country, it's used
+	assert.Equal(t, claro, all.GetForURN(flows.NewContactURN(urns.URN("tel:+593971234567"), nil), flows.ChannelRoleSend))
+
+	// if there's multiple channels, one with longest number overlap wins
+	assert.Equal(t, mtn, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), flows.ChannelRoleSend))
+	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), flows.ChannelRoleSend))
+
+	// if there's no overlap, then last/newest channel wins
+	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nil), flows.ChannelRoleSend))
+
+	// channels can be delegates for other channels
+	android := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Android", "+250723333333", []string{"tel"}, rolesDefault, nil)
+	bulk := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Bulk Sender", "1234", []string{"tel"}, rolesSend, android.Reference())
+	all = flows.NewChannelSet([]flows.Channel{android, bulk})
+
+	// delegate will always be used if it has the requested role
+	assert.Equal(t, android, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), flows.ChannelRoleReceive))
+	assert.Equal(t, bulk, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), flows.ChannelRoleSend))
+
+	// matching prefixes can be explicitly set too
+	short1 := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Shortcode 1", "1234", rolesSend, nil, "RW", []string{"25078", "25077"})
+	short2 := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Shortcode 2", "1235", rolesSend, nil, "RW", []string{"25072"})
+	all = flows.NewChannelSet([]flows.Channel{short1, short2})
+
+	assert.Equal(t, short1, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), flows.ChannelRoleSend))
+	assert.Equal(t, short1, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250771234567"), nil), flows.ChannelRoleSend))
+	assert.Equal(t, short2, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), flows.ChannelRoleSend))
 }
 
 func TestChannelUnmarsal(t *testing.T) {

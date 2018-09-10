@@ -81,3 +81,14 @@ func TestTokenizeStringByChars(t *testing.T) {
 		assert.Equal(t, test.result, utils.TokenizeStringByChars(test.text, test.chars), "unexpected result tokenizing '%s'", test.text)
 	}
 }
+
+func TestPrefixOverlap(t *testing.T) {
+	assert.Equal(t, 0, utils.PrefixOverlap("", ""))
+	assert.Equal(t, 0, utils.PrefixOverlap("abc", ""))
+	assert.Equal(t, 0, utils.PrefixOverlap("", "abc"))
+	assert.Equal(t, 0, utils.PrefixOverlap("a", "x"))
+	assert.Equal(t, 1, utils.PrefixOverlap("x", "x"))
+	assert.Equal(t, 2, utils.PrefixOverlap("xya", "xyz"))
+	assert.Equal(t, 2, utils.PrefixOverlap("😄😟👨🏼", "😄😟👰"))
+	assert.Equal(t, 4, utils.PrefixOverlap("25078", "25073254252"))
+}

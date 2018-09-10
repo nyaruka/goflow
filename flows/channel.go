@@ -3,7 +3,9 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -47,6 +49,12 @@ type Channel interface {
 	SupportsScheme(string) bool
 	Roles() []ChannelRole
 	HasRole(ChannelRole) bool
+	Parent() *ChannelReference
+
+	// tel channel specific methods
+	Country() string
+	MatchPrefixes() []string
+
 	Reference() *ChannelReference
 }
 
@@ -56,16 +64,35 @@ type channel struct {
 	address string
 	schemes []string
 	roles   []ChannelRole
+	parent  *ChannelReference
+
+	country       string
+	matchPrefixes []string
 }
 
 // NewChannel creates a new channel
-func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole) Channel {
+func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole, parent *ChannelReference) Channel {
 	return &channel{
 		uuid:    uuid,
 		name:    name,
 		address: address,
 		schemes: schemes,
 		roles:   roles,
+		parent:  parent,
+	}
+}
+
+// NewTelChannel creates a new tel channel
+func NewTelChannel(uuid ChannelUUID, name string, address string, roles []ChannelRole, parent *ChannelReference, country string, matchPrefixes []string) Channel {
+	return &channel{
+		uuid:          uuid,
+		name:          name,
+		address:       address,
+		schemes:       []string{urns.TelScheme},
+		roles:         roles,
+		parent:        parent,
+		country:       country,
+		matchPrefixes: matchPrefixes,
 	}
 }
 
@@ -87,6 +114,9 @@ func (c *channel) Roles() []ChannelRole { return c.roles }
 // Reference returns a reference to this channel
 func (c *channel) Reference() *ChannelReference { return NewChannelReference(c.uuid, c.name) }
 
+// Parent returns a reference to this channel's parent (if any)
+func (c *channel) Parent() *ChannelReference { return c.parent }
+
 // SupportsScheme returns whether this channel supports the given URN scheme
 func (c *channel) SupportsScheme(scheme string) bool {
 	for _, s := range c.schemes {
@@ -106,6 +136,12 @@ func (c *channel) HasRole(role ChannelRole) bool {
 	}
 	return false
 }
+
+// Country returns this channel's associated country code (if any)
+func (c *channel) Country() string { return c.country }
+
+// MatchPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
+func (c *channel) MatchPrefixes() []string { return c.matchPrefixes }
 
 // Resolve resolves the given key when this channel is referenced in an expression
 func (c *channel) Resolve(env utils.Environment, key string) types.XValue {
@@ -134,6 +170,10 @@ func (c *channel) ToXJSON(env utils.Environment) types.XText {
 	return types.ResolveKeys(env, c, "uuid", "name", "address").ToXJSON(env)
 }
 
+func (c *channel) String() string {
+	return fmt.Sprintf("%s (%s)", c.address, c.name)
+}
+
 var _ Channel = (*channel)(nil)
 
 // ChannelSet defines the unordered set of all channels for a session
@@ -152,21 +192,73 @@ func NewChannelSet(channels []Channel) *ChannelSet {
 }
 
 // GetForURN returns the best channel for the given URN
-func (s *ChannelSet) GetForURN(urn *ContactURN) Channel {
+func (s *ChannelSet) GetForURN(urn *ContactURN, role ChannelRole) Channel {
 	// if caller has told us which channel to use for this URN, use that
 	if urn.Channel() != nil {
-		return urn.Channel()
+		return s.getDelegate(urn.Channel(), role)
 	}
 
-	// if not, return the first channel which supports this URN scheme
-	scheme := urn.Scheme()
-	for _, ch := range s.channels {
-		if ch.HasRole(ChannelRoleSend) && ch.SupportsScheme(scheme) {
-			return ch
+	// tel is a special case because we do number based matching
+	if urn.Scheme() == urns.TelScheme {
+		countryCode := utils.DeriveCountryFromTel(urn.Path())
+		candidates := make([]Channel, 0)
+
+		for _, ch := range s.channels {
+			if ch.HasRole(role) && ch.SupportsScheme(urns.TelScheme) && (countryCode == "" || countryCode == ch.Country()) && ch.Parent() == nil {
+				candidates = append(candidates, ch)
+			}
+		}
+
+		var channel Channel
+		if len(candidates) > 1 {
+			// we don't have a channel for this contact yet, let's try to pick one from the same carrier
+			// we need at least one digit to overlap to infer a channel
+			contactNumber := strings.TrimPrefix(urn.URN.Path(), "+")
+			maxOverlap := 0
+			for _, candidate := range candidates {
+				candidatePrefixes := candidate.MatchPrefixes()
+				if len(candidatePrefixes) == 0 {
+					candidatePrefixes = []string{strings.TrimPrefix(candidate.Address(), "+")}
+				}
+
+				for _, prefix := range candidatePrefixes {
+					overlap := utils.PrefixOverlap(prefix, contactNumber)
+					if overlap >= maxOverlap {
+						maxOverlap = overlap
+						channel = candidate
+					}
+				}
+			}
+
+		} else if len(candidates) == 1 {
+			channel = candidates[0]
+		}
+
+		if channel != nil {
+			return s.getDelegate(channel, role)
 		}
 	}
 
+	return s.getForSchemeAndRole(urn.Scheme(), role)
+}
+
+func (s *ChannelSet) getForSchemeAndRole(scheme string, role ChannelRole) Channel {
+	for _, ch := range s.channels {
+		if ch.HasRole(ChannelRoleSend) && ch.SupportsScheme(scheme) {
+			return s.getDelegate(ch, role)
+		}
+	}
 	return nil
+}
+
+// looks for a delegate for the given channel and defaults to the channel itself
+func (s *ChannelSet) getDelegate(channel Channel, role ChannelRole) Channel {
+	for _, ch := range s.channels {
+		if ch.Parent() != nil && ch.Parent().UUID == channel.UUID() && ch.HasRole(role) {
+			return ch
+		}
+	}
+	return channel
 }
 
 // FindByUUID finds the channel with the given UUID
@@ -179,11 +271,15 @@ func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {
 //------------------------------------------------------------------------------------------
 
 type channelEnvelope struct {
-	UUID    ChannelUUID   `json:"uuid" validate:"required,uuid"`
-	Name    string        `json:"name"`
-	Address string        `json:"address"`
-	Schemes []string      `json:"schemes" validate:"min=1"`
-	Roles   []ChannelRole `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
+	UUID    ChannelUUID       `json:"uuid" validate:"required,uuid"`
+	Name    string            `json:"name"`
+	Address string            `json:"address"`
+	Schemes []string          `json:"schemes" validate:"min=1"`
+	Roles   []ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
+	Parent  *ChannelReference `json:"parent" validate:"omitempty,dive"`
+
+	Country       string   `json:"country,omitempty"`
+	MatchPrefixes []string `json:"match_prefixes,omitempty"`
 }
 
 // ReadChannel decodes a channel from the passed in JSON
@@ -194,11 +290,14 @@ func ReadChannel(data json.RawMessage) (Channel, error) {
 	}
 
 	return &channel{
-		uuid:    ce.UUID,
-		name:    ce.Name,
-		address: ce.Address,
-		schemes: ce.Schemes,
-		roles:   ce.Roles,
+		uuid:          ce.UUID,
+		name:          ce.Name,
+		address:       ce.Address,
+		schemes:       ce.Schemes,
+		roles:         ce.Roles,
+		parent:        ce.Parent,
+		country:       ce.Country,
+		matchPrefixes: ce.MatchPrefixes,
 	}, nil
 }
 
