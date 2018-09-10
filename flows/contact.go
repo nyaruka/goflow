@@ -60,8 +60,25 @@ type Contact struct {
 	fields    FieldValues
 }
 
-// NewContact returns a new contact
-func NewContact(name string, language utils.Language, timezone *time.Location) *Contact {
+// NewContact creates a new contact with the passed in attributes
+func NewContact(
+	uuid ContactUUID, id int, name string, language utils.Language, timezone *time.Location, createdOn time.Time,
+	urns URNList, groups *GroupList, fields FieldValues) *Contact {
+	return &Contact{
+		uuid:      uuid,
+		id:        id,
+		name:      name,
+		language:  language,
+		timezone:  timezone,
+		createdOn: createdOn,
+		urns:      urns,
+		groups:    groups,
+		fields:    fields,
+	}
+}
+
+// NewEmptyContact creates a new empy contact with the passed in name, language and location
+func NewEmptyContact(name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
 		uuid:      ContactUUID(utils.NewUUID()),
 		name:      name,
