@@ -20,7 +20,7 @@ func TestContact(t *testing.T) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	contact := flows.NewContact("Joe Bloggs", utils.Language("eng"), nil)
+	contact := flows.NewEmptyContact("Joe Bloggs", utils.Language("eng"), nil)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
 	assert.Nil(t, contact.PreferredChannel())
@@ -70,12 +70,12 @@ func TestContactFormat(t *testing.T) {
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, nil, utils.RedactionPolicyNone)
 
 	// name takes precedence if set
-	contact := flows.NewContact("Joe", utils.NilLanguage, nil)
+	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"))
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
-	contact = flows.NewContact("", utils.NilLanguage, nil)
+	contact = flows.NewEmptyContact("", utils.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"))
 	contact.SetID(12345)
 	assert.Equal(t, "joey", contact.Format(env))
@@ -86,7 +86,7 @@ func TestContactFormat(t *testing.T) {
 	assert.Equal(t, "12345", contact.Format(anonEnv))
 
 	// if we don't have name or URNs, then empty string
-	contact = flows.NewContact("", utils.NilLanguage, nil)
+	contact = flows.NewEmptyContact("", utils.NilLanguage, nil)
 	assert.Equal(t, "", contact.Format(env))
 }
 
@@ -97,7 +97,7 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles)
 	//nexmo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Nexmo", "+250961111111", []string{"tel"}, roles)
 
-	contact := flows.NewContact("Joe", utils.NilLanguage, nil)
+	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
 	contact.AddURN(urns.URN("twitter:joey"))
 	contact.AddURN(urns.URN("tel:+12345678999"))
 	contact.AddURN(urns.URN("tel:+18005555777"))
@@ -146,7 +146,7 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	twitterCrazies := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), "Twitter Crazies", `twitter ~ crazy`)
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
-	contact := flows.NewContact("Joe", "eng", nil)
+	contact := flows.NewEmptyContact("Joe", "eng", nil)
 	contact.AddURN(urns.URN("tel:+12345678999"))
 
 	assert.Equal(t, []*flows.Group{english}, evaluateGroups(t, env, contact, groups))
