@@ -51,9 +51,9 @@ type Channel interface {
 	HasRole(ChannelRole) bool
 	Parent() *ChannelReference
 
-	MatchTelCountry() string
-	MatchTelPrefixes() []string
-	SetTelMatching(string, []string)
+	// tel channel specific methods
+	Country() string
+	MatchPrefixes() []string
 
 	Reference() *ChannelReference
 }
@@ -66,8 +66,8 @@ type channel struct {
 	roles   []ChannelRole
 	parent  *ChannelReference
 
-	matchTelCountry  string
-	matchTelPrefixes []string
+	country       string
+	matchPrefixes []string
 }
 
 // NewChannel creates a new channel
@@ -79,6 +79,20 @@ func NewChannel(uuid ChannelUUID, name string, address string, schemes []string,
 		schemes: schemes,
 		roles:   roles,
 		parent:  parent,
+	}
+}
+
+// NewTelChannel creates a new tel channel
+func NewTelChannel(uuid ChannelUUID, name string, address string, roles []ChannelRole, parent *ChannelReference, country string, matchPrefixes []string) Channel {
+	return &channel{
+		uuid:          uuid,
+		name:          name,
+		address:       address,
+		schemes:       []string{urns.TelScheme},
+		roles:         roles,
+		parent:        parent,
+		country:       country,
+		matchPrefixes: matchPrefixes,
 	}
 }
 
@@ -123,16 +137,11 @@ func (c *channel) HasRole(role ChannelRole) bool {
 	return false
 }
 
-// MatchTelCountry returns this channel's associated country code (if any)
-func (c *channel) MatchTelCountry() string { return c.matchTelCountry }
+// Country returns this channel's associated country code (if any)
+func (c *channel) Country() string { return c.country }
 
-// MatchTelPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
-func (c *channel) MatchTelPrefixes() []string { return c.matchTelPrefixes }
-
-func (c *channel) SetTelMatching(country string, prefixes []string) {
-	c.matchTelCountry = country
-	c.matchTelPrefixes = prefixes
-}
+// MatchPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
+func (c *channel) MatchPrefixes() []string { return c.matchPrefixes }
 
 // Resolve resolves the given key when this channel is referenced in an expression
 func (c *channel) Resolve(env utils.Environment, key string) types.XValue {
@@ -195,7 +204,7 @@ func (s *ChannelSet) GetForURN(urn *ContactURN, role ChannelRole) Channel {
 		candidates := make([]Channel, 0)
 
 		for _, ch := range s.channels {
-			if ch.HasRole(role) && ch.SupportsScheme(urns.TelScheme) && (countryCode == "" || countryCode == ch.MatchTelCountry()) && ch.Parent() == nil {
+			if ch.HasRole(role) && ch.SupportsScheme(urns.TelScheme) && (countryCode == "" || countryCode == ch.Country()) && ch.Parent() == nil {
 				candidates = append(candidates, ch)
 			}
 		}
@@ -207,7 +216,7 @@ func (s *ChannelSet) GetForURN(urn *ContactURN, role ChannelRole) Channel {
 			contactNumber := strings.TrimPrefix(urn.URN.Path(), "+")
 			maxOverlap := 0
 			for _, candidate := range candidates {
-				candidatePrefixes := candidate.MatchTelPrefixes()
+				candidatePrefixes := candidate.MatchPrefixes()
 				if len(candidatePrefixes) == 0 {
 					candidatePrefixes = []string{strings.TrimPrefix(candidate.Address(), "+")}
 				}
@@ -269,7 +278,7 @@ type channelEnvelope struct {
 	Roles   []ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
 	Parent  *ChannelReference `json:"parent" validate:"omitempty,dive"`
 
-	MatchCountry  string   `json:"match_country"`
+	Country       string   `json:"country"`
 	MatchPrefixes []string `json:"match_prefixes"`
 }
 
@@ -281,14 +290,14 @@ func ReadChannel(data json.RawMessage) (Channel, error) {
 	}
 
 	return &channel{
-		uuid:             ce.UUID,
-		name:             ce.Name,
-		address:          ce.Address,
-		schemes:          ce.Schemes,
-		roles:            ce.Roles,
-		parent:           ce.Parent,
-		matchTelCountry:  ce.MatchCountry,
-		matchTelPrefixes: ce.MatchPrefixes,
+		uuid:          ce.UUID,
+		name:          ce.Name,
+		address:       ce.Address,
+		schemes:       ce.Schemes,
+		roles:         ce.Roles,
+		parent:        ce.Parent,
+		country:       ce.Country,
+		matchPrefixes: ce.MatchPrefixes,
 	}, nil
 }
 

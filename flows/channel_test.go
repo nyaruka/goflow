@@ -40,15 +40,10 @@ func TestChannelSetGetForURN(t *testing.T) {
 	rolesSend := []flows.ChannelRole{flows.ChannelRoleSend}
 	rolesDefault := []flows.ChannelRole{flows.ChannelRoleSend, flows.ChannelRoleReceive}
 
-	claro := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Claro", "+593971111111", []string{"tel"}, rolesDefault, nil)
-	mtn := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "MTN", "+250782222222", []string{"tel"}, rolesDefault, nil)
-	tigo := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Tigo", "+250723333333", []string{"tel"}, rolesDefault, nil)
+	claro := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Claro", "+593971111111", rolesDefault, nil, "EC", nil)
+	mtn := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "MTN", "+250782222222", rolesDefault, nil, "RW", nil)
+	tigo := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Tigo", "+250723333333", rolesDefault, nil, "RW", nil)
 	twitter := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
-
-	claro.SetTelMatching("EC", nil)
-	mtn.SetTelMatching("RW", nil)
-	tigo.SetTelMatching("RW", nil)
-
 	all := flows.NewChannelSet([]flows.Channel{claro, mtn, tigo, twitter})
 
 	// nil if no channel
@@ -84,10 +79,8 @@ func TestChannelSetGetForURN(t *testing.T) {
 	assert.Equal(t, bulk, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), flows.ChannelRoleSend))
 
 	// matching prefixes can be explicitly set too
-	short1 := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Shortcode 1", "1234", []string{"tel"}, rolesSend, nil)
-	short1.SetTelMatching("RW", []string{"25078", "25077"})
-	short2 := flows.NewChannel(flows.ChannelUUID(utils.NewUUID()), "Shortcode 2", "1235", []string{"tel"}, rolesSend, nil)
-	short2.SetTelMatching("RW", []string{"25072"})
+	short1 := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Shortcode 1", "1234", rolesSend, nil, "RW", []string{"25078", "25077"})
+	short2 := flows.NewTelChannel(flows.ChannelUUID(utils.NewUUID()), "Shortcode 2", "1235", rolesSend, nil, "RW", []string{"25072"})
 	all = flows.NewChannelSet([]flows.Channel{short1, short2})
 
 	assert.Equal(t, short1, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), flows.ChannelRoleSend))
