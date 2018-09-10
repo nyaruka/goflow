@@ -205,21 +205,18 @@ func (s *ChannelSet) GetForURN(urn *ContactURN, role ChannelRole) Channel {
 			// we don't have a channel for this contact yet, let's try to pick one from the same carrier
 			// we need at least one digit to overlap to infer a channel
 			contactNumber := strings.TrimPrefix(urn.URN.Path(), "+")
-			prefix := 1
+			maxOverlap := 0
 			for _, candidate := range candidates {
 				candidatePrefixes := candidate.MatchTelPrefixes()
 				if len(candidatePrefixes) == 0 {
 					candidatePrefixes = []string{strings.TrimPrefix(candidate.Address(), "+")}
 				}
 
-				for _, chanPrefix := range candidatePrefixes {
-					for idx := prefix; idx <= len(chanPrefix); idx++ {
-						if idx >= prefix && chanPrefix[0:idx] == contactNumber[0:idx] {
-							prefix = idx
-							channel = candidate
-						} else {
-							break
-						}
+				for _, prefix := range candidatePrefixes {
+					overlap := utils.PrefixOverlap(prefix, contactNumber)
+					if overlap >= maxOverlap {
+						maxOverlap = overlap
+						channel = candidate
 					}
 				}
 			}

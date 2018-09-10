@@ -40,3 +40,13 @@ func TokenizeStringByChars(str string, chars string) []string {
 	}
 	return strings.FieldsFunc(str, f)
 }
+
+// PrefixOverlap returns the number of prefix characters which s1 and s2 have in common
+func PrefixOverlap(s1, s2 string) int {
+	r1 := []rune(s1)
+	r2 := []rune(s2)
+	r := 0
+	for ; r < len(r1) && r < len(r2) && r1[r] == r2[r]; r++ {
+	}
+	return r
+}
