@@ -28,6 +28,8 @@ func (l *Label) Name() string { return l.name }
 // Reference returns a reference to this label
 func (l *Label) Reference() *LabelReference { return NewLabelReference(l.uuid, l.name) }
 
+var _ assets.Label = (*Label)(nil)
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

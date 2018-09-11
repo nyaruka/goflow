@@ -43,6 +43,7 @@ type Channel interface {
 	types.XResolvable
 
 	UUID() ChannelUUID
+	ID() ChannelID
 	Name() string
 	Address() string
 	Schemes() []string
@@ -60,6 +61,7 @@ type Channel interface {
 
 type channel struct {
 	uuid    ChannelUUID
+	id      ChannelID
 	name    string
 	address string
 	schemes []string
@@ -71,9 +73,10 @@ type channel struct {
 }
 
 // NewChannel creates a new channel
-func NewChannel(uuid ChannelUUID, name string, address string, schemes []string, roles []ChannelRole, parent *ChannelReference) Channel {
+func NewChannel(uuid ChannelUUID, id ChannelID, name string, address string, schemes []string, roles []ChannelRole, parent *ChannelReference) Channel {
 	return &channel{
 		uuid:    uuid,
+		id:      id,
 		name:    name,
 		address: address,
 		schemes: schemes,
@@ -83,9 +86,10 @@ func NewChannel(uuid ChannelUUID, name string, address string, schemes []string,
 }
 
 // NewTelChannel creates a new tel channel
-func NewTelChannel(uuid ChannelUUID, name string, address string, roles []ChannelRole, parent *ChannelReference, country string, matchPrefixes []string) Channel {
+func NewTelChannel(uuid ChannelUUID, id ChannelID, name string, address string, roles []ChannelRole, parent *ChannelReference, country string, matchPrefixes []string) Channel {
 	return &channel{
 		uuid:          uuid,
+		id:            id,
 		name:          name,
 		address:       address,
 		schemes:       []string{urns.TelScheme},
@@ -95,6 +99,9 @@ func NewTelChannel(uuid ChannelUUID, name string, address string, roles []Channe
 		matchPrefixes: matchPrefixes,
 	}
 }
+
+// ID returns the ID of this channel
+func (c *channel) ID() ChannelID { return c.id }
 
 // UUID returns the UUID of this channel
 func (c *channel) UUID() ChannelUUID { return c.uuid }
@@ -272,6 +279,7 @@ func (s *ChannelSet) FindByUUID(uuid ChannelUUID) Channel {
 
 type channelEnvelope struct {
 	UUID    ChannelUUID       `json:"uuid" validate:"required,uuid"`
+	ID      ChannelID         `json:"id,omitempty"`
 	Name    string            `json:"name"`
 	Address string            `json:"address"`
 	Schemes []string          `json:"schemes" validate:"min=1"`
@@ -291,6 +299,7 @@ func ReadChannel(data json.RawMessage) (Channel, error) {
 
 	return &channel{
 		uuid:          ce.UUID,
+		id:            ce.ID,
 		name:          ce.Name,
 		address:       ce.Address,
 		schemes:       ce.Schemes,

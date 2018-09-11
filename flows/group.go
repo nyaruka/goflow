@@ -27,15 +27,24 @@ import (
 // @context group
 type Group struct {
 	uuid        GroupUUID
+	id          GroupID
 	name        string
 	query       string
 	parsedQuery *contactql.ContactQuery
 }
 
 // NewGroup returns a new group object with the passed in uuid and name
-func NewGroup(uuid GroupUUID, name string, query string) *Group {
-	return &Group{uuid: uuid, name: name, query: query}
+func NewGroup(uuid GroupUUID, id GroupID, name string, query string) *Group {
+	return &Group{
+		uuid:  uuid,
+		id:    id,
+		name:  name,
+		query: query,
+	}
 }
+
+// ID returns the ID of the group
+func (g *Group) ID() GroupID { return g.id }
 
 // UUID returns the UUID of the group
 func (g *Group) UUID() GroupUUID { return g.uuid }
@@ -256,6 +265,7 @@ func (s *GroupSet) FindByName(name string) *Group {
 
 type groupEnvelope struct {
 	UUID  GroupUUID `json:"uuid" validate:"required,uuid4"`
+	ID    GroupID   `json:"id,omitempty"`
 	Name  string    `json:"name"`
 	Query string    `json:"query,omitempty"`
 }
@@ -267,7 +277,7 @@ func ReadGroup(data json.RawMessage) (*Group, error) {
 		return nil, fmt.Errorf("unable to read group: %s", err)
 	}
 
-	return NewGroup(ge.UUID, ge.Name, ge.Query), nil
+	return NewGroup(ge.UUID, ge.ID, ge.Name, ge.Query), nil
 }
 
 // ReadGroupSet reads a group set from the given JSON

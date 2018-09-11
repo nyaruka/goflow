@@ -32,6 +32,7 @@ type Flow struct {
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
 	UUID     flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	ID       flows.FlowID   `json:"id,omitempty"`
 	Name     string         `json:"name"`
 	Revision int            `json:"revision"`
 	Expires  int            `json:"expires"`
@@ -1029,6 +1030,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 
 	return definition.NewFlow(
 		f.Metadata.UUID,
+		f.Metadata.ID,
 		f.Metadata.Name,
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],
