@@ -36,13 +36,13 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 
 // GroupReference is used to reference a group
 type GroupReference struct {
-	UUID      GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name      string    `json:"name,omitempty"`
-	NameMatch string    `json:"name_match,omitempty"`
+	UUID      assets.GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	Name      string           `json:"name,omitempty"`
+	NameMatch string           `json:"name_match,omitempty"`
 }
 
 // NewGroupReference creates a new group reference with the given UUID and name
-func NewGroupReference(uuid GroupUUID, name string) *GroupReference {
+func NewGroupReference(uuid assets.GroupUUID, name string) *GroupReference {
 	return &GroupReference{UUID: uuid, Name: name}
 }
 

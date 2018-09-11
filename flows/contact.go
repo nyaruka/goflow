@@ -292,12 +292,11 @@ func (c *Contact) UpdatePreferredChannel(channel Channel) {
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
 func (c *Contact) ReevaluateDynamicGroups(session Session) error {
-	groups, err := session.Assets().GetGroupSet()
-	if err != nil {
-		return err
-	}
+	for _, group := range session.Assets().GetAllGroups() {
+		if !group.IsDynamic() {
+			continue
+		}
 
-	for _, group := range groups.Dynamic() {
 		qualifies, err := group.CheckDynamicMembership(session.Environment(), c)
 		if err != nil {
 			return err

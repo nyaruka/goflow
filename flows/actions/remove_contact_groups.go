@@ -61,11 +61,11 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 	var err error
 
 	if a.AllGroups {
-		groupSet, err := run.Session().Assets().GetGroupSet()
-		if err != nil {
-			return err
+		for _, group := range run.Session().Assets().GetAllGroups() {
+			if !group.IsDynamic() {
+				groups = append(groups, group)
+			}
 		}
-		groups = groupSet.Static()
 	} else {
 		if groups, err = a.resolveGroups(run, step, a.Groups, log); err != nil {
 			return err

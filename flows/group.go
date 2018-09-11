@@ -3,8 +3,8 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -26,28 +26,23 @@ import (
 //
 // @context group
 type Group struct {
-	uuid        GroupUUID
-	id          GroupID
+	uuid        assets.GroupUUID
 	name        string
 	query       string
 	parsedQuery *contactql.ContactQuery
 }
 
 // NewGroup returns a new group object with the passed in uuid and name
-func NewGroup(uuid GroupUUID, id GroupID, name string, query string) *Group {
+func NewGroup(uuid assets.GroupUUID, name string, query string) *Group {
 	return &Group{
 		uuid:  uuid,
-		id:    id,
 		name:  name,
 		query: query,
 	}
 }
 
-// ID returns the ID of the group
-func (g *Group) ID() GroupID { return g.id }
-
 // UUID returns the UUID of the group
-func (g *Group) UUID() GroupUUID { return g.uuid }
+func (g *Group) UUID() assets.GroupUUID { return g.uuid }
 
 // Name returns the name of the group
 func (g *Group) Name() string { return g.name }
@@ -108,6 +103,7 @@ func (g *Group) ToXJSON(env utils.Environment) types.XText {
 	return types.ResolveKeys(env, g, "uuid", "name").ToXJSON(env)
 }
 
+var _ assets.Group = (*Group)(nil)
 var _ types.XValue = (*Group)(nil)
 var _ types.XResolvable = (*Group)(nil)
 
@@ -129,7 +125,7 @@ func (l *GroupList) clone() *GroupList {
 }
 
 // FindByUUID returns the group with the passed in UUID or nil if not found
-func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
+func (l *GroupList) FindByUUID(uuid assets.GroupUUID) *Group {
 	for _, group := range l.groups {
 		if group.uuid == uuid {
 			return group
@@ -198,101 +194,39 @@ func (l GroupList) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*GroupList)(nil)
 var _ types.XIndexable = (*GroupList)(nil)
 
-// GroupSet defines the unordered set of all groups for a session
-type GroupSet struct {
-	groups        []*Group
-	staticGroups  []*Group
-	dynamicGroups []*Group
-	groupsByUUID  map[GroupUUID]*Group
-}
-
-// NewGroupSet creates a new group set from the given list of groups
-func NewGroupSet(groups []*Group) *GroupSet {
-	s := &GroupSet{
-		groups:        groups,
-		staticGroups:  make([]*Group, 0),
-		dynamicGroups: make([]*Group, 0),
-		groupsByUUID:  make(map[GroupUUID]*Group, len(groups)),
-	}
-
-	for _, group := range s.groups {
-		if group.IsDynamic() {
-			s.dynamicGroups = append(s.dynamicGroups, group)
-		} else {
-			s.staticGroups = append(s.staticGroups, group)
-		}
-
-		s.groupsByUUID[group.uuid] = group
-	}
-
-	return s
-}
-
-// All returns all groups in this group set
-func (s *GroupSet) All() []*Group {
-	return s.groups
-}
-
-// Static returns all the static groups in this group set
-func (s *GroupSet) Static() []*Group {
-	return s.staticGroups
-}
-
-// Dynamic returns all the dynamic groups in this group set
-func (s *GroupSet) Dynamic() []*Group {
-	return s.dynamicGroups
-}
-
-// FindByUUID finds the group with the given UUID
-func (s *GroupSet) FindByUUID(uuid GroupUUID) *Group {
-	return s.groupsByUUID[uuid]
-}
-
-// FindByName looks for a group with the given name (case-insensitive)
-func (s *GroupSet) FindByName(name string) *Group {
-	name = strings.ToLower(name)
-	for _, group := range s.groups {
-		if strings.ToLower(group.name) == name {
-			return group
-		}
-	}
-	return nil
-}
-
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
 type groupEnvelope struct {
-	UUID  GroupUUID `json:"uuid" validate:"required,uuid4"`
-	ID    GroupID   `json:"id,omitempty"`
-	Name  string    `json:"name"`
-	Query string    `json:"query,omitempty"`
+	UUID  assets.GroupUUID `json:"uuid" validate:"required,uuid4"`
+	Name  string           `json:"name"`
+	Query string           `json:"query,omitempty"`
 }
 
 // ReadGroup reads a group from the given JSON
-func ReadGroup(data json.RawMessage) (*Group, error) {
+func ReadGroup(data json.RawMessage) (assets.Group, error) {
 	var ge groupEnvelope
 	if err := utils.UnmarshalAndValidate(data, &ge); err != nil {
 		return nil, fmt.Errorf("unable to read group: %s", err)
 	}
 
-	return NewGroup(ge.UUID, ge.ID, ge.Name, ge.Query), nil
+	return NewGroup(ge.UUID, ge.Name, ge.Query), nil
 }
 
-// ReadGroupSet reads a group set from the given JSON
-func ReadGroupSet(data json.RawMessage) (*GroupSet, error) {
+// ReadGroups reads a group set from the given JSON
+func ReadGroups(data json.RawMessage) ([]assets.Group, error) {
 	items, err := utils.UnmarshalArray(data)
 	if err != nil {
 		return nil, err
 	}
 
-	groups := make([]*Group, len(items))
+	groups := make([]assets.Group, len(items))
 	for d := range items {
 		if groups[d], err = ReadGroup(items[d]); err != nil {
 			return nil, err
 		}
 	}
 
-	return NewGroupSet(groups), nil
+	return groups, nil
 }

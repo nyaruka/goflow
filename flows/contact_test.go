@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -138,13 +139,13 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		flows.NewField("age", "Age", flows.FieldValueTypeNumber),
 	})
 
-	males := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Males", `gender="M"`)
-	old := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Old", `age>30`)
-	english := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "English", `language=eng`)
-	spanish := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Español", `language=spa`)
-	lastYear := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Old", `created_on <= 2017-12-31`)
-	tel1800 := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Tel with 1800", `tel ~ 1800`)
-	twitterCrazies := flows.NewGroup(flows.GroupUUID(utils.NewUUID()), flows.NilGroupID, "Twitter Crazies", `twitter ~ crazy`)
+	males := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Males", `gender="M"`)
+	old := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Old", `age>30`)
+	english := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "English", `language=eng`)
+	spanish := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Español", `language=spa`)
+	lastYear := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Old", `created_on <= 2017-12-31`)
+	tel1800 := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Tel with 1800", `tel ~ 1800`)
+	twitterCrazies := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Twitter Crazies", `twitter ~ crazy`)
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
 	contact := flows.NewEmptyContact("Joe", "eng", nil)

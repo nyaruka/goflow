@@ -24,7 +24,7 @@ func init() {
 	assets.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) })
 	assets.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
 	assets.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
-	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) })
+	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadGroups(data) })
 	assets.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLabels(data) })
 	assets.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
 	assets.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
@@ -54,11 +54,25 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 	return set, nil
 }
 
+func (s *ServerSource) Groups() ([]assets.Group, error) {
+	asset, err := s.server.GetAsset(assetTypeGroup, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]assets.Group)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
 	source assets.AssetSource
 	server assets.AssetServer
 
+	groups       []*flows.Group
+	groupsByUUID map[assets.GroupUUID]*flows.Group
 	labels       []*flows.Label
 	labelsByUUID map[assets.LabelUUID]*flows.Label
 }
@@ -79,8 +93,22 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 		labelsByUUID[label.UUID()] = label
 	}
 
+	rawGroups, err := source.Groups()
+	if err != nil {
+		return nil, err
+	}
+	groups := make([]*flows.Group, len(rawGroups))
+	groupsByUUID := make(map[assets.GroupUUID]*flows.Group, len(rawGroups))
+	for g, rawGroup := range rawGroups {
+		group := flows.NewGroup(rawGroup.UUID(), rawGroup.Name(), rawGroup.Query())
+		groups[g] = group
+		groupsByUUID[group.UUID()] = group
+	}
+
 	return &sessionAssets{
 		server:       source.(*ServerSource).Server(),
+		groups:       groups,
+		groupsByUUID: groupsByUUID,
 		labels:       labels,
 		labelsByUUID: labelsByUUID,
 	}, nil
@@ -169,38 +197,41 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 	return flow, nil
 }
 
-// GetGroup gets a contact group asset for the session
-func (s *sessionAssets) GetGroup(uuid flows.GroupUUID) (*flows.Group, error) {
-	set, err := s.GetGroupSet()
-	if err != nil {
-		return nil, err
-	}
-	group := set.FindByUUID(uuid)
-	if group == nil {
+// GetGroup gets the group with the given UUID
+func (s *sessionAssets) GetGroup(uuid assets.GroupUUID) (*flows.Group, error) {
+	group, found := s.groupsByUUID[uuid]
+	if !found {
 		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
 	}
 	return group, nil
 }
 
-// GetGroupSet gets the set of all groups asset for the session
-func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
-	asset, err := s.server.GetAsset(assetTypeGroup, "")
-	if err != nil {
-		return nil, err
+// FindGroupByName gets the group with the given name if its exists
+func (s *sessionAssets) FindGroupByName(name string) *flows.Group {
+	name = strings.ToLower(name)
+	for _, group := range s.groups {
+		if strings.ToLower(group.Name()) == name {
+			return group
+		}
 	}
-	set, isType := asset.(*flows.GroupSet)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
+	return nil
 }
 
-// GetLabel gets a message label asset for the session
-func (s *sessionAssets) GetLabel(uuid assets.LabelUUID) *flows.Label {
-	return s.labelsByUUID[uuid]
+// GetAllGroups gets all groups
+func (s *sessionAssets) GetAllGroups() []*flows.Group {
+	return s.groups
 }
 
-// FindLabelByName looks for the message label with the given name
+// GetLabel gets the label with the given UUID
+func (s *sessionAssets) GetLabel(uuid assets.LabelUUID) (*flows.Label, error) {
+	label, found := s.labelsByUUID[uuid]
+	if !found {
+		return nil, fmt.Errorf("no such label with uuid '%s'", uuid)
+	}
+	return label, nil
+}
+
+// FindLabelByName gets the label with the given name if its exists
 func (s *sessionAssets) FindLabelByName(name string) *flows.Label {
 	name = strings.ToLower(name)
 	for _, label := range s.labels {

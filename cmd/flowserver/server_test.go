@@ -45,6 +45,11 @@ var testStructurallyInvalidFlowAssets = `[
 		}
 	},
 	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": []
+	},
+	{
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
@@ -128,6 +133,11 @@ var testValidFlowWithNoWaitAssets = `[
 		}
 	},
 	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": []
+	},
+	{
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
@@ -180,6 +190,11 @@ var testValidFlowWithWaitAssets = `[
 		}
 	},
 	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": []
+	},
+	{
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
@@ -216,6 +231,11 @@ var testValidFlowWithWebhook = `[
 				}
 			]
 		}
+	},
+	{
+		"type": "group",
+		"url": "http://testserver/assets/group",
+		"content": []
 	},
 	{
 		"type": "label",

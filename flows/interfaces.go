@@ -41,15 +41,6 @@ type RunUUID utils.UUID
 // StepUUID is the UUID of a run step
 type StepUUID utils.UUID
 
-// GroupID is the ID of a group
-type GroupID int64
-
-// NilGroupID is the nil value for GroupID
-const NilGroupID = GroupID(0)
-
-// GroupUUID is the UUID of a group
-type GroupUUID utils.UUID
-
 // InputUUID is the UUID of an input
 type InputUUID utils.UUID
 
@@ -126,10 +117,11 @@ type SessionAssets interface {
 
 	GetFlow(FlowUUID) (Flow, error)
 
-	GetGroup(GroupUUID) (*Group, error)
-	GetGroupSet() (*GroupSet, error)
+	GetGroup(assets.GroupUUID) (*Group, error)
+	FindGroupByName(name string) *Group
+	GetAllGroups() []*Group
 
-	GetLabel(assets.LabelUUID) *Label
+	GetLabel(assets.LabelUUID) (*Label, error)
 	FindLabelByName(string) *Label
 
 	HasLocations() bool

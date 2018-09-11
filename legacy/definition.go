@@ -118,7 +118,7 @@ func (c *ContactReference) Migrate() *flows.ContactReference {
 }
 
 type GroupReference struct {
-	UUID flows.GroupUUID
+	UUID assets.GroupUUID
 	Name string
 }
 
@@ -153,7 +153,7 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	g.UUID = flows.GroupUUID(raw["uuid"].(string))
+	g.UUID = assets.GroupUUID(raw["uuid"].(string))
 	g.Name = raw["name"].(string)
 	return nil
 }
