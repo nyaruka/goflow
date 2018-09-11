@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
@@ -23,7 +22,8 @@ func TestContact(t *testing.T) {
 
 	contact := flows.NewContact(
 		flows.ContactUUID(utils.NewUUID()), flows.ContactID(12345), "Joe Bloggs", utils.Language("eng"),
-		nil, time.Now(), flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues))
+		nil, time.Now(), flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
+	)
 
 	assert.Equal(t, flows.URNList{}, contact.URNs())
 	assert.Nil(t, contact.PreferredChannel())
@@ -79,7 +79,8 @@ func TestContactFormat(t *testing.T) {
 	// if not we fallback to URN
 	contact = flows.NewContact(
 		flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
-		flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues))
+		flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
+	)
 	contact.AddURN(urns.URN("twitter:joey"))
 	assert.Equal(t, "joey", contact.Format(env))
 
@@ -139,13 +140,13 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 		flows.NewField("age", "Age", flows.FieldValueTypeNumber),
 	})
 
-	males := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Males", `gender="M"`)
-	old := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Old", `age>30`)
-	english := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "English", `language=eng`)
-	spanish := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Español", `language=spa`)
-	lastYear := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Old", `created_on <= 2017-12-31`)
-	tel1800 := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Tel with 1800", `tel ~ 1800`)
-	twitterCrazies := flows.NewGroup(assets.GroupUUID(utils.NewUUID()), "Twitter Crazies", `twitter ~ crazy`)
+	males := test.NewGroup("Males", `gender="M"`)
+	old := test.NewGroup("Old", `age>30`)
+	english := test.NewGroup("English", `language=eng`)
+	spanish := test.NewGroup("Español", `language=spa`)
+	lastYear := test.NewGroup("Old", `created_on <= 2017-12-31`)
+	tel1800 := test.NewGroup("Tel with 1800", `tel ~ 1800`)
+	twitterCrazies := test.NewGroup("Twitter Crazies", `twitter ~ crazy`)
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
 	contact := flows.NewEmptyContact("Joe", "eng", nil)

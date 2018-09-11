@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/simple"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 )
@@ -24,8 +25,8 @@ func init() {
 	assets.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) })
 	assets.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
 	assets.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
-	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadGroups(data) })
-	assets.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLabels(data) })
+	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadGroups(data) })
+	assets.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadLabels(data) })
 	assets.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
 	assets.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
 }
@@ -88,7 +89,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	labels := make([]*flows.Label, len(rawLabels))
 	labelsByUUID := make(map[assets.LabelUUID]*flows.Label, len(rawLabels))
 	for l, rawLabel := range rawLabels {
-		label := flows.NewLabel(rawLabel.UUID(), rawLabel.Name())
+		label := flows.NewLabel(rawLabel)
 		labels[l] = label
 		labelsByUUID[label.UUID()] = label
 	}
@@ -100,7 +101,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	groups := make([]*flows.Group, len(rawGroups))
 	groupsByUUID := make(map[assets.GroupUUID]*flows.Group, len(rawGroups))
 	for g, rawGroup := range rawGroups {
-		group := flows.NewGroup(rawGroup.UUID(), rawGroup.Name(), rawGroup.Query())
+		group := flows.NewGroup(rawGroup)
 		groups[g] = group
 		groupsByUUID[group.UUID()] = group
 	}

@@ -3,20 +3,19 @@ package flows_test
 import (
 	"testing"
 
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
-	"github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGroupListResolve(t *testing.T) {
-	customers := flows.NewGroup(assets.GroupUUID(uuid.NewV4().String()), "Customers", "")
-	testers := flows.NewGroup(assets.GroupUUID(uuid.NewV4().String()), "Testers", "")
-	males := flows.NewGroup(assets.GroupUUID(uuid.NewV4().String()), "Males", "gender = \"M\"")
-	urnList := flows.NewGroupList([]*flows.Group{customers, testers, males})
+	customers := test.NewGroup("Customers", "")
+	testers := test.NewGroup("Testers", "")
+	males := test.NewGroup("Males", "gender = \"M\"")
+	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
 	env := utils.NewDefaultEnvironment()
 
@@ -32,7 +31,7 @@ func TestGroupListResolve(t *testing.T) {
 		{"3", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
-		val := excellent.ResolveValue(env, urnList, tc.key)
+		val := excellent.ResolveValue(env, groups, tc.key)
 
 		err, isErr := val.(error)
 

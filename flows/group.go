@@ -1,7 +1,6 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
@@ -26,35 +25,23 @@ import (
 //
 // @context group
 type Group struct {
-	uuid        assets.GroupUUID
-	name        string
-	query       string
+	assets.Group
 	parsedQuery *contactql.ContactQuery
 }
 
-// NewGroup returns a new group object with the passed in uuid and name
-func NewGroup(uuid assets.GroupUUID, name string, query string) *Group {
-	return &Group{
-		uuid:  uuid,
-		name:  name,
-		query: query,
-	}
+// NewGroup returns a new group object from the given group asset
+func NewGroup(asset assets.Group) *Group {
+	return &Group{Group: asset}
 }
 
-// UUID returns the UUID of the group
-func (g *Group) UUID() assets.GroupUUID { return g.uuid }
-
-// Name returns the name of the group
-func (g *Group) Name() string { return g.name }
-
-// Query returns the query of a dynamic group
-func (g *Group) Query() string { return g.query }
+// Asset returns the underlying asset
+func (g *Group) Asset() assets.Group { return g.Group }
 
 // ParsedQuery returns the parsed query of a dynamic group (cached)
 func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
-	if g.query != "" && g.parsedQuery == nil {
+	if g.Query() != "" && g.parsedQuery == nil {
 		var err error
-		if g.parsedQuery, err = contactql.ParseQuery(g.query); err != nil {
+		if g.parsedQuery, err = contactql.ParseQuery(g.Query()); err != nil {
 			return nil, err
 		}
 	}
@@ -62,7 +49,7 @@ func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
 }
 
 // IsDynamic returns whether this group is dynamic
-func (g *Group) IsDynamic() bool { return g.query != "" }
+func (g *Group) IsDynamic() bool { return g.Query() != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
 func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) (bool, error) {
@@ -78,15 +65,15 @@ func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) 
 }
 
 // Reference returns a reference to this group
-func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
+func (g *Group) Reference() *GroupReference { return NewGroupReference(g.UUID(), g.Name()) }
 
 // Resolve resolves the given key when this group is referenced in an expression
 func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXText(string(g.uuid))
+		return types.NewXText(string(g.UUID()))
 	case "name":
-		return types.NewXText(g.name)
+		return types.NewXText(g.Name())
 	}
 
 	return types.NewXResolveError(g, key)
@@ -96,14 +83,13 @@ func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
 func (g *Group) Describe() string { return "group" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (g *Group) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(g.name) }
+func (g *Group) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(g.Name()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (g *Group) ToXJSON(env utils.Environment) types.XText {
 	return types.ResolveKeys(env, g, "uuid", "name").ToXJSON(env)
 }
 
-var _ assets.Group = (*Group)(nil)
 var _ types.XValue = (*Group)(nil)
 var _ types.XResolvable = (*Group)(nil)
 
@@ -127,7 +113,7 @@ func (l *GroupList) clone() *GroupList {
 // FindByUUID returns the group with the passed in UUID or nil if not found
 func (l *GroupList) FindByUUID(uuid assets.GroupUUID) *Group {
 	for _, group := range l.groups {
-		if group.uuid == uuid {
+		if group.UUID() == uuid {
 			return group
 		}
 	}
@@ -136,7 +122,7 @@ func (l *GroupList) FindByUUID(uuid assets.GroupUUID) *Group {
 
 // Add adds the given group to this group list
 func (l *GroupList) Add(group *Group) bool {
-	if l.FindByUUID(group.uuid) == nil {
+	if l.FindByUUID(group.UUID()) == nil {
 		l.groups = append(l.groups, group)
 		return true
 	}
@@ -146,7 +132,7 @@ func (l *GroupList) Add(group *Group) bool {
 // Remove removes the given group from this group list
 func (l *GroupList) Remove(group *Group) bool {
 	for g := range l.groups {
-		if l.groups[g].uuid == group.uuid {
+		if l.groups[g].UUID() == group.UUID() {
 			l.groups = append(l.groups[:g], l.groups[g+1:]...)
 			return true
 		}
@@ -193,40 +179,3 @@ func (l GroupList) ToXJSON(env utils.Environment) types.XText {
 
 var _ types.XValue = (*GroupList)(nil)
 var _ types.XIndexable = (*GroupList)(nil)
-
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-type groupEnvelope struct {
-	UUID  assets.GroupUUID `json:"uuid" validate:"required,uuid4"`
-	Name  string           `json:"name"`
-	Query string           `json:"query,omitempty"`
-}
-
-// ReadGroup reads a group from the given JSON
-func ReadGroup(data json.RawMessage) (assets.Group, error) {
-	var ge groupEnvelope
-	if err := utils.UnmarshalAndValidate(data, &ge); err != nil {
-		return nil, fmt.Errorf("unable to read group: %s", err)
-	}
-
-	return NewGroup(ge.UUID, ge.Name, ge.Query), nil
-}
-
-// ReadGroups reads a group set from the given JSON
-func ReadGroups(data json.RawMessage) ([]assets.Group, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
-		return nil, err
-	}
-
-	groups := make([]assets.Group, len(items))
-	for d := range items {
-		if groups[d], err = ReadGroup(items[d]); err != nil {
-			return nil, err
-		}
-	}
-
-	return groups, nil
-}
