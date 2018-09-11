@@ -66,8 +66,8 @@ func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*fl
 func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*flows.LabelReference) error {
 	for _, ref := range references {
 		if ref.UUID != "" {
-			if _, err := assets.GetLabel(ref.UUID); err != nil {
-				return err
+			if assets.GetLabel(ref.UUID) == nil {
+				return fmt.Errorf("no such label with uuid '%s'", ref.UUID)
 			}
 		}
 	}
@@ -116,11 +116,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
 func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*flows.LabelReference, log flows.EventLog) ([]*flows.Label, error) {
-	labelSet, err := run.Session().Assets().GetLabelSet()
-	if err != nil {
-		return nil, err
-	}
-
+	assets := run.Session().Assets()
 	labels := make([]*flows.Label, 0, len(references))
 
 	for _, ref := range references {
@@ -128,7 +124,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 
 		if ref.UUID != "" {
 			// label is a fixed label with a UUID
-			label = labelSet.FindByUUID(ref.UUID)
+			label = assets.GetLabel(ref.UUID)
 			if label == nil {
 				return nil, fmt.Errorf("no such label with UUID '%s'", ref.UUID)
 			}
@@ -139,7 +135,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 				log.Add(events.NewErrorEvent(err))
 			} else {
 				// look up the set of all labels to see if such a label exists
-				label = labelSet.FindByName(evaluatedLabelName)
+				label = assets.FindLabelByName(evaluatedLabelName)
 				if label == nil {
 					log.Add(events.NewErrorEvent(fmt.Errorf("no such label with name '%s'", evaluatedLabelName)))
 				}

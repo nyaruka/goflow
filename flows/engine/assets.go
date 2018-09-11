@@ -3,6 +3,7 @@ package engine
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
@@ -24,21 +25,65 @@ func init() {
 	assets.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
 	assets.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
 	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadGroupSet(data) })
-	assets.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLabelSet(data) })
+	assets.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLabels(data) })
 	assets.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
 	assets.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
 }
 
+type ServerSource struct {
+	server assets.AssetServer
+}
+
+func NewServerSource(server assets.AssetServer) assets.AssetSource {
+	return &ServerSource{server: server}
+}
+
+func (s *ServerSource) Server() assets.AssetServer {
+	return s.server
+}
+
+func (s *ServerSource) Labels() ([]assets.Label, error) {
+	asset, err := s.server.GetAsset(assetTypeLabel, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]assets.Label)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
+	source assets.AssetSource
 	server assets.AssetServer
+
+	labels       []*flows.Label
+	labelsByUUID map[assets.LabelUUID]*flows.Label
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
-func NewSessionAssets(server assets.AssetServer) flows.SessionAssets {
-	return &sessionAssets{server: server}
+func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
+	rawLabels, err := source.Labels()
+	if err != nil {
+		return nil, err
+	}
+	labels := make([]*flows.Label, len(rawLabels))
+	labelsByUUID := make(map[assets.LabelUUID]*flows.Label, len(rawLabels))
+	for l, rawLabel := range rawLabels {
+		label := flows.NewLabel(rawLabel.UUID(), rawLabel.Name())
+		labels[l] = label
+		labelsByUUID[label.UUID()] = label
+	}
+
+	return &sessionAssets{
+		server:       source.(*ServerSource).Server(),
+		labels:       labels,
+		labelsByUUID: labelsByUUID,
+	}, nil
 }
 
 // HasLocations returns whether locations are supported as an asset item type
@@ -151,28 +196,19 @@ func (s *sessionAssets) GetGroupSet() (*flows.GroupSet, error) {
 }
 
 // GetLabel gets a message label asset for the session
-func (s *sessionAssets) GetLabel(uuid flows.LabelUUID) (*flows.Label, error) {
-	set, err := s.GetLabelSet()
-	if err != nil {
-		return nil, err
-	}
-	label := set.FindByUUID(uuid)
-	if label == nil {
-		return nil, fmt.Errorf("no such label with uuid '%s'", uuid)
-	}
-	return label, nil
+func (s *sessionAssets) GetLabel(uuid assets.LabelUUID) *flows.Label {
+	return s.labelsByUUID[uuid]
 }
 
-func (s *sessionAssets) GetLabelSet() (*flows.LabelSet, error) {
-	asset, err := s.server.GetAsset(assetTypeLabel, "")
-	if err != nil {
-		return nil, err
+// FindLabelByName looks for the message label with the given name
+func (s *sessionAssets) FindLabelByName(name string) *flows.Label {
+	name = strings.ToLower(name)
+	for _, label := range s.labels {
+		if strings.ToLower(label.Name()) == name {
+			return label
+		}
 	}
-	set, isType := asset.(*flows.LabelSet)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
+	return nil
 }
 
 func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {

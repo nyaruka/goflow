@@ -373,7 +373,11 @@ func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 	}
 
 	// create our engine session
-	assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+	assets, err := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(assetCache)))
+	if err != nil {
+		return nil, err
+	}
+
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 	return session, nil
 }

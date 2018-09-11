@@ -3,6 +3,7 @@ package flows
 import (
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -30,9 +31,6 @@ type RunUUID utils.UUID
 
 // StepUUID is the UUID of a run step
 type StepUUID utils.UUID
-
-// LabelUUID is the UUID of a label
-type LabelUUID utils.UUID
 
 // GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
@@ -110,8 +108,8 @@ type SessionAssets interface {
 	GetGroup(GroupUUID) (*Group, error)
 	GetGroupSet() (*GroupSet, error)
 
-	GetLabel(LabelUUID) (*Label, error)
-	GetLabelSet() (*LabelSet, error)
+	GetLabel(assets.LabelUUID) *Label
+	FindLabelByName(string) *Label
 
 	HasLocations() bool
 	GetLocationHierarchySet() (*LocationHierarchySet, error)

@@ -1,6 +1,7 @@
 package events
 
 import (
+	"fmt"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -44,9 +45,8 @@ func (e *InputLabelsAddedEvent) Type() string { return TypeInputLabelsAdded }
 // Validate validates our event is valid and has all the assets it needs
 func (e *InputLabelsAddedEvent) Validate(assets flows.SessionAssets) error {
 	for _, label := range e.Labels {
-		_, err := assets.GetLabel(label.UUID)
-		if err != nil {
-			return err
+		if assets.GetLabel(label.UUID) != nil {
+			return fmt.Errorf("no such label with UUID '%s'", label.UUID)
 		}
 	}
 	return nil

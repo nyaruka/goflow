@@ -3,6 +3,7 @@ package flows
 import (
 	validator "gopkg.in/go-playground/validator.v9"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -74,13 +75,13 @@ func NewFlowReference(uuid FlowUUID, name string) *FlowReference {
 
 // LabelReference is used to reference a label
 type LabelReference struct {
-	UUID      LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name      string    `json:"name,omitempty"`
-	NameMatch string    `json:"name_match,omitempty"`
+	UUID      assets.LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	Name      string           `json:"name,omitempty"`
+	NameMatch string           `json:"name_match,omitempty"`
 }
 
 // NewLabelReference creates a new label reference with the given UUID and name
-func NewLabelReference(uuid LabelUUID, name string) *LabelReference {
+func NewLabelReference(uuid assets.LabelUUID, name string) *LabelReference {
 	return &LabelReference{UUID: uuid, Name: name}
 }
 

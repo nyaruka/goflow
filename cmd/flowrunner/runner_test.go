@@ -102,7 +102,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+	assets, _ := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(assetCache)))
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
@@ -126,7 +126,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 		outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
 
-		assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+		assets, _ := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(assetCache)))
 		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, sessionJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)

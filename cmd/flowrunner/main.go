@@ -86,7 +86,11 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{}, utils.RedactionPolicyNone)
 
-	assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+	assets, err := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(assetCache)))
+	if err != nil {
+		log.Fatal("error parsing assets: ", err)
+	}
+
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), httpClient)
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
@@ -143,7 +147,11 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+		assets, err := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(assetCache)))
+		if err != nil {
+			log.Fatal("Error parsing assets: ", err)
+		}
+
 		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), httpClient, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)

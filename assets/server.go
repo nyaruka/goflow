@@ -147,7 +147,7 @@ func (s *MockAssetServer) fetchAsset(url string, itemType AssetType) ([]byte, er
 
 	assetBuf, found := s.mockResponses[url]
 	if !found {
-		return nil, fmt.Errorf("mock asset server has no mocked response for URL: %s", url)
+		return []byte(`{"results":[]}`), nil
 	}
 	return assetBuf, nil
 }

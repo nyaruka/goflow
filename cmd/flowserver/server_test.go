@@ -43,6 +43,11 @@ var testStructurallyInvalidFlowAssets = `[
 				}
 			]
 		}
+	},
+	{
+		"type": "label",
+		"url": "http://testserver/assets/label",
+		"content": []
 	}
 ]`
 
@@ -90,6 +95,11 @@ var testFlowMissingGroupAssets = `[
 				"name": "Survey Audience"
 			}
 		]
+	},
+	{
+		"type": "label",
+		"url": "http://testserver/assets/label",
+		"content": []
 	}
 ]`
 
@@ -116,6 +126,11 @@ var testValidFlowWithNoWaitAssets = `[
 				}
 			]
 		}
+	},
+	{
+		"type": "label",
+		"url": "http://testserver/assets/label",
+		"content": []
 	}
 ]`
 
@@ -163,6 +178,11 @@ var testValidFlowWithWaitAssets = `[
 				}
 			]
 		}
+	},
+	{
+		"type": "label",
+		"url": "http://testserver/assets/label",
+		"content": []
 	}
 ]`
 
@@ -196,18 +216,26 @@ var testValidFlowWithWebhook = `[
 				}
 			]
 		}
+	},
+	{
+		"type": "label",
+		"url": "http://testserver/assets/label",
+		"content": []
 	}
 ]`
 
+var assetServerConfig = `{
+	"type_urls": {
+		"flow": "http://testserver/assets/flow/",
+		"field": "http://testserver/assets/field/",
+		"group": "http://testserver/assets/group/",
+		"label": "http://testserver/assets/label/"
+	}
+}`
+
 var startRequestTemplate = `{
 	"assets": %s,
-	"asset_server": {
-		"type_urls": {
-			"flow": "http://testserver/assets/flow/",
-			"field": "http://testserver/assets/field/",
-			"group": "http://testserver/assets/group/"
-		}
-	},
+	"asset_server": %s,
 	"trigger": {
 		"type": "manual",
 		"flow": {"uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02", "name": "Test Flow"},
@@ -278,7 +306,9 @@ func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []m
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	assets := engine.NewSessionAssets(engine.NewMockAssetServer(ts.flowServer.assetCache))
+	assets, err := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(ts.flowServer.assetCache)))
+	ts.Require().NoError(err)
+
 	session, err := engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
 	ts.Require().NoError(err)
 
@@ -367,24 +397,24 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"field 'asset_server' is required", "field 'trigger' is required"})
 
 	// try POSTing an incomplete trigger to the start endpoint
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", `{"asset_server": {}, "trigger": {"type": "manual"}}`)
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", fmt.Sprintf(`{"assets": %s, "asset_server": %s, "trigger": {"type": "manual"}}`, testValidFlowWithNoWaitAssets, assetServerConfig))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"unable to read trigger[type=manual]: field 'flow' is required, field 'triggered_on' is required"})
 
 	// try POSTing to the start endpoint a structurally invalid flow asset
-	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets, `{}`)
+	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"unable to read asset[url=http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try POSTing to the start endpoint a flow asset that references a non-existent group asset
-	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets, `{}`)
+	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// POST to the start endpoint with a valid flow with no wait (it should complete)
-	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets, `{}`)
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(200, status)
 
@@ -406,7 +436,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.assertErrorResponse(body, []string{"only waiting sessions can be resumed"})
 
 	// start another session on a flow that will wait for input
-	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWaitAssets, `{}`)
+	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithWaitAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(200, status)
 
@@ -476,7 +506,7 @@ func (ts *ServerTestSuite) TestWebhookMocking() {
 
 	for _, tc := range testCases {
 		// POST to the start endpoint with a flow with a webhook call, with webhooks disabled
-		requestBody := fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, tc.config)
+		requestBody := fmt.Sprintf(startRequestTemplate, testValidFlowWithWebhook, assetServerConfig, tc.config)
 		status, body := ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 		ts.Equal(200, status)
 

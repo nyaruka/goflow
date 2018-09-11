@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -66,7 +67,7 @@ type ActionSet struct {
 }
 
 type LabelReference struct {
-	UUID flows.LabelUUID
+	UUID assets.LabelUUID
 	Name string
 }
 
@@ -101,7 +102,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	l.UUID = flows.LabelUUID(raw["uuid"].(string))
+	l.UUID = assets.LabelUUID(raw["uuid"].(string))
 	l.Name = raw["name"].(string)
 	return nil
 }
