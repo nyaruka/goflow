@@ -54,7 +54,7 @@ func (a *BaseAction) evaluateLocalizableTemplate(run flows.FlowRun, localization
 func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*flows.GroupReference) error {
 	for _, ref := range references {
 		if ref.UUID != "" {
-			if _, err := assets.GetGroup(ref.UUID); err != nil {
+			if _, err := assets.Groups().Get(ref.UUID); err != nil {
 				return err
 			}
 		}
@@ -66,7 +66,7 @@ func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*fl
 func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*flows.LabelReference) error {
 	for _, ref := range references {
 		if ref.UUID != "" {
-			if _, err := assets.GetLabel(ref.UUID); err != nil {
+			if _, err := assets.Labels().Get(ref.UUID); err != nil {
 				return err
 			}
 		}
@@ -76,7 +76,7 @@ func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*fl
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*flows.GroupReference, log flows.EventLog) ([]*flows.Group, error) {
-	assets := run.Session().Assets()
+	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
 	for _, ref := range references {
@@ -85,7 +85,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 
 		if ref.UUID != "" {
 			// group is a fixed group with a UUID
-			group, err = assets.GetGroup(ref.UUID)
+			group, err = groupSet.Get(ref.UUID)
 			if err != nil {
 				return nil, err
 			}
@@ -96,7 +96,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 				log.Add(events.NewErrorEvent(err))
 			} else {
 				// look up the set of all groups to see if such a group exists
-				group = assets.FindGroupByName(evaluatedGroupName)
+				group = groupSet.FindByName(evaluatedGroupName)
 				if group == nil {
 					log.Add(events.NewErrorEvent(fmt.Errorf("no such group with name '%s'", evaluatedGroupName)))
 				}
@@ -113,7 +113,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
 func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*flows.LabelReference, log flows.EventLog) ([]*flows.Label, error) {
-	assets := run.Session().Assets()
+	labelSet := run.Session().Assets().Labels()
 	labels := make([]*flows.Label, 0, len(references))
 
 	for _, ref := range references {
@@ -122,7 +122,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 
 		if ref.UUID != "" {
 			// label is a fixed label with a UUID
-			label, err = assets.GetLabel(ref.UUID)
+			label, err = labelSet.Get(ref.UUID)
 			if err != nil {
 				return nil, err
 			}
@@ -133,7 +133,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 				log.Add(events.NewErrorEvent(err))
 			} else {
 				// look up the set of all labels to see if such a label exists
-				label = assets.FindLabelByName(evaluatedLabelName)
+				label = labelSet.FindByName(evaluatedLabelName)
 				if label == nil {
 					log.Add(events.NewErrorEvent(fmt.Errorf("no such label with name '%s'", evaluatedLabelName)))
 				}
@@ -189,7 +189,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 }
 
 func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*flows.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*flows.GroupReference, error) {
-	assets := run.Session().Assets()
+	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
 	urnList := make([]urns.URN, 0, len(actionURNs))
@@ -224,7 +224,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 			// if variable evaluates to a UUID, we assume it's a contact UUID
 			contactRefs = append(contactRefs, flows.NewContactReference(flows.ContactUUID(evaluatedLegacyVar), ""))
 
-		} else if groupByName := assets.FindGroupByName(evaluatedLegacyVar); groupByName != nil {
+		} else if groupByName := groupSet.FindByName(evaluatedLegacyVar); groupByName != nil {
 			// next up we look for a group with a matching name
 			groupRefs = append(groupRefs, groupByName.Reference())
 		} else {

@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
@@ -180,3 +181,48 @@ func (l GroupList) ToXJSON(env utils.Environment) types.XText {
 
 var _ types.XValue = (*GroupList)(nil)
 var _ types.XIndexable = (*GroupList)(nil)
+
+// GroupAssets provides access to all group assets
+type GroupAssets struct {
+	all    []*Group
+	byUUID map[assets.GroupUUID]*Group
+}
+
+// NewGroupAssets creates a new set of group assets
+func NewGroupAssets(groups []assets.Group) *GroupAssets {
+	s := &GroupAssets{
+		all:    make([]*Group, len(groups)),
+		byUUID: make(map[assets.GroupUUID]*Group, len(groups)),
+	}
+	for g, asset := range groups {
+		group := NewGroup(asset)
+		s.all[g] = group
+		s.byUUID[group.UUID()] = group
+	}
+	return s
+}
+
+// All returns all the groups
+func (s *GroupAssets) All() []*Group {
+	return s.all
+}
+
+// Get returns the group with the given UUID
+func (s *GroupAssets) Get(uuid assets.GroupUUID) (*Group, error) {
+	c, found := s.byUUID[uuid]
+	if !found {
+		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
+	}
+	return c, nil
+}
+
+// FindByName looks for a group with the given name (case-insensitive)
+func (s *GroupAssets) FindByName(name string) *Group {
+	name = strings.ToLower(name)
+	for _, group := range s.all {
+		if strings.ToLower(group.Name()) == name {
+			return group
+		}
+	}
+	return nil
+}

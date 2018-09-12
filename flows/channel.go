@@ -98,7 +98,7 @@ func (c *Channel) String() string {
 var _ types.XValue = (*Channel)(nil)
 var _ types.XResolvable = (*Channel)(nil)
 
-// ChannelAssets defines provides access to all channel assets
+// ChannelAssets provides access to all channel assets
 type ChannelAssets struct {
 	all    []*Channel
 	byUUID map[assets.ChannelUUID]*Channel

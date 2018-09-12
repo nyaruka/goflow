@@ -3,7 +3,6 @@ package flows
 import (
 	"time"
 
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -104,18 +103,13 @@ const (
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
 	Channels() *ChannelAssets
+	Groups() *GroupAssets
+	Labels() *LabelAssets
 
 	GetField(string) (*Field, error)
 	GetFieldSet() (*FieldSet, error)
 
 	GetFlow(FlowUUID) (Flow, error)
-
-	GetGroup(assets.GroupUUID) (*Group, error)
-	FindGroupByName(name string) *Group
-	GetAllGroups() []*Group
-
-	GetLabel(assets.LabelUUID) (*Label, error)
-	FindLabelByName(string) *Label
 
 	HasLocations() bool
 	GetLocationHierarchySet() (*LocationHierarchySet, error)

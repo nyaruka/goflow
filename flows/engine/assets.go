@@ -3,7 +3,6 @@ package engine
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/simple"
@@ -84,11 +83,9 @@ type sessionAssets struct {
 	source assets.AssetSource
 	server assets.AssetServer
 
-	channels     *flows.ChannelAssets
-	groups       []*flows.Group
-	groupsByUUID map[assets.GroupUUID]*flows.Group
-	labels       []*flows.Label
-	labelsByUUID map[assets.LabelUUID]*flows.Label
+	channels *flows.ChannelAssets
+	groups   *flows.GroupAssets
+	labels   *flows.LabelAssets
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
@@ -99,39 +96,33 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	if err != nil {
 		return nil, err
 	}
-	rawGroups, err := source.Groups()
+	groups, err := source.Groups()
 	if err != nil {
 		return nil, err
 	}
-	rawLabels, err := source.Labels()
+	labels, err := source.Labels()
 	if err != nil {
 		return nil, err
-	}
-
-	groups := make([]*flows.Group, len(rawGroups))
-	groupsByUUID := make(map[assets.GroupUUID]*flows.Group, len(rawGroups))
-	for g, rawGroup := range rawGroups {
-		group := flows.NewGroup(rawGroup)
-		groups[g] = group
-		groupsByUUID[group.UUID()] = group
-	}
-
-	labels := make([]*flows.Label, len(rawLabels))
-	labelsByUUID := make(map[assets.LabelUUID]*flows.Label, len(rawLabels))
-	for l, rawLabel := range rawLabels {
-		label := flows.NewLabel(rawLabel)
-		labels[l] = label
-		labelsByUUID[label.UUID()] = label
 	}
 
 	return &sessionAssets{
-		server:       source.(*ServerSource).Server(),
-		groups:       groups,
-		channels:     flows.NewChannelAssets(channels),
-		groupsByUUID: groupsByUUID,
-		labels:       labels,
-		labelsByUUID: labelsByUUID,
+		server:   source.(*ServerSource).Server(),
+		channels: flows.NewChannelAssets(channels),
+		groups:   flows.NewGroupAssets(groups),
+		labels:   flows.NewLabelAssets(labels),
 	}, nil
+}
+
+func (s *sessionAssets) Channels() *flows.ChannelAssets {
+	return s.channels
+}
+
+func (s *sessionAssets) Groups() *flows.GroupAssets {
+	return s.groups
+}
+
+func (s *sessionAssets) Labels() *flows.LabelAssets {
+	return s.labels
 }
 
 // HasLocations returns whether locations are supported as an asset item type
@@ -150,10 +141,6 @@ func (s *sessionAssets) GetLocationHierarchySet() (*flows.LocationHierarchySet, 
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
-}
-
-func (s *sessionAssets) Channels() *flows.ChannelAssets {
-	return s.channels
 }
 
 // GetField gets a contact field asset for the session
@@ -193,51 +180,6 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
 	}
 	return flow, nil
-}
-
-// GetGroup gets the group with the given UUID
-func (s *sessionAssets) GetGroup(uuid assets.GroupUUID) (*flows.Group, error) {
-	group, found := s.groupsByUUID[uuid]
-	if !found {
-		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
-	}
-	return group, nil
-}
-
-// FindGroupByName gets the group with the given name if its exists
-func (s *sessionAssets) FindGroupByName(name string) *flows.Group {
-	name = strings.ToLower(name)
-	for _, group := range s.groups {
-		if strings.ToLower(group.Name()) == name {
-			return group
-		}
-	}
-	return nil
-}
-
-// GetAllGroups gets all groups
-func (s *sessionAssets) GetAllGroups() []*flows.Group {
-	return s.groups
-}
-
-// GetLabel gets the label with the given UUID
-func (s *sessionAssets) GetLabel(uuid assets.LabelUUID) (*flows.Label, error) {
-	label, found := s.labelsByUUID[uuid]
-	if !found {
-		return nil, fmt.Errorf("no such label with uuid '%s'", uuid)
-	}
-	return label, nil
-}
-
-// FindLabelByName gets the label with the given name if its exists
-func (s *sessionAssets) FindLabelByName(name string) *flows.Label {
-	name = strings.ToLower(name)
-	for _, label := range s.labels {
-		if strings.ToLower(label.Name()) == name {
-			return label
-		}
-	}
-	return nil
 }
 
 func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {

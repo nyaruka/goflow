@@ -61,7 +61,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 	var err error
 
 	if a.AllGroups {
-		for _, group := range run.Session().Assets().GetAllGroups() {
+		for _, group := range run.Session().Assets().Groups().All() {
 			if !group.IsDynamic() {
 				groups = append(groups, group)
 			}

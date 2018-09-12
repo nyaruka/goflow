@@ -292,7 +292,7 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
 func (c *Contact) ReevaluateDynamicGroups(session Session) error {
-	for _, group := range session.Assets().GetAllGroups() {
+	for _, group := range session.Assets().Groups().All() {
 		if !group.IsDynamic() {
 			continue
 		}
@@ -426,7 +426,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	} else {
 		groups := make([]*Group, len(envelope.Groups))
 		for g := range envelope.Groups {
-			if groups[g], err = assets.GetGroup(envelope.Groups[g].UUID); err != nil {
+			if groups[g], err = assets.Groups().Get(envelope.Groups[g].UUID); err != nil {
 				return nil, err
 			}
 		}

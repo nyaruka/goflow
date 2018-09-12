@@ -43,7 +43,7 @@ func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {
 	for _, group := range e.Groups {
-		if _, err := assets.GetGroup(group.UUID); err != nil {
+		if _, err := assets.Groups().Get(group.UUID); err != nil {
 			return err
 		}
 	}
@@ -59,7 +59,7 @@ func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
 	assets := run.Session().Assets()
 
 	for _, groupRef := range e.Groups {
-		group, err := assets.GetGroup(groupRef.UUID)
+		group, err := assets.Groups().Get(groupRef.UUID)
 		if err == nil {
 			run.Contact().Groups().Add(group)
 		}
