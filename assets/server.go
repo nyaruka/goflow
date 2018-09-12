@@ -11,27 +11,47 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// AssetServer describes the asset server we'll fetch missing assets from
-type AssetServer interface {
-	IsTypeSupported(AssetType) bool
+const (
+	assetTypeChannel           AssetType = "channel"
+	assetTypeField             AssetType = "field"
+	assetTypeFlow              AssetType = "flow"
+	assetTypeGroup             AssetType = "group"
+	assetTypeLabel             AssetType = "label"
+	assetTypeLocationHierarchy AssetType = "location_hierarchy"
+	assetTypeResthook          AssetType = "resthook"
+)
+
+type LegacyServer interface {
 	GetAsset(AssetType, string) (interface{}, error)
 }
 
-type assetServer struct {
+type AssetServer struct {
 	authToken  string
 	typeURLs   map[AssetType]string
 	httpClient *utils.HTTPClient
 	cache      *AssetCache
+
+	fetcher assetFetcher
 }
 
-var _ assetFetcher = (*assetServer)(nil)
+var _ AssetSource = (*AssetServer)(nil)
+var _ assetFetcher = (*AssetServer)(nil)
+
+// NewAssetServer creates a new asset server
+func NewAssetServer(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient, cache *AssetCache) *AssetServer {
+	// TODO validate typeURLs are for registered types?
+
+	s := &AssetServer{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient, cache: cache}
+	s.fetcher = s
+	return s
+}
 
 type assetServerEnvelope struct {
 	TypeURLs map[AssetType]string `json:"type_urls"`
 }
 
 // ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, cache *AssetCache, data json.RawMessage) (AssetServer, error) {
+func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, cache *AssetCache, data json.RawMessage) (*AssetServer, error) {
 	envelope := &assetServerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, fmt.Errorf("unable to read asset server: %s", err)
@@ -40,31 +60,58 @@ func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, cache *Asse
 	return NewAssetServer(authToken, envelope.TypeURLs, httpClient, cache), nil
 }
 
-// NewAssetServer creates a new asset server
-func NewAssetServer(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient, cache *AssetCache) AssetServer {
-	// TODO validate typeURLs are for registered types?
-
-	return &assetServer{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient, cache: cache}
+func (s *AssetServer) Channels() ([]Channel, error) {
+	asset, err := s.GetAsset(assetTypeChannel, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]Channel)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
 }
 
-// IsTypeSupported returns whether the given asset item type is supported
-func (s *assetServer) IsTypeSupported(itemType AssetType) bool {
-	_, hasTypeURL := s.typeURLs[itemType]
+func (s *AssetServer) Groups() ([]Group, error) {
+	asset, err := s.GetAsset(assetTypeGroup, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]Group)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
+func (s *AssetServer) Labels() ([]Label, error) {
+	asset, err := s.GetAsset(assetTypeLabel, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]Label)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
+func (s *AssetServer) HasLocations() bool {
+	_, hasTypeURL := s.typeURLs["location_hierarchy"]
 	return hasTypeURL
 }
 
-// GetAsset returns either a single item or the set of items
-func (s *assetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
+func (s *AssetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
 	url, err := s.getAssetURL(itemType, itemUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.cache.getAsset(url, s, itemType)
+	return s.cache.getAsset(url, s.fetcher, itemType)
 }
 
 // getAssetURL gets the URL for a set of the given asset type
-func (s *assetServer) getAssetURL(itemType AssetType, itemUUID string) (string, error) {
+func (s *AssetServer) getAssetURL(itemType AssetType, itemUUID string) (string, error) {
 	url, found := s.typeURLs[itemType]
 	if !found {
 		return "", fmt.Errorf("asset type '%s' not supported by asset server", itemType)
@@ -78,7 +125,7 @@ func (s *assetServer) getAssetURL(itemType AssetType, itemUUID string) (string, 
 }
 
 // fetches an asset by its URL and parses it as the provided type
-func (s *assetServer) fetchAsset(url string, itemType AssetType) ([]byte, error) {
+func (s *AssetServer) fetchAsset(url string, itemType AssetType) ([]byte, error) {
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -109,7 +156,7 @@ func (s *assetServer) fetchAsset(url string, itemType AssetType) ([]byte, error)
 }
 
 type MockAssetServer struct {
-	assetServer
+	AssetServer
 
 	mockResponses  map[string]json.RawMessage
 	mockedRequests []string
@@ -117,11 +164,13 @@ type MockAssetServer struct {
 
 // NewMockAssetServer creates a new mocked asset server for testing
 func NewMockAssetServer(typeURLs map[AssetType]string, cache *AssetCache) *MockAssetServer {
-	return &MockAssetServer{
-		assetServer:    assetServer{typeURLs: typeURLs, cache: cache},
+	s := &MockAssetServer{
+		AssetServer:    AssetServer{typeURLs: typeURLs, cache: cache},
 		mockResponses:  map[string]json.RawMessage{},
 		mockedRequests: []string{},
 	}
+	s.AssetServer.fetcher = s
+	return s
 }
 
 func (s *MockAssetServer) MockResponse(url string, response json.RawMessage) {
@@ -130,16 +179,6 @@ func (s *MockAssetServer) MockResponse(url string, response json.RawMessage) {
 
 func (s *MockAssetServer) MockedRequests() []string {
 	return s.mockedRequests
-}
-
-// GetAsset returns either a single item or the set of items
-func (s *MockAssetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
-	url, err := s.getAssetURL(itemType, itemUUID)
-	if err != nil {
-		return nil, err
-	}
-
-	return s.cache.getAsset(url, s, itemType)
 }
 
 func (s *MockAssetServer) fetchAsset(url string, itemType AssetType) ([]byte, error) {
@@ -154,7 +193,9 @@ func (s *MockAssetServer) fetchAsset(url string, itemType AssetType) ([]byte, er
 
 // MarshalJSON marshals this mock asset server into JSON
 func (s *MockAssetServer) MarshalJSON() ([]byte, error) {
-	envelope := &assetServerEnvelope{}
-	envelope.TypeURLs = s.typeURLs
+	envelope := &assetServerEnvelope{TypeURLs: s.typeURLs}
 	return json.Marshal(envelope)
 }
+
+var _ LegacyServer = (*MockAssetServer)(nil)
+var _ assetFetcher = (*MockAssetServer)(nil)

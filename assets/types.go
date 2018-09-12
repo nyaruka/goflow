@@ -57,4 +57,5 @@ type AssetSource interface {
 	Channels() ([]Channel, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
+	HasLocations() bool
 }

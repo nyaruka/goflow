@@ -352,7 +352,7 @@ func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []m
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	assets, err := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(ts.flowServer.assetCache)))
+	assets, err := engine.NewSessionAssets(engine.NewMockAssetServer(ts.flowServer.assetCache))
 	ts.Require().NoError(err)
 
 	session, err := engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)

@@ -53,7 +53,7 @@ func TestFlowValidation(t *testing.T) {
 	err = assetCache.Include(assetsJSON)
 	assert.NoError(t, err)
 
-	assets, err := engine.NewSessionAssets(engine.NewServerSource(engine.NewMockAssetServer(assetCache)))
+	assets, err := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
 	assert.NoError(t, err)
 
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)

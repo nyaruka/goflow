@@ -30,58 +30,10 @@ func init() {
 	assets.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
 }
 
-type ServerSource struct {
-	server assets.AssetServer
-}
-
-func NewServerSource(server assets.AssetServer) assets.AssetSource {
-	return &ServerSource{server: server}
-}
-
-func (s *ServerSource) Server() assets.AssetServer {
-	return s.server
-}
-
-func (s *ServerSource) Channels() ([]assets.Channel, error) {
-	asset, err := s.server.GetAsset(assetTypeChannel, "")
-	if err != nil {
-		return nil, err
-	}
-	set, isType := asset.([]assets.Channel)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
-}
-
-func (s *ServerSource) Groups() ([]assets.Group, error) {
-	asset, err := s.server.GetAsset(assetTypeGroup, "")
-	if err != nil {
-		return nil, err
-	}
-	set, isType := asset.([]assets.Group)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
-}
-
-func (s *ServerSource) Labels() ([]assets.Label, error) {
-	asset, err := s.server.GetAsset(assetTypeLabel, "")
-	if err != nil {
-		return nil, err
-	}
-	set, isType := asset.([]assets.Label)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
-}
-
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
 	source assets.AssetSource
-	server assets.AssetServer
+	server assets.LegacyServer
 
 	channels *flows.ChannelAssets
 	groups   *flows.GroupAssets
@@ -106,7 +58,8 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	}
 
 	return &sessionAssets{
-		server:   source.(*ServerSource).Server(),
+		source:   source,
+		server:   source.(assets.LegacyServer),
 		channels: flows.NewChannelAssets(channels),
 		groups:   flows.NewGroupAssets(groups),
 		labels:   flows.NewLabelAssets(labels),
@@ -127,7 +80,7 @@ func (s *sessionAssets) Labels() *flows.LabelAssets {
 
 // HasLocations returns whether locations are supported as an asset item type
 func (s *sessionAssets) HasLocations() bool {
-	return s.server.IsTypeSupported(assetTypeLocationHierarchy)
+	return s.source.HasLocations()
 }
 
 // GetLocationHierarchy gets the location hierarchy asset for the session

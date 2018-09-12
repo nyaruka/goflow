@@ -67,7 +67,7 @@ type startRequest struct {
 }
 
 // reads the assets and asset_server section of a request
-func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (assets.AssetServer, error) {
+func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (*assets.AssetServer, error) {
 	// include any embedded assets
 	if request.Assets != nil {
 		if err := s.assetCache.Include(*request.Assets); err != nil {
@@ -98,7 +98,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build our session
-	assets, err := engine.NewSessionAssets(engine.NewServerSource(assetServer))
+	assets, err := engine.NewSessionAssets(assetServer)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +160,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read our session
-	assets, err := engine.NewSessionAssets(engine.NewServerSource(assetServer))
+	assets, err := engine.NewSessionAssets(assetServer)
 	if err != nil {
 		return nil, err
 	}

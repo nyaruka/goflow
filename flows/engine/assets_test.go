@@ -23,7 +23,7 @@ func TestSessionAssets(t *testing.T) {
 		]
 	}`))
 
-	sessionAssets, err := engine.NewSessionAssets(engine.NewServerSource(server))
+	sessionAssets, err := engine.NewSessionAssets(server)
 	assert.NoError(t, err)
 
 	group, err := sessionAssets.Groups().Get(assets.GroupUUID("2aad21f6-30b7-42c5-bd7f-1b720c154817"))
