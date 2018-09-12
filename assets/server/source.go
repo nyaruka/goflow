@@ -98,6 +98,11 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 	return set, nil
 }
 
+func (s *ServerSource) Locations() ([]assets.Location, error) {
+	// TODO
+	return nil, nil
+}
+
 func (s *ServerSource) Resthooks() ([]assets.Resthook, error) {
 	asset, err := s.GetAsset(assetTypeResthook, "")
 	if err != nil {
