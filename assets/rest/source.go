@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/rest/types"
 	"github.com/nyaruka/goflow/utils"
 
 	log "github.com/sirupsen/logrus"
@@ -22,20 +21,6 @@ const (
 	AssetTypeLocationHierarchy AssetType = "location_hierarchy"
 	AssetTypeResthook          AssetType = "resthook"
 )
-
-func init() {
-	RegisterType(AssetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) })
-	RegisterType(AssetTypeField, true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) })
-	RegisterType(AssetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) })
-	RegisterType(AssetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) })
-	RegisterType(AssetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) })
-	RegisterType(AssetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLocationHierarchies(data) })
-	RegisterType(AssetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) })
-}
-
-type LegacyServer interface {
-	GetAsset(AssetType, string) (interface{}, error)
-}
 
 // ServerSource is an asset source which fetches assets from a server and caches them
 type ServerSource struct {
@@ -265,6 +250,3 @@ func (s *MockServerSource) MarshalJSON() ([]byte, error) {
 	envelope := &serverSourceEnvelope{TypeURLs: s.typeURLs}
 	return json.Marshal(envelope)
 }
-
-var _ LegacyServer = (*MockServerSource)(nil)
-var _ assetFetcher = (*MockServerSource)(nil)

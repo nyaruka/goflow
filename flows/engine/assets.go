@@ -2,7 +2,6 @@ package engine
 
 import (
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 
 	// so that the definition can call flows.SetFlowReader
@@ -12,7 +11,6 @@ import (
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
 	source assets.AssetSource
-	legacy rest.LegacyServer
 
 	channels  *flows.ChannelAssets
 	fields    *flows.FieldAssets
@@ -54,7 +52,6 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 
 	return &sessionAssets{
 		source:    source,
-		legacy:    source.(rest.LegacyServer),
 		channels:  flows.NewChannelAssets(channels),
 		fields:    flows.NewFieldAssets(fields),
 		flows:     flows.NewFlowAssets(source),
