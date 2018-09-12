@@ -86,13 +86,14 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{}, utils.RedactionPolicyNone)
 
-	session := engine.NewSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), httpClient)
+	assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+	session := engine.NewSession(assets, engine.NewDefaultConfig(), httpClient)
 
 	contactJSON, err := ioutil.ReadFile(*contactFile)
 	if err != nil {
 		log.Fatal("error reading contact file: ", err)
 	}
-	contact, err := flows.ReadContact(session, json.RawMessage(contactJSON))
+	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON))
 	if err != nil {
 		log.Fatal("error unmarshalling contact: ", err)
 	}
@@ -136,13 +137,14 @@ func main() {
 		scanner.Scan()
 
 		// create our event to resume with
-		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
+		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
 		event := events.NewMsgReceivedEvent(msg)
 		event.SetFromCaller(true)
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		session, err = engine.ReadSession(engine.NewMockAssetServer(assetCache), engine.NewDefaultConfig(), httpClient, outJSON)
+		assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), httpClient, outJSON)
 		if err != nil {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}

@@ -445,7 +445,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
     "msg": {
         "uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
-        "urn": "tel:+12065551212",
+        "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "My Android Phone"

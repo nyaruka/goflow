@@ -31,6 +31,7 @@ type Flow struct {
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
 	UUID     flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	ID       flows.FlowID   `json:"id,omitempty"`
 	Name     string         `json:"name"`
 	Revision int            `json:"revision"`
 	Expires  int            `json:"expires"`
@@ -571,8 +572,12 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		body := ""
+		method := strings.ToUpper(a.Action)
+		if method == "" {
+			method = "POST"
+		}
 
-		if strings.ToUpper(a.Action) == "POST" {
+		if method == "POST" {
 			headers["Content-Type"] = "application/json"
 			body = flows.DefaultWebhookPayload
 		}
@@ -583,7 +588,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return &actions.CallWebhookAction{
 			BaseAction: actions.NewBaseAction(a.UUID),
-			Method:     a.Action,
+			Method:     method,
 			URL:        migratedURL,
 			Body:       body,
 			Headers:    headers,
@@ -634,8 +639,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, expressions.ExtraAsFunction, false)
 		headers := make(map[string]string, len(config.WebhookHeaders))
 		body := ""
+		method := strings.ToUpper(config.WebhookAction)
+		if method == "" {
+			method = "POST"
+		}
 
-		if strings.ToUpper(config.WebhookAction) == "POST" {
+		if method == "POST" {
 			headers["Content-Type"] = "application/json"
 			body = flows.DefaultWebhookPayload
 		}
@@ -648,7 +657,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&actions.CallWebhookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				URL:        migratedURL,
-				Method:     config.WebhookAction,
+				Method:     method,
 				Headers:    headers,
 				Body:       body,
 			},
@@ -1062,6 +1071,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 
 	return definition.NewFlow(
 		f.Metadata.UUID,
+		f.Metadata.ID,
 		f.Metadata.Name,
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],

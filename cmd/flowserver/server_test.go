@@ -278,7 +278,8 @@ func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []m
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	session, err := engine.ReadSession(engine.NewMockAssetServer(ts.flowServer.assetCache), engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
+	assets := engine.NewSessionAssets(engine.NewMockAssetServer(ts.flowServer.assetCache))
+	session, err := engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
 	ts.Require().NoError(err)
 
 	return session, envelope.Log
@@ -397,7 +398,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 
 	// try to resume this completed session
 	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
-	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), tgURN, nil, "hello", []flows.Attachment{})
+	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, tgURN, nil, "hello", []flows.Attachment{})
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
 		events.NewMsgReceivedEvent(msg),
 	}))

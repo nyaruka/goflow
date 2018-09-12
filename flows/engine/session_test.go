@@ -30,11 +30,11 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.first_name", "Ryan", ""},
 		{"@contact.language", "eng", ""},
 		{"@contact.timezone", "America/Guayaquil", ""},
-		{"@contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},
-		{"@contact.urns.tel", `["tel:+12065551212"]`, ""},
+		{"@contact.urns", `["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},
+		{"@contact.urns.tel", `["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"]`, ""},
 		{"@contact.urns.xxx", "", "error evaluating @contact.urns.xxx: no such URN scheme 'xxx'"},
-		{"@contact.urns.0", "tel:+12065551212", ""},
-		{"@(contact.urns[0])", "tel:+12065551212", ""},
+		{"@contact.urns.0", "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", ""},
+		{"@(contact.urns[0])", "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", ""},
 		{"@(contact.urns[110])", "", "error evaluating @(contact.urns[110]): index 110 out of range for 3 items"},
 		{"@contact.urns.0.scheme", "tel", ""},
 		{"@contact.urns.0.path", "+12065551212", ""},
@@ -158,7 +158,7 @@ func TestWaitTimeout(t *testing.T) {
 	flow, err := session.Assets().GetFlow(flows.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
-	contact := flows.NewContact("Joe", "eng", nil)
+	contact := flows.NewEmptyContact("Joe", "eng", nil)
 	contact.AddURN(urns.URN("tel:+18005555777"))
 	trigger := triggers.NewManualTrigger(nil, contact, flow, nil, time.Now())
 

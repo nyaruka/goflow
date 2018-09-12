@@ -13,14 +13,23 @@ type NodeUUID utils.UUID
 // ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
 
+// FlowID is the ID of a flow
+type FlowID int64
+
 // FlowUUID is the UUID of a flow
 type FlowUUID utils.UUID
 
 // ActionUUID is the UUID of an action
 type ActionUUID utils.UUID
 
+// ContactID is the ID of a contact
+type ContactID int64
+
 // ContactUUID is the UUID of a contact
 type ContactUUID utils.UUID
+
+// ChannelID is the ID of a channel
+type ChannelID int64
 
 // ChannelUUID is the UUID of a channel
 type ChannelUUID utils.UUID
@@ -31,14 +40,29 @@ type RunUUID utils.UUID
 // StepUUID is the UUID of a run step
 type StepUUID utils.UUID
 
+// LabelID is the ID of a label
+type LabelID int64
+
 // LabelUUID is the UUID of a label
 type LabelUUID utils.UUID
+
+// GroupID is the ID of a group
+type GroupID int64
+
+// NilGroupID is the nil value for GroupID
+const NilGroupID = GroupID(0)
 
 // GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
 
 // InputUUID is the UUID of an input
 type InputUUID utils.UUID
+
+// MsgID is the ID of a message
+type MsgID int64
+
+// NilMsgID is our constant for nil message ids
+const NilMsgID = MsgID(0)
 
 // MsgUUID is the UUID of a message
 type MsgUUID utils.UUID
@@ -139,6 +163,7 @@ type Flow interface {
 	types.XResolvable
 
 	UUID() FlowUUID
+	ID() FlowID
 	Name() string
 	Revision() int
 	Language() utils.Language

@@ -1,8 +1,9 @@
 package flows_test
 
 import (
-	"github.com/satori/go.uuid"
 	"testing"
+
+	"github.com/satori/go.uuid"
 
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
@@ -12,9 +13,9 @@ import (
 )
 
 func TestGroupListResolve(t *testing.T) {
-	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Customers", "")
-	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Testers", "")
-	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Males", "gender = \"M\"")
+	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Customers", "")
+	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Testers", "")
+	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Males", "gender = \"M\"")
 	urnList := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
 	env := utils.NewDefaultEnvironment()
@@ -50,9 +51,9 @@ func TestGroupListResolve(t *testing.T) {
 }
 
 func TestGroupSet(t *testing.T) {
-	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Customers", "")
-	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Testers", "")
-	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), "Males", "gender = \"M\"")
+	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Customers", "")
+	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Testers", "")
+	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Males", "gender = \"M\"")
 
 	set := flows.NewGroupSet([]*flows.Group{customers, testers, males})
 

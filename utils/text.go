@@ -8,6 +8,9 @@ import (
 
 var snakedChars = regexp.MustCompile(`[^\p{L}\d_]+`)
 
+// treats sequences of letters/numbers/_/' as tokens, and symbols as individual tokens
+var wordTokenRegex = regexp.MustCompile(`[\pL\pN_']+|\pS`)
+
 // Snakify turns the passed in string into a context reference. We replace all whitespace
 // characters with _ and replace any duplicate underscores
 func Snakify(text string) string {
@@ -18,9 +21,6 @@ func Snakify(text string) string {
 func URLEscape(s string) string {
 	return strings.Replace(url.QueryEscape(s), "+", "%20", -1)
 }
-
-// see: https://en.wikipedia.org/wiki/Emoji for emoji ranges
-var wordTokenRegex = regexp.MustCompile("((\\pL|\\pN|[\u20A0-\u20CF]|[\u2600-\u27BF])+|[\U0001F170-\U0001F9CF])")
 
 // TokenizeString returns the words in the passed in string, split by non word characters including emojis
 func TokenizeString(str string) []string {
@@ -39,4 +39,14 @@ func TokenizeStringByChars(str string, chars string) []string {
 		return false
 	}
 	return strings.FieldsFunc(str, f)
+}
+
+// PrefixOverlap returns the number of prefix characters which s1 and s2 have in common
+func PrefixOverlap(s1, s2 string) int {
+	r1 := []rune(s1)
+	r2 := []rune(s2)
+	r := 0
+	for ; r < len(r1) && r < len(r2) && r1[r] == r2[r]; r++ {
+	}
+	return r
 }

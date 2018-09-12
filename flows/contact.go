@@ -37,9 +37,9 @@ import (
 //   @contact.language -> eng
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
-//   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-//   @contact.urns.0 -> tel:+12065551212
-//   @contact.urns.tel -> ["tel:+12065551212"]
+//   @contact.urns -> ["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
+//   @contact.urns.0 -> tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d
+//   @contact.urns.tel -> ["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"]
 //   @contact.urns.mailto.0 -> mailto:foo@bar.com
 //   @contact.urn -> (206) 555-1212
 //   @contact.groups -> ["Testers","Males"]
@@ -50,7 +50,7 @@ import (
 // @context contact
 type Contact struct {
 	uuid      ContactUUID
-	id        int
+	id        ContactID
 	name      string
 	language  utils.Language
 	timezone  *time.Location
@@ -60,8 +60,25 @@ type Contact struct {
 	fields    FieldValues
 }
 
-// NewContact returns a new contact
-func NewContact(name string, language utils.Language, timezone *time.Location) *Contact {
+// NewContact creates a new contact with the passed in attributes
+func NewContact(
+	uuid ContactUUID, id ContactID, name string, language utils.Language, timezone *time.Location, createdOn time.Time,
+	urns URNList, groups *GroupList, fields FieldValues) *Contact {
+	return &Contact{
+		uuid:      uuid,
+		id:        id,
+		name:      name,
+		language:  language,
+		timezone:  timezone,
+		createdOn: createdOn,
+		urns:      urns,
+		groups:    groups,
+		fields:    fields,
+	}
+}
+
+// NewEmptyContact creates a new empy contact with the passed in name, language and location
+func NewEmptyContact(name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
 		uuid:      ContactUUID(utils.NewUUID()),
 		name:      name,
@@ -96,11 +113,8 @@ func (c *Contact) Clone() *Contact {
 // UUID returns the UUID of this contact
 func (c *Contact) UUID() ContactUUID { return c.uuid }
 
-// SetID sets the numeric ID of this contact
-func (c *Contact) SetID(id int) { c.id = id }
-
 // ID returns the numeric ID of this contact
-func (c *Contact) ID() int { return c.id }
+func (c *Contact) ID() ContactID { return c.id }
 
 // SetLanguage sets the language for this contact
 func (c *Contact) SetLanguage(lang utils.Language) { c.language = lang }
@@ -147,7 +161,7 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	urn = urn.Normalize("")
 
 	for _, u := range c.urns {
-		if u.URN == urn {
+		if u.URN.Identity() == urn.Identity() {
 			return true
 		}
 	}
@@ -172,7 +186,7 @@ func (c *Contact) Format(env utils.Environment) string {
 
 	// otherwise use either id or the higest priority URN depending on the env
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-		return strconv.Itoa(c.id)
+		return strconv.Itoa(int(c.id))
 	}
 	if len(c.urns) > 0 {
 		return c.urns[0].Format()
@@ -187,7 +201,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
 	case "id":
-		return types.NewXNumberFromInt(c.id)
+		return types.NewXNumberFromInt(int(c.id))
 	case "name":
 		return types.NewXText(c.name)
 	case "first_name":
@@ -367,7 +381,7 @@ type fieldValueEnvelope struct {
 
 type contactEnvelope struct {
 	UUID      ContactUUID                    `json:"uuid" validate:"required,uuid4"`
-	ID        int                            `json:"id"`
+	ID        ContactID                      `json:"id"`
 	Name      string                         `json:"name"`
 	Language  utils.Language                 `json:"language"`
 	Timezone  string                         `json:"timezone"`
@@ -378,7 +392,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
+func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -403,7 +417,7 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	if envelope.URNs == nil {
 		c.urns = make(URNList, 0)
 	} else {
-		if c.urns, err = ReadURNList(session, envelope.URNs); err != nil {
+		if c.urns, err = ReadURNList(assets, envelope.URNs); err != nil {
 			return nil, err
 		}
 	}
@@ -413,14 +427,14 @@ func ReadContact(session Session, data json.RawMessage) (*Contact, error) {
 	} else {
 		groups := make([]*Group, len(envelope.Groups))
 		for g := range envelope.Groups {
-			if groups[g], err = session.Assets().GetGroup(envelope.Groups[g].UUID); err != nil {
+			if groups[g], err = assets.GetGroup(envelope.Groups[g].UUID); err != nil {
 				return nil, err
 			}
 		}
 		c.groups = NewGroupList(groups)
 	}
 
-	fieldSet, err := session.Assets().GetFieldSet()
+	fieldSet, err := assets.GetFieldSet()
 	if err != nil {
 		return nil, err
 	}
