@@ -77,7 +77,7 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 
 	base.triggeredOn = envelope.TriggeredOn
 
-	if base.flow, err = session.Assets().GetFlow(envelope.Flow.UUID); err != nil {
+	if base.flow, err = session.Assets().Flows().Get(envelope.Flow.UUID); err != nil {
 		return fmt.Errorf("unable to load flow[uuid=%s]: %s", envelope.Flow.UUID, err)
 	}
 

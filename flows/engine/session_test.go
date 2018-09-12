@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -155,7 +156,7 @@ func TestWaitTimeout(t *testing.T) {
 	session, err := test.CreateSession(json.RawMessage(sessionAssets))
 	require.NoError(t, err)
 
-	flow, err := session.Assets().GetFlow(flows.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
+	flow, err := session.Assets().Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))
 	require.NoError(t, err)
 
 	contact := flows.NewEmptyContact("Joe", "eng", nil)

@@ -26,6 +26,7 @@ const (
 func init() {
 	RegisterType(AssetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) })
 	RegisterType(AssetTypeField, true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) })
+	RegisterType(AssetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) })
 	RegisterType(AssetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) })
 	RegisterType(AssetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) })
 	RegisterType(AssetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) })
@@ -93,6 +94,18 @@ func (s *ServerSource) Fields() ([]assets.Field, error) {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
+}
+
+func (s *ServerSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
+	asset, err := s.GetAsset(AssetTypeFlow, string(uuid))
+	if err != nil {
+		return nil, err
+	}
+	flow, isType := asset.(assets.Flow)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
+	}
+	return flow, nil
 }
 
 func (s *ServerSource) Groups() ([]assets.Group, error) {

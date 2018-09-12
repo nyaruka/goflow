@@ -57,7 +57,7 @@ func TestFlowValidation(t *testing.T) {
 	assert.NoError(t, err)
 
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
-	flow, err := session.Assets().GetFlow("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
+	flow, err := session.Assets().Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	assert.NoError(t, err)
 
 	// break the add_input_labels action so references an invalid label

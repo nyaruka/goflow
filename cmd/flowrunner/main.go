@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/rest"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
@@ -70,7 +71,7 @@ func main() {
 	httpClient := utils.NewHTTPClient("goflow-flowrunner")
 
 	assetsFilename := flag.Args()[0]
-	startFlowUUID := flows.FlowUUID(flag.Args()[1])
+	startFlowUUID := assets.FlowUUID(flag.Args()[1])
 
 	fmt.Printf("Parsing: %s\n", assetsFilename)
 	assetsJSON, err := ioutil.ReadFile(assetsFilename)
@@ -101,7 +102,7 @@ func main() {
 	if err != nil {
 		log.Fatal("error unmarshalling contact: ", err)
 	}
-	flow, err := session.Assets().GetFlow(startFlowUUID)
+	flow, err := session.Assets().Flows().Get(startFlowUUID)
 	if err != nil {
 		log.Fatal("error accessing flow: ", err)
 	}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -334,7 +335,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 
 	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {
-		flow, _ := session.Assets().GetFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
+		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
 		flow.Nodes()[2].AddAction(actionToAdd)
 	}
 

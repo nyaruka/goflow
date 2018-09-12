@@ -340,7 +340,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.exitedOn = envelope.ExitedOn
 
 	// lookup flow
-	if r.flow, err = session.Assets().GetFlow(envelope.Flow.UUID); err != nil {
+	if r.flow, err = session.Assets().Flows().Get(envelope.Flow.UUID); err != nil {
 		return nil, err
 	}
 

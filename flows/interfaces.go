@@ -3,6 +3,7 @@ package flows
 import (
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -12,12 +13,6 @@ type NodeUUID utils.UUID
 
 // ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
-
-// FlowID is the ID of a flow
-type FlowID int64
-
-// FlowUUID is the UUID of a flow
-type FlowUUID utils.UUID
 
 // ActionUUID is the UUID of an action
 type ActionUUID utils.UUID
@@ -104,13 +99,12 @@ const (
 type SessionAssets interface {
 	Channels() *ChannelAssets
 	Fields() *FieldAssets
+	Flows() *FlowAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
 	Resthooks() *ResthookAssets
 
 	HasLocations() bool
-
-	GetFlow(FlowUUID) (Flow, error)
 
 	GetLocationHierarchySet() (*LocationHierarchySet, error)
 }
@@ -134,8 +128,7 @@ type Flow interface {
 	types.XValue
 	types.XResolvable
 
-	UUID() FlowUUID
-	ID() FlowID
+	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
 	Language() utils.Language
@@ -330,7 +323,7 @@ type Session interface {
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun)
 	Wait() Wait
-	FlowOnStack(FlowUUID) bool
+	FlowOnStack(assets.FlowUUID) bool
 
 	Start(Trigger, []Event) error
 	Resume([]Event) error

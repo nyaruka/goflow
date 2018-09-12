@@ -31,12 +31,11 @@ type Flow struct {
 
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
-	UUID     flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	ID       flows.FlowID   `json:"id,omitempty"`
-	Name     string         `json:"name"`
-	Revision int            `json:"revision"`
-	Expires  int            `json:"expires"`
-	Notes    []Note         `json:"notes,omitempty"`
+	UUID     assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name     string          `json:"name"`
+	Revision int             `json:"revision"`
+	Expires  int             `json:"expires"`
+	Notes    []Note          `json:"notes,omitempty"`
 }
 
 type Rule struct {
@@ -163,8 +162,8 @@ type VariableReference struct {
 }
 
 type FlowReference struct {
-	UUID flows.FlowUUID `json:"uuid"`
-	Name string         `json:"name"`
+	UUID assets.FlowUUID `json:"uuid"`
+	Name string          `json:"name"`
 }
 
 func (f *FlowReference) Migrate() *flows.FlowReference {
@@ -1030,7 +1029,6 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 
 	return definition.NewFlow(
 		f.Metadata.UUID,
-		f.Metadata.ID,
 		f.Metadata.Name,
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],

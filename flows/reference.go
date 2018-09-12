@@ -64,12 +64,12 @@ func NewFieldReference(key string, label string) *FieldReference {
 
 // FlowReference is used to reference a flow from another flow
 type FlowReference struct {
-	UUID FlowUUID `json:"uuid" validate:"uuid4"`
-	Name string   `json:"name"`
+	UUID assets.FlowUUID `json:"uuid" validate:"uuid4"`
+	Name string          `json:"name"`
 }
 
 // NewFlowReference creates a new flow reference with the given UUID and name
-func NewFlowReference(uuid FlowUUID, name string) *FlowReference {
+func NewFlowReference(uuid assets.FlowUUID, name string) *FlowReference {
 	return &FlowReference{UUID: uuid, Name: name}
 }
 

@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"encoding/json"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -54,6 +55,16 @@ type Field interface {
 	Type() FieldType
 }
 
+// FlowUUID is the UUID of a flow
+type FlowUUID utils.UUID
+
+// Flow is graph of nodes with actions and routers
+type Flow interface {
+	UUID() FlowUUID
+	Name() string
+	Definition() json.RawMessage
+}
+
 // GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
 
@@ -90,6 +101,7 @@ type Resthook interface {
 type AssetSource interface {
 	Channels() ([]Channel, error)
 	Fields() ([]Field, error)
+	Flow(FlowUUID) (Flow, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
 	Locations() ([]Location, error)

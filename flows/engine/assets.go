@@ -7,16 +7,14 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/definition"
+	_ "github.com/nyaruka/goflow/flows/definition"
 )
 
 const (
-	assetTypeFlow              rest.AssetType = "flow"
 	assetTypeLocationHierarchy rest.AssetType = "location_hierarchy"
 )
 
 func init() {
-	rest.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
 	rest.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
 }
 
@@ -27,6 +25,7 @@ type sessionAssets struct {
 
 	channels  *flows.ChannelAssets
 	fields    *flows.FieldAssets
+	flows     *flows.FlowAssets
 	groups    *flows.GroupAssets
 	labels    *flows.LabelAssets
 	resthooks *flows.ResthookAssets
@@ -62,6 +61,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 		legacy:    source.(rest.LegacyServer),
 		channels:  flows.NewChannelAssets(channels),
 		fields:    flows.NewFieldAssets(fields),
+		flows:     flows.NewFlowAssets(source),
 		groups:    flows.NewGroupAssets(groups),
 		labels:    flows.NewLabelAssets(labels),
 		resthooks: flows.NewResthookAssets(resthooks),
@@ -70,6 +70,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 
 func (s *sessionAssets) Channels() *flows.ChannelAssets   { return s.channels }
 func (s *sessionAssets) Fields() *flows.FieldAssets       { return s.fields }
+func (s *sessionAssets) Flows() *flows.FlowAssets         { return s.flows }
 func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
@@ -90,17 +91,4 @@ func (s *sessionAssets) GetLocationHierarchySet() (*flows.LocationHierarchySet, 
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
-}
-
-// GetFlow gets a flow asset for the session
-func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	asset, err := s.legacy.GetAsset(assetTypeFlow, string(uuid))
-	if err != nil {
-		return nil, err
-	}
-	flow, isType := asset.(flows.Flow)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
-	}
-	return flow, nil
 }
