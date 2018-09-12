@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/server"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -67,7 +67,7 @@ type startRequest struct {
 }
 
 // reads the assets and asset_server section of a request
-func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (*assets.ServerSource, error) {
+func (s *FlowServer) readAssets(request *sessionRequest, cache *server.AssetCache) (*server.ServerSource, error) {
 	// include any embedded assets
 	if request.Assets != nil {
 		if err := s.assetCache.Include(*request.Assets); err != nil {
@@ -76,7 +76,7 @@ func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCach
 	}
 
 	// read and validate our asset server
-	return assets.ReadServerSource(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
+	return server.ReadServerSource(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
 }
 
 // handles a request to /start

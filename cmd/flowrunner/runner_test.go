@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/server"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -75,7 +75,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 }
 
 type runResult struct {
-	assetCache *assets.AssetCache
+	assetCache *server.AssetCache
 	session    flows.Session
 	outputs    []*Output
 }
@@ -94,7 +94,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	assetCache := assets.NewAssetCache(100, 5)
+	assetCache := server.NewAssetCache(100, 5)
 	if err := assetCache.Include(defaultAssetsJSON); err != nil {
 		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
 	}

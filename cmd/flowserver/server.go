@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/server"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/go-chi/chi"
@@ -19,7 +19,7 @@ import (
 type FlowServer struct {
 	config     *Config
 	httpServer *http.Server
-	assetCache *assets.AssetCache
+	assetCache *server.AssetCache
 	httpClient *utils.HTTPClient
 }
 
@@ -77,7 +77,7 @@ func NewFlowServer(config *Config) *FlowServer {
 
 // Start starts the flow server
 func (s *FlowServer) Start() {
-	s.assetCache = assets.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
+	s.assetCache = server.NewAssetCache(s.config.AssetCacheSize, s.config.AssetCachePrune)
 
 	go func() {
 		err := s.httpServer.ListenAndServe()

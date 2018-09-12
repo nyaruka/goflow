@@ -5,35 +5,36 @@ import (
 	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/simple"
+	"github.com/nyaruka/goflow/assets/server"
+	"github.com/nyaruka/goflow/assets/server/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/definition"
 )
 
 const (
-	assetTypeChannel           assets.AssetType = "channel"
-	assetTypeField             assets.AssetType = "field"
-	assetTypeFlow              assets.AssetType = "flow"
-	assetTypeGroup             assets.AssetType = "group"
-	assetTypeLabel             assets.AssetType = "label"
-	assetTypeLocationHierarchy assets.AssetType = "location_hierarchy"
-	assetTypeResthook          assets.AssetType = "resthook"
+	assetTypeChannel           server.AssetType = "channel"
+	assetTypeField             server.AssetType = "field"
+	assetTypeFlow              server.AssetType = "flow"
+	assetTypeGroup             server.AssetType = "group"
+	assetTypeLabel             server.AssetType = "label"
+	assetTypeLocationHierarchy server.AssetType = "location_hierarchy"
+	assetTypeResthook          server.AssetType = "resthook"
 )
 
 func init() {
-	assets.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadChannels(data) })
-	assets.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
-	assets.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
-	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadGroups(data) })
-	assets.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadLabels(data) })
-	assets.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
-	assets.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
+	server.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) })
+	server.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
+	server.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
+	server.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) })
+	server.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) })
+	server.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
+	server.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
 }
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
 	source assets.AssetSource
-	server assets.LegacyServer
+	legacy server.LegacyServer
 
 	channels *flows.ChannelAssets
 	groups   *flows.GroupAssets
@@ -59,7 +60,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 
 	return &sessionAssets{
 		source:   source,
-		server:   source.(assets.LegacyServer),
+		legacy:   source.(server.LegacyServer),
 		channels: flows.NewChannelAssets(channels),
 		groups:   flows.NewGroupAssets(groups),
 		labels:   flows.NewLabelAssets(labels),
@@ -85,7 +86,7 @@ func (s *sessionAssets) HasLocations() bool {
 
 // GetLocationHierarchy gets the location hierarchy asset for the session
 func (s *sessionAssets) GetLocationHierarchySet() (*flows.LocationHierarchySet, error) {
-	asset, err := s.server.GetAsset(assetTypeLocationHierarchy, "")
+	asset, err := s.legacy.GetAsset(assetTypeLocationHierarchy, "")
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +112,7 @@ func (s *sessionAssets) GetField(key string) (*flows.Field, error) {
 
 // GetFieldSet gets the set of all fields asset for the session
 func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
-	asset, err := s.server.GetAsset(assetTypeField, "")
+	asset, err := s.legacy.GetAsset(assetTypeField, "")
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +125,7 @@ func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
 
 // GetFlow gets a flow asset for the session
 func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
-	asset, err := s.server.GetAsset(assetTypeFlow, string(uuid))
+	asset, err := s.legacy.GetAsset(assetTypeFlow, string(uuid))
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +137,7 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 }
 
 func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {
-	asset, err := s.server.GetAsset(assetTypeResthook, "")
+	asset, err := s.legacy.GetAsset(assetTypeResthook, "")
 	if err != nil {
 		return nil, err
 	}
@@ -148,8 +149,8 @@ func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {
 }
 
 // NewMockServerSource creates a new mocked asset server with URLs for all flow engine types already configured
-func NewMockServerSource(cache *assets.AssetCache) *assets.MockServerSource {
-	return assets.NewMockServerSource(map[assets.AssetType]string{
+func NewMockServerSource(cache *server.AssetCache) *server.MockServerSource {
+	return server.NewMockServerSource(map[server.AssetType]string{
 		assetTypeChannel:           "http://testserver/assets/channel/",
 		assetTypeField:             "http://testserver/assets/field/",
 		assetTypeFlow:              "http://testserver/assets/flow/",

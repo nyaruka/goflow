@@ -1,4 +1,4 @@
-package assets
+package server
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 
 	log "github.com/sirupsen/logrus"
@@ -35,7 +36,7 @@ type ServerSource struct {
 	fetcher assetFetcher
 }
 
-var _ AssetSource = (*ServerSource)(nil)
+var _ assets.AssetSource = (*ServerSource)(nil)
 var _ assetFetcher = (*ServerSource)(nil)
 
 // NewServerSource creates a new server asset source
@@ -61,36 +62,36 @@ func ReadServerSource(authToken string, httpClient *utils.HTTPClient, cache *Ass
 	return NewServerSource(authToken, envelope.TypeURLs, httpClient, cache), nil
 }
 
-func (s *ServerSource) Channels() ([]Channel, error) {
+func (s *ServerSource) Channels() ([]assets.Channel, error) {
 	asset, err := s.GetAsset(assetTypeChannel, "")
 	if err != nil {
 		return nil, err
 	}
-	set, isType := asset.([]Channel)
+	set, isType := asset.([]assets.Channel)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
 
-func (s *ServerSource) Groups() ([]Group, error) {
+func (s *ServerSource) Groups() ([]assets.Group, error) {
 	asset, err := s.GetAsset(assetTypeGroup, "")
 	if err != nil {
 		return nil, err
 	}
-	set, isType := asset.([]Group)
+	set, isType := asset.([]assets.Group)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
 
-func (s *ServerSource) Labels() ([]Label, error) {
+func (s *ServerSource) Labels() ([]assets.Label, error) {
 	asset, err := s.GetAsset(assetTypeLabel, "")
 	if err != nil {
 		return nil, err
 	}
-	set, isType := asset.([]Label)
+	set, isType := asset.([]assets.Label)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}

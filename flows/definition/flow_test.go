@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/server"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -49,7 +49,7 @@ func TestFlowValidation(t *testing.T) {
 	assert.NoError(t, err)
 
 	// build our session
-	assetCache := assets.NewAssetCache(100, 5)
+	assetCache := server.NewAssetCache(100, 5)
 	err = assetCache.Include(assetsJSON)
 	assert.NoError(t, err)
 

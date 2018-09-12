@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/server"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -77,7 +77,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading assets file: ", err)
 	}
-	assetCache := assets.NewAssetCache(100, 5)
+	assetCache := server.NewAssetCache(100, 5)
 	if err := assetCache.Include(json.RawMessage(assetsJSON)); err != nil {
 		log.Fatal("Error reading assets: ", err)
 	}
