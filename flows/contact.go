@@ -254,10 +254,10 @@ var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key string, rawValue string) error {
+func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) error {
 	runEnv := env.(RunEnvironment)
 
-	return c.fields.setValue(runEnv, fieldSet, key, rawValue)
+	return c.fields.setValue(runEnv, fields, key, rawValue)
 }
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
@@ -433,10 +433,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 		c.groups = NewGroupList(groups)
 	}
 
-	fieldSet, err := assets.GetFieldSet()
-	if err != nil {
-		return nil, err
-	}
+	fieldSet := assets.Fields()
 
 	c.fields = make(FieldValues, len(fieldSet.All()))
 
@@ -444,7 +441,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 		value := NewEmptyFieldValue(field)
 
 		if envelope.Fields != nil {
-			valueEnvelope := envelope.Fields[field.key]
+			valueEnvelope := envelope.Fields[field.Key()]
 			if valueEnvelope != nil {
 				value.text = valueEnvelope.Text
 				value.number = valueEnvelope.Number
@@ -455,7 +452,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 			}
 		}
 
-		c.fields[field.key] = value
+		c.fields[field.Key()] = value
 	}
 
 	return c, nil

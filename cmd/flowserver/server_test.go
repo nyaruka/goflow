@@ -50,6 +50,11 @@ var testStructurallyInvalidFlowAssets = `[
 		"content": []
 	},
 	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
+		"content": []
+	},
+	{
 		"type": "group",
 		"url": "http://testserver/assets/group",
 		"content": []
@@ -107,6 +112,11 @@ var testFlowMissingGroupAssets = `[
 		"content": []
 	},
 	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
+		"content": []
+	},
+	{
 		"type": "group",
 		"url": "http://testserver/assets/group",
 		"content": [
@@ -155,6 +165,11 @@ var testValidFlowWithNoWaitAssets = `[
 	{
 		"type": "channel",
 		"url": "http://testserver/assets/channel",
+		"content": []
+	},
+	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
 		"content": []
 	},
 	{
@@ -225,6 +240,11 @@ var testValidFlowWithWaitAssets = `[
 		"content": []
 	},
 	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
+		"content": []
+	},
+	{
 		"type": "group",
 		"url": "http://testserver/assets/group",
 		"content": []
@@ -275,6 +295,11 @@ var testValidFlowWithWebhook = `[
 	{
 		"type": "channel",
 		"url": "http://testserver/assets/channel",
+		"content": []
+	},
+	{
+		"type": "field",
+		"url": "http://testserver/assets/field",
 		"content": []
 	},
 	{

@@ -7,6 +7,10 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+func NewField(key string, name string, valueType assets.FieldType) *flows.Field {
+	return flows.NewField(types.NewField(key, name, valueType))
+}
+
 func NewGroup(name string, query string) *flows.Group {
 	return flows.NewGroup(types.NewGroup(assets.GroupUUID(utils.NewUUID()), name, query))
 }

@@ -74,6 +74,18 @@ func (s *ServerSource) Channels() ([]assets.Channel, error) {
 	return set, nil
 }
 
+func (s *ServerSource) Fields() ([]assets.Field, error) {
+	asset, err := s.GetAsset(assetTypeField, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]assets.Field)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
 func (s *ServerSource) Groups() ([]assets.Group, error) {
 	asset, err := s.GetAsset(assetTypeGroup, "")
 	if err != nil {

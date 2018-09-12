@@ -103,14 +103,12 @@ const (
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
 	Channels() *ChannelAssets
+	Fields() *FieldAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
 	Resthooks() *ResthookAssets
 
 	HasLocations() bool
-
-	GetField(string) (*Field, error)
-	GetFieldSet() (*FieldSet, error)
 
 	GetFlow(FlowUUID) (Flow, error)
 

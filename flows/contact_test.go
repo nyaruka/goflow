@@ -136,9 +136,9 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 	env := session.Runs()[0].Environment()
 
-	fieldSet := flows.NewFieldSet([]*flows.Field{
-		flows.NewField("gender", "Gender", flows.FieldValueTypeText),
-		flows.NewField("age", "Age", flows.FieldValueTypeNumber),
+	fieldSet := flows.NewFieldAssets([]assets.Field{
+		test.NewField("gender", "Gender", assets.FieldTypeText).Asset(),
+		test.NewField("age", "Age", assets.FieldTypeNumber).Asset(),
 	})
 
 	males := test.NewGroup("Males", `gender="M"`)

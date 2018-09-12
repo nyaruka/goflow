@@ -23,12 +23,13 @@ const (
 
 func init() {
 	server.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) })
-	server.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
-	server.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
+	server.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) })
 	server.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) })
 	server.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) })
-	server.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
 	server.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) })
+
+	server.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
+	server.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
 }
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
@@ -37,6 +38,7 @@ type sessionAssets struct {
 	legacy server.LegacyServer
 
 	channels  *flows.ChannelAssets
+	fields    *flows.FieldAssets
 	groups    *flows.GroupAssets
 	labels    *flows.LabelAssets
 	resthooks *flows.ResthookAssets
@@ -47,6 +49,10 @@ var _ flows.SessionAssets = (*sessionAssets)(nil)
 // NewSessionAssets creates a new session assets instance with the provided base URLs
 func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	channels, err := source.Channels()
+	if err != nil {
+		return nil, err
+	}
+	fields, err := source.Fields()
 	if err != nil {
 		return nil, err
 	}
@@ -67,27 +73,18 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 		source:    source,
 		legacy:    source.(server.LegacyServer),
 		channels:  flows.NewChannelAssets(channels),
+		fields:    flows.NewFieldAssets(fields),
 		groups:    flows.NewGroupAssets(groups),
 		labels:    flows.NewLabelAssets(labels),
 		resthooks: flows.NewResthookAssets(resthooks),
 	}, nil
 }
 
-func (s *sessionAssets) Channels() *flows.ChannelAssets {
-	return s.channels
-}
-
-func (s *sessionAssets) Groups() *flows.GroupAssets {
-	return s.groups
-}
-
-func (s *sessionAssets) Labels() *flows.LabelAssets {
-	return s.labels
-}
-
-func (s *sessionAssets) Resthooks() *flows.ResthookAssets {
-	return s.resthooks
-}
+func (s *sessionAssets) Channels() *flows.ChannelAssets   { return s.channels }
+func (s *sessionAssets) Fields() *flows.FieldAssets       { return s.fields }
+func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
+func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
+func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
 
 // HasLocations returns whether locations are supported as an asset item type
 func (s *sessionAssets) HasLocations() bool {
@@ -101,32 +98,6 @@ func (s *sessionAssets) GetLocationHierarchySet() (*flows.LocationHierarchySet, 
 		return nil, err
 	}
 	set, isType := asset.(*flows.LocationHierarchySet)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
-}
-
-// GetField gets a contact field asset for the session
-func (s *sessionAssets) GetField(key string) (*flows.Field, error) {
-	set, err := s.GetFieldSet()
-	if err != nil {
-		return nil, err
-	}
-	field := set.FindByKey(key)
-	if field == nil {
-		return nil, fmt.Errorf("no such field with key '%s'", key)
-	}
-	return field, nil
-}
-
-// GetFieldSet gets the set of all fields asset for the session
-func (s *sessionAssets) GetFieldSet() (*flows.FieldSet, error) {
-	asset, err := s.legacy.GetAsset(assetTypeField, "")
-	if err != nil {
-		return nil, err
-	}
-	set, isType := asset.(*flows.FieldSet)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}

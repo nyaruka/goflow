@@ -1,40 +1,25 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
 
-// FieldValueType is the data type of values for each field
-type FieldValueType string
-
-// field value types
-const (
-	FieldValueTypeText     FieldValueType = "text"
-	FieldValueTypeNumber   FieldValueType = "number"
-	FieldValueTypeDatetime FieldValueType = "datetime"
-	FieldValueTypeWard     FieldValueType = "ward"
-	FieldValueTypeDistrict FieldValueType = "district"
-	FieldValueTypeState    FieldValueType = "state"
-)
-
 // Field represents a contact field
 type Field struct {
-	key       string
-	name      string
-	valueType FieldValueType
+	assets.Field
 }
 
-// NewField returns a new field object with the passed in uuid, key and value type
-func NewField(key string, name string, valueType FieldValueType) *Field {
-	return &Field{key: key, name: name, valueType: valueType}
+// NewField creates a new field from the given asset
+func NewField(asset assets.Field) *Field {
+	return &Field{Field: asset}
 }
 
-// Key returns the key of the field
-func (f *Field) Key() string { return f.key }
+// Asset returns the underlying asset
+func (f *Field) Asset() assets.Field { return f.Field }
 
 // FieldValue represents a contact's value for a specific field
 type FieldValue struct {
@@ -59,22 +44,22 @@ func (v *FieldValue) IsEmpty() bool {
 
 // TypedValue returns the value in its proper type
 func (v *FieldValue) TypedValue() types.XValue {
-	switch v.field.valueType {
-	case FieldValueTypeText:
+	switch v.field.Type() {
+	case assets.FieldTypeText:
 		return v.text
-	case FieldValueTypeDatetime:
+	case assets.FieldTypeDatetime:
 		if v.datetime != nil {
 			return *v.datetime
 		}
-	case FieldValueTypeNumber:
+	case assets.FieldTypeNumber:
 		if v.number != nil {
 			return *v.number
 		}
-	case FieldValueTypeState:
+	case assets.FieldTypeState:
 		return v.state
-	case FieldValueTypeDistrict:
+	case assets.FieldTypeDistrict:
 		return v.district
-	case FieldValueTypeWard:
+	case assets.FieldTypeWard:
 		return v.ward
 	}
 	return nil
@@ -129,10 +114,10 @@ func (f FieldValues) getValue(key string) *FieldValue {
 	return f[key]
 }
 
-func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string, rawValue string) error {
-	field := fieldSet.FindByKey(key)
-	if field == nil {
-		return fmt.Errorf("no such field: %s", key)
+func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key string, rawValue string) error {
+	field, err := fields.Get(key)
+	if err != nil {
+		return err
 	}
 
 	if rawValue == "" {
@@ -160,17 +145,17 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 	} else {
 		var matchingLocations []*utils.Location
 
-		if field.valueType == FieldValueTypeWard {
-			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeDistrict)
+		if field.Type() == assets.FieldTypeWard {
+			parent := f.getFirstLocationValue(env, fields, assets.FieldTypeDistrict)
 			if parent != nil {
 				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelWard, parent)
 			}
-		} else if field.valueType == FieldValueTypeDistrict {
-			parent := f.getFirstLocationValue(env, fieldSet, FieldValueTypeState)
+		} else if field.Type() == assets.FieldTypeDistrict {
+			parent := f.getFirstLocationValue(env, fields, assets.FieldTypeState)
 			if parent != nil {
 				matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelDistrict, parent)
 			}
-		} else if field.valueType == FieldValueTypeState {
+		} else if field.Type() == assets.FieldTypeState {
 			matchingLocations, _ = env.FindLocationsFuzzy(rawValue, LocationLevelState, nil)
 		}
 
@@ -207,8 +192,8 @@ func (f FieldValues) setValue(env RunEnvironment, fieldSet *FieldSet, key string
 	return nil
 }
 
-func (f FieldValues) getFirstLocationValue(env RunEnvironment, fieldSet *FieldSet, valueType FieldValueType) *utils.Location {
-	field := fieldSet.FirstOfType(valueType)
+func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {
+	field := fields.FirstOfType(valueType)
 	if field == nil {
 		return nil
 	}
@@ -255,77 +240,46 @@ var _ types.XValue = (FieldValues)(nil)
 var _ types.XLengthable = (FieldValues)(nil)
 var _ types.XResolvable = (FieldValues)(nil)
 
-// FieldSet defines the unordered set of all fields for a session
-type FieldSet struct {
-	fields      []*Field
-	fieldsByKey map[string]*Field
+// FieldAssets provides access to all field assets
+type FieldAssets struct {
+	all   []*Field
+	byKey map[string]*Field
 }
 
-// NewFieldSet creates a new set of fields
-func NewFieldSet(fields []*Field) *FieldSet {
-	s := &FieldSet{
-		fields:      fields,
-		fieldsByKey: make(map[string]*Field, len(fields)),
+// NewFieldAssets creates a new set of field assets
+func NewFieldAssets(fields []assets.Field) *FieldAssets {
+	s := &FieldAssets{
+		all:   make([]*Field, len(fields)),
+		byKey: make(map[string]*Field, len(fields)),
 	}
-	for _, field := range s.fields {
-		s.fieldsByKey[field.key] = field
+	for f, asset := range fields {
+		field := NewField(asset)
+		s.all[f] = field
+		s.byKey[field.Key()] = field
 	}
 	return s
 }
 
-// FindByKey finds the contact field with the given key
-func (s *FieldSet) FindByKey(key string) *Field {
-	return s.fieldsByKey[key]
+// Get returns the contact field with the given key
+func (s *FieldAssets) Get(key string) (*Field, error) {
+	field, found := s.byKey[key]
+	if !found {
+		return nil, fmt.Errorf("no such field with key '%s'", key)
+	}
+	return field, nil
+}
+
+// All returns all the fields in this set
+func (s *FieldAssets) All() []*Field {
+	return s.all
 }
 
 // FirstOfType returns the first field in this set with the given value type
-func (s *FieldSet) FirstOfType(valueType FieldValueType) *Field {
-	for _, field := range s.fields {
-		if field.valueType == valueType {
+func (s *FieldAssets) FirstOfType(valueType assets.FieldType) *Field {
+	for _, field := range s.all {
+		if field.Type() == valueType {
 			return field
 		}
 	}
 	return nil
-}
-
-// All returns all the fields in this set
-func (s *FieldSet) All() []*Field {
-	return s.fields
-}
-
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-type fieldEnvelope struct {
-	Key       string         `json:"key"`
-	Name      string         `json:"name"`
-	ValueType FieldValueType `json:"value_type,omitempty"`
-}
-
-// ReadField reads a contact field from the given JSON
-func ReadField(data json.RawMessage) (*Field, error) {
-	var fe fieldEnvelope
-	if err := utils.UnmarshalAndValidate(data, &fe); err != nil {
-		return nil, fmt.Errorf("unable to read field: %s", err)
-	}
-
-	return NewField(fe.Key, fe.Name, fe.ValueType), nil
-}
-
-// ReadFieldSet reads a set of contact fields from the given JSON
-func ReadFieldSet(data json.RawMessage) (*FieldSet, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
-		return nil, err
-	}
-
-	fields := make([]*Field, len(items))
-	for d := range items {
-		if fields[d], err = ReadField(items[d]); err != nil {
-			return nil, err
-		}
-	}
-
-	return NewFieldSet(fields), nil
 }

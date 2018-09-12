@@ -34,6 +34,26 @@ type Channel interface {
 	MatchPrefixes() []string
 }
 
+// FieldType is the data type of values for each field
+type FieldType string
+
+// field value types
+const (
+	FieldTypeText     FieldType = "text"
+	FieldTypeNumber   FieldType = "number"
+	FieldTypeDatetime FieldType = "datetime"
+	FieldTypeWard     FieldType = "ward"
+	FieldTypeDistrict FieldType = "district"
+	FieldTypeState    FieldType = "state"
+)
+
+// Field is a custom contact property
+type Field interface {
+	Key() string
+	Name() string
+	Type() FieldType
+}
+
 // GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
 
@@ -69,6 +89,7 @@ type Resthook interface {
 // AssetSource is a source of assets
 type AssetSource interface {
 	Channels() ([]Channel, error)
+	Fields() ([]Field, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
 	Locations() ([]Location, error)
