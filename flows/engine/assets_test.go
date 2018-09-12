@@ -11,7 +11,7 @@ import (
 )
 
 func TestSessionAssets(t *testing.T) {
-	server := engine.NewMockAssetServer(assets.NewAssetCache(100, 10))
+	server := engine.NewMockServerSource(assets.NewAssetCache(100, 10))
 	server.MockResponse("http://testserver/assets/channel/", json.RawMessage(`{"results": []}`))
 	server.MockResponse("http://testserver/assets/label/", json.RawMessage(`{"results": []}`))
 	server.MockResponse("http://testserver/assets/group/", json.RawMessage(`{

@@ -29,7 +29,7 @@ func readFooAssets(data json.RawMessage) ([]*fooAsset, error) {
 func TestAssetCache(t *testing.T) {
 	assets.RegisterType(fooAssetType, true, func(data json.RawMessage) (interface{}, error) { return readFooAssets(data) })
 
-	server := assets.NewMockAssetServer(map[assets.AssetType]string{
+	server := assets.NewMockServerSource(map[assets.AssetType]string{
 		fooAssetType: "http://testserver/assets/foo/",
 	}, assets.NewAssetCache(100, 10))
 	server.MockResponse("http://testserver/assets/foo/", json.RawMessage(`{

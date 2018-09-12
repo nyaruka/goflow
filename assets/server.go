@@ -25,7 +25,8 @@ type LegacyServer interface {
 	GetAsset(AssetType, string) (interface{}, error)
 }
 
-type AssetServer struct {
+// ServerSource is an asset source which fetches assets from a server and caches them
+type ServerSource struct {
 	authToken  string
 	typeURLs   map[AssetType]string
 	httpClient *utils.HTTPClient
@@ -34,33 +35,33 @@ type AssetServer struct {
 	fetcher assetFetcher
 }
 
-var _ AssetSource = (*AssetServer)(nil)
-var _ assetFetcher = (*AssetServer)(nil)
+var _ AssetSource = (*ServerSource)(nil)
+var _ assetFetcher = (*ServerSource)(nil)
 
-// NewAssetServer creates a new asset server
-func NewAssetServer(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient, cache *AssetCache) *AssetServer {
+// NewServerSource creates a new server asset source
+func NewServerSource(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient, cache *AssetCache) *ServerSource {
 	// TODO validate typeURLs are for registered types?
 
-	s := &AssetServer{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient, cache: cache}
+	s := &ServerSource{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient, cache: cache}
 	s.fetcher = s
 	return s
 }
 
-type assetServerEnvelope struct {
+type serverSourceEnvelope struct {
 	TypeURLs map[AssetType]string `json:"type_urls"`
 }
 
-// ReadAssetServer reads an asset server fronm the given JSON
-func ReadAssetServer(authToken string, httpClient *utils.HTTPClient, cache *AssetCache, data json.RawMessage) (*AssetServer, error) {
-	envelope := &assetServerEnvelope{}
+// ReadServerSource reads a server asset source fronm the given JSON
+func ReadServerSource(authToken string, httpClient *utils.HTTPClient, cache *AssetCache, data json.RawMessage) (*ServerSource, error) {
+	envelope := &serverSourceEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
 		return nil, fmt.Errorf("unable to read asset server: %s", err)
 	}
 
-	return NewAssetServer(authToken, envelope.TypeURLs, httpClient, cache), nil
+	return NewServerSource(authToken, envelope.TypeURLs, httpClient, cache), nil
 }
 
-func (s *AssetServer) Channels() ([]Channel, error) {
+func (s *ServerSource) Channels() ([]Channel, error) {
 	asset, err := s.GetAsset(assetTypeChannel, "")
 	if err != nil {
 		return nil, err
@@ -72,7 +73,7 @@ func (s *AssetServer) Channels() ([]Channel, error) {
 	return set, nil
 }
 
-func (s *AssetServer) Groups() ([]Group, error) {
+func (s *ServerSource) Groups() ([]Group, error) {
 	asset, err := s.GetAsset(assetTypeGroup, "")
 	if err != nil {
 		return nil, err
@@ -84,7 +85,7 @@ func (s *AssetServer) Groups() ([]Group, error) {
 	return set, nil
 }
 
-func (s *AssetServer) Labels() ([]Label, error) {
+func (s *ServerSource) Labels() ([]Label, error) {
 	asset, err := s.GetAsset(assetTypeLabel, "")
 	if err != nil {
 		return nil, err
@@ -96,12 +97,12 @@ func (s *AssetServer) Labels() ([]Label, error) {
 	return set, nil
 }
 
-func (s *AssetServer) HasLocations() bool {
+func (s *ServerSource) HasLocations() bool {
 	_, hasTypeURL := s.typeURLs["location_hierarchy"]
 	return hasTypeURL
 }
 
-func (s *AssetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
+func (s *ServerSource) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
 	url, err := s.getAssetURL(itemType, itemUUID)
 	if err != nil {
 		return nil, err
@@ -111,7 +112,7 @@ func (s *AssetServer) GetAsset(itemType AssetType, itemUUID string) (interface{}
 }
 
 // getAssetURL gets the URL for a set of the given asset type
-func (s *AssetServer) getAssetURL(itemType AssetType, itemUUID string) (string, error) {
+func (s *ServerSource) getAssetURL(itemType AssetType, itemUUID string) (string, error) {
 	url, found := s.typeURLs[itemType]
 	if !found {
 		return "", fmt.Errorf("asset type '%s' not supported by asset server", itemType)
@@ -125,7 +126,7 @@ func (s *AssetServer) getAssetURL(itemType AssetType, itemUUID string) (string, 
 }
 
 // fetches an asset by its URL and parses it as the provided type
-func (s *AssetServer) fetchAsset(url string, itemType AssetType) ([]byte, error) {
+func (s *ServerSource) fetchAsset(url string, itemType AssetType) ([]byte, error) {
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -155,33 +156,33 @@ func (s *AssetServer) fetchAsset(url string, itemType AssetType) ([]byte, error)
 	return ioutil.ReadAll(response.Body)
 }
 
-type MockAssetServer struct {
-	AssetServer
+type MockServerSource struct {
+	ServerSource
 
 	mockResponses  map[string]json.RawMessage
 	mockedRequests []string
 }
 
-// NewMockAssetServer creates a new mocked asset server for testing
-func NewMockAssetServer(typeURLs map[AssetType]string, cache *AssetCache) *MockAssetServer {
-	s := &MockAssetServer{
-		AssetServer:    AssetServer{typeURLs: typeURLs, cache: cache},
+// NewMockServerSource creates a new mocked asset server for testing
+func NewMockServerSource(typeURLs map[AssetType]string, cache *AssetCache) *MockServerSource {
+	s := &MockServerSource{
+		ServerSource:   ServerSource{typeURLs: typeURLs, cache: cache},
 		mockResponses:  map[string]json.RawMessage{},
 		mockedRequests: []string{},
 	}
-	s.AssetServer.fetcher = s
+	s.ServerSource.fetcher = s
 	return s
 }
 
-func (s *MockAssetServer) MockResponse(url string, response json.RawMessage) {
+func (s *MockServerSource) MockResponse(url string, response json.RawMessage) {
 	s.mockResponses[url] = response
 }
 
-func (s *MockAssetServer) MockedRequests() []string {
+func (s *MockServerSource) MockedRequests() []string {
 	return s.mockedRequests
 }
 
-func (s *MockAssetServer) fetchAsset(url string, itemType AssetType) ([]byte, error) {
+func (s *MockServerSource) fetchAsset(url string, itemType AssetType) ([]byte, error) {
 	s.mockedRequests = append(s.mockedRequests, url)
 
 	assetBuf, found := s.mockResponses[url]
@@ -192,10 +193,10 @@ func (s *MockAssetServer) fetchAsset(url string, itemType AssetType) ([]byte, er
 }
 
 // MarshalJSON marshals this mock asset server into JSON
-func (s *MockAssetServer) MarshalJSON() ([]byte, error) {
-	envelope := &assetServerEnvelope{TypeURLs: s.typeURLs}
+func (s *MockServerSource) MarshalJSON() ([]byte, error) {
+	envelope := &serverSourceEnvelope{TypeURLs: s.typeURLs}
 	return json.Marshal(envelope)
 }
 
-var _ LegacyServer = (*MockAssetServer)(nil)
-var _ assetFetcher = (*MockAssetServer)(nil)
+var _ LegacyServer = (*MockServerSource)(nil)
+var _ assetFetcher = (*MockServerSource)(nil)

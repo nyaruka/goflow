@@ -352,7 +352,7 @@ func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []m
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	assets, err := engine.NewSessionAssets(engine.NewMockAssetServer(ts.flowServer.assetCache))
+	assets, err := engine.NewSessionAssets(engine.NewMockServerSource(ts.flowServer.assetCache))
 	ts.Require().NoError(err)
 
 	session, err := engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
@@ -372,7 +372,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	}
 
 	assetsData := json.RawMessage(assetsJSON)
-	assetServer, _ := utils.JSONMarshal(engine.NewMockAssetServer(nil))
+	assetServer, _ := utils.JSONMarshal(engine.NewMockServerSource(nil))
 
 	request := &resumeRequest{
 		sessionRequest: sessionRequest{

@@ -67,7 +67,7 @@ type startRequest struct {
 }
 
 // reads the assets and asset_server section of a request
-func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (*assets.AssetServer, error) {
+func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (*assets.ServerSource, error) {
 	// include any embedded assets
 	if request.Assets != nil {
 		if err := s.assetCache.Include(*request.Assets); err != nil {
@@ -76,7 +76,7 @@ func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCach
 	}
 
 	// read and validate our asset server
-	return assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
+	return assets.ReadServerSource(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
 }
 
 // handles a request to /start
