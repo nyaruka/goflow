@@ -26,6 +26,7 @@ import (
 // @context group
 type Group struct {
 	assets.Group
+
 	parsedQuery *contactql.ContactQuery
 }
 

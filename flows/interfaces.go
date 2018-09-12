@@ -29,12 +29,6 @@ type ContactID int64
 // ContactUUID is the UUID of a contact
 type ContactUUID utils.UUID
 
-// ChannelID is the ID of a channel
-type ChannelID int64
-
-// ChannelUUID is the UUID of a channel
-type ChannelUUID utils.UUID
-
 // RunUUID is the UUID of a flow run
 type RunUUID utils.UUID
 
@@ -109,8 +103,7 @@ const (
 
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
-	GetChannel(ChannelUUID) (Channel, error)
-	GetChannelSet() (*ChannelSet, error)
+	Channels() *ChannelAssets
 
 	GetField(string) (*Field, error)
 	GetFieldSet() (*FieldSet, error)
@@ -310,7 +303,7 @@ type Input interface {
 
 	UUID() InputUUID
 	CreatedOn() time.Time
-	Channel() Channel
+	Channel() *Channel
 }
 
 type Step interface {

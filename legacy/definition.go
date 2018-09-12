@@ -223,7 +223,7 @@ type Action struct {
 	Flow FlowReference `json:"flow"`
 
 	// channel
-	Channel flows.ChannelUUID `json:"channel"`
+	Channel assets.ChannelUUID `json:"channel"`
 
 	//email
 	Emails  []string `json:"emails"`

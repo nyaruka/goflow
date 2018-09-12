@@ -12,6 +12,7 @@ import (
 
 func TestSessionAssets(t *testing.T) {
 	server := engine.NewMockAssetServer(assets.NewAssetCache(100, 10))
+	server.MockResponse("http://testserver/assets/channel/", json.RawMessage(`{"results": []}`))
 	server.MockResponse("http://testserver/assets/label/", json.RawMessage(`{"results": []}`))
 	server.MockResponse("http://testserver/assets/group/", json.RawMessage(`{
 		"results": [
@@ -31,5 +32,9 @@ func TestSessionAssets(t *testing.T) {
 	assert.Equal(t, "Survey Audience", group.Name())
 
 	// requesting a group actually fetches and caches the entire group set
-	assert.Equal(t, server.MockedRequests(), []string{"http://testserver/assets/label/", "http://testserver/assets/group/"})
+	assert.Equal(t, server.MockedRequests(), []string{
+		"http://testserver/assets/channel/",
+		"http://testserver/assets/group/",
+		"http://testserver/assets/label/",
+	})
 }

@@ -22,7 +22,7 @@ const (
 )
 
 func init() {
-	assets.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadChannelSet(data) })
+	assets.RegisterType(assetTypeChannel, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadChannels(data) })
 	assets.RegisterType(assetTypeField, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadFieldSet(data) })
 	assets.RegisterType(assetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return definition.ReadFlow(data) })
 	assets.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return simple.ReadGroups(data) })
@@ -43,12 +43,12 @@ func (s *ServerSource) Server() assets.AssetServer {
 	return s.server
 }
 
-func (s *ServerSource) Labels() ([]assets.Label, error) {
-	asset, err := s.server.GetAsset(assetTypeLabel, "")
+func (s *ServerSource) Channels() ([]assets.Channel, error) {
+	asset, err := s.server.GetAsset(assetTypeChannel, "")
 	if err != nil {
 		return nil, err
 	}
-	set, isType := asset.([]assets.Label)
+	set, isType := asset.([]assets.Channel)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}
@@ -67,11 +67,24 @@ func (s *ServerSource) Groups() ([]assets.Group, error) {
 	return set, nil
 }
 
+func (s *ServerSource) Labels() ([]assets.Label, error) {
+	asset, err := s.server.GetAsset(assetTypeLabel, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]assets.Label)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
 // our implementation of SessionAssets - the high-level API for asset access from the engine
 type sessionAssets struct {
 	source assets.AssetSource
 	server assets.AssetServer
 
+	channels     *flows.ChannelAssets
 	groups       []*flows.Group
 	groupsByUUID map[assets.GroupUUID]*flows.Group
 	labels       []*flows.Label
@@ -82,22 +95,19 @@ var _ flows.SessionAssets = (*sessionAssets)(nil)
 
 // NewSessionAssets creates a new session assets instance with the provided base URLs
 func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
-	rawLabels, err := source.Labels()
+	channels, err := source.Channels()
 	if err != nil {
 		return nil, err
 	}
-	labels := make([]*flows.Label, len(rawLabels))
-	labelsByUUID := make(map[assets.LabelUUID]*flows.Label, len(rawLabels))
-	for l, rawLabel := range rawLabels {
-		label := flows.NewLabel(rawLabel)
-		labels[l] = label
-		labelsByUUID[label.UUID()] = label
-	}
-
 	rawGroups, err := source.Groups()
 	if err != nil {
 		return nil, err
 	}
+	rawLabels, err := source.Labels()
+	if err != nil {
+		return nil, err
+	}
+
 	groups := make([]*flows.Group, len(rawGroups))
 	groupsByUUID := make(map[assets.GroupUUID]*flows.Group, len(rawGroups))
 	for g, rawGroup := range rawGroups {
@@ -106,9 +116,18 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 		groupsByUUID[group.UUID()] = group
 	}
 
+	labels := make([]*flows.Label, len(rawLabels))
+	labelsByUUID := make(map[assets.LabelUUID]*flows.Label, len(rawLabels))
+	for l, rawLabel := range rawLabels {
+		label := flows.NewLabel(rawLabel)
+		labels[l] = label
+		labelsByUUID[label.UUID()] = label
+	}
+
 	return &sessionAssets{
 		server:       source.(*ServerSource).Server(),
 		groups:       groups,
+		channels:     flows.NewChannelAssets(channels),
 		groupsByUUID: groupsByUUID,
 		labels:       labels,
 		labelsByUUID: labelsByUUID,
@@ -133,30 +152,8 @@ func (s *sessionAssets) GetLocationHierarchySet() (*flows.LocationHierarchySet, 
 	return set, nil
 }
 
-// GetChannel gets a channel asset for the session
-func (s *sessionAssets) GetChannel(uuid flows.ChannelUUID) (flows.Channel, error) {
-	set, err := s.GetChannelSet()
-	if err != nil {
-		return nil, err
-	}
-	channel := set.FindByUUID(uuid)
-	if channel == nil {
-		return nil, fmt.Errorf("no such channel with uuid '%s'", uuid)
-	}
-	return channel, nil
-}
-
-// GetChannelSet gets the set of all channels asset for the session
-func (s *sessionAssets) GetChannelSet() (*flows.ChannelSet, error) {
-	asset, err := s.server.GetAsset(assetTypeChannel, "")
-	if err != nil {
-		return nil, err
-	}
-	set, isType := asset.(*flows.ChannelSet)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
+func (s *sessionAssets) Channels() *flows.ChannelAssets {
+	return s.channels
 }
 
 // GetField gets a contact field asset for the session

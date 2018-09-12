@@ -14,12 +14,12 @@ func init() {
 
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
-	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
-	Name string      `json:"name"`
+	UUID assets.ChannelUUID `json:"uuid" validate:"required,uuid"`
+	Name string             `json:"name"`
 }
 
 // NewChannelReference creates a new channel reference with the given UUID and name
-func NewChannelReference(uuid ChannelUUID, name string) *ChannelReference {
+func NewChannelReference(uuid assets.ChannelUUID, name string) *ChannelReference {
 	return &ChannelReference{UUID: uuid, Name: name}
 }
 

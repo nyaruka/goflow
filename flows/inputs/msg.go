@@ -27,7 +27,7 @@ type MsgInput struct {
 }
 
 // NewMsgInput creates a new user input based on a message
-func NewMsgInput(uuid flows.InputUUID, channel flows.Channel, createdOn time.Time, urn urns.URN, text string, attachments []flows.Attachment) *MsgInput {
+func NewMsgInput(uuid flows.InputUUID, channel *flows.Channel, createdOn time.Time, urn urns.URN, text string, attachments []flows.Attachment) *MsgInput {
 	return &MsgInput{
 		baseInput:   baseInput{uuid: uuid, channel: channel, createdOn: createdOn},
 		urn:         flows.NewContactURN(urn, nil),
@@ -99,9 +99,9 @@ func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, err
 	}
 
 	// lookup the channel
-	var channel flows.Channel
+	var channel *flows.Channel
 	if i.Channel != nil {
-		channel, err = session.Assets().GetChannel(i.Channel.UUID)
+		channel, err = session.Assets().Channels().Get(i.Channel.UUID)
 		if err != nil {
 			return nil, err
 		}

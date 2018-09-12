@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
@@ -58,19 +59,19 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 // @context urn
 type ContactURN struct {
 	urns.URN
-	channel Channel
+	channel *Channel
 }
 
 // NewContactURN creates a new contact URN with associated channel
-func NewContactURN(urn urns.URN, channel Channel) *ContactURN {
+func NewContactURN(urn urns.URN, channel *Channel) *ContactURN {
 	return &ContactURN{URN: urn, channel: channel}
 }
 
 // Channel gets the channel associated with this URN
-func (u *ContactURN) Channel() Channel { return u.channel }
+func (u *ContactURN) Channel() *Channel { return u.channel }
 
 // SetChannel sets the channel associated with this URN
-func (u *ContactURN) SetChannel(channel Channel) { u.channel = channel }
+func (u *ContactURN) SetChannel(channel *Channel) { u.channel = channel }
 
 // Resolve resolves the given key when this URN is referenced in an expression
 func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
@@ -116,7 +117,7 @@ var _ types.XResolvable = (*ContactURN)(nil)
 type URNList []*ContactURN
 
 // ReadURNList parses contact URN list from the given list of raw URNs
-func ReadURNList(assets SessionAssets, rawURNs []urns.URN) (URNList, error) {
+func ReadURNList(a SessionAssets, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
 	for u := range rawURNs {
@@ -127,10 +128,10 @@ func ReadURNList(assets SessionAssets, rawURNs []urns.URN) (URNList, error) {
 			return nil, err
 		}
 
-		var channel Channel
-		channelUUID := parsedQuery.Get("channel")
-		if channelUUID != "" {
-			if channel, err = assets.GetChannel(ChannelUUID(channelUUID)); err != nil {
+		var channel *Channel
+		channelUUID := assets.ChannelUUID(parsedQuery.Get("channel"))
+		if channelUUID != assets.NilChannelUUID {
+			if channel, err = a.Channels().Get(channelUUID); err != nil {
 				return nil, err
 			}
 		}

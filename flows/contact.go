@@ -261,7 +261,7 @@ func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key s
 }
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
-func (c *Contact) PreferredChannel() Channel {
+func (c *Contact) PreferredChannel() *Channel {
 	if len(c.urns) > 0 {
 		return c.urns[0].Channel()
 	}
@@ -269,7 +269,7 @@ func (c *Contact) PreferredChannel() Channel {
 }
 
 // UpdatePreferredChannel updates the preferred channel
-func (c *Contact) UpdatePreferredChannel(channel Channel) {
+func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 	priorityURNs := make([]*ContactURN, 0)
 	otherURNs := make([]*ContactURN, 0)
 

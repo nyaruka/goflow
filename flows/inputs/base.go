@@ -21,13 +21,13 @@ func RegisterType(name string, f readFunc) {
 
 type baseInput struct {
 	uuid      flows.InputUUID
-	channel   flows.Channel
+	channel   *flows.Channel
 	createdOn time.Time
 }
 
-func (i *baseInput) UUID() flows.InputUUID  { return i.uuid }
-func (i *baseInput) Channel() flows.Channel { return i.channel }
-func (i *baseInput) CreatedOn() time.Time   { return i.createdOn }
+func (i *baseInput) UUID() flows.InputUUID   { return i.uuid }
+func (i *baseInput) Channel() *flows.Channel { return i.channel }
+func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 
 // Resolve resolves the given key when this input is referenced in an expression
 func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
