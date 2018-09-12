@@ -98,6 +98,18 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 	return set, nil
 }
 
+func (s *ServerSource) Resthooks() ([]assets.Resthook, error) {
+	asset, err := s.GetAsset(assetTypeResthook, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]assets.Resthook)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
+}
+
 func (s *ServerSource) HasLocations() bool {
 	_, hasTypeURL := s.typeURLs["location_hierarchy"]
 	return hasTypeURL

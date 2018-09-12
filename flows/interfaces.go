@@ -105,16 +105,16 @@ type SessionAssets interface {
 	Channels() *ChannelAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
+	Resthooks() *ResthookAssets
+
+	HasLocations() bool
 
 	GetField(string) (*Field, error)
 	GetFieldSet() (*FieldSet, error)
 
 	GetFlow(FlowUUID) (Flow, error)
 
-	HasLocations() bool
 	GetLocationHierarchySet() (*LocationHierarchySet, error)
-
-	GetResthookSet() (*ResthookSet, error)
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following

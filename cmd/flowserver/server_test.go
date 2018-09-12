@@ -58,6 +58,11 @@ var testStructurallyInvalidFlowAssets = `[
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
+	},
+	{
+		"type": "resthook",
+		"url": "http://testserver/assets/resthook",
+		"content": []
 	}
 ]`
 
@@ -115,6 +120,11 @@ var testFlowMissingGroupAssets = `[
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
+	},
+	{
+		"type": "resthook",
+		"url": "http://testserver/assets/resthook",
+		"content": []
 	}
 ]`
 
@@ -155,6 +165,11 @@ var testValidFlowWithNoWaitAssets = `[
 	{
 		"type": "label",
 		"url": "http://testserver/assets/label",
+		"content": []
+	},
+	{
+		"type": "resthook",
+		"url": "http://testserver/assets/resthook",
 		"content": []
 	}
 ]`
@@ -218,6 +233,11 @@ var testValidFlowWithWaitAssets = `[
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
+	},
+	{
+		"type": "resthook",
+		"url": "http://testserver/assets/resthook",
+		"content": []
 	}
 ]`
 
@@ -266,6 +286,11 @@ var testValidFlowWithWebhook = `[
 		"type": "label",
 		"url": "http://testserver/assets/label",
 		"content": []
+	},
+	{
+		"type": "resthook",
+		"url": "http://testserver/assets/resthook",
+		"content": []
 	}
 ]`
 
@@ -275,7 +300,8 @@ var assetServerConfig = `{
 		"flow": "http://testserver/assets/flow/",
 		"field": "http://testserver/assets/field/",
 		"group": "http://testserver/assets/group/",
-		"label": "http://testserver/assets/label/"
+		"label": "http://testserver/assets/label/",
+		"resthook": "http://testserver/assets/resthook/"
 	}
 }`
 

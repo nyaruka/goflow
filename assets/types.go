@@ -52,10 +52,17 @@ type Label interface {
 	Name() string
 }
 
+// Resthook is a set of URLs which are subscribed to the named event
+type Resthook interface {
+	Slug() string
+	Subscribers() []string
+}
+
 // AssetSource is a source of assets
 type AssetSource interface {
 	Channels() ([]Channel, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
+	Resthooks() ([]Resthook, error)
 	HasLocations() bool
 }

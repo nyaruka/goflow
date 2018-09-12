@@ -28,7 +28,7 @@ func init() {
 	server.RegisterType(assetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) })
 	server.RegisterType(assetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) })
 	server.RegisterType(assetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadLocationHierarchySet(data) })
-	server.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return flows.ReadResthookSet(data) })
+	server.RegisterType(assetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) })
 }
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
@@ -36,9 +36,10 @@ type sessionAssets struct {
 	source assets.AssetSource
 	legacy server.LegacyServer
 
-	channels *flows.ChannelAssets
-	groups   *flows.GroupAssets
-	labels   *flows.LabelAssets
+	channels  *flows.ChannelAssets
+	groups    *flows.GroupAssets
+	labels    *flows.LabelAssets
+	resthooks *flows.ResthookAssets
 }
 
 var _ flows.SessionAssets = (*sessionAssets)(nil)
@@ -57,13 +58,18 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 	if err != nil {
 		return nil, err
 	}
+	resthooks, err := source.Resthooks()
+	if err != nil {
+		return nil, err
+	}
 
 	return &sessionAssets{
-		source:   source,
-		legacy:   source.(server.LegacyServer),
-		channels: flows.NewChannelAssets(channels),
-		groups:   flows.NewGroupAssets(groups),
-		labels:   flows.NewLabelAssets(labels),
+		source:    source,
+		legacy:    source.(server.LegacyServer),
+		channels:  flows.NewChannelAssets(channels),
+		groups:    flows.NewGroupAssets(groups),
+		labels:    flows.NewLabelAssets(labels),
+		resthooks: flows.NewResthookAssets(resthooks),
 	}, nil
 }
 
@@ -77,6 +83,10 @@ func (s *sessionAssets) Groups() *flows.GroupAssets {
 
 func (s *sessionAssets) Labels() *flows.LabelAssets {
 	return s.labels
+}
+
+func (s *sessionAssets) Resthooks() *flows.ResthookAssets {
+	return s.resthooks
 }
 
 // HasLocations returns whether locations are supported as an asset item type
@@ -134,18 +144,6 @@ func (s *sessionAssets) GetFlow(uuid flows.FlowUUID) (flows.Flow, error) {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
 	}
 	return flow, nil
-}
-
-func (s *sessionAssets) GetResthookSet() (*flows.ResthookSet, error) {
-	asset, err := s.legacy.GetAsset(assetTypeResthook, "")
-	if err != nil {
-		return nil, err
-	}
-	set, isType := asset.(*flows.ResthookSet)
-	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
-	}
-	return set, nil
 }
 
 // NewMockServerSource creates a new mocked asset server with URLs for all flow engine types already configured

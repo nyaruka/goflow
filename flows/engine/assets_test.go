@@ -23,6 +23,7 @@ func TestSessionAssets(t *testing.T) {
 			}
 		]
 	}`))
+	server.MockResponse("http://testserver/assets/resthook/", json.RawMessage(`{"results": []}`))
 
 	sessionAssets, err := engine.NewSessionAssets(server)
 	assert.NoError(t, err)
@@ -37,5 +38,6 @@ func TestSessionAssets(t *testing.T) {
 		"http://testserver/assets/channel/",
 		"http://testserver/assets/group/",
 		"http://testserver/assets/label/",
+		"http://testserver/assets/resthook/",
 	})
 }
