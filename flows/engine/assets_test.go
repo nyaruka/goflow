@@ -5,14 +5,14 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/server"
+	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows/engine"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSessionAssets(t *testing.T) {
-	server := engine.NewMockServerSource(server.NewAssetCache(100, 10))
+	server := rest.NewMockServerSource(rest.NewAssetCache(100, 10))
 	server.MockResponse("http://testserver/assets/channel/", json.RawMessage(`{"results": []}`))
 	server.MockResponse("http://testserver/assets/field/", json.RawMessage(`{"results": []}`))
 	server.MockResponse("http://testserver/assets/group/", json.RawMessage(`{

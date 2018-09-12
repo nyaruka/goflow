@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/server/types"
+	"github.com/nyaruka/goflow/assets/rest/types"
 
 	"github.com/stretchr/testify/assert"
 )

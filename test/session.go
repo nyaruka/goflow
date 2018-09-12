@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nyaruka/goflow/assets/server"
+	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -366,14 +366,14 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 // CreateSession creates a session with the given assets
 func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 	// load our assets into a cache
-	assetCache := server.NewAssetCache(100, 5)
+	assetCache := rest.NewAssetCache(100, 5)
 	err := assetCache.Include(sessionAssets)
 	if err != nil {
 		return nil, err
 	}
 
 	// create our engine session
-	assets, err := engine.NewSessionAssets(engine.NewMockServerSource(assetCache))
+	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 	if err != nil {
 		return nil, err
 	}

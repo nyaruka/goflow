@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -403,7 +404,7 @@ func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []m
 	err := json.Unmarshal(body, &envelope)
 	ts.Require().NoError(err)
 
-	assets, err := engine.NewSessionAssets(engine.NewMockServerSource(ts.flowServer.assetCache))
+	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(ts.flowServer.assetCache))
 	ts.Require().NoError(err)
 
 	session, err := engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, envelope.Session)
@@ -423,7 +424,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	}
 
 	assetsData := json.RawMessage(assetsJSON)
-	assetServer, _ := utils.JSONMarshal(engine.NewMockServerSource(nil))
+	assetServer, _ := utils.JSONMarshal(rest.NewMockServerSource(nil))
 
 	request := &resumeRequest{
 		sessionRequest: sessionRequest{

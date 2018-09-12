@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/assets/server"
+	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -75,7 +75,7 @@ func readFile(prefix string, filename string) ([]byte, error) {
 }
 
 type runResult struct {
-	assetCache *server.AssetCache
+	assetCache *rest.AssetCache
 	session    flows.Session
 	outputs    []*Output
 }
@@ -94,7 +94,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	assetCache := server.NewAssetCache(100, 5)
+	assetCache := rest.NewAssetCache(100, 5)
 	if err := assetCache.Include(defaultAssetsJSON); err != nil {
 		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
 	}
@@ -102,7 +102,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
 
-	assets, _ := engine.NewSessionAssets(engine.NewMockServerSource(assetCache))
+	assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
@@ -126,7 +126,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		}
 		outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
 
-		assets, _ := engine.NewSessionAssets(engine.NewMockServerSource(assetCache))
+		assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, sessionJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)

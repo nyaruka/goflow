@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nyaruka/goflow/assets/server"
+	"github.com/nyaruka/goflow/assets/rest"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -77,7 +77,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error reading assets file: ", err)
 	}
-	assetCache := server.NewAssetCache(100, 5)
+	assetCache := rest.NewAssetCache(100, 5)
 	if err := assetCache.Include(json.RawMessage(assetsJSON)); err != nil {
 		log.Fatal("Error reading assets: ", err)
 	}
@@ -86,7 +86,7 @@ func main() {
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{}, utils.RedactionPolicyNone)
 
-	assets, err := engine.NewSessionAssets(engine.NewMockServerSource(assetCache))
+	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 	if err != nil {
 		log.Fatal("error parsing assets: ", err)
 	}
@@ -147,7 +147,7 @@ func main() {
 		callerEvents = append(callerEvents, []flows.Event{event})
 
 		// rebuild our session
-		assets, err := engine.NewSessionAssets(engine.NewMockServerSource(assetCache))
+		assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 		if err != nil {
 			log.Fatal("Error parsing assets: ", err)
 		}
