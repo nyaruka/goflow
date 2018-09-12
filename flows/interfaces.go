@@ -102,11 +102,10 @@ type SessionAssets interface {
 	Flows() *FlowAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
+	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
 
 	HasLocations() bool
-
-	GetLocationHierarchySet() (*LocationHierarchySet, error)
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following

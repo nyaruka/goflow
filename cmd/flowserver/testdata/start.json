@@ -59,6 +59,7 @@
             "field": "http://testserver/assets/field/",
             "group": "http://testserver/assets/group/",
             "label": "http://testserver/assets/label/",
+            "location_hierarchy": "http://testserver/assets/location_hierarchy/",
             "resthook": "http://testserver/assets/resthook/"
         }
     },

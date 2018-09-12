@@ -29,6 +29,7 @@ func init() {
 	RegisterType(AssetTypeFlow, false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) })
 	RegisterType(AssetTypeGroup, true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) })
 	RegisterType(AssetTypeLabel, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) })
+	RegisterType(AssetTypeLocationHierarchy, true, func(data json.RawMessage) (interface{}, error) { return types.ReadLocationHierarchies(data) })
 	RegisterType(AssetTypeResthook, true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) })
 }
 
@@ -132,9 +133,16 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 	return set, nil
 }
 
-func (s *ServerSource) Locations() ([]assets.Location, error) {
-	// TODO
-	return nil, nil
+func (s *ServerSource) Locations() ([]*utils.LocationHierarchy, error) {
+	asset, err := s.GetAsset(AssetTypeLocationHierarchy, "")
+	if err != nil {
+		return nil, err
+	}
+	set, isType := asset.([]*utils.LocationHierarchy)
+	if !isType {
+		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+	}
+	return set, nil
 }
 
 func (s *ServerSource) Resthooks() ([]assets.Resthook, error) {

@@ -84,13 +84,6 @@ type Label interface {
 	Name() string
 }
 
-// Location is a geographical entity
-type Location interface {
-	Name() string
-	Aliases() []string
-	Children() []Location
-}
-
 // Resthook is a set of URLs which are subscribed to the named event
 type Resthook interface {
 	Slug() string
@@ -104,7 +97,7 @@ type AssetSource interface {
 	Flow(FlowUUID) (Flow, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
-	Locations() ([]Location, error)
+	Locations() ([]*utils.LocationHierarchy, error)
 	Resthooks() ([]Resthook, error)
 
 	HasLocations() bool

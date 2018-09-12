@@ -66,6 +66,11 @@ var testStructurallyInvalidFlowAssets = `[
 		"content": []
 	},
 	{
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
+		"content": []
+	},
+	{
 		"type": "resthook",
 		"url": "http://testserver/assets/resthook",
 		"content": []
@@ -133,6 +138,11 @@ var testFlowMissingGroupAssets = `[
 		"content": []
 	},
 	{
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
+		"content": []
+	},
+	{
 		"type": "resthook",
 		"url": "http://testserver/assets/resthook",
 		"content": []
@@ -181,6 +191,11 @@ var testValidFlowWithNoWaitAssets = `[
 	{
 		"type": "label",
 		"url": "http://testserver/assets/label",
+		"content": []
+	},
+	{
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
 		"content": []
 	},
 	{
@@ -256,6 +271,11 @@ var testValidFlowWithWaitAssets = `[
 		"content": []
 	},
 	{
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
+		"content": []
+	},
+	{
 		"type": "resthook",
 		"url": "http://testserver/assets/resthook",
 		"content": []
@@ -314,6 +334,11 @@ var testValidFlowWithWebhook = `[
 		"content": []
 	},
 	{
+		"type": "location_hierarchy",
+		"url": "http://testserver/assets/location_hierarchy",
+		"content": []
+	},
+	{
 		"type": "resthook",
 		"url": "http://testserver/assets/resthook",
 		"content": []
@@ -327,6 +352,7 @@ var assetServerConfig = `{
 		"field": "http://testserver/assets/field/",
 		"group": "http://testserver/assets/group/",
 		"label": "http://testserver/assets/label/",
+		"location_hierarchy": "http://testserver/assets/location_hierarchy/",
 		"resthook": "http://testserver/assets/resthook/"
 	}
 }`
