@@ -1,3 +1,5 @@
+// Package rest is an implementation of AssetSource which fetches assets from a REST server. It maintains
+// a cache which can also be preloaded with assets.
 package rest
 
 import (
@@ -13,13 +15,13 @@ import (
 )
 
 const (
-	AssetTypeChannel           AssetType = "channel"
-	AssetTypeField             AssetType = "field"
-	AssetTypeFlow              AssetType = "flow"
-	AssetTypeGroup             AssetType = "group"
-	AssetTypeLabel             AssetType = "label"
-	AssetTypeLocationHierarchy AssetType = "location_hierarchy"
-	AssetTypeResthook          AssetType = "resthook"
+	assetTypeChannel           AssetType = "channel"
+	assetTypeField             AssetType = "field"
+	assetTypeFlow              AssetType = "flow"
+	assetTypeGroup             AssetType = "group"
+	assetTypeLabel             AssetType = "label"
+	assetTypeLocationHierarchy AssetType = "location_hierarchy"
+	assetTypeResthook          AssetType = "resthook"
 )
 
 // ServerSource is an asset source which fetches assets from a server and caches them
@@ -58,8 +60,9 @@ func ReadServerSource(authToken string, httpClient *utils.HTTPClient, cache *Ass
 	return NewServerSource(authToken, envelope.TypeURLs, httpClient, cache), nil
 }
 
+// Channels returns all channel assets
 func (s *ServerSource) Channels() ([]assets.Channel, error) {
-	asset, err := s.GetAsset(AssetTypeChannel, "")
+	asset, err := s.getAsset(assetTypeChannel, "")
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +73,9 @@ func (s *ServerSource) Channels() ([]assets.Channel, error) {
 	return set, nil
 }
 
+// Fields returns all field assets
 func (s *ServerSource) Fields() ([]assets.Field, error) {
-	asset, err := s.GetAsset(AssetTypeField, "")
+	asset, err := s.getAsset(assetTypeField, "")
 	if err != nil {
 		return nil, err
 	}
@@ -82,8 +86,9 @@ func (s *ServerSource) Fields() ([]assets.Field, error) {
 	return set, nil
 }
 
+// Flow returns the flow asset with the given UUID
 func (s *ServerSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
-	asset, err := s.GetAsset(AssetTypeFlow, string(uuid))
+	asset, err := s.getAsset(assetTypeFlow, string(uuid))
 	if err != nil {
 		return nil, err
 	}
@@ -94,8 +99,9 @@ func (s *ServerSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
 	return flow, nil
 }
 
+// Groups returns all group assets
 func (s *ServerSource) Groups() ([]assets.Group, error) {
-	asset, err := s.GetAsset(AssetTypeGroup, "")
+	asset, err := s.getAsset(assetTypeGroup, "")
 	if err != nil {
 		return nil, err
 	}
@@ -106,8 +112,9 @@ func (s *ServerSource) Groups() ([]assets.Group, error) {
 	return set, nil
 }
 
+// Labels returns all label assets
 func (s *ServerSource) Labels() ([]assets.Label, error) {
-	asset, err := s.GetAsset(AssetTypeLabel, "")
+	asset, err := s.getAsset(assetTypeLabel, "")
 	if err != nil {
 		return nil, err
 	}
@@ -118,8 +125,9 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 	return set, nil
 }
 
+// Locations returns all location assets
 func (s *ServerSource) Locations() ([]*utils.LocationHierarchy, error) {
-	asset, err := s.GetAsset(AssetTypeLocationHierarchy, "")
+	asset, err := s.getAsset(assetTypeLocationHierarchy, "")
 	if err != nil {
 		return nil, err
 	}
@@ -130,8 +138,9 @@ func (s *ServerSource) Locations() ([]*utils.LocationHierarchy, error) {
 	return set, nil
 }
 
+// Resthooks returns all resthook assets
 func (s *ServerSource) Resthooks() ([]assets.Resthook, error) {
-	asset, err := s.GetAsset(AssetTypeResthook, "")
+	asset, err := s.getAsset(assetTypeResthook, "")
 	if err != nil {
 		return nil, err
 	}
@@ -142,12 +151,13 @@ func (s *ServerSource) Resthooks() ([]assets.Resthook, error) {
 	return set, nil
 }
 
+// HasLocations returns whether this source supports locations
 func (s *ServerSource) HasLocations() bool {
 	_, hasTypeURL := s.typeURLs["location_hierarchy"]
 	return hasTypeURL
 }
 
-func (s *ServerSource) GetAsset(itemType AssetType, itemUUID string) (interface{}, error) {
+func (s *ServerSource) getAsset(itemType AssetType, itemUUID string) (interface{}, error) {
 	url, err := s.getAssetURL(itemType, itemUUID)
 	if err != nil {
 		return nil, err
@@ -199,54 +209,4 @@ func (s *ServerSource) fetchAsset(url string, itemType AssetType) ([]byte, error
 	}
 
 	return ioutil.ReadAll(response.Body)
-}
-
-type MockServerSource struct {
-	ServerSource
-
-	mockResponses  map[string]json.RawMessage
-	mockedRequests []string
-}
-
-// NewMockServerSource creates a new mocked asset server for testing
-func NewMockServerSource(cache *AssetCache) *MockServerSource {
-	s := &MockServerSource{
-		ServerSource: ServerSource{typeURLs: map[AssetType]string{
-			AssetTypeChannel:           "http://testserver/assets/channel/",
-			AssetTypeField:             "http://testserver/assets/field/",
-			AssetTypeFlow:              "http://testserver/assets/flow/",
-			AssetTypeGroup:             "http://testserver/assets/group/",
-			AssetTypeLabel:             "http://testserver/assets/label/",
-			AssetTypeLocationHierarchy: "http://testserver/assets/location_hierarchy/",
-			AssetTypeResthook:          "http://testserver/assets/resthook/",
-		}, cache: cache},
-		mockResponses:  map[string]json.RawMessage{},
-		mockedRequests: []string{},
-	}
-	s.ServerSource.fetcher = s
-	return s
-}
-
-func (s *MockServerSource) MockResponse(url string, response json.RawMessage) {
-	s.mockResponses[url] = response
-}
-
-func (s *MockServerSource) MockedRequests() []string {
-	return s.mockedRequests
-}
-
-func (s *MockServerSource) fetchAsset(url string, itemType AssetType) ([]byte, error) {
-	s.mockedRequests = append(s.mockedRequests, url)
-
-	assetBuf, found := s.mockResponses[url]
-	if !found {
-		return []byte(`{"results":[]}`), nil
-	}
-	return assetBuf, nil
-}
-
-// MarshalJSON marshals this mock asset server into JSON
-func (s *MockServerSource) MarshalJSON() ([]byte, error) {
-	envelope := &serverSourceEnvelope{TypeURLs: s.typeURLs}
-	return json.Marshal(envelope)
 }

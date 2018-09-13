@@ -2,8 +2,6 @@ package rest_test
 
 import (
 	"encoding/json"
-	"github.com/nyaruka/goflow/assets"
-	"reflect"
 	"testing"
 
 	"github.com/nyaruka/goflow/assets/rest"
@@ -20,23 +18,16 @@ func TestAssetCache(t *testing.T) {
 		]
 	}`))
 
-	// can't get an non-registered asset type
-	asset, err := source.GetAsset(rest.AssetType("pizza"), "")
-	assert.EqualError(t, err, "asset type 'pizza' not supported by asset server")
-
 	// try to get all labels
-	asset, err = source.GetAsset(rest.AssetTypeLabel, "")
+	labels, err := source.Labels()
 	assert.NoError(t, err)
-	assert.Equal(t, source.MockedRequests(), []string{"http://testserver/assets/label/"})
-
-	// check we got an asset of the expected type
-	labels, isLabelSlice := asset.([]assets.Label)
-	assert.True(t, isLabelSlice, "expecting slice of label objects but got something of type %s", reflect.TypeOf(asset))
 	assert.Equal(t, 2, len(labels))
 	assert.Equal(t, "Test", labels[0].Name())
+	assert.Equal(t, source.MockedRequests(), []string{"http://testserver/assets/label/"})
 
 	// check that we can refetch without making another server request
-	asset, err = source.GetAsset(rest.AssetTypeLabel, "")
+	labels, err = source.Labels()
 	assert.NoError(t, err)
+	assert.Equal(t, 2, len(labels))
 	assert.Equal(t, source.MockedRequests(), []string{"http://testserver/assets/label/"})
 }

@@ -25,13 +25,13 @@ type assetTypeConfig struct {
 }
 
 var typeConfigs = map[AssetType]*assetTypeConfig{
-	AssetTypeChannel:           {true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) }},
-	AssetTypeField:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) }},
-	AssetTypeFlow:              {false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) }},
-	AssetTypeGroup:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) }},
-	AssetTypeLabel:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) }},
-	AssetTypeLocationHierarchy: {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLocationHierarchies(data) }},
-	AssetTypeResthook:          {true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) }},
+	assetTypeChannel:           {true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) }},
+	assetTypeField:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) }},
+	assetTypeFlow:              {false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) }},
+	assetTypeGroup:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) }},
+	assetTypeLabel:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) }},
+	assetTypeLocationHierarchy: {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLocationHierarchies(data) }},
+	assetTypeResthook:          {true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) }},
 }
 
 // anything which the cache can use to fetch missing items
