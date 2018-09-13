@@ -51,7 +51,7 @@ type CampaignTrigger struct {
 }
 
 // NewCampaignTrigger creates a new campaign trigger with the passed in values
-func NewCampaignTrigger(env utils.Environment, flow flows.Flow, contact *flows.Contact, event *CampaignEvent, triggeredOn time.Time) *CampaignTrigger {
+func NewCampaignTrigger(env utils.Environment, flow *flows.FlowReference, contact *flows.Contact, event *CampaignEvent, triggeredOn time.Time) *CampaignTrigger {
 	return &CampaignTrigger{
 		baseTrigger: baseTrigger{
 			environment: env,

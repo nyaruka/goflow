@@ -529,7 +529,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"unable to read trigger[type=manual]: unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
+	ts.assertErrorResponse(body, []string{"unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try POSTing to the start endpoint a flow asset that references a non-existent group asset
 	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets, assetServerConfig, `{}`)
@@ -572,7 +572,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 		events.NewMsgReceivedEvent(msg),
 	}))
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"unable to read trigger[type=manual]: unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
+	ts.assertErrorResponse(body, []string{"unable to read run 0: unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try to resume this session with a invalid version of the flow which is missing a group
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testFlowMissingGroupAssets, waitingSession, []flows.Event{

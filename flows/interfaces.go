@@ -219,7 +219,7 @@ type Trigger interface {
 	types.XResolvable
 
 	Environment() utils.Environment
-	Flow() Flow
+	Flow() *FlowReference
 	Contact() *Contact
 	Params() types.XValue
 	TriggeredOn() time.Time

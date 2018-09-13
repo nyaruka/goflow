@@ -341,7 +341,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	// lookup flow
 	if r.flow, err = session.Assets().Flows().Get(envelope.Flow.UUID); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to load flow[uuid=%s]: %s", envelope.Flow.UUID, err)
 	}
 
 	// lookup parent run

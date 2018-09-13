@@ -118,8 +118,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// start our flow
-	err = session.Start(trigger, callerEvents)
-	if err != nil {
+	if err := session.Start(trigger, callerEvents); err != nil {
 		return nil, err
 	}
 
