@@ -99,6 +99,4 @@ type AssetSource interface {
 	Labels() ([]Label, error)
 	Locations() ([]*utils.LocationHierarchy, error)
 	Resthooks() ([]Resthook, error)
-
-	HasLocations() bool
 }

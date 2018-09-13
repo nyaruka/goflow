@@ -108,8 +108,6 @@ type SessionAssets interface {
 	Labels() *LabelAssets
 	Locations() *LocationAssets
 	Resthooks() *ResthookAssets
-
-	HasLocations() bool
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following

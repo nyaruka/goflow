@@ -67,8 +67,3 @@ func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }
 func (s *sessionAssets) Resthooks() *flows.ResthookAssets { return s.resthooks }
-
-// HasLocations returns whether locations are supported as an asset item type
-func (s *sessionAssets) HasLocations() bool {
-	return s.source.HasLocations()
-}
