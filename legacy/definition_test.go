@@ -169,6 +169,10 @@ func TestActionMigration(t *testing.T) {
 		migratedActionJSON, _ := utils.JSONMarshal(migratedActionEnvelope)
 		expectedActionJSON, _ := utils.JSONMarshal(test.ExpectedAction)
 
+		if string(expectedActionJSON) != string(migratedActionJSON) {
+			fmt.Println(string(migratedActionJSON))
+		}
+
 		assert.Equal(t, string(expectedActionJSON), string(migratedActionJSON))
 
 		checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
@@ -246,10 +250,11 @@ func TestRuleSetMigration(t *testing.T) {
 			migratedNodeJSON, _ := utils.JSONMarshal(migratedNode)
 			expectedNodeJSON, _ := utils.JSONMarshal(test.ExpectedNode)
 
-			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
 			if string(expectedNodeJSON) != string(migratedNodeJSON) {
 				fmt.Println(string(migratedNodeJSON))
 			}
+
+			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
 
 			migratedNodeUI, _ := utils.JSONMarshal(migratedFlow.UI().GetNode(migratedNode.UUID()))
 			expectedNodeUI, _ := utils.JSONMarshal(test.ExpectedUI)
