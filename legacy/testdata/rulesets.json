@@ -108,6 +108,10 @@
           "name": ["Oui"]
         }
       }
+    },
+    "expected_ui": {
+      "type": "wait_for_response",
+      "position": { "left": 100, "top": 0 }
     }
   },
   {
@@ -227,6 +231,10 @@
           "name": ["Oui"]
         }
       }
+    },
+    "expected_ui": {
+      "type": "wait_for_response",
+      "position": { "left": 100, "top": 0 }
     }
   },
   {
@@ -347,6 +355,10 @@
           "name": ["Femme"]
         }
       }
+    },
+    "expected_ui": {
+      "type": "split_by_expression",
+      "position": { "left": 323, "top": 84 }
     }
   },
   {
@@ -447,7 +459,11 @@
         "type": "msg"
       }
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "wait_for_response",
+      "position": { "left": 100, "top": 0 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -528,7 +544,11 @@
         "type": "msg"
       }
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "wait_for_response",
+      "position": { "left": 5, "top": 5 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -626,7 +646,11 @@
         }
       ]
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "split_by_webhook",
+      "position": { "left": 1, "top": 100 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -740,7 +764,11 @@
         }
       ]
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "split_by_webhook",
+      "position": { "left": 1, "top": 100 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -836,7 +864,13 @@
         }
       ]
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "position": {
+        "left": 1,
+        "top": 100
+      }
+    }
   },
   {
     "legacy_ruleset": {
@@ -938,6 +972,10 @@
           "name": ["Terminé"]
         }
       }
+    },
+    "expected_ui": {
+      "type": "split_by_subflow",
+      "position": { "left": 100, "top": 0 }
     }
   },
   {
@@ -1007,7 +1045,12 @@
         }
       ]
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "split_by_contact_field",
+      "config": { "id": "telegram", "type": "scheme" },
+      "position": { "left": 708, "top": 1611 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -1081,7 +1124,11 @@
         }
       ]
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "split_by_groups",
+      "position": { "left": 428, "top": 374 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -1158,7 +1205,11 @@
         "timeout": 300
       }
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": {
+      "type": "wait_for_response",
+      "position": { "left": 300, "top": 146 }
+    }
   },
   {
     "legacy_ruleset": {
@@ -1261,6 +1312,7 @@
         }
       ]
     },
-    "expected_localization": {}
+    "expected_localization": {},
+    "expected_ui": { "position": { "left": 240, "top": 430 } }
   }
 ]
