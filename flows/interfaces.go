@@ -212,8 +212,6 @@ type Translations interface {
 
 // UINodeDetails is the top level ui details for a node
 type UINodeDetails interface {
-	GetNodeConfig() UINodeConfig
-	GetNodeType() UINodeType
 }
 
 // UI is a optional section in a flow definition with editor specific information

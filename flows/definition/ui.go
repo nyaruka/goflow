@@ -84,11 +84,3 @@ func NewUINodeDetails(
 		},
 	}
 }
-
-func (uie uiNodeDetails) GetNodeConfig() flows.UINodeConfig {
-	return uie.UiNodeConfig_
-}
-
-func (uie uiNodeDetails) GetNodeType() flows.UINodeType {
-	return uie.NodeType_
-}

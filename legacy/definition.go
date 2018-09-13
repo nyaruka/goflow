@@ -1023,12 +1023,10 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		nodes[i] = node
 	}
 
-	for i := range f.RuleSets {
-		ruleSet := f.RuleSets[i]
-
+	for i, ruleSet := range f.RuleSets {
 		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization, collapseExits)
 		if err != nil {
-			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
+			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", ruleSet.UUID, err)
 		}
 		nodes[len(f.ActionSets)+i] = node
 		nodeUI[node.UUID()] = definition.NewUINodeDetails(ruleSet.X, ruleSet.Y, uiType, uiNodeConfig)
