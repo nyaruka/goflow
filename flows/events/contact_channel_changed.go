@@ -42,7 +42,7 @@ func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelCh
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactChannelChangedEvent) Validate(assets flows.SessionAssets) error {
-	_, err := assets.GetChannel(e.Channel.UUID)
+	_, err := assets.Channels().Get(e.Channel.UUID)
 	return err
 }
 
@@ -52,7 +52,7 @@ func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can't apply event in session without a contact")
 	}
 
-	channel, err := run.Session().Assets().GetChannel(e.Channel.UUID)
+	channel, err := run.Session().Assets().Channels().Get(e.Channel.UUID)
 	if err != nil {
 		return err
 	}

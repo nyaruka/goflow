@@ -43,8 +43,7 @@ func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {
 	for _, group := range e.Groups {
-		_, err := assets.GetGroup(group.UUID)
-		if err != nil {
+		if _, err := assets.Groups().Get(group.UUID); err != nil {
 			return err
 		}
 	}
@@ -57,15 +56,11 @@ func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can't apply event in session without a contact")
 	}
 
-	groupSet, err := run.Session().Assets().GetGroupSet()
-	if err != nil {
-		return err
-	}
+	assets := run.Session().Assets()
 
 	for _, groupRef := range e.Groups {
-		group := groupSet.FindByUUID(groupRef.UUID)
-
-		if group != nil {
+		group, err := assets.Groups().Get(groupRef.UUID)
+		if err == nil {
 			run.Contact().Groups().Add(group)
 		}
 	}

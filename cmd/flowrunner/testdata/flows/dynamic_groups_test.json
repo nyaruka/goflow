@@ -261,7 +261,7 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "flow": {
-                        "name": "Dynamic Groups",
+                        "name": "Registration",
                         "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",

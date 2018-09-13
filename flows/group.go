@@ -1,10 +1,10 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -26,40 +26,24 @@ import (
 //
 // @context group
 type Group struct {
-	uuid        GroupUUID
-	id          GroupID
-	name        string
-	query       string
+	assets.Group
+
 	parsedQuery *contactql.ContactQuery
 }
 
-// NewGroup returns a new group object with the passed in uuid and name
-func NewGroup(uuid GroupUUID, id GroupID, name string, query string) *Group {
-	return &Group{
-		uuid:  uuid,
-		id:    id,
-		name:  name,
-		query: query,
-	}
+// NewGroup returns a new group object from the given group asset
+func NewGroup(asset assets.Group) *Group {
+	return &Group{Group: asset}
 }
 
-// ID returns the ID of the group
-func (g *Group) ID() GroupID { return g.id }
-
-// UUID returns the UUID of the group
-func (g *Group) UUID() GroupUUID { return g.uuid }
-
-// Name returns the name of the group
-func (g *Group) Name() string { return g.name }
-
-// Query returns the query of a dynamic group
-func (g *Group) Query() string { return g.query }
+// Asset returns the underlying asset
+func (g *Group) Asset() assets.Group { return g.Group }
 
 // ParsedQuery returns the parsed query of a dynamic group (cached)
 func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
-	if g.query != "" && g.parsedQuery == nil {
+	if g.Query() != "" && g.parsedQuery == nil {
 		var err error
-		if g.parsedQuery, err = contactql.ParseQuery(g.query); err != nil {
+		if g.parsedQuery, err = contactql.ParseQuery(g.Query()); err != nil {
 			return nil, err
 		}
 	}
@@ -67,7 +51,7 @@ func (g *Group) ParsedQuery() (*contactql.ContactQuery, error) {
 }
 
 // IsDynamic returns whether this group is dynamic
-func (g *Group) IsDynamic() bool { return g.query != "" }
+func (g *Group) IsDynamic() bool { return g.Query() != "" }
 
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
 func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) (bool, error) {
@@ -83,15 +67,15 @@ func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) 
 }
 
 // Reference returns a reference to this group
-func (g *Group) Reference() *GroupReference { return NewGroupReference(g.uuid, g.name) }
+func (g *Group) Reference() *GroupReference { return NewGroupReference(g.UUID(), g.Name()) }
 
 // Resolve resolves the given key when this group is referenced in an expression
 func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "uuid":
-		return types.NewXText(string(g.uuid))
+		return types.NewXText(string(g.UUID()))
 	case "name":
-		return types.NewXText(g.name)
+		return types.NewXText(g.Name())
 	}
 
 	return types.NewXResolveError(g, key)
@@ -101,7 +85,7 @@ func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
 func (g *Group) Describe() string { return "group" }
 
 // Reduce is called when this object needs to be reduced to a primitive
-func (g *Group) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(g.name) }
+func (g *Group) Reduce(env utils.Environment) types.XPrimitive { return types.NewXText(g.Name()) }
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (g *Group) ToXJSON(env utils.Environment) types.XText {
@@ -129,9 +113,9 @@ func (l *GroupList) clone() *GroupList {
 }
 
 // FindByUUID returns the group with the passed in UUID or nil if not found
-func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
+func (l *GroupList) FindByUUID(uuid assets.GroupUUID) *Group {
 	for _, group := range l.groups {
-		if group.uuid == uuid {
+		if group.UUID() == uuid {
 			return group
 		}
 	}
@@ -140,7 +124,7 @@ func (l *GroupList) FindByUUID(uuid GroupUUID) *Group {
 
 // Add adds the given group to this group list
 func (l *GroupList) Add(group *Group) bool {
-	if l.FindByUUID(group.uuid) == nil {
+	if l.FindByUUID(group.UUID()) == nil {
 		l.groups = append(l.groups, group)
 		return true
 	}
@@ -150,7 +134,7 @@ func (l *GroupList) Add(group *Group) bool {
 // Remove removes the given group from this group list
 func (l *GroupList) Remove(group *Group) bool {
 	for g := range l.groups {
-		if l.groups[g].uuid == group.uuid {
+		if l.groups[g].UUID() == group.UUID() {
 			l.groups = append(l.groups[:g], l.groups[g+1:]...)
 			return true
 		}
@@ -198,101 +182,47 @@ func (l GroupList) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*GroupList)(nil)
 var _ types.XIndexable = (*GroupList)(nil)
 
-// GroupSet defines the unordered set of all groups for a session
-type GroupSet struct {
-	groups        []*Group
-	staticGroups  []*Group
-	dynamicGroups []*Group
-	groupsByUUID  map[GroupUUID]*Group
+// GroupAssets provides access to all group assets
+type GroupAssets struct {
+	all    []*Group
+	byUUID map[assets.GroupUUID]*Group
 }
 
-// NewGroupSet creates a new group set from the given list of groups
-func NewGroupSet(groups []*Group) *GroupSet {
-	s := &GroupSet{
-		groups:        groups,
-		staticGroups:  make([]*Group, 0),
-		dynamicGroups: make([]*Group, 0),
-		groupsByUUID:  make(map[GroupUUID]*Group, len(groups)),
+// NewGroupAssets creates a new set of group assets
+func NewGroupAssets(groups []assets.Group) *GroupAssets {
+	s := &GroupAssets{
+		all:    make([]*Group, len(groups)),
+		byUUID: make(map[assets.GroupUUID]*Group, len(groups)),
 	}
-
-	for _, group := range s.groups {
-		if group.IsDynamic() {
-			s.dynamicGroups = append(s.dynamicGroups, group)
-		} else {
-			s.staticGroups = append(s.staticGroups, group)
-		}
-
-		s.groupsByUUID[group.uuid] = group
+	for g, asset := range groups {
+		group := NewGroup(asset)
+		s.all[g] = group
+		s.byUUID[group.UUID()] = group
 	}
-
 	return s
 }
 
-// All returns all groups in this group set
-func (s *GroupSet) All() []*Group {
-	return s.groups
+// All returns all the groups
+func (s *GroupAssets) All() []*Group {
+	return s.all
 }
 
-// Static returns all the static groups in this group set
-func (s *GroupSet) Static() []*Group {
-	return s.staticGroups
-}
-
-// Dynamic returns all the dynamic groups in this group set
-func (s *GroupSet) Dynamic() []*Group {
-	return s.dynamicGroups
-}
-
-// FindByUUID finds the group with the given UUID
-func (s *GroupSet) FindByUUID(uuid GroupUUID) *Group {
-	return s.groupsByUUID[uuid]
+// Get returns the group with the given UUID
+func (s *GroupAssets) Get(uuid assets.GroupUUID) (*Group, error) {
+	c, found := s.byUUID[uuid]
+	if !found {
+		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
+	}
+	return c, nil
 }
 
 // FindByName looks for a group with the given name (case-insensitive)
-func (s *GroupSet) FindByName(name string) *Group {
+func (s *GroupAssets) FindByName(name string) *Group {
 	name = strings.ToLower(name)
-	for _, group := range s.groups {
-		if strings.ToLower(group.name) == name {
+	for _, group := range s.all {
+		if strings.ToLower(group.Name()) == name {
 			return group
 		}
 	}
 	return nil
-}
-
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-type groupEnvelope struct {
-	UUID  GroupUUID `json:"uuid" validate:"required,uuid4"`
-	ID    GroupID   `json:"id,omitempty"`
-	Name  string    `json:"name"`
-	Query string    `json:"query,omitempty"`
-}
-
-// ReadGroup reads a group from the given JSON
-func ReadGroup(data json.RawMessage) (*Group, error) {
-	var ge groupEnvelope
-	if err := utils.UnmarshalAndValidate(data, &ge); err != nil {
-		return nil, fmt.Errorf("unable to read group: %s", err)
-	}
-
-	return NewGroup(ge.UUID, ge.ID, ge.Name, ge.Query), nil
-}
-
-// ReadGroupSet reads a group set from the given JSON
-func ReadGroupSet(data json.RawMessage) (*GroupSet, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
-		return nil, err
-	}
-
-	groups := make([]*Group, len(items))
-	for d := range items {
-		if groups[d], err = ReadGroup(items[d]); err != nil {
-			return nil, err
-		}
-	}
-
-	return NewGroupSet(groups), nil
 }

@@ -49,7 +49,7 @@ func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 // Validate validates our event is valid and has all the assets it needs
 func (e *MsgReceivedEvent) Validate(assets flows.SessionAssets) error {
 	if e.Msg.Channel() != nil {
-		_, err := assets.GetChannel(e.Msg.Channel().UUID)
+		_, err := assets.Channels().Get(e.Msg.Channel().UUID)
 		return err
 	}
 	return nil
@@ -57,10 +57,10 @@ func (e *MsgReceivedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
-	var channel flows.Channel
+	var channel *flows.Channel
 	var err error
 	if e.Msg.Channel() != nil {
-		channel, err = run.Session().Assets().GetChannel(e.Msg.Channel().UUID)
+		channel, err = run.Session().Assets().Channels().Get(e.Msg.Channel().UUID)
 		if err != nil {
 			return err
 		}

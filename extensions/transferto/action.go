@@ -96,7 +96,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log 
 }
 
 // attempts to make the transfer, returning the actual amount transfered or an error
-func attemptTransfer(channel flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string, httpClient *utils.HTTPClient) (string, decimal.Decimal, error) {
+func attemptTransfer(channel *flows.Channel, config *transferToConfig, amounts map[string]decimal.Decimal, recipient string, httpClient *utils.HTTPClient) (string, decimal.Decimal, error) {
 	cl := client.NewTransferToClient(config.Login, config.APIToken, httpClient)
 
 	info, err := cl.MSISDNInfo(recipient, config.Currency, "1")

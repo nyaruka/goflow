@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
@@ -63,7 +64,7 @@ func (s *session) Trigger() flows.Trigger               { return s.trigger }
 func (s *session) Contact() *flows.Contact              { return s.contact }
 func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
 
-func (s *session) FlowOnStack(flowUUID flows.FlowUUID) bool { return s.flowStack.hasFlow(flowUUID) }
+func (s *session) FlowOnStack(uuid assets.FlowUUID) bool { return s.flowStack.hasFlow(uuid) }
 
 func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun) {
 	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun}
@@ -129,10 +130,15 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 
 // Start beings processing of this session from a trigger and a set of initial caller events
 func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error {
+	// try to load the flow
+	flow, err := s.Assets().Flows().Get(trigger.Flow().UUID)
+	if err != nil {
+		return fmt.Errorf("unable to load flow[uuid=%s]: %s", trigger.Flow().UUID, err)
+	}
 
 	// check flow is valid and has everything it needs to run
-	if err := trigger.Flow().Validate(s.Assets()); err != nil {
-		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", trigger.Flow().UUID(), err)
+	if err := flow.Validate(s.Assets()); err != nil {
+		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", flow.UUID(), err)
 	}
 
 	// check caller events are valid
@@ -148,7 +154,7 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 	}
 
 	s.trigger = trigger
-	s.PushFlow(trigger.Flow(), nil)
+	s.PushFlow(flow, nil)
 
 	// off to the races...
 	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
@@ -167,7 +173,7 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets()); err != nil {
-		return fmt.Errorf("validation failed for flow[uuid=%s]: %v", waitingRun.Flow().UUID(), err)
+		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", waitingRun.Flow().UUID(), err)
 	}
 
 	// check caller events are valid
@@ -517,7 +523,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	for i := range envelope.Runs {
 		run, err := runs.ReadRun(s, envelope.Runs[i])
 		if err != nil {
-			return nil, fmt.Errorf("unable to read run: %s", err)
+			return nil, fmt.Errorf("unable to read run %d: %s", i, err)
 		}
 		s.addRun(run)
 	}

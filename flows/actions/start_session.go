@@ -46,7 +46,7 @@ func (a *StartSessionAction) Type() string { return TypeStartSession }
 // Validate validates our action is valid and has all the assets it needs
 func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {
 	// check we have the flow
-	if _, err := assets.GetFlow(a.Flow.UUID); err != nil {
+	if _, err := assets.Flows().Get(a.Flow.UUID); err != nil {
 		return err
 	}
 	// check we have all groups

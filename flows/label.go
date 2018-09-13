@@ -1,105 +1,71 @@
 package flows
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
-	"github.com/nyaruka/goflow/utils"
+	"github.com/nyaruka/goflow/assets"
 )
 
 // Label represents a message label
 type Label struct {
-	uuid LabelUUID
-	id   LabelID
-	name string
+	assets.Label
 }
 
-// NewLabel creates a new label given the passed in uuid and name
-func NewLabel(uuid LabelUUID, id LabelID, name string) *Label {
-	return &Label{
-		uuid: uuid,
-		id:   id,
-		name: name,
-	}
+// NewLabel creates a new label from the given asset
+func NewLabel(asset assets.Label) *Label {
+	return &Label{Label: asset}
 }
 
-// ID returns the ID of this label
-func (l *Label) ID() LabelID { return l.id }
-
-// UUID returns the UUID of this label
-func (l *Label) UUID() LabelUUID { return l.uuid }
-
-// Name returns the name of this label
-func (l *Label) Name() string { return l.name }
+// Asset returns the underlying asset
+func (l *Label) Asset() assets.Label { return l.Label }
 
 // Reference returns a reference to this label
-func (l *Label) Reference() *LabelReference { return NewLabelReference(l.uuid, l.name) }
+func (l *Label) Reference() *LabelReference { return NewLabelReference(l.UUID(), l.Name()) }
 
-// LabelSet defines the unordered set of all labels for a session
-type LabelSet struct {
-	labels       []*Label
-	labelsByUUID map[LabelUUID]*Label
+var _ assets.Label = (*Label)(nil)
+
+// LabelAssets provides access to all label assets
+type LabelAssets struct {
+	all    []*Label
+	byUUID map[assets.LabelUUID]*Label
 }
 
-// NewLabelSet creates a new label set from the given slice of labels
-func NewLabelSet(labels []*Label) *LabelSet {
-	s := &LabelSet{labels: labels, labelsByUUID: make(map[LabelUUID]*Label, len(labels))}
-	for _, label := range s.labels {
-		s.labelsByUUID[label.uuid] = label
+// NewLabelAssets creates a new set of label assets
+func NewLabelAssets(labels []assets.Label) *LabelAssets {
+	s := &LabelAssets{
+		all:    make([]*Label, len(labels)),
+		byUUID: make(map[assets.LabelUUID]*Label, len(labels)),
+	}
+	for g, asset := range labels {
+		label := NewLabel(asset)
+		s.all[g] = label
+		s.byUUID[label.UUID()] = label
 	}
 	return s
 }
 
-// FindByUUID finds the label with the given UUID
-func (s *LabelSet) FindByUUID(uuid LabelUUID) *Label {
-	return s.labelsByUUID[uuid]
+// All returns all the labels
+func (s *LabelAssets) All() []*Label {
+	return s.all
+}
+
+// Get returns the label with the given UUID
+func (s *LabelAssets) Get(uuid assets.LabelUUID) (*Label, error) {
+	c, found := s.byUUID[uuid]
+	if !found {
+		return nil, fmt.Errorf("no such label with uuid '%s'", uuid)
+	}
+	return c, nil
 }
 
 // FindByName looks for a label with the given name (case-insensitive)
-func (s *LabelSet) FindByName(name string) *Label {
+func (s *LabelAssets) FindByName(name string) *Label {
 	name = strings.ToLower(name)
-	for _, label := range s.labels {
-		if strings.ToLower(label.name) == name {
+	for _, label := range s.all {
+		if strings.ToLower(label.Name()) == name {
 			return label
 		}
 	}
 	return nil
-}
-
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-type labelEnvelope struct {
-	UUID LabelUUID `json:"uuid" validate:"required,uuid4"`
-	ID   LabelID   `json:"id,omitempty"`
-	Name string    `json:"name"`
-}
-
-// ReadLabel reads a label from the given JSON
-func ReadLabel(data json.RawMessage) (*Label, error) {
-	var le labelEnvelope
-	if err := utils.UnmarshalAndValidate(data, &le); err != nil {
-		return nil, fmt.Errorf("unable to read label: %s", err)
-	}
-
-	return NewLabel(le.UUID, le.ID, le.Name), nil
-}
-
-// ReadLabelSet reads a label set from the given JSON
-func ReadLabelSet(data json.RawMessage) (*LabelSet, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
-		return nil, err
-	}
-
-	labels := make([]*Label, len(items))
-	for d := range items {
-		if labels[d], err = ReadLabel(items[d]); err != nil {
-			return nil, err
-		}
-	}
-
-	return NewLabelSet(labels), nil
 }

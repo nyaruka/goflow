@@ -155,7 +155,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Registration Flow",
+                        "name": "Registration",
                         "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -414,7 +414,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Registration Flow",
+                        "name": "Registration",
                         "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",

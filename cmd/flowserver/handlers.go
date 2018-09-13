@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -67,7 +67,7 @@ type startRequest struct {
 }
 
 // reads the assets and asset_server section of a request
-func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCache) (assets.AssetServer, error) {
+func (s *FlowServer) readAssets(request *sessionRequest, cache *rest.AssetCache) (*rest.ServerSource, error) {
 	// include any embedded assets
 	if request.Assets != nil {
 		if err := s.assetCache.Include(*request.Assets); err != nil {
@@ -76,7 +76,7 @@ func (s *FlowServer) readAssets(request *sessionRequest, cache *assets.AssetCach
 	}
 
 	// read and validate our asset server
-	return assets.ReadAssetServer(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
+	return rest.ReadServerSource(s.config.AssetServerToken, s.httpClient, cache, request.AssetServer)
 }
 
 // handles a request to /start
@@ -98,7 +98,11 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// build our session
-	assets := engine.NewSessionAssets(assetServer)
+	assets, err := engine.NewSessionAssets(assetServer)
+	if err != nil {
+		return nil, err
+	}
+
 	session := engine.NewSession(assets, config, s.httpClient)
 
 	// read our trigger
@@ -114,8 +118,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// start our flow
-	err = session.Start(trigger, callerEvents)
-	if err != nil {
+	if err := session.Start(trigger, callerEvents); err != nil {
 		return nil, err
 	}
 
@@ -156,7 +159,11 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read our session
-	assets := engine.NewSessionAssets(assetServer)
+	assets, err := engine.NewSessionAssets(assetServer)
+	if err != nil {
+		return nil, err
+	}
+
 	session, err := engine.ReadSession(assets, config, s.httpClient, resume.Session)
 	if err != nil {
 		return nil, err

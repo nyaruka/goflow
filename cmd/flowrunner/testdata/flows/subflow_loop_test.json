@@ -219,7 +219,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Parent Flow",
+                        "name": "Registration",
                         "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -43,17 +44,13 @@ func (e *runEnvironment) Languages() utils.LanguageList {
 	return e.cachedLanguages
 }
 
-func (e *runEnvironment) Locations() (*utils.LocationHierarchy, error) {
+func (e *runEnvironment) Locations() (assets.LocationHierarchy, error) {
 	sessionAssets := e.run.Session().Assets()
-	if sessionAssets.HasLocations() {
-		hierarchies, err := sessionAssets.GetLocationHierarchySet()
-		if err != nil {
-			return nil, err
-		}
-
+	hierarchies := sessionAssets.Locations().Hierarchies()
+	if len(hierarchies) > 0 {
 		// in the future we might support more than one hiearchy per session,
 		// but for now we only use the first one
-		return hierarchies.All()[0], nil
+		return hierarchies[0], nil
 	}
 
 	return nil, nil

@@ -61,7 +61,7 @@ func ReadRunSummary(session flows.Session, data json.RawMessage) (flows.RunSumma
 	}
 
 	// lookup the flow
-	if run.flow, err = session.Assets().GetFlow(e.Flow.UUID); err != nil {
+	if run.flow, err = session.Assets().Flows().Get(e.Flow.UUID); err != nil {
 		return nil, err
 	}
 

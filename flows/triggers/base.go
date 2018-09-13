@@ -21,14 +21,14 @@ func RegisterType(name string, f readFunc) {
 
 type baseTrigger struct {
 	environment utils.Environment
-	flow        flows.Flow
+	flow        *flows.FlowReference
 	contact     *flows.Contact
 	params      types.XValue
 	triggeredOn time.Time
 }
 
 func (t *baseTrigger) Environment() utils.Environment { return t.environment }
-func (t *baseTrigger) Flow() flows.Flow               { return t.flow }
+func (t *baseTrigger) Flow() *flows.FlowReference     { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
 func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
@@ -48,7 +48,7 @@ func (t *baseTrigger) Describe() string { return "trigger" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(string(t.flow.UUID()))
+	return types.NewXText(string(t.flow.UUID))
 }
 
 //------------------------------------------------------------------------------------------
@@ -75,11 +75,8 @@ func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Tr
 func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTriggerEnvelope) error {
 	var err error
 
+	base.flow = envelope.Flow
 	base.triggeredOn = envelope.TriggeredOn
-
-	if base.flow, err = session.Assets().GetFlow(envelope.Flow.UUID); err != nil {
-		return fmt.Errorf("unable to load flow[uuid=%s]: %s", envelope.Flow.UUID, err)
-	}
 
 	if envelope.Environment != nil {
 		if base.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
@@ -100,7 +97,7 @@ func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *ba
 
 func marshalBaseTrigger(t *baseTrigger, envelope *baseTriggerEnvelope) error {
 	var err error
-	envelope.Flow = t.flow.Reference()
+	envelope.Flow = t.flow
 	envelope.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {

@@ -3,6 +3,7 @@ package flows_test
 import (
 	"testing"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 
@@ -52,6 +53,6 @@ func TestChannelReferenceUnmarsal(t *testing.T) {
 	channel := &flows.ChannelReference{}
 	err := utils.UnmarshalAndValidate([]byte(`{"uuid": "ffffffff-9b24-92e1-ffff-ffffb207cdb4", "name": "Old Channel"}`), channel)
 	assert.NoError(t, err)
-	assert.Equal(t, flows.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID)
+	assert.Equal(t, assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"), channel.UUID)
 	assert.Equal(t, "Old Channel", channel.Name)
 }

@@ -3,15 +3,16 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
 
 type flow struct {
-	uuid     flows.FlowUUID
-	id       flows.FlowID
+	uuid     assets.FlowUUID
 	name     string
 	language utils.Language
 	flowType flows.FlowType
@@ -27,12 +28,10 @@ type flow struct {
 	ui flows.UI
 }
 
-type FlowObj = flow
-
-func NewFlow(uuid flows.FlowUUID, id flows.FlowID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) (flows.Flow, error) {
+// NewFlow creates a new flow
+func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
-		id:                 id,
 		name:               name,
 		language:           language,
 		flowType:           flowType,
@@ -67,8 +66,7 @@ func NewFlow(uuid flows.FlowUUID, id flows.FlowID, name string, language utils.L
 	return f, nil
 }
 
-func (f *flow) UUID() flows.FlowUUID                   { return f.uuid }
-func (f *flow) ID() flows.FlowID                       { return f.id }
+func (f *flow) UUID() assets.FlowUUID                  { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
 func (f *flow) Revision() int                          { return f.revision }
 func (f *flow) Language() utils.Language               { return f.language }
@@ -173,15 +171,14 @@ func (f *flow) buildNodeMap() error {
 //------------------------------------------------------------------------------------------
 
 type flowEnvelope struct {
-	UUID               flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	ID                 flows.FlowID   `json:"id,omitempty"`
-	Name               string         `json:"name" validate:"required"`
-	Language           utils.Language `json:"language" validate:"required"`
-	Type               flows.FlowType `json:"type" validate:"required"`
-	Revision           int            `json:"revision"`
-	ExpireAfterMinutes int            `json:"expire_after_minutes"`
-	Localization       localization   `json:"localization"`
-	Nodes              []*node        `json:"nodes"`
+	UUID               assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name               string          `json:"name" validate:"required"`
+	Language           utils.Language  `json:"language" validate:"required"`
+	Type               flows.FlowType  `json:"type" validate:"required"`
+	Revision           int             `json:"revision"`
+	ExpireAfterMinutes int             `json:"expire_after_minutes"`
+	Localization       localization    `json:"localization"`
+	Nodes              []*node         `json:"nodes"`
 }
 
 type flowEnvelopeWithUI struct {
@@ -200,7 +197,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		nodes[n] = e.Nodes[n]
 	}
 
-	return NewFlow(e.UUID, e.ID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil)
+	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil)
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -208,7 +205,6 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 	var fe = &flowEnvelopeWithUI{
 		flowEnvelope: flowEnvelope{
 			UUID:               f.uuid,
-			ID:                 f.id,
 			Name:               f.name,
 			Language:           f.language,
 			Type:               f.flowType,
@@ -228,4 +224,44 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(fe)
+}
+
+// implemention of FlowAssets which provides lazy loading and validation of flows
+type flowAssets struct {
+	byUUID map[assets.FlowUUID]flows.Flow
+
+	mutex  sync.Mutex
+	source assets.AssetSource
+}
+
+// NewFlowAssets creates a new flow assets
+func NewFlowAssets(source assets.AssetSource) flows.FlowAssets {
+	return &flowAssets{
+		byUUID: make(map[assets.FlowUUID]flows.Flow),
+		source: source,
+	}
+}
+
+// Get returns the flow with the given UUID
+func (a *flowAssets) Get(uuid assets.FlowUUID) (flows.Flow, error) {
+	a.mutex.Lock()
+	defer a.mutex.Unlock()
+
+	flow := a.byUUID[uuid]
+	if flow != nil {
+		return flow, nil
+	}
+
+	asset, err := a.source.Flow(uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	flow, err = ReadFlow(asset.Definition())
+	if err != nil {
+		return nil, err
+	}
+
+	a.byUUID[flow.UUID()] = flow
+	return flow, nil
 }

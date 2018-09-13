@@ -40,7 +40,7 @@ func (a *SetContactFieldAction) Type() string { return TypeSetContactField }
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactFieldAction) Validate(assets flows.SessionAssets) error {
-	_, err := assets.GetField(a.Field.Key)
+	_, err := assets.Fields().Get(a.Field.Key)
 	return err
 }
 

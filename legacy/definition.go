@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
@@ -30,12 +31,11 @@ type Flow struct {
 
 // Metadata is the metadata section of a legacy flow
 type Metadata struct {
-	UUID     flows.FlowUUID `json:"uuid" validate:"required,uuid4"`
-	ID       flows.FlowID   `json:"id,omitempty"`
-	Name     string         `json:"name"`
-	Revision int            `json:"revision"`
-	Expires  int            `json:"expires"`
-	Notes    []Note         `json:"notes,omitempty"`
+	UUID     assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
+	Name     string          `json:"name"`
+	Revision int             `json:"revision"`
+	Expires  int             `json:"expires"`
+	Notes    []Note          `json:"notes,omitempty"`
 }
 
 type Rule struct {
@@ -67,7 +67,7 @@ type ActionSet struct {
 }
 
 type LabelReference struct {
-	UUID flows.LabelUUID
+	UUID assets.LabelUUID
 	Name string
 }
 
@@ -102,7 +102,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	l.UUID = flows.LabelUUID(raw["uuid"].(string))
+	l.UUID = assets.LabelUUID(raw["uuid"].(string))
 	l.Name = raw["name"].(string)
 	return nil
 }
@@ -117,7 +117,7 @@ func (c *ContactReference) Migrate() *flows.ContactReference {
 }
 
 type GroupReference struct {
-	UUID flows.GroupUUID
+	UUID assets.GroupUUID
 	Name string
 }
 
@@ -152,7 +152,7 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	g.UUID = flows.GroupUUID(raw["uuid"].(string))
+	g.UUID = assets.GroupUUID(raw["uuid"].(string))
 	g.Name = raw["name"].(string)
 	return nil
 }
@@ -162,8 +162,8 @@ type VariableReference struct {
 }
 
 type FlowReference struct {
-	UUID flows.FlowUUID `json:"uuid"`
-	Name string         `json:"name"`
+	UUID assets.FlowUUID `json:"uuid"`
+	Name string          `json:"name"`
 }
 
 func (f *FlowReference) Migrate() *flows.FlowReference {
@@ -222,7 +222,7 @@ type Action struct {
 	Flow FlowReference `json:"flow"`
 
 	// channel
-	Channel flows.ChannelUUID `json:"channel"`
+	Channel assets.ChannelUUID `json:"channel"`
 
 	//email
 	Emails  []string `json:"emails"`
@@ -1064,7 +1064,6 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 
 	return definition.NewFlow(
 		f.Metadata.UUID,
-		f.Metadata.ID,
 		f.Metadata.Name,
 		f.BaseLanguage,
 		flowTypeMapping[f.FlowType],

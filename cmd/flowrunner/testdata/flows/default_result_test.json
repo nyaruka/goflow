@@ -142,7 +142,7 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "flow": {
-                        "name": "Another Flow",
+                        "name": "Registration",
                         "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -379,7 +379,7 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "flow": {
-                        "name": "Another Flow",
+                        "name": "Registration",
                         "uuid": "c37ae862-4802-447a-a783-1fe029a170e9"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",

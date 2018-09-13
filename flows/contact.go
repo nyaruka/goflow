@@ -254,14 +254,14 @@ var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, fieldSet *FieldSet, key string, rawValue string) error {
+func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) error {
 	runEnv := env.(RunEnvironment)
 
-	return c.fields.setValue(runEnv, fieldSet, key, rawValue)
+	return c.fields.setValue(runEnv, fields, key, rawValue)
 }
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
-func (c *Contact) PreferredChannel() Channel {
+func (c *Contact) PreferredChannel() *Channel {
 	if len(c.urns) > 0 {
 		return c.urns[0].Channel()
 	}
@@ -269,7 +269,7 @@ func (c *Contact) PreferredChannel() Channel {
 }
 
 // UpdatePreferredChannel updates the preferred channel
-func (c *Contact) UpdatePreferredChannel(channel Channel) {
+func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 	priorityURNs := make([]*ContactURN, 0)
 	otherURNs := make([]*ContactURN, 0)
 
@@ -292,12 +292,11 @@ func (c *Contact) UpdatePreferredChannel(channel Channel) {
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
 func (c *Contact) ReevaluateDynamicGroups(session Session) error {
-	groups, err := session.Assets().GetGroupSet()
-	if err != nil {
-		return err
-	}
+	for _, group := range session.Assets().Groups().All() {
+		if !group.IsDynamic() {
+			continue
+		}
 
-	for _, group := range groups.Dynamic() {
 		qualifies, err := group.CheckDynamicMembership(session.Environment(), c)
 		if err != nil {
 			return err
@@ -427,17 +426,14 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	} else {
 		groups := make([]*Group, len(envelope.Groups))
 		for g := range envelope.Groups {
-			if groups[g], err = assets.GetGroup(envelope.Groups[g].UUID); err != nil {
+			if groups[g], err = assets.Groups().Get(envelope.Groups[g].UUID); err != nil {
 				return nil, err
 			}
 		}
 		c.groups = NewGroupList(groups)
 	}
 
-	fieldSet, err := assets.GetFieldSet()
-	if err != nil {
-		return nil, err
-	}
+	fieldSet := assets.Fields()
 
 	c.fields = make(FieldValues, len(fieldSet.All()))
 
@@ -445,7 +441,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 		value := NewEmptyFieldValue(field)
 
 		if envelope.Fields != nil {
-			valueEnvelope := envelope.Fields[field.key]
+			valueEnvelope := envelope.Fields[field.Key()]
 			if valueEnvelope != nil {
 				value.text = valueEnvelope.Text
 				value.number = valueEnvelope.Number
@@ -456,7 +452,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 			}
 		}
 
-		c.fields[field.key] = value
+		c.fields[field.Key()] = value
 	}
 
 	return c, nil

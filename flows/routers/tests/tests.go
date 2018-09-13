@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/functions"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -224,7 +225,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 	}
 
 	// iterate through the groups looking for one with the same UUID as passed in
-	group := contact.Groups().FindByUUID(flows.GroupUUID(groupUUID.Native()))
+	group := contact.Groups().FindByUUID(assets.GroupUUID(groupUUID.Native()))
 	if group != nil {
 		return XTestResult{true, group}
 	}
