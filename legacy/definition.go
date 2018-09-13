@@ -71,11 +71,11 @@ type LabelReference struct {
 	Name string
 }
 
-func (l *LabelReference) Migrate() *flows.LabelReference {
+func (l *LabelReference) Migrate() *assets.LabelReference {
 	if len(l.UUID) > 0 {
-		return flows.NewLabelReference(l.UUID, l.Name)
+		return assets.NewLabelReference(l.UUID, l.Name)
 	}
-	return flows.NewVariableLabelReference(l.Name)
+	return assets.NewVariableLabelReference(l.Name)
 }
 
 // UnmarshalJSON unmarshals a legacy label reference from the given JSON
@@ -121,11 +121,11 @@ type GroupReference struct {
 	Name string
 }
 
-func (g *GroupReference) Migrate() *flows.GroupReference {
+func (g *GroupReference) Migrate() *assets.GroupReference {
 	if len(g.UUID) > 0 {
-		return flows.NewGroupReference(g.UUID, g.Name)
+		return assets.NewGroupReference(g.UUID, g.Name)
 	}
-	return flows.NewVariableGroupReference(g.Name)
+	return assets.NewVariableGroupReference(g.Name)
 }
 
 // UnmarshalJSON unmarshals a legacy group reference from the given JSON
@@ -166,19 +166,19 @@ type FlowReference struct {
 	Name string          `json:"name"`
 }
 
-func (f *FlowReference) Migrate() *flows.FlowReference {
-	return flows.NewFlowReference(f.UUID, f.Name)
+func (f *FlowReference) Migrate() *assets.FlowReference {
+	return assets.NewFlowReference(f.UUID, f.Name)
 }
 
 // RulesetConfig holds the config dictionary for a legacy ruleset
 type RulesetConfig struct {
-	Flow           *flows.FlowReference `json:"flow"`
-	FieldDelimiter string               `json:"field_delimiter"`
-	FieldIndex     int                  `json:"field_index"`
-	Webhook        string               `json:"webhook"`
-	WebhookAction  string               `json:"webhook_action"`
-	WebhookHeaders []WebhookHeader      `json:"webhook_headers"`
-	Resthook       string               `json:"resthook"`
+	Flow           *assets.FlowReference `json:"flow"`
+	FieldDelimiter string                `json:"field_delimiter"`
+	FieldIndex     int                   `json:"field_index"`
+	Webhook        string                `json:"webhook"`
+	WebhookAction  string                `json:"webhook_action"`
+	WebhookHeaders []WebhookHeader       `json:"webhook_headers"`
+	Resthook       string                `json:"resthook"`
 }
 
 type WebhookHeader struct {
@@ -364,7 +364,7 @@ var testTypeMappings = map[string]string{
 func migrateAction(baseLanguage utils.Language, a Action, localization flows.Localization) (flows.Action, error) {
 	switch a.Type {
 	case "add_label":
-		labels := make([]*flows.LabelReference, len(a.Labels))
+		labels := make([]*assets.LabelReference, len(a.Labels))
 		for i, label := range a.Labels {
 			labels[i] = label.Migrate()
 		}
@@ -402,7 +402,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}, nil
 	case "channel":
 		return &actions.SetContactChannelAction{
-			Channel:    flows.NewChannelReference(a.Channel, a.Name),
+			Channel:    assets.NewChannelReference(a.Channel, a.Name),
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "flow":
@@ -415,7 +415,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		for i, contact := range a.Contacts {
 			contacts[i] = contact.Migrate()
 		}
-		groups := make([]*flows.GroupReference, len(a.Groups))
+		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -489,7 +489,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		for i, contact := range a.Contacts {
 			contacts[i] = contact.Migrate()
 		}
-		groups := make([]*flows.GroupReference, len(a.Groups))
+		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -510,7 +510,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}, nil
 
 	case "add_group":
-		groups := make([]*flows.GroupReference, len(a.Groups))
+		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -520,7 +520,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil
 	case "del_group":
-		groups := make([]*flows.GroupReference, len(a.Groups))
+		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
@@ -563,7 +563,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 
 		return &actions.SetContactFieldAction{
-			Field:      flows.NewFieldReference(a.Field, a.Label),
+			Field:      assets.NewFieldReference(a.Field, a.Label),
 			Value:      migratedValue,
 			BaseAction: actions.NewBaseAction(a.UUID),
 		}, nil

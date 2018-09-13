@@ -8,9 +8,6 @@ import (
 // ChannelUUID is the UUID of a channel
 type ChannelUUID utils.UUID
 
-// NilChannelUUID is an empty channel UUID
-const NilChannelUUID ChannelUUID = ChannelUUID("")
-
 // ChannelRole is a role that a channel can perform
 type ChannelRole string
 
@@ -30,7 +27,7 @@ type Channel interface {
 	Address() string
 	Schemes() []string
 	Roles() []ChannelRole
-	ParentUUID() ChannelUUID
+	Parent() *ChannelReference
 	Country() string
 	MatchPrefixes() []string
 }

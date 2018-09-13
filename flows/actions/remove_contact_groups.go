@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -32,8 +33,8 @@ type RemoveContactGroupsAction struct {
 	BaseAction
 	universalAction
 
-	Groups    []*flows.GroupReference `json:"groups,omitempty" validate:"dive"`
-	AllGroups bool                    `json:"all_groups"`
+	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
+	AllGroups bool                     `json:"all_groups"`
 }
 
 // Type returns the type of this action
@@ -72,7 +73,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 		}
 	}
 
-	groupRefs := make([]*flows.GroupReference, 0, len(groups))
+	groupRefs := make([]*assets.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact isn't actually in it
 		if contact.Groups().FindByUUID(group.UUID()) == nil {

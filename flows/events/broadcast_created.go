@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -51,11 +52,11 @@ type BroadcastCreatedEvent struct {
 	BaseLanguage utils.Language                           `json:"base_language" validate:"required"`
 	URNs         []urns.URN                               `json:"urns,omitempty" validate:"dive,urn"`
 	Contacts     []*flows.ContactReference                `json:"contacts,omitempty" validate:"dive"`
-	Groups       []*flows.GroupReference                  `json:"groups,omitempty" validate:"dive"`
+	Groups       []*assets.GroupReference                 `json:"groups,omitempty" validate:"dive"`
 }
 
 // NewBroadcastCreatedEvent creates a new outgoing msg event for the given recipients
-func NewBroadcastCreatedEvent(translations map[utils.Language]*BroadcastTranslation, baseLanguage utils.Language, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference) *BroadcastCreatedEvent {
+func NewBroadcastCreatedEvent(translations map[utils.Language]*BroadcastTranslation, baseLanguage utils.Language, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference) *BroadcastCreatedEvent {
 	event := BroadcastCreatedEvent{
 		BaseEvent:    NewBaseEvent(),
 		Translations: translations,

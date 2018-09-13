@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -34,9 +35,9 @@ type StartSessionAction struct {
 
 	URNs          []urns.URN                `json:"urns,omitempty"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups        []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	LegacyVars    []string                  `json:"legacy_vars,omitempty"`
-	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
+	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
 }
 

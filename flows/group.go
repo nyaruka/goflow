@@ -67,7 +67,9 @@ func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) 
 }
 
 // Reference returns a reference to this group
-func (g *Group) Reference() *GroupReference { return NewGroupReference(g.UUID(), g.Name()) }
+func (g *Group) Reference() *assets.GroupReference {
+	return assets.NewGroupReference(g.UUID(), g.Name())
+}
 
 // Resolve resolves the given key when this group is referenced in an expression
 func (g *Group) Resolve(env utils.Environment, key string) types.XValue {

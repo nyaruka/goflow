@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -47,16 +48,16 @@ type SessionTriggeredEvent struct {
 	BaseEvent
 	engineOnlyEvent
 
-	Flow          *flows.FlowReference      `json:"flow" validate:"required"`
+	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups        []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
 	Run           json.RawMessage           `json:"run"`
 }
 
 // NewSessionTriggeredEvent returns a new session triggered event
-func NewSessionTriggeredEvent(flow *flows.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*flows.GroupReference, createContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
+func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, createContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		BaseEvent:     NewBaseEvent(),
 		Flow:          flow,
