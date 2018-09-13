@@ -144,6 +144,7 @@ type Flow interface {
 	Language() utils.Language
 	ExpireAfterMinutes() int
 	Localization() Localization
+	UI() UI
 
 	Validate(SessionAssets) error
 	Nodes() []Node
@@ -217,8 +218,16 @@ type UINodeDetails interface {
 
 // UI is a optional section in a flow definition with editor specific information
 type UI interface {
-	AddNode(uuid NodeUUID, x, y int, nodeConf UINodeDetails)
+	AddNode(uuid NodeUUID, details UINodeDetails)
 	AddSticky(sticky Sticky)
+
+	GetNode(uuid NodeUUID) UINodeDetails
+}
+
+// Position holds coordinates for a node
+type Position interface {
+	GetLeft() int
+	GetTop() int
 }
 
 // Trigger represents something which can initiate a session with the flow engine. It has several properties which can be

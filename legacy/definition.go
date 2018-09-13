@@ -1024,14 +1024,14 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	}
 
 	for i := range f.RuleSets {
-		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization, collapseExits)
+		ruleSet := f.RuleSets[i]
+
+		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization, collapseExits)
 		if err != nil {
 			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
 		}
 		nodes[len(f.ActionSets)+i] = node
-
-		// TODO AddNode
-		nodeUI[node.UUID()] = definition.NewUINodeDetails(uiType, uiNodeConfig)
+		nodeUI[node.UUID()] = definition.NewUINodeDetails(ruleSet.X, ruleSet.Y, uiType, uiNodeConfig)
 	}
 
 	// make sure our entry node is first
@@ -1051,11 +1051,14 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		ui = definition.NewUI()
 
 		for _, actionSet := range f.ActionSets {
-			var config flows.UINodeDetails
-			ui.AddNode(actionSet.UUID, actionSet.X, actionSet.Y, config)
+			var nodeType flows.UINodeType
+			var nodeConfig flows.UINodeConfig
+
+			details := definition.NewUINodeDetails(actionSet.X, actionSet.Y, nodeType, nodeConfig)
+			ui.AddNode(actionSet.UUID, details)
 		}
 		for _, ruleSet := range f.RuleSets {
-			ui.AddNode(ruleSet.UUID, ruleSet.X, ruleSet.Y, nodeUI[ruleSet.UUID])
+			ui.AddNode(ruleSet.UUID, nodeUI[ruleSet.UUID])
 		}
 		for _, note := range f.Metadata.Notes {
 			ui.AddSticky(note.Migrate())

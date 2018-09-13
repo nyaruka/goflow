@@ -73,7 +73,7 @@ func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Localization() flows.Localization       { return f.localization }
-func (f *flow) GetUI() flows.UI                        { return f.ui }
+func (f *flow) UI() flows.UI                           { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
 // Validates that structurally we are sane. IE, all required fields are present and

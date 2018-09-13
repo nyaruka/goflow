@@ -243,6 +243,8 @@ func TestRuleSetMigration(t *testing.T) {
 				}
 			}
 
+			fmt.Println(migratedFlow.UI())
+
 			migratedNodeJSON, _ := utils.JSONMarshal(migratedNode)
 			expectedNodeJSON, _ := utils.JSONMarshal(test.ExpectedNode)
 
