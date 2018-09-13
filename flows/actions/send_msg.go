@@ -78,7 +78,12 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 
 	// create a new message for each URN+channel destination
 	for _, dest := range destinations {
-		msg := flows.NewMsgOut(dest.urn, dest.channel, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
+		var channelRef *assets.ChannelReference
+		if dest.channel != nil {
+			channelRef = assets.NewChannelReference(dest.channel.UUID(), dest.channel.Name())
+		}
+
+		msg := flows.NewMsgOut(dest.urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
 		log.Add(events.NewMsgCreatedEvent(msg))
 	}
 
