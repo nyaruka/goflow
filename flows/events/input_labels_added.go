@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -25,12 +26,12 @@ type InputLabelsAddedEvent struct {
 	BaseEvent
 	callerOrEngineEvent
 
-	InputUUID flows.InputUUID         `json:"input_uuid" validate:"required,uuid4"`
-	Labels    []*flows.LabelReference `json:"labels" validate:"required,min=1,dive"`
+	InputUUID flows.InputUUID          `json:"input_uuid" validate:"required,uuid4"`
+	Labels    []*assets.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
 // NewInputLabelsAddedEvent returns a new add to group event
-func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*flows.LabelReference) *InputLabelsAddedEvent {
+func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*assets.LabelReference) *InputLabelsAddedEvent {
 	return &InputLabelsAddedEvent{
 		BaseEvent: NewBaseEvent(),
 		InputUUID: inputUUID,

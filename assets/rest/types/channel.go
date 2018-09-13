@@ -11,37 +11,37 @@ import (
 
 // json serializable implementation of a channel asset
 type channel struct {
-	UUID_          assets.ChannelUUID   `json:"uuid" validate:"required,uuid"`
-	Name_          string               `json:"name"`
-	Address_       string               `json:"address"`
-	Schemes_       []string             `json:"schemes" validate:"min=1"`
-	Roles_         []assets.ChannelRole `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
-	ParentUUID_    assets.ChannelUUID   `json:"parent_uuid" validate:"omitempty,uuid4"`
-	Country_       string               `json:"country,omitempty"`
-	MatchPrefixes_ []string             `json:"match_prefixes,omitempty"`
+	UUID_          assets.ChannelUUID       `json:"uuid" validate:"required,uuid"`
+	Name_          string                   `json:"name"`
+	Address_       string                   `json:"address"`
+	Schemes_       []string                 `json:"schemes" validate:"min=1"`
+	Roles_         []assets.ChannelRole     `json:"roles" validate:"min=1,dive,eq=send|eq=receive|eq=call|eq=answer|eq=ussd"`
+	Parent_        *assets.ChannelReference `json:"parent" validate:"omitempty,dive"`
+	Country_       string                   `json:"country,omitempty"`
+	MatchPrefixes_ []string                 `json:"match_prefixes,omitempty"`
 }
 
 // NewChannel creates a new channel
-func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []string, roles []assets.ChannelRole, parentUUID assets.ChannelUUID) assets.Channel {
+func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []string, roles []assets.ChannelRole, parent *assets.ChannelReference) assets.Channel {
 	return &channel{
-		UUID_:       uuid,
-		Name_:       name,
-		Address_:    address,
-		Schemes_:    schemes,
-		Roles_:      roles,
-		ParentUUID_: parentUUID,
+		UUID_:    uuid,
+		Name_:    name,
+		Address_: address,
+		Schemes_: schemes,
+		Roles_:   roles,
+		Parent_:  parent,
 	}
 }
 
 // NewTelChannel creates a new tel channel
-func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles []assets.ChannelRole, parentUUID assets.ChannelUUID, country string, matchPrefixes []string) assets.Channel {
+func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country string, matchPrefixes []string) assets.Channel {
 	return &channel{
 		UUID_:          uuid,
 		Name_:          name,
 		Address_:       address,
 		Schemes_:       []string{urns.TelScheme},
 		Roles_:         roles,
-		ParentUUID_:    parentUUID,
+		Parent_:        parent,
 		Country_:       country,
 		MatchPrefixes_: matchPrefixes,
 	}
@@ -62,8 +62,8 @@ func (c *channel) Schemes() []string { return c.Schemes_ }
 // Roles returns the roles of this channel
 func (c *channel) Roles() []assets.ChannelRole { return c.Roles_ }
 
-// Parent returns the UUID of this channel's parent (if any)
-func (c *channel) ParentUUID() assets.ChannelUUID { return c.ParentUUID_ }
+// Parent returns a reference to this channel's parent (if any)
+func (c *channel) Parent() *assets.ChannelReference { return c.Parent_ }
 
 // Country returns this channel's associated country code (if any)
 func (c *channel) Country() string { return c.Country_ }

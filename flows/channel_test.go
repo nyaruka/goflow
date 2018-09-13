@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,7 +21,7 @@ func TestChannel(t *testing.T) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	rolesDefault := []assets.ChannelRole{assets.ChannelRoleSend, assets.ChannelRoleReceive}
-	ch := test.NewChannel("Android", "+250961111111", []string{"tel"}, rolesDefault, assets.NilChannelUUID)
+	ch := test.NewChannel("Android", "+250961111111", []string{"tel"}, rolesDefault, nil)
 
 	assert.Equal(t, assets.ChannelUUID("c00e5d67-c275-4389-aded-7d8b151cbd5b"), ch.UUID())
 	assert.Equal(t, "Android", ch.Name())
@@ -36,7 +37,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, types.NewXText("Android"), ch.Reduce(env))
 	assert.Equal(t, types.NewXText(`{"address":"+250961111111","name":"Android","uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), ch.ToXJSON(env))
 
-	assert.Equal(t, flows.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
+	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))
 	assert.False(t, ch.HasRole(assets.ChannelRoleCall))
 }
@@ -45,10 +46,10 @@ func TestChannelSetGetForURN(t *testing.T) {
 	rolesSend := []assets.ChannelRole{assets.ChannelRoleSend}
 	rolesDefault := []assets.ChannelRole{assets.ChannelRoleSend, assets.ChannelRoleReceive}
 
-	claro := test.NewTelChannel("Claro", "+593971111111", rolesDefault, assets.NilChannelUUID, "EC", nil)
-	mtn := test.NewTelChannel("MTN", "+250782222222", rolesDefault, assets.NilChannelUUID, "RW", nil)
-	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, assets.NilChannelUUID, "RW", nil)
-	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, assets.NilChannelUUID)
+	claro := test.NewTelChannel("Claro", "+593971111111", rolesDefault, nil, "EC", nil)
+	mtn := test.NewTelChannel("MTN", "+250782222222", rolesDefault, nil, "RW", nil)
+	tigo := test.NewTelChannel("Tigo", "+250723333333", rolesDefault, nil, "RW", nil)
+	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, rolesDefault, nil)
 	all := flows.NewChannelAssets([]assets.Channel{claro.Asset(), mtn.Asset(), tigo.Asset(), twitter.Asset()})
 
 	// nil if no channel
@@ -75,8 +76,8 @@ func TestChannelSetGetForURN(t *testing.T) {
 	assert.Equal(t, tigo, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250962222222"), nil), assets.ChannelRoleSend))
 
 	// channels can be delegates for other channels
-	android := test.NewChannel("Android", "+250723333333", []string{"tel"}, rolesDefault, assets.NilChannelUUID)
-	bulk := test.NewChannel("Bulk Sender", "1234", []string{"tel"}, rolesSend, android.UUID())
+	android := test.NewChannel("Android", "+250723333333", []string{"tel"}, rolesDefault, nil)
+	bulk := test.NewChannel("Bulk Sender", "1234", []string{"tel"}, rolesSend, android.Reference())
 	all = flows.NewChannelAssets([]assets.Channel{android.Asset(), bulk.Asset()})
 
 	// delegate will always be used if it has the requested role
@@ -84,8 +85,8 @@ func TestChannelSetGetForURN(t *testing.T) {
 	assert.Equal(t, bulk, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250721234567"), nil), assets.ChannelRoleSend))
 
 	// matching prefixes can be explicitly set too
-	short1 := test.NewTelChannel("Shortcode 1", "1234", rolesSend, assets.NilChannelUUID, "RW", []string{"25078", "25077"})
-	short2 := test.NewTelChannel("Shortcode 2", "1235", rolesSend, assets.NilChannelUUID, "RW", []string{"25072"})
+	short1 := test.NewTelChannel("Shortcode 1", "1234", rolesSend, nil, "RW", []string{"25078", "25077"})
+	short2 := test.NewTelChannel("Shortcode 2", "1235", rolesSend, nil, "RW", []string{"25072"})
 	all = flows.NewChannelAssets([]assets.Channel{short1.Asset(), short2.Asset()})
 
 	assert.Equal(t, short1, all.GetForURN(flows.NewContactURN(urns.URN("tel:+250781234567"), nil), assets.ChannelRoleSend))

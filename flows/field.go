@@ -37,6 +37,19 @@ func NewEmptyFieldValue(field *Field) *FieldValue {
 	return &FieldValue{field: field}
 }
 
+// NewFieldValue creates a new field value with the passed in values
+func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *FieldValue {
+	return &FieldValue{
+		field:    field,
+		text:     text,
+		datetime: datetime,
+		number:   number,
+		state:    state,
+		district: district,
+		ward:     ward,
+	}
+}
+
 // IsEmpty returns whether this field value is set for any type
 func (v *FieldValue) IsEmpty() bool {
 	return v.text.Empty() && v.datetime == nil && v.number == nil && v.state == "" && v.district == "" && v.ward == ""

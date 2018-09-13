@@ -38,7 +38,9 @@ func NewChannel(asset assets.Channel) *Channel {
 func (c *Channel) Asset() assets.Channel { return c.Channel }
 
 // Reference returns a reference to this channel
-func (c *Channel) Reference() *ChannelReference { return NewChannelReference(c.UUID(), c.Name()) }
+func (c *Channel) Reference() *assets.ChannelReference {
+	return assets.NewChannelReference(c.UUID(), c.Name())
+}
 
 // SupportsScheme returns whether this channel supports the given URN scheme
 func (c *Channel) SupportsScheme(scheme string) bool {
@@ -61,7 +63,7 @@ func (c *Channel) HasRole(role assets.ChannelRole) bool {
 }
 
 func (c *Channel) HasParent() bool {
-	return c.ParentUUID() != assets.NilChannelUUID
+	return c.Parent() != nil
 }
 
 // Resolve resolves the given key when this channel is referenced in an expression
@@ -190,7 +192,7 @@ func (s *ChannelAssets) getForSchemeAndRole(scheme string, role assets.ChannelRo
 // looks for a delegate for the given channel and defaults to the channel itself
 func (s *ChannelAssets) getDelegate(channel *Channel, role assets.ChannelRole) *Channel {
 	for _, ch := range s.all {
-		if ch.ParentUUID() == channel.UUID() && ch.HasRole(role) {
+		if ch.HasParent() && ch.Parent().UUID == channel.UUID() && ch.HasRole(role) {
 			return ch
 		}
 	}

@@ -3,6 +3,7 @@ package events
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -26,11 +27,11 @@ type ContactChannelChangedEvent struct {
 	BaseEvent
 	callerOrEngineEvent
 
-	Channel *flows.ChannelReference `json:"channel" validate:"required"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required"`
 }
 
 // NewContactChannelChangedEvent returns a new preferred channel event
-func NewContactChannelChangedEvent(channel *flows.ChannelReference) *ContactChannelChangedEvent {
+func NewContactChannelChangedEvent(channel *assets.ChannelReference) *ContactChannelChangedEvent {
 	return &ContactChannelChangedEvent{
 		BaseEvent: NewBaseEvent(),
 		Channel:   channel,

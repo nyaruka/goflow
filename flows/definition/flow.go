@@ -149,8 +149,9 @@ func (f *flow) ToXJSON(env utils.Environment) types.XText {
 
 var _ flows.Flow = (*flow)(nil)
 
-func (f *flow) Reference() *flows.FlowReference {
-	return flows.NewFlowReference(f.uuid, f.name)
+// Reference returns a reference to this flow asset
+func (f *flow) Reference() *assets.FlowReference {
+	return assets.NewFlowReference(f.uuid, f.name)
 }
 
 func (f *flow) buildNodeMap() error {

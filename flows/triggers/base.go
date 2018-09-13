@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -21,14 +22,14 @@ func RegisterType(name string, f readFunc) {
 
 type baseTrigger struct {
 	environment utils.Environment
-	flow        *flows.FlowReference
+	flow        *assets.FlowReference
 	contact     *flows.Contact
 	params      types.XValue
 	triggeredOn time.Time
 }
 
 func (t *baseTrigger) Environment() utils.Environment { return t.environment }
-func (t *baseTrigger) Flow() *flows.FlowReference     { return t.flow }
+func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
 func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
 func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
@@ -56,11 +57,11 @@ func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 //------------------------------------------------------------------------------------------
 
 type baseTriggerEnvelope struct {
-	Environment json.RawMessage      `json:"environment,omitempty"`
-	Flow        *flows.FlowReference `json:"flow" validate:"required"`
-	Contact     json.RawMessage      `json:"contact,omitempty"`
-	Params      json.RawMessage      `json:"params,omitempty"`
-	TriggeredOn time.Time            `json:"triggered_on" validate:"required"`
+	Environment json.RawMessage       `json:"environment,omitempty"`
+	Flow        *assets.FlowReference `json:"flow" validate:"required"`
+	Contact     json.RawMessage       `json:"contact,omitempty"`
+	Params      json.RawMessage       `json:"params,omitempty"`
+	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
 
 // ReadTrigger reads a trigger from the given typed envelope
