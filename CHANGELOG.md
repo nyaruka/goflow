@@ -1,3 +1,7 @@
+v0.15.0
+----------
+ * Great assets refactor
+
 v0.14.7
 ----------
  * Replicate channel matching logic from RP
