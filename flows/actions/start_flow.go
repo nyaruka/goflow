@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -29,7 +30,7 @@ type StartFlowAction struct {
 	BaseAction
 	universalAction
 
-	Flow *flows.FlowReference `json:"flow" validate:"required"`
+	Flow *assets.FlowReference `json:"flow" validate:"required"`
 }
 
 // Type returns the type of this action

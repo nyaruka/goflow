@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -25,12 +26,12 @@ type FlowTriggeredEvent struct {
 	BaseEvent
 	engineOnlyEvent
 
-	Flow          *flows.FlowReference `json:"flow" validate:"required"`
-	ParentRunUUID flows.RunUUID        `json:"parent_run_uuid" validate:"omitempty,uuid4"`
+	Flow          *assets.FlowReference `json:"flow" validate:"required"`
+	ParentRunUUID flows.RunUUID         `json:"parent_run_uuid" validate:"omitempty,uuid4"`
 }
 
 // NewFlowTriggeredEvent returns a new flow triggered event for the passed in flow and parent run
-func NewFlowTriggeredEvent(flow *flows.FlowReference, parentRunUUID flows.RunUUID) *FlowTriggeredEvent {
+func NewFlowTriggeredEvent(flow *assets.FlowReference, parentRunUUID flows.RunUUID) *FlowTriggeredEvent {
 	return &FlowTriggeredEvent{
 		BaseEvent:     NewBaseEvent(),
 		Flow:          flow,

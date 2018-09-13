@@ -2,17 +2,18 @@ package flows
 
 import (
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 )
 
 // BaseMsg represents a incoming or outgoing message with the session contact
 type BaseMsg struct {
-	UUID_        MsgUUID           `json:"uuid"`
-	ID_          MsgID             `json:"id,omitempty"`
-	URN_         urns.URN          `json:"urn" validate:"omitempty,urn"`
-	Channel_     *ChannelReference `json:"channel,omitempty"`
-	Text_        string            `json:"text"`
-	Attachments_ []Attachment      `json:"attachments,omitempty"`
+	UUID_        MsgUUID                  `json:"uuid"`
+	ID_          MsgID                    `json:"id,omitempty"`
+	URN_         urns.URN                 `json:"urn" validate:"omitempty,urn"`
+	Channel_     *assets.ChannelReference `json:"channel,omitempty"`
+	Text_        string                   `json:"text"`
+	Attachments_ []Attachment             `json:"attachments,omitempty"`
 }
 
 // MsgIn represents a incoming message from the session contact
@@ -28,7 +29,7 @@ type MsgOut struct {
 
 // NewMsgIn creates a new incoming message
 func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *Channel, text string, attachments []Attachment) *MsgIn {
-	var channelRef *ChannelReference
+	var channelRef *assets.ChannelReference
 	if channel != nil {
 		channelRef = channel.Reference()
 	}
@@ -47,7 +48,7 @@ func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *Channel, text strin
 
 // NewMsgOut creates a new outgoing message
 func NewMsgOut(urn urns.URN, channel *Channel, text string, attachments []Attachment, quickReplies []string) *MsgOut {
-	var channelRef *ChannelReference
+	var channelRef *assets.ChannelReference
 	if channel != nil {
 		channelRef = channel.Reference()
 	}
@@ -74,7 +75,7 @@ func (m *BaseMsg) ID() MsgID { return m.ID_ }
 func (m *BaseMsg) URN() urns.URN { return m.URN_ }
 
 // Channel returns the channel of this message
-func (m *BaseMsg) Channel() *ChannelReference { return m.Channel_ }
+func (m *BaseMsg) Channel() *assets.ChannelReference { return m.Channel_ }
 
 // Text returns the text of this message
 func (m *BaseMsg) Text() string { return m.Text_ }

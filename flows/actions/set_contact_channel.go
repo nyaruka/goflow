@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -29,7 +30,7 @@ type SetContactChannelAction struct {
 	BaseAction
 	onlineAction
 
-	Channel *flows.ChannelReference `json:"channel"`
+	Channel *assets.ChannelReference `json:"channel"`
 }
 
 // Type returns the type of this action

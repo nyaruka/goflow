@@ -3,6 +3,7 @@ package events
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -26,11 +27,11 @@ type ContactGroupsAddedEvent struct {
 	BaseEvent
 	callerOrEngineEvent
 
-	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups []*assets.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // NewContactGroupsAddedEvent returns a new contact_groups_added event
-func NewContactGroupsAddedEvent(groups []*flows.GroupReference) *ContactGroupsAddedEvent {
+func NewContactGroupsAddedEvent(groups []*assets.GroupReference) *ContactGroupsAddedEvent {
 	return &ContactGroupsAddedEvent{
 		BaseEvent: NewBaseEvent(),
 		Groups:    groups,

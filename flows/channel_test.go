@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -36,7 +37,7 @@ func TestChannel(t *testing.T) {
 	assert.Equal(t, types.NewXText("Android"), ch.Reduce(env))
 	assert.Equal(t, types.NewXText(`{"address":"+250961111111","name":"Android","uuid":"c00e5d67-c275-4389-aded-7d8b151cbd5b"}`), ch.ToXJSON(env))
 
-	assert.Equal(t, flows.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
+	assert.Equal(t, assets.NewChannelReference(ch.UUID(), "Android"), ch.Reference())
 	assert.True(t, ch.HasRole(assets.ChannelRoleSend))
 	assert.False(t, ch.HasRole(assets.ChannelRoleCall))
 }

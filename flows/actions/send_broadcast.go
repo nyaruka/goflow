@@ -2,6 +2,7 @@ package actions
 
 import (
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -37,7 +38,7 @@ type SendBroadcastAction struct {
 	QuickReplies []string                  `json:"quick_replies,omitempty"`
 	URNs         []urns.URN                `json:"urns,omitempty"`
 	Contacts     []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
-	Groups       []*flows.GroupReference   `json:"groups,omitempty" validate:"dive"`
+	Groups       []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	LegacyVars   []string                  `json:"legacy_vars,omitempty"`
 }
 

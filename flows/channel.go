@@ -38,7 +38,9 @@ func NewChannel(asset assets.Channel) *Channel {
 func (c *Channel) Asset() assets.Channel { return c.Channel }
 
 // Reference returns a reference to this channel
-func (c *Channel) Reference() *ChannelReference { return NewChannelReference(c.UUID(), c.Name()) }
+func (c *Channel) Reference() *assets.ChannelReference {
+	return assets.NewChannelReference(c.UUID(), c.Name())
+}
 
 // SupportsScheme returns whether this channel supports the given URN scheme
 func (c *Channel) SupportsScheme(scheme string) bool {

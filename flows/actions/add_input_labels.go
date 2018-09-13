@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -30,7 +31,7 @@ type AddInputLabelsAction struct {
 	BaseAction
 	universalAction
 
-	Labels []*flows.LabelReference `json:"labels" validate:"required,dive"`
+	Labels []*assets.LabelReference `json:"labels" validate:"required,dive"`
 }
 
 // Type returns the type of this action
@@ -55,7 +56,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, log f
 		return err
 	}
 
-	labelRefs := make([]*flows.LabelReference, 0, len(labels))
+	labelRefs := make([]*assets.LabelReference, 0, len(labels))
 	for _, label := range labels {
 		labelRefs = append(labelRefs, label.Reference())
 	}

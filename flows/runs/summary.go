@@ -3,6 +3,7 @@ package runs
 import (
 	"encoding/json"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -39,11 +40,11 @@ var _ flows.RunSummary = (*runSummary)(nil)
 //------------------------------------------------------------------------------------------
 
 type runSummaryEnvelope struct {
-	UUID    flows.RunUUID        `json:"uuid" validate:"uuid4"`
-	Flow    *flows.FlowReference `json:"flow" validate:"required,dive"`
-	Contact json.RawMessage      `json:"contact" validate:"required"`
-	Status  flows.RunStatus      `json:"status" validate:"required"`
-	Results flows.Results        `json:"results"`
+	UUID    flows.RunUUID         `json:"uuid" validate:"uuid4"`
+	Flow    *assets.FlowReference `json:"flow" validate:"required,dive"`
+	Contact json.RawMessage       `json:"contact" validate:"required"`
+	Status  flows.RunStatus       `json:"status" validate:"required"`
+	Results flows.Results         `json:"results"`
 }
 
 // ReadRunSummary reads a run summary from the given JSON

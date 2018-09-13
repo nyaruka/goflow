@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -48,9 +49,9 @@ func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 //------------------------------------------------------------------------------------------
 
 type baseInputEnvelope struct {
-	UUID      flows.InputUUID         `json:"uuid"`
-	Channel   *flows.ChannelReference `json:"channel,omitempty" validate:"omitempty,dive"`
-	CreatedOn time.Time               `json:"created_on" validate:"required"`
+	UUID      flows.InputUUID          `json:"uuid"`
+	Channel   *assets.ChannelReference `json:"channel,omitempty" validate:"omitempty,dive"`
+	CreatedOn time.Time                `json:"created_on" validate:"required"`
 }
 
 // ReadInput reads an input from the given typed envelope

@@ -3,6 +3,7 @@ package events
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -27,11 +28,11 @@ type ContactGroupsRemovedEvent struct {
 	BaseEvent
 	callerOrEngineEvent
 
-	Groups []*flows.GroupReference `json:"groups" validate:"required,min=1,dive"`
+	Groups []*assets.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
 
 // NewContactGroupsRemovedEvent returns a new remove from group event
-func NewContactGroupsRemovedEvent(groups []*flows.GroupReference) *ContactGroupsRemovedEvent {
+func NewContactGroupsRemovedEvent(groups []*assets.GroupReference) *ContactGroupsRemovedEvent {
 	return &ContactGroupsRemovedEvent{
 		BaseEvent: NewBaseEvent(),
 		Groups:    groups,
