@@ -224,8 +224,6 @@ type UI interface {
 
 // Position holds coordinates for a node
 type Position interface {
-	GetLeft() int
-	GetTop() int
 }
 
 // Trigger represents something which can initiate a session with the flow engine. It has several properties which can be

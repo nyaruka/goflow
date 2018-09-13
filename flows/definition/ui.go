@@ -54,8 +54,6 @@ type position struct {
 	top  int
 }
 
-func (p position) GetLeft() int { return p.left }
-func (p position) GetTop() int  { return p.top }
 func (p position) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"left": p.left,
