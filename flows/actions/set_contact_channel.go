@@ -37,7 +37,7 @@ func (a *SetContactChannelAction) Type() string { return TypeSetContactChannel }
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactChannelAction) Validate(assets flows.SessionAssets) error {
-	_, err := assets.GetChannel(a.Channel.UUID)
+	_, err := assets.Channels().Get(a.Channel.UUID)
 	return err
 }
 

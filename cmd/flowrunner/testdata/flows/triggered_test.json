@@ -122,7 +122,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Triggered Flow",
+                        "name": "Registration",
                         "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
                     },
                     "run": {

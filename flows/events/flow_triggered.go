@@ -43,7 +43,7 @@ func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
 
 // Apply applies this event to the given run
 func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) error {
-	flow, err := run.Session().Assets().GetFlow(e.Flow.UUID)
+	flow, err := run.Session().Assets().Flows().Get(e.Flow.UUID)
 	if err != nil {
 		return err
 	}

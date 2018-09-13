@@ -3,20 +3,19 @@ package flows_test
 import (
 	"testing"
 
-	"github.com/satori/go.uuid"
-
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGroupListResolve(t *testing.T) {
-	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Customers", "")
-	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Testers", "")
-	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Males", "gender = \"M\"")
-	urnList := flows.NewGroupList([]*flows.Group{customers, testers, males})
+	customers := test.NewGroup("Customers", "")
+	testers := test.NewGroup("Testers", "")
+	males := test.NewGroup("Males", "gender = \"M\"")
+	groups := flows.NewGroupList([]*flows.Group{customers, testers, males})
 
 	env := utils.NewDefaultEnvironment()
 
@@ -32,7 +31,7 @@ func TestGroupListResolve(t *testing.T) {
 		{"3", false, nil}, // index out of range
 	}
 	for _, tc := range testCases {
-		val := excellent.ResolveValue(env, urnList, tc.key)
+		val := excellent.ResolveValue(env, groups, tc.key)
 
 		err, isErr := val.(error)
 
@@ -48,18 +47,4 @@ func TestGroupListResolve(t *testing.T) {
 			assert.Equal(t, tc.value, val)
 		}
 	}
-}
-
-func TestGroupSet(t *testing.T) {
-	customers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Customers", "")
-	testers := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Testers", "")
-	males := flows.NewGroup(flows.GroupUUID(uuid.NewV4().String()), flows.NilGroupID, "Males", "gender = \"M\"")
-
-	set := flows.NewGroupSet([]*flows.Group{customers, testers, males})
-
-	assert.Equal(t, []*flows.Group{customers, testers, males}, set.All())
-	assert.Equal(t, []*flows.Group{customers, testers}, set.Static())
-	assert.Equal(t, []*flows.Group{males}, set.Dynamic())
-	assert.Equal(t, customers, set.FindByUUID(customers.UUID()))
-	assert.Equal(t, testers, set.FindByName("TESTERS"))
 }

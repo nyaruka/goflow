@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
@@ -334,7 +335,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 
 	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {
-		flow, _ := session.Assets().GetFlow(flows.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
+		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
 		flow.Nodes()[2].AddAction(actionToAdd)
 	}
 
@@ -366,14 +367,18 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 // CreateSession creates a session with the given assets
 func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 	// load our assets into a cache
-	assetCache := assets.NewAssetCache(100, 5)
+	assetCache := rest.NewAssetCache(100, 5)
 	err := assetCache.Include(sessionAssets)
 	if err != nil {
 		return nil, err
 	}
 
 	// create our engine session
-	assets := engine.NewSessionAssets(engine.NewMockAssetServer(assetCache))
+	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
+	if err != nil {
+		return nil, err
+	}
+
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 	return session, nil
 }

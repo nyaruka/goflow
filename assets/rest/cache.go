@@ -1,4 +1,4 @@
-package assets
+package rest
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/nyaruka/goflow/assets/rest/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/karlseguin/ccache"
@@ -23,11 +24,14 @@ type assetTypeConfig struct {
 	reader      AssetReader
 }
 
-var typeConfigs = map[AssetType]*assetTypeConfig{}
-
-// RegisterType registers a new asset type for use with this cache
-func RegisterType(name AssetType, manageAsSet bool, reader AssetReader) {
-	typeConfigs[name] = &assetTypeConfig{manageAsSet: manageAsSet, reader: reader}
+var typeConfigs = map[AssetType]*assetTypeConfig{
+	assetTypeChannel:           {true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) }},
+	assetTypeField:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) }},
+	assetTypeFlow:              {false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) }},
+	assetTypeGroup:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) }},
+	assetTypeLabel:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) }},
+	assetTypeLocationHierarchy: {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLocationHierarchies(data) }},
+	assetTypeResthook:          {true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) }},
 }
 
 // anything which the cache can use to fetch missing items

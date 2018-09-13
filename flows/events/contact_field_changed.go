@@ -45,7 +45,7 @@ func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChange
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactFieldChangedEvent) Validate(assets flows.SessionAssets) error {
-	_, err := assets.GetField(e.Field.Key)
+	_, err := assets.Fields().Get(e.Field.Key)
 	return err
 }
 
@@ -55,12 +55,9 @@ func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
 		return fmt.Errorf("can't apply event in session without a contact")
 	}
 
-	fieldSet, err := run.Session().Assets().GetFieldSet()
-	if err != nil {
-		return err
-	}
+	fields := run.Session().Assets().Fields()
 
-	if err = run.Contact().SetFieldValue(run.Environment(), fieldSet, e.Field.Key, e.Value); err != nil {
+	if err := run.Contact().SetFieldValue(run.Environment(), fields, e.Field.Key, e.Value); err != nil {
 		return err
 	}
 

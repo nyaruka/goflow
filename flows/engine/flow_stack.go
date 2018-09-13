@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -49,7 +50,7 @@ func (s *flowStack) hasVisited(nodeUUID flows.NodeUUID) bool {
 	return s.stack[len(s.stack)-1].visitedNodes[nodeUUID]
 }
 
-func (s *flowStack) hasFlow(flowUUID flows.FlowUUID) bool {
+func (s *flowStack) hasFlow(flowUUID assets.FlowUUID) bool {
 	for _, f := range s.stack {
 		if f.flow.UUID() == flowUUID {
 			return true

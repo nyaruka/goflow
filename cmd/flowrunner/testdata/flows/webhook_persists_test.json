@@ -220,7 +220,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Webhook Test",
+                        "name": "Registration",
                         "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -450,7 +450,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Webhook Test",
+                        "name": "Registration",
                         "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",

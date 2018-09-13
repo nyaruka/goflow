@@ -273,7 +273,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Parent Flow",
+                        "name": "Registration",
                         "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -556,7 +556,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Parent Flow",
+                        "name": "Registration",
                         "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -929,7 +929,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Parent Flow",
+                        "name": "Registration",
                         "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -1364,7 +1364,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Parent Flow",
+                        "name": "Registration",
                         "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
@@ -1839,7 +1839,7 @@
                         "timezone": "America/Los_Angeles"
                     },
                     "flow": {
-                        "name": "Parent Flow",
+                        "name": "Registration",
                         "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",

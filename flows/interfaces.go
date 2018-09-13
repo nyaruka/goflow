@@ -3,6 +3,7 @@ package flows
 import (
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -13,12 +14,6 @@ type NodeUUID utils.UUID
 // ExitUUID is the UUID of a node exit
 type ExitUUID utils.UUID
 
-// FlowID is the ID of a flow
-type FlowID int64
-
-// FlowUUID is the UUID of a flow
-type FlowUUID utils.UUID
-
 // ActionUUID is the UUID of an action
 type ActionUUID utils.UUID
 
@@ -28,32 +23,11 @@ type ContactID int64
 // ContactUUID is the UUID of a contact
 type ContactUUID utils.UUID
 
-// ChannelID is the ID of a channel
-type ChannelID int64
-
-// ChannelUUID is the UUID of a channel
-type ChannelUUID utils.UUID
-
 // RunUUID is the UUID of a flow run
 type RunUUID utils.UUID
 
 // StepUUID is the UUID of a run step
 type StepUUID utils.UUID
-
-// LabelID is the ID of a label
-type LabelID int64
-
-// LabelUUID is the UUID of a label
-type LabelUUID utils.UUID
-
-// GroupID is the ID of a group
-type GroupID int64
-
-// NilGroupID is the nil value for GroupID
-const NilGroupID = GroupID(0)
-
-// GroupUUID is the UUID of a group
-type GroupUUID utils.UUID
 
 // InputUUID is the UUID of an input
 type InputUUID utils.UUID
@@ -121,26 +95,19 @@ const (
 	RunStatusInterrupted RunStatus = "interrupted"
 )
 
+type FlowAssets interface {
+	Get(assets.FlowUUID) (Flow, error)
+}
+
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
-	GetChannel(ChannelUUID) (Channel, error)
-	GetChannelSet() (*ChannelSet, error)
-
-	GetField(string) (*Field, error)
-	GetFieldSet() (*FieldSet, error)
-
-	GetFlow(FlowUUID) (Flow, error)
-
-	GetGroup(GroupUUID) (*Group, error)
-	GetGroupSet() (*GroupSet, error)
-
-	GetLabel(LabelUUID) (*Label, error)
-	GetLabelSet() (*LabelSet, error)
-
-	HasLocations() bool
-	GetLocationHierarchySet() (*LocationHierarchySet, error)
-
-	GetResthookSet() (*ResthookSet, error)
+	Channels() *ChannelAssets
+	Fields() *FieldAssets
+	Flows() FlowAssets
+	Groups() *GroupAssets
+	Labels() *LabelAssets
+	Locations() *LocationAssets
+	Resthooks() *ResthookAssets
 }
 
 // Flow describes the ordered logic of actions and routers. It renders as its name in a template, and has the following
@@ -162,8 +129,7 @@ type Flow interface {
 	types.XValue
 	types.XResolvable
 
-	UUID() FlowUUID
-	ID() FlowID
+	UUID() assets.FlowUUID
 	Name() string
 	Revision() int
 	Language() utils.Language
@@ -253,7 +219,7 @@ type Trigger interface {
 	types.XResolvable
 
 	Environment() utils.Environment
-	Flow() Flow
+	Flow() *FlowReference
 	Contact() *Contact
 	Params() types.XValue
 	TriggeredOn() time.Time
@@ -323,7 +289,7 @@ type Input interface {
 
 	UUID() InputUUID
 	CreatedOn() time.Time
-	Channel() Channel
+	Channel() *Channel
 }
 
 type Step interface {
@@ -358,7 +324,7 @@ type Session interface {
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun)
 	Wait() Wait
-	FlowOnStack(FlowUUID) bool
+	FlowOnStack(assets.FlowUUID) bool
 
 	Start(Trigger, []Event) error
 	Resume([]Event) error

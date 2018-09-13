@@ -2,7 +2,9 @@ package actions
 
 import (
 	"fmt"
+
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -39,7 +41,7 @@ type SendMsgAction struct {
 
 type msgDestination struct {
 	urn     urns.URN
-	channel flows.Channel
+	channel *flows.Channel
 }
 
 // Type returns the type of this action
@@ -59,15 +61,11 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 
 	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, run.Environment().Languages(), a.Text, a.Attachments, a.QuickReplies, log)
 
-	channelSet, err := run.Session().Assets().GetChannelSet()
-	if err != nil {
-		return err
-	}
-
+	channels := run.Session().Assets().Channels()
 	destinations := []msgDestination{}
 
 	for _, u := range run.Contact().URNs() {
-		channel := channelSet.GetForURN(u, flows.ChannelRoleSend)
+		channel := channels.GetForURN(u, assets.ChannelRoleSend)
 		if channel != nil {
 			destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
 
