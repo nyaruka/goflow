@@ -543,5 +543,39 @@
             "create_contact": true
         },
         "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "save",
+            "uuid": "985c658a-f514-4bd7-aa41-6562b6965232",
+            "label": "Contact Name",
+            "field": "name",
+            "value": "Trey Anastasio"
+        },
+        "expected_action": {
+            "type": "set_contact_name",
+            "uuid": "985c658a-f514-4bd7-aa41-6562b6965232",
+            "name": "Trey Anastasio"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "save",
+            "uuid": "985c658a-f514-4bd7-aa41-6562b6965232",
+            "label": "Favorite Song",
+            "field": "favorite_song",
+            "value": "Harry Hood"
+        },
+        "expected_action": {
+            "type": "set_contact_field",
+            "uuid": "985c658a-f514-4bd7-aa41-6562b6965232",
+            "field": {
+                "key": "favorite_song",
+                "name": "Favorite Song"
+            },
+            "value": "Harry Hood"
+        },
+        "expected_localization": {}
     }
 ]

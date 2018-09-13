@@ -25,11 +25,11 @@ type flow struct {
 	nodeMap map[flows.NodeUUID]flows.Node
 
 	// only read for legacy flows which are being migrated
-	ui map[string]interface{}
+	ui flows.UI
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui map[string]interface{}) (flows.Flow, error) {
+func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) (flows.Flow, error) {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
@@ -73,6 +73,7 @@ func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) ExpireAfterMinutes() int                { return f.expireAfterMinutes }
 func (f *flow) Nodes() []flows.Node                    { return f.nodes }
 func (f *flow) Localization() flows.Localization       { return f.localization }
+func (f *flow) UI() flows.UI                           { return f.ui }
 func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] }
 
 // Validates that structurally we are sane. IE, all required fields are present and
@@ -183,7 +184,7 @@ type flowEnvelope struct {
 
 type flowEnvelopeWithUI struct {
 	flowEnvelope
-	UI map[string]interface{} `json:"_ui,omitempty"`
+	UI flows.UI `json:"_ui,omitempty"`
 }
 
 // ReadFlow reads a single flow definition from the passed in byte array

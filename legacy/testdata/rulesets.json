@@ -118,6 +118,13 @@
                     ]
                 }
             }
+        },
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 100,
+                "top": 0
+            }
         }
     },
     {
@@ -248,6 +255,13 @@
                         "Oui"
                     ]
                 }
+            }
+        },
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 100,
+                "top": 0
             }
         }
     },
@@ -383,6 +397,13 @@
                     ]
                 }
             }
+        },
+        "expected_ui": {
+            "type": "split_by_expression",
+            "position": {
+                "left": 323,
+                "top": 84
+            }
         }
     },
     {
@@ -487,7 +508,14 @@
                 "type": "msg"
             }
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 100,
+                "top": 0
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -495,7 +523,7 @@
             "rules": [
                 {
                     "category": {
-                        "eng": "< 10"
+                        "eng": "Too Young"
                     },
                     "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
                     "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
@@ -508,7 +536,7 @@
                 },
                 {
                     "category": {
-                        "eng": "> 10"
+                        "eng": "Permitted"
                     },
                     "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
                     "destination": "833fc698-d590-42dc-93e1-39e701b7e8e4",
@@ -560,19 +588,26 @@
                 {
                     "uuid": "1c75fd71-027b-40e8-a819-151a0f8140e6",
                     "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
-                    "name": "\u003c 10"
+                    "name": "Too Young"
                 },
                 {
                     "uuid": "40cc7c36-b7c8-4f05-ae82-25275607e5aa",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "\u003e 10"
+                    "name": "Permitted"
                 }
             ],
             "wait": {
                 "type": "msg"
             }
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 5,
+                "top": 5
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -676,7 +711,14 @@
                 }
             ]
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_webhook",
+            "position": {
+                "left": 1,
+                "top": 100
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -796,7 +838,14 @@
                 }
             ]
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_webhook",
+            "position": {
+                "left": 1,
+                "top": 100
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -898,7 +947,13 @@
                 }
             ]
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "position": {
+                "left": 1,
+                "top": 100
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -1008,6 +1063,13 @@
                     ]
                 }
             }
+        },
+        "expected_ui": {
+            "type": "split_by_subflow",
+            "position": {
+                "left": 100,
+                "top": 0
+            }
         }
     },
     {
@@ -1077,7 +1139,18 @@
                 }
             ]
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_contact_field",
+            "config": {
+                "id": "telegram",
+                "type": "scheme"
+            },
+            "position": {
+                "left": 708,
+                "top": 1611
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -1153,7 +1226,14 @@
                 }
             ]
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_groups",
+            "position": {
+                "left": 428,
+                "top": 374
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -1232,7 +1312,14 @@
                 "timeout": 300
             }
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 300,
+                "top": 146
+            }
+        }
     },
     {
         "legacy_ruleset": {
@@ -1339,6 +1426,302 @@
                 }
             ]
         },
-        "expected_localization": {}
+        "expected_localization": {},
+        "expected_ui": {
+            "position": {
+                "left": 240,
+                "top": 430
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "413868c6-f35b-4a1c-b80e-df0091568b59",
+            "x": 293,
+            "y": 218,
+            "label": "Delimited Split",
+            "rules": [
+                {
+                    "uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660",
+                    "category": {
+                        "eng": "Fish"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "contains_any",
+                        "test": {
+                            "eng": "fish"
+                        }
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36",
+                    "category": {
+                        "eng": "Chicken"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "contains_any",
+                        "test": {
+                            "eng": "chicken"
+                        }
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "true"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "form_field",
+            "response_type": "",
+            "operand": "@flow.response_1",
+            "config": {
+                "field_index": 1,
+                "field_delimiter": " "
+            }
+        },
+        "expected_node": {
+            "uuid": "413868c6-f35b-4a1c-b80e-df0091568b59",
+            "router": {
+                "type": "switch",
+                "result_name": "Delimited Split",
+                "default_exit_uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
+                "operand": "@(field(run.results.response_1, 1, \" \"))",
+                "cases": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "fish"
+                        ],
+                        "exit_uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660"
+                    },
+                    {
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "chicken"
+                        ],
+                        "exit_uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "65b7a5ee-44cb-499c-8334-8032b96e2660",
+                    "name": "Fish"
+                },
+                {
+                    "uuid": "ce2102b1-7f8b-4813-808e-5b7af8116a36",
+                    "name": "Chicken"
+                },
+                {
+                    "uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
+                    "name": "Other"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_run_result_delimited",
+            "position": {
+                "left": 293,
+                "top": 218
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "8b6fe272-eac9-4ba8-ab10-86d35dbce3b1",
+            "x": 293,
+            "y": 218,
+            "label": "Flow Field",
+            "rules": [
+                {
+                    "uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a",
+                    "category": {
+                        "eng": "Fish"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "contains_any",
+                        "test": {
+                            "eng": "fish"
+                        }
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed",
+                    "category": {
+                        "eng": "Chicken"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "contains_any",
+                        "test": {
+                            "eng": "chicken"
+                        }
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
+                    "category": {
+                        "eng": "Other"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "true"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "flow_field",
+            "response_type": "",
+            "operand": "@flow.response_1",
+            "config": {
+                "field_index": 1,
+                "field_delimiter": " "
+            }
+        },
+        "expected_node": {
+            "uuid": "8b6fe272-eac9-4ba8-ab10-86d35dbce3b1",
+            "router": {
+                "type": "switch",
+                "result_name": "Flow Field",
+                "default_exit_uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
+                "operand": "@run.results.response_1",
+                "cases": [
+                    {
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "fish"
+                        ],
+                        "exit_uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a"
+                    },
+                    {
+                        "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                        "type": "has_any_word",
+                        "arguments": [
+                            "chicken"
+                        ],
+                        "exit_uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed"
+                    }
+                ]
+            },
+            "exits": [
+                {
+                    "uuid": "1db7814f-c832-4d62-b0f9-939aa343cd9a",
+                    "name": "Fish"
+                },
+                {
+                    "uuid": "9eb1744e-bb40-426c-97aa-9aed051717ed",
+                    "name": "Chicken"
+                },
+                {
+                    "uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
+                    "name": "Other"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_run_result",
+            "config": {
+                "id": "response_1",
+                "type": "result"
+            },
+            "position": {
+                "left": 293,
+                "top": 218
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "7bc054ca-398f-48c5-94d3-ea2d525cbc77",
+            "x": 100,
+            "y": 0,
+            "label": "Random Split",
+            "rules": [
+                {
+                    "uuid": "57552c7e-aab2-41b2-a3b2-02e8ff0d0268",
+                    "category": {
+                        "eng": "Bucket 1"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "between",
+                        "min": "0",
+                        "max": "0.5"
+                    },
+                    "label": null
+                },
+                {
+                    "uuid": "f6144072-933b-4d80-b82b-a7bb62db10bb",
+                    "category": {
+                        "eng": "Bucket 2"
+                    },
+                    "destination": null,
+                    "destination_type": null,
+                    "test": {
+                        "type": "between",
+                        "min": "0.5",
+                        "max": "1"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "random",
+            "response_type": "",
+            "operand": "@(RAND())",
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "7bc054ca-398f-48c5-94d3-ea2d525cbc77",
+            "router": {
+                "type": "random",
+                "result_name": "Random Split"
+            },
+            "exits": [
+                {
+                    "uuid": "57552c7e-aab2-41b2-a3b2-02e8ff0d0268",
+                    "name": "Bucket 1"
+                },
+                {
+                    "uuid": "f6144072-933b-4d80-b82b-a7bb62db10bb",
+                    "name": "Bucket 2"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "split_by_random",
+            "position": {
+                "left": 100,
+                "top": 0
+            }
+        }
     }
 ]

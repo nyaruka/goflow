@@ -44,6 +44,15 @@ type MsgUUID utils.UUID
 // FlowType represents the different types of flows
 type FlowType string
 
+// UINodeType tells the editor how to render a particular node
+type UINodeType string
+
+// UINodeConfig contains config unique to its type
+type UINodeConfig map[string]string
+
+// Sticky is a migrated note
+type Sticky map[string]interface{}
+
 const (
 	// FlowTypeMessaging is a flow that is run over a messaging channel
 	FlowTypeMessaging FlowType = "messaging"
@@ -135,6 +144,7 @@ type Flow interface {
 	Language() utils.Language
 	ExpireAfterMinutes() int
 	Localization() Localization
+	UI() UI
 
 	Validate(SessionAssets) error
 	Nodes() []Node
@@ -198,6 +208,22 @@ type Localization interface {
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
 type Translations interface {
 	GetTextArray(uuid utils.UUID, key string) []string
+}
+
+// UINodeDetails is the top level ui details for a node
+type UINodeDetails interface {
+}
+
+// UI is a optional section in a flow definition with editor specific information
+type UI interface {
+	AddNode(uuid NodeUUID, details UINodeDetails)
+	AddSticky(sticky Sticky)
+
+	GetNode(uuid NodeUUID) UINodeDetails
+}
+
+// Position holds coordinates for a node
+type Position interface {
 }
 
 // Trigger represents something which can initiate a session with the flow engine. It has several properties which can be

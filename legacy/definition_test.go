@@ -119,6 +119,7 @@ type RuleSetMigrationTest struct {
 	CollapseExits        bool            `json:"collapse_exits"`
 	ExpectedNode         json.RawMessage `json:"expected_node"`
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
+	ExpectedUI           json.RawMessage `json:"expected_ui"`
 }
 
 func TestFlowMigration(t *testing.T) {
@@ -167,6 +168,10 @@ func TestActionMigration(t *testing.T) {
 		migratedActionEnvelope, _ := utils.EnvelopeFromTyped(migratedAction)
 		migratedActionJSON, _ := utils.JSONMarshal(migratedActionEnvelope)
 		expectedActionJSON, _ := utils.JSONMarshal(test.ExpectedAction)
+
+		if string(expectedActionJSON) != string(migratedActionJSON) {
+			fmt.Println(string(migratedActionJSON))
+		}
 
 		assert.Equal(t, string(expectedActionJSON), string(migratedActionJSON))
 
@@ -227,7 +232,7 @@ func TestRuleSetMigration(t *testing.T) {
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(test.CollapseExits, false)
+		migratedFlow, err := legacyFlow.Migrate(test.CollapseExits, true)
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations
@@ -245,11 +250,18 @@ func TestRuleSetMigration(t *testing.T) {
 			migratedNodeJSON, _ := utils.JSONMarshal(migratedNode)
 			expectedNodeJSON, _ := utils.JSONMarshal(test.ExpectedNode)
 
-			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
-
 			if string(expectedNodeJSON) != string(migratedNodeJSON) {
 				fmt.Println(string(migratedNodeJSON))
 			}
+
+			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
+
+			migratedNodeUI, _ := utils.JSONMarshal(migratedFlow.UI().GetNode(migratedNode.UUID()))
+			expectedNodeUI, _ := utils.JSONMarshal(test.ExpectedUI)
+			if string(expectedNodeUI) != string(migratedNodeUI) {
+				fmt.Println(string(migratedNodeUI))
+			}
+			assert.Equal(t, string(expectedNodeUI), string(migratedNodeUI))
 
 			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
 		}

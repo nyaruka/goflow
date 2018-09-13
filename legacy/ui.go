@@ -2,26 +2,21 @@ package legacy
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
-
 	"github.com/shopspring/decimal"
 )
 
-// UINodeType tells the editor how to render a particular node
-type UINodeType string
-
 // the different node types supported by the editor
 const (
-	UINodeTypeWaitForResponse           UINodeType = "wait_for_response"
-	UINodeTypeSplitBySubflow            UINodeType = "split_by_subflow"
-	UINodeTypeSplitByWebhook            UINodeType = "split_by_webhook"
-	UINodeTypeSplitByResthook           UINodeType = "split_by_resthook"
-	UINodeTypeSplitByGroups             UINodeType = "split_by_groups"
-	UINodeTypeSplitByExpression         UINodeType = "split_by_expression"
-	UINodeTypeSplitByContactField       UINodeType = "split_by_contact_field"
-	UINodeTypeSplitByRunResult          UINodeType = "split_by_run_result"
-	UINodeTypeSplitByRunResultDelimited UINodeType = "split_by_run_result_delimited"
-	UINodeTypeSplitByRandom             UINodeType = "split_by_random"
+	UINodeTypeWaitForResponse           flows.UINodeType = "wait_for_response"
+	UINodeTypeSplitBySubflow            flows.UINodeType = "split_by_subflow"
+	UINodeTypeSplitByWebhook            flows.UINodeType = "split_by_webhook"
+	UINodeTypeSplitByResthook           flows.UINodeType = "split_by_resthook"
+	UINodeTypeSplitByGroups             flows.UINodeType = "split_by_groups"
+	UINodeTypeSplitByExpression         flows.UINodeType = "split_by_expression"
+	UINodeTypeSplitByContactField       flows.UINodeType = "split_by_contact_field"
+	UINodeTypeSplitByRunResult          flows.UINodeType = "split_by_run_result"
+	UINodeTypeSplitByRunResultDelimited flows.UINodeType = "split_by_run_result_delimited"
+	UINodeTypeSplitByRandom             flows.UINodeType = "split_by_random"
 )
 
 // Note is a legacy sticky note
@@ -32,45 +27,12 @@ type Note struct {
 	Body  string          `json:"body"`
 }
 
-// Sticky is a migrated note
-type Sticky map[string]interface{}
-
 // Migrate migrates this note to a new sticky note
-func (n *Note) Migrate() Sticky {
-	return Sticky{
+func (n *Note) Migrate() flows.Sticky {
+	return flows.Sticky{
 		"position": map[string]interface{}{"left": n.X.IntPart(), "top": n.Y.IntPart()},
 		"title":    n.Title,
 		"body":     n.Body,
 		"color":    "yellow",
 	}
-}
-
-// UI is a optional section in a flow definition with editor specific information
-type UI map[string]interface{}
-
-// NewUI creates a new UI section
-func NewUI() UI {
-	return UI{
-		"nodes":    make(map[flows.NodeUUID]interface{}),
-		"stickies": make(map[utils.UUID]Sticky),
-	}
-}
-
-// AddNode adds information about a node
-func (u UI) AddNode(uuid flows.NodeUUID, x, y int, uiType UINodeType) {
-	node := make(map[string]interface{})
-	node["position"] = map[string]int{
-		"left": x,
-		"top":  y,
-	}
-	if uiType != "" {
-		node["type"] = uiType
-	}
-
-	u["nodes"].(map[flows.NodeUUID]interface{})[uuid] = node
-}
-
-// AddSticky adds a new sticky note
-func (u UI) AddSticky(sticky Sticky) {
-	u["stickies"].(map[utils.UUID]Sticky)[utils.NewUUID()] = sticky
 }

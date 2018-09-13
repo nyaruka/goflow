@@ -599,15 +599,16 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, UINodeType, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
-	var uiType UINodeType
+	var uiType flows.UINodeType
+	var uiNodeConfig flows.UINodeConfig
 
 	cases, exits, defaultExit, err := migrateRules(lang, r, localization, collapseExits)
 	if err != nil {
-		return nil, "", err
+		return nil, "", nil, err
 	}
 
 	resultName := r.Label
@@ -617,7 +618,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	if r.Config != nil {
 		err := json.Unmarshal(r.Config, &config)
 		if err != nil {
-			return nil, "", err
+			return nil, "", nil, err
 		}
 	}
 
@@ -695,7 +696,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			if rule.Test.Type == "timeout" {
 				test := timeoutTest{}
 				if err := json.Unmarshal(rule.Test.Data, &test); err != nil {
-					return nil, "", err
+					return nil, "", nil, err
 				}
 				t := 60 * test.Minutes
 				timeout = &t
@@ -714,8 +715,39 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		switch r.Type {
 		case "flow_field":
 			uiType = UINodeTypeSplitByRunResult
+			lastDot := strings.LastIndex(r.Operand, ".")
+			if lastDot > -1 {
+				fieldKey := r.Operand[lastDot+1:]
+				uiNodeConfig = flows.UINodeConfig{
+					"type": "result",
+					"id":   fieldKey,
+				}
+			}
 		case "contact_field":
 			uiType = UINodeTypeSplitByContactField
+
+			lastDot := strings.LastIndex(r.Operand, ".")
+			if lastDot > -1 {
+				fieldKey := r.Operand[lastDot+1:]
+				if fieldKey == "name" {
+					uiNodeConfig = flows.UINodeConfig{
+						"type": "property",
+						"id":   "name",
+						"name": "Name",
+					}
+				} else if urns.IsValidScheme(fieldKey) {
+					uiNodeConfig = flows.UINodeConfig{
+						"type": "scheme",
+						"id":   fieldKey,
+					}
+				} else {
+					uiNodeConfig = flows.UINodeConfig{
+						"type": "field",
+						"id":   fieldKey,
+					}
+				}
+			}
+
 		case "expression":
 			defaultToSelf = true
 			uiType = UINodeTypeSplitByExpression
@@ -737,14 +769,14 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			Amount       decimal.Decimal `json:"amount"`
 		}{}
 		if err := json.Unmarshal(r.Config, &countryConfigs); err != nil {
-			return nil, "", err
+			return nil, "", nil, err
 		}
 		currencyAmounts := make(map[string]decimal.Decimal, len(countryConfigs))
 		for _, countryCfg := range countryConfigs {
 			// check if we already have a configuration for this currency
 			existingAmount, alreadyDefined := currencyAmounts[countryCfg.CurrencyCode]
 			if alreadyDefined && existingAmount != countryCfg.Amount {
-				return nil, "", fmt.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
+				return nil, "", nil, fmt.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
 			}
 
 			currencyAmounts[countryCfg.CurrencyCode] = countryCfg.Amount
@@ -760,10 +792,10 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		router = routers.NewSwitchRouter(defaultExit, "@run", cases, resultName)
 
 	default:
-		return nil, "", fmt.Errorf("unrecognized ruleset type: %s", r.Type)
+		return nil, "", nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
-	return definition.NewNode(r.UUID, newActions, router, exits, wait), uiType, nil
+	return definition.NewNode(r.UUID, newActions, router, exits, wait), uiType, uiNodeConfig, nil
 }
 
 // migrates a set of legacy rules to sets of cases and exits
@@ -981,7 +1013,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
-	nodeUITypes := make(map[flows.NodeUUID]UINodeType, numNodes)
+	nodeUI := make(map[flows.NodeUUID]flows.UINodeDetails, numNodes)
 
 	for i := range f.ActionSets {
 		node, err := migateActionSet(f.BaseLanguage, f.ActionSets[i], localization)
@@ -991,13 +1023,13 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		nodes[i] = node
 	}
 
-	for i := range f.RuleSets {
-		node, uiType, err := migrateRuleSet(f.BaseLanguage, f.RuleSets[i], localization, collapseExits)
+	for i, ruleSet := range f.RuleSets {
+		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization, collapseExits)
 		if err != nil {
-			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
+			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", ruleSet.UUID, err)
 		}
 		nodes[len(f.ActionSets)+i] = node
-		nodeUITypes[node.UUID()] = uiType
+		nodeUI[node.UUID()] = definition.NewUINodeDetails(ruleSet.X, ruleSet.Y, uiType, uiNodeConfig)
 	}
 
 	// make sure our entry node is first
@@ -1011,16 +1043,20 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		}
 	}
 
-	var ui UI
+	var ui flows.UI
 
 	if includeUI {
-		ui = NewUI()
+		ui = definition.NewUI()
 
 		for _, actionSet := range f.ActionSets {
-			ui.AddNode(actionSet.UUID, actionSet.X, actionSet.Y, "")
+			var nodeType flows.UINodeType
+			var nodeConfig flows.UINodeConfig
+
+			details := definition.NewUINodeDetails(actionSet.X, actionSet.Y, nodeType, nodeConfig)
+			ui.AddNode(actionSet.UUID, details)
 		}
 		for _, ruleSet := range f.RuleSets {
-			ui.AddNode(ruleSet.UUID, ruleSet.X, ruleSet.Y, nodeUITypes[ruleSet.UUID])
+			ui.AddNode(ruleSet.UUID, nodeUI[ruleSet.UUID])
 		}
 		for _, note := range f.Metadata.Notes {
 			ui.AddSticky(note.Migrate())
