@@ -3,9 +3,7 @@ package engine
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-
-	// so that the definition can call flows.SetFlowReader
-	_ "github.com/nyaruka/goflow/flows/definition"
+	"github.com/nyaruka/goflow/flows/definition"
 )
 
 // our implementation of SessionAssets - the high-level API for asset access from the engine
@@ -14,7 +12,7 @@ type sessionAssets struct {
 
 	channels  *flows.ChannelAssets
 	fields    *flows.FieldAssets
-	flows     *flows.FlowAssets
+	flows     flows.FlowAssets
 	groups    *flows.GroupAssets
 	labels    *flows.LabelAssets
 	locations *flows.LocationAssets
@@ -54,7 +52,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 		source:    source,
 		channels:  flows.NewChannelAssets(channels),
 		fields:    flows.NewFieldAssets(fields),
-		flows:     flows.NewFlowAssets(source),
+		flows:     definition.NewFlowAssets(source),
 		groups:    flows.NewGroupAssets(groups),
 		labels:    flows.NewLabelAssets(labels),
 		locations: flows.NewLocationAssets(locations),
@@ -64,7 +62,7 @@ func NewSessionAssets(source assets.AssetSource) (flows.SessionAssets, error) {
 
 func (s *sessionAssets) Channels() *flows.ChannelAssets   { return s.channels }
 func (s *sessionAssets) Fields() *flows.FieldAssets       { return s.fields }
-func (s *sessionAssets) Flows() *flows.FlowAssets         { return s.flows }
+func (s *sessionAssets) Flows() flows.FlowAssets          { return s.flows }
 func (s *sessionAssets) Groups() *flows.GroupAssets       { return s.groups }
 func (s *sessionAssets) Labels() *flows.LabelAssets       { return s.labels }
 func (s *sessionAssets) Locations() *flows.LocationAssets { return s.locations }

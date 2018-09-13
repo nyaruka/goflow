@@ -95,11 +95,15 @@ const (
 	RunStatusInterrupted RunStatus = "interrupted"
 )
 
+type FlowAssets interface {
+	Get(assets.FlowUUID) (Flow, error)
+}
+
 // SessionAssets is the assets available to a session
 type SessionAssets interface {
 	Channels() *ChannelAssets
 	Fields() *FieldAssets
-	Flows() *FlowAssets
+	Flows() FlowAssets
 	Groups() *GroupAssets
 	Labels() *LabelAssets
 	Locations() *LocationAssets
