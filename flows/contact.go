@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
@@ -365,6 +366,17 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 
 var _ contactql.Queryable = (*Contact)(nil)
 
+// ContactReference is used to reference a contact
+type ContactReference struct {
+	UUID ContactUUID `json:"uuid" validate:"required,uuid4"`
+	Name string      `json:"name"`
+}
+
+// NewContactReference creates a new contact reference with the given UUID and name
+func NewContactReference(uuid ContactUUID, name string) *ContactReference {
+	return &ContactReference{UUID: uuid, Name: name}
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
@@ -386,7 +398,7 @@ type contactEnvelope struct {
 	Timezone  string                         `json:"timezone"`
 	CreatedOn time.Time                      `json:"created_on"`
 	URNs      []urns.URN                     `json:"urns" validate:"dive,urn"`
-	Groups    []*GroupReference              `json:"groups,omitempty" validate:"dive"`
+	Groups    []*assets.GroupReference       `json:"groups,omitempty" validate:"dive"`
 	Fields    map[string]*fieldValueEnvelope `json:"fields,omitempty"`
 }
 
@@ -473,7 +485,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Timezone = c.timezone.String()
 	}
 
-	ce.Groups = make([]*GroupReference, c.groups.Count())
+	ce.Groups = make([]*assets.GroupReference, c.groups.Count())
 	for g, group := range c.groups.All() {
 		ce.Groups[g] = group.Reference()
 	}

@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
@@ -51,7 +52,7 @@ func (a *BaseAction) evaluateLocalizableTemplate(run flows.FlowRun, localization
 }
 
 // helper function for actions that have a set of group references that must be validated
-func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*flows.GroupReference) error {
+func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*assets.GroupReference) error {
 	for _, ref := range references {
 		if ref.UUID != "" {
 			if _, err := assets.Groups().Get(ref.UUID); err != nil {
@@ -63,7 +64,7 @@ func (a *BaseAction) validateGroups(assets flows.SessionAssets, references []*fl
 }
 
 // helper function for actions that have a set of label references that must be validated
-func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*flows.LabelReference) error {
+func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*assets.LabelReference) error {
 	for _, ref := range references {
 		if ref.UUID != "" {
 			if _, err := assets.Labels().Get(ref.UUID); err != nil {
@@ -75,7 +76,7 @@ func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*fl
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*flows.GroupReference, log flows.EventLog) ([]*flows.Group, error) {
+func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*assets.GroupReference, log flows.EventLog) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -112,7 +113,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*flows.LabelReference, log flows.EventLog) ([]*flows.Label, error) {
+func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*assets.LabelReference, log flows.EventLog) ([]*flows.Label, error) {
 	labelSet := run.Session().Assets().Labels()
 	labels := make([]*flows.Label, 0, len(references))
 
@@ -188,7 +189,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
 }
 
-func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*flows.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*flows.GroupReference, error) {
+func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -208,7 +209,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	groupRefs := make([]*flows.GroupReference, 0, len(groups))
+	groupRefs := make([]*assets.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		groupRefs = append(groupRefs, group.Reference())
 	}

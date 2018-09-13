@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -31,7 +32,7 @@ type AddContactGroupsAction struct {
 	BaseAction
 	universalAction
 
-	Groups []*flows.GroupReference `json:"groups" validate:"required,dive"`
+	Groups []*assets.GroupReference `json:"groups" validate:"required,dive"`
 }
 
 // Type returns the type of this action
@@ -56,7 +57,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 		return err
 	}
 
-	groupRefs := make([]*flows.GroupReference, 0, len(groups))
+	groupRefs := make([]*assets.GroupReference, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact is already in it
 		if contact.Groups().FindByUUID(group.UUID()) != nil {

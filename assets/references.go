@@ -1,9 +1,8 @@
-package flows
+package assets
 
 import (
 	validator "gopkg.in/go-playground/validator.v9"
 
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -14,35 +13,24 @@ func init() {
 
 // ChannelReference is used to reference a channel
 type ChannelReference struct {
-	UUID assets.ChannelUUID `json:"uuid" validate:"required,uuid"`
-	Name string             `json:"name"`
-}
-
-// NewChannelReference creates a new channel reference with the given UUID and name
-func NewChannelReference(uuid assets.ChannelUUID, name string) *ChannelReference {
-	return &ChannelReference{UUID: uuid, Name: name}
-}
-
-// ContactReference is used to reference a contact
-type ContactReference struct {
-	UUID ContactUUID `json:"uuid" validate:"required,uuid4"`
+	UUID ChannelUUID `json:"uuid" validate:"required,uuid"`
 	Name string      `json:"name"`
 }
 
-// NewContactReference creates a new contact reference with the given UUID and name
-func NewContactReference(uuid ContactUUID, name string) *ContactReference {
-	return &ContactReference{UUID: uuid, Name: name}
+// NewChannelReference creates a new channel reference with the given UUID and name
+func NewChannelReference(uuid ChannelUUID, name string) *ChannelReference {
+	return &ChannelReference{UUID: uuid, Name: name}
 }
 
 // GroupReference is used to reference a group
 type GroupReference struct {
-	UUID      assets.GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name      string           `json:"name,omitempty"`
-	NameMatch string           `json:"name_match,omitempty"`
+	UUID      GroupUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	Name      string    `json:"name,omitempty"`
+	NameMatch string    `json:"name_match,omitempty"`
 }
 
 // NewGroupReference creates a new group reference with the given UUID and name
-func NewGroupReference(uuid assets.GroupUUID, name string) *GroupReference {
+func NewGroupReference(uuid GroupUUID, name string) *GroupReference {
 	return &GroupReference{UUID: uuid, Name: name}
 }
 
@@ -64,24 +52,24 @@ func NewFieldReference(key string, label string) *FieldReference {
 
 // FlowReference is used to reference a flow from another flow
 type FlowReference struct {
-	UUID assets.FlowUUID `json:"uuid" validate:"uuid4"`
-	Name string          `json:"name"`
+	UUID FlowUUID `json:"uuid" validate:"uuid4"`
+	Name string   `json:"name"`
 }
 
 // NewFlowReference creates a new flow reference with the given UUID and name
-func NewFlowReference(uuid assets.FlowUUID, name string) *FlowReference {
+func NewFlowReference(uuid FlowUUID, name string) *FlowReference {
 	return &FlowReference{UUID: uuid, Name: name}
 }
 
 // LabelReference is used to reference a label
 type LabelReference struct {
-	UUID      assets.LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
-	Name      string           `json:"name,omitempty"`
-	NameMatch string           `json:"name_match,omitempty"`
+	UUID      LabelUUID `json:"uuid,omitempty" validate:"omitempty,uuid4"`
+	Name      string    `json:"name,omitempty"`
+	NameMatch string    `json:"name_match,omitempty"`
 }
 
 // NewLabelReference creates a new label reference with the given UUID and name
-func NewLabelReference(uuid assets.LabelUUID, name string) *LabelReference {
+func NewLabelReference(uuid LabelUUID, name string) *LabelReference {
 	return &LabelReference{UUID: uuid, Name: name}
 }
 

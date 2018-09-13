@@ -140,7 +140,7 @@ type Flow interface {
 	Nodes() []Node
 	GetNode(uuid NodeUUID) Node
 
-	Reference() *FlowReference
+	Reference() *assets.FlowReference
 }
 
 // Node is a single node in a flow
@@ -219,7 +219,7 @@ type Trigger interface {
 	types.XResolvable
 
 	Environment() utils.Environment
-	Flow() *FlowReference
+	Flow() *assets.FlowReference
 	Contact() *Contact
 	Params() types.XValue
 	TriggeredOn() time.Time
