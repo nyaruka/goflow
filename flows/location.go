@@ -3,6 +3,7 @@ package flows
 import (
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -49,15 +50,15 @@ var _ types.XValue = LocationPath("")
 
 // LocationAssets provides access to location assets
 type LocationAssets struct {
-	hierarchies []*utils.LocationHierarchy
+	hierarchies []assets.LocationHierarchy
 }
 
 // NewLocationAssets creates a new set of location assets
-func NewLocationAssets(hierarchies []*utils.LocationHierarchy) *LocationAssets {
+func NewLocationAssets(hierarchies []assets.LocationHierarchy) *LocationAssets {
 	return &LocationAssets{hierarchies: hierarchies}
 }
 
 // Hierarchies returns all hierarchies
-func (s *LocationAssets) Hierarchies() []*utils.LocationHierarchy {
+func (s *LocationAssets) Hierarchies() []assets.LocationHierarchy {
 	return s.hierarchies
 }

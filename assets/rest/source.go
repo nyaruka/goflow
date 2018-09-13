@@ -141,7 +141,7 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 }
 
 // Locations returns all location assets
-func (s *ServerSource) Locations() ([]*utils.LocationHierarchy, error) {
+func (s *ServerSource) Locations() ([]assets.LocationHierarchy, error) {
 	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
 		return nil, nil
 	}
@@ -149,7 +149,7 @@ func (s *ServerSource) Locations() ([]*utils.LocationHierarchy, error) {
 	if err != nil {
 		return nil, err
 	}
-	set, isType := asset.([]*utils.LocationHierarchy)
+	set, isType := asset.([]assets.LocationHierarchy)
 	if !isType {
 		return nil, fmt.Errorf("asset cache contains asset with wrong type")
 	}

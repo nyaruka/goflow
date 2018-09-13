@@ -84,6 +84,12 @@ type Label interface {
 	Name() string
 }
 
+// LocationHierarchy is a searchable hierachy of locations
+type LocationHierarchy interface {
+	FindByPath(path string) *utils.Location
+	FindByName(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location
+}
+
 // Resthook is a set of URLs which are subscribed to the named event
 type Resthook interface {
 	Slug() string
@@ -97,6 +103,6 @@ type AssetSource interface {
 	Flow(FlowUUID) (Flow, error)
 	Groups() ([]Group, error)
 	Labels() ([]Label, error)
-	Locations() ([]*utils.LocationHierarchy, error)
+	Locations() ([]LocationHierarchy, error)
 	Resthooks() ([]Resthook, error)
 }
