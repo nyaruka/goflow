@@ -741,7 +741,6 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 						"id":   fieldKey,
 					}
 				} else {
-					fmt.Println("field:", fieldKey)
 					uiNodeConfig = UINodeConfig{
 						"type": "field",
 						"id":   fieldKey,
