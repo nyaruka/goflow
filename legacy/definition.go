@@ -599,12 +599,12 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 }
 
 // migrates the given legacy rulset to a node with a router
-func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, UINodeType, UINodeConfig, error) {
+func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
 	var newActions []flows.Action
 	var router flows.Router
 	var wait flows.Wait
-	var uiType UINodeType
-	var uiNodeConfig UINodeConfig
+	var uiType flows.UINodeType
+	var uiNodeConfig flows.UINodeConfig
 
 	cases, exits, defaultExit, err := migrateRules(lang, r, localization, collapseExits)
 	if err != nil {
@@ -718,7 +718,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			lastDot := strings.LastIndex(r.Operand, ".")
 			if lastDot > -1 {
 				fieldKey := r.Operand[lastDot+1:]
-				uiNodeConfig = UINodeConfig{
+				uiNodeConfig = flows.UINodeConfig{
 					"type": "result",
 					"id":   fieldKey,
 				}
@@ -730,18 +730,18 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			if lastDot > -1 {
 				fieldKey := r.Operand[lastDot+1:]
 				if fieldKey == "name" {
-					uiNodeConfig = UINodeConfig{
+					uiNodeConfig = flows.UINodeConfig{
 						"type": "property",
 						"id":   "name",
 						"name": "Name",
 					}
 				} else if urns.IsValidScheme(fieldKey) {
-					uiNodeConfig = UINodeConfig{
+					uiNodeConfig = flows.UINodeConfig{
 						"type": "scheme",
 						"id":   fieldKey,
 					}
 				} else {
-					uiNodeConfig = UINodeConfig{
+					uiNodeConfig = flows.UINodeConfig{
 						"type": "field",
 						"id":   fieldKey,
 					}
@@ -1008,17 +1008,12 @@ func ReadLegacyFlow(data json.RawMessage) (*Flow, error) {
 	return flow, nil
 }
 
-type uiConfig struct {
-	nodeType     UINodeType
-	uiNodeConfig UINodeConfig
-}
-
 // Migrate migrates this legacy flow to the new format
 func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	localization := definition.NewLocalization()
 	numNodes := len(f.ActionSets) + len(f.RuleSets)
 	nodes := make([]flows.Node, numNodes)
-	nodeUI := make(map[flows.NodeUUID]uiConfig, numNodes)
+	nodeUI := make(map[flows.NodeUUID]flows.UINodeDetails, numNodes)
 
 	for i := range f.ActionSets {
 		node, err := migateActionSet(f.BaseLanguage, f.ActionSets[i], localization)
@@ -1034,10 +1029,9 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", f.RuleSets[i].UUID, err)
 		}
 		nodes[len(f.ActionSets)+i] = node
-		nodeUI[node.UUID()] = uiConfig{
-			nodeType:     uiType,
-			uiNodeConfig: uiNodeConfig,
-		}
+
+		// TODO AddNode
+		nodeUI[node.UUID()] = definition.NewUINodeDetails(uiType, uiNodeConfig)
 	}
 
 	// make sure our entry node is first
@@ -1051,13 +1045,13 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		}
 	}
 
-	var ui UI
+	var ui flows.UI
 
 	if includeUI {
-		ui = NewUI()
+		ui = definition.NewUI()
 
 		for _, actionSet := range f.ActionSets {
-			var config uiConfig
+			var config flows.UINodeDetails
 			ui.AddNode(actionSet.UUID, actionSet.X, actionSet.Y, config)
 		}
 		for _, ruleSet := range f.RuleSets {

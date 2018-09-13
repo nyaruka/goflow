@@ -106,6 +106,7 @@ type ActionMigrationTest struct {
 	LegacyAction         json.RawMessage `json:"legacy_action"`
 	ExpectedAction       json.RawMessage `json:"expected_action"`
 	ExpectedLocalization json.RawMessage `json:"expected_localization"`
+	ExpectedUIConfig     json.RawMessage `json:"expected_uiconfig"`
 }
 
 type TestMigrationTest struct {
