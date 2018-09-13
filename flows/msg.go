@@ -47,12 +47,7 @@ func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *Channel, text strin
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channel *Channel, text string, attachments []Attachment, quickReplies []string) *MsgOut {
-	var channelRef *assets.ChannelReference
-	if channel != nil {
-		channelRef = channel.Reference()
-	}
-
+func NewMsgOut(urn urns.URN, channelRef *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(utils.NewUUID()),
