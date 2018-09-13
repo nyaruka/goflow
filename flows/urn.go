@@ -129,9 +129,9 @@ func ReadURNList(a SessionAssets, rawURNs []urns.URN) (URNList, error) {
 		}
 
 		var channel *Channel
-		channelUUID := assets.ChannelUUID(parsedQuery.Get("channel"))
-		if channelUUID != assets.NilChannelUUID {
-			if channel, err = a.Channels().Get(channelUUID); err != nil {
+		channelUUID := parsedQuery.Get("channel")
+		if channelUUID != "" {
+			if channel, err = a.Channels().Get(assets.ChannelUUID(channelUUID)); err != nil {
 				return nil, err
 			}
 		}
