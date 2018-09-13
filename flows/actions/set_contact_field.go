@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -31,8 +32,8 @@ type SetContactFieldAction struct {
 	BaseAction
 	universalAction
 
-	Field *flows.FieldReference `json:"field" validate:"required"`
-	Value string                `json:"value"`
+	Field *assets.FieldReference `json:"field" validate:"required"`
+	Value string                 `json:"value"`
 }
 
 // Type returns the type of this action

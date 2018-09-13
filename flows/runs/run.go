@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
@@ -303,7 +304,7 @@ var _ flows.RunSummary = (*flowRun)(nil)
 
 type runEnvelope struct {
 	UUID   flows.RunUUID          `json:"uuid" validate:"required,uuid4"`
-	Flow   *flows.FlowReference   `json:"flow" validate:"required,dive"`
+	Flow   *assets.FlowReference  `json:"flow" validate:"required,dive"`
 	Path   []*step                `json:"path" validate:"dive"`
 	Events []*utils.TypedEnvelope `json:"events,omitempty"`
 

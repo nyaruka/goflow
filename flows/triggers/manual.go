@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -34,7 +35,7 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow *flows.FlowReference, params types.XValue, triggeredOn time.Time) flows.Trigger {
+func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, triggeredOn time.Time) flows.Trigger {
 	return &ManualTrigger{baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn}}
 }
 

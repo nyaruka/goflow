@@ -21,7 +21,9 @@ func NewLabel(asset assets.Label) *Label {
 func (l *Label) Asset() assets.Label { return l.Label }
 
 // Reference returns a reference to this label
-func (l *Label) Reference() *LabelReference { return NewLabelReference(l.UUID(), l.Name()) }
+func (l *Label) Reference() *assets.LabelReference {
+	return assets.NewLabelReference(l.UUID(), l.Name())
+}
 
 var _ assets.Label = (*Label)(nil)
 
