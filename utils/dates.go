@@ -131,7 +131,7 @@ func DateToString(env Environment, date time.Time) string {
 
 // DateFromString returns a date constructed from the passed in string, or an error if we
 // are unable to extract one
-func DateFromString(env Environment, str string) (time.Time, error) {
+func DateFromString(env Environment, str string, fillTime bool) (time.Time, error) {
 	// first see if we can parse in any known iso formats, if so return that
 	for _, format := range isoFormats {
 		parsed, err := time.ParseInLocation(format, strings.Trim(str, " \n\r\t"), env.Timezone())
@@ -166,6 +166,23 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 	}
 
 	// can we pull out a time?
+	hasTime, hour, minute, second, ns := parseTime(str)
+	if hasTime {
+		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, second, ns, env.Timezone())
+	} else if fillTime {
+		now := Now().In(env.Timezone())
+		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), now.Hour(), now.Minute(), now.Second(), now.Nanosecond(), env.Timezone())
+	}
+
+	// set our timezone if we have one
+	if env.Timezone() != nil && parsed != ZeroTime {
+		parsed = parsed.In(env.Timezone())
+	}
+
+	return parsed, nil
+}
+
+func parseTime(str string) (bool, int, int, int, int) {
 	matches := patternTime.FindAllStringSubmatch(str, -1)
 	for _, match := range matches {
 		hour, _ := strconv.Atoi(match[1])
@@ -187,10 +204,10 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 			continue
 		}
 
-		seconds := 0
+		second := 0
 		if match[4] != "" {
-			seconds, _ = strconv.Atoi(match[4])
-			if seconds > 60 {
+			second, _ = strconv.Atoi(match[4])
+			if second > 60 {
 				continue
 			}
 		}
@@ -208,16 +225,10 @@ func DateFromString(env Environment, str string) (time.Time, error) {
 			}
 		}
 
-		parsed = time.Date(parsed.Year(), parsed.Month(), parsed.Day(), hour, minute, seconds, ns, env.Timezone())
-		break
+		return true, hour, minute, second, ns
 	}
 
-	// set our timezone if we have one
-	if env.Timezone() != nil && parsed != ZeroTime {
-		parsed = parsed.In(env.Timezone())
-	}
-
-	return parsed, nil
+	return false, 0, 0, 0, 0
 }
 
 // FormattingMode describe a mode of formatting dates, times, datetimes

@@ -167,7 +167,7 @@ func Number(env utils.Environment, value types.XValue) types.XValue {
 //
 // @function datetime(text)
 func DateTime(env utils.Environment, str types.XText) types.XValue {
-	date, err := utils.DateFromString(env, str.Native())
+	date, err := utils.DateFromString(env, str.Native(), false)
 	if err != nil {
 		return types.NewXError(err)
 	}

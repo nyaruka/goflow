@@ -1293,7 +1293,7 @@ Tests whether `text` contains a date formatted according to our environment
 
 ```objectivec
 @(has_date("the date is 2017-01-15")) → true
-@(has_date("the date is 2017-01-15").match) → 2017-01-15T00:00:00.000000-05:00
+@(has_date("the date is 2017-01-15").match) → 2017-01-15T13:24:30.123456-05:00
 @(has_date("there is no date here, just a year 2017")) → false
 ```
 
@@ -1306,8 +1306,8 @@ Tests whether `text` a date equal to `date`
 
 ```objectivec
 @(has_date_eq("the date is 2017-01-15", "2017-01-15")) → true
-@(has_date_eq("the date is 2017-01-15", "2017-01-15").match) → 2017-01-15T00:00:00.000000-05:00
-@(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) → false
+@(has_date_eq("the date is 2017-01-15", "2017-01-15").match) → 2017-01-15T13:24:30.123456-05:00
+@(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) → true
 @(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) → false
 @(has_date_eq("there is no date here, just a year 2017", "not date")) → ERROR
 ```
@@ -1321,7 +1321,7 @@ Tests whether `text` a date after the date `min`
 
 ```objectivec
 @(has_date_gt("the date is 2017-01-15", "2017-01-01")) → true
-@(has_date_gt("the date is 2017-01-15", "2017-01-01").match) → 2017-01-15T00:00:00.000000-05:00
+@(has_date_gt("the date is 2017-01-15", "2017-01-01").match) → 2017-01-15T13:24:30.123456-05:00
 @(has_date_gt("the date is 2017-01-15", "2017-03-15")) → false
 @(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) → false
 @(has_date_gt("there is no date here, just a year 2017", "not date")) → ERROR
@@ -1336,7 +1336,7 @@ Tests whether `text` contains a date before the date `max`
 
 ```objectivec
 @(has_date_lt("the date is 2017-01-15", "2017-06-01")) → true
-@(has_date_lt("the date is 2017-01-15", "2017-06-01").match) → 2017-01-15T00:00:00.000000-05:00
+@(has_date_lt("the date is 2017-01-15", "2017-06-01").match) → 2017-01-15T13:24:30.123456-05:00
 @(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) → false
 @(has_date_lt("there is no date here, just a year 2017", "not date")) → ERROR
 ```
