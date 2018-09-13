@@ -524,7 +524,7 @@ func HasNumberGT(env utils.Environment, text types.XText, num types.XNumber) typ
 // HasDate tests whether `text` contains a date formatted according to our environment
 //
 //   @(has_date("the date is 2017-01-15")) -> true
-//   @(has_date("the date is 2017-01-15").match) -> 2017-01-15T00:00:00.000000-05:00
+//   @(has_date("the date is 2017-01-15").match) -> 2017-01-15T13:24:30.123456-05:00
 //   @(has_date("there is no date here, just a year 2017")) -> false
 //
 // @test has_date(text)
@@ -535,7 +535,7 @@ func HasDate(env utils.Environment, text types.XText) types.XValue {
 // HasDateLT tests whether `text` contains a date before the date `max`
 //
 //   @(has_date_lt("the date is 2017-01-15", "2017-06-01")) -> true
-//   @(has_date_lt("the date is 2017-01-15", "2017-06-01").match) -> 2017-01-15T00:00:00.000000-05:00
+//   @(has_date_lt("the date is 2017-01-15", "2017-06-01").match) -> 2017-01-15T13:24:30.123456-05:00
 //   @(has_date_lt("there is no date here, just a year 2017", "2017-06-01")) -> false
 //   @(has_date_lt("there is no date here, just a year 2017", "not date")) -> ERROR
 //
@@ -547,8 +547,8 @@ func HasDateLT(env utils.Environment, text types.XText, date types.XDateTime) ty
 // HasDateEQ tests whether `text` a date equal to `date`
 //
 //   @(has_date_eq("the date is 2017-01-15", "2017-01-15")) -> true
-//   @(has_date_eq("the date is 2017-01-15", "2017-01-15").match) -> 2017-01-15T00:00:00.000000-05:00
-//   @(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) -> false
+//   @(has_date_eq("the date is 2017-01-15", "2017-01-15").match) -> 2017-01-15T13:24:30.123456-05:00
+//   @(has_date_eq("the date is 2017-01-15 15:00", "2017-01-15")) -> true
 //   @(has_date_eq("there is no date here, just a year 2017", "2017-06-01")) -> false
 //   @(has_date_eq("there is no date here, just a year 2017", "not date")) -> ERROR
 //
@@ -560,7 +560,7 @@ func HasDateEQ(env utils.Environment, text types.XText, date types.XDateTime) ty
 // HasDateGT tests whether `text` a date after the date `min`
 //
 //   @(has_date_gt("the date is 2017-01-15", "2017-01-01")) -> true
-//   @(has_date_gt("the date is 2017-01-15", "2017-01-01").match) -> 2017-01-15T00:00:00.000000-05:00
+//   @(has_date_gt("the date is 2017-01-15", "2017-01-01").match) -> 2017-01-15T13:24:30.123456-05:00
 //   @(has_date_gt("the date is 2017-01-15", "2017-03-15")) -> false
 //   @(has_date_gt("there is no date here, just a year 2017", "2017-06-01")) -> false
 //   @(has_date_gt("there is no date here, just a year 2017", "not date")) -> ERROR
@@ -951,13 +951,18 @@ func isNumberGT(value decimal.Decimal, test decimal.Decimal) bool {
 type dateTest func(value time.Time, test time.Time) bool
 
 func testDate(env utils.Environment, str types.XText, testDate types.XDateTime, testFunc dateTest) types.XValue {
-	// error is if we don't find a date on our test value, that's ok but no match
-	value, xerr := types.ToXDateTime(env, str)
+	// first parse wiwth time filling which will the rest result
+	value, xerr := types.ToXDateTimeWithTimeFill(env, str)
+
+	// but comparsion should be against only the date portions
+	valueAsDate := value.Native().Truncate(24 * time.Hour)
+	testAsDate := testDate.Native().Truncate(24 * time.Hour)
+
 	if xerr != nil {
 		return XFalseResult
 	}
 
-	if testFunc(value.Native(), testDate.Native()) {
+	if testFunc(valueAsDate, testAsDate) {
 		return XTestResult{true, value}
 	}
 

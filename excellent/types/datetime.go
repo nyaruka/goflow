@@ -75,6 +75,16 @@ var _ XPrimitive = XDateTimeZero
 
 // ToXDateTime converts the given value to a time or returns an error if that isn't possible
 func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
+	return toXDateTime(env, x, false)
+}
+
+// ToXDateTimeWithTimeFill converts the given value to a time or returns an error if that isn't possible
+func ToXDateTimeWithTimeFill(env utils.Environment, x XValue) (XDateTime, XError) {
+	return toXDateTime(env, x, true)
+}
+
+// converts the given value to a time or returns an error if that isn't possible
+func toXDateTime(env utils.Environment, x XValue, fillTime bool) (XDateTime, XError) {
 	if !utils.IsNil(x) {
 		x = x.Reduce(env)
 
@@ -84,7 +94,7 @@ func ToXDateTime(env utils.Environment, x XValue) (XDateTime, XError) {
 		case XDateTime:
 			return typed, nil
 		case XText:
-			parsed, err := utils.DateFromString(env, typed.Native())
+			parsed, err := utils.DateFromString(env, typed.Native(), fillTime)
 			if err == nil {
 				return NewXDateTime(parsed), nil
 			}

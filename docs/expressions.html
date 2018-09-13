@@ -719,21 +719,21 @@
 <h2 id="has_datetext">has_date(text)</h2>
 <p>Tests whether <code>text</code> contains a date formatted according to our environment</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb74-1" data-line-number="1">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">@(has_date(<span class="st">&quot;the date is 2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb74-3" data-line-number="3">@(has_date(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_date_eq"></a></p>
 <h2 id="has_date_eqtext-date">has_date_eq(text, date)</h2>
 <p>Tests whether <code>text</code> a date equal to <code>date</code></p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb75-1" data-line-number="1">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
-<a class="sourceLine" id="cb75-3" data-line-number="3">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb75-3" data-line-number="3">@(has_date_eq(<span class="st">&quot;the date is 2017-01-15 15:00&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb75-4" data-line-number="4">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb75-5" data-line-number="5">@(has_date_eq(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_date_gt"></a></p>
 <h2 id="has_date_gttext-min">has_date_gt(text, min)</h2>
 <p>Tests whether <code>text</code> a date after the date <code>min</code></p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb76-1" data-line-number="1">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb76-2" data-line-number="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb76-2" data-line-number="2">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb76-3" data-line-number="3">@(has_date_gt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-03-15&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb76-4" data-line-number="4">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb76-5" data-line-number="5">@(has_date_gt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
@@ -741,7 +741,7 @@
 <h2 id="has_date_lttext-max">has_date_lt(text, max)</h2>
 <p>Tests whether <code>text</code> contains a date before the date <code>max</code></p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb77-1" data-line-number="1">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb77-2" data-line-number="2">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T00:<span class="dv">00</span>:<span class="fl">00.000000</span><span class="dv">-05</span>:<span class="dv">00</span></a>
+<a class="sourceLine" id="cb77-2" data-line-number="2">@(has_date_lt(<span class="st">&quot;the date is 2017-01-15&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>).match) → <span class="dv">2017-01</span>-15T13:<span class="dv">24</span>:<span class="fl">30.123456</span><span class="dv">-05</span>:<span class="dv">00</span></a>
 <a class="sourceLine" id="cb77-3" data-line-number="3">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;2017-06-01&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb77-4" data-line-number="4">@(has_date_lt(<span class="st">&quot;there is no date here, just a year 2017&quot;</span>, <span class="st">&quot;not date&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:has_district"></a></p>
