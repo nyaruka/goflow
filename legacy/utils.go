@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
 )
@@ -39,17 +40,20 @@ func (t *Translations) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DecimalString represents a decimal value which may be provided as a string or floating point value
-type DecimalString string
+// StringOrNumber represents something we need to read as a string, but might actually be number value in the JSON source
+type StringOrNumber string
 
-// UnmarshalJSON unmarshals a decimal string from the given JSON
-func (s *DecimalString) UnmarshalJSON(data []byte) error {
-	if data[0] == '"' {
+// UnmarshalJSON unmarshals this from the given JSON
+func (s *StringOrNumber) UnmarshalJSON(data []byte) error {
+	c := data[0]
+	if c == '"' {
 		// data is a quoted string
-		*s = DecimalString(data[1 : len(data)-1])
+		*s = StringOrNumber(data[1 : len(data)-1])
+	} else if (c >= '0' && c <= '9') || c == '-' {
+		// data is JSON number
+		*s = StringOrNumber(data)
 	} else {
-		// data is JSON float
-		*s = DecimalString(data)
+		return fmt.Errorf("expected string or number, not %s", string(c))
 	}
 	return nil
 }

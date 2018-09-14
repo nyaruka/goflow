@@ -38,13 +38,22 @@ func TestTranslations(t *testing.T) {
 	}, legacy.TransformTranslations(translationSet))
 }
 
-func TestDecimalString(t *testing.T) {
+func TestStringOrNumber(t *testing.T) {
 	// can unmarshall from a string
-	var decimal legacy.DecimalString
-	json.Unmarshal([]byte(`"123.45"`), &decimal)
-	assert.Equal(t, legacy.DecimalString("123.45"), decimal)
+	var s legacy.StringOrNumber
+	err := json.Unmarshal([]byte(`"123.45"`), &s)
+	assert.NoError(t, err)
+	assert.Equal(t, legacy.StringOrNumber("123.45"), s)
 
 	// or a floating point (JSON number type)
-	json.Unmarshal([]byte(`567.89`), &decimal)
-	assert.Equal(t, legacy.DecimalString("567.89"), decimal)
+	err = json.Unmarshal([]byte(`567.89`), &s)
+	assert.NoError(t, err)
+	assert.Equal(t, legacy.StringOrNumber("567.89"), s)
+
+	err = json.Unmarshal([]byte(`-567.89`), &s)
+	assert.NoError(t, err)
+	assert.Equal(t, legacy.StringOrNumber("-567.89"), s)
+
+	err = json.Unmarshal([]byte(`[]`), &s)
+	assert.EqualError(t, err, "expected string or number, not [")
 }

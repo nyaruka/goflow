@@ -250,7 +250,7 @@ type stringTest struct {
 }
 
 type numericTest struct {
-	Test DecimalString `json:"test"`
+	Test StringOrNumber `json:"test"`
 }
 
 type betweenTest struct {
