@@ -1,3 +1,8 @@
+v0.15.2
+----------
+ * Fix determining whether asset serversource supports a particular type
+ * Fix parsing of numbers when string contains uppercase letters
+
 v0.15.1
 ----------
  * Fill in current time when parsing dates during tests
