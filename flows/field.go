@@ -21,9 +21,8 @@ func NewField(asset assets.Field) *Field {
 // Asset returns the underlying asset
 func (f *Field) Asset() assets.Field { return f.Field }
 
-// FieldValue represents a contact's value for a specific field
-type FieldValue struct {
-	field    *Field
+// Value represents a value in each of the field types
+type Value struct {
 	text     types.XText
 	datetime *types.XDateTime
 	number   *types.XNumber
@@ -32,21 +31,34 @@ type FieldValue struct {
 	ward     LocationPath
 }
 
-// NewEmptyFieldValue creates a new empty value for the given field
-func NewEmptyFieldValue(field *Field) *FieldValue {
-	return &FieldValue{field: field}
-}
-
-// NewFieldValue creates a new field value with the passed in values
-func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *FieldValue {
-	return &FieldValue{
-		field:    field,
+// NewValue creates an empty value
+func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *Value {
+	return &Value{
 		text:     text,
 		datetime: datetime,
 		number:   number,
 		state:    state,
 		district: district,
 		ward:     ward,
+	}
+}
+
+// FieldValue represents a field and a set of values for that field
+type FieldValue struct {
+	field *Field
+	*Value
+}
+
+// NewEmptyFieldValue creates a new empty value for the given field
+func NewEmptyFieldValue(field *Field) *FieldValue {
+	return &FieldValue{field: field, Value: &Value{}}
+}
+
+// NewFieldValue creates a new field value with the passed in values
+func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *FieldValue {
+	return &FieldValue{
+		field: field,
+		Value: NewValue(text, datetime, number, state, district, ward),
 	}
 }
 
@@ -113,6 +125,19 @@ var EmptyFieldValue = &FieldValue{}
 
 // FieldValues is the set of all field values for a contact
 type FieldValues map[string]*FieldValue
+
+// NewFieldValues creates a new field value map
+func NewFieldValues(a SessionAssets, values map[assets.Field]*Value) (FieldValues, error) {
+	fieldValues := make(FieldValues, len(values))
+	for asset, val := range values {
+		field, err := a.Fields().Get(asset.Key())
+		if err != nil {
+			return nil, err
+		}
+		fieldValues[field.Key()] = &FieldValue{field: field, Value: val}
+	}
+	return fieldValues, nil
+}
 
 // Clone returns a clone of this set of field values
 func (f FieldValues) clone() FieldValues {
@@ -193,13 +218,15 @@ func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key strin
 	}
 
 	f[key] = &FieldValue{
-		field:    field,
-		text:     asText,
-		datetime: asDateTime,
-		number:   asNumber,
-		state:    asState,
-		district: asDistrict,
-		ward:     asWard,
+		field: field,
+		Value: &Value{
+			text:     asText,
+			datetime: asDateTime,
+			number:   asNumber,
+			state:    asState,
+			district: asDistrict,
+			ward:     asWard,
+		},
 	}
 
 	return nil

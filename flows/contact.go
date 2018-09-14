@@ -78,6 +78,47 @@ func NewContact(
 	}
 }
 
+// NewContactFromAssets creates a new contact using assets
+func NewContactFromAssets(
+	a SessionAssets,
+	uuid ContactUUID,
+	id ContactID,
+	name string,
+	language utils.Language,
+	timezone *time.Location,
+	createdOn time.Time,
+	urns []urns.URN,
+	groups []assets.Group,
+	fields map[assets.Field]*Value) (*Contact, error) {
+
+	urnList, err := ReadURNList(a, urns)
+	if err != nil {
+		return nil, err
+	}
+
+	groupList, err := NewGroupListFromAssets(a, groups)
+	if err != nil {
+		return nil, err
+	}
+
+	fieldValues, err := NewFieldValues(a, fields)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Contact{
+		uuid:      uuid,
+		id:        id,
+		name:      name,
+		language:  language,
+		timezone:  timezone,
+		createdOn: createdOn,
+		urns:      urnList,
+		groups:    groupList,
+		fields:    fieldValues,
+	}, nil
+}
+
 // NewEmptyContact creates a new empy contact with the passed in name, language and location
 func NewEmptyContact(name string, language utils.Language, timezone *time.Location) *Contact {
 	return &Contact{
