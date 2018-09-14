@@ -21,8 +21,8 @@ func NewField(asset assets.Field) *Field {
 // Asset returns the underlying asset
 func (f *Field) Asset() assets.Field { return f.Field }
 
-// represents a value in each of the field types
-type ValueSet struct {
+// Value represents a value in each of the field types
+type Value struct {
 	text     types.XText
 	datetime *types.XDateTime
 	number   *types.XNumber
@@ -31,9 +31,9 @@ type ValueSet struct {
 	ward     LocationPath
 }
 
-// NewValueSet creates an empty value
-func NewValueSet(text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *ValueSet {
-	return &ValueSet{
+// NewValue creates an empty value
+func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *Value {
+	return &Value{
 		text:     text,
 		datetime: datetime,
 		number:   number,
@@ -46,19 +46,19 @@ func NewValueSet(text types.XText, datetime *types.XDateTime, number *types.XNum
 // FieldValue represents a field and a set of values for that field
 type FieldValue struct {
 	field *Field
-	*ValueSet
+	*Value
 }
 
 // NewEmptyFieldValue creates a new empty value for the given field
 func NewEmptyFieldValue(field *Field) *FieldValue {
-	return &FieldValue{field: field, ValueSet: &ValueSet{}}
+	return &FieldValue{field: field, Value: &Value{}}
 }
 
 // NewFieldValue creates a new field value with the passed in values
 func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *FieldValue {
 	return &FieldValue{
-		field:    field,
-		ValueSet: NewValueSet(text, datetime, number, state, district, ward),
+		field: field,
+		Value: NewValue(text, datetime, number, state, district, ward),
 	}
 }
 
@@ -127,14 +127,14 @@ var EmptyFieldValue = &FieldValue{}
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[assets.Field]*ValueSet) (FieldValues, error) {
+func NewFieldValues(a SessionAssets, values map[assets.Field]*Value) (FieldValues, error) {
 	fieldValues := make(FieldValues, len(values))
 	for asset, val := range values {
 		field, err := a.Fields().Get(asset.Key())
 		if err != nil {
 			return nil, err
 		}
-		fieldValues[field.Key()] = &FieldValue{field: field, ValueSet: val}
+		fieldValues[field.Key()] = &FieldValue{field: field, Value: val}
 	}
 	return fieldValues, nil
 }
@@ -219,7 +219,7 @@ func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key strin
 
 	f[key] = &FieldValue{
 		field: field,
-		ValueSet: &ValueSet{
+		Value: &Value{
 			text:     asText,
 			datetime: asDateTime,
 			number:   asNumber,

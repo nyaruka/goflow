@@ -89,7 +89,7 @@ func NewContactFromAssets(
 	createdOn time.Time,
 	urns []urns.URN,
 	groups []assets.Group,
-	fields map[assets.Field]*ValueSet) (*Contact, error) {
+	fields map[assets.Field]*Value) (*Contact, error) {
 
 	urnList, err := ReadURNList(a, urns)
 	if err != nil {
