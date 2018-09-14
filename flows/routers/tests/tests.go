@@ -884,9 +884,9 @@ var parseableNumberRegex = regexp.MustCompile(`^[$£€]?([\d,][\d,\.]*([\.,]\d+
 
 func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
 	// common SMS foibles
-	cleaned := strings.ToLower(val)
+	cleaned := strings.Replace(val, "l", "1", -1)
+	cleaned = strings.Replace(cleaned, "O", "0", -1)
 	cleaned = strings.Replace(cleaned, "o", "0", -1)
-	cleaned = strings.Replace(cleaned, "l", "1", -1)
 
 	num, err := decimal.NewFromString(cleaned)
 	if err == nil {

@@ -108,6 +108,7 @@ var testTests = []struct {
 
 	{"has_number", []types.XValue{xs("the number 10")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("24ans")}, true, xn("24"), false},
+	{"has_number", []types.XValue{xs("J'AI 20ANS")}, true, xn("20"), false},
 	{"has_number", []types.XValue{xs("the number 1o")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("the number lo")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
