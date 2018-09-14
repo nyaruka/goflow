@@ -1,3 +1,8 @@
+v0.15.1
+----------
+ * Fill in current time when parsing dates during tests
+ * Add ui config options for composed split migrations
+
 v0.15.0
 ----------
  * Great assets refactor
