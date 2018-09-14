@@ -62,7 +62,7 @@ func ReadServerSource(authToken string, httpClient *utils.HTTPClient, cache *Ass
 
 // Channels returns all channel assets
 func (s *ServerSource) Channels() ([]assets.Channel, error) {
-	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
+	if _, supported := s.typeURLs[assetTypeChannel]; !supported {
 		return nil, nil
 	}
 	asset, err := s.getAsset(assetTypeChannel, "")
@@ -78,7 +78,7 @@ func (s *ServerSource) Channels() ([]assets.Channel, error) {
 
 // Fields returns all field assets
 func (s *ServerSource) Fields() ([]assets.Field, error) {
-	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
+	if _, supported := s.typeURLs[assetTypeField]; !supported {
 		return nil, nil
 	}
 	asset, err := s.getAsset(assetTypeField, "")
@@ -94,7 +94,7 @@ func (s *ServerSource) Fields() ([]assets.Field, error) {
 
 // Flow returns the flow asset with the given UUID
 func (s *ServerSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
-	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
+	if _, supported := s.typeURLs[assetTypeFlow]; !supported {
 		return nil, nil
 	}
 	asset, err := s.getAsset(assetTypeFlow, string(uuid))
@@ -110,7 +110,7 @@ func (s *ServerSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
 
 // Groups returns all group assets
 func (s *ServerSource) Groups() ([]assets.Group, error) {
-	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
+	if _, supported := s.typeURLs[assetTypeGroup]; !supported {
 		return nil, nil
 	}
 	asset, err := s.getAsset(assetTypeGroup, "")
@@ -126,7 +126,7 @@ func (s *ServerSource) Groups() ([]assets.Group, error) {
 
 // Labels returns all label assets
 func (s *ServerSource) Labels() ([]assets.Label, error) {
-	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
+	if _, supported := s.typeURLs[assetTypeLabel]; !supported {
 		return nil, nil
 	}
 	asset, err := s.getAsset(assetTypeLabel, "")
@@ -142,7 +142,7 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 
 // Locations returns all location assets
 func (s *ServerSource) Locations() ([]assets.LocationHierarchy, error) {
-	if _, supported := s.typeURLs[assetTypeResthook]; !supported {
+	if _, supported := s.typeURLs[assetTypeLocationHierarchy]; !supported {
 		return nil, nil
 	}
 	asset, err := s.getAsset(assetTypeLocationHierarchy, "")
