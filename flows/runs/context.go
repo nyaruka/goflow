@@ -7,15 +7,19 @@ import (
 )
 
 // RunContextTopLevels are the allowed top-level variables for expression evaluations
-var RunContextTopLevels = []string{"contact", "child", "parent", "run", "trigger"}
+var RunContextTopLevels = []string{"contact", "child", "parent", "run", "trigger", "legacy_extra"}
 
 type runContext struct {
 	run flows.FlowRun
+
+	legacyExtra types.XValue
 }
 
 // creates a new evaluation context for the passed in run
 func newRunContext(run flows.FlowRun) types.XValue {
-	return &runContext{run: run}
+	return &runContext{
+		run: run,
+	}
 }
 
 // Resolve resolves the given top-level key in an expression
@@ -31,6 +35,11 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 		return c.run
 	case "trigger":
 		return c.run.Session().Trigger()
+	case "legacy_extra":
+		if c.legacyExtra == nil {
+			c.legacyExtra = NewLegacyExtra(c.run)
+		}
+		return c.legacyExtra
 	}
 
 	return types.NewXResolveError(c, key)

@@ -15,16 +15,6 @@ type Resolvable interface {
 // ContextTopLevels are the allowed top-level identifiers in legacy expressions, i.e. @contact.bar is valid but @foo.bar isn't
 var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", "flow", "parent", "step"}
 
-// ExtraVarsMapping defines how @extra.* variables should be migrated
-type ExtraVarsMapping int
-
-// different ways of mapping @extra in legacy flows
-const (
-	ExtraAsWebhookJSON ExtraVarsMapping = iota
-	ExtraAsTriggerParams
-	ExtraAsFunction
-)
-
 type varMapper struct {
 	// subitems that should be replaced completely with the given strings
 	substitutions map[string]string
@@ -123,12 +113,11 @@ func (v *varMapper) String() string {
 
 var _ Resolvable = (*varMapper)(nil)
 
-// Migration of @extra requires its own mapper because it can map differently depending on the containing flow
+// Migration of @extra requires its own mapper
 type extraMapper struct {
 	varMapper
 
-	path    string
-	extraAs ExtraVarsMapping
+	path string
 }
 
 // Resolve resolves the given key to a new expression
@@ -150,24 +139,17 @@ func (m *extraMapper) Resolve(key string) interface{} {
 		}
 	}
 
-	return &extraMapper{extraAs: m.extraAs, path: strings.Join(newPath, ".")}
+	return &extraMapper{path: strings.Join(newPath, ".")}
 }
 
 func (m *extraMapper) String() string {
-	switch m.extraAs {
-	case ExtraAsWebhookJSON:
-		return fmt.Sprintf("run.webhook.json.%s", m.path)
-	case ExtraAsTriggerParams:
-		return fmt.Sprintf("trigger.params.%s", m.path)
-	case ExtraAsFunction:
-		return fmt.Sprintf("if(is_error(run.webhook.json.%s), trigger.params.%s, run.webhook.json.%s)", m.path, m.path, m.path)
+	if m.path != "" {
+		return fmt.Sprintf("legacy_extra.%s", m.path)
 	}
-	return ""
+	return "legacy_extra"
 }
 
-var _ Resolvable = (*extraMapper)(nil)
-
-func newMigrationBaseVars() map[string]interface{} {
+func newMigrationVars() map[string]interface{} {
 	contact := &varMapper{
 		base: "contact",
 		baseVars: map[string]interface{}{
@@ -198,6 +180,17 @@ func newMigrationBaseVars() map[string]interface{} {
 		}
 	}
 
+	parent := &varMapper{
+		base: "parent",
+		baseVars: map[string]interface{}{
+			"contact": contact,
+		},
+		arbitraryNesting: "results",
+		arbitraryVars: map[string]interface{}{
+			"category": "category_localized",
+		},
+	}
+
 	return map[string]interface{}{
 		"contact": contact,
 		"flow": &varMapper{
@@ -211,16 +204,7 @@ func newMigrationBaseVars() map[string]interface{} {
 				"time":     "created_on",
 			},
 		},
-		"parent": &varMapper{
-			base: "parent",
-			baseVars: map[string]interface{}{
-				"contact": contact,
-			},
-			arbitraryNesting: "results",
-			arbitraryVars: map[string]interface{}{
-				"category": "category_localized",
-			},
-		},
+		"parent": parent,
 		"child": &varMapper{
 			base: "child",
 			baseVars: map[string]interface{}{
@@ -260,21 +244,8 @@ func newMigrationBaseVars() map[string]interface{} {
 				"yesterday":   `format_date(datetime_add(now(), -1, "D"))`,
 			},
 		},
+		"extra": &extraMapper{},
 	}
 }
 
-var migrationBaseVars = newMigrationBaseVars()
-
-// creates a new var mapper for migrating expressions
-func newMigrationVarMapper(extraAs ExtraVarsMapping) *varMapper {
-	// copy the base migration vars
-	baseVars := make(map[string]interface{})
-	for k, v := range migrationBaseVars {
-		baseVars[k] = v
-	}
-
-	// add a mapper for extra
-	baseVars["extra"] = &extraMapper{extraAs: extraAs}
-
-	return &varMapper{baseVars: baseVars}
-}
+var migrationContext = &varMapper{baseVars: newMigrationVars()}

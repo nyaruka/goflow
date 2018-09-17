@@ -17,12 +17,14 @@ var TestHTTPClient = utils.NewHTTPClient("goflow-testing")
 func NewTestHTTPServer(port int) (*httptest.Server, error) {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(testHTTPHandler))
 
-	// manually create a listener for our test server so that our output is predictable
-	l, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
-	if err != nil {
-		return nil, err
+	if port > 0 {
+		// manually create a listener for our test server so that our output is predictable
+		l, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
+		if err != nil {
+			return nil, err
+		}
+		server.Listener = l
 	}
-	server.Listener = l
 	server.Start()
 	return server, nil
 }

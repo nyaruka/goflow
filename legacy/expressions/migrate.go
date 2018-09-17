@@ -24,10 +24,8 @@ var datePrefixes = []string{
 }
 
 // MigrateTemplate will take a legacy expression and translate it to the new syntax
-func MigrateTemplate(template string, extraAs ExtraVarsMapping, defaultToSelf bool) (string, error) {
-	migrationVarMapper := newMigrationVarMapper(extraAs)
-
-	return migrateLegacyTemplateAsString(migrationVarMapper, template, defaultToSelf)
+func MigrateTemplate(template string, defaultToSelf bool) (string, error) {
+	return migrateLegacyTemplateAsString(migrationContext, template, defaultToSelf)
 }
 
 func migrateLegacyTemplateAsString(resolver Resolvable, template string, defaultToSelf bool) (string, error) {

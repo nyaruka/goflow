@@ -12,6 +12,7 @@ type XMap interface {
 	XResolvable
 	XLengthable
 
+	Get(string) XValue
 	Put(string, XValue)
 	Keys() []string
 }
@@ -85,6 +86,11 @@ func (m *xmap) Resolve(env utils.Environment, key string) XValue {
 		return NewXResolveError(m, key)
 	}
 	return val
+}
+
+// Get retrieves the given item from this map
+func (m *xmap) Get(key string) XValue {
+	return m.values[key]
 }
 
 // Put adds the given item to this map

@@ -24,7 +24,6 @@ import (
 type testTemplate struct {
 	old           string
 	new           string
-	extraAs       expressions.ExtraVarsMapping
 	defaultToSelf bool
 }
 
@@ -91,9 +90,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@date.yesterday`, new: `@(format_date(datetime_add(now(), -1, "D")))`},
 
 		// extra
-		{old: `@extra.results.0.state`, new: `@run.webhook.json.results.0.state`, extraAs: expressions.ExtraAsWebhookJSON},
-		{old: `@extra.address.state`, new: `@trigger.params.address.state`, extraAs: expressions.ExtraAsTriggerParams},
-		{old: `@extra.address.state`, new: `@(if(is_error(run.webhook.json.address.state), trigger.params.address.state, run.webhook.json.address.state))`, extraAs: expressions.ExtraAsFunction},
+		{old: `@extra`, new: `@legacy_extra`},
+		{old: `@extra.address.state`, new: `@legacy_extra.address.state`},
 		{old: `@extra.flow.role`, new: `@parent.results.role`},
 
 		// variables in parens
@@ -227,7 +225,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// expressions that should default to themselves on error
 		{old: `@("hello")`, new: `@(if(is_error("hello"), "@(\"hello\")", "hello"))`, defaultToSelf: true},
-		{old: `@extra.exists`, new: `@(if(is_error(run.webhook.json.exists), "@extra.exists", run.webhook.json.exists))`, extraAs: expressions.ExtraAsWebhookJSON, defaultToSelf: true},
+		{old: `@extra.exists`, new: `@(if(is_error(legacy_extra.exists), "@extra.exists", legacy_extra.exists))`, defaultToSelf: true},
 
 		// non-expressions
 		{old: `bob@nyaruka.com`, new: `bob@nyaruka.com`},
@@ -243,13 +241,11 @@ func TestMigrateTemplate(t *testing.T) {
 		tests = append(tests, testTemplate{
 			old:           "Embedded " + tc.old + " text",
 			new:           "Embedded " + tc.new + " text",
-			extraAs:       tc.extraAs,
 			defaultToSelf: tc.defaultToSelf,
 		})
 		tests = append(tests, testTemplate{
 			old:           "Replace " + tc.old + " two " + tc.old + " times",
 			new:           "Replace " + tc.new + " two " + tc.new + " times",
-			extraAs:       tc.extraAs,
 			defaultToSelf: tc.defaultToSelf,
 		})
 	}
@@ -265,7 +261,7 @@ func TestMigrateTemplate(t *testing.T) {
 	for _, tc := range tests {
 
 		for i := 0; i < 1; i++ {
-			migratedTemplate, err := expressions.MigrateTemplate(tc.old, tc.extraAs, tc.defaultToSelf)
+			migratedTemplate, err := expressions.MigrateTemplate(tc.old, tc.defaultToSelf)
 
 			defer func() {
 				if r := recover(); r != nil {
@@ -386,7 +382,7 @@ func TestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, expressions.ExtraAsFunction, false)
+		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, false)
 
 		defer func() {
 			if r := recover(); r != nil {
