@@ -11,11 +11,13 @@ var RunContextTopLevels = []string{"contact", "child", "parent", "run", "trigger
 
 type runContext struct {
 	run flows.FlowRun
+
+	extra *legacyExtra
 }
 
 // creates a new evaluation context for the passed in run
 func newRunContext(run flows.FlowRun) types.XValue {
-	return &runContext{run: run}
+	return &runContext{run: run, extra: newLegacyExtra(run)}
 }
 
 // Resolve resolves the given top-level key in an expression
@@ -32,7 +34,8 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	case "trigger":
 		return c.run.Session().Trigger()
 	case "legacy_extra":
-		return NewLegacyExtra(c.run)
+		c.extra.update()
+		return c.extra
 	}
 
 	return types.NewXResolveError(c, key)

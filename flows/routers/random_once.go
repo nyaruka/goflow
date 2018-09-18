@@ -76,10 +76,10 @@ func (r *RandomOnceRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step
 
 	// no valid choices? exit!
 	if len(validExits) == 0 {
-		return nil, flows.NewRoute(r.Exit, "0"), nil
+		return nil, flows.NewRoute(r.Exit, "0", nil), nil
 	}
 
 	// ok, now pick one randomly
 	exitN := utils.RandIntN(len(validExits))
-	return nil, flows.NewRoute(validExits[exitN], string(exitN)), nil
+	return nil, flows.NewRoute(validExits[exitN], string(exitN), nil), nil
 }

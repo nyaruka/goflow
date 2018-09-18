@@ -9,11 +9,17 @@ import (
 type XTestResult struct {
 	matched bool
 	match   types.XValue
+	extra   map[string]string
 }
 
 // NewTrueResult creates a new matched result
 func NewTrueResult(match types.XValue) XTestResult {
-	return XTestResult{true, match}
+	return XTestResult{true, match, nil}
+}
+
+// NewTrueResultWithExtra creates a new matched result with extra info about the match
+func NewTrueResultWithExtra(match types.XValue, extra map[string]string) XTestResult {
+	return XTestResult{true, match, extra}
 }
 
 // Matched returns whether the test matched
@@ -21,6 +27,9 @@ func (t XTestResult) Matched() bool { return t.matched }
 
 // Match returns the item which was matched
 func (t XTestResult) Match() types.XValue { return t.match }
+
+// Extra returns the extra data about the match
+func (t XTestResult) Extra() map[string]string { return t.extra }
 
 // Resolve resolves the given key when this result is referenced in an expression
 func (t XTestResult) Resolve(env utils.Environment, key string) types.XValue {

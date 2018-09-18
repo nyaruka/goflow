@@ -2,6 +2,7 @@ package tests
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -345,45 +346,6 @@ func HasBeginning(env utils.Environment, text types.XText, beginning types.XText
 	return XFalseResult
 }
 
-// Returned by the has_pattern test as its match value
-type patternMatch struct {
-	groups types.XArray
-}
-
-func newPatternMatch(matches []string) *patternMatch {
-	groups := types.NewXArray()
-	for _, match := range matches {
-		groups.Append(types.NewXText(match))
-	}
-	return &patternMatch{groups: groups}
-}
-
-// Resolve resolves the given key when this match is referenced in an expression
-func (m *patternMatch) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "groups":
-		return m.groups
-	}
-
-	return types.NewXResolveError(m, key)
-}
-
-// Describe returns a representation of this type for error messages
-func (m *patternMatch) Describe() string { return "regex match" }
-
-// Reduce is called when this object needs to be reduced to a primitive
-func (m *patternMatch) Reduce(env utils.Environment) types.XPrimitive {
-	return m.groups.Index(0).(types.XText)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (m *patternMatch) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, m, "groups").ToXJSON(env)
-}
-
-var _ types.XValue = (*patternMatch)(nil)
-var _ types.XResolvable = (*patternMatch)(nil)
-
 // HasPattern tests whether `text` matches the regex `pattern`
 //
 // Both text values are trimmed of surrounding whitespace and matching is case-insensitive.
@@ -391,8 +353,6 @@ var _ types.XResolvable = (*patternMatch)(nil)
 //   @(has_pattern("Sell cheese please", "buy (\w+)")) -> false
 //   @(has_pattern("Buy cheese please", "buy (\w+)")) -> true
 //   @(has_pattern("Buy cheese please", "buy (\w+)").match) -> Buy cheese
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) -> Buy cheese
-//   @(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) -> cheese
 //
 // @test has_pattern(text, pattern)
 func HasPattern(env utils.Environment, text types.XText, pattern types.XText) types.XValue {
@@ -403,7 +363,11 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 
 	matches := regex.FindStringSubmatch(strings.TrimSpace(text.Native()))
 	if matches != nil {
-		return NewTrueResult(newPatternMatch(matches))
+		extra := make(map[string]string, len(matches))
+		for g, group := range matches {
+			extra[strconv.Itoa(g)] = group
+		}
+		return NewTrueResultWithExtra(types.NewXText(matches[0]), extra)
 	}
 
 	return XFalseResult

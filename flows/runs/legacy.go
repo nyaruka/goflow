@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -18,64 +20,33 @@ func legacyExtraKey(key string) string {
 	return key[0:utils.MinInt(len(key), 255)]
 }
 
-type legacyExtra struct {
-	values map[string]interface{}
+type legacyExtraMap map[string]interface{}
+
+func (e legacyExtraMap) Describe() string { return "legacy extra" }
+
+func (e legacyExtraMap) ToXJSON(env utils.Environment) types.XText {
+	return types.MustMarshalToXText(e)
 }
 
-// NewLegacyExtra creates a new resolveable which provides backwards compatibility with @extra in legacy flows
-func NewLegacyExtra(run flows.FlowRun) types.XValue {
-	values := make(map[string]interface{})
+func (e legacyExtraMap) Reduce(env utils.Environment) types.XPrimitive { return e.ToXJSON(env) }
 
-	// if trigger params is a JSON object, we include it in @extra
-	triggerParams := run.Session().Trigger().Params()
-	asJSON, isJSON := triggerParams.(types.XJSONObject)
-	if isJSON {
-		asMap, err := utils.JSONDecodeToMap(json.RawMessage(asJSON.XJSON))
-		if err == nil {
-			for k, v := range asMap {
-				values[legacyExtraKey(k)] = v
-			}
-		}
-	}
-
-	// if we have a webhook with a JSON payload, we include that too
-	if run.Webhook() != nil {
-		asMap, err := utils.JSONDecodeToMap(json.RawMessage(run.Webhook().Body()))
-		if err == nil {
-			for k, v := range asMap {
-				values[legacyExtraKey(k)] = v
-			}
-		}
-	}
-
-	return &legacyExtra{values: values}
-}
-
-func (e *legacyExtra) Describe() string { return "legacy extra" }
-
-func (e *legacyExtra) ToXJSON(env utils.Environment) types.XText {
-	return types.MustMarshalToXText(e.values)
-}
-
-func (e *legacyExtra) Reduce(env utils.Environment) types.XPrimitive { return e.ToXJSON(env) }
-
-func (e *legacyExtra) Resolve(env utils.Environment, key string) types.XValue {
+func (e legacyExtraMap) Resolve(env utils.Environment, key string) types.XValue {
 	key = strings.ToLower(key)
-	val, found := e.values[key]
+	val, found := e[key]
 	if !found {
 		return types.NewXResolveError(e, key)
 	}
 	return e.convertToXValue(val)
 }
 
-func (e *legacyExtra) convertToXValue(val interface{}) types.XValue {
+func (e legacyExtraMap) convertToXValue(val interface{}) types.XValue {
 	switch typed := val.(type) {
 	case map[string]interface{}:
 		normalized := make(map[string]interface{}, len(typed))
 		for k, v := range typed {
 			normalized[legacyExtraKey(k)] = v
 		}
-		return &legacyExtra{values: normalized}
+		return legacyExtraMap(normalized)
 	case []interface{}:
 		xvals := make([]types.XValue, len(typed))
 		for v := range typed {
@@ -91,6 +62,75 @@ func (e *legacyExtra) convertToXValue(val interface{}) types.XValue {
 		return types.NewXBoolean(typed)
 	}
 	return nil
+}
+
+var _ types.XValue = (legacyExtraMap)(nil)
+var _ types.XResolvable = (legacyExtraMap)(nil)
+
+type legacyExtra struct {
+	legacyExtraMap
+
+	run           flows.FlowRun
+	lastEventTime time.Time
+}
+
+func newLegacyExtra(run flows.FlowRun) *legacyExtra {
+	values := make(map[string]interface{})
+
+	// if trigger params is a JSON object, we include it in @extra
+	triggerParams := run.Session().Trigger().Params()
+	asJSON, isJSON := triggerParams.(types.XJSONObject)
+	if isJSON {
+		asMap, err := utils.JSONDecodeToMap(json.RawMessage(asJSON.XJSON))
+		if err == nil {
+			for k, v := range asMap {
+				values[legacyExtraKey(k)] = v
+			}
+		}
+	}
+
+	return &legacyExtra{legacyExtraMap: values, run: run}
+}
+
+// updates @legacy_extra by looking for new events since we last updated
+func (e *legacyExtra) update() {
+	prevLastEventTime := e.lastEventTime
+
+	for _, event := range e.run.Events() {
+		if !event.CreatedOn().After(prevLastEventTime) {
+			continue
+		}
+
+		switch typed := event.(type) {
+		case *events.WebhookCalledEvent:
+			e.addPossibleJSONResponse(typed.Response)
+		case *events.ResthookCalledEvent:
+			for _, call := range typed.Calls {
+				e.addPossibleJSONResponse(call.Response)
+			}
+		case *events.RunResultChangedEvent:
+			for k, v := range typed.Extra {
+				e.legacyExtraMap[legacyExtraKey(k)] = v
+			}
+		}
+
+		e.lastEventTime = event.CreatedOn()
+	}
+}
+
+// tries to parse the given response as JSON and if successful adds it to this @extra
+func (e *legacyExtra) addPossibleJSONResponse(response string) {
+	parts := strings.SplitN(response, "\r\n\r\n", 2)
+	if len(parts) != 2 {
+		return
+	}
+	values, err := utils.JSONDecodeToMap(json.RawMessage(parts[1]))
+	if err != nil {
+		return
+	}
+	for k, v := range values {
+		e.legacyExtraMap[legacyExtraKey(k)] = v
+	}
 }
 
 var _ types.XValue = (*legacyExtra)(nil)

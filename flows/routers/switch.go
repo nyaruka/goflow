@@ -133,7 +133,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 					return nil, flows.NoRoute, xerr
 				}
 
-				return operandAsStr, flows.NewRoute(c.ExitUUID, resultAsStr.Native()), nil
+				return operandAsStr, flows.NewRoute(c.ExitUUID, resultAsStr.Native(), typedResult.Extra()), nil
 			}
 		default:
 			return nil, flows.NoRoute, fmt.Errorf("Unexpected result type from test %v: %#v", xtest, result)
@@ -148,7 +148,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 			run.AddError(step, nil, xerr)
 		}
 
-		return operandAsStr, flows.NewRoute(r.Default, value.Native()), nil
+		return operandAsStr, flows.NewRoute(r.Default, value.Native(), nil), nil
 	}
 
 	// no matches, no defaults, no route
