@@ -113,7 +113,7 @@ func (v *varMapper) String() string {
 
 var _ Resolvable = (*varMapper)(nil)
 
-// Migration of @extra requires its own mapper
+// Migration of @extra requires its own mapper because parts of it are completely unstructured
 type extraMapper struct {
 	varMapper
 

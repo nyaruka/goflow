@@ -67,7 +67,7 @@ func UnmarshalAndValidateWithLimit(reader io.ReadCloser, s interface{}, limit in
 	return Validate(s)
 }
 
-// JSONDecodeToMap decodes the given JSON as a gender map
+// JSONDecodeToMap decodes the given JSON as a generic map
 func JSONDecodeToMap(data []byte) (map[string]interface{}, error) {
 	var m map[string]interface{}
 	decoder := json.NewDecoder(bytes.NewBuffer(data))

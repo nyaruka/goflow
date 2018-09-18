@@ -2,7 +2,6 @@ package runs
 
 import (
 	"encoding/json"
-	"fmt"
 	"regexp"
 	"strings"
 
@@ -83,7 +82,6 @@ func (e *legacyExtra) convertToXValue(val interface{}) types.XValue {
 			xvals[v] = e.convertToXValue(typed[v])
 		}
 		arr := types.NewXArray(xvals...)
-		fmt.Printf("  >  %+v\n", arr)
 		return arr
 	case json.Number:
 		return types.RequireXNumberFromString(string(typed))

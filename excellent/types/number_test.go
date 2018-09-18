@@ -42,10 +42,6 @@ func TestXNumber(t *testing.T) {
 	data, err := json.Marshal(types.RequireXNumberFromString("23.45"))
 	assert.NoError(t, err)
 	assert.Equal(t, []byte(`23.45`), data)
-
-	data, err = utils.JSONMarshal(types.RequireXNumberFromString("23.45"))
-	assert.NoError(t, err)
-	assert.Equal(t, []byte(`23.45`), data)
 }
 
 func TestToXNumberAndInteger(t *testing.T) {
