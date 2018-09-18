@@ -50,7 +50,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.groups", `["Testers","Males"]`, ""},
 		{"@(join(contact.groups, \",\"))", `Testers,Males`, ""},
 		{"@(length(contact.groups))", "2", ""},
-		{"@contact.fields", `{"activation_token":"AACC55","age":"23","gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"}`, ""},
+		{"@contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00"}`, ""},
 		{"@contact.fields.activation_token", "AACC55", ""},
 		{"@contact.fields.age", "23", ""},
 		{"@contact.fields.join_date", "2017-12-02T00:00:00.000000-02:00", ""},

@@ -110,7 +110,7 @@ Examples:
 @contact.urns.mailto.0 → mailto:foo@bar.com
 @contact.urn → (206) 555-1212
 @contact.groups → ["Testers","Males"]
-@contact.fields → {"activation_token":"AACC55","age":"23","gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"}
+@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00"}
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
@@ -479,7 +479,7 @@ Takes two arguments, returning `test` if not an error or nil or empty text, othe
 @(default(undeclared.var, "default_value")) → default_value
 @(default("10", "20")) → 10
 @(default("", "value")) → value
-@(default(array(1, 2), "value")) → ["1","2"]
+@(default(array(1, 2), "value")) → [1,2]
 @(default(array(), "value")) → value
 @(default(datetime("invalid-date"), "today")) → today
 ```

@@ -34,14 +34,11 @@ func (a *xarray) Reduce(env utils.Environment) XPrimitive { return a }
 
 // ToXText converts this type to text
 func (a *xarray) ToXText(env utils.Environment) XText {
-	texts := make([]XText, len(a.values))
+	primitives := make([]XValue, len(a.values))
 	for i, v := range a.values {
-		asText, err := ToXText(env, v)
-		if err == nil {
-			texts[i] = asText
-		}
+		primitives[i] = Reduce(env, v)
 	}
-	return MustMarshalToXText(texts)
+	return MustMarshalToXText(primitives)
 }
 
 // ToXBoolean converts this type to a bool
