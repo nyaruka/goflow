@@ -94,7 +94,7 @@ var XTESTS = map[string]functions.XFunction{
 // @test is_text_eq(text1, text2)
 func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {
 	if text1.Equals(text2) {
-		return XTestResult{true, text1}
+		return NewTrueResult(text1)
 	}
 
 	return XFalseResult
@@ -114,7 +114,7 @@ func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types
 // @test is_error(value)
 func IsError(env utils.Environment, value types.XValue) types.XValue {
 	if types.IsXError(value) {
-		return XTestResult{true, value}
+		return NewTrueResult(value)
 	}
 
 	return XFalseResult
@@ -138,7 +138,7 @@ func HasValue(env utils.Environment, value types.XValue) types.XValue {
 		return XFalseResult
 	}
 
-	return XTestResult{true, value}
+	return NewTrueResult(value)
 }
 
 // HasWaitTimedOut returns whether the last wait timed out.
@@ -160,7 +160,7 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 
 		_, isTimeout := event.(*events.WaitTimedOutEvent)
 		if isTimeout {
-			return XTestResult{true, types.NewXDateTime(event.CreatedOn())}
+			return NewTrueResult(types.NewXDateTime(event.CreatedOn()))
 		}
 
 		_, isInput := event.(*events.MsgReceivedEvent)
@@ -196,10 +196,10 @@ func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 
 	if webhook != nil {
 		if string(webhook.Status()) == strings.ToLower(status.Native()) {
-			return XTestResult{true, types.NewXText(webhook.Body())}
+			return NewTrueResult(types.NewXText(webhook.Body()))
 		}
 	} else if status.Native() == string(flows.WebhookStatusSuccess) {
-		return XTestResult{true, types.XTextEmpty}
+		return NewTrueResult(types.XTextEmpty)
 	}
 
 	return XFalseResult
@@ -227,7 +227,7 @@ func HasGroup(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types
 	// iterate through the groups looking for one with the same UUID as passed in
 	group := contact.Groups().FindByUUID(assets.GroupUUID(groupUUID.Native()))
 	if group != nil {
-		return XTestResult{true, group}
+		return NewTrueResult(group)
 	}
 
 	return XFalseResult
@@ -305,7 +305,7 @@ func HasText(env utils.Environment, text types.XText) types.XValue {
 
 	// if there is anything left then we have text
 	if text.Length() > 0 {
-		return XTestResult{true, text}
+		return NewTrueResult(text)
 	}
 
 	return XFalseResult
@@ -339,7 +339,7 @@ func HasBeginning(env utils.Environment, text types.XText, beginning types.XText
 
 	segment := hayStack[:len(pinCushion)]
 	if strings.ToLower(segment) == strings.ToLower(pinCushion) {
-		return XTestResult{true, types.NewXText(segment)}
+		return NewTrueResult(types.NewXText(segment))
 	}
 
 	return XFalseResult
@@ -403,7 +403,7 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 
 	matches := regex.FindStringSubmatch(strings.TrimSpace(text.Native()))
 	if matches != nil {
-		return XTestResult{true, newPatternMatch(matches)}
+		return NewTrueResult(newPatternMatch(matches))
 	}
 
 	return XFalseResult
@@ -449,7 +449,7 @@ func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 		if err == nil {
 			num := types.NewXNumber(parsed)
 			if num.Compare(min) >= 0 && num.Compare(max) <= 0 {
-				return XTestResult{true, num}
+				return NewTrueResult(num)
 			}
 		}
 	}
@@ -584,7 +584,7 @@ func HasEmail(env utils.Environment, text types.XText) types.XValue {
 	// split by whitespace
 	email := emailAddressRE.FindString(text.Native())
 	if email != "" {
-		return XTestResult{true, types.NewXText(email)}
+		return NewTrueResult(types.NewXText(email))
 	}
 
 	return XFalseResult
@@ -606,7 +606,7 @@ func HasPhone(env utils.Environment, text types.XText, country types.XText) type
 
 	// format as E164 number
 	formatted := phonenumbers.Format(phone, phonenumbers.E164)
-	return XTestResult{true, types.NewXText(formatted)}
+	return NewTrueResult(types.NewXText(formatted))
 }
 
 // HasState tests whether a state name is contained in the `text`
@@ -626,7 +626,7 @@ func HasState(env utils.Environment, text types.XText) types.XValue {
 		return types.NewXError(err)
 	}
 	if len(states) > 0 {
-		return XTestResult{true, types.NewXText(states[0].Path())}
+		return NewTrueResult(types.NewXText(states[0].Path()))
 	}
 	return XFalseResult
 }
@@ -671,7 +671,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 			return types.NewXError(err)
 		}
 		if len(districts) > 0 {
-			return XTestResult{true, types.NewXText(districts[0].Path())}
+			return NewTrueResult(types.NewXText(districts[0].Path()))
 		}
 	}
 
@@ -682,7 +682,7 @@ func HasDistrict(env utils.Environment, args ...types.XValue) types.XValue {
 			return types.NewXError(err)
 		}
 		if len(districts) == 1 {
-			return XTestResult{true, types.NewXText(districts[0].Path())}
+			return NewTrueResult(types.NewXText(districts[0].Path()))
 		}
 	}
 
@@ -739,7 +739,7 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 				return types.NewXError(err)
 			}
 			if len(wards) > 0 {
-				return XTestResult{true, types.NewXText(wards[0].Path())}
+				return NewTrueResult(types.NewXText(wards[0].Path()))
 			}
 		}
 	}
@@ -751,7 +751,7 @@ func HasWard(env utils.Environment, args ...types.XValue) types.XValue {
 			return types.NewXError(err)
 		}
 		if len(wards) == 1 {
-			return XTestResult{true, types.NewXText(wards[0].Path())}
+			return NewTrueResult(types.NewXText(wards[0].Path()))
 		}
 	}
 
@@ -777,7 +777,7 @@ func testStringTokens(env utils.Environment, str types.XText, testStr types.XTex
 
 func hasPhraseTest(origHays []string, hays []string, pins []string) XTestResult {
 	if len(pins) == 0 {
-		return XTestResult{true, types.XTextEmpty}
+		return NewTrueResult(types.XTextEmpty)
 	}
 
 	pinIdx := 0
@@ -795,7 +795,7 @@ func hasPhraseTest(origHays []string, hays []string, pins []string) XTestResult 
 	}
 
 	if pinIdx == len(pins) {
-		return XTestResult{true, types.NewXText(strings.Join(matches, " "))}
+		return NewTrueResult(types.NewXText(strings.Join(matches, " ")))
 	}
 
 	return XFalseResult
@@ -829,7 +829,7 @@ func hasAllWordsTest(origHays []string, hays []string, pins []string) XTestResul
 	}
 
 	if allMatch {
-		return XTestResult{true, types.NewXText(strings.Join(matches, " "))}
+		return NewTrueResult(types.NewXText(strings.Join(matches, " ")))
 	}
 
 	return XFalseResult
@@ -852,7 +852,7 @@ func hasAnyWordTest(origHays []string, hays []string, pins []string) XTestResult
 	}
 
 	if len(matches) > 0 {
-		return XTestResult{true, types.NewXText(strings.Join(matches, " "))}
+		return NewTrueResult(types.NewXText(strings.Join(matches, " ")))
 	}
 
 	return XFalseResult
@@ -873,7 +873,7 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestRes
 		matches = append(matches, origHays[i])
 	}
 
-	return XTestResult{true, types.NewXText(strings.Join(matches, " "))}
+	return NewTrueResult(types.NewXText(strings.Join(matches, " ")))
 }
 
 //------------------------------------------------------------------------------------------
@@ -912,7 +912,7 @@ func testNumber(env utils.Environment, str types.XText, testNum types.XNumber, t
 		num, xerr := parseDecimalFuzzy(value)
 		if xerr == nil {
 			if testFunc(num, testNum.Native()) {
-				return XTestResult{true, types.NewXNumber(num)}
+				return NewTrueResult(types.NewXNumber(num))
 			}
 		}
 	}
@@ -963,7 +963,7 @@ func testDate(env utils.Environment, str types.XText, testDate types.XDateTime, 
 	}
 
 	if testFunc(valueAsDate, testAsDate) {
-		return XTestResult{true, value}
+		return NewTrueResult(value)
 	}
 
 	return XFalseResult
