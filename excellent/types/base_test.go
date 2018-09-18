@@ -166,14 +166,14 @@ func TestXValueRequiredConversions(t *testing.T) {
 			value:          types.NewXArray(types.NewXNumberFromInt(1), types.NewXNumberFromInt(2)),
 			asInternalJSON: `[1,2]`,
 			asJSON:         `[1,2]`,
-			asText:         `["1","2"]`,
+			asText:         `[1,2]`,
 			asBool:         true,
 			isEmpty:        false,
 		}, {
 			value:          types.NewXArray(types.NewXDateTime(date1), types.NewXDateTime(date2)),
 			asInternalJSON: `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`,
 			asJSON:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
-			asText:         `["2017-06-23T15:30:00.000000Z","2017-07-18T15:30:00.000000-05:00"]`,
+			asText:         `["2017-06-23T15:30:00Z","2017-07-18T15:30:00-05:00"]`,
 			asBool:         true,
 			isEmpty:        false,
 		}, {
