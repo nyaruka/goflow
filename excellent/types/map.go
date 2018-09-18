@@ -42,14 +42,11 @@ func (m *xmap) Reduce(env utils.Environment) XPrimitive { return m }
 
 // ToXText converts this type to text
 func (m *xmap) ToXText(env utils.Environment) XText {
-	texts := make(map[string]XText, len(m.values))
+	primitives := make(map[string]XValue, len(m.values))
 	for k, v := range m.values {
-		asText, err := ToXText(env, v)
-		if err == nil {
-			texts[k] = asText
-		}
+		primitives[k] = Reduce(env, v)
 	}
-	return MustMarshalToXText(texts)
+	return MustMarshalToXText(primitives)
 }
 
 // ToXBoolean converts this type to a bool

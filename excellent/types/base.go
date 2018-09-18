@@ -101,6 +101,13 @@ func IsEmpty(x XValue) bool {
 	return false
 }
 
+func Reduce(env utils.Environment, x XValue) XValue {
+	if utils.IsNil(x) {
+		return nil
+	}
+	return x.Reduce(env)
+}
+
 // Describe returns a representation of the given value for use in error messages
 func Describe(x XValue) string {
 	if utils.IsNil(x) {

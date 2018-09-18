@@ -10,6 +10,8 @@ import (
 )
 
 func TestXArray(t *testing.T) {
+	env := utils.NewDefaultEnvironment()
+
 	arr1 := types.NewXArray(types.NewXText("abc"), types.NewXNumberFromInt(123))
 	assert.Equal(t, 2, arr1.Length())
 
@@ -17,7 +19,9 @@ func TestXArray(t *testing.T) {
 	assert.Equal(t, 3, arr1.Length())
 	assert.Equal(t, types.NewXNumberFromInt(123), arr1.Index(1))
 
-	assert.Equal(t, `["abc","123","false"]`, arr1.String())
+	assert.Equal(t, types.NewXText(`["abc",123,false]`), arr1.ToXJSON(env))
+	assert.Equal(t, types.NewXText(`["abc",123,false]`), arr1.ToXText(env))
+	assert.Equal(t, `["abc",123,false]`, arr1.String())
 	assert.Equal(t, arr1, arr1.Reduce(utils.NewDefaultEnvironment()))
 	assert.Equal(t, "array", arr1.Describe())
 
