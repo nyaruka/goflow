@@ -1,6 +1,8 @@
 package runs_test
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/nyaruka/goflow/test"
@@ -10,8 +12,11 @@ import (
 )
 
 func TestLegacyExtra(t *testing.T) {
-	server, err := test.NewTestHTTPServer(0)
-	require.NoError(t, err)
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"bool": true, "number": 123.34, "text": "hello", "dict": {"foo": "bar"}, "list": [1, "x"]}`))
+	}))
+	server.Start()
 	defer server.Close()
 
 	session, err := test.CreateTestSession(server.URL, nil)
@@ -26,9 +31,14 @@ func TestLegacyExtra(t *testing.T) {
 		{"@legacy_extra.address.state", "WA"},
 		{"@legacy_extra.ADDRESS.StaTE", "WA"},
 		{"@legacy_extra.ADDRESS", `{"state":"WA"}`},
-		{"@legacy_extra.results.1", `{"state":"IN"}`},
-		{"@legacy_extra.results.1.state", `IN`},
-		{"@legacy_extra", `{"address":{"state":"WA"},"results":[{"state":"WA"},{"state":"IN"}],"source":"website"}`},
+		{"@legacy_extra.bool", `true`},
+		{"@legacy_extra.number", `123.34`},
+		{"@legacy_extra.text", `hello`},
+		{"@legacy_extra.list", `[1,"x"]`},
+		{"@legacy_extra.list.0", `1`},
+		{"@legacy_extra.list.1", `x`},
+		{"@legacy_extra.dict.FOO", `bar`},
+		{"@legacy_extra", `{"address":{"state":"WA"},"bool":true,"dict":{"foo":"bar"},"list":[1,"x"],"number":123.34,"source":"website","text":"hello"}`},
 	}
 	for _, tc := range tests {
 		output, err := run.EvaluateTemplateAsString(tc.template, false)

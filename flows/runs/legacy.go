@@ -2,14 +2,13 @@ package runs
 
 import (
 	"encoding/json"
+	"fmt"
 	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
-
-	"github.com/shopspring/decimal"
 )
 
 var invalidLegacyExtraKeyChars = regexp.MustCompile(`[^a-zA-Z0-9_]`)
@@ -32,8 +31,8 @@ func NewLegacyExtra(run flows.FlowRun) types.XValue {
 	triggerParams := run.Session().Trigger().Params()
 	asJSON, isJSON := triggerParams.(types.XJSONObject)
 	if isJSON {
-		var asMap map[string]interface{}
-		if json.Unmarshal(json.RawMessage(asJSON.XJSON), &asMap) == nil {
+		asMap, err := utils.JSONDecodeToMap(json.RawMessage(asJSON.XJSON))
+		if err == nil {
 			for k, v := range asMap {
 				values[legacyExtraKey(k)] = v
 			}
@@ -42,8 +41,8 @@ func NewLegacyExtra(run flows.FlowRun) types.XValue {
 
 	// if we have a webhook with a JSON payload, we include that too
 	if run.Webhook() != nil {
-		var asMap map[string]interface{}
-		if json.Unmarshal(json.RawMessage(run.Webhook().Body()), &asMap) == nil {
+		asMap, err := utils.JSONDecodeToMap(json.RawMessage(run.Webhook().Body()))
+		if err == nil {
 			for k, v := range asMap {
 				values[legacyExtraKey(k)] = v
 			}
@@ -83,11 +82,13 @@ func (e *legacyExtra) convertToXValue(val interface{}) types.XValue {
 		for v := range typed {
 			xvals[v] = e.convertToXValue(typed[v])
 		}
-		return types.NewXArray(xvals...)
+		arr := types.NewXArray(xvals...)
+		fmt.Printf("  >  %+v\n", arr)
+		return arr
+	case json.Number:
+		return types.RequireXNumberFromString(string(typed))
 	case string:
 		return types.NewXText(typed)
-	case float64:
-		return types.NewXNumber(decimal.NewFromFloat(typed))
 	case bool:
 		return types.NewXBoolean(typed)
 	}
