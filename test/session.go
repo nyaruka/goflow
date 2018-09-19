@@ -133,7 +133,7 @@ var sessionAssets = `[
                             "key": "age",
                             "name": "Age"
                         },
-                        "value": "@run.results.age"
+                        "value": "@results.age"
                     }
                 ]
             }]

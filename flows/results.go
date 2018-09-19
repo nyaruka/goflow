@@ -20,9 +20,9 @@ import (
 //
 // Examples:
 //
-//   @run.results.favorite_color -> red
-//   @run.results.favorite_color.value -> red
-//   @run.results.favorite_color.category -> Red
+//   @results.favorite_color -> red
+//   @results.favorite_color.value -> red
+//   @results.favorite_color.category -> Red
 //
 // @context result
 type Result struct {

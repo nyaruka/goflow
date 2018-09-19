@@ -225,7 +225,7 @@ var testValidFlowWithWaitAssets = `[
 						"type": "switch",
 						"default_exit_uuid": "0680b01f-ba0b-48f4-a688-d2f963130126",
 						"result_name": "name",
-						"operand": "@run.input",
+						"operand": "@input",
 						"cases": [
 							{
 								"uuid": "5d6abc80-39e7-4620-9988-a2447bffe526",

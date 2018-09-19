@@ -196,8 +196,8 @@
                 "bob@nyaruka.com",
                 "@contact.fields.supervisor"
             ],
-            "subject": "Subject @run.input",
-            "body": "Body @run.input"
+            "subject": "Subject @input",
+            "body": "Body @input"
         },
         "expected_localization": {}
     },
@@ -303,7 +303,7 @@
         "expected_action": {
             "type": "set_contact_name",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "name": "Bob @run.input"
+            "name": "Bob @input"
         },
         "expected_localization": {}
     },
@@ -318,7 +318,7 @@
         "expected_action": {
             "type": "set_contact_name",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "name": "@run.input @(word_slice(contact.name, 1, -1))"
+            "name": "@input @(word_slice(contact.name, 1, -1))"
         },
         "expected_localization": {}
     },
@@ -337,7 +337,7 @@
                 "key": "gender",
                 "name": "Gender"
             },
-            "value": "@run.input"
+            "value": "@input"
         },
         "expected_localization": {}
     },

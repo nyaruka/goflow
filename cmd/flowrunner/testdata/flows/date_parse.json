@@ -25,7 +25,7 @@
                         "type": "switch",
                         "result_name": "Birth Date",
                         "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "cases": [
                             {
                                 "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
@@ -57,12 +57,12 @@
                                 "key": "birth_date",
                                 "name": "Birth Date"
                             },
-                            "value": "@run.results.birth_date"
+                            "value": "@results.birth_date"
                         },
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "Awesome, you were born on @(format_datetime(run.results.birth_date, \"MM-DD-YYYY\")) at @(format_datetime(run.results.birth_date, \"tt:mm\"))"
+                            "text": "Awesome, you were born on @(format_datetime(results.birth_date, \"MM-DD-YYYY\")) at @(format_datetime(results.birth_date, \"tt:mm\"))"
                         }
                     ]
                 }

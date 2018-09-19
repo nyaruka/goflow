@@ -755,7 +755,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		operand, _ := expressions.MigrateTemplate(r.Operand, defaultToSelf)
 		if operand == "" {
-			operand = "@run.input"
+			operand = "@input"
 		}
 
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)

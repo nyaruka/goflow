@@ -41,7 +41,7 @@
                         "type": "switch",
                         "cases": [],
                         "default_exit_uuid": "cf9a2465-049a-4ba1-95ed-eb60fb45fd63",
-                        "operand": "@run.input"
+                        "operand": "@input"
                     }
                 },
                 {
@@ -50,7 +50,7 @@
                         {
                             "type": "set_contact_name",
                             "uuid": "aafb505c-603d-4025-864d-471345ed236d",
-                            "name": "@run.results.contact_name"
+                            "name": "@results.contact_name"
                         },
                         {
                             "type": "set_contact_field",
@@ -59,7 +59,7 @@
                                 "key": "first_name",
                                 "name": "First Name"
                             },
-                            "value": "@(WORD(run.results.contact_name, 0))"
+                            "value": "@(WORD(results.contact_name, 0))"
                         },
                         {
                             "type": "send_msg",

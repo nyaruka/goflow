@@ -100,7 +100,7 @@ Each case consists of:
     "uuid":"ee0bee3f-34b3-4275-af78-f9ff52c82e6a",
     "router": {
         "type":"switch",
-        "operand": "@run.input",
+        "operand": "@input",
         "default_exit_uuid": "9574fbfd-510f-4dfc-b989-97d2aecf50b9",
         "cases": [{
             "uuid": "6f78d564-029b-4715-b8d4-b28daeae4f24",

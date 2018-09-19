@@ -15,7 +15,7 @@
                             {
                                 "uuid": "accca030-7963-4660-92e9-5b86d5f21d05",
                                 "type": "send_msg",
-                                "text": "You said '@run.input.text'"
+                                "text": "You said '@input.text'"
                             }
                         ]
                     }
