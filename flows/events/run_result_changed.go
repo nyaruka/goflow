@@ -65,6 +65,6 @@ func (e *RunResultChangedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *RunResultChangedEvent) Apply(run flows.FlowRun) error {
-	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, utils.Now())
+	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, e.NodeUUID, e.Input, e.Extra, utils.Now())
 	return nil
 }

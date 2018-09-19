@@ -26,13 +26,14 @@ import (
 //
 // @context result
 type Result struct {
-	Name              string    `json:"name"`
-	Value             string    `json:"value"`
-	Category          string    `json:"category,omitempty"`
-	CategoryLocalized string    `json:"category_localized,omitempty"`
-	NodeUUID          NodeUUID  `json:"node_uuid"`
-	Input             *string   `json:"input,omitempty"`
-	CreatedOn         time.Time `json:"created_on"`
+	Name              string            `json:"name"`
+	Value             string            `json:"value"`
+	Category          string            `json:"category,omitempty"`
+	CategoryLocalized string            `json:"category_localized,omitempty"`
+	NodeUUID          NodeUUID          `json:"node_uuid"`
+	Input             *string           `json:"input,omitempty"`
+	Extra             map[string]string `json:"extra,omitempty"`
+	CreatedOn         time.Time         `json:"created_on"`
 }
 
 // Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
@@ -54,6 +55,8 @@ func (r *Result) Resolve(env utils.Environment, key string) types.XValue {
 			return types.NewXText(*r.Input)
 		}
 		return nil
+	case "extra":
+		return types.NewXMapFromStrings(r.Extra)
 	case "node_uuid":
 		return types.NewXText(string(r.NodeUUID))
 	case "created_on":
@@ -97,7 +100,7 @@ func (r Results) Clone() Results {
 }
 
 // Save saves a new result in our map. The key is saved in a snakified format
-func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input *string, createdOn time.Time) {
+func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input *string, extra map[string]string, createdOn time.Time) {
 	r[utils.Snakify(name)] = &Result{
 		Name:              name,
 		Value:             value,
@@ -105,6 +108,7 @@ func (r Results) Save(name string, value string, category string, categoryLocali
 		CategoryLocalized: categoryLocalized,
 		NodeUUID:          nodeUUID,
 		Input:             input,
+		Extra:             extra,
 		CreatedOn:         createdOn,
 	}
 }
