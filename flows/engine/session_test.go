@@ -74,7 +74,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 		{"@run.input.text", "Hi there", ""},
 		{"@run.status", "completed", ""},
-		{"@results.favorite_color", "red", ""},
+		{"@run.results.favorite_color", "red", ""},
 
 		{"@trigger.params", `{"source": "website","address": {"state": "WA"}}`, ""},
 		{"@trigger.params.source", "website", ""},
