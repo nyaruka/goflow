@@ -39,5 +39,5 @@ func (r *RandomRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 
 	// pick a random exit
 	exitN := utils.RandIntN(len(exits))
-	return nil, flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN)), nil
+	return nil, flows.NewRoute(exits[exitN].UUID(), fmt.Sprintf("%d", exitN), nil), nil
 }

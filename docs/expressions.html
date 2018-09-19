@@ -835,9 +835,7 @@
 <p>Both text values are trimmed of surrounding whitespace and matching is case-insensitive.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb89-1" data-line-number="1">@(has_pattern(<span class="st">&quot;Sell cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb89-2" data-line-number="2">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb89-3" data-line-number="3">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</a>
-<a class="sourceLine" id="cb89-4" data-line-number="4">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match.groups[<span class="dv">0</span>]) → Buy cheese</a>
-<a class="sourceLine" id="cb89-5" data-line-number="5">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match.groups[<span class="dv">1</span>]) → cheese</a></code></pre></div>
+<a class="sourceLine" id="cb89-3" data-line-number="3">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</a></code></pre></div>
 <p><a name="test:has_phone"></a></p>
 <h2 id="has_phonetext-country_code">has_phone(text, country_code)</h2>
 <p>Tests whether a phone number (in the passed in <code>country_code</code>) is contained in the <code>text</code></p>

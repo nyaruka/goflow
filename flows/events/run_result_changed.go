@@ -32,16 +32,17 @@ type RunResultChangedEvent struct {
 	BaseEvent
 	callerOrEngineEvent
 
-	Name              string         `json:"name" validate:"required"`
-	Value             string         `json:"value"`
-	Category          string         `json:"category"`
-	CategoryLocalized string         `json:"category_localized,omitempty"`
-	NodeUUID          flows.NodeUUID `json:"node_uuid" validate:"required,uuid4"`
-	Input             *string        `json:"input,omitempty"`
+	Name              string            `json:"name" validate:"required"`
+	Value             string            `json:"value"`
+	Category          string            `json:"category"`
+	CategoryLocalized string            `json:"category_localized,omitempty"`
+	NodeUUID          flows.NodeUUID    `json:"node_uuid" validate:"required,uuid4"`
+	Input             *string           `json:"input,omitempty"`
+	Extra             map[string]string `json:"extra,omitempty"`
 }
 
 // NewRunResultChangedEvent returns a new save result event for the passed in values
-func NewRunResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input *string) *RunResultChangedEvent {
+func NewRunResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input *string, extra map[string]string) *RunResultChangedEvent {
 	return &RunResultChangedEvent{
 		BaseEvent:         NewBaseEvent(),
 		Name:              name,
@@ -50,6 +51,7 @@ func NewRunResultChangedEvent(name string, value string, categoryName string, ca
 		CategoryLocalized: categoryLocalized,
 		NodeUUID:          node,
 		Input:             input,
+		Extra:             extra,
 	}
 }
 

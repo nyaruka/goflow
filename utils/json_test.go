@@ -56,3 +56,14 @@ func TestUnmarshalAndValidateWithLimit(t *testing.T) {
 	err = utils.UnmarshalAndValidateWithLimit(buffer, s, 5)
 	assert.EqualError(t, err, "unexpected end of JSON input")
 }
+
+func TestJSONDecodeToMap(t *testing.T) {
+	data := []byte(`{"bool": true, "number": 123.34, "text": "hello", "dict": {"foo": "bar"}, "list": [1, "x"]}`)
+	asMap, err := utils.JSONDecodeToMap(data)
+	assert.NoError(t, err)
+	assert.Equal(t, true, asMap["bool"])
+	assert.Equal(t, json.Number("123.34"), asMap["number"])
+	assert.Equal(t, "hello", asMap["text"])
+	assert.Equal(t, map[string]interface{}{"foo": "bar"}, asMap["dict"])
+	assert.Equal(t, []interface{}{json.Number("1"), "x"}, asMap["list"])
+}

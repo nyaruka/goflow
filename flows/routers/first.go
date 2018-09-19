@@ -35,5 +35,5 @@ func (r *FirstRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flow
 		return nil, flows.NoRoute, nil
 	}
 
-	return nil, flows.NewRoute(exits[0].UUID(), ""), nil
+	return nil, flows.NewRoute(exits[0].UUID(), "", nil), nil
 }

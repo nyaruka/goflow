@@ -1518,8 +1518,6 @@ Both text values are trimmed of surrounding whitespace and matching is case-inse
 @(has_pattern("Sell cheese please", "buy (\w+)")) → false
 @(has_pattern("Buy cheese please", "buy (\w+)")) → true
 @(has_pattern("Buy cheese please", "buy (\w+)").match) → Buy cheese
-@(has_pattern("Buy cheese please", "buy (\w+)").match.groups[0]) → Buy cheese
-@(has_pattern("Buy cheese please", "buy (\w+)").match.groups[1]) → cheese
 ```
 
 <a name="test:has_phone"></a>
