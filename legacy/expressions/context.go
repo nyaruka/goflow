@@ -197,7 +197,7 @@ func newMigrationVars() map[string]interface{} {
 			baseVars: map[string]interface{}{
 				"contact": contact,
 			},
-			arbitraryNesting: "run.results",
+			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 				"text":     "input",
@@ -217,11 +217,11 @@ func newMigrationVars() map[string]interface{} {
 		},
 		"step": &varMapper{
 			substitutions: map[string]string{
-				"__default__": "run.input",
-				"value":       "run.input",
-				"text":        "run.input.text",
-				"attachments": "run.input.attachments",
-				"time":        "run.input.created_on",
+				"__default__": "input",
+				"value":       "input",
+				"text":        "input.text",
+				"attachments": "input.attachments",
+				"time":        "input.created_on",
 			},
 			baseVars: map[string]interface{}{
 				"contact": contact,

@@ -41,7 +41,7 @@
                     },
                     "d2a4052a-3fa9-4608-ab3e-5b9631440447": {
                         "text": [
-                            "@(TITLE(run.results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
+                            "@(TITLE(results.favorite_color.category_localized))! Bien sur! Quelle est votes soda preferee? (pepsi/coke)"
                         ]
                     },
                     "e27c3bce-1095-4d08-9164-dc4530a0688a": {
@@ -71,7 +71,7 @@
                     },
                     "0a8467eb-911a-41db-8101-ccf415c48e6a": {
                         "text": [
-                            "Parfait, vous avez finis et tu aimes @run.results.soda.category"
+                            "Parfait, vous avez finis et tu aimes @results.soda.category"
                         ]
                     }
                 }
@@ -94,7 +94,7 @@
                         "type": "switch",
                         "result_name": "Favorite Color",
                         "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "cases": [
                             {
                                 "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
@@ -143,7 +143,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "@(TITLE(run.results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
+                            "text": "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
                         }
                     ],
                     "wait": {
@@ -154,7 +154,7 @@
                         "type": "switch",
                         "default_exit_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
                         "result_name": "Soda",
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "cases": [
                             {
                                 "uuid": "e27c3bce-1095-4d08-9164-dc4530a0688a",
@@ -200,12 +200,12 @@
                             "type": "call_webhook",
                             "url": "http://localhost/?cmd=success",
                             "method": "POST",
-                            "body": "{ \"contact\": @(json(contact.uuid)), \"soda\": @(json(run.results.soda.value)) }"
+                            "body": "{ \"contact\": @(json(contact.uuid)), \"soda\": @(json(results.soda.value)) }"
                         },
                         {
                             "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
                             "type": "send_msg",
-                            "text": "Great, you are done and like @run.results.soda! Webhook status was @run.webhook.status_code"
+                            "text": "Great, you are done and like @results.soda! Webhook status was @run.webhook.status_code"
                         }
                     ]
                 }

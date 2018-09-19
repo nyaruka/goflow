@@ -95,7 +95,7 @@
 <a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span><span class="st">&quot;ee0bee3f-34b3-4275-af78-f9ff52c82e6a&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="dt">&quot;router&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">        <span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;switch&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="dt">&quot;operand&quot;</span><span class="fu">:</span> <span class="st">&quot;@run.input&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="dt">&quot;operand&quot;</span><span class="fu">:</span> <span class="st">&quot;@input&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">        <span class="dt">&quot;default_exit_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;9574fbfd-510f-4dfc-b989-97d2aecf50b9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">        <span class="dt">&quot;cases&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">            <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;6f78d564-029b-4715-b8d4-b28daeae4f24&quot;</span><span class="fu">,</span></a>
@@ -174,7 +174,7 @@ Action
 <a class="sourceLine" id="cb9-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;add_contact_urn&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;8eebd020-1af5-431c-b943-aa670fc74da9&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">    <span class="dt">&quot;scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;tel&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">    <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;@run.results.phone_number&quot;</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">    <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;@results.phone_number&quot;</span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="fu">}</span></a></code></pre></div>
 </div>
 <div class="output_event">
@@ -566,7 +566,7 @@ Event
 </div>
 <p><a name="action:set_run_result"></a></p>
 <h2 id="set_run_result">set_run_result</h2>
-<p>Can be used to save a result for a flow. The result will be available in the context for the run as <span class="citation" data-cites="run.results">@run.results</span>.[name]. The optional category can be used as a way of categorizing results, this can be useful for reporting or analytics.</p>
+<p>Can be used to save a result for a flow. The result will be available in the context for the run as <span class="citation" data-cites="run.results">@results</span>.[name]. The optional category can be used as a way of categorizing results, this can be useful for reporting or analytics.</p>
 <p>Both the value and category fields may be templates. A <a href="sessions.html#event:run_result_changed">run_result_changed</a> event will be created with the final values.</p>
 <div class="input_action">
 <h3>

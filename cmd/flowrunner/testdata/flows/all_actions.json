@@ -187,12 +187,15 @@
                                 "key": "gender",
                                 "name": "Gender"
                             },
-                            "value": "@run.results.gender.category"
+                            "value": "@results.gender.category"
                         },
                         {
                             "uuid": "f5650691-b046-4fc7-8b11-359e9d8d02a1",
                             "type": "set_contact_field",
-                            "field": {"key": "district", "name": "District"},
+                            "field": {
+                                "key": "district",
+                                "name": "District"
+                            },
                             "value": "@contact.fields.raw_district"
                         },
                         {

@@ -25,7 +25,7 @@
                         "type": "switch",
                         "result_name": "Favorite Color",
                         "default_exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "cases": [
                             {
                                 "uuid": "98503572-25bf-40ce-ad72-8836b6549a38",
@@ -78,7 +78,7 @@
                         {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "You said @run.results.favorite_color.category_localized. Thanks!"
+                            "text": "You said @results.favorite_color.category_localized. Thanks!"
                         }
                     ]
                 },
@@ -113,8 +113,13 @@
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "name": "Android Channel",
                 "address": "+12345671111",
-                "schemes": ["tel"],
-                "roles": ["send", "receive"]
+                "schemes": [
+                    "tel"
+                ],
+                "roles": [
+                    "send",
+                    "receive"
+                ]
             }
         ]
     }

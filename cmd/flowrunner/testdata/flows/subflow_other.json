@@ -135,7 +135,7 @@
                                 "exit_uuid": "3f6401ba-4144-4f29-8b48-9e8a3a11ff26"
                             }
                         ],
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "default_exit_uuid": "3e3a8051-da19-495a-b0ad-69b11e2158f7"
                     }
                 },
@@ -150,7 +150,7 @@
                     ],
                     "actions": [
                         {
-                            "text": "All Done! You said @child.results.answer in the child and @run.results.answer here.",
+                            "text": "All Done! You said @child.results.answer in the child and @results.answer here.",
                             "type": "send_msg",
                             "uuid": "bd387e9c-1ea9-49c8-a292-858d8a23a2d0"
                         }
@@ -227,7 +227,7 @@
                                 "exit_uuid": "9cf9216c-d001-4052-85db-c499c26a0ea1"
                             }
                         ],
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "default_exit_uuid": "47f7e70f-f7a5-4a24-a6cd-4853ef07487d"
                     }
                 },
