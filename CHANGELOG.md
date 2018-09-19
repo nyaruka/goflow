@@ -1,3 +1,7 @@
+v0.16.0
+----------
+ * Adds @legacy_extra to context to mimic @extra in legacy flows
+
 v0.15.2
 ----------
  * Fix determining whether asset serversource supports a particular type
