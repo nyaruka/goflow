@@ -658,7 +658,8 @@
                     "type": "call_webhook",
                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "method": "GET",
-                    "url": "http://example.com"
+                    "url": "http://example.com",
+                    "result_name": "webhook"
                 }
             ],
             "router": {
@@ -785,7 +786,8 @@
                         "Content-Type": "application/json",
                         "User-Agent": "RapidPro"
                     },
-                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
+                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}",
+                    "result_name": "webhook"
                 }
             ],
             "router": {
@@ -894,7 +896,8 @@
                 {
                     "type": "call_resthook",
                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "resthook": "new-registration"
+                    "resthook": "new-registration",
+                    "result_name": "webhook"
                 }
             ],
             "router": {

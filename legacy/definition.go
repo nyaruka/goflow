@@ -660,6 +660,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				Method:     method,
 				Headers:    headers,
 				Body:       body,
+				ResultName: "webhook",
 			},
 		}
 
@@ -672,6 +673,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&actions.CallResthookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				Resthook:   config.Resthook,
+				ResultName: "webhook",
 			},
 		}
 

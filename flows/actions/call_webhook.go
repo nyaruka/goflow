@@ -19,7 +19,9 @@ const TypeCallWebhook string = "call_webhook"
 // CallWebhookAction can be used to call an external service. The body, header and url fields may be
 // templates and will be evaluated at runtime.
 //
-// A [event:webhook_called] event will be created based on the results of the HTTP call.
+// A [event:webhook_called] event will be created based on the results of the HTTP call. If the action
+// has `result_name` set, a result will be created with that name, and if the webhook returns valid JSON,
+// that will be accessible through `extra` on the result.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -28,7 +30,8 @@ const TypeCallWebhook string = "call_webhook"
 //     "url": "http://localhost:49998/?cmd=success",
 //     "headers": {
 //       "Authorization": "Token AAFFZZHH"
-//     }
+//     },
+//     "result_name": "webhook"
 //   }
 //
 // @action call_webhook
@@ -36,10 +39,11 @@ type CallWebhookAction struct {
 	BaseAction
 	onlineAction
 
-	Method  string            `json:"method"             validate:"required,http_method"`
-	URL     string            `json:"url"                validate:"required"`
-	Headers map[string]string `json:"headers,omitempty"`
-	Body    string            `json:"body,omitempty"`
+	Method     string            `json:"method"             validate:"required,http_method"`
+	URL        string            `json:"url"                validate:"required"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Body       string            `json:"body,omitempty"`
+	ResultName string            `json:"result_name,omitempty"`
 }
 
 // Type returns the type of this action
@@ -101,6 +105,10 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		log.Add(events.NewErrorEvent(err))
 	} else {
 		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+
+		if a.ResultName != "" {
+			//log.Add(events.NewRunResultChangedEvent(a.ResultName, webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+		}
 	}
 
 	return nil

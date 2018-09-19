@@ -256,7 +256,9 @@ no user input at that point then this action will be ignored.
 Can be used to call a resthook.
 
 A [resthook_called](sessions.html#event:resthook_called) event will be created based on the results of the HTTP call
-to each subscriber of the resthook.
+to each subscriber of the resthook. If the action has `result_name` set, a result will
+be created with that name, and if the resthook returns valid JSON, that will be accessible
+through `extra` on the result.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -290,7 +292,9 @@ to each subscriber of the resthook.
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime.
 
-A [webhook_called](sessions.html#event:webhook_called) event will be created based on the results of the HTTP call.
+A [webhook_called](sessions.html#event:webhook_called) event will be created based on the results of the HTTP call. If the action
+has `result_name` set, a result will be created with that name, and if the webhook returns valid JSON,
+that will be accessible through `extra` on the result.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -300,7 +304,8 @@ A [webhook_called](sessions.html#event:webhook_called) event will be created bas
     "url": "http://localhost:49998/?cmd=success",
     "headers": {
         "Authorization": "Token AAFFZZHH"
-    }
+    },
+    "result_name": "webhook"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json

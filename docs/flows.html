@@ -226,7 +226,7 @@ Event
 <p><a name="action:call_resthook"></a></p>
 <h2 id="call_resthook">call_resthook</h2>
 <p>Can be used to call a resthook.</p>
-<p>A <a href="sessions.html#event:resthook_called">resthook_called</a> event will be created based on the results of the HTTP call to each subscriber of the resthook.</p>
+<p>A <a href="sessions.html#event:resthook_called">resthook_called</a> event will be created based on the results of the HTTP call to each subscriber of the resthook. If the action has <code>result_name</code> set, a result will be created with that name, and if the resthook returns valid JSON, that will be accessible through <code>extra</code> on the result.</p>
 <div class="input_action">
 <h3>
 Action
@@ -260,7 +260,7 @@ Event
 <p><a name="action:call_webhook"></a></p>
 <h2 id="call_webhook">call_webhook</h2>
 <p>Can be used to call an external service. The body, header and url fields may be templates and will be evaluated at runtime.</p>
-<p>A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created based on the results of the HTTP call.</p>
+<p>A <a href="sessions.html#event:webhook_called">webhook_called</a> event will be created based on the results of the HTTP call. If the action has <code>result_name</code> set, a result will be created with that name, and if the webhook returns valid JSON, that will be accessible through <code>extra</code> on the result.</p>
 <div class="input_action">
 <h3>
 Action
@@ -272,8 +272,9 @@ Action
 <a class="sourceLine" id="cb15-5" data-line-number="5">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb15-6" data-line-number="6">    <span class="dt">&quot;headers&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb15-7" data-line-number="7">        <span class="dt">&quot;Authorization&quot;</span><span class="fu">:</span> <span class="st">&quot;Token AAFFZZHH&quot;</span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="fu">},</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook&quot;</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
 </div>
 <div class="output_event">
 <h3>

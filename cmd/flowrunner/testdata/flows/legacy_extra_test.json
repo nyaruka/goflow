@@ -220,6 +220,11 @@
                             "name_check": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "extra": {
+                                    "0": "Ben Haggerty",
+                                    "1": "Ben",
+                                    "2": "Haggerty"
+                                },
                                 "input": "Ben Haggerty",
                                 "name": "Name Check",
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
@@ -486,6 +491,11 @@
                             "name_check": {
                                 "category": "Valid",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "extra": {
+                                    "0": "Ben Haggerty",
+                                    "1": "Ben",
+                                    "2": "Haggerty"
+                                },
                                 "input": "Ben Haggerty",
                                 "name": "Name Check",
                                 "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
