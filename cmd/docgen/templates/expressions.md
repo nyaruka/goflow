@@ -13,10 +13,12 @@ The `@` symbol can be escaped in templates by repeating it, ie, `Hi @@twitter` w
 
 The context is all the variables which are accessible in expressions and contains the following top-level variables:
 
- * `contact` the [contact](#context:contact) of the current flow run
  * `run` the current [run](#context:run)
  * `parent` the parent of the current [run](#context:run), i.e. the run that started the current run
  * `child` the child of the current [run](#context:run), i.e. the last subflow
+ * `contact` the current [contact](#context:contact), shortcut for `@run.contact`
+ * `input` the current [input](#context:input), shortcut for `@run.input`
+ * `results` the current [results](#context:result), shortcut for `@run.results`
  * `trigger` the [trigger](#context:trigger) that initiated this session
 
 The following types appear in the context:
