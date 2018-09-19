@@ -14,7 +14,7 @@ func TestRoute(t *testing.T) {
 	r := flows.NewRoute(exitUUID, "red", map[string]string{"foo": "bar"})
 	assert.Equal(t, exitUUID, r.Exit())
 	assert.Equal(t, "red", r.Match())
-	assert.Equal(t, map[string]string{"foo": "bar"}, r.MatchExtra())
+	assert.Equal(t, map[string]string{"foo": "bar"}, r.Extra())
 
 	assert.Equal(t, flows.ExitUUID(""), flows.NoRoute.Exit())
 	assert.Equal(t, "", flows.NoRoute.Match())
