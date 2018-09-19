@@ -460,7 +460,7 @@
         },
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-            "type": "has_webhook_status",
+            "type": "is_text_eq",
             "arguments": [
                 "success"
             ],
@@ -475,7 +475,7 @@
         },
         "expected_case": {
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-            "type": "has_webhook_status",
+            "type": "is_text_eq",
             "arguments": [
                 "response_error"
             ],

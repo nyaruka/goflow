@@ -356,7 +356,6 @@ var testTypeMappings = map[string]string{
 	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
-	"webhook_status":       "is_text_eq",
 	"airtime_status":       "has_airtime_status",
 }
 
@@ -592,6 +591,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			URL:        migratedURL,
 			Body:       body,
 			Headers:    headers,
+			ResultName: "webhook",
 		}, nil
 	default:
 		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
@@ -664,8 +664,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			},
 		}
 
-		// webhook rulesets operate on the webhook call
-		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+		// webhook rulesets operate on the webhook status, saved as category
+		router = routers.NewSwitchRouter(defaultExit, "@results.webhook.category", cases, resultName)
 		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
@@ -677,8 +677,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			},
 		}
 
-		// webhook rulesets operate on the webhook call
-		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+		// resthook rulesets operate on the webhook status, saved as category
+		router = routers.NewSwitchRouter(defaultExit, "@results.webhook.category", cases, resultName)
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, false)
@@ -857,7 +857,7 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 
 		cases = append(cases, routers.Case{
 			UUID:        utils.UUID(utils.NewUUID()),
-			Type:        "has_webhook_status",
+			Type:        "is_text_eq",
 			Arguments:   []string{"connection_error"},
 			OmitOperand: false,
 			ExitUUID:    connectionErrorExit.UUID(),
@@ -933,6 +933,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
+		newType = "is_text_eq"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
