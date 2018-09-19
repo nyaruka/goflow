@@ -356,7 +356,7 @@ var testTypeMappings = map[string]string{
 	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
-	"webhook_status":       "has_webhook_status",
+	"webhook_status":       "is_text_eq",
 	"airtime_status":       "has_airtime_status",
 }
 

@@ -1630,22 +1630,6 @@ Tests whether a ward name is contained in the `text`
 @(has_ward("Gisozi")) → true
 ```
 
-<a name="test:has_webhook_status"></a>
-
-## has_webhook_status(webhook, status)
-
-Tests whether the passed in `webhook` call has the passed in `status`. If there is no
-webhook set, then "success" will still match.
-
-
-```objectivec
-@(has_webhook_status(NULL, "success")) → true
-@(has_webhook_status(run.webhook, "success")) → true
-@(has_webhook_status(run.webhook, "connection_error")) → false
-@(has_webhook_status(run.webhook, "success").match) → {"results":[{"state":"WA"},{"state":"IN"}]}
-@(has_webhook_status("abc", "success")) → ERROR
-```
-
 <a name="test:is_error"></a>
 
 ## is_error(value)

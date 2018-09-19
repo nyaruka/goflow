@@ -892,32 +892,24 @@
 <a class="sourceLine" id="cb96-6" data-line-number="6">@(has_ward(<span class="st">&quot;Brooklyn&quot;</span>, <span class="st">&quot;Gasabo&quot;</span>, <span class="st">&quot;Kigali&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb96-7" data-line-number="7">@(has_ward(<span class="st">&quot;Gasabo&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb96-8" data-line-number="8">@(has_ward(<span class="st">&quot;Gisozi&quot;</span>)) → true</a></code></pre></div>
-<p><a name="test:has_webhook_status"></a></p>
-<h2 id="has_webhook_statuswebhook-status">has_webhook_status(webhook, status)</h2>
-<p>Tests whether the passed in <code>webhook</code> call has the passed in <code>status</code>. If there is no webhook set, then “success” will still match.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb97-1" data-line-number="1">@(has_webhook_status(NULL, <span class="st">&quot;success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb97-2" data-line-number="2">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb97-3" data-line-number="3">@(has_webhook_status(run.webhook, <span class="st">&quot;connection_error&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb97-4" data-line-number="4">@(has_webhook_status(run.webhook, <span class="st">&quot;success&quot;</span>).match) → {<span class="st">&quot;results&quot;</span>:[{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;WA&quot;</span>},{<span class="st">&quot;state&quot;</span>:<span class="st">&quot;IN&quot;</span>}]}</a>
-<a class="sourceLine" id="cb97-5" data-line-number="5">@(has_webhook_status(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;success&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="test:is_error"></a></p>
 <h2 id="is_errorvalue">is_error(value)</h2>
 <p>Returns whether <code>value</code> is an error</p>
 <p>Note that <code>contact.fields</code> and <code>run.results</code> are considered dynamic, so it is not an error to try to retrieve a value from fields or results which don’t exist, rather these return an empty value.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
-<a class="sourceLine" id="cb98-2" data-line-number="2">@(is_error(run.not.existing)) → true</a>
-<a class="sourceLine" id="cb98-3" data-line-number="3">@(is_error(contact.fields.unset)) → true</a>
-<a class="sourceLine" id="cb98-4" data-line-number="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb97-1" data-line-number="1">@(is_error(datetime(<span class="st">&quot;foo&quot;</span>))) → true</a>
+<a class="sourceLine" id="cb97-2" data-line-number="2">@(is_error(run.not.existing)) → true</a>
+<a class="sourceLine" id="cb97-3" data-line-number="3">@(is_error(contact.fields.unset)) → true</a>
+<a class="sourceLine" id="cb97-4" data-line-number="4">@(is_error(<span class="st">&quot;hello&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:is_text_eq"></a></p>
 <h2 id="is_text_eqtext1-text2">is_text_eq(text1, text2)</h2>
 <p>Returns whether two text values are equal (case sensitive). In the case that they are, it will return the text as the match.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb99-1" data-line-number="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb99-2" data-line-number="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb99-3" data-line-number="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb99-4" data-line-number="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
-<a class="sourceLine" id="cb99-5" data-line-number="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb99-6" data-line-number="6">@(is_text_eq(run.webhook.status, <span class="st">&quot;success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb99-7" data-line-number="7">@(is_text_eq(run.webhook.status, <span class="st">&quot;connection_error&quot;</span>)) → false</a></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb98-1" data-line-number="1">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;foo&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb98-2" data-line-number="2">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;FOO&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb98-3" data-line-number="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</a>
+<a class="sourceLine" id="cb98-4" data-line-number="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
+<a class="sourceLine" id="cb98-5" data-line-number="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb98-6" data-line-number="6">@(is_text_eq(run.webhook.status, <span class="st">&quot;success&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb98-7" data-line-number="7">@(is_text_eq(run.webhook.status, <span class="st">&quot;connection_error&quot;</span>)) → false</a></code></pre></div>
 </div>
 
     </body>

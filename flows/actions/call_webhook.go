@@ -108,13 +108,17 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 
 		if a.ResultName != "" {
-			input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
-			value := strconv.Itoa(webhook.StatusCode())
-			category := string(webhook.Status())
-			extra := []byte(webhook.Body()) // TODO
-			log.Add(events.NewRunResultChangedEvent(a.ResultName, value, category, "", step.NodeUUID(), &input, extra))
+			log.Add(webhookCallToResultEvent(a.ResultName, webhook, step))
 		}
 	}
 
 	return nil
+}
+
+func webhookCallToResultEvent(resultName string, webhook *flows.WebhookCall, step flows.Step) flows.Event {
+	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
+	value := strconv.Itoa(webhook.StatusCode())
+	category := string(webhook.Status())
+	extra := []byte(webhook.Body()) // TODO
+	return events.NewRunResultChangedEvent(resultName, value, category, "", step.NodeUUID(), &input, extra)
 }

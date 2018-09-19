@@ -49,18 +49,19 @@
                             "type": "call_webhook",
                             "uuid": "9aa018e7-4934-457a-b582-63b164c562f7",
                             "method": "GET",
-                            "url": "http://localhost/?cmd=echo&content=%7B%22exists%22%3A%22valid%22%7D"
+                            "url": "http://localhost/?cmd=echo&content=%7B%22exists%22%3A%22valid%22%7D",
+                            "result_name": "webhook"
                         }
                     ],
                     "router": {
                         "type": "switch",
                         "result_name": "Country Webhook",
                         "default_exit_uuid": "3b3ac506-7523-4f68-b19e-b376734da8d5",
-                        "operand": "@run.webhook",
+                        "operand": "@results.webhook.category",
                         "cases": [
                             {
                                 "uuid": "518a925a-480e-4d44-a56d-98034df486a3",
-                                "type": "has_webhook_status",
+                                "type": "is_text_eq",
                                 "arguments": [
                                     "success"
                                 ],
@@ -68,7 +69,7 @@
                             },
                             {
                                 "uuid": "a01a04b1-d9a8-4919-b745-a3532f5fdb89",
-                                "type": "has_webhook_status",
+                                "type": "is_text_eq",
                                 "arguments": [
                                     "response_error"
                                 ],
@@ -76,7 +77,7 @@
                             },
                             {
                                 "uuid": "cc642b3b-37d1-4d9c-a905-c621a80edfba",
-                                "type": "has_webhook_status",
+                                "type": "is_text_eq",
                                 "arguments": [
                                     "connection_error"
                                 ],

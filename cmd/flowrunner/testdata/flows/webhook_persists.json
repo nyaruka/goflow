@@ -45,11 +45,12 @@
                             "uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
                             "type": "call_webhook",
                             "method": "GET",
-                            "body": null
+                            "body": null,
+                            "result_name": "webhook"
                         }
                     ],
                     "router": {
-                        "operand": "@run.webhook",
+                        "operand": "@results.webhook.category",
                         "cases": [
                             {
                                 "arguments": [
@@ -57,7 +58,7 @@
                                 ],
                                 "uuid": "789b45bc-005a-46db-8331-6a966c0141c2",
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
-                                "type": "has_webhook_status"
+                                "type": "is_text_eq"
                             }
                         ],
                         "default_exit_uuid": "3699df6c-15f0-4a86-b7f8-9fe1497e7854",
