@@ -82,5 +82,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 
 	log.Add(events.NewResthookCalledEvent(a.Resthook, payload, calls))
 
+	// TODO create run result event
+
 	return nil
 }

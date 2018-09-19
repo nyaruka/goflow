@@ -34,15 +34,6 @@ func NewEmptyXMap() XMap {
 	}
 }
 
-// NewXMapFromStrings returns a new map based on the given map of strings
-func NewXMapFromStrings(strs map[string]string) XMap {
-	values := make(map[string]XValue, len(strs))
-	for k, v := range strs {
-		values[k] = NewXText(v)
-	}
-	return &xmap{values: values}
-}
-
 // Describe returns a representation of this type for error messages
 func (m *xmap) Describe() string { return "map" }
 

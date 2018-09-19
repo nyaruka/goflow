@@ -40,11 +40,4 @@ func TestXMap(t *testing.T) {
 		"bar": types.NewXNumberFromInt(123),
 		"zed": types.XBooleanFalse,
 	}))
-
-	map2 := types.NewXMapFromStrings(map[string]string{
-		"foo": "abc",
-		"bar": "123",
-	})
-	assert.Equal(t, 2, map2.Length())
-	assert.Equal(t, types.NewXText("abc"), map1.Resolve(nil, "foo"))
 }

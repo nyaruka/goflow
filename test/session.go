@@ -91,7 +91,8 @@ var sessionAssets = `[
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",
-                            "url": "http://localhost/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D"
+                            "url": "http://localhost/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
+                            "result_name": "webhook"
                         }
                     ],
                     "exits": [

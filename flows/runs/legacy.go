@@ -102,34 +102,18 @@ func (e *legacyExtra) update() {
 		}
 
 		switch typed := event.(type) {
-		case *events.WebhookCalledEvent:
-			e.addPossibleJSONResponse(typed.Response)
-		case *events.ResthookCalledEvent:
-			for _, call := range typed.Calls {
-				e.addPossibleJSONResponse(call.Response)
-			}
 		case *events.RunResultChangedEvent:
-			for k, v := range typed.Extra {
-				e.legacyExtraMap[legacyExtraKey(k)] = v
+			if typed.Extra != nil {
+				values, err := utils.JSONDecodeToMap(typed.Extra)
+				if err == nil {
+					for k, v := range values {
+						e.legacyExtraMap[legacyExtraKey(k)] = v
+					}
+				}
 			}
 		}
 
 		e.lastEventTime = event.CreatedOn()
-	}
-}
-
-// tries to parse the given response as JSON and if successful adds it to this @extra
-func (e *legacyExtra) addPossibleJSONResponse(response string) {
-	parts := strings.SplitN(response, "\r\n\r\n", 2)
-	if len(parts) != 2 {
-		return
-	}
-	values, err := utils.JSONDecodeToMap(json.RawMessage(parts[1]))
-	if err != nil {
-		return
-	}
-	for k, v := range values {
-		e.legacyExtraMap[legacyExtraKey(k)] = v
 	}
 }
 

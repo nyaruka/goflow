@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -107,7 +108,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
 
 		if a.ResultName != "" {
-			//log.Add(events.NewRunResultChangedEvent(a.ResultName, webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+			input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
+			value := strconv.Itoa(webhook.StatusCode())
+			category := string(webhook.Status())
+			extra := []byte(webhook.Body()) // TODO
+			log.Add(events.NewRunResultChangedEvent(a.ResultName, value, category, "", step.NodeUUID(), &input, extra))
 		}
 	}
 

@@ -1,6 +1,7 @@
 package events
 
 import (
+	"encoding/json"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -32,17 +33,17 @@ type RunResultChangedEvent struct {
 	BaseEvent
 	callerOrEngineEvent
 
-	Name              string            `json:"name" validate:"required"`
-	Value             string            `json:"value"`
-	Category          string            `json:"category"`
-	CategoryLocalized string            `json:"category_localized,omitempty"`
-	NodeUUID          flows.NodeUUID    `json:"node_uuid" validate:"required,uuid4"`
-	Input             *string           `json:"input,omitempty"`
-	Extra             map[string]string `json:"extra,omitempty"`
+	Name              string          `json:"name" validate:"required"`
+	Value             string          `json:"value"`
+	Category          string          `json:"category"`
+	CategoryLocalized string          `json:"category_localized,omitempty"`
+	NodeUUID          flows.NodeUUID  `json:"node_uuid" validate:"required,uuid4"`
+	Input             *string         `json:"input,omitempty"`
+	Extra             json.RawMessage `json:"extra,omitempty"`
 }
 
 // NewRunResultChangedEvent returns a new save result event for the passed in values
-func NewRunResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input *string, extra map[string]string) *RunResultChangedEvent {
+func NewRunResultChangedEvent(name string, value string, categoryName string, categoryLocalized string, node flows.NodeUUID, input *string, extra json.RawMessage) *RunResultChangedEvent {
 	return &RunResultChangedEvent{
 		BaseEvent:         NewBaseEvent(),
 		Name:              name,
