@@ -22,7 +22,7 @@ import (
 //   @contact.channel -> My Android Phone
 //   @contact.channel.name -> My Android Phone
 //   @contact.channel.address -> +12345671111
-//   @run.input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
+//   @input.channel.uuid -> 57f1078f-88aa-46f4-a59a-948a5739c03d
 //   @(json(contact.channel)) -> {"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"}
 //
 // @context channel

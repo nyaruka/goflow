@@ -64,7 +64,7 @@
                 "type": "switch",
                 "result_name": "Beer",
                 "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                "operand": "@run.input",
+                "operand": "@input",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -192,7 +192,7 @@
                 "type": "switch",
                 "result_name": "Beer",
                 "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                "operand": "@run.input",
+                "operand": "@input",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -467,7 +467,7 @@
                 "type": "switch",
                 "result_name": "Beer",
                 "default_exit_uuid": "1fc4c133-d038-4f75-a69e-6e7e3190e5d8",
-                "operand": "@run.input",
+                "operand": "@input",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -564,7 +564,7 @@
                 "type": "switch",
                 "result_name": "age",
                 "default_exit_uuid": "",
-                "operand": "@run.input",
+                "operand": "@input",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -1282,7 +1282,7 @@
                 "type": "switch",
                 "result_name": "Name",
                 "default_exit_uuid": "233c4a90-9cd9-4cdf-b0b9-a9569576f502",
-                "operand": "@run.input",
+                "operand": "@input",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -1499,7 +1499,7 @@
                 "type": "switch",
                 "result_name": "Delimited Split",
                 "default_exit_uuid": "22b5ef86-afad-41aa-8863-c167996083a6",
-                "operand": "@(field(run.results.response_1, 1, \" \"))",
+                "operand": "@(field(results.response_1, 1, \" \"))",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -1608,7 +1608,7 @@
                 "type": "switch",
                 "result_name": "Flow Field",
                 "default_exit_uuid": "1996613d-cc80-4704-be21-6c0a8e79870c",
-                "operand": "@run.results.response_1",
+                "operand": "@results.response_1",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

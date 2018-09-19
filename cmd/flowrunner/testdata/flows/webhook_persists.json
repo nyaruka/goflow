@@ -94,7 +94,7 @@
                         }
                     ],
                     "router": {
-                        "operand": "@run.input",
+                        "operand": "@input",
                         "cases": [],
                         "default_exit_uuid": "dd0d800b-97ce-418f-9eb7-f0985df89f08",
                         "type": "switch"

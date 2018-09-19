@@ -54,11 +54,11 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.mailto`, new: `@(format_urn(contact.urns.mailto))`},
 
 		// run variables
-		{old: `@flow.favorite_color`, new: `@run.results.favorite_color`},
-		{old: `@flow.favorite_color.category`, new: `@run.results.favorite_color.category_localized`},
-		{old: `@flow.favorite_color.text`, new: `@run.results.favorite_color.input`},
-		{old: `@flow.favorite_color.time`, new: `@run.results.favorite_color.created_on`},
-		{old: `@flow.favorite_color.value`, new: `@run.results.favorite_color.value`},
+		{old: `@flow.favorite_color`, new: `@results.favorite_color`},
+		{old: `@flow.favorite_color.category`, new: `@results.favorite_color.category_localized`},
+		{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
+		{old: `@flow.favorite_color.time`, new: `@results.favorite_color.created_on`},
+		{old: `@flow.favorite_color.value`, new: `@results.favorite_color.value`},
 		{old: `@flow.contact`, new: `@contact`},
 		{old: `@flow.contact.name`, new: `@contact.name`},
 
@@ -73,11 +73,11 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.contact.gender`, new: `@parent.contact.fields.gender`},
 
 		// input
-		{old: `@step`, new: `@run.input`},
-		{old: `@step.value`, new: `@run.input`},
-		{old: `@step.text`, new: `@run.input.text`},
-		{old: `@step.attachments`, new: `@run.input.attachments`},
-		{old: `@step.time`, new: `@run.input.created_on`},
+		{old: `@step`, new: `@input`},
+		{old: `@step.value`, new: `@input`},
+		{old: `@step.text`, new: `@input.text`},
+		{old: `@step.attachments`, new: `@input.attachments`},
+		{old: `@step.time`, new: `@input.created_on`},
 		{old: `@step.contact`, new: `@contact`},
 		{old: `@step.contact.name`, new: `@contact.name`},
 		{old: `@step.contact.age`, new: `@contact.fields.age`},
@@ -97,7 +97,7 @@ func TestMigrateTemplate(t *testing.T) {
 		// variables in parens
 		{old: `@(contact.tel)`, new: `@(format_urn(contact.urns.tel))`},
 		{old: `@(contact.gender)`, new: `@contact.fields.gender`},
-		{old: `@(flow.favorite_color)`, new: `@run.results.favorite_color`},
+		{old: `@(flow.favorite_color)`, new: `@results.favorite_color`},
 
 		// booleans
 		{old: `@(TRUE)`, new: `@(true)`},
@@ -128,25 +128,25 @@ func TestMigrateTemplate(t *testing.T) {
 
 		// functions
 		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},
-		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(run.results.favorite_color))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(run.results.favorite_color, 1))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(run.results.favorite_color, 1, 3))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, TRUE))`, new: `@(word_slice(run.results.favorite_color, 1, 3, " \t"))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, FALSE))`, new: `@(word_slice(run.results.favorite_color, 1, 3, NULL))`},
-		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(run.results.favorite_color, 1, ","))`},
-		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(run.results.favorite_color, child.results.age - 1, ","))`},
+		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(results.favorite_color))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(results.favorite_color, 1))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(results.favorite_color, 1, 3))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, TRUE))`, new: `@(word_slice(results.favorite_color, 1, 3, " \t"))`},
+		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, FALSE))`, new: `@(word_slice(results.favorite_color, 1, 3, NULL))`},
+		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(results.favorite_color, 1, ","))`},
+		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(results.favorite_color, child.results.age - 1, ","))`},
 		{old: `@(FIRST_WORD(WORD_SLICE("bee cat dog elf", 2, 4)))`, new: `@(word(word_slice("bee cat dog elf", 1, 3), 0))`},
-		{old: `@(FIRST_WORD(flow.favorite_color))`, new: `@(word(run.results.favorite_color, 0))`},
-		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(run.results.favorite_color, legacy_add(child.results.age, -22) - 1))`},
-		{old: `@(WORD(flow.favorite_color, 1))`, new: `@(word(run.results.favorite_color, 0))`},
-		{old: `@(WORD(flow.favorite_color, 1, TRUE))`, new: `@(word(run.results.favorite_color, 0, " \t"))`},
-		{old: `@(WORD(flow.favorite_color, 1, FALSE))`, new: `@(word(run.results.favorite_color, 0, NULL))`},
-		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(run.results.favorite_color))`},
-		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(run.results.favorite_color, " \t"))`},
-		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(run.results.favorite_color, NULL))`},
+		{old: `@(FIRST_WORD(flow.favorite_color))`, new: `@(word(results.favorite_color, 0))`},
+		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(results.favorite_color, legacy_add(child.results.age, -22) - 1))`},
+		{old: `@(WORD(flow.favorite_color, 1))`, new: `@(word(results.favorite_color, 0))`},
+		{old: `@(WORD(flow.favorite_color, 1, TRUE))`, new: `@(word(results.favorite_color, 0, " \t"))`},
+		{old: `@(WORD(flow.favorite_color, 1, FALSE))`, new: `@(word(results.favorite_color, 0, NULL))`},
+		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(results.favorite_color))`},
+		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(results.favorite_color, " \t"))`},
+		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(results.favorite_color, NULL))`},
 		{old: `@(ABS(-5))`, new: `@(abs(-5))`},
 		{old: `@(AVERAGE(1, 2, 3, 4, 5))`, new: `@(mean(1, 2, 3, 4, 5))`},
-		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(contact.fields.age > 30, run.results.amount < 5))`},
+		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(contact.fields.age > 30, results.amount < 5))`},
 		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`},
 		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`},
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`},
@@ -234,7 +234,7 @@ func TestMigrateTemplate(t *testing.T) {
 		// misc edge cases
 		{old: `@`, new: `@`},
 		{old: `@contact.first_name...?`, new: `@contact.first_name...?`},
-		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@run.results.favorite_color @@flow.favorite_color @run.results.favorite_color @nyaruka @ @`},
+		{old: `Hi @@@flow.favorite_color @@flow.favorite_color @flow.favorite_color @nyaruka @ @`, new: `Hi @@@results.favorite_color @@flow.favorite_color @results.favorite_color @nyaruka @ @`},
 	}
 
 	for _, tc := range tests {

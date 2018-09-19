@@ -23,10 +23,12 @@
 <h1 id="context">Context</h1>
 <p>The context is all the variables which are accessible in expressions and contains the following top-level variables:</p>
 <ul>
-<li><code>contact</code> the <a href="#context:contact">contact</a> of the current flow run</li>
 <li><code>run</code> the current <a href="#context:run">run</a></li>
 <li><code>parent</code> the parent of the current <a href="#context:run">run</a>, i.e. the run that started the current run</li>
 <li><code>child</code> the child of the current <a href="#context:run">run</a>, i.e. the last subflow</li>
+<li><code>contact</code> the current <a href="#context:contact">contact</a>, shortcut for <code>@run.contact</code></li>
+<li><code>input</code> the current <a href="#context:input">input</a>, shortcut for <code>@run.input</code></li>
+<li><code>results</code> the current <a href="#context:result">results</a>, shortcut for <code>@run.results</code></li>
 <li><code>trigger</code> the <a href="#context:trigger">trigger</a> that initiated this session</li>
 </ul>
 <p>The following types appear in the context:</p>
@@ -51,8 +53,8 @@
 <li><code>url</code> the URL of the attachment</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" data-line-number="1">@run.input.attachments.<span class="fl">0.</span>content_type → image/jpeg</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">@run.input.attachments.<span class="fl">0.</span>url → http:<span class="co">//s3.amazon.com/bucket/test.jpg</span></a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" data-line-number="1">@input.attachments.<span class="fl">0.</span>content_type → image/jpeg</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">@input.attachments.<span class="fl">0.</span>url → http:<span class="co">//s3.amazon.com/bucket/test.jpg</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">@(json(run.input.attachments<span class="fl">.0</span>)) → {<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>}</a></code></pre></div>
 <p><a name="context:channel"></a></p>
 <h2 id="channel">Channel</h2>
@@ -66,7 +68,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" data-line-number="1">@contact.channel → My Android Phone</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">@contact.channel.name → My Android Phone</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">@contact.channel.address → +<span class="dv">12345671111</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">@run.input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">@input.channel.uuid → 57f1078f-88aa-46f4-a59a-948a5739c03d</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">@(json(contact.channel)) → {<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>}</a></code></pre></div>
 <p><a name="context:contact"></a></p>
 <h2 id="contact">Contact</h2>
@@ -143,10 +145,10 @@
 <li><code>urn</code> the <a href="#context:urn">URN</a> that the input was received on</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" data-line-number="1">@run.input → Hi there\nhttp:<span class="co">//s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">@run.input.type → msg</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">@run.input.text → Hi there</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">@run.input.attachments → [<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>]</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb6-1" data-line-number="1">@input → Hi there\nhttp:<span class="co">//s3.amazon.com/bucket/test.jpg\nhttp://s3.amazon.com/bucket/test.mp3</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">@input.type → msg</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">@input.text → Hi there</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">@input.attachments → [<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>,<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>]</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">@(json(run.input)) → {<span class="st">&quot;attachments&quot;</span>:[{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;image/jpeg&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.jpg&quot;</span>},{<span class="st">&quot;content_type&quot;</span>:<span class="st">&quot;audio/mp3&quot;</span>,<span class="st">&quot;url&quot;</span>:<span class="st">&quot;http://s3.amazon.com/bucket/test.mp3&quot;</span>}],<span class="st">&quot;channel&quot;</span>:{<span class="st">&quot;address&quot;</span>:<span class="st">&quot;+12345671111&quot;</span>,<span class="st">&quot;name&quot;</span>:<span class="st">&quot;My Android Phone&quot;</span>,<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>},<span class="st">&quot;created_on&quot;</span>:<span class="st">&quot;2000-01-01T00:00:00.000000Z&quot;</span>,<span class="st">&quot;text&quot;</span>:<span class="st">&quot;Hi there&quot;</span>,<span class="st">&quot;type&quot;</span>:<span class="st">&quot;msg&quot;</span>,<span class="st">&quot;urn&quot;</span>:{<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>},<span class="st">&quot;uuid&quot;</span>:<span class="st">&quot;9bf91c2b-ce58-4cef-aacc-281e03f69ab5&quot;</span>}</a></code></pre></div>
 <p><a name="context:result"></a></p>
 <h2 id="result">Result</h2>
@@ -160,9 +162,9 @@
 <li><code>created_on</code> the time when the result was created</li>
 </ul>
 <p>Examples:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" data-line-number="1">@run.results.favorite_color → red</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">@run.results.favorite_color.value → red</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">@run.results.favorite_color.category → Red</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" data-line-number="1">@results.favorite_color → red</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">@results.favorite_color.value → red</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">@results.favorite_color.category → Red</a></code></pre></div>
 <p><a name="context:run"></a></p>
 <h2 id="run">Run</h2>
 <p>Is a single contact’s journey through a flow. It records the path they have taken, and the results that have been collected. It has several properties which can be accessed in expressions:</p>
@@ -172,7 +174,7 @@
 <li><code>contact</code> the <a href="#context:contact">contact</a> of the flow run</li>
 <li><code>input</code> the <a href="#context:input">input</a> of the current run</li>
 <li><code>results</code> the results that have been saved for this run</li>
-<li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>run.results.age</code></li>
+<li><code>results.[snaked_result_name]</code> the value of the specific result, e.g. <code>results.age</code></li>
 <li><code>webhook</code> the last <a href="#context:webhook">webhook</a> call made in the current run</li>
 </ul>
 <p>Examples:</p>
