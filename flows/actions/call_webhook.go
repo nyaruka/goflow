@@ -37,8 +37,8 @@ type CallWebhookAction struct {
 	BaseAction
 	onlineAction
 
-	Method     string            `json:"method"             validate:"required,http_method"`
-	URL        string            `json:"url"                validate:"required"`
+	Method     string            `json:"method" validate:"required,http_method"`
+	URL        string            `json:"url" validate:"required"`
 	Headers    map[string]string `json:"headers,omitempty"`
 	Body       string            `json:"body,omitempty"`
 	ResultName string            `json:"result_name,omitempty"`

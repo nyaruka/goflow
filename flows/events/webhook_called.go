@@ -29,7 +29,7 @@ const TypeWebhookCalled string = "webhook_called"
 //     "status": "success",
 //     "request": "GET /?format=json HTTP/1.1",
 //     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
-//     "result_name": "ip_check"
+//     "result_name": "IP Check"
 //   }
 //
 // @event webhook_called

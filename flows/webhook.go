@@ -66,7 +66,7 @@ type WebhookCall struct {
 	responseTrace string
 }
 
-// ReconstructWebhookCall creates a new webhook call
+// ReconstructWebhookCall reconstructs a webhook call from the given traces
 func ReconstructWebhookCall(url string, requestTrace string, responseTrace string) (*WebhookCall, error) {
 	request, err := http.ReadRequest(bufio.NewReader(strings.NewReader(requestTrace)))
 	if err != nil {

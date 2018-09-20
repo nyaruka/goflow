@@ -69,7 +69,6 @@
                             "url": "http://localhost/?cmd=success",
                             "uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
                             "method": "GET",
-                            "body": null,
                             "result_name": "webhook"
                         },
                         {

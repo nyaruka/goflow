@@ -107,7 +107,7 @@ func (e *legacyExtra) update() {
 	// sort by created time
 	sort.SliceStable(newExtras, func(i, j int) bool { return newExtras[i].CreatedOn.Before(newExtras[j].CreatedOn) })
 
-	// add each extra blog to our master extra
+	// add each extra blob to our master extra
 	for _, result := range newExtras {
 		values, err := utils.JSONDecodeToMap(result.Extra)
 		if err == nil {

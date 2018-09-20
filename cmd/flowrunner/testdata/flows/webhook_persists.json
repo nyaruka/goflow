@@ -45,7 +45,6 @@
                             "uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
                             "type": "call_webhook",
                             "method": "GET",
-                            "body": null,
                             "result_name": "webhook"
                         }
                     ],

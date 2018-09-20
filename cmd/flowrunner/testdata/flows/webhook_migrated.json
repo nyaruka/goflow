@@ -50,14 +50,13 @@
                             "uuid": "9aa018e7-4934-457a-b582-63b164c562f7",
                             "method": "GET",
                             "url": "http://localhost/?cmd=echo&content=%7B%22exists%22%3A%22valid%22%7D",
-                            "result_name": "webhook"
+                            "result_name": "Country Webhook"
                         }
                     ],
                     "router": {
                         "type": "switch",
-                        "result_name": "Country Webhook",
                         "default_exit_uuid": "3b3ac506-7523-4f68-b19e-b376734da8d5",
-                        "operand": "@results.webhook.category",
+                        "operand": "@results.country_webhook.category",
                         "cases": [
                             {
                                 "uuid": "518a925a-480e-4d44-a56d-98034df486a3",

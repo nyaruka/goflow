@@ -90,7 +90,7 @@ func (e *ResthookCalledEvent) Type() string { return TypeResthookCalled }
 
 // Apply applies this event to the given run
 func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
-	// no result namem then nothing to do
+	// no result name then nothing to do
 	if e.ResultName == "" {
 		return nil
 	}
