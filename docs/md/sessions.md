@@ -543,7 +543,6 @@ the result was generated.
     "value": "m",
     "category": "Male",
     "category_localized": "Homme",
-    "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
     "input": "M"
 }
 ```

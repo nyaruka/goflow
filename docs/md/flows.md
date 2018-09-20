@@ -618,8 +618,7 @@ final values.
     "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
     "name": "Gender",
     "value": "m",
-    "category": "Male",
-    "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325"
+    "category": "Male"
 }
 ```
 </div>

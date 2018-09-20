@@ -291,7 +291,6 @@
                     "created_on": "2018-07-06T12:30:13.123456789Z",
                     "input": "neither",
                     "name": "Answer",
-                    "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                     "type": "run_result_changed",
                     "value": "neither"
@@ -440,7 +439,6 @@
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "neither",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -574,7 +572,6 @@
                     "created_on": "2018-07-06T12:30:20.123456789Z",
                     "input": "yes",
                     "name": "Answer",
-                    "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                     "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                     "type": "run_result_changed",
                     "value": "yes"
@@ -768,7 +765,6 @@
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "neither",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -811,7 +807,6 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "input": "yes",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "yes"
@@ -947,7 +942,6 @@
                     "created_on": "2018-07-06T12:30:30.123456789Z",
                     "input": "never",
                     "name": "Answer",
-                    "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                     "type": "run_result_changed",
                     "value": "never"
@@ -1070,7 +1064,6 @@
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "input": "never",
                                 "name": "Answer",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "run_result_changed",
                                 "value": "never"
@@ -1203,7 +1196,6 @@
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "neither",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -1246,7 +1238,6 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "input": "yes",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "yes"
@@ -1382,7 +1373,6 @@
                     "created_on": "2018-07-06T12:30:37.123456789Z",
                     "input": "no",
                     "name": "Answer",
-                    "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                     "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                     "type": "run_result_changed",
                     "value": "no"
@@ -1500,7 +1490,6 @@
                                 "created_on": "2018-07-06T12:30:30.123456789Z",
                                 "input": "never",
                                 "name": "Answer",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                                 "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
                                 "type": "run_result_changed",
                                 "value": "never"
@@ -1543,7 +1532,6 @@
                                 "created_on": "2018-07-06T12:30:37.123456789Z",
                                 "input": "no",
                                 "name": "Answer",
-                                "node_uuid": "6bd3b6ec-050d-41f7-84bf-f4030f2f01f7",
                                 "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
                                 "type": "run_result_changed",
                                 "value": "no"
@@ -1678,7 +1666,6 @@
                                 "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "input": "neither",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
                                 "type": "run_result_changed",
                                 "value": "neither"
@@ -1721,7 +1708,6 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "input": "yes",
                                 "name": "Answer",
-                                "node_uuid": "7dbcb3fd-16ee-4ce6-bd56-54b45a647958",
                                 "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
                                 "type": "run_result_changed",
                                 "value": "yes"
