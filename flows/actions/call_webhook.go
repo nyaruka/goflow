@@ -3,7 +3,6 @@ package actions
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
@@ -20,9 +19,7 @@ const TypeCallWebhook string = "call_webhook"
 // CallWebhookAction can be used to call an external service. The body, header and url fields may be
 // templates and will be evaluated at runtime.
 //
-// A [event:webhook_called] event will be created based on the results of the HTTP call. If the action
-// has `result_name` set, a result will be created with that name, and if the webhook returns valid JSON,
-// that will be accessible through `extra` on the result.
+// A [event:webhook_called] event will be created based on the results of the HTTP call.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -105,20 +102,8 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	} else {
-		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
-
-		if a.ResultName != "" {
-			log.Add(webhookCallToResultEvent(a.ResultName, webhook, step))
-		}
+		log.Add(events.NewWebhookCalledEvent(webhook, a.ResultName))
 	}
 
 	return nil
-}
-
-func webhookCallToResultEvent(resultName string, webhook *flows.WebhookCall, step flows.Step) flows.Event {
-	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
-	value := strconv.Itoa(webhook.StatusCode())
-	category := string(webhook.Status())
-	extra := []byte(webhook.Body()) // TODO
-	return events.NewRunResultChangedEvent(resultName, value, category, "", step.NodeUUID(), &input, extra)
 }

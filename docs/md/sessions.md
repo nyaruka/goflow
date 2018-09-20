@@ -508,7 +508,8 @@ calls fails, then it is used to update @run.webhook instead.
             "status_code": 410,
             "response": "{\"errors\":[\"Unsubscribe\"]}"
         }
-    ]
+    ],
+    "result_name": "ip_check"
 }
 ```
 </div>
@@ -615,7 +616,9 @@ the item that the wait was waiting for
 
 Events are created when a webhook is called. The event contains
 the status and status code of the response, as well as a full dump of the
-request and response. Applying this event updates @run.webhook in the context.
+request and response. If this event has a `reult_name`, then applying this event creates
+a new result with that name. If the webhook returned valid JSON, that will be accessible
+through `extra` on the result.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -625,7 +628,8 @@ request and response. Applying this event updates @run.webhook in the context.
     "status": "success",
     "status_code": 200,
     "request": "GET https://api.ipify.org?format=json",
-    "response": "HTTP/1.1 200 OK {\"ip\":\"190.154.48.130\"}"
+    "response": "HTTP/1.1 200 OK {\"ip\":\"190.154.48.130\"}",
+    "result_name": "ip_check"
 }
 ```
 </div>

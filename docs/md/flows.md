@@ -292,9 +292,7 @@ through `extra` on the result.
 Can be used to call an external service. The body, header and url fields may be
 templates and will be evaluated at runtime.
 
-A [webhook_called](sessions.html#event:webhook_called) event will be created based on the results of the HTTP call. If the action
-has `result_name` set, a result will be created with that name, and if the webhook returns valid JSON,
-that will be accessible through `extra` on the result.
+A [webhook_called](sessions.html#event:webhook_called) event will be created based on the results of the HTTP call.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -309,31 +307,17 @@ that will be accessible through `extra` on the result.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-[
-    {
-        "type": "webhook_called",
-        "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
-        "url": "http://localhost:49998/?cmd=success",
-        "status": "success",
-        "status_code": 200,
-        "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
-        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
-    },
-    {
-        "type": "run_result_changed",
-        "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
-        "name": "webhook",
-        "value": "200",
-        "category": "success",
-        "node_uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-        "input": "GET http://localhost:49998/?cmd=success",
-        "extra": {
-            "ok": "true"
-        }
-    }
-]
+{
+    "type": "webhook_called",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+    "url": "http://localhost:49998/?cmd=success",
+    "status": "success",
+    "status_code": 200,
+    "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
+    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+    "result_name": "webhook"
+}
 ```
 </div>
 <a name="action:remove_contact_groups"></a>

@@ -8,7 +8,6 @@ import (
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -70,8 +69,8 @@ var _ types.XResolvable = (legacyExtraMap)(nil)
 type legacyExtra struct {
 	legacyExtraMap
 
-	run           flows.FlowRun
-	lastEventTime time.Time
+	run            flows.FlowRun
+	lastResultTime time.Time
 }
 
 func newLegacyExtra(run flows.FlowRun) *legacyExtra {
@@ -94,26 +93,21 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 
 // updates @legacy_extra by looking for new events since we last updated
 func (e *legacyExtra) update() {
-	prevLastEventTime := e.lastEventTime
+	//prevLastResultTime := e.lastResultTime
 
-	for _, event := range e.run.Events() {
-		if !event.CreatedOn().After(prevLastEventTime) {
-			continue
-		}
+	// TODO switch to using results sorted and filtered by time
 
-		switch typed := event.(type) {
-		case *events.RunResultChangedEvent:
-			if typed.Extra != nil {
-				values, err := utils.JSONDecodeToMap(typed.Extra)
-				if err == nil {
-					for k, v := range values {
-						e.legacyExtraMap[legacyExtraKey(k)] = v
-					}
+	for _, result := range e.run.Results() {
+		if result.Extra != nil {
+			values, err := utils.JSONDecodeToMap(result.Extra)
+			if err == nil {
+				for k, v := range values {
+					e.legacyExtraMap[legacyExtraKey(k)] = v
 				}
 			}
 		}
 
-		e.lastEventTime = event.CreatedOn()
+		// e.lastResultTime = result.CreatedOn()
 	}
 }
 

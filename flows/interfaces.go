@@ -422,6 +422,7 @@ type FlowRun interface {
 	AddFatalError(Step, Action, error)
 
 	CreateStep(Node) Step
+	GetStep(StepUUID) Step
 	Path() []Step
 	PathLocation() (Step, Node, error)
 	Events() []Event

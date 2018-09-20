@@ -660,7 +660,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				Method:     method,
 				Headers:    headers,
 				Body:       body,
-				ResultName: "webhook",
+				ResultName: "webhook", // TODO need to use old ruleset label?
 			},
 		}
 

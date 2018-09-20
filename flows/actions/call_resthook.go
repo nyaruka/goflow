@@ -62,7 +62,6 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 
 	// make a call to each subscriber URL
 	calls := make([]*events.ResthookSubscriberCall, 0, len(resthook.Subscribers()))
-	var lastFailure, asResult *flows.WebhookCall
 
 	for _, url := range resthook.Subscribers() {
 		req, err := http.NewRequest("POST", url, strings.NewReader(payload))
@@ -77,25 +76,10 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 		} else {
-			if webhook.Status() == flows.WebhookStatusSuccess {
-				asResult = webhook
-			} else {
-				lastFailure = webhook
-			}
-
 			calls = append(calls, events.NewResthookSubscriberCall(webhook))
 		}
 	}
 
-	log.Add(events.NewResthookCalledEvent(a.Resthook, payload, calls))
-
-	if lastFailure != nil {
-		asResult = lastFailure
-	}
-
-	if a.ResultName != "" && asResult != nil {
-		log.Add(webhookCallToResultEvent(a.ResultName, asResult, step))
-	}
-
+	log.Add(events.NewResthookCalledEvent(a.Resthook, payload, calls, a.ResultName))
 	return nil
 }

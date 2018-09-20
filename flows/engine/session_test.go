@@ -143,10 +143,6 @@ func TestContextToJSON(t *testing.T) {
 
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
 		assert.Equal(t, test.expected, eval, "json() returned unexpected value for template '%s'", template)
-
-		if test.expected != eval {
-			fmt.Println(eval)
-		}
 	}
 }
 

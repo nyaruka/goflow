@@ -61,7 +61,8 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 //         "status_code": 410,
 //         "response": "{\"errors\":[\"Unsubscribe\"]}"
 //       }
-//     ]
+//     ],
+//     "result_name": "ip_check"
 //   }
 //
 // @event resthook_called
@@ -69,18 +70,20 @@ type ResthookCalledEvent struct {
 	BaseEvent
 	engineOnlyEvent
 
-	Resthook string                    `json:"resthook" validate:"required"`
-	Payload  string                    `json:"payload"`
-	Calls    []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
+	Resthook   string                    `json:"resthook" validate:"required"`
+	Payload    string                    `json:"payload"`
+	Calls      []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
+	ResultName string                    `json:"result_name,omitempty"`
 }
 
 // NewResthookCalledEvent returns a new resthook called event
-func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSubscriberCall) *ResthookCalledEvent {
+func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSubscriberCall, resultName string) *ResthookCalledEvent {
 	return &ResthookCalledEvent{
-		BaseEvent: NewBaseEvent(),
-		Resthook:  resthook,
-		Payload:   payload,
-		Calls:     calls,
+		BaseEvent:  NewBaseEvent(),
+		Resthook:   resthook,
+		Payload:    payload,
+		Calls:      calls,
+		ResultName: resultName,
 	}
 }
 
@@ -89,8 +92,13 @@ func (e *ResthookCalledEvent) Type() string { return TypeResthookCalled }
 
 // Apply applies this event to the given run
 func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
-	var lastFailure, asWebhook *ResthookSubscriberCall
+	// no result namem then nothing to do
+	if e.ResultName == "" {
+		return nil
+	}
 
+	// select one of our calls to become the webhook result
+	var lastFailure, asWebhook *ResthookSubscriberCall
 	for _, call := range e.Calls {
 		if call.Status == flows.WebhookStatusSuccess {
 			asWebhook = call
@@ -98,7 +106,6 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 			lastFailure = call
 		}
 	}
-
 	if lastFailure != nil {
 		asWebhook = lastFailure
 	}
@@ -107,6 +114,11 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 		// reconstruct the request dump
 		request := fmt.Sprintf("POST %s\r\n\r\n%s", asWebhook.URL, e.Payload)
 
+		nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
+
+		e.saveWebhookResult(run, e.ResultName, flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response), nodeUUID)
+
+		// TODO remove
 		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response))
 	} else {
 		run.SetWebhook(nil)
