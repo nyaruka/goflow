@@ -1,126 +1,128 @@
 [
-  {
-    "legacy": {
-      "metadata": {
-        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-        "name": "Empty",
-        "revision": 1
-      },
-      "base_language": "eng",
-      "flow_type": "F",
-      "action_sets": [],
-      "rule_sets": []
-    },
-    "expected": {
-      "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-      "name": "Empty",
-      "language": "eng",
-      "type": "messaging",
-      "revision": 1,
-      "expire_after_minutes": 0,
-      "localization": {},
-      "nodes": [],
-      "_ui": {
-        "nodes": {},
-        "stickies": {}
-      }
-    }
-  },
-  {
-    "legacy": {
-      "metadata": {
-        "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-        "name": "Simple",
-        "revision": 123,
-        "notes": [
-          {
-            "y": 22.3435,
-            "x": 37,
-            "body": "This is a note",
-            "title": "Attention"
-          }
-        ]
-      },
-      "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
-      "base_language": "eng",
-      "flow_type": "M",
-      "action_sets": [
-        {
-          "y": 1,
-          "x": 1,
-          "destination": null,
-          "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
-          "exit_uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314",
-          "actions": [
-            {
-              "msg": {
-                "eng": "Hello",
-                "fre": "Bonjour"
-              },
-              "media": {},
-              "send_all": false,
-              "type": "reply",
-              "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420"
-            }
-          ]
-        }
-      ],
-      "rule_sets": []
-    },
-    "expected": {
-      "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-      "name": "Simple",
-      "language": "eng",
-      "type": "messaging",
-      "revision": 123,
-      "expire_after_minutes": 0,
-      "localization": {
-        "fre": {
-          "98388930-7a0f-4eb8-9a0a-09be2f006420": {
-            "text": ["Bonjour"]
-          }
-        }
-      },
-      "nodes": [
-        {
-          "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
-          "actions": [
-            {
-              "type": "send_msg",
-              "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420",
-              "text": "Hello",
-              "attachments": []
-            }
-          ],
-          "exits": [
-            {
-              "uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314"
-            }
-          ]
-        }
-      ],
-      "_ui": {
-        "nodes": {
-          "d51ec25f-04e6-4349-a448-e7c4d93d4597": {
-            "type": "execute_actions",
-            "position": {
-              "left": 1,
-              "top": 1
-            }
-          }
-        },
-        "stickies": {
-          "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
-            "body": "This is a note",
-            "color": "yellow",
-            "position": {
-              "left": 37,
-              "top": 22
+    {
+        "legacy": {
+            "metadata": {
+                "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                "name": "Empty",
+                "revision": 1
             },
-            "title": "Attention"
-          }
+            "base_language": "eng",
+            "flow_type": "F",
+            "action_sets": [],
+            "rule_sets": []
+        },
+        "expected": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Empty",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 1,
+            "expire_after_minutes": 0,
+            "localization": {},
+            "nodes": [],
+            "_ui": {
+                "nodes": {},
+                "stickies": {}
+            }
         }
-      }
+    },
+    {
+        "legacy": {
+            "metadata": {
+                "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+                "name": "Simple",
+                "revision": 123,
+                "notes": [
+                    {
+                        "y": 22.3435,
+                        "x": 37,
+                        "body": "This is a note",
+                        "title": "Attention"
+                    }
+                ]
+            },
+            "entry": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+            "base_language": "eng",
+            "flow_type": "M",
+            "action_sets": [
+                {
+                    "y": 1,
+                    "x": 1,
+                    "destination": null,
+                    "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                    "exit_uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314",
+                    "actions": [
+                        {
+                            "msg": {
+                                "eng": "Hello",
+                                "fre": "Bonjour"
+                            },
+                            "media": {},
+                            "send_all": false,
+                            "type": "reply",
+                            "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420"
+                        }
+                    ]
+                }
+            ],
+            "rule_sets": []
+        },
+        "expected": {
+            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+            "name": "Simple",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "expire_after_minutes": 0,
+            "localization": {
+                "fre": {
+                    "98388930-7a0f-4eb8-9a0a-09be2f006420": {
+                        "text": [
+                            "Bonjour"
+                        ]
+                    }
+                }
+            },
+            "nodes": [
+                {
+                    "uuid": "d51ec25f-04e6-4349-a448-e7c4d93d4597",
+                    "actions": [
+                        {
+                            "type": "send_msg",
+                            "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420",
+                            "text": "Hello",
+                            "attachments": []
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "02e9b42f-62f8-46e5-91c0-a7ef5d1ae314"
+                        }
+                    ]
+                }
+            ],
+            "_ui": {
+                "nodes": {
+                    "d51ec25f-04e6-4349-a448-e7c4d93d4597": {
+                        "type": "execute_actions",
+                        "position": {
+                            "left": 1,
+                            "top": 1
+                        }
+                    }
+                },
+                "stickies": {
+                    "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5": {
+                        "body": "This is a note",
+                        "color": "yellow",
+                        "position": {
+                            "left": 37,
+                            "top": 22
+                        },
+                        "title": "Attention"
+                    }
+                }
+            }
+        }
     }
-  }
 ]
