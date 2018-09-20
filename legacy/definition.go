@@ -1040,7 +1040,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 			return nil, fmt.Errorf("error migrating action_set[uuid=%s]: %s", actionSet.UUID, err)
 		}
 		nodes[i] = node
-		nodeUI[node.UUID()] = definition.NewUINodeDetails(actionSet.X, actionSet.Y, UINodeTyepActionSet, nil)
+		nodeUI[node.UUID()] = definition.NewUINodeDetails(actionSet.X, actionSet.Y, UINodeTypeActionSet, nil)
 	}
 
 	for i, ruleSet := range f.RuleSets {

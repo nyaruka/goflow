@@ -7,7 +7,7 @@ import (
 
 // the different node types supported by the editor
 const (
-	UINodeTyepActionSet                 flows.UINodeType = "execute_actions"
+	UINodeTypeActionSet                 flows.UINodeType = "execute_actions"
 	UINodeTypeWaitForResponse           flows.UINodeType = "wait_for_response"
 	UINodeTypeSplitByAirtime            flows.UINodeType = "split_by_airtime"
 	UINodeTypeSplitBySubflow            flows.UINodeType = "split_by_subflow"
