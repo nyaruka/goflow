@@ -495,7 +495,6 @@ that will be accessible through `extra` on the result.
     "type": "resthook_called",
     "created_on": "2006-01-02T15:04:05Z",
     "resthook": "new-registration",
-    "payload": "{...}",
     "calls": [
         {
             "url": "http://localhost:49998/?cmd=success",

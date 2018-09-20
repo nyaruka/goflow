@@ -71,7 +71,6 @@ type ResthookCalledEvent struct {
 	engineOnlyEvent
 
 	Resthook   string                    `json:"resthook" validate:"required"`
-	Payload    string                    `json:"payload"`
 	Calls      []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
 	ResultName string                    `json:"result_name,omitempty"`
 }
@@ -81,7 +80,6 @@ func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSu
 	return &ResthookCalledEvent{
 		BaseEvent:  NewBaseEvent(),
 		Resthook:   resthook,
-		Payload:    payload,
 		Calls:      calls,
 		ResultName: resultName,
 	}
