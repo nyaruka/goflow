@@ -25,7 +25,6 @@ type flowRun struct {
 	contact *flows.Contact
 
 	context types.XValue
-	webhook *flows.WebhookCall
 	input   flows.Input
 	parent  flows.FlowRun
 
@@ -188,9 +187,6 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 	return step, node, nil
 }
 
-func (r *flowRun) Webhook() *flows.WebhookCall      { return r.webhook }
-func (r *flowRun) SetWebhook(rr *flows.WebhookCall) { r.webhook = rr }
-
 func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
@@ -270,8 +266,6 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 		return r.Flow()
 	case "input":
 		return r.Input()
-	case "webhook":
-		return r.Webhook()
 	case "status":
 		return types.NewXText(string(r.Status()))
 	case "results":
@@ -299,7 +293,7 @@ func (r *flowRun) Reduce(env utils.Environment) types.XPrimitive {
 }
 
 func (r *flowRun) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, r, "uuid", "contact", "flow", "input", "webhook", "status", "results", "created_on", "exited_on").ToXJSON(env)
+	return types.ResolveKeys(env, r, "uuid", "contact", "flow", "input", "status", "results", "created_on", "exited_on").ToXJSON(env)
 }
 
 func (r *flowRun) Snapshot() flows.RunSummary {
@@ -346,7 +340,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.contact = session.Contact()
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
-	r.webhook = envelope.Webhook
 	r.createdOn = envelope.CreatedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.exitedOn = envelope.ExitedOn
@@ -408,7 +401,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.ExpiresOn = r.expiresOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results
-	re.Webhook = r.webhook
 
 	if r.parent != nil {
 		re.ParentUUID = r.parent.UUID()

@@ -62,9 +62,6 @@ func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
 
 // Apply applies this event to the given run
 func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
-	// TODO remove
-	run.SetWebhook(flows.NewWebhookCall(e.URL, e.Status, e.StatusCode, e.Request, e.Response))
-
 	if e.ResultName != "" {
 		nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
 		e.saveWebhookResult(run, e.ResultName, flows.NewWebhookCall(e.URL, e.Status, e.StatusCode, e.Request, e.Response), nodeUUID)

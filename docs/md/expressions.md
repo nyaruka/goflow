@@ -32,7 +32,6 @@ The following types appear in the context:
  * [Run](#context:run)
  * [Trigger](#context:trigger)
  * [URN](#context:urn)
- * [Webhook](#context:webhook)
 
 <div class="context">
 <a name="context:attachment"></a>
@@ -225,7 +224,6 @@ collected. It has several properties which can be accessed in expressions:
  * `input` the [input](#context:input) of the current run
  * `results` the results that have been saved for this run
  * `results.[snaked_result_name]` the value of the specific result, e.g. `results.age`
- * `webhook` the last [webhook](#context:webhook) call made in the current run
 
 Examples:
 
@@ -283,28 +281,6 @@ Examples:
 @contact.urns.1.display → nyaruka
 @(format_urn(contact.urns.0)) → (206) 555-1212
 @(json(contact.urns.0)) → {"display":"","path":"+12065551212","scheme":"tel"}
-```
-
-<a name="context:webhook"></a>
-
-## Webhook
-
-Is a call made to an external service. It has several properties which can be accessed in expressions:
-
- * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
- * `status_code` the status code of the response
- * `body` the body of the response
- * `json` the parsed JSON response (if response body was JSON)
- * `json.[key]` sub-elements of the parsed JSON response
- * `request` the raw request made, including headers
- * `response` the raw response received, including headers
-
-Examples:
-
-
-```objectivec
-@run.webhook.status_code → 200
-@run.webhook.json.results.0.state → WA
 ```
 
 

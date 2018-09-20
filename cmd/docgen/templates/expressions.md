@@ -32,7 +32,6 @@ The following types appear in the context:
  * [Run](#context:run)
  * [Trigger](#context:trigger)
  * [URN](#context:urn)
- * [Webhook](#context:webhook)
 
 <div class="context">
 {{ .contextDocs }}

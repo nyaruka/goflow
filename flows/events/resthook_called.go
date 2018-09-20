@@ -118,11 +118,6 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 		nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
 
 		e.saveWebhookResult(run, e.ResultName, flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response), nodeUUID)
-
-		// TODO remove
-		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response))
-	} else {
-		run.SetWebhook(nil)
 	}
 	return nil
 }

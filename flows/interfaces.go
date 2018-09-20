@@ -394,7 +394,6 @@ type RunEnvironment interface {
 //  * `input` the [input](#context:input) of the current run
 //  * `results` the results that have been saved for this run
 //  * `results.[snaked_result_name]` the value of the specific result, e.g. `results.age`
-//  * `webhook` the last [webhook](#context:webhook) call made in the current run
 //
 // Examples:
 //
@@ -410,12 +409,10 @@ type FlowRun interface {
 	Session() Session
 	Context() types.XValue
 	Input() Input
-	Webhook() *WebhookCall
 
 	SetContact(*Contact)
 	SetInput(Input)
 	SetStatus(RunStatus)
-	SetWebhook(*WebhookCall)
 
 	ApplyEvent(Step, Action, Event) error
 	AddError(Step, Action, error)
