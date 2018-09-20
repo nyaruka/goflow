@@ -613,22 +613,20 @@ func (ts *ServerTestSuite) TestWebhookMocking() {
 		expectedValue string
 		expectedExtra string
 	}{
-		// TODO parsing of non-json responses!
-
 		// default config is make webhook calls
 		{`{}`, `200`, `{"ok":"true"}`},
 
 		// explicitly disabled or enabled
 		{`{"disable_webhooks": false}`, `200`, `{"ok":"true"}`},
-		//{`{"disable_webhooks": true}`, `200`, "DISABLED"},
+		{`{"disable_webhooks": true}`, `200`, `"DISABLED"`},
 
 		// a matching mock will always be used and matching is case-insensitive
-		//{`{"webhook_mocks":[{"method":"GET","url":"http://localhost:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, `201`, "I'm mocked"},
-		//{`{"webhook_mocks":[{"method":"get","url":"http://LOCALHOST:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, `201`, "I'm mocked"},
+		{`{"webhook_mocks":[{"method":"GET","url":"http://localhost:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, `201`, `"I'm mocked"`},
+		{`{"webhook_mocks":[{"method":"get","url":"http://LOCALHOST:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, `201`, `"I'm mocked"`},
 
 		// no matching mock means we fall back to whether disable_webhooks is set
 		{`{"webhook_mocks":[{"method":"POST","url":"http://xxxxxx/?cmd=success","status":201,"body":"I'm mocked"}]}`, `200`, `{"ok":"true"}`},
-		//{`{"disable_webhooks": true, "webhook_mocks":[{"method":"POST","url":"http://xxxxxx/?cmd=success","status":201,"body":"I'm mocked"}]}`, `200`, "DISABLED"},
+		{`{"disable_webhooks": true, "webhook_mocks":[{"method":"POST","url":"http://xxxxxx/?cmd=success","status":201,"body":"I'm mocked"}]}`, `200`, `"DISABLED"`},
 	}
 
 	for _, tc := range testCases {
