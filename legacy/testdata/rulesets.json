@@ -659,14 +659,13 @@
                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "method": "GET",
                     "url": "http://example.com",
-                    "result_name": "webhook"
+                    "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@results.webhook.category",
+                "operand": "@results.response_1.category",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -787,14 +786,13 @@
                         "User-Agent": "RapidPro"
                     },
                     "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}",
-                    "result_name": "webhook"
+                    "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@results.webhook.category",
+                "operand": "@results.response_1.category",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -897,14 +895,13 @@
                     "type": "call_resthook",
                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "resthook": "new-registration",
-                    "result_name": "webhook"
+                    "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@results.webhook.category",
+                "operand": "@results.response_1.category",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

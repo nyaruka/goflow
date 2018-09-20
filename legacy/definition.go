@@ -660,12 +660,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				Method:     method,
 				Headers:    headers,
 				Body:       body,
-				ResultName: "webhook", // TODO need to use old ruleset label?
+				ResultName: resultName,
 			},
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
-		router = routers.NewSwitchRouter(defaultExit, "@results.webhook.category", cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
@@ -673,12 +673,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&actions.CallResthookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				Resthook:   config.Resthook,
-				ResultName: "webhook",
+				ResultName: resultName,
 			},
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
-		router = routers.NewSwitchRouter(defaultExit, "@results.webhook.category", cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, false)
