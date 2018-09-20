@@ -40,7 +40,6 @@
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "result_name": "webhook",
                     "status": "success",
-                    "status_code": 200,
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
@@ -121,7 +120,6 @@
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "result_name": "webhook",
                                 "status": "success",
-                                "status_code": 200,
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
@@ -312,7 +310,6 @@
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "result_name": "webhook",
                                 "status": "success",
-                                "status_code": 200,
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"

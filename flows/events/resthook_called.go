@@ -1,7 +1,6 @@
 package events
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/nyaruka/goflow/flows"
@@ -16,10 +15,10 @@ const TypeResthookCalled string = "resthook_called"
 
 // ResthookSubscriberCall is call to a single subsccriber of a resthook
 type ResthookSubscriberCall struct {
-	URL        string              `json:"url" validate:"required"`
-	Status     flows.WebhookStatus `json:"status" validate:"required"`
-	StatusCode int                 `json:"status_code" validate:"required"`
-	Response   string              `json:"response"`
+	URL      string              `json:"url" validate:"required"`
+	Status   flows.WebhookStatus `json:"status" validate:"required"`
+	Request  string              `json:"request" validate:"required"`
+	Response string              `json:"response"`
 }
 
 // NewResthookSubscriberCall creates a new subscriber call from the given webhook call
@@ -32,10 +31,10 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 	}
 
 	return &ResthookSubscriberCall{
-		URL:        webhook.URL(),
-		Status:     status,
-		StatusCode: webhook.StatusCode(),
-		Response:   webhook.Response(),
+		URL:      webhook.URL(),
+		Status:   status,
+		Request:  webhook.Request(),
+		Response: webhook.Response(),
 	}
 }
 
@@ -54,16 +53,16 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 //       {
 //         "url": "http://localhost:49998/?cmd=success",
 //         "status": "success",
-//         "status_code": 200,
-//         "response": "{\"errors\":[]}"
+//         "request": "POST /?cmd=success HTTP/1.1",
+//         "response": "HTTP/1.1 200 OK\r\n\r\n{\"errors\":[]}"
 //       },{
-//         "url": "https://api.ipify.org?format=json",
+//         "url": "https://api.ipify.org/?format=json",
 //         "status": "success",
-//         "status_code": 410,
-//         "response": "{\"errors\":[\"Unsubscribe\"]}"
+//         "request": "POST /?format=json HTTP/1.1",
+//         "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
 //       }
 //     ],
-//     "result_name": "ip_check"
+//     "result_name": "IP Check"
 //   }
 //
 // @event resthook_called
@@ -99,25 +98,21 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 	}
 
 	// select one of our calls to become the webhook result
-	var lastFailure, asWebhook *ResthookSubscriberCall
+	var lastFailure, asResult *ResthookSubscriberCall
 	for _, call := range e.Calls {
 		if call.Status == flows.WebhookStatusSuccess {
-			asWebhook = call
+			asResult = call
 		} else {
 			lastFailure = call
 		}
 	}
 	if lastFailure != nil {
-		asWebhook = lastFailure
+		asResult = lastFailure
 	}
 
-	if asWebhook != nil {
-		// reconstruct the request dump
-		request := fmt.Sprintf("POST %s\r\n\r\n%s", asWebhook.URL, e.Payload)
-
+	if asResult != nil {
 		nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
-
-		e.saveWebhookResult(run, e.ResultName, flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response), nodeUUID)
+		return e.saveWebhookResult(run, e.ResultName, asResult.URL, asResult.Request, asResult.Response, nodeUUID)
 	}
 	return nil
 }

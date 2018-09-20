@@ -500,17 +500,17 @@ that will be accessible through `extra` on the result.
         {
             "url": "http://localhost:49998/?cmd=success",
             "status": "success",
-            "status_code": 200,
-            "response": "{\"errors\":[]}"
+            "request": "POST /?cmd=success HTTP/1.1",
+            "response": "HTTP/1.1 200 OK\r\n\r\n{\"errors\":[]}"
         },
         {
-            "url": "https://api.ipify.org?format=json",
+            "url": "https://api.ipify.org/?format=json",
             "status": "success",
-            "status_code": 410,
-            "response": "{\"errors\":[\"Unsubscribe\"]}"
+            "request": "POST /?format=json HTTP/1.1",
+            "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
         }
     ],
-    "result_name": "ip_check"
+    "result_name": "IP Check"
 }
 ```
 </div>
@@ -625,11 +625,10 @@ through `extra` on the result.
 {
     "type": "webhook_called",
     "created_on": "2006-01-02T15:04:05Z",
-    "url": "https://api.ipify.org?format=json",
+    "url": "https://api.ipify.org/?format=json",
     "status": "success",
-    "status_code": 200,
-    "request": "GET https://api.ipify.org?format=json",
-    "response": "HTTP/1.1 200 OK {\"ip\":\"190.154.48.130\"}",
+    "request": "GET /?format=json HTTP/1.1",
+    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
     "result_name": "ip_check"
 }
 ```

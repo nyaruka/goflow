@@ -1,10 +1,12 @@
 package events
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -23,11 +25,10 @@ const TypeWebhookCalled string = "webhook_called"
 //   {
 //     "type": "webhook_called",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "url": "https://api.ipify.org?format=json",
+//     "url": "https://api.ipify.org/?format=json",
 //     "status": "success",
-//     "status_code": 200,
-//     "request": "GET https://api.ipify.org?format=json",
-//     "response": "HTTP/1.1 200 OK {\"ip\":\"190.154.48.130\"}",
+//     "request": "GET /?format=json HTTP/1.1",
+//     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
 //     "result_name": "ip_check"
 //   }
 //
@@ -38,7 +39,6 @@ type WebhookCalledEvent struct {
 
 	URL        string              `json:"url" validate:"required"`
 	Status     flows.WebhookStatus `json:"status" validate:"required"`
-	StatusCode int                 `json:"status_code"`
 	Request    string              `json:"request" validate:"required"`
 	Response   string              `json:"response"`
 	ResultName string              `json:"result_name,omitempty"`
@@ -50,7 +50,6 @@ func NewWebhookCalledEvent(webhook *flows.WebhookCall, resultName string) *Webho
 		BaseEvent:  NewBaseEvent(),
 		URL:        webhook.URL(),
 		Status:     webhook.Status(),
-		StatusCode: webhook.StatusCode(),
 		Request:    webhook.Request(),
 		Response:   webhook.Response(),
 		ResultName: resultName,
@@ -64,16 +63,33 @@ func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }
 func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
 	if e.ResultName != "" {
 		nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
-		e.saveWebhookResult(run, e.ResultName, flows.NewWebhookCall(e.URL, e.Status, e.StatusCode, e.Request, e.Response), nodeUUID)
+		return e.saveWebhookResult(run, e.ResultName, e.URL, e.Request, e.Response, nodeUUID)
 	}
 	return nil
 }
 
-func (e *BaseEvent) saveWebhookResult(run flows.FlowRun, resultName string, webhook *flows.WebhookCall, nodeUUID flows.NodeUUID) {
+func (e *BaseEvent) saveWebhookResult(run flows.FlowRun, resultName, url, requestTrace string, responseTrace string, nodeUUID flows.NodeUUID) error {
+	webhook, err := flows.ReconstructWebhookCall(url, requestTrace, responseTrace)
+	if err != nil {
+		return err
+	}
+
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
 	category := string(webhook.Status())
-	extra := []byte(webhook.Body()) // TODO
+
+	body := []byte(webhook.Body())
+	var extra json.RawMessage
+
+	// try to parse body as a JSON object -> map
+	if _, err := utils.JSONDecodeToMap(body); err == nil {
+		// if that was successful, the body is valid JSON and extra is the body
+		extra = body
+	} else {
+		// if not, treat body as text and encode as a JSON string
+		extra, _ = json.Marshal(string(body))
+	}
 
 	run.Results().Save(resultName, value, category, "", nodeUUID, &input, extra, e.CreatedOn())
+	return nil
 }

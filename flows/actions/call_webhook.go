@@ -50,7 +50,7 @@ func (a *CallWebhookAction) Type() string { return TypeCallWebhook }
 // Validate validates our action is valid and has all the assets it needs
 func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 	if a.Body != "" && a.Method == "GET" {
-		return fmt.Errorf("can specifiy body if method is GET")
+		return fmt.Errorf("can't specify body if method is GET")
 	}
 
 	return nil
