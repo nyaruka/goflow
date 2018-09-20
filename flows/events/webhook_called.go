@@ -81,8 +81,8 @@ func (e *BaseEvent) saveWebhookResult(run flows.FlowRun, resultName, url, reques
 	body := []byte(webhook.Body())
 	var extra json.RawMessage
 
-	// try to parse body as a JSON object -> map
-	if _, err := utils.JSONDecodeToMap(body); err == nil {
+	// try to parse body as JSON
+	if utils.IsValidJSON(body) {
 		// if that was successful, the body is valid JSON and extra is the body
 		extra = body
 	} else {

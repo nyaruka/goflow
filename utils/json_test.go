@@ -67,3 +67,22 @@ func TestJSONDecodeToMap(t *testing.T) {
 	assert.Equal(t, map[string]interface{}{"foo": "bar"}, asMap["dict"])
 	assert.Equal(t, []interface{}{json.Number("1"), "x"}, asMap["list"])
 }
+
+func TestIsValidJSON(t *testing.T) {
+	assert.True(t, utils.IsValidJSON([]byte(`true`)))
+	assert.True(t, utils.IsValidJSON([]byte(`false`)))
+	assert.True(t, utils.IsValidJSON([]byte(`null`)))
+	assert.True(t, utils.IsValidJSON([]byte(`"abc"`)))
+	assert.True(t, utils.IsValidJSON([]byte(`123.456`)))
+	assert.True(t, utils.IsValidJSON([]byte(`{}`)))
+	assert.True(t, utils.IsValidJSON([]byte(`{"foo":"bar"}`)))
+	assert.True(t, utils.IsValidJSON([]byte(`[]`)))
+	assert.True(t, utils.IsValidJSON([]byte(`[1, "x"]`)))
+
+	assert.False(t, utils.IsValidJSON(nil))
+	assert.False(t, utils.IsValidJSON([]byte(`abc`)))
+	assert.False(t, utils.IsValidJSON([]byte(`{`)))
+	assert.False(t, utils.IsValidJSON([]byte(`{}xx`)))
+	assert.False(t, utils.IsValidJSON([]byte(`{foo:"bar"}`)))
+	assert.False(t, utils.IsValidJSON([]byte(`{0:"bar"}`)))
+}

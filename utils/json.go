@@ -74,3 +74,9 @@ func JSONDecodeToMap(data []byte) (map[string]interface{}, error) {
 	decoder.UseNumber()
 	return m, decoder.Decode(&m)
 }
+
+// IsValidJSON determines whether the given bytes contain valid JSON, by trying to parse it
+func IsValidJSON(data []byte) bool {
+	var s interface{}
+	return json.Unmarshal(data, &s) == nil
+}

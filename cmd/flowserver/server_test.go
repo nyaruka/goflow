@@ -623,6 +623,8 @@ func (ts *ServerTestSuite) TestWebhookMocking() {
 		// a matching mock will always be used and matching is case-insensitive
 		{`{"webhook_mocks":[{"method":"GET","url":"http://localhost:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, `201`, `"I'm mocked"`},
 		{`{"webhook_mocks":[{"method":"get","url":"http://LOCALHOST:49993/?cmd=success","status":201,"body":"I'm mocked"}]}`, `201`, `"I'm mocked"`},
+		{`{"webhook_mocks":[{"method":"get","url":"http://LOCALHOST:49993/?cmd=success","status":201,"body":"{\"foo\": \"bar\"}"}]}`, `201`, `{"foo":"bar"}`},
+		{`{"webhook_mocks":[{"method":"get","url":"http://LOCALHOST:49993/?cmd=success","status":201,"body":"[1, 2]"}]}`, `201`, `[1,2]`},
 
 		// no matching mock means we fall back to whether disable_webhooks is set
 		{`{"webhook_mocks":[{"method":"POST","url":"http://xxxxxx/?cmd=success","status":201,"body":"I'm mocked"}]}`, `200`, `{"ok":"true"}`},
