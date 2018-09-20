@@ -949,6 +949,7 @@
         },
         "expected_localization": {},
         "expected_ui": {
+            "type": "split_by_resthook",
             "position": {
                 "left": 1,
                 "top": 100
@@ -1143,8 +1144,10 @@
         "expected_ui": {
             "type": "split_by_contact_field",
             "config": {
-                "id": "telegram",
-                "type": "scheme"
+                "operand": {
+                    "id": "telegram",
+                    "type": "scheme"
+                }
             },
             "position": {
                 "left": 708,
@@ -1428,6 +1431,7 @@
         },
         "expected_localization": {},
         "expected_ui": {
+            "type": "split_by_airtime",
             "position": {
                 "left": 240,
                 "top": 430
@@ -1537,6 +1541,13 @@
         "expected_localization": {},
         "expected_ui": {
             "type": "split_by_run_result_delimited",
+            "config": {
+                "delimiter": " ",
+                "index": 1,
+                "operand": {
+                    "id": "response_1"
+                }
+            },
             "position": {
                 "left": 293,
                 "top": 218
@@ -1647,8 +1658,9 @@
         "expected_ui": {
             "type": "split_by_run_result",
             "config": {
-                "id": "response_1",
-                "type": "result"
+                "operand": {
+                    "id": "response_1"
+                }
             },
             "position": {
                 "left": 293,
