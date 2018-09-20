@@ -3,6 +3,7 @@ package runs
 import (
 	"encoding/json"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
@@ -93,21 +94,27 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 
 // updates @legacy_extra by looking for new events since we last updated
 func (e *legacyExtra) update() {
-	//prevLastResultTime := e.lastResultTime
+	prevLastResultTime := e.lastResultTime
 
-	// TODO switch to using results sorted and filtered by time
-
+	// get all results with extra created since the last update
+	newExtras := make([]*flows.Result, 0)
 	for _, result := range e.run.Results() {
-		if result.Extra != nil {
-			values, err := utils.JSONDecodeToMap(result.Extra)
-			if err == nil {
-				for k, v := range values {
-					e.legacyExtraMap[legacyExtraKey(k)] = v
-				}
+		if result.Extra != nil && result.CreatedOn.After(prevLastResultTime) {
+			newExtras = append(newExtras, result)
+		}
+		e.lastResultTime = result.CreatedOn
+	}
+	// sort by created time
+	sort.SliceStable(newExtras, func(i, j int) bool { return newExtras[i].CreatedOn.Before(newExtras[j].CreatedOn) })
+
+	// add each extra blog to our master extra
+	for _, result := range newExtras {
+		values, err := utils.JSONDecodeToMap(result.Extra)
+		if err == nil {
+			for k, v := range values {
+				e.legacyExtraMap[legacyExtraKey(k)] = v
 			}
 		}
-
-		// e.lastResultTime = result.CreatedOn()
 	}
 }
 
