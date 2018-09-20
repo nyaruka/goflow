@@ -444,7 +444,7 @@ Event
 </div>
 <p><a name="event:resthook_called"></a></p>
 <h2 id="resthook_called">resthook_called</h2>
-<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers, as well as the payload sent to each subscriber. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context to the results of the last subscriber call. However if one of the subscriber calls fails, then it is used to update <span class="citation" data-cites="run.webhook">@run.webhook</span> instead.</p>
+<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers, as well as the payload sent to each subscriber. If this event has a <code>result_name</code>, then applying this event creates a new result with that name based on one of the calls. The call used will the last one unless one has failed, in which case it is used instead. If the call returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
 <div class="output_event">
 <h3>
 Event
@@ -563,7 +563,7 @@ Event
 </div>
 <p><a name="event:webhook_called"></a></p>
 <h2 id="webhook_called">webhook_called</h2>
-<p>Events are created when a webhook is called. The event contains the status and status code of the response, as well as a full dump of the request and response. If this event has a <code>reult_name</code>, then applying this event creates a new result with that name. If the webhook returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
+<p>Events are created when a webhook is called. The event contains the status and status code of the response, as well as a full dump of the request and response. If this event has a <code>result_name</code>, then applying this event creates a new result with that name. If the webhook returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
 <div class="output_event">
 <h3>
 Event

@@ -88,8 +88,8 @@ var XTESTS = map[string]functions.XFunction{
 //   @(is_text_eq("foo", "bar")) -> false
 //   @(is_text_eq("foo", " foo ")) -> false
 //   @(is_text_eq(run.status, "completed")) -> true
-//   @(is_text_eq(run.webhook.status, "success")) -> true
-//   @(is_text_eq(run.webhook.status, "connection_error")) -> false
+//   @(is_text_eq(results.webhook.category, "success")) -> true
+//   @(is_text_eq(results.webhook.category, "connection_error")) -> false
 //
 // @test is_text_eq(text1, text2)
 func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {

@@ -215,7 +215,7 @@
 <a class="sourceLine" id="cb10-6" data-line-number="6">@(json(contact.urns<span class="fl">.0</span>)) → {<span class="st">&quot;display&quot;</span>:<span class="st">&quot;&quot;</span>,<span class="st">&quot;path&quot;</span>:<span class="st">&quot;+12065551212&quot;</span>,<span class="st">&quot;scheme&quot;</span>:<span class="st">&quot;tel&quot;</span>}</a></code></pre></div>
 <p><a name="context:webhook"></a></p>
 <h2 id="webhook">Webhook</h2>
-<p>Describes a call made to an external service. It has several properties which can be accessed in expressions:</p>
+<p>Is a call made to an external service. It has several properties which can be accessed in expressions:</p>
 <ul>
 <li><code>status</code> the status of the webhook - one of “success”, “connection_error” or “response_error”</li>
 <li><code>status_code</code> the status code of the response</li>
@@ -908,8 +908,8 @@
 <a class="sourceLine" id="cb98-3" data-line-number="3">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb98-4" data-line-number="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
 <a class="sourceLine" id="cb98-5" data-line-number="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb98-6" data-line-number="6">@(is_text_eq(run.webhook.status, <span class="st">&quot;success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb98-7" data-line-number="7">@(is_text_eq(run.webhook.status, <span class="st">&quot;connection_error&quot;</span>)) → false</a></code></pre></div>
+<a class="sourceLine" id="cb98-6" data-line-number="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;success&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb98-7" data-line-number="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;connection_error&quot;</span>)) → false</a></code></pre></div>
 </div>
 
     </body>

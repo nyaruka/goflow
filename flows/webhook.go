@@ -24,7 +24,7 @@ var DefaultWebhookPayload = `{
 	"channel": @(json(if(run.input, run.input.channel, null)))
 }`
 
-// response content-types that we'll save as @run.webhook.body
+// response content-types that we'll fetch
 var saveResponseContentTypes = map[string]bool{
 	"application/json":       true,
 	"application/javascript": true,
@@ -52,7 +52,7 @@ func (r WebhookStatus) String() string {
 	return string(r)
 }
 
-// WebhookCall describes a call made to an external service. It has several properties which can be accessed in expressions:
+// WebhookCall is a call made to an external service. It has several properties which can be accessed in expressions:
 //
 //  * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
 //  * `status_code` the status code of the response

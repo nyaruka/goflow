@@ -289,7 +289,7 @@ Examples:
 
 ## Webhook
 
-Describes a call made to an external service. It has several properties which can be accessed in expressions:
+Is a call made to an external service. It has several properties which can be accessed in expressions:
 
  * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
  * `status_code` the status code of the response
@@ -1662,8 +1662,8 @@ are, it will return the text as the match.
 @(is_text_eq("foo", "bar")) → false
 @(is_text_eq("foo", " foo ")) → false
 @(is_text_eq(run.status, "completed")) → true
-@(is_text_eq(run.webhook.status, "success")) → true
-@(is_text_eq(run.webhook.status, "connection_error")) → false
+@(is_text_eq(results.webhook.category, "success")) → true
+@(is_text_eq(results.webhook.category, "connection_error")) → false
 ```
 
 

@@ -16,7 +16,7 @@ const TypeWebhookCalled string = "webhook_called"
 
 // WebhookCalledEvent events are created when a webhook is called. The event contains
 // the status and status code of the response, as well as a full dump of the
-// request and response. If this event has a `reult_name`, then applying this event creates
+// request and response. If this event has a `result_name`, then applying this event creates
 // a new result with that name. If the webhook returned valid JSON, that will be accessible
 // through `extra` on the result.
 //
