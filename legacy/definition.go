@@ -679,11 +679,23 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 		// resthook rulesets operate on the webhook status, saved as category
 		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
+		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, false)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
+
+		lastDot := strings.LastIndex(r.Operand, ".")
+		if lastDot > -1 {
+			fieldKey := r.Operand[lastDot+1:]
+			uiNodeConfig = flows.UINodeConfig{
+				"operand":   map[string]string{"id": fieldKey},
+				"delimiter": config.FieldDelimiter,
+				"index":     config.FieldIndex,
+			}
+		}
+
 		uiType = UINodeTypeSplitByRunResultDelimited
 
 	case "group":
@@ -721,8 +733,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			if lastDot > -1 {
 				fieldKey := r.Operand[lastDot+1:]
 				uiNodeConfig = flows.UINodeConfig{
-					"type": "result",
-					"id":   fieldKey,
+					"operand": map[string]string{"id": fieldKey},
 				}
 			}
 		case "contact_field":
@@ -733,19 +744,25 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				fieldKey := r.Operand[lastDot+1:]
 				if fieldKey == "name" {
 					uiNodeConfig = flows.UINodeConfig{
-						"type": "property",
-						"id":   "name",
-						"name": "Name",
+						"operand": map[string]string{
+							"type": "property",
+							"id":   "name",
+							"name": "Name",
+						},
 					}
 				} else if urns.IsValidScheme(fieldKey) {
 					uiNodeConfig = flows.UINodeConfig{
-						"type": "scheme",
-						"id":   fieldKey,
+						"operand": map[string]string{
+							"type": "scheme",
+							"id":   fieldKey,
+						},
 					}
 				} else {
 					uiNodeConfig = flows.UINodeConfig{
-						"type": "field",
-						"id":   fieldKey,
+						"operand": map[string]string{
+							"type": "field",
+							"id":   fieldKey,
+						},
 					}
 				}
 			}
@@ -790,6 +807,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				Amounts:    currencyAmounts,
 			},
 		}
+
+		uiType = UINodeTypeSplitByAirtime
 
 		router = routers.NewSwitchRouter(defaultExit, "@run", cases, resultName)
 
@@ -1018,12 +1037,13 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	nodes := make([]flows.Node, numNodes)
 	nodeUI := make(map[flows.NodeUUID]flows.UINodeDetails, numNodes)
 
-	for i := range f.ActionSets {
-		node, err := migateActionSet(f.BaseLanguage, f.ActionSets[i], localization)
+	for i, actionSet := range f.ActionSets {
+		node, err := migateActionSet(f.BaseLanguage, actionSet, localization)
 		if err != nil {
-			return nil, fmt.Errorf("error migrating action_set[uuid=%s]: %s", f.ActionSets[i].UUID, err)
+			return nil, fmt.Errorf("error migrating action_set[uuid=%s]: %s", actionSet.UUID, err)
 		}
 		nodes[i] = node
+		nodeUI[node.UUID()] = definition.NewUINodeDetails(actionSet.X, actionSet.Y, UINodeTypeActionSet, nil)
 	}
 
 	for i, ruleSet := range f.RuleSets {
@@ -1052,11 +1072,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		ui = definition.NewUI()
 
 		for _, actionSet := range f.ActionSets {
-			var nodeType flows.UINodeType
-			var nodeConfig flows.UINodeConfig
-
-			details := definition.NewUINodeDetails(actionSet.X, actionSet.Y, nodeType, nodeConfig)
-			ui.AddNode(actionSet.UUID, details)
+			ui.AddNode(actionSet.UUID, nodeUI[actionSet.UUID])
 		}
 		for _, ruleSet := range f.RuleSets {
 			ui.AddNode(ruleSet.UUID, nodeUI[ruleSet.UUID])

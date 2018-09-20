@@ -48,7 +48,7 @@ type FlowType string
 type UINodeType string
 
 // UINodeConfig contains config unique to its type
-type UINodeConfig map[string]string
+type UINodeConfig map[string]interface{}
 
 // Sticky is a migrated note
 type Sticky map[string]interface{}

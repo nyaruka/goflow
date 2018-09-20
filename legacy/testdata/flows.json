@@ -104,6 +104,7 @@
             "_ui": {
                 "nodes": {
                     "d51ec25f-04e6-4349-a448-e7c4d93d4597": {
+                        "type": "execute_actions",
                         "position": {
                             "left": 1,
                             "top": 1
