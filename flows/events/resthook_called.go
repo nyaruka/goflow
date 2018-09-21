@@ -48,7 +48,6 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 //     "type": "resthook_called",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "resthook": "new-registration",
-//     "payload": "{...}",
 //     "calls": [
 //       {
 //         "url": "http://localhost:49998/?cmd=success",
@@ -108,9 +107,12 @@ func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
 		asResult = lastFailure
 	}
 
+	nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
+
 	if asResult != nil {
-		nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
 		return e.saveWebhookResult(run, e.ResultName, asResult.URL, asResult.Request, asResult.Response, nodeUUID)
+	} else {
+		run.Results().Save(e.ResultName, "", "Success", "", nodeUUID, nil, nil, e.CreatedOn())
 	}
 	return nil
 }
