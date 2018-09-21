@@ -1,5 +1,12 @@
 v0.17.0
 ----------
+ * Remove Connection Error as a separate exit for webhook routers
+ * call_webhook and call_resthook now save a result and run.Webhook is removed
+ * @input and @results as shortcuts to @run.input and @run.results
+ * Router tests can now return extra to be added to the result
+
+v0.17.0
+----------
  * Remove "Connection Error" as a separate exit for webhook routers
  * call_webhook and call_resthook now save a result and run.Webhook is removed
  * @input and @results as shortcuts to @run.input and @run.results
