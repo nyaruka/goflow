@@ -591,7 +591,6 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			URL:        migratedURL,
 			Body:       body,
 			Headers:    headers,
-			ResultName: "webhook",
 		}, nil
 	default:
 		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
