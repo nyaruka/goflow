@@ -1,3 +1,7 @@
+v0.17.1
+----------
+ * Use result name when populating @legacy_extra instead of just .webhook
+
 v0.17.0
 ----------
  * Remove Connection Error as a separate exit for webhook routers
