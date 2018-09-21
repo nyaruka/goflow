@@ -68,6 +68,12 @@ func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
 	return nil
 }
 
+var webhookStatusCategories = map[flows.WebhookStatus]string{
+	flows.WebhookStatusSuccess:         "Success",
+	flows.WebhookStatusResponseError:   "Failure", // for historical reasons so results match old world
+	flows.WebhookStatusConnectionError: "Unreachable",
+}
+
 func (e *BaseEvent) saveWebhookResult(run flows.FlowRun, resultName, url, requestTrace string, responseTrace string, nodeUUID flows.NodeUUID) error {
 	webhook, err := flows.ReconstructWebhookCall(url, requestTrace, responseTrace)
 	if err != nil {
@@ -76,7 +82,7 @@ func (e *BaseEvent) saveWebhookResult(run flows.FlowRun, resultName, url, reques
 
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
-	category := string(webhook.Status())
+	category := webhookStatusCategories[webhook.Status()]
 
 	body := []byte(webhook.Body())
 	var extra json.RawMessage

@@ -62,7 +62,7 @@
                                 "uuid": "518a925a-480e-4d44-a56d-98034df486a3",
                                 "type": "is_text_eq",
                                 "arguments": [
-                                    "success"
+                                    "Success"
                                 ],
                                 "exit_uuid": "1de32bd4-de13-485e-b7dd-fe557c7644c4"
                             },
@@ -70,7 +70,7 @@
                                 "uuid": "a01a04b1-d9a8-4919-b745-a3532f5fdb89",
                                 "type": "is_text_eq",
                                 "arguments": [
-                                    "response_error"
+                                    "Failure"
                                 ],
                                 "exit_uuid": "3b3ac506-7523-4f68-b19e-b376734da8d5"
                             },
@@ -78,7 +78,7 @@
                                 "uuid": "cc642b3b-37d1-4d9c-a905-c621a80edfba",
                                 "type": "is_text_eq",
                                 "arguments": [
-                                    "connection_error"
+                                    "Unreachable"
                                 ],
                                 "exit_uuid": "cdf91af5-2c2f-4141-b968-adc9d791bdba"
                             }
@@ -98,7 +98,7 @@
                         {
                             "uuid": "cdf91af5-2c2f-4141-b968-adc9d791bdba",
                             "destination_node_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",
-                            "name": "Connection Error"
+                            "name": "Unreachable"
                         }
                     ]
                 },

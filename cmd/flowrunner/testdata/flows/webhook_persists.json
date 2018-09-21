@@ -53,7 +53,7 @@
                         "cases": [
                             {
                                 "arguments": [
-                                    "success"
+                                    "Success"
                                 ],
                                 "uuid": "789b45bc-005a-46db-8331-6a966c0141c2",
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
@@ -67,7 +67,6 @@
                 {
                     "exits": [
                         {
-                            "name": null,
                             "destination_node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
                             "uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00"
                         }

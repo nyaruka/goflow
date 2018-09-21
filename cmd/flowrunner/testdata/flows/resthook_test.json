@@ -121,7 +121,7 @@
                         ],
                         "results": {
                             "response_1": {
-                                "category": "response_error",
+                                "category": "Failure",
                                 "created_on": "2018-07-06T12:30:03.123456789Z",
                                 "extra": {
                                     "errors": [

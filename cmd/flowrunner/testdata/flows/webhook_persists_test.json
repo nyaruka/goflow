@@ -177,7 +177,7 @@
                         ],
                         "results": {
                             "webhook": {
-                                "category": "success",
+                                "category": "Success",
                                 "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "extra": {
                                     "ok": "true"
@@ -413,7 +413,7 @@
                         ],
                         "results": {
                             "webhook": {
-                                "category": "success",
+                                "category": "Success",
                                 "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "extra": {
                                     "ok": "true"
