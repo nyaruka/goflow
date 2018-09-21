@@ -356,7 +356,6 @@ var testTypeMappings = map[string]string{
 	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
-	"webhook_status":       "has_webhook_status",
 	"airtime_status":       "has_airtime_status",
 }
 
@@ -660,11 +659,12 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 				Method:     method,
 				Headers:    headers,
 				Body:       body,
+				ResultName: resultName,
 			},
 		}
 
-		// webhook rulesets operate on the webhook call
-		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
+		// webhook rulesets operate on the webhook status, saved as category
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 		uiType = UINodeTypeSplitByWebhook
 
 	case "resthook":
@@ -672,12 +672,13 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&actions.CallResthookAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				Resthook:   config.Resthook,
+				ResultName: resultName,
 			},
 		}
 
-		// resthooks rulesets operate on the webhook call
+		// resthook rulesets operate on the webhook status, saved as category
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 		uiType = UINodeTypeSplitByResthook
-		router = routers.NewSwitchRouter(defaultExit, "@run.webhook", cases, resultName)
 
 	case "form_field":
 		operand, _ := expressions.MigrateTemplate(r.Operand, false)
@@ -867,21 +868,6 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 		cases = append(cases, kase)
 	}
 
-	// for webhook rulesets we need to add an additional case/error pair for connection errors
-	if r.Type == "webhook" || r.Type == "resthook" {
-		connectionErrorCategory := "Connection Error"
-		connectionErrorExit := definition.NewExit(flows.ExitUUID(utils.NewUUID()), exits[1].DestinationNodeUUID(), connectionErrorCategory)
-
-		cases = append(cases, routers.Case{
-			UUID:        utils.UUID(utils.NewUUID()),
-			Type:        "has_webhook_status",
-			Arguments:   []string{"connection_error"},
-			OmitOperand: false,
-			ExitUUID:    connectionErrorExit.UUID(),
-		})
-		exits = append(exits, connectionErrorExit)
-	}
-
 	return cases, exits, defaultExitUUID, nil
 }
 
@@ -950,12 +936,13 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		arguments = []string{test.ExitType}
 
 	case "webhook_status":
+		newType = "is_text_eq"
 		test := webhookTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if test.Status == "success" {
-			arguments = []string{"success"}
+			arguments = []string{"Success"}
 		} else {
-			arguments = []string{"response_error"}
+			arguments = []string{"Failure"}
 		}
 
 	case "airtime_status":

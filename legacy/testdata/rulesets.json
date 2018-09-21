@@ -656,40 +656,32 @@
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "method": "GET",
-                    "url": "http://example.com"
+                    "url": "http://example.com",
+                    "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@run.webhook",
+                "operand": "@results.response_1.category",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_webhook_status",
+                        "type": "is_text_eq",
                         "arguments": [
-                            "success"
+                            "Success"
                         ],
                         "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
                     },
                     {
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_webhook_status",
+                        "type": "is_text_eq",
                         "arguments": [
-                            "response_error"
+                            "Failure"
                         ],
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
-                    },
-                    {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "has_webhook_status",
-                        "arguments": [
-                            "connection_error"
-                        ],
-                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ]
             },
@@ -703,11 +695,6 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "name": "Failure"
-                },
-                {
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Connection Error"
                 }
             ]
         },
@@ -777,7 +764,7 @@
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "method": "POST",
                     "url": "http://example.com",
                     "headers": {
@@ -785,38 +772,30 @@
                         "Content-Type": "application/json",
                         "User-Agent": "RapidPro"
                     },
-                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}"
+                    "body": "{\n\t\"contact\": {\"uuid\": \"@contact.uuid\", \"name\": @(json(contact.name)), \"urn\": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},\n\t\"flow\": @(json(run.flow)),\n\t\"path\": @(json(run.path)),\n\t\"results\": @(json(run.results)),\n\t\"run\": {\"uuid\": \"@run.uuid\", \"created_on\": \"@run.created_on\"},\n\t\"input\": @(json(run.input)),\n\t\"channel\": @(json(if(run.input, run.input.channel, null)))\n}",
+                    "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@run.webhook",
+                "operand": "@results.response_1.category",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_webhook_status",
+                        "type": "is_text_eq",
                         "arguments": [
-                            "success"
+                            "Success"
                         ],
                         "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
                     },
                     {
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_webhook_status",
+                        "type": "is_text_eq",
                         "arguments": [
-                            "response_error"
+                            "Failure"
                         ],
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
-                    },
-                    {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "has_webhook_status",
-                        "arguments": [
-                            "connection_error"
-                        ],
-                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ]
             },
@@ -830,11 +809,6 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "name": "Failure"
-                },
-                {
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Connection Error"
                 }
             ]
         },
@@ -893,39 +867,31 @@
             "actions": [
                 {
                     "type": "call_resthook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "resthook": "new-registration"
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
+                    "resthook": "new-registration",
+                    "result_name": "Response 1"
                 }
             ],
             "router": {
                 "type": "switch",
-                "result_name": "Response 1",
                 "default_exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875",
-                "operand": "@run.webhook",
+                "operand": "@results.response_1.category",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                        "type": "has_webhook_status",
+                        "type": "is_text_eq",
                         "arguments": [
-                            "success"
+                            "Success"
                         ],
                         "exit_uuid": "7fab0ddd-3e4d-4541-84df-8470e05ead16"
                     },
                     {
                         "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                        "type": "has_webhook_status",
+                        "type": "is_text_eq",
                         "arguments": [
-                            "response_error"
+                            "Failure"
                         ],
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
-                    },
-                    {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "has_webhook_status",
-                        "arguments": [
-                            "connection_error"
-                        ],
-                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ]
             },
@@ -939,11 +905,6 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "name": "Failure"
-                },
-                {
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Connection Error"
                 }
             ]
         },

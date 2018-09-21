@@ -444,7 +444,7 @@ Event
 </div>
 <p><a name="event:resthook_called"></a></p>
 <h2 id="resthook_called">resthook_called</h2>
-<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers, as well as the payload sent to each subscriber. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context to the results of the last subscriber call. However if one of the subscriber calls fails, then it is used to update <span class="citation" data-cites="run.webhook">@run.webhook</span> instead.</p>
+<p>Events are created when a resthook is called. The event contains the status and status code of each call to the resthook’s subscribers, as well as the payload sent to each subscriber. If this event has a <code>result_name</code>, then applying this event creates a new result with that name based on one of the calls. The call used will the last one unless one has failed, in which case it is used instead. If the call returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
 <div class="output_event">
 <h3>
 Event
@@ -453,21 +453,21 @@ Event
 <a class="sourceLine" id="cb23-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;resthook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb23-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb23-4" data-line-number="4">    <span class="dt">&quot;resthook&quot;</span><span class="fu">:</span> <span class="st">&quot;new-registration&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-5" data-line-number="5">    <span class="dt">&quot;payload&quot;</span><span class="fu">:</span> <span class="st">&quot;{...}&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-6" data-line-number="6">    <span class="dt">&quot;calls&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
-<a class="sourceLine" id="cb23-7" data-line-number="7">        <span class="fu">{</span></a>
-<a class="sourceLine" id="cb23-8" data-line-number="8">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-9" data-line-number="9">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-10" data-line-number="10">            <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-11" data-line-number="11">            <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;{</span><span class="ch">\&quot;</span><span class="st">errors</span><span class="ch">\&quot;</span><span class="st">:[]}&quot;</span></a>
-<a class="sourceLine" id="cb23-12" data-line-number="12">        <span class="fu">}</span><span class="ot">,</span></a>
-<a class="sourceLine" id="cb23-13" data-line-number="13">        <span class="fu">{</span></a>
-<a class="sourceLine" id="cb23-14" data-line-number="14">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-15" data-line-number="15">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-16" data-line-number="16">            <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">410</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb23-17" data-line-number="17">            <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;{</span><span class="ch">\&quot;</span><span class="st">errors</span><span class="ch">\&quot;</span><span class="st">:[</span><span class="ch">\&quot;</span><span class="st">Unsubscribe</span><span class="ch">\&quot;</span><span class="st">]}&quot;</span></a>
-<a class="sourceLine" id="cb23-18" data-line-number="18">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb23-19" data-line-number="19">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">    <span class="dt">&quot;calls&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;http://localhost:49998/?cmd=success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">            <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /?cmd=success HTTP/1.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">            <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">errors</span><span class="ch">\&quot;</span><span class="st">:[]}&quot;</span></a>
+<a class="sourceLine" id="cb23-11" data-line-number="11">        <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12">        <span class="fu">{</span></a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">            <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org/?format=json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-14" data-line-number="14">            <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-15" data-line-number="15">            <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;POST /?format=json HTTP/1.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-16" data-line-number="16">            <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 410 Gone</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">errors</span><span class="ch">\&quot;</span><span class="st">:[</span><span class="ch">\&quot;</span><span class="st">Unsubscribe</span><span class="ch">\&quot;</span><span class="st">]}&quot;</span></a>
+<a class="sourceLine" id="cb23-17" data-line-number="17">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb23-18" data-line-number="18">    <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb23-19" data-line-number="19">    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;IP Check&quot;</span></a>
 <a class="sourceLine" id="cb23-20" data-line-number="20"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="event:run_expired"></a></p>
@@ -497,9 +497,8 @@ Event
 <a class="sourceLine" id="cb25-5" data-line-number="5">    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;m&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb25-6" data-line-number="6">    <span class="dt">&quot;category&quot;</span><span class="fu">:</span> <span class="st">&quot;Male&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb25-7" data-line-number="7">    <span class="dt">&quot;category_localized&quot;</span><span class="fu">:</span> <span class="st">&quot;Homme&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb25-8" data-line-number="8">    <span class="dt">&quot;node_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b7cf0d83-f1c9-411c-96fd-c511a4cfa86d&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb25-9" data-line-number="9">    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;M&quot;</span></a>
-<a class="sourceLine" id="cb25-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb25-8" data-line-number="8">    <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;M&quot;</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="event:session_triggered"></a></p>
 <h2 id="session_triggered">session_triggered</h2>
@@ -562,7 +561,7 @@ Event
 </div>
 <p><a name="event:webhook_called"></a></p>
 <h2 id="webhook_called">webhook_called</h2>
-<p>Events are created when a webhook is called. The event contains the status and status code of the response, as well as a full dump of the request and response. Applying this event updates <span class="citation" data-cites="run.webhook">@run.webhook</span> in the context.</p>
+<p>Events are created when a webhook is called. The event contains the status and status code of the response, as well as a full dump of the request and response. If this event has a <code>result_name</code>, then applying this event creates a new result with that name. If the webhook returned valid JSON, that will be accessible through <code>extra</code> on the result.</p>
 <div class="output_event">
 <h3>
 Event
@@ -570,11 +569,11 @@ Event
 <div class="sourceCode" id="cb28"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb28-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;webhook_called&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb28-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.ipify.org/?format=json&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb28-5" data-line-number="5">    <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;success&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb28-6" data-line-number="6">    <span class="dt">&quot;status_code&quot;</span><span class="fu">:</span> <span class="dv">200</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET https://api.ipify.org?format=json&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK {</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">    <span class="dt">&quot;request&quot;</span><span class="fu">:</span> <span class="st">&quot;GET /?format=json HTTP/1.1&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7">    <span class="dt">&quot;response&quot;</span><span class="fu">:</span> <span class="st">&quot;HTTP/1.1 200 OK</span><span class="ch">\r\n\r\n</span><span class="st">{</span><span class="ch">\&quot;</span><span class="st">ip</span><span class="ch">\&quot;</span><span class="st">:</span><span class="ch">\&quot;</span><span class="st">190.154.48.130</span><span class="ch">\&quot;</span><span class="st">}&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8">    <span class="dt">&quot;result_name&quot;</span><span class="fu">:</span> <span class="st">&quot;IP Check&quot;</span></a>
 <a class="sourceLine" id="cb28-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
 </div>
 </div>

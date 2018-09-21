@@ -18,7 +18,6 @@
                     "created_on": "2018-07-06T12:30:04.123456789Z",
                     "input": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                     "name": "Transfer",
-                    "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "run_result_changed",
                     "value": "success"
@@ -71,7 +70,6 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "input": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "name": "Transfer",
-                                "node_uuid": "75656148-9e8b-4611-82c0-7ff4b55fb44a",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "run_result_changed",
                                 "value": "success"

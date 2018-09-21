@@ -3,12 +3,12 @@ package runs
 import (
 	"encoding/json"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -70,8 +70,8 @@ var _ types.XResolvable = (legacyExtraMap)(nil)
 type legacyExtra struct {
 	legacyExtraMap
 
-	run           flows.FlowRun
-	lastEventTime time.Time
+	run            flows.FlowRun
+	lastResultTime time.Time
 }
 
 func newLegacyExtra(run flows.FlowRun) *legacyExtra {
@@ -94,42 +94,28 @@ func newLegacyExtra(run flows.FlowRun) *legacyExtra {
 
 // updates @legacy_extra by looking for new events since we last updated
 func (e *legacyExtra) update() {
-	prevLastEventTime := e.lastEventTime
+	prevLastResultTime := e.lastResultTime
 
-	for _, event := range e.run.Events() {
-		if !event.CreatedOn().After(prevLastEventTime) {
-			continue
+	// get all results with extra created since the last update
+	newExtras := make([]*flows.Result, 0)
+	for _, result := range e.run.Results() {
+		if result.Extra != nil && result.CreatedOn.After(prevLastResultTime) {
+			newExtras = append(newExtras, result)
 		}
+		e.lastResultTime = result.CreatedOn
+	}
+	// sort by created time
+	sort.SliceStable(newExtras, func(i, j int) bool { return newExtras[i].CreatedOn.Before(newExtras[j].CreatedOn) })
 
-		switch typed := event.(type) {
-		case *events.WebhookCalledEvent:
-			e.addPossibleJSONResponse(typed.Response)
-		case *events.ResthookCalledEvent:
-			for _, call := range typed.Calls {
-				e.addPossibleJSONResponse(call.Response)
-			}
-		case *events.RunResultChangedEvent:
-			for k, v := range typed.Extra {
+	// add each extra blob to our master extra
+	for _, result := range newExtras {
+		e.legacyExtraMap["webhook"] = string(result.Extra)
+		values, err := utils.JSONDecodeToMap(result.Extra)
+		if err == nil {
+			for k, v := range values {
 				e.legacyExtraMap[legacyExtraKey(k)] = v
 			}
 		}
-
-		e.lastEventTime = event.CreatedOn()
-	}
-}
-
-// tries to parse the given response as JSON and if successful adds it to this @extra
-func (e *legacyExtra) addPossibleJSONResponse(response string) {
-	parts := strings.SplitN(response, "\r\n\r\n", 2)
-	if len(parts) != 2 {
-		return
-	}
-	values, err := utils.JSONDecodeToMap(json.RawMessage(parts[1]))
-	if err != nil {
-		return
-	}
-	for k, v := range values {
-		e.legacyExtraMap[legacyExtraKey(k)] = v
 	}
 }
 

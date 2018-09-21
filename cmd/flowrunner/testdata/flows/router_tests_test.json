@@ -10,7 +10,6 @@
                     "created_on": "2018-07-06T12:30:03.123456789Z",
                     "input": "",
                     "name": "URN Check",
-                    "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "run_result_changed",
                     "value": ""
@@ -20,7 +19,6 @@
                     "created_on": "2018-07-06T12:30:06.123456789Z",
                     "input": "Ben Haggerty",
                     "name": "Group Check",
-                    "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                     "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "type": "run_result_changed",
                     "value": "Ben Haggerty"
@@ -30,7 +28,6 @@
                     "created_on": "2018-07-06T12:30:09.123456789Z",
                     "input": "I live in gasabo",
                     "name": "District Check",
-                    "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "run_result_changed",
                     "value": "Rwanda > Kigali City > Gasabo"
@@ -109,7 +106,6 @@
                                 "created_on": "2018-07-06T12:30:03.123456789Z",
                                 "input": "",
                                 "name": "URN Check",
-                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "run_result_changed",
                                 "value": ""
@@ -119,7 +115,6 @@
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input": "Ben Haggerty",
                                 "name": "Group Check",
-                                "node_uuid": "08d71f03-dc18-450a-a82b-496f64862a56",
                                 "step_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                                 "type": "run_result_changed",
                                 "value": "Ben Haggerty"
@@ -129,7 +124,6 @@
                                 "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "input": "I live in gasabo",
                                 "name": "District Check",
-                                "node_uuid": "8476e6fe-1c22-436c-be2c-c27afdc940f3",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "run_result_changed",
                                 "value": "Rwanda > Kigali City > Gasabo"

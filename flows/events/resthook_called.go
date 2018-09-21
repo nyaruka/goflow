@@ -1,7 +1,6 @@
 package events
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/nyaruka/goflow/flows"
@@ -16,10 +15,10 @@ const TypeResthookCalled string = "resthook_called"
 
 // ResthookSubscriberCall is call to a single subsccriber of a resthook
 type ResthookSubscriberCall struct {
-	URL        string              `json:"url" validate:"required"`
-	Status     flows.WebhookStatus `json:"status" validate:"required"`
-	StatusCode int                 `json:"status_code" validate:"required"`
-	Response   string              `json:"response"`
+	URL      string              `json:"url" validate:"required"`
+	Status   flows.WebhookStatus `json:"status" validate:"required"`
+	Request  string              `json:"request" validate:"required"`
+	Response string              `json:"response"`
 }
 
 // NewResthookSubscriberCall creates a new subscriber call from the given webhook call
@@ -32,36 +31,37 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 	}
 
 	return &ResthookSubscriberCall{
-		URL:        webhook.URL(),
-		Status:     status,
-		StatusCode: webhook.StatusCode(),
-		Response:   webhook.Response(),
+		URL:      webhook.URL(),
+		Status:   status,
+		Request:  webhook.Request(),
+		Response: webhook.Response(),
 	}
 }
 
 // ResthookCalledEvent events are created when a resthook is called. The event contains the status and status code
-// of each call to the resthook's subscribers, as well as the payload sent to each subscriber. Applying this event
-// updates @run.webhook in the context to the results of the last subscriber call. However if one of the subscriber
-// calls fails, then it is used to update @run.webhook instead.
+// of each call to the resthook's subscribers, as well as the payload sent to each subscriber. If this event has a
+// `result_name`, then applying this event creates a new result with that name based on one of the calls. The call
+// used will the last one unless one has failed, in which case it is used instead. If the call returned valid JSON,
+// that will be accessible through `extra` on the result.
 //
 //   {
 //     "type": "resthook_called",
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "resthook": "new-registration",
-//     "payload": "{...}",
 //     "calls": [
 //       {
 //         "url": "http://localhost:49998/?cmd=success",
 //         "status": "success",
-//         "status_code": 200,
-//         "response": "{\"errors\":[]}"
+//         "request": "POST /?cmd=success HTTP/1.1",
+//         "response": "HTTP/1.1 200 OK\r\n\r\n{\"errors\":[]}"
 //       },{
-//         "url": "https://api.ipify.org?format=json",
+//         "url": "https://api.ipify.org/?format=json",
 //         "status": "success",
-//         "status_code": 410,
-//         "response": "{\"errors\":[\"Unsubscribe\"]}"
+//         "request": "POST /?format=json HTTP/1.1",
+//         "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
 //       }
-//     ]
+//     ],
+//     "result_name": "IP Check"
 //   }
 //
 // @event resthook_called
@@ -69,18 +69,18 @@ type ResthookCalledEvent struct {
 	BaseEvent
 	engineOnlyEvent
 
-	Resthook string                    `json:"resthook" validate:"required"`
-	Payload  string                    `json:"payload"`
-	Calls    []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
+	Resthook   string                    `json:"resthook" validate:"required"`
+	Calls      []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
+	ResultName string                    `json:"result_name,omitempty"`
 }
 
 // NewResthookCalledEvent returns a new resthook called event
-func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSubscriberCall) *ResthookCalledEvent {
+func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSubscriberCall, resultName string) *ResthookCalledEvent {
 	return &ResthookCalledEvent{
-		BaseEvent: NewBaseEvent(),
-		Resthook:  resthook,
-		Payload:   payload,
-		Calls:     calls,
+		BaseEvent:  NewBaseEvent(),
+		Resthook:   resthook,
+		Calls:      calls,
+		ResultName: resultName,
 	}
 }
 
@@ -89,27 +89,30 @@ func (e *ResthookCalledEvent) Type() string { return TypeResthookCalled }
 
 // Apply applies this event to the given run
 func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
-	var lastFailure, asWebhook *ResthookSubscriberCall
+	// no result name then nothing to do
+	if e.ResultName == "" {
+		return nil
+	}
 
+	// select one of our calls to become the webhook result
+	var lastFailure, asResult *ResthookSubscriberCall
 	for _, call := range e.Calls {
 		if call.Status == flows.WebhookStatusSuccess {
-			asWebhook = call
+			asResult = call
 		} else {
 			lastFailure = call
 		}
 	}
-
 	if lastFailure != nil {
-		asWebhook = lastFailure
+		asResult = lastFailure
 	}
 
-	if asWebhook != nil {
-		// reconstruct the request dump
-		request := fmt.Sprintf("POST %s\r\n\r\n%s", asWebhook.URL, e.Payload)
+	nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
 
-		run.SetWebhook(flows.NewWebhookCall(asWebhook.URL, asWebhook.Status, asWebhook.StatusCode, request, asWebhook.Response))
+	if asResult != nil {
+		return e.saveWebhookResult(run, e.ResultName, asResult.URL, asResult.Request, asResult.Response, nodeUUID)
 	} else {
-		run.SetWebhook(nil)
+		run.Results().Save(e.ResultName, "", "Success", "", nodeUUID, nil, nil, e.CreatedOn())
 	}
 	return nil
 }

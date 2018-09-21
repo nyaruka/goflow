@@ -45,19 +45,19 @@
                             "uuid": "881c9b75-d426-4f57-8562-d32bdc75b524",
                             "type": "call_webhook",
                             "method": "GET",
-                            "body": null
+                            "result_name": "webhook"
                         }
                     ],
                     "router": {
-                        "operand": "@run.webhook",
+                        "operand": "@results.webhook.category",
                         "cases": [
                             {
                                 "arguments": [
-                                    "success"
+                                    "Success"
                                 ],
                                 "uuid": "789b45bc-005a-46db-8331-6a966c0141c2",
                                 "exit_uuid": "bb09f6b6-89f4-45bd-8cc9-1d4655914590",
-                                "type": "has_webhook_status"
+                                "type": "is_text_eq"
                             }
                         ],
                         "default_exit_uuid": "3699df6c-15f0-4a86-b7f8-9fe1497e7854",
@@ -67,7 +67,6 @@
                 {
                     "exits": [
                         {
-                            "name": null,
                             "destination_node_uuid": "d08e402f-0d6f-413c-8336-bd8a3bcc432b",
                             "uuid": "cf472a83-3041-4d4b-a765-dea6dc0a9c00"
                         }
@@ -76,7 +75,7 @@
                     "actions": [
                         {
                             "uuid": "8453e418-03ec-40a0-935f-d757cd2ab075",
-                            "text": "The status is @run.webhook.json.ok. Send something",
+                            "text": "The status is @results.webhook.extra.ok. Send something",
                             "type": "send_msg"
                         }
                     ]
@@ -112,7 +111,7 @@
                     "actions": [
                         {
                             "uuid": "09cd20fb-9a8a-49a2-9c98-fac728c35300",
-                            "text": "The status is now @run.webhook.json.ok",
+                            "text": "The status is now @results.webhook.extra.ok",
                             "type": "send_msg"
                         }
                     ]

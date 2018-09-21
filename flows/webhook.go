@@ -1,7 +1,7 @@
 package flows
 
 import (
-	"encoding/json"
+	"bufio"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -9,9 +9,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"strings"
-
-	"github.com/nyaruka/goflow/excellent/types"
-	"github.com/nyaruka/goflow/utils"
 )
 
 var DefaultWebhookPayload = `{
@@ -24,8 +21,8 @@ var DefaultWebhookPayload = `{
 	"channel": @(json(if(run.input, run.input.channel, null)))
 }`
 
-// response content-types that we'll save as @run.webhook.body
-var saveResponseContentTypes = map[string]bool{
+// response content-types that we'll fetch
+var fetchResponseContentTypes = map[string]bool{
 	"application/json":       true,
 	"application/javascript": true,
 	"application/xml":        true,
@@ -48,43 +45,47 @@ const (
 	WebhookStatusResponseError WebhookStatus = "response_error"
 )
 
+func WebhookStatusFromCode(code int) WebhookStatus {
+	if code/100 == 2 {
+		return WebhookStatusSuccess
+	}
+	return WebhookStatusResponseError
+}
+
 func (r WebhookStatus) String() string {
 	return string(r)
 }
 
-// WebhookCall describes a call made to an external service. It has several properties which can be accessed in expressions:
-//
-//  * `status` the status of the webhook - one of "success", "connection_error" or "response_error"
-//  * `status_code` the status code of the response
-//  * `body` the body of the response
-//  * `json` the parsed JSON response (if response body was JSON)
-//  * `json.[key]` sub-elements of the parsed JSON response
-//  * `request` the raw request made, including headers
-//  * `response` the raw response received, including headers
-//
-// Examples:
-//
-//   @run.webhook.status_code -> 200
-//   @run.webhook.json.results.0.state -> WA
-//
-// @context webhook
+// WebhookCall is a call made to an external service
 type WebhookCall struct {
-	url        string
-	status     WebhookStatus
-	statusCode int
-	request    string
-	response   string
+	url           string
+	request       *http.Request
+	response      *http.Response
+	status        WebhookStatus
+	requestTrace  string
+	responseTrace string
 }
 
-// NewWebhookCall creates a new webhook call
-func NewWebhookCall(url string, status WebhookStatus, statusCode int, request string, response string) *WebhookCall {
-	return &WebhookCall{
-		url:        url,
-		status:     status,
-		statusCode: statusCode,
-		request:    request,
-		response:   response,
+// ReconstructWebhookCall reconstructs a webhook call from the given traces
+func ReconstructWebhookCall(url string, requestTrace string, responseTrace string) (*WebhookCall, error) {
+	request, err := http.ReadRequest(bufio.NewReader(strings.NewReader(requestTrace)))
+	if err != nil {
+		return nil, err
 	}
+
+	response, err := http.ReadResponse(bufio.NewReader(strings.NewReader(responseTrace)), request)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WebhookCall{
+		url:           url,
+		request:       request,
+		response:      response,
+		status:        WebhookStatusFromCode(response.StatusCode),
+		requestTrace:  requestTrace,
+		responseTrace: responseTrace,
+	}, nil
 }
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
@@ -117,76 +118,43 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 func (w *WebhookCall) URL() string { return w.url }
 
 // Method returns the full HTTP method
-func (w *WebhookCall) Method() string { return w.request[:strings.IndexRune(w.request, ' ')] }
+func (w *WebhookCall) Method() string { return w.request.Method }
 
 // Status returns the response status message
 func (w *WebhookCall) Status() WebhookStatus { return w.status }
 
 // StatusCode returns the response status code
-func (w *WebhookCall) StatusCode() int { return w.statusCode }
+func (w *WebhookCall) StatusCode() int {
+	if w.response != nil {
+		return w.response.StatusCode
+	}
+	return 0
+}
 
 // Request returns the request trace
-func (w *WebhookCall) Request() string { return w.request }
+func (w *WebhookCall) Request() string { return w.requestTrace }
 
 // Response returns the response trace
-func (w *WebhookCall) Response() string { return w.response }
+func (w *WebhookCall) Response() string { return w.responseTrace }
 
 // Body returns the response body
 func (w *WebhookCall) Body() string {
-	parts := strings.SplitN(w.response, "\r\n\r\n", 2)
+	parts := strings.SplitN(w.responseTrace, "\r\n\r\n", 2)
 	if len(parts) == 2 {
 		return parts[1]
 	}
 	return ""
 }
 
-// JSON returns the response as a JSON fragment
-func (w *WebhookCall) JSON() types.XValue { return types.JSONToXValue([]byte(w.Body())) }
-
-// Resolve resolves the given key when this webhook is referenced in an expression
-func (w *WebhookCall) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "url":
-		return types.NewXText(w.URL())
-	case "request":
-		return types.NewXText(w.Request())
-	case "response":
-		return types.NewXText(w.Response())
-	case "status":
-		return types.NewXText(string(w.Status()))
-	case "status_code":
-		return types.NewXNumberFromInt(w.StatusCode())
-	case "json":
-		return w.JSON()
-	}
-
-	return types.NewXResolveError(w, key)
-}
-
-// Describe returns a representation of this type for error messages
-func (w *WebhookCall) Describe() string { return "webhook" }
-
-// Reduce reduces this to a string of method and URL, e.g. "GET http://example.com/hook.php"
-func (w *WebhookCall) Reduce(env utils.Environment) types.XPrimitive {
-	return types.NewXText(fmt.Sprintf("%s %s", w.Method(), w.URL()))
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (w *WebhookCall) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, w, "body", "json", "url", "request", "response", "status", "status_code").ToXJSON(env)
-}
-
-var _ types.XValue = (*WebhookCall)(nil)
-var _ types.XResolvable = (*WebhookCall)(nil)
-
 // newWebhookCallFromError creates a new webhook call based on the passed in http request and error (when we received no response)
 func newWebhookCallFromError(request *http.Request, requestTrace string, requestError error) *WebhookCall {
 	return &WebhookCall{
-		url:        request.URL.String(),
-		status:     WebhookStatusConnectionError,
-		statusCode: 0,
-		request:    requestTrace,
-		response:   requestError.Error(),
+		url:           request.URL.String(),
+		request:       request,
+		response:      nil,
+		status:        WebhookStatusConnectionError,
+		requestTrace:  requestTrace,
+		responseTrace: requestError.Error(),
 	}
 }
 
@@ -194,30 +162,25 @@ func newWebhookCallFromError(request *http.Request, requestTrace string, request
 func newWebhookCallFromResponse(requestTrace string, response *http.Response, maxBodyBytes int) (*WebhookCall, error) {
 	defer response.Body.Close()
 
-	w := &WebhookCall{
-		url:        response.Request.URL.String(),
-		statusCode: response.StatusCode,
-		request:    requestTrace,
-	}
-
-	// set our status based on our status code
-	if w.statusCode/100 == 2 {
-		w.status = WebhookStatusSuccess
-	} else {
-		w.status = WebhookStatusResponseError
-	}
-
-	// save response dump without body which will be parsed separately
-	responseDump, err := httputil.DumpResponse(response, false)
+	// save response trace without body which will be parsed separately
+	responseTrace, err := httputil.DumpResponse(response, false)
 	if err != nil {
 		return nil, err
 	}
-	w.response = string(responseDump)
+
+	w := &WebhookCall{
+		url:           response.Request.URL.String(),
+		request:       response.Request,
+		response:      response,
+		status:        WebhookStatusFromCode(response.StatusCode),
+		requestTrace:  requestTrace,
+		responseTrace: string(responseTrace),
+	}
 
 	// only save response body's if we have a supported content-type
 	contentType := response.Header.Get("Content-Type")
 	mediaType, _, _ := mime.ParseMediaType(contentType)
-	saveBody := saveResponseContentTypes[mediaType]
+	saveBody := fetchResponseContentTypes[mediaType]
 
 	if saveBody {
 		// only read up to our max body bytes limit
@@ -233,10 +196,10 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 			return nil, fmt.Errorf("webhook response body exceeds %d bytes limit", maxBodyBytes)
 		}
 
-		w.response += string(bodyBytes)
+		w.responseTrace += string(bodyBytes)
 	} else {
 		// no body for non-text responses but add it to our Response log so users know why
-		w.response += "Non-text body, ignoring"
+		w.responseTrace += "Non-text body, ignoring"
 	}
 
 	return w, nil
@@ -260,45 +223,4 @@ func findMockedRequest(session Session, request *http.Request) *WebhookMock {
 		}
 	}
 	return nil
-}
-
-//------------------------------------------------------------------------------------------
-// JSON Encoding / Decoding
-//------------------------------------------------------------------------------------------
-
-type webhookCallEnvelope struct {
-	URL        string        `json:"url"`
-	Status     WebhookStatus `json:"status"`
-	StatusCode int           `json:"status_code"`
-	Request    string        `json:"request"`
-	Response   string        `json:"response"`
-}
-
-// UnmarshalJSON unmarshals a request response from the given JSON
-func (w *WebhookCall) UnmarshalJSON(data []byte) error {
-	var envelope webhookCallEnvelope
-	var err error
-
-	err = json.Unmarshal(data, &envelope)
-	if err != nil {
-		return err
-	}
-
-	w.url = envelope.URL
-	w.status = envelope.Status
-	w.statusCode = envelope.StatusCode
-	w.request = envelope.Request
-	w.response = envelope.Response
-	return nil
-}
-
-// MarshalJSON marshals this request response into JSON
-func (r *WebhookCall) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&webhookCallEnvelope{
-		URL:        r.url,
-		Status:     r.status,
-		StatusCode: r.statusCode,
-		Request:    r.request,
-		Response:   r.response,
-	})
 }

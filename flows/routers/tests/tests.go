@@ -44,7 +44,6 @@ var XTESTS = map[string]functions.XFunction{
 	"has_value": functions.OneArgFunction(HasValue),
 
 	"has_group":          functions.TwoArgFunction(HasGroup),
-	"has_webhook_status": functions.TwoArgFunction(HasWebhookStatus),
 	"has_wait_timed_out": functions.OneArgFunction(HasWaitTimedOut),
 
 	"is_text_eq":      functions.TwoTextFunction(IsTextEQ),
@@ -89,8 +88,8 @@ var XTESTS = map[string]functions.XFunction{
 //   @(is_text_eq("foo", "bar")) -> false
 //   @(is_text_eq("foo", " foo ")) -> false
 //   @(is_text_eq(run.status, "completed")) -> true
-//   @(is_text_eq(run.webhook.status, "success")) -> true
-//   @(is_text_eq(run.webhook.status, "connection_error")) -> false
+//   @(is_text_eq(results.webhook.category, "Success")) -> true
+//   @(is_text_eq(results.webhook.category, "Failure")) -> false
 //
 // @test is_text_eq(text1, text2)
 func IsTextEQ(env utils.Environment, text1 types.XText, text2 types.XText) types.XValue {
@@ -168,39 +167,6 @@ func HasWaitTimedOut(env utils.Environment, value types.XValue) types.XValue {
 		if isInput {
 			break
 		}
-	}
-
-	return XFalseResult
-}
-
-// HasWebhookStatus tests whether the passed in `webhook` call has the passed in `status`. If there is no
-// webhook set, then "success" will still match.
-//
-//   @(has_webhook_status(NULL, "success")) -> true
-//   @(has_webhook_status(run.webhook, "success")) -> true
-//   @(has_webhook_status(run.webhook, "connection_error")) -> false
-//   @(has_webhook_status(run.webhook, "success").match) -> {"results":[{"state":"WA"},{"state":"IN"}]}
-//   @(has_webhook_status("abc", "success")) -> ERROR
-//
-// @test has_webhook_status(webhook, status)
-func HasWebhookStatus(env utils.Environment, arg1 types.XValue, arg2 types.XValue) types.XValue {
-	// is the first argument a webhook call
-	webhook, isWebhook := arg1.(*flows.WebhookCall)
-	if arg1 != nil && !isWebhook {
-		return types.NewXErrorf("must have a webhook call as its first argument")
-	}
-
-	status, xerr := types.ToXText(env, arg2)
-	if xerr != nil {
-		return xerr
-	}
-
-	if webhook != nil {
-		if string(webhook.Status()) == strings.ToLower(status.Native()) {
-			return NewTrueResult(types.NewXText(webhook.Body()))
-		}
-	} else if status.Native() == string(flows.WebhookStatusSuccess) {
-		return NewTrueResult(types.XTextEmpty)
 	}
 
 	return XFalseResult

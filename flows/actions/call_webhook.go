@@ -28,7 +28,8 @@ const TypeCallWebhook string = "call_webhook"
 //     "url": "http://localhost:49998/?cmd=success",
 //     "headers": {
 //       "Authorization": "Token AAFFZZHH"
-//     }
+//     },
+//     "result_name": "webhook"
 //   }
 //
 // @action call_webhook
@@ -36,10 +37,11 @@ type CallWebhookAction struct {
 	BaseAction
 	onlineAction
 
-	Method  string            `json:"method"             validate:"required,http_method"`
-	URL     string            `json:"url"                validate:"required"`
-	Headers map[string]string `json:"headers,omitempty"`
-	Body    string            `json:"body,omitempty"`
+	Method     string            `json:"method" validate:"required,http_method"`
+	URL        string            `json:"url" validate:"required"`
+	Headers    map[string]string `json:"headers,omitempty"`
+	Body       string            `json:"body,omitempty"`
+	ResultName string            `json:"result_name,omitempty"`
 }
 
 // Type returns the type of this action
@@ -48,7 +50,7 @@ func (a *CallWebhookAction) Type() string { return TypeCallWebhook }
 // Validate validates our action is valid and has all the assets it needs
 func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 	if a.Body != "" && a.Method == "GET" {
-		return fmt.Errorf("can specifiy body if method is GET")
+		return fmt.Errorf("can't specify body if method is GET")
 	}
 
 	return nil
@@ -100,7 +102,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	if err != nil {
 		log.Add(events.NewErrorEvent(err))
 	} else {
-		log.Add(events.NewWebhookCalledEvent(webhook.URL(), webhook.Status(), webhook.StatusCode(), webhook.Request(), webhook.Response()))
+		log.Add(events.NewWebhookCalledEvent(webhook, a.ResultName))
 	}
 
 	return nil

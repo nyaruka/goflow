@@ -485,30 +485,31 @@ waiting for anything from the caller.
 ## resthook_called
 
 Events are created when a resthook is called. The event contains the status and status code
-of each call to the resthook's subscribers, as well as the payload sent to each subscriber. Applying this event
-updates @run.webhook in the context to the results of the last subscriber call. However if one of the subscriber
-calls fails, then it is used to update @run.webhook instead.
+of each call to the resthook's subscribers, as well as the payload sent to each subscriber. If this event has a
+`result_name`, then applying this event creates a new result with that name based on one of the calls. The call
+used will the last one unless one has failed, in which case it is used instead. If the call returned valid JSON,
+that will be accessible through `extra` on the result.
 
 <div class="output_event"><h3>Event</h3>```json
 {
     "type": "resthook_called",
     "created_on": "2006-01-02T15:04:05Z",
     "resthook": "new-registration",
-    "payload": "{...}",
     "calls": [
         {
             "url": "http://localhost:49998/?cmd=success",
             "status": "success",
-            "status_code": 200,
-            "response": "{\"errors\":[]}"
+            "request": "POST /?cmd=success HTTP/1.1",
+            "response": "HTTP/1.1 200 OK\r\n\r\n{\"errors\":[]}"
         },
         {
-            "url": "https://api.ipify.org?format=json",
+            "url": "https://api.ipify.org/?format=json",
             "status": "success",
-            "status_code": 410,
-            "response": "{\"errors\":[\"Unsubscribe\"]}"
+            "request": "POST /?format=json HTTP/1.1",
+            "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
         }
-    ]
+    ],
+    "result_name": "IP Check"
 }
 ```
 </div>
@@ -542,7 +543,6 @@ the result was generated.
     "value": "m",
     "category": "Male",
     "category_localized": "Homme",
-    "node_uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
     "input": "M"
 }
 ```
@@ -615,17 +615,19 @@ the item that the wait was waiting for
 
 Events are created when a webhook is called. The event contains
 the status and status code of the response, as well as a full dump of the
-request and response. Applying this event updates @run.webhook in the context.
+request and response. If this event has a `result_name`, then applying this event creates
+a new result with that name. If the webhook returned valid JSON, that will be accessible
+through `extra` on the result.
 
 <div class="output_event"><h3>Event</h3>```json
 {
     "type": "webhook_called",
     "created_on": "2006-01-02T15:04:05Z",
-    "url": "https://api.ipify.org?format=json",
+    "url": "https://api.ipify.org/?format=json",
     "status": "success",
-    "status_code": 200,
-    "request": "GET https://api.ipify.org?format=json",
-    "response": "HTTP/1.1 200 OK {\"ip\":\"190.154.48.130\"}"
+    "request": "GET /?format=json HTTP/1.1",
+    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
+    "result_name": "IP Check"
 }
 ```
 </div>

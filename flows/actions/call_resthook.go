@@ -19,7 +19,9 @@ const TypeCallResthook string = "call_resthook"
 // CallResthookAction can be used to call a resthook.
 //
 // A [event:resthook_called] event will be created based on the results of the HTTP call
-// to each subscriber of the resthook.
+// to each subscriber of the resthook. If the action has `result_name` set, a result will
+// be created with that name, and if the resthook returns valid JSON, that will be accessible
+// through `extra` on the result.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -32,7 +34,8 @@ type CallResthookAction struct {
 	BaseAction
 	onlineAction
 
-	Resthook string `json:"resthook" validate:"required"`
+	Resthook   string `json:"resthook" validate:"required"`
+	ResultName string `json:"result_name,omitempty"`
 }
 
 // Type returns the type of this action
@@ -77,7 +80,6 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		}
 	}
 
-	log.Add(events.NewResthookCalledEvent(a.Resthook, payload, calls))
-
+	log.Add(events.NewResthookCalledEvent(a.Resthook, payload, calls, a.ResultName))
 	return nil
 }
