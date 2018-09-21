@@ -109,7 +109,7 @@ func (e *legacyExtra) update() {
 
 	// add each extra blob to our master extra
 	for _, result := range newExtras {
-		e.legacyExtraMap["webhook"] = string(result.Extra)
+		e.legacyExtraMap[utils.Snakify(result.Name)] = string(result.Extra)
 		values, err := utils.JSONDecodeToMap(result.Extra)
 		if err == nil {
 			for k, v := range values {
