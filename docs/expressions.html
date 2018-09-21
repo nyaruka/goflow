@@ -892,7 +892,7 @@
 <a class="sourceLine" id="cb97-4" data-line-number="4">@(is_text_eq(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot; foo &quot;</span>)) → false</a>
 <a class="sourceLine" id="cb97-5" data-line-number="5">@(is_text_eq(run.status, <span class="st">&quot;completed&quot;</span>)) → true</a>
 <a class="sourceLine" id="cb97-6" data-line-number="6">@(is_text_eq(results.webhook.category, <span class="st">&quot;Success&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb97-7" data-line-number="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Unreachable&quot;</span>)) → false</a></code></pre></div>
+<a class="sourceLine" id="cb97-7" data-line-number="7">@(is_text_eq(results.webhook.category, <span class="st">&quot;Failure&quot;</span>)) → false</a></code></pre></div>
 </div>
 
     </body>

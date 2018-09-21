@@ -73,14 +73,6 @@
                                     "Failure"
                                 ],
                                 "exit_uuid": "3b3ac506-7523-4f68-b19e-b376734da8d5"
-                            },
-                            {
-                                "uuid": "cc642b3b-37d1-4d9c-a905-c621a80edfba",
-                                "type": "is_text_eq",
-                                "arguments": [
-                                    "Unreachable"
-                                ],
-                                "exit_uuid": "cdf91af5-2c2f-4141-b968-adc9d791bdba"
                             }
                         ]
                     },
@@ -94,11 +86,6 @@
                             "uuid": "3b3ac506-7523-4f68-b19e-b376734da8d5",
                             "destination_node_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",
                             "name": "Failure"
-                        },
-                        {
-                            "uuid": "cdf91af5-2c2f-4141-b968-adc9d791bdba",
-                            "destination_node_uuid": "e5d0c54c-7702-4e6b-9080-3de1a120a647",
-                            "name": "Unreachable"
                         }
                     ]
                 },

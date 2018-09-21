@@ -1639,7 +1639,7 @@ are, it will return the text as the match.
 @(is_text_eq("foo", " foo ")) → false
 @(is_text_eq(run.status, "completed")) → true
 @(is_text_eq(results.webhook.category, "Success")) → true
-@(is_text_eq(results.webhook.category, "Unreachable")) → false
+@(is_text_eq(results.webhook.category, "Failure")) → false
 ```
 
 

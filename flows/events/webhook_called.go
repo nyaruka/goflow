@@ -70,8 +70,8 @@ func (e *WebhookCalledEvent) Apply(run flows.FlowRun) error {
 
 var webhookStatusCategories = map[flows.WebhookStatus]string{
 	flows.WebhookStatusSuccess:         "Success",
-	flows.WebhookStatusResponseError:   "Failure", // for historical reasons so results match old world
-	flows.WebhookStatusConnectionError: "Unreachable",
+	flows.WebhookStatusResponseError:   "Failure",
+	flows.WebhookStatusConnectionError: "Failure",
 }
 
 func (e *BaseEvent) saveWebhookResult(run flows.FlowRun, resultName, url, requestTrace string, responseTrace string, nodeUUID flows.NodeUUID) error {

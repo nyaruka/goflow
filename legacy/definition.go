@@ -869,21 +869,6 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 		cases = append(cases, kase)
 	}
 
-	// for webhook rulesets we need to add an additional case/error pair for connection errors
-	if r.Type == "webhook" || r.Type == "resthook" {
-		connectionErrorCategory := "Unreachable"
-		connectionErrorExit := definition.NewExit(flows.ExitUUID(utils.NewUUID()), exits[1].DestinationNodeUUID(), connectionErrorCategory)
-
-		cases = append(cases, routers.Case{
-			UUID:        utils.UUID(utils.NewUUID()),
-			Type:        "is_text_eq",
-			Arguments:   []string{connectionErrorCategory},
-			OmitOperand: false,
-			ExitUUID:    connectionErrorExit.UUID(),
-		})
-		exits = append(exits, connectionErrorExit)
-	}
-
 	return cases, exits, defaultExitUUID, nil
 }
 

@@ -656,7 +656,7 @@
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "method": "GET",
                     "url": "http://example.com",
                     "result_name": "Response 1"
@@ -682,14 +682,6 @@
                             "Failure"
                         ],
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
-                    },
-                    {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "is_text_eq",
-                        "arguments": [
-                            "Unreachable"
-                        ],
-                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ]
             },
@@ -703,11 +695,6 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "name": "Failure"
-                },
-                {
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Unreachable"
                 }
             ]
         },
@@ -777,7 +764,7 @@
             "actions": [
                 {
                     "type": "call_webhook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "method": "POST",
                     "url": "http://example.com",
                     "headers": {
@@ -809,14 +796,6 @@
                             "Failure"
                         ],
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
-                    },
-                    {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "is_text_eq",
-                        "arguments": [
-                            "Unreachable"
-                        ],
-                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ]
             },
@@ -830,11 +809,6 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "name": "Failure"
-                },
-                {
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Unreachable"
                 }
             ]
         },
@@ -893,7 +867,7 @@
             "actions": [
                 {
                     "type": "call_resthook",
-                    "uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "resthook": "new-registration",
                     "result_name": "Response 1"
                 }
@@ -918,14 +892,6 @@
                             "Failure"
                         ],
                         "exit_uuid": "f3e4cb68-408f-4435-b337-82826e928875"
-                    },
-                    {
-                        "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                        "type": "is_text_eq",
-                        "arguments": [
-                            "Unreachable"
-                        ],
-                        "exit_uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     }
                 ]
             },
@@ -939,11 +905,6 @@
                     "uuid": "f3e4cb68-408f-4435-b337-82826e928875",
                     "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
                     "name": "Failure"
-                },
-                {
-                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
-                    "destination_node_uuid": "833fc698-d590-42dc-93e1-39e701b7e8e4",
-                    "name": "Unreachable"
                 }
             ]
         },
