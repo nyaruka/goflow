@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -46,21 +44,10 @@ func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChange
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactFieldChangedEvent) Validate(assets flows.SessionAssets) error {
-	_, err := assets.Fields().Get(e.Field.Key)
-	return err
+	return nil
 }
 
 // Apply applies this event to the given run
 func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
-	if run.Contact() == nil {
-		return fmt.Errorf("can't apply event in session without a contact")
-	}
-
-	fields := run.Session().Assets().Fields()
-
-	if err := run.Contact().SetFieldValue(run.Environment(), fields, e.Field.Key, e.Value); err != nil {
-		return err
-	}
-
-	return run.Contact().ReevaluateDynamicGroups(run.Session())
+	return nil
 }

@@ -61,6 +61,15 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
+	fields := run.Session().Assets().Fields()
+	if err := run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, value); err != nil {
+		return err
+	}
+
+	if err := run.Contact().ReevaluateDynamicGroups(run.Session()); err != nil {
+		return err
+	}
+
 	log.Add(events.NewContactFieldChangedEvent(a.Field, value))
 	return nil
 }

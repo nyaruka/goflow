@@ -296,7 +296,7 @@ Events are created when a timezone of a contact has been changed
 
 ## contact_urn_added
 
-Events will be created with the URN that should be added to the current contact.
+Events are created when a URN is added to a contact.
 
 <div class="output_event"><h3>Event</h3>```json
 {

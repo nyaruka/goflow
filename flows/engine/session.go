@@ -457,7 +457,11 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		if route.Extra() != nil {
 			extraJSON, _ = json.Marshal(route.Extra())
 		}
-		event := events.NewRunResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, operand, extraJSON)
+		resultName := router.ResultName()
+		resultValue := route.Match()
+		resultCategory := exit.Name()
+		run.Results().Save(resultName, resultValue, resultCategory, localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
+		event := events.NewRunResultChangedEvent(resultName, resultValue, resultCategory, localizedExitName, operand, extraJSON)
 		run.ApplyEvent(step, nil, event)
 	}
 

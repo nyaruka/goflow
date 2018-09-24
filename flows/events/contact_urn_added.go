@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -14,7 +12,7 @@ func init() {
 // TypeContactURNAdded is the type of our add URN event
 const TypeContactURNAdded string = "contact_urn_added"
 
-// ContactURNAddedEvent events will be created with the URN that should be added to the current contact.
+// ContactURNAddedEvent events are created when a URN is added to a contact.
 //
 //   {
 //     "type": "contact_urn_added",
@@ -45,10 +43,5 @@ func (e *ContactURNAddedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *ContactURNAddedEvent) Apply(run flows.FlowRun) error {
-	if run.Contact() == nil {
-		return fmt.Errorf("can't apply event in session without a contact")
-	}
-
-	run.Contact().AddURN(e.URN)
 	return nil
 }

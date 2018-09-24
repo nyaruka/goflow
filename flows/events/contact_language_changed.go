@@ -1,10 +1,7 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -48,19 +45,5 @@ func (e *ContactLanguageChangedEvent) Validate(assets flows.SessionAssets) error
 
 // Apply applies this event to the given run
 func (e *ContactLanguageChangedEvent) Apply(run flows.FlowRun) error {
-	if run.Contact() == nil {
-		return fmt.Errorf("can't apply event in session without a contact")
-	}
-
-	if e.Language != "" {
-		lang, err := utils.ParseLanguage(e.Language)
-		if err != nil {
-			return err
-		}
-		run.Contact().SetLanguage(lang)
-	} else {
-		run.Contact().SetLanguage(utils.NilLanguage)
-	}
-
 	return nil
 }

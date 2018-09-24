@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -43,21 +41,10 @@ func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelCh
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactChannelChangedEvent) Validate(assets flows.SessionAssets) error {
-	_, err := assets.Channels().Get(e.Channel.UUID)
-	return err
+	return nil
 }
 
 // Apply applies this event to the given run
 func (e *ContactChannelChangedEvent) Apply(run flows.FlowRun) error {
-	if run.Contact() == nil {
-		return fmt.Errorf("can't apply event in session without a contact")
-	}
-
-	channel, err := run.Session().Assets().Channels().Get(e.Channel.UUID)
-	if err != nil {
-		return err
-	}
-
-	run.Contact().UpdatePreferredChannel(channel)
 	return nil
 }

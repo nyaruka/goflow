@@ -87,6 +87,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 		}
 
 		groupRefs = append(groupRefs, group.Reference())
+		run.Contact().Groups().Remove(group)
 	}
 
 	// only generate event if contact's groups change

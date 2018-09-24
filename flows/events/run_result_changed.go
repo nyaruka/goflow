@@ -2,8 +2,8 @@ package events
 
 import (
 	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -64,7 +64,5 @@ func (e *RunResultChangedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *RunResultChangedEvent) Apply(run flows.FlowRun) error {
-	step := run.GetStep(e.StepUUID())
-	run.Results().Save(e.Name, e.Value, e.Category, e.CategoryLocalized, step.NodeUUID(), e.Input, e.Extra, utils.Now())
 	return nil
 }

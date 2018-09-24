@@ -62,6 +62,7 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		categoryLocalized = ""
 	}
 
+	run.Results().Save(a.Name, value, a.Category, categoryLocalized, step.NodeUUID(), nil, nil, utils.Now())
 	log.Add(events.NewRunResultChangedEvent(a.Name, value, a.Category, categoryLocalized, nil, nil))
 	return nil
 }

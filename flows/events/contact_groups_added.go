@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 )
@@ -43,27 +41,10 @@ func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded 
 
 // Validate validates our event is valid and has all the assets it needs
 func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {
-	for _, group := range e.Groups {
-		if _, err := assets.Groups().Get(group.UUID); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
 // Apply applies this event to the given run
 func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
-	if run.Contact() == nil {
-		return fmt.Errorf("can't apply event in session without a contact")
-	}
-
-	assets := run.Session().Assets()
-
-	for _, groupRef := range e.Groups {
-		group, err := assets.Groups().Get(groupRef.UUID)
-		if err == nil {
-			run.Contact().Groups().Add(group)
-		}
-	}
 	return nil
 }

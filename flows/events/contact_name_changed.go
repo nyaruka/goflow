@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -47,10 +45,5 @@ func (e *ContactNameChangedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *ContactNameChangedEvent) Apply(run flows.FlowRun) error {
-	if run.Contact() == nil {
-		return fmt.Errorf("can't apply event in session without a contact")
-	}
-
-	run.Contact().SetName(e.Name)
 	return nil
 }

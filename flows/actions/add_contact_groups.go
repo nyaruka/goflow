@@ -71,6 +71,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 		}
 
 		groupRefs = append(groupRefs, group.Reference())
+		run.Contact().Groups().Add(group)
 	}
 
 	// only generate event if contact's groups change

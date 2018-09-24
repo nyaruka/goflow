@@ -48,6 +48,11 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 		return nil
 	}
 
+	channel, err := run.Session().Assets().Channels().Get(a.Channel.UUID)
+	if err != nil {
+		return err
+	}
+	run.Contact().UpdatePreferredChannel(channel)
 	log.Add(events.NewContactChannelChangedEvent(a.Channel))
 	return nil
 }

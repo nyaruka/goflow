@@ -67,6 +67,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	}
 
 	if !run.Contact().HasURN(urn) {
+		run.Contact().AddURN(urn)
 		log.Add(events.NewURNAddedEvent(urn))
 	}
 
