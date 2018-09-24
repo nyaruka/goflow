@@ -12,7 +12,7 @@ func init() {
 // TypeFlowTriggered is the type of our flow triggered event
 const TypeFlowTriggered string = "flow_triggered"
 
-// FlowTriggeredEvent events are created when an action wants to start a subflow
+// FlowTriggeredEvent events are created when an action has started a sub-flow.
 //
 //   {
 //     "type": "flow_triggered",

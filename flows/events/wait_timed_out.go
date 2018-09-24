@@ -15,7 +15,7 @@ func init() {
 const TypeWaitTimedOut string = "wait_timed_out"
 
 // WaitTimedOutEvent events are sent by the caller when a wait has timed out - i.e. they are sent instead of
-// the item that the wait was waiting for
+// the item that the wait was waiting for.
 //
 //   {
 //     "type": "wait_timed_out",

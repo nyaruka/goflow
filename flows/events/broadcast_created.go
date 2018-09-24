@@ -21,7 +21,7 @@ type BroadcastTranslation struct {
 	QuickReplies []string           `json:"quick_replies,omitempty"`
 }
 
-// BroadcastCreatedEvent events are created for outgoing broadcasts.
+// BroadcastCreatedEvent events are created when an action wants to send a message to other contacts.
 //
 //   {
 //     "type": "broadcast_created",

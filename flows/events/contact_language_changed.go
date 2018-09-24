@@ -11,7 +11,7 @@ func init() {
 // TypeContactLanguageChanged is the type of our contact language changed event
 const TypeContactLanguageChanged string = "contact_language_changed"
 
-// ContactLanguageChangedEvent events are created when a Language of a contact has been changed
+// ContactLanguageChangedEvent events are created when the language of the contact has been changed.
 //
 //   {
 //     "type": "contact_language_changed",

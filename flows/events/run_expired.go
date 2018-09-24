@@ -13,7 +13,7 @@ func init() {
 // TypeRunExpired is the type of our flow expired event
 const TypeRunExpired string = "run_expired"
 
-// RunExpiredEvent events are sent by the caller to notify the engine that a run has expired
+// RunExpiredEvent events are sent by the caller to tell the engine that a run has expired.
 //
 //   {
 //     "type": "run_expired",

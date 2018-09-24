@@ -17,9 +17,10 @@ func init() {
 const TypeCallWebhook string = "call_webhook"
 
 // CallWebhookAction can be used to call an external service. The body, header and url fields may be
-// templates and will be evaluated at runtime.
-//
-// A [event:webhook_called] event will be created based on the results of the HTTP call.
+// templates and will be evaluated at runtime. A [event:webhook_called] event will be created based on
+// the results of the HTTP call. If this action has a `result_name`, then addtionally it will create
+// a new result with that name. If the webhook returned valid JSON, that will be accessible
+// through `extra` on the result.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",

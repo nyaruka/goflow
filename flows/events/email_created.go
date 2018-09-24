@@ -11,7 +11,7 @@ func init() {
 // TypeEmailCreated is our type for the email event
 const TypeEmailCreated string = "email_created"
 
-// EmailCreatedEvent events are created for each recipient which should receive an email.
+// EmailCreatedEvent events are created when an action wants to send an email.
 //
 //   {
 //     "type": "email_created",

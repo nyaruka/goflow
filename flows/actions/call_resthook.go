@@ -18,8 +18,8 @@ const TypeCallResthook string = "call_resthook"
 
 // CallResthookAction can be used to call a resthook.
 //
-// A [event:resthook_called] event will be created based on the results of the HTTP call
-// to each subscriber of the resthook. If the action has `result_name` set, a result will
+// A [event:webhook_called] event will be created for each subscriber of the resthook with the results
+// of the HTTP call. If the action has `result_name` set, a result will
 // be created with that name, and if the resthook returns valid JSON, that will be accessible
 // through `extra` on the result.
 //

@@ -12,7 +12,7 @@ func init() {
 // TypeContactGroupsAdded is the type of our add to group action
 const TypeContactGroupsAdded string = "contact_groups_added"
 
-// ContactGroupsAddedEvent events will be created with the groups a contact was added to.
+// ContactGroupsAddedEvent events are created when a contact is added to one or more groups.
 //
 //   {
 //     "type": "contact_groups_added",

@@ -15,7 +15,7 @@ func init() {
 // TypeEnvironmentChanged is the type of our environment changed event
 const TypeEnvironmentChanged string = "environment_changed"
 
-// EnvironmentChangedEvent events are created to set the environment on a session
+// EnvironmentChangedEvent events are sent by the caller to tell the engine to update the session environment.
 //
 //   {
 //     "type": "environment_changed",

@@ -15,7 +15,7 @@ func init() {
 // TypeSessionTriggered is the type of our session triggered event
 const TypeSessionTriggered string = "session_triggered"
 
-// SessionTriggeredEvent events are created when an action wants to start a subflow
+// SessionTriggeredEvent events are created when an action wants to start other people in a flow.
 //
 //   {
 //     "type": "session_triggered",

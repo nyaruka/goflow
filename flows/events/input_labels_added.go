@@ -12,7 +12,7 @@ func init() {
 // TypeInputLabelsAdded is the type of our add label action
 const TypeInputLabelsAdded string = "input_labels_added"
 
-// InputLabelsAddedEvent events will be created with the labels that were applied to the given input.
+// InputLabelsAddedEvent events are created when an action wants to add labels to the current input.
 //
 //   {
 //     "type": "input_labels_added",

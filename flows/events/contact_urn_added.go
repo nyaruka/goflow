@@ -12,7 +12,7 @@ func init() {
 // TypeContactURNAdded is the type of our add URN event
 const TypeContactURNAdded string = "contact_urn_added"
 
-// ContactURNAddedEvent events are created when a URN is added to a contact.
+// ContactURNAddedEvent events are created when a URN has been added to the contact.
 //
 //   {
 //     "type": "contact_urn_added",

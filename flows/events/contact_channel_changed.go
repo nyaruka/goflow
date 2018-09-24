@@ -12,7 +12,7 @@ func init() {
 // TypeContactChannelChanged is the type of our set preferred channel event
 const TypeContactChannelChanged string = "contact_channel_changed"
 
-// ContactChannelChangedEvent events are created when a contact's preferred channel is changed.
+// ContactChannelChangedEvent events are created when the preferred channel of the contact has been changed.
 //
 //   {
 //     "type": "contact_channel_changed",

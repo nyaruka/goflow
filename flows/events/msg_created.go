@@ -11,7 +11,7 @@ func init() {
 // TypeMsgCreated is a constant for incoming messages
 const TypeMsgCreated string = "msg_created"
 
-// MsgCreatedEvent events are used for replies to the session contact.
+// MsgCreatedEvent events are created when an action wants to send a reply to the current contact.
 //
 //   {
 //     "type": "msg_created",

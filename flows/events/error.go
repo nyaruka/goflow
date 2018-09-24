@@ -11,8 +11,7 @@ func init() {
 // TypeError is the type of our error events
 const TypeError string = "error"
 
-// ErrorEvent events will be created whenever an error is encountered during flow execution. This
-// can vary from template evaluation errors to invalid actions.
+// ErrorEvent events are created when an error occurs during flow execution.
 //
 //   {
 //     "type": "error",

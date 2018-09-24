@@ -12,8 +12,7 @@ func init() {
 // TypeContactGroupsRemoved is the type fo our remove from group action
 const TypeContactGroupsRemoved string = "contact_groups_removed"
 
-// ContactGroupsRemovedEvent events are created when a contact has been removed from one or more
-// groups.
+// ContactGroupsRemovedEvent events are created when a contact is removed from one or more groups.
 //
 //   {
 //     "type": "contact_groups_removed",

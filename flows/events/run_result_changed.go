@@ -13,7 +13,7 @@ func init() {
 // TypeRunResultChanged is the type of our run result event
 const TypeRunResultChanged string = "run_result_changed"
 
-// RunResultChangedEvent events are created when a result is saved. They contain not only
+// RunResultChangedEvent events are created when a run result is saved. They contain not only
 // the name, value and category of the result, but also the UUID of the node where
 // the result was generated.
 //

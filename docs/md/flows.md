@@ -194,8 +194,7 @@ for the groups which the contact has been added to.
 ## add_contact_urn
 
 Can be used to add a URN to the current contact. A [contact_urn_added](sessions.html#event:contact_urn_added) event
-will be created when this action is encountered. If there is no contact then this
-action will be ignored.
+will be created when this action is encountered.
 
 <div class="input_action"><h3>Action</h3>```json
 {
@@ -255,8 +254,8 @@ no user input at that point then this action will be ignored.
 
 Can be used to call a resthook.
 
-A [resthook_called](sessions.html#event:resthook_called) event will be created based on the results of the HTTP call
-to each subscriber of the resthook. If the action has `result_name` set, a result will
+A [webhook_called](sessions.html#event:webhook_called) event will be created for each subscriber of the resthook with the results
+of the HTTP call. If the action has `result_name` set, a result will
 be created with that name, and if the resthook returns valid JSON, that will be accessible
 through `extra` on the result.
 
@@ -269,18 +268,13 @@ through `extra` on the result.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "resthook_called",
+    "type": "webhook_called",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
-    "resthook": "new-registration",
-    "calls": [
-        {
-            "url": "http://127.0.0.1:49998/?cmd=success",
-            "status": "success",
-            "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2205\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"347b55be-7be1-4e68-aaa3-04d3fbce5f9a\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\n\t\"run\": {\"uuid\": \"4c9abf31-d821-4e97-ba7e-53c2263e32f8\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2000-01-01T00:00:00.000000Z\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
-            "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
-        }
-    ]
+    "url": "http://127.0.0.1:49998/?cmd=success",
+    "status": "success",
+    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2205\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"347b55be-7be1-4e68-aaa3-04d3fbce5f9a\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\n\t\"run\": {\"uuid\": \"4c9abf31-d821-4e97-ba7e-53c2263e32f8\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2000-01-01T00:00:00.000000Z\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
+    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
 }
 ```
 </div>
@@ -289,9 +283,10 @@ through `extra` on the result.
 ## call_webhook
 
 Can be used to call an external service. The body, header and url fields may be
-templates and will be evaluated at runtime.
-
-A [webhook_called](sessions.html#event:webhook_called) event will be created based on the results of the HTTP call.
+templates and will be evaluated at runtime. A [webhook_called](sessions.html#event:webhook_called) event will be created based on
+the results of the HTTP call. If this action has a `result_name`, then addtionally it will create
+a new result with that name. If the webhook returned valid JSON, that will be accessible
+through `extra` on the result.
 
 <div class="input_action"><h3>Action</h3>```json
 {

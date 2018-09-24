@@ -12,8 +12,8 @@ func init() {
 // TypeMsgReceived is a constant for incoming messages
 const TypeMsgReceived string = "msg_received"
 
-// MsgReceivedEvent events are used for starting flows or resuming flows which are waiting for a message.
-// They represent an incoming message for a contact.
+// MsgReceivedEvent events are sent by the caller to tell the engine that a message was received from
+// the contact and that it should try to resume the session.
 //
 //   {
 //     "type": "msg_received",

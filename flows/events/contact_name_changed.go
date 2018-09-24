@@ -11,7 +11,7 @@ func init() {
 // TypeContactNameChanged is the type of our contact name changed event
 const TypeContactNameChanged string = "contact_name_changed"
 
-// ContactNameChangedEvent events are created when a name of a contact has been changed
+// ContactNameChangedEvent events are created when the name of the contact has been changed.
 //
 //   {
 //     "type": "contact_name_changed",

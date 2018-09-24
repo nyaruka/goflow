@@ -11,7 +11,7 @@ func init() {
 // TypeContactTimezoneChanged is the type of our contact timezone changed event
 const TypeContactTimezoneChanged string = "contact_timezone_changed"
 
-// ContactTimezoneChangedEvent events are created when a timezone of a contact has been changed
+// ContactTimezoneChangedEvent events are created when the timezone of the contact has been changed.
 //
 //   {
 //     "type": "contact_timezone_changed",
