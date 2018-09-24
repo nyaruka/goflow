@@ -306,16 +306,29 @@ A [webhook_called](sessions.html#event:webhook_called) event will be created bas
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "webhook_called",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
-    "url": "http://localhost:49998/?cmd=success",
-    "status": "success",
-    "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
-    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-    "result_name": "webhook"
-}
+[
+    {
+        "type": "webhook_called",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+        "url": "http://localhost:49998/?cmd=success",
+        "status": "success",
+        "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
+        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
+    },
+    {
+        "type": "run_result_changed",
+        "created_on": "2018-04-11T18:24:30.123456Z",
+        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+        "name": "webhook",
+        "value": "200",
+        "category": "Success",
+        "input": "GET http://localhost:49998/?cmd=success",
+        "extra": {
+            "ok": "true"
+        }
+    }
+]
 ```
 </div>
 <a name="action:remove_contact_groups"></a>

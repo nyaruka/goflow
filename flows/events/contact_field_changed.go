@@ -24,7 +24,6 @@ const TypeContactFieldChanged string = "contact_field_changed"
 // @event contact_field_changed
 type ContactFieldChangedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	Field *assets.FieldReference `json:"field" validate:"required"`
 	Value string                 `json:"value" validate:"required"`
@@ -41,13 +40,3 @@ func NewContactFieldChangedEvent(field *assets.FieldReference, value string) *Co
 
 // Type returns the type of this event
 func (e *ContactFieldChangedEvent) Type() string { return TypeContactFieldChanged }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *ContactFieldChangedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *ContactFieldChangedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

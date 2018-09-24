@@ -129,7 +129,7 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 //------------------------------------------------------------------------------------------
 
 // Start beings processing of this session from a trigger and a set of initial caller events
-func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error {
+func (s *session) Start(trigger flows.Trigger, callerEvents []flows.CallerEvent) error {
 	// try to load the flow
 	flow, err := s.Assets().Flows().Get(trigger.Flow().UUID)
 	if err != nil {
@@ -161,7 +161,7 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 }
 
 // Resume tries to resume a waiting session
-func (s *session) Resume(callerEvents []flows.Event) error {
+func (s *session) Resume(callerEvents []flows.CallerEvent) error {
 	if s.status != flows.SessionStatusWaiting {
 		return fmt.Errorf("only waiting sessions can be resumed")
 	}
@@ -187,14 +187,14 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 			run.Exit(flows.RunStatusErrored)
 		}
 		s.status = flows.SessionStatusErrored
-		s.LogEvent(events.NewFatalErrorEvent(err))
+		s.LogEvent(events.NewErrorEvent(err))
 	}
 
 	return nil
 }
 
 // Resume resumes a waiting session
-func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Event) error {
+func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.CallerEvent) error {
 	// figure out where in the flow we began waiting on
 	step, _, err := waitingRun.PathLocation()
 	if err != nil {
@@ -233,7 +233,7 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 	s.status = flows.SessionStatusActive
 
 	// off to the races again...
-	return s.continueUntilWait(waitingRun, destination, step, []flows.Event{})
+	return s.continueUntilWait(waitingRun, destination, step, []flows.CallerEvent{})
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
@@ -253,7 +253,7 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 }
 
 // the main flow execution loop
-func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
+func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.CallerEvent) (err error) {
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
@@ -343,7 +343,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 }
 
 // visits the given node, creating a step in our current run path
-func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (flows.Step, flows.NodeUUID, error) {
+func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.CallerEvent) (flows.Step, flows.NodeUUID, error) {
 	step := run.CreateStep(node)
 
 	// apply any caller events
@@ -470,11 +470,8 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 const noDestination = flows.NodeUUID("")
 
-func (s *session) validateCallerEvents(events []flows.Event) error {
+func (s *session) validateCallerEvents(events []flows.CallerEvent) error {
 	for _, event := range events {
-		if event.AllowedOrigin()&flows.EventOriginCaller == 0 {
-			return fmt.Errorf("event[type=%s] can't be sent by callers", event.Type())
-		}
 		if err := event.Validate(s.assets); err != nil {
 			return fmt.Errorf("validation failed for event[type=%s]: %s", event.Type(), err)
 		}

@@ -24,7 +24,6 @@ const TypeRunExpired string = "run_expired"
 // @event run_expired
 type RunExpiredEvent struct {
 	BaseEvent
-	callerOnlyEvent
 
 	RunUUID flows.RunUUID `json:"run_uuid"    validate:"required,uuid4"`
 }
@@ -46,3 +45,5 @@ func (e *RunExpiredEvent) Apply(run flows.FlowRun) error {
 	run.Exit(flows.RunStatusExpired)
 	return nil
 }
+
+var _ flows.CallerEvent = (*RunExpiredEvent)(nil)

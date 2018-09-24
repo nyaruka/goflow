@@ -28,7 +28,7 @@ func (w *NothingWait) Begin(run flows.FlowRun, step flows.Step) {
 }
 
 // CanResume always returns true for a nothing wait because it's not waiting for anything
-func (w *NothingWait) CanResume(callerEvents []flows.Event) bool {
+func (w *NothingWait) CanResume(callerEvents []flows.CallerEvent) bool {
 	return true
 }
 

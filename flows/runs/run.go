@@ -116,25 +116,26 @@ func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
 func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
+	asCallerEvent, isCaller := event.(flows.CallerEvent)
+
+	if isCaller {
+		if err := asCallerEvent.Apply(r); err != nil {
+			return fmt.Errorf("unable to apply event[type=%s]: %s", event.Type(), err)
+		}
+	}
+
 	if s != nil {
 		event.SetStepUUID(s.UUID())
-	}
-
-	if err := event.Apply(r); err != nil {
-		return fmt.Errorf("unable to apply event[type=%s]: %s", event.Type(), err)
-	}
-
-	if s != nil {
 		r.events = append(r.events, event)
 	}
 
-	if !event.FromCaller() {
+	if !isCaller {
 		r.Session().LogEvent(event)
 	}
 
 	if log.GetLevel() >= log.DebugLevel {
 		var origin string
-		if event.FromCaller() {
+		if isCaller {
 			origin = "caller"
 		} else {
 			origin = "engine"
@@ -152,6 +153,7 @@ func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
 }
 
 func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
+	r.Exit(flows.RunStatusErrored)
 	r.ApplyEvent(step, action, events.NewFatalErrorEvent(err))
 }
 
@@ -161,14 +163,6 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	return step
-}
-func (r *flowRun) GetStep(stepUUID flows.StepUUID) flows.Step {
-	for _, step := range r.Path() {
-		if step.UUID() == stepUUID {
-			return step
-		}
-	}
-	return nil
 }
 
 func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {

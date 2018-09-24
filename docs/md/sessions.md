@@ -508,8 +508,7 @@ that will be accessible through `extra` on the result.
             "request": "POST /?format=json HTTP/1.1",
             "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
         }
-    ],
-    "result_name": "IP Check"
+    ]
 }
 ```
 </div>
@@ -626,8 +625,7 @@ through `extra` on the result.
     "url": "https://api.ipify.org/?format=json",
     "status": "success",
     "request": "GET /?format=json HTTP/1.1",
-    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
-    "result_name": "IP Check"
+    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 }
 ```
 </div>

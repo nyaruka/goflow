@@ -31,7 +31,6 @@ const TypeEnvironmentChanged string = "environment_changed"
 // @event environment_changed
 type EnvironmentChangedEvent struct {
 	BaseEvent
-	callerOnlyEvent
 
 	Environment json.RawMessage `json:"environment"`
 }
@@ -54,3 +53,5 @@ func (e *EnvironmentChangedEvent) Apply(run flows.FlowRun) error {
 	run.Session().SetEnvironment(env)
 	return nil
 }
+
+var _ flows.CallerEvent = (*EnvironmentChangedEvent)(nil)

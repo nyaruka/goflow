@@ -66,14 +66,25 @@
                     "created_on": "2018-07-06T12:30:09.123456789Z",
                     "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-                    "result_name": "webhook",
                     "status": "success",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:10.123456789Z",
+                    "category": "Success",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "extra": {
+                        "ok": "true"
+                    },
+                    "input": "GET http://127.0.0.1:49999/?cmd=success",
+                    "name": "webhook",
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "run_result_changed",
+                    "value": "200"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:12.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -87,9 +98,9 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:14.123456789Z",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "timeout_on": "2018-07-06T12:40:11.123456789Z",
+                    "timeout_on": "2018-07-06T12:40:13.123456789Z",
                     "type": "msg_wait"
                 }
             ],
@@ -162,14 +173,25 @@
                                 "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-                                "result_name": "webhook",
                                 "status": "success",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "category": "Success",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "extra": {
+                                    "ok": "true"
+                                },
+                                "input": "GET http://127.0.0.1:49999/?cmd=success",
+                                "name": "webhook",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "200"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -183,9 +205,9 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "timeout_on": "2018-07-06T12:40:11.123456789Z",
+                                "timeout_on": "2018-07-06T12:40:13.123456789Z",
                                 "type": "msg_wait"
                             }
                         ],
@@ -230,7 +252,7 @@
                             },
                             "webhook": {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "extra": {
                                     "ok": "true"
                                 },
@@ -272,7 +294,7 @@
                 },
                 "wait": {
                     "timeout": 600,
-                    "timeout_on": "2018-07-06T12:40:11.123456789Z",
+                    "timeout_on": "2018-07-06T12:40:13.123456789Z",
                     "type": "msg"
                 }
             }
@@ -281,7 +303,7 @@
             "events": [
                 {
                     "category": "",
-                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
                     "input": "Ryan Lewis",
                     "name": "Continue",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -289,7 +311,7 @@
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -372,14 +394,25 @@
                                 "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-                                "result_name": "webhook",
                                 "status": "success",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "category": "Success",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "extra": {
+                                    "ok": "true"
+                                },
+                                "input": "GET http://127.0.0.1:49999/?cmd=success",
+                                "name": "webhook",
+                                "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                                "type": "run_result_changed",
+                                "value": "200"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -393,9 +426,9 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                                "timeout_on": "2018-07-06T12:40:11.123456789Z",
+                                "timeout_on": "2018-07-06T12:40:13.123456789Z",
                                 "type": "msg_wait"
                             },
                             {
@@ -414,7 +447,7 @@
                             },
                             {
                                 "category": "",
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -422,7 +455,7 @@
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -436,8 +469,8 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:18.123456789Z",
-                        "expires_on": "2018-07-06T12:30:13.123456789Z",
+                        "exited_on": "2018-07-06T12:30:20.123456789Z",
+                        "expires_on": "2018-07-06T12:30:15.123456789Z",
                         "flow": {
                             "name": "Legacy Extra",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
@@ -473,7 +506,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:16.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:18.123456789Z",
                                 "exit_uuid": "82765044-5c8e-4678-a1c8-8e4f348f903a",
                                 "node_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -481,7 +514,7 @@
                         ],
                         "results": {
                             "continue": {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -502,7 +535,7 @@
                             },
                             "webhook": {
                                 "category": "Success",
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "extra": {
                                     "ok": "true"
                                 },

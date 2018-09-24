@@ -32,7 +32,7 @@
                     "type": "input_labels_added"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "created_on": "2018-07-06T12:30:06.123456789Z",
                     "fatal": true,
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "text": "can't execute action in session without a contact",
@@ -80,14 +80,14 @@
                                 "type": "input_labels_added"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "fatal": true,
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:06.123456789Z",
+                        "exited_on": "2018-07-06T12:30:05.123456789Z",
                         "expires_on": "2018-07-06T12:30:03.123456789Z",
                         "flow": {
                             "name": "Registration Flow",

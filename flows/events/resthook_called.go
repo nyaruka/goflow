@@ -60,59 +60,30 @@ func NewResthookSubscriberCall(webhook *flows.WebhookCall) *ResthookSubscriberCa
 //         "request": "POST /?format=json HTTP/1.1",
 //         "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
 //       }
-//     ],
-//     "result_name": "IP Check"
+//     ]
 //   }
 //
 // @event resthook_called
 type ResthookCalledEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
-	Resthook   string                    `json:"resthook" validate:"required"`
-	Calls      []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
-	ResultName string                    `json:"result_name,omitempty"`
+	Resthook string                    `json:"resthook" validate:"required"`
+	Calls    []*ResthookSubscriberCall `json:"calls" validate:"omitempty,dive"`
 }
 
 // NewResthookCalledEvent returns a new resthook called event
-func NewResthookCalledEvent(resthook string, payload string, calls []*ResthookSubscriberCall, resultName string) *ResthookCalledEvent {
+func NewResthookCalledEvent(resthook string, webhooks []*flows.WebhookCall) *ResthookCalledEvent {
+	calls := make([]*ResthookSubscriberCall, len(webhooks))
+	for w := range webhooks {
+		calls[w] = NewResthookSubscriberCall(webhooks[w])
+	}
+
 	return &ResthookCalledEvent{
-		BaseEvent:  NewBaseEvent(),
-		Resthook:   resthook,
-		Calls:      calls,
-		ResultName: resultName,
+		BaseEvent: NewBaseEvent(),
+		Resthook:  resthook,
+		Calls:     calls,
 	}
 }
 
 // Type returns the type of this event
 func (e *ResthookCalledEvent) Type() string { return TypeResthookCalled }
-
-// Apply applies this event to the given run
-func (e *ResthookCalledEvent) Apply(run flows.FlowRun) error {
-	// no result name then nothing to do
-	if e.ResultName == "" {
-		return nil
-	}
-
-	// select one of our calls to become the webhook result
-	var lastFailure, asResult *ResthookSubscriberCall
-	for _, call := range e.Calls {
-		if call.Status == flows.WebhookStatusSuccess {
-			asResult = call
-		} else {
-			lastFailure = call
-		}
-	}
-	if lastFailure != nil {
-		asResult = lastFailure
-	}
-
-	nodeUUID := run.GetStep(e.StepUUID()).NodeUUID()
-
-	if asResult != nil {
-		return e.saveWebhookResult(run, e.ResultName, asResult.URL, asResult.Request, asResult.Response, nodeUUID)
-	} else {
-		run.Results().Save(e.ResultName, "", "Success", "", nodeUUID, nil, nil, e.CreatedOn())
-	}
-	return nil
-}

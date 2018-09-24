@@ -25,7 +25,6 @@ const TypeWaitTimedOut string = "wait_timed_out"
 // @event wait_timed_out
 type WaitTimedOutEvent struct {
 	BaseEvent
-	callerOnlyEvent
 }
 
 // NewWaitTimedOutEvent creates a new wait timed out event
@@ -60,3 +59,5 @@ func (e *WaitTimedOutEvent) Apply(run flows.FlowRun) error {
 	run.SetInput(nil)
 	return nil
 }
+
+var _ flows.CallerEvent = (*WaitTimedOutEvent)(nil)

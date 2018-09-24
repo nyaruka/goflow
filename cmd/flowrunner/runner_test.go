@@ -81,7 +81,7 @@ type runResult struct {
 	outputs    []*Output
 }
 
-func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.Event) (runResult, error) {
+func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.CallerEvent) (runResult, error) {
 	// load both the test specific assets and default assets
 	defaultAssetsJSON, err := readFile("", "default.json")
 	if err != nil {
@@ -175,17 +175,15 @@ func TestFlows(t *testing.T) {
 		require.NoError(t, err, "Error unmarshalling output for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
 		// unmarshal our caller events
-		callerEvents := make([][]flows.Event, len(flowTest.CallerEvents))
+		callerEvents := make([][]flows.CallerEvent, len(flowTest.CallerEvents))
 
 		for i := range flowTest.CallerEvents {
-			callerEvents[i] = make([]flows.Event, len(flowTest.CallerEvents[i]))
+			callerEvents[i] = make([]flows.CallerEvent, len(flowTest.CallerEvents[i]))
 
 			for e := range flowTest.CallerEvents[i] {
 				event, err := events.ReadEvent(flowTest.CallerEvents[i][e])
 				require.NoError(t, err, "Error unmarshalling caller events for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
-
-				event.SetFromCaller(true)
-				callerEvents[i][e] = event
+				callerEvents[i][e] = event.(flows.CallerEvent)
 			}
 		}
 

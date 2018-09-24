@@ -355,7 +355,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	if err := json.Unmarshal(json.RawMessage(initialEvents), &eventEnvelopes); err != nil {
 		return nil, err
 	}
-	events, err := events.ReadEvents(eventEnvelopes)
+	events, err := events.ReadCallerEvents(eventEnvelopes)
 	if err != nil {
 		return nil, err
 	}

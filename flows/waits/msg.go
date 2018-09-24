@@ -32,7 +32,7 @@ func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
 }
 
 // CanResume returns true if a message event has been received
-func (w *MsgWait) CanResume(callerEvents []flows.Event) bool {
+func (w *MsgWait) CanResume(callerEvents []flows.CallerEvent) bool {
 	if containsEventOfType(callerEvents, events.TypeMsgReceived) {
 		return true
 	}

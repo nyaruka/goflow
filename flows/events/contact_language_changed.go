@@ -22,7 +22,6 @@ const TypeContactLanguageChanged string = "contact_language_changed"
 // @event contact_language_changed
 type ContactLanguageChangedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	Language string `json:"language"`
 }
@@ -37,13 +36,3 @@ func NewContactLanguageChangedEvent(language string) *ContactLanguageChangedEven
 
 // Type returns the type of this event
 func (e *ContactLanguageChangedEvent) Type() string { return TypeContactLanguageChanged }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *ContactLanguageChangedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *ContactLanguageChangedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

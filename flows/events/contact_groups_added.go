@@ -23,7 +23,6 @@ const TypeContactGroupsAdded string = "contact_groups_added"
 // @event contact_groups_added
 type ContactGroupsAddedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	Groups []*assets.GroupReference `json:"groups" validate:"required,min=1,dive"`
 }
@@ -38,13 +37,3 @@ func NewContactGroupsAddedEvent(groups []*assets.GroupReference) *ContactGroupsA
 
 // Type returns the type of this event
 func (e *ContactGroupsAddedEvent) Type() string { return TypeContactGroupsAdded }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *ContactGroupsAddedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *ContactGroupsAddedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

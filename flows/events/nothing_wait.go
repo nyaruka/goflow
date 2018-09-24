@@ -22,7 +22,6 @@ const TypeNothingWait string = "nothing_wait"
 // @event nothing_wait
 type NothingWaitEvent struct {
 	BaseEvent
-	engineOnlyEvent
 }
 
 // NewNothingWait returns a new nothing wait
@@ -32,8 +31,3 @@ func NewNothingWait() *NothingWaitEvent {
 
 // Type returns the type of this event
 func (e *NothingWaitEvent) Type() string { return TypeNothingWait }
-
-// Apply applies this event to the given run
-func (e *NothingWaitEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

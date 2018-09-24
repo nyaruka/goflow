@@ -28,7 +28,6 @@ const TypeContactChanged string = "contact_changed"
 // @event contact_changed
 type ContactChangedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	Contact json.RawMessage `json:"contact"`
 }
@@ -52,3 +51,5 @@ func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
 	run.Session().SetContact(contact)
 	return nil
 }
+
+var _ flows.CallerEvent = (*ContactChangedEvent)(nil)

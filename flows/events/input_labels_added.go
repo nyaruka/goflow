@@ -24,7 +24,6 @@ const TypeInputLabelsAdded string = "input_labels_added"
 // @event input_labels_added
 type InputLabelsAddedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	InputUUID flows.InputUUID          `json:"input_uuid" validate:"required,uuid4"`
 	Labels    []*assets.LabelReference `json:"labels" validate:"required,min=1,dive"`
@@ -41,13 +40,3 @@ func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*assets.LabelR
 
 // Type returns the type of this event
 func (e *InputLabelsAddedEvent) Type() string { return TypeInputLabelsAdded }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *InputLabelsAddedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *InputLabelsAddedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

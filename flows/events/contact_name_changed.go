@@ -22,7 +22,6 @@ const TypeContactNameChanged string = "contact_name_changed"
 // @event contact_name_changed
 type ContactNameChangedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	Name string `json:"name"`
 }
@@ -37,13 +36,3 @@ func NewContactNameChangedEvent(name string) *ContactNameChangedEvent {
 
 // Type returns the type of this event
 func (e *ContactNameChangedEvent) Type() string { return TypeContactNameChanged }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *ContactNameChangedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *ContactNameChangedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

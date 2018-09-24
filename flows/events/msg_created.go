@@ -28,7 +28,6 @@ const TypeMsgCreated string = "msg_created"
 // @event msg_created
 type MsgCreatedEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
 	Msg flows.MsgOut `json:"msg" validate:"required,dive"`
 }
@@ -43,8 +42,3 @@ func NewMsgCreatedEvent(msg *flows.MsgOut) *MsgCreatedEvent {
 
 // Type returns the type of this event
 func (e *MsgCreatedEvent) Type() string { return TypeMsgCreated }
-
-// Apply applies this event to the given run
-func (e *MsgCreatedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

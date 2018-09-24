@@ -46,7 +46,6 @@ const TypeSessionTriggered string = "session_triggered"
 // @event session_triggered
 type SessionTriggeredEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
 	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
 	URNs          []urns.URN                `json:"urns,omitempty" validate:"dive,urn"`
@@ -71,8 +70,3 @@ func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, conta
 
 // Type returns the type of this event
 func (e *SessionTriggeredEvent) Type() string { return TypeSessionTriggered }
-
-// Apply applies this event to the given run
-func (e *SessionTriggeredEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

@@ -30,7 +30,6 @@ const TypeMsgReceived string = "msg_received"
 // @event msg_received
 type MsgReceivedEvent struct {
 	BaseEvent
-	callerOnlyEvent
 
 	Msg flows.MsgIn `json:"msg" validate:"required,dive"`
 }
@@ -72,3 +71,5 @@ func (e *MsgReceivedEvent) Apply(run flows.FlowRun) error {
 	run.ResetExpiration(nil)
 	return nil
 }
+
+var _ flows.CallerEvent = (*MsgReceivedEvent)(nil)

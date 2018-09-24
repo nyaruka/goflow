@@ -1,8 +1,10 @@
 package actions
 
 import (
+	"encoding/json"
 	"fmt"
 	"regexp"
+	"strconv"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -10,6 +12,12 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
+
+var webhookStatusCategories = map[flows.WebhookStatus]string{
+	flows.WebhookStatusSuccess:         "Success",
+	flows.WebhookStatusResponseError:   "Failure",
+	flows.WebhookStatusConnectionError: "Failure",
+}
 
 var registeredTypes = map[string](func() flows.Action){}
 
@@ -239,6 +247,38 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	}
 
 	return urnList, contactRefs, groupRefs, nil
+}
+
+// saves a run result and returns the corresponding event
+func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage) flows.Event {
+	run.Results().Save(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
+	return events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra)
+}
+
+// saves a run result based on a webhook call and returns the corresponding event
+func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall) flows.Event {
+	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
+	value := strconv.Itoa(webhook.StatusCode())
+	category := webhookStatusCategories[webhook.Status()]
+
+	body := []byte(webhook.Body())
+	var extra json.RawMessage
+
+	// try to parse body as JSON
+	if utils.IsValidJSON(body) {
+		// if that was successful, the body is valid JSON and extra is the body
+		extra = body
+	} else {
+		// if not, treat body as text and encode as a JSON string
+		extra, _ = json.Marshal(string(body))
+	}
+
+	return a.saveResult(run, step, name, value, category, "", &input, extra)
+}
+
+func (a *BaseAction) fatalError(run flows.FlowRun, err error) flows.Event {
+	run.Exit(flows.RunStatusErrored)
+	return events.NewFatalErrorEvent(err)
 }
 
 // utility struct which sets the allowed flow types to any

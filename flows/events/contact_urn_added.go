@@ -23,7 +23,6 @@ const TypeContactURNAdded string = "contact_urn_added"
 // @event contact_urn_added
 type ContactURNAddedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	URN urns.URN `json:"urn" validate:"urn"`
 }
@@ -35,13 +34,3 @@ func NewURNAddedEvent(urn urns.URN) *ContactURNAddedEvent {
 
 // Type returns the type of this event
 func (e *ContactURNAddedEvent) Type() string { return TypeContactURNAdded }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *ContactURNAddedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *ContactURNAddedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}
