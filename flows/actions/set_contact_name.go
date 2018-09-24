@@ -57,7 +57,9 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, log f
 		return nil
 	}
 
-	run.Contact().SetName(name)
-	log.Add(events.NewContactNameChangedEvent(name))
+	if run.Contact().Name() != name {
+		run.Contact().SetName(name)
+		log.Add(events.NewContactNameChangedEvent(name))
+	}
 	return nil
 }

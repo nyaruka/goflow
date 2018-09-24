@@ -52,7 +52,10 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 	if err != nil {
 		return err
 	}
-	run.Contact().UpdatePreferredChannel(channel)
-	log.Add(events.NewContactChannelChangedEvent(a.Channel))
+
+	if run.Contact().PreferredChannel() != channel {
+		run.Contact().UpdatePreferredChannel(channel)
+		log.Add(events.NewContactChannelChangedEvent(a.Channel))
+	}
 	return nil
 }

@@ -59,17 +59,18 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	}
 
 	// language must be empty or valid language code
+	lang := utils.NilLanguage
 	if language != "" {
-		lang, err := utils.ParseLanguage(language)
+		lang, err = utils.ParseLanguage(language)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 			return nil
 		}
-		run.Contact().SetLanguage(lang)
-	} else {
-		run.Contact().SetLanguage(utils.NilLanguage)
 	}
 
-	log.Add(events.NewContactLanguageChangedEvent(language))
+	if run.Contact().Language() != lang {
+		run.Contact().SetLanguage(lang)
+		log.Add(events.NewContactLanguageChangedEvent(language))
+	}
 	return nil
 }

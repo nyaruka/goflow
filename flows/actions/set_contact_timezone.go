@@ -59,17 +59,18 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 	}
 
 	// timezone must be empty or valid timezone name
+	var tz *time.Location
 	if timezone != "" {
-		tz, err := time.LoadLocation(timezone)
+		tz, err = time.LoadLocation(timezone)
 		if err != nil {
 			log.Add(events.NewErrorEvent(err))
 			return nil
 		}
-		run.Contact().SetTimezone(tz)
-	} else {
-		run.Contact().SetTimezone(nil)
 	}
 
-	log.Add(events.NewContactTimezoneChangedEvent(timezone))
+	if run.Contact().Timezone() != tz {
+		run.Contact().SetTimezone(tz)
+		log.Add(events.NewContactTimezoneChangedEvent(timezone))
+	}
 	return nil
 }

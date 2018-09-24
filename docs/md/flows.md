@@ -543,12 +543,7 @@ A [contact_language_changed](sessions.html#event:contact_language_changed) event
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_language_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "7ca3fc1e-e652-4f5c-979e-17606f578787",
-    "language": "eng"
-}
+[]
 ```
 </div>
 <a name="action:set_contact_name"></a>
