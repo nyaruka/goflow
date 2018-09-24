@@ -160,7 +160,7 @@ representation of a contact's state based on action performed on a flow so that 
 
 ## add_contact_groups
 
-Can be used to add a contact to one or more groups. A [contact_groups_added](sessions.html#event:contact_groups_added) event will be created
+Can be used to add a contact to one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact has been added to.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -177,10 +177,10 @@ for the groups which the contact has been added to.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_groups_added",
+    "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-    "groups": [
+    "groups_added": [
         {
             "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
             "name": "Customers"
@@ -330,7 +330,7 @@ through `extra` on the result.
 
 ## remove_contact_groups
 
-Can be used to remove a contact from one or more groups. A [contact_groups_removed](sessions.html#event:contact_groups_removed) event will be created
+Can be used to remove a contact from one or more groups. A [contact_groups_changed](sessions.html#event:contact_groups_changed) event will be created
 for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 the contact from all non-dynamic groups.
 
@@ -349,10 +349,10 @@ the contact from all non-dynamic groups.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_groups_removed",
+    "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
-    "groups": [
+    "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Testers"

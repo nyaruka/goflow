@@ -211,39 +211,26 @@ Events are created when a custom field value of the contact has been changed.
 }
 ```
 </div>
-<a name="event:contact_groups_added"></a>
+<a name="event:contact_groups_changed"></a>
 
-## contact_groups_added
+## contact_groups_changed
 
-Events are created when a contact is added to one or more groups.
+Events are created when a contact is added or removed to/from one or more groups.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_groups_added",
+    "type": "contact_groups_changed",
     "created_on": "2006-01-02T15:04:05Z",
-    "groups": [
+    "groups_added": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Reporters"
         }
-    ]
-}
-```
-</div>
-<a name="event:contact_groups_removed"></a>
-
-## contact_groups_removed
-
-Events are created when a contact is removed from one or more groups.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_groups_removed",
-    "created_on": "2006-01-02T15:04:05Z",
-    "groups": [
+    ],
+    "groups_removed": [
         {
-            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "name": "Reporters"
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
         }
     ]
 }

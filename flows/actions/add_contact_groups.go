@@ -15,7 +15,7 @@ func init() {
 // TypeAddContactGroups is our type for the add to groups action
 const TypeAddContactGroups string = "add_contact_groups"
 
-// AddContactGroupsAction can be used to add a contact to one or more groups. A [event:contact_groups_added] event will be created
+// AddContactGroupsAction can be used to add a contact to one or more groups. A [event:contact_groups_changed] event will be created
 // for the groups which the contact has been added to.
 //
 //   {
@@ -76,7 +76,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 
 	// only generate event if contact's groups change
 	if len(groupRefs) > 0 {
-		log.Add(events.NewContactGroupsAddedEvent(groupRefs))
+		log.Add(events.NewContactGroupsChangedEvent(groupRefs, nil))
 	}
 
 	return nil
