@@ -77,10 +77,9 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 			log.Add(events.NewErrorEvent(err))
 		} else {
 			webhooks = append(webhooks, webhook)
+			log.Add(events.NewWebhookCalledEvent(webhook))
 		}
 	}
-
-	log.Add(events.NewResthookCalledEvent(a.Resthook, webhooks))
 
 	asResult := a.pickResultWebhook(webhooks)
 	if asResult != nil && a.ResultName != "" {
