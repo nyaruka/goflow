@@ -523,7 +523,9 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
         "key": "gender",
         "name": "Gender"
     },
-    "value": "Male"
+    "value": {
+        "text": "Male"
+    }
 }
 ```
 </div>

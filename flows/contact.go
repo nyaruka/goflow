@@ -333,7 +333,11 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(session Session) error {
+func (c *Contact) ReevaluateDynamicGroups(session Session) ([]*Group, []*Group, []error) {
+	added := make([]*Group, 0)
+	removed := make([]*Group, 0)
+	errors := make([]error, 0)
+
 	for _, group := range session.Assets().Groups().All() {
 		if !group.IsDynamic() {
 			continue
@@ -341,16 +345,19 @@ func (c *Contact) ReevaluateDynamicGroups(session Session) error {
 
 		qualifies, err := group.CheckDynamicMembership(session.Environment(), c)
 		if err != nil {
-			return err
-		}
-		if qualifies {
-			c.groups.Add(group)
+			errors = append(errors, err)
+		} else if qualifies {
+			if c.groups.Add(group) {
+				added = append(added, group)
+			}
 		} else {
-			c.groups.Remove(group)
+			if c.groups.Remove(group) {
+				removed = append(removed, group)
+			}
 		}
 	}
 
-	return nil
+	return added, removed, errors
 }
 
 // ResolveQueryKey resolves a contact query search key for this contact

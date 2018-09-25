@@ -70,5 +70,6 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 		log.Add(events.NewURNAddedEvent(urn))
 	}
 
+	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

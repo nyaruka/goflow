@@ -57,7 +57,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 		return err
 	}
 
-	groupRefs := make([]*assets.GroupReference, 0, len(groups))
+	added := make([]*flows.Group, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact is already in it
 		if contact.Groups().FindByUUID(group.UUID()) != nil {
@@ -70,13 +70,13 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 			continue
 		}
 
-		groupRefs = append(groupRefs, group.Reference())
 		run.Contact().Groups().Add(group)
+		added = append(added, group)
 	}
 
 	// only generate event if contact's groups change
-	if len(groupRefs) > 0 {
-		log.Add(events.NewContactGroupsChangedEvent(groupRefs, nil))
+	if len(added) > 0 {
+		log.Add(events.NewContactGroupsChangedEvent(added, nil))
 	}
 
 	return nil

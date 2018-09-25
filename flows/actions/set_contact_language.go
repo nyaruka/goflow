@@ -72,5 +72,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 		run.Contact().SetLanguage(lang)
 		log.Add(events.NewContactLanguageChangedEvent(language))
 	}
+
+	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

@@ -207,7 +207,9 @@ Events are created when a custom field value of the contact has been changed.
         "key": "gender",
         "name": "Gender"
     },
-    "value": "Male"
+    "value": {
+        "text": "Male"
+    }
 }
 ```
 </div>

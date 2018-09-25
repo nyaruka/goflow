@@ -276,6 +276,20 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 	return a.saveResult(run, step, name, value, category, "", &input, extra)
 }
 
+func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, log flows.EventLog) {
+	added, removed, errors := run.Contact().ReevaluateDynamicGroups(run.Session())
+
+	// add error event for each group we couldn't re-evaluate
+	for _, err := range errors {
+		log.Add(events.NewErrorEvent(err))
+	}
+
+	// add groups changed event for the groups we were added/removed to/from
+	if len(added) > 0 || len(removed) > 0 {
+		log.Add(events.NewContactGroupsChangedEvent(added, removed))
+	}
+}
+
 func (a *BaseAction) fatalError(run flows.FlowRun, err error) flows.Event {
 	run.Exit(flows.RunStatusErrored)
 	return events.NewFatalErrorEvent(err)
