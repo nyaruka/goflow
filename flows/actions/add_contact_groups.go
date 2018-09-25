@@ -48,7 +48,7 @@ func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets) error {
 func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	contact := run.Contact()
 	if contact == nil {
-		log.Add(a.fatalError(run, fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -66,7 +66,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			log.Add(events.NewErrorEvent(fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID())))
+			a.logError(fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID()), log)
 			continue
 		}
 

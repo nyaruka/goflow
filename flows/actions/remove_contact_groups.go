@@ -54,7 +54,7 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets) error {
 func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	contact := run.Contact()
 	if contact == nil {
-		log.Add(a.fatalError(run, fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -82,7 +82,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			log.Add(events.NewErrorEvent(fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID())))
+			a.logError(fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID()), log)
 			continue
 		}
 

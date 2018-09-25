@@ -45,7 +45,7 @@ func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
-		log.Add(a.fatalError(run, fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -54,7 +54,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// if we received an error, log it
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 		return nil
 	}
 
@@ -63,7 +63,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 	if language != "" {
 		lang, err = utils.ParseLanguage(language)
 		if err != nil {
-			log.Add(events.NewErrorEvent(err))
+			a.logError(err, log)
 			return nil
 		}
 	}

@@ -250,13 +250,13 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 }
 
 // saves a run result and returns the corresponding event
-func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage) flows.Event {
+func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage, log flows.EventLog) {
 	run.Results().Save(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
-	return events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra)
+	log.Add(events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra))
 }
 
 // saves a run result based on a webhook call and returns the corresponding event
-func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall) flows.Event {
+func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, log flows.EventLog) {
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
 	category := webhookStatusCategories[webhook.Status()]
@@ -273,7 +273,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 		extra, _ = json.Marshal(string(body))
 	}
 
-	return a.saveResult(run, step, name, value, category, "", &input, extra)
+	a.saveResult(run, step, name, value, category, "", &input, extra, log)
 }
 
 func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, log flows.EventLog) {
@@ -290,9 +290,12 @@ func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, log flows.EventL
 	}
 }
 
-func (a *BaseAction) fatalError(run flows.FlowRun, err error) flows.Event {
-	run.Exit(flows.RunStatusErrored)
-	return events.NewFatalErrorEvent(err)
+func (a *BaseAction) logError(err error, log flows.EventLog) {
+	log.Add(events.NewErrorEvent(err))
+}
+
+func (a *BaseAction) logFatalError(err error, log flows.EventLog) {
+	log.Add(events.NewFatalErrorEvent(err))
 }
 
 // utility struct which sets the allowed flow types to any

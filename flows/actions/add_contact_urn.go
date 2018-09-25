@@ -47,7 +47,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
-		log.Add(a.fatalError(run, fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -61,7 +61,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	// if we don't have a valid URN, log error
 	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
 	if err != nil {
-		log.Add(events.NewErrorEvent(fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error())))
+		a.logError(fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error()), log)
 		return nil
 	}
 
