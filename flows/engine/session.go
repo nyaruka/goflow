@@ -204,11 +204,12 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Cal
 	// set up our flow stack based on the current run hierarchy
 	s.flowStack = flowStackFromRun(waitingRun)
 
-	// apply our caller events to this step
+	// apply and add our caller events to this step
 	for _, event := range callerEvents {
-		if err := waitingRun.ApplyEvent(step, nil, event); err != nil {
+		if err := event.Apply(waitingRun); err != nil {
 			return err
 		}
+		waitingRun.AddEvent(step, nil, event)
 	}
 
 	var destination flows.NodeUUID
@@ -346,11 +347,12 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.CallerEvent) (flows.Step, flows.NodeUUID, error) {
 	step := run.CreateStep(node)
 
-	// apply any caller events
+	// apply and add any caller events to this new step
 	for _, event := range callerEvents {
-		if err := run.ApplyEvent(step, nil, event); err != nil {
+		if err := event.Apply(run); err != nil {
 			return nil, noDestination, err
 		}
+		run.AddEvent(step, nil, event)
 	}
 
 	// execute our node's actions
@@ -368,15 +370,14 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executed")
 			}
 
-			// apply any events that the action generated
+			// add any events that the action generated
 			for _, event := range eventLog.Events() {
-				if err := run.ApplyEvent(step, action, event); err != nil {
-					return nil, noDestination, err
-				}
+				run.AddEvent(step, action, event)
+			}
 
-				if run.Status() == flows.RunStatusErrored {
-					return step, noDestination, nil
-				}
+			// check if this action has errored the run
+			if run.Status() == flows.RunStatusErrored {
+				return step, noDestination, nil
 			}
 		}
 	}
@@ -462,7 +463,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		resultCategory := exit.Name()
 		run.Results().Save(resultName, resultValue, resultCategory, localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
 		event := events.NewRunResultChangedEvent(resultName, resultValue, resultCategory, localizedExitName, operand, extraJSON)
-		run.ApplyEvent(step, nil, event)
+		run.AddEvent(step, nil, event)
 	}
 
 	return step, exit.DestinationNodeUUID(), nil

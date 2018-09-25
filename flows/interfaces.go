@@ -413,7 +413,7 @@ type FlowRun interface {
 	SetInput(Input)
 	SetStatus(RunStatus)
 
-	ApplyEvent(Step, Action, Event) error
+	AddEvent(Step, Action, Event)
 	AddError(Step, Action, error)
 	AddFatalError(Step, Action, error)
 

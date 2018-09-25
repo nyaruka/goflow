@@ -115,20 +115,14 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
-	asCallerEvent, isCaller := event.(flows.CallerEvent)
-
-	if isCaller {
-		if err := asCallerEvent.Apply(r); err != nil {
-			return fmt.Errorf("unable to apply event[type=%s]: %s", event.Type(), err)
-		}
-	}
-
+func (r *flowRun) AddEvent(s flows.Step, action flows.Action, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
 		r.events = append(r.events, event)
 	}
 
+	// only add this event to the session's event log if it didn't come from the caller
+	_, isCaller := event.(flows.CallerEvent)
 	if !isCaller {
 		r.Session().LogEvent(event)
 	}
@@ -144,17 +138,15 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 		eventJSON, _ := json.Marshal(eventEnvelope)
 		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("%s event applied", origin)
 	}
-
-	return nil
 }
 
 func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
-	r.ApplyEvent(step, action, events.NewErrorEvent(err))
+	r.AddEvent(step, action, events.NewErrorEvent(err))
 }
 
 func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
 	r.Exit(flows.RunStatusErrored)
-	r.ApplyEvent(step, action, events.NewFatalErrorEvent(err))
+	r.AddEvent(step, action, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
