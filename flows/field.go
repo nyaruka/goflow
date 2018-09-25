@@ -23,23 +23,23 @@ func (f *Field) Asset() assets.Field { return f.Field }
 
 // Value represents a value in each of the field types
 type Value struct {
-	text     types.XText
-	datetime *types.XDateTime
-	number   *types.XNumber
-	state    LocationPath
-	district LocationPath
-	ward     LocationPath
+	Text     types.XText      `json:"text"`
+	Datetime *types.XDateTime `json:"datetime,omitempty"`
+	Number   *types.XNumber   `json:"number,omitempty"`
+	State    LocationPath     `json:"state,omitempty"`
+	District LocationPath     `json:"district,omitempty"`
+	Ward     LocationPath     `json:"ward,omitempty"`
 }
 
 // NewValue creates an empty value
 func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *Value {
 	return &Value{
-		text:     text,
-		datetime: datetime,
-		number:   number,
-		state:    state,
-		district: district,
-		ward:     ward,
+		Text:     text,
+		Datetime: datetime,
+		Number:   number,
+		State:    state,
+		District: district,
+		Ward:     ward,
 	}
 }
 
@@ -47,11 +47,6 @@ func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber
 type FieldValue struct {
 	field *Field
 	*Value
-}
-
-// NewEmptyFieldValue creates a new empty value for the given field
-func NewEmptyFieldValue(field *Field) *FieldValue {
-	return &FieldValue{field: field, Value: &Value{}}
 }
 
 // NewFieldValue creates a new field value with the passed in values
@@ -64,28 +59,28 @@ func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, nu
 
 // IsEmpty returns whether this field value is set for any type
 func (v *FieldValue) IsEmpty() bool {
-	return v.text.Empty() && v.datetime == nil && v.number == nil && v.state == "" && v.district == "" && v.ward == ""
+	return v.Text.Empty() && v.Datetime == nil && v.Number == nil && v.State == "" && v.District == "" && v.Ward == ""
 }
 
 // TypedValue returns the value in its proper type
 func (v *FieldValue) TypedValue() types.XValue {
 	switch v.field.Type() {
 	case assets.FieldTypeText:
-		return v.text
+		return v.Text
 	case assets.FieldTypeDatetime:
-		if v.datetime != nil {
-			return *v.datetime
+		if v.Datetime != nil {
+			return *v.Datetime
 		}
 	case assets.FieldTypeNumber:
-		if v.number != nil {
-			return *v.number
+		if v.Number != nil {
+			return *v.Number
 		}
 	case assets.FieldTypeState:
-		return v.state
+		return v.State
 	case assets.FieldTypeDistrict:
-		return v.district
+		return v.District
 	case assets.FieldTypeWard:
-		return v.ward
+		return v.Ward
 	}
 	return nil
 }
@@ -94,7 +89,7 @@ func (v *FieldValue) TypedValue() types.XValue {
 func (v *FieldValue) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "text":
-		return v.text
+		return v.Text
 	}
 	return types.NewXResolveError(v, key)
 }
@@ -152,17 +147,31 @@ func (f FieldValues) getValue(key string) *FieldValue {
 	return f[key]
 }
 
-func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key string, rawValue string) error {
+func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key string, rawValue string) (*Value, error) {
+	// lookup the actual field object for this key
 	field, err := fields.Get(key)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	var value *Value
+
+	// if raw value is empty string, set an empty value, other parse into different types
 	if rawValue == "" {
-		f[key] = NewEmptyFieldValue(field)
-		return nil
+		value = &Value{}
+	} else {
+		value = f.parseValue(env, fields, field, rawValue)
 	}
 
+	fieldValue := &FieldValue{
+		field: field,
+		Value: value,
+	}
+	f[key] = fieldValue
+	return fieldValue.Value, nil
+}
+
+func (f FieldValues) parseValue(env RunEnvironment, fields *FieldAssets, field *Field, rawValue string) *Value {
 	var asText = types.NewXText(rawValue)
 	var asDateTime *types.XDateTime
 	var asNumber *types.XNumber
@@ -217,19 +226,14 @@ func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key strin
 		}
 	}
 
-	f[key] = &FieldValue{
-		field: field,
-		Value: &Value{
-			text:     asText,
-			datetime: asDateTime,
-			number:   asNumber,
-			state:    asState,
-			district: asDistrict,
-			ward:     asWard,
-		},
+	return &Value{
+		Text:     asText,
+		Datetime: asDateTime,
+		Number:   asNumber,
+		State:    asState,
+		District: asDistrict,
+		Ward:     asWard,
 	}
-
-	return nil
 }
 
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {

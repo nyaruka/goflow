@@ -16,8 +16,7 @@ func init() {
 const TypeAddContactURN string = "add_contact_urn"
 
 // AddContactURNAction can be used to add a URN to the current contact. A [event:contact_urn_added] event
-// will be created when this action is encountered. If there is no contact then this
-// action will be ignored.
+// will be created when this action is encountered.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -48,7 +47,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -56,19 +55,21 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 
 	// if we received an error, log it although it might just be a non-expression like foo@bar.com
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 	}
 
 	// if we don't have a valid URN, log error
 	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
 	if err != nil {
-		log.Add(events.NewErrorEvent(fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error())))
+		a.logError(fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error()), log)
 		return nil
 	}
 
 	if !run.Contact().HasURN(urn) {
-		log.Add(events.NewURNAddedEvent(urn))
+		run.Contact().AddURN(urn)
+		a.log(events.NewURNAddedEvent(urn), log)
 	}
 
+	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

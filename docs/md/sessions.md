@@ -121,7 +121,7 @@ All templates in events have been evaluated and can be used to create concrete m
 
 ## broadcast_created
 
-Events are created for outgoing broadcasts.
+Events are created when an action wants to send a message to other contacts.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -160,7 +160,7 @@ Events are created for outgoing broadcasts.
 
 ## contact_changed
 
-Events are created to set a contact on a session
+Events are sent by the caller to tell the engine to update the session contact.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -180,7 +180,7 @@ Events are created to set a contact on a session
 
 ## contact_channel_changed
 
-Events are created when a contact's preferred channel is changed.
+Events are created when the preferred channel of the contact has been changed.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -197,7 +197,7 @@ Events are created when a contact's preferred channel is changed.
 
 ## contact_field_changed
 
-Events are created when a contact field is updated.
+Events are created when a custom field value of the contact has been changed.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -207,44 +207,32 @@ Events are created when a contact field is updated.
         "key": "gender",
         "name": "Gender"
     },
-    "value": "Male"
+    "value": {
+        "text": "Male"
+    }
 }
 ```
 </div>
-<a name="event:contact_groups_added"></a>
+<a name="event:contact_groups_changed"></a>
 
-## contact_groups_added
+## contact_groups_changed
 
-Events will be created with the groups a contact was added to.
+Events are created when a contact is added or removed to/from one or more groups.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_groups_added",
+    "type": "contact_groups_changed",
     "created_on": "2006-01-02T15:04:05Z",
-    "groups": [
+    "groups_added": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Reporters"
         }
-    ]
-}
-```
-</div>
-<a name="event:contact_groups_removed"></a>
-
-## contact_groups_removed
-
-Events are created when a contact has been removed from one or more
-groups.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_groups_removed",
-    "created_on": "2006-01-02T15:04:05Z",
-    "groups": [
+    ],
+    "groups_removed": [
         {
-            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "name": "Reporters"
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
         }
     ]
 }
@@ -254,7 +242,7 @@ groups.
 
 ## contact_language_changed
 
-Events are created when a Language of a contact has been changed
+Events are created when the language of the contact has been changed.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -268,7 +256,7 @@ Events are created when a Language of a contact has been changed
 
 ## contact_name_changed
 
-Events are created when a name of a contact has been changed
+Events are created when the name of the contact has been changed.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -282,7 +270,7 @@ Events are created when a name of a contact has been changed
 
 ## contact_timezone_changed
 
-Events are created when a timezone of a contact has been changed
+Events are created when the timezone of the contact has been changed.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -296,7 +284,7 @@ Events are created when a timezone of a contact has been changed
 
 ## contact_urn_added
 
-Events will be created with the URN that should be added to the current contact.
+Events are created when a URN has been added to the contact.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -310,7 +298,7 @@ Events will be created with the URN that should be added to the current contact.
 
 ## email_created
 
-Events are created for each recipient which should receive an email.
+Events are created when an action wants to send an email.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -328,7 +316,7 @@ Events are created for each recipient which should receive an email.
 
 ## environment_changed
 
-Events are created to set the environment on a session
+Events are sent by the caller to tell the engine to update the session environment.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -350,8 +338,7 @@ Events are created to set the environment on a session
 
 ## error
 
-Events will be created whenever an error is encountered during flow execution. This
-can vary from template evaluation errors to invalid actions.
+Events are created when an error occurs during flow execution.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -366,7 +353,7 @@ can vary from template evaluation errors to invalid actions.
 
 ## flow_triggered
 
-Events are created when an action wants to start a subflow
+Events are created when an action has started a sub-flow.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -384,7 +371,7 @@ Events are created when an action wants to start a subflow
 
 ## input_labels_added
 
-Events will be created with the labels that were applied to the given input.
+Events are created when an action wants to add labels to the current input.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -404,7 +391,7 @@ Events will be created with the labels that were applied to the given input.
 
 ## msg_created
 
-Events are used for replies to the session contact.
+Events are created when an action wants to send a reply to the current contact.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -429,8 +416,8 @@ Events are used for replies to the session contact.
 
 ## msg_received
 
-Events are used for starting flows or resuming flows which are waiting for a message.
-They represent an incoming message for a contact.
+Events are sent by the caller to tell the engine that a message was received from
+the contact and that it should try to resume the session.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -480,44 +467,11 @@ waiting for anything from the caller.
 }
 ```
 </div>
-<a name="event:resthook_called"></a>
-
-## resthook_called
-
-Events are created when a resthook is called. The event contains the status and status code
-of each call to the resthook's subscribers, as well as the payload sent to each subscriber. If this event has a
-`result_name`, then applying this event creates a new result with that name based on one of the calls. The call
-used will the last one unless one has failed, in which case it is used instead. If the call returned valid JSON,
-that will be accessible through `extra` on the result.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "resthook_called",
-    "created_on": "2006-01-02T15:04:05Z",
-    "resthook": "new-registration",
-    "calls": [
-        {
-            "url": "http://localhost:49998/?cmd=success",
-            "status": "success",
-            "request": "POST /?cmd=success HTTP/1.1",
-            "response": "HTTP/1.1 200 OK\r\n\r\n{\"errors\":[]}"
-        },
-        {
-            "url": "https://api.ipify.org/?format=json",
-            "status": "success",
-            "request": "POST /?format=json HTTP/1.1",
-            "response": "HTTP/1.1 410 Gone\r\n\r\n{\"errors\":[\"Unsubscribe\"]}"
-        }
-    ],
-    "result_name": "IP Check"
-}
-```
-</div>
 <a name="event:run_expired"></a>
 
 ## run_expired
 
-Events are sent by the caller to notify the engine that a run has expired
+Events are sent by the caller to tell the engine that a run has expired.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -531,7 +485,7 @@ Events are sent by the caller to notify the engine that a run has expired
 
 ## run_result_changed
 
-Events are created when a result is saved. They contain not only
+Events are created when a run result is saved. They contain not only
 the name, value and category of the result, but also the UUID of the node where
 the result was generated.
 
@@ -551,7 +505,7 @@ the result was generated.
 
 ## session_triggered
 
-Events are created when an action wants to start a subflow
+Events are created when an action wants to start other people in a flow.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -600,7 +554,7 @@ Events are created when an action wants to start a subflow
 ## wait_timed_out
 
 Events are sent by the caller when a wait has timed out - i.e. they are sent instead of
-the item that the wait was waiting for
+the item that the wait was waiting for.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -614,10 +568,8 @@ the item that the wait was waiting for
 ## webhook_called
 
 Events are created when a webhook is called. The event contains
-the status and status code of the response, as well as a full dump of the
-request and response. If this event has a `result_name`, then applying this event creates
-a new result with that name. If the webhook returned valid JSON, that will be accessible
-through `extra` on the result.
+the URL and the status of the response, as well as a full dump of the
+request and response.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -626,8 +578,7 @@ through `extra` on the result.
     "url": "https://api.ipify.org/?format=json",
     "status": "success",
     "request": "GET /?format=json HTTP/1.1",
-    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}",
-    "result_name": "IP Check"
+    "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 }
 ```
 </div>

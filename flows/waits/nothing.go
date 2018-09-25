@@ -24,11 +24,11 @@ func (w *NothingWait) Type() string { return TypeNothing }
 func (w *NothingWait) Begin(run flows.FlowRun, step flows.Step) {
 	w.baseWait.Begin(run)
 
-	run.ApplyEvent(step, nil, events.NewNothingWait())
+	run.AddEvent(step, nil, events.NewNothingWait())
 }
 
 // CanResume always returns true for a nothing wait because it's not waiting for anything
-func (w *NothingWait) CanResume(callerEvents []flows.Event) bool {
+func (w *NothingWait) CanResume(callerEvents []flows.CallerEvent) bool {
 	return true
 }
 

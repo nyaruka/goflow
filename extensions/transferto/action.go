@@ -52,7 +52,7 @@ func (a *TransferAirtimeAction) AllowedFlowTypes() []flows.FlowType {
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	contact := run.Contact()
 	if contact == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		log.Add(events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 

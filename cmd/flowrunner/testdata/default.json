@@ -53,7 +53,7 @@
                 "name": "Kigali City Members"
             },
             {
-                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
+                "uuid": "bf282a79-aa74-4557-9932-22a9b3bce537",
                 "name": "Males",
                 "query": "gender = Male"
             }
@@ -67,22 +67,37 @@
                 "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
                 "name": "Android Channel",
                 "address": "+12345671111",
-                "schemes": ["tel"],
-                "roles": ["send", "receive"]
+                "schemes": [
+                    "tel"
+                ],
+                "roles": [
+                    "send",
+                    "receive"
+                ]
             },
             {
                 "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
                 "name": "Twitter Channel",
                 "address": "nyaruka",
-                "schemes": ["twitter"],
-                "roles": ["send", "receive"]
+                "schemes": [
+                    "twitter"
+                ],
+                "roles": [
+                    "send",
+                    "receive"
+                ]
             },
             {
                 "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
                 "name": "Facebook Channel",
                 "address": "235326346322111",
-                "schemes": ["facebook"],
-                "roles": ["send", "receive"]
+                "schemes": [
+                    "facebook"
+                ],
+                "roles": [
+                    "send",
+                    "receive"
+                ]
             }
         ]
     },
@@ -106,11 +121,16 @@
         "content": [
             {
                 "name": "Rwanda",
-                "aliases": ["Ruanda"],		
+                "aliases": [
+                    "Ruanda"
+                ],
                 "children": [
                     {
                         "name": "Kigali City",
-                        "aliases": ["Kigali", "Kigari"],
+                        "aliases": [
+                            "Kigali",
+                            "Kigari"
+                        ],
                         "children": [
                             {
                                 "name": "Gasabo",

@@ -45,7 +45,7 @@ func (a *SetContactTimezoneAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -54,18 +54,25 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// if we received an error, log it
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 		return nil
 	}
 
 	// timezone must be empty or valid timezone name
+	var tz *time.Location
 	if timezone != "" {
-		if _, err := time.LoadLocation(timezone); err != nil {
-			log.Add(events.NewErrorEvent(err))
+		tz, err = time.LoadLocation(timezone)
+		if err != nil {
+			a.logError(err, log)
 			return nil
 		}
 	}
 
-	log.Add(events.NewContactTimezoneChangedEvent(timezone))
+	if run.Contact().Timezone() != tz {
+		run.Contact().SetTimezone(tz)
+		a.log(events.NewContactTimezoneChangedEvent(timezone), log)
+	}
+
+	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

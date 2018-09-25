@@ -112,7 +112,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// read our caller events
-	callerEvents, err := events.ReadEvents(start.Events)
+	callerEvents, err := events.ReadCallerEvents(start.Events)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +170,7 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// read our new caller events
-	callerEvents, err := events.ReadEvents(resume.Events)
+	callerEvents, err := events.ReadCallerEvents(resume.Events)
 	if err != nil {
 		return nil, err
 	}

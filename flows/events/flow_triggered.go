@@ -12,7 +12,7 @@ func init() {
 // TypeFlowTriggered is the type of our flow triggered event
 const TypeFlowTriggered string = "flow_triggered"
 
-// FlowTriggeredEvent events are created when an action wants to start a subflow
+// FlowTriggeredEvent events are created when an action has started a sub-flow.
 //
 //   {
 //     "type": "flow_triggered",
@@ -24,7 +24,6 @@ const TypeFlowTriggered string = "flow_triggered"
 // @event flow_triggered
 type FlowTriggeredEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
 	Flow          *assets.FlowReference `json:"flow" validate:"required"`
 	ParentRunUUID flows.RunUUID         `json:"parent_run_uuid" validate:"omitempty,uuid4"`
@@ -41,19 +40,3 @@ func NewFlowTriggeredEvent(flow *assets.FlowReference, parentRunUUID flows.RunUU
 
 // Type returns the type of this event
 func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
-
-// Apply applies this event to the given run
-func (e *FlowTriggeredEvent) Apply(run flows.FlowRun) error {
-	flow, err := run.Session().Assets().Flows().Get(e.Flow.UUID)
-	if err != nil {
-		return err
-	}
-
-	parentRun, err := run.Session().GetRun(e.ParentRunUUID)
-	if err != nil {
-		return err
-	}
-
-	run.Session().PushFlow(flow, parentRun)
-	return nil
-}

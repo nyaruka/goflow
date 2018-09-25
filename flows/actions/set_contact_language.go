@@ -45,7 +45,7 @@ func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -54,18 +54,25 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	// if we received an error, log it
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 		return nil
 	}
 
 	// language must be empty or valid language code
+	lang := utils.NilLanguage
 	if language != "" {
-		if _, err := utils.ParseLanguage(language); err != nil {
-			log.Add(events.NewErrorEvent(err))
+		lang, err = utils.ParseLanguage(language)
+		if err != nil {
+			a.logError(err, log)
 			return nil
 		}
 	}
 
-	log.Add(events.NewContactLanguageChangedEvent(language))
+	if run.Contact().Language() != lang {
+		run.Contact().SetLanguage(lang)
+		a.log(events.NewContactLanguageChangedEvent(language), log)
+	}
+
+	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

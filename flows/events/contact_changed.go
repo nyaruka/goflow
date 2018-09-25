@@ -13,7 +13,7 @@ func init() {
 // TypeContactChanged is the type of our set contact event
 const TypeContactChanged string = "contact_changed"
 
-// ContactChangedEvent events are created to set a contact on a session
+// ContactChangedEvent events are sent by the caller to tell the engine to update the session contact.
 //
 //   {
 //     "type": "contact_changed",
@@ -28,7 +28,6 @@ const TypeContactChanged string = "contact_changed"
 // @event contact_changed
 type ContactChangedEvent struct {
 	BaseEvent
-	callerOrEngineEvent
 
 	Contact json.RawMessage `json:"contact"`
 }
@@ -52,3 +51,5 @@ func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
 	run.Session().SetContact(contact)
 	return nil
 }
+
+var _ flows.CallerEvent = (*ContactChangedEvent)(nil)

@@ -15,7 +15,7 @@ func init() {
 // TypeRemoveContactGroups is the type for the remove from groups action
 const TypeRemoveContactGroups string = "remove_contact_groups"
 
-// RemoveContactGroupsAction can be used to remove a contact from one or more groups. A [event:contact_groups_removed] event will be created
+// RemoveContactGroupsAction can be used to remove a contact from one or more groups. A [event:contact_groups_changed] event will be created
 // for the groups which the contact is removed from. Groups can either be explicitly provided or `all_groups` can be set to true to remove
 // the contact from all non-dynamic groups.
 //
@@ -54,7 +54,7 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets) error {
 func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	contact := run.Contact()
 	if contact == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
@@ -73,7 +73,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 		}
 	}
 
-	groupRefs := make([]*assets.GroupReference, 0, len(groups))
+	removed := make([]*flows.Group, 0, len(groups))
 	for _, group := range groups {
 		// ignore group if contact isn't actually in it
 		if contact.Groups().FindByUUID(group.UUID()) == nil {
@@ -82,16 +82,17 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			log.Add(events.NewErrorEvent(fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID())))
+			a.logError(fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID()), log)
 			continue
 		}
 
-		groupRefs = append(groupRefs, group.Reference())
+		run.Contact().Groups().Remove(group)
+		removed = append(removed, group)
 	}
 
 	// only generate event if contact's groups change
-	if len(groupRefs) > 0 {
-		log.Add(events.NewContactGroupsRemovedEvent(groupRefs))
+	if len(removed) > 0 {
+		a.log(events.NewContactGroupsChangedEvent(nil, removed), log)
 	}
 
 	return nil

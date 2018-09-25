@@ -182,7 +182,7 @@ func TestWaitTimeout(t *testing.T) {
 	timeoutOn := *waitEvent.TimeoutOn
 
 	// try to resume without any event - we should remain in waiting state
-	session.Resume([]flows.Event{})
+	session.Resume([]flows.CallerEvent{})
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusWaiting, session.Status())
@@ -196,7 +196,7 @@ func TestWaitTimeout(t *testing.T) {
 	timeoutEvent := events.NewWaitTimedOutEvent()
 	timeoutEvent.CreatedOn_ = timeoutOn.Add(time.Second * 60)
 
-	session.Resume([]flows.Event{timeoutEvent})
+	session.Resume([]flows.CallerEvent{timeoutEvent})
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())

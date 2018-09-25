@@ -15,7 +15,7 @@ func init() {
 const TypeWaitTimedOut string = "wait_timed_out"
 
 // WaitTimedOutEvent events are sent by the caller when a wait has timed out - i.e. they are sent instead of
-// the item that the wait was waiting for
+// the item that the wait was waiting for.
 //
 //   {
 //     "type": "wait_timed_out",
@@ -25,7 +25,6 @@ const TypeWaitTimedOut string = "wait_timed_out"
 // @event wait_timed_out
 type WaitTimedOutEvent struct {
 	BaseEvent
-	callerOnlyEvent
 }
 
 // NewWaitTimedOutEvent creates a new wait timed out event
@@ -60,3 +59,5 @@ func (e *WaitTimedOutEvent) Apply(run flows.FlowRun) error {
 	run.SetInput(nil)
 	return nil
 }
+
+var _ flows.CallerEvent = (*WaitTimedOutEvent)(nil)

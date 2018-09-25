@@ -129,7 +129,7 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 //------------------------------------------------------------------------------------------
 
 // Start beings processing of this session from a trigger and a set of initial caller events
-func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error {
+func (s *session) Start(trigger flows.Trigger, callerEvents []flows.CallerEvent) error {
 	// try to load the flow
 	flow, err := s.Assets().Flows().Get(trigger.Flow().UUID)
 	if err != nil {
@@ -161,7 +161,7 @@ func (s *session) Start(trigger flows.Trigger, callerEvents []flows.Event) error
 }
 
 // Resume tries to resume a waiting session
-func (s *session) Resume(callerEvents []flows.Event) error {
+func (s *session) Resume(callerEvents []flows.CallerEvent) error {
 	if s.status != flows.SessionStatusWaiting {
 		return fmt.Errorf("only waiting sessions can be resumed")
 	}
@@ -187,14 +187,14 @@ func (s *session) Resume(callerEvents []flows.Event) error {
 			run.Exit(flows.RunStatusErrored)
 		}
 		s.status = flows.SessionStatusErrored
-		s.LogEvent(events.NewFatalErrorEvent(err))
+		s.LogEvent(events.NewErrorEvent(err))
 	}
 
 	return nil
 }
 
 // Resume resumes a waiting session
-func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Event) error {
+func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.CallerEvent) error {
 	// figure out where in the flow we began waiting on
 	step, _, err := waitingRun.PathLocation()
 	if err != nil {
@@ -204,11 +204,12 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 	// set up our flow stack based on the current run hierarchy
 	s.flowStack = flowStackFromRun(waitingRun)
 
-	// apply our caller events to this step
+	// apply and add our caller events to this step
 	for _, event := range callerEvents {
-		if err := waitingRun.ApplyEvent(step, nil, event); err != nil {
+		if err := event.Apply(waitingRun); err != nil {
 			return err
 		}
+		waitingRun.AddEvent(step, nil, event)
 	}
 
 	var destination flows.NodeUUID
@@ -233,7 +234,7 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Eve
 	s.status = flows.SessionStatusActive
 
 	// off to the races again...
-	return s.continueUntilWait(waitingRun, destination, step, []flows.Event{})
+	return s.continueUntilWait(waitingRun, destination, step, []flows.CallerEvent{})
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
@@ -253,7 +254,7 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 }
 
 // the main flow execution loop
-func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.Event) (err error) {
+func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.CallerEvent) (err error) {
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
@@ -343,14 +344,15 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 }
 
 // visits the given node, creating a step in our current run path
-func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.Event) (flows.Step, flows.NodeUUID, error) {
+func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.CallerEvent) (flows.Step, flows.NodeUUID, error) {
 	step := run.CreateStep(node)
 
-	// apply any caller events
+	// apply and add any caller events to this new step
 	for _, event := range callerEvents {
-		if err := run.ApplyEvent(step, nil, event); err != nil {
+		if err := event.Apply(run); err != nil {
 			return nil, noDestination, err
 		}
+		run.AddEvent(step, nil, event)
 	}
 
 	// execute our node's actions
@@ -368,15 +370,14 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []f
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executed")
 			}
 
-			// apply any events that the action generated
+			// add any events that the action generated
 			for _, event := range eventLog.Events() {
-				if err := run.ApplyEvent(step, action, event); err != nil {
-					return nil, noDestination, err
-				}
+				run.AddEvent(step, action, event)
+			}
 
-				if run.Status() == flows.RunStatusErrored {
-					return step, noDestination, nil
-				}
+			// check if this action has errored the run
+			if run.Status() == flows.RunStatusErrored {
+				return step, noDestination, nil
 			}
 		}
 	}
@@ -457,8 +458,12 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		if route.Extra() != nil {
 			extraJSON, _ = json.Marshal(route.Extra())
 		}
-		event := events.NewRunResultChangedEvent(router.ResultName(), route.Match(), exit.Name(), localizedExitName, operand, extraJSON)
-		run.ApplyEvent(step, nil, event)
+		resultName := router.ResultName()
+		resultValue := route.Match()
+		resultCategory := exit.Name()
+		run.Results().Save(resultName, resultValue, resultCategory, localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
+		event := events.NewRunResultChangedEvent(resultName, resultValue, resultCategory, localizedExitName, operand, extraJSON)
+		run.AddEvent(step, nil, event)
 	}
 
 	return step, exit.DestinationNodeUUID(), nil
@@ -466,11 +471,8 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 
 const noDestination = flows.NodeUUID("")
 
-func (s *session) validateCallerEvents(events []flows.Event) error {
+func (s *session) validateCallerEvents(events []flows.CallerEvent) error {
 	for _, event := range events {
-		if event.AllowedOrigin()&flows.EventOriginCaller == 0 {
-			return fmt.Errorf("event[type=%s] can't be sent by callers", event.Type())
-		}
 		if err := event.Validate(s.assets); err != nil {
 			return fmt.Errorf("validation failed for event[type=%s]: %s", event.Type(), err)
 		}

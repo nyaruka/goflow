@@ -55,12 +55,12 @@ func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
 }
 
 // CanResume returns true if a wait timed out event has been received
-func (w *baseTimeoutWait) CanResume(callerEvents []flows.Event) bool {
+func (w *baseTimeoutWait) CanResume(callerEvents []flows.CallerEvent) bool {
 	return containsEventOfType(callerEvents, events.TypeWaitTimedOut)
 }
 
 // utility function to look for an event of a given type
-func containsEventOfType(events []flows.Event, eventType string) bool {
+func containsEventOfType(events []flows.CallerEvent, eventType string) bool {
 	for _, event := range events {
 		if event.Type() == eventType {
 			return true

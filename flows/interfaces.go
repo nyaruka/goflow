@@ -195,7 +195,7 @@ type Wait interface {
 	TimeoutOn() *time.Time
 
 	Begin(FlowRun, Step)
-	CanResume([]Event) bool
+	CanResume([]CallerEvent) bool
 }
 
 // Localization provide a way to get the translations for a specific language
@@ -264,20 +264,19 @@ const (
 
 // Event describes a state change
 type Event interface {
-	CreatedOn() time.Time
+	utils.Typed
 
+	CreatedOn() time.Time
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)
+}
 
-	FromCaller() bool
-	SetFromCaller(bool)
+// CallerEvent is an event we can receive from our caller
+type CallerEvent interface {
+	Event
 
-	AllowedOrigin() EventOrigin
 	Validate(SessionAssets) error
-
 	Apply(FlowRun) error
-
-	utils.Typed
 }
 
 // EventLog is the log of events the caller must apply after each call
@@ -352,8 +351,8 @@ type Session interface {
 	Wait() Wait
 	FlowOnStack(assets.FlowUUID) bool
 
-	Start(Trigger, []Event) error
-	Resume([]Event) error
+	Start(Trigger, []CallerEvent) error
+	Resume([]CallerEvent) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun
@@ -414,12 +413,11 @@ type FlowRun interface {
 	SetInput(Input)
 	SetStatus(RunStatus)
 
-	ApplyEvent(Step, Action, Event) error
+	AddEvent(Step, Action, Event)
 	AddError(Step, Action, error)
 	AddFatalError(Step, Action, error)
 
 	CreateStep(Node) Step
-	GetStep(StepUUID) Step
 	Path() []Step
 	PathLocation() (Step, Node, error)
 	Events() []Event

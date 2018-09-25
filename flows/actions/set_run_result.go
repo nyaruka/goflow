@@ -2,7 +2,6 @@ package actions
 
 import (
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -54,7 +53,7 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log flo
 
 	// log any error received
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 	}
 
 	categoryLocalized := run.GetText(utils.UUID(a.UUID()), "category", a.Category)
@@ -62,6 +61,6 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		categoryLocalized = ""
 	}
 
-	log.Add(events.NewRunResultChangedEvent(a.Name, value, a.Category, categoryLocalized, nil, nil))
+	a.saveResult(run, step, a.Name, value, a.Category, categoryLocalized, nil, nil, log)
 	return nil
 }

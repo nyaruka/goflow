@@ -21,7 +21,7 @@ type BroadcastTranslation struct {
 	QuickReplies []string           `json:"quick_replies,omitempty"`
 }
 
-// BroadcastCreatedEvent events are created for outgoing broadcasts.
+// BroadcastCreatedEvent events are created when an action wants to send a message to other contacts.
 //
 //   {
 //     "type": "broadcast_created",
@@ -46,7 +46,6 @@ type BroadcastTranslation struct {
 // @event broadcast_created
 type BroadcastCreatedEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
 	Translations map[utils.Language]*BroadcastTranslation `json:"translations,min=1" validate:"dive"`
 	BaseLanguage utils.Language                           `json:"base_language" validate:"required"`
@@ -70,8 +69,3 @@ func NewBroadcastCreatedEvent(translations map[utils.Language]*BroadcastTranslat
 
 // Type returns the type of this event
 func (e *BroadcastCreatedEvent) Type() string { return TypeBroadcastCreated }
-
-// Apply applies this event to the given run
-func (e *BroadcastCreatedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

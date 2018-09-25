@@ -11,7 +11,7 @@ func init() {
 // TypeEmailCreated is our type for the email event
 const TypeEmailCreated string = "email_created"
 
-// EmailCreatedEvent events are created for each recipient which should receive an email.
+// EmailCreatedEvent events are created when an action wants to send an email.
 //
 //   {
 //     "type": "email_created",
@@ -24,7 +24,6 @@ const TypeEmailCreated string = "email_created"
 // @event email_created
 type EmailCreatedEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
 	Addresses []string `json:"addresses" validate:"required,min=1"`
 	Subject   string   `json:"subject" validate:"required"`
@@ -43,13 +42,3 @@ func NewEmailCreatedEvent(addresses []string, subject string, body string) *Emai
 
 // Type returns the type of this event
 func (e *EmailCreatedEvent) Type() string { return TypeEmailCreated }
-
-// Validate validates our event is valid and has all the assets it needs
-func (e *EmailCreatedEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *EmailCreatedEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

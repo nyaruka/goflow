@@ -26,7 +26,6 @@ const TypeMsgWait string = "msg_wait"
 // @event msg_wait
 type MsgWaitEvent struct {
 	BaseEvent
-	engineOnlyEvent
 
 	TimeoutOn *time.Time `json:"timeout_on,omitempty"`
 }
@@ -41,8 +40,3 @@ func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
 
 // Type returns the type of this event
 func (e *MsgWaitEvent) Type() string { return TypeMsgWait }
-
-// Apply applies this event to the given run
-func (e *MsgWaitEvent) Apply(run flows.FlowRun) error {
-	return nil
-}

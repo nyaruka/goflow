@@ -72,7 +72,7 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step, log fl
 		}
 	}
 
-	log.Add(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs))
+	a.log(events.NewBroadcastCreatedEvent(translations, run.Flow().Language(), urnList, contactRefs, groupRefs), log)
 
 	return nil
 }

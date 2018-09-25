@@ -115,26 +115,21 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Event) error {
+func (r *flowRun) AddEvent(s flows.Step, action flows.Action, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
-	}
-
-	if err := event.Apply(r); err != nil {
-		return fmt.Errorf("unable to apply event[type=%s]: %s", event.Type(), err)
-	}
-
-	if s != nil {
 		r.events = append(r.events, event)
 	}
 
-	if !event.FromCaller() {
+	// only add this event to the session's event log if it didn't come from the caller
+	_, isCaller := event.(flows.CallerEvent)
+	if !isCaller {
 		r.Session().LogEvent(event)
 	}
 
 	if log.GetLevel() >= log.DebugLevel {
 		var origin string
-		if event.FromCaller() {
+		if isCaller {
 			origin = "caller"
 		} else {
 			origin = "engine"
@@ -143,16 +138,15 @@ func (r *flowRun) ApplyEvent(s flows.Step, action flows.Action, event flows.Even
 		eventJSON, _ := json.Marshal(eventEnvelope)
 		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("%s event applied", origin)
 	}
-
-	return nil
 }
 
 func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
-	r.ApplyEvent(step, action, events.NewErrorEvent(err))
+	r.AddEvent(step, action, events.NewErrorEvent(err))
 }
 
 func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
-	r.ApplyEvent(step, action, events.NewFatalErrorEvent(err))
+	r.Exit(flows.RunStatusErrored)
+	r.AddEvent(step, action, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -161,14 +155,6 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
 	return step
-}
-func (r *flowRun) GetStep(stepUUID flows.StepUUID) flows.Step {
-	for _, step := range r.Path() {
-		if step.UUID() == stepUUID {
-			return step
-		}
-	}
-	return nil
 }
 
 func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {

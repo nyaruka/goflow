@@ -44,10 +44,18 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets) error {
 
 func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
-	log.Add(events.NewContactChannelChangedEvent(a.Channel))
+	channel, err := run.Session().Assets().Channels().Get(a.Channel.UUID)
+	if err != nil {
+		return err
+	}
+
+	if run.Contact().PreferredChannel() != channel {
+		run.Contact().UpdatePreferredChannel(channel)
+		a.log(events.NewContactChannelChangedEvent(a.Channel), log)
+	}
 	return nil
 }

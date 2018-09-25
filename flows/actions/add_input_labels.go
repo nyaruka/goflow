@@ -62,7 +62,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, log f
 	}
 
 	if len(labelRefs) > 0 {
-		log.Add(events.NewInputLabelsAddedEvent(input.UUID(), labelRefs))
+		a.log(events.NewInputLabelsAddedEvent(input.UUID(), labelRefs), log)
 	}
 
 	return nil

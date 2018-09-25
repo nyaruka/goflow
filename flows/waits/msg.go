@@ -28,11 +28,11 @@ func (w *MsgWait) Type() string { return TypeMsg }
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
 	w.baseTimeoutWait.Begin(run)
 
-	run.ApplyEvent(step, nil, events.NewMsgWait(w.TimeoutOn_))
+	run.AddEvent(step, nil, events.NewMsgWait(w.TimeoutOn_))
 }
 
 // CanResume returns true if a message event has been received
-func (w *MsgWait) CanResume(callerEvents []flows.Event) bool {
+func (w *MsgWait) CanResume(callerEvents []flows.CallerEvent) bool {
 	if containsEventOfType(callerEvents, events.TypeMsgReceived) {
 		return true
 	}

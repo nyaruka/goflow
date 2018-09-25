@@ -48,19 +48,27 @@ func (a *SetContactFieldAction) Validate(assets flows.SessionAssets) error {
 // Execute runs this action
 func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
 	if run.Contact() == nil {
-		log.Add(events.NewFatalErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
 		return nil
 	}
 
-	value, err := a.evaluateLocalizableTemplate(run, "value", a.Value)
-	value = strings.TrimSpace(value)
+	rawValue, err := a.evaluateLocalizableTemplate(run, "value", a.Value)
+	rawValue = strings.TrimSpace(rawValue)
 
 	// if we received an error, log it
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 		return nil
 	}
 
-	log.Add(events.NewContactFieldChangedEvent(a.Field, value))
+	fields := run.Session().Assets().Fields()
+	value, err := run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, rawValue)
+	if err != nil {
+		return err
+	}
+
+	a.log(events.NewContactFieldChangedEvent(a.Field, value), log)
+
+	a.reevaluateDynamicGroups(run, log)
 	return nil
 }
