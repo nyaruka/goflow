@@ -296,7 +296,7 @@ var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) error {
+func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) (*FieldValue, error) {
 	runEnv := env.(RunEnvironment)
 
 	return c.fields.setValue(runEnv, fields, key, rawValue)
@@ -422,25 +422,16 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-type fieldValueEnvelope struct {
-	Text     types.XText      `json:"text"`
-	Datetime *types.XDateTime `json:"datetime,omitempty"`
-	Number   *types.XNumber   `json:"number,omitempty"`
-	State    LocationPath     `json:"state,omitempty"`
-	District LocationPath     `json:"district,omitempty"`
-	Ward     LocationPath     `json:"ward,omitempty"`
-}
-
 type contactEnvelope struct {
-	UUID      ContactUUID                    `json:"uuid" validate:"required,uuid4"`
-	ID        ContactID                      `json:"id"`
-	Name      string                         `json:"name"`
-	Language  utils.Language                 `json:"language"`
-	Timezone  string                         `json:"timezone"`
-	CreatedOn time.Time                      `json:"created_on"`
-	URNs      []urns.URN                     `json:"urns" validate:"dive,urn"`
-	Groups    []*assets.GroupReference       `json:"groups,omitempty" validate:"dive"`
-	Fields    map[string]*fieldValueEnvelope `json:"fields,omitempty"`
+	UUID      ContactUUID              `json:"uuid" validate:"required,uuid4"`
+	ID        ContactID                `json:"id"`
+	Name      string                   `json:"name"`
+	Language  utils.Language           `json:"language"`
+	Timezone  string                   `json:"timezone"`
+	CreatedOn time.Time                `json:"created_on"`
+	URNs      []urns.URN               `json:"urns" validate:"dive,urn"`
+	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
+	Fields    map[string]*Value        `json:"fields,omitempty"`
 }
 
 // ReadContact decodes a contact from the passed in JSON
@@ -490,22 +481,16 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 
 	c.fields = make(FieldValues, len(fieldSet.All()))
 
+	// give contact a value for every known field using empty values if they don't have a value set
 	for _, field := range fieldSet.All() {
-		value := NewEmptyFieldValue(field)
-
+		var value *Value
 		if envelope.Fields != nil {
-			valueEnvelope := envelope.Fields[field.Key()]
-			if valueEnvelope != nil {
-				value.text = valueEnvelope.Text
-				value.number = valueEnvelope.Number
-				value.datetime = valueEnvelope.Datetime
-				value.state = valueEnvelope.State
-				value.district = valueEnvelope.District
-				value.ward = valueEnvelope.Ward
-			}
+			value = envelope.Fields[field.Key()]
 		}
-
-		c.fields[field.Key()] = value
+		if value == nil {
+			value = &Value{}
+		}
+		c.fields[field.Key()] = &FieldValue{field: field, Value: value}
 	}
 
 	return c, nil
@@ -531,17 +516,10 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		ce.Groups[g] = group.Reference()
 	}
 
-	ce.Fields = make(map[string]*fieldValueEnvelope)
+	ce.Fields = make(map[string]*Value)
 	for _, v := range c.fields {
 		if !v.IsEmpty() {
-			ce.Fields[v.field.Key()] = &fieldValueEnvelope{
-				Text:     v.text,
-				Number:   v.number,
-				Datetime: v.datetime,
-				State:    v.state,
-				District: v.district,
-				Ward:     v.ward,
-			}
+			ce.Fields[v.field.Key()] = v.Value
 		}
 	}
 

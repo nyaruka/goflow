@@ -62,7 +62,8 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 	}
 
 	fields := run.Session().Assets().Fields()
-	if err := run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, value); err != nil {
+	_, err = run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, value)
+	if err != nil {
 		return err
 	}
 
