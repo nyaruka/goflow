@@ -52,8 +52,8 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return nil
 	}
 
-	value, err := a.evaluateLocalizableTemplate(run, "value", a.Value)
-	value = strings.TrimSpace(value)
+	rawValue, err := a.evaluateLocalizableTemplate(run, "value", a.Value)
+	rawValue = strings.TrimSpace(rawValue)
 
 	// if we received an error, log it
 	if err != nil {
@@ -62,7 +62,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 	}
 
 	fields := run.Session().Assets().Fields()
-	_, err = run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, value)
+	value, err := run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, rawValue)
 	if err != nil {
 		return err
 	}

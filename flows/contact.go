@@ -296,7 +296,7 @@ var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
 // SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) (*FieldValue, error) {
+func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) (*Value, error) {
 	runEnv := env.(RunEnvironment)
 
 	return c.fields.setValue(runEnv, fields, key, rawValue)

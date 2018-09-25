@@ -54,7 +54,11 @@
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "contact_field_changed",
-                    "value": "Rwanda > Kigali City > Gasabo"
+                    "value": {
+                        "district": "Rwanda > Kigali City > Gasabo",
+                        "state": "Rwanda > Kigali City",
+                        "text": "Rwanda > Kigali City > Gasabo"
+                    }
                 }
             ],
             "session": {
@@ -150,7 +154,11 @@
                                 },
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_field_changed",
-                                "value": "Rwanda > Kigali City > Gasabo"
+                                "value": {
+                                    "district": "Rwanda > Kigali City > Gasabo",
+                                    "state": "Rwanda > Kigali City",
+                                    "text": "Rwanda > Kigali City > Gasabo"
+                                }
                             }
                         ],
                         "exited_on": "2018-07-06T12:30:15.123456789Z",

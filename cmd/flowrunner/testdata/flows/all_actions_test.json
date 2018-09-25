@@ -64,7 +64,9 @@
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_field_changed",
-                    "value": "XXX-YYY-ZZZ"
+                    "value": {
+                        "text": "XXX-YYY-ZZZ"
+                    }
                 },
                 {
                     "addresses": [
@@ -327,7 +329,9 @@
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_field_changed",
-                    "value": "Male"
+                    "value": {
+                        "text": "Male"
+                    }
                 },
                 {
                     "created_on": "2018-07-06T12:30:29.123456789Z",
@@ -337,7 +341,11 @@
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_field_changed",
-                    "value": "I live in gasabo"
+                    "value": {
+                        "district": "Rwanda > Kigali City > Gasabo",
+                        "state": "Rwanda > Kigali City",
+                        "text": "I live in gasabo"
+                    }
                 },
                 {
                     "created_on": "2018-07-06T12:30:30.123456789Z",
@@ -466,7 +474,9 @@
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",
-                                "value": "XXX-YYY-ZZZ"
+                                "value": {
+                                    "text": "XXX-YYY-ZZZ"
+                                }
                             },
                             {
                                 "addresses": [
@@ -729,7 +739,9 @@
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",
-                                "value": "Male"
+                                "value": {
+                                    "text": "Male"
+                                }
                             },
                             {
                                 "created_on": "2018-07-06T12:30:29.123456789Z",
@@ -739,7 +751,11 @@
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_field_changed",
-                                "value": "I live in gasabo"
+                                "value": {
+                                    "district": "Rwanda > Kigali City > Gasabo",
+                                    "state": "Rwanda > Kigali City",
+                                    "text": "I live in gasabo"
+                                }
                             },
                             {
                                 "created_on": "2018-07-06T12:30:30.123456789Z",

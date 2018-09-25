@@ -178,7 +178,9 @@
                     },
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                     "type": "contact_field_changed",
-                    "value": "Ryan"
+                    "value": {
+                        "text": "Ryan"
+                    }
                 },
                 {
                     "created_on": "2018-07-06T12:30:13.123456789Z",
@@ -285,7 +287,9 @@
                                 },
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
                                 "type": "contact_field_changed",
-                                "value": "Ryan"
+                                "value": {
+                                    "text": "Ryan"
+                                }
                             },
                             {
                                 "created_on": "2018-07-06T12:30:13.123456789Z",

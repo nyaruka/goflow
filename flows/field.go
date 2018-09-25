@@ -147,7 +147,7 @@ func (f FieldValues) getValue(key string) *FieldValue {
 	return f[key]
 }
 
-func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key string, rawValue string) (*FieldValue, error) {
+func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key string, rawValue string) (*Value, error) {
 	// lookup the actual field object for this key
 	field, err := fields.Get(key)
 	if err != nil {
@@ -168,7 +168,7 @@ func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key strin
 		Value: value,
 	}
 	f[key] = fieldValue
-	return fieldValue, nil
+	return fieldValue.Value, nil
 }
 
 func (f FieldValues) parseValue(env RunEnvironment, fields *FieldAssets, field *Field, rawValue string) *Value {
