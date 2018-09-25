@@ -102,12 +102,12 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 			// group is an expression that evaluates to an existing group's name
 			evaluatedGroupName, err := run.EvaluateTemplateAsString(ref.NameMatch, false)
 			if err != nil {
-				log.Add(events.NewErrorEvent(err))
+				a.logError(err, log)
 			} else {
 				// look up the set of all groups to see if such a group exists
 				group = groupSet.FindByName(evaluatedGroupName)
 				if group == nil {
-					log.Add(events.NewErrorEvent(fmt.Errorf("no such group with name '%s'", evaluatedGroupName)))
+					a.log(events.NewErrorEvent(fmt.Errorf("no such group with name '%s'", evaluatedGroupName)), log)
 				}
 			}
 		}
@@ -139,12 +139,12 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 			// label is an expression that evaluates to an existing label's name
 			evaluatedLabelName, err := run.EvaluateTemplateAsString(ref.NameMatch, false)
 			if err != nil {
-				log.Add(events.NewErrorEvent(err))
+				a.logError(err, log)
 			} else {
 				// look up the set of all labels to see if such a label exists
 				label = labelSet.FindByName(evaluatedLabelName)
 				if label == nil {
-					log.Add(events.NewErrorEvent(fmt.Errorf("no such label with name '%s'", evaluatedLabelName)))
+					a.log(events.NewErrorEvent(fmt.Errorf("no such label with name '%s'", evaluatedLabelName)), log)
 				}
 			}
 		}
@@ -163,7 +163,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText, false)
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 	}
 
 	// localize and evaluate the message attachments
@@ -172,9 +172,9 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := run.EvaluateTemplateAsString(translatedAttachments[n], true)
 		if err != nil {
-			log.Add(events.NewErrorEvent(err))
+			a.logError(err, log)
 		} else if evaluatedAttachment == "" {
-			log.Add(events.NewErrorEvent(fmt.Errorf("attachment text evaluated to empty string, skipping")))
+			a.log(events.NewErrorEvent(fmt.Errorf("attachment text evaluated to empty string, skipping")), log)
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, flows.Attachment(evaluatedAttachment))
@@ -186,9 +186,9 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	for n := range translatedQuickReplies {
 		evaluatedQuickReply, err := run.EvaluateTemplateAsString(translatedQuickReplies[n], false)
 		if err != nil {
-			log.Add(events.NewErrorEvent(err))
+			a.logError(err, log)
 		} else if evaluatedQuickReply == "" {
-			log.Add(events.NewErrorEvent(fmt.Errorf("quick reply text evaluated to empty string, skipping")))
+			a.log(events.NewErrorEvent(fmt.Errorf("quick reply text evaluated to empty string, skipping")), log)
 			continue
 		}
 		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
@@ -226,7 +226,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	for _, legacyVar := range actionLegacyVars {
 		evaluatedLegacyVar, err := run.EvaluateTemplateAsString(legacyVar, false)
 		if err != nil {
-			log.Add(events.NewErrorEvent(err))
+			a.logError(err, log)
 		}
 
 		if uuidRegex.MatchString(evaluatedLegacyVar) {
@@ -252,7 +252,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 // saves a run result and returns the corresponding event
 func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage, log flows.EventLog) {
 	run.Results().Save(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
-	log.Add(events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra))
+	a.log(events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra), log)
 }
 
 // saves a run result based on a webhook call and returns the corresponding event
@@ -281,21 +281,25 @@ func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, log flows.EventL
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 	}
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		log.Add(events.NewContactGroupsChangedEvent(added, removed))
+		a.log(events.NewContactGroupsChangedEvent(added, removed), log)
 	}
 }
 
+func (a *BaseAction) log(event flows.Event, log flows.EventLog) {
+	log.Add(event)
+}
+
 func (a *BaseAction) logError(err error, log flows.EventLog) {
-	log.Add(events.NewErrorEvent(err))
+	a.log(events.NewErrorEvent(err), log)
 }
 
 func (a *BaseAction) logFatalError(err error, log flows.EventLog) {
-	log.Add(events.NewFatalErrorEvent(err))
+	a.log(events.NewFatalErrorEvent(err), log)
 }
 
 // utility struct which sets the allowed flow types to any

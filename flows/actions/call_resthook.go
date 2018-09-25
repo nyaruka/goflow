@@ -77,7 +77,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step, log flo
 			a.logError(err, log)
 		} else {
 			webhooks = append(webhooks, webhook)
-			log.Add(events.NewWebhookCalledEvent(webhook))
+			a.log(events.NewWebhookCalledEvent(webhook), log)
 		}
 	}
 

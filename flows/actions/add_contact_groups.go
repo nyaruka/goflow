@@ -76,7 +76,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, log
 
 	// only generate event if contact's groups change
 	if len(added) > 0 {
-		log.Add(events.NewContactGroupsChangedEvent(added, nil))
+		a.log(events.NewContactGroupsChangedEvent(added, nil), log)
 	}
 
 	return nil

@@ -70,7 +70,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	if run.Contact().Timezone() != tz {
 		run.Contact().SetTimezone(tz)
-		log.Add(events.NewContactTimezoneChangedEvent(timezone))
+		a.log(events.NewContactTimezoneChangedEvent(timezone), log)
 	}
 
 	a.reevaluateDynamicGroups(run, log)

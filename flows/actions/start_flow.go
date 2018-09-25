@@ -57,6 +57,6 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step, log flows.
 	}
 
 	run.Session().PushFlow(flow, run)
-	log.Add(events.NewFlowTriggeredEvent(a.Flow, run.UUID()))
+	a.log(events.NewFlowTriggeredEvent(a.Flow, run.UUID()), log)
 	return nil
 }

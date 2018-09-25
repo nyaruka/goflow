@@ -70,7 +70,7 @@ func (a *SetContactLanguageAction) Execute(run flows.FlowRun, step flows.Step, l
 
 	if run.Contact().Language() != lang {
 		run.Contact().SetLanguage(lang)
-		log.Add(events.NewContactLanguageChangedEvent(language))
+		a.log(events.NewContactLanguageChangedEvent(language), log)
 	}
 
 	a.reevaluateDynamicGroups(run, log)

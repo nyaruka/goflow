@@ -55,7 +55,7 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step, lo
 
 	if run.Contact().PreferredChannel() != channel {
 		run.Contact().UpdatePreferredChannel(channel)
-		log.Add(events.NewContactChannelChangedEvent(a.Channel))
+		a.log(events.NewContactChannelChangedEvent(a.Channel), log)
 	}
 	return nil
 }

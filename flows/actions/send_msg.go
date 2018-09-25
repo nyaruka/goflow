@@ -84,7 +84,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 		}
 
 		msg := flows.NewMsgOut(dest.urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
-		log.Add(events.NewMsgCreatedEvent(msg))
+		a.log(events.NewMsgCreatedEvent(msg), log)
 	}
 
 	return nil

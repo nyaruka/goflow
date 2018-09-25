@@ -91,7 +91,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step, log flows.
 	}
 
 	if len(evaluatedAddresses) > 0 {
-		log.Add(events.NewEmailCreatedEvent(evaluatedAddresses, subject, body))
+		a.log(events.NewEmailCreatedEvent(evaluatedAddresses, subject, body), log)
 	}
 
 	return nil

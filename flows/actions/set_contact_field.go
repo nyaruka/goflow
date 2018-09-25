@@ -67,7 +67,7 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 		return err
 	}
 
-	log.Add(events.NewContactFieldChangedEvent(a.Field, value))
+	a.log(events.NewContactFieldChangedEvent(a.Field, value), log)
 
 	a.reevaluateDynamicGroups(run, log)
 	return nil

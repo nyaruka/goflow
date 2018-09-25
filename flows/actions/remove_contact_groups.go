@@ -92,7 +92,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step, 
 
 	// only generate event if contact's groups change
 	if len(removed) > 0 {
-		log.Add(events.NewContactGroupsChangedEvent(nil, removed))
+		a.log(events.NewContactGroupsChangedEvent(nil, removed), log)
 	}
 
 	return nil

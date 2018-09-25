@@ -66,6 +66,6 @@ func (a *StartSessionAction) Execute(run flows.FlowRun, step flows.Step, log flo
 		return err
 	}
 
-	log.Add(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot))
+	a.log(events.NewSessionTriggeredEvent(a.Flow, urnList, contactRefs, groupRefs, a.CreateContact, runSnapshot), log)
 	return nil
 }

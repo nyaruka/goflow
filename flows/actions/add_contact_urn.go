@@ -55,7 +55,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 
 	// if we received an error, log it although it might just be a non-expression like foo@bar.com
 	if err != nil {
-		log.Add(events.NewErrorEvent(err))
+		a.logError(err, log)
 	}
 
 	// if we don't have a valid URN, log error
@@ -67,7 +67,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 
 	if !run.Contact().HasURN(urn) {
 		run.Contact().AddURN(urn)
-		log.Add(events.NewURNAddedEvent(urn))
+		a.log(events.NewURNAddedEvent(urn), log)
 	}
 
 	a.reevaluateDynamicGroups(run, log)
