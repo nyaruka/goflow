@@ -29,16 +29,18 @@ type WebhookCalledEvent struct {
 	BaseEvent
 
 	URL      string              `json:"url" validate:"required"`
+	Resthook string              `json:"resthook,omitempty"`
 	Status   flows.WebhookStatus `json:"status" validate:"required"`
 	Request  string              `json:"request" validate:"required"`
 	Response string              `json:"response"`
 }
 
 // NewWebhookCalledEvent returns a new webhook called event
-func NewWebhookCalledEvent(webhook *flows.WebhookCall) *WebhookCalledEvent {
+func NewWebhookCalledEvent(webhook *flows.WebhookCall, resthook string) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
 		BaseEvent: NewBaseEvent(),
 		URL:       webhook.URL(),
+		Resthook:  resthook,
 		Status:    webhook.Status(),
 		Request:   webhook.Request(),
 		Response:  webhook.Response(),
