@@ -1,3 +1,14 @@
+v0.18.0
+----------
+ * Use default value for router on migrated webhook ruleset in case resthook didn't have any subscribers
+ * Add resthook slug to webhook_called events if it exists
+ * Generate a groups changed event when dynamic groups are re-evaluated
+ * Contact field changed events should have the entire value objects
+ * Non-caller events should only ever be added to runs and not applied
+ * Merged contact_groups_add/removed into contact_groups_changed
+ * Only generate events when state has actually changed
+ * Move event functiionality into the actions that generate them
+
 v0.17.1
 ----------
  * Use result name when populating @legacy_extra instead of just .webhook
