@@ -110,6 +110,11 @@
                 "query": "gender != \"\""
             },
             {
+                "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9",
+                "name": "Stateless",
+                "query": "state = \"\""
+            },
+            {
                 "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50",
                 "name": "Youth",
                 "query": "age <= 18"
