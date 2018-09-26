@@ -192,7 +192,7 @@ var funcTests = []struct {
 	{"format_urn", []types.XValue{ERROR}, ERROR},
 	{"format_urn", []types.XValue{}, ERROR},
 
-	{"from_epoch", []types.XValue{xn("1497286619000000000")}, xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
+	{"from_epoch", []types.XValue{xn("1497286619.000000000")}, xd(time.Date(2017, 6, 12, 16, 56, 59, 0, time.UTC))},
 	{"from_epoch", []types.XValue{ERROR}, ERROR},
 	{"from_epoch", []types.XValue{}, ERROR},
 

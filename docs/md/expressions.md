@@ -298,7 +298,7 @@ Context variables referred to within functions do not need a leading `@`. Functi
 
 ## abs(num)
 
-Returns the absolute value of `num`
+Returns the absolute value of `num`.
 
 
 ```objectivec
@@ -309,9 +309,9 @@ Returns the absolute value of `num`
 
 <a name="function:and"></a>
 
-## and(tests...)
+## and(values...)
 
-Returns whether all the passed in arguments are truthy
+Returns whether all the given `values` are truthy.
 
 
 ```objectivec
@@ -323,7 +323,7 @@ Returns whether all the passed in arguments are truthy
 
 ## array(values...)
 
-Takes a list of `values` and returns them as an array
+Takes multiple `values` and returns them as an array.
 
 
 ```objectivec
@@ -337,7 +337,9 @@ Takes a list of `values` and returns them as an array
 
 ## boolean(value)
 
-Tries to convert `value` to a boolean. An error is returned if the value can't be converted.
+Tries to convert `value` to a boolean.
+
+An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -348,9 +350,11 @@ Tries to convert `value` to a boolean. An error is returned if the value can't b
 
 <a name="function:char"></a>
 
-## char(num)
+## char(code)
 
-Returns the rune for the passed in codepoint, `num`, which may be unicode, this is the reverse of code
+Returns the character for the given UNICODE `code`.
+
+It is the inverse of [code](expressions.html#function:code).
 
 
 ```objectivec
@@ -363,7 +367,7 @@ Returns the rune for the passed in codepoint, `num`, which may be unicode, this 
 
 ## clean(text)
 
-Strips any non-printable characters from `text`
+Strips any non-printable characters from `text`.
 
 
 ```objectivec
@@ -375,7 +379,9 @@ Strips any non-printable characters from `text`
 
 ## code(text)
 
-Returns the numeric code for the first character in `text`, it is the inverse of char
+Returns the UNICODE code for the first character of `text`.
+
+It is the inverse of [char](expressions.html#function:char).
 
 
 ```objectivec
@@ -391,8 +397,9 @@ Returns the numeric code for the first character in `text`, it is the inverse of
 
 ## datetime(text)
 
-Turns `text` into a date according to the environment's settings. It will return an error
-if it is unable to convert the text to a date.
+Parses `text` into a date using to the default date format.
+
+An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -421,10 +428,10 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 ## datetime_diff(date1, date2, unit)
 
-Returns the integer duration between `date1` and `date2` in the `unit` specified.
+Returns the duration between `date1` and `date2` in the `unit` specified.
 
 Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
-"m" for minutes, "s" for seconds
+"m" for minutes, "s" for seconds.
 
 
 ```objectivec
@@ -437,7 +444,7 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 ## datetime_from_parts(year, month, day)
 
-Converts the passed in `year`, `month` and `day`
+Creates a date from `year`, `month` and `day`.
 
 
 ```objectivec
@@ -448,9 +455,9 @@ Converts the passed in `year`, `month` and `day`
 
 <a name="function:default"></a>
 
-## default(test, default)
+## default(value, default)
 
-Takes two arguments, returning `test` if not an error or nil or empty text, otherwise returning `default`
+Returns `value` if is not empty or an error, otherwise it returns `default`.
 
 
 ```objectivec
@@ -466,7 +473,9 @@ Takes two arguments, returning `test` if not an error or nil or empty text, othe
 
 ## epoch(date)
 
-Converts `date` to the number of seconds since January 1st, 1970 GMT
+Converts `date` to a UNIX epoch time.
+
+The returned number can contain fractional seconds.
 
 
 ```objectivec
@@ -478,10 +487,11 @@ Converts `date` to the number of seconds since January 1st, 1970 GMT
 
 <a name="function:field"></a>
 
-## field(text, offset, delimiter)
+## field(text, index, delimiter)
 
-Splits `text` based on the passed in `delimiter` and returns the field at `offset`.  When splitting
-with a space, the delimiter is considered to be all whitespace.  (first field is 0)
+Splits `text` using the given `delimiter` and returns the field at `index`.
+
+The index starts at zero. When splitting with a space, the delimiter is considered to be all whitespace.
 
 
 ```objectivec
@@ -497,7 +507,7 @@ with a space, the delimiter is considered to be all whitespace.  (first field is
 
 ## format_date(date, [,format])
 
-Turns `date` into text according to the `format` specified.
+Formats `date` as text according to the given `format`.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -523,8 +533,7 @@ The format string can consist of the following characters. The characters
 
 ## format_datetime(date [,format [,timezone]])
 
-Turns `date` into text according to the `format` specified and in
-the optional `timezone`.
+Formats `date` as text according to the given `format`.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -551,8 +560,8 @@ The format string can consist of the following characters. The characters
 * `ZZZ`       - hour and minute offset from UTC
 
 Timezone should be a location name as specified in the IANA Time Zone database, such
-as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
-environment will be used. An error will be returned if the timezone is not recognized.
+as "America/Guayaquil" or "America/Los_Angeles". If not specified, the current timezone
+will be used. An error will be returned if the timezone is not recognized.
 
 
 ```objectivec
@@ -569,7 +578,7 @@ environment will be used. An error will be returned if the timezone is not recog
 
 ## format_location(location)
 
-Formats the given location as its name
+Formats the given `location` as its name.
 
 
 ```objectivec
@@ -579,9 +588,11 @@ Formats the given location as its name
 
 <a name="function:format_number"></a>
 
-## format_number(num, places, commas)
+## format_number(number, places [, commas])
 
-Returns `num` formatted with the passed in number of decimal `places` and optional `commas` dividing thousands separators
+Formats `number` to the given number of decimal `places`.
+
+An optional third argument `commas` can be false to disable the use of commas as thousand separators.
 
 
 ```objectivec
@@ -596,7 +607,7 @@ Returns `num` formatted with the passed in number of decimal `places` and option
 
 ## format_urn(urn)
 
-Turns `urn` into human friendly text
+Formats `urn` into human friendly text.
 
 
 ```objectivec
@@ -612,22 +623,23 @@ Turns `urn` into human friendly text
 
 <a name="function:from_epoch"></a>
 
-## from_epoch(num)
+## from_epoch(seconds)
 
-Returns a new date created from `num` which represents number of nanoseconds since January 1st, 1970 GMT
+Converts the UNIX epoch time `seconds` into a new date.
 
 
 ```objectivec
-@(from_epoch(1497286619000000000)) → 2017-06-12T11:56:59.000000-05:00
+@(from_epoch(1497286619)) → 2017-06-12T11:56:59.000000-05:00
+@(from_epoch(1497286619.123456)) → 2017-06-12T11:56:59.123456-05:00
 ```
 
 <a name="function:if"></a>
 
-## if(test, true_value, false_value)
+## if(test, value1, value2)
 
-Evaluates the `test` argument, and if truthy returns `true_value`, if not returning `false_value`
+Returns `value1` if `test` is truthy or `value2` if not.
 
-If the first argument is an error that error is returned
+If the first argument is an error that error is returned.
 
 
 ```objectivec
@@ -637,9 +649,9 @@ If the first argument is an error that error is returned
 
 <a name="function:join"></a>
 
-## join(array, delimiter)
+## join(array, separator)
 
-Joins the passed in `array` of strings with the passed in `delimiter`
+Joins the given `array` of strings with `separator` to make text.
 
 
 ```objectivec
@@ -651,8 +663,7 @@ Joins the passed in `array` of strings with the passed in `delimiter`
 
 ## json(value)
 
-Tries to return a JSON representation of `value`. An error is returned if there is
-no JSON representation of that object.
+Returns the JSON representation of `value`.
 
 
 ```objectivec
@@ -665,7 +676,7 @@ no JSON representation of that object.
 
 ## left(text, count)
 
-Returns the `count` most left characters of the passed in `text`
+Returns the `count` left-most characters in `text`
 
 
 ```objectivec
@@ -696,7 +707,7 @@ length will return an error if it is passed an item which doesn't have length.
 
 ## lower(text)
 
-Lowercases the passed in `text`
+Converts `text` to lowercase.
 
 
 ```objectivec
@@ -710,7 +721,7 @@ Lowercases the passed in `text`
 
 ## max(values...)
 
-Takes a list of `values` and returns the greatest of them
+Returns the maximum value in `values`.
 
 
 ```objectivec
@@ -723,7 +734,7 @@ Takes a list of `values` and returns the greatest of them
 
 ## mean(values)
 
-Takes a list of `values` and returns the arithmetic mean of them
+Returns the arithmetic mean of the numbers in `values`.
 
 
 ```objectivec
@@ -736,7 +747,7 @@ Takes a list of `values` and returns the arithmetic mean of them
 
 ## min(values)
 
-Takes a list of `values` and returns the smallest of them
+Returns the minimum value in `values`.
 
 
 ```objectivec
@@ -749,7 +760,7 @@ Takes a list of `values` and returns the smallest of them
 
 ## mod(dividend, divisor)
 
-Returns the remainder of the division of `divident` by `divisor`
+Returns the remainder of the division of `dividend` by `divisor`.
 
 
 ```objectivec
@@ -762,7 +773,7 @@ Returns the remainder of the division of `divident` by `divisor`
 
 ## now()
 
-Returns the current date and time in the environment timezone
+Returns the current date and time in the current timezone.
 
 
 ```objectivec
@@ -773,7 +784,9 @@ Returns the current date and time in the environment timezone
 
 ## number(value)
 
-Tries to convert `value` to a number. An error is returned if the value can't be converted.
+Tries to convert `value` to a number.
+
+An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -784,9 +797,9 @@ Tries to convert `value` to a number. An error is returned if the value can't be
 
 <a name="function:or"></a>
 
-## or(tests...)
+## or(values...)
 
-Returns whether if any of the passed in arguments are truthy
+Returns whether if any of the given `values` are truthy.
 
 
 ```objectivec
@@ -798,7 +811,7 @@ Returns whether if any of the passed in arguments are truthy
 
 ## parse_datetime(text, format [,timezone])
 
-Turns `text` into a date according to the `format` and optional `timezone` specified
+Parses `text` into a date using the given `format`.
 
 The format string can consist of the following characters. The characters
 ' ', ':', ',', 'T', '-' and '_' are ignored. Any other character is an error.
@@ -825,8 +838,8 @@ The format string can consist of the following characters. The characters
 * `ZZZ`       - hour and minute offset from UTC
 
 Timezone should be a location name as specified in the IANA Time Zone database, such
-as "America/Guayaquil" or "America/Los_Angeles". If not specified the timezone of your
-environment will be used. An error will be returned if the timezone is not recognized.
+as "America/Guayaquil" or "America/Los_Angeles". If not specified, the current timezone
+will be used. An error will be returned if the timezone is not recognized.
 
 Note that fractional seconds will be parsed even without an explicit format identifier.
 You should only specify fractional seconds when you want to assert the number of places
@@ -846,12 +859,13 @@ parse_datetime will return an error if it is unable to convert the text to a dat
 
 ## parse_json(text)
 
-Tries to parse `text` as JSON, returning a fragment you can index into
+Tries to parse `text` as JSON.
 
-If the passed in value is not JSON, then an error is returned
+If the given `text` is not valid JSON, then an error is returned
 
 
 ```objectivec
+@(parse_json("{\"foo\": \"bar\"}").foo) → bar
 @(parse_json("[1,2,3,4]").2) → 3
 @(parse_json("invalid json")) → ERROR
 ```
@@ -860,7 +874,7 @@ If the passed in value is not JSON, then an error is returned
 
 ## percent(num)
 
-Converts `num` to text represented as a percentage
+Formats `num` as a percentage.
 
 
 ```objectivec
@@ -897,7 +911,7 @@ A single random integer in the given inclusive range.
 
 ## read_chars(text)
 
-Converts `text` into something that can be read by IVR systems
+Converts `text` into something that can be read by IVR systems.
 
 ReadChars will split the numbers such as they are easier to understand. This includes
 splitting in 3s or 4s if appropriate.
@@ -913,7 +927,7 @@ splitting in 3s or 4s if appropriate.
 
 ## remove_first_word(text)
 
-Removes the 1st word of `text`
+Removes the first word of `text`.
 
 
 ```objectivec
@@ -924,7 +938,7 @@ Removes the 1st word of `text`
 
 ## repeat(text, count)
 
-Return `text` repeated `count` number of times
+Returns `text` repeated `count` number of times.
 
 
 ```objectivec
@@ -936,7 +950,7 @@ Return `text` repeated `count` number of times
 
 ## replace(text, needle, replacement)
 
-Replaces all occurrences of `needle` with `replacement` in `text`
+Replaces all occurrences of `needle` with `replacement` in `text`.
 
 
 ```objectivec
@@ -948,7 +962,7 @@ Replaces all occurrences of `needle` with `replacement` in `text`
 
 ## right(text, count)
 
-Returns the `count` most right characters of the passed in `text`
+Returns the `count` right-most characters in `text`
 
 
 ```objectivec
@@ -962,9 +976,10 @@ Returns the `count` most right characters of the passed in `text`
 
 ## round(num [,places])
 
-Rounds `num` to the nearest value. You can optionally pass in the number of decimal places to round to as `places`.
+Rounds `num` to the nearest value.
 
-If places < 0, it will round the integer part to the nearest 10^(-places).
+You can optionally pass in the number of decimal places to round to as `places`. If `places` < 0,
+it will round the integer part to the nearest 10^(-places).
 
 
 ```objectivec
@@ -981,7 +996,9 @@ If places < 0, it will round the integer part to the nearest 10^(-places).
 
 ## round_down(num [,places])
 
-Rounds `num` down to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
+Rounds `num` down to the nearest integer value.
+
+You can optionally pass in the number of decimal places to round to as `places`.
 
 
 ```objectivec
@@ -997,7 +1014,9 @@ Rounds `num` down to the nearest integer value. You can optionally pass in the n
 
 ## round_up(num [,places])
 
-Rounds `num` up to the nearest integer value. You can optionally pass in the number of decimal places to round to as `places`.
+Rounds `num` up to the nearest integer value.
+
+You can optionally pass in the number of decimal places to round to as `places`.
 
 
 ```objectivec
@@ -1013,9 +1032,9 @@ Rounds `num` up to the nearest integer value. You can optionally pass in the num
 
 ## split(text, delimiters)
 
-Splits `text` based on the characters in `delimiters`
+Splits `text` based on the given characters in `delimiters`.
 
-Empty values are removed from the returned list
+Empty values are removed from the returned list.
 
 
 ```objectivec
@@ -1030,7 +1049,9 @@ Empty values are removed from the returned list
 
 ## text(value)
 
-Tries to convert `value` to text. An error is returned if the value can't be converted.
+Tries to convert `value` to text.
+
+An error is returned if the value can't be converted.
 
 
 ```objectivec
@@ -1043,9 +1064,10 @@ Tries to convert `value` to text. An error is returned if the value can't be con
 
 ## text_compare(text1, text2)
 
-Returns the comparison between the strings `text1` and `text2`.
-The return value will be -1 if str1 is smaller than str2, 0 if they
-are equal and 1 if str1 is greater than str2
+Returns the dictionary order of `text1` and `text2`.
+
+The return value will be -1 if `text1` comes before `text2`, 0 if they are equal
+and 1 if `text1` comes after `text2`.
 
 
 ```objectivec
@@ -1058,7 +1080,7 @@ are equal and 1 if str1 is greater than str2
 
 ## title(text)
 
-Titlecases the passed in `text`, capitalizing each word
+Capitalizes each word in `text`.
 
 
 ```objectivec
@@ -1071,7 +1093,9 @@ Titlecases the passed in `text`, capitalizing each word
 
 ## today()
 
-Returns the current date in the current timezone, time is set to midnight in the environment timezone
+Returns the current date in the current timezone.
+
+The returned datetime has a time set to midnight in the current timezone.
 
 
 ```objectivec
@@ -1082,10 +1106,9 @@ Returns the current date in the current timezone, time is set to midnight in the
 
 ## tz(date)
 
-Returns the timezone for `date``
+Returns the name of the timezone of `date`.
 
-If not timezone information is present in the date, then the environment's
-timezone will be returned
+If no timezone information is present in the date, then the current timezone will be returned.
 
 
 ```objectivec
@@ -1099,10 +1122,10 @@ timezone will be returned
 
 ## tz_offset(date)
 
-Returns the offset for the timezone as text +/- HHMM for `date`
+Returns the offset of the timezone of `date`.
 
-If no timezone information is present in the date, then the environment's
-timezone offset will be returned
+The offset is returned in the format `[+/-]HH:MM`. If no timezone information is present in the date,
+then the current timezone offset will be returned.
 
 
 ```objectivec
@@ -1116,7 +1139,7 @@ timezone offset will be returned
 
 ## upper(text)
 
-Uppercases all characters in the passed `text`
+Converts `text` to lowercase.
 
 
 ```objectivec
@@ -1128,7 +1151,7 @@ Uppercases all characters in the passed `text`
 
 ## url_encode(text)
 
-URL encodes `text` for use in a URL parameter
+Encodes `text` for use as a URL parameter.
 
 
 ```objectivec
@@ -1140,7 +1163,9 @@ URL encodes `text` for use in a URL parameter
 
 ## weekday(date)
 
-Returns the day of the week for `date`, 0 is sunday, 1 is monday..
+Returns the day of the week for `date`.
+
+The week is considered to start on Sunday so a Sunday returns 0, a Monday returns 1 etc.
 
 
 ```objectivec
@@ -1152,8 +1177,10 @@ Returns the day of the week for `date`, 0 is sunday, 1 is monday..
 
 ## word(text, index [,delimiters])
 
-Returns the word at the passed in `index` for the passed in `text`. There is an optional final
-parameter `delimiters` which is string of characters used to split the text into words.
+Returns the word at `index` in `text`.
+
+Indexes start at zero. There is an optional final parameter `delimiters` which
+is string of characters used to split the text into words.
 
 
 ```objectivec
@@ -1171,8 +1198,10 @@ parameter `delimiters` which is string of characters used to split the text into
 
 ## word_count(text [,delimiters])
 
-Returns the number of words in `text`. There is an optional final parameter `delimiters`
-which is string of characters used to split the text into words.
+Returns the number of words in `text`.
+
+There is an optional final parameter `delimiters` which is string of characters used
+to split the text into words.
 
 
 ```objectivec
@@ -1188,7 +1217,9 @@ which is string of characters used to split the text into words.
 
 ## word_slice(text, start, end [,delimiters])
 
-Extracts a substring from `text` spanning from `start` up to but not-including `end`. (first word is 0). A negative
+Extracts a sub-sequence of words from `text`.
+
+The returned words are those from `start` up to but not-including `end`. Indexes start at zero and a negative
 end value means that all words after the start should be returned. There is an optional final parameter `delimiters`
 which is string of characters used to split the text into words.
 
