@@ -398,6 +398,10 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 			case LocationPath:
 				nativeValue = typed.Name()
 			case types.XText:
+				// empty string values aren't considered set
+				if typed.Empty() {
+					return nil
+				}
 				nativeValue = typed.Native()
 			case types.XNumber:
 				nativeValue = typed.Native()
