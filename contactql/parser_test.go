@@ -130,6 +130,8 @@ func TestEvaluateQuery(t *testing.T) {
 		{`age != ""`, true},
 		{`xyz = ""`, true},
 		{`xyz != ""`, false},
+		{`age != "" AND xyz != ""`, false},
+		{`age != "" OR xyz != ""`, true},
 
 		// boolean combinations
 		{`age = 36 AND gender = male`, true},

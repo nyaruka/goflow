@@ -105,6 +105,11 @@
                 "query": "gender = Male"
             },
             {
+                "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75",
+                "name": "Has Gender",
+                "query": "gender != \"\""
+            },
+            {
                 "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50",
                 "name": "Youth",
                 "query": "age <= 18"
@@ -118,6 +123,11 @@
                 "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba",
                 "name": "MTN Callers",
                 "query": "tel ~ \"25078\""
+            },
+            {
+                "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff",
+                "name": "Complicated",
+                "query": "gender != \"\" AND (age != \"\" OR tel ~ \"25078\")"
             }
         ]
     }
