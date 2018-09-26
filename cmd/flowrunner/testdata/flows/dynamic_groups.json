@@ -120,6 +120,16 @@
                 "query": "age > 50 AND gender = male"
             },
             {
+                "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c",
+                "name": "Has Age",
+                "query": "age != \"\""
+            },
+            {
+                "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c",
+                "name": "No Age",
+                "query": "age = \"\""
+            },
+            {
                 "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba",
                 "name": "MTN Callers",
                 "query": "tel ~ \"25078\""
