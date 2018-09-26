@@ -103,7 +103,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	if err != nil {
 		a.logError(err, log)
 	} else {
-		a.log(events.NewWebhookCalledEvent(webhook), log)
+		a.log(events.NewWebhookCalledEvent(webhook, ""), log)
 		if a.ResultName != "" {
 			a.saveWebhookResult(run, step, a.ResultName, webhook, log)
 		}
