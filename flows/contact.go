@@ -439,7 +439,7 @@ type contactEnvelope struct {
 }
 
 // ReadContact decodes a contact from the passed in JSON
-func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
+func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Contact, error) {
 	var envelope contactEnvelope
 	var err error
 
@@ -472,11 +472,13 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	if envelope.Groups == nil {
 		c.groups = NewGroupList([]*Group{})
 	} else {
-		groups := make([]*Group, len(envelope.Groups))
+		groups := make([]*Group, 0, len(envelope.Groups))
 		for g := range envelope.Groups {
-			if groups[g], err = assets.Groups().Get(envelope.Groups[g].UUID); err != nil {
+			group, err := assets.Groups().Get(envelope.Groups[g].UUID)
+			if err != nil && strict {
 				return nil, err
 			}
+			groups = append(groups, group)
 		}
 		c.groups = NewGroupList(groups)
 	}
@@ -484,7 +486,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 	c.fields = make(FieldValues, len(envelope.Fields))
 	for key, value := range envelope.Fields {
 		field, err := assets.Fields().Get(key)
-		if err != nil {
+		if err != nil && strict {
 			return nil, fmt.Errorf("unable to load contact field values: %s", err)
 		}
 		c.fields[field.Key()] = &FieldValue{field: field, Value: value}
