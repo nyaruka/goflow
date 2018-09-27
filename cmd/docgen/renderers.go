@@ -26,14 +26,12 @@ func renderContextDoc(output *strings.Builder, item *documentedItem, session flo
 		}
 	}
 
-	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
-
 	output.WriteString(fmt.Sprintf("<a name=\"context:%s\"></a>\n\n", item.tagValue))
 	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
-	output.WriteString(exampleBlock)
+	output.WriteString(strings.Join(item.examples, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```\n")
 	output.WriteString("\n")
@@ -58,14 +56,12 @@ func renderFunctionDoc(output *strings.Builder, item *documentedItem, session fl
 		}
 	}
 
-	exampleBlock := strings.Replace(strings.Join(item.examples, "\n"), "->", "→", -1)
-
 	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
 	output.WriteString(fmt.Sprintf("## %s%s\n\n", item.tagValue, item.tagExtra))
 	output.WriteString(strings.Join(item.description, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```objectivec\n")
-	output.WriteString(exampleBlock)
+	output.WriteString(strings.Join(item.examples, "\n"))
 	output.WriteString("\n")
 	output.WriteString("```\n")
 	output.WriteString("\n")
@@ -207,7 +203,7 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 }
 
 func checkExample(session flows.Session, line string) error {
-	pieces := strings.Split(line, "->")
+	pieces := strings.Split(line, "→")
 	if len(pieces) != 2 {
 		return fmt.Errorf("unparseable example: %s", line)
 	}
