@@ -29,7 +29,7 @@ const TypeFlowAction string = "flow_action"
 //       "contact": {
 //         "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
 //         "name": "Bob",
-//         "fields": {"state": {"value": "Azuay", "created_on": "2000-01-01T00:00:00.000000000-00:00"}}
+//         "fields": {"gender": {"text": "Male"}}
 //       },
 //       "status": "active",
 //       "results": {
