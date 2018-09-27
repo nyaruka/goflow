@@ -131,6 +131,10 @@ func NewFieldValues(a SessionAssets, values map[assets.Field]*Value) (FieldValue
 		if err != nil {
 			return nil, err
 		}
+		if val.Text.Empty() {
+			return nil, fmt.Errorf("field values can't be empty")
+		}
+
 		fieldValues[field.Key()] = &FieldValue{field: field, Value: val}
 	}
 	return fieldValues, nil
