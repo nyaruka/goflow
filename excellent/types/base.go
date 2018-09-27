@@ -101,7 +101,7 @@ func IsEmpty(x XValue) bool {
 	return false
 }
 
-func Reduce(env utils.Environment, x XValue) XValue {
+func Reduce(env utils.Environment, x XValue) XPrimitive {
 	if utils.IsNil(x) {
 		return nil
 	}

@@ -66,7 +66,12 @@ Is used when another session triggered this run using a trigger_flow action.
             "language": "",
             "timezone": "",
             "created_on": "0001-01-01T00:00:00Z",
-            "urns": []
+            "urns": [],
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            }
         },
         "status": "active",
         "results": {

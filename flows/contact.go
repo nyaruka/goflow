@@ -299,7 +299,13 @@ var _ types.XResolvable = (*Contact)(nil)
 func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) (*Value, error) {
 	runEnv := env.(RunEnvironment)
 
-	return c.fields.setValue(runEnv, fields, key, rawValue)
+	// lookup the actual field object for this key
+	field, err := fields.Get(key)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.fields.setValue(runEnv, field, rawValue, fields), nil
 }
 
 // PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
@@ -365,9 +371,8 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 	if key == "language" {
 		if c.language != utils.NilLanguage {
 			return []interface{}{string(c.language)}
-		} else {
-			return nil
 		}
+		return nil
 	} else if key == "created_on" {
 		return []interface{}{c.createdOn}
 	}
@@ -381,39 +386,27 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 				vals[u] = string(urnsWithScheme[u].URN)
 			}
 			return vals
-		} else {
-			return nil
 		}
+		return nil
 	}
 
 	// try as a contact field
-	for k, value := range c.fields {
-		if key == string(k) {
-			fieldValue := value.TypedValue()
-			var nativeValue interface{}
+	var nativeValue interface{}
 
-			switch typed := fieldValue.(type) {
-			case nil:
-				return nil
-			case LocationPath:
-				nativeValue = typed.Name()
-			case types.XText:
-				// empty string values aren't considered set
-				if typed.Empty() {
-					return nil
-				}
-				nativeValue = typed.Native()
-			case types.XNumber:
-				nativeValue = typed.Native()
-			case types.XDateTime:
-				nativeValue = typed.Native()
-			}
-
-			return []interface{}{nativeValue}
-		}
+	switch typed := c.fields[key].TypedValue().(type) {
+	case nil:
+		return nil
+	case LocationPath:
+		nativeValue = typed.Name()
+	case types.XText:
+		nativeValue = typed.Native()
+	case types.XNumber:
+		nativeValue = typed.Native()
+	case types.XDateTime:
+		nativeValue = typed.Native()
 	}
 
-	return nil
+	return []interface{}{nativeValue}
 }
 
 var _ contactql.Queryable = (*Contact)(nil)
@@ -488,18 +481,11 @@ func ReadContact(assets SessionAssets, data json.RawMessage) (*Contact, error) {
 		c.groups = NewGroupList(groups)
 	}
 
-	fieldSet := assets.Fields()
-
-	c.fields = make(FieldValues, len(fieldSet.All()))
-
-	// give contact a value for every known field using empty values if they don't have a value set
-	for _, field := range fieldSet.All() {
-		var value *Value
-		if envelope.Fields != nil {
-			value = envelope.Fields[field.Key()]
-		}
-		if value == nil {
-			value = &Value{}
+	c.fields = make(FieldValues, len(envelope.Fields))
+	for key, value := range envelope.Fields {
+		field, err := assets.Fields().Get(key)
+		if err != nil {
+			return nil, fmt.Errorf("unable to load contact field values: %s", err)
 		}
 		c.fields[field.Key()] = &FieldValue{field: field, Value: value}
 	}
@@ -529,9 +515,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 
 	ce.Fields = make(map[string]*Value)
 	for _, v := range c.fields {
-		if !v.IsEmpty() {
-			ce.Fields[v.field.Key()] = v.Value
-		}
+		ce.Fields[v.field.Key()] = v.Value
 	}
 
 	return json.Marshal(ce)

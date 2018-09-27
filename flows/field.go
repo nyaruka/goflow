@@ -23,7 +23,7 @@ func (f *Field) Asset() assets.Field { return f.Field }
 
 // Value represents a value in each of the field types
 type Value struct {
-	Text     types.XText      `json:"text"`
+	Text     types.XText      `json:"text" validate:"required"`
 	Datetime *types.XDateTime `json:"datetime,omitempty"`
 	Number   *types.XNumber   `json:"number,omitempty"`
 	State    LocationPath     `json:"state,omitempty"`
@@ -57,13 +57,13 @@ func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, nu
 	}
 }
 
-// IsEmpty returns whether this field value is set for any type
-func (v *FieldValue) IsEmpty() bool {
-	return v.Text.Empty() && v.Datetime == nil && v.Number == nil && v.State == "" && v.District == "" && v.Ward == ""
-}
-
-// TypedValue returns the value in its proper type
+// TypedValue returns the value in its proper type or nil if there is no value in that type
 func (v *FieldValue) TypedValue() types.XValue {
+	// the typed value of no value is nil
+	if v == nil {
+		return nil
+	}
+
 	switch v.field.Type() {
 	case assets.FieldTypeText:
 		return v.Text
@@ -76,11 +76,17 @@ func (v *FieldValue) TypedValue() types.XValue {
 			return *v.Number
 		}
 	case assets.FieldTypeState:
-		return v.State
+		if v.State != "" {
+			return v.State
+		}
 	case assets.FieldTypeDistrict:
-		return v.District
+		if v.District != "" {
+			return v.District
+		}
 	case assets.FieldTypeWard:
-		return v.Ward
+		if v.Ward != "" {
+			return v.Ward
+		}
 	}
 	return nil
 }
@@ -99,11 +105,7 @@ func (v *FieldValue) Describe() string { return "field value" }
 
 // Reduce is called when this object needs to be reduced to a primitive
 func (v *FieldValue) Reduce(env utils.Environment) types.XPrimitive {
-	typed := v.TypedValue()
-	if typed != nil {
-		return typed.Reduce(env)
-	}
-	return nil
+	return types.Reduce(env, v.TypedValue())
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
@@ -129,6 +131,10 @@ func NewFieldValues(a SessionAssets, values map[assets.Field]*Value) (FieldValue
 		if err != nil {
 			return nil, err
 		}
+		if val.Text.Empty() {
+			return nil, fmt.Errorf("field values can't be empty")
+		}
+
 		fieldValues[field.Key()] = &FieldValue{field: field, Value: val}
 	}
 	return fieldValues, nil
@@ -143,22 +149,20 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) getValue(key string) *FieldValue {
-	return f[key]
+func (f FieldValues) getValue(field *Field) *FieldValue {
+	return f[field.Key()]
 }
 
-func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key string, rawValue string) (*Value, error) {
-	// lookup the actual field object for this key
-	field, err := fields.Get(key)
-	if err != nil {
-		return nil, err
-	}
+func (f FieldValues) clearValue(field *Field) {
+	delete(f, field.Key())
+}
 
+func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string, fields *FieldAssets) *Value {
 	var value *Value
 
 	// if raw value is empty string, set an empty value, other parse into different types
 	if rawValue == "" {
-		value = &Value{}
+		f.clearValue(field)
 	} else {
 		value = f.parseValue(env, fields, field, rawValue)
 	}
@@ -167,8 +171,8 @@ func (f FieldValues) setValue(env RunEnvironment, fields *FieldAssets, key strin
 		field: field,
 		Value: value,
 	}
-	f[key] = fieldValue
-	return fieldValue.Value, nil
+	f[field.Key()] = fieldValue
+	return fieldValue.Value
 }
 
 func (f FieldValues) parseValue(env RunEnvironment, fields *FieldAssets, field *Field, rawValue string) *Value {
@@ -237,11 +241,17 @@ func (f FieldValues) parseValue(env RunEnvironment, fields *FieldAssets, field *
 }
 
 func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAssets, valueType assets.FieldType) *utils.Location {
+	// do we have a field of this type?
 	field := fields.FirstOfType(valueType)
 	if field == nil {
 		return nil
 	}
+	// does this contact have a value for that field?
 	value := f[field.Key()].TypedValue()
+	if value == nil {
+		return nil
+	}
+
 	location, err := env.LookupLocation(value.(LocationPath))
 	if err != nil {
 		return nil
