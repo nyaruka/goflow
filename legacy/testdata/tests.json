@@ -347,7 +347,7 @@
         "legacy_test": {
             "type": "regex",
             "test": {
-                "eng": "[Yy]eah?",
+                "eng": "[Yy]eah? \\w",
                 "fra": "[Oo]ui"
             }
         },
@@ -355,7 +355,7 @@
             "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
             "type": "has_pattern",
             "arguments": [
-                "[Yy]eah?"
+                "[Yy]eah? \\w"
             ],
             "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
         },

@@ -260,3 +260,14 @@ func convertTimeToSeconds(operand string) (string, bool) {
 	}
 	return operand, converted
 }
+
+func MigrateStringLiteral(s string) string {
+	// strip surrounding quotes
+	s = s[1 : len(s)-1]
+
+	// replace any escaped quotes
+	s = strings.Replace(s, `""`, `\"`, -1)
+
+	// re-quote
+	return `"` + s + `"`
+}

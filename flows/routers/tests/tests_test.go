@@ -106,6 +106,9 @@ var testTests = []struct {
 	{"has_beginning", []types.XValue{xs("but this world"), xs("this world")}, false, nil, false},
 	{"has_beginning", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
+	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`<\w+>`)}, true, xs("<html>"), false},
+	{"has_pattern", []types.XValue{xs("<html>x</html>"), xs(`[`)}, false, nil, true},
+
 	{"has_number", []types.XValue{xs("the number 10")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("24ans")}, true, xn("24"), false},
 	{"has_number", []types.XValue{xs("J'AI 20ANS")}, true, xn("20"), false},

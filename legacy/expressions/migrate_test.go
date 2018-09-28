@@ -127,8 +127,9 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 
 		// functions
-		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},
 		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(results.favorite_color))`},
+		{old: `@(REGEX_GROUP(flow.favorite_color, "\w\w+"))`, new: `@(regex_match(results.favorite_color, "\w\w+"))`},
+		{old: `@(REGEX_GROUP(flow.favorite_color, "\w(\w+)", 1))`, new: `@(regex_match(results.favorite_color, "\w(\w+)", 1))`},
 		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(results.favorite_color, 1))`},
 		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(results.favorite_color, 1, 3))`},
 		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, TRUE))`, new: `@(word_slice(results.favorite_color, 1, 3, " \t"))`},
@@ -144,11 +145,16 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(results.favorite_color))`},
 		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(results.favorite_color, " \t"))`},
 		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(results.favorite_color, NULL))`},
+
+		// math and logic functions
 		{old: `@(ABS(-5))`, new: `@(abs(-5))`},
 		{old: `@(AVERAGE(1, 2, 3, 4, 5))`, new: `@(mean(1, 2, 3, 4, 5))`},
 		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(contact.fields.age > 30, results.amount < 5))`},
+
+		// date functions
 		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`},
 		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`},
+		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`},
 		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`},
 		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`},
@@ -416,4 +422,12 @@ func TestLegacyTests(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestMigrateStringLiteral(t *testing.T) {
+	assert.Equal(t, `""`, expressions.MigrateStringLiteral(`""`))
+	assert.Equal(t, `"abc"`, expressions.MigrateStringLiteral(`"abc"`))
+	assert.Equal(t, `"\"hello\""`, expressions.MigrateStringLiteral(`"""hello"""`))
+	assert.Equal(t, `"line1\nline2\ttabbed"`, expressions.MigrateStringLiteral(`"line1\nline2\ttabbed"`))
+	assert.Equal(t, `"\D\w+[\.*]"`, expressions.MigrateStringLiteral(`"\D\w+[\.*]"`))
 }

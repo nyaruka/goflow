@@ -137,7 +137,7 @@ var callMigrators = map[string]callMigrator{
 	"rand":              asIs(),
 	"randbetween":       asRename(`rand_between`),
 	"read_digits":       asRename(`read_chars`),
-	"regex_group":       asIs(),
+	"regex_group":       asRename(`regex_match`),
 	"remove_first_word": asIs(),
 	"rept":              asRename(`repeat`),
 	"right":             asIs(),
