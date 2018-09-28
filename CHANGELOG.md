@@ -1,3 +1,7 @@
+v0.19.2
+----------
+ * Only generate a contact_field_changed event if a value has actually changed
+
 v0.19.1
 ----------
  * Fix blowing up when contact doesn't have a value for a contact field
