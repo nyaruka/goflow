@@ -73,6 +73,5 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step, l
 		a.log(events.NewContactTimezoneChangedEvent(timezone), log)
 	}
 
-	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

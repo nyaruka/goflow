@@ -36,10 +36,11 @@ func TestFieldValues(t *testing.T) {
 	}, true)
 	assert.NoError(t, err)
 
-	genderVal := fieldVals.GetValue(gender)
-	ageVal := fieldVals.GetValue(age)
-	assert.NotNil(t, genderVal)
-	assert.NotNil(t, ageVal)
+	assert.Equal(t, types.NewXText("Male"), fieldVals.Get(gender).Text)
+	assert.Equal(t, types.NewXText("nan"), fieldVals.Get(age).Text)
+
+	genderVal := fieldVals["gender"]
+	ageVal := fieldVals["age"]
 
 	assert.Equal(t, 2, fieldVals.Length())
 	assert.Equal(t, genderVal, fieldVals.Resolve(env, "gender"))
@@ -52,4 +53,26 @@ func TestFieldValues(t *testing.T) {
 
 	assert.Nil(t, ageVal.Reduce(env)) // doesn't have a value in the right type
 	assert.Equal(t, types.NewXText("nan"), ageVal.Resolve(env, "text"))
+}
+
+func TestValues(t *testing.T) {
+	num1 := types.RequireXNumberFromString("23")
+	num2 := types.RequireXNumberFromString("23")
+	num3 := types.RequireXNumberFromString("45")
+
+	v1 := flows.NewValue(types.NewXText("Male"), nil, nil, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath(""))
+	v2 := flows.NewValue(types.NewXText("Male"), nil, nil, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath(""))
+	v3 := flows.NewValue(types.NewXText("23"), nil, &num1, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath(""))
+	v4 := flows.NewValue(types.NewXText("23x"), nil, &num2, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath(""))
+	v5 := flows.NewValue(types.NewXText("23x"), nil, &num3, flows.LocationPath(""), flows.LocationPath(""), flows.LocationPath(""))
+	v6 := (*flows.Value)(nil)
+
+	assert.True(t, v1.Equals(v1))
+	assert.True(t, v1.Equals(v2))
+	assert.False(t, v2.Equals(v3))
+	assert.False(t, v3.Equals(v4))
+	assert.False(t, v4.Equals(v5))
+	assert.False(t, v4.Equals(v6))
+	assert.False(t, v6.Equals(v4))
+	assert.True(t, v6.Equals(v6))
 }

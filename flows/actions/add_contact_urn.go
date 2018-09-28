@@ -68,8 +68,9 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step, log fl
 	if !run.Contact().HasURN(urn) {
 		run.Contact().AddURN(urn)
 		a.log(events.NewURNAddedEvent(urn), log)
+
+		a.reevaluateDynamicGroups(run, log)
 	}
 
-	a.reevaluateDynamicGroups(run, log)
 	return nil
 }
