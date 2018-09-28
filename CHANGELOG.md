@@ -1,3 +1,13 @@
+v0.19.0
+----------
+ * Add missing regex_match func and migration of string literals in legacy flows
+ * Allow contacts to be loaded in a mode that ignores missing groups or fields
+ * Disallow creating contacts with empty field values
+ * Generate a JSON listing of functions
+ * Cleanup field value code so that we no longer need empty values
+ * Fix group reevaluation when contact has no value for a text field
+ * Cleanup function docstrings and fix from_epoch
+
 v0.18.0
 ----------
  * Use default value for router on migrated webhook ruleset in case resthook didn't have any subscribers
