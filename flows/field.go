@@ -49,12 +49,9 @@ type FieldValue struct {
 	*Value
 }
 
-// NewFieldValue creates a new field value with the passed in values
-func NewFieldValue(field *Field, text types.XText, datetime *types.XDateTime, number *types.XNumber, state LocationPath, district LocationPath, ward LocationPath) *FieldValue {
-	return &FieldValue{
-		field: field,
-		Value: NewValue(text, datetime, number, state, district, ward),
-	}
+// NewFieldValue creates a new field value
+func NewFieldValue(field *Field, value *Value) *FieldValue {
+	return &FieldValue{field: field, Value: value}
 }
 
 // TypedValue returns the value in its proper type or nil if there is no value in that type
@@ -124,19 +121,30 @@ var EmptyFieldValue = &FieldValue{}
 type FieldValues map[string]*FieldValue
 
 // NewFieldValues creates a new field value map
-func NewFieldValues(a SessionAssets, values map[assets.Field]*Value) (FieldValues, error) {
-	fieldValues := make(FieldValues, len(values))
-	for asset, val := range values {
-		field, err := a.Fields().Get(asset.Key())
-		if err != nil {
-			return nil, err
+func NewFieldValues(a SessionAssets, values map[string]*Value, strict bool) (FieldValues, error) {
+	allFields := a.Fields().All()
+	fieldValues := make(FieldValues, len(allFields))
+	for _, field := range allFields {
+		value := values[field.Key()]
+		if value != nil {
+			if value.Text.Empty() {
+				return nil, fmt.Errorf("field values can't be empty")
+			}
+			fieldValues[field.Key()] = NewFieldValue(field, value)
+		} else {
+			fieldValues[field.Key()] = nil
 		}
-		if val.Text.Empty() {
-			return nil, fmt.Errorf("field values can't be empty")
-		}
-
-		fieldValues[field.Key()] = &FieldValue{field: field, Value: val}
 	}
+
+	if strict {
+		for key := range values {
+			_, valid := fieldValues[key]
+			if !valid {
+				return nil, fmt.Errorf("invalid field key: %s", key)
+			}
+		}
+	}
+
 	return fieldValues, nil
 }
 
@@ -149,7 +157,7 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) getValue(field *Field) *FieldValue {
+func (f FieldValues) GetValue(field *Field) *FieldValue {
 	return f[field.Key()]
 }
 
@@ -167,10 +175,7 @@ func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string,
 		value = f.parseValue(env, fields, field, rawValue)
 	}
 
-	fieldValue := &FieldValue{
-		field: field,
-		Value: value,
-	}
+	fieldValue := NewFieldValue(field, value)
 	f[field.Key()] = fieldValue
 	return fieldValue.Value
 }
@@ -259,9 +264,15 @@ func (f FieldValues) getFirstLocationValue(env RunEnvironment, fields *FieldAsse
 	return location
 }
 
-// Length is called to get the length of this object
+// Length is called to get the length of this object which in this case is the number of set values
 func (f FieldValues) Length() int {
-	return len(f)
+	count := 0
+	for _, v := range f {
+		if v != nil {
+			count++
+		}
+	}
+	return count
 }
 
 // Resolve resolves the given key when this set of field values is referenced in an expression

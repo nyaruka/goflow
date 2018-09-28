@@ -76,6 +76,8 @@ func Validate(obj interface{}) error {
 			problem = "must be a valid UUID"
 		case "uuid4":
 			problem = "must be a valid UUID4"
+		case "url":
+			problem = "is not a valid URL"
 		case "min":
 			problem = fmt.Sprintf("must have a minimum of %s items", fieldErr.Param())
 		case "max":

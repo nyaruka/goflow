@@ -89,7 +89,7 @@ func NewContactFromAssets(
 	createdOn time.Time,
 	urns []urns.URN,
 	groups []assets.Group,
-	fields map[assets.Field]*Value) (*Contact, error) {
+	fields map[string]*Value) (*Contact, error) {
 
 	urnList, err := ReadURNList(a, urns)
 	if err != nil {
@@ -101,7 +101,7 @@ func NewContactFromAssets(
 		return nil, err
 	}
 
-	fieldValues, err := NewFieldValues(a, fields)
+	fieldValues, err := NewFieldValues(a, fields, true)
 	if err != nil {
 		return nil, err
 	}
@@ -465,7 +465,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 		c.urns = make(URNList, 0)
 	} else {
 		if c.urns, err = ReadURNList(assets, envelope.URNs); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error reading urns: %s", err)
 		}
 	}
 
@@ -476,20 +476,15 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 		for g := range envelope.Groups {
 			group, err := assets.Groups().Get(envelope.Groups[g].UUID)
 			if err != nil && strict {
-				return nil, err
+				return nil, fmt.Errorf("error reading groups: %s", err)
 			}
 			groups = append(groups, group)
 		}
 		c.groups = NewGroupList(groups)
 	}
 
-	c.fields = make(FieldValues, len(envelope.Fields))
-	for key, value := range envelope.Fields {
-		field, err := assets.Fields().Get(key)
-		if err != nil && strict {
-			return nil, fmt.Errorf("unable to load contact field values: %s", err)
-		}
-		c.fields[field.Key()] = &FieldValue{field: field, Value: value}
+	if c.fields, err = NewFieldValues(assets, envelope.Fields, strict); err != nil {
+		return nil, fmt.Errorf("error reading fields: %s", err)
 	}
 
 	return c, nil
@@ -517,7 +512,9 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 
 	ce.Fields = make(map[string]*Value)
 	for _, v := range c.fields {
-		ce.Fields[v.field.Key()] = v.Value
+		if v != nil {
+			ce.Fields[v.field.Key()] = v.Value
+		}
 	}
 
 	return json.Marshal(ce)
