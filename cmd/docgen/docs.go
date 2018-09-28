@@ -19,17 +19,16 @@ import (
 var tagLineRegex = regexp.MustCompile(`@\w+\s+(?P<value>\w+)(?P<extra>.+)?`)
 
 var docSets = []struct {
-	contextKey string
 	searchDirs []string
 	tag        string
-	handler    renderFunc
+	renderer   renderFunc
 }{
-	{"contextDocs", []string{"flows"}, "context", renderContextDoc},
-	{"functionDocs", []string{"excellent/functions"}, "function", renderFunctionDoc},
-	{"testDocs", []string{"flows/routers/tests"}, "test", renderFunctionDoc},
-	{"actionDocs", []string{"flows/actions"}, "action", renderActionDoc},
-	{"eventDocs", []string{"flows/events"}, "event", renderEventDoc},
-	{"triggerDocs", []string{"flows/triggers"}, "trigger", renderTriggerDoc},
+	{[]string{"flows"}, "context", renderContextDoc},
+	{[]string{"excellent/functions"}, "function", renderFunctionDoc},
+	{[]string{"flows/routers/tests"}, "test", renderFunctionDoc},
+	{[]string{"flows/actions"}, "action", renderActionDoc},
+	{[]string{"flows/events"}, "event", renderEventDoc},
+	{[]string{"flows/triggers"}, "trigger", renderTriggerDoc},
 }
 
 type documentedItem struct {
@@ -43,13 +42,11 @@ type documentedItem struct {
 
 type renderFunc func(output *strings.Builder, item *documentedItem, session flows.Session) error
 
-// builds the documentation generation context from the given base directory
-func buildDocsContext(baseDir string) (map[string]string, map[string]bool, error) {
-	fmt.Println("Generating docs...")
-
+// builds the documentation generation context from the given documented items
+func buildDocsContext(items map[string][]*documentedItem) (map[string]string, error) {
 	server, err := test.NewTestHTTPServer(49998)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error starting mock HTTP server: %s", err)
+		return nil, fmt.Errorf("error starting mock HTTP server: %s", err)
 	}
 	defer server.Close()
 
@@ -63,52 +60,55 @@ func buildDocsContext(baseDir string) (map[string]string, map[string]bool, error
 
 	session, err := test.CreateTestSession(server.URL, nil)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating example session: %s", err)
+		return nil, fmt.Errorf("error creating example session: %s", err)
 	}
 
 	context := make(map[string]string, len(docSets))
-	linkTargets := make(map[string]bool)
 
 	for _, ds := range docSets {
-		var tagValues []string
-		if context[ds.contextKey], tagValues, err = buildDocSet(baseDir, ds.searchDirs, ds.tag, ds.handler, session); err != nil {
-			return nil, nil, err
-		}
-		for _, tagValue := range tagValues {
-			linkTargets[ds.tag+":"+tagValue] = true
+		contextKey := fmt.Sprintf("%sDocs", ds.tag)
+
+		if context[contextKey], err = buildDocSet(ds.tag, items[ds.tag], ds.renderer, session); err != nil {
+			return nil, err
 		}
 	}
 
-	return context, linkTargets, nil
+	return context, nil
 }
 
-func buildDocSet(baseDir string, searchDirs []string, tag string, renderer renderFunc, session flows.Session) (string, []string, error) {
-	items := make([]*documentedItem, 0)
-	for _, searchDir := range searchDirs {
-		fromDir, err := findDocumentedItems(baseDir, searchDir, tag)
-		if err != nil {
-			return "", nil, err
-		}
-		items = append(items, fromDir...)
-	}
-
+// builds a docset for the given tag type
+func buildDocSet(tag string, tagItems []*documentedItem, renderer renderFunc, session flows.Session) (string, error) {
 	// sort documented items by their tag value
-	sort.SliceStable(items, func(i, j int) bool { return items[i].tagValue < items[j].tagValue })
-
-	fmt.Printf(" > Found %d documented items with tag %s\n", len(items), tag)
+	sort.SliceStable(tagItems, func(i, j int) bool { return tagItems[i].tagValue < tagItems[j].tagValue })
 
 	buffer := &strings.Builder{}
-	tagValues := make([]string, len(items))
 
-	for i, item := range items {
-		tagValues[i] = item.tagValue
-
+	for _, item := range tagItems {
 		if err := renderer(buffer, item, session); err != nil {
-			return "", nil, fmt.Errorf("error rendering %s:%s: %s", item.tagName, item.tagValue, err)
+			return "", fmt.Errorf("error rendering %s:%s: %s", item.tagName, item.tagValue, err)
 		}
 	}
 
-	return buffer.String(), tagValues, nil
+	return buffer.String(), nil
+}
+
+// finds all documented items for all tag types
+func findAllDocumentedItems(baseDir string) (map[string][]*documentedItem, error) {
+	items := make(map[string][]*documentedItem)
+	for _, ds := range docSets {
+		tagItems := make([]*documentedItem, 0)
+		for _, searchDir := range ds.searchDirs {
+			fromDir, err := findDocumentedItems(baseDir, searchDir, ds.tag)
+			if err != nil {
+				return nil, err
+			}
+			tagItems = append(tagItems, fromDir...)
+		}
+		items[ds.tag] = tagItems
+
+		fmt.Printf(" > Found %d documented items with tag %s\n", len(tagItems), ds.tag)
+	}
+	return items, nil
 }
 
 // finds all documented items in go files in the given directory
@@ -155,6 +155,7 @@ func parseDocString(tag string, docString string, typeName string) *documentedIt
 			tagValue = parts[1]
 			tagExtra = parts[2]
 		} else if strings.HasPrefix(l, "  ") { // examples are indented by at least two spaces
+			trimmed = strings.Replace(trimmed, "->", "→", -1)
 			examples = append(examples, trimmed)
 		} else {
 			description = append(description, l)
