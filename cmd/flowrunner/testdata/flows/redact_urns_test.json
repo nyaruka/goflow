@@ -20,12 +20,12 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "created_on": "2018-07-06T12:30:06.123456789Z",
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 71\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": [{\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}]) }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "time_taken": 0,
+                    "time_taken": 1000,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 }
@@ -81,17 +81,17 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 71\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": [{\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}]) }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "time_taken": 0,
+                                "time_taken": 1000,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:05.123456789Z",
+                        "exited_on": "2018-07-06T12:30:07.123456789Z",
                         "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Redacted URNs",

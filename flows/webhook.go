@@ -9,6 +9,8 @@ import (
 	"net/http/httputil"
 	"strings"
 	"time"
+
+	"github.com/nyaruka/goflow/utils"
 )
 
 var DefaultWebhookPayload = `{
@@ -83,9 +85,9 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 		if session.EngineConfig().DisableWebhooks() {
 			response, requestDump, err = session.HTTPClient().MockWithDump(request, 200, "DISABLED")
 		} else {
-			start := time.Now()
+			start := utils.Now()
 			response, requestDump, err = session.HTTPClient().DoWithDump(request)
-			timeTaken = time.Since(start)
+			timeTaken = utils.Now().Sub(start)
 		}
 	}
 
