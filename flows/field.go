@@ -43,6 +43,21 @@ func NewValue(text types.XText, datetime *types.XDateTime, number *types.XNumber
 	}
 }
 
+// Equals determines whether two values are equal
+func (v *Value) Equals(o *Value) bool {
+	if v == nil && o == nil {
+		return true
+	}
+	if (v == nil && o != nil) || (v != nil && o == nil) {
+		return false
+	}
+
+	dateEqual := (v.Datetime == nil && o.Datetime == nil) || (v.Datetime != nil && o.Datetime != nil && v.Datetime.Equals(*o.Datetime))
+	numEqual := (v.Number == nil && o.Number == nil) || (v.Number != nil && o.Number != nil && v.Number.Equals(*o.Number))
+
+	return v.Text.Equals(o.Text) && dateEqual && numEqual && v.State == o.State && v.District == o.District && v.Ward == o.Ward
+}
+
 // FieldValue represents a field and a set of values for that field
 type FieldValue struct {
 	field *Field
@@ -114,9 +129,6 @@ func (v *FieldValue) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*FieldValue)(nil)
 var _ types.XResolvable = (*FieldValue)(nil)
 
-// EmptyFieldValue is used when a contact doesn't have a value set for a field
-var EmptyFieldValue = &FieldValue{}
-
 // FieldValues is the set of all field values for a contact
 type FieldValues map[string]*FieldValue
 
@@ -157,24 +169,32 @@ func (f FieldValues) clone() FieldValues {
 	return clone
 }
 
-func (f FieldValues) GetValue(field *Field) *FieldValue {
-	return f[field.Key()]
+// Get gets the field value set for the given field
+func (f FieldValues) Get(field *Field) *Value {
+	fieldVal := f[field.Key()]
+	if fieldVal != nil {
+		return fieldVal.Value
+	}
+	return nil
 }
 
-func (f FieldValues) clearValue(field *Field) {
+// Clear clears the field value set for the given field
+func (f FieldValues) Clear(field *Field) {
 	delete(f, field.Key())
 }
 
-func (f FieldValues) setValue(env RunEnvironment, field *Field, rawValue string, fields *FieldAssets) *Value {
+// Set sets the field value set for the given field
+func (f FieldValues) Set(env utils.Environment, field *Field, rawValue string, fields *FieldAssets) *Value {
+	runEnv := env.(RunEnvironment)
 	var value *Value
 
 	// if raw value is empty string, set an empty value, other parse into different types
 	if rawValue == "" {
-		f.clearValue(field)
-	} else {
-		value = f.parseValue(env, fields, field, rawValue)
+		f.Clear(field)
+		return nil
 	}
 
+	value = f.parseValue(runEnv, fields, field, rawValue)
 	fieldValue := NewFieldValue(field, value)
 	f[field.Key()] = fieldValue
 	return fieldValue.Value

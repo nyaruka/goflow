@@ -512,7 +512,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
         "key": "gender",
         "name": "Gender"
     },
-    "value": "Male"
+    "value": "Female"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -525,7 +525,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
         "name": "Gender"
     },
     "value": {
-        "text": "Male"
+        "text": "Female"
     }
 }
 ```

@@ -295,19 +295,6 @@ func (c *Contact) ToXJSON(env utils.Environment) types.XText {
 var _ types.XValue = (*Contact)(nil)
 var _ types.XResolvable = (*Contact)(nil)
 
-// SetFieldValue updates the given contact field value for this contact
-func (c *Contact) SetFieldValue(env utils.Environment, fields *FieldAssets, key string, rawValue string) (*Value, error) {
-	runEnv := env.(RunEnvironment)
-
-	// lookup the actual field object for this key
-	field, err := fields.Get(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.fields.setValue(runEnv, field, rawValue, fields), nil
-}
-
 // PreferredChannel gets the preferred channel for this contact, i.e. the preferred channel of their highest priority URN
 func (c *Contact) PreferredChannel() *Channel {
 	if len(c.urns) > 0 {

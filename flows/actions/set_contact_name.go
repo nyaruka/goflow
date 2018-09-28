@@ -60,8 +60,9 @@ func (a *SetContactNameAction) Execute(run flows.FlowRun, step flows.Step, log f
 	if run.Contact().Name() != name {
 		run.Contact().SetName(name)
 		a.log(events.NewContactNameChangedEvent(name), log)
+
+		a.reevaluateDynamicGroups(run, log)
 	}
 
-	a.reevaluateDynamicGroups(run, log)
 	return nil
 }

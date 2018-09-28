@@ -24,7 +24,7 @@ const TypeSetContactField string = "set_contact_field"
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
 //     "type": "set_contact_field",
 //     "field": {"key": "gender", "name": "Gender"},
-//     "value": "Male"
+//     "value": "Female"
 //   }
 //
 // @action set_contact_field
@@ -62,13 +62,18 @@ func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step, log 
 	}
 
 	fields := run.Session().Assets().Fields()
-	value, err := run.Contact().SetFieldValue(run.Environment(), fields, a.Field.Key, rawValue)
+
+	field, err := fields.Get(a.Field.Key)
 	if err != nil {
 		return err
 	}
 
-	a.log(events.NewContactFieldChangedEvent(a.Field, value), log)
+	oldValue := run.Contact().Fields().Get(field)
+	newValue := run.Contact().Fields().Set(run.Environment(), field, rawValue, fields)
 
-	a.reevaluateDynamicGroups(run, log)
+	if !newValue.Equals(oldValue) {
+		a.log(events.NewContactFieldChangedEvent(a.Field, newValue), log)
+		a.reevaluateDynamicGroups(run, log)
+	}
 	return nil
 }

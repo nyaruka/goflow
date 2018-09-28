@@ -136,10 +136,10 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 
 	env := session.Runs()[0].Environment()
 
-	fieldSet := flows.NewFieldAssets([]assets.Field{
-		test.NewField("gender", "Gender", assets.FieldTypeText).Asset(),
-		test.NewField("age", "Age", assets.FieldTypeNumber).Asset(),
-	})
+	gender := test.NewField("gender", "Gender", assets.FieldTypeText)
+	age := test.NewField("age", "Age", assets.FieldTypeNumber)
+
+	fieldSet := flows.NewFieldAssets([]assets.Field{gender.Asset(), age.Asset()})
 
 	males := test.NewGroup("Males", `gender="M"`)
 	old := test.NewGroup("Old", `age>30`)
@@ -158,8 +158,8 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	contact.SetLanguage(utils.Language("spa"))
 	contact.AddURN(urns.URN("twitter:crazy_joe"))
 	contact.AddURN(urns.URN("tel:+18005555777"))
-	contact.SetFieldValue(env, fieldSet, "gender", "M")
-	contact.SetFieldValue(env, fieldSet, "age", "37")
+	contact.Fields().Set(env, gender, "M", fieldSet)
+	contact.Fields().Set(env, age, "37", fieldSet)
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
 
 	assert.Equal(t, []*flows.Group{males, old, spanish, lastYear, tel1800, twitterCrazies}, evaluateGroups(t, env, contact, groups))
