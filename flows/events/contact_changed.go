@@ -42,7 +42,7 @@ func (e *ContactChangedEvent) Validate(assets flows.SessionAssets) error {
 
 // Apply applies this event to the given run
 func (e *ContactChangedEvent) Apply(run flows.FlowRun) error {
-	contact, err := flows.ReadContact(run.Session().Assets(), e.Contact)
+	contact, err := flows.ReadContact(run.Session().Assets(), e.Contact, true)
 	if err != nil {
 		return err
 	}
