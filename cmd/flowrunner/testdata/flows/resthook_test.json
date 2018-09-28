@@ -12,6 +12,7 @@
                     "resthook": "new-registration",
                     "status": "response_error",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "time_taken": 0,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/"
                 },
@@ -22,6 +23,7 @@
                     "resthook": "new-registration",
                     "status": "success",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "time_taken": 0,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 },
@@ -84,6 +86,7 @@
                                 "resthook": "new-registration",
                                 "status": "response_error",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "time_taken": 0,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/"
                             },
@@ -94,6 +97,7 @@
                                 "resthook": "new-registration",
                                 "status": "success",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "time_taken": 0,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             },

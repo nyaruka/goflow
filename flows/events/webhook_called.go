@@ -18,8 +18,9 @@ const TypeWebhookCalled string = "webhook_called"
 //   {
 //     "type": "webhook_called",
 //     "created_on": "2006-01-02T15:04:05Z",
-//     "url": "https://api.ipify.org/?format=json",
+//     "url": "http://localhost:49998/?cmd=success",
 //     "status": "success",
+//     "time_taken": 123,
 //     "request": "GET /?format=json HTTP/1.1",
 //     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 //   }
@@ -28,11 +29,12 @@ const TypeWebhookCalled string = "webhook_called"
 type WebhookCalledEvent struct {
 	BaseEvent
 
-	URL      string              `json:"url" validate:"required"`
-	Resthook string              `json:"resthook,omitempty"`
-	Status   flows.WebhookStatus `json:"status" validate:"required"`
-	Request  string              `json:"request" validate:"required"`
-	Response string              `json:"response"`
+	URL       string              `json:"url" validate:"required"`
+	Resthook  string              `json:"resthook,omitempty"`
+	Status    flows.WebhookStatus `json:"status" validate:"required"`
+	TimeTaken int                 `json:"time_taken"`
+	Request   string              `json:"request" validate:"required"`
+	Response  string              `json:"response"`
 }
 
 // NewWebhookCalledEvent returns a new webhook called event
@@ -42,6 +44,7 @@ func NewWebhookCalledEvent(webhook *flows.WebhookCall, resthook string) *Webhook
 		URL:       webhook.URL(),
 		Resthook:  resthook,
 		Status:    webhook.Status(),
+		TimeTaken: int(webhook.TimeTaken().Nanoseconds() / 1e6),
 		Request:   webhook.Request(),
 		Response:  webhook.Response(),
 	}

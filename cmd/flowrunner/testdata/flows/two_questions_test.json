@@ -429,6 +429,7 @@
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "time_taken": 0,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 },
@@ -581,6 +582,7 @@
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                                "time_taken": 0,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             },

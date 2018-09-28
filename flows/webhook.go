@@ -1,7 +1,6 @@
 package flows
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -9,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"strings"
+	"time"
 )
 
 var DefaultWebhookPayload = `{
@@ -62,30 +62,9 @@ type WebhookCall struct {
 	request       *http.Request
 	response      *http.Response
 	status        WebhookStatus
+	timeTaken     time.Duration
 	requestTrace  string
 	responseTrace string
-}
-
-// ReconstructWebhookCall reconstructs a webhook call from the given traces
-func ReconstructWebhookCall(url string, requestTrace string, responseTrace string) (*WebhookCall, error) {
-	request, err := http.ReadRequest(bufio.NewReader(strings.NewReader(requestTrace)))
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := http.ReadResponse(bufio.NewReader(strings.NewReader(responseTrace)), request)
-	if err != nil {
-		return nil, err
-	}
-
-	return &WebhookCall{
-		url:           url,
-		request:       request,
-		response:      response,
-		status:        WebhookStatusFromCode(response.StatusCode),
-		requestTrace:  requestTrace,
-		responseTrace: responseTrace,
-	}, nil
 }
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
@@ -94,6 +73,7 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 	var response *http.Response
 	var requestDump string
 	var err error
+	var timeTaken time.Duration
 
 	// if our config has mocks, look for a matching one
 	mock := findMockedRequest(session, request)
@@ -103,7 +83,9 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 		if session.EngineConfig().DisableWebhooks() {
 			response, requestDump, err = session.HTTPClient().MockWithDump(request, 200, "DISABLED")
 		} else {
+			start := time.Now()
 			response, requestDump, err = session.HTTPClient().DoWithDump(request)
+			timeTaken = time.Since(start)
 		}
 	}
 
@@ -111,7 +93,7 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 		return newWebhookCallFromError(request, requestDump, err), err
 	}
 
-	return newWebhookCallFromResponse(requestDump, response, session.EngineConfig().MaxWebhookResponseBytes())
+	return newWebhookCallFromResponse(requestDump, response, session.EngineConfig().MaxWebhookResponseBytes(), timeTaken)
 }
 
 // URL returns the full URL
@@ -130,6 +112,9 @@ func (w *WebhookCall) StatusCode() int {
 	}
 	return 0
 }
+
+// TimeTaken returns the time taken to make the request
+func (w *WebhookCall) TimeTaken() time.Duration { return w.timeTaken }
 
 // Request returns the request trace
 func (w *WebhookCall) Request() string { return w.requestTrace }
@@ -159,7 +144,7 @@ func newWebhookCallFromError(request *http.Request, requestTrace string, request
 }
 
 // newWebhookCallFromResponse creates a new RequestResponse based on the passed in http Response
-func newWebhookCallFromResponse(requestTrace string, response *http.Response, maxBodyBytes int) (*WebhookCall, error) {
+func newWebhookCallFromResponse(requestTrace string, response *http.Response, maxBodyBytes int, timeTaken time.Duration) (*WebhookCall, error) {
 	defer response.Body.Close()
 
 	// save response trace without body which will be parsed separately
@@ -175,6 +160,7 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 		status:        WebhookStatusFromCode(response.StatusCode),
 		requestTrace:  requestTrace,
 		responseTrace: string(responseTrace),
+		timeTaken:     timeTaken,
 	}
 
 	// only save response body's if we have a supported content-type
