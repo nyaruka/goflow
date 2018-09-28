@@ -53,6 +53,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"left":              TextAndIntegerFunction(Left),
 	"lower":             OneTextFunction(Lower),
 	"right":             TextAndIntegerFunction(Right),
+	"regex_match":       InitialTextFunction(1, 2, RegexMatch),
 	"text_compare":      TwoTextFunction(TextCompare),
 	"repeat":            TextAndIntegerFunction(Repeat),
 	"replace":           ThreeTextFunction(Replace),
@@ -609,6 +610,45 @@ func Left(env utils.Environment, text types.XText, count int) types.XValue {
 // @function lower(text)
 func Lower(env utils.Environment, text types.XText) types.XValue {
 	return types.NewXText(strings.ToLower(text.Native()))
+}
+
+// RegexMatch returns the first match of the regular expression `pattern` in `text`.
+//
+// An optional third parameter `group` determines which matching group will be returned.
+//
+//   @(regex_match("sda34dfddg67", "\d+")) -> 34
+//   @(regex_match("Bob Smith", "(\w+) (\w+)", 1)) -> Bob
+//   @(regex_match("Bob Smith", "(\w+) (\w+)", 2)) -> Smith
+//   @(regex_match("Bob Smith", "(\w+) (\w+)", 5)) -> ERROR
+//   @(regex_match("abc", "[\.")) -> ERROR
+//
+// @function regex_match(text, pattern [,group])
+func RegexMatch(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	pattern, xerr := types.ToXText(env, args[0])
+	if xerr != nil {
+		return xerr
+	}
+
+	groupNum := 0
+	if len(args) == 2 {
+		groupNum, xerr = types.ToInteger(env, args[1])
+		if xerr != nil {
+			return xerr
+		}
+	}
+
+	exp, err := regexp.Compile(`(?mi)` + pattern.Native())
+	if err != nil {
+		return types.NewXErrorf("invalid regular expression")
+	}
+
+	groups := exp.FindStringSubmatch(text.Native())
+
+	if groupNum < 0 || groupNum >= len(groups) {
+		return types.NewXErrorf("invalid regular expression group")
+	}
+
+	return types.NewXText(groups[groupNum])
 }
 
 // Right returns the `count` right-most characters in `text`

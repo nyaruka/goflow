@@ -923,6 +923,23 @@ splitting in 3s or 4s if appropriate.
 @(read_chars("abcdef")) → a b c , d e f
 ```
 
+<a name="function:regex_match"></a>
+
+## regex_match(text, pattern [,group])
+
+Returns the first match of the regular expression `pattern` in `text`.
+
+An optional third parameter `group` determines which matching group will be returned.
+
+
+```objectivec
+@(regex_match("sda34dfddg67", "\d+")) → 34
+@(regex_match("Bob Smith", "(\w+) (\w+)", 1)) → Bob
+@(regex_match("Bob Smith", "(\w+) (\w+)", 2)) → Smith
+@(regex_match("Bob Smith", "(\w+) (\w+)", 5)) → ERROR
+@(regex_match("abc", "[\.")) → ERROR
+```
+
 <a name="function:remove_first_word"></a>
 
 ## remove_first_word(text)

@@ -320,6 +320,10 @@ var funcTests = []struct {
 	{"read_chars", []types.XValue{xs("12")}, xs("1 , 2")},
 	{"read_chars", []types.XValue{}, ERROR},
 
+	{"regex_match", []types.XValue{xs("zAbc"), xs(`a\w`)}, xs(`Ab`)},
+	{"regex_match", []types.XValue{xs("<html>"), xs(`<(\w+)>`), xn("1")}, xs(`html`)},
+	{"regex_match", []types.XValue{xs("<html>"), xs(`<(\w+)>`), xn("2")}, ERROR},
+
 	{"remove_first_word", []types.XValue{xs("hello World")}, xs("World")},
 	{"remove_first_word", []types.XValue{xs("hello")}, xs("")},
 	{"remove_first_word", []types.XValue{xs("😁hello")}, xs("hello")},

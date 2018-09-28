@@ -322,7 +322,7 @@ func HasBeginning(env utils.Environment, text types.XText, beginning types.XText
 //
 // @test has_pattern(text, pattern)
 func HasPattern(env utils.Environment, text types.XText, pattern types.XText) types.XValue {
-	regex, err := regexp.Compile("(?i)" + strings.TrimSpace(pattern.Native()))
+	regex, err := regexp.Compile("(?mi)" + strings.TrimSpace(pattern.Native()))
 	if err != nil {
 		return types.NewXErrorf("must be called with a valid regular expression")
 	}
