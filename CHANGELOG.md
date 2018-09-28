@@ -1,3 +1,7 @@
+v0.19.1
+----------
+ * Fix blowing up when contact doesn't have a value for a contact field
+
 v0.19.0
 ----------
  * Add missing regex_match func and migration of string literals in legacy flows
