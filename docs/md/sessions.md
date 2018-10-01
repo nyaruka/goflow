@@ -116,6 +116,65 @@ Is used when a session was triggered manually by a user
 
 </div>
 
+# Resumes
+
+Resumes resume an existing session with the flow engine and describe why the session is being resumed.
+
+<div class="resumes">
+<a name="resume:msg"></a>
+
+## msg
+
+Is used when a session is resumed with a new message from the contact
+
+
+```json
+{
+    "type": "msg",
+    "Msg": {
+        "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+            "name": "Twilio"
+        },
+        "text": "hi there",
+        "attachments": [
+            "https://s3.amazon.com/mybucket/attachment.jpg"
+        ]
+    }
+}
+```
+
+<a name="resume:run_expiration"></a>
+
+## run_expiration
+
+Is used when a session is resumed because the waiting run has expired
+
+
+```json
+{
+    "type": "run_expiration"
+}
+```
+
+<a name="resume:wait_timeout"></a>
+
+## wait_timeout
+
+Is used when a session is resumed because a wait has timed out
+
+
+```json
+{
+    "type": "wait_timeout"
+}
+```
+
+
+</div>
+
 # Events
 
 Events are the output of a flow run and represent instructions to the engine container on what actions should be taken due to the flow execution.

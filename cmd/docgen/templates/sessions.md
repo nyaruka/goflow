@@ -7,6 +7,14 @@ be accessed in expressions.
 {{ .triggerDocs }}
 </div>
 
+# Resumes
+
+Resumes resume an existing session with the flow engine and describe why the session is being resumed.
+
+<div class="resumes">
+{{ .resumeDocs }}
+</div>
+
 # Events
 
 Events are the output of a flow run and represent instructions to the engine container on what actions should be taken due to the flow execution.

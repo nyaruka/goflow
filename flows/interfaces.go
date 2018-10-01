@@ -251,16 +251,13 @@ type Trigger interface {
 	TriggeredOn() time.Time
 }
 
-// EventOrigin is the allowed origin of an event
-type EventOrigin int
+// Resume represents something which can resume a session with the flow engine
+type Resume interface {
+	utils.Typed
 
-const (
-	// EventOriginCaller means an event can originate from the caller
-	EventOriginCaller EventOrigin = 1
-
-	// EventOriginEngine means an event can originate from the engine
-	EventOriginEngine EventOrigin = 2
-)
+	Environment() utils.Environment
+	Contact() *Contact
+}
 
 // Event describes a state change
 type Event interface {
