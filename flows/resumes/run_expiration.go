@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -24,7 +25,8 @@ const TypeRunExpiration string = "run_expiration"
 //       "language": "fra",
 //       "fields": {"gender": {"text": "Male"}},
 //       "groups": []
-//     }
+//     },
+//     "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 //
 // @resume run_expiration
@@ -35,15 +37,20 @@ type RunExpirationResume struct {
 // NewRunExpirationResume creates a new run expired resume with the passed in values
 func NewRunExpirationResume(env utils.Environment, contact *flows.Contact) *RunExpirationResume {
 	return &RunExpirationResume{
-		baseResume: baseResume{
-			environment: env,
-			contact:     contact,
-		},
+		baseResume: newBaseResume(env, contact),
 	}
 }
 
 // Type returns the type of this resume
-func (t *RunExpirationResume) Type() string { return TypeRunExpiration }
+func (r *RunExpirationResume) Type() string { return TypeRunExpiration }
+
+// Apply applies our state changes and saves any events to the run
+func (r *RunExpirationResume) Apply(run flows.FlowRun, step flows.Step) error {
+	run.Exit(flows.RunStatusExpired)
+	run.AddEvent(step, nil, events.NewRunExpiredEvent(run))
+
+	return r.baseResume.Apply(run, step)
+}
 
 var _ flows.Resume = (*RunExpirationResume)(nil)
 

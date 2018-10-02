@@ -3,8 +3,10 @@ package resumes
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -20,10 +22,36 @@ func RegisterType(name string, f readFunc) {
 type baseResume struct {
 	environment utils.Environment
 	contact     *flows.Contact
+	resumedOn   time.Time
 }
 
-func (t *baseResume) Environment() utils.Environment { return t.environment }
-func (t *baseResume) Contact() *flows.Contact        { return t.contact }
+func newBaseResume(env utils.Environment, contact *flows.Contact) baseResume {
+	return baseResume{environment: env, contact: contact, resumedOn: utils.Now()}
+}
+
+func (r *baseResume) Environment() utils.Environment { return r.environment }
+func (r *baseResume) Contact() *flows.Contact        { return r.contact }
+func (r *baseResume) ResumedOn() time.Time           { return r.resumedOn }
+
+// Apply applies our state changes and saves any events to the run
+func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
+	if r.environment != nil {
+		run.Session().SetEnvironment(r.environment)
+
+		// TODO diffing
+
+		run.AddEvent(step, nil, events.NewEnvironmentChangedEvent(r.Environment()))
+	}
+	if r.contact != nil {
+		run.Session().SetContact(r.contact.Clone())
+
+		// TODO diffing
+
+		run.AddEvent(step, nil, events.NewContactChangedEvent(r.contact))
+	}
+
+	return nil
+}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
@@ -32,6 +60,7 @@ func (t *baseResume) Contact() *flows.Contact        { return t.contact }
 type baseResumeEnvelope struct {
 	Environment json.RawMessage `json:"environment,omitempty"`
 	Contact     json.RawMessage `json:"contact,omitempty"`
+	ResumedOn   time.Time       `json:"resumed_on" validate:"required"`
 }
 
 // ReadResume reads a resume from the given typed envelope
@@ -45,6 +74,8 @@ func ReadResume(session flows.Session, envelope *utils.TypedEnvelope) (flows.Res
 
 func unmarshalBaseResume(session flows.Session, base *baseResume, envelope *baseResumeEnvelope) error {
 	var err error
+
+	base.resumedOn = envelope.ResumedOn
 
 	if envelope.Environment != nil {
 		if base.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {

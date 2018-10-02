@@ -1,80 +1,7 @@
 {
-    "caller_events": [
-        [],
-        [
-            {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "msg": {
-                    "channel": {
-                        "name": "Nexmo",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "text": "Something!",
-                    "urn": "tel:+12065551212",
-                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                },
-                "type": "msg_received"
-            }
-        ]
-    ],
     "outputs": [
         {
-            "events": [
-                {
-                    "created_on": "2018-07-06T12:30:03.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Android Channel",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "This is the first message.",
-                        "urn": "tel:+12065551212",
-                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
-                    },
-                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "type": "msg_created"
-                },
-                {
-                    "created_on": "2018-07-06T12:30:05.123456789Z",
-                    "request": "GET /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
-                    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
-                    "status": "success",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "type": "webhook_called",
-                    "url": "http://127.0.0.1:49999/?cmd=success"
-                },
-                {
-                    "category": "Success",
-                    "created_on": "2018-07-06T12:30:07.123456789Z",
-                    "extra": {
-                        "ok": "true"
-                    },
-                    "input": "GET http://127.0.0.1:49999/?cmd=success",
-                    "name": "webhook",
-                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "type": "run_result_changed",
-                    "value": "200"
-                },
-                {
-                    "created_on": "2018-07-06T12:30:09.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Android Channel",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "The status is true. Send something",
-                        "urn": "tel:+12065551212",
-                        "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
-                    },
-                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
-                    "type": "msg_created"
-                },
-                {
-                    "created_on": "2018-07-06T12:30:11.123456789Z",
-                    "step_uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9",
-                    "type": "msg_wait"
-                }
-            ],
+            "events": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -260,22 +187,7 @@
             }
         },
         {
-            "events": [
-                {
-                    "created_on": "2018-07-06T12:30:14.123456789Z",
-                    "msg": {
-                        "channel": {
-                            "name": "Android Channel",
-                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                        },
-                        "text": "The status is now true",
-                        "urn": "tel:+12065551212",
-                        "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
-                    },
-                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
-                    "type": "msg_created"
-                }
-            ],
+            "events": [],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -367,7 +279,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -381,7 +293,7 @@
                                 "type": "msg_received"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -395,7 +307,7 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:15.123456789Z",
+                        "exited_on": "2018-07-06T12:30:16.123456789Z",
                         "expires_on": "2018-07-06T12:30:12.123456789Z",
                         "flow": {
                             "name": "Webhook Test",
@@ -438,7 +350,7 @@
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:13.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:14.123456789Z",
                                 "exit_uuid": "accf4276-f719-4664-b0b1-4f18c0184f56",
                                 "node_uuid": "9bd027cd-ae88-4906-b3ea-c003f30d8db5",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -502,6 +414,21 @@
                     "type": "manual"
                 }
             }
+        }
+    ],
+    "resumes": [
+        {
+            "msg": {
+                "channel": {
+                    "name": "Nexmo",
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                },
+                "text": "Something!",
+                "urn": "tel:+12065551212",
+                "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+            },
+            "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "msg"
         }
     ],
     "trigger": {

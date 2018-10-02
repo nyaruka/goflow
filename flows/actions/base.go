@@ -28,20 +28,6 @@ func RegisterType(name string, initFunc func() flows.Action) {
 
 var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
 
-type eventLog struct {
-	events []flows.Event
-}
-
-func NewEventLog() flows.EventLog {
-	return &eventLog{events: make([]flows.Event, 0)}
-}
-
-func (l *eventLog) Events() []flows.Event { return l.events }
-
-func (l *eventLog) Add(event flows.Event) {
-	l.events = append(l.events, event)
-}
-
 // BaseAction is our base action
 type BaseAction struct {
 	UUID_ flows.ActionUUID `json:"uuid" validate:"required,uuid4"`

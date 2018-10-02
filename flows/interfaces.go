@@ -195,7 +195,7 @@ type Wait interface {
 	TimeoutOn() *time.Time
 
 	Begin(FlowRun, Step)
-	CanResume([]CallerEvent) bool
+	End(Resume) error
 }
 
 // Localization provide a way to get the translations for a specific language
@@ -244,6 +244,9 @@ type Trigger interface {
 	types.XValue
 	types.XResolvable
 
+	Initialize(Session) error
+	InitializeRun(FlowRun) error
+
 	Environment() utils.Environment
 	Flow() *assets.FlowReference
 	Contact() *Contact
@@ -255,8 +258,11 @@ type Trigger interface {
 type Resume interface {
 	utils.Typed
 
+	Apply(FlowRun, Step) error
+
 	Environment() utils.Environment
 	Contact() *Contact
+	ResumedOn() time.Time
 }
 
 // Event describes a state change
@@ -266,14 +272,6 @@ type Event interface {
 	CreatedOn() time.Time
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)
-}
-
-// CallerEvent is an event we can receive from our caller
-type CallerEvent interface {
-	Event
-
-	Validate(SessionAssets) error
-	Apply(FlowRun) error
 }
 
 // EventLog is the log of events the caller must apply after each call
@@ -302,7 +300,7 @@ type EventLog interface {
 //   @input.type -> msg
 //   @input.text -> Hi there
 //   @input.attachments -> ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
-//   @(json(run.input)) -> {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+//   @(json(run.input)) -> {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 //
 // @context input
 type Input interface {
@@ -348,8 +346,8 @@ type Session interface {
 	Wait() Wait
 	FlowOnStack(assets.FlowUUID) bool
 
-	Start(Trigger, []CallerEvent) error
-	Resume([]CallerEvent) error
+	Start(Trigger) error
+	Resume(Resume) error
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun

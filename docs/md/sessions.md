@@ -113,6 +113,45 @@ Is used when a session was triggered manually by a user
 }
 ```
 
+<a name="trigger:msg"></a>
+
+## msg
+
+Is used when a session was triggered by a message being recieved by the caller
+
+
+```json
+{
+    "type": "msg",
+    "flow": {
+        "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "id": 0,
+        "name": "Bob",
+        "language": "",
+        "timezone": "",
+        "created_on": "0001-01-01T00:00:00Z",
+        "urns": []
+    },
+    "triggered_on": "2000-01-01T00:00:00Z",
+    "msg": {
+        "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "urn": "tel:+12065551212",
+        "channel": {
+            "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+            "name": "Twilio"
+        },
+        "text": "hi there",
+        "attachments": [
+            "https://s3.amazon.com/mybucket/attachment.jpg"
+        ]
+    }
+}
+```
+
 
 </div>
 

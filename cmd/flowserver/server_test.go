@@ -15,7 +15,6 @@ import (
 	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -440,18 +439,18 @@ func (ts *ServerTestSuite) parseSessionResponse(body []byte) (flows.Session, []m
 	return session, envelope.Log
 }
 
-func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.Session, events []flows.Event) string {
+func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.Session, msg *flows.MsgIn) string {
 	sessionJSON, err := utils.JSONMarshal(session)
 	ts.Require().NoError(err)
 
-	eventEnvelopes := make([]*utils.TypedEnvelope, len(events))
-	for e := range events {
-		eventEnvelopes[e], err = utils.EnvelopeFromTyped(events[e])
-		ts.Require().NoError(err)
-	}
-
 	assetsData := json.RawMessage(assetsJSON)
 	assetServer, _ := utils.JSONMarshal(rest.NewMockServerSource(nil))
+
+	msgJSON, _ := json.Marshal(msg)
+	resumeJSON := fmt.Sprintf(`{"type": "msg", "msg": %s, "resumed_on": "2017-12-31T11:35:10.035757258-02:00"}`, string(msgJSON))
+
+	resumeEnvelope := &utils.TypedEnvelope{}
+	json.Unmarshal([]byte(resumeJSON), resumeEnvelope)
 
 	request := &resumeRequest{
 		sessionRequest: sessionRequest{
@@ -459,7 +458,7 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 			AssetServer: assetServer,
 		},
 		Session: sessionJSON,
-		Events:  eventEnvelopes,
+		Resume:  resumeEnvelope,
 	}
 
 	requestJSON, err := utils.JSONMarshal(request)
@@ -546,17 +545,10 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	session, _ := ts.parseSessionResponse(body)
 	ts.Equal(flows.SessionStatus("completed"), session.Status())
 
-	// try to resume this completed session but with no caller events
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{}))
-	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"field 'events' must have a minimum of 1 items"})
-
 	// try to resume this completed session
 	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
 	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, tgURN, nil, "hello", []flows.Attachment{})
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, []flows.Event{
-		events.NewMsgReceivedEvent(msg),
-	}))
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, msg))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"only waiting sessions can be resumed"})
 
@@ -569,23 +561,17 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.Equal(flows.SessionStatus("waiting"), waitingSession.Status())
 
 	// try to resume this session with a structurally invalid version of the flow passed as an asset
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testStructurallyInvalidFlowAssets, waitingSession, []flows.Event{
-		events.NewMsgReceivedEvent(msg),
-	}))
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testStructurallyInvalidFlowAssets, waitingSession, msg))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"unable to read run 0: unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try to resume this session with a invalid version of the flow which is missing a group
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testFlowMissingGroupAssets, waitingSession, []flows.Event{
-		events.NewMsgReceivedEvent(msg),
-	}))
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testFlowMissingGroupAssets, waitingSession, msg))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// check we can resume if we include a fixed version of the flow as an asset
-	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testValidFlowWithWaitAssets, waitingSession, []flows.Event{
-		events.NewMsgReceivedEvent(msg),
-	}))
+	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testValidFlowWithWaitAssets, waitingSession, msg))
 	ts.Equal(200, status)
 
 	// check we got back a completed session
@@ -593,9 +579,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	ts.Equal(flows.SessionStatus("completed"), completedSession.Status())
 
 	// mess with our waiting session JSON so we appear to be waiting on a node that doesn't exist in the flow
-	sessionJSON := ts.buildResumeRequest(`[]`, waitingSession, []flows.Event{
-		events.NewMsgReceivedEvent(msg),
-	})
+	sessionJSON := ts.buildResumeRequest(`[]`, waitingSession, msg)
 	sessionJSON = strings.Replace(sessionJSON, "a58be63b-907d-4a1a-856b-0bb5579d7507", "626daa56-2fac-48eb-825d-af9a7ab23a2c", -1)
 
 	// and try to resume that

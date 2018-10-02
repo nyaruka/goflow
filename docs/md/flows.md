@@ -176,17 +176,7 @@ for the groups which the contact has been added to.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_groups_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
-    "groups_added": [
-        {
-            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
-            "name": "Customers"
-        }
-    ]
-}
+[]
 ```
 </div>
 <a name="action:add_contact_urn"></a>
@@ -205,12 +195,7 @@ will be created when this action is encountered.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_urn_added",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
-    "urn": "tel:+12344563452"
-}
+[]
 ```
 </div>
 <a name="action:add_input_labels"></a>
@@ -234,18 +219,7 @@ no user input at that point then this action will be ignored.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "input_labels_added",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
-    "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
-    "labels": [
-        {
-            "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-            "name": "Spam"
-        }
-    ]
-}
+[]
 ```
 </div>
 <a name="action:call_resthook"></a>
@@ -267,16 +241,7 @@ through `extra` on the result.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "webhook_called",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
-    "url": "http://127.0.0.1:49998/?cmd=success",
-    "resthook": "new-registration",
-    "status": "success",
-    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2205\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"347b55be-7be1-4e68-aaa3-04d3fbce5f9a\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\n\t\"run\": {\"uuid\": \"4c9abf31-d821-4e97-ba7e-53c2263e32f8\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2000-01-01T00:00:00.000000Z\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
-    "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
-}
+[]
 ```
 </div>
 <a name="action:call_webhook"></a>
@@ -302,29 +267,7 @@ through `extra` on the result.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-[
-    {
-        "type": "webhook_called",
-        "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
-        "url": "http://localhost:49998/?cmd=success",
-        "status": "success",
-        "request": "GET /?cmd=success HTTP/1.1\r\nHost: localhost:49998\r\nUser-Agent: goflow-testing\r\nAuthorization: Token AAFFZZHH\r\nAccept-Encoding: gzip\r\n\r\n",
-        "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
-    },
-    {
-        "type": "run_result_changed",
-        "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
-        "name": "webhook",
-        "value": "200",
-        "category": "Success",
-        "input": "GET http://localhost:49998/?cmd=success",
-        "extra": {
-            "ok": "true"
-        }
-    }
-]
+[]
 ```
 </div>
 <a name="action:remove_contact_groups"></a>
@@ -349,17 +292,7 @@ the contact from all non-dynamic groups.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_groups_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
-    "groups_removed": [
-        {
-            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-            "name": "Testers"
-        }
-    ]
-}
+[]
 ```
 </div>
 <a name="action:send_broadcast"></a>
@@ -384,20 +317,7 @@ with the evaluated text.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "broadcast_created",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
-    "translations": {
-        "eng": {
-            "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
-        }
-    },
-    "base_language": "eng",
-    "urns": [
-        "tel:+12065551212"
-    ]
-}
+[]
 ```
 </div>
 <a name="action:send_email"></a>
@@ -421,16 +341,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "email_created",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
-    "addresses": [
-        "foo@bar.com"
-    ],
-    "subject": "Here is your activation token",
-    "body": "Your activation token is AACC55"
-}
+[]
 ```
 </div>
 <a name="action:send_msg"></a>
@@ -450,20 +361,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "msg_created",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
-    "msg": {
-        "uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
-        "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-        "channel": {
-            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-            "name": "My Android Phone"
-        },
-        "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
-    }
-}
+[]
 ```
 </div>
 <a name="action:set_contact_channel"></a>
@@ -485,15 +383,7 @@ A [contact_channel_changed](sessions.html#event:contact_channel_changed) event w
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_channel_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
-    "channel": {
-        "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-        "name": "FAcebook Channel"
-    }
-}
+[]
 ```
 </div>
 <a name="action:set_contact_field"></a>
@@ -516,18 +406,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_field_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
-    "field": {
-        "key": "gender",
-        "name": "Gender"
-    },
-    "value": {
-        "text": "Female"
-    }
-}
+[]
 ```
 </div>
 <a name="action:set_contact_language"></a>
@@ -565,12 +444,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_name_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
-    "name": "Bob Smith"
-}
+[]
 ```
 </div>
 <a name="action:set_contact_timezone"></a>
@@ -589,12 +463,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_timezone_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
-    "timezone": "Africa/Kigali"
-}
+[]
 ```
 </div>
 <a name="action:set_run_result"></a>
@@ -618,14 +487,7 @@ final values.
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "run_result_changed",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
-    "name": "Gender",
-    "value": "m",
-    "category": "Male"
-}
+[]
 ```
 </div>
 <a name="action:start_flow"></a>
@@ -647,16 +509,7 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "flow_triggered",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
-    "flow": {
-        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "name": "Collect Language"
-    },
-    "parent_run_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8"
-}
+[]
 ```
 </div>
 <a name="action:start_session"></a>
@@ -683,101 +536,7 @@ will be created and it's the responsibility of the caller to act on that by init
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
-{
-    "type": "session_triggered",
-    "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "636bcfe8-1dd9-4bbd-a2a5-6b6ffeeada26",
-    "flow": {
-        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "name": "Registration"
-    },
-    "groups": [
-        {
-            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
-            "name": "Customers"
-        }
-    ],
-    "run": {
-        "uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100",
-        "flow": {
-            "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
-            "name": "Registration"
-        },
-        "contact": {
-            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
-            "id": 1234567,
-            "name": "Ryan Lewis",
-            "language": "eng",
-            "timezone": "America/Guayaquil",
-            "created_on": "2018-06-20T11:40:30.123456789Z",
-            "urns": [
-                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "twitterid:54784326227#nyaruka",
-                "mailto:foo@bar.com"
-            ],
-            "groups": [
-                {
-                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-                    "name": "Testers"
-                },
-                {
-                    "uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9",
-                    "name": "Males"
-                }
-            ],
-            "fields": {
-                "activation_token": {
-                    "text": "AACC55"
-                },
-                "age": {
-                    "text": "23",
-                    "number": 23
-                },
-                "gender": {
-                    "text": "Male"
-                },
-                "join_date": {
-                    "text": "2017-12-02",
-                    "datetime": "2017-12-02T00:00:00-02:00"
-                }
-            }
-        },
-        "status": "active",
-        "results": {
-            "favorite_color": {
-                "name": "Favorite Color",
-                "value": "red",
-                "category": "Red",
-                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "created_on": "2018-04-11T18:24:30.123456Z"
-            },
-            "phone_number": {
-                "name": "Phone Number",
-                "value": "+12344563452",
-                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "created_on": "2018-04-11T18:24:30.123456Z"
-            },
-            "webhook": {
-                "name": "webhook",
-                "value": "200",
-                "category": "Success",
-                "node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03",
-                "input": "GET http://127.0.0.1:49998/?cmd=echo\u0026content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D",
-                "extra": {
-                    "results": [
-                        {
-                            "state": "WA"
-                        },
-                        {
-                            "state": "IN"
-                        }
-                    ]
-                },
-                "created_on": "2018-04-11T18:24:30.123456Z"
-            }
-        }
-    }
-}
+[]
 ```
 </div>
 

@@ -34,6 +34,35 @@ func (t *baseTrigger) Contact() *flows.Contact        { return t.contact }
 func (t *baseTrigger) Params() types.XValue           { return t.params }
 func (t *baseTrigger) TriggeredOn() time.Time         { return t.triggeredOn }
 
+// Initialize initializes the session
+func (t *baseTrigger) Initialize(session flows.Session) error {
+	// try to load the flow
+	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
+	if err != nil {
+		return fmt.Errorf("unable to load flow[uuid=%s]: %s", t.Flow().UUID, err)
+	}
+
+	// check flow is valid and has everything it needs to run
+	if err := flow.Validate(session.Assets()); err != nil {
+		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", flow.UUID(), err)
+	}
+
+	session.PushFlow(flow, nil)
+
+	if t.environment != nil {
+		session.SetEnvironment(t.environment)
+	}
+	if t.contact != nil {
+		session.SetContact(t.contact.Clone())
+	}
+	return nil
+}
+
+// InitializeRun performs additional initialization when we create our first run
+func (t *baseTrigger) InitializeRun(run flows.FlowRun) error {
+	return nil
+}
+
 // Resolve resolves the given key when this trigger is referenced in an expression
 func (t *baseTrigger) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {

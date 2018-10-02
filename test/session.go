@@ -9,7 +9,7 @@ import (
 	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -67,6 +67,25 @@ var sessionAssets = `[
                     "exits": [
                         {
                             "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                            "destination_node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
+                        }
+                    ]
+                },
+                {
+                    "uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82",
+                    "wait": {
+                        "type": "msg",
+                        "timeout": 600
+                    },
+                    "router": {
+                        "type": "switch",
+                        "default_exit_uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                        "operand": "@input"
+                    },
+                    "exits": [
+                        {
+                            "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                            "label": "Al Responses",
                             "destination_node_uuid": "f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03"
                         }
                     ]
@@ -304,25 +323,23 @@ var sessionTrigger = `{
     "params": {"source": "website","address": {"state": "WA"}}
 }`
 
-var initialEvents = `[
-    {
-        "created_on": "2000-01-01T00:00:00.000000000-00:00",
-        "msg": {
-            "attachments": [
-                "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
-                "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
-            ],
-            "channel": {
-                "name": "Nexmo",
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-            },
-            "text": "Hi there",
-            "urn": "tel:+12065551212",
-            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+var sessionResume = `{
+    "type": "msg",
+    "msg": {
+        "attachments": [
+            "image/jpeg:http://s3.amazon.com/bucket/test.jpg",
+            "audio/mp3:http://s3.amazon.com/bucket/test.mp3"
+        ],
+        "channel": {
+            "name": "Nexmo",
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
         },
-        "type": "msg_received"
-    }
-]`
+        "text": "Hi there",
+        "urn": "tel:+12065551212",
+        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+    },
+    "resumed_on": "2017-12-31T11:35:10.035757258-02:00"
+}`
 
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, error) {
@@ -350,18 +367,21 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 		return nil, fmt.Errorf("error reading trigger: %s", err)
 	}
 
-	// and the initial events
-	eventEnvelopes := []*utils.TypedEnvelope{}
-	if err := json.Unmarshal(json.RawMessage(initialEvents), &eventEnvelopes); err != nil {
-		return nil, err
-	}
-	events, err := events.ReadCallerEvents(eventEnvelopes)
-	if err != nil {
+	if err := session.Start(trigger); err != nil {
 		return nil, err
 	}
 
-	// and start the example flow
-	err = session.Start(trigger, events)
+	// read our resume
+	resumeEnvelope := &utils.TypedEnvelope{}
+	if err := resumeEnvelope.UnmarshalJSON(json.RawMessage(sessionResume)); err != nil {
+		return nil, fmt.Errorf("error unmarsalling resume: %s", err)
+	}
+	resume, err := resumes.ReadResume(session, resumeEnvelope)
+	if err != nil {
+		return nil, fmt.Errorf("error reading resume: %s", err)
+	}
+
+	err = session.Resume(resume)
 	return session, err
 }
 

@@ -36,6 +36,25 @@ func (e *BaseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
 //------------------------------------------------------------------------------------------
+// EventLog
+//------------------------------------------------------------------------------------------
+
+type eventLog struct {
+	events []flows.Event
+}
+
+// NewEventLog creates a new empty event log
+func NewEventLog() flows.EventLog {
+	return &eventLog{events: make([]flows.Event, 0)}
+}
+
+func (l *eventLog) Events() []flows.Event { return l.events }
+
+func (l *eventLog) Add(event flows.Event) {
+	l.events = append(l.events, event)
+}
+
+//------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
@@ -48,23 +67,6 @@ func ReadEvent(envelope *utils.TypedEnvelope) (flows.Event, error) {
 
 	event := f()
 	return event, utils.UnmarshalAndValidate(envelope.Data, event)
-}
-
-// ReadCallerEvents reads the caller events from the given envelopes
-func ReadCallerEvents(envelopes []*utils.TypedEnvelope) ([]flows.CallerEvent, error) {
-	events := make([]flows.CallerEvent, len(envelopes))
-	for e, envelope := range envelopes {
-		event, err := ReadEvent(envelope)
-		if err != nil {
-			return nil, fmt.Errorf("unable to read event[type=%s]: %s", envelope.Type, err)
-		}
-		asCallerEvent, isCallerEvent := event.(flows.CallerEvent)
-		if !isCallerEvent {
-			return nil, fmt.Errorf("event[type=%s] is not a supported caller event: %s", envelope.Type, err)
-		}
-		events[e] = asCallerEvent
-	}
-	return events, nil
 }
 
 // EventsToEnvelopes converts the given events to typed envelopes

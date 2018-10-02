@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -31,7 +33,8 @@ const TypeMsg string = "msg"
 //       "urn": "tel:+12065551212",
 //       "text": "hi there",
 //       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
-//     }
+//     },
+//     "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 //
 // @resume msg
@@ -43,16 +46,33 @@ type MsgResume struct {
 // NewMsgResume creates a new message resume with the passed in values
 func NewMsgResume(env utils.Environment, contact *flows.Contact, msg *flows.MsgIn) *MsgResume {
 	return &MsgResume{
-		baseResume: baseResume{
-			environment: env,
-			contact:     contact,
-		},
-		Msg: msg,
+		baseResume: newBaseResume(env, contact),
+		Msg:        msg,
 	}
 }
 
 // Type returns the type of this resume
-func (t *MsgResume) Type() string { return TypeMsg }
+func (r *MsgResume) Type() string { return TypeMsg }
+
+// Apply applies our state changes and saves any events to the run
+func (r *MsgResume) Apply(run flows.FlowRun, step flows.Step) error {
+	var channel *flows.Channel
+	var err error
+	if r.Msg.Channel() != nil {
+		channel, err = run.Session().Assets().Channels().Get(r.Msg.Channel().UUID)
+		if err != nil {
+			return err
+		}
+	}
+
+	// update this run's input
+	input := inputs.NewMsgInput(flows.InputUUID(r.Msg.UUID()), channel, r.ResumedOn(), r.Msg.URN(), r.Msg.Text(), r.Msg.Attachments())
+	run.SetInput(input)
+	run.ResetExpiration(nil)
+	run.AddEvent(step, nil, events.NewMsgReceivedEvent(r.Msg))
+
+	return r.baseResume.Apply(run, step)
+}
 
 var _ flows.Resume = (*MsgResume)(nil)
 

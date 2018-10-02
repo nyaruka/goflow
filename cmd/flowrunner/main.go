@@ -18,6 +18,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -28,9 +29,9 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Trigger      *utils.TypedEnvelope     `json:"trigger"`
-	CallerEvents [][]*utils.TypedEnvelope `json:"caller_events"`
-	Outputs      []json.RawMessage        `json:"outputs"`
+	Trigger *utils.TypedEnvelope   `json:"trigger"`
+	Resumes []*utils.TypedEnvelope `json:"resumes"`
+	Outputs []json.RawMessage      `json:"outputs"`
 }
 
 func normalizeJSON(data json.RawMessage) ([]byte, error) {
@@ -110,16 +111,14 @@ func main() {
 	trigger := triggers.NewManualTrigger(env, contact, flow.Reference(), nil, time.Now())
 
 	// and start our flow
-	err = session.Start(trigger, nil)
+	err = session.Start(trigger)
 	if err != nil {
 		log.Fatal("Error starting flow: ", err)
 	}
 
 	scanner := bufio.NewScanner(os.Stdin)
 
-	callerEvents := make([][]flows.Event, 0)
-	callerEvents = append(callerEvents, []flows.Event{})
-
+	resumeObjs := make([]flows.Resume, 0)
 	outputs := make([]*Output, 0)
 
 	for session.Wait() != nil {
@@ -141,10 +140,10 @@ func main() {
 		fmt.Printf("<<< ")
 		scanner.Scan()
 
-		// create our event to resume with
+		// create our resume
 		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
-		event := events.NewMsgReceivedEvent(msg)
-		callerEvents = append(callerEvents, []flows.Event{event})
+		resume := resumes.NewMsgResume(nil, nil, msg)
+		resumeObjs = append(resumeObjs, resume)
 
 		// rebuild our session
 		assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
@@ -157,7 +156,7 @@ func main() {
 			log.Fatalf("Error unmarshalling output: %s", err)
 		}
 
-		err = session.Resume([]flows.CallerEvent{event})
+		err = session.Resume(resume)
 		if err != nil {
 			log.Print("Error resuming flow: ", err)
 			break
@@ -177,11 +176,6 @@ func main() {
 		// name of the test file is the same as our assets file, just with _test.json instead of .json
 		testFilename := strings.Replace(assetsFilename, ".json", "_test.json", 1)
 
-		callerEventEnvelopes := make([][]*utils.TypedEnvelope, len(callerEvents))
-		for i := range callerEvents {
-			callerEventEnvelopes[i], _ = events.EventsToEnvelopes(callerEvents[i])
-		}
-
 		rawOutputs := make([]json.RawMessage, len(outputs))
 		for i := range outputs {
 			rawOutputs[i], err = utils.JSONMarshal(outputs[i])
@@ -195,7 +189,12 @@ func main() {
 			log.Fatal(err)
 		}
 
-		flowTest := FlowTest{Trigger: triggerEnvelope, CallerEvents: callerEventEnvelopes, Outputs: rawOutputs}
+		resumeEnvelopes := make([]*utils.TypedEnvelope, len(resumeObjs))
+		for i := range resumeObjs {
+			resumeEnvelopes[i], _ = utils.EnvelopeFromTyped(resumeObjs[i])
+		}
+
+		flowTest := FlowTest{Trigger: triggerEnvelope, Resumes: resumeEnvelopes, Outputs: rawOutputs}
 		testJSON, err := utils.JSONMarshal(flowTest)
 		if err != nil {
 			log.Fatal("Error marshalling test definition: ", err)

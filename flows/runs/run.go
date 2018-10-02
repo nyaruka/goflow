@@ -121,22 +121,10 @@ func (r *flowRun) AddEvent(s flows.Step, action flows.Action, event flows.Event)
 		r.events = append(r.events, event)
 	}
 
-	// only add this event to the session's event log if it didn't come from the caller
-	_, isCaller := event.(flows.CallerEvent)
-	if !isCaller {
-		r.Session().LogEvent(event)
-	}
-
 	if log.GetLevel() >= log.DebugLevel {
-		var origin string
-		if isCaller {
-			origin = "caller"
-		} else {
-			origin = "engine"
-		}
 		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 		eventJSON, _ := json.Marshal(eventEnvelope)
-		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("%s event applied", origin)
+		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event applied")
 	}
 }
 

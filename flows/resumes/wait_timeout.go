@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -24,7 +25,8 @@ const TypeWaitTimeout string = "wait_timeout"
 //       "language": "fra",
 //       "fields": {"gender": {"text": "Male"}},
 //       "groups": []
-//     }
+//     },
+//     "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 //
 // @resume wait_timeout
@@ -35,15 +37,21 @@ type WaitTimeoutResume struct {
 // NewWaitTimeoutResume creates a new timeout resume with the passed in values
 func NewWaitTimeoutResume(env utils.Environment, contact *flows.Contact) *WaitTimeoutResume {
 	return &WaitTimeoutResume{
-		baseResume: baseResume{
-			environment: env,
-			contact:     contact,
-		},
+		baseResume: newBaseResume(env, contact),
 	}
 }
 
 // Type returns the type of this resume
-func (t *WaitTimeoutResume) Type() string { return TypeWaitTimeout }
+func (r *WaitTimeoutResume) Type() string { return TypeWaitTimeout }
+
+// Apply applies our state changes and saves any events to the run
+func (r *WaitTimeoutResume) Apply(run flows.FlowRun, step flows.Step) error {
+	// clear the last input on the run
+	run.SetInput(nil)
+	run.AddEvent(step, nil, events.NewWaitTimedOutEvent())
+
+	return r.baseResume.Apply(run, step)
+}
 
 var _ flows.Resume = (*WaitTimeoutResume)(nil)
 
