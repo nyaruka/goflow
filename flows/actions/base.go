@@ -70,7 +70,7 @@ func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*as
 }
 
 // helper function for actions that have a set of group references that must be resolved to actual groups
-func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*assets.GroupReference, log flows.EventLog) ([]*flows.Group, error) {
+func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*assets.GroupReference) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
 	groups := make([]*flows.Group, 0, len(references))
 
@@ -88,12 +88,12 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 			// group is an expression that evaluates to an existing group's name
 			evaluatedGroupName, err := run.EvaluateTemplateAsString(ref.NameMatch, false)
 			if err != nil {
-				a.logError(err, log)
+				a.logError(run, step, err)
 			} else {
 				// look up the set of all groups to see if such a group exists
 				group = groupSet.FindByName(evaluatedGroupName)
 				if group == nil {
-					a.log(events.NewErrorEvent(fmt.Errorf("no such group with name '%s'", evaluatedGroupName)), log)
+					a.logError(run, step, fmt.Errorf("no such group with name '%s'", evaluatedGroupName))
 				}
 			}
 		}
@@ -107,7 +107,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that have a set of label references that must be resolved to actual labels
-func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*assets.LabelReference, log flows.EventLog) ([]*flows.Label, error) {
+func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, references []*assets.LabelReference) ([]*flows.Label, error) {
 	labelSet := run.Session().Assets().Labels()
 	labels := make([]*flows.Label, 0, len(references))
 
@@ -125,12 +125,12 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 			// label is an expression that evaluates to an existing label's name
 			evaluatedLabelName, err := run.EvaluateTemplateAsString(ref.NameMatch, false)
 			if err != nil {
-				a.logError(err, log)
+				a.logError(run, step, err)
 			} else {
 				// look up the set of all labels to see if such a label exists
 				label = labelSet.FindByName(evaluatedLabelName)
 				if label == nil {
-					a.log(events.NewErrorEvent(fmt.Errorf("no such label with name '%s'", evaluatedLabelName)), log)
+					a.logError(run, step, fmt.Errorf("no such label with name '%s'", evaluatedLabelName))
 				}
 			}
 		}
@@ -144,12 +144,12 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 }
 
 // helper function for actions that send a message (text + attachments) that must be localized and evalulated
-func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.LanguageList, actionText string, actionAttachments []string, actionQuickReplies []string, log flows.EventLog) (string, []flows.Attachment, []string) {
+func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, languages utils.LanguageList, actionText string, actionAttachments []string, actionQuickReplies []string) (string, []flows.Attachment, []string) {
 	// localize and evaluate the message text
 	localizedText := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "text", []string{actionText}, languages)[0]
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText, false)
 	if err != nil {
-		a.logError(err, log)
+		a.logError(run, step, err)
 	}
 
 	// localize and evaluate the message attachments
@@ -158,9 +158,9 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	for n := range translatedAttachments {
 		evaluatedAttachment, err := run.EvaluateTemplateAsString(translatedAttachments[n], true)
 		if err != nil {
-			a.logError(err, log)
+			a.logError(run, step, err)
 		} else if evaluatedAttachment == "" {
-			a.log(events.NewErrorEvent(fmt.Errorf("attachment text evaluated to empty string, skipping")), log)
+			a.logError(run, step, fmt.Errorf("attachment text evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, flows.Attachment(evaluatedAttachment))
@@ -172,9 +172,9 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	for n := range translatedQuickReplies {
 		evaluatedQuickReply, err := run.EvaluateTemplateAsString(translatedQuickReplies[n], false)
 		if err != nil {
-			a.logError(err, log)
+			a.logError(run, step, err)
 		} else if evaluatedQuickReply == "" {
-			a.log(events.NewErrorEvent(fmt.Errorf("quick reply text evaluated to empty string, skipping")), log)
+			a.logError(run, step, fmt.Errorf("quick reply text evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
@@ -183,7 +183,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, languages utils.Language
 	return evaluatedText, evaluatedAttachments, evaluatedQuickReplies
 }
 
-func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string, log flows.EventLog) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
+func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step, actionURNs []urns.URN, actionContacts []*flows.ContactReference, actionGroups []*assets.GroupReference, actionLegacyVars []string) ([]urns.URN, []*flows.ContactReference, []*assets.GroupReference, error) {
 	groupSet := run.Session().Assets().Groups()
 
 	// copy URNs
@@ -199,7 +199,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	}
 
 	// resolve group references
-	groups, err := a.resolveGroups(run, step, actionGroups, log)
+	groups, err := a.resolveGroups(run, step, actionGroups)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -212,7 +212,7 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 	for _, legacyVar := range actionLegacyVars {
 		evaluatedLegacyVar, err := run.EvaluateTemplateAsString(legacyVar, false)
 		if err != nil {
-			a.logError(err, log)
+			a.logError(run, step, err)
 		}
 
 		if uuidRegex.MatchString(evaluatedLegacyVar) {
@@ -236,13 +236,13 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 }
 
 // helper to save a run result and log it as an event
-func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage, log flows.EventLog) {
+func (a *BaseAction) saveResult(run flows.FlowRun, step flows.Step, name, value, category, categoryLocalized string, input *string, extra json.RawMessage) {
 	run.Results().Save(name, value, category, categoryLocalized, step.NodeUUID(), input, extra, utils.Now())
-	a.log(events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra), log)
+	a.log(run, step, events.NewRunResultChangedEvent(name, value, category, categoryLocalized, input, extra))
 }
 
 // helper to save a run result based on a webhook call and log it as an event
-func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall, log flows.EventLog) {
+func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name string, webhook *flows.WebhookCall) {
 	input := fmt.Sprintf("%s %s", webhook.Method(), webhook.URL())
 	value := strconv.Itoa(webhook.StatusCode())
 	category := webhookStatusCategories[webhook.Status()]
@@ -259,37 +259,38 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 		extra, _ = json.Marshal(string(body))
 	}
 
-	a.saveResult(run, step, name, value, category, "", &input, extra, log)
+	a.saveResult(run, step, name, value, category, "", &input, extra)
 }
 
 // helper to re-evaluate dynamic groups and log any changes to membership
-func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, log flows.EventLog) {
+func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, step flows.Step) {
 	added, removed, errors := run.Contact().ReevaluateDynamicGroups(run.Session())
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
-		a.logError(err, log)
+		a.logError(run, step, err)
 	}
 
 	// add groups changed event for the groups we were added/removed to/from
 	if len(added) > 0 || len(removed) > 0 {
-		a.log(events.NewContactGroupsChangedEvent(added, removed), log)
+		a.log(run, step, events.NewContactGroupsChangedEvent(added, removed))
 	}
 }
 
 // helper to error the current run and log a fatal error event
-func (a *BaseAction) fatalError(run flows.FlowRun, err error, log flows.EventLog) {
+func (a *BaseAction) fatalError(run flows.FlowRun, step flows.Step, err error) {
 	run.Exit(flows.RunStatusErrored)
-	a.log(events.NewFatalErrorEvent(err), log)
+	a.log(run, step, events.NewFatalErrorEvent(err))
 }
 
 // helper to log an error event
-func (a *BaseAction) logError(err error, log flows.EventLog) {
-	a.log(events.NewErrorEvent(err), log)
+func (a *BaseAction) logError(run flows.FlowRun, step flows.Step, err error) {
+	a.log(run, step, events.NewErrorEvent(err))
 }
 
-func (a *BaseAction) log(event flows.Event, log flows.EventLog) {
-	log.Add(event)
+// helper to log an event
+func (a *BaseAction) log(run flows.FlowRun, step flows.Step, event flows.Event) {
+	run.AddEvent(step, event)
 }
 
 // utility struct which sets the allowed flow types to any

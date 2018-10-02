@@ -48,7 +48,7 @@ func (r *WaitTimeoutResume) Type() string { return TypeWaitTimeout }
 func (r *WaitTimeoutResume) Apply(run flows.FlowRun, step flows.Step) error {
 	// clear the last input on the run
 	run.SetInput(nil)
-	run.AddEvent(step, nil, events.NewWaitTimedOutEvent())
+	run.AddEvent(step, events.NewWaitTimedOutEvent())
 
 	return r.baseResume.Apply(run, step)
 }

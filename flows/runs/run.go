@@ -115,7 +115,7 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) AddEvent(s flows.Step, action flows.Action, event flows.Event) {
+func (r *flowRun) AddEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
 		r.events = append(r.events, event)
@@ -128,13 +128,13 @@ func (r *flowRun) AddEvent(s flows.Step, action flows.Action, event flows.Event)
 	}
 }
 
-func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
-	r.AddEvent(step, action, events.NewErrorEvent(err))
+func (r *flowRun) AddError(step flows.Step, err error) {
+	r.AddEvent(step, events.NewErrorEvent(err))
 }
 
-func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
+func (r *flowRun) AddFatalError(step flows.Step, err error) {
 	r.Exit(flows.RunStatusErrored)
-	r.AddEvent(step, action, events.NewFatalErrorEvent(err))
+	r.AddEvent(step, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

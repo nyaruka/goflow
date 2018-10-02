@@ -53,13 +53,13 @@ func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if run.Contact() == nil {
-		a.logError(fmt.Errorf("can't execute action in session without a contact"), log)
+		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
 
-	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, run.Environment().Languages(), a.Text, a.Attachments, a.QuickReplies, log)
+	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, run.Environment().Languages(), a.Text, a.Attachments, a.QuickReplies)
 
 	channels := run.Session().Assets().Channels()
 	destinations := []msgDestination{}
@@ -84,7 +84,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step, log flows.Ev
 		}
 
 		msg := flows.NewMsgOut(dest.urn, channelRef, evaluatedText, evaluatedAttachments, evaluatedQuickReplies)
-		a.log(events.NewMsgCreatedEvent(msg), log)
+		a.log(run, step, events.NewMsgCreatedEvent(msg))
 	}
 
 	return nil

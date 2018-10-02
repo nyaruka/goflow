@@ -44,14 +44,14 @@ func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs the labeling action
-func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// only generate event if run has input
 	input := run.Input()
 	if input == nil {
 		return nil
 	}
 
-	labels, err := a.resolveLabels(run, step, a.Labels, log)
+	labels, err := a.resolveLabels(run, step, a.Labels)
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step, log f
 	}
 
 	if len(labelRefs) > 0 {
-		a.log(events.NewInputLabelsAddedEvent(input.UUID(), labelRefs), log)
+		a.log(run, step, events.NewInputLabelsAddedEvent(input.UUID(), labelRefs))
 	}
 
 	return nil

@@ -47,7 +47,7 @@ func (r *RunExpirationResume) Type() string { return TypeRunExpiration }
 // Apply applies our state changes and saves any events to the run
 func (r *RunExpirationResume) Apply(run flows.FlowRun, step flows.Step) error {
 	run.Exit(flows.RunStatusExpired)
-	run.AddEvent(step, nil, events.NewRunExpiredEvent(run))
+	run.AddEvent(step, events.NewRunExpiredEvent(run))
 
 	return r.baseResume.Apply(run, step)
 }

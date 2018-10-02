@@ -36,25 +36,6 @@ func (e *BaseEvent) StepUUID() flows.StepUUID { return e.StepUUID_ }
 func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUID }
 
 //------------------------------------------------------------------------------------------
-// EventLog
-//------------------------------------------------------------------------------------------
-
-type eventLog struct {
-	events []flows.Event
-}
-
-// NewEventLog creates a new empty event log
-func NewEventLog() flows.EventLog {
-	return &eventLog{events: make([]flows.Event, 0)}
-}
-
-func (l *eventLog) Events() []flows.Event { return l.events }
-
-func (l *eventLog) Add(event flows.Event) {
-	l.events = append(l.events, event)
-}
-
-//------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 

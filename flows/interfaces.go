@@ -169,7 +169,7 @@ type Node interface {
 type Action interface {
 	UUID() ActionUUID
 
-	Execute(FlowRun, Step, EventLog) error
+	Execute(FlowRun, Step) error
 	Validate(SessionAssets) error
 	AllowedFlowTypes() []FlowType
 	utils.Typed
@@ -272,12 +272,6 @@ type Event interface {
 	CreatedOn() time.Time
 	StepUUID() StepUUID
 	SetStepUUID(StepUUID)
-}
-
-// EventLog is the log of events the caller must apply after each call
-type EventLog interface {
-	Add(Event)
-	Events() []Event
 }
 
 // Input describes input from the contact and currently we only support one type of input: `msg`. Any input has the following
@@ -408,9 +402,9 @@ type FlowRun interface {
 	SetInput(Input)
 	SetStatus(RunStatus)
 
-	AddEvent(Step, Action, Event)
-	AddError(Step, Action, error)
-	AddFatalError(Step, Action, error)
+	AddEvent(Step, Event)
+	AddError(Step, error)
+	AddFatalError(Step, error)
 
 	CreateStep(Node) Step
 	Path() []Step

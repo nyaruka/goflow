@@ -58,15 +58,15 @@ func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {
 }
 
 // Execute runs this action
-func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flows.EventLog) error {
+func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// substitute any variables in our url
 	url, err := run.EvaluateTemplateAsString(a.URL, true)
 	if err != nil {
-		a.logError(err, log)
+		a.logError(run, step, err)
 	}
 	if url == "" {
-		a.logError(fmt.Errorf("call_webhook URL evaluated to empty string, skipping"), log)
+		a.logError(run, step, fmt.Errorf("call_webhook URL evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -77,14 +77,14 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	if body != "" {
 		body, err = run.EvaluateTemplateAsString(body, false)
 		if err != nil {
-			a.logError(err, log)
+			a.logError(run, step, err)
 		}
 	}
 
 	// build our request
 	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {
-		a.logError(err, log)
+		a.logError(run, step, err)
 		return nil
 	}
 
@@ -92,7 +92,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	for key, value := range a.Headers {
 		headerValue, err := run.EvaluateTemplateAsString(value, false)
 		if err != nil {
-			a.logError(err, log)
+			a.logError(run, step, err)
 		}
 
 		req.Header.Add(key, headerValue)
@@ -101,11 +101,11 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step, log flow
 	webhook, err := flows.MakeWebhookCall(run.Session(), req)
 
 	if err != nil {
-		a.logError(err, log)
+		a.logError(run, step, err)
 	} else {
-		a.log(events.NewWebhookCalledEvent(webhook, ""), log)
+		a.log(run, step, events.NewWebhookCalledEvent(webhook, ""))
 		if a.ResultName != "" {
-			a.saveWebhookResult(run, step, a.ResultName, webhook, log)
+			a.saveWebhookResult(run, step, a.ResultName, webhook)
 		}
 	}
 

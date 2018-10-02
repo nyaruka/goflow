@@ -262,12 +262,12 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
-						currentRun.AddFatalError(step, nil, fmt.Errorf("can't resume run as node no longer exists"))
+						currentRun.AddFatalError(step, fmt.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					currentRun.AddFatalError(step, nil, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					currentRun.AddFatalError(step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
@@ -287,7 +287,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 		if destination != noDestination {
 			if s.flowStack.hasVisited(destination) {
 				// this is a loop, we log it and stop execution
-				currentRun.AddFatalError(step, nil, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				currentRun.AddFatalError(step, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
@@ -319,9 +319,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node) (flows.Step, flo
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			eventLog := events.NewEventLog()
-
-			if err := action.Execute(run, step, eventLog); err != nil {
+			if err := action.Execute(run, step); err != nil {
 				return nil, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
 			}
 
@@ -329,11 +327,6 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node) (flows.Step, flo
 				actionEnvelope, _ := utils.EnvelopeFromTyped(action)
 				actionJSON, _ := json.Marshal(actionEnvelope)
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executed")
-			}
-
-			// add any events that the action generated
-			for _, event := range eventLog.Events() {
-				run.AddEvent(step, action, event)
 			}
 
 			// check if this action has errored the run
@@ -424,7 +417,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		resultCategory := exit.Name()
 		run.Results().Save(resultName, resultValue, resultCategory, localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
 		event := events.NewRunResultChangedEvent(resultName, resultValue, resultCategory, localizedExitName, operand, extraJSON)
-		run.AddEvent(step, nil, event)
+		run.AddEvent(step, event)
 	}
 
 	return step, exit.DestinationNodeUUID(), nil
