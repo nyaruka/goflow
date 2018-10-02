@@ -354,7 +354,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	// optional modify the main flow by adding the provided action to the final empty node
 	if actionToAdd != nil {
 		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
-		flow.Nodes()[2].AddAction(actionToAdd)
+		flow.Nodes()[3].AddAction(actionToAdd)
 	}
 
 	// read our trigger
