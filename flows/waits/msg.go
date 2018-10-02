@@ -29,7 +29,7 @@ func (w *MsgWait) Type() string { return TypeMsg }
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) {
 	w.baseWait.Begin(run)
 
-	run.AddEvent(step, events.NewMsgWait(w.TimeoutOn_))
+	run.LogEvent(step, events.NewMsgWait(w.TimeoutOn_))
 }
 
 // End ends this wait or returns an error

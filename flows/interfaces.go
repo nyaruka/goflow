@@ -402,9 +402,9 @@ type FlowRun interface {
 	SetInput(Input)
 	SetStatus(RunStatus)
 
-	AddEvent(Step, Event)
-	AddError(Step, error)
-	AddFatalError(Step, error)
+	LogEvent(Step, Event)
+	LogError(Step, error)
+	LogFatalError(Step, error)
 
 	CreateStep(Node) Step
 	Path() []Step

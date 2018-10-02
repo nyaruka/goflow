@@ -52,15 +52,15 @@ func (a *TransferAirtimeAction) AllowedFlowTypes() []flows.FlowType {
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step) error {
 	contact := run.Contact()
 	if contact == nil {
-		run.AddEvent(step, events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 
 	// log error and return if we don't have a configuration
 	rawConfig := run.Session().Environment().Extension("transferto")
 	if rawConfig == nil {
-		run.AddEvent(step, events.NewErrorEvent(fmt.Errorf("missing transferto configuration")))
-		run.AddEvent(step, NewFailedAirtimeTransferredEvent())
+		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("missing transferto configuration")))
+		run.LogEvent(step, NewFailedAirtimeTransferredEvent())
 		return nil
 	}
 
@@ -71,27 +71,27 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step) erro
 
 	// if airtime transferred are disabled, return a mock event
 	if config.Disabled {
-		run.AddEvent(step, NewAirtimeTransferredEvent(config.Currency, decimal.RequireFromString("1")))
+		run.LogEvent(step, NewAirtimeTransferredEvent(config.Currency, decimal.RequireFromString("1")))
 		return nil
 	}
 
 	// check that our contact has a tel URN
 	telURNs := contact.URNs().WithScheme(urns.TelScheme)
 	if len(telURNs) == 0 {
-		run.AddEvent(step, events.NewErrorEvent(fmt.Errorf("can't transfer airtime to contact without a tel URN")))
-		run.AddEvent(step, NewFailedAirtimeTransferredEvent())
+		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("can't transfer airtime to contact without a tel URN")))
+		run.LogEvent(step, NewFailedAirtimeTransferredEvent())
 		return nil
 	}
 
 	currency, amount, err := attemptTransfer(run.Contact().PreferredChannel(), config, a.Amounts, telURNs[0].Path(), run.Session().HTTPClient())
 
 	if err != nil {
-		run.AddEvent(step, events.NewErrorEvent(err))
-		run.AddEvent(step, NewFailedAirtimeTransferredEvent())
+		run.LogEvent(step, events.NewErrorEvent(err))
+		run.LogEvent(step, NewFailedAirtimeTransferredEvent())
 		return nil
 	}
 
-	run.AddEvent(step, NewAirtimeTransferredEvent(currency, amount))
+	run.LogEvent(step, NewAirtimeTransferredEvent(currency, amount))
 	return nil
 }
 

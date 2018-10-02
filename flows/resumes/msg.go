@@ -69,7 +69,7 @@ func (r *MsgResume) Apply(run flows.FlowRun, step flows.Step) error {
 	input := inputs.NewMsgInput(flows.InputUUID(r.Msg.UUID()), channel, r.ResumedOn(), r.Msg.URN(), r.Msg.Text(), r.Msg.Attachments())
 	run.SetInput(input)
 	run.ResetExpiration(nil)
-	run.AddEvent(step, events.NewMsgReceivedEvent(r.Msg))
+	run.LogEvent(step, events.NewMsgReceivedEvent(r.Msg))
 
 	return r.baseResume.Apply(run, step)
 }

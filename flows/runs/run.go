@@ -115,7 +115,7 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 func (r *flowRun) Input() flows.Input         { return r.input }
 func (r *flowRun) SetInput(input flows.Input) { r.input = input }
 
-func (r *flowRun) AddEvent(s flows.Step, event flows.Event) {
+func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
 		r.events = append(r.events, event)
@@ -126,17 +126,17 @@ func (r *flowRun) AddEvent(s flows.Step, event flows.Event) {
 	if log.GetLevel() >= log.DebugLevel {
 		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 		eventJSON, _ := json.Marshal(eventEnvelope)
-		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event applied")
+		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event logged")
 	}
 }
 
-func (r *flowRun) AddError(step flows.Step, err error) {
-	r.AddEvent(step, events.NewErrorEvent(err))
+func (r *flowRun) LogError(step flows.Step, err error) {
+	r.LogEvent(step, events.NewErrorEvent(err))
 }
 
-func (r *flowRun) AddFatalError(step flows.Step, err error) {
+func (r *flowRun) LogFatalError(step flows.Step, err error) {
 	r.Exit(flows.RunStatusErrored)
-	r.AddEvent(step, events.NewFatalErrorEvent(err))
+	r.LogEvent(step, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }

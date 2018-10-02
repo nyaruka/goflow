@@ -69,7 +69,7 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun) error {
 	input := inputs.NewMsgInput(flows.InputUUID(t.Msg.UUID()), channel, t.TriggeredOn(), t.Msg.URN(), t.Msg.Text(), t.Msg.Attachments())
 	run.SetInput(input)
 	run.ResetExpiration(nil)
-	run.AddEvent(nil, events.NewMsgReceivedEvent(t.Msg))
+	run.LogEvent(nil, events.NewMsgReceivedEvent(t.Msg))
 	return nil
 }
 

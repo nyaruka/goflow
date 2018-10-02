@@ -290,7 +290,7 @@ func (a *BaseAction) logError(run flows.FlowRun, step flows.Step, err error) {
 
 // helper to log an event
 func (a *BaseAction) log(run flows.FlowRun, step flows.Step, event flows.Event) {
-	run.AddEvent(step, event)
+	run.LogEvent(step, event)
 }
 
 // utility struct which sets the allowed flow types to any
