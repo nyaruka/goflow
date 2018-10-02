@@ -1,7 +1,29 @@
 {
     "outputs": [
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Hi! What is your name?",
+                        "urn": "tel:+12065551212",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "fatal": true,
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "text": "flow loop detected, stopping execution before entering '32bc60ad-5c86-465e-a6b8-049c44ecce49'",
+                    "type": "error"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",

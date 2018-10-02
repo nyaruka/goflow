@@ -214,8 +214,7 @@ func renderResumeDoc(output *strings.Builder, item *documentedItem, session flow
 	}
 
 	// validate it
-	err = utils.Validate(resume)
-	if err != nil {
+	if err := utils.Validate(resume); err != nil {
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 

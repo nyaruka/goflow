@@ -121,6 +121,8 @@ func (r *flowRun) AddEvent(s flows.Step, event flows.Event) {
 		r.events = append(r.events, event)
 	}
 
+	r.Session().LogEvent(event)
+
 	if log.GetLevel() >= log.DebugLevel {
 		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 		eventJSON, _ := json.Marshal(eventEnvelope)

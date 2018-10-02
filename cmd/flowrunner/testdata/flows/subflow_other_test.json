@@ -1,7 +1,51 @@
 {
     "outputs": [
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Hi there, let's go to the child.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "flow": {
+                        "name": "Rules",
+                        "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
+                    },
+                    "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                    "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
+                    "type": "flow_triggered"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Welcome to the child, say yes or no!",
+                        "urn": "tel:+12065551212",
+                        "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
+                    },
+                    "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "msg_wait"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -178,7 +222,50 @@
             }
         },
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "neither",
+                        "urn": "tel:+12065551212",
+                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                    },
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "input": "neither",
+                    "name": "Answer",
+                    "step_uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671",
+                    "type": "run_result_changed",
+                    "value": "neither"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Nope, that's neither.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "b88ce93d-4360-4455-a691-235cbe720980"
+                    },
+                    "step_uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "type": "msg_wait"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -430,7 +517,64 @@
             }
         },
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "yes",
+                        "urn": "tel:+12065551212",
+                        "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
+                    },
+                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Yes",
+                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "input": "yes",
+                    "name": "Answer",
+                    "step_uuid": "1b5491ec-2b83-445d-bebe-b4a1f677cf4c",
+                    "type": "run_result_changed",
+                    "value": "yes"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:25.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "You said yes",
+                        "urn": "tel:+12065551212",
+                        "uuid": "44fe8d72-00ed-4736-acca-bbca70987315"
+                    },
+                    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Hooray, you did it and said yes. Say yes or no!",
+                        "urn": "tel:+12065551212",
+                        "uuid": "b52a7f80-f820-4163-9654-8a7258fbaae4"
+                    },
+                    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
+                    "type": "msg_wait"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -757,7 +901,50 @@
             }
         },
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:32.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "never",
+                        "urn": "tel:+12065551212",
+                        "uuid": "3dcbe073-60ad-4104-9d4d-e4330f6d8ba1"
+                    },
+                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "Other",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
+                    "input": "never",
+                    "name": "Answer",
+                    "step_uuid": "8ed05195-68cc-47fa-8e78-3bde7b3370ae",
+                    "type": "run_result_changed",
+                    "value": "never"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:36.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Nope, that's neither",
+                        "urn": "tel:+12065551212",
+                        "uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db"
+                    },
+                    "step_uuid": "27b67219-e599-4697-b62c-3c781ca3b5da",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:38.123456789Z",
+                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
+                    "type": "msg_wait"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
@@ -1159,7 +1346,45 @@
             }
         },
         {
-            "events": [],
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:40.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "no",
+                        "urn": "tel:+12065551212",
+                        "uuid": "09350b41-cecd-4f3e-93cd-ea516cea4e0a"
+                    },
+                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
+                    "type": "msg_received"
+                },
+                {
+                    "category": "No",
+                    "created_on": "2018-07-06T12:30:42.123456789Z",
+                    "input": "no",
+                    "name": "Answer",
+                    "step_uuid": "f5e0f002-41fc-4565-8d9f-e51d30290005",
+                    "type": "run_result_changed",
+                    "value": "no"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:44.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "All Done! You said yes in the child and no here.",
+                        "urn": "tel:+12065551212",
+                        "uuid": "b6c40a98-ecfa-4266-9853-0310d032b497"
+                    },
+                    "step_uuid": "3ceb7525-c2e1-40b0-bec9-e032f4f9af5f",
+                    "type": "msg_created"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",

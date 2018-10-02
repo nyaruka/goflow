@@ -1,7 +1,25 @@
 {
     "outputs": [
         {
-            "events": [],
+            "events": [
+                {
+                    "amount": 1,
+                    "created_on": "2018-07-06T12:30:03.123456789Z",
+                    "currency": "USD",
+                    "status": "success",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "airtime_transferred"
+                },
+                {
+                    "category": "Success",
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "input": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                    "name": "Transfer",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "run_result_changed",
+                    "value": "success"
+                }
+            ],
             "session": {
                 "contact": {
                     "created_on": "2000-01-01T00:00:00Z",
