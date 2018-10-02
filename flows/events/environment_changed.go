@@ -36,7 +36,6 @@ type EnvironmentChangedEvent struct {
 
 // NewEnvironmentChangedEvent creates a new environment changed event
 func NewEnvironmentChangedEvent(env utils.Environment) *EnvironmentChangedEvent {
-	// TODO error handling? use envelope instead?
 	marshalled, _ := json.Marshal(env)
 	return &EnvironmentChangedEvent{
 		BaseEvent:   NewBaseEvent(),

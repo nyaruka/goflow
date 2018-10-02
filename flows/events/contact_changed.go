@@ -34,7 +34,6 @@ type ContactChangedEvent struct {
 
 // NewContactChangedEvent creates a new contact changed event
 func NewContactChangedEvent(contact *flows.Contact) *ContactChangedEvent {
-	// TODO error handling? use envelope instead?
 	marshalled, _ := json.Marshal(contact)
 	return &ContactChangedEvent{
 		BaseEvent: NewBaseEvent(),
