@@ -40,14 +40,14 @@ const TypeMsg string = "msg"
 // @resume msg
 type MsgResume struct {
 	baseResume
-	Msg *flows.MsgIn
+	msg *flows.MsgIn
 }
 
 // NewMsgResume creates a new message resume with the passed in values
 func NewMsgResume(env utils.Environment, contact *flows.Contact, msg *flows.MsgIn) *MsgResume {
 	return &MsgResume{
 		baseResume: newBaseResume(env, contact),
-		Msg:        msg,
+		msg:        msg,
 	}
 }
 
@@ -56,20 +56,14 @@ func (r *MsgResume) Type() string { return TypeMsg }
 
 // Apply applies our state changes and saves any events to the run
 func (r *MsgResume) Apply(run flows.FlowRun, step flows.Step) error {
-	var channel *flows.Channel
-	var err error
-	if r.Msg.Channel() != nil {
-		channel, err = run.Session().Assets().Channels().Get(r.Msg.Channel().UUID)
-		if err != nil {
-			return err
-		}
+	// update the run's input
+	input, err := inputs.NewMsgInput(run.Session().Assets(), r.msg, r.ResumedOn())
+	if err != nil {
+		return err
 	}
 
-	// update this run's input
-	input := inputs.NewMsgInput(flows.InputUUID(r.Msg.UUID()), channel, r.ResumedOn(), r.Msg.URN(), r.Msg.Text(), r.Msg.Attachments())
 	run.SetInput(input)
-	run.ResetExpiration(nil)
-	run.LogEvent(step, events.NewMsgReceivedEvent(r.Msg))
+	run.LogEvent(step, events.NewMsgReceivedEvent(r.msg))
 
 	return r.baseResume.Apply(run, step)
 }
@@ -97,7 +91,7 @@ func ReadMsgResume(session flows.Session, data json.RawMessage) (flows.Resume, e
 		return nil, err
 	}
 
-	resume.Msg = e.Msg
+	resume.msg = e.Msg
 
 	return resume, nil
 }

@@ -112,8 +112,15 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 	return ancestors
 }
 
-func (r *flowRun) Input() flows.Input         { return r.input }
-func (r *flowRun) SetInput(input flows.Input) { r.input = input }
+func (r *flowRun) Input() flows.Input { return r.input }
+func (r *flowRun) SetInput(input flows.Input) {
+	r.input = input
+
+	// if we actually have new input, we can extend our expiration
+	if input != nil {
+		r.ResetExpiration(nil)
+	}
+}
 
 func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	if s != nil {

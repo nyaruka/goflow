@@ -41,35 +41,27 @@ const TypeMsg string = "msg"
 // @trigger msg
 type MsgTrigger struct {
 	baseTrigger
-	Msg *flows.MsgIn
+	msg *flows.MsgIn
 }
 
 // NewMsgTrigger creates a new message trigger
 func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, msg *flows.MsgIn, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn},
-		Msg:         msg,
+		msg:         msg,
 	}
 }
 
 // InitializeRun performs additional initialization when we visit our first node
-func (t *MsgTrigger) InitializeRun(run flows.FlowRun) error {
-	var channel *flows.Channel
-	var err error
-	if t.Msg.Channel() != nil {
-		channel, err = run.Session().Assets().Channels().Get(t.Msg.Channel().UUID)
-		if err != nil {
-			return err
-		}
+func (t *MsgTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
+	// update the run's input
+	input, err := inputs.NewMsgInput(run.Session().Assets(), t.msg, t.triggeredOn)
+	if err != nil {
+		return err
 	}
 
-	// TODO this method is basically the same as MsgResume.Apply
-
-	// update this run's input
-	input := inputs.NewMsgInput(flows.InputUUID(t.Msg.UUID()), channel, t.TriggeredOn(), t.Msg.URN(), t.Msg.Text(), t.Msg.Attachments())
 	run.SetInput(input)
-	run.ResetExpiration(nil)
-	run.LogEvent(nil, events.NewMsgReceivedEvent(t.Msg))
+	run.LogEvent(step, events.NewMsgReceivedEvent(t.msg))
 	return nil
 }
 
@@ -114,7 +106,7 @@ func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger,
 		return nil, err
 	}
 
-	trigger.Msg = e.Msg
+	trigger.msg = e.Msg
 
 	return trigger, nil
 }
@@ -127,7 +119,7 @@ func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	envelope.Msg = t.Msg
+	envelope.Msg = t.msg
 
 	return json.Marshal(envelope)
 }

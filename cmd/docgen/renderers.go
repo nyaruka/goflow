@@ -167,7 +167,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 
 func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
-	exampleJSON := []byte(strings.Join(item.examples, "\n"))
+	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	trigger, err := triggers.ReadTrigger(session, typed)
@@ -181,12 +181,7 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
-	typed, err = utils.EnvelopeFromTyped(trigger)
-	if err != nil {
-		return fmt.Errorf("unable to marshal example: %s", err)
-	}
-
-	exampleJSON, err = utils.JSONMarshalPretty(typed)
+	exampleJSON, err = utils.JSONMarshalPretty(exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
@@ -205,7 +200,7 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 
 func renderResumeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
-	exampleJSON := []byte(strings.Join(item.examples, "\n"))
+	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	resume, err := resumes.ReadResume(session, typed)
@@ -218,12 +213,7 @@ func renderResumeDoc(output *strings.Builder, item *documentedItem, session flow
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
-	typed, err = utils.EnvelopeFromTyped(resume)
-	if err != nil {
-		return fmt.Errorf("unable to marshal example: %s", err)
-	}
-
-	exampleJSON, err = utils.JSONMarshalPretty(typed)
+	exampleJSON, err = utils.JSONMarshalPretty(exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}

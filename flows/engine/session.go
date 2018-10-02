@@ -228,14 +228,6 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 			s.addRun(currentRun)
 			s.flowStack.push(flow)
 
-			// this might be the first run of the session in which case a trigger might need to initialize the run
-			if trigger != nil {
-				if err := trigger.InitializeRun(currentRun); err != nil {
-					return nil
-				}
-				trigger = nil
-			}
-
 			// our destination is the first node in that flow... if such a node exists
 			if len(flow.Nodes()) > 0 {
 				destination = flow.Nodes()[0].UUID()
@@ -295,10 +287,13 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
 				}
 
-				step, destination, err = s.visitNode(currentRun, node)
+				step, destination, err = s.visitNode(currentRun, node, trigger)
 				if err != nil {
 					return err
 				}
+
+				// only want to pass this to the first node
+				trigger = nil
 
 				// if we hit a wait, also return to the caller
 				if s.status == flows.SessionStatusWaiting {
@@ -313,8 +308,15 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 }
 
 // visits the given node, creating a step in our current run path
-func (s *session) visitNode(run flows.FlowRun, node flows.Node) (flows.Step, flows.NodeUUID, error) {
+func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Trigger) (flows.Step, flows.NodeUUID, error) {
 	step := run.CreateStep(node)
+
+	// this might be the first run of the session in which case a trigger might need to initialize the run
+	if trigger != nil {
+		if err := trigger.InitializeRun(run, step); err != nil {
+			return step, noDestination, nil
+		}
+	}
 
 	// execute our node's actions
 	if node.Actions() != nil {
@@ -326,7 +328,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node) (flows.Step, flo
 			}
 
 			if err := action.Execute(run, step); err != nil {
-				return nil, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
+				return step, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
 			}
 
 			// check if this action has errored the run

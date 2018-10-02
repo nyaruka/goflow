@@ -43,7 +43,8 @@ func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
 		run.LogEvent(step, events.NewEnvironmentChangedEvent(r.Environment()))
 	}
 	if r.contact != nil {
-		run.Session().SetContact(r.contact.Clone())
+		run.SetContact(r.contact)
+		run.Session().SetContact(r.contact)
 
 		// TODO diffing
 

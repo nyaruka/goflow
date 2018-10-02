@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:03.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -13,6 +13,7 @@
                         "urn": "tel:+12065551212",
                         "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                     },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "msg_received"
                 },
                 {
@@ -432,6 +433,20 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Nexmo",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Ryan Lewis",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_received"
+                            },
+                            {
                                 "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
                                 "labels": [
@@ -808,7 +823,7 @@
                         },
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:04.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }

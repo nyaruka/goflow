@@ -27,13 +27,23 @@ type MsgInput struct {
 }
 
 // NewMsgInput creates a new user input based on a message
-func NewMsgInput(uuid flows.InputUUID, channel *flows.Channel, createdOn time.Time, urn urns.URN, text string, attachments []flows.Attachment) *MsgInput {
-	return &MsgInput{
-		baseInput:   baseInput{uuid: uuid, channel: channel, createdOn: createdOn},
-		urn:         flows.NewContactURN(urn, nil),
-		text:        text,
-		attachments: attachments,
+func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Time) (*MsgInput, error) {
+	// load the channel
+	var channel *flows.Channel
+	var err error
+	if msg.Channel() != nil {
+		channel, err = assets.Channels().Get(msg.Channel().UUID)
+		if err != nil {
+			return nil, err
+		}
 	}
+
+	return &MsgInput{
+		baseInput:   baseInput{uuid: flows.InputUUID(msg.UUID()), channel: channel, createdOn: createdOn},
+		urn:         flows.NewContactURN(msg.URN(), nil),
+		text:        msg.Text(),
+		attachments: msg.Attachments(),
+	}, nil
 }
 
 // Type returns the type of this event

@@ -245,7 +245,7 @@ type Trigger interface {
 	types.XResolvable
 
 	Initialize(Session) error
-	InitializeRun(FlowRun) error
+	InitializeRun(FlowRun, Step) error
 
 	Environment() utils.Environment
 	Flow() *assets.FlowReference
