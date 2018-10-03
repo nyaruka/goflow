@@ -1,3 +1,8 @@
+v0.20.0
+----------
+ * Replace caller events with resumes
+ * Record time taken in webhook_called events
+
 v0.19.2
 ----------
  * Only generate a contact_field_changed event if a value has actually changed
