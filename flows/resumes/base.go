@@ -38,17 +38,17 @@ func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
 	if r.environment != nil {
 		run.Session().SetEnvironment(r.environment)
 
-		// TODO diffing
-
-		run.LogEvent(step, events.NewEnvironmentChangedEvent(r.Environment()))
+		if !run.Session().Environment().Equal(r.environment) {
+			run.LogEvent(step, events.NewEnvironmentChangedEvent(r.environment))
+		}
 	}
 	if r.contact != nil {
 		run.SetContact(r.contact)
 		run.Session().SetContact(r.contact)
 
-		// TODO diffing
-
-		run.LogEvent(step, events.NewContactChangedEvent(r.contact))
+		if !run.Session().Contact().Equal(r.contact) {
+			run.LogEvent(step, events.NewContactChangedEvent(r.contact))
+		}
 	}
 
 	return nil

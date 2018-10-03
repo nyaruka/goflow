@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"reflect"
 	"time"
 )
 
@@ -26,6 +27,8 @@ type Environment interface {
 
 	// extensions to the engine can expect their own env values
 	Extension(string) json.RawMessage
+
+	Equal(Environment) bool
 }
 
 // NewDefaultEnvironment creates a new Environment with our usual defaults in the UTC timezone
@@ -68,6 +71,11 @@ func (e *environment) Now() time.Time                   { return Now().In(e.Time
 
 func (e *environment) Extension(name string) json.RawMessage {
 	return e.extensions[name]
+}
+
+// Equal returns true if this environment is equal to the given environment
+func (e *environment) Equal(other Environment) bool {
+	return reflect.DeepEqual(e, other)
 }
 
 //------------------------------------------------------------------------------------------

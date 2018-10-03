@@ -3,6 +3,7 @@ package flows
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -150,6 +151,11 @@ func (c *Contact) Clone() *Contact {
 		groups:    c.groups.clone(),
 		fields:    c.fields.clone(),
 	}
+}
+
+// Equal returns true if this contact is equal to the given contact
+func (c *Contact) Equal(other *Contact) bool {
+	return reflect.DeepEqual(c, other)
 }
 
 // UUID returns the UUID of this contact
