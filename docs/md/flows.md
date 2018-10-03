@@ -179,7 +179,7 @@ for the groups which the contact has been added to.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "4f15f627-b1e2-4851-8dbf-00ecf5d03034",
+    "step_uuid": "688e64f9-2456-4b42-afcb-91a2073e5459",
     "groups_added": [
         {
             "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
@@ -208,7 +208,7 @@ will be created when this action is encountered.
 {
     "type": "contact_urn_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "b504fe9e-d8a8-47fd-af9c-ff2f1faac4db",
+    "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
     "urn": "tel:+12344563452"
 }
 ```
@@ -237,7 +237,7 @@ no user input at that point then this action will be ignored.
 {
     "type": "input_labels_added",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "f3cbd795-9bb3-4331-ba82-c15b24dd577f",
+    "step_uuid": "2a6725ab-4f62-4c5a-9014-2c868db4022e",
     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
     "labels": [
         {
@@ -270,12 +270,12 @@ through `extra` on the result.
 {
     "type": "webhook_called",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "229bd432-dac7-4a3f-ba91-c48ad8c50e6b",
+    "step_uuid": "644592ee-11ad-4bc4-9566-6fb2598c32d6",
     "url": "http://127.0.0.1:49998/?cmd=success",
     "resthook": "new-registration",
     "status": "success",
     "time_taken": 0,
-    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2205\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"347b55be-7be1-4e68-aaa3-04d3fbce5f9a\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"da339edd-083b-48cb-bef6-3979f99a96f9\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\n\t\"run\": {\"uuid\": \"4c9abf31-d821-4e97-ba7e-53c2263e32f8\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2000-01-01T00:00:00.000000Z\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
+    "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49998\r\nUser-Agent: goflow-testing\r\nContent-Length: 2403\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212\"},\n\t\"flow\": {\"name\":\"Registration\",\"revision\":123,\"uuid\":\"50c3706e-fedb-42c0-8eab-dda3335714b7\"},\n\t\"path\": [{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"229bd432-dac7-4a3f-ba91-c48ad8c50e6b\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"37d8813f-1402-4ad2-9cc2-e9054a96525b\",\"node_uuid\":\"3dcccbb4-d29c-41dd-a01f-16d814c9ab82\",\"uuid\":\"5254b218-3673-41f2-b63d-c8dcc2fa9de0\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"d898f9a4-f0fc-4ac4-a639-c98c602bb511\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"uuid\":\"951242a1-5333-4221-8f9d-465efd6fbb5e\"},{\"arrived_on\":\"2018-04-11T18:24:30.123456Z\",\"exit_uuid\":\"\",\"node_uuid\":\"c0781400-737f-4940-9a6c-1ec1c3df0325\",\"uuid\":\"644592ee-11ad-4bc4-9566-6fb2598c32d6\"}],\n\t\"results\": {\"favorite_color\":{\"category\":\"Red\",\"category_localized\":\"Red\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Favorite Color\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"red\"},\"phone_number\":{\"category\":\"\",\"category_localized\":\"\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":null,\"name\":\"Phone Number\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"+12344563452\"},\"webhook\":{\"category\":\"Success\",\"category_localized\":\"Success\",\"created_on\":\"2018-04-11T18:24:30.123456Z\",\"input\":\"GET http://127.0.0.1:49998/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D\",\"name\":\"webhook\",\"node_uuid\":\"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03\",\"value\":\"200\"}},\n\t\"run\": {\"uuid\": \"da339edd-083b-48cb-bef6-3979f99a96f9\", \"created_on\": \"2018-04-11T18:24:30.123456Z\"},\n\t\"input\": {\"attachments\":[{\"content_type\":\"image/jpeg\",\"url\":\"http://s3.amazon.com/bucket/test.jpg\"},{\"content_type\":\"audio/mp3\",\"url\":\"http://s3.amazon.com/bucket/test.mp3\"}],\"channel\":{\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"},\"created_on\":\"2017-12-31T11:35:10.035757-02:00\",\"text\":\"Hi there\",\"type\":\"msg\",\"urn\":{\"display\":\"\",\"path\":\"+12065551212\",\"scheme\":\"tel\"},\"uuid\":\"9bf91c2b-ce58-4cef-aacc-281e03f69ab5\"},\n\t\"channel\": {\"address\":\"+12345671111\",\"name\":\"My Android Phone\",\"uuid\":\"57f1078f-88aa-46f4-a59a-948a5739c03d\"}\n}",
     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }"
 }
 ```
@@ -307,7 +307,7 @@ through `extra` on the result.
     {
         "type": "webhook_called",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+        "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
         "url": "http://localhost:49998/?cmd=success",
         "status": "success",
         "time_taken": 0,
@@ -317,7 +317,7 @@ through `extra` on the result.
     {
         "type": "run_result_changed",
         "created_on": "2018-04-11T18:24:30.123456Z",
-        "step_uuid": "e68a851e-6328-426b-a8fd-1537ca860f97",
+        "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
         "name": "webhook",
         "value": "200",
         "category": "Success",
@@ -354,7 +354,7 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "5fa51f39-76ea-421c-a71b-fe4af29b871a",
+    "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525",
     "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
@@ -389,7 +389,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "8e64b588-d46e-4016-a5ef-59cf4d9d7a5b",
+    "step_uuid": "5861c68a-8201-4d77-9e14-020037f6ddea",
     "translations": {
         "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -426,7 +426,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "08eba586-0bb1-47ab-8c15-15a7c0c5228d",
+    "step_uuid": "06b98e9d-825f-4be0-92f0-b4a6fcc7080c",
     "addresses": [
         "foo@bar.com"
     ],
@@ -455,9 +455,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
+    "step_uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa",
     "msg": {
-        "uuid": "10c62052-7db1-49d1-b8ba-60d66db82e39",
+        "uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6",
         "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -490,7 +490,7 @@ A [contact_channel_changed](sessions.html#event:contact_channel_changed) event w
 {
     "type": "contact_channel_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
+    "step_uuid": "7dcc445a-83cf-432b-8188-76dd971a6205",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
         "name": "FAcebook Channel"
@@ -521,7 +521,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "a08b46fc-f057-4e9a-9bd7-277a6a165264",
+    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -570,7 +570,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
+    "step_uuid": "e0e8ce1b-5368-4e92-ba1b-6cc3bea197e4",
     "name": "Bob Smith"
 }
 ```
@@ -594,7 +594,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e4be9d25-b3ab-4a47-8704-ab259cb52a5d",
+    "step_uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100",
     "timezone": "Africa/Kigali"
 }
 ```
@@ -623,7 +623,7 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "bb7de8fc-d0b0-41a6-bdf0-950b64bbbc6d",
+    "step_uuid": "17de0954-e818-46a3-89c9-308c16612438",
     "name": "Gender",
     "value": "m",
     "category": "Male"
@@ -652,12 +652,12 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
 {
     "type": "flow_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
+    "step_uuid": "2e69f97c-4e50-408f-93ca-b93dc25ffd65",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "a8ff08ef-6f27-44bd-9029-066bfcb36cf8"
+    "parent_run_uuid": "936fea74-7589-4322-aac5-484f64970a84"
 }
 ```
 </div>
@@ -688,7 +688,7 @@ will be created and it's the responsibility of the caller to act on that by init
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "636bcfe8-1dd9-4bbd-a2a5-6b6ffeeada26",
+    "step_uuid": "77405d28-851d-4051-a8e1-fc82b887c3ff",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -700,7 +700,7 @@ will be created and it's the responsibility of the caller to act on that by init
         }
     ],
     "run": {
-        "uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100",
+        "uuid": "77edcde6-5d7c-4ae9-b660-52c755c4d15c",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"

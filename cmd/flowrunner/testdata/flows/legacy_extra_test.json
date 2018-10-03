@@ -1,22 +1,4 @@
 {
-    "caller_events": [
-        [],
-        [
-            {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "msg": {
-                    "channel": {
-                        "name": "Nexmo",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "text": "Ryan Lewis",
-                    "urn": "tel:+12065551212",
-                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                },
-                "type": "msg_received"
-            }
-        ]
-    ],
     "outputs": [
         {
             "events": [
@@ -304,8 +286,22 @@
         {
             "events": [
                 {
+                    "created_on": "2018-07-06T12:30:18.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Ryan Lewis",
+                        "urn": "tel:+12065551212",
+                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                    },
+                    "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
+                    "type": "msg_received"
+                },
+                {
                     "category": "",
-                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
                     "input": "Ryan Lewis",
                     "name": "Continue",
                     "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -313,7 +309,7 @@
                     "value": "Ryan Lewis"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -435,7 +431,7 @@
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2000-01-01T00:00:00Z",
+                                "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -450,7 +446,7 @@
                             },
                             {
                                 "category": "",
-                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "step_uuid": "5802813d-6c58-4292-8228-9728778b6c98",
@@ -458,7 +454,7 @@
                                 "value": "Ryan Lewis"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -472,7 +468,7 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:22.123456789Z",
+                        "exited_on": "2018-07-06T12:30:23.123456789Z",
                         "expires_on": "2018-07-06T12:30:17.123456789Z",
                         "flow": {
                             "name": "Legacy Extra",
@@ -509,7 +505,7 @@
                                 "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:20.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
                                 "exit_uuid": "82765044-5c8e-4678-a1c8-8e4f348f903a",
                                 "node_uuid": "e9666140-dcf1-46ab-a27e-ecb2a5e8b73d",
                                 "uuid": "312d3af0-a565-4c96-ba00-bd7f0d08e671"
@@ -517,7 +513,7 @@
                         ],
                         "results": {
                             "continue": {
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "Ryan Lewis",
                                 "name": "Continue",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -579,6 +575,21 @@
                     "type": "manual"
                 }
             }
+        }
+    ],
+    "resumes": [
+        {
+            "msg": {
+                "channel": {
+                    "name": "Nexmo",
+                    "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                },
+                "text": "Ryan Lewis",
+                "urn": "tel:+12065551212",
+                "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+            },
+            "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "msg"
         }
     ],
     "trigger": {

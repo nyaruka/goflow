@@ -20,21 +20,16 @@ Is used when a session was triggered by a campaign event
     },
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-        "id": 0,
-        "name": "Bob",
-        "language": "",
-        "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
-        "urns": []
+        "name": "Bob"
     },
-    "triggered_on": "2000-01-01T00:00:00Z",
     "event": {
         "uuid": "34d16dbd-476d-4b77-bac3-9f3d597848cc",
         "campaign": {
             "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
             "name": "New Mothers"
         }
-    }
+    },
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 }
 ```
 
@@ -52,7 +47,7 @@ Is used when another session triggered this run using a trigger_flow action.
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Age"
     },
-    "triggered_on": "2000-01-01T00:00:00Z",
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
     "run": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "flow": {
@@ -61,12 +56,7 @@ Is used when another session triggered this run using a trigger_flow action.
         },
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
-            "id": 0,
             "name": "Bob",
-            "language": "",
-            "timezone": "",
-            "created_on": "0001-01-01T00:00:00Z",
-            "urns": [],
             "fields": {
                 "gender": {
                     "text": "Male"
@@ -76,10 +66,10 @@ Is used when another session triggered this run using a trigger_flow action.
         "status": "active",
         "results": {
             "age": {
-                "name": "",
+                "result_name": "Age",
                 "value": "33",
-                "node_uuid": "",
-                "created_on": "2000-01-01T00:00:00Z"
+                "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+                "created_on": "2000-01-01T00:00:00.000000000-00:00"
             }
         }
     }
@@ -102,14 +92,142 @@ Is used when a session was triggered manually by a user
     },
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-        "id": 0,
-        "name": "Bob",
-        "language": "",
-        "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
-        "urns": []
+        "name": "Bob"
     },
-    "triggered_on": "2000-01-01T00:00:00Z"
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
+}
+```
+
+<a name="trigger:msg"></a>
+
+## msg
+
+Is used when a session was triggered by a message being recieved by the caller
+
+
+```json
+{
+    "type": "msg",
+    "flow": {
+        "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "name": "Bob"
+    },
+    "msg": {
+        "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "channel": {
+            "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+            "name": "Twilio"
+        },
+        "urn": "tel:+12065551212",
+        "text": "hi there",
+        "attachments": [
+            "https://s3.amazon.com/mybucket/attachment.jpg"
+        ]
+    },
+    "keyword_match": {
+        "type": "first_word",
+        "keyword": "start"
+    },
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
+}
+```
+
+
+</div>
+
+# Resumes
+
+Resumes resume an existing session with the flow engine and describe why the session is being resumed.
+
+<div class="resumes">
+<a name="resume:msg"></a>
+
+## msg
+
+Is used when a session is resumed with a new message from the contact
+
+
+```json
+{
+    "type": "msg",
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "name": "Bob",
+        "language": "fra",
+        "fields": {
+            "gender": {
+                "text": "Male"
+            }
+        },
+        "groups": []
+    },
+    "msg": {
+        "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "channel": {
+            "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
+            "name": "Twilio"
+        },
+        "urn": "tel:+12065551212",
+        "text": "hi there",
+        "attachments": [
+            "https://s3.amazon.com/mybucket/attachment.jpg"
+        ]
+    },
+    "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+}
+```
+
+<a name="resume:run_expiration"></a>
+
+## run_expiration
+
+Is used when a session is resumed because the waiting run has expired
+
+
+```json
+{
+    "type": "run_expiration",
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "name": "Bob",
+        "language": "fra",
+        "fields": {
+            "gender": {
+                "text": "Male"
+            }
+        },
+        "groups": []
+    },
+    "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+}
+```
+
+<a name="resume:wait_timeout"></a>
+
+## wait_timeout
+
+Is used when a session is resumed because a wait has timed out
+
+
+```json
+{
+    "type": "wait_timeout",
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "name": "Bob",
+        "language": "fra",
+        "fields": {
+            "gender": {
+                "text": "Male"
+            }
+        },
+        "groups": []
+    },
+    "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
 }
 ```
 

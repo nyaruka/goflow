@@ -21,8 +21,7 @@ type flowRun struct {
 	session     flows.Session
 	environment flows.RunEnvironment
 
-	flow    flows.Flow
-	contact *flows.Contact
+	flow flows.Flow
 
 	context types.XValue
 	input   flows.Input
@@ -39,12 +38,11 @@ type flowRun struct {
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
-func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
+func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
 	r := &flowRun{
 		uuid:      flows.RunUUID(utils.NewUUID()),
 		session:   session,
 		flow:      flow,
-		contact:   contact,
 		results:   flows.NewResults(),
 		status:    flows.RunStatusActive,
 		createdOn: utils.Now(),
@@ -63,9 +61,8 @@ func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
 func (r *flowRun) Session() flows.Session            { return r.session }
 func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
-func (r *flowRun) Flow() flows.Flow                  { return r.flow }
-func (r *flowRun) Contact() *flows.Contact           { return r.contact }
-func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
+func (r *flowRun) Flow() flows.Flow        { return r.flow }
+func (r *flowRun) Contact() *flows.Contact { return r.session.Contact() }
 
 func (r *flowRun) Context() types.XValue  { return r.context }
 func (r *flowRun) Results() flows.Results { return r.results }
@@ -112,41 +109,38 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 	return ancestors
 }
 
-func (r *flowRun) Input() flows.Input         { return r.input }
-func (r *flowRun) SetInput(input flows.Input) { r.input = input }
+func (r *flowRun) Input() flows.Input { return r.input }
+func (r *flowRun) SetInput(input flows.Input) {
+	r.input = input
 
-func (r *flowRun) AddEvent(s flows.Step, action flows.Action, event flows.Event) {
+	// if we actually have new input, we can extend our expiration
+	if input != nil {
+		r.ResetExpiration(nil)
+	}
+}
+
+func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
 		r.events = append(r.events, event)
 	}
 
-	// only add this event to the session's event log if it didn't come from the caller
-	_, isCaller := event.(flows.CallerEvent)
-	if !isCaller {
-		r.Session().LogEvent(event)
-	}
+	r.Session().LogEvent(event)
 
 	if log.GetLevel() >= log.DebugLevel {
-		var origin string
-		if isCaller {
-			origin = "caller"
-		} else {
-			origin = "engine"
-		}
 		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
 		eventJSON, _ := json.Marshal(eventEnvelope)
-		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("%s event applied", origin)
+		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event logged")
 	}
 }
 
-func (r *flowRun) AddError(step flows.Step, action flows.Action, err error) {
-	r.AddEvent(step, action, events.NewErrorEvent(err))
+func (r *flowRun) LogError(step flows.Step, err error) {
+	r.LogEvent(step, events.NewErrorEvent(err))
 }
 
-func (r *flowRun) AddFatalError(step flows.Step, action flows.Action, err error) {
+func (r *flowRun) LogFatalError(step flows.Step, err error) {
 	r.Exit(flows.RunStatusErrored)
-	r.AddEvent(step, action, events.NewFatalErrorEvent(err))
+	r.LogEvent(step, events.NewFatalErrorEvent(err))
 }
 
 func (r *flowRun) Path() []flows.Step { return r.path }
@@ -323,7 +317,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	}
 
 	r.session = session
-	r.contact = session.Contact()
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
 	r.createdOn = envelope.CreatedOn

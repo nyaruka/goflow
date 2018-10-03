@@ -1,26 +1,23 @@
 {
-    "caller_events": [
-        [
-            {
-                "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                "msg": {
-                    "channel": {
-                        "name": "Nexmo",
-                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                    },
-                    "text": "Ryan Lewis",
-                    "urn": "tel:+12065551212",
-                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                },
-                "type": "msg_received"
-            }
-        ]
-    ],
     "outputs": [
         {
             "events": [
                 {
                     "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Ryan Lewis",
+                        "urn": "tel:+12065551212",
+                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_received"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:05.123456789Z",
                     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
                     "labels": [
                         {
@@ -36,7 +33,7 @@
                     "type": "input_labels_added"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:05.123456789Z",
+                    "created_on": "2018-07-06T12:30:06.123456789Z",
                     "groups_added": [
                         {
                             "name": "Survey Audience",
@@ -51,13 +48,13 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_urn_added",
                     "urn": "twitter:ben_haggerty"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:09.123456789Z",
                     "field": {
                         "key": "activation_token",
                         "name": "Activation Token"
@@ -74,13 +71,13 @@
                         "test@example.com"
                     ],
                     "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
-                    "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "created_on": "2018-07-06T12:30:10.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "subject": "Here is your activation token",
                     "type": "email_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:10.123456789Z",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "flow": {
                         "name": "Collect Language",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -96,7 +93,7 @@
                             "uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8"
                         }
                     ],
-                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "created_on": "2018-07-06T12:30:12.123456789Z",
                     "flow": {
                         "name": "Collect Language",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -154,7 +151,7 @@
                 },
                 {
                     "base_language": "eng",
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "translations": {
                         "eng": {
@@ -171,7 +168,7 @@
                 },
                 {
                     "base_language": "eng",
-                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "created_on": "2018-07-06T12:30:14.123456789Z",
                     "groups": [
                         {
                             "name": "Survey Audience",
@@ -196,7 +193,7 @@
                     "type": "broadcast_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:14.123456789Z",
+                    "created_on": "2018-07-06T12:30:15.123456789Z",
                     "groups_removed": [
                         {
                             "name": "Survey Audience",
@@ -207,7 +204,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:15.123456789Z",
+                    "created_on": "2018-07-06T12:30:16.123456789Z",
                     "groups_added": [
                         {
                             "name": "Survey Audience",
@@ -218,7 +215,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "created_on": "2018-07-06T12:30:17.123456789Z",
                     "groups_removed": [
                         {
                             "name": "Survey Audience",
@@ -233,7 +230,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:17.123456789Z",
+                    "created_on": "2018-07-06T12:30:18.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -247,7 +244,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:18.123456789Z",
+                    "created_on": "2018-07-06T12:30:19.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -261,7 +258,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:19.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Facebook Channel",
@@ -275,7 +272,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:20.123456789Z",
+                    "created_on": "2018-07-06T12:30:21.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Twitter Channel",
@@ -289,7 +286,7 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:21.123456789Z",
+                    "created_on": "2018-07-06T12:30:22.123456789Z",
                     "msg": {
                         "attachments": [
                             "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
@@ -311,26 +308,26 @@
                 },
                 {
                     "category": "Male",
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "name": "Gender",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "run_result_changed",
                     "value": "m"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "created_on": "2018-07-06T12:30:25.123456789Z",
                     "name": "Jeff Jefferson",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_name_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:25.123456789Z",
+                    "created_on": "2018-07-06T12:30:26.123456789Z",
                     "language": "",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "contact_language_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:27.123456789Z",
+                    "created_on": "2018-07-06T12:30:28.123456789Z",
                     "field": {
                         "key": "gender",
                         "name": "Gender"
@@ -342,7 +339,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:28.123456789Z",
+                    "created_on": "2018-07-06T12:30:29.123456789Z",
                     "groups_added": [
                         {
                             "name": "Males",
@@ -353,7 +350,7 @@
                     "type": "contact_groups_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:30.123456789Z",
+                    "created_on": "2018-07-06T12:30:31.123456789Z",
                     "field": {
                         "key": "district",
                         "name": "District"
@@ -367,7 +364,7 @@
                     }
                 },
                 {
-                    "created_on": "2018-07-06T12:30:33.123456789Z",
+                    "created_on": "2018-07-06T12:30:34.123456789Z",
                     "request": "GET /?cmd=success&name=Jeff%20Jefferson HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
@@ -436,7 +433,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2000-01-01T00:00:00Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -450,7 +447,7 @@
                                 "type": "msg_received"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "created_on": "2018-07-06T12:30:05.123456789Z",
                                 "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
                                 "labels": [
                                     {
@@ -466,7 +463,7 @@
                                 "type": "input_labels_added"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:05.123456789Z",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Survey Audience",
@@ -481,13 +478,13 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_urn_added",
                                 "urn": "twitter:ben_haggerty"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:09.123456789Z",
                                 "field": {
                                     "key": "activation_token",
                                     "name": "Activation Token"
@@ -504,13 +501,13 @@
                                     "test@example.com"
                                 ],
                                 "body": "Hi Ben, Your activation token is XXX-YYY-ZZZ, your coupon is AAA-BBB-CCC",
-                                "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "subject": "Here is your activation token",
                                 "type": "email_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "flow": {
                                     "name": "Collect Language",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -526,7 +523,7 @@
                                         "uuid": "820f5923-3369-41c6-b3cd-af577c0bd4b8"
                                     }
                                 ],
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "flow": {
                                     "name": "Collect Language",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -584,7 +581,7 @@
                             },
                             {
                                 "base_language": "eng",
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "translations": {
                                     "eng": {
@@ -601,7 +598,7 @@
                             },
                             {
                                 "base_language": "eng",
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "groups": [
                                     {
                                         "name": "Survey Audience",
@@ -626,7 +623,7 @@
                                 "type": "broadcast_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:15.123456789Z",
                                 "groups_removed": [
                                     {
                                         "name": "Survey Audience",
@@ -637,7 +634,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:15.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Survey Audience",
@@ -648,7 +645,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "groups_removed": [
                                     {
                                         "name": "Survey Audience",
@@ -663,7 +660,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -677,7 +674,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -691,7 +688,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:19.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Facebook Channel",
@@ -705,7 +702,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:20.123456789Z",
+                                "created_on": "2018-07-06T12:30:21.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Twitter Channel",
@@ -719,7 +716,7 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:21.123456789Z",
+                                "created_on": "2018-07-06T12:30:22.123456789Z",
                                 "msg": {
                                     "attachments": [
                                         "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
@@ -741,26 +738,26 @@
                             },
                             {
                                 "category": "Male",
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "name": "Gender",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "run_result_changed",
                                 "value": "m"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "created_on": "2018-07-06T12:30:25.123456789Z",
                                 "name": "Jeff Jefferson",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_name_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:25.123456789Z",
+                                "created_on": "2018-07-06T12:30:26.123456789Z",
                                 "language": "",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:27.123456789Z",
+                                "created_on": "2018-07-06T12:30:28.123456789Z",
                                 "field": {
                                     "key": "gender",
                                     "name": "Gender"
@@ -772,7 +769,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:28.123456789Z",
+                                "created_on": "2018-07-06T12:30:29.123456789Z",
                                 "groups_added": [
                                     {
                                         "name": "Males",
@@ -783,7 +780,7 @@
                                 "type": "contact_groups_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:30.123456789Z",
+                                "created_on": "2018-07-06T12:30:31.123456789Z",
                                 "field": {
                                     "key": "district",
                                     "name": "District"
@@ -797,7 +794,7 @@
                                 }
                             },
                             {
-                                "created_on": "2018-07-06T12:30:33.123456789Z",
+                                "created_on": "2018-07-06T12:30:34.123456789Z",
                                 "request": "GET /?cmd=success&name=Jeff%20Jefferson HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nAccept-Encoding: gzip\r\n\r\n",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
@@ -807,8 +804,8 @@
                                 "url": "http://127.0.0.1:49999/?cmd=success&name=Jeff%20Jefferson"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:37.123456789Z",
-                        "expires_on": "2018-07-06T12:30:35.123456789Z",
+                        "exited_on": "2018-07-06T12:30:38.123456789Z",
+                        "expires_on": "2018-07-06T12:30:36.123456789Z",
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
@@ -834,7 +831,7 @@
                         "results": {
                             "gender": {
                                 "category": "Male",
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:23.123456789Z",
                                 "name": "Gender",
                                 "node_uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
                                 "value": "m"
@@ -844,9 +841,9 @@
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
                     },
                     {
-                        "created_on": "2018-07-06T12:30:34.123456789Z",
-                        "exited_on": "2018-07-06T12:30:36.123456789Z",
-                        "expires_on": "2018-07-06T12:30:35.123456789Z",
+                        "created_on": "2018-07-06T12:30:35.123456789Z",
+                        "exited_on": "2018-07-06T12:30:37.123456789Z",
+                        "expires_on": "2018-07-06T12:30:36.123456789Z",
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
@@ -898,6 +895,15 @@
                         "name": "Registration",
                         "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
                     },
+                    "msg": {
+                        "channel": {
+                            "name": "Nexmo",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Ryan Lewis",
+                        "urn": "tel:+12065551212",
+                        "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                    },
                     "params": {
                         "coupons": [
                             {
@@ -907,11 +913,12 @@
                         ]
                     },
                     "triggered_on": "2000-01-01T00:00:00Z",
-                    "type": "manual"
+                    "type": "msg"
                 }
             }
         }
     ],
+    "resumes": [],
     "trigger": {
         "contact": {
             "created_on": "2000-01-01T00:00:00.000000000-00:00",
@@ -951,6 +958,15 @@
             "name": "Registration",
             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
         },
+        "msg": {
+            "channel": {
+                "name": "Nexmo",
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+            },
+            "text": "Ryan Lewis",
+            "urn": "tel:+12065551212",
+            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+        },
         "params": {
             "coupons": [
                 {
@@ -960,6 +976,6 @@
             ]
         },
         "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
-        "type": "manual"
+        "type": "msg"
     }
 }

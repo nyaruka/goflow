@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -18,55 +18,40 @@ func RegisterType(name string, initFunc func() flows.Wait) {
 
 // the base of all wait types
 type baseWait struct {
-}
-
-// Timeout would return the timeout of this wait for wait types that do that
-func (w *baseWait) Timeout() *int { return nil }
-
-// TimeoutOn would return when this wait times out for wait types that do that
-func (w *baseWait) TimeoutOn() *time.Time { return nil }
-
-// Begin beings waiting
-func (w *baseWait) Begin(run flows.FlowRun) {}
-
-// base of all wait types than can timeout
-type baseTimeoutWait struct {
-	baseWait
-
 	Timeout_   *int       `json:"timeout,omitempty"`
 	TimeoutOn_ *time.Time `json:"timeout_on,omitempty"`
 }
 
 // Timeout returns the timeout of this wait in seconds or nil if no timeout is set
-func (w *baseTimeoutWait) Timeout() *int { return w.Timeout_ }
+func (w *baseWait) Timeout() *int { return w.Timeout_ }
 
 // TimeoutOn returns when this wait times out
-func (w *baseTimeoutWait) TimeoutOn() *time.Time { return w.TimeoutOn_ }
+func (w *baseWait) TimeoutOn() *time.Time { return w.TimeoutOn_ }
 
-// Begin beings waiting at this wait
-func (w *baseTimeoutWait) Begin(run flows.FlowRun) {
+// Begin beings waiting
+func (w *baseWait) Begin(run flows.FlowRun) {
 	if w.Timeout_ != nil {
 		timeoutOn := utils.Now().Add(time.Second * time.Duration(*w.Timeout_))
 
 		w.TimeoutOn_ = &timeoutOn
 	}
-
-	w.baseWait.Begin(run)
 }
 
-// CanResume returns true if a wait timed out event has been received
-func (w *baseTimeoutWait) CanResume(callerEvents []flows.CallerEvent) bool {
-	return containsEventOfType(callerEvents, events.TypeWaitTimedOut)
-}
-
-// utility function to look for an event of a given type
-func containsEventOfType(events []flows.CallerEvent, eventType string) bool {
-	for _, event := range events {
-		if event.Type() == eventType {
-			return true
+// End ends this wait or returns an error
+func (w *baseWait) End(resume flows.Resume) error {
+	switch resume.Type() {
+	case resumes.TypeRunExpiration:
+		// expired runs always end a wait
+		return nil
+	case resumes.TypeWaitTimeout:
+		if w.Timeout() == nil || w.TimeoutOn() == nil {
+			return fmt.Errorf("can only be applied when session wait has timeout")
+		}
+		if utils.Now().Before(*w.TimeoutOn()) {
+			return fmt.Errorf("can't apply before wait has timed out")
 		}
 	}
-	return false
+	return nil
 }
 
 //------------------------------------------------------------------------------------------

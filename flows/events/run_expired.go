@@ -1,8 +1,6 @@
 package events
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -28,22 +26,12 @@ type RunExpiredEvent struct {
 	RunUUID flows.RunUUID `json:"run_uuid"    validate:"required,uuid4"`
 }
 
+// NewRunExpiredEvent creates a new run expired event
+func NewRunExpiredEvent(run flows.FlowRun) *RunExpiredEvent {
+	return &RunExpiredEvent{BaseEvent: NewBaseEvent(), RunUUID: run.UUID()}
+}
+
 // Type returns the type of this event
 func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
 
-// Validate validates our event is valid and has all the assets it needs
-func (e *RunExpiredEvent) Validate(assets flows.SessionAssets) error {
-	return nil
-}
-
-// Apply applies this event to the given run
-func (e *RunExpiredEvent) Apply(run flows.FlowRun) error {
-	if run.UUID() != e.RunUUID {
-		return fmt.Errorf("only the current run can be expired")
-	}
-
-	run.Exit(flows.RunStatusExpired)
-	return nil
-}
-
-var _ flows.CallerEvent = (*RunExpiredEvent)(nil)
+var _ flows.Event = (*RunExpiredEvent)(nil)

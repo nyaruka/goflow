@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -62,7 +63,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@input.text", "Hi there", ""},
 		{"@input.attachments", `["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]`, ""},
 		{"@input.attachments.0", "http://s3.amazon.com/bucket/test.jpg", ""},
-		{"@input.created_on", "2000-01-01T00:00:00.000000Z", ""},
+		{"@input.created_on", "2017-12-31T11:35:10.035757-02:00", ""},
 		{"@input.channel.name", "My Android Phone", ""},
 
 		{"@results", `{"favorite_color":"red","phone_number":"+12344563452"}`, ""},
@@ -115,8 +116,8 @@ func TestContextToJSON(t *testing.T) {
 		{"contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"}`},
 		{"contact.fields.age", `23`},
 		{"contact", `{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"}`},
-		{"run.input", `{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}`},
-		{"run", `{"contact":{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"},"created_on":"2018-04-11T13:24:30.123456Z","exited_on":"2018-04-11T13:24:30.123456Z","flow":{"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"},"input":{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2000-01-01T00:00:00.000000Z","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"},"results":{"favorite_color":{"category":"Red","category_localized":"Red","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"},"phone_number":{"category":"","category_localized":"","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Phone Number","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"+12344563452"},"webhook":{"category":"Success","category_localized":"Success","created_on":"2018-04-11T13:24:30.123456Z","input":"GET http://127.0.0.1:49992/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D","name":"webhook","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"200"}},"status":"completed","uuid":"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"}`},
+		{"run.input", `{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}`},
+		{"run", `{"contact":{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"},"created_on":"2018-04-11T13:24:30.123456Z","exited_on":"2018-04-11T13:24:30.123456Z","flow":{"name":"Registration","revision":123,"uuid":"50c3706e-fedb-42c0-8eab-dda3335714b7"},"input":{"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"},"results":{"favorite_color":{"category":"Red","category_localized":"Red","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Favorite Color","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"red"},"phone_number":{"category":"","category_localized":"","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Phone Number","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"+12344563452"},"webhook":{"category":"Success","category_localized":"Success","created_on":"2018-04-11T13:24:30.123456Z","input":"GET http://127.0.0.1:49992/?cmd=echo&content=%7B%22results%22%3A%5B%7B%22state%22%3A%22WA%22%7D%2C%7B%22state%22%3A%22IN%22%7D%5D%7D","name":"webhook","node_uuid":"f5bb9b7a-7b5e-45c3-8f0e-61b4e95edf03","value":"200"}},"status":"completed","uuid":"d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"}`},
 		{"child", `{"contact":{"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2018-06-20T11:40:30.123456Z","fields":{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00.000000-02:00"},"groups":[{"name":"Testers","uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},{"name":"Males","uuid":"4f1f98fc-27a7-4a69-bbdb-24744ba739a9"}],"language":"eng","name":"Ryan Lewis","timezone":"America/Guayaquil","urns":[{"display":"","path":"+12065551212","scheme":"tel"},{"display":"nyaruka","path":"54784326227","scheme":"twitterid"},{"display":"","path":"foo@bar.com","scheme":"mailto"}],"uuid":"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"},"flow":{"name":"Collect Age","revision":0,"uuid":"b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"},"results":{"age":{"category":"Youth","category_localized":"Youth","created_on":"2018-04-11T13:24:30.123456Z","input":null,"name":"Age","node_uuid":"d9dba561-b5ee-4f62-ba44-60c4dc242b84","value":"23"}},"status":"completed","uuid":"8720f157-ca1c-432f-9c0b-2014ddc77094"}`},
 		{"parent", `{"contact":{"channel":null,"created_on":"0001-01-01T00:00:00.000000Z","fields":{"activation_token":null,"age":33,"gender":"Female","join_date":null},"groups":[],"language":"spa","name":"Jasmine","timezone":null,"urns":[],"uuid":"c59b0033-e748-4240-9d4c-e85eb6800151"},"flow":{"name":"Parent","revision":0,"uuid":"fece6eac-9127-4343-9269-56e88f391562"},"results":{"role":{"category":"Reporter","category_localized":"Reporter","created_on":"2000-01-01T00:00:00.000000Z","input":"a reporter","name":"Role","node_uuid":"385cb848-5043-448e-9123-05cbcf26ad74","value":"reporter"}},"status":"active","uuid":"4213ac47-93fd-48c4-af12-7da8218ef09d"}`},
 		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},
@@ -167,7 +168,7 @@ func TestWaitTimeout(t *testing.T) {
 	contact.AddURN(urns.URN("tel:+18005555777"))
 	trigger := triggers.NewManualTrigger(nil, contact, flow.Reference(), nil, time.Now())
 
-	err = session.Start(trigger, nil)
+	err = session.Start(trigger)
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
@@ -181,22 +182,19 @@ func TestWaitTimeout(t *testing.T) {
 	require.Equal(t, &t2, waitEvent.TimeoutOn)
 	timeoutOn := *waitEvent.TimeoutOn
 
-	// try to resume without any event - we should remain in waiting state
-	session.Resume([]flows.CallerEvent{})
-	require.NoError(t, err)
-
-	require.Equal(t, flows.SessionStatusWaiting, session.Status())
-	require.Equal(t, 1, len(run.Path()))
-	require.Equal(t, 2, len(run.Events()))
-
 	// mock our current time to be 10 seconds after the wait times out
 	utils.SetTimeSource(utils.NewFixedTimeSource(t2.Add(time.Second * 10)))
 
 	// should be able to resume with a timed out event in the future
-	timeoutEvent := events.NewWaitTimedOutEvent()
-	timeoutEvent.CreatedOn_ = timeoutOn.Add(time.Second * 60)
+	resumeJSON := fmt.Sprintf(`{"type": "wait_timeout", "resumed_on": "%s"}`, timeoutOn.Add(time.Second*60).Format(time.RFC3339))
+	resumeEnvelope := &utils.TypedEnvelope{}
+	err = resumeEnvelope.UnmarshalJSON([]byte(resumeJSON))
+	require.NoError(t, err)
 
-	session.Resume([]flows.CallerEvent{timeoutEvent})
+	resume, err := resumes.ReadResume(session, resumeEnvelope)
+	require.NoError(t, err)
+
+	err = session.Resume(resume)
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
@@ -205,6 +203,6 @@ func TestWaitTimeout(t *testing.T) {
 
 	result := run.Results().Get("favorite_color")
 	require.Equal(t, "Timeout", result.Category)
-	require.Equal(t, "2018-04-11T13:35:30.123456Z", result.Value)
+	require.Equal(t, "2018-04-11T13:34:40.123456Z", result.Value)
 	require.Nil(t, result.Input)
 }

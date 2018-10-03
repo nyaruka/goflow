@@ -6,7 +6,6 @@ import (
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/flows/triggers"
@@ -128,40 +127,20 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 // Flow execution
 //------------------------------------------------------------------------------------------
 
-// Start beings processing of this session from a trigger and a set of initial caller events
-func (s *session) Start(trigger flows.Trigger, callerEvents []flows.CallerEvent) error {
-	// try to load the flow
-	flow, err := s.Assets().Flows().Get(trigger.Flow().UUID)
-	if err != nil {
-		return fmt.Errorf("unable to load flow[uuid=%s]: %s", trigger.Flow().UUID, err)
-	}
-
-	// check flow is valid and has everything it needs to run
-	if err := flow.Validate(s.Assets()); err != nil {
-		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", flow.UUID(), err)
-	}
-
-	// check caller events are valid
-	if err := s.validateCallerEvents(callerEvents); err != nil {
+// Start initializes this session with the given trigger and runs the flow to the first wait
+func (s *session) Start(trigger flows.Trigger) error {
+	if err := trigger.Initialize(s); err != nil {
 		return err
 	}
 
-	if trigger.Environment() != nil {
-		s.env = trigger.Environment()
-	}
-	if trigger.Contact() != nil {
-		s.contact = trigger.Contact().Clone()
-	}
-
 	s.trigger = trigger
-	s.PushFlow(flow, nil)
 
 	// off to the races...
-	return s.continueUntilWait(nil, noDestination, nil, callerEvents)
+	return s.continueUntilWait(nil, noDestination, nil, trigger)
 }
 
 // Resume tries to resume a waiting session
-func (s *session) Resume(callerEvents []flows.CallerEvent) error {
+func (s *session) Resume(resume flows.Resume) error {
 	if s.status != flows.SessionStatusWaiting {
 		return fmt.Errorf("only waiting sessions can be resumed")
 	}
@@ -176,12 +155,7 @@ func (s *session) Resume(callerEvents []flows.CallerEvent) error {
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", waitingRun.Flow().UUID(), err)
 	}
 
-	// check caller events are valid
-	if err := s.validateCallerEvents(callerEvents); err != nil {
-		return err
-	}
-
-	if err := s.tryToResume(waitingRun, callerEvents); err != nil {
+	if err := s.tryToResume(waitingRun, resume); err != nil {
 		// if we got an error, add it to the log and shut everything down
 		for _, run := range s.runs {
 			run.Exit(flows.RunStatusErrored)
@@ -194,7 +168,7 @@ func (s *session) Resume(callerEvents []flows.CallerEvent) error {
 }
 
 // Resume resumes a waiting session
-func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.CallerEvent) error {
+func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) error {
 	// figure out where in the flow we began waiting on
 	step, _, err := waitingRun.PathLocation()
 	if err != nil {
@@ -204,37 +178,27 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, callerEvents []flows.Cal
 	// set up our flow stack based on the current run hierarchy
 	s.flowStack = flowStackFromRun(waitingRun)
 
-	// apply and add our caller events to this step
-	for _, event := range callerEvents {
-		if err := event.Apply(waitingRun); err != nil {
-			return err
-		}
-		waitingRun.AddEvent(step, nil, event)
+	// try to end our wait which will return and error if it can't be ended with this resume
+	if err := s.wait.End(resume); err != nil {
+		return err
 	}
 
-	var destination flows.NodeUUID
-
-	// events can change run status so only proceed to the wait if we're still waiting
-	if waitingRun.Status() == flows.RunStatusWaiting {
-		if s.wait.CanResume(callerEvents) {
-			s.wait = nil
-			s.status = flows.SessionStatusActive
-			waitingRun.SetStatus(flows.RunStatusActive)
-
-			destination, err = s.findResumeDestination(waitingRun)
-			if err != nil {
-				return err
-			}
-		} else {
-			// if our wait isn't satisfied, return immediately to the caller
-			return nil
-		}
-	}
-
+	s.wait = nil
 	s.status = flows.SessionStatusActive
+	waitingRun.SetStatus(flows.RunStatusActive)
+
+	// resumes are allowed to make state changes
+	if err := resume.Apply(waitingRun, step); err != nil {
+		return err
+	}
+
+	destination, err := s.findResumeDestination(waitingRun)
+	if err != nil {
+		return err
+	}
 
 	// off to the races again...
-	return s.continueUntilWait(waitingRun, destination, step, []flows.CallerEvent{})
+	return s.continueUntilWait(waitingRun, destination, step, nil)
 }
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
@@ -254,13 +218,13 @@ func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, erro
 }
 
 // the main flow execution loop
-func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, callerEvents []flows.CallerEvent) (err error) {
+func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.NodeUUID, step flows.Step, trigger flows.Trigger) (err error) {
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
 			// create a new run for it
 			flow := s.pushedFlow.flow
-			currentRun = runs.NewRun(s, s.pushedFlow.flow, s.contact, currentRun)
+			currentRun = runs.NewRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
 			s.flowStack.push(flow)
 
@@ -290,12 +254,12 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
-						currentRun.AddFatalError(step, nil, fmt.Errorf("can't resume run as node no longer exists"))
+						currentRun.LogFatalError(step, fmt.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					currentRun.AddFatalError(step, nil, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					currentRun.LogFatalError(step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
@@ -315,7 +279,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 		if destination != noDestination {
 			if s.flowStack.hasVisited(destination) {
 				// this is a loop, we log it and stop execution
-				currentRun.AddFatalError(step, nil, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				currentRun.LogFatalError(step, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
@@ -323,10 +287,13 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
 				}
 
-				step, destination, err = s.visitNode(currentRun, node, callerEvents)
+				step, destination, err = s.visitNode(currentRun, node, trigger)
 				if err != nil {
 					return err
 				}
+
+				// only want to pass this to the first node
+				trigger = nil
 
 				// if we hit a wait, also return to the caller
 				if s.status == flows.SessionStatusWaiting {
@@ -335,44 +302,33 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 				// mark this node as visited to prevent loops
 				s.flowStack.visit(node.UUID())
-
-				// only pass our caller events to the first node as it is responsible for handling them
-				callerEvents = nil
 			}
 		}
 	}
 }
 
 // visits the given node, creating a step in our current run path
-func (s *session) visitNode(run flows.FlowRun, node flows.Node, callerEvents []flows.CallerEvent) (flows.Step, flows.NodeUUID, error) {
+func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Trigger) (flows.Step, flows.NodeUUID, error) {
 	step := run.CreateStep(node)
 
-	// apply and add any caller events to this new step
-	for _, event := range callerEvents {
-		if err := event.Apply(run); err != nil {
-			return nil, noDestination, err
+	// this might be the first run of the session in which case a trigger might need to initialize the run
+	if trigger != nil {
+		if err := trigger.InitializeRun(run, step); err != nil {
+			return step, noDestination, nil
 		}
-		run.AddEvent(step, nil, event)
 	}
 
 	// execute our node's actions
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
-			eventLog := actions.NewEventLog()
-
-			if err := action.Execute(run, step, eventLog); err != nil {
-				return nil, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
-			}
-
 			if log.GetLevel() >= log.DebugLevel {
 				actionEnvelope, _ := utils.EnvelopeFromTyped(action)
 				actionJSON, _ := json.Marshal(actionEnvelope)
-				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executed")
+				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executing")
 			}
 
-			// add any events that the action generated
-			for _, event := range eventLog.Events() {
-				run.AddEvent(step, action, event)
+			if err := action.Execute(run, step); err != nil {
+				return step, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
 			}
 
 			// check if this action has errored the run
@@ -463,22 +419,13 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 		resultCategory := exit.Name()
 		run.Results().Save(resultName, resultValue, resultCategory, localizedExitName, step.NodeUUID(), operand, extraJSON, utils.Now())
 		event := events.NewRunResultChangedEvent(resultName, resultValue, resultCategory, localizedExitName, operand, extraJSON)
-		run.AddEvent(step, nil, event)
+		run.LogEvent(step, event)
 	}
 
 	return step, exit.DestinationNodeUUID(), nil
 }
 
 const noDestination = flows.NodeUUID("")
-
-func (s *session) validateCallerEvents(events []flows.CallerEvent) error {
-	for _, event := range events {
-		if err := event.Validate(s.assets); err != nil {
-			return fmt.Errorf("validation failed for event[type=%s]: %s", event.Type(), err)
-		}
-	}
-	return nil
-}
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding

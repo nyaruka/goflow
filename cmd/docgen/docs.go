@@ -29,6 +29,7 @@ var docSets = []struct {
 	{[]string{"flows/actions"}, "action", renderActionDoc},
 	{[]string{"flows/events"}, "event", renderEventDoc},
 	{[]string{"flows/triggers"}, "trigger", renderTriggerDoc},
+	{[]string{"flows/resumes"}, "resume", renderResumeDoc},
 }
 
 type documentedItem struct {

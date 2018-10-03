@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
@@ -55,15 +56,13 @@ func (r *sessionResponse) MarshalJSON() ([]byte, error) {
 //   {
 //     "assets": [...],
 //     "asset_server": {...},
-//     "trigger": {...},
-//     "events": [...]
+//     "trigger": {...}
 //   }
 //
 type startRequest struct {
 	sessionRequest
 
-	Trigger *utils.TypedEnvelope   `json:"trigger" validate:"required"`
-	Events  []*utils.TypedEnvelope `json:"events"`
+	Trigger *utils.TypedEnvelope `json:"trigger" validate:"required"`
 }
 
 // reads the assets and asset_server section of a request
@@ -81,20 +80,20 @@ func (s *FlowServer) readAssets(request *sessionRequest, cache *rest.AssetCache)
 
 // handles a request to /start
 func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	start := &startRequest{}
-	if err := utils.UnmarshalAndValidateWithLimit(r.Body, start, maxRequestBytes); err != nil {
+	request := &startRequest{}
+	if err := utils.UnmarshalAndValidateWithLimit(r.Body, request, maxRequestBytes); err != nil {
 		return nil, err
 	}
 
-	assetServer, err := s.readAssets(&start.sessionRequest, s.assetCache)
+	assetServer, err := s.readAssets(&request.sessionRequest, s.assetCache)
 	if err != nil {
 		return nil, err
 	}
 
 	// build the configuration for this request
 	config := s.config.Engine()
-	if start.Config != nil {
-		config, err = engine.ReadConfig(*start.Config, config)
+	if request.Config != nil {
+		config, err = engine.ReadConfig(*request.Config, config)
 	}
 
 	// build our session
@@ -106,19 +105,13 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	session := engine.NewSession(assets, config, s.httpClient)
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session, start.Trigger)
+	trigger, err := triggers.ReadTrigger(session, request.Trigger)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", start.Trigger.Type, err)
-	}
-
-	// read our caller events
-	callerEvents, err := events.ReadCallerEvents(start.Events)
-	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", request.Trigger.Type, err)
 	}
 
 	// start our flow
-	if err := session.Start(trigger, callerEvents); err != nil {
+	if err := session.Start(trigger); err != nil {
 		return nil, err
 	}
 
@@ -137,25 +130,25 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 type resumeRequest struct {
 	sessionRequest
 
-	Session json.RawMessage        `json:"session" validate:"required"`
-	Events  []*utils.TypedEnvelope `json:"events" validate:"required,min=1"`
+	Session json.RawMessage      `json:"session" validate:"required"`
+	Resume  *utils.TypedEnvelope `json:"resume" validate:"required"`
 }
 
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	resume := &resumeRequest{}
-	if err := utils.UnmarshalAndValidateWithLimit(r.Body, resume, maxRequestBytes); err != nil {
+	request := &resumeRequest{}
+	if err := utils.UnmarshalAndValidateWithLimit(r.Body, request, maxRequestBytes); err != nil {
 		return nil, err
 	}
 
-	assetServer, err := s.readAssets(&resume.sessionRequest, s.assetCache)
+	assetServer, err := s.readAssets(&request.sessionRequest, s.assetCache)
 	if err != nil {
 		return nil, err
 	}
 
 	// build the configuration for this request
 	config := s.config.Engine()
-	if resume.Config != nil {
-		config, err = engine.ReadConfig(*resume.Config, config)
+	if request.Config != nil {
+		config, err = engine.ReadConfig(*request.Config, config)
 	}
 
 	// read our session
@@ -164,19 +157,19 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 		return nil, err
 	}
 
-	session, err := engine.ReadSession(assets, config, s.httpClient, resume.Session)
+	session, err := engine.ReadSession(assets, config, s.httpClient, request.Session)
 	if err != nil {
 		return nil, err
 	}
 
-	// read our new caller events
-	callerEvents, err := events.ReadCallerEvents(resume.Events)
+	// read our resume
+	resume, err := resumes.ReadResume(session, request.Resume)
 	if err != nil {
 		return nil, err
 	}
 
-	// resume our flow
-	err = session.Resume(callerEvents)
+	// resume our session
+	err = session.Resume(resume)
 	if err != nil {
 		return nil, err
 	}

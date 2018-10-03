@@ -12,7 +12,7 @@ import (
 	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -81,7 +81,7 @@ type runResult struct {
 	outputs    []*Output
 }
 
-func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, callerEvents [][]flows.CallerEvent) (runResult, error) {
+func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
 	// load both the test specific assets and default assets
 	defaultAssetsJSON, err := readFile("", "default.json")
 	if err != nil {
@@ -111,16 +111,15 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 		return runResult{}, fmt.Errorf("error unmarshalling trigger: %s", err)
 	}
 
-	err = session.Start(trigger, callerEvents[0])
+	err = session.Start(trigger)
 	if err != nil {
 		return runResult{}, err
 	}
 
 	outputs := make([]*Output, 0)
 
-	// for each of our remaining caller events
-	resumeEvents := callerEvents[1:]
-	for i := range resumeEvents {
+	// try to resume the session for each of the provided resumes
+	for r, resumeEnvelope := range resumeEnvelopes {
 		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
@@ -135,9 +134,15 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, caller
 
 		// if we aren't at a wait, that's an error
 		if session.Wait() == nil {
-			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resume events: %#v", resumeEvents[i:])
+			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resumes: %#v", resumeEnvelopes[r:])
 		}
-		err = session.Resume(resumeEvents[i])
+
+		resume, err := resumes.ReadResume(session, resumeEnvelope)
+		if err != nil {
+			return runResult{}, err
+		}
+
+		err = session.Resume(resume)
 		if err != nil {
 			return runResult{}, err
 		}
@@ -170,25 +175,12 @@ func TestFlows(t *testing.T) {
 		testJSON, err := readFile("flows/", tc.output)
 		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
-		flowTest := FlowTest{}
+		flowTest := &FlowTest{}
 		err = json.Unmarshal(json.RawMessage(testJSON), &flowTest)
 		require.NoError(t, err, "Error unmarshalling output for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
-		// unmarshal our caller events
-		callerEvents := make([][]flows.CallerEvent, len(flowTest.CallerEvents))
-
-		for i := range flowTest.CallerEvents {
-			callerEvents[i] = make([]flows.CallerEvent, len(flowTest.CallerEvents[i]))
-
-			for e := range flowTest.CallerEvents[i] {
-				event, err := events.ReadEvent(flowTest.CallerEvents[i][e])
-				require.NoError(t, err, "Error unmarshalling caller events for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
-				callerEvents[i][e] = event.(flows.CallerEvent)
-			}
-		}
-
 		// run our flow
-		runResult, err := runFlow(tc.assets, flowTest.Trigger, callerEvents)
+		runResult, err := runFlow(tc.assets, flowTest.Trigger, flowTest.Resumes)
 		if err != nil {
 			t.Errorf("Error running flow for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 			continue
@@ -201,7 +193,7 @@ func TestFlows(t *testing.T) {
 				rawOutputs[i], err = utils.JSONMarshal(runResult.outputs[i])
 				require.NoError(t, err)
 			}
-			flowTest := FlowTest{Trigger: flowTest.Trigger, CallerEvents: flowTest.CallerEvents, Outputs: rawOutputs}
+			flowTest := &FlowTest{Trigger: flowTest.Trigger, Resumes: flowTest.Resumes, Outputs: rawOutputs}
 			testJSON, err := utils.JSONMarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 

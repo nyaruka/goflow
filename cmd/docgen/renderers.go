@@ -9,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -166,7 +167,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 
 func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
-	exampleJSON := []byte(strings.Join(item.examples, "\n"))
+	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
 	typed := &utils.TypedEnvelope{}
 	err := json.Unmarshal(exampleJSON, typed)
 	trigger, err := triggers.ReadTrigger(session, typed)
@@ -180,12 +181,39 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
-	typed, err = utils.EnvelopeFromTyped(trigger)
+	exampleJSON, err = utils.JSONMarshalPretty(exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(typed)
+	output.WriteString(fmt.Sprintf("<a name=\"%s:%s\"></a>\n\n", item.tagName, item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", item.tagValue))
+	output.WriteString(strings.Join(item.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```json\n")
+	output.WriteString(fmt.Sprintf("%s\n", exampleJSON))
+	output.WriteString("```\n")
+	output.WriteString("\n")
+
+	return nil
+}
+
+func renderResumeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	// try to parse our example
+	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
+	typed := &utils.TypedEnvelope{}
+	err := json.Unmarshal(exampleJSON, typed)
+	resume, err := resumes.ReadResume(session, typed)
+	if err != nil {
+		return fmt.Errorf("unable to read resume[type=%s]: %s", typed.Type, err)
+	}
+
+	// validate it
+	if err := utils.Validate(resume); err != nil {
+		return fmt.Errorf("unable to validate example: %s", err)
+	}
+
+	exampleJSON, err = utils.JSONMarshalPretty(exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}
