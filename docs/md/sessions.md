@@ -128,6 +128,10 @@ Is used when a session was triggered by a message being recieved by the caller
             "https://s3.amazon.com/mybucket/attachment.jpg"
         ]
     },
+    "keyword_match": {
+        "type": "first_word",
+        "keyword": "start"
+    },
     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 }
 ```

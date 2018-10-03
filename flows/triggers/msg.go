@@ -35,20 +35,41 @@ const TypeMsg string = "msg"
 //       "text": "hi there",
 //       "attachments": ["https://s3.amazon.com/mybucket/attachment.jpg"]
 //     },
+//     "keyword_match": {
+//       "type": "first_word",
+//       "keyword": "start"
+//     },
 //     "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
 //   }
 //
 // @trigger msg
 type MsgTrigger struct {
 	baseTrigger
-	msg *flows.MsgIn
+	msg   *flows.MsgIn
+	match *KeywordMatch
+}
+
+// KeywordMatchType describes how the message matched a keyword
+type KeywordMatchType string
+
+// the different types of keyword match
+const (
+	KeywordMatchTypeFirstWord KeywordMatchType = "first_word"
+	KeywordMatchTypeOnlyWord  KeywordMatchType = "only_word"
+)
+
+// KeywordMatch describes why the message triggered a session
+type KeywordMatch struct {
+	Type    KeywordMatchType `json:"type" validate:"required"`
+	Keyword string           `json:"keyword" validate:"required"`
 }
 
 // NewMsgTrigger creates a new message trigger
-func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, msg *flows.MsgIn, triggeredOn time.Time) flows.Trigger {
+func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn},
 		msg:         msg,
+		match:       match,
 	}
 }
 
@@ -91,7 +112,8 @@ var _ flows.Trigger = (*MsgTrigger)(nil)
 
 type msgTriggerEnvelope struct {
 	baseTriggerEnvelope
-	Msg *flows.MsgIn `json:"msg" validate:"required,dive"`
+	Msg   *flows.MsgIn  `json:"msg" validate:"required,dive"`
+	Match *KeywordMatch `json:"keyword_match,omitempty" validate:"omitempty,dive"`
 }
 
 // ReadMsgTrigger reads a message trigger
@@ -107,6 +129,7 @@ func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger,
 	}
 
 	trigger.msg = e.Msg
+	trigger.match = e.Match
 
 	return trigger, nil
 }
@@ -120,6 +143,7 @@ func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
 	}
 
 	envelope.Msg = t.msg
+	envelope.Match = t.match
 
 	return json.Marshal(envelope)
 }
