@@ -182,19 +182,23 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) err
 	if err := s.wait.End(resume); err != nil {
 		return err
 	}
-
 	s.wait = nil
 	s.status = flows.SessionStatusActive
-	waitingRun.SetStatus(flows.RunStatusActive)
 
 	// resumes are allowed to make state changes
 	if err := resume.Apply(waitingRun, step); err != nil {
 		return err
 	}
 
-	destination, err := s.findResumeDestination(waitingRun)
-	if err != nil {
-		return err
+	var destination flows.NodeUUID
+
+	if waitingRun.Status() == flows.RunStatusWaiting {
+		waitingRun.SetStatus(flows.RunStatusActive)
+
+		destination, err = s.findResumeDestination(waitingRun)
+		if err != nil {
+			return err
+		}
 	}
 
 	// off to the races again...
