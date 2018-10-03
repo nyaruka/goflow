@@ -18,11 +18,11 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "elapsed_ms": 1000,
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 71\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": [{\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}]) }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "elapsed_ms": 1000,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 }
@@ -51,10 +51,11 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "urns",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -79,11 +80,11 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "elapsed_ms": 1000,
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 71\r\nAccept-Encoding: gzip\r\n\r\n{ \"phone\": [{\"display\":\"********\",\"path\":\"********\",\"scheme\":\"tel\"}]) }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "elapsed_ms": 1000,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             }
@@ -131,10 +132,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "urns",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -174,10 +176,11 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-            "date_format": "YYYY-MM-DD",
-            "languages": [
+            "allowed_languages": [
                 "eng"
             ],
+            "date_format": "YYYY-MM-DD",
+            "default_language": "eng",
             "redaction_policy": "urns",
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"

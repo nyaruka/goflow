@@ -43,10 +43,11 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -114,10 +115,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -155,11 +157,12 @@
                 {
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng",
                             "fra"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -216,7 +219,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                        "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
@@ -254,11 +257,12 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng",
                         "fra"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -304,11 +308,12 @@
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "environment": {
-                                    "date_format": "YYYY-MM-DD",
-                                    "languages": [
+                                    "allowed_languages": [
                                         "eng",
                                         "fra"
                                     ],
+                                    "date_format": "YYYY-MM-DD",
+                                    "default_language": "eng",
                                     "redaction_policy": "none",
                                     "time_format": "hh:mm",
                                     "timezone": "America/Los_Angeles"
@@ -365,7 +370,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                    "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
@@ -444,10 +449,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -493,11 +499,11 @@
                 },
                 {
                     "created_on": "2018-07-06T12:30:24.123456789Z",
+                    "elapsed_ms": 1000,
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                    "elapsed_ms": 1000,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 },
@@ -540,11 +546,12 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng",
                         "fra"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -590,11 +597,12 @@
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "environment": {
-                                    "date_format": "YYYY-MM-DD",
-                                    "languages": [
+                                    "allowed_languages": [
                                         "eng",
                                         "fra"
                                     ],
+                                    "date_format": "YYYY-MM-DD",
+                                    "default_language": "eng",
                                     "redaction_policy": "none",
                                     "time_format": "hh:mm",
                                     "timezone": "America/Los_Angeles"
@@ -651,7 +659,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
+                                    "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
@@ -689,11 +697,11 @@
                             },
                             {
                                 "created_on": "2018-07-06T12:30:24.123456789Z",
+                                "elapsed_ms": 1000,
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
-                                "elapsed_ms": 1000,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             },
@@ -791,10 +799,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -834,11 +843,12 @@
                 "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
             },
             "environment": {
-                "date_format": "YYYY-MM-DD",
-                "languages": [
+                "allowed_languages": [
                     "eng",
                     "fra"
                 ],
+                "date_format": "YYYY-MM-DD",
+                "default_language": "eng",
                 "time_format": "hh:mm",
                 "timezone": "America/Los_Angeles"
             },
@@ -888,10 +898,11 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-            "date_format": "YYYY-MM-DD",
-            "languages": [
+            "allowed_languages": [
                 "eng"
             ],
+            "date_format": "YYYY-MM-DD",
+            "default_language": "eng",
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
         },

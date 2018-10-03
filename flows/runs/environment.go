@@ -14,15 +14,12 @@ import (
 type runEnvironment struct {
 	utils.Environment
 
-	run             *flowRun
-	cachedLanguages utils.LanguageList
+	run *flowRun
 }
 
 // creates a run environment based on the given run
 func newRunEnvironment(base utils.Environment, run *flowRun) flows.RunEnvironment {
-	env := &runEnvironment{base, run, nil}
-	env.refreshLanguagesCache()
-	return env
+	return &runEnvironment{base, run}
 }
 
 func (e *runEnvironment) Timezone() *time.Location {
@@ -35,15 +32,6 @@ func (e *runEnvironment) Timezone() *time.Location {
 	return e.run.Session().Environment().Timezone()
 }
 
-func (e *runEnvironment) Languages() utils.LanguageList {
-	// if contact language has changed, rebuild our cached language list
-	if e.run.Contact() != nil && e.cachedLanguages[0] != e.run.Contact().Language() {
-		e.refreshLanguagesCache()
-	}
-
-	return e.cachedLanguages
-}
-
 func (e *runEnvironment) Locations() (assets.LocationHierarchy, error) {
 	sessionAssets := e.run.Session().Assets()
 	hierarchies := sessionAssets.Locations().Hierarchies()
@@ -54,24 +42,6 @@ func (e *runEnvironment) Locations() (assets.LocationHierarchy, error) {
 	}
 
 	return nil, nil
-}
-
-func (e *runEnvironment) refreshLanguagesCache() {
-	contact := e.run.Contact()
-	var languages utils.LanguageList
-
-	// if contact has a language, it takes priority
-	if contact != nil && contact.Language() != utils.NilLanguage {
-		languages = append(languages, contact.Language())
-	}
-
-	// next we include any environment languages
-	languages = append(languages, e.run.Session().Environment().Languages()...)
-
-	// finally we include the flow native language
-	languages = append(languages, e.run.flow.Language())
-
-	e.cachedLanguages = languages.RemoveDuplicates()
 }
 
 // FindLocations returns locations with the matching name (case-insensitive), level and parent (optional)

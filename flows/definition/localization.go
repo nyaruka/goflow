@@ -44,8 +44,8 @@ func NewLocalization() flows.Localization {
 }
 
 // Languages gets the list of languages included in this localization
-func (l localization) Languages() utils.LanguageList {
-	languages := make(utils.LanguageList, 0, len(l))
+func (l localization) Languages() []utils.Language {
+	languages := make([]utils.Language, 0, len(l))
 	for lang := range l {
 		languages = append(languages, lang)
 	}

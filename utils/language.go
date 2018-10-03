@@ -25,19 +25,3 @@ func ParseLanguage(lang string) (Language, error) {
 
 	return Language(base.ISO3()), nil
 }
-
-// LanguageList is a list of languages
-type LanguageList []Language
-
-// RemoveDuplicates returns a new language list with duplicates removed
-func (ll LanguageList) RemoveDuplicates() LanguageList {
-	result := LanguageList{}
-	seen := map[Language]bool{}
-	for _, val := range ll {
-		if _, ok := seen[val]; !ok {
-			result = append(result, val)
-			seen[val] = true
-		}
-	}
-	return result
-}

@@ -449,7 +449,8 @@ Events are sent by the caller to tell the engine to update the session environme
         "date_format": "YYYY-MM-DD",
         "time_format": "hh:mm",
         "timezone": "Africa/Kigali",
-        "languages": [
+        "default_language": "eng",
+        "allowed_languages": [
             "eng",
             "fra"
         ]

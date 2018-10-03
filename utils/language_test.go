@@ -19,8 +19,3 @@ func TestLanguage(t *testing.T) {
 	_, err = utils.ParseLanguage("xzx")
 	assert.EqualError(t, err, "unrecognized language code: xzx")
 }
-
-func TestLanguageList(t *testing.T) {
-	languages := utils.LanguageList{utils.Language("eng"), utils.Language("fra"), utils.Language("eng")}
-	assert.Equal(t, utils.LanguageList{utils.Language("eng"), utils.Language("fra")}, languages.RemoveDuplicates())
-}

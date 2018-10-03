@@ -70,10 +70,11 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -189,10 +190,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -287,10 +289,11 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -490,10 +493,11 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -547,10 +551,11 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-            "date_format": "YYYY-MM-DD",
-            "languages": [
+            "allowed_languages": [
                 "eng"
             ],
+            "date_format": "YYYY-MM-DD",
+            "default_language": "eng",
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
         },
