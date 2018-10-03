@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"reflect"
 	"time"
 )
 
@@ -73,9 +72,11 @@ func (e *environment) Extension(name string) json.RawMessage {
 	return e.extensions[name]
 }
 
-// Equal returns true if this environment is equal to the given environment
+// Equal returns true if this instance is equal to the given instance
 func (e *environment) Equal(other Environment) bool {
-	return reflect.DeepEqual(e, other)
+	asJSON1, _ := json.Marshal(e)
+	asJSON2, _ := json.Marshal(other)
+	return string(asJSON1) == string(asJSON2)
 }
 
 //------------------------------------------------------------------------------------------
