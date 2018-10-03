@@ -21,8 +21,7 @@ type flowRun struct {
 	session     flows.Session
 	environment flows.RunEnvironment
 
-	flow    flows.Flow
-	contact *flows.Contact
+	flow flows.Flow
 
 	context types.XValue
 	input   flows.Input
@@ -39,12 +38,11 @@ type flowRun struct {
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
-func NewRun(session flows.Session, flow flows.Flow, contact *flows.Contact, parent flows.FlowRun) flows.FlowRun {
+func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
 	r := &flowRun{
 		uuid:      flows.RunUUID(utils.NewUUID()),
 		session:   session,
 		flow:      flow,
-		contact:   contact,
 		results:   flows.NewResults(),
 		status:    flows.RunStatusActive,
 		createdOn: utils.Now(),
@@ -63,9 +61,8 @@ func (r *flowRun) UUID() flows.RunUUID               { return r.uuid }
 func (r *flowRun) Session() flows.Session            { return r.session }
 func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
-func (r *flowRun) Flow() flows.Flow                  { return r.flow }
-func (r *flowRun) Contact() *flows.Contact           { return r.contact }
-func (r *flowRun) SetContact(contact *flows.Contact) { r.contact = contact }
+func (r *flowRun) Flow() flows.Flow        { return r.flow }
+func (r *flowRun) Contact() *flows.Contact { return r.session.Contact() }
 
 func (r *flowRun) Context() types.XValue  { return r.context }
 func (r *flowRun) Results() flows.Results { return r.results }
@@ -320,7 +317,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	}
 
 	r.session = session
-	r.contact = session.Contact()
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
 	r.createdOn = envelope.CreatedOn

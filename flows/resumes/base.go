@@ -43,7 +43,6 @@ func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
 		}
 	}
 	if r.contact != nil {
-		run.SetContact(r.contact)
 		run.Session().SetContact(r.contact)
 
 		if !run.Session().Contact().Equal(r.contact) {

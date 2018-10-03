@@ -398,7 +398,6 @@ type FlowRun interface {
 	Context() types.XValue
 	Input() Input
 
-	SetContact(*Contact)
 	SetInput(Input)
 	SetStatus(RunStatus)
 

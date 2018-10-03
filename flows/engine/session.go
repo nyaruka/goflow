@@ -224,7 +224,7 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 		if s.pushedFlow != nil {
 			// create a new run for it
 			flow := s.pushedFlow.flow
-			currentRun = runs.NewRun(s, s.pushedFlow.flow, s.contact, currentRun)
+			currentRun = runs.NewRun(s, s.pushedFlow.flow, currentRun)
 			s.addRun(currentRun)
 			s.flowStack.push(flow)
 

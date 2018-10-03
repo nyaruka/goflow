@@ -26,7 +26,7 @@ func newRunEnvironment(base utils.Environment, run *flowRun) flows.RunEnvironmen
 }
 
 func (e *runEnvironment) Timezone() *time.Location {
-	contact := e.run.contact
+	contact := e.run.Contact()
 
 	// if run has a contact with a timezone, that overrides the enviroment's timezone
 	if contact != nil && contact.Timezone() != nil {
@@ -57,7 +57,7 @@ func (e *runEnvironment) Locations() (assets.LocationHierarchy, error) {
 }
 
 func (e *runEnvironment) refreshLanguagesCache() {
-	contact := e.run.contact
+	contact := e.run.Contact()
 	var languages utils.LanguageList
 
 	// if contact has a language, it takes priority
