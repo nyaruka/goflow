@@ -176,3 +176,33 @@ func evaluateGroups(t *testing.T, env utils.Environment, contact *flows.Contact,
 	}
 	return matching
 }
+
+func TestContactEqual(t *testing.T) {
+	session, err := test.CreateTestSession("http://localhost", nil)
+	require.NoError(t, err)
+
+	contact1JSON := `{
+		"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+		"id": 1234567,
+		"created_on": "2000-01-01T00:00:00.000000000-00:00",
+		"fields": {
+			"gender": {"text": "Male"}
+		},
+		"language": "eng",
+		"name": "Ben Haggerty",
+		"timezone": "America/Guayaquil",
+		"urns": ["tel:+12065551212"]
+	}`
+
+	contact1, err := flows.ReadContact(session.Assets(), []byte(contact1JSON), true)
+	require.NoError(t, err)
+
+	contact2, err := flows.ReadContact(session.Assets(), []byte(contact1JSON), true)
+	require.NoError(t, err)
+
+	assert.True(t, contact1.Equal(contact2))
+	assert.True(t, contact1.Equal(contact1.Clone()))
+
+	contact2.SetLanguage(utils.NilLanguage)
+	assert.False(t, contact1.Equal(contact2))
+}

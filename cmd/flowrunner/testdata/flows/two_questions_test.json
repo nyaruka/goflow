@@ -29,10 +29,6 @@
                     "fields": {
                         "first_name": {
                             "text": "Ben"
-                        },
-                        "state": {
-                            "state": "Ecuador > Azuay",
-                            "text": "Ecuador > Azuay"
                         }
                     },
                     "id": 1234567,
@@ -104,10 +100,6 @@
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
                             }
                         },
                         "id": 1234567,
@@ -161,8 +153,50 @@
                     "type": "msg_received"
                 },
                 {
-                    "category": "Blue",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "environment": {
+                        "date_format": "YYYY-MM-DD",
+                        "languages": [
+                            "eng",
+                            "fra"
+                        ],
+                        "redaction_policy": "none",
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "environment_changed"
+                },
+                {
+                    "contact": {
+                        "created_on": "2000-01-01T00:00:00Z",
+                        "fields": {
+                            "first_name": {
+                                "text": "Ben"
+                            },
+                            "state": {
+                                "state": "Ecuador > Azuay",
+                                "text": "Ecuador > Azuay"
+                            }
+                        },
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
                     "created_on": "2018-07-06T12:30:09.123456789Z",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "contact_changed"
+                },
+                {
+                    "category": "Blue",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "input": "I like blue!",
                     "name": "Favorite Color",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -170,13 +204,13 @@
                     "value": "blue"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "created_on": "2018-07-06T12:30:13.123456789Z",
                     "language": "fra",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                     "type": "contact_language_changed"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:14.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -190,9 +224,9 @@
                     "type": "msg_created"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:14.123456789Z",
+                    "created_on": "2018-07-06T12:30:16.123456789Z",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                    "timeout_on": "2018-07-06T12:40:13.123456789Z",
+                    "timeout_on": "2018-07-06T12:40:15.123456789Z",
                     "type": "msg_wait"
                 }
             ],
@@ -222,7 +256,8 @@
                 "environment": {
                     "date_format": "YYYY-MM-DD",
                     "languages": [
-                        "eng"
+                        "eng",
+                        "fra"
                     ],
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
@@ -267,8 +302,50 @@
                                 "type": "msg_received"
                             },
                             {
-                                "category": "Blue",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "environment": {
+                                    "date_format": "YYYY-MM-DD",
+                                    "languages": [
+                                        "eng",
+                                        "fra"
+                                    ],
+                                    "redaction_policy": "none",
+                                    "time_format": "hh:mm",
+                                    "timezone": "America/Los_Angeles"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "environment_changed"
+                            },
+                            {
+                                "contact": {
+                                    "created_on": "2000-01-01T00:00:00Z",
+                                    "fields": {
+                                        "first_name": {
+                                            "text": "Ben"
+                                        },
+                                        "state": {
+                                            "state": "Ecuador > Azuay",
+                                            "text": "Ecuador > Azuay"
+                                        }
+                                    },
+                                    "id": 1234567,
+                                    "language": "eng",
+                                    "name": "Ben Haggerty",
+                                    "timezone": "America/Guayaquil",
+                                    "urns": [
+                                        "tel:+12065551212",
+                                        "facebook:1122334455667788",
+                                        "mailto:ben@macklemore"
+                                    ],
+                                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                },
                                 "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "contact_changed"
+                            },
+                            {
+                                "category": "Blue",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -276,13 +353,13 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -296,9 +373,9 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "timeout_on": "2018-07-06T12:40:13.123456789Z",
+                                "timeout_on": "2018-07-06T12:40:15.123456789Z",
                                 "type": "msg_wait"
                             }
                         ],
@@ -327,7 +404,7 @@
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:12.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             }
@@ -335,7 +412,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -353,10 +430,6 @@
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
                             }
                         },
                         "id": 1234567,
@@ -388,7 +461,7 @@
                 },
                 "wait": {
                     "timeout": 600,
-                    "timeout_on": "2018-07-06T12:40:13.123456789Z",
+                    "timeout_on": "2018-07-06T12:40:15.123456789Z",
                     "type": "msg"
                 }
             }
@@ -396,7 +469,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:16.123456789Z",
+                    "created_on": "2018-07-06T12:30:18.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -411,7 +484,7 @@
                 },
                 {
                     "category": "Coke",
-                    "created_on": "2018-07-06T12:30:18.123456789Z",
+                    "created_on": "2018-07-06T12:30:20.123456789Z",
                     "input": "Coke",
                     "name": "Soda",
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
@@ -419,7 +492,7 @@
                     "value": "Coke"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:22.123456789Z",
+                    "created_on": "2018-07-06T12:30:24.123456789Z",
                     "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
@@ -429,7 +502,7 @@
                     "url": "http://127.0.0.1:49999/?cmd=success"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:23.123456789Z",
+                    "created_on": "2018-07-06T12:30:25.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -469,7 +542,8 @@
                 "environment": {
                     "date_format": "YYYY-MM-DD",
                     "languages": [
-                        "eng"
+                        "eng",
+                        "fra"
                     ],
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
@@ -514,8 +588,50 @@
                                 "type": "msg_received"
                             },
                             {
-                                "category": "Blue",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "environment": {
+                                    "date_format": "YYYY-MM-DD",
+                                    "languages": [
+                                        "eng",
+                                        "fra"
+                                    ],
+                                    "redaction_policy": "none",
+                                    "time_format": "hh:mm",
+                                    "timezone": "America/Los_Angeles"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "environment_changed"
+                            },
+                            {
+                                "contact": {
+                                    "created_on": "2000-01-01T00:00:00Z",
+                                    "fields": {
+                                        "first_name": {
+                                            "text": "Ben"
+                                        },
+                                        "state": {
+                                            "state": "Ecuador > Azuay",
+                                            "text": "Ecuador > Azuay"
+                                        }
+                                    },
+                                    "id": 1234567,
+                                    "language": "eng",
+                                    "name": "Ben Haggerty",
+                                    "timezone": "America/Guayaquil",
+                                    "urns": [
+                                        "tel:+12065551212",
+                                        "facebook:1122334455667788",
+                                        "mailto:ben@macklemore"
+                                    ],
+                                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                                },
                                 "created_on": "2018-07-06T12:30:09.123456789Z",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "contact_changed"
+                            },
+                            {
+                                "category": "Blue",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -523,13 +639,13 @@
                                 "value": "blue"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "created_on": "2018-07-06T12:30:13.123456789Z",
                                 "language": "fra",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
                                 "type": "contact_language_changed"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:14.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -543,13 +659,13 @@
                                 "type": "msg_created"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:14.123456789Z",
+                                "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
-                                "timeout_on": "2018-07-06T12:40:13.123456789Z",
+                                "timeout_on": "2018-07-06T12:40:15.123456789Z",
                                 "type": "msg_wait"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:16.123456789Z",
+                                "created_on": "2018-07-06T12:30:18.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -564,7 +680,7 @@
                             },
                             {
                                 "category": "Coke",
-                                "created_on": "2018-07-06T12:30:18.123456789Z",
+                                "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
@@ -572,7 +688,7 @@
                                 "value": "Coke"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:22.123456789Z",
+                                "created_on": "2018-07-06T12:30:24.123456789Z",
                                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49999\r\nUser-Agent: goflow-testing\r\nContent-Length: 69\r\nAccept-Encoding: gzip\r\n\r\n{ \"contact\": \"ba96bf7f-bc2a-4873-a7c7-254d1927c4e3\", \"soda\": \"Coke\" }",
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
@@ -582,7 +698,7 @@
                                 "url": "http://127.0.0.1:49999/?cmd=success"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:23.123456789Z",
+                                "created_on": "2018-07-06T12:30:25.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -596,8 +712,8 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:24.123456789Z",
-                        "expires_on": "2018-07-06T12:30:15.123456789Z",
+                        "exited_on": "2018-07-06T12:30:26.123456789Z",
+                        "expires_on": "2018-07-06T12:30:17.123456789Z",
                         "flow": {
                             "name": "U-Report Registration Flow",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
@@ -621,13 +737,13 @@
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:12.123456789Z",
                                 "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:19.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:21.123456789Z",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }
@@ -635,7 +751,7 @@
                         "results": {
                             "favorite_color": {
                                 "category": "Blue",
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "input": "I like blue!",
                                 "name": "Favorite Color",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -643,7 +759,7 @@
                             },
                             "soda": {
                                 "category": "Coke",
-                                "created_on": "2018-07-06T12:30:17.123456789Z",
+                                "created_on": "2018-07-06T12:30:19.123456789Z",
                                 "input": "Coke",
                                 "name": "Soda",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
@@ -661,10 +777,6 @@
                         "fields": {
                             "first_name": {
                                 "text": "Ben"
-                            },
-                            "state": {
-                                "state": "Ecuador > Azuay",
-                                "text": "Ecuador > Azuay"
                             }
                         },
                         "id": 1234567,
@@ -699,6 +811,37 @@
     ],
     "resumes": [
         {
+            "contact": {
+                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                "fields": {
+                    "first_name": {
+                        "text": "Ben"
+                    },
+                    "state": {
+                        "state": "Ecuador > Azuay",
+                        "text": "Ecuador > Azuay"
+                    }
+                },
+                "id": 1234567,
+                "language": "eng",
+                "name": "Ben Haggerty",
+                "timezone": "America/Guayaquil",
+                "urns": [
+                    "tel:+12065551212",
+                    "facebook:1122334455667788",
+                    "mailto:ben@macklemore"
+                ],
+                "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+            },
+            "environment": {
+                "date_format": "YYYY-MM-DD",
+                "languages": [
+                    "eng",
+                    "fra"
+                ],
+                "time_format": "hh:mm",
+                "timezone": "America/Los_Angeles"
+            },
             "msg": {
                 "channel": {
                     "name": "Nexmo",
@@ -731,10 +874,6 @@
             "fields": {
                 "first_name": {
                     "text": "Ben"
-                },
-                "state": {
-                    "state": "Ecuador > Azuay",
-                    "text": "Ecuador > Azuay"
                 }
             },
             "id": 1234567,
