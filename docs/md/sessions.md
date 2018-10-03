@@ -700,7 +700,7 @@ request and response.
     "created_on": "2006-01-02T15:04:05Z",
     "url": "http://localhost:49998/?cmd=success",
     "status": "success",
-    "time_taken": 123,
+    "elapsed_ms": 123,
     "request": "GET /?format=json HTTP/1.1",
     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 }

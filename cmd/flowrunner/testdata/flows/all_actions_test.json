@@ -369,7 +369,7 @@
                     "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                     "status": "success",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "time_taken": 1000,
+                    "elapsed_ms": 1000,
                     "type": "webhook_called",
                     "url": "http://127.0.0.1:49999/?cmd=success&name=Jeff%20Jefferson"
                 }
@@ -799,7 +799,7 @@
                                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                                 "status": "success",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "time_taken": 1000,
+                                "elapsed_ms": 1000,
                                 "type": "webhook_called",
                                 "url": "http://127.0.0.1:49999/?cmd=success&name=Jeff%20Jefferson"
                             }

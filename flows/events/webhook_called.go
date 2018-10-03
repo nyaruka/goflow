@@ -20,7 +20,7 @@ const TypeWebhookCalled string = "webhook_called"
 //     "created_on": "2006-01-02T15:04:05Z",
 //     "url": "http://localhost:49998/?cmd=success",
 //     "status": "success",
-//     "time_taken": 123,
+//     "elapsed_ms": 123,
 //     "request": "GET /?format=json HTTP/1.1",
 //     "response": "HTTP/1.1 200 OK\r\n\r\n{\"ip\":\"190.154.48.130\"}"
 //   }
@@ -32,7 +32,7 @@ type WebhookCalledEvent struct {
 	URL       string              `json:"url" validate:"required"`
 	Resthook  string              `json:"resthook,omitempty"`
 	Status    flows.WebhookStatus `json:"status" validate:"required"`
-	TimeTaken int                 `json:"time_taken"`
+	ElapsedMS int                 `json:"elapsed_ms"`
 	Request   string              `json:"request" validate:"required"`
 	Response  string              `json:"response"`
 }
@@ -44,7 +44,7 @@ func NewWebhookCalledEvent(webhook *flows.WebhookCall, resthook string) *Webhook
 		URL:       webhook.URL(),
 		Resthook:  resthook,
 		Status:    webhook.Status(),
-		TimeTaken: int(webhook.TimeTaken().Nanoseconds() / 1e6),
+		ElapsedMS: int(webhook.TimeTaken().Nanoseconds() / 1e6),
 		Request:   webhook.Request(),
 		Response:  webhook.Response(),
 	}
