@@ -44,7 +44,8 @@
                 },
                 "environment": {
                     "allowed_languages": [
-                        "eng"
+                        "eng",
+                        "fra"
                     ],
                     "date_format": "YYYY-MM-DD",
                     "default_language": "eng",
@@ -116,7 +117,8 @@
                     },
                     "environment": {
                         "allowed_languages": [
-                            "eng"
+                            "eng",
+                            "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
                         "default_language": "eng",
@@ -165,7 +167,7 @@
                         "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
-                        "timezone": "America/Los_Angeles"
+                        "timezone": "America/New_York"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "environment_changed"
@@ -219,7 +221,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
+                        "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
@@ -265,7 +267,7 @@
                     "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
+                    "timezone": "America/New_York"
                 },
                 "runs": [
                     {
@@ -316,7 +318,7 @@
                                     "default_language": "eng",
                                     "redaction_policy": "none",
                                     "time_format": "hh:mm",
-                                    "timezone": "America/Los_Angeles"
+                                    "timezone": "America/New_York"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "environment_changed"
@@ -370,7 +372,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
+                                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
@@ -450,7 +452,8 @@
                     },
                     "environment": {
                         "allowed_languages": [
-                            "eng"
+                            "eng",
+                            "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
                         "default_language": "eng",
@@ -554,7 +557,7 @@
                     "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
+                    "timezone": "America/New_York"
                 },
                 "runs": [
                     {
@@ -605,7 +608,7 @@
                                     "default_language": "eng",
                                     "redaction_policy": "none",
                                     "time_format": "hh:mm",
-                                    "timezone": "America/Los_Angeles"
+                                    "timezone": "America/New_York"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "environment_changed"
@@ -659,7 +662,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Blue it is! What is your favorite soda? (pepsi/coke)",
+                                    "text": "Blue! Bien sur! Quelle est votes soda preferee? (pepsi/coke)",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
@@ -800,7 +803,8 @@
                     },
                     "environment": {
                         "allowed_languages": [
-                            "eng"
+                            "eng",
+                            "fra"
                         ],
                         "date_format": "YYYY-MM-DD",
                         "default_language": "eng",
@@ -850,7 +854,7 @@
                 "date_format": "YYYY-MM-DD",
                 "default_language": "eng",
                 "time_format": "hh:mm",
-                "timezone": "America/Los_Angeles"
+                "timezone": "America/New_York"
             },
             "msg": {
                 "channel": {
@@ -899,7 +903,8 @@
         },
         "environment": {
             "allowed_languages": [
-                "eng"
+                "eng",
+                "fra"
             ],
             "date_format": "YYYY-MM-DD",
             "default_language": "eng",
