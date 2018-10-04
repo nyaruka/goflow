@@ -264,7 +264,7 @@ func (a *BaseAction) saveWebhookResult(run flows.FlowRun, step flows.Step, name 
 
 // helper to re-evaluate dynamic groups and log any changes to membership
 func (a *BaseAction) reevaluateDynamicGroups(run flows.FlowRun, step flows.Step) {
-	added, removed, errors := run.Contact().ReevaluateDynamicGroups(run.Session())
+	added, removed, errors := run.Contact().ReevaluateDynamicGroups(run.Session().Environment(), run.Session().Assets().Groups())
 
 	// add error event for each group we couldn't re-evaluate
 	for _, err := range errors {
