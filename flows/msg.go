@@ -28,18 +28,13 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *Channel, text string, attachments []Attachment) *MsgIn {
-	var channelRef *assets.ChannelReference
-	if channel != nil {
-		channelRef = channel.Reference()
-	}
-
+func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
 			UUID_:        uuid,
 			ID_:          id,
 			URN_:         urn,
-			Channel_:     channelRef,
+			Channel_:     channel,
 			Text_:        text,
 			Attachments_: attachments,
 		},
@@ -47,12 +42,12 @@ func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *Channel, text strin
 }
 
 // NewMsgOut creates a new outgoing message
-func NewMsgOut(urn urns.URN, channelRef *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string) *MsgOut {
+func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, quickReplies []string) *MsgOut {
 	return &MsgOut{
 		BaseMsg: BaseMsg{
 			UUID_:        MsgUUID(utils.NewUUID()),
 			URN_:         urn,
-			Channel_:     channelRef,
+			Channel_:     channel,
 			Text_:        text,
 			Attachments_: attachments,
 		},
