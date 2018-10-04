@@ -312,8 +312,9 @@ var sessionTrigger = `{
     },
     "environment": {
         "date_format": "YYYY-MM-DD",
-        "languages": [
-            "eng",
+        "default_language": "eng",
+        "allowed_languages": [
+            "eng", 
             "spa"
         ],
         "redaction_policy": "none",

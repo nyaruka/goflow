@@ -23,7 +23,8 @@ const TypeEnvironmentChanged string = "environment_changed"
 //       "date_format": "YYYY-MM-DD",
 //       "time_format": "hh:mm",
 //       "timezone": "Africa/Kigali",
-//       "languages": ["eng", "fra"]
+//       "default_language": "eng",
+//       "allowed_languages": ["eng", "fra"]
 //     }
 //   }
 //

@@ -202,7 +202,7 @@ type Wait interface {
 type Localization interface {
 	AddItemTranslation(utils.Language, utils.UUID, string, []string)
 	GetTranslations(utils.Language) Translations
-	Languages() utils.LanguageList
+	Languages() []utils.Language
 }
 
 // Translations provide a way to get the translation for a specific language for a uuid/key pair
@@ -415,7 +415,7 @@ type FlowRun interface {
 
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string
-	GetTranslatedTextArray(utils.UUID, string, []string, utils.LanguageList) []string
+	GetTranslatedTextArray(utils.UUID, string, []string, []utils.Language) []string
 
 	Snapshot() RunSummary
 	Parent() RunSummary

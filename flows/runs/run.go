@@ -199,16 +199,48 @@ func (r *flowRun) EvaluateTemplateAsString(template string, urlEncode bool) (str
 	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, urlEncode, RunContextTopLevels)
 }
 
+// get the ordered list of languages to be used for localization in this run
+func (r *flowRun) getLanguages() []utils.Language {
+	// TODO cache this this?
+
+	contact := r.Contact()
+	languages := make([]utils.Language, 0, 3)
+
+	// if contact has a allowed language, it takes priority
+	if contact != nil && contact.Language() != utils.NilLanguage {
+		for _, l := range r.Environment().AllowedLanguages() {
+			if l == contact.Language() {
+				languages = append(languages, contact.Language())
+				break
+			}
+		}
+	}
+
+	// next we include the default language if it's different to the contact language
+	defaultLanguage := r.Environment().DefaultLanguage()
+	if defaultLanguage != utils.NilLanguage && defaultLanguage != contact.Language() {
+		languages = append(languages, defaultLanguage)
+	}
+
+	// finally we include the flow native language if it isn't an allowed language - because it's the only
+	// one guaranteed to have translations
+	return append(languages, r.flow.Language())
+}
+
 func (r *flowRun) GetText(uuid utils.UUID, key string, native string) string {
 	textArray := r.GetTextArray(uuid, key, []string{native})
 	return textArray[0]
 }
 
 func (r *flowRun) GetTextArray(uuid utils.UUID, key string, native []string) []string {
-	return r.GetTranslatedTextArray(uuid, key, native, r.environment.Languages())
+	return r.GetTranslatedTextArray(uuid, key, native, r.getLanguages())
 }
 
-func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages utils.LanguageList) []string {
+func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []string, languages []utils.Language) []string {
+	if languages == nil {
+		languages = r.getLanguages()
+	}
+
 	for _, lang := range languages {
 		if lang == r.Flow().Language() {
 			return native

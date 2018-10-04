@@ -46,9 +46,6 @@
             "session": {
                 "environment": {
                     "date_format": "YYYY-MM-DD",
-                    "languages": [
-                        "eng"
-                    ],
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -130,9 +127,6 @@
                 "trigger": {
                     "environment": {
                         "date_format": "YYYY-MM-DD",
-                        "languages": [
-                            "eng"
-                        ],
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"

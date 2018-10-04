@@ -43,10 +43,12 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
-                        "eng"
+                    "allowed_languages": [
+                        "eng",
+                        "fra"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
@@ -114,10 +116,12 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
-                            "eng"
+                        "allowed_languages": [
+                            "eng",
+                            "fra"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -155,14 +159,15 @@
                 {
                     "created_on": "2018-07-06T12:30:08.123456789Z",
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
+                        "allowed_languages": [
                             "eng",
                             "fra"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
-                        "timezone": "America/Los_Angeles"
+                        "timezone": "America/New_York"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "environment_changed"
@@ -254,14 +259,15 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng",
                         "fra"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
+                    "timezone": "America/New_York"
                 },
                 "runs": [
                     {
@@ -304,14 +310,15 @@
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "environment": {
-                                    "date_format": "YYYY-MM-DD",
-                                    "languages": [
+                                    "allowed_languages": [
                                         "eng",
                                         "fra"
                                     ],
+                                    "date_format": "YYYY-MM-DD",
+                                    "default_language": "eng",
                                     "redaction_policy": "none",
                                     "time_format": "hh:mm",
-                                    "timezone": "America/Los_Angeles"
+                                    "timezone": "America/New_York"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "environment_changed"
@@ -444,10 +451,12 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
-                            "eng"
+                        "allowed_languages": [
+                            "eng",
+                            "fra"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -540,14 +549,15 @@
                     "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                 },
                 "environment": {
-                    "date_format": "YYYY-MM-DD",
-                    "languages": [
+                    "allowed_languages": [
                         "eng",
                         "fra"
                     ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
-                    "timezone": "America/Los_Angeles"
+                    "timezone": "America/New_York"
                 },
                 "runs": [
                     {
@@ -590,14 +600,15 @@
                             {
                                 "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "environment": {
-                                    "date_format": "YYYY-MM-DD",
-                                    "languages": [
+                                    "allowed_languages": [
                                         "eng",
                                         "fra"
                                     ],
+                                    "date_format": "YYYY-MM-DD",
+                                    "default_language": "eng",
                                     "redaction_policy": "none",
                                     "time_format": "hh:mm",
-                                    "timezone": "America/Los_Angeles"
+                                    "timezone": "America/New_York"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "environment_changed"
@@ -791,10 +802,12 @@
                         "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
                     },
                     "environment": {
-                        "date_format": "YYYY-MM-DD",
-                        "languages": [
-                            "eng"
+                        "allowed_languages": [
+                            "eng",
+                            "fra"
                         ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
                         "redaction_policy": "none",
                         "time_format": "hh:mm",
                         "timezone": "America/Los_Angeles"
@@ -834,13 +847,14 @@
                 "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
             },
             "environment": {
-                "date_format": "YYYY-MM-DD",
-                "languages": [
+                "allowed_languages": [
                     "eng",
                     "fra"
                 ],
+                "date_format": "YYYY-MM-DD",
+                "default_language": "eng",
                 "time_format": "hh:mm",
-                "timezone": "America/Los_Angeles"
+                "timezone": "America/New_York"
             },
             "msg": {
                 "channel": {
@@ -888,10 +902,12 @@
             "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
         },
         "environment": {
-            "date_format": "YYYY-MM-DD",
-            "languages": [
-                "eng"
+            "allowed_languages": [
+                "eng",
+                "fra"
             ],
+            "date_format": "YYYY-MM-DD",
+            "default_language": "eng",
             "time_format": "hh:mm",
             "timezone": "America/Los_Angeles"
         },

@@ -59,7 +59,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 		return nil
 	}
 
-	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, run.Environment().Languages(), a.Text, a.Attachments, a.QuickReplies)
+	evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, nil, a.Text, a.Attachments, a.QuickReplies)
 
 	channels := run.Session().Assets().Channels()
 	destinations := []msgDestination{}

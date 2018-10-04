@@ -58,11 +58,11 @@ func (a *SendBroadcastAction) Execute(run flows.FlowRun, step flows.Step) error 
 	}
 
 	translations := make(map[utils.Language]*events.BroadcastTranslation)
-	languages := append(utils.LanguageList{run.Flow().Language()}, run.Flow().Localization().Languages()...)
+	languages := append([]utils.Language{run.Flow().Language()}, run.Flow().Localization().Languages()...)
 
 	// evaluate the broadcast in each language we have translations for
 	for _, language := range languages {
-		languages := utils.LanguageList{language, run.Flow().Language()}.RemoveDuplicates()
+		languages := []utils.Language{language, run.Flow().Language()}
 
 		evaluatedText, evaluatedAttachments, evaluatedQuickReplies := a.evaluateMessage(run, step, languages, a.Text, a.Attachments, a.QuickReplies)
 		translations[language] = &events.BroadcastTranslation{

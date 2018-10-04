@@ -86,7 +86,7 @@ func main() {
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
-	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.LanguageList{}, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, nil, utils.RedactionPolicyNone)
 
 	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 	if err != nil {
