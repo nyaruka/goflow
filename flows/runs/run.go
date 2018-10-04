@@ -199,8 +199,9 @@ func (r *flowRun) EvaluateTemplateAsString(template string, urlEncode bool) (str
 	return excellent.EvaluateTemplateAsString(r.Environment(), r.Context(), template, urlEncode, RunContextTopLevels)
 }
 
+// get the ordered list of languages to be used for localization in this run
 func (r *flowRun) getLanguages() []utils.Language {
-	// TODO cache?
+	// TODO cache this this?
 
 	contact := r.Contact()
 	languages := make([]utils.Language, 0, 3)
@@ -215,13 +216,14 @@ func (r *flowRun) getLanguages() []utils.Language {
 		}
 	}
 
-	// next we include the default language
+	// next we include the default language if it's different to the contact language
 	defaultLanguage := r.Environment().DefaultLanguage()
 	if defaultLanguage != utils.NilLanguage && defaultLanguage != contact.Language() {
 		languages = append(languages, defaultLanguage)
 	}
 
-	// finally we include the flow native language
+	// finally we include the flow native language if it isn't an allowed language - because it's the only
+	// one guaranteed to have translations
 	return append(languages, r.flow.Language())
 }
 
