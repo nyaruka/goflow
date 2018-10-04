@@ -333,17 +333,17 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
-func (c *Contact) ReevaluateDynamicGroups(session Session) ([]*Group, []*Group, []error) {
+func (c *Contact) ReevaluateDynamicGroups(env utils.Environment, allGroups *GroupAssets) ([]*Group, []*Group, []error) {
 	added := make([]*Group, 0)
 	removed := make([]*Group, 0)
 	errors := make([]error, 0)
 
-	for _, group := range session.Assets().Groups().All() {
+	for _, group := range allGroups.All() {
 		if !group.IsDynamic() {
 			continue
 		}
 
-		qualifies, err := group.CheckDynamicMembership(session.Environment(), c)
+		qualifies, err := group.CheckDynamicMembership(env, c)
 		if err != nil {
 			errors = append(errors, err)
 		} else if qualifies {
