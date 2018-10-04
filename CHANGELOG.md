@@ -1,3 +1,8 @@
+v0.21.0
+----------
+ * Change sigature of ReevaluateDynamicGroups to not require a session
+ * Fix language selection for flow localization 
+
 v0.20.1
 ----------
  * Fix run expirations
