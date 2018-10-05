@@ -429,6 +429,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.Flow = r.flow.Reference()
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
+	re.ModifiedOn = r.modifiedOn
 	re.ExpiresOn = r.expiresOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results

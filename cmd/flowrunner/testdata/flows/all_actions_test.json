@@ -821,7 +821,7 @@
                             "urn": "tel:+12065551212",
                             "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
-                        "modified_on": "0001-01-01T00:00:00Z",
+                        "modified_on": "2018-07-06T12:31:08.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -849,7 +849,7 @@
                             "name": "Registration Flow",
                             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                         },
-                        "modified_on": "0001-01-01T00:00:00Z",
+                        "modified_on": "2018-07-06T12:31:07.123456789Z",
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "path": [],
                         "status": "completed",
