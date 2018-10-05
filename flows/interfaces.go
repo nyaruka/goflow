@@ -397,7 +397,7 @@ type FlowRun interface {
 	Session() Session
 	Context() types.XValue
 	Input() Input
-
+	SaveResult(*Result)
 	SetInput(Input)
 	SetStatus(RunStatus)
 
@@ -423,6 +423,7 @@ type FlowRun interface {
 	Ancestors() []FlowRun
 
 	CreatedOn() time.Time
+	ModifiedOn() time.Time
 	ExpiresOn() *time.Time
 	ResetExpiration(*time.Time)
 	ExitedOn() *time.Time
