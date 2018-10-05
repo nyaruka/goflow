@@ -1,3 +1,8 @@
+v0.21.1
+----------
+ * Re-evaluate and correct contact groups at the start/resume of a session
+ * Add run.modified_on
+
 v0.21.0
 ----------
  * Change sigature of ReevaluateDynamicGroups to not require a session
