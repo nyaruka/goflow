@@ -346,7 +346,7 @@ type runEnvelope struct {
 	Input   *utils.TypedEnvelope `json:"input,omitempty" validate:"omitempty,dive"`
 
 	CreatedOn  time.Time  `json:"created_on" validate:"required"`
-	ModifiedOn time.Time  `json:"modified_on"`
+	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
 	ExpiresOn  *time.Time `json:"expires_on"`
 	ExitedOn   *time.Time `json:"exited_on"`
 }
@@ -369,11 +369,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.modifiedOn = envelope.ModifiedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.exitedOn = envelope.ExitedOn
-
-	// old saved sessions might not have modified set
-	if r.modifiedOn.IsZero() {
-		r.modifiedOn = r.createdOn
-	}
 
 	// lookup flow
 	if r.flow, err = session.Assets().Flows().Get(envelope.Flow.UUID); err != nil {
