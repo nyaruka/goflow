@@ -56,20 +56,7 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 	if t.contact != nil {
 		session.SetContact(t.contact.Clone())
 
-		// it's possible our contact is in the wrong dynamic groups as far as the engine is concerned
-		// so for consistency we start by re-evaluating their groups
-		allGroups := session.Assets().Groups()
-		added, removed, errors := t.contact.ReevaluateDynamicGroups(session.Environment(), allGroups)
-
-		// add error event for each group we couldn't re-evaluate
-		for _, err := range errors {
-			session.LogEvent(events.NewErrorEvent(err))
-		}
-
-		// add groups changed event for the groups we were added/removed to/from
-		if len(added) > 0 || len(removed) > 0 {
-			session.LogEvent(events.NewContactGroupsChangedEvent(added, removed))
-		}
+		EnsureDynamicGroups(session)
 	}
 	return nil
 }
@@ -95,6 +82,23 @@ func (t *baseTrigger) Describe() string { return "trigger" }
 // Reduce is called when this object needs to be reduced to a primitive
 func (t *baseTrigger) Reduce(env utils.Environment) types.XPrimitive {
 	return types.NewXText(string(t.flow.UUID))
+}
+
+// EnsureDynamicGroups ensures that our session contact is in the correct dynamic groups as
+// as far as the engine is concerned
+func EnsureDynamicGroups(session flows.Session) {
+	allGroups := session.Assets().Groups()
+	added, removed, errors := session.Contact().ReevaluateDynamicGroups(session.Environment(), allGroups)
+
+	// add error event for each group we couldn't re-evaluate
+	for _, err := range errors {
+		session.LogEvent(events.NewErrorEvent(err))
+	}
+
+	// add groups changed event for the groups we were added/removed to/from
+	if len(added) > 0 || len(removed) > 0 {
+		session.LogEvent(events.NewContactGroupsChangedEvent(added, removed))
+	}
 }
 
 //------------------------------------------------------------------------------------------

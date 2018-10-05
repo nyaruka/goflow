@@ -7,7 +7,7 @@
                     "groups_added": [
                         {
                             "name": "No Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
+                            "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3"
                         }
                     ],
                     "type": "contact_groups_changed"
@@ -34,10 +34,6 @@
                         {
                             "name": "Has Gender",
                             "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
-                        },
-                        {
-                            "name": "No Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                         }
                     ],
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -64,6 +60,10 @@
                             "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b"
                         },
                         {
+                            "name": "Has Age",
+                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
+                        },
+                        {
                             "name": "Complicated",
                             "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff"
                         }
@@ -71,7 +71,7 @@
                     "groups_removed": [
                         {
                             "name": "No Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
+                            "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3"
                         }
                     ],
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -84,7 +84,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Complicated\"]",
+                        "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Has Age\",\"Complicated\"]",
                         "urn": "tel:+12065551212",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
@@ -101,18 +101,8 @@
                     "created_on": "2018-07-06T12:30:12.123456789Z",
                     "groups_added": [
                         {
-                            "name": "Has Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
-                        },
-                        {
                             "name": "MTN Callers",
                             "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
-                        }
-                    ],
-                    "groups_removed": [
-                        {
-                            "name": "No Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                         }
                     ],
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -125,7 +115,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Complicated\",\"MTN Callers\"]",
+                        "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Has Age\",\"Complicated\",\"MTN Callers\"]",
                         "urn": "tel:+12065551212",
                         "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                     },
@@ -151,20 +141,12 @@
                         {
                             "name": "Youth",
                             "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
-                        },
-                        {
-                            "name": "Has Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                         }
                     ],
                     "groups_removed": [
                         {
                             "name": "Old Men",
                             "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b"
-                        },
-                        {
-                            "name": "No Age",
-                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                         }
                     ],
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -177,7 +159,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Complicated\",\"MTN Callers\",\"Youth\"]",
+                        "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Has Age\",\"Complicated\",\"MTN Callers\",\"Youth\"]",
                         "urn": "tel:+12065551212",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
@@ -212,6 +194,10 @@
                         {
                             "name": "Has Gender",
                             "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
+                        },
+                        {
+                            "name": "Has Age",
+                            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                         },
                         {
                             "name": "Complicated",
@@ -270,10 +256,6 @@
                                     {
                                         "name": "Has Gender",
                                         "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75"
-                                    },
-                                    {
-                                        "name": "No Age",
-                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                                     }
                                 ],
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -300,6 +282,10 @@
                                         "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b"
                                     },
                                     {
+                                        "name": "Has Age",
+                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
+                                    },
+                                    {
                                         "name": "Complicated",
                                         "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff"
                                     }
@@ -307,7 +293,7 @@
                                 "groups_removed": [
                                     {
                                         "name": "No Age",
-                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
+                                        "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3"
                                     }
                                 ],
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -320,7 +306,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Complicated\"]",
+                                    "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Has Age\",\"Complicated\"]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                 },
@@ -337,18 +323,8 @@
                                 "created_on": "2018-07-06T12:30:12.123456789Z",
                                 "groups_added": [
                                     {
-                                        "name": "Has Age",
-                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
-                                    },
-                                    {
                                         "name": "MTN Callers",
                                         "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba"
-                                    }
-                                ],
-                                "groups_removed": [
-                                    {
-                                        "name": "No Age",
-                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                                     }
                                 ],
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -361,7 +337,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Complicated\",\"MTN Callers\"]",
+                                    "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Old Men\",\"Has Age\",\"Complicated\",\"MTN Callers\"]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb"
                                 },
@@ -387,20 +363,12 @@
                                     {
                                         "name": "Youth",
                                         "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
-                                    },
-                                    {
-                                        "name": "Has Age",
-                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                                     }
                                 ],
                                 "groups_removed": [
                                     {
                                         "name": "Old Men",
                                         "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b"
-                                    },
-                                    {
-                                        "name": "No Age",
-                                        "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                                     }
                                 ],
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -413,7 +381,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Complicated\",\"MTN Callers\",\"Youth\"]",
+                                    "text": "Current groups: [\"Stateless\",\"Males\",\"Has Gender\",\"Has Age\",\"Complicated\",\"MTN Callers\",\"Youth\"]",
                                     "urn": "tel:+12065551212",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
@@ -451,10 +419,6 @@
                             {
                                 "name": "Stateless",
                                 "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9"
-                            },
-                            {
-                                "name": "No Age",
-                                "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c"
                             }
                         ],
                         "id": 1234567,

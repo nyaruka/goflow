@@ -7,6 +7,7 @@ import (
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+	//"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -48,6 +49,8 @@ func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
 		}
 
 		run.Session().SetContact(r.contact)
+
+		//triggers.EnsureDynamicGroups(run.Session())
 	}
 
 	return nil

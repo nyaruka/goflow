@@ -37,12 +37,8 @@
                     },
                     "groups": [
                         {
-                            "name": "Females",
-                            "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
-                        },
-                        {
-                            "name": "Youth",
-                            "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
+                            "name": "Males",
+                            "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6"
                         }
                     ],
                     "id": 1234567,
@@ -89,8 +85,12 @@
                         },
                         "groups": [
                             {
-                                "name": "Males",
-                                "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6"
+                                "name": "Females",
+                                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0"
+                            },
+                            {
+                                "name": "Youth",
+                                "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50"
                             }
                         ],
                         "id": 1234567,
