@@ -37,6 +37,20 @@ type Result struct {
 	CreatedOn         time.Time       `json:"created_on"`
 }
 
+// NewResult creates a new result
+func NewResult(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input *string, extra json.RawMessage, createdOn time.Time) *Result {
+	return &Result{
+		Name:              name,
+		Value:             value,
+		Category:          category,
+		CategoryLocalized: categoryLocalized,
+		NodeUUID:          nodeUUID,
+		Input:             input,
+		Extra:             extra,
+		CreatedOn:         createdOn,
+	}
+}
+
 // Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
 func (r *Result) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
@@ -101,17 +115,8 @@ func (r Results) Clone() Results {
 }
 
 // Save saves a new result in our map. The key is saved in a snakified format
-func (r Results) Save(name string, value string, category string, categoryLocalized string, nodeUUID NodeUUID, input *string, extra json.RawMessage, createdOn time.Time) {
-	r[utils.Snakify(name)] = &Result{
-		Name:              name,
-		Value:             value,
-		Category:          category,
-		CategoryLocalized: categoryLocalized,
-		NodeUUID:          nodeUUID,
-		Input:             input,
-		Extra:             extra,
-		CreatedOn:         createdOn,
-	}
+func (r Results) Save(result *Result) {
+	r[utils.Snakify(result.Name)] = result
 }
 
 func (r Results) Get(key string) *Result {

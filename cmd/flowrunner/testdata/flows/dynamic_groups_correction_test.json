@@ -59,12 +59,13 @@
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:01.123456789Z",
-                        "exited_on": "2018-07-06T12:30:03.123456789Z",
+                        "exited_on": "2018-07-06T12:30:04.123456789Z",
                         "expires_on": "2018-07-06T12:30:02.123456789Z",
                         "flow": {
                             "name": "Dynamic Groups Correction",
                             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c"
                         },
+                        "modified_on": "2018-07-06T12:30:04.123456789Z",
                         "path": [],
                         "status": "completed",
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"

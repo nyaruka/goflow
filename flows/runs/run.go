@@ -32,25 +32,28 @@ type flowRun struct {
 	events  []flows.Event
 	status  flows.RunStatus
 
-	createdOn time.Time
-	expiresOn *time.Time
-	exitedOn  *time.Time
+	createdOn  time.Time
+	modifiedOn time.Time
+	expiresOn  *time.Time
+	exitedOn   *time.Time
 }
 
 // NewRun initializes a new context and flow run for the passed in flow and contact
 func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.FlowRun {
+	now := utils.Now()
 	r := &flowRun{
-		uuid:      flows.RunUUID(utils.NewUUID()),
-		session:   session,
-		flow:      flow,
-		results:   flows.NewResults(),
-		status:    flows.RunStatusActive,
-		createdOn: utils.Now(),
+		uuid:       flows.RunUUID(utils.NewUUID()),
+		session:    session,
+		flow:       flow,
+		parent:     parent,
+		results:    flows.NewResults(),
+		status:     flows.RunStatusActive,
+		createdOn:  now,
+		modifiedOn: now,
 	}
 
 	r.environment = newRunEnvironment(session.Environment(), r)
 	r.context = newRunContext(r)
-	r.parent = parent
 
 	r.ResetExpiration(nil)
 
@@ -63,19 +66,26 @@ func (r *flowRun) Environment() flows.RunEnvironment { return r.environment }
 
 func (r *flowRun) Flow() flows.Flow        { return r.flow }
 func (r *flowRun) Contact() *flows.Contact { return r.session.Contact() }
+func (r *flowRun) Context() types.XValue   { return r.context }
+func (r *flowRun) Events() []flows.Event   { return r.events }
 
-func (r *flowRun) Context() types.XValue  { return r.context }
 func (r *flowRun) Results() flows.Results { return r.results }
-func (r *flowRun) Events() []flows.Event  { return r.events }
+func (r *flowRun) SaveResult(result *flows.Result) {
+	r.results.Save(result)
+	r.modifiedOn = utils.Now()
+}
 
 func (r *flowRun) Exit(status flows.RunStatus) {
-	r.SetStatus(status)
 	now := utils.Now()
+
+	r.status = status
 	r.exitedOn = &now
+	r.modifiedOn = now
 }
 func (r *flowRun) Status() flows.RunStatus { return r.status }
 func (r *flowRun) SetStatus(status flows.RunStatus) {
 	r.status = status
+	r.modifiedOn = utils.Now()
 }
 
 // ParentInSession returns the parent of the run within the same session if one exists
@@ -123,6 +133,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	if s != nil {
 		event.SetStepUUID(s.UUID())
 		r.events = append(r.events, event)
+		r.modifiedOn = utils.Now()
 	}
 
 	r.Session().LogEvent(event)
@@ -148,6 +159,7 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := utils.Now()
 	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
 	r.path = append(r.path, step)
+	r.modifiedOn = now
 	return step
 }
 
@@ -168,6 +180,7 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 }
 
 func (r *flowRun) CreatedOn() time.Time  { return r.createdOn }
+func (r *flowRun) ModifiedOn() time.Time { return r.modifiedOn }
 func (r *flowRun) ExpiresOn() *time.Time { return r.expiresOn }
 func (r *flowRun) ResetExpiration(from *time.Time) {
 	if r.Flow().ExpireAfterMinutes() >= 0 {
@@ -180,6 +193,7 @@ func (r *flowRun) ResetExpiration(from *time.Time) {
 		expiresOn := from.Add(expiresAfterMinutes * time.Minute)
 
 		r.expiresOn = &expiresOn
+		r.modifiedOn = utils.Now()
 	}
 
 	if r.ParentInSession() != nil {
@@ -325,16 +339,16 @@ type runEnvelope struct {
 	Path   []*step                `json:"path" validate:"dive"`
 	Events []*utils.TypedEnvelope `json:"events,omitempty"`
 
-	Status     flows.RunStatus `json:"status"`
+	Status     flows.RunStatus `json:"status" validate:"required"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
 
 	Results flows.Results        `json:"results,omitempty" validate:"omitempty,dive"`
 	Input   *utils.TypedEnvelope `json:"input,omitempty" validate:"omitempty,dive"`
-	Webhook *flows.WebhookCall   `json:"webhook,omitempty" validate:"omitempty,dive"`
 
-	CreatedOn time.Time  `json:"created_on"`
-	ExpiresOn *time.Time `json:"expires_on"`
-	ExitedOn  *time.Time `json:"exited_on"`
+	CreatedOn  time.Time  `json:"created_on" validate:"required"`
+	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
+	ExpiresOn  *time.Time `json:"expires_on"`
+	ExitedOn   *time.Time `json:"exited_on"`
 }
 
 // ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
@@ -352,6 +366,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.uuid = envelope.UUID
 	r.status = envelope.Status
 	r.createdOn = envelope.CreatedOn
+	r.modifiedOn = envelope.ModifiedOn
 	r.expiresOn = envelope.ExpiresOn
 	r.exitedOn = envelope.ExitedOn
 
@@ -409,6 +424,7 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 	re.Flow = r.flow.Reference()
 	re.Status = r.status
 	re.CreatedOn = r.createdOn
+	re.ModifiedOn = r.modifiedOn
 	re.ExpiresOn = r.expiresOn
 	re.ExitedOn = r.exitedOn
 	re.Results = r.results

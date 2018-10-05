@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:03.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -55,7 +55,7 @@
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:03.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -69,15 +69,16 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:04.123456789Z",
+                        "exited_on": "2018-07-06T12:30:06.123456789Z",
                         "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Triggered Flow",
                             "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
                         },
+                        "modified_on": "2018-07-06T12:30:06.123456789Z",
                         "path": [
                             {
-                                "arrived_on": "2018-07-06T12:30:02.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }
