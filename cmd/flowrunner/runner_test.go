@@ -38,6 +38,7 @@ var flowTests = []struct {
 	{"date_parse.json", "date_parse_test.json"},
 	{"webhook_persists.json", "webhook_persists_test.json"},
 	{"dynamic_groups.json", "dynamic_groups_test.json"},
+	{"dynamic_groups_correction.json", "dynamic_groups_correction_test.json"},
 	{"triggered.json", "triggered_test.json"},
 	{"no_contact.json", "no_contact_test.json"},
 	{"redact_urns.json", "redact_urns_test.json"},
