@@ -158,7 +158,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`},
 		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`},
 		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`},
-		{old: `@(HOUR(NOW()))`, new: `@(format_datetime(now(), "h"))`},
+		{old: `@(HOUR(NOW()))`, new: `@(format_datetime(now(), "tt"))`},
 		{old: `@(MINUTE(NOW()))`, new: `@(format_datetime(now(), "m"))`},
 		{old: `@(MONTH(NOW()))`, new: `@(format_date(now(), "M"))`},
 		{old: `@(YEAR(NOW()))`, new: `@(format_date(now(), "YYYY"))`},
@@ -227,7 +227,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
 		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
-		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "h"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
+		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "tt"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
 		// expressions that should default to themselves on error
 		{old: `@("hello")`, new: `@(if(is_error("hello"), "@(\"hello\")", "hello"))`, defaultToSelf: true},
@@ -403,7 +403,7 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, tz, utils.NilLanguage, nil, utils.RedactionPolicyNone)
+			env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, tz, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 			if tc.Context.Now != nil {
 				utils.SetTimeSource(utils.NewFixedTimeSource(*tc.Context.Now))
 				defer utils.SetTimeSource(utils.DefaultTimeSource)

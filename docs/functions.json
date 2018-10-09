@@ -383,9 +383,9 @@
         ]
     },
     {
-        "signature": "format_number(number, places [, commas])",
+        "signature": "format_number(number, places [, humanize])",
         "summary": "Formats `number` to the given number of decimal `places`.",
-        "detail": "An optional third argument `commas` can be false to disable the use of commas as thousand separators.",
+        "detail": "An optional third argument `humanize` can be false to disable the use of thousand separators.",
         "examples": [
             {
                 "template": "@(format_number(31337))",

@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -207,7 +208,7 @@ func TestTests(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.NilLanguage, nil, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	for _, test := range testTests {
 		testFunc := tests.XTESTS[test.name]
@@ -269,4 +270,32 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 			assert.Equal(t, test.expected, eval, "actual '%s' does not match expected '%s' evaluating template: '%s'", eval, test.expected, test.template)
 		}
 	}
+}
+
+func TestParseDecimalFuzzy(t *testing.T) {
+	parseTests := []struct {
+		input    string
+		expected decimal.Decimal
+		format   *utils.NumberFormat
+	}{
+		{"1234", decimal.RequireFromString("1234"), utils.DefaultNumberFormat},
+		{"1,234.567", decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat},
+		{"1.234,567", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
+		{"lOO", decimal.RequireFromString("100"), utils.DefaultNumberFormat},
+		{"$100", decimal.RequireFromString("100"), utils.DefaultNumberFormat},
+		{"£100.00", decimal.RequireFromString("100.00"), utils.DefaultNumberFormat},
+		{"100ans", decimal.RequireFromString("100"), utils.DefaultNumberFormat},
+		{"100C", decimal.RequireFromString("100"), utils.DefaultNumberFormat},
+	}
+
+	for _, test := range parseTests {
+		val, err := tests.ParseDecimalFuzzy(test.input, test.format)
+
+		assert.NoError(t, err)
+		assert.Equal(t, test.expected, val, "parse decimal failed for input '%s'", test.input)
+	}
+
+	// don't allow both prefixes/suffixes and substitutions
+	_, err := tests.ParseDecimalFuzzy("lOOans", utils.DefaultNumberFormat)
+	assert.Error(t, err)
 }

@@ -71,7 +71,7 @@ func TestContact(t *testing.T) {
 }
 
 func TestContactFormat(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
@@ -86,7 +86,7 @@ func TestContactFormat(t *testing.T) {
 	contact.AddURN(urns.URN("twitter:joey"))
 	assert.Equal(t, "joey", contact.Format(env))
 
-	anonEnv := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.RedactionPolicyURNs)
+	anonEnv := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyURNs)
 
 	// unless URNs are redacted
 	assert.Equal(t, "1234", contact.Format(anonEnv))

@@ -1,7 +1,6 @@
 package functions_test
 
 import (
-	"github.com/stretchr/testify/require"
 	"math"
 	"testing"
 	"time"
@@ -10,7 +9,9 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var errorArg = types.NewXErrorf("I am error")
@@ -163,6 +164,9 @@ var funcTests = []struct {
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YYYY-MM-DDTtt:mm:ss.ffffffZ"), xs("America/Los_Angeles")}, xs("1977-06-23T08:34:00.000000-07:00")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), xs("YY-MM-DD h:mm:ss AA"), xs("America/Los_Angeles")}, xs("77-06-23 8:34:00 AM")},
 	{"format_datetime", []types.XValue{xs("1977-06-23T08:34:00.000-07:00"), xs("YYYY-MM-DDTtt:mm:ss.fffZ"), xs("UTC")}, xs("1977-06-23T15:34:00.000Z")},
+	{"format_datetime", []types.XValue{xs("1977-06-23T08:34:00.000-07:00"), xs("h"), xs("UTC")}, xs("3")},
+	{"format_datetime", []types.XValue{xs("1977-06-23T08:34:00.000-07:00"), xs("hh"), xs("UTC")}, xs("03")},
+	{"format_datetime", []types.XValue{xs("1977-06-23T08:34:00.000-07:00"), xs("tt"), xs("UTC")}, xs("15")},
 	{"format_datetime", []types.XValue{xs("NOT DATE")}, ERROR},
 	{"format_datetime", []types.XValue{ERROR}, ERROR},
 	{"format_datetime", []types.XValue{xs("1977-06-23T15:34:00.000000Z"), ERROR}, ERROR},
@@ -468,7 +472,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	defer utils.SetRand(utils.DefaultRand)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
@@ -496,5 +500,27 @@ func TestFunctions(t *testing.T) {
 				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)
 			}
 		}
+	}
+}
+
+func TestFormatDecimal(t *testing.T) {
+	fmtTests := []struct {
+		input       decimal.Decimal
+		format      *utils.NumberFormat
+		places      int
+		groupDigits bool
+		expected    string
+	}{
+		{decimal.RequireFromString("1234"), utils.DefaultNumberFormat, 2, true, "1,234.00"},
+		{decimal.RequireFromString("1234"), utils.DefaultNumberFormat, 0, false, "1234"},
+		{decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat, 2, true, "1,234.57"},
+		{decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat, 2, false, "1234.57"},
+		{decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}, 2, true, "1.234,57"},
+	}
+
+	for _, test := range fmtTests {
+		val := functions.FormatDecimal(test.input, test.format, test.places, test.groupDigits)
+
+		assert.Equal(t, test.expected, val, "format decimal failed for input '%s'", test.input)
 	}
 }
