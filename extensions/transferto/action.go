@@ -87,9 +87,11 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step) erro
 
 	if a.ResultName != "" && transfer != nil {
 		value := transfer.actualAmount.String()
-		category := string(transfer.status)
-		run.Results().Save(a.ResultName, value, category, "", step.NodeUUID(), nil, nil, utils.Now())
-		run.LogEvent(step, events.NewRunResultChangedEvent(a.ResultName, value, category, "", nil, nil))
+		category := statusCategories[transfer.status]
+		result := flows.NewResult(a.ResultName, value, category, "", step.NodeUUID(), nil, nil, utils.Now())
+
+		run.SaveResult(result)
+		run.LogEvent(step, events.NewRunResultChangedEvent(result))
 	}
 	return nil
 }
@@ -107,6 +109,11 @@ type transfer struct {
 	desiredAmount decimal.Decimal
 	actualAmount  decimal.Decimal
 	status        transferStatus
+}
+
+var statusCategories = map[transferStatus]string{
+	transferStatusSuccess: "Success",
+	transferStatusFailed:  "Failure",
 }
 
 // attempts to make the transfer, returning the actual transfer or an error

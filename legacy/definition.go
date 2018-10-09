@@ -356,7 +356,6 @@ var testTypeMappings = map[string]string{
 	"state":                "has_state",
 	"timeout":              "has_wait_timed_out",
 	"ward":                 "has_ward",
-	"airtime_status":       "has_airtime_status",
 }
 
 // migrates the given legacy action to a new action
@@ -804,12 +803,13 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			&transferto.TransferAirtimeAction{
 				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
 				Amounts:    currencyAmounts,
+				ResultName: resultName,
 			},
 		}
 
 		uiType = UINodeTypeSplitByAirtime
 
-		router = routers.NewSwitchRouter(defaultExit, "@run", cases, resultName)
+		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 
 	default:
 		return nil, "", nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
@@ -946,9 +946,14 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		}
 
 	case "airtime_status":
+		newType = "is_text_eq"
 		test := airtimeTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.ExitStatus}
+		if test.ExitStatus == "success" {
+			arguments = []string{"Success"}
+		} else {
+			arguments = []string{"Failure"}
+		}
 
 	case "timeout":
 		omitOperand = true
