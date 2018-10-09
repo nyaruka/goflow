@@ -1,3 +1,8 @@
+v0.21.3
+----------
+ * Add results from run summary on flow_action triggers to @legacy_extra
+ * Fix migration of @flow by itself
+
 v0.21.2
 ----------
  * Fix migration of calls to HOUR(...)
