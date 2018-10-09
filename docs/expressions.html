@@ -374,9 +374,9 @@
 <div class="sourceCode" id="cb27"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" data-line-number="1">@(format_location(<span class="st">&quot;Rwanda&quot;</span>)) → Rwanda</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">@(format_location(<span class="st">&quot;Rwanda &gt; Kigali&quot;</span>)) → Kigali</a></code></pre></div>
 <p><a name="function:format_number"></a></p>
-<h2 id="format_numbernumber-places-commas">format_number(number, places [, commas])</h2>
+<h2 id="format_numbernumber-places-humanize">format_number(number, places [, humanize])</h2>
 <p>Formats <code>number</code> to the given number of decimal <code>places</code>.</p>
-<p>An optional third argument <code>commas</code> can be false to disable the use of commas as thousand separators.</p>
+<p>An optional third argument <code>humanize</code> can be false to disable the use of thousand separators.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb28-1" data-line-number="1">@(format_number(<span class="dv">31337</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
 <a class="sourceLine" id="cb28-2" data-line-number="2">@(format_number(<span class="dv">31337</span>, <span class="dv">2</span>)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>
 <a class="sourceLine" id="cb28-3" data-line-number="3">@(format_number(<span class="dv">31337</span>, <span class="dv">2</span>, true)) → <span class="dv">31</span>,<span class="fl">337.00</span></a>

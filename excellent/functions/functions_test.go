@@ -1,7 +1,6 @@
 package functions_test
 
 import (
-	"github.com/stretchr/testify/require"
 	"math"
 	"testing"
 	"time"
@@ -10,7 +9,9 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var errorArg = types.NewXErrorf("I am error")
@@ -468,7 +469,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	defer utils.SetRand(utils.DefaultRand)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
@@ -496,5 +497,27 @@ func TestFunctions(t *testing.T) {
 				assert.Fail(t, "", "unexpected value, expected %T{%s}, got %T{%s} for function %s(%T{%s})", test.expected, test.expected, result, result, test.name, test.args, test.args)
 			}
 		}
+	}
+}
+
+func TestFormatDecimal(t *testing.T) {
+	fmtTests := []struct {
+		input       decimal.Decimal
+		format      *utils.NumberFormat
+		places      int
+		groupDigits bool
+		expected    string
+	}{
+		{decimal.RequireFromString("1234"), utils.DefaultNumberFormat, 2, true, "1,234.00"},
+		{decimal.RequireFromString("1234"), utils.DefaultNumberFormat, 0, false, "1234"},
+		{decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat, 2, true, "1,234.57"},
+		{decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat, 2, false, "1234.57"},
+		{decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}, 2, true, "1.234,57"},
+	}
+
+	for _, test := range fmtTests {
+		val := functions.FormatDecimal(test.input, test.format, test.places, test.groupDigits)
+
+		assert.Equal(t, test.expected, val, "format decimal failed for input '%s'", test.input)
 	}
 }

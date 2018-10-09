@@ -12,6 +12,15 @@ const (
 	RedactionPolicyURNs RedactionPolicy = "urns"
 )
 
+// NumberFormat describes how numbers should be parsed and formatted
+type NumberFormat struct {
+	DecimalSymbol       string `json:"decimal_symbol"`
+	DigitGroupingSymbol string `json:"digit_grouping_symbol"`
+}
+
+// DefaultNumberFormat is the default number formatting, e.g. 1,234.567
+var DefaultNumberFormat = &NumberFormat{DecimalSymbol: `.`, DigitGroupingSymbol: `,`}
+
 // Environment defines the environment that the Excellent function is running in, this includes
 // the timezone the user is in as well as the preferred date and time formats.
 type Environment interface {
@@ -20,6 +29,7 @@ type Environment interface {
 	Timezone() *time.Location
 	DefaultLanguage() Language
 	AllowedLanguages() []Language
+	NumberFormat() *NumberFormat
 	RedactionPolicy() RedactionPolicy
 
 	// Convenience method to get the current time in the env timezone
@@ -39,18 +49,20 @@ func NewDefaultEnvironment() Environment {
 		timezone:         time.UTC,
 		defaultLanguage:  NilLanguage,
 		allowedLanguages: nil,
+		numberFormat:     DefaultNumberFormat,
 		redactionPolicy:  RedactionPolicyNone,
 	}
 }
 
 // NewEnvironment creates a new Environment with the passed in date and time formats and timezone
-func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location, defaultLanguage Language, allowedLanguages []Language, redactionPolicy RedactionPolicy) Environment {
+func NewEnvironment(dateFormat DateFormat, timeFormat TimeFormat, timezone *time.Location, defaultLanguage Language, allowedLanguages []Language, numberFormat *NumberFormat, redactionPolicy RedactionPolicy) Environment {
 	return &environment{
 		dateFormat:       dateFormat,
 		timeFormat:       timeFormat,
 		timezone:         timezone,
 		defaultLanguage:  defaultLanguage,
 		allowedLanguages: allowedLanguages,
+		numberFormat:     numberFormat,
 		redactionPolicy:  redactionPolicy,
 	}
 }
@@ -61,6 +73,7 @@ type environment struct {
 	timezone         *time.Location
 	defaultLanguage  Language
 	allowedLanguages []Language
+	numberFormat     *NumberFormat
 	redactionPolicy  RedactionPolicy
 	extensions       map[string]json.RawMessage
 }
@@ -70,6 +83,7 @@ func (e *environment) TimeFormat() TimeFormat           { return e.timeFormat }
 func (e *environment) Timezone() *time.Location         { return e.timezone }
 func (e *environment) DefaultLanguage() Language        { return e.defaultLanguage }
 func (e *environment) AllowedLanguages() []Language     { return e.allowedLanguages }
+func (e *environment) NumberFormat() *NumberFormat      { return e.numberFormat }
 func (e *environment) RedactionPolicy() RedactionPolicy { return e.redactionPolicy }
 func (e *environment) Now() time.Time                   { return Now().In(e.Timezone()) }
 
@@ -94,6 +108,7 @@ type envEnvelope struct {
 	Timezone         string                     `json:"timezone" validate:"required"`
 	DefaultLanguage  Language                   `json:"default_language,omitempty"`
 	AllowedLanguages []Language                 `json:"allowed_languages,omitempty"`
+	NumberFormat     *NumberFormat              `json:"number_format,omitempty"`
 	RedactionPolicy  RedactionPolicy            `json:"redaction_policy" validate:"omitempty,eq=none|eq=urns"`
 	Extensions       map[string]json.RawMessage `json:"extensions,omitempty"`
 }
@@ -112,6 +127,10 @@ func ReadEnvironment(data json.RawMessage) (Environment, error) {
 	env.defaultLanguage = envelope.DefaultLanguage
 	env.allowedLanguages = envelope.AllowedLanguages
 	env.extensions = envelope.Extensions
+
+	if envelope.NumberFormat != nil {
+		env.numberFormat = envelope.NumberFormat
+	}
 
 	tz, err := time.LoadLocation(envelope.Timezone)
 	if err != nil {
@@ -138,5 +157,9 @@ func (e *environment) MarshalJSON() ([]byte, error) {
 		RedactionPolicy:  e.redactionPolicy,
 		Extensions:       e.extensions,
 	}
+	if e.numberFormat != DefaultNumberFormat {
+		ee.NumberFormat = e.numberFormat
+	}
+
 	return json.Marshal(ee)
 }
