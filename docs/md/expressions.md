@@ -588,11 +588,11 @@ Formats the given `location` as its name.
 
 <a name="function:format_number"></a>
 
-## format_number(number, places [, commas])
+## format_number(number, places [, humanize])
 
 Formats `number` to the given number of decimal `places`.
 
-An optional third argument `commas` can be false to disable the use of commas as thousand separators.
+An optional third argument `humanize` can be false to disable the use of thousand separators.
 
 
 ```objectivec

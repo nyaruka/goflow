@@ -289,14 +289,13 @@ func TestParseDecimalFuzzy(t *testing.T) {
 	}
 
 	for _, test := range parseTests {
-		env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, nil, utils.NilLanguage, nil, test.format, utils.RedactionPolicyNone)
-		val, err := tests.ParseDecimalFuzzy(env, test.input)
+		val, err := tests.ParseDecimalFuzzy(test.input, test.format)
 
 		assert.NoError(t, err)
 		assert.Equal(t, test.expected, val, "parse decimal failed for input '%s'", test.input)
 	}
 
 	// don't allow both prefixes/suffixes and substitutions
-	_, err := tests.ParseDecimalFuzzy(utils.NewDefaultEnvironment(), "lOOans")
+	_, err := tests.ParseDecimalFuzzy("lOOans", utils.DefaultNumberFormat)
 	assert.Error(t, err)
 }
