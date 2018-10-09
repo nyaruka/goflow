@@ -118,7 +118,7 @@ var callMigrators = map[string]callMigrator{
 	"fixed":             asParamMigrators(`format_number`, paramAsIs(), paramAsIs(), paramAsIs()),
 	"format_date":       asRename(`format_datetime`),
 	"format_location":   asIs(),
-	"hour":              asTemplate(`format_datetime(%s, "h")`),
+	"hour":              asTemplate(`format_datetime(%s, "tt")`),
 	"if":                asIs(),
 	"int":               asRename(`round_down`),
 	"left":              asIs(),
