@@ -17,7 +17,7 @@ var ContextTopLevels = []string{"channel", "child", "contact", "date", "extra", 
 
 type varMapper struct {
 	// subitems that should be replaced completely with the given strings
-	substitutions map[string]string
+	substitutions map[string]interface{}
 
 	// base for fixed subitems, e.g. "contact"
 	base string
@@ -106,7 +106,10 @@ func (v *varMapper) Resolve(key string) interface{} {
 func (v *varMapper) String() string {
 	sub, exists := v.substitutions["__default__"]
 	if exists {
-		return sub
+		asString, isString := sub.(string)
+		if isString {
+			return asString
+		}
 	}
 	return v.base
 }
@@ -161,7 +164,7 @@ func newMigrationVars() map[string]interface{} {
 			"created_on": "created_on",
 			"tel_e164":   "urns.tel.0.path",
 		},
-		substitutions: map[string]string{
+		substitutions: map[string]interface{}{
 			"groups": "join(contact.groups, \",\")",
 		},
 		arbitraryNesting: "fields",
@@ -169,7 +172,7 @@ func newMigrationVars() map[string]interface{} {
 
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
-			substitutions: map[string]string{
+			substitutions: map[string]interface{}{
 				"__default__": fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
 				"display":     fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
 				"scheme":      fmt.Sprintf("contact.urns.%s.0.scheme", scheme),
@@ -194,10 +197,10 @@ func newMigrationVars() map[string]interface{} {
 	return map[string]interface{}{
 		"contact": contact,
 		"flow": &varMapper{
-			baseVars: map[string]interface{}{
+			base: "results",
+			substitutions: map[string]interface{}{
 				"contact": contact,
 			},
-			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
 				"text":     "input",
@@ -216,7 +219,7 @@ func newMigrationVars() map[string]interface{} {
 			},
 		},
 		"step": &varMapper{
-			substitutions: map[string]string{
+			substitutions: map[string]interface{}{
 				"__default__": "input",
 				"value":       "input",
 				"text":        "input.text",
@@ -228,7 +231,7 @@ func newMigrationVars() map[string]interface{} {
 			},
 		},
 		"channel": &varMapper{
-			substitutions: map[string]string{
+			substitutions: map[string]interface{}{
 				"__default__": "contact.channel.address",
 				"name":        "contact.channel.name",
 				"tel":         "contact.channel.address",
@@ -236,7 +239,7 @@ func newMigrationVars() map[string]interface{} {
 			},
 		},
 		"date": &varMapper{
-			substitutions: map[string]string{
+			substitutions: map[string]interface{}{
 				"__default__": `now()`,
 				"now":         `now()`,
 				"today":       `format_date(now())`,

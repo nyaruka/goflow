@@ -54,6 +54,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@contact.mailto`, new: `@(format_urn(contact.urns.mailto))`},
 
 		// run variables
+		{old: `@flow`, new: `@results`},
 		{old: `@flow.favorite_color`, new: `@results.favorite_color`},
 		{old: `@flow.favorite_color.category`, new: `@results.favorite_color.category_localized`},
 		{old: `@flow.favorite_color.text`, new: `@results.favorite_color.input`},
