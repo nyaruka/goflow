@@ -375,7 +375,7 @@ func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 
 	// for each of our values, try to evaluate to a decimal
 	for _, value := range strings.Fields(str.Native()) {
-		parsed, err := parseDecimalFuzzy(value)
+		parsed, err := ParseDecimalFuzzy(env, value)
 		if err == nil {
 			num := types.NewXNumber(parsed)
 			if num.Compare(min) >= 0 && num.Compare(max) <= 0 {
@@ -812,11 +812,17 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestRes
 
 var parseableNumberRegex = regexp.MustCompile(`^[$£€]?([\d,][\d,\.]*([\.,]\d+)?)\D*$`)
 
-func parseDecimalFuzzy(val string) (decimal.Decimal, error) {
+func ParseDecimalFuzzy(env utils.Environment, val string) (decimal.Decimal, error) {
 	// common SMS foibles
 	cleaned := strings.Replace(val, "l", "1", -1)
 	cleaned = strings.Replace(cleaned, "O", "0", -1)
 	cleaned = strings.Replace(cleaned, "o", "0", -1)
+
+	// remove digit grouping symbol
+	cleaned = strings.Replace(cleaned, env.NumberFormat().DigitGroupingSymbol, "", -1)
+
+	// replace non-period decimal symbols
+	cleaned = strings.Replace(cleaned, env.NumberFormat().DecimalSymbol, ".", -1)
 
 	num, err := decimal.NewFromString(cleaned)
 	if err == nil {
@@ -839,7 +845,7 @@ type decimalTest func(value decimal.Decimal, test decimal.Decimal) bool
 func testNumber(env utils.Environment, str types.XText, testNum types.XNumber, testFunc decimalTest) types.XValue {
 	// for each of our values, try to evaluate to a decimal
 	for _, value := range strings.Fields(str.Native()) {
-		num, xerr := parseDecimalFuzzy(value)
+		num, xerr := ParseDecimalFuzzy(env, value)
 		if xerr == nil {
 			if testFunc(num, testNum.Native()) {
 				return NewTrueResult(types.NewXNumber(num))
