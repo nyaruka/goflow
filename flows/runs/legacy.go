@@ -74,32 +74,51 @@ type legacyExtra struct {
 	lastResultTime time.Time
 }
 
+// creates a new legacy extra which will be lazily initialized on first call to .update()
 func newLegacyExtra(run flows.FlowRun) *legacyExtra {
-	values := make(map[string]interface{})
+	return &legacyExtra{run: run}
+}
+
+func (e *legacyExtra) initialize() {
+	e.legacyExtraMap = make(map[string]interface{})
 
 	// if trigger params is a JSON object, we include it in @extra
-	triggerParams := run.Session().Trigger().Params()
+	triggerParams := e.run.Session().Trigger().Params()
 	asJSON, isJSON := triggerParams.(types.XJSONObject)
 	if isJSON {
 		asMap, err := utils.JSONDecodeToMap(json.RawMessage(asJSON.XJSON))
 		if err == nil {
 			for k, v := range asMap {
-				values[legacyExtraKey(k)] = v
+				e.legacyExtraMap[legacyExtraKey(k)] = v
 			}
 		}
 	}
 
-	return &legacyExtra{legacyExtraMap: values, run: run}
+	// if trigger has results (i.e. a flow_action type trigger with a parent run) use them too
+	asExtraContrib, isExtraContrib := e.run.Session().Trigger().(flows.LegacyExtraContributor)
+	if isExtraContrib {
+		e.addResults(asExtraContrib.LegacyExtra(), time.Time{})
+	}
 }
 
-// updates @legacy_extra by looking for new events since we last updated
+// updates @legacy_extra by looking for new results since we last updated
 func (e *legacyExtra) update() {
+	// lazy initialize if necessary
+	if e.legacyExtraMap == nil {
+		e.initialize()
+	}
+
 	prevLastResultTime := e.lastResultTime
 
+	e.addResults(e.run.Results(), prevLastResultTime)
+}
+
+// adds any results with extra to this blob of all extras
+func (e *legacyExtra) addResults(results flows.Results, after time.Time) {
 	// get all results with extra created since the last update
 	newExtras := make([]*flows.Result, 0)
-	for _, result := range e.run.Results() {
-		if result.Extra != nil && result.CreatedOn.After(prevLastResultTime) {
+	for _, result := range results {
+		if result.Extra != nil && result.CreatedOn.After(after) {
 			newExtras = append(newExtras, result)
 		}
 		e.lastResultTime = result.CreatedOn

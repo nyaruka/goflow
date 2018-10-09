@@ -429,3 +429,8 @@ type FlowRun interface {
 	ExitedOn() *time.Time
 	Exit(RunStatus)
 }
+
+// LegacyExtraContributor is something which contributes results for constructing @legacy_extra
+type LegacyExtraContributor interface {
+	LegacyExtra() Results
+}
