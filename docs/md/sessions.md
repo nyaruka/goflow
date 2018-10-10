@@ -33,6 +33,35 @@ Is used when a session was triggered by a campaign event
 }
 ```
 
+<a name="trigger:channel"></a>
+
+## channel
+
+Is used when a session was triggered by a channel event
+
+
+```json
+{
+    "type": "channel",
+    "flow": {
+        "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
+        "name": "Registration"
+    },
+    "contact": {
+        "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "name": "Bob"
+    },
+    "event": {
+        "type": "new_conversation",
+        "channel": {
+            "uuid": "58e9b092-fe42-4173-876c-ff45a14a24fe",
+            "name": "Facebook"
+        }
+    },
+    "triggered_on": "2000-01-01T00:00:00.000000000-00:00"
+}
+```
+
 <a name="trigger:flow_action"></a>
 
 ## flow_action
