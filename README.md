@@ -49,7 +49,7 @@ You can run all the tests with:
 If you've made changes to the flow server response format, regenerate the test files with:
 
 ```
-% go test github.com/nyaruka/goflow/cmd/flowrunner -write
+% go test github.com/nyaruka/goflow/test -write
 ```
 
 If you've made changes to the flow server static files, you should regenerate the statik module with:

@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"encoding/json"
@@ -10,11 +10,12 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets/rest"
+	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
 	diff "github.com/sergi/go-diff/diffmatchpatch"
@@ -67,6 +68,28 @@ func deriveFilename(prefix string, filename string) string {
 	return filename
 }
 
+func normalizeJSON(data json.RawMessage) ([]byte, error) {
+	var asMap map[string]interface{}
+	if err := json.Unmarshal(data, &asMap); err != nil {
+		return nil, err
+	}
+
+	return utils.JSONMarshalPretty(asMap)
+}
+
+func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
+	envelopes, err := events.EventsToEnvelopes(eventLog)
+	marshaled := make([]json.RawMessage, len(envelopes))
+
+	for i := range envelopes {
+		marshaled[i], err = utils.JSONMarshal(envelopes[i])
+		if err != nil {
+			return nil, fmt.Errorf("error creating marshaling envelope %s: %s", envelopes[i], err)
+		}
+	}
+	return marshaled, nil
+}
+
 func readFile(prefix string, filename string) ([]byte, error) {
 	filename = deriveFilename(prefix, filename)
 	bytes, err := ioutil.ReadFile(filename)
@@ -74,6 +97,17 @@ func readFile(prefix string, filename string) ([]byte, error) {
 		return nil, fmt.Errorf("Error reading file '%s': %s", filename, err)
 	}
 	return bytes, err
+}
+
+type Output struct {
+	Session json.RawMessage   `json:"session"`
+	Events  []json.RawMessage `json:"events"`
+}
+
+type FlowTest struct {
+	Trigger *utils.TypedEnvelope   `json:"trigger"`
+	Resumes []*utils.TypedEnvelope `json:"resumes"`
+	Outputs []json.RawMessage      `json:"outputs"`
 }
 
 type runResult struct {
@@ -105,7 +139,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resume
 	}
 
 	assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
-	session := engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
+	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
 	if err != nil {
@@ -125,10 +159,15 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resume
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
-		outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
+		marshalledEvents, err := marshalEventLog(session.Events())
+		if err != nil {
+			return runResult{}, err
+		}
+
+		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
 		assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
-		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient, sessionJSON)
+		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 		}
@@ -153,13 +192,19 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resume
 	if err != nil {
 		return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
 	}
-	outputs = append(outputs, &Output{sessionJSON, marshalEventLog(session.Events())})
+
+	marshalledEvents, err := marshalEventLog(session.Events())
+	if err != nil {
+		return runResult{}, err
+	}
+
+	outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
 	return runResult{assetCache, session, outputs}, nil
 }
 
 func TestFlows(t *testing.T) {
-	server, err := test.NewTestHTTPServer(49999)
+	server, err := NewTestHTTPServer(49999)
 	require.NoError(t, err)
 
 	defer server.Close()
