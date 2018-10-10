@@ -34,21 +34,12 @@ type AirtimeTransferredEvent struct {
 }
 
 // NewAirtimeTransferredEvent creates a new airtime transferred event
-func NewAirtimeTransferredEvent(currency string, amount decimal.Decimal) *AirtimeTransferredEvent {
+func NewAirtimeTransferredEvent(t *transfer) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
 		BaseEvent: events.NewBaseEvent(),
-		Currency:  currency,
-		Amount:    amount,
-		Status:    "success",
-	}
-}
-
-// NewFailedAirtimeTransferredEvent creates a new failed airtime transferred event
-func NewFailedAirtimeTransferredEvent() *AirtimeTransferredEvent {
-	return &AirtimeTransferredEvent{
-		BaseEvent: events.NewBaseEvent(),
-		Amount:    decimal.Zero,
-		Status:    "failed",
+		Currency:  t.currency,
+		Amount:    t.actualAmount,
+		Status:    string(t.status),
 	}
 }
 
