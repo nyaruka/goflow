@@ -10,7 +10,7 @@ This program provides a command line interface for stepping through a given flow
 
 ```
 % go install github.com/nyaruka/goflow/cmd/flowrunner
-% $GOPATH/bin/flowrunner cmd/flowrunner/testdata/flows/two_questions.json
+% $GOPATH/bin/flowrunner cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
 ```
 
 ## Server
@@ -49,7 +49,7 @@ You can run all the tests with:
 If you've made changes to the flow server response format, regenerate the test files with:
 
 ```
-% go test github.com/nyaruka/goflow/cmd/flowrunner -write
+% go test github.com/nyaruka/goflow/test -write
 ```
 
 If you've made changes to the flow server static files, you should regenerate the statik module with:

@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nyaruka/goflow/assets/rest/types"
+	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/karlseguin/ccache"

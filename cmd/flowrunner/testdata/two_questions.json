@@ -1,10 +1,11 @@
 {
     "flows": [
         {
-            "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-            "name": "Question With Timeout",
+            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4",
+            "name": "Two Questions",
             "language": "eng",
             "type": "messaging",
+            "localization": {},
             "nodes": [
                 {
                     "uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
@@ -12,7 +13,7 @@
                         {
                             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                             "type": "send_msg",
-                            "text": "Hi @contact.name! What is your favorite color?"
+                            "text": "Hi @contact.name! What is your favorite color? (red/blue)"
                         }
                     ],
                     "wait": {
@@ -40,15 +41,6 @@
                                     "blue"
                                 ],
                                 "exit_uuid": "c70fe86c-9aac-4cc2-a5cb-d35cbe3fed6e"
-                            },
-                            {
-                                "uuid": "7ea92692-a2c8-4add-8c84-6c74a963c198",
-                                "type": "has_wait_timed_out",
-                                "arguments": [
-                                    "@run"
-                                ],
-                                "omit_operand": true,
-                                "exit_uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0"
                             }
                         ]
                     },
@@ -65,8 +57,8 @@
                         },
                         {
                             "uuid": "78ae8f05-f92e-43b2-a886-406eaea1b8e0",
-                            "name": "Timeout",
-                            "destination_node_uuid": "091decfb-c9b0-4dcf-954e-04927f119fc8"
+                            "name": "Other",
+                            "destination_node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d"
                         }
                     ]
                 },
@@ -74,19 +66,69 @@
                     "uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                     "actions": [
                         {
+                            "uuid": "afd5ac22-2a86-4576-a2c7-715f0bb10194",
+                            "type": "set_contact_language",
+                            "language": "fra"
+                        },
+                        {
                             "uuid": "d2a4052a-3fa9-4608-ab3e-5b9631440447",
                             "type": "send_msg",
-                            "text": "You said @results.favorite_color.category_localized. Thanks!"
+                            "text": "@(TITLE(results.favorite_color.category_localized)) it is! What is your favorite soda? (pepsi/coke)"
+                        }
+                    ],
+                    "wait": {
+                        "type": "msg",
+                        "timeout": 600
+                    },
+                    "router": {
+                        "type": "switch",
+                        "default_exit_uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                        "result_name": "Soda",
+                        "operand": "@input",
+                        "cases": [
+                            {
+                                "uuid": "e27c3bce-1095-4d08-9164-dc4530a0688a",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "pepsi"
+                                ],
+                                "exit_uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492"
+                            },
+                            {
+                                "uuid": "4a6c3b0b-0658-4a93-ae37-bee68f6a6a87",
+                                "type": "has_any_word",
+                                "arguments": [
+                                    "coke coca cola"
+                                ],
+                                "exit_uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad"
+                            }
+                        ]
+                    },
+                    "exits": [
+                        {
+                            "uuid": "2ab9b033-77a8-4e56-a558-b568c00c9492",
+                            "name": "Pepsi",
+                            "destination_node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
+                        },
+                        {
+                            "uuid": "c7bca181-0cb3-4ec6-8555-f7e5644238ad",
+                            "name": "Coke",
+                            "destination_node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db"
+                        },
+                        {
+                            "uuid": "5ce6c69a-fdfe-4594-ab71-26be534d31c3",
+                            "name": "Other",
+                            "destination_node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e"
                         }
                     ]
                 },
                 {
-                    "uuid": "091decfb-c9b0-4dcf-954e-04927f119fc8",
+                    "uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                     "actions": [
                         {
-                            "uuid": "ec0cbd0a-0aaa-4cdd-8ce9-a0430b83d500",
+                            "uuid": "0a8467eb-911a-41db-8101-ccf415c48e6a",
                             "type": "send_msg",
-                            "text": "Guess you're busy - catch you another time!"
+                            "text": "Great, you are done!"
                         }
                     ]
                 }
@@ -107,5 +149,11 @@
             ]
         }
     ],
-    "locations": []
+    "fields": [
+        {
+            "key": "first_name",
+            "label": "First Name",
+            "value_type": "text"
+        }
+    ]
 }

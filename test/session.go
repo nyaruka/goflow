@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/rest"
+	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
@@ -14,38 +14,32 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-var sessionAssets = `[
-    {
-        "type": "channel",
-        "url": "http://testserver/assets/channel",
-        "content": [
-            {
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "My Android Phone",
-                "address": "+12345671111",
-                "schemes": ["tel"],
-                "roles": ["send", "receive"]
-            },
-            {
-                "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
-                "name": "Twitter Channel",
-                "address": "nyaruka",
-                "schemes": ["twitter"],
-                "roles": ["send", "receive"]
-            },
-            {
-                "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-                "name": "Facebook Channel",
-                "address": "235326346322111",
-                "schemes": ["facebook"],
-                "roles": ["send", "receive"]
-            }
-        ]
-    },
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/50c3706e-fedb-42c0-8eab-dda3335714b7",
-        "content": {
+var sessionAssets = `{
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone",
+            "address": "+12345671111",
+            "schemes": ["tel"],
+            "roles": ["send", "receive"]
+        },
+        {
+            "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+            "name": "Twitter Channel",
+            "address": "nyaruka",
+            "schemes": ["twitter"],
+            "roles": ["send", "receive"]
+        },
+        {
+            "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
+            "name": "Facebook Channel",
+            "address": "235326346322111",
+            "schemes": ["facebook"],
+            "roles": ["send", "receive"]
+        }
+    ],
+    "flows": [
+        {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration",
             "language": "eng",
@@ -126,12 +120,8 @@ var sessionAssets = `[
                     "actions": []
                 }
             ]
-        }
-    },
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "content": {
+        },
+        {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Age",
             "language": "eng",
@@ -157,94 +147,67 @@ var sessionAssets = `[
                     }
                 ]
             }]
-        }
-    },
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/fece6eac-9127-4343-9269-56e88f391562",
-        "content": {
+        },
+        {
             "uuid": "fece6eac-9127-4343-9269-56e88f391562",
             "name": "Parent",
             "language": "eng",
             "type": "messaging",
             "nodes": []
         }
-    },
-    {
-        "type": "field",
-        "url": "http://testserver/assets/field",
-        "content": [
-            {"key": "gender", "label": "Gender", "value_type": "text"},
-            {"key": "age", "label": "Age", "value_type": "number"},
-            {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
-            {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
-        ]
-    },
-    {
-        "type": "group",
-        "url": "http://testserver/assets/group",
-        "content": [
-            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
-            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
-            {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
-        ]
-    },
-    {
-        "type": "label",
-        "url": "http://testserver/assets/label",
-        "content": [
-            {
-                "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
-                "name": "Spam"
-            }
-        ]
-    },
-    {
-        "type": "location_hierarchy",
-        "url": "http://testserver/assets/location_hierarchy",
-        "content": [
-            {
-                "name": "Rwanda",
-                "aliases": ["Ruanda"],		
-                "children": [
-                    {
-                        "name": "Kigali City",
-                        "aliases": ["Kigali", "Kigari"],
-                        "children": [
-                            {
-                                "name": "Gasabo",
-                                "children": [
-                                    {
-                                        "name": "Gisozi"
-                                    },
-                                    {
-                                        "name": "Ndera"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Nyarugenge",
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "type": "resthook",
-        "url": "http://testserver/assets/resthook",
-        "content": [
-            {
-                "slug": "new-registration", 
-                "subscribers": [
-                    "http://localhost/?cmd=success"
-                ]
-            }
-        ]
-    }
-]`
+    ],
+    "fields": [
+        {"key": "gender", "label": "Gender", "value_type": "text"},
+        {"key": "age", "label": "Age", "value_type": "number"},
+        {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
+        {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
+    ],
+    "groups": [
+        {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+        {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
+        {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
+    ],
+    "labels": [
+        {"uuid": "3f65d88a-95dc-4140-9451-943e94e06fea", "name": "Spam"}
+    ],
+    "locations": [
+        {
+            "name": "Rwanda",
+            "aliases": ["Ruanda"],		
+            "children": [
+                {
+                    "name": "Kigali City",
+                    "aliases": ["Kigali", "Kigari"],
+                    "children": [
+                        {
+                            "name": "Gasabo",
+                            "children": [
+                                {
+                                    "name": "Gisozi"
+                                },
+                                {
+                                    "name": "Ndera"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Nyarugenge",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "resthooks": [
+        {
+            "slug": "new-registration", 
+            "subscribers": [
+                "http://localhost/?cmd=success"
+            ]
+        }
+    ]
+}`
 
 var sessionTrigger = `{
     "type": "flow_action",
@@ -388,15 +351,14 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 
 // CreateSession creates a session with the given assets
 func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
-	// load our assets into a cache
-	assetCache := rest.NewAssetCache(100, 5)
-	err := assetCache.Include(sessionAssets)
+	// read our assets into a source
+	source, err := static.NewStaticSource(sessionAssets)
 	if err != nil {
 		return nil, err
 	}
 
 	// create our engine session
-	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
+	assets, err := engine.NewSessionAssets(source)
 	if err != nil {
 		return nil, err
 	}
