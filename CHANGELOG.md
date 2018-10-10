@@ -1,3 +1,7 @@
+v0.21.4
+----------
+ * Rework transferto action to generate result like a webhook call
+
 v0.21.3
 ----------
  * Add results from run summary on flow_action triggers to @legacy_extra
