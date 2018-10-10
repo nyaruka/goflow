@@ -141,6 +141,9 @@ func (s *session) Start(trigger flows.Trigger) error {
 
 // Resume tries to resume a waiting session
 func (s *session) Resume(resume flows.Resume) error {
+	// clear the event log
+	s.newEvents = nil
+
 	if s.status != flows.SessionStatusWaiting {
 		return fmt.Errorf("only waiting sessions can be resumed")
 	}

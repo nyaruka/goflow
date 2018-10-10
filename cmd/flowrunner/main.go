@@ -5,15 +5,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
-	"log"
+	"io"
 	"os"
-	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/rest"
+	"github.com/nyaruka/goflow/assets/static"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -23,189 +20,106 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type Output struct {
-	Session json.RawMessage   `json:"session"`
-	Events  []json.RawMessage `json:"events"`
-}
-
-type FlowTest struct {
-	Trigger *utils.TypedEnvelope   `json:"trigger"`
-	Resumes []*utils.TypedEnvelope `json:"resumes"`
-	Outputs []json.RawMessage      `json:"outputs"`
-}
-
-func normalizeJSON(data json.RawMessage) ([]byte, error) {
-	var asMap map[string]interface{}
-	if err := json.Unmarshal(data, &asMap); err != nil {
-		return nil, err
-	}
-
-	return utils.JSONMarshalPretty(asMap)
-}
-
-func marshalEventLog(eventLog []flows.Event) []json.RawMessage {
-	envelopes, err := events.EventsToEnvelopes(eventLog)
-	marshaled := make([]json.RawMessage, len(envelopes))
-
-	for i := range envelopes {
-		marshaled[i], err = utils.JSONMarshal(envelopes[i])
-		if err != nil {
-			log.Fatalf("error creating marshaling envelope %s: %s", envelopes[i], err)
+var contactJSON = `{
+	"uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3",
+	"id": 1234567,
+	"name": "Ben Haggerty",
+	"created_on": "2018-01-01T12:00:00.000000000-00:00",
+	"fields": {
+		"first_name": {
+			"text": "Ben"
 		}
-	}
-	return marshaled
+	},
+	"language": "eng",
+	"timezone": "America/Guayaquil",
+	"urns": [
+		"tel:+12065551212",
+		"facebook:1122334455667788",
+		"mailto:ben@macklemore"
+	]
 }
+`
 
 func main() {
-	testdata := filepath.Join(os.Getenv("GOPATH"), "src/github.com/nyaruka/goflow/cmd/flowrunner/testdata")
-
-	writePtr := flag.Bool("write", false, "Whether to write a _test.json file for this flow")
-	contactFile := flag.String("contact", filepath.Join(testdata, "contacts/default.json"), "The location of the JSON file defining the contact to use, defaulting to test/contacts/default.json")
-
 	flag.Parse()
 
 	if len(flag.Args()) != 2 {
-		fmt.Printf("\nUsage: runner [-write] <assets.json> flow_uuid\n\n")
+		fmt.Printf("\nUsage: flowrunner <assets.json> <flow_uuid>\n\n")
 		os.Exit(1)
 	}
 
-	httpClient := utils.NewHTTPClient("goflow-flowrunner")
+	assetsPath := flag.Args()[0]
+	flowUUID := assets.FlowUUID(flag.Args()[1])
 
-	assetsFilename := flag.Args()[0]
-	startFlowUUID := assets.FlowUUID(flag.Args()[1])
-
-	fmt.Printf("Parsing: %s\n", assetsFilename)
-	assetsJSON, err := ioutil.ReadFile(assetsFilename)
-	if err != nil {
-		log.Fatal("Error reading assets file: ", err)
+	if err := RunFlow(assetsPath, flowUUID, os.Stdin, os.Stdout); err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
 	}
-	assetCache := rest.NewAssetCache(100, 5)
-	if err := assetCache.Include(json.RawMessage(assetsJSON)); err != nil {
-		log.Fatal("Error reading assets: ", err)
+}
+
+// RunFlow steps through a flow
+func RunFlow(assetsPath string, flowUUID assets.FlowUUID, in io.Reader, out io.Writer) error {
+	source, err := static.LoadStaticSource(assetsPath)
+	if err != nil {
+		return err
 	}
 
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
-	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
+	assets, err := engine.NewSessionAssets(source)
 	if err != nil {
-		log.Fatal("error parsing assets: ", err)
+		return fmt.Errorf("error parsing assets: %s", err)
 	}
 
+	httpClient := utils.NewHTTPClient("goflow-flowrunner")
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), httpClient)
 
-	contactJSON, err := ioutil.ReadFile(*contactFile)
-	if err != nil {
-		log.Fatal("error reading contact file: ", err)
-	}
 	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
 	if err != nil {
-		log.Fatal("error unmarshalling contact: ", err)
+		return err
 	}
-	flow, err := session.Assets().Flows().Get(startFlowUUID)
+	flow, err := session.Assets().Flows().Get(flowUUID)
 	if err != nil {
-		log.Fatal("error accessing flow: ", err)
+		return err
 	}
 
 	trigger := triggers.NewManualTrigger(env, contact, flow.Reference(), nil, time.Now())
+	fmt.Fprintf(out, "Starting flow '%s'....\n", flow.Name())
 
-	// and start our flow
-	err = session.Start(trigger)
-	if err != nil {
-		log.Fatal("Error starting flow: ", err)
+	// start our session
+	if err := session.Start(trigger); err != nil {
+		return err
 	}
 
-	scanner := bufio.NewScanner(os.Stdin)
-
-	resumeObjs := make([]flows.Resume, 0)
-	outputs := make([]*Output, 0)
+	printEvents(session, out)
+	scanner := bufio.NewScanner(in)
 
 	for session.Wait() != nil {
-		outJSON, err := utils.JSONMarshalPretty(session)
-		if err != nil {
-			log.Fatal("Error marshalling output: ", err)
-		}
-		fmt.Printf("%s\n", outJSON)
-		outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
-
-		// print any msg_created events
-		for _, event := range session.Events() {
-			if event.Type() == events.TypeMsgCreated {
-				fmt.Printf(">>> %s\n", event.(*events.MsgCreatedEvent).Msg.Text())
-			}
-		}
 
 		// ask for input
-		fmt.Printf("<<< ")
+		fmt.Fprintf(out, "> ")
 		scanner.Scan()
 
 		// create our resume
 		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
 		resume := resumes.NewMsgResume(nil, nil, msg)
-		resumeObjs = append(resumeObjs, resume)
 
-		// rebuild our session
-		assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
-		if err != nil {
-			log.Fatal("Error parsing assets: ", err)
+		if err := session.Resume(resume); err != nil {
+			return err
 		}
 
-		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), httpClient, outJSON)
-		if err != nil {
-			log.Fatalf("Error unmarshalling output: %s", err)
-		}
-
-		err = session.Resume(resume)
-		if err != nil {
-			log.Print("Error resuming flow: ", err)
-			break
-		}
+		printEvents(session, out)
 	}
+	return nil
+}
 
-	// print out our context
-	outJSON, err := utils.JSONMarshalPretty(session)
-	if err != nil {
-		log.Fatal("Error marshalling output: ", err)
-	}
-	fmt.Printf("%s\n", outJSON)
-	outputs = append(outputs, &Output{outJSON, marshalEventLog(session.Events())})
-
-	// write out our test file
-	if *writePtr {
-		// name of the test file is the same as our assets file, just with _test.json instead of .json
-		testFilename := strings.Replace(assetsFilename, ".json", "_test.json", 1)
-
-		rawOutputs := make([]json.RawMessage, len(outputs))
-		for i := range outputs {
-			rawOutputs[i], err = utils.JSONMarshal(outputs[i])
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		triggerEnvelope, err := utils.EnvelopeFromTyped(trigger)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		resumeEnvelopes := make([]*utils.TypedEnvelope, len(resumeObjs))
-		for i := range resumeObjs {
-			resumeEnvelopes[i], _ = utils.EnvelopeFromTyped(resumeObjs[i])
-		}
-
-		flowTest := FlowTest{Trigger: triggerEnvelope, Resumes: resumeEnvelopes, Outputs: rawOutputs}
-		testJSON, err := utils.JSONMarshal(flowTest)
-		if err != nil {
-			log.Fatal("Error marshalling test definition: ", err)
-		}
-
-		testJSON, _ = normalizeJSON(testJSON)
-
-		// write our output
-		err = ioutil.WriteFile(testFilename, testJSON, 0644)
-		if err != nil {
-			log.Fatalf("Error writing test file to %s: %s\n", testFilename, err)
+func printEvents(session flows.Session, out io.Writer) {
+	// print any msg_created events
+	for _, event := range session.Events() {
+		if event.Type() == events.TypeMsgCreated {
+			fmt.Fprintf(out, "💬 %s\n", event.(*events.MsgCreatedEvent).Msg.Text())
 		}
 	}
 }
