@@ -57,17 +57,6 @@ func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite test output")
 }
 
-func deriveFilename(prefix string, filename string) string {
-	if filename == "" {
-		filename = "default.json"
-	}
-
-	if !strings.Contains(filename, "/") {
-		filename = fmt.Sprintf("%s/%s%s", "testdata", prefix, filename)
-	}
-	return filename
-}
-
 func normalizeJSON(data json.RawMessage) ([]byte, error) {
 	var asMap map[string]interface{}
 	if err := json.Unmarshal(data, &asMap); err != nil {
@@ -90,15 +79,6 @@ func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
 	return marshaled, nil
 }
 
-func readFile(prefix string, filename string) ([]byte, error) {
-	filename = deriveFilename(prefix, filename)
-	bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("Error reading file '%s': %s", filename, err)
-	}
-	return bytes, err
-}
-
 type Output struct {
 	Session json.RawMessage   `json:"session"`
 	Events  []json.RawMessage `json:"events"`
@@ -116,9 +96,9 @@ type runResult struct {
 	outputs    []*Output
 }
 
-func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
+func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
 	// load the test specific assets
-	testAssetsJSON, err := readFile("flows/", assetsFilename)
+	testAssetsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", assetsPath))
 	if err != nil {
 		return runResult{}, err
 	}
@@ -128,7 +108,7 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resume
 
 	assetCache := rest.NewAssetCache(100, 5)
 	if err := assetCache.Include(json.RawMessage(testAssetsJSONStr)); err != nil {
-		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
+		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsPath, err)
 	}
 
 	assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
@@ -211,7 +191,7 @@ func TestFlows(t *testing.T) {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 		utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 7, 6, 12, 30, 0, 123456789, time.UTC)))
 
-		testJSON, err := readFile("flows/", tc.output)
+		testJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", tc.output))
 		require.NoError(t, err, "Error reading output file for flow '%s' and output '%s': %s", tc.assets, tc.output, err)
 
 		flowTest := &FlowTest{}
@@ -239,7 +219,7 @@ func TestFlows(t *testing.T) {
 			testJSON, _ = normalizeJSON(testJSON)
 
 			// write our output
-			outputFilename := deriveFilename("flows/", tc.output)
+			outputFilename := fmt.Sprintf("testdata/flows/%s", tc.output)
 			err = ioutil.WriteFile(outputFilename, testJSON, 0644)
 			require.NoError(t, err, "Error writing test file to %s: %s", outputFilename, err)
 		} else {
