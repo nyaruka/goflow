@@ -921,7 +921,14 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 	case "date_equal", "date_after", "date_before":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test}
+		if err != nil {
+			return routers.Case{}, err
+		}
+		migratedTest, err := expressions.MigrateTemplate(test.Test, false)
+		if err != nil {
+			return routers.Case{}, err
+		}
+		arguments = []string{migratedTest}
 
 	// tests against a single group value
 	case "in_group":

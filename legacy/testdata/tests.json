@@ -163,6 +163,21 @@
     },
     {
         "legacy_test": {
+            "type": "date_after",
+            "test": "@date.yesterday"
+        },
+        "expected_case": {
+            "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+            "type": "has_date_gt",
+            "arguments": [
+                "@(format_date(datetime_add(now(), -1, \"D\")))"
+            ],
+            "exit_uuid": "c072ecb5-0686-40ea-8ed3-898dc1349783"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_test": {
             "type": "date_before",
             "test": "27-7-2017"
         },
