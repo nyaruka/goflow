@@ -107,9 +107,5 @@
             ]
         }
     ],
-    "groups": [],
-    "fields": [],
-    "labels": [],
-    "locations": [],
-    "resthooks": []
+    "locations": []
 }

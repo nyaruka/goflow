@@ -9,8 +9,8 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// json serializable implementation of a channel asset
-type channel struct {
+// Channel is a JSON serializable implementation of a channel asset
+type Channel struct {
 	UUID_          assets.ChannelUUID       `json:"uuid" validate:"required,uuid"`
 	Name_          string                   `json:"name"`
 	Address_       string                   `json:"address"`
@@ -23,7 +23,7 @@ type channel struct {
 
 // NewChannel creates a new channel
 func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []string, roles []assets.ChannelRole, parent *assets.ChannelReference) assets.Channel {
-	return &channel{
+	return &Channel{
 		UUID_:    uuid,
 		Name_:    name,
 		Address_: address,
@@ -35,7 +35,7 @@ func NewChannel(uuid assets.ChannelUUID, name string, address string, schemes []
 
 // NewTelChannel creates a new tel channel
 func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles []assets.ChannelRole, parent *assets.ChannelReference, country string, matchPrefixes []string) assets.Channel {
-	return &channel{
+	return &Channel{
 		UUID_:          uuid,
 		Name_:          name,
 		Address_:       address,
@@ -48,32 +48,32 @@ func NewTelChannel(uuid assets.ChannelUUID, name string, address string, roles [
 }
 
 // UUID returns the UUID of this channel
-func (c *channel) UUID() assets.ChannelUUID { return c.UUID_ }
+func (c *Channel) UUID() assets.ChannelUUID { return c.UUID_ }
 
 // Name returns the name of this channel
-func (c *channel) Name() string { return c.Name_ }
+func (c *Channel) Name() string { return c.Name_ }
 
 // Address returns the address of this channel
-func (c *channel) Address() string { return c.Address_ }
+func (c *Channel) Address() string { return c.Address_ }
 
 // Schemes returns the supported schemes of this channel
-func (c *channel) Schemes() []string { return c.Schemes_ }
+func (c *Channel) Schemes() []string { return c.Schemes_ }
 
 // Roles returns the roles of this channel
-func (c *channel) Roles() []assets.ChannelRole { return c.Roles_ }
+func (c *Channel) Roles() []assets.ChannelRole { return c.Roles_ }
 
 // Parent returns a reference to this channel's parent (if any)
-func (c *channel) Parent() *assets.ChannelReference { return c.Parent_ }
+func (c *Channel) Parent() *assets.ChannelReference { return c.Parent_ }
 
 // Country returns this channel's associated country code (if any)
-func (c *channel) Country() string { return c.Country_ }
+func (c *Channel) Country() string { return c.Country_ }
 
 // MatchPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
-func (c *channel) MatchPrefixes() []string { return c.MatchPrefixes_ }
+func (c *Channel) MatchPrefixes() []string { return c.MatchPrefixes_ }
 
 // ReadChannel reads a channel from the given JSON
 func ReadChannel(data json.RawMessage) (assets.Channel, error) {
-	c := &channel{}
+	c := &Channel{}
 	if err := utils.UnmarshalAndValidate(data, c); err != nil {
 		return nil, fmt.Errorf("unable to read channel: %s", err)
 	}

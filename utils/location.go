@@ -87,11 +87,16 @@ type LocationHierarchy struct {
 
 // NewLocationHierarchy cretes a new location hierarchy
 func NewLocationHierarchy(root *Location, numLevels int) *LocationHierarchy {
-	h := &LocationHierarchy{
-		root:         root,
-		levelLookups: make([]locationNameLookup, numLevels),
-		pathLookup:   make(locationPathLookup),
-	}
+	h := &LocationHierarchy{}
+	h.initializeFromRoot(root, numLevels)
+	return h
+}
+
+// NewLocationHierarchy cretes a new location hierarchy
+func (h *LocationHierarchy) initializeFromRoot(root *Location, numLevels int) {
+	h.root = root
+	h.levelLookups = make([]locationNameLookup, numLevels)
+	h.pathLookup = make(locationPathLookup)
 
 	for l := 0; l < numLevels; l++ {
 		h.levelLookups[l] = make(locationNameLookup)
@@ -108,7 +113,6 @@ func NewLocationHierarchy(root *Location, numLevels int) *LocationHierarchy {
 		h.pathLookup.addLookup(location.path, location)
 		h.addNameLookups(location)
 	})
-	return h
 }
 
 func (h *LocationHierarchy) addNameLookups(location *Location) {
@@ -160,6 +164,17 @@ func (h *LocationHierarchy) FindByName(name string, level LocationLevel, parent 
 // FindByPath looks for a location in the hierarchy with the given path
 func (h *LocationHierarchy) FindByPath(path string) *Location {
 	return h.pathLookup.lookup(strings.ToLower(path))
+}
+
+func (h *LocationHierarchy) UnmarshalJSON(data []byte) error {
+	var le locationEnvelope
+	if err := UnmarshalAndValidate(data, &le); err != nil {
+		return err
+	}
+
+	root := locationFromEnvelope(&le, LocationLevel(0), nil)
+	h.initializeFromRoot(root, 4)
+	return nil
 }
 
 //------------------------------------------------------------------------------------------

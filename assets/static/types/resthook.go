@@ -8,25 +8,25 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-// json serializable implementation of a resthook asset
-type resthook struct {
+// Resthook is a JSON serializable implementation of a resthook asset
+type Resthook struct {
 	Slug_        string   `json:"slug" validate:"required"`
 	Subscribers_ []string `json:"subscribers" validate:"required,dive,url"`
 }
 
 func NewResthook(slug string, subscribers []string) assets.Resthook {
-	return &resthook{Slug_: slug, Subscribers_: subscribers}
+	return &Resthook{Slug_: slug, Subscribers_: subscribers}
 }
 
 // Slug returns the slug of the resthook
-func (r *resthook) Slug() string { return r.Slug_ }
+func (r *Resthook) Slug() string { return r.Slug_ }
 
 // Subscribers returns the subscribers to the resthook
-func (r *resthook) Subscribers() []string { return r.Subscribers_ }
+func (r *Resthook) Subscribers() []string { return r.Subscribers_ }
 
 // ReadResthook reads a resthook from the given JSON
 func ReadResthook(data json.RawMessage) (assets.Resthook, error) {
-	r := &resthook{}
+	r := &Resthook{}
 	if err := utils.UnmarshalAndValidate(data, r); err != nil {
 		return nil, fmt.Errorf("unable to read resthook: %s", err)
 	}
