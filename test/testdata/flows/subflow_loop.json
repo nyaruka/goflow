@@ -74,5 +74,49 @@
                 }
             ]
         }
+    },
+    {
+        "type": "field",
+        "url": "http://testserver/assets/field",
+        "content": [
+            {
+                "key": "first_name",
+                "label": "First Name",
+                "value_type": "text"
+            },
+            {
+                "key": "activation_token",
+                "label": "Activation Token",
+                "value_type": "text"
+            },
+            {
+                "key": "gender",
+                "label": "Gender",
+                "value_type": "text"
+            },
+            {
+                "key": "state",
+                "label": "State",
+                "value_type": "state"
+            }
+        ]
+    },
+    {
+        "type": "channel",
+        "url": "http://testserver/assets/channel",
+        "content": [
+            {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "Android Channel",
+                "address": "+12345671111",
+                "schemes": [
+                    "tel"
+                ],
+                "roles": [
+                    "send",
+                    "receive"
+                ]
+            }
+        ]
     }
 ]

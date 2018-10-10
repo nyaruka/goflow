@@ -27,34 +27,34 @@ var flowTests = []struct {
 	assets string
 	output string
 }{
-	{"two_questions.json", "two_questions_test.json"},
-	{"subflow.json", "subflow_test.json"},
-	{"subflow_other.json", "subflow_other_test.json"},
-	{"brochure.json", "brochure_test.json"},
-	{"all_actions.json", "all_actions_test.json"},
-	{"default_result.json", "default_result_test.json"},
-	{"empty.json", "empty_test.json"},
-	{"node_loop.json", "node_loop_test.json"},
-	{"subflow_loop.json", "subflow_loop_test.json"},
-	{"date_parse.json", "date_parse_test.json"},
-	{"webhook_persists.json", "webhook_persists_test.json"},
-	{"dynamic_groups.json", "dynamic_groups_test.json"},
-	{"dynamic_groups_correction.json", "dynamic_groups_correction_test.json"},
-	{"triggered.json", "triggered_test.json"},
-	{"no_contact.json", "no_contact_test.json"},
-	{"redact_urns.json", "redact_urns_test.json"},
-	{"router_tests.json", "router_tests_test.json"},
-	{"webhook_migrated.json", "webhook_migrated_test.json"},
-	{"resthook.json", "resthook_test.json"},
 	{"airtime.json", "airtime_disabled_test.json"},
+	{"all_actions.json", "all_actions_test.json"},
+	{"brochure.json", "brochure_test.json"},
+	{"date_parse.json", "date_parse_test.json"},
+	{"default_result.json", "default_result_test.json"},
+	{"dynamic_groups_correction.json", "dynamic_groups_correction_test.json"},
+	{"dynamic_groups.json", "dynamic_groups_test.json"},
+	{"empty.json", "empty_test.json"},
 	{"legacy_extra.json", "legacy_extra_test.json"},
+	{"no_contact.json", "no_contact_test.json"},
+	{"node_loop.json", "node_loop_test.json"},
+	{"redact_urns.json", "redact_urns_test.json"},
+	{"resthook.json", "resthook_test.json"},
+	{"router_tests.json", "router_tests_test.json"},
+	{"subflow_loop.json", "subflow_loop_test.json"},
+	{"subflow_other.json", "subflow_other_test.json"},
+	{"subflow.json", "subflow_test.json"},
+	{"triggered.json", "triggered_test.json"},
+	{"two_questions.json", "two_questions_test.json"},
+	{"webhook_migrated.json", "webhook_migrated_test.json"},
+	{"webhook_persists.json", "webhook_persists_test.json"},
 }
 
 var writeOutput bool
 var serverURL = ""
 
 func init() {
-	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite TestFlow output")
+	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite test output")
 }
 
 func deriveFilename(prefix string, filename string) string {
@@ -117,11 +117,7 @@ type runResult struct {
 }
 
 func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
-	// load both the test specific assets and default assets
-	defaultAssetsJSON, err := readFile("", "default.json")
-	if err != nil {
-		return runResult{}, err
-	}
+	// load the test specific assets
 	testAssetsJSON, err := readFile("flows/", assetsFilename)
 	if err != nil {
 		return runResult{}, err
@@ -131,9 +127,6 @@ func runFlow(assetsFilename string, triggerEnvelope *utils.TypedEnvelope, resume
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
 	assetCache := rest.NewAssetCache(100, 5)
-	if err := assetCache.Include(defaultAssetsJSON); err != nil {
-		return runResult{}, fmt.Errorf("Error reading default assets '%s': %s", assetsFilename, err)
-	}
 	if err := assetCache.Include(json.RawMessage(testAssetsJSONStr)); err != nil {
 		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsFilename, err)
 	}
