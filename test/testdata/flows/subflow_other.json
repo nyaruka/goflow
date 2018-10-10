@@ -1,8 +1,6 @@
-[
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/9e43da00-b2e5-450e-a351-0772f5469511",
-        "content": {
+{
+    "flows": [
+        {
             "name": "Parent Flow",
             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511",
             "type": "messaging",
@@ -158,12 +156,8 @@
                 }
             ],
             "language": "eng"
-        }
-    },
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
-        "content": {
+        },
+        {
             "name": "Rules",
             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8",
             "type": "messaging",
@@ -285,49 +279,41 @@
             ],
             "language": "eng"
         }
-    },
-    {
-        "type": "field",
-        "url": "http://testserver/assets/field",
-        "content": [
-            {
-                "key": "first_name",
-                "label": "First Name",
-                "value_type": "text"
-            },
-            {
-                "key": "activation_token",
-                "label": "Activation Token",
-                "value_type": "text"
-            },
-            {
-                "key": "gender",
-                "label": "Gender",
-                "value_type": "text"
-            },
-            {
-                "key": "state",
-                "label": "State",
-                "value_type": "state"
-            }
-        ]
-    },
-    {
-        "type": "channel",
-        "url": "http://testserver/assets/channel",
-        "content": [
-            {
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "Android Channel",
-                "address": "+12345671111",
-                "schemes": [
-                    "tel"
-                ],
-                "roles": [
-                    "send",
-                    "receive"
-                ]
-            }
-        ]
-    }
-]
+    ],
+    "fields": [
+        {
+            "key": "first_name",
+            "label": "First Name",
+            "value_type": "text"
+        },
+        {
+            "key": "activation_token",
+            "label": "Activation Token",
+            "value_type": "text"
+        },
+        {
+            "key": "gender",
+            "label": "Gender",
+            "value_type": "text"
+        },
+        {
+            "key": "state",
+            "label": "State",
+            "value_type": "state"
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Android Channel",
+            "address": "+12345671111",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ]
+}

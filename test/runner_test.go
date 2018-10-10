@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/nyaruka/goflow/assets/static"
 	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/nyaruka/goflow/assets/rest"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -91,9 +91,8 @@ type FlowTest struct {
 }
 
 type runResult struct {
-	assetCache *rest.AssetCache
-	session    flows.Session
-	outputs    []*Output
+	session flows.Session
+	outputs []*Output
 }
 
 func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
@@ -106,12 +105,12 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 	// rewrite the URL on any webhook actions
 	testAssetsJSONStr := strings.Replace(string(testAssetsJSON), "http://localhost", serverURL, -1)
 
-	assetCache := rest.NewAssetCache(100, 5)
-	if err := assetCache.Include(json.RawMessage(testAssetsJSONStr)); err != nil {
-		return runResult{}, fmt.Errorf("Error reading test assets '%s': %s", assetsPath, err)
+	source, err := static.NewStaticSource(json.RawMessage(testAssetsJSONStr))
+	if err != nil {
+		return runResult{}, fmt.Errorf("error reading test assets '%s': %s", assetsPath, err)
 	}
 
-	assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
+	assets, _ := engine.NewSessionAssets(source)
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 
 	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
@@ -139,7 +138,6 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 
 		outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
-		assets, _ := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
@@ -173,7 +171,7 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 
 	outputs = append(outputs, &Output{sessionJSON, marshalledEvents})
 
-	return runResult{assetCache, session, outputs}, nil
+	return runResult{session, outputs}, nil
 }
 
 func TestFlows(t *testing.T) {

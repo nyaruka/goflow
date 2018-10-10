@@ -1,8 +1,6 @@
-[
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/76f0a02f-3b75-4b86-9064-e9195e1b3a02",
-        "content": {
+{
+    "flows": [
+        {
             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
             "name": "Legacy Extra",
             "language": "eng",
@@ -123,23 +121,19 @@
                 }
             ]
         }
-    },
-    {
-        "type": "channel",
-        "url": "http://testserver/assets/channel",
-        "content": [
-            {
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "Android Channel",
-                "address": "+12345671111",
-                "schemes": [
-                    "tel"
-                ],
-                "roles": [
-                    "send",
-                    "receive"
-                ]
-            }
-        ]
-    }
-]
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Android Channel",
+            "address": "+12345671111",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ]
+}

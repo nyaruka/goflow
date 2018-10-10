@@ -1,8 +1,6 @@
-[
-    {
-        "type": "flow",
-        "url": "http://testserver/assets/flow/1b462ce8-983a-4393-b133-e15a0efdb70c",
-        "content": {
+{
+    "flows": [
+        {
             "uuid": "1b462ce8-983a-4393-b133-e15a0efdb70c",
             "name": "Dynamic Groups",
             "language": "eng",
@@ -63,105 +61,93 @@
                 }
             ]
         }
-    },
-    {
-        "type": "field",
-        "url": "http://testserver/assets/field",
-        "content": [
-            {
-                "key": "first_name",
-                "label": "First Name",
-                "value_type": "text"
-            },
-            {
-                "key": "gender",
-                "label": "Gender",
-                "value_type": "text"
-            },
-            {
-                "key": "age",
-                "label": "Age",
-                "value_type": "number"
-            },
-            {
-                "key": "state",
-                "label": "State",
-                "value_type": "text"
-            }
-        ]
-    },
-    {
-        "type": "group",
-        "url": "http://testserver/assets/group",
-        "content": [
-            {
-                "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
-                "name": "Females",
-                "query": "gender = Female"
-            },
-            {
-                "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6",
-                "name": "Males",
-                "query": "gender = Male"
-            },
-            {
-                "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75",
-                "name": "Has Gender",
-                "query": "gender != \"\""
-            },
-            {
-                "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9",
-                "name": "Stateless",
-                "query": "state = \"\""
-            },
-            {
-                "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50",
-                "name": "Youth",
-                "query": "age <= 18"
-            },
-            {
-                "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b",
-                "name": "Old Men",
-                "query": "age > 50 AND gender = male"
-            },
-            {
-                "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c",
-                "name": "Has Age",
-                "query": "age != \"\""
-            },
-            {
-                "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3",
-                "name": "No Age",
-                "query": "age = \"\""
-            },
-            {
-                "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba",
-                "name": "MTN Callers",
-                "query": "tel ~ \"25078\""
-            },
-            {
-                "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff",
-                "name": "Complicated",
-                "query": "gender != \"\" AND (age != \"\" OR tel ~ \"25078\")"
-            }
-        ]
-    },
-    {
-        "type": "channel",
-        "url": "http://testserver/assets/channel",
-        "content": [
-            {
-                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
-                "name": "Android Channel",
-                "address": "+12345671111",
-                "schemes": [
-                    "tel"
-                ],
-                "roles": [
-                    "send",
-                    "receive"
-                ]
-            }
-        ]
-    }
-]
+    ],
+    "fields": [
+        {
+            "key": "first_name",
+            "label": "First Name",
+            "value_type": "text"
+        },
+        {
+            "key": "gender",
+            "label": "Gender",
+            "value_type": "text"
+        },
+        {
+            "key": "age",
+            "label": "Age",
+            "value_type": "number"
+        },
+        {
+            "key": "state",
+            "label": "State",
+            "value_type": "text"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "d7ff4872-9238-452f-9d38-2f558fea89e0",
+            "name": "Females",
+            "query": "gender = Female"
+        },
+        {
+            "uuid": "047de1c9-9189-4f4c-aa04-bff0a4c2efb6",
+            "name": "Males",
+            "query": "gender = Male"
+        },
+        {
+            "uuid": "b75f451a-f180-4494-b597-8d9f4ef43d75",
+            "name": "Has Gender",
+            "query": "gender != \"\""
+        },
+        {
+            "uuid": "272ee7f6-a011-4baf-b178-b68ed2b2f5b9",
+            "name": "Stateless",
+            "query": "state = \"\""
+        },
+        {
+            "uuid": "4bb13eec-5344-4ab8-83b7-b5791c669c50",
+            "name": "Youth",
+            "query": "age <= 18"
+        },
+        {
+            "uuid": "f3c36e43-404d-4723-83d5-2cd09212619b",
+            "name": "Old Men",
+            "query": "age > 50 AND gender = male"
+        },
+        {
+            "uuid": "08fded54-e957-4ee3-bce7-c4af5f4c051c",
+            "name": "Has Age",
+            "query": "age != \"\""
+        },
+        {
+            "uuid": "d56e5f4e-17e8-429a-9dff-f6f5e4a784f3",
+            "name": "No Age",
+            "query": "age = \"\""
+        },
+        {
+            "uuid": "db60d4dd-b4eb-46bf-9cdb-65d3d0e75bba",
+            "name": "MTN Callers",
+            "query": "tel ~ \"25078\""
+        },
+        {
+            "uuid": "898396a2-df6f-4c2f-afe2-c850038a7fff",
+            "name": "Complicated",
+            "query": "gender != \"\" AND (age != \"\" OR tel ~ \"25078\")"
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "Android Channel",
+            "address": "+12345671111",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ]
+}
