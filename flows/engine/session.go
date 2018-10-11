@@ -19,6 +19,7 @@ import (
 type pushedFlow struct {
 	flow      flows.Flow
 	parentRun flows.FlowRun
+	terminal  bool
 }
 
 type session struct {
@@ -65,8 +66,8 @@ func (s *session) SetContact(contact *flows.Contact)    { s.contact = contact }
 
 func (s *session) FlowOnStack(uuid assets.FlowUUID) bool { return s.flowStack.hasFlow(uuid) }
 
-func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun) {
-	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun}
+func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun, terminal bool) {
+	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun, terminal: terminal}
 }
 
 func (s *session) Runs() []flows.FlowRun { return s.runs }
@@ -229,6 +230,13 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 	for {
 		// if we have a flow trigger handle that first to find our destination in the new flow
 		if s.pushedFlow != nil {
+			// if this is terminal, then we need to interrupt all other runs so we don't try to resume them
+			if s.pushedFlow.terminal {
+				for _, run := range s.runs {
+					run.Exit(flows.RunStatusInterrupted)
+				}
+			}
+
 			// create a new run for it
 			flow := s.pushedFlow.flow
 			currentRun = runs.NewRun(s, s.pushedFlow.flow, currentRun)
@@ -252,10 +260,12 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				currentRun.Exit(flows.RunStatusCompleted)
 			}
 
-			// switch back our parent run
-			if currentRun.ParentInSession() != nil {
+			parentRun := currentRun.ParentInSession()
+
+			// switch back our parent run if it's still active
+			if parentRun != nil && parentRun.Status() == flows.RunStatusActive {
 				childRun := currentRun
-				currentRun = currentRun.ParentInSession()
+				currentRun = parentRun
 				s.flowStack.pop()
 
 				// as long as we didn't error, we can try to resume it

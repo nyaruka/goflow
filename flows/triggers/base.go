@@ -48,7 +48,7 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", flow.UUID(), err)
 	}
 
-	session.PushFlow(flow, nil)
+	session.PushFlow(flow, nil, false)
 
 	if t.environment != nil {
 		session.SetEnvironment(t.environment)

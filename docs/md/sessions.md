@@ -516,7 +516,8 @@ Events are created when an action has started a sub-flow.
         "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
         "name": "Registration"
     },
-    "parent_run_uuid": "95eb96df-461b-4668-b168-727f8ceb13dd"
+    "parent_run_uuid": "95eb96df-461b-4668-b168-727f8ceb13dd",
+    "terminal": false
 }
 ```
 </div>
