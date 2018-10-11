@@ -116,10 +116,29 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, in io.Reader, out io.W
 }
 
 func printEvents(session flows.Session, out io.Writer) {
-	// print any msg_created events
 	for _, event := range session.Events() {
-		if event.Type() == events.TypeMsgCreated {
-			fmt.Fprintf(out, "💬 %s\n", event.(*events.MsgCreatedEvent).Msg.Text())
+		var msg string
+		switch typed := event.(type) {
+		case *events.ContactNameChangedEvent:
+			msg = fmt.Sprintf("📛 name changed to %s", typed.Name)
+		case *events.ContactLanguageChangedEvent:
+			msg = fmt.Sprintf("🌐 language changed to %s", typed.Language)
+		case *events.ContactTimezoneChangedEvent:
+			msg = fmt.Sprintf("🕑 timezone changed to %s", typed.Timezone)
+		case *events.ErrorEvent:
+			msg = fmt.Sprintf("⚠️ %s", typed.Text)
+		case *events.MsgCreatedEvent:
+			msg = fmt.Sprintf("💬 \"%s\"", typed.Msg.Text())
+		case *events.MsgReceivedEvent:
+			msg = fmt.Sprintf("📥 received message '%s'", typed.Msg.Text())
+		case *events.MsgWaitEvent:
+			msg = fmt.Sprintf("⏳ waiting for message....")
+		case *events.RunResultChangedEvent:
+			msg = fmt.Sprintf("📈 run result '%s' changed to '%s'", typed.Name, typed.Value)
+		default:
+			msg = fmt.Sprintf("❓ %s event", typed.Type())
 		}
+
+		fmt.Fprintln(out, msg)
 	}
 }
