@@ -336,7 +336,7 @@ type Session interface {
 
 	Status() SessionStatus
 	Trigger() Trigger
-	PushFlow(Flow, FlowRun)
+	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
 	FlowOnStack(assets.FlowUUID) bool
 

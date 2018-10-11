@@ -407,6 +407,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		return &actions.StartFlowAction{
 			BaseAction: actions.NewBaseAction(a.UUID),
 			Flow:       a.Flow.Migrate(),
+			Terminal:   true,
 		}, nil
 	case "trigger-flow":
 		contacts := make([]*flows.ContactReference, len(a.Contacts))

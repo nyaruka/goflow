@@ -84,6 +84,7 @@
                     },
                     "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "terminal": false,
                     "type": "flow_triggered"
                 },
                 {
@@ -514,6 +515,7 @@
                                 },
                                 "parent_run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "terminal": false,
                                 "type": "flow_triggered"
                             },
                             {

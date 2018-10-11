@@ -645,7 +645,8 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
-    }
+    },
+    "terminal": false
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -657,7 +658,8 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "936fea74-7589-4322-aac5-484f64970a84"
+    "parent_run_uuid": "936fea74-7589-4322-aac5-484f64970a84",
+    "terminal": false
 }
 ```
 </div>
