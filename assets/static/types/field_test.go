@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFields(t *testing.T) {
+func TestField(t *testing.T) {
 	field := types.NewField("age", "Age", assets.FieldTypeNumber)
 	assert.Equal(t, "age", field.Key())
 	assert.Equal(t, "Age", field.Name())

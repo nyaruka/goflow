@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestChannels(t *testing.T) {
+func TestChannel(t *testing.T) {
 	channel := types.NewChannel(
 		assets.ChannelUUID("ffffffff-9b24-92e1-ffff-ffffb207cdb4"),
 		"Android",
