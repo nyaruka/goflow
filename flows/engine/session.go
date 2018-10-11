@@ -306,9 +306,6 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				if s.status == flows.SessionStatusWaiting {
 					return nil
 				}
-
-				// mark this node as visited to prevent loops
-				s.flowStack.visit(node.UUID())
 			}
 		}
 	}
@@ -316,6 +313,9 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 
 // visits the given node, creating a step in our current run path
 func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Trigger) (flows.Step, flows.NodeUUID, error) {
+	// mark this node as visited to prevent loops
+	s.flowStack.visit(node.UUID())
+
 	step := run.CreateStep(node)
 
 	// this might be the first run of the session in which case a trigger might need to initialize the run
@@ -351,16 +351,22 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 		return step, noDestination, nil
 	}
 
-	// if our node has a wait before its router, we hand back to the caller
+	// our node might have wait
 	wait := node.Wait()
 	if wait != nil {
-		wait.Begin(run, step)
 
-		run.SetStatus(flows.RunStatusWaiting)
-		s.wait = wait
-		s.status = flows.SessionStatusWaiting
+		// waits have the option to skip themselves
+		if wait.Begin(run, step) {
+			// mark ouselves as waiting and hand back to
+			run.SetStatus(flows.RunStatusWaiting)
+			s.wait = wait
+			s.status = flows.SessionStatusWaiting
 
-		return step, noDestination, nil
+			return step, noDestination, nil
+		}
+
+		// if our wait skipped we need to pretend we were never at this node to avoid a loop error if we end up back here
+		s.flowStack.unvisit(node.UUID())
 	}
 
 	// use our node's router to determine where to go next

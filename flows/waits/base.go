@@ -29,12 +29,13 @@ func (w *baseWait) Timeout() *int { return w.Timeout_ }
 func (w *baseWait) TimeoutOn() *time.Time { return w.TimeoutOn_ }
 
 // Begin beings waiting
-func (w *baseWait) Begin(run flows.FlowRun) {
+func (w *baseWait) Begin(run flows.FlowRun) bool {
 	if w.Timeout_ != nil {
 		timeoutOn := utils.Now().Add(time.Second * time.Duration(*w.Timeout_))
 
 		w.TimeoutOn_ = &timeoutOn
 	}
+	return true
 }
 
 // End ends this wait or returns an error
