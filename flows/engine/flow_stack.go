@@ -42,12 +42,17 @@ func (s *flowStack) pop() {
 
 // records the given node as visited in the current frame
 func (s *flowStack) visit(nodeUUID flows.NodeUUID) {
-	s.stack[len(s.stack)-1].visitedNodes[nodeUUID] = true
+	s.currentFrame().visitedNodes[nodeUUID] = true
+}
+
+// records the given node as visited in the current frame
+func (s *flowStack) unvisit(nodeUUID flows.NodeUUID) {
+	s.currentFrame().visitedNodes[nodeUUID] = false
 }
 
 // checks whether the given node has already been visited in the current frame
 func (s *flowStack) hasVisited(nodeUUID flows.NodeUUID) bool {
-	return s.stack[len(s.stack)-1].visitedNodes[nodeUUID]
+	return s.currentFrame().visitedNodes[nodeUUID]
 }
 
 func (s *flowStack) hasFlow(flowUUID assets.FlowUUID) bool {
@@ -60,3 +65,5 @@ func (s *flowStack) hasFlow(flowUUID assets.FlowUUID) bool {
 }
 
 func (s *flowStack) depth() int { return len(s.stack) }
+
+func (s *flowStack) currentFrame() *flowFrame { return s.stack[len(s.stack)-1] }

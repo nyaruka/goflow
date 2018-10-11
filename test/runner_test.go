@@ -35,6 +35,7 @@ var flowTests = []struct {
 	{"dynamic_groups_correction.json", "dynamic_groups_correction_test.json"},
 	{"dynamic_groups.json", "dynamic_groups_test.json"},
 	{"empty.json", "empty_test.json"},
+	{"initial_wait.json", "initial_wait_test.json"},
 	{"legacy_extra.json", "legacy_extra_test.json"},
 	{"no_contact.json", "no_contact_test.json"},
 	{"node_loop.json", "node_loop_test.json"},

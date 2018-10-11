@@ -65,7 +65,7 @@ type KeywordMatch struct {
 }
 
 // NewMsgTrigger creates a new message trigger
-func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
+func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn},
 		msg:         msg,

@@ -194,7 +194,7 @@ type Wait interface {
 	Timeout() *int
 	TimeoutOn() *time.Time
 
-	Begin(FlowRun, Step)
+	Begin(FlowRun, Step) bool
 	End(Resume) error
 }
 
