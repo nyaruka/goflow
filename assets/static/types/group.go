@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
@@ -29,28 +28,17 @@ func (g *Group) Name() string { return g.Name_ }
 // Query returns the query of a dynamic group
 func (g *Group) Query() string { return g.Query_ }
 
-// ReadGroup reads a group from the given JSON
-func ReadGroup(data json.RawMessage) (assets.Group, error) {
-	g := &Group{}
-	if err := utils.UnmarshalAndValidate(data, g); err != nil {
-		return nil, fmt.Errorf("unable to read group: %s", err)
-	}
-	return g, nil
-}
-
 // ReadGroups reads groups from the given JSON
 func ReadGroups(data json.RawMessage) ([]assets.Group, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
+	var items []*Group
+	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
 		return nil, err
 	}
 
-	groups := make([]assets.Group, len(items))
-	for d := range items {
-		if groups[d], err = ReadGroup(items[d]); err != nil {
-			return nil, err
-		}
+	asAssets := make([]assets.Group, len(items))
+	for i := range items {
+		asAssets[i] = items[i]
 	}
 
-	return groups, nil
+	return asAssets, nil
 }

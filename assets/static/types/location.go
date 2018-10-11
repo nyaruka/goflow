@@ -9,17 +9,15 @@ import (
 
 // ReadLocationHierarchies reads location hierarchies from the given JSON
 func ReadLocationHierarchies(data json.RawMessage) ([]assets.LocationHierarchy, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
+	var items []*utils.LocationHierarchy
+	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
 		return nil, err
 	}
 
-	hierarchies := make([]assets.LocationHierarchy, len(items))
-	for d := range items {
-		if hierarchies[d], err = utils.ReadLocationHierarchy(items[d]); err != nil {
-			return nil, err
-		}
+	asAssets := make([]assets.LocationHierarchy, len(items))
+	for i := range items {
+		asAssets[i] = items[i]
 	}
 
-	return hierarchies, nil
+	return asAssets, nil
 }

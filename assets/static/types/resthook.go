@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
@@ -14,6 +13,7 @@ type Resthook struct {
 	Subscribers_ []string `json:"subscribers" validate:"required,dive,url"`
 }
 
+// NewResthook creates a new resthook
 func NewResthook(slug string, subscribers []string) assets.Resthook {
 	return &Resthook{Slug_: slug, Subscribers_: subscribers}
 }
@@ -24,29 +24,17 @@ func (r *Resthook) Slug() string { return r.Slug_ }
 // Subscribers returns the subscribers to the resthook
 func (r *Resthook) Subscribers() []string { return r.Subscribers_ }
 
-// ReadResthook reads a resthook from the given JSON
-func ReadResthook(data json.RawMessage) (assets.Resthook, error) {
-	r := &Resthook{}
-	if err := utils.UnmarshalAndValidate(data, r); err != nil {
-		return nil, fmt.Errorf("unable to read resthook: %s", err)
-	}
-
-	return r, nil
-}
-
 // ReadResthooks reads a resthook set from the given JSON
 func ReadResthooks(data json.RawMessage) ([]assets.Resthook, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
+	var items []*Resthook
+	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
 		return nil, err
 	}
 
-	resthooks := make([]assets.Resthook, len(items))
-	for d := range items {
-		if resthooks[d], err = ReadResthook(items[d]); err != nil {
-			return nil, err
-		}
+	asAssets := make([]assets.Resthook, len(items))
+	for i := range items {
+		asAssets[i] = items[i]
 	}
 
-	return resthooks, nil
+	return asAssets, nil
 }

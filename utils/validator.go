@@ -40,10 +40,21 @@ func (e ValidationErrors) Error() string {
 // For example: "field 'flows' is required"
 //
 func Validate(obj interface{}) error {
-	err := Validator.Struct(obj)
+	var err error
+
+	// gets the value stored in the interface var, and if it's a pointer, dereferences it
+	v := reflect.Indirect(reflect.ValueOf(obj))
+
+	if v.Type().Kind() == reflect.Slice {
+		err = Validator.Var(obj, `required,dive`)
+	} else {
+		err = Validator.Struct(obj)
+	}
+
 	if err == nil {
 		return nil
 	}
+
 	validationErrs, isValidationErr := err.(validator.ValidationErrors)
 	if !isValidationErr {
 		return err

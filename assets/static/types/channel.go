@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
@@ -71,28 +70,17 @@ func (c *Channel) Country() string { return c.Country_ }
 // MatchPrefixes returns this channel's match prefixes values used for selecting a channel for a URN (if any)
 func (c *Channel) MatchPrefixes() []string { return c.MatchPrefixes_ }
 
-// ReadChannel reads a channel from the given JSON
-func ReadChannel(data json.RawMessage) (assets.Channel, error) {
-	c := &Channel{}
-	if err := utils.UnmarshalAndValidate(data, c); err != nil {
-		return nil, fmt.Errorf("unable to read channel: %s", err)
-	}
-	return c, nil
-}
-
 // ReadChannels reads channels from the given JSON
 func ReadChannels(data json.RawMessage) ([]assets.Channel, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
+	var items []*Channel
+	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
 		return nil, err
 	}
 
-	channels := make([]assets.Channel, len(items))
-	for d := range items {
-		if channels[d], err = ReadChannel(items[d]); err != nil {
-			return nil, err
-		}
+	asAssets := make([]assets.Channel, len(items))
+	for i := range items {
+		asAssets[i] = items[i]
 	}
 
-	return channels, nil
+	return asAssets, nil
 }

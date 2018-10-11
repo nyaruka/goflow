@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
@@ -29,28 +28,17 @@ func (f *Field) Name() string { return f.Name_ }
 // Type returns the value type of the field
 func (f *Field) Type() assets.FieldType { return f.Type_ }
 
-// ReadField reads a field from the given JSON
-func ReadField(data json.RawMessage) (assets.Field, error) {
-	f := &Field{}
-	if err := utils.UnmarshalAndValidate(data, f); err != nil {
-		return nil, fmt.Errorf("unable to read field: %s", err)
-	}
-	return f, nil
-}
-
 // ReadFields reads fields from the given JSON
 func ReadFields(data json.RawMessage) ([]assets.Field, error) {
-	items, err := utils.UnmarshalArray(data)
-	if err != nil {
+	var items []*Field
+	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
 		return nil, err
 	}
 
-	fields := make([]assets.Field, len(items))
-	for d := range items {
-		if fields[d], err = ReadField(items[d]); err != nil {
-			return nil, err
-		}
+	asAssets := make([]assets.Field, len(items))
+	for i := range items {
+		asAssets[i] = items[i]
 	}
 
-	return fields, nil
+	return asAssets, nil
 }
