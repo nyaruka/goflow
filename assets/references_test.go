@@ -14,6 +14,14 @@ func TestReferenceValidation(t *testing.T) {
 	assert.NoError(t, utils.Validate(assets.NewChannelReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Nexmo")))
 	assert.EqualError(t, utils.Validate(assets.NewChannelReference("", "Nexmo")), "field 'uuid' is required")
 
+	// field references must have a key
+	assert.NoError(t, utils.Validate(assets.NewFieldReference("gender", "Gender")))
+	assert.EqualError(t, utils.Validate(assets.NewFieldReference("", "Gender")), "field 'key' is required")
+
+	// flow references must always be concrete
+	assert.NoError(t, utils.Validate(assets.NewFlowReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Registration")))
+	assert.EqualError(t, utils.Validate(assets.NewFlowReference("", "Registration")), "field 'uuid' is required")
+
 	// group references can be concrete or a name match template
 	assert.NoError(t, utils.Validate(assets.NewGroupReference("61602f3e-f603-4c70-8a8f-c477505bf4bf", "Testers")))
 	assert.NoError(t, utils.Validate(assets.NewVariableGroupReference("@contact.fields.district")))

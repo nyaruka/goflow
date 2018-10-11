@@ -52,7 +52,7 @@ func NewFieldReference(key string, label string) *FieldReference {
 
 // FlowReference is used to reference a flow from another flow
 type FlowReference struct {
-	UUID FlowUUID `json:"uuid" validate:"uuid4"`
+	UUID FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name string   `json:"name"`
 }
 
