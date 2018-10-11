@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/karlseguin/ccache"
@@ -25,13 +24,13 @@ type assetTypeConfig struct {
 }
 
 var typeConfigs = map[AssetType]*assetTypeConfig{
-	assetTypeChannel:           {true, func(data json.RawMessage) (interface{}, error) { return types.ReadChannels(data) }},
-	assetTypeField:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadFields(data) }},
-	assetTypeFlow:              {false, func(data json.RawMessage) (interface{}, error) { return types.ReadFlow(data) }},
-	assetTypeGroup:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadGroups(data) }},
-	assetTypeLabel:             {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLabels(data) }},
-	assetTypeLocationHierarchy: {true, func(data json.RawMessage) (interface{}, error) { return types.ReadLocationHierarchies(data) }},
-	assetTypeResthook:          {true, func(data json.RawMessage) (interface{}, error) { return types.ReadResthooks(data) }},
+	assetTypeChannel:           {true, readChannels},
+	assetTypeField:             {true, readFields},
+	assetTypeFlow:              {false, readFlow},
+	assetTypeGroup:             {true, readGroups},
+	assetTypeLabel:             {true, readLabels},
+	assetTypeLocationHierarchy: {true, readLocationHierarchies},
+	assetTypeResthook:          {true, readResthooks},
 }
 
 // anything which the cache can use to fetch missing items

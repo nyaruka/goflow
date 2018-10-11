@@ -1,10 +1,7 @@
 package types
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Group is a JSON serializable implementation of a group asset
@@ -27,18 +24,3 @@ func (g *Group) Name() string { return g.Name_ }
 
 // Query returns the query of a dynamic group
 func (g *Group) Query() string { return g.Query_ }
-
-// ReadGroups reads groups from the given JSON
-func ReadGroups(data json.RawMessage) ([]assets.Group, error) {
-	var items []*Group
-	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
-		return nil, err
-	}
-
-	asAssets := make([]assets.Group, len(items))
-	for i := range items {
-		asAssets[i] = items[i]
-	}
-
-	return asAssets, nil
-}

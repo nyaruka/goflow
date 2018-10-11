@@ -1,10 +1,7 @@
 package types
 
 import (
-	"encoding/json"
-
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Label is a JSON serializable implementation of a label asset
@@ -23,18 +20,3 @@ func (l *Label) UUID() assets.LabelUUID { return l.UUID_ }
 
 // Name returns the name of the label
 func (l *Label) Name() string { return l.Name_ }
-
-// ReadLabels reads labels from the given JSON
-func ReadLabels(data json.RawMessage) ([]assets.Label, error) {
-	var items []*Label
-	if err := utils.UnmarshalAndValidate(data, &items); err != nil {
-		return nil, err
-	}
-
-	asAssets := make([]assets.Label, len(items))
-	for i := range items {
-		asAssets[i] = items[i]
-	}
-
-	return asAssets, nil
-}

@@ -2,10 +2,8 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/utils"
 )
 
 // Flow is a JSON serializable implementation of a flow asset
@@ -29,13 +27,4 @@ func (f *Flow) UnmarshalJSON(data []byte) error {
 	// alias our type so we don't end up here again
 	type alias Flow
 	return json.Unmarshal(data, (*alias)(f))
-}
-
-// ReadFlow reads a flow from the given JSON
-func ReadFlow(data json.RawMessage) (assets.Flow, error) {
-	f := &Flow{Definition_: data}
-	if err := utils.UnmarshalAndValidate(data, f); err != nil {
-		return nil, fmt.Errorf("unable to read flow: %s", err)
-	}
-	return f, nil
 }
