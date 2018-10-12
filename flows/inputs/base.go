@@ -21,10 +21,23 @@ func RegisterType(name string, f readFunc) {
 }
 
 type baseInput struct {
+	type_     string
 	uuid      flows.InputUUID
 	channel   *flows.Channel
 	createdOn time.Time
 }
+
+func newBaseInput(typeName string, uuid flows.InputUUID, channel *flows.Channel, createdOn time.Time) baseInput {
+	return baseInput{
+		type_:     typeName,
+		uuid:      uuid,
+		channel:   channel,
+		createdOn: createdOn,
+	}
+}
+
+// Type returns the type of this input
+func (i *baseInput) Type() string { return i.type_ }
 
 func (i *baseInput) UUID() flows.InputUUID   { return i.uuid }
 func (i *baseInput) Channel() *flows.Channel { return i.channel }
@@ -33,6 +46,8 @@ func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 // Resolve resolves the given key when this input is referenced in an expression
 func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
+	case "type":
+		return types.NewXText(TypeMsg)
 	case "uuid":
 		return types.NewXText(string(i.uuid))
 	case "created_on":
@@ -49,16 +64,48 @@ func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 //------------------------------------------------------------------------------------------
 
 type baseInputEnvelope struct {
+	Type      string                   `json:"type" validate:"required"`
 	UUID      flows.InputUUID          `json:"uuid"`
 	Channel   *assets.ChannelReference `json:"channel,omitempty" validate:"omitempty,dive"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
 }
 
 // ReadInput reads an input from the given typed envelope
-func ReadInput(session flows.Session, envelope *utils.TypedEnvelope) (flows.Input, error) {
-	f := registeredTypes[envelope.Type]
-	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
+func ReadInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
+	typeName, err := utils.ReadTypeFromJSON(data)
+	if err != nil {
+		return nil, err
 	}
-	return f(session, envelope.Data)
+
+	f := registeredTypes[typeName]
+	if f == nil {
+		return nil, fmt.Errorf("unknown type: %s", typeName)
+	}
+	return f(session, data)
+}
+
+func (i *baseInput) unmarshal(session flows.Session, e *baseInputEnvelope) error {
+	var err error
+
+	i.type_ = e.Type
+	i.uuid = e.UUID
+	i.createdOn = e.CreatedOn
+
+	if e.Channel != nil {
+		i.channel, err = session.Assets().Channels().Get(e.Channel.UUID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (i *baseInput) marshal(e *baseInputEnvelope) {
+	e.Type = i.Type()
+	e.UUID = i.UUID()
+	e.CreatedOn = i.CreatedOn()
+
+	if i.Channel() != nil {
+		e.Channel = i.Channel().Reference()
+	}
 }

@@ -24,8 +24,8 @@ type baseWait struct {
 	TimeoutOn_ *time.Time `json:"timeout_on,omitempty"`
 }
 
-func newBaseWait(typ string, timeout *int) baseWait {
-	return baseWait{Type_: typ, Timeout_: timeout}
+func newBaseWait(typeName string, timeout *int) baseWait {
+	return baseWait{Type_: typeName, Timeout_: timeout}
 }
 
 // Type returns the type of this wait
