@@ -20,11 +20,8 @@ type RandomRouter struct {
 }
 
 func NewRandomRouter(resultName string) *RandomRouter {
-	return &RandomRouter{BaseRouter: BaseRouter{ResultName_: resultName}}
+	return &RandomRouter{newBaseRouter(TypeRandom, resultName)}
 }
-
-// Type returns the type of this router
-func (r *RandomRouter) Type() string { return TypeRandom }
 
 // Validate validates that the fields on this router are valid
 func (r *RandomRouter) Validate(exits []flows.Exit) error {
