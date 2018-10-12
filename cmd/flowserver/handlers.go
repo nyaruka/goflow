@@ -44,7 +44,7 @@ type sessionResponse struct {
 type startRequest struct {
 	sessionRequest
 
-	Trigger *utils.TypedEnvelope `json:"trigger" validate:"required"`
+	Trigger json.RawMessage `json:"trigger" validate:"required"`
 }
 
 // reads the assets and asset_server section of a request
@@ -89,7 +89,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, request.Trigger)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", request.Trigger.Type, err)
+		return nil, fmt.Errorf("unable to read trigger: %s", err)
 	}
 
 	// start our flow

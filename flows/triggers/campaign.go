@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -54,32 +53,9 @@ type CampaignTrigger struct {
 // NewCampaignTrigger creates a new campaign trigger with the passed in values
 func NewCampaignTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, event *CampaignEvent, triggeredOn time.Time) *CampaignTrigger {
 	return &CampaignTrigger{
-		baseTrigger: baseTrigger{
-			environment: env,
-			flow:        flow,
-			contact:     contact,
-			triggeredOn: triggeredOn,
-		},
-		event: event,
+		baseTrigger: newBaseTrigger(TypeCampaign, env, flow, contact, nil, triggeredOn),
+		event:       event,
 	}
-}
-
-// Type returns the type of this trigger
-func (t *CampaignTrigger) Type() string { return TypeCampaign }
-
-// Resolve resolves the given key when this trigger is referenced in an expression
-func (t *CampaignTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "type":
-		return types.NewXText(TypeCampaign)
-	}
-
-	return t.baseTrigger.Resolve(env, key)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (t *CampaignTrigger) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
 }
 
 var _ flows.Trigger = (*CampaignTrigger)(nil)

@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -67,7 +66,7 @@ type KeywordMatch struct {
 // NewMsgTrigger creates a new message trigger
 func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
-		baseTrigger: baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn},
+		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, triggeredOn),
 		msg:         msg,
 		match:       match,
 	}
@@ -84,24 +83,6 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
 	run.SetInput(input)
 	run.LogEvent(step, events.NewMsgReceivedEvent(t.msg))
 	return nil
-}
-
-// Type returns the type of this trigger
-func (t *MsgTrigger) Type() string { return TypeMsg }
-
-// Resolve resolves the given key when this trigger is referenced in an expression
-func (t *MsgTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "type":
-		return types.NewXText(TypeMsg)
-	}
-
-	return t.baseTrigger.Resolve(env, key)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (t *MsgTrigger) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
 }
 
 var _ flows.Trigger = (*MsgTrigger)(nil)

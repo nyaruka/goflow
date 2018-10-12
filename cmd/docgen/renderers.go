@@ -158,11 +158,9 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
-	typed := &utils.TypedEnvelope{}
-	err := json.Unmarshal(exampleJSON, typed)
-	trigger, err := triggers.ReadTrigger(session, typed)
+	trigger, err := triggers.ReadTrigger(session, exampleJSON)
 	if err != nil {
-		return fmt.Errorf("unable to read trigger[type=%s]: %s", typed.Type, err)
+		return fmt.Errorf("unable to read trigger: %s", err)
 	}
 
 	// validate it
@@ -171,7 +169,7 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(exampleJSON)
+	exampleJSON, err = utils.JSONMarshalPretty(trigger)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}

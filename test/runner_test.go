@@ -86,9 +86,9 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Trigger *utils.TypedEnvelope `json:"trigger"`
-	Resumes []json.RawMessage    `json:"resumes"`
-	Outputs []json.RawMessage    `json:"outputs"`
+	Trigger json.RawMessage   `json:"trigger"`
+	Resumes []json.RawMessage `json:"resumes"`
+	Outputs []json.RawMessage `json:"outputs"`
 }
 
 type runResult struct {
@@ -96,7 +96,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, rawResumes []json.RawMessage) (runResult, error) {
+func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
 	// load the test specific assets
 	testAssetsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", assetsPath))
 	if err != nil {
@@ -114,7 +114,7 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, rawResumes
 	assets, _ := engine.NewSessionAssets(source)
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 
-	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
+	trigger, err := triggers.ReadTrigger(session, rawTrigger)
 	if err != nil {
 		return runResult{}, fmt.Errorf("error unmarshalling trigger: %s", err)
 	}

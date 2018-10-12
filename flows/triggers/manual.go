@@ -36,25 +36,9 @@ type ManualTrigger struct {
 
 // NewManualTrigger creates a new manual trigger
 func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, triggeredOn time.Time) flows.Trigger {
-	return &ManualTrigger{baseTrigger{environment: env, contact: contact, flow: flow, triggeredOn: triggeredOn}}
-}
-
-// Type returns the type of this trigger
-func (t *ManualTrigger) Type() string { return TypeManual }
-
-// Resolve resolves the given key when this trigger is referenced in an expression
-func (t *ManualTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "type":
-		return types.NewXText(TypeManual)
+	return &ManualTrigger{
+		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, params, triggeredOn),
 	}
-
-	return t.baseTrigger.Resolve(env, key)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (t *ManualTrigger) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
 }
 
 var _ flows.Trigger = (*ManualTrigger)(nil)

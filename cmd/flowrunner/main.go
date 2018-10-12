@@ -180,18 +180,3 @@ type Repro struct {
 	Trigger flows.Trigger  `json:"trigger"`
 	Resumes []flows.Resume `json:"resumes"`
 }
-
-func (r *Repro) MarshalJSON() ([]byte, error) {
-	envelope := &struct {
-		Trigger *utils.TypedEnvelope   `json:"trigger"`
-		Resumes []*utils.TypedEnvelope `json:"resumes"`
-	}{}
-
-	envelope.Trigger, _ = utils.EnvelopeFromTyped(r.Trigger)
-	envelope.Resumes = make([]*utils.TypedEnvelope, len(r.Resumes))
-	for i := range r.Resumes {
-		envelope.Resumes[i], _ = utils.EnvelopeFromTyped(r.Resumes[i])
-	}
-
-	return json.Marshal(envelope)
-}
