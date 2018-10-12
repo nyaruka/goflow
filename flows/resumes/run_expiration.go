@@ -37,12 +37,9 @@ type RunExpirationResume struct {
 // NewRunExpirationResume creates a new run expired resume with the passed in values
 func NewRunExpirationResume(env utils.Environment, contact *flows.Contact) *RunExpirationResume {
 	return &RunExpirationResume{
-		baseResume: newBaseResume(env, contact),
+		baseResume: newBaseResume(TypeRunExpiration, env, contact),
 	}
 }
-
-// Type returns the type of this resume
-func (r *RunExpirationResume) Type() string { return TypeRunExpiration }
 
 // Apply applies our state changes and saves any events to the run
 func (r *RunExpirationResume) Apply(run flows.FlowRun, step flows.Step) error {

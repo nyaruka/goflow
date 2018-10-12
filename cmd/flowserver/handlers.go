@@ -112,8 +112,8 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 type resumeRequest struct {
 	sessionRequest
 
-	Session json.RawMessage      `json:"session" validate:"required"`
-	Resume  *utils.TypedEnvelope `json:"resume" validate:"required"`
+	Session json.RawMessage `json:"session" validate:"required"`
+	Resume  json.RawMessage `json:"resume" validate:"required"`
 }
 
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {

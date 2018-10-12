@@ -86,9 +86,9 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Trigger *utils.TypedEnvelope   `json:"trigger"`
-	Resumes []*utils.TypedEnvelope `json:"resumes"`
-	Outputs []json.RawMessage      `json:"outputs"`
+	Trigger *utils.TypedEnvelope `json:"trigger"`
+	Resumes []json.RawMessage    `json:"resumes"`
+	Outputs []json.RawMessage    `json:"outputs"`
 }
 
 type runResult struct {
@@ -96,7 +96,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
+func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, rawResumes []json.RawMessage) (runResult, error) {
 	// load the test specific assets
 	testAssetsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", assetsPath))
 	if err != nil {
@@ -127,7 +127,7 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 	outputs := make([]*Output, 0)
 
 	// try to resume the session for each of the provided resumes
-	for r, resumeEnvelope := range resumeEnvelopes {
+	for r, rawResume := range rawResumes {
 		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
@@ -146,10 +146,10 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 
 		// if we aren't at a wait, that's an error
 		if session.Wait() == nil {
-			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resumes: %#v", resumeEnvelopes[r:])
+			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
 		}
 
-		resume, err := resumes.ReadResume(session, resumeEnvelope)
+		resume, err := resumes.ReadResume(session, rawResume)
 		if err != nil {
 			return runResult{}, err
 		}

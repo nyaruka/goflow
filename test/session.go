@@ -336,11 +336,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our resume
-	resumeEnvelope := &utils.TypedEnvelope{}
-	if err := resumeEnvelope.UnmarshalJSON(json.RawMessage(sessionResume)); err != nil {
-		return nil, fmt.Errorf("error unmarsalling resume: %s", err)
-	}
-	resume, err := resumes.ReadResume(session, resumeEnvelope)
+	resume, err := resumes.ReadResume(session, json.RawMessage(sessionResume))
 	if err != nil {
 		return nil, fmt.Errorf("error reading resume: %s", err)
 	}

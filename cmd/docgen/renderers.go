@@ -191,11 +191,9 @@ func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flo
 func renderResumeDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
-	typed := &utils.TypedEnvelope{}
-	err := json.Unmarshal(exampleJSON, typed)
-	resume, err := resumes.ReadResume(session, typed)
+	resume, err := resumes.ReadResume(session, exampleJSON)
 	if err != nil {
-		return fmt.Errorf("unable to read resume[type=%s]: %s", typed.Type, err)
+		return fmt.Errorf("unable to read resume: %s", err)
 	}
 
 	// validate it
@@ -203,7 +201,7 @@ func renderResumeDoc(output *strings.Builder, item *documentedItem, session flow
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
-	exampleJSON, err = utils.JSONMarshalPretty(exampleJSON)
+	exampleJSON, err = utils.JSONMarshalPretty(resume)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}

@@ -185,28 +185,31 @@ Is used when a session is resumed with a new message from the contact
     "type": "msg",
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "id": 0,
         "name": "Bob",
         "language": "fra",
+        "timezone": "",
+        "created_on": "0001-01-01T00:00:00Z",
+        "urns": [],
         "fields": {
             "gender": {
                 "text": "Male"
             }
-        },
-        "groups": []
+        }
     },
+    "resumed_on": "2000-01-01T00:00:00Z",
     "msg": {
         "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
+        "urn": "tel:+12065551212",
         "channel": {
             "uuid": "61602f3e-f603-4c70-8a8f-c477505bf4bf",
             "name": "Twilio"
         },
-        "urn": "tel:+12065551212",
         "text": "hi there",
         "attachments": [
             "https://s3.amazon.com/mybucket/attachment.jpg"
         ]
-    },
-    "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+    }
 }
 ```
 
@@ -222,16 +225,19 @@ Is used when a session is resumed because the waiting run has expired
     "type": "run_expiration",
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "id": 0,
         "name": "Bob",
         "language": "fra",
+        "timezone": "",
+        "created_on": "0001-01-01T00:00:00Z",
+        "urns": [],
         "fields": {
             "gender": {
                 "text": "Male"
             }
-        },
-        "groups": []
+        }
     },
-    "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+    "resumed_on": "2000-01-01T00:00:00Z"
 }
 ```
 
@@ -247,16 +253,19 @@ Is used when a session is resumed because a wait has timed out
     "type": "wait_timeout",
     "contact": {
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
+        "id": 0,
         "name": "Bob",
         "language": "fra",
+        "timezone": "",
+        "created_on": "0001-01-01T00:00:00Z",
+        "urns": [],
         "fields": {
             "gender": {
                 "text": "Male"
             }
-        },
-        "groups": []
+        }
     },
-    "resumed_on": "2000-01-01T00:00:00.000000000-00:00"
+    "resumed_on": "2000-01-01T00:00:00Z"
 }
 ```
 

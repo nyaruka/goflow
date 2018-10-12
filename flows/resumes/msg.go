@@ -46,13 +46,10 @@ type MsgResume struct {
 // NewMsgResume creates a new message resume with the passed in values
 func NewMsgResume(env utils.Environment, contact *flows.Contact, msg *flows.MsgIn) *MsgResume {
 	return &MsgResume{
-		baseResume: newBaseResume(env, contact),
+		baseResume: newBaseResume(TypeMsg, env, contact),
 		msg:        msg,
 	}
 }
-
-// Type returns the type of this resume
-func (r *MsgResume) Type() string { return TypeMsg }
 
 // Apply applies our state changes and saves any events to the run
 func (r *MsgResume) Apply(run flows.FlowRun, step flows.Step) error {

@@ -101,11 +101,11 @@ func (i *baseInput) unmarshal(session flows.Session, e *baseInputEnvelope) error
 }
 
 func (i *baseInput) marshal(e *baseInputEnvelope) {
-	e.Type = i.Type()
-	e.UUID = i.UUID()
-	e.CreatedOn = i.CreatedOn()
+	e.Type = i.type_
+	e.UUID = i.uuid
+	e.CreatedOn = i.createdOn
 
-	if i.Channel() != nil {
-		e.Channel = i.Channel().Reference()
+	if i.channel != nil {
+		e.Channel = i.channel.Reference()
 	}
 }

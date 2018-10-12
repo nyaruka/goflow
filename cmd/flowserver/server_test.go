@@ -449,16 +449,13 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	msgJSON, _ := json.Marshal(msg)
 	resumeJSON := fmt.Sprintf(`{"type": "msg", "msg": %s, "resumed_on": "2017-12-31T11:35:10.035757258-02:00"}`, string(msgJSON))
 
-	resumeEnvelope := &utils.TypedEnvelope{}
-	json.Unmarshal([]byte(resumeJSON), resumeEnvelope)
-
 	request := &resumeRequest{
 		sessionRequest: sessionRequest{
 			Assets:      &assetsData,
 			AssetServer: assetServer,
 		},
 		Session: sessionJSON,
-		Resume:  resumeEnvelope,
+		Resume:  json.RawMessage(resumeJSON),
 	}
 
 	requestJSON, err := utils.JSONMarshal(request)
