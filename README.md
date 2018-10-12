@@ -13,6 +13,13 @@ This program provides a command line interface for stepping through a given flow
 % $GOPATH/bin/flowrunner cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
 ```
 
+By default it will use a manual trigger to create a session, but the `-msg` flag can be used
+to start the session with a message trigger:
+
+```
+% $GOPATH/bin/flowrunner -msg "hi there" cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
+```
+
 ## Server
 
 This server provides an HTTP endpoint for stepping through a given flow:
