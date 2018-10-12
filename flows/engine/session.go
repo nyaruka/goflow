@@ -458,7 +458,7 @@ type sessionEnvelope struct {
 	Contact     *json.RawMessage     `json:"contact,omitempty"`
 	Runs        []json.RawMessage    `json:"runs"`
 	Status      flows.SessionStatus  `json:"status"`
-	Wait        *utils.TypedEnvelope `json:"wait,omitempty"`
+	Wait        json.RawMessage      `json:"wait,omitempty"`
 }
 
 // ReadSession decodes a session from the passed in JSON
@@ -506,7 +506,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	if envelope.Wait != nil {
 		s.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
-			return nil, fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Wait.Type, err)
+			return nil, fmt.Errorf("unable to read wait: %s", err)
 		}
 	}
 
@@ -542,7 +542,7 @@ func (s *session) MarshalJSON() ([]byte, error) {
 		}
 	}
 	if s.wait != nil {
-		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
+		if envelope.Wait, err = json.Marshal(s.wait); err != nil {
 			return nil, err
 		}
 	}

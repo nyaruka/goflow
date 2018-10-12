@@ -65,7 +65,7 @@ type nodeEnvelope struct {
 	Actions []*utils.TypedEnvelope `json:"actions,omitempty"`
 	Router  *utils.TypedEnvelope   `json:"router,omitempty"`
 	Exits   []*exit                `json:"exits"`
-	Wait    *utils.TypedEnvelope   `json:"wait,omitempty"`
+	Wait    json.RawMessage        `json:"wait,omitempty"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON
@@ -90,7 +90,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	if envelope.Wait != nil {
 		n.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
-			return fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Wait.Type, err)
+			return fmt.Errorf("unable to read wait: %s", err)
 		}
 	}
 
@@ -124,9 +124,11 @@ func (n *node) MarshalJSON() ([]byte, error) {
 		return nil, err
 	}
 
-	envelope.Wait, err = utils.EnvelopeFromTyped(n.wait)
-	if err != nil {
-		return nil, err
+	if n.wait != nil {
+		envelope.Wait, err = json.Marshal(n.wait)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// and the right kind of actions

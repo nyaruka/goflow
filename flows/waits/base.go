@@ -1,6 +1,7 @@
 package waits
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -18,9 +19,17 @@ func RegisterType(name string, initFunc func() flows.Wait) {
 
 // the base of all wait types
 type baseWait struct {
+	Type_      string     `json:"type" validate:"required"`
 	Timeout_   *int       `json:"timeout,omitempty"`
 	TimeoutOn_ *time.Time `json:"timeout_on,omitempty"`
 }
+
+func newBaseWait(typ string, timeout *int) baseWait {
+	return baseWait{Type_: typ, Timeout_: timeout}
+}
+
+// Type returns the type of this wait
+func (w *baseWait) Type() string { return w.Type_ }
 
 // Timeout returns the timeout of this wait in seconds or nil if no timeout is set
 func (w *baseWait) Timeout() *int { return w.Timeout_ }
@@ -59,13 +68,18 @@ func (w *baseWait) End(resume flows.Resume) error {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadWait reads a wait from the given typed envelope
-func ReadWait(envelope *utils.TypedEnvelope) (flows.Wait, error) {
-	f := registeredTypes[envelope.Type]
+// ReadWait reads a wait from the given JSON
+func ReadWait(data json.RawMessage) (flows.Wait, error) {
+	typeName, err := utils.ReadTypeFromJSON(data)
+	if err != nil {
+		return nil, err
+	}
+
+	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", typeName)
 	}
 
 	wait := f()
-	return wait, utils.UnmarshalAndValidate(envelope.Data, wait)
+	return wait, utils.UnmarshalAndValidate(data, wait)
 }

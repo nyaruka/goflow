@@ -19,6 +19,15 @@ type TypedEnvelope struct {
 	Data []byte `json:"-"`
 }
 
+// ReadTypeFromJSON reads a field called `type` from the given JSON
+func ReadTypeFromJSON(data []byte) (string, error) {
+	t := &typeOnly{}
+	if err := UnmarshalAndValidate(data, t); err != nil {
+		return "", err
+	}
+	return t.Type, nil
+}
+
 // UnmarshalJSON unmarshals a typed envelope from the given JSON
 func (e *TypedEnvelope) UnmarshalJSON(b []byte) error {
 	t := &typeOnly{}

@@ -21,11 +21,8 @@ type MsgWait struct {
 
 // NewMsgWait creates a new message wait
 func NewMsgWait(timeout *int) *MsgWait {
-	return &MsgWait{baseWait{Timeout_: timeout}}
+	return &MsgWait{newBaseWait(TypeMsg, timeout)}
 }
-
-// Type returns the type of this wait
-func (w *MsgWait) Type() string { return TypeMsg }
 
 // Begin beings waiting at this wait
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) bool {
