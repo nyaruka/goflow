@@ -30,7 +30,6 @@ var contactJSON = `{
 			"text": "Ben"
 		}
 	},
-	"language": "eng",
 	"timezone": "America/Guayaquil",
 	"urns": [
 		"tel:+12065551212",
@@ -40,37 +39,51 @@ var contactJSON = `{
 }
 `
 
-func main() {
-	flag.Parse()
+var usage = `usage: flowrunner [flags] <assets.json> <flow_uuid>`
 
-	if len(flag.Args()) != 2 {
-		fmt.Printf("\nUsage: flowrunner <assets.json> <flow_uuid>\n\n")
+func main() {
+	var initialMsg, contactLang string
+	var printRepro bool
+	flags := flag.NewFlagSet("", flag.ExitOnError)
+	flags.StringVar(&initialMsg, "msg", "", "initial message to trigger session with")
+	flags.StringVar(&contactLang, "lang", "eng", "initial language of the contact")
+	flags.BoolVar(&printRepro, "repro", false, "print repro afterwards")
+	flags.Parse(os.Args[1:])
+	args := flags.Args()
+
+	if len(args) != 2 {
+		fmt.Println(usage)
+		flags.PrintDefaults()
 		os.Exit(1)
 	}
 
-	assetsPath := flag.Args()[0]
-	flowUUID := assets.FlowUUID(flag.Args()[1])
+	assetsPath := args[0]
+	flowUUID := assets.FlowUUID(args[1])
 
-	if err := RunFlow(assetsPath, flowUUID, os.Stdin, os.Stdout); err != nil {
+	repro, err := RunFlow(assetsPath, flowUUID, initialMsg, utils.Language(contactLang), os.Stdin, os.Stdout)
+
+	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
+	}
+
+	if printRepro {
+		fmt.Println("---------------------------------------")
+		marshaledRepro, _ := utils.JSONMarshalPretty(repro)
+		fmt.Println(string(marshaledRepro))
 	}
 }
 
 // RunFlow steps through a flow
-func RunFlow(assetsPath string, flowUUID assets.FlowUUID, in io.Reader, out io.Writer) error {
+func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, contactLang utils.Language, in io.Reader, out io.Writer) (*Repro, error) {
 	source, err := static.LoadStaticSource(assetsPath)
 	if err != nil {
-		return err
+		return nil, err
 	}
-
-	// create our environment
-	la, _ := time.LoadLocation("America/Los_Angeles")
-	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	assets, err := engine.NewSessionAssets(source)
 	if err != nil {
-		return fmt.Errorf("error parsing assets: %s", err)
+		return nil, fmt.Errorf("error parsing assets: %s", err)
 	}
 
 	httpClient := utils.NewHTTPClient("goflow-flowrunner")
@@ -78,19 +91,33 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, in io.Reader, out io.W
 
 	contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
 	if err != nil {
-		return err
+		return nil, err
 	}
+	contact.SetLanguage(contactLang)
+
 	flow, err := session.Assets().Flows().Get(flowUUID)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	trigger := triggers.NewManualTrigger(env, contact, flow.Reference(), nil, time.Now())
-	fmt.Fprintf(out, "Starting flow '%s'....\n", flow.Name())
+	// create our environment
+	la, _ := time.LoadLocation("America/Los_Angeles")
+	languages := []utils.Language{flow.Language(), contact.Language()}
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, languages, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+
+	repro := &Repro{}
+
+	if initialMsg != "" {
+		msg := createMessage(contact, initialMsg)
+		repro.Trigger = triggers.NewMsgTrigger(env, contact, flow.Reference(), msg, nil, time.Now())
+	} else {
+		repro.Trigger = triggers.NewManualTrigger(env, contact, flow.Reference(), nil, time.Now())
+	}
+	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
 	// start our session
-	if err := session.Start(trigger); err != nil {
-		return err
+	if err := session.Start(repro.Trigger); err != nil {
+		return nil, err
 	}
 
 	printEvents(session, out)
@@ -103,16 +130,22 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, in io.Reader, out io.W
 		scanner.Scan()
 
 		// create our resume
-		msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN, nil, scanner.Text(), []flows.Attachment{})
+		msg := createMessage(contact, scanner.Text())
 		resume := resumes.NewMsgResume(nil, nil, msg)
+		repro.Resumes = append(repro.Resumes, resume)
 
 		if err := session.Resume(resume); err != nil {
-			return err
+			return nil, err
 		}
 
 		printEvents(session, out)
 	}
-	return nil
+
+	return repro, nil
+}
+
+func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
+	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN, nil, text, []flows.Attachment{})
 }
 
 func printEvents(session flows.Session, out io.Writer) {
@@ -141,4 +174,24 @@ func printEvents(session flows.Session, out io.Writer) {
 
 		fmt.Fprintln(out, msg)
 	}
+}
+
+type Repro struct {
+	Trigger flows.Trigger  `json:"trigger"`
+	Resumes []flows.Resume `json:"resumes"`
+}
+
+func (r *Repro) MarshalJSON() ([]byte, error) {
+	envelope := &struct {
+		Trigger *utils.TypedEnvelope   `json:"trigger"`
+		Resumes []*utils.TypedEnvelope `json:"resumes"`
+	}{}
+
+	envelope.Trigger, _ = utils.EnvelopeFromTyped(r.Trigger)
+	envelope.Resumes = make([]*utils.TypedEnvelope, len(r.Resumes))
+	for i := range r.Resumes {
+		envelope.Resumes[i], _ = utils.EnvelopeFromTyped(r.Resumes[i])
+	}
+
+	return json.Marshal(envelope)
 }

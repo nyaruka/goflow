@@ -75,19 +75,38 @@ func ReadResume(session flows.Session, envelope *utils.TypedEnvelope) (flows.Res
 	return f(session, envelope.Data)
 }
 
-func unmarshalBaseResume(session flows.Session, base *baseResume, envelope *baseResumeEnvelope) error {
+func (r *baseResume) unmarshal(session flows.Session, envelope *baseResumeEnvelope) error {
 	var err error
 
-	base.resumedOn = envelope.ResumedOn
+	r.resumedOn = envelope.ResumedOn
 
 	if envelope.Environment != nil {
-		if base.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
+		if r.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
 			return fmt.Errorf("unable to read environment: %s", err)
 		}
 	}
 	if envelope.Contact != nil {
-		if base.contact, err = flows.ReadContact(session.Assets(), envelope.Contact, true); err != nil {
+		if r.contact, err = flows.ReadContact(session.Assets(), envelope.Contact, true); err != nil {
 			return fmt.Errorf("unable to read contact: %s", err)
+		}
+	}
+	return nil
+}
+
+func (r *baseResume) marshal(envelope *baseResumeEnvelope) error {
+	var err error
+	envelope.ResumedOn = r.resumedOn
+
+	if r.environment != nil {
+		envelope.Environment, err = json.Marshal(r.environment)
+		if err != nil {
+			return err
+		}
+	}
+	if r.contact != nil {
+		envelope.Contact, err = json.Marshal(r.contact)
+		if err != nil {
+			return err
 		}
 	}
 	return nil

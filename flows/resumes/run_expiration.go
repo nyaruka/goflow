@@ -60,15 +60,27 @@ var _ flows.Resume = (*RunExpirationResume)(nil)
 
 // ReadRunExpirationResume reads a run expired resume
 func ReadRunExpirationResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
-	resume := &RunExpirationResume{}
-	e := baseResumeEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &baseResumeEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseResume(session, &resume.baseResume, &e); err != nil {
+	r := &RunExpirationResume{}
+
+	if err := r.unmarshal(session, e); err != nil {
 		return nil, err
 	}
 
-	return resume, nil
+	return r, nil
+}
+
+// MarshalJSON marshals this resume into JSON
+func (r *RunExpirationResume) MarshalJSON() ([]byte, error) {
+	e := &baseResumeEnvelope{}
+
+	if err := r.marshal(e); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(e)
 }

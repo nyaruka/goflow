@@ -16,7 +16,7 @@ func TestRunFlow(t *testing.T) {
 	in := strings.NewReader("I like red\npepsi\n")
 	out := &strings.Builder{}
 
-	err := main.RunFlow("testdata/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"), in, out)
+	_, err := main.RunFlow("testdata/two_questions.json", assets.FlowUUID("615b8a0f-588c-4d20-a05f-363b0b4ce6f4"), "", "eng", in, out)
 	require.NoError(t, err)
 
 	// remove input prompts and split output by line to get each event
@@ -24,6 +24,7 @@ func TestRunFlow(t *testing.T) {
 
 	assert.Equal(t, []string{
 		"Starting flow 'Two Questions'....",
+		"---------------------------------------",
 		"💬 \"Hi Ben Haggerty! What is your favorite color? (red/blue)\"",
 		"⏳ waiting for message....",
 		"📥 received message 'I like red'",
