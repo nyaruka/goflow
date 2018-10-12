@@ -65,24 +65,25 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 
 // ReadManualTrigger reads a manual trigger
 func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
-	trigger := ManualTrigger{}
-	e := baseTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &baseTriggerEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e); err != nil {
+	t := &ManualTrigger{}
+
+	if err := t.unmarshal(session, e); err != nil {
 		return nil, err
 	}
 
-	return &trigger, nil
+	return t, nil
 }
 
 // MarshalJSON marshals this trigger into JSON
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
-	var envelope baseTriggerEnvelope
+	envelope := &baseTriggerEnvelope{}
 
-	if err := marshalBaseTrigger(&t.baseTrigger, &envelope); err != nil {
+	if err := t.marshal(envelope); err != nil {
 		return nil, err
 	}
 

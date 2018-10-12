@@ -122,30 +122,30 @@ func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Tr
 	return f(session, envelope.Data)
 }
 
-func unmarshalBaseTrigger(session flows.Session, base *baseTrigger, envelope *baseTriggerEnvelope) error {
+func (t *baseTrigger) unmarshal(session flows.Session, envelope *baseTriggerEnvelope) error {
 	var err error
 
-	base.flow = envelope.Flow
-	base.triggeredOn = envelope.TriggeredOn
+	t.flow = envelope.Flow
+	t.triggeredOn = envelope.TriggeredOn
 
 	if envelope.Environment != nil {
-		if base.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
+		if t.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
 			return fmt.Errorf("unable to read environment: %s", err)
 		}
 	}
 	if envelope.Contact != nil {
-		if base.contact, err = flows.ReadContact(session.Assets(), envelope.Contact, true); err != nil {
+		if t.contact, err = flows.ReadContact(session.Assets(), envelope.Contact, true); err != nil {
 			return fmt.Errorf("unable to read contact: %s", err)
 		}
 	}
 	if envelope.Params != nil {
-		base.params = types.JSONToXValue(envelope.Params)
+		t.params = types.JSONToXValue(envelope.Params)
 	}
 
 	return nil
 }
 
-func marshalBaseTrigger(t *baseTrigger, envelope *baseTriggerEnvelope) error {
+func (t *baseTrigger) marshal(envelope *baseTriggerEnvelope) error {
 	var err error
 	envelope.Flow = t.flow
 	envelope.TriggeredOn = t.triggeredOn

@@ -43,9 +43,11 @@ var usage = `usage: flowrunner [flags] <assets.json> <flow_uuid>`
 
 func main() {
 	var initialMsg, contactLang string
+	var printRepro bool
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.StringVar(&initialMsg, "msg", "", "initial message to trigger session with")
 	flags.StringVar(&contactLang, "lang", "eng", "initial language of the contact")
+	flags.BoolVar(&printRepro, "repro", false, "print repro afterwards")
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
 
@@ -58,17 +60,18 @@ func main() {
 	assetsPath := args[0]
 	flowUUID := assets.FlowUUID(args[1])
 
-	_, err := RunFlow(assetsPath, flowUUID, initialMsg, utils.Language(contactLang), os.Stdin, os.Stdout)
+	repro, err := RunFlow(assetsPath, flowUUID, initialMsg, utils.Language(contactLang), os.Stdin, os.Stdout)
 
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-}
 
-type Repro struct {
-	Trigger flows.Trigger  `json:"trigger"`
-	Resumes []flows.Resume `json:"resumes"`
+	if printRepro {
+		fmt.Println("---------------------------------------")
+		marshaledRepro, _ := json.Marshal(repro)
+		fmt.Println(string(marshaledRepro))
+	}
 }
 
 // RunFlow steps through a flow
@@ -138,9 +141,6 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		printEvents(session, out)
 	}
 
-	marshaledRepro, _ := json.Marshal(repro)
-	fmt.Println(string(marshaledRepro))
-
 	return repro, nil
 }
 
@@ -174,4 +174,24 @@ func printEvents(session flows.Session, out io.Writer) {
 
 		fmt.Fprintln(out, msg)
 	}
+}
+
+type Repro struct {
+	Trigger flows.Trigger  `json:"trigger"`
+	Resumes []flows.Resume `json:"resumes"`
+}
+
+func (r *Repro) MarshalJSON() ([]byte, error) {
+	envelope := &struct {
+		Trigger *utils.TypedEnvelope   `json:"trigger"`
+		Resumes []*utils.TypedEnvelope `json:"resumes"`
+	}{}
+
+	envelope.Trigger, _ = utils.EnvelopeFromTyped(r.Trigger)
+	envelope.Resumes = make([]*utils.TypedEnvelope, len(r.Resumes))
+	for i := range r.Resumes {
+		envelope.Resumes[i], _ = utils.EnvelopeFromTyped(r.Resumes[i])
+	}
+
+	return json.Marshal(envelope)
 }

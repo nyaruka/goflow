@@ -42,7 +42,7 @@ type ChannelEvent struct {
 // @trigger channel
 type ChannelTrigger struct {
 	baseTrigger
-	Event *ChannelEvent
+	event *ChannelEvent
 }
 
 // NewChannelTrigger creates a new channel trigger with the passed in values
@@ -55,7 +55,7 @@ func NewChannelTrigger(env utils.Environment, flow *assets.FlowReference, contac
 			params:      params,
 			triggeredOn: triggeredOn,
 		},
-		Event: event,
+		event: event,
 	}
 }
 
@@ -90,30 +90,31 @@ type channelTriggerEnvelope struct {
 
 // ReadChannelTrigger reads a channel trigger
 func ReadChannelTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
-	trigger := &ChannelTrigger{}
-	e := channelTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &channelTriggerEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
+	t := &ChannelTrigger{
+		event: e.Event,
+	}
+
+	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	trigger.Event = e.Event
-
-	return trigger, nil
+	return t, nil
 }
 
 // MarshalJSON marshals this trigger into JSON
 func (t *ChannelTrigger) MarshalJSON() ([]byte, error) {
-	var envelope channelTriggerEnvelope
-
-	if err := marshalBaseTrigger(&t.baseTrigger, &envelope.baseTriggerEnvelope); err != nil {
-		return nil, err
+	envelope := &channelTriggerEnvelope{
+		Event: t.event,
 	}
 
-	envelope.Event = t.Event
+	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+		return nil, err
+	}
 
 	return json.Marshal(envelope)
 }

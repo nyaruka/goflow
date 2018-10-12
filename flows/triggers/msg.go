@@ -118,32 +118,33 @@ type msgTriggerEnvelope struct {
 
 // ReadMsgTrigger reads a message trigger
 func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
-	trigger := &MsgTrigger{}
-	e := msgTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &msgTriggerEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
+	t := &MsgTrigger{
+		msg:   e.Msg,
+		match: e.Match,
+	}
+
+	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	trigger.msg = e.Msg
-	trigger.match = e.Match
-
-	return trigger, nil
+	return t, nil
 }
 
 // MarshalJSON marshals this trigger into JSON
 func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
-	var envelope msgTriggerEnvelope
-
-	if err := marshalBaseTrigger(&t.baseTrigger, &envelope.baseTriggerEnvelope); err != nil {
-		return nil, err
+	envelope := &msgTriggerEnvelope{
+		Msg:   t.msg,
+		Match: t.match,
 	}
 
-	envelope.Msg = t.msg
-	envelope.Match = t.match
+	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+		return nil, err
+	}
 
 	return json.Marshal(envelope)
 }

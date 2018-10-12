@@ -83,34 +83,34 @@ type flowActionTriggerEnvelope struct {
 
 // ReadFlowActionTrigger reads a flow action trigger
 func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+	e := &flowActionTriggerEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
 	var err error
-	trigger := &FlowActionTrigger{}
-	e := flowActionTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
-		return nil, err
-	}
-
-	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
-		return nil, err
-	}
-
-	if trigger.run, err = runs.ReadRunSummary(session, e.Run); err != nil {
+	t := &FlowActionTrigger{}
+	if t.run, err = runs.ReadRunSummary(session, e.Run); err != nil {
 		return nil, fmt.Errorf("unable to read run summary: %s", err)
 	}
 
-	return trigger, nil
+	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+		return nil, err
+	}
+
+	return t, nil
 }
 
 // MarshalJSON marshals this trigger into JSON
 func (t *FlowActionTrigger) MarshalJSON() ([]byte, error) {
-	var envelope flowActionTriggerEnvelope
-	var err error
+	envelope := &flowActionTriggerEnvelope{}
 
-	if err := marshalBaseTrigger(&t.baseTrigger, &envelope.baseTriggerEnvelope); err != nil {
+	var err error
+	if envelope.Run, err = json.Marshal(t.run); err != nil {
 		return nil, err
 	}
 
-	if envelope.Run, err = json.Marshal(t.run); err != nil {
+	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

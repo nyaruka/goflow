@@ -48,7 +48,7 @@ type CampaignEvent struct {
 // @trigger campaign
 type CampaignTrigger struct {
 	baseTrigger
-	Event *CampaignEvent
+	event *CampaignEvent
 }
 
 // NewCampaignTrigger creates a new campaign trigger with the passed in values
@@ -60,7 +60,7 @@ func NewCampaignTrigger(env utils.Environment, flow *assets.FlowReference, conta
 			contact:     contact,
 			triggeredOn: triggeredOn,
 		},
-		Event: event,
+		event: event,
 	}
 }
 
@@ -95,30 +95,30 @@ type campaignTriggerEnvelope struct {
 
 // ReadCampaignTrigger reads a campaign trigger
 func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
-	trigger := &CampaignTrigger{}
-	e := campaignTriggerEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &campaignTriggerEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseTrigger(session, &trigger.baseTrigger, &e.baseTriggerEnvelope); err != nil {
+	t := &CampaignTrigger{
+		event: e.Event,
+	}
+	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	trigger.Event = e.Event
-
-	return trigger, nil
+	return t, nil
 }
 
 // MarshalJSON marshals this trigger into JSON
 func (t *CampaignTrigger) MarshalJSON() ([]byte, error) {
-	var envelope campaignTriggerEnvelope
-
-	if err := marshalBaseTrigger(&t.baseTrigger, &envelope.baseTriggerEnvelope); err != nil {
-		return nil, err
+	envelope := &campaignTriggerEnvelope{
+		Event: t.event,
 	}
 
-	envelope.Event = t.Event
+	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+		return nil, err
+	}
 
 	return json.Marshal(envelope)
 }
