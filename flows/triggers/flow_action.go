@@ -103,16 +103,16 @@ func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.T
 
 // MarshalJSON marshals this trigger into JSON
 func (t *FlowActionTrigger) MarshalJSON() ([]byte, error) {
-	envelope := &flowActionTriggerEnvelope{}
+	e := &flowActionTriggerEnvelope{}
 
 	var err error
-	if envelope.Run, err = json.Marshal(t.run); err != nil {
+	if e.Run, err = json.Marshal(t.run); err != nil {
 		return nil, err
 	}
 
-	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	return json.Marshal(envelope)
+	return json.Marshal(e)
 }

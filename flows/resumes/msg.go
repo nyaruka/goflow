@@ -81,17 +81,31 @@ type msgResumeEnvelope struct {
 
 // ReadMsgResume reads a message resume
 func ReadMsgResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
-	resume := &MsgResume{}
-	e := msgResumeEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &msgResumeEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseResume(session, &resume.baseResume, &e.baseResumeEnvelope); err != nil {
+	r := &MsgResume{
+		msg: e.Msg,
+	}
+
+	if err := r.unmarshal(session, &e.baseResumeEnvelope); err != nil {
 		return nil, err
 	}
 
-	resume.msg = e.Msg
+	return r, nil
+}
 
-	return resume, nil
+// MarshalJSON marshals this resume into JSON
+func (r *MsgResume) MarshalJSON() ([]byte, error) {
+	e := &msgResumeEnvelope{
+		Msg: r.msg,
+	}
+
+	if err := r.marshal(&e.baseResumeEnvelope); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(e)
 }

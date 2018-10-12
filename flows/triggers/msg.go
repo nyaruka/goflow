@@ -137,14 +137,14 @@ func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger,
 
 // MarshalJSON marshals this trigger into JSON
 func (t *MsgTrigger) MarshalJSON() ([]byte, error) {
-	envelope := &msgTriggerEnvelope{
+	e := &msgTriggerEnvelope{
 		Msg:   t.msg,
 		Match: t.match,
 	}
 
-	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	return json.Marshal(envelope)
+	return json.Marshal(e)
 }

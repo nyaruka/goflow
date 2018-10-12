@@ -61,15 +61,27 @@ var _ flows.Resume = (*WaitTimeoutResume)(nil)
 
 // ReadWaitTimeoutResume reads a timeout resume
 func ReadWaitTimeoutResume(session flows.Session, data json.RawMessage) (flows.Resume, error) {
-	resume := &WaitTimeoutResume{}
-	e := baseResumeEnvelope{}
-	if err := utils.UnmarshalAndValidate(data, &e); err != nil {
+	e := &baseResumeEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
 	}
 
-	if err := unmarshalBaseResume(session, &resume.baseResume, &e); err != nil {
+	r := &WaitTimeoutResume{}
+
+	if err := r.unmarshal(session, e); err != nil {
 		return nil, err
 	}
 
-	return resume, nil
+	return r, nil
+}
+
+// MarshalJSON marshals this resume into JSON
+func (r *WaitTimeoutResume) MarshalJSON() ([]byte, error) {
+	e := &baseResumeEnvelope{}
+
+	if err := r.marshal(e); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(e)
 }

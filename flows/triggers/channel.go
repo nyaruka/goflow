@@ -108,13 +108,13 @@ func ReadChannelTrigger(session flows.Session, data json.RawMessage) (flows.Trig
 
 // MarshalJSON marshals this trigger into JSON
 func (t *ChannelTrigger) MarshalJSON() ([]byte, error) {
-	envelope := &channelTriggerEnvelope{
+	e := &channelTriggerEnvelope{
 		Event: t.event,
 	}
 
-	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	return json.Marshal(envelope)
+	return json.Marshal(e)
 }

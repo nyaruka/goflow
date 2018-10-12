@@ -69,7 +69,7 @@ func main() {
 
 	if printRepro {
 		fmt.Println("---------------------------------------")
-		marshaledRepro, _ := json.Marshal(repro)
+		marshaledRepro, _ := utils.JSONMarshalPretty(repro)
 		fmt.Println(string(marshaledRepro))
 	}
 }

@@ -81,11 +81,11 @@ func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigg
 
 // MarshalJSON marshals this trigger into JSON
 func (t *ManualTrigger) MarshalJSON() ([]byte, error) {
-	envelope := &baseTriggerEnvelope{}
+	e := &baseTriggerEnvelope{}
 
-	if err := t.marshal(envelope); err != nil {
+	if err := t.marshal(e); err != nil {
 		return nil, err
 	}
 
-	return json.Marshal(envelope)
+	return json.Marshal(e)
 }

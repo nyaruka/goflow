@@ -112,13 +112,13 @@ func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Tri
 
 // MarshalJSON marshals this trigger into JSON
 func (t *CampaignTrigger) MarshalJSON() ([]byte, error) {
-	envelope := &campaignTriggerEnvelope{
+	e := &campaignTriggerEnvelope{
 		Event: t.event,
 	}
 
-	if err := t.marshal(&envelope.baseTriggerEnvelope); err != nil {
+	if err := t.marshal(&e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
-	return json.Marshal(envelope)
+	return json.Marshal(e)
 }
