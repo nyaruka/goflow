@@ -11,6 +11,10 @@ This program provides a command line interface for stepping through a given flow
 ```
 % go install github.com/nyaruka/goflow/cmd/flowrunner
 % $GOPATH/bin/flowrunner cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
+Starting flow 'U-Report Registration Flow'....
+---------------------------------------
+💬 "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212"
+⏳ waiting for message....
 ```
 
 By default it will use a manual trigger to create a session, but the `-msg` flag can be used
@@ -18,6 +22,12 @@ to start the session with a message trigger:
 
 ```
 % $GOPATH/bin/flowrunner -msg "hi there" cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
+```
+
+If the `-repro` flag is set, it will dump the triggers and resumes it used which can be used to reproduce the session in a test:
+
+```
+% $GOPATH/bin/flowrunner -repro cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
 ```
 
 ## Server
