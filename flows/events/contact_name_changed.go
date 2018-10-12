@@ -29,10 +29,7 @@ type ContactNameChangedEvent struct {
 // NewContactNameChangedEvent returns a new contact name changed event
 func NewContactNameChangedEvent(name string) *ContactNameChangedEvent {
 	return &ContactNameChangedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeContactNameChanged),
 		Name:      name,
 	}
 }
-
-// Type returns the type of this event
-func (e *ContactNameChangedEvent) Type() string { return TypeContactNameChanged }

@@ -26,8 +26,5 @@ type NothingWaitEvent struct {
 
 // NewNothingWait returns a new nothing wait
 func NewNothingWait() *NothingWaitEvent {
-	return &NothingWaitEvent{BaseEvent: NewBaseEvent()}
+	return &NothingWaitEvent{BaseEvent: NewBaseEvent(TypeNothingWait)}
 }
-
-// Type returns the type of this event
-func (e *NothingWaitEvent) Type() string { return TypeNothingWait }

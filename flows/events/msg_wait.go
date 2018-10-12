@@ -33,10 +33,7 @@ type MsgWaitEvent struct {
 // NewMsgWait returns a new msg wait with the passed in timeout
 func NewMsgWait(timeoutOn *time.Time) *MsgWaitEvent {
 	return &MsgWaitEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeMsgWait),
 		TimeoutOn: timeoutOn,
 	}
 }
-
-// Type returns the type of this event
-func (e *MsgWaitEvent) Type() string { return TypeMsgWait }

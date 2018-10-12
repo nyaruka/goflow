@@ -33,12 +33,9 @@ type EmailCreatedEvent struct {
 // NewEmailCreatedEvent returns a new email event with the passed in subject, body and emails
 func NewEmailCreatedEvent(addresses []string, subject string, body string) *EmailCreatedEvent {
 	return &EmailCreatedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeEmailCreated),
 		Addresses: addresses,
 		Subject:   subject,
 		Body:      body,
 	}
 }
-
-// Type returns the type of this event
-func (e *EmailCreatedEvent) Type() string { return TypeEmailCreated }

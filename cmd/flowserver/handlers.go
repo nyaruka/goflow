@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/legacy"
@@ -30,25 +29,8 @@ type sessionRequest struct {
 }
 
 type sessionResponse struct {
-	Session flows.Session
-	Events  []flows.Event
-}
-
-// MarshalJSON marshals this session response into JSON
-func (r *sessionResponse) MarshalJSON() ([]byte, error) {
-	eventEnvelopes, err := events.EventsToEnvelopes(r.Session.Events())
-	if err != nil {
-		return nil, err
-	}
-	envelope := struct {
-		Session flows.Session          `json:"session"`
-		Events  []*utils.TypedEnvelope `json:"events"`
-	}{
-		Session: r.Session,
-		Events:  eventEnvelopes,
-	}
-
-	return utils.JSONMarshal(envelope)
+	Session flows.Session `json:"session"`
+	Events  []flows.Event `json:"events"`
 }
 
 // Starts a new engine session

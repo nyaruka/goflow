@@ -43,7 +43,7 @@ type RunResultChangedEvent struct {
 // NewRunResultChangedEvent returns a new save result event for the passed in values
 func NewRunResultChangedEvent(result *flows.Result) *RunResultChangedEvent {
 	return &RunResultChangedEvent{
-		BaseEvent:         NewBaseEvent(),
+		BaseEvent:         NewBaseEvent(TypeRunResultChanged),
 		Name:              result.Name,
 		Value:             result.Value,
 		Category:          result.Category,
@@ -52,6 +52,3 @@ func NewRunResultChangedEvent(result *flows.Result) *RunResultChangedEvent {
 		Extra:             result.Extra,
 	}
 }
-
-// Type returns the type of this event
-func (e *RunResultChangedEvent) Type() string { return TypeRunResultChanged }

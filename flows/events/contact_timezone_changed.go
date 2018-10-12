@@ -29,10 +29,7 @@ type ContactTimezoneChangedEvent struct {
 // NewContactTimezoneChangedEvent returns a new contact timezone changed event
 func NewContactTimezoneChangedEvent(timezone string) *ContactTimezoneChangedEvent {
 	return &ContactTimezoneChangedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeContactTimezoneChanged),
 		Timezone:  timezone,
 	}
 }
-
-// Type returns the type of this event
-func (e *ContactTimezoneChangedEvent) Type() string { return TypeContactTimezoneChanged }

@@ -47,7 +47,7 @@ func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "type":
-		return types.NewXText(TypeMsg)
+		return types.NewXText(i.type_)
 	case "uuid":
 		return types.NewXText(string(i.uuid))
 	case "created_on":

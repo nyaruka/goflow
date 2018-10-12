@@ -334,10 +334,10 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID   flows.RunUUID          `json:"uuid" validate:"required,uuid4"`
-	Flow   *assets.FlowReference  `json:"flow" validate:"required,dive"`
-	Path   []*step                `json:"path" validate:"dive"`
-	Events []*utils.TypedEnvelope `json:"events,omitempty"`
+	UUID   flows.RunUUID         `json:"uuid" validate:"required,uuid4"`
+	Flow   *assets.FlowReference `json:"flow" validate:"required,dive"`
+	Path   []*step               `json:"path" validate:"dive"`
+	Events []json.RawMessage     `json:"events,omitempty"`
 
 	Status     flows.RunStatus `json:"status" validate:"required"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
@@ -405,7 +405,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.events = make([]flows.Event, len(e.Events))
 	for i := range r.events {
 		if r.events[i], err = events.ReadEvent(e.Events[i]); err != nil {
-			return nil, fmt.Errorf("unable to read event[type=%s]: %s", e.Events[i].Type, err)
+			return nil, fmt.Errorf("unable to read event: %s", err)
 		}
 	}
 
@@ -447,9 +447,11 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 		e.Path[i] = s.(*step)
 	}
 
-	e.Events, err = events.EventsToEnvelopes(r.events)
-	if err != nil {
-		return nil, err
+	e.Events = make([]json.RawMessage, len(r.events))
+	for i := range r.events {
+		if e.Events[i], err = json.Marshal(r.events[i]); err != nil {
+			return nil, err
+		}
 	}
 
 	return json.Marshal(e)

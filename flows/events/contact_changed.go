@@ -36,12 +36,9 @@ type ContactChangedEvent struct {
 func NewContactChangedEvent(contact *flows.Contact) *ContactChangedEvent {
 	marshalled, _ := json.Marshal(contact)
 	return &ContactChangedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeContactChanged),
 		Contact:   marshalled,
 	}
 }
-
-// Type returns the type of this event
-func (e *ContactChangedEvent) Type() string { return TypeContactChanged }
 
 var _ flows.Event = (*ContactChangedEvent)(nil)

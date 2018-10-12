@@ -30,7 +30,7 @@ type ErrorEvent struct {
 // NewErrorEvent returns a new error event for the passed in error
 func NewErrorEvent(err error) *ErrorEvent {
 	return &ErrorEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeError),
 		Text:      err.Error(),
 	}
 }
@@ -38,11 +38,8 @@ func NewErrorEvent(err error) *ErrorEvent {
 // NewFatalErrorEvent returns a new fatal error event for the passed in error
 func NewFatalErrorEvent(err error) *ErrorEvent {
 	return &ErrorEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeError),
 		Text:      err.Error(),
 		Fatal:     true,
 	}
 }
-
-// Type returns the type of this event
-func (e *ErrorEvent) Type() string { return TypeError }

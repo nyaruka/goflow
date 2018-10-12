@@ -28,10 +28,10 @@ type RunExpiredEvent struct {
 
 // NewRunExpiredEvent creates a new run expired event
 func NewRunExpiredEvent(run flows.FlowRun) *RunExpiredEvent {
-	return &RunExpiredEvent{BaseEvent: NewBaseEvent(), RunUUID: run.UUID()}
+	return &RunExpiredEvent{
+		BaseEvent: NewBaseEvent(TypeRunExpired),
+		RunUUID:   run.UUID(),
+	}
 }
-
-// Type returns the type of this event
-func (e *RunExpiredEvent) Type() string { return TypeRunExpired }
 
 var _ flows.Event = (*RunExpiredEvent)(nil)

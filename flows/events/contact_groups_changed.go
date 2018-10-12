@@ -32,14 +32,11 @@ type ContactGroupsChangedEvent struct {
 // NewContactGroupsChangedEvent returns a new contact_groups_changed event
 func NewContactGroupsChangedEvent(added []*flows.Group, removed []*flows.Group) *ContactGroupsChangedEvent {
 	return &ContactGroupsChangedEvent{
-		BaseEvent:     NewBaseEvent(),
+		BaseEvent:     NewBaseEvent(TypeContactGroupsChanged),
 		GroupsAdded:   groupsToReferences(added),
 		GroupsRemoved: groupsToReferences(removed),
 	}
 }
-
-// Type returns the type of this event
-func (e *ContactGroupsChangedEvent) Type() string { return TypeContactGroupsChanged }
 
 // converts a slice of groups to a slice of references
 func groupsToReferences(groups []*flows.Group) []*assets.GroupReference {

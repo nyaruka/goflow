@@ -57,7 +57,7 @@ type BroadcastCreatedEvent struct {
 // NewBroadcastCreatedEvent creates a new outgoing msg event for the given recipients
 func NewBroadcastCreatedEvent(translations map[utils.Language]*BroadcastTranslation, baseLanguage utils.Language, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference) *BroadcastCreatedEvent {
 	event := BroadcastCreatedEvent{
-		BaseEvent:    NewBaseEvent(),
+		BaseEvent:    NewBaseEvent(TypeBroadcastCreated),
 		Translations: translations,
 		BaseLanguage: baseLanguage,
 		URNs:         urns,
@@ -67,5 +67,4 @@ func NewBroadcastCreatedEvent(translations map[utils.Language]*BroadcastTranslat
 	return &event
 }
 
-// Type returns the type of this event
-func (e *BroadcastCreatedEvent) Type() string { return TypeBroadcastCreated }
+var _ flows.Event = (*BroadcastCreatedEvent)(nil)

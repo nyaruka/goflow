@@ -32,11 +32,8 @@ type InputLabelsAddedEvent struct {
 // NewInputLabelsAddedEvent returns a new add to group event
 func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*assets.LabelReference) *InputLabelsAddedEvent {
 	return &InputLabelsAddedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeInputLabelsAdded),
 		InputUUID: inputUUID,
 		Labels:    labels,
 	}
 }
-
-// Type returns the type of this event
-func (e *InputLabelsAddedEvent) Type() string { return TypeInputLabelsAdded }

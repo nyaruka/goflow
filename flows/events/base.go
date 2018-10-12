@@ -1,6 +1,7 @@
 package events
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -17,14 +18,18 @@ func RegisterType(name string, initFunc func() flows.Event) {
 
 // BaseEvent is the base of all event types
 type BaseEvent struct {
+	Type_      string         `json:"type" validate:"required"`
 	CreatedOn_ time.Time      `json:"created_on" validate:"required"`
 	StepUUID_  flows.StepUUID `json:"step_uuid,omitempty" validate:"omitempty,uuid4"`
 }
 
 // NewBaseEvent creates a new base event
-func NewBaseEvent() BaseEvent {
-	return BaseEvent{CreatedOn_: utils.Now()}
+func NewBaseEvent(typeName string) BaseEvent {
+	return BaseEvent{Type_: typeName, CreatedOn_: utils.Now()}
 }
+
+// Type returns the type of this event
+func (e *BaseEvent) Type() string { return e.Type_ }
 
 // CreatedOn returns the created on time of this event
 func (e *BaseEvent) CreatedOn() time.Time { return e.CreatedOn_ }
@@ -40,24 +45,17 @@ func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUI
 //------------------------------------------------------------------------------------------
 
 // ReadEvent reads a single event from the given envelope
-func ReadEvent(envelope *utils.TypedEnvelope) (flows.Event, error) {
-	f := registeredTypes[envelope.Type]
+func ReadEvent(data json.RawMessage) (flows.Event, error) {
+	typeName, err := utils.ReadTypeFromJSON(data)
+	if err != nil {
+		return nil, err
+	}
+
+	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", typeName)
 	}
 
 	event := f()
-	return event, utils.UnmarshalAndValidate(envelope.Data, event)
-}
-
-// EventsToEnvelopes converts the given events to typed envelopes
-func EventsToEnvelopes(events []flows.Event) ([]*utils.TypedEnvelope, error) {
-	var err error
-	envelopes := make([]*utils.TypedEnvelope, len(events))
-	for e, event := range events {
-		if envelopes[e], err = utils.EnvelopeFromTyped(event); err != nil {
-			return nil, err
-		}
-	}
-	return envelopes, nil
+	return event, utils.UnmarshalAndValidate(data, event)
 }

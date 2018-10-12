@@ -13,7 +13,6 @@ import (
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
@@ -69,13 +68,13 @@ func normalizeJSON(data json.RawMessage) ([]byte, error) {
 }
 
 func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
-	envelopes, err := events.EventsToEnvelopes(eventLog)
-	marshaled := make([]json.RawMessage, len(envelopes))
+	marshaled := make([]json.RawMessage, len(eventLog))
+	var err error
 
-	for i := range envelopes {
-		marshaled[i], err = utils.JSONMarshal(envelopes[i])
+	for i := range eventLog {
+		marshaled[i], err = utils.JSONMarshal(eventLog[i])
 		if err != nil {
-			return nil, fmt.Errorf("error creating marshaling envelope %s: %s", envelopes[i], err)
+			return nil, fmt.Errorf("error marshaling event: %s", err)
 		}
 	}
 	return marshaled, nil

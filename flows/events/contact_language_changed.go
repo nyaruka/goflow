@@ -29,10 +29,7 @@ type ContactLanguageChangedEvent struct {
 // NewContactLanguageChangedEvent returns a new contact language changed event
 func NewContactLanguageChangedEvent(language string) *ContactLanguageChangedEvent {
 	return &ContactLanguageChangedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeContactLanguageChanged),
 		Language:  language,
 	}
 }
-
-// Type returns the type of this event
-func (e *ContactLanguageChangedEvent) Type() string { return TypeContactLanguageChanged }
