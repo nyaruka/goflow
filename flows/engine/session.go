@@ -339,8 +339,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
 			if log.GetLevel() >= log.DebugLevel {
-				actionEnvelope, _ := utils.EnvelopeFromTyped(action)
-				actionJSON, _ := json.Marshal(actionEnvelope)
+				actionJSON, _ := json.Marshal(action)
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executing")
 			}
 
@@ -453,12 +452,12 @@ const noDestination = flows.NodeUUID("")
 //------------------------------------------------------------------------------------------
 
 type sessionEnvelope struct {
-	Environment json.RawMessage      `json:"environment"`
-	Trigger     *utils.TypedEnvelope `json:"trigger"`
-	Contact     *json.RawMessage     `json:"contact,omitempty"`
-	Runs        []json.RawMessage    `json:"runs"`
-	Status      flows.SessionStatus  `json:"status"`
-	Wait        *utils.TypedEnvelope `json:"wait,omitempty"`
+	Environment json.RawMessage     `json:"environment"`
+	Trigger     json.RawMessage     `json:"trigger" validate:"required"`
+	Contact     *json.RawMessage    `json:"contact,omitempty"`
+	Runs        []json.RawMessage   `json:"runs"`
+	Status      flows.SessionStatus `json:"status" validate:"required"`
+	Wait        json.RawMessage     `json:"wait,omitempty"`
 }
 
 // ReadSession decodes a session from the passed in JSON
@@ -482,7 +481,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	// read our trigger
 	if envelope.Trigger != nil {
 		if s.trigger, err = triggers.ReadTrigger(s, envelope.Trigger); err != nil {
-			return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", envelope.Trigger.Type, err)
+			return nil, fmt.Errorf("unable to read trigger: %s", err)
 		}
 	}
 
@@ -506,7 +505,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	if envelope.Wait != nil {
 		s.wait, err = waits.ReadWait(envelope.Wait)
 		if err != nil {
-			return nil, fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Wait.Type, err)
+			return nil, fmt.Errorf("unable to read wait: %s", err)
 		}
 	}
 
@@ -537,12 +536,12 @@ func (s *session) MarshalJSON() ([]byte, error) {
 		envelope.Contact = &contactJSON
 	}
 	if s.trigger != nil {
-		if envelope.Trigger, err = utils.EnvelopeFromTyped(s.trigger); err != nil {
+		if envelope.Trigger, err = json.Marshal(s.trigger); err != nil {
 			return nil, err
 		}
 	}
 	if s.wait != nil {
-		if envelope.Wait, err = utils.EnvelopeFromTyped(s.wait); err != nil {
+		if envelope.Wait, err = json.Marshal(s.wait); err != nil {
 			return nil, err
 		}
 	}

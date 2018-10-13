@@ -39,21 +39,16 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 	}
 
 	return &MsgInput{
-		baseInput:   baseInput{uuid: flows.InputUUID(msg.UUID()), channel: channel, createdOn: createdOn},
+		baseInput:   newBaseInput(TypeMsg, flows.InputUUID(msg.UUID()), channel, createdOn),
 		urn:         flows.NewContactURN(msg.URN(), nil),
 		text:        msg.Text(),
 		attachments: msg.Attachments(),
 	}, nil
 }
 
-// Type returns the type of this event
-func (i *MsgInput) Type() string { return TypeMsg }
-
 // Resolve resolves the given key when this input is referenced in an expression
 func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
-	case "type":
-		return types.NewXText(TypeMsg)
 	case "urn":
 		return i.urn
 	case "text":
@@ -101,43 +96,34 @@ type msgInputEnvelope struct {
 
 // ReadMsgInput reads a message input from the given JSON
 func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, error) {
-	input := MsgInput{}
-	i := msgInputEnvelope{}
-	err := utils.UnmarshalAndValidate(data, &i)
+	e := &msgInputEnvelope{}
+	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {
 		return nil, err
 	}
 
-	// lookup the channel
-	var channel *flows.Channel
-	if i.Channel != nil {
-		channel, err = session.Assets().Channels().Get(i.Channel.UUID)
-		if err != nil {
-			return nil, err
-		}
+	i := &MsgInput{
+		urn:         flows.NewContactURN(e.URN, nil),
+		text:        e.Text,
+		attachments: e.Attachments,
 	}
 
-	input.baseInput.uuid = i.UUID
-	input.baseInput.channel = channel
-	input.baseInput.createdOn = i.CreatedOn
-	input.urn = flows.NewContactURN(i.URN, nil)
-	input.text = i.Text
-	input.attachments = i.Attachments
-	return &input, nil
+	if err := i.unmarshal(session, &e.baseInputEnvelope); err != nil {
+		return nil, err
+	}
+
+	return i, nil
 }
 
 // MarshalJSON marshals this msg input into JSON
 func (i *MsgInput) MarshalJSON() ([]byte, error) {
-	var envelope msgInputEnvelope
-
-	if i.Channel() != nil {
-		envelope.baseInputEnvelope.Channel = i.Channel().Reference()
+	e := &msgInputEnvelope{
+		URN:         i.urn.URN,
+		Text:        i.text,
+		Attachments: i.attachments,
 	}
-	envelope.baseInputEnvelope.UUID = i.UUID()
-	envelope.baseInputEnvelope.CreatedOn = i.CreatedOn()
-	envelope.URN = i.urn.URN
-	envelope.Text = i.text
-	envelope.Attachments = i.attachments
 
-	return json.Marshal(envelope)
+	i.marshal(&e.baseInputEnvelope)
+
+	return json.Marshal(e)
 }

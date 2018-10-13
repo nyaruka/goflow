@@ -37,15 +37,12 @@ type SwitchRouter struct {
 
 func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []Case, resultName string) *SwitchRouter {
 	return &SwitchRouter{
-		BaseRouter: BaseRouter{ResultName_: resultName},
+		BaseRouter: newBaseRouter(TypeSwitch, resultName),
 		Default:    defaultExit,
 		Operand:    operand,
 		Cases:      cases,
 	}
 }
-
-// Type returns the type of this router
-func (r *SwitchRouter) Type() string { return TypeSwitch }
 
 // Validate validates the arguments for this router
 func (r *SwitchRouter) Validate(exits []flows.Exit) error {

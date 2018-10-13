@@ -37,8 +37,14 @@ type RemoveContactGroupsAction struct {
 	AllGroups bool                     `json:"all_groups"`
 }
 
-// Type returns the type of this action
-func (a *RemoveContactGroupsAction) Type() string { return TypeRemoveContactGroups }
+// NewRemoveContactGroupsAction creates a new remove from groups action
+func NewRemoveContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupReference, allGroups bool) *RemoveContactGroupsAction {
+	return &RemoveContactGroupsAction{
+		BaseAction: NewBaseAction(TypeRemoveContactGroups, uuid),
+		Groups:     groups,
+		AllGroups:  allGroups,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets) error {

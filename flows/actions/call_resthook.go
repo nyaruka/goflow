@@ -38,8 +38,14 @@ type CallResthookAction struct {
 	ResultName string `json:"result_name,omitempty"`
 }
 
-// Type returns the type of this action
-func (a *CallResthookAction) Type() string { return TypeCallResthook }
+// NewCallResthookAction creates a new call resthook action
+func NewCallResthookAction(uuid flows.ActionUUID, resthook string, resultName string) *CallResthookAction {
+	return &CallResthookAction{
+		BaseAction: NewBaseAction(TypeCallResthook, uuid),
+		Resthook:   resthook,
+		ResultName: resultName,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *CallResthookAction) Validate(assets flows.SessionAssets) error {

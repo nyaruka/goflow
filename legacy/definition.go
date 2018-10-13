@@ -39,11 +39,11 @@ type Metadata struct {
 }
 
 type Rule struct {
-	UUID            flows.ExitUUID      `json:"uuid" validate:"required,uuid4"`
-	Destination     flows.NodeUUID      `json:"destination" validate:"omitempty,uuid4"`
-	DestinationType string              `json:"destination_type" validate:"eq=A|eq=R"`
-	Test            utils.TypedEnvelope `json:"test"`
-	Category        Translations        `json:"category"`
+	UUID            flows.ExitUUID `json:"uuid" validate:"required,uuid4"`
+	Destination     flows.NodeUUID `json:"destination" validate:"omitempty,uuid4"`
+	DestinationType string         `json:"destination_type" validate:"eq=A|eq=R"`
+	Test            TypedEnvelope  `json:"test"`
+	Category        Translations   `json:"category"`
 }
 
 type RuleSet struct {
@@ -367,10 +367,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			labels[i] = label.Migrate()
 		}
 
-		return &actions.AddInputLabelsAction{
-			Labels:     labels,
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		return actions.NewAddInputLabelsAction(a.UUID, labels), nil
 
 	case "email":
 		var msg string
@@ -386,29 +383,14 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			migratedEmails[e], _ = expressions.MigrateTemplate(email, false)
 		}
 
-		return &actions.SendEmailAction{
-			Subject:    migratedSubject,
-			Body:       migratedBody,
-			Addresses:  migratedEmails,
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		return actions.NewSendEmailAction(a.UUID, migratedEmails, migratedSubject, migratedBody), nil
 
 	case "lang":
-		return &actions.SetContactLanguageAction{
-			Language:   string(a.Language),
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		return actions.NewSetContactLanguageAction(a.UUID, string(a.Language)), nil
 	case "channel":
-		return &actions.SetContactChannelAction{
-			Channel:    assets.NewChannelReference(a.Channel, a.Name),
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		return actions.NewSetContactChannelAction(a.UUID, assets.NewChannelReference(a.Channel, a.Name)), nil
 	case "flow":
-		return &actions.StartFlowAction{
-			BaseAction: actions.NewBaseAction(a.UUID),
-			Flow:       a.Flow.Migrate(),
-			Terminal:   true,
-		}, nil
+		return actions.NewStartFlowAction(a.UUID, a.Flow.Migrate(), true), nil
 	case "trigger-flow":
 		contacts := make([]*flows.ContactReference, len(a.Contacts))
 		for i, contact := range a.Contacts {
@@ -429,15 +411,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 		}
 
-		return &actions.StartSessionAction{
-			BaseAction:    actions.NewBaseAction(a.UUID),
-			Flow:          a.Flow.Migrate(),
-			URNs:          []urns.URN{},
-			Contacts:      contacts,
-			Groups:        groups,
-			LegacyVars:    variables,
-			CreateContact: createContact,
-		}, nil
+		return actions.NewStartSessionAction(a.UUID, []urns.URN{}, contacts, groups, variables, a.Flow.Migrate(), createContact), nil
 	case "reply", "send":
 		msg := make(Translations)
 		media := make(Translations)
@@ -475,13 +449,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 
 		if a.Type == "reply" {
-			return &actions.SendMsgAction{
-				BaseAction:   actions.NewBaseAction(a.UUID),
-				Text:         migratedText,
-				Attachments:  attachments,
-				QuickReplies: migratedQuickReplies,
-				AllURNs:      a.SendAll,
-			}, nil
+			return actions.NewSendMsgAction(a.UUID, migratedText, attachments, migratedQuickReplies, a.SendAll), nil
 		}
 
 		contacts := make([]*flows.ContactReference, len(a.Contacts))
@@ -498,15 +466,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			variables = append(variables, migratedVar)
 		}
 
-		return &actions.SendBroadcastAction{
-			BaseAction:  actions.NewBaseAction(a.UUID),
-			Text:        migratedText,
-			Attachments: attachments,
-			URNs:        []urns.URN{},
-			Contacts:    contacts,
-			Groups:      groups,
-			LegacyVars:  variables,
-		}, nil
+		return actions.NewSendBroadcastAction(a.UUID, migratedText, attachments, migratedQuickReplies, []urns.URN{}, contacts, groups, variables), nil
 
 	case "add_group":
 		groups := make([]*assets.GroupReference, len(a.Groups))
@@ -514,21 +474,15 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			groups[i] = group.Migrate()
 		}
 
-		return &actions.AddContactGroupsAction{
-			Groups:     groups,
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		return actions.NewAddContactGroupsAction(a.UUID, groups), nil
 	case "del_group":
 		groups := make([]*assets.GroupReference, len(a.Groups))
 		for i, group := range a.Groups {
 			groups[i] = group.Migrate()
 		}
 
-		return &actions.RemoveContactGroupsAction{
-			Groups:     groups,
-			AllGroups:  len(groups) == 0,
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		allGroups := len(groups) == 0
+		return actions.NewRemoveContactGroupsAction(a.UUID, groups, allGroups), nil
 	case "save":
 		migratedValue, _ := expressions.MigrateTemplate(a.Value, false)
 
@@ -540,32 +494,17 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 				migratedValue = fmt.Sprintf("%s @(word_slice(contact.name, 1, -1))", migratedValue)
 			}
 
-			return &actions.SetContactNameAction{
-				Name:       migratedValue,
-				BaseAction: actions.NewBaseAction(a.UUID),
-			}, nil
+			return actions.NewSetContactNameAction(a.UUID, migratedValue), nil
 		}
 
 		// and another new action for adding a URN
 		if urns.IsValidScheme(a.Field) {
-			return &actions.AddContactURNAction{
-				Scheme:     a.Field,
-				Path:       migratedValue,
-				BaseAction: actions.NewBaseAction(a.UUID),
-			}, nil
+			return actions.NewAddContactURNAction(a.UUID, a.Field, migratedValue), nil
 		} else if a.Field == "tel_e164" {
-			return &actions.AddContactURNAction{
-				Scheme:     "tel",
-				Path:       migratedValue,
-				BaseAction: actions.NewBaseAction(a.UUID),
-			}, nil
+			return actions.NewAddContactURNAction(a.UUID, "tel", migratedValue), nil
 		}
 
-		return &actions.SetContactFieldAction{
-			Field:      assets.NewFieldReference(a.Field, a.Label),
-			Value:      migratedValue,
-			BaseAction: actions.NewBaseAction(a.UUID),
-		}, nil
+		return actions.NewSetContactFieldAction(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
 	case "api":
 		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, false)
 
@@ -585,13 +524,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			headers[header.Name] = header.Value
 		}
 
-		return &actions.CallWebhookAction{
-			BaseAction: actions.NewBaseAction(a.UUID),
-			Method:     method,
-			URL:        migratedURL,
-			Body:       body,
-			Headers:    headers,
-		}, nil
+		return actions.NewCallWebhookAction(a.UUID, method, migratedURL, headers, body, ""), nil
 	default:
 		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}
@@ -624,10 +557,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	switch r.Type {
 	case "subflow":
 		newActions = []flows.Action{
-			&actions.StartFlowAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
-				Flow:       config.Flow,
-			},
+			actions.NewStartFlowAction(flows.ActionUUID(utils.NewUUID()), config.Flow, false),
 		}
 
 		// subflow rulesets operate on the child flow status
@@ -653,14 +583,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		newActions = []flows.Action{
-			&actions.CallWebhookAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
-				URL:        migratedURL,
-				Method:     method,
-				Headers:    headers,
-				Body:       body,
-				ResultName: resultName,
-			},
+			actions.NewCallWebhookAction(flows.ActionUUID(utils.NewUUID()), method, migratedURL, headers, body, resultName),
 		}
 
 		// webhook rulesets operate on the webhook status, saved as category
@@ -669,11 +592,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 
 	case "resthook":
 		newActions = []flows.Action{
-			&actions.CallResthookAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
-				Resthook:   config.Resthook,
-				ResultName: resultName,
-			},
+			actions.NewCallResthookAction(flows.ActionUUID(utils.NewUUID()), config.Resthook, resultName),
 		}
 
 		// resthook rulesets operate on the webhook status, saved as category
@@ -801,11 +720,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		newActions = []flows.Action{
-			&transferto.TransferAirtimeAction{
-				BaseAction: actions.NewBaseAction(flows.ActionUUID(utils.NewUUID())),
-				Amounts:    currencyAmounts,
-				ResultName: resultName,
-			},
+			transferto.NewTransferAirtimeAction(flows.ActionUUID(utils.NewUUID()), currencyAmounts, resultName),
 		}
 
 		uiType = UINodeTypeSplitByAirtime

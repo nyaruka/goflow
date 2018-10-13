@@ -36,12 +36,9 @@ type AirtimeTransferredEvent struct {
 // NewAirtimeTransferredEvent creates a new airtime transferred event
 func NewAirtimeTransferredEvent(t *transfer) *AirtimeTransferredEvent {
 	return &AirtimeTransferredEvent{
-		BaseEvent: events.NewBaseEvent(),
+		BaseEvent: events.NewBaseEvent(TypeAirtimeTransfered),
 		Currency:  t.currency,
 		Amount:    t.actualAmount,
 		Status:    string(t.status),
 	}
 }
-
-// Type returns the type of this event
-func (e *AirtimeTransferredEvent) Type() string { return TypeAirtimeTransfered }

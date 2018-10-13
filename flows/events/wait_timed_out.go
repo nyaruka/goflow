@@ -26,10 +26,7 @@ type WaitTimedOutEvent struct {
 
 // NewWaitTimedOutEvent creates a new wait timed out event
 func NewWaitTimedOutEvent() *WaitTimedOutEvent {
-	return &WaitTimedOutEvent{BaseEvent: NewBaseEvent()}
+	return &WaitTimedOutEvent{BaseEvent: NewBaseEvent(TypeWaitTimedOut)}
 }
-
-// Type returns the type of this event
-func (e *WaitTimedOutEvent) Type() string { return TypeWaitTimedOut }
 
 var _ flows.Event = (*WaitTimedOutEvent)(nil)

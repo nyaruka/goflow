@@ -22,12 +22,20 @@ func RegisterType(name string, f readFunc) {
 }
 
 type baseTrigger struct {
+	type_       string
 	environment utils.Environment
 	flow        *assets.FlowReference
 	contact     *flows.Contact
 	params      types.XValue
 	triggeredOn time.Time
 }
+
+func newBaseTrigger(typeName string, env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, params types.XValue, triggeredOn time.Time) baseTrigger {
+	return baseTrigger{type_: typeName, environment: env, flow: flow, contact: contact, params: params, triggeredOn: triggeredOn}
+}
+
+// Type returns the type of this trigger
+func (t *baseTrigger) Type() string { return t.type_ }
 
 func (t *baseTrigger) Environment() utils.Environment { return t.environment }
 func (t *baseTrigger) Flow() *assets.FlowReference    { return t.flow }
@@ -69,11 +77,18 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
 // Resolve resolves the given key when this trigger is referenced in an expression
 func (t *baseTrigger) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
+	case "type":
+		return types.NewXText(t.type_)
 	case "params":
 		return t.params
 	}
 
 	return types.NewXResolveError(t, key)
+}
+
+// ToXJSON is called when this type is passed to @(json(...))
+func (t *baseTrigger) ToXJSON(env utils.Environment) types.XText {
+	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
 }
 
 // Describe returns a representation of this type for error messages
@@ -106,6 +121,7 @@ func EnsureDynamicGroups(session flows.Session) {
 //------------------------------------------------------------------------------------------
 
 type baseTriggerEnvelope struct {
+	Type        string                `json:"type" validate:"required"`
 	Environment json.RawMessage       `json:"environment,omitempty"`
 	Flow        *assets.FlowReference `json:"flow" validate:"required"`
 	Contact     json.RawMessage       `json:"contact,omitempty"`
@@ -113,57 +129,64 @@ type baseTriggerEnvelope struct {
 	TriggeredOn time.Time             `json:"triggered_on" validate:"required"`
 }
 
-// ReadTrigger reads a trigger from the given typed envelope
-func ReadTrigger(session flows.Session, envelope *utils.TypedEnvelope) (flows.Trigger, error) {
-	f := registeredTypes[envelope.Type]
-	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
+// ReadTrigger reads a trigger from the given JSON
+func ReadTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+	typeName, err := utils.ReadTypeFromJSON(data)
+	if err != nil {
+		return nil, err
 	}
-	return f(session, envelope.Data)
+
+	f := registeredTypes[typeName]
+	if f == nil {
+		return nil, fmt.Errorf("unknown type: %s", typeName)
+	}
+	return f(session, data)
 }
 
-func (t *baseTrigger) unmarshal(session flows.Session, envelope *baseTriggerEnvelope) error {
+func (t *baseTrigger) unmarshal(session flows.Session, e *baseTriggerEnvelope) error {
 	var err error
 
-	t.flow = envelope.Flow
-	t.triggeredOn = envelope.TriggeredOn
+	t.type_ = e.Type
+	t.flow = e.Flow
+	t.triggeredOn = e.TriggeredOn
 
-	if envelope.Environment != nil {
-		if t.environment, err = utils.ReadEnvironment(envelope.Environment); err != nil {
+	if e.Environment != nil {
+		if t.environment, err = utils.ReadEnvironment(e.Environment); err != nil {
 			return fmt.Errorf("unable to read environment: %s", err)
 		}
 	}
-	if envelope.Contact != nil {
-		if t.contact, err = flows.ReadContact(session.Assets(), envelope.Contact, true); err != nil {
+	if e.Contact != nil {
+		if t.contact, err = flows.ReadContact(session.Assets(), e.Contact, true); err != nil {
 			return fmt.Errorf("unable to read contact: %s", err)
 		}
 	}
-	if envelope.Params != nil {
-		t.params = types.JSONToXValue(envelope.Params)
+	if e.Params != nil {
+		t.params = types.JSONToXValue(e.Params)
 	}
 
 	return nil
 }
 
-func (t *baseTrigger) marshal(envelope *baseTriggerEnvelope) error {
+func (t *baseTrigger) marshal(e *baseTriggerEnvelope) error {
 	var err error
-	envelope.Flow = t.flow
-	envelope.TriggeredOn = t.triggeredOn
+	e.Type = t.type_
+	e.Flow = t.flow
+	e.TriggeredOn = t.triggeredOn
 
 	if t.environment != nil {
-		envelope.Environment, err = json.Marshal(t.environment)
+		e.Environment, err = json.Marshal(t.environment)
 		if err != nil {
 			return err
 		}
 	}
 	if t.contact != nil {
-		envelope.Contact, err = json.Marshal(t.contact)
+		e.Contact, err = json.Marshal(t.contact)
 		if err != nil {
 			return err
 		}
 	}
 	if t.params != nil {
-		envelope.Params, err = json.Marshal(t.params)
+		e.Params, err = json.Marshal(t.params)
 		if err != nil {
 			return err
 		}

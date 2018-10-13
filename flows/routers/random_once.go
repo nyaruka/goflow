@@ -22,13 +22,10 @@ type RandomOnceRouter struct {
 
 func NewRandomOnceRouter(exit flows.ExitUUID, resultName string) *RandomOnceRouter {
 	return &RandomOnceRouter{
-		BaseRouter: BaseRouter{ResultName_: resultName},
+		BaseRouter: newBaseRouter(TypeRandomOnce, resultName),
 		Exit:       exit,
 	}
 }
-
-// Type returns the type of our router
-func (r *RandomOnceRouter) Type() string { return TypeRandomOnce }
 
 // Validate validates the parameters on this router
 func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {

@@ -57,3 +57,27 @@ func TestStringOrNumber(t *testing.T) {
 	err = json.Unmarshal([]byte(`[]`), &s)
 	assert.EqualError(t, err, "expected string or number, not [")
 }
+
+type testObject struct {
+	Foo   string `json:"foo"`
+	Other int    `json:"other"`
+}
+
+func (t *testObject) Type() string { return "second" }
+func TestTypedEnvelope(t *testing.T) {
+	// error if JSON is malformed
+	e := &legacy.TypedEnvelope{}
+	err := json.Unmarshal([]byte(`{`), e)
+	assert.EqualError(t, err, "unexpected end of JSON input")
+
+	// error if we don't have a type field
+	e = &legacy.TypedEnvelope{}
+	err = json.Unmarshal([]byte(`{"foo":"bar","other":1234}`), e)
+	assert.EqualError(t, err, "field 'type' is required")
+
+	e = &legacy.TypedEnvelope{}
+	err = json.Unmarshal([]byte(`{"type":"first","foo":"bar","other":1234}`), e)
+	assert.NoError(t, err)
+	assert.Equal(t, "first", e.Type)
+	assert.Equal(t, `{"type":"first","foo":"bar","other":1234}`, string(e.Data))
+}

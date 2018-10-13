@@ -13,6 +13,11 @@ func init() {
 	RegisterType(TypeSendMsg, func() flows.Action { return &SendMsgAction{} })
 }
 
+type msgDestination struct {
+	urn     urns.URN
+	channel *flows.Channel
+}
+
 // TypeSendMsg is the type for the send message action
 const TypeSendMsg string = "send_msg"
 
@@ -39,13 +44,16 @@ type SendMsgAction struct {
 	AllURNs      bool     `json:"all_urns,omitempty"`
 }
 
-type msgDestination struct {
-	urn     urns.URN
-	channel *flows.Channel
+// NewSendMsgAction creates a new send msg action
+func NewSendMsgAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, allURNs bool) *SendMsgAction {
+	return &SendMsgAction{
+		BaseAction:   NewBaseAction(TypeSendMsg, uuid),
+		Text:         text,
+		Attachments:  attachments,
+		QuickReplies: quickReplies,
+		AllURNs:      allURNs,
+	}
 }
-
-// Type returns the type of this action
-func (a *SendMsgAction) Type() string { return TypeSendMsg }
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SendMsgAction) Validate(assets flows.SessionAssets) error {

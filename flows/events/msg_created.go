@@ -35,10 +35,7 @@ type MsgCreatedEvent struct {
 // NewMsgCreatedEvent creates a new outgoing msg event to a single contact
 func NewMsgCreatedEvent(msg *flows.MsgOut) *MsgCreatedEvent {
 	return &MsgCreatedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeMsgCreated),
 		Msg:       *msg,
 	}
 }
-
-// Type returns the type of this event
-func (e *MsgCreatedEvent) Type() string { return TypeMsgCreated }

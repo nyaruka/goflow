@@ -42,8 +42,19 @@ type SendBroadcastAction struct {
 	LegacyVars   []string                  `json:"legacy_vars,omitempty"`
 }
 
-// Type returns the type of this action
-func (a *SendBroadcastAction) Type() string { return TypeSendBroadcast }
+// NewSendBroadcastAction creates a new send broadcast action
+func NewSendBroadcastAction(uuid flows.ActionUUID, text string, attachments []string, quickReplies []string, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string) *SendBroadcastAction {
+	return &SendBroadcastAction{
+		BaseAction:   NewBaseAction(TypeSendBroadcast, uuid),
+		Text:         text,
+		Attachments:  attachments,
+		QuickReplies: quickReplies,
+		URNs:         urns,
+		Contacts:     contacts,
+		Groups:       groups,
+		LegacyVars:   legacyVars,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SendBroadcastAction) Validate(assets flows.SessionAssets) error {

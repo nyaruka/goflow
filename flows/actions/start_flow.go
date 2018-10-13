@@ -35,8 +35,14 @@ type StartFlowAction struct {
 	Terminal bool                  `json:"terminal"`
 }
 
-// Type returns the type of this action
-func (a *StartFlowAction) Type() string { return TypeStartFlow }
+// NewStartFlowAction creates a new start flow action
+func NewStartFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, terminal bool) *StartFlowAction {
+	return &StartFlowAction{
+		BaseAction: NewBaseAction(TypeStartFlow, uuid),
+		Flow:       flow,
+		Terminal:   terminal,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *StartFlowAction) Validate(assets flows.SessionAssets) error {

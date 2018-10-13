@@ -61,52 +61,52 @@ func (n *node) AddAction(action flows.Action) {
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID         `json:"uuid"                  validate:"required,uuid4"`
-	Actions []*utils.TypedEnvelope `json:"actions,omitempty"`
-	Router  *utils.TypedEnvelope   `json:"router,omitempty"`
-	Exits   []*exit                `json:"exits"`
-	Wait    *utils.TypedEnvelope   `json:"wait,omitempty"`
+	UUID    flows.NodeUUID    `json:"uuid"                  validate:"required,uuid4"`
+	Actions []json.RawMessage `json:"actions,omitempty"`
+	Router  json.RawMessage   `json:"router,omitempty"`
+	Exits   []*exit           `json:"exits"`
+	Wait    json.RawMessage   `json:"wait,omitempty"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON
 func (n *node) UnmarshalJSON(data []byte) error {
-	var envelope nodeEnvelope
-	err := utils.UnmarshalAndValidate(data, &envelope)
+	e := &nodeEnvelope{}
+	err := utils.UnmarshalAndValidate(data, e)
 	if err != nil {
 		return fmt.Errorf("unable to read node: %s", err)
 	}
 
-	n.uuid = envelope.UUID
+	n.uuid = e.UUID
 
 	// instantiate the right kind of router
-	if envelope.Router != nil {
-		n.router, err = routers.ReadRouter(envelope.Router)
+	if e.Router != nil {
+		n.router, err = routers.ReadRouter(e.Router)
 		if err != nil {
-			return fmt.Errorf("unable to read router[type=%s]: %s", envelope.Router.Type, err)
+			return fmt.Errorf("unable to read router: %s", err)
 		}
 	}
 
 	// and the right kind of wait
-	if envelope.Wait != nil {
-		n.wait, err = waits.ReadWait(envelope.Wait)
+	if e.Wait != nil {
+		n.wait, err = waits.ReadWait(e.Wait)
 		if err != nil {
-			return fmt.Errorf("unable to read wait[type=%s]: %s", envelope.Wait.Type, err)
+			return fmt.Errorf("unable to read wait: %s", err)
 		}
 	}
 
 	// and the right kind of actions
-	n.actions = make([]flows.Action, len(envelope.Actions))
-	for i := range envelope.Actions {
-		n.actions[i], err = actions.ReadAction(envelope.Actions[i])
+	n.actions = make([]flows.Action, len(e.Actions))
+	for i := range e.Actions {
+		n.actions[i], err = actions.ReadAction(e.Actions[i])
 		if err != nil {
-			return fmt.Errorf("unable to read action[type=%s]: %s", envelope.Actions[i], err)
+			return fmt.Errorf("unable to read action: %s", err)
 		}
 	}
 
 	// populate our exits
-	n.exits = make([]flows.Exit, len(envelope.Exits))
-	for i := range envelope.Exits {
-		n.exits[i] = envelope.Exits[i]
+	n.exits = make([]flows.Exit, len(e.Exits))
+	for i := range e.Exits {
+		n.exits[i] = e.Exits[i]
 	}
 
 	return nil
@@ -114,36 +114,41 @@ func (n *node) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON marshals this flow node into JSON
 func (n *node) MarshalJSON() ([]byte, error) {
-	envelope := nodeEnvelope{}
 	var err error
 
-	envelope.UUID = n.uuid
-
-	envelope.Router, err = utils.EnvelopeFromTyped(n.router)
-	if err != nil {
-		return nil, err
+	e := &nodeEnvelope{
+		UUID: n.uuid,
 	}
 
-	envelope.Wait, err = utils.EnvelopeFromTyped(n.wait)
-	if err != nil {
-		return nil, err
-	}
-
-	// and the right kind of actions
-	envelope.Actions = make([]*utils.TypedEnvelope, len(n.actions))
-	for i := range n.actions {
-		envelope.Actions[i], err = utils.EnvelopeFromTyped(n.actions[i])
+	if n.router != nil {
+		e.Router, err = json.Marshal(n.router)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	envelope.Exits = make([]*exit, len(n.exits))
-	for i := range n.exits {
-		envelope.Exits[i] = n.exits[i].(*exit)
+	if n.wait != nil {
+		e.Wait, err = json.Marshal(n.wait)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	return json.Marshal(envelope)
+	// and the right kind of actions
+	e.Actions = make([]json.RawMessage, len(n.actions))
+	for i := range n.actions {
+		e.Actions[i], err = json.Marshal(n.actions[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	e.Exits = make([]*exit, len(n.exits))
+	for i := range n.exits {
+		e.Exits[i] = n.exits[i].(*exit)
+	}
+
+	return json.Marshal(e)
 }
 
 type exitEnvelope struct {

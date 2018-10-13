@@ -34,8 +34,13 @@ type SetContactTimezoneAction struct {
 	Timezone string `json:"timezone"`
 }
 
-// Type returns the type of this action
-func (a *SetContactTimezoneAction) Type() string { return TypeSetContactTimezone }
+// NewSetContactTimezoneAction creates a new set timezone action
+func NewSetContactTimezoneAction(uuid flows.ActionUUID, timezone string) *SetContactTimezoneAction {
+	return &SetContactTimezoneAction{
+		BaseAction: NewBaseAction(TypeSetContactTimezone, uuid),
+		Timezone:   timezone,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactTimezoneAction) Validate(assets flows.SessionAssets) error {

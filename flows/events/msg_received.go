@@ -36,12 +36,9 @@ type MsgReceivedEvent struct {
 // NewMsgReceivedEvent creates a new incoming msg event for the passed in channel, URN and text
 func NewMsgReceivedEvent(msg *flows.MsgIn) *MsgReceivedEvent {
 	return &MsgReceivedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeMsgReceived),
 		Msg:       *msg,
 	}
 }
-
-// Type returns the type of this event
-func (e *MsgReceivedEvent) Type() string { return TypeMsgReceived }
 
 var _ flows.Event = (*MsgReceivedEvent)(nil)

@@ -29,8 +29,8 @@ type ContactURNAddedEvent struct {
 
 // NewURNAddedEvent returns a new add URN event
 func NewURNAddedEvent(urn urns.URN) *ContactURNAddedEvent {
-	return &ContactURNAddedEvent{BaseEvent: NewBaseEvent(), URN: urn}
+	return &ContactURNAddedEvent{
+		BaseEvent: NewBaseEvent(TypeContactURNAdded),
+		URN:       urn,
+	}
 }
-
-// Type returns the type of this event
-func (e *ContactURNAddedEvent) Type() string { return TypeContactURNAdded }

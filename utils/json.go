@@ -80,3 +80,21 @@ func IsValidJSON(data []byte) bool {
 	var s interface{}
 	return json.Unmarshal(data, &s) == nil
 }
+
+// Typed is an interface of objects that are marshalled as typed envelopes
+type Typed interface {
+	Type() string
+}
+
+type typeOnly struct {
+	Type string `json:"type" validate:"required"`
+}
+
+// ReadTypeFromJSON reads a field called `type` from the given JSON
+func ReadTypeFromJSON(data []byte) (string, error) {
+	t := &typeOnly{}
+	if err := UnmarshalAndValidate(data, t); err != nil {
+		return "", err
+	}
+	return t.Type, nil
+}

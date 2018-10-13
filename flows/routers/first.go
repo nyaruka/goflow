@@ -18,11 +18,8 @@ type FirstRouter struct {
 }
 
 func NewFirstRouter(resultName string) *FirstRouter {
-	return &FirstRouter{BaseRouter: BaseRouter{ResultName_: resultName}}
+	return &FirstRouter{BaseRouter: newBaseRouter(TypeFirst, resultName)}
 }
-
-// Type returns the type of this router
-func (r *FirstRouter) Type() string { return TypeFirst }
 
 // Validate validates the arguments on this router
 func (r *FirstRouter) Validate(exits []flows.Exit) error {

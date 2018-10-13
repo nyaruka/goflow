@@ -37,8 +37,15 @@ type SetRunResultAction struct {
 	Category string `json:"category"`
 }
 
-// Type returns the type of this action
-func (a *SetRunResultAction) Type() string { return TypeSetRunResult }
+// NewSetRunResultAction creates a new set run result action
+func NewSetRunResultAction(uuid flows.ActionUUID, name string, value string, category string) *SetRunResultAction {
+	return &SetRunResultAction{
+		BaseAction: NewBaseAction(TypeSetRunResult, uuid),
+		Name:       name,
+		Value:      value,
+		Category:   category,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetRunResultAction) Validate(assets flows.SessionAssets) error {

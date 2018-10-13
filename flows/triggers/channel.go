@@ -48,28 +48,9 @@ type ChannelTrigger struct {
 // NewChannelTrigger creates a new channel trigger with the passed in values
 func NewChannelTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, event *ChannelEvent, params types.XValue, triggeredOn time.Time) *ChannelTrigger {
 	return &ChannelTrigger{
-		baseTrigger: baseTrigger{
-			environment: env,
-			flow:        flow,
-			contact:     contact,
-			params:      params,
-			triggeredOn: triggeredOn,
-		},
-		event: event,
+		baseTrigger: newBaseTrigger(TypeChannel, env, flow, contact, params, triggeredOn),
+		event:       event,
 	}
-}
-
-// Type returns the type of this trigger
-func (t *ChannelTrigger) Type() string { return TypeChannel }
-
-// Resolve resolves the given key when this trigger is referenced in an expression
-func (t *ChannelTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "type":
-		return types.NewXText(TypeChannel)
-	}
-
-	return t.baseTrigger.Resolve(env, key)
 }
 
 // ToXJSON is called when this type is passed to @(json(...))

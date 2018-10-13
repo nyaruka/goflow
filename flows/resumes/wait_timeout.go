@@ -37,12 +37,9 @@ type WaitTimeoutResume struct {
 // NewWaitTimeoutResume creates a new timeout resume with the passed in values
 func NewWaitTimeoutResume(env utils.Environment, contact *flows.Contact) *WaitTimeoutResume {
 	return &WaitTimeoutResume{
-		baseResume: newBaseResume(env, contact),
+		baseResume: newBaseResume(TypeWaitTimeout, env, contact),
 	}
 }
-
-// Type returns the type of this resume
-func (r *WaitTimeoutResume) Type() string { return TypeWaitTimeout }
 
 // Apply applies our state changes and saves any events to the run
 func (r *WaitTimeoutResume) Apply(run flows.FlowRun, step flows.Step) error {

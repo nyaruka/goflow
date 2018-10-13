@@ -35,6 +35,14 @@ type AddContactGroupsAction struct {
 	Groups []*assets.GroupReference `json:"groups" validate:"required,dive"`
 }
 
+// NewAddContactGroupsAction creates a new add to groups action
+func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupReference) *AddContactGroupsAction {
+	return &AddContactGroupsAction{
+		BaseAction: NewBaseAction(TypeAddContactGroups, uuid),
+		Groups:     groups,
+	}
+}
+
 // Type returns the type of this action
 func (a *AddContactGroupsAction) Type() string { return TypeAddContactGroups }
 

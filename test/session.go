@@ -11,7 +11,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/utils"
 )
 
 var sessionAssets = `{
@@ -322,11 +321,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our trigger
-	triggerEnvelope := &utils.TypedEnvelope{}
-	if err := triggerEnvelope.UnmarshalJSON(json.RawMessage(sessionTrigger)); err != nil {
-		return nil, fmt.Errorf("error unmarsalling trigger: %s", err)
-	}
-	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
+	trigger, err := triggers.ReadTrigger(session, json.RawMessage(sessionTrigger))
 	if err != nil {
 		return nil, fmt.Errorf("error reading trigger: %s", err)
 	}
@@ -336,11 +331,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our resume
-	resumeEnvelope := &utils.TypedEnvelope{}
-	if err := resumeEnvelope.UnmarshalJSON(json.RawMessage(sessionResume)); err != nil {
-		return nil, fmt.Errorf("error unmarsalling resume: %s", err)
-	}
-	resume, err := resumes.ReadResume(session, resumeEnvelope)
+	resume, err := resumes.ReadResume(session, json.RawMessage(sessionResume))
 	if err != nil {
 		return nil, fmt.Errorf("error reading resume: %s", err)
 	}

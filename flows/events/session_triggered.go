@@ -58,7 +58,7 @@ type SessionTriggeredEvent struct {
 // NewSessionTriggeredEvent returns a new session triggered event
 func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, createContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
-		BaseEvent:     NewBaseEvent(),
+		BaseEvent:     NewBaseEvent(TypeSessionTriggered),
 		Flow:          flow,
 		URNs:          urns,
 		Contacts:      contacts,
@@ -67,6 +67,3 @@ func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, conta
 		Run:           runSnapshot,
 	}
 }
-
-// Type returns the type of this event
-func (e *SessionTriggeredEvent) Type() string { return TypeSessionTriggered }

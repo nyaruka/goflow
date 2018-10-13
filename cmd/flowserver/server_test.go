@@ -449,16 +449,13 @@ func (ts *ServerTestSuite) buildResumeRequest(assetsJSON string, session flows.S
 	msgJSON, _ := json.Marshal(msg)
 	resumeJSON := fmt.Sprintf(`{"type": "msg", "msg": %s, "resumed_on": "2017-12-31T11:35:10.035757258-02:00"}`, string(msgJSON))
 
-	resumeEnvelope := &utils.TypedEnvelope{}
-	json.Unmarshal([]byte(resumeJSON), resumeEnvelope)
-
 	request := &resumeRequest{
 		sessionRequest: sessionRequest{
 			Assets:      &assetsData,
 			AssetServer: assetServer,
 		},
 		Session: sessionJSON,
-		Resume:  resumeEnvelope,
+		Resume:  json.RawMessage(resumeJSON),
 	}
 
 	requestJSON, err := utils.JSONMarshal(request)
@@ -523,7 +520,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	// try POSTing an incomplete trigger to the start endpoint
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", fmt.Sprintf(`{"assets": %s, "asset_server": %s, "trigger": {"type": "manual"}}`, testValidFlowWithNoWaitAssets, assetServerConfig))
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"unable to read trigger[type=manual]: field 'flow' is required, field 'triggered_on' is required"})
+	ts.assertErrorResponse(body, []string{"unable to read trigger: field 'flow' is required, field 'triggered_on' is required"})
 
 	// try POSTing to the start endpoint a structurally invalid flow asset
 	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets, assetServerConfig, `{}`)

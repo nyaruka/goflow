@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/runs"
 	"github.com/nyaruka/goflow/utils"
@@ -49,26 +48,8 @@ type FlowActionTrigger struct {
 	run flows.RunSummary
 }
 
-// Type returns the type of this trigger
-func (t *FlowActionTrigger) Type() string { return TypeFlowAction }
-
 // Run returns the summary of the run that triggered this session
 func (t *FlowActionTrigger) Run() flows.RunSummary { return t.run }
-
-// Resolve resolves the given key when this trigger is referenced in an expression
-func (t *FlowActionTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
-	case "type":
-		return types.NewXText(TypeFlowAction)
-	}
-
-	return t.baseTrigger.Resolve(env, key)
-}
-
-// ToXJSON is called when this type is passed to @(json(...))
-func (t *FlowActionTrigger) ToXJSON(env utils.Environment) types.XText {
-	return types.ResolveKeys(env, t, "type", "params").ToXJSON(env)
-}
 
 var _ flows.Trigger = (*FlowActionTrigger)(nil)
 

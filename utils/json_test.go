@@ -86,3 +86,15 @@ func TestIsValidJSON(t *testing.T) {
 	assert.False(t, utils.IsValidJSON([]byte(`{foo:"bar"}`)))
 	assert.False(t, utils.IsValidJSON([]byte(`{0:"bar"}`)))
 }
+
+func TestReadTypeFromJSON(t *testing.T) {
+	_, err := utils.ReadTypeFromJSON([]byte(`{}`))
+	assert.EqualError(t, err, "field 'type' is required")
+
+	_, err = utils.ReadTypeFromJSON([]byte(`{"type": ""}`))
+	assert.EqualError(t, err, "field 'type' is required")
+
+	typeName, err := utils.ReadTypeFromJSON([]byte(`{"thing": 2, "type": "foo"}`))
+	assert.NoError(t, err)
+	assert.Equal(t, "foo", typeName)
+}

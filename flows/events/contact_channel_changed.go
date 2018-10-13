@@ -30,10 +30,7 @@ type ContactChannelChangedEvent struct {
 // NewContactChannelChangedEvent returns a new preferred channel event
 func NewContactChannelChangedEvent(channel *assets.ChannelReference) *ContactChannelChangedEvent {
 	return &ContactChannelChangedEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeContactChannelChanged),
 		Channel:   channel,
 	}
 }
-
-// Type returns the type of this event
-func (e *ContactChannelChangedEvent) Type() string { return TypeContactChannelChanged }

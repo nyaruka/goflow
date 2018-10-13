@@ -12,7 +12,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/legacy"
@@ -30,25 +29,8 @@ type sessionRequest struct {
 }
 
 type sessionResponse struct {
-	Session flows.Session
-	Events  []flows.Event
-}
-
-// MarshalJSON marshals this session response into JSON
-func (r *sessionResponse) MarshalJSON() ([]byte, error) {
-	eventEnvelopes, err := events.EventsToEnvelopes(r.Session.Events())
-	if err != nil {
-		return nil, err
-	}
-	envelope := struct {
-		Session flows.Session          `json:"session"`
-		Events  []*utils.TypedEnvelope `json:"events"`
-	}{
-		Session: r.Session,
-		Events:  eventEnvelopes,
-	}
-
-	return utils.JSONMarshal(envelope)
+	Session flows.Session `json:"session"`
+	Events  []flows.Event `json:"events"`
 }
 
 // Starts a new engine session
@@ -62,7 +44,7 @@ func (r *sessionResponse) MarshalJSON() ([]byte, error) {
 type startRequest struct {
 	sessionRequest
 
-	Trigger *utils.TypedEnvelope `json:"trigger" validate:"required"`
+	Trigger json.RawMessage `json:"trigger" validate:"required"`
 }
 
 // reads the assets and asset_server section of a request
@@ -107,7 +89,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, request.Trigger)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read trigger[type=%s]: %s", request.Trigger.Type, err)
+		return nil, fmt.Errorf("unable to read trigger: %s", err)
 	}
 
 	// start our flow
@@ -130,8 +112,8 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 type resumeRequest struct {
 	sessionRequest
 
-	Session json.RawMessage      `json:"session" validate:"required"`
-	Resume  *utils.TypedEnvelope `json:"resume" validate:"required"`
+	Session json.RawMessage `json:"session" validate:"required"`
+	Resume  json.RawMessage `json:"resume" validate:"required"`
 }
 
 func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (interface{}, error) {

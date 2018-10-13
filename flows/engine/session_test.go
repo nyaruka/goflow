@@ -187,11 +187,7 @@ func TestWaitTimeout(t *testing.T) {
 
 	// should be able to resume with a timed out event in the future
 	resumeJSON := fmt.Sprintf(`{"type": "wait_timeout", "resumed_on": "%s"}`, timeoutOn.Add(time.Second*60).Format(time.RFC3339))
-	resumeEnvelope := &utils.TypedEnvelope{}
-	err = resumeEnvelope.UnmarshalJSON([]byte(resumeJSON))
-	require.NoError(t, err)
-
-	resume, err := resumes.ReadResume(session, resumeEnvelope)
+	resume, err := resumes.ReadResume(session, []byte(resumeJSON))
 	require.NoError(t, err)
 
 	err = session.Resume(resume)

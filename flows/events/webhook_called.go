@@ -40,7 +40,7 @@ type WebhookCalledEvent struct {
 // NewWebhookCalledEvent returns a new webhook called event
 func NewWebhookCalledEvent(webhook *flows.WebhookCall, resthook string) *WebhookCalledEvent {
 	return &WebhookCalledEvent{
-		BaseEvent: NewBaseEvent(),
+		BaseEvent: NewBaseEvent(TypeWebhookCalled),
 		URL:       webhook.URL(),
 		Resthook:  resthook,
 		Status:    webhook.Status(),
@@ -49,6 +49,3 @@ func NewWebhookCalledEvent(webhook *flows.WebhookCall, resthook string) *Webhook
 		Response:  webhook.Response(),
 	}
 }
-
-// Type returns the type of this event
-func (e *WebhookCalledEvent) Type() string { return TypeWebhookCalled }

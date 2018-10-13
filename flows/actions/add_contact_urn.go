@@ -34,8 +34,14 @@ type AddContactURNAction struct {
 	Path   string `json:"path" validate:"required"`
 }
 
-// Type returns the type of this action
-func (a *AddContactURNAction) Type() string { return TypeAddContactURN }
+// NewAddContactURNAction creates a new add URN action
+func NewAddContactURNAction(uuid flows.ActionUUID, scheme string, path string) *AddContactURNAction {
+	return &AddContactURNAction{
+		BaseAction: NewBaseAction(TypeAddContactURN, uuid),
+		Scheme:     scheme,
+		Path:       path,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *AddContactURNAction) Validate(assets flows.SessionAssets) error {

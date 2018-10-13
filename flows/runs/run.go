@@ -139,8 +139,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	r.Session().LogEvent(event)
 
 	if log.GetLevel() >= log.DebugLevel {
-		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
-		eventJSON, _ := json.Marshal(eventEnvelope)
+		eventJSON, _ := json.Marshal(event)
 		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event logged")
 	}
 }
@@ -334,16 +333,16 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID   flows.RunUUID          `json:"uuid" validate:"required,uuid4"`
-	Flow   *assets.FlowReference  `json:"flow" validate:"required,dive"`
-	Path   []*step                `json:"path" validate:"dive"`
-	Events []*utils.TypedEnvelope `json:"events,omitempty"`
+	UUID   flows.RunUUID         `json:"uuid" validate:"required,uuid4"`
+	Flow   *assets.FlowReference `json:"flow" validate:"required,dive"`
+	Path   []*step               `json:"path" validate:"dive"`
+	Events []json.RawMessage     `json:"events,omitempty"`
 
 	Status     flows.RunStatus `json:"status" validate:"required"`
 	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
 
-	Results flows.Results        `json:"results,omitempty" validate:"omitempty,dive"`
-	Input   *utils.TypedEnvelope `json:"input,omitempty" validate:"omitempty,dive"`
+	Results flows.Results   `json:"results,omitempty" validate:"omitempty,dive"`
+	Input   json.RawMessage `json:"input,omitempty" validate:"omitempty"`
 
 	CreatedOn  time.Time  `json:"created_on" validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
@@ -354,57 +353,58 @@ type runEnvelope struct {
 // ReadRun decodes a run from the passed in JSON. Parent run UUID is returned separately as the
 // run in question might be loaded yet from the session.
 func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error) {
-	r := &flowRun{}
-	var envelope runEnvelope
+	e := &runEnvelope{}
 	var err error
 
-	if err = utils.UnmarshalAndValidate(data, &envelope); err != nil {
+	if err = utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, fmt.Errorf("unable to read run: %s", err)
 	}
 
-	r.session = session
-	r.uuid = envelope.UUID
-	r.status = envelope.Status
-	r.createdOn = envelope.CreatedOn
-	r.modifiedOn = envelope.ModifiedOn
-	r.expiresOn = envelope.ExpiresOn
-	r.exitedOn = envelope.ExitedOn
+	r := &flowRun{
+		session:    session,
+		uuid:       e.UUID,
+		status:     e.Status,
+		createdOn:  e.CreatedOn,
+		modifiedOn: e.ModifiedOn,
+		expiresOn:  e.ExpiresOn,
+		exitedOn:   e.ExitedOn,
+	}
 
 	// lookup flow
-	if r.flow, err = session.Assets().Flows().Get(envelope.Flow.UUID); err != nil {
-		return nil, fmt.Errorf("unable to load flow[uuid=%s]: %s", envelope.Flow.UUID, err)
+	if r.flow, err = session.Assets().Flows().Get(e.Flow.UUID); err != nil {
+		return nil, fmt.Errorf("unable to load flow[uuid=%s]: %s", e.Flow.UUID, err)
 	}
 
 	// lookup parent run
-	if envelope.ParentUUID != "" {
-		if r.parent, err = session.GetRun(envelope.ParentUUID); err != nil {
+	if e.ParentUUID != "" {
+		if r.parent, err = session.GetRun(e.ParentUUID); err != nil {
 			return nil, err
 		}
 	}
 
-	if envelope.Input != nil {
-		if r.input, err = inputs.ReadInput(session, envelope.Input); err != nil {
-			return nil, fmt.Errorf("unable to read input[type=%s]: %s", envelope.Input.Type, err)
+	if e.Input != nil {
+		if r.input, err = inputs.ReadInput(session, e.Input); err != nil {
+			return nil, fmt.Errorf("unable to read input: %s", err)
 		}
 	}
 
-	if envelope.Results != nil {
-		r.results = envelope.Results
+	if e.Results != nil {
+		r.results = e.Results
 	} else {
 		r.results = flows.NewResults()
 	}
 
 	// read in our path
-	r.path = make([]flows.Step, len(envelope.Path))
-	for i, step := range envelope.Path {
+	r.path = make([]flows.Step, len(e.Path))
+	for i, step := range e.Path {
 		r.path[i] = step
 	}
 
 	// read in our events
-	r.events = make([]flows.Event, len(envelope.Events))
+	r.events = make([]flows.Event, len(e.Events))
 	for i := range r.events {
-		if r.events[i], err = events.ReadEvent(envelope.Events[i]); err != nil {
-			return nil, fmt.Errorf("unable to read event[type=%s]: %s", envelope.Events[i].Type, err)
+		if r.events[i], err = events.ReadEvent(e.Events[i]); err != nil {
+			return nil, fmt.Errorf("unable to read event: %s", err)
 		}
 	}
 
@@ -417,36 +417,41 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 // MarshalJSON marshals this flow run into JSON
 func (r *flowRun) MarshalJSON() ([]byte, error) {
-	var re runEnvelope
 	var err error
 
-	re.UUID = r.uuid
-	re.Flow = r.flow.Reference()
-	re.Status = r.status
-	re.CreatedOn = r.createdOn
-	re.ModifiedOn = r.modifiedOn
-	re.ExpiresOn = r.expiresOn
-	re.ExitedOn = r.exitedOn
-	re.Results = r.results
+	e := &runEnvelope{
+		UUID:       r.uuid,
+		Flow:       r.flow.Reference(),
+		Status:     r.status,
+		CreatedOn:  r.createdOn,
+		ModifiedOn: r.modifiedOn,
+		ExpiresOn:  r.expiresOn,
+		ExitedOn:   r.exitedOn,
+		Results:    r.results,
+	}
 
 	if r.parent != nil {
-		re.ParentUUID = r.parent.UUID()
+		e.ParentUUID = r.parent.UUID()
 	}
 
-	re.Input, err = utils.EnvelopeFromTyped(r.input)
-	if err != nil {
-		return nil, err
+	if r.input != nil {
+		e.Input, err = json.Marshal(r.input)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	re.Path = make([]*step, len(r.path))
+	e.Path = make([]*step, len(r.path))
 	for i, s := range r.path {
-		re.Path[i] = s.(*step)
+		e.Path[i] = s.(*step)
 	}
 
-	re.Events, err = events.EventsToEnvelopes(r.events)
-	if err != nil {
-		return nil, err
+	e.Events = make([]json.RawMessage, len(r.events))
+	for i := range r.events {
+		if e.Events[i], err = json.Marshal(r.events[i]); err != nil {
+			return nil, err
+		}
 	}
 
-	return json.Marshal(re)
+	return json.Marshal(e)
 }

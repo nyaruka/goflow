@@ -13,7 +13,6 @@ import (
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
-	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
@@ -69,13 +68,13 @@ func normalizeJSON(data json.RawMessage) ([]byte, error) {
 }
 
 func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
-	envelopes, err := events.EventsToEnvelopes(eventLog)
-	marshaled := make([]json.RawMessage, len(envelopes))
+	marshaled := make([]json.RawMessage, len(eventLog))
+	var err error
 
-	for i := range envelopes {
-		marshaled[i], err = utils.JSONMarshal(envelopes[i])
+	for i := range eventLog {
+		marshaled[i], err = utils.JSONMarshal(eventLog[i])
 		if err != nil {
-			return nil, fmt.Errorf("error creating marshaling envelope %s: %s", envelopes[i], err)
+			return nil, fmt.Errorf("error marshaling event: %s", err)
 		}
 	}
 	return marshaled, nil
@@ -87,9 +86,9 @@ type Output struct {
 }
 
 type FlowTest struct {
-	Trigger *utils.TypedEnvelope   `json:"trigger"`
-	Resumes []*utils.TypedEnvelope `json:"resumes"`
-	Outputs []json.RawMessage      `json:"outputs"`
+	Trigger json.RawMessage   `json:"trigger"`
+	Resumes []json.RawMessage `json:"resumes"`
+	Outputs []json.RawMessage `json:"outputs"`
 }
 
 type runResult struct {
@@ -97,7 +96,7 @@ type runResult struct {
 	outputs []*Output
 }
 
-func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnvelopes []*utils.TypedEnvelope) (runResult, error) {
+func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.RawMessage) (runResult, error) {
 	// load the test specific assets
 	testAssetsJSON, err := ioutil.ReadFile(fmt.Sprintf("testdata/flows/%s", assetsPath))
 	if err != nil {
@@ -115,7 +114,7 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 	assets, _ := engine.NewSessionAssets(source)
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 
-	trigger, err := triggers.ReadTrigger(session, triggerEnvelope)
+	trigger, err := triggers.ReadTrigger(session, rawTrigger)
 	if err != nil {
 		return runResult{}, fmt.Errorf("error unmarshalling trigger: %s", err)
 	}
@@ -128,7 +127,7 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 	outputs := make([]*Output, 0)
 
 	// try to resume the session for each of the provided resumes
-	for r, resumeEnvelope := range resumeEnvelopes {
+	for r, rawResume := range rawResumes {
 		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
 			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
@@ -147,10 +146,10 @@ func runFlow(assetsPath string, triggerEnvelope *utils.TypedEnvelope, resumeEnve
 
 		// if we aren't at a wait, that's an error
 		if session.Wait() == nil {
-			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resumes: %#v", resumeEnvelopes[r:])
+			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
 		}
 
-		resume, err := resumes.ReadResume(session, resumeEnvelope)
+		resume, err := resumes.ReadResume(session, rawResume)
 		if err != nil {
 			return runResult{}, err
 		}

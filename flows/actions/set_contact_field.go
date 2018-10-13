@@ -36,8 +36,14 @@ type SetContactFieldAction struct {
 	Value string                 `json:"value"`
 }
 
-// Type returns the type of this action
-func (a *SetContactFieldAction) Type() string { return TypeSetContactField }
+// NewSetContactFieldAction creates a new set channel action
+func NewSetContactFieldAction(uuid flows.ActionUUID, field *assets.FieldReference, value string) *SetContactFieldAction {
+	return &SetContactFieldAction{
+		BaseAction: NewBaseAction(TypeSetContactField, uuid),
+		Field:      field,
+		Value:      value,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactFieldAction) Validate(assets flows.SessionAssets) error {

@@ -39,12 +39,9 @@ type EnvironmentChangedEvent struct {
 func NewEnvironmentChangedEvent(env utils.Environment) *EnvironmentChangedEvent {
 	marshalled, _ := json.Marshal(env)
 	return &EnvironmentChangedEvent{
-		BaseEvent:   NewBaseEvent(),
+		BaseEvent:   NewBaseEvent(TypeEnvironmentChanged),
 		Environment: marshalled,
 	}
 }
-
-// Type returns the type of this event
-func (e *EnvironmentChangedEvent) Type() string { return TypeEnvironmentChanged }
 
 var _ flows.Event = (*EnvironmentChangedEvent)(nil)

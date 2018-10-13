@@ -34,12 +34,9 @@ type FlowTriggeredEvent struct {
 // NewFlowTriggeredEvent returns a new flow triggered event for the passed in flow and parent run
 func NewFlowTriggeredEvent(flow *assets.FlowReference, parentRunUUID flows.RunUUID, terminal bool) *FlowTriggeredEvent {
 	return &FlowTriggeredEvent{
-		BaseEvent:     NewBaseEvent(),
+		BaseEvent:     NewBaseEvent(TypeFlowTriggered),
 		Flow:          flow,
 		ParentRunUUID: parentRunUUID,
 		Terminal:      terminal,
 	}
 }
-
-// Type returns the type of this event
-func (e *FlowTriggeredEvent) Type() string { return TypeFlowTriggered }
