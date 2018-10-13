@@ -28,7 +28,8 @@ const TypeFlowAction string = "flow_action"
 //       "contact": {
 //         "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
 //         "name": "Bob",
-//         "fields": {"gender": {"text": "Male"}}
+//         "fields": {"gender": {"text": "Male"}},
+//         "created_on": "2018-01-01T12:00:00.000000000-00:00"
 //       },
 //       "status": "active",
 //       "results": {
@@ -36,7 +37,7 @@ const TypeFlowAction string = "flow_action"
 //           "result_name": "Age",
 //           "value": "33",
 //           "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
-//           "created_on": "2000-01-01T00:00:00.000000000-00:00"
+//           "created_on": "2018-01-01T12:00:00.000000000-00:00"
 //         }
 //       }
 //     }

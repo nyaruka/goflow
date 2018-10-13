@@ -24,7 +24,7 @@ Is used when a session was triggered by a campaign event
         "name": "Bob",
         "language": "",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -58,7 +58,7 @@ Is used when a session was triggered by a channel event
         "name": "Bob",
         "language": "",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -99,7 +99,7 @@ Is used when another session triggered this run using a trigger_flow action.
             "name": "Bob",
             "language": "",
             "timezone": "",
-            "created_on": "0001-01-01T00:00:00Z",
+            "created_on": "2018-01-01T12:00:00Z",
             "urns": [],
             "fields": {
                 "gender": {
@@ -113,7 +113,7 @@ Is used when another session triggered this run using a trigger_flow action.
                 "name": "",
                 "value": "33",
                 "node_uuid": "",
-                "created_on": "2000-01-01T00:00:00Z"
+                "created_on": "2018-01-01T12:00:00Z"
             }
         }
     }
@@ -140,7 +140,7 @@ Is used when a session was triggered manually by a user
         "name": "Bob",
         "language": "",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
     "triggered_on": "2000-01-01T00:00:00Z"
@@ -167,7 +167,7 @@ Is used when a session was triggered by a message being recieved by the caller
         "name": "Bob",
         "language": "",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
     "triggered_on": "2000-01-01T00:00:00Z",
@@ -214,7 +214,7 @@ Is used when a session is resumed with a new message from the contact
         "name": "Bob",
         "language": "fra",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": [],
         "fields": {
             "gender": {
@@ -254,7 +254,7 @@ Is used when a session is resumed because the waiting run has expired
         "name": "Bob",
         "language": "fra",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": [],
         "fields": {
             "gender": {
@@ -282,7 +282,7 @@ Is used when a session is resumed because a wait has timed out
         "name": "Bob",
         "language": "fra",
         "timezone": "",
-        "created_on": "0001-01-01T00:00:00Z",
+        "created_on": "2018-01-01T12:00:00Z",
         "urns": [],
         "fields": {
             "gender": {

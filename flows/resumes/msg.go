@@ -23,6 +23,7 @@ const TypeMsg string = "msg"
 //     "contact": {
 //       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
 //       "name": "Bob",
+//       "created_on": "2018-01-01T12:00:00.000000Z",
 //       "language": "fra",
 //       "fields": {"gender": {"text": "Male"}},
 //       "groups": []

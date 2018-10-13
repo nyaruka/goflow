@@ -127,7 +127,7 @@
                     },
                     "run": {
                         "contact": {
-                            "created_on": "0001-01-01T00:00:00Z",
+                            "created_on": "2018-01-01T12:00:00Z",
                             "fields": {
                                 "state": {
                                     "state": "Ecuador > Esmeraldas",
@@ -201,6 +201,7 @@
         },
         "run": {
             "contact": {
+                "created_on": "2018-01-01T12:00:00.000000Z",
                 "fields": {
                     "state": {
                         "state": "Ecuador > Esmeraldas",

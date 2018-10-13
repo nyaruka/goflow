@@ -25,7 +25,8 @@ const TypeMsg string = "msg"
 //     "flow": {"uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7", "name": "Registration"},
 //     "contact": {
 //       "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
-//       "name": "Bob"
+//       "name": "Bob",
+//       "created_on": "2018-01-01T12:00:00.000000Z"
 //     },
 //     "msg": {
 //       "uuid": "2d611e17-fb22-457f-b802-b8f7ec5cda5b",
