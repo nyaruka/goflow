@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "text": "PING",
                         "urn": "tel:+12065551212",
@@ -14,7 +14,7 @@
                 },
                 {
                     "category": "Ping",
-                    "created_on": "2018-07-06T12:30:10.123456789Z",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
                     "input": "PING",
                     "name": "Command",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -22,7 +22,7 @@
                     "value": "PING"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:13.123456789Z",
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Android Channel",
@@ -61,12 +61,19 @@
                     "time_format": "tt:mm",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "created_on": "2018-10-11T14:27:09.05642-05:00",
+                    "text": "PING",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "PING",
                                     "urn": "tel:+12065551212",
@@ -77,7 +84,7 @@
                             },
                             {
                                 "category": "Ping",
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "input": "PING",
                                 "name": "Command",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -85,7 +92,7 @@
                                 "value": "PING"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:13.123456789Z",
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Android Channel",
@@ -99,20 +106,13 @@
                                 "type": "msg_created"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:15.123456789Z",
-                        "expires_on": "2018-07-06T12:30:04.123456789Z",
+                        "exited_on": "2018-07-06T12:30:13.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Initial Wait",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
                         },
-                        "input": {
-                            "created_on": "2018-10-11T14:27:09.05642-05:00",
-                            "text": "PING",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "0932960c-2b34-4b1e-a739-725ac77c7210"
-                        },
-                        "modified_on": "2018-07-06T12:30:15.123456789Z",
+                        "modified_on": "2018-07-06T12:30:13.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
@@ -121,7 +121,7 @@
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             },
                             {
-                                "arrived_on": "2018-07-06T12:30:12.123456789Z",
+                                "arrived_on": "2018-07-06T12:30:10.123456789Z",
                                 "node_uuid": "11a772f3-3ca2-4429-8b33-20fdcfc2b69e",
                                 "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                             }
@@ -129,7 +129,7 @@
                         "results": {
                             "command": {
                                 "category": "Ping",
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input": "PING",
                                 "name": "Command",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",

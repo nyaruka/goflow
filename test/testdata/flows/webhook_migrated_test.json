@@ -150,6 +150,13 @@
                     "time_format": "tt:mm",
                     "timezone": "UTC"
                 },
+                "input": {
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "Ryan Lewis",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
@@ -215,13 +222,6 @@
                         "flow": {
                             "name": "Migrated Webhook",
                             "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02"
-                        },
-                        "input": {
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "Ryan Lewis",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "modified_on": "2018-07-06T12:30:30.123456789Z",
                         "path": [

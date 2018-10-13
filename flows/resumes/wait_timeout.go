@@ -44,8 +44,8 @@ func NewWaitTimeoutResume(env utils.Environment, contact *flows.Contact) *WaitTi
 
 // Apply applies our state changes and saves any events to the run
 func (r *WaitTimeoutResume) Apply(run flows.FlowRun, step flows.Step) error {
-	// clear the last input on the run
-	run.SetInput(nil)
+	// clear the last input
+	run.Session().SetInput(nil)
 	run.LogEvent(step, events.NewWaitTimedOutEvent())
 
 	return r.baseResume.Apply(run, step)

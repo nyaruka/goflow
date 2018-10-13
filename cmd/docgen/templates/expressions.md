@@ -17,9 +17,9 @@ The context is all the variables which are accessible in expressions and contain
  * `parent` the parent of the current [run](#context:run), i.e. the run that started the current run
  * `child` the child of the current [run](#context:run), i.e. the last subflow
  * `contact` the current [contact](#context:contact), shortcut for `@run.contact`
- * `input` the current [input](#context:input), shortcut for `@run.input`
  * `results` the current [results](#context:result), shortcut for `@run.results`
  * `trigger` the [trigger](#context:trigger) that initiated this session
+ * `input` the last [input](#context:input) from the contact
 
 The following types appear in the context:
 

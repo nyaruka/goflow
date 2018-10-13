@@ -305,6 +305,17 @@
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "neither",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
@@ -428,17 +439,6 @@
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "neither",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "modified_on": "2018-07-06T12:30:36.123456789Z",
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -618,6 +618,17 @@
                     "redaction_policy": "none",
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
+                },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "yes",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                 },
                 "runs": [
                     {
@@ -811,17 +822,6 @@
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
                         },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "yes",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
-                        },
                         "modified_on": "2018-07-06T12:30:50.123456789Z",
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
                         "path": [
@@ -994,6 +994,17 @@
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "never",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "3dcbe073-60ad-4104-9d4d-e4330f6d8ba1"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
@@ -1090,17 +1101,6 @@
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "never",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "3dcbe073-60ad-4104-9d4d-e4330f6d8ba1"
                         },
                         "modified_on": "2018-07-06T12:31:13.123456789Z",
                         "path": [
@@ -1260,17 +1260,6 @@
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "yes",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                         },
                         "modified_on": "2018-07-06T12:30:50.123456789Z",
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
@@ -1439,6 +1428,17 @@
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "no",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "09350b41-cecd-4f3e-93cd-ea516cea4e0a"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
@@ -1572,17 +1572,6 @@
                         "flow": {
                             "name": "Parent Flow",
                             "uuid": "9e43da00-b2e5-450e-a351-0772f5469511"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "no",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "09350b41-cecd-4f3e-93cd-ea516cea4e0a"
                         },
                         "modified_on": "2018-07-06T12:31:26.123456789Z",
                         "path": [
@@ -1749,17 +1738,6 @@
                         "flow": {
                             "name": "Rules",
                             "uuid": "d092cbbf-7745-4a41-b55d-bdafc4c96ab8"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "yes",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "34bf602e-e86a-4957-8a47-fcb455e58cf4"
                         },
                         "modified_on": "2018-07-06T12:30:50.123456789Z",
                         "parent_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",

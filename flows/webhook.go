@@ -14,13 +14,13 @@ import (
 )
 
 var DefaultWebhookPayload = `{
-	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(run.input.urn, default(contact.urns.0, null)), text(default(run.input.urn, default(contact.urns.0, null))), null)))},
+	"contact": {"uuid": "@contact.uuid", "name": @(json(contact.name)), "urn": @(json(if(default(input.urn, default(contact.urns.0, null)), text(default(input.urn, default(contact.urns.0, null))), null)))},
 	"flow": @(json(run.flow)),
 	"path": @(json(run.path)),
 	"results": @(json(run.results)),
 	"run": {"uuid": "@run.uuid", "created_on": "@run.created_on"},
-	"input": @(json(run.input)),
-	"channel": @(json(if(run.input, run.input.channel, null)))
+	"input": @(json(input)),
+	"channel": @(json(if(input, input.channel, null)))
 }`
 
 // response content-types that we'll fetch
