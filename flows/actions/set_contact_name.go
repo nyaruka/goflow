@@ -33,8 +33,13 @@ type SetContactNameAction struct {
 	Name string `json:"name"`
 }
 
-// Type returns the type of this action
-func (a *SetContactNameAction) Type() string { return TypeSetContactName }
+// NewSetContactNameAction creates a new set name action
+func NewSetContactNameAction(uuid flows.ActionUUID, name string) *SetContactNameAction {
+	return &SetContactNameAction{
+		BaseAction: NewBaseAction(TypeSetContactName, uuid),
+		Name:       name,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactNameAction) Validate(assets flows.SessionAssets) error {

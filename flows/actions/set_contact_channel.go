@@ -33,8 +33,13 @@ type SetContactChannelAction struct {
 	Channel *assets.ChannelReference `json:"channel"`
 }
 
-// Type returns the type of this action
-func (a *SetContactChannelAction) Type() string { return TypeSetContactChannel }
+// NewSetContactChannelAction creates a new set channel action
+func NewSetContactChannelAction(uuid flows.ActionUUID, channel *assets.ChannelReference) *SetContactChannelAction {
+	return &SetContactChannelAction{
+		BaseAction: NewBaseAction(TypeSetContactChannel, uuid),
+		Channel:    channel,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactChannelAction) Validate(assets flows.SessionAssets) error {

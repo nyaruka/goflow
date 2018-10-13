@@ -165,8 +165,7 @@ func TestActionMigration(t *testing.T) {
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
-		migratedActionEnvelope, _ := utils.EnvelopeFromTyped(migratedAction)
-		migratedActionJSON, _ := utils.JSONMarshal(migratedActionEnvelope)
+		migratedActionJSON, _ := utils.JSONMarshal(migratedAction)
 		expectedActionJSON, _ := utils.JSONMarshal(test.ExpectedAction)
 
 		if string(expectedActionJSON) != string(migratedActionJSON) {

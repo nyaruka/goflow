@@ -39,8 +39,15 @@ type SendEmailAction struct {
 	Body      string   `json:"body" validate:"required"`
 }
 
-// Type returns the type of this action
-func (a *SendEmailAction) Type() string { return TypeSendEmail }
+// NewSendEmailAction creates a new send email action
+func NewSendEmailAction(uuid flows.ActionUUID, addresses []string, subject string, body string) *SendEmailAction {
+	return &SendEmailAction{
+		BaseAction: NewBaseAction(TypeSendEmail, uuid),
+		Addresses:  addresses,
+		Subject:    subject,
+		Body:       body,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SendEmailAction) Validate(assets flows.SessionAssets) error {

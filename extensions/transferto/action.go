@@ -36,8 +36,14 @@ type TransferAirtimeAction struct {
 	ResultName string                     `json:"result_name,omitempty"`
 }
 
-// Type returns the type of this router
-func (a *TransferAirtimeAction) Type() string { return TypeTransferAirtime }
+// NewTransferAirtimeAction creates a new airtime transfer action
+func NewTransferAirtimeAction(uuid flows.ActionUUID, amounts map[string]decimal.Decimal, resultName string) *TransferAirtimeAction {
+	return &TransferAirtimeAction{
+		BaseAction: actions.NewBaseAction(TypeTransferAirtime, uuid),
+		Amounts:    amounts,
+		ResultName: resultName,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *TransferAirtimeAction) Validate(assets flows.SessionAssets) error {

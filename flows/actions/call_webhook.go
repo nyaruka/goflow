@@ -45,8 +45,17 @@ type CallWebhookAction struct {
 	ResultName string            `json:"result_name,omitempty"`
 }
 
-// Type returns the type of this action
-func (a *CallWebhookAction) Type() string { return TypeCallWebhook }
+// NewCallWebhookAction creates a new call webhook action
+func NewCallWebhookAction(uuid flows.ActionUUID, method string, url string, headers map[string]string, body string, resultName string) *CallWebhookAction {
+	return &CallWebhookAction{
+		BaseAction: NewBaseAction(TypeCallWebhook, uuid),
+		Method:     method,
+		URL:        url,
+		Headers:    headers,
+		Body:       body,
+		ResultName: resultName,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *CallWebhookAction) Validate(assets flows.SessionAssets) error {

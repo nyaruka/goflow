@@ -34,8 +34,13 @@ type SetContactLanguageAction struct {
 	Language string `json:"language"`
 }
 
-// Type returns the type of this action
-func (a *SetContactLanguageAction) Type() string { return TypeSetContactLanguage }
+// NewSetContactLanguageAction creates a new set language action
+func NewSetContactLanguageAction(uuid flows.ActionUUID, language string) *SetContactLanguageAction {
+	return &SetContactLanguageAction{
+		BaseAction: NewBaseAction(TypeSetContactLanguage, uuid),
+		Language:   language,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets) error {

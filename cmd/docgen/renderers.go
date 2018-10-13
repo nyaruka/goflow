@@ -106,11 +106,9 @@ func renderEventDoc(output *strings.Builder, item *documentedItem, session flows
 func renderActionDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := []byte(strings.Join(item.examples, "\n"))
-	typed := &utils.TypedEnvelope{}
-	err := json.Unmarshal(exampleJSON, typed)
-	action, err := actions.ReadAction(typed)
+	action, err := actions.ReadAction(exampleJSON)
 	if err != nil {
-		return fmt.Errorf("unable to read action[type=%s]: %s", typed.Type, err)
+		return fmt.Errorf("unable to read action: %s", err)
 	}
 
 	// validate it
@@ -119,12 +117,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 		return fmt.Errorf("unable to validate example: %s", err)
 	}
 
-	typed, err = utils.EnvelopeFromTyped(action)
-	if err != nil {
-		return fmt.Errorf("unable to marshal example: %s", err)
-	}
-
-	exampleJSON, err = utils.JSONMarshalPretty(typed)
+	exampleJSON, err = utils.JSONMarshalPretty(action)
 	if err != nil {
 		return fmt.Errorf("unable to marshal example: %s", err)
 	}

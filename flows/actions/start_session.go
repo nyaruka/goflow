@@ -41,8 +41,18 @@ type StartSessionAction struct {
 	CreateContact bool                      `json:"create_contact,omitempty"`
 }
 
-// Type returns the type of this action
-func (a *StartSessionAction) Type() string { return TypeStartSession }
+// NewStartSessionAction creates a new start session action
+func NewStartSessionAction(uuid flows.ActionUUID, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, flow *assets.FlowReference, createContact bool) *StartSessionAction {
+	return &StartSessionAction{
+		BaseAction:    NewBaseAction(TypeStartSession, uuid),
+		URNs:          urns,
+		Contacts:      contacts,
+		Groups:        groups,
+		LegacyVars:    legacyVars,
+		Flow:          flow,
+		CreateContact: createContact,
+	}
+}
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {

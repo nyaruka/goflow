@@ -44,7 +44,7 @@ func (e *BaseEvent) SetStepUUID(stepUUID flows.StepUUID) { e.StepUUID_ = stepUUI
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadEvent reads a single event from the given envelope
+// ReadEvent reads a single event from the given JSON
 func ReadEvent(data json.RawMessage) (flows.Event, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {

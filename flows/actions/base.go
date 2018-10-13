@@ -30,12 +30,16 @@ var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}
 
 // BaseAction is our base action
 type BaseAction struct {
+	Type_ string           `json:"type" validate:"required"`
 	UUID_ flows.ActionUUID `json:"uuid" validate:"required,uuid4"`
 }
 
-func NewBaseAction(uuid flows.ActionUUID) BaseAction {
-	return BaseAction{UUID_: uuid}
+func NewBaseAction(typeName string, uuid flows.ActionUUID) BaseAction {
+	return BaseAction{Type_: typeName, UUID_: uuid}
 }
+
+// Type returns the type of this action
+func (a *BaseAction) Type() string { return a.Type_ }
 
 // UUID returns the UUID of the action
 func (a *BaseAction) UUID() flows.ActionUUID { return a.UUID_ }
@@ -314,13 +318,18 @@ func (a *onlineAction) AllowedFlowTypes() []flows.FlowType {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
-// ReadAction reads an action from the given typed envelope
-func ReadAction(envelope *utils.TypedEnvelope) (flows.Action, error) {
-	f := registeredTypes[envelope.Type]
+// ReadAction reads an action from the given JSON
+func ReadAction(data json.RawMessage) (flows.Action, error) {
+	typeName, err := utils.ReadTypeFromJSON(data)
+	if err != nil {
+		return nil, err
+	}
+
+	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", envelope.Type)
+		return nil, fmt.Errorf("unknown type: %s", typeName)
 	}
 
 	action := f()
-	return action, utils.UnmarshalAndValidate(envelope.Data, action)
+	return action, utils.UnmarshalAndValidate(data, action)
 }

@@ -61,11 +61,11 @@ func (n *node) AddAction(action flows.Action) {
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID         `json:"uuid"                  validate:"required,uuid4"`
-	Actions []*utils.TypedEnvelope `json:"actions,omitempty"`
-	Router  json.RawMessage        `json:"router,omitempty"`
-	Exits   []*exit                `json:"exits"`
-	Wait    json.RawMessage        `json:"wait,omitempty"`
+	UUID    flows.NodeUUID    `json:"uuid"                  validate:"required,uuid4"`
+	Actions []json.RawMessage `json:"actions,omitempty"`
+	Router  json.RawMessage   `json:"router,omitempty"`
+	Exits   []*exit           `json:"exits"`
+	Wait    json.RawMessage   `json:"wait,omitempty"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON
@@ -99,7 +99,7 @@ func (n *node) UnmarshalJSON(data []byte) error {
 	for i := range e.Actions {
 		n.actions[i], err = actions.ReadAction(e.Actions[i])
 		if err != nil {
-			return fmt.Errorf("unable to read action[type=%s]: %s", e.Actions[i], err)
+			return fmt.Errorf("unable to read action: %s", err)
 		}
 	}
 
@@ -135,9 +135,9 @@ func (n *node) MarshalJSON() ([]byte, error) {
 	}
 
 	// and the right kind of actions
-	e.Actions = make([]*utils.TypedEnvelope, len(n.actions))
+	e.Actions = make([]json.RawMessage, len(n.actions))
 	for i := range n.actions {
-		e.Actions[i], err = utils.EnvelopeFromTyped(n.actions[i])
+		e.Actions[i], err = json.Marshal(n.actions[i])
 		if err != nil {
 			return nil, err
 		}

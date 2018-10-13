@@ -339,8 +339,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 	if node.Actions() != nil {
 		for _, action := range node.Actions() {
 			if log.GetLevel() >= log.DebugLevel {
-				actionEnvelope, _ := utils.EnvelopeFromTyped(action)
-				actionJSON, _ := json.Marshal(actionEnvelope)
+				actionJSON, _ := json.Marshal(action)
 				log.WithField("action_type", action.Type()).WithField("payload", string(actionJSON)).WithField("run", run.UUID()).Debug("action executing")
 			}
 

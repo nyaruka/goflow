@@ -139,8 +139,7 @@ func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
 	r.Session().LogEvent(event)
 
 	if log.GetLevel() >= log.DebugLevel {
-		eventEnvelope, _ := utils.EnvelopeFromTyped(event)
-		eventJSON, _ := json.Marshal(eventEnvelope)
+		eventJSON, _ := json.Marshal(event)
 		log.WithField("event_type", event.Type()).WithField("payload", string(eventJSON)).WithField("run", r.UUID()).Debugf("event logged")
 	}
 }
