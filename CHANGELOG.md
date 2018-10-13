@@ -1,3 +1,16 @@
+v0.22.0
+----------
+ * Move input from run to session
+ * Make contact.name .language .timezone omitted in JSON when empty
+ * Make contact.created_on required
+ * Simplify un/marshaling of typed objects
+ * Allow waits to skip themselves, and have the msg wait skip itself if it's the first thing after a msg trigger
+ * Improve flowrunner cmd to display more event types
+ * Add new terminal option to start_flow actions
+ * Ensure arguments to date router tests are migrated
+ * Create new static asset source type for simpler testing
+ * Add channel event trigger type
+
 v0.21.4
 ----------
  * Rework transferto action to generate result like a webhook call
