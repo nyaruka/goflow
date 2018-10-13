@@ -75,7 +75,7 @@ func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.F
 
 // InitializeRun performs additional initialization when we visit our first node
 func (t *MsgTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
-	// update the our input
+	// update our input
 	input, err := inputs.NewMsgInput(run.Session().Assets(), t.msg, t.triggeredOn)
 	if err != nil {
 		return err
