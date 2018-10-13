@@ -22,8 +22,6 @@ Is used when a session was triggered by a campaign event
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "language": "",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
@@ -56,8 +54,6 @@ Is used when a session was triggered by a channel event
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "language": "",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
@@ -97,8 +93,6 @@ Is used when another session triggered this run using a trigger_flow action.
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
             "id": 0,
             "name": "Bob",
-            "language": "",
-            "timezone": "",
             "created_on": "2018-01-01T12:00:00Z",
             "urns": [],
             "fields": {
@@ -138,8 +132,6 @@ Is used when a session was triggered manually by a user
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "language": "",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
@@ -165,8 +157,6 @@ Is used when a session was triggered by a message being recieved by the caller
         "uuid": "9f7ede93-4b16-4692-80ad-b7dc54a1cd81",
         "id": 0,
         "name": "Bob",
-        "language": "",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": []
     },
@@ -213,7 +203,6 @@ Is used when a session is resumed with a new message from the contact
         "id": 0,
         "name": "Bob",
         "language": "fra",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": [],
         "fields": {
@@ -253,7 +242,6 @@ Is used when a session is resumed because the waiting run has expired
         "id": 0,
         "name": "Bob",
         "language": "fra",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": [],
         "fields": {
@@ -281,7 +269,6 @@ Is used when a session is resumed because a wait has timed out
         "id": 0,
         "name": "Bob",
         "language": "fra",
-        "timezone": "",
         "created_on": "2018-01-01T12:00:00Z",
         "urns": [],
         "fields": {
