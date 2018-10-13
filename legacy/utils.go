@@ -57,3 +57,23 @@ func (s *StringOrNumber) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
+
+// TypedEnvelope represents a json blob with a type property
+type TypedEnvelope struct {
+	Type string `json:"type" validate:"required"`
+	Data []byte `json:"-"`
+}
+
+// UnmarshalJSON unmarshals a typed envelope from the given JSON
+func (e *TypedEnvelope) UnmarshalJSON(b []byte) error {
+	t := &struct {
+		Type string `json:"type" validate:"required"`
+	}{}
+	if err := utils.UnmarshalAndValidate(b, t); err != nil {
+		return err
+	}
+	e.Type = t.Type
+	e.Data = make([]byte, len(b))
+	copy(e.Data, b)
+	return nil
+}

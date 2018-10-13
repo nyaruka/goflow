@@ -39,11 +39,11 @@ type Metadata struct {
 }
 
 type Rule struct {
-	UUID            flows.ExitUUID      `json:"uuid" validate:"required,uuid4"`
-	Destination     flows.NodeUUID      `json:"destination" validate:"omitempty,uuid4"`
-	DestinationType string              `json:"destination_type" validate:"eq=A|eq=R"`
-	Test            utils.TypedEnvelope `json:"test"`
-	Category        Translations        `json:"category"`
+	UUID            flows.ExitUUID `json:"uuid" validate:"required,uuid4"`
+	Destination     flows.NodeUUID `json:"destination" validate:"omitempty,uuid4"`
+	DestinationType string         `json:"destination_type" validate:"eq=A|eq=R"`
+	Test            TypedEnvelope  `json:"test"`
+	Category        Translations   `json:"category"`
 }
 
 type RuleSet struct {
