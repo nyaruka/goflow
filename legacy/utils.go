@@ -64,11 +64,13 @@ type TypedEnvelope struct {
 	Data []byte `json:"-"`
 }
 
+type typeOnly struct {
+	Type string `json:"type" validate:"required"`
+}
+
 // UnmarshalJSON unmarshals a typed envelope from the given JSON
 func (e *TypedEnvelope) UnmarshalJSON(b []byte) error {
-	t := &struct {
-		Type string `json:"type" validate:"required"`
-	}{}
+	t := &typeOnly{}
 	if err := utils.UnmarshalAndValidate(b, t); err != nil {
 		return err
 	}
