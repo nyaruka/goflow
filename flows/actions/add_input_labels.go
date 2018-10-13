@@ -51,7 +51,7 @@ func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets) error {
 // Execute runs the labeling action
 func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// only generate event if run has input
-	input := run.Input()
+	input := run.Session().Input()
 	if input == nil {
 		return nil
 	}

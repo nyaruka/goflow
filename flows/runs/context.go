@@ -43,14 +43,14 @@ func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
 	// shortcuts to things on the current run
 	case "contact":
 		return c.run.Contact()
-	case "input":
-		return c.run.Input()
 	case "results":
 		return c.run.Results()
 
 	// other
 	case "trigger":
 		return c.run.Session().Trigger()
+	case "input":
+		return c.run.Session().Input()
 	case "legacy_extra":
 		c.extra.update()
 		return c.extra

@@ -237,6 +237,17 @@
                     "time_format": "h:mm aa",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "I was born on 1977.06.23 at 3:34 pm",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
@@ -317,17 +328,6 @@
                         "flow": {
                             "name": "Date Test",
                             "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "I was born on 1977.06.23 at 3:34 pm",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "modified_on": "2018-07-06T12:30:25.123456789Z",
                         "path": [

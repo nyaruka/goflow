@@ -249,6 +249,17 @@
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "Ryan Lewis",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
@@ -333,17 +344,6 @@
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "25a2d8b2-ae7c-4fed-964a-506fb8c3f0c0"
-                        },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "Ryan Lewis",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
                         },
                         "modified_on": "2018-07-06T12:30:27.123456789Z",
                         "path": [

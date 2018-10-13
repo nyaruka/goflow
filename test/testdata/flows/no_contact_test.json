@@ -3,7 +3,7 @@
         {
             "events": [
                 {
-                    "created_on": "2018-07-06T12:30:06.123456789Z",
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "channel": {
                             "name": "Nexmo",
@@ -17,7 +17,7 @@
                     "type": "msg_received"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:08.123456789Z",
+                    "created_on": "2018-07-06T12:30:06.123456789Z",
                     "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
                     "labels": [
                         {
@@ -29,14 +29,14 @@
                     "type": "input_labels_added"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:10.123456789Z",
+                    "created_on": "2018-07-06T12:30:08.123456789Z",
                     "fatal": false,
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "text": "can't execute action in session without a contact",
                     "type": "error"
                 },
                 {
-                    "created_on": "2018-07-06T12:30:12.123456789Z",
+                    "created_on": "2018-07-06T12:30:10.123456789Z",
                     "fatal": false,
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "text": "can't execute action in session without a contact",
@@ -50,12 +50,23 @@
                     "time_format": "hh:mm",
                     "timezone": "America/Los_Angeles"
                 },
+                "input": {
+                    "channel": {
+                        "name": "Android Channel",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "text": "Ryan Lewis",
+                    "type": "msg",
+                    "urn": "tel:+12065551212",
+                    "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
+                },
                 "runs": [
                     {
                         "created_on": "2018-07-06T12:30:00.123456789Z",
                         "events": [
                             {
-                                "created_on": "2018-07-06T12:30:06.123456789Z",
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "channel": {
                                         "name": "Nexmo",
@@ -69,7 +80,7 @@
                                 "type": "msg_received"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:08.123456789Z",
+                                "created_on": "2018-07-06T12:30:06.123456789Z",
                                 "input_uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5",
                                 "labels": [
                                     {
@@ -81,38 +92,27 @@
                                 "type": "input_labels_added"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:10.123456789Z",
+                                "created_on": "2018-07-06T12:30:08.123456789Z",
                                 "fatal": false,
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"
                             },
                             {
-                                "created_on": "2018-07-06T12:30:12.123456789Z",
+                                "created_on": "2018-07-06T12:30:10.123456789Z",
                                 "fatal": false,
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "text": "can't execute action in session without a contact",
                                 "type": "error"
                             }
                         ],
-                        "exited_on": "2018-07-06T12:30:14.123456789Z",
-                        "expires_on": "2018-07-06T12:30:04.123456789Z",
+                        "exited_on": "2018-07-06T12:30:12.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
                         "flow": {
                             "name": "Registration Flow",
                             "uuid": "8ca44c09-791d-453a-9799-a70dd3303306"
                         },
-                        "input": {
-                            "channel": {
-                                "name": "Android Channel",
-                                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
-                            },
-                            "created_on": "2000-01-01T00:00:00Z",
-                            "text": "Ryan Lewis",
-                            "type": "msg",
-                            "urn": "tel:+12065551212",
-                            "uuid": "9bf91c2b-ce58-4cef-aacc-281e03f69ab5"
-                        },
-                        "modified_on": "2018-07-06T12:30:14.123456789Z",
+                        "modified_on": "2018-07-06T12:30:12.123456789Z",
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",

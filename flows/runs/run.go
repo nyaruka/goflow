@@ -10,7 +10,6 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
-	"github.com/nyaruka/goflow/flows/inputs"
 	"github.com/nyaruka/goflow/utils"
 
 	log "github.com/sirupsen/logrus"
@@ -24,7 +23,6 @@ type flowRun struct {
 	flow flows.Flow
 
 	context types.XValue
-	input   flows.Input
 	parent  flows.FlowRun
 
 	results flows.Results
@@ -117,16 +115,6 @@ func (r *flowRun) Ancestors() []flows.FlowRun {
 	}
 
 	return ancestors
-}
-
-func (r *flowRun) Input() flows.Input { return r.input }
-func (r *flowRun) SetInput(input flows.Input) {
-	r.input = input
-
-	// if we actually have new input, we can extend our expiration
-	if input != nil {
-		r.ResetExpiration(nil)
-	}
 }
 
 func (r *flowRun) LogEvent(s flows.Step, event flows.Event) {
@@ -289,8 +277,6 @@ func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
 		return r.Contact()
 	case "flow":
 		return r.Flow()
-	case "input":
-		return r.Input()
 	case "status":
 		return types.NewXText(string(r.Status()))
 	case "results":
@@ -333,16 +319,13 @@ var _ flows.RunSummary = (*flowRun)(nil)
 //------------------------------------------------------------------------------------------
 
 type runEnvelope struct {
-	UUID   flows.RunUUID         `json:"uuid" validate:"required,uuid4"`
-	Flow   *assets.FlowReference `json:"flow" validate:"required,dive"`
-	Path   []*step               `json:"path" validate:"dive"`
-	Events []json.RawMessage     `json:"events,omitempty"`
-
-	Status     flows.RunStatus `json:"status" validate:"required"`
-	ParentUUID flows.RunUUID   `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
-
-	Results flows.Results   `json:"results,omitempty" validate:"omitempty,dive"`
-	Input   json.RawMessage `json:"input,omitempty" validate:"omitempty"`
+	UUID       flows.RunUUID         `json:"uuid" validate:"required,uuid4"`
+	Flow       *assets.FlowReference `json:"flow" validate:"required,dive"`
+	Path       []*step               `json:"path" validate:"dive"`
+	Events     []json.RawMessage     `json:"events,omitempty"`
+	Results    flows.Results         `json:"results,omitempty" validate:"omitempty,dive"`
+	Status     flows.RunStatus       `json:"status" validate:"required"`
+	ParentUUID flows.RunUUID         `json:"parent_uuid,omitempty" validate:"omitempty,uuid4"`
 
 	CreatedOn  time.Time  `json:"created_on" validate:"required"`
 	ModifiedOn time.Time  `json:"modified_on" validate:"required"`
@@ -379,12 +362,6 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	if e.ParentUUID != "" {
 		if r.parent, err = session.GetRun(e.ParentUUID); err != nil {
 			return nil, err
-		}
-	}
-
-	if e.Input != nil {
-		if r.input, err = inputs.ReadInput(session, e.Input); err != nil {
-			return nil, fmt.Errorf("unable to read input: %s", err)
 		}
 	}
 
@@ -432,13 +409,6 @@ func (r *flowRun) MarshalJSON() ([]byte, error) {
 
 	if r.parent != nil {
 		e.ParentUUID = r.parent.UUID()
-	}
-
-	if r.input != nil {
-		e.Input, err = json.Marshal(r.input)
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	e.Path = make([]*step, len(r.path))
