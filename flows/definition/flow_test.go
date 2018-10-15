@@ -208,6 +208,7 @@ func TestNewFlow(t *testing.T) {
 						false,
 					),
 				},
+				waits.NewMsgWait(nil),
 				routers.NewSwitchRouter(
 					flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 					"@input",
@@ -228,7 +229,6 @@ func TestNewFlow(t *testing.T) {
 						"No",
 					),
 				},
-				waits.NewMsgWait(nil),
 			),
 			definition.NewNode(
 				flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
@@ -241,11 +241,11 @@ func TestNewFlow(t *testing.T) {
 						},
 					),
 				},
+				nil, // no wait
 				nil, // no router
 				[]flows.Exit{
 					definition.NewExit(flows.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), "", ""),
 				},
-				nil, // no wait
 			),
 		},
 		nil, // no UI

@@ -411,7 +411,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			}
 		}
 
-		return actions.NewStartSessionAction(a.UUID, []urns.URN{}, contacts, groups, variables, a.Flow.Migrate(), createContact), nil
+		return actions.NewStartSessionAction(a.UUID, a.Flow.Migrate(), []urns.URN{}, contacts, groups, variables, createContact), nil
 	case "reply", "send":
 		msg := make(Translations)
 		media := make(Translations)
@@ -731,7 +731,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		return nil, "", nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
-	return definition.NewNode(r.UUID, newActions, router, exits, wait), uiType, uiNodeConfig, nil
+	return definition.NewNode(r.UUID, newActions, wait, router, exits), uiType, uiNodeConfig, nil
 }
 
 // migrates a set of legacy rules to sets of cases and exits
@@ -924,7 +924,7 @@ func migateActionSet(lang utils.Language, a ActionSet, localization flows.Locali
 		actions[i] = action
 	}
 
-	return definition.NewNode(a.UUID, actions, nil, []flows.Exit{definition.NewExit(a.ExitUUID, a.Destination, "")}, nil), nil
+	return definition.NewNode(a.UUID, actions, nil, nil, []flows.Exit{definition.NewExit(a.ExitUUID, a.Destination, "")}), nil
 }
 
 // ReadLegacyFlow reads a single legacy formatted flow
