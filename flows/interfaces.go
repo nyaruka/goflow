@@ -142,6 +142,7 @@ type Flow interface {
 	Name() string
 	Revision() int
 	Language() utils.Language
+	Type() FlowType
 	ExpireAfterMinutes() int
 	Localization() Localization
 	UI() UI
@@ -156,13 +157,13 @@ type Flow interface {
 // Node is a single node in a flow
 type Node interface {
 	UUID() NodeUUID
-
 	Actions() []Action
 	AddAction(Action)
-
 	Router() Router
 	Exits() []Exit
 	Wait() Wait
+
+	Validate(SessionAssets, Flow, map[utils.UUID]bool) error
 }
 
 // Action is an action within a flow node
