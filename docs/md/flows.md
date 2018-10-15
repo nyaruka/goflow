@@ -447,8 +447,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "send_msg",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-    "text": "Hi @contact.name, are you ready to complete today's survey?",
-    "attachments": []
+    "text": "Hi @contact.name, are you ready to complete today's survey?"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json

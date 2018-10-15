@@ -735,8 +735,8 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 }
 
 // migrates a set of legacy rules to sets of cases and exits
-func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) ([]routers.Case, []flows.Exit, flows.ExitUUID, error) {
-	cases := make([]routers.Case, 0, len(r.Rules))
+func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) ([]*routers.Case, []flows.Exit, flows.ExitUUID, error) {
+	cases := make([]*routers.Case, 0, len(r.Rules))
 	exits := make([]flows.Exit, 0, len(r.Rules))
 	var defaultExitUUID flows.ExitUUID
 
@@ -788,7 +788,7 @@ func migrateRules(baseLanguage utils.Language, r RuleSet, localization flows.Loc
 }
 
 // migrates the given legacy rule to a router case
-func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localization flows.Localization) (routers.Case, error) {
+func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localization flows.Localization) (*routers.Case, error) {
 	newType, _ := testTypeMappings[r.Test.Type]
 	var omitOperand bool
 	var arguments []string
@@ -808,7 +808,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		err = json.Unmarshal(r.Test.Data, &test)
 		migratedTest, err := expressions.MigrateTemplate(string(test.Test), false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		arguments = []string{migratedTest}
 
@@ -817,11 +817,11 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		err = json.Unmarshal(r.Test.Data, &test)
 		migratedMin, err := expressions.MigrateTemplate(test.Min, false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		migratedMax, err := expressions.MigrateTemplate(test.Max, false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		arguments = []string{migratedMin, migratedMax}
 
@@ -838,11 +838,11 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		migratedTest, err := expressions.MigrateTemplate(test.Test, false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		arguments = []string{migratedTest}
 
@@ -887,7 +887,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		err = json.Unmarshal(r.Test.Data, &test)
 		migratedState, err := expressions.MigrateTemplate(test.Test, false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		arguments = []string{migratedState}
 
@@ -896,25 +896,19 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		err = json.Unmarshal(r.Test.Data, &test)
 		migratedDistrict, err := expressions.MigrateTemplate(test.District, false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		migratedState, err := expressions.MigrateTemplate(test.State, false)
 		if err != nil {
-			return routers.Case{}, err
+			return nil, err
 		}
 		arguments = []string{migratedDistrict, migratedState}
 
 	default:
-		return routers.Case{}, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
+		return nil, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
-	return routers.Case{
-		UUID:        caseUUID,
-		Type:        newType,
-		Arguments:   arguments,
-		OmitOperand: omitOperand,
-		ExitUUID:    exit.UUID(),
-	}, err
+	return routers.NewCase(caseUUID, newType, arguments, omitOperand, exit.UUID()), err
 }
 
 // migrates the given legacy actionset to a node with a set of migrated actions and a single exit

@@ -90,8 +90,7 @@
                         {
                             "type": "send_msg",
                             "uuid": "98388930-7a0f-4eb8-9a0a-09be2f006420",
-                            "text": "Hello",
-                            "attachments": []
+                            "text": "Hello"
                         }
                     ],
                     "exits": [

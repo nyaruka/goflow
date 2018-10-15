@@ -11,6 +11,8 @@ import (
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/routers"
+	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -113,12 +115,54 @@ var flowDef = `{
     "name": "Test Flow",
     "language": "eng",
     "type": "messaging",
-    "revision": 0,
-    "expire_after_minutes": 0,
+    "revision": 123,
+    "expire_after_minutes": 30,
     "localization": null,
     "nodes": [
         {
             "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+            "actions": [
+				{
+					"type": "send_msg",
+					"uuid": "76112ef2-790e-4b5b-84cb-e910f191a335",
+					"text": "Do you like beer?"
+				}
+			],
+			"wait": {
+				"type": "msg"
+			},
+			"router": {
+				"cases": [
+					{
+						"uuid": "9f593e22-7886-4c08-a52f-0e8780504d75",
+						"type": "has_any_word",
+						"arguments": [
+							"yes",
+							"yeah"
+						],
+						"exit_uuid": "97b9451c-2856-475b-af38-32af68100897"
+					}
+				],
+				"default_exit_uuid": "8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6",
+				"operand": "@input",
+				"result_name": "Response 1",
+				"type": "switch"
+			},
+            "exits": [
+                {
+					"uuid": "97b9451c-2856-475b-af38-32af68100897",
+					"destination_node_uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99",
+					"name": "Yes"
+                },
+				{
+					"uuid": "8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6",
+					"destination_node_uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99",
+					"name": "No"
+				}
+            ]
+		},
+		{
+            "uuid": "baaf9085-1198-4b41-9a1c-cc51c6dbec99",
             "actions": [
                 {
                     "type": "add_input_labels",
@@ -136,7 +180,7 @@ var flowDef = `{
             ],
             "exits": [
                 {
-                    "uuid": "97b9451c-2856-475b-af38-32af68100897"
+                    "uuid": "3e077111-7b62-4407-b8a4-4fddaf0d2f24"
                 }
             ]
         }
@@ -149,12 +193,45 @@ func TestNewFlow(t *testing.T) {
 		"Test Flow",           // name
 		utils.Language("eng"), // base language
 		flows.FlowTypeMessaging,
-		0,   // revision
-		0,   // expires after minutes
+		123, // revision
+		30,  // expires after minutes
 		nil, // localization
 		[]flows.Node{
 			definition.NewNode(
 				flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),
+				[]flows.Action{
+					actions.NewSendMsgAction(
+						flows.ActionUUID("76112ef2-790e-4b5b-84cb-e910f191a335"),
+						"Do you like beer?",
+						nil,
+						nil,
+						false,
+					),
+				},
+				routers.NewSwitchRouter(
+					flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
+					"@input",
+					[]*routers.Case{
+						routers.NewCase(utils.UUID("9f593e22-7886-4c08-a52f-0e8780504d75"), "has_any_word", []string{"yes", "yeah"}, false, flows.ExitUUID("97b9451c-2856-475b-af38-32af68100897")),
+					},
+					"Response 1",
+				),
+				[]flows.Exit{
+					definition.NewExit(
+						flows.ExitUUID("97b9451c-2856-475b-af38-32af68100897"),
+						flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
+						"Yes",
+					),
+					definition.NewExit(
+						flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
+						flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
+						"No",
+					),
+				},
+				waits.NewMsgWait(nil),
+			),
+			definition.NewNode(
+				flows.NodeUUID("baaf9085-1198-4b41-9a1c-cc51c6dbec99"),
 				[]flows.Action{
 					actions.NewAddInputLabelsAction(
 						flows.ActionUUID("ad154980-7bf7-4ab8-8728-545fd6378912"),
@@ -166,7 +243,7 @@ func TestNewFlow(t *testing.T) {
 				},
 				nil, // no router
 				[]flows.Exit{
-					definition.NewExit(flows.ExitUUID("97b9451c-2856-475b-af38-32af68100897"), "", ""),
+					definition.NewExit(flows.ExitUUID("3e077111-7b62-4407-b8a4-4fddaf0d2f24"), "", ""),
 				},
 				nil, // no wait
 			),
