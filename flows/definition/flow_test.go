@@ -5,11 +5,14 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/rest"
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -103,4 +106,77 @@ func TestFlowValidation(t *testing.T) {
 
 	// fix the set_contact_channel action
 	prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"
+}
+
+var flowDef = `{
+    "uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
+    "name": "Test Flow",
+    "language": "eng",
+    "type": "messaging",
+    "revision": 0,
+    "expire_after_minutes": 0,
+    "localization": null,
+    "nodes": [
+        {
+            "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+            "actions": [
+                {
+                    "type": "add_input_labels",
+                    "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+                    "labels": [
+                        {
+                            "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                            "name": "Spam"
+                        },
+                        {
+                            "name_match": "@(format_location(contact.fields.state)) Messages"
+                        }
+                    ]
+                }
+            ],
+            "exits": [
+                {
+                    "uuid": "97b9451c-2856-475b-af38-32af68100897"
+                }
+            ]
+        }
+    ]
+}`
+
+func TestNewFlow(t *testing.T) {
+	flow, err := definition.NewFlow(
+		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
+		"Test Flow",           // name
+		utils.Language("eng"), // base language
+		flows.FlowTypeMessaging,
+		0,   // revision
+		0,   // expires after minutes
+		nil, // localization
+		[]flows.Node{
+			definition.NewNode(
+				flows.NodeUUID("a58be63b-907d-4a1a-856b-0bb5579d7507"),
+				[]flows.Action{
+					actions.NewAddInputLabelsAction(
+						flows.ActionUUID("ad154980-7bf7-4ab8-8728-545fd6378912"),
+						[]*assets.LabelReference{
+							assets.NewLabelReference(assets.LabelUUID("3f65d88a-95dc-4140-9451-943e94e06fea"), "Spam"),
+							assets.NewVariableLabelReference("@(format_location(contact.fields.state)) Messages"),
+						},
+					),
+				},
+				nil, // no router
+				[]flows.Exit{
+					definition.NewExit(flows.ExitUUID("97b9451c-2856-475b-af38-32af68100897"), "", ""),
+				},
+				nil, // no wait
+			),
+		},
+		nil, // no UI
+	)
+	assert.NoError(t, err)
+
+	marshaled, err := json.Marshal(flow)
+	assert.NoError(t, err)
+
+	test.AssertEqualJSON(t, []byte(flowDef), marshaled, "flow definition mismatch")
 }
