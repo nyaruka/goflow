@@ -1,10 +1,12 @@
 package tests
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/functions"
@@ -347,7 +349,7 @@ func HasPattern(env utils.Environment, text types.XText, pattern types.XText) ty
 //
 // @test has_number(text)
 func HasNumber(env utils.Environment, text types.XText) types.XValue {
-	return testNumber(env, text, types.XNumberZero, isNumberTest)
+	return testNumber(env, text, types.XNumberZero, types.XNumberZero, isNumberTest)
 }
 
 // HasNumberBetween tests whether `text` contains a number between `min` and `max` inclusive
@@ -360,7 +362,7 @@ func HasNumber(env utils.Environment, text types.XText) types.XValue {
 //
 // @test has_number_between(text, min, max)
 func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValue, arg3 types.XValue) types.XValue {
-	str, xerr := types.ToXText(env, arg1)
+	text, xerr := types.ToXText(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
@@ -373,17 +375,7 @@ func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 		return xerr
 	}
 
-	// for each of our values, try to evaluate to a decimal
-	for _, value := range strings.Fields(str.Native()) {
-		parsed, err := ParseDecimalFuzzy(value, env.NumberFormat())
-		if err == nil {
-			num := types.NewXNumber(parsed)
-			if num.Compare(min) >= 0 && num.Compare(max) <= 0 {
-				return NewTrueResult(num)
-			}
-		}
-	}
-	return XFalseResult
+	return testNumber(env, text, min, max, isNumberBetween)
 }
 
 // HasNumberLT tests whether `text` contains a number less than `max`
@@ -396,7 +388,7 @@ func HasNumberBetween(env utils.Environment, arg1 types.XValue, arg2 types.XValu
 //
 // @test has_number_lt(text, max)
 func HasNumberLT(env utils.Environment, text types.XText, num types.XNumber) types.XValue {
-	return testNumber(env, text, num, isNumberLT)
+	return testNumber(env, text, num, types.XNumberZero, isNumberLT)
 }
 
 // HasNumberLTE tests whether `text` contains a number less than or equal to `max`
@@ -409,7 +401,7 @@ func HasNumberLT(env utils.Environment, text types.XText, num types.XNumber) typ
 //
 // @test has_number_lte(text, max)
 func HasNumberLTE(env utils.Environment, text types.XText, num types.XNumber) types.XValue {
-	return testNumber(env, text, num, isNumberLTE)
+	return testNumber(env, text, num, types.XNumberZero, isNumberLTE)
 }
 
 // HasNumberEQ tests whether `text` contains a number equal to the `value`
@@ -422,7 +414,7 @@ func HasNumberLTE(env utils.Environment, text types.XText, num types.XNumber) ty
 //
 // @test has_number_eq(text, value)
 func HasNumberEQ(env utils.Environment, text types.XText, num types.XNumber) types.XValue {
-	return testNumber(env, text, num, isNumberEQ)
+	return testNumber(env, text, num, types.XNumberZero, isNumberEQ)
 }
 
 // HasNumberGTE tests whether `text` contains a number greater than or equal to `min`
@@ -435,7 +427,7 @@ func HasNumberEQ(env utils.Environment, text types.XText, num types.XNumber) typ
 //
 // @test has_number_gte(text, min)
 func HasNumberGTE(env utils.Environment, text types.XText, num types.XNumber) types.XValue {
-	return testNumber(env, text, num, isNumberGTE)
+	return testNumber(env, text, num, types.XNumberZero, isNumberGTE)
 }
 
 // HasNumberGT tests whether `text` contains a number greater than `min`
@@ -448,7 +440,7 @@ func HasNumberGTE(env utils.Environment, text types.XText, num types.XNumber) ty
 //
 // @test has_number_gt(text, min)
 func HasNumberGT(env utils.Environment, text types.XText, num types.XNumber) types.XValue {
-	return testNumber(env, text, num, isNumberGT)
+	return testNumber(env, text, num, types.XNumberZero, isNumberGT)
 }
 
 // HasDate tests whether `text` contains a date formatted according to our environment
@@ -810,13 +802,58 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestRes
 // Numerical Test Functions
 //------------------------------------------------------------------------------------------
 
-var parseableNumberRegex = regexp.MustCompile(`^[$£€]?([\d,][\d,\.]*([\.,]\d+)?)\D*$`)
+var altNumerals = map[rune]rune{
+	'٠': '0', // Arabic
+	'١': '1',
+	'٢': '2',
+	'٣': '3',
+	'٤': '4',
+	'٥': '5',
+	'٦': '6',
+	'٧': '7',
+	'٨': '8',
+	'٩': '9',
+	'۰': '0', // Persian
+	'۱': '1',
+	'۲': '2',
+	'۳': '3',
+	'۴': '4',
+	'۵': '5',
+	'۶': '6',
+	'۷': '7',
+	'۸': '8',
+	'۹': '9',
+}
 
+func replaceAltNumerals(r rune) rune {
+	repl, found := altNumerals[r]
+	if found {
+		return repl
+	}
+	return r
+}
+
+// ParseDecimalFuzzy parses a decimal from a string
 func ParseDecimalFuzzy(val string, format *utils.NumberFormat) (decimal.Decimal, error) {
+	// must contain at least one real digit - prevents things like ll becoming 11
+	containsDigit := false
+	for _, c := range val {
+		if unicode.IsDigit(c) {
+			containsDigit = true
+			break
+		}
+	}
+	if !containsDigit {
+		return decimal.Zero, fmt.Errorf("must contain at least one digit")
+	}
+
 	// common SMS foibles
 	cleaned := strings.Replace(val, "l", "1", -1)
 	cleaned = strings.Replace(cleaned, "O", "0", -1)
 	cleaned = strings.Replace(cleaned, "o", "0", -1)
+
+	// replace numerals used by other languages
+	cleaned = strings.Map(replaceAltNumerals, cleaned)
 
 	// remove digit grouping symbol
 	cleaned = strings.Replace(cleaned, format.DigitGroupingSymbol, "", -1)
@@ -824,30 +861,20 @@ func ParseDecimalFuzzy(val string, format *utils.NumberFormat) (decimal.Decimal,
 	// replace non-period decimal symbols
 	cleaned = strings.Replace(cleaned, format.DecimalSymbol, ".", -1)
 
-	num, err := decimal.NewFromString(cleaned)
-	if err == nil {
-		return num, nil
-	}
-
-	// we only try this hard if we haven't already substituted characters
-	if cleaned == val {
-		// does this start with a number? just use that part if so
-		match := parseableNumberRegex.FindStringSubmatch(val)
-		if match != nil {
-			return decimal.NewFromString(match[1])
-		}
-	}
-	return decimal.Zero, err
+	return decimal.NewFromString(cleaned)
 }
 
-type decimalTest func(value decimal.Decimal, test decimal.Decimal) bool
+type decimalTest func(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool
 
-func testNumber(env utils.Environment, str types.XText, testNum types.XNumber, testFunc decimalTest) types.XValue {
-	// for each of our values, try to evaluate to a decimal
-	for _, value := range strings.Fields(str.Native()) {
-		num, xerr := ParseDecimalFuzzy(value, env.NumberFormat())
-		if xerr == nil {
-			if testFunc(num, testNum.Native()) {
+func testNumber(env utils.Environment, str types.XText, testNum1 types.XNumber, testNum2 types.XNumber, testFunc decimalTest) types.XValue {
+	// create a number finding regex based on current environment
+	pattern := regexp.MustCompile(fmt.Sprintf(`[-+]?[\pNlO\%s]+(\%s[\pNlO]+)?`, env.NumberFormat().DigitGroupingSymbol, env.NumberFormat().DecimalSymbol))
+
+	// look for number like things in the input and use the first one that we can actually parse
+	for _, value := range pattern.FindAllString(str.Native(), -1) {
+		num, err := ParseDecimalFuzzy(value, env.NumberFormat())
+		if err == nil {
+			if testFunc(num, testNum1.Native(), testNum2.Native()) {
 				return NewTrueResult(types.NewXNumber(num))
 			}
 		}
@@ -856,28 +883,32 @@ func testNumber(env utils.Environment, str types.XText, testNum types.XNumber, t
 	return XFalseResult
 }
 
-func isNumberTest(value decimal.Decimal, test decimal.Decimal) bool {
+func isNumberTest(value decimal.Decimal, _ decimal.Decimal, _ decimal.Decimal) bool {
 	return true
 }
 
-func isNumberLT(value decimal.Decimal, test decimal.Decimal) bool {
+func isNumberLT(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
 	return value.Cmp(test) < 0
 }
 
-func isNumberLTE(value decimal.Decimal, test decimal.Decimal) bool {
+func isNumberLTE(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
 	return value.Cmp(test) <= 0
 }
 
-func isNumberEQ(value decimal.Decimal, test decimal.Decimal) bool {
+func isNumberEQ(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
 	return value.Cmp(test) == 0
 }
 
-func isNumberGTE(value decimal.Decimal, test decimal.Decimal) bool {
+func isNumberGTE(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
 	return value.Cmp(test) >= 0
 }
 
-func isNumberGT(value decimal.Decimal, test decimal.Decimal) bool {
+func isNumberGT(value decimal.Decimal, test decimal.Decimal, _ decimal.Decimal) bool {
 	return value.Cmp(test) > 0
+}
+
+func isNumberBetween(value decimal.Decimal, test1 decimal.Decimal, test2 decimal.Decimal) bool {
+	return value.Cmp(test1) >= 0 && value.Cmp(test2) <= 0
 }
 
 //------------------------------------------------------------------------------------------
