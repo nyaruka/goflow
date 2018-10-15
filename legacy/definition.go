@@ -998,5 +998,5 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 		localization,
 		nodes,
 		ui,
-	)
+	), nil
 }

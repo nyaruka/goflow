@@ -20,36 +20,45 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func testReadingInvalidFlow(t *testing.T, file string, expectedErr string) {
+// loads and validates a flow and checks the validation error message
+func testInvalidFlow(t *testing.T, sessionAssets flows.SessionAssets, file string, expectedErr string) {
 	var err error
 	var assetsJSON json.RawMessage
 	assetsJSON, err = ioutil.ReadFile(file)
 	require.NoError(t, err)
 
-	_, err = definition.ReadFlow(assetsJSON)
+	flow, err := definition.ReadFlow(assetsJSON)
+	require.NoError(t, err)
+
+	err = flow.Validate(sessionAssets)
 	assert.EqualError(t, err, expectedErr)
 }
 
-func TestReadFlow(t *testing.T) {
-	testReadingInvalidFlow(t,
+func TestFlowValidation(t *testing.T) {
+	session, err := test.CreateTestSession("", nil)
+	require.NoError(t, err)
+
+	testInvalidFlow(t,
+		session.Assets(),
 		"testdata/flow_with_duplicate_node_uuid.json",
-		"duplicate node uuid: a58be63b-907d-4a1a-856b-0bb5579d7507",
+		"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
 	)
-	testReadingInvalidFlow(t,
+	testInvalidFlow(t,
+		session.Assets(),
 		"testdata/flow_with_invalid_default_exit.json",
 		"router is invalid on node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: default exit 0680b01f-ba0b-48f4-a688-d2f963130126 is not a valid exit",
 	)
-	testReadingInvalidFlow(t,
+	testInvalidFlow(t,
+		session.Assets(),
 		"testdata/flow_with_invalid_case_exit.json",
 		"router is invalid on node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
 	)
-	testReadingInvalidFlow(t,
+	testInvalidFlow(t,
+		session.Assets(),
 		"testdata/flow_with_invalid_case_exit.json",
 		"router is invalid on node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
 	)
-}
 
-func TestFlowValidation(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/flow_validation.json")
 	assert.NoError(t, err)
 
@@ -61,7 +70,7 @@ func TestFlowValidation(t *testing.T) {
 	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
 	assert.NoError(t, err)
 
-	session := engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
+	session = engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
 	flow, err := session.Assets().Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
 	assert.NoError(t, err)
 
@@ -188,7 +197,10 @@ var flowDef = `{
 }`
 
 func TestNewFlow(t *testing.T) {
-	flow, err := definition.NewFlow(
+	session, err := test.CreateTestSession("", nil)
+	require.NoError(t, err)
+
+	flow := definition.NewFlow(
 		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
 		"Test Flow",           // name
 		utils.Language("eng"), // base language
@@ -250,6 +262,9 @@ func TestNewFlow(t *testing.T) {
 		},
 		nil, // no UI
 	)
+
+	// should validate ok
+	err = flow.Validate(session.Assets())
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
