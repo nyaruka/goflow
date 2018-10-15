@@ -33,23 +33,23 @@ type StartSessionAction struct {
 	BaseAction
 	onlineAction
 
+	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
 	URNs          []urns.URN                `json:"urns,omitempty"`
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	LegacyVars    []string                  `json:"legacy_vars,omitempty"`
-	Flow          *assets.FlowReference     `json:"flow" validate:"required"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
 }
 
 // NewStartSessionAction creates a new start session action
-func NewStartSessionAction(uuid flows.ActionUUID, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, flow *assets.FlowReference, createContact bool) *StartSessionAction {
+func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, legacyVars []string, createContact bool) *StartSessionAction {
 	return &StartSessionAction{
 		BaseAction:    NewBaseAction(TypeStartSession, uuid),
+		Flow:          flow,
 		URNs:          urns,
 		Contacts:      contacts,
 		Groups:        groups,
 		LegacyVars:    legacyVars,
-		Flow:          flow,
 		CreateContact: createContact,
 	}
 }

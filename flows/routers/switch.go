@@ -26,16 +26,28 @@ type Case struct {
 	ExitUUID    flows.ExitUUID `json:"exit_uuid"            validate:"required"`
 }
 
+// NewCase creates a new case
+func NewCase(uuid utils.UUID, type_ string, arguments []string, omitOperand bool, exitUUID flows.ExitUUID) *Case {
+	return &Case{
+		UUID:        uuid,
+		Type:        type_,
+		Arguments:   arguments,
+		OmitOperand: omitOperand,
+		ExitUUID:    exitUUID,
+	}
+}
+
 // SwitchRouter is a router which allows specifying 0-n cases which should each be tested in order, following
 // whichever case returns true, or if none do, then taking the default exit
 type SwitchRouter struct {
 	BaseRouter
 	Default flows.ExitUUID `json:"default_exit_uuid"   validate:"omitempty,uuid4"`
 	Operand string         `json:"operand"             validate:"required"`
-	Cases   []Case         `json:"cases"`
+	Cases   []*Case        `json:"cases"`
 }
 
-func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []Case, resultName string) *SwitchRouter {
+// NewSwitchRouter creates a new switch router
+func NewSwitchRouter(defaultExit flows.ExitUUID, operand string, cases []*Case, resultName string) *SwitchRouter {
 	return &SwitchRouter{
 		BaseRouter: newBaseRouter(TypeSwitch, resultName),
 		Default:    defaultExit,

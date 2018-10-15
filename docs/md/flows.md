@@ -447,8 +447,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "send_msg",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-    "text": "Hi @contact.name, are you ready to complete today's survey?",
-    "attachments": []
+    "text": "Hi @contact.name, are you ready to complete today's survey?"
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json
@@ -674,16 +673,16 @@ will be created and it's the responsibility of the caller to act on that by init
 {
     "type": "start_session",
     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "flow": {
+        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+        "name": "Registration"
+    },
     "groups": [
         {
             "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
             "name": "Customers"
         }
-    ],
-    "flow": {
-        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
-        "name": "Registration"
-    }
+    ]
 }
 ```
 </div><div class="output_event"><h3>Event</h3>```json

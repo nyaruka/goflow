@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/nyaruka/goflow/assets/static"
 	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/nyaruka/goflow/assets/static"
 	_ "github.com/nyaruka/goflow/extensions/transferto"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
@@ -17,7 +17,6 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 
-	diff "github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -56,15 +55,6 @@ var serverURL = ""
 
 func init() {
 	flag.BoolVar(&writeOutput, "write", false, "whether to rewrite test output")
-}
-
-func normalizeJSON(data json.RawMessage) ([]byte, error) {
-	var asMap map[string]interface{}
-	if err := json.Unmarshal(data, &asMap); err != nil {
-		return nil, err
-	}
-
-	return utils.JSONMarshalPretty(asMap)
 }
 
 func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
@@ -215,7 +205,7 @@ func TestFlows(t *testing.T) {
 			testJSON, err := utils.JSONMarshalPretty(flowTest)
 			require.NoError(t, err, "Error marshalling test definition: %s", err)
 
-			testJSON, _ = normalizeJSON(testJSON)
+			testJSON, _ = NormalizeJSON(testJSON)
 
 			// write our output
 			outputFilename := fmt.Sprintf("testdata/flows/%s", tc.output)
@@ -235,32 +225,17 @@ func TestFlows(t *testing.T) {
 				require.NoError(t, err, "error unmarshalling output")
 
 				// first the session
-				if !assertEqualJSON(t, expected.Session, actual.Session, fmt.Sprintf("session is different in output[%d] for flow test %s", i, tc.assets)) {
+				if !AssertEqualJSON(t, expected.Session, actual.Session, fmt.Sprintf("session is different in output[%d] for flow test %s", i, tc.assets)) {
 					break
 				}
 
 				// and then each event
 				for e := range actual.Events {
-					if !assertEqualJSON(t, expected.Events[e], actual.Events[e], fmt.Sprintf("event[%d] is different in output[%d] for flow test %s", e, i, tc.assets)) {
+					if !AssertEqualJSON(t, expected.Events[e], actual.Events[e], fmt.Sprintf("event[%d] is different in output[%d] for flow test %s", e, i, tc.assets)) {
 						break
 					}
 				}
 			}
 		}
 	}
-}
-
-// asserts that the given JSON fragments are equal
-func assertEqualJSON(t *testing.T, expected json.RawMessage, actual json.RawMessage, message string) bool {
-	expectedNormalized, _ := normalizeJSON(expected)
-	actualNormalized, _ := normalizeJSON(actual)
-
-	differ := diff.New()
-	diffs := differ.DiffMain(string(expectedNormalized), string(actualNormalized), false)
-
-	if len(diffs) != 1 || diffs[0].Type != diff.DiffEqual {
-		assert.Fail(t, message, differ.DiffPrettyText(diffs))
-		return false
-	}
-	return true
 }

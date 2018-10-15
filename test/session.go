@@ -308,11 +308,13 @@ var sessionResume = `{
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, error) {
 	// different tests different ports for the test HTTP server
-	sessionAssets = strings.Replace(sessionAssets, "http://localhost", testServerURL, -1)
+	if testServerURL != "" {
+		sessionAssets = strings.Replace(sessionAssets, "http://localhost", testServerURL, -1)
+	}
 
 	session, err := CreateSession(json.RawMessage(sessionAssets))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating test session: %s", err)
 	}
 
 	// optional modify the main flow by adding the provided action to the final empty node
@@ -346,13 +348,13 @@ func CreateSession(sessionAssets json.RawMessage) (flows.Session, error) {
 	// read our assets into a source
 	source, err := static.NewStaticSource(sessionAssets)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error loading test assets: %s", err)
 	}
 
 	// create our engine session
 	assets, err := engine.NewSessionAssets(source)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating test session assets: %s", err)
 	}
 
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)

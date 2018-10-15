@@ -9,8 +9,9 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/legacy"
+	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
-	"github.com/stretchr/testify/assert"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -132,19 +133,19 @@ func TestFlowMigration(t *testing.T) {
 
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	for _, test := range tests {
+	for _, tc := range tests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 
-		legacyFlow, err := legacy.ReadLegacyFlow(test.Legacy)
+		legacyFlow, err := legacy.ReadLegacyFlow(tc.Legacy)
 		require.NoError(t, err)
 
 		migratedFlow, err := legacyFlow.Migrate(true, true)
 		require.NoError(t, err)
 
-		migratedFlowJSON, _ := utils.JSONMarshalPretty(migratedFlow)
-		expectedFlowJSON, _ := utils.JSONMarshalPretty(test.Expected)
+		migratedFlowJSON, err := json.Marshal(migratedFlow)
+		require.NoError(t, err)
 
-		assert.Equal(t, string(expectedFlowJSON), string(migratedFlowJSON))
+		test.AssertEqualJSON(t, tc.Expected, migratedFlowJSON, "migrated flow produced unexpected JSON")
 	}
 }
 
@@ -156,8 +157,8 @@ func TestActionMigration(t *testing.T) {
 	err = json.Unmarshal(data, &tests)
 	require.NoError(t, err)
 
-	for _, test := range tests {
-		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, string(test.LegacyAction))
+	for _, tc := range tests {
+		legacyFlowJSON := fmt.Sprintf(legacyActionHolderDef, string(tc.LegacyAction))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
@@ -165,16 +166,12 @@ func TestActionMigration(t *testing.T) {
 		require.NoError(t, err)
 
 		migratedAction := migratedFlow.Nodes()[0].Actions()[0]
-		migratedActionJSON, _ := utils.JSONMarshal(migratedAction)
-		expectedActionJSON, _ := utils.JSONMarshal(test.ExpectedAction)
+		migratedActionJSON, err := utils.JSONMarshal(migratedAction)
+		require.NoError(t, err)
 
-		if string(expectedActionJSON) != string(migratedActionJSON) {
-			fmt.Println(string(migratedActionJSON))
-		}
+		test.AssertEqualJSON(t, tc.ExpectedAction, migratedActionJSON, "migrated action produced unexpected JSON")
 
-		assert.Equal(t, string(expectedActionJSON), string(migratedActionJSON))
-
-		checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
+		checkFlowLocalization(t, migratedFlow, tc.ExpectedLocalization)
 	}
 }
 
@@ -188,10 +185,10 @@ func TestTestMigration(t *testing.T) {
 
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	for _, test := range tests {
+	for _, tc := range tests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 
-		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(test.LegacyTest))
+		legacyFlowJSON := fmt.Sprintf(legacyTestHolderDef, string(tc.LegacyTest))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
@@ -201,15 +198,15 @@ func TestTestMigration(t *testing.T) {
 		migratedRouter := migratedFlow.Nodes()[0].Router().(*routers.SwitchRouter)
 
 		if len(migratedRouter.Cases) == 0 {
-			t.Errorf("Got no migrated case from legacy test:\n%s\n\n", string(test.LegacyTest))
+			t.Errorf("Got no migrated case from legacy test:\n%s\n\n", string(tc.LegacyTest))
 		} else {
 			migratedCase := migratedRouter.Cases[0]
-			migratedCaseJSON, _ := utils.JSONMarshal(migratedCase)
-			expectedCaseJSON, _ := utils.JSONMarshal(test.ExpectedCase)
+			migratedCaseJSON, err := utils.JSONMarshal(migratedCase)
+			require.NoError(t, err)
 
-			assert.Equal(t, string(expectedCaseJSON), string(migratedCaseJSON))
+			test.AssertEqualJSON(t, tc.ExpectedCase, migratedCaseJSON, "migrated test produced unexpected JSON")
 
-			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
+			checkFlowLocalization(t, migratedFlow, tc.ExpectedLocalization)
 		}
 	}
 }
@@ -224,19 +221,19 @@ func TestRuleSetMigration(t *testing.T) {
 
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
-	for _, test := range tests {
+	for _, tc := range tests {
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 
-		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(test.LegacyRuleSet))
+		legacyFlowJSON := fmt.Sprintf(legacyRuleSetHolderDef, string(tc.LegacyRuleSet))
 		legacyFlow, err := legacy.ReadLegacyFlow(json.RawMessage(legacyFlowJSON))
 		require.NoError(t, err)
 
-		migratedFlow, err := legacyFlow.Migrate(test.CollapseExits, true)
+		migratedFlow, err := legacyFlow.Migrate(tc.CollapseExits, true)
 		require.NoError(t, err)
 
 		// check we now have a new node in addition to the 3 actionsets used as destinations
 		if len(migratedFlow.Nodes()) <= 3 {
-			t.Errorf("Got no migrated nodes from legacy ruleset:\n%s\n\n", string(test.LegacyRuleSet))
+			t.Errorf("Got no migrated nodes from legacy ruleset:\n%s\n\n", string(tc.LegacyRuleSet))
 		} else {
 			// find the new node which might be before or after the actionset nodes
 			var migratedNode flows.Node
@@ -246,30 +243,27 @@ func TestRuleSetMigration(t *testing.T) {
 				}
 			}
 
-			migratedNodeJSON, _ := utils.JSONMarshal(migratedNode)
-			expectedNodeJSON, _ := utils.JSONMarshal(test.ExpectedNode)
+			migratedNodeJSON, err := utils.JSONMarshal(migratedNode)
+			require.NoError(t, err)
 
-			if string(expectedNodeJSON) != string(migratedNodeJSON) {
-				fmt.Println(string(migratedNodeJSON))
-			}
+			test.AssertEqualJSON(t, tc.ExpectedNode, migratedNodeJSON, "migrated ruleset produced unexpected JSON")
 
-			assert.Equal(t, string(expectedNodeJSON), string(migratedNodeJSON))
+			migratedNodeUIJSON, err := utils.JSONMarshal(migratedFlow.UI().GetNode(migratedNode.UUID()))
+			require.NoError(t, err)
 
-			migratedNodeUI, _ := utils.JSONMarshal(migratedFlow.UI().GetNode(migratedNode.UUID()))
-			expectedNodeUI, _ := utils.JSONMarshal(test.ExpectedUI)
-			if string(expectedNodeUI) != string(migratedNodeUI) {
-				fmt.Println(string(migratedNodeUI))
-			}
-			assert.Equal(t, string(expectedNodeUI), string(migratedNodeUI))
+			test.AssertEqualJSON(t, tc.ExpectedUI, migratedNodeUIJSON, "migrated ruleset produced unexpected UI JSON")
 
-			checkFlowLocalization(t, migratedFlow, test.ExpectedLocalization)
+			checkFlowLocalization(t, migratedFlow, tc.ExpectedLocalization)
 		}
 	}
 }
 
 func checkFlowLocalization(t *testing.T, flow flows.Flow, expectedLocalizationRaw json.RawMessage) {
-	actualLocalizationJSON, _ := utils.JSONMarshal(flow.Localization())
-	expectedLocalizationJSON, _ := utils.JSONMarshal(expectedLocalizationRaw)
+	actualLocalizationJSON, err := utils.JSONMarshal(flow.Localization())
+	require.NoError(t, err)
 
-	assert.Equal(t, string(expectedLocalizationJSON), string(actualLocalizationJSON))
+	expectedLocalizationJSON, _ := utils.JSONMarshal(expectedLocalizationRaw)
+	require.NoError(t, err)
+
+	test.AssertEqualJSON(t, expectedLocalizationJSON, actualLocalizationJSON, "migrated localization produced unexpected JSON")
 }

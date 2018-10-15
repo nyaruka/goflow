@@ -27,30 +27,29 @@ func (e *exit) DestinationNodeUUID() flows.NodeUUID { return e.destination }
 func (e *exit) Name() string                        { return e.name }
 
 type node struct {
-	uuid flows.NodeUUID
-
+	uuid    flows.NodeUUID
 	actions []flows.Action
+	wait    flows.Wait
 	router  flows.Router
 	exits   []flows.Exit
-	wait    flows.Wait
 }
 
 // NewNode creates a new flow node
-func NewNode(uuid flows.NodeUUID, actions []flows.Action, router flows.Router, exits []flows.Exit, wait flows.Wait) flows.Node {
+func NewNode(uuid flows.NodeUUID, actions []flows.Action, wait flows.Wait, router flows.Router, exits []flows.Exit) flows.Node {
 	return &node{
 		uuid:    uuid,
 		actions: actions,
+		wait:    wait,
 		router:  router,
 		exits:   exits,
-		wait:    wait,
 	}
 }
 
 func (n *node) UUID() flows.NodeUUID    { return n.uuid }
-func (n *node) Router() flows.Router    { return n.router }
 func (n *node) Actions() []flows.Action { return n.actions }
-func (n *node) Exits() []flows.Exit     { return n.exits }
 func (n *node) Wait() flows.Wait        { return n.wait }
+func (n *node) Router() flows.Router    { return n.router }
+func (n *node) Exits() []flows.Exit     { return n.exits }
 
 func (n *node) AddAction(action flows.Action) {
 	n.actions = append(n.actions, action)
@@ -61,11 +60,11 @@ func (n *node) AddAction(action flows.Action) {
 //------------------------------------------------------------------------------------------
 
 type nodeEnvelope struct {
-	UUID    flows.NodeUUID    `json:"uuid"                  validate:"required,uuid4"`
+	UUID    flows.NodeUUID    `json:"uuid" validate:"required,uuid4"`
 	Actions []json.RawMessage `json:"actions,omitempty"`
+	Wait    json.RawMessage   `json:"wait,omitempty"`
 	Router  json.RawMessage   `json:"router,omitempty"`
 	Exits   []*exit           `json:"exits"`
-	Wait    json.RawMessage   `json:"wait,omitempty"`
 }
 
 // UnmarshalJSON unmarshals a flow node from the given JSON
