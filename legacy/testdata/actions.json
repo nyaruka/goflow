@@ -228,8 +228,7 @@
         "expected_action": {
             "type": "send_msg",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
-            "text": "Do you still live in @contact.fields.city?",
-            "attachments": []
+            "text": "Do you still live in @contact.fields.city?"
         },
         "expected_localization": {}
     },
