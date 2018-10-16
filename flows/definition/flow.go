@@ -12,20 +12,21 @@ import (
 )
 
 type flow struct {
-	uuid     assets.FlowUUID
-	name     string
-	language utils.Language
-	flowType flows.FlowType
-
+	uuid               assets.FlowUUID
+	name               string
+	language           utils.Language
+	flowType           flows.FlowType
 	revision           int
 	expireAfterMinutes int
 	localization       flows.Localization
-
-	nodes   []flows.Node
-	nodeMap map[flows.NodeUUID]flows.Node
+	nodes              []flows.Node
 
 	// only read for legacy flows which are being migrated
 	ui flows.UI
+
+	// internal state
+	nodeMap map[flows.NodeUUID]flows.Node
+	valid   bool
 }
 
 // NewFlow creates a new flow
@@ -70,6 +71,11 @@ func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 	}
 	context.Start(f)
 
+	// if this flow has already been validated, don't need to do it again
+	if f.valid {
+		return nil
+	}
+
 	// track UUIDs used by nodes and actions to ensure that they are unique
 	seenUUIDs := make(map[utils.UUID]bool)
 
@@ -84,6 +90,8 @@ func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 			return fmt.Errorf("validation failed for node[uuid=%s]: %s", node.UUID(), err)
 		}
 	}
+
+	f.valid = true
 	return nil
 }
 
