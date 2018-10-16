@@ -45,9 +45,17 @@ const (
 
 	// WebhookStatusResponseError represents that the webhook response had a non 2xx status code
 	WebhookStatusResponseError WebhookStatus = "response_error"
+
+	// WebhookStatusSubscriberGone represents a special state of resthook responses which indicate the caller must remove that subscriber
+	WebhookStatusSubscriberGone WebhookStatus = "subscriber_gone"
 )
 
-func WebhookStatusFromCode(code int) WebhookStatus {
+// WebhookStatusFromCode determines the webhook status from the HTTP status code
+func WebhookStatusFromCode(code int, isResthook bool) WebhookStatus {
+	// https://zapier.com/developer/documentation/v2/rest-hooks/
+	if isResthook && code == 410 {
+		return WebhookStatusSubscriberGone
+	}
 	if code/100 == 2 {
 		return WebhookStatusSuccess
 	}
@@ -61,6 +69,7 @@ func (r WebhookStatus) String() string {
 // WebhookCall is a call made to an external service
 type WebhookCall struct {
 	url           string
+	resthook      string
 	request       *http.Request
 	response      *http.Response
 	status        WebhookStatus
@@ -71,7 +80,7 @@ type WebhookCall struct {
 
 // MakeWebhookCall fires the passed in http request, returning any errors encountered. RequestResponse is always set
 // regardless of any errors being set
-func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, error) {
+func MakeWebhookCall(session Session, request *http.Request, resthook string) (*WebhookCall, error) {
 	var response *http.Response
 	var requestDump string
 	var err error
@@ -95,11 +104,14 @@ func MakeWebhookCall(session Session, request *http.Request) (*WebhookCall, erro
 		return newWebhookCallFromError(request, requestDump, err), err
 	}
 
-	return newWebhookCallFromResponse(requestDump, response, session.EngineConfig().MaxWebhookResponseBytes(), timeTaken)
+	return newWebhookCallFromResponse(requestDump, response, session.EngineConfig().MaxWebhookResponseBytes(), timeTaken, resthook)
 }
 
 // URL returns the full URL
 func (w *WebhookCall) URL() string { return w.url }
+
+// Resthook returns the resthook slug (if this call came from a resthook action)
+func (w *WebhookCall) Resthook() string { return w.resthook }
 
 // Method returns the full HTTP method
 func (w *WebhookCall) Method() string { return w.request.Method }
@@ -146,7 +158,7 @@ func newWebhookCallFromError(request *http.Request, requestTrace string, request
 }
 
 // newWebhookCallFromResponse creates a new RequestResponse based on the passed in http Response
-func newWebhookCallFromResponse(requestTrace string, response *http.Response, maxBodyBytes int, timeTaken time.Duration) (*WebhookCall, error) {
+func newWebhookCallFromResponse(requestTrace string, response *http.Response, maxBodyBytes int, timeTaken time.Duration, resthook string) (*WebhookCall, error) {
 	defer response.Body.Close()
 
 	// save response trace without body which will be parsed separately
@@ -157,9 +169,10 @@ func newWebhookCallFromResponse(requestTrace string, response *http.Response, ma
 
 	w := &WebhookCall{
 		url:           response.Request.URL.String(),
+		resthook:      resthook,
 		request:       response.Request,
 		response:      response,
-		status:        WebhookStatusFromCode(response.StatusCode),
+		status:        WebhookStatusFromCode(response.StatusCode, resthook != ""),
 		requestTrace:  requestTrace,
 		responseTrace: string(responseTrace),
 		timeTaken:     timeTaken,
