@@ -130,6 +130,11 @@
                             "type": "send_msg",
                             "text": "Great, you are done!"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "bbaaec87-a646-435d-bade-e0a8ac09beb8"
+                        }
                     ]
                 }
             ]

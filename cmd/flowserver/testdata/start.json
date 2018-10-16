@@ -17,6 +17,11 @@
                                 "type": "send_msg",
                                 "text": "You said '@input.text'"
                             }
+                        ],
+                        "exits": [
+                            {
+                                "uuid": "71af69ed-8bcf-43c7-a43b-58fef6a54594"
+                            }
                         ]
                     }
                 ]
