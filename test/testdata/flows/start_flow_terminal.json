@@ -39,6 +39,11 @@
                             "type": "send_msg",
                             "text": "Shouldn't arrive here..."
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "83922556-f7fa-4e95-802a-abb982ea960e"
+                        }
                     ]
                 }
             ]

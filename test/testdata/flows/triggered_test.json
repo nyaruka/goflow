@@ -79,6 +79,7 @@
                         "path": [
                             {
                                 "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "exit_uuid": "fa60eef2-9985-46bd-8d58-4d1abf6ae93b",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
                                 "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
                             }

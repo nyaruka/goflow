@@ -373,6 +373,7 @@
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:32.123456789Z",
+                                "exit_uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832",
                                 "node_uuid": "c8380f24-7524-4340-9d38-db8a131d2b70",
                                 "uuid": "a4d15ed4-5b24-407f-b86e-4b881f09a186"
                             }
@@ -457,6 +458,7 @@
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:28.123456789Z",
+                                "exit_uuid": "80aa94f5-1c2f-4286-b2ec-5a3bdaf9c7d0",
                                 "node_uuid": "3689e39d-608e-4e85-8a18-c9aa6375bb43",
                                 "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                             }

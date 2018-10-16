@@ -205,6 +205,11 @@
                             "type": "send_msg",
                             "text": "Great, you are done and like @results.soda! Webhook status was @results.webhook.value"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d"
+                        }
                     ]
                 }
             ]

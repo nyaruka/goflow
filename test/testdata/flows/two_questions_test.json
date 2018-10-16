@@ -758,6 +758,7 @@
                             },
                             {
                                 "arrived_on": "2018-07-06T12:30:41.123456789Z",
+                                "exit_uuid": "2bd0b38a-5010-426e-a9f5-77ffe7b89d4d",
                                 "node_uuid": "cefd2817-38a8-4ddb-af97-34fffac7e6db",
                                 "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                             }

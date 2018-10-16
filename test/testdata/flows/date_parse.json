@@ -62,6 +62,11 @@
                             "type": "send_msg",
                             "text": "Awesome, you were born on @(format_datetime(results.birth_date, \"MM-DD-YYYY\")) at @(format_datetime(results.birth_date, \"tt:mm\"))"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "4ae06b16-3854-4336-b285-302c984fc235"
+                        }
                     ]
                 }
             ]

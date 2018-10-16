@@ -38,6 +38,11 @@
                             "type": "send_msg",
                             "text": "Flow succeeded"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "1a26ab25-fc6d-4324-865b-1d8e7d73bf52"
+                        }
                     ]
                 }
             ]

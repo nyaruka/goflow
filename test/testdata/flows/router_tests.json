@@ -112,6 +112,11 @@
                             },
                             "value": "@results.district_check"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "4cfc03fb-33f3-4ca7-bb87-d3bdc2964d5f"
+                        }
                     ]
                 }
             ]

@@ -8,17 +8,17 @@
             "nodes": [
                 {
                     "uuid": "4fd923cc-b39f-4722-b1ea-22ce1ef388de",
-                    "exits": [
-                        {
-                            "uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
-                            "destination_node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
-                        }
-                    ],
                     "actions": [
                         {
                             "text": "What is your name?",
                             "type": "send_msg",
                             "uuid": "d3cd8da7-55f2-4bd3-9a0c-efc93c99e498"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "19f677bf-2b34-48bd-8a05-3839191b51b2",
+                            "destination_node_uuid": "3a430844-e259-4dcd-9a1d-7bef3168d43f"
                         }
                     ]
                 },
@@ -63,6 +63,11 @@
                             "type": "send_msg",
                             "uuid": "8b3ce80d-0ce7-4e17-a3e7-33e62948bde8",
                             "text": "Great, pleased to meet you @contact.fields.first_name"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "645dc267-40aa-4777-bda1-bb3133fba511"
                         }
                     ]
                 }
