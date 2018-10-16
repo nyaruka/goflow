@@ -344,7 +344,7 @@ func TestActions(t *testing.T) {
 
 	for _, tc := range actionTests {
 		// test validating the action
-		err := tc.action.Validate(session.Assets())
+		err := tc.action.Validate(session.Assets(), flows.NewValidationContext())
 		assert.NoError(t, err)
 
 		// test marshaling the action

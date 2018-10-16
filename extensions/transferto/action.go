@@ -46,7 +46,7 @@ func NewTransferAirtimeAction(uuid flows.ActionUUID, amounts map[string]decimal.
 }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *TransferAirtimeAction) Validate(assets flows.SessionAssets) error {
+func (a *TransferAirtimeAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	return nil
 }
 

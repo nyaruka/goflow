@@ -55,12 +55,19 @@ func NewStartSessionAction(uuid flows.ActionUUID, flow *assets.FlowReference, ur
 }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *StartSessionAction) Validate(assets flows.SessionAssets) error {
-	// check we have the flow
-	if _, err := assets.Flows().Get(a.Flow.UUID); err != nil {
+func (a *StartSessionAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+	// check the flow exists
+	flow, err := assets.Flows().Get(a.Flow.UUID)
+	if err != nil {
 		return err
 	}
-	// check we have all groups
+
+	// and that it's valid
+	if err := flow.Validate(assets, context); err != nil {
+		return err
+	}
+
+	// finally check that all the groups exist
 	return a.validateGroups(assets, a.Groups)
 }
 

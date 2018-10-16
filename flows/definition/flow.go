@@ -63,7 +63,12 @@ func (f *flow) GetNode(uuid flows.NodeUUID) flows.Node { return f.nodeMap[uuid] 
 
 // Validates that structurally we are sane. IE, all required fields are present and
 // all exits with destinations point to valid endpoints.
-func (f *flow) Validate(assets flows.SessionAssets) error {
+func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+	// check we haven't already started validating this flow to avoid an infinite loop
+	if context.IsStarted(f) {
+		return nil
+	}
+	context.Start(f)
 
 	// track UUIDs used by nodes and actions to ensure that they are unique
 	seenUUIDs := make(map[utils.UUID]bool)
@@ -75,7 +80,7 @@ func (f *flow) Validate(assets flows.SessionAssets) error {
 		}
 		seenUUIDs[utils.UUID(node.UUID())] = true
 
-		if err := node.Validate(assets, f, seenUUIDs); err != nil {
+		if err := node.Validate(assets, context, f, seenUUIDs); err != nil {
 			return fmt.Errorf("validation failed for node[uuid=%s]: %s", node.UUID(), err)
 		}
 	}

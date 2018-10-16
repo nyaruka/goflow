@@ -149,6 +149,11 @@ var sessionAssets = `{
                         },
                         "value": "@results.age"
                     }
+                ],
+                "exits": [
+                    {
+                        "uuid": "4ee148c8-4026-41da-9d4c-08cb4d60b0d7"
+                    }
                 ]
             }]
         },

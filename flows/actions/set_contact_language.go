@@ -43,7 +43,7 @@ func NewSetContactLanguageAction(uuid flows.ActionUUID, language string) *SetCon
 }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets) error {
+func (a *SetContactLanguageAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	return nil
 }
 

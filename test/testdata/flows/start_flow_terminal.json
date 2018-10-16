@@ -62,6 +62,11 @@
                             "type": "send_msg",
                             "text": "You're now in the child flow!"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "d47af449-7faa-4387-9059-8fad67085538"
+                        }
                     ]
                 }
             ]
