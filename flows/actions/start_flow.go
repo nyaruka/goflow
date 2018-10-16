@@ -46,14 +46,9 @@ func NewStartFlowAction(uuid flows.ActionUUID, flow *assets.FlowReference, termi
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *StartFlowAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	// check the flow exists
-	flow, err := assets.Flows().Get(a.Flow.UUID)
-	if err != nil {
-		return err
-	}
 
-	// and that it's valid
-	return flow.Validate(assets, context)
+	// check the flow exists and that it's valid
+	return a.validateFlow(assets, a.Flow, context)
 }
 
 // Execute runs our action

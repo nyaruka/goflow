@@ -73,6 +73,18 @@ func (a *BaseAction) validateLabels(assets flows.SessionAssets, references []*as
 	return nil
 }
 
+// helper function for actions that have a flow reference that must be validated
+func (a *BaseAction) validateFlow(assets flows.SessionAssets, reference *assets.FlowReference, context *flows.ValidationContext) error {
+	// check the flow exists
+	flow, err := assets.Flows().Get(reference.UUID)
+	if err != nil {
+		return err
+	}
+
+	// and that it's valid
+	return flow.Validate(assets, context)
+}
+
 // helper function for actions that have a set of group references that must be resolved to actual groups
 func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, references []*assets.GroupReference) ([]*flows.Group, error) {
 	groupSet := run.Session().Assets().Groups()
