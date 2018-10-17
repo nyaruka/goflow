@@ -829,7 +829,17 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 	case "contains", "contains_any", "contains_phrase", "contains_only_phrase", "regex", "starts":
 		test := localizedStringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		arguments = []string{test.Test.Base(baseLanguage)}
+
+		baseTest := test.Test.Base(baseLanguage)
+
+		// all the tests are evaluated as templates.. except regex
+		if r.Test.Type != "regex" {
+			baseTest, err = expressions.MigrateTemplate(baseTest, false)
+			if err != nil {
+				return nil, err
+			}
+		}
+		arguments = []string{baseTest}
 
 		addTranslationMap(baseLanguage, localization, test.Test, caseUUID, "arguments")
 

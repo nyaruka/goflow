@@ -401,7 +401,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 	var exitUUID flows.ExitUUID
 	if router != nil {
 		if operand, route, err = router.PickRoute(run, node.Exits(), step); err != nil {
-			return nil, noDestination, err
+			return nil, noDestination, fmt.Errorf("error routing from node[uuid=%s]: %s", node.UUID(), err)
 		}
 		exitUUID = route.Exit()
 	} else if len(node.Exits()) > 0 {
