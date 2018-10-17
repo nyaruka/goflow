@@ -4,6 +4,24 @@
 
 See https://nyaruka.github.io/goflow/ for the complete specification docs.
 
+## Basic Usage
+
+```go
+import (
+	"github.com/nyaruka/goflow/assets/static"
+    "github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
+    "github.com/nyaruka/goflow/utils"
+)
+
+source, _ := static.LoadStaticSource("myassets.json")
+assets, _ := engine.NewSessionAssets(source)
+session := engine.NewSession(assets, engine.NewDefaultConfig(), utils.NewHTTPClient("goflow-flowrunner"))
+contact := flows.NewContact(...)
+trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, time.Now())
+session.Start(trigger)
+```
+
 ## Runner 
 
 This program provides a command line interface for stepping through a given flow.
