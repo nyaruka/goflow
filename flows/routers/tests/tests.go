@@ -802,37 +802,6 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestRes
 // Numerical Test Functions
 //------------------------------------------------------------------------------------------
 
-var altNumerals = map[rune]rune{
-	'٠': '0', // Arabic
-	'١': '1',
-	'٢': '2',
-	'٣': '3',
-	'٤': '4',
-	'٥': '5',
-	'٦': '6',
-	'٧': '7',
-	'٨': '8',
-	'٩': '9',
-	'۰': '0', // Persian
-	'۱': '1',
-	'۲': '2',
-	'۳': '3',
-	'۴': '4',
-	'۵': '5',
-	'۶': '6',
-	'۷': '7',
-	'۸': '8',
-	'۹': '9',
-}
-
-func replaceAltNumerals(r rune) rune {
-	repl, found := altNumerals[r]
-	if found {
-		return repl
-	}
-	return r
-}
-
 // ParseDecimalFuzzy parses a decimal from a string
 func ParseDecimalFuzzy(val string, format *utils.NumberFormat) (decimal.Decimal, error) {
 	// must contain at least one real digit - prevents things like ll becoming 11
@@ -851,9 +820,6 @@ func ParseDecimalFuzzy(val string, format *utils.NumberFormat) (decimal.Decimal,
 	cleaned := strings.Replace(val, "l", "1", -1)
 	cleaned = strings.Replace(cleaned, "O", "0", -1)
 	cleaned = strings.Replace(cleaned, "o", "0", -1)
-
-	// replace numerals used by other languages
-	cleaned = strings.Map(replaceAltNumerals, cleaned)
 
 	// remove digit grouping symbol
 	cleaned = strings.Replace(cleaned, format.DigitGroupingSymbol, "", -1)

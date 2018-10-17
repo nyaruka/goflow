@@ -120,7 +120,6 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("the number l0")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
 	{"has_number", []types.XValue{xs("hi.51")}, true, xn("51"), false},
-	{"has_number", []types.XValue{xs("١٠")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("nothing here")}, false, nil, false},
 	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
@@ -287,14 +286,6 @@ func TestParseDecimalFuzzy(t *testing.T) {
 		{"1.234,567", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
 		{"l00", decimal.RequireFromString("100"), utils.DefaultNumberFormat},
 		{"100.00", decimal.RequireFromString("100.00"), utils.DefaultNumberFormat},
-
-		// Arabic
-		{"١٠", decimal.RequireFromString("10"), utils.DefaultNumberFormat},
-		{"١٢٣٤,٥٦٧", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
-
-		// Persian
-		{"۱۰", decimal.RequireFromString("10"), utils.DefaultNumberFormat},
-		{"۱۲۳۴,۵۶۷", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
 	}
 
 	for _, test := range parseTests {
