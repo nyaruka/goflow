@@ -39,10 +39,6 @@ var invalidFlows = []struct {
 		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
 	},
 	{
-		"flow_with_exitless_node.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: nodes must have at least one exit",
-	},
-	{
 		"flow_with_invalid_label_asset_ref.json",
 		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with uuid 'ab0c8941-64a9-4f48-8949-907d0565e9ad'",
 	},

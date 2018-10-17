@@ -74,11 +74,6 @@ func (n *node) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 		}
 	}
 
-	// check we have at least one exit
-	if len(n.Exits()) < 1 {
-		return fmt.Errorf("nodes must have at least one exit")
-	}
-
 	// check every exit has a unique UUID and valid destination
 	for _, exit := range n.Exits() {
 		uuidAlreadySeen := seenUUIDs[utils.UUID(exit.UUID())]
