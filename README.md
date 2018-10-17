@@ -1,8 +1,26 @@
-# Goflow [![Build Status](https://travis-ci.org/nyaruka/goflow.svg?branch=master)](https://travis-ci.org/nyaruka/goflow) [![Coverage Status](https://coveralls.io/repos/github/nyaruka/goflow/badge.svg?branch=master)](https://coveralls.io/github/nyaruka/goflow?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/goflow)](https://goreportcard.com/report/github.com/nyaruka/goflow)
+# Goflow [![Build Status](https://travis-ci.org/nyaruka/goflow.svg?branch=master)](https://travis-ci.org/nyaruka/goflow) [![codecov](https://codecov.io/gh/nyaruka/goflow/branch/master/graph/badge.svg)](https://codecov.io/gh/nyaruka/goflow) [![Go Report Card](https://goreportcard.com/badge/github.com/nyaruka/goflow)](https://goreportcard.com/report/github.com/nyaruka/goflow)
 
 ## Specification
 
 See https://nyaruka.github.io/goflow/ for the complete specification docs.
+
+## Basic Usage
+
+```go
+import (
+    "github.com/nyaruka/goflow/assets/static"
+    "github.com/nyaruka/goflow/flows"
+    "github.com/nyaruka/goflow/flows/engine"
+    "github.com/nyaruka/goflow/utils"
+)
+
+source, _ := static.LoadStaticSource("myassets.json")
+assets, _ := engine.NewSessionAssets(source)
+session := engine.NewSession(assets, engine.NewDefaultConfig(), utils.NewHTTPClient("goflow-flowrunner"))
+contact := flows.NewContact(...)
+trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, time.Now())
+session.Start(trigger)
+```
 
 ## Runner 
 
