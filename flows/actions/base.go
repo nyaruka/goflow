@@ -17,6 +17,7 @@ var webhookStatusCategories = map[flows.WebhookStatus]string{
 	flows.WebhookStatusSuccess:         "Success",
 	flows.WebhookStatusResponseError:   "Failure",
 	flows.WebhookStatusConnectionError: "Failure",
+	flows.WebhookStatusSubscriberGone:  "Failure",
 }
 
 var registeredTypes = map[string](func() flows.Action){}
