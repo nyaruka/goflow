@@ -202,6 +202,11 @@
                             "method": "GET",
                             "url": "http://localhost/?cmd=success&name=@contact.name"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "118221f7-e637-4cdb-83ca-7f0a5aae98c6"
+                        }
                     ]
                 }
             ]

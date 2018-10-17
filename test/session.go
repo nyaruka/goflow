@@ -59,7 +59,7 @@ var sessionAssets = `{
                     ],
                     "exits": [
                         {
-                            "uuid": "37d8813f-1402-4ad2-9cc2-e9054a96525b",
+                            "uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c",
                             "destination_node_uuid": "3dcccbb4-d29c-41dd-a01f-16d814c9ab82"
                         }
                     ]
@@ -116,7 +116,12 @@ var sessionAssets = `{
                 },
                 {
                     "uuid": "c0781400-737f-4940-9a6c-1ec1c3df0325",
-                    "actions": []
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "9fc5f8b4-2247-43db-b899-ab1ac50ba06c"
+                        }
+                    ]
                 }
             ]
         },

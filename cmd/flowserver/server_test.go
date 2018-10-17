@@ -526,13 +526,13 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	requestBody := fmt.Sprintf(startRequestTemplate, testStructurallyInvalidFlowAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try POSTing to the start endpoint a flow asset that references a non-existent group asset
 	requestBody = fmt.Sprintf(startRequestTemplate, testFlowMissingGroupAssets, assetServerConfig, `{}`)
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/start", requestBody)
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// POST to the start endpoint with a valid flow with no wait (it should complete)
 	requestBody = fmt.Sprintf(startRequestTemplate, testValidFlowWithNoWaitAssets, assetServerConfig, `{}`)
@@ -560,12 +560,12 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 	// try to resume this session with a structurally invalid version of the flow passed as an asset
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testStructurallyInvalidFlowAssets, waitingSession, msg))
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"unable to read run 0: unable to load flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: destination 714f1409-486e-4e8e-bb08-23e2943ef9f6 of exit[uuid=37d8813f-1402-4ad2-9cc2-e9054a96525b] isn't a known node"})
 
 	// try to resume this session with a invalid version of the flow which is missing a group
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testFlowMissingGroupAssets, waitingSession, msg))
 	ts.Equal(400, status)
-	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
+	ts.assertErrorResponse(body, []string{"validation failed for flow[uuid=76f0a02f-3b75-4b86-9064-e9195e1b3a02]: validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_contact_groups]: no such group with uuid '77a1bb5c-92f7-42bc-8a54-d21c1536ebc0'"})
 
 	// check we can resume if we include a fixed version of the flow as an asset
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(testValidFlowWithWaitAssets, waitingSession, msg))

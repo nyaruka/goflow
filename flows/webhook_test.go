@@ -98,11 +98,12 @@ func TestWebhookParsing(t *testing.T) {
 		request, err := http.NewRequest(tc.call.method, tc.call.url, strings.NewReader(tc.call.body))
 		require.NoError(t, err)
 
-		webhook, err := flows.MakeWebhookCall(session, request)
+		webhook, err := flows.MakeWebhookCall(session, request, "")
 		if tc.isError {
 			assert.Error(t, err)
 		} else {
 			assert.Equal(t, tc.call.url, webhook.URL(), "URL mismatch for call %s", tc.call)
+			assert.Equal(t, "", webhook.Resthook(), "resthook mismatch for call %s", tc.call)
 			assert.Equal(t, tc.call.method, webhook.Method(), "method mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.request, webhook.Request(), "request trace mismatch for call %s", tc.call)
 			assert.Equal(t, tc.webhook.response, webhook.Response(), "response mismatch for call %s", tc.call)

@@ -38,6 +38,11 @@
                             "scheme": "twitter",
                             "path": "@(replace(lower(contact.name), \" \", \"_\"))"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "28039554-80a8-4a5d-9024-90ec1dacdd47"
+                        }
                     ]
                 }
             ]

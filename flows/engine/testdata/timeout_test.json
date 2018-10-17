@@ -78,6 +78,11 @@
                             "type": "send_msg",
                             "text": "You said @results.favorite_color.category_localized. Thanks!"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "cee79a7f-51fd-414a-a9fb-f9c1f1baf186"
+                        }
                     ]
                 },
                 {
@@ -87,6 +92,11 @@
                             "uuid": "ec0cbd0a-0aaa-4cdd-8ce9-a0430b83d500",
                             "type": "send_msg",
                             "text": "Guess you're busy - catch you another time!"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "bbaaec87-a646-435d-bade-e0a8ac09beb8"
                         }
                     ]
                 }

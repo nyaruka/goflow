@@ -60,6 +60,11 @@
                             "type": "send_msg",
                             "text": "Resthook: @(json(results.response_1.extra))"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "d075e84c-cdfd-4b6d-82e1-d64a03fb7acb"
+                        }
                     ]
                 }
             ]

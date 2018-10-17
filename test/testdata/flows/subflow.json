@@ -63,6 +63,11 @@
                             "type": "send_msg",
                             "text": "Flow succeeded, they said @child.results.name"
                         }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "9b13f6ac-5257-4cec-8d5c-545ba85bc832"
+                        }
                     ]
                 },
                 {
@@ -72,6 +77,11 @@
                             "uuid": "d80b2a5c-3b5c-47cd-b6ea-2f59bf2bb477",
                             "type": "send_msg",
                             "text": "Flow failed"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "3edede74-c67f-4151-921c-1635627aa256"
                         }
                     ]
                 }
@@ -128,6 +138,11 @@
                             "uuid": "d63929fe-e999-42ef-abf1-4b281f58891e",
                             "type": "send_msg",
                             "text": "Got it!"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "80aa94f5-1c2f-4286-b2ec-5a3bdaf9c7d0"
                         }
                     ]
                 }

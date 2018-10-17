@@ -11,21 +11,6 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type exit struct {
-	uuid        flows.ExitUUID
-	destination flows.NodeUUID
-	name        string
-}
-
-// NewExit creates a new exit
-func NewExit(uuid flows.ExitUUID, destination flows.NodeUUID, name string) flows.Exit {
-	return &exit{uuid: uuid, destination: destination, name: name}
-}
-
-func (e *exit) UUID() flows.ExitUUID                { return e.uuid }
-func (e *exit) DestinationNodeUUID() flows.NodeUUID { return e.destination }
-func (e *exit) Name() string                        { return e.name }
-
 type node struct {
 	uuid    flows.NodeUUID
 	actions []flows.Action
@@ -53,6 +38,61 @@ func (n *node) Exits() []flows.Exit     { return n.exits }
 
 func (n *node) AddAction(action flows.Action) {
 	n.actions = append(n.actions, action)
+}
+
+func (n *node) Validate(assets flows.SessionAssets, flow flows.Flow, seenUUIDs map[utils.UUID]bool) error {
+	// validate all the node's actions
+	for _, action := range n.Actions() {
+
+		// check that this action is valid for this flow type
+		isValidInType := false
+		for _, allowedType := range action.AllowedFlowTypes() {
+			if flow.Type() == allowedType {
+				isValidInType = true
+				break
+			}
+		}
+		if !isValidInType {
+			return fmt.Errorf("action type '%s' is not allowed in a flow of type '%s'", action.Type(), flow.Type())
+		}
+
+		uuidAlreadySeen := seenUUIDs[utils.UUID(action.UUID())]
+		if uuidAlreadySeen {
+			return fmt.Errorf("action UUID %s isn't unique", action.UUID())
+		}
+		seenUUIDs[utils.UUID(action.UUID())] = true
+
+		if err := action.Validate(assets); err != nil {
+			return fmt.Errorf("validation failed for action[uuid=%s, type=%s]: %v", action.UUID(), action.Type(), err)
+		}
+	}
+
+	// check the router if there is one
+	if n.Router() != nil {
+		if err := n.Router().Validate(n.Exits()); err != nil {
+			return fmt.Errorf("validation failed for router: %s", err)
+		}
+	}
+
+	// check we have at least one exit
+	if len(n.Exits()) < 1 {
+		return fmt.Errorf("nodes must have at least one exit")
+	}
+
+	// check every exit has a unique UUID and valid destination
+	for _, exit := range n.Exits() {
+		uuidAlreadySeen := seenUUIDs[utils.UUID(exit.UUID())]
+		if uuidAlreadySeen {
+			return fmt.Errorf("exit UUID %s isn't unique", exit.UUID())
+		}
+		seenUUIDs[utils.UUID(exit.UUID())] = true
+
+		if exit.DestinationNodeUUID() != "" && flow.GetNode(exit.DestinationNodeUUID()) == nil {
+			return fmt.Errorf("destination %s of exit[uuid=%s] isn't a known node", exit.DestinationNodeUUID(), exit.UUID())
+		}
+	}
+
+	return nil
 }
 
 //------------------------------------------------------------------------------------------
@@ -148,31 +188,4 @@ func (n *node) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(e)
-}
-
-type exitEnvelope struct {
-	UUID                flows.ExitUUID `json:"uuid"                               validate:"required,uuid4"`
-	DestinationNodeUUID flows.NodeUUID `json:"destination_node_uuid,omitempty"    validate:"omitempty,uuid4"`
-	Name                string         `json:"name,omitempty"`
-}
-
-// UnmarshalJSON unmarshals a node exit from the given JSON
-func (e *exit) UnmarshalJSON(data []byte) error {
-	var envelope exitEnvelope
-	err := utils.UnmarshalAndValidate(data, &envelope)
-	if err != nil {
-		return fmt.Errorf("unable to read exit: %s", err)
-	}
-
-	e.uuid = envelope.UUID
-	e.destination = envelope.DestinationNodeUUID
-	e.name = envelope.Name
-
-	return nil
-}
-
-// MarshalJSON marshals this node exit into JSON
-func (e *exit) MarshalJSON() ([]byte, error) {
-	envelope := exitEnvelope{e.uuid, e.destination, e.name}
-	return json.Marshal(envelope)
 }
