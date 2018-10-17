@@ -6,11 +6,9 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/assets"
-	"github.com/nyaruka/goflow/assets/rest"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
 	"github.com/nyaruka/goflow/flows/definition"
-	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/test"
@@ -20,103 +18,62 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// loads and validates a flow and checks the validation error message
-func testInvalidFlow(t *testing.T, sessionAssets flows.SessionAssets, file string, expectedErr string) {
-	var err error
-	var assetsJSON json.RawMessage
-	assetsJSON, err = ioutil.ReadFile(file)
-	require.NoError(t, err)
-
-	flow, err := definition.ReadFlow(assetsJSON)
-	require.NoError(t, err)
-
-	err = flow.Validate(sessionAssets)
-	assert.EqualError(t, err, expectedErr)
+var invalidFlows = []struct {
+	path        string
+	expectedErr string
+}{
+	{
+		"flow_with_duplicate_node_uuid.json",
+		"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
+	},
+	{
+		"flow_with_invalid_default_exit.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default exit 0680b01f-ba0b-48f4-a688-d2f963130126 is not a valid exit",
+	},
+	{
+		"flow_with_invalid_case_exit.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
+	},
+	{
+		"flow_with_invalid_case_exit.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
+	},
+	{
+		"flow_with_exitless_node.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: nodes must have at least one exit",
+	},
+	{
+		"flow_with_invalid_label_asset_ref.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with uuid 'ab0c8941-64a9-4f48-8949-907d0565e9ad'",
+	},
+	{
+		"flow_with_invalid_group_asset_ref.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=09cd9762-8700-4d14-bbc9-35f75f711873, type=add_contact_groups]: no such group with uuid 'b27a413d-d737-4a3b-ab42-8a181b52c908'",
+	},
+	{
+		"flow_with_invalid_channel_asset_ref.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: no such channel with uuid '038276e5-9223-4143-992b-ef9d7b907030'",
+	},
+	{
+		"flow_with_invalid_field_asset_ref.json",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=7bd8b3bf-0a3c-4928-bc46-df416e77ddf4, type=set_contact_field]: no such field with key 'xyz'",
+	},
 }
 
 func TestFlowValidation(t *testing.T) {
 	session, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
-	testInvalidFlow(t,
-		session.Assets(),
-		"testdata/flow_with_duplicate_node_uuid.json",
-		"node UUID a58be63b-907d-4a1a-856b-0bb5579d7507 isn't unique",
-	)
-	testInvalidFlow(t,
-		session.Assets(),
-		"testdata/flow_with_invalid_default_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: default exit 0680b01f-ba0b-48f4-a688-d2f963130126 is not a valid exit",
-	)
-	testInvalidFlow(t,
-		session.Assets(),
-		"testdata/flow_with_invalid_case_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
-	)
-	testInvalidFlow(t,
-		session.Assets(),
-		"testdata/flow_with_invalid_case_exit.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for router: case exit 37d8813f-1402-4ad2-9cc2-e9054a96525b is not a valid exit",
-	)
+	for _, tc := range invalidFlows {
+		assetsJSON, err := ioutil.ReadFile("testdata/" + tc.path)
+		require.NoError(t, err)
 
-	assetsJSON, err := ioutil.ReadFile("testdata/flow_validation.json")
-	assert.NoError(t, err)
+		flow, err := definition.ReadFlow(assetsJSON)
+		require.NoError(t, err)
 
-	// build our session
-	assetCache := rest.NewAssetCache(100, 5)
-	err = assetCache.Include(assetsJSON)
-	assert.NoError(t, err)
-
-	assets, err := engine.NewSessionAssets(rest.NewMockServerSource(assetCache))
-	assert.NoError(t, err)
-
-	session = engine.NewSession(assets, engine.NewDefaultConfig(), test.TestHTTPClient)
-	flow, err := session.Assets().Flows().Get("76f0a02f-3b75-4b86-9064-e9195e1b3a02")
-	assert.NoError(t, err)
-
-	// break the add_input_labels action so references an invalid label
-	addLabelAction := flow.Nodes()[0].Actions()[1].(*actions.AddInputLabelsAction)
-	addLabelAction.Labels[0].UUID = "xyx"
-
-	// check that validation fails
-	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with uuid 'xyx'")
-
-	// fix the add_input_labels action
-	addLabelAction.Labels[0].UUID = "3f65d88a-95dc-4140-9451-943e94e06fea"
-
-	// break the add_group action so references an invalid group
-	addGroupAction := flow.Nodes()[0].Actions()[2].(*actions.AddContactGroupsAction)
-	addGroupAction.Groups[0].UUID = "xyx"
-
-	// check that validation fails
-	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=09cd9762-8700-4d14-bbc9-35f75f711873, type=add_contact_groups]: no such group with uuid 'xyx'")
-
-	// fix the add_group action
-	addGroupAction.Groups[0].UUID = "2aad21f6-30b7-42c5-bd7f-1b720c154817"
-
-	// break the set_contact_field action so references an invalid field
-	saveContactAction := flow.Nodes()[0].Actions()[3].(*actions.SetContactFieldAction)
-	saveContactAction.Field.Key = "xyx"
-
-	// check that validation fails
-	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=7bd8b3bf-0a3c-4928-bc46-df416e77ddf4, type=set_contact_field]: no such field with key 'xyx'")
-
-	// fix the set_contact_field action
-	saveContactAction.Field.Key = "first_name"
-
-	// break the set_contact_channel action so references an invalid channel
-	prefChannelAction := flow.Nodes()[0].Actions()[4].(*actions.SetContactChannelAction)
-	prefChannelAction.Channel.UUID = "xyx"
-
-	// check that validation fails
-	err = flow.Validate(session.Assets())
-	assert.EqualError(t, err, "validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: no such channel with uuid 'xyx'")
-
-	// fix the set_contact_channel action
-	prefChannelAction.Channel.UUID = "57f1078f-88aa-46f4-a59a-948a5739c03d"
+		err = flow.Validate(session.Assets(), flows.NewValidationContext())
+		assert.EqualError(t, err, tc.expectedErr)
+	}
 }
 
 var flowDef = `{
@@ -264,7 +221,7 @@ func TestNewFlow(t *testing.T) {
 	)
 
 	// should validate ok
-	err = flow.Validate(session.Assets())
+	err = flow.Validate(session.Assets(), flows.NewValidationContext())
 	assert.NoError(t, err)
 
 	marshaled, err := json.Marshal(flow)
