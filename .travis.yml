@@ -1,19 +1,15 @@
 language: go
 
 go:
- - "1.10"
+ - "1.11"
 
 before_install:
  - sudo apt-get install -y pandoc
 
-before_script:
- - go get github.com/mattn/goveralls
-
 script:
- - go test -covermode=count -coverprofile=profile.cov github.com/nyaruka/goflow/...
- - $GOPATH/bin/goveralls -coverprofile=profile.cov -service=travis-ci
- - go test github.com/nyaruka/goflow/... -bench=. -benchmem
+ - go test -p=1 -coverprofile=coverage.text -covermode=atomic github.com/nyaruka/goflow/...
 
 after_success:
- - rm profile.cov
+ - bash <(curl -s https://codecov.io/bash)
+ - rm coverage.text
  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
