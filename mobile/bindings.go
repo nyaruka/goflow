@@ -8,10 +8,12 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/engine"
+	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -74,23 +76,6 @@ func NewSessionAssets(source *AssetsSource) (*SessionAssets, error) {
 	return &SessionAssets{target: s}, nil
 }
 
-// Session represents a session with the flow engine
-type Session struct {
-	target flows.Session
-}
-
-// NewSession creates a new session
-func NewSession(a *SessionAssets, httpUserAgent string) *Session {
-	httpClient := utils.NewHTTPClient(httpUserAgent)
-	s := engine.NewSession(a.target, engine.NewDefaultConfig(), httpClient)
-	return &Session{target: s}
-}
-
-// Start starts this session using the given trigger
-func (s *Session) Start(trigger Trigger) error {
-	return s.target.Start(trigger.target)
-}
-
 // Contact represents a person who is interacting with a flow
 type Contact struct {
 	target *flows.Contact
@@ -109,9 +94,44 @@ type Trigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(environment *Environment, contact *Contact, flowUUID string) *Trigger {
-	flow := assets.NewFlowReference(assets.FlowUUID(flowUUID), "")
+func NewManualTrigger(environment *Environment, contact *Contact, flowUUID string, flowName string) *Trigger {
+	flow := assets.NewFlowReference(assets.FlowUUID(flowUUID), flowName)
 	return &Trigger{
 		target: triggers.NewManualTrigger(environment.target, contact.target, flow, nil, utils.Now()),
 	}
+}
+
+// Resume represents something which can resume a session
+type Resume struct {
+	target flows.Resume
+}
+
+// NewMsgResume creates a new message resume
+func NewMsgResume(text string) *Resume {
+	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), 0, urns.NilURN, nil, text, nil)
+	return &Resume{
+		target: resumes.NewMsgResume(nil, nil, msg),
+	}
+}
+
+// Session represents a session with the flow engine
+type Session struct {
+	target flows.Session
+}
+
+// NewSession creates a new session
+func NewSession(a *SessionAssets, httpUserAgent string) *Session {
+	httpClient := utils.NewHTTPClient(httpUserAgent)
+	s := engine.NewSession(a.target, engine.NewDefaultConfig(), httpClient)
+	return &Session{target: s}
+}
+
+// Start starts this session using the given trigger
+func (s *Session) Start(trigger *Trigger) error {
+	return s.target.Start(trigger.target)
+}
+
+// Resume resumes this session
+func (s *Session) Resume(resume *Resume) error {
+	return s.target.Resume(resume.target)
 }

@@ -48,7 +48,7 @@ func NewSetRunResultAction(uuid flows.ActionUUID, name string, value string, cat
 }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *SetRunResultAction) Validate(assets flows.SessionAssets) error {
+func (a *SetRunResultAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	return nil
 }
 

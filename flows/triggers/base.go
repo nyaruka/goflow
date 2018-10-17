@@ -52,7 +52,7 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 	}
 
 	// check flow is valid and has everything it needs to run
-	if err := flow.Validate(session.Assets()); err != nil {
+	if err := flow.Validate(session.Assets(), flows.NewValidationContext()); err != nil {
 		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", flow.UUID(), err)
 	}
 

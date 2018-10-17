@@ -1,0 +1,23 @@
+{
+    "uuid": "76f0a02f-3b75-4b86-9064-e9195e1b3a02",
+    "name": "Test Flow",
+    "language": "eng",
+    "type": "messaging",
+    "nodes": [
+        {
+            "uuid": "a58be63b-907d-4a1a-856b-0bb5579d7507",
+            "actions": [
+                {
+                    "uuid": "09cd9762-8700-4d14-bbc9-35f75f711873",
+                    "type": "add_contact_groups",
+                    "groups": [
+                        {
+                            "uuid": "b27a413d-d737-4a3b-ab42-8a181b52c908",
+                            "name": "No Such Group"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
