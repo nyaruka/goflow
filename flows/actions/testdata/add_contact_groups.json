@@ -14,7 +14,7 @@
         "validation_error": "no such group with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
     },
     {
-        "description": "Add to group is an error without a contact",
+        "description": "Error event if session has no contact",
         "no_contact": true,
         "action": {
             "type": "add_contact_groups",
@@ -37,7 +37,7 @@
         ]
     },
     {
-        "description": "Adding contact to a dynamic group is an error",
+        "description": "Error event if a group is dynamic",
         "action": {
             "type": "add_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -59,7 +59,7 @@
         ]
     },
     {
-        "description": "Adding contact to group they're already in is a NOOP",
+        "description": "NOOP if contact is already in group",
         "action": {
             "type": "add_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -73,7 +73,7 @@
         "events": []
     },
     {
-        "description": "Adding contact to group creates a groups changed event",
+        "description": "Groups changed event if contact added to group",
         "action": {
             "type": "add_contact_groups",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",

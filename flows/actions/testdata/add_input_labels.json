@@ -12,5 +12,27 @@
             ]
         },
         "validation_error": "no such label with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    },
+    {
+        "description": "Error event if session has no input",
+        "action": {
+            "type": "add_input_labels",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "labels": [
+                {
+                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                    "name": "Spam"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without input",
+                "type": "error"
+            }
+        ]
     }
 ]
