@@ -43,9 +43,6 @@ func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupRefe
 	}
 }
 
-// Type returns the type of this action
-func (a *AddContactGroupsAction) Type() string { return TypeAddContactGroups }
-
 // Validate validates our action is valid and has all the assets it needs
 func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	// check we have all groups

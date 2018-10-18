@@ -14,12 +14,13 @@ import (
 
 // NormalizeJSON re-formats the given JSON
 func NormalizeJSON(data json.RawMessage) ([]byte, error) {
-	var asMap map[string]interface{}
+	//if data[0] == '{' {
+	var asMap interface{}
 	if err := json.Unmarshal(data, &asMap); err != nil {
 		return nil, err
 	}
-
 	return utils.JSONMarshalPretty(asMap)
+	//} else if data[0] == '['
 }
 
 // AssertEqualJSON checks two JSON strings for equality

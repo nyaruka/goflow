@@ -1,0 +1,42 @@
+[
+    {
+        "description": "Adding contact to group they're already in is a NOOP",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
+        },
+        "events": []
+    },
+    {
+        "description": "Adding contact to group creates a groups changed event",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:41.000123456Z",
+                "step_uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d",
+                "groups_added": [
+                    {
+                        "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                        "name": "Customers"
+                    }
+                ]
+            }
+        ]
+    }
+]

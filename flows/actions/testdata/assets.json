@@ -1,0 +1,118 @@
+{
+    "flows": [
+        {
+            "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+            "name": "Action Tester",
+            "language": "eng",
+            "type": "messaging",
+            "revision": 123,
+            "nodes": [
+                {
+                    "uuid": "72a1f5df-49f9-45df-94c9-d86f7ea064e5",
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "name": "Collect Age",
+            "language": "eng",
+            "type": "messaging",
+            "nodes": [
+                {
+                    "uuid": "d9dba561-b5ee-4f62-ba44-60c4dc242b84",
+                    "actions": [
+                        {
+                            "uuid": "4ed673b3-bdcc-40f2-944b-6ad1c82eb3ee",
+                            "type": "set_run_result",
+                            "name": "Age",
+                            "value": "23",
+                            "category": "Youth"
+                        },
+                        {
+                            "uuid": "7a0c3cec-ef84-41aa-bf2b-be8259038683",
+                            "type": "set_contact_field",
+                            "field": {
+                                "key": "age",
+                                "name": "Age"
+                            },
+                            "value": "@results.age"
+                        }
+                    ],
+                    "exits": [
+                        {
+                            "uuid": "4ee148c8-4026-41da-9d4c-08cb4d60b0d7"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone",
+            "address": "+12345671111",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        },
+        {
+            "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+            "name": "Twitter Channel",
+            "address": "nyaruka",
+            "schemes": [
+                "twitter"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "key": "gender",
+            "label": "Gender",
+            "value_type": "text"
+        },
+        {
+            "key": "age",
+            "label": "Age",
+            "value_type": "number"
+        }
+    ],
+    "groups": [
+        {
+            "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+            "name": "Testers"
+        },
+        {
+            "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+            "name": "Customers"
+        }
+    ],
+    "labels": [
+        {
+            "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+            "name": "Spam"
+        }
+    ],
+    "resthooks": [
+        {
+            "slug": "new-registration",
+            "subscribers": [
+                "http://localhost/?cmd=success"
+            ]
+        }
+    ]
+}
