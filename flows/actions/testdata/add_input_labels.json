@@ -1,0 +1,16 @@
+[
+    {
+        "description": "Validation fails for invalid label reference",
+        "action": {
+            "type": "add_input_labels",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "labels": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbing"
+                }
+            ]
+        },
+        "validation_error": "no such label with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    }
+]

@@ -1,0 +1,31 @@
+[
+    {
+        "description": "Validation fails for invalid group reference",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers"
+                }
+            ]
+        },
+        "validation_error": "no such group with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    },
+    {
+        "description": "Validation fails when both groups and all_groups are provided",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ],
+            "all_groups": true
+        },
+        "validation_error": "can't specify specific groups when all_groups=true"
+    }
+]

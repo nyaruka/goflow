@@ -2,6 +2,7 @@ package actions_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
@@ -359,30 +360,6 @@ func TestMarshaling(t *testing.T) {
 	}
 }
 
-func TestValidation(t *testing.T) {
-	session, err := test.CreateTestSession("", nil)
-	require.NoError(t, err)
-
-	errorFile, err := ioutil.ReadFile("testdata/validation.json")
-	require.NoError(t, err)
-
-	tests := []struct {
-		ActionJSON json.RawMessage `json:"action"`
-		ErrMsg     string          `json:"error"`
-	}{}
-
-	err = json.Unmarshal(errorFile, &tests)
-	require.NoError(t, err)
-
-	for _, tc := range tests {
-		action, err := actions.ReadAction(tc.ActionJSON)
-		require.NoError(t, err)
-
-		err = action.Validate(session.Assets(), flows.NewValidationContext())
-		assert.EqualError(t, err, tc.ErrMsg)
-	}
-}
-
 var contactJSON = `{
 	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
 	"name": "Ryan Lewis",
@@ -403,45 +380,68 @@ var contactJSON = `{
 	"created_on": "2018-06-20T11:40:30.123456789-00:00"
 }`
 
-func TestExecution(t *testing.T) {
-	assetsJSON, err := ioutil.ReadFile("testdata/assets.json")
+func TestActionTypes(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	errorFile, err := ioutil.ReadFile("testdata/execution.json")
+	for typeName := range actions.RegisteredTypes() {
+		testActionType(t, assetsJSON, typeName)
+	}
+}
+
+func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		Description string            `json:"description"`
-		ActionJSON  json.RawMessage   `json:"action"`
-		Events      []json.RawMessage `json:"events"`
+		Description     string            `json:"description"`
+		NoContact       bool              `json:"no_contact"`
+		ActionJSON      json.RawMessage   `json:"action"`
+		ValidationError string            `json:"validation_error"`
+		Events          []json.RawMessage `json:"events"`
 	}{}
 
-	err = json.Unmarshal(errorFile, &tests)
+	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
-
-	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	for _, tc := range tests {
+		utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+
+		testName := fmt.Sprintf("test '%s' for event type '%s'", tc.Description, typeName)
+
 		// create unstarted session from our assets
 		session, err := test.CreateSession(assetsJSON, "")
-		require.NoError(t, err)
-
-		// load our contact
-		contact, err := flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
 		require.NoError(t, err)
 
 		// get the main flow
 		flow, err := session.Assets().Flows().Get(assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a"))
 		require.NoError(t, err)
 
-		// add this tests action to its first node
 		action, err := actions.ReadAction(tc.ActionJSON)
 		require.NoError(t, err)
+
+		// if this action is expected to fail validation, check that
+		err = action.Validate(session.Assets(), flows.NewValidationContext())
+		if tc.ValidationError != "" {
+			assert.EqualError(t, err, tc.ValidationError, "validation error mismatch in %s", testName)
+			continue
+		} else {
+			assert.NoError(t, err, "unexpected validation error in %s", testName)
+		}
+
+		// if not, add it to our flow
 		flow.Nodes()[0].AddAction(action)
+
+		// optionally load our contact
+		var contact *flows.Contact
+		if !tc.NoContact {
+			contact, err = flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
+			require.NoError(t, err)
+		}
 
 		trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, utils.Now())
 		err = session.Start(trigger)
@@ -451,6 +451,6 @@ func TestExecution(t *testing.T) {
 		actualEventsJSON, _ := json.Marshal(run.Events())
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 
-		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "event mismatch in test '%s'", tc.Description)
+		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 	}
 }

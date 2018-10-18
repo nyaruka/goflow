@@ -71,7 +71,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) err
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			a.logError(run, step, fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			a.logError(run, step, fmt.Errorf("can't manually add contact to dynamic group '%s'", group.Name()))
 			continue
 		}
 
