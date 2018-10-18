@@ -26,8 +26,8 @@ var contactJSON = `{
 	"name": "Ben Haggerty",
 	"created_on": "2018-01-01T12:00:00.000000000-00:00",
 	"fields": {
-		"first_name": {
-			"text": "Ben"
+		"gender": {
+			"text": "Male"
 		}
 	},
 	"timezone": "America/Guayaquil",

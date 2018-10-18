@@ -46,6 +46,7 @@ var flowTests = []struct {
 	{"subflow.json", "subflow_test.json"},
 	{"triggered.json", "triggered_test.json"},
 	{"two_questions.json", "two_questions_test.json"},
+	{"two_questions_offline.json", "two_questions_offline_test.json"},
 	{"webhook_migrated.json", "webhook_migrated_test.json"},
 	{"webhook_persists.json", "webhook_persists_test.json"},
 }
