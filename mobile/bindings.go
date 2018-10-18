@@ -88,6 +88,18 @@ func NewEmptyContact() *Contact {
 	}
 }
 
+// MsgIn is an incoming message
+type MsgIn struct {
+	target *flows.MsgIn
+}
+
+// NewMsgIn creates a new incoming message
+func NewMsgIn(uuid string, text string) *MsgIn {
+	return &MsgIn{
+		target: flows.NewMsgIn(flows.MsgUUID(uuid), 0, urns.NilURN, nil, text, nil),
+	}
+}
+
 // Trigger represents something which can initiate a session
 type Trigger struct {
 	target flows.Trigger
@@ -107,10 +119,9 @@ type Resume struct {
 }
 
 // NewMsgResume creates a new message resume
-func NewMsgResume(text string) *Resume {
-	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), 0, urns.NilURN, nil, text, nil)
+func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
 	return &Resume{
-		target: resumes.NewMsgResume(nil, nil, msg),
+		target: resumes.NewMsgResume(environment.target, contact.target, msg.target),
 	}
 }
 
