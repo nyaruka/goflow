@@ -407,7 +407,7 @@ Event
 </div>
 <p><a name="action:send_msg"></a></p>
 <h2 id="send_msg">send_msg</h2>
-<p>Can be used to reply to the current contact in a flow. The text field may contain templates.</p>
+<p>Can be used to reply to the current contact in a flow. The text field may contain templates. The action will attempt to find pairs of URNs and channels which can be used for sending. If it can’t find such a pair, it will create a message without a channel or URN.</p>
 <p>A <a href="sessions.html#event:msg_created">msg_created</a> event will be created with the evaluated text.</p>
 <div class="input_action">
 <h3>

@@ -439,7 +439,9 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 
 ## send_msg
 
-Can be used to reply to the current contact in a flow. The text field may contain templates.
+Can be used to reply to the current contact in a flow. The text field may contain templates. The action
+will attempt to find pairs of URNs and channels which can be used for sending. If it can't find such a pair, it will
+create a message without a channel or URN.
 
 A [msg_created](sessions.html#event:msg_created) event will be created with the evaluated text.
 

@@ -10,7 +10,7 @@ import (
 type BaseMsg struct {
 	UUID_        MsgUUID                  `json:"uuid"`
 	ID_          MsgID                    `json:"id,omitempty"`
-	URN_         urns.URN                 `json:"urn" validate:"omitempty,urn"`
+	URN_         urns.URN                 `json:"urn,omitempty" validate:"omitempty,urn"`
 	Channel_     *assets.ChannelReference `json:"channel,omitempty"`
 	Text_        string                   `json:"text"`
 	Attachments_ []Attachment             `json:"attachments,omitempty"`

@@ -6,7 +6,6 @@
                     "created_on": "2018-07-06T12:30:04.123456789Z",
                     "msg": {
                         "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                        "urn": "",
                         "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -56,7 +55,6 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "urn": "",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -156,7 +154,6 @@
                     "created_on": "2018-07-06T12:30:20.123456789Z",
                     "msg": {
                         "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                        "urn": "",
                         "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                     },
                     "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
@@ -213,7 +210,6 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "urn": "",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -248,7 +244,6 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "msg": {
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                                    "urn": "",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
@@ -364,7 +359,6 @@
                     "created_on": "2018-07-06T12:30:36.123456789Z",
                     "msg": {
                         "text": "Great, you are done and like pepsi!",
-                        "urn": "",
                         "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                     },
                     "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
@@ -415,7 +409,6 @@
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
                                 "msg": {
                                     "text": "Hi Ben Haggerty! What is your favorite color? (red/blue)",
-                                    "urn": "",
                                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
@@ -450,7 +443,6 @@
                                 "created_on": "2018-07-06T12:30:20.123456789Z",
                                 "msg": {
                                     "text": "Red it is! What is your favorite soda? (pepsi/coke)",
-                                    "urn": "",
                                     "uuid": "5802813d-6c58-4292-8228-9728778b6c98"
                                 },
                                 "step_uuid": "c34b6c7d-fa06-4563-92a3-d648ab64bccb",
@@ -485,7 +477,6 @@
                                 "created_on": "2018-07-06T12:30:36.123456789Z",
                                 "msg": {
                                     "text": "Great, you are done and like pepsi!",
-                                    "urn": "",
                                     "uuid": "5ecda5fc-951c-437b-a17e-f85e49829fb9"
                                 },
                                 "step_uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623",
