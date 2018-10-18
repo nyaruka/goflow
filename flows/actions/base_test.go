@@ -2,6 +2,7 @@ package actions_test
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"testing"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -352,5 +353,29 @@ func TestActions(t *testing.T) {
 		assert.NoError(t, err)
 
 		test.AssertEqualJSON(t, json.RawMessage(tc.json), actualJSON, "new action produced unexpected JSON")
+	}
+}
+
+func TestValidationErrors(t *testing.T) {
+	session, err := test.CreateTestSession("", nil)
+	require.NoError(t, err)
+
+	errorFile, err := ioutil.ReadFile("testdata/validation_errors.json")
+	require.NoError(t, err)
+
+	tests := []struct {
+		ActionJSON json.RawMessage `json:"action"`
+		ErrMsg     string          `json:"error"`
+	}{}
+
+	err = json.Unmarshal(errorFile, &tests)
+	require.NoError(t, err)
+
+	for _, tc := range tests {
+		action, err := actions.ReadAction(tc.ActionJSON)
+		assert.NoError(t, err)
+
+		err = action.Validate(session.Assets(), flows.NewValidationContext())
+		assert.EqualError(t, err, tc.ErrMsg)
 	}
 }

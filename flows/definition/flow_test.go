@@ -40,15 +40,15 @@ var invalidFlows = []struct {
 	},
 	{
 		"flow_with_invalid_label_asset_ref.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with uuid 'ab0c8941-64a9-4f48-8949-907d0565e9ad'",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=ad154980-7bf7-4ab8-8728-545fd6378912, type=add_input_labels]: no such label with UUID 'ab0c8941-64a9-4f48-8949-907d0565e9ad'",
 	},
 	{
 		"flow_with_invalid_group_asset_ref.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=09cd9762-8700-4d14-bbc9-35f75f711873, type=add_contact_groups]: no such group with uuid 'b27a413d-d737-4a3b-ab42-8a181b52c908'",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=09cd9762-8700-4d14-bbc9-35f75f711873, type=add_contact_groups]: no such group with UUID 'b27a413d-d737-4a3b-ab42-8a181b52c908'",
 	},
 	{
 		"flow_with_invalid_channel_asset_ref.json",
-		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: no such channel with uuid '038276e5-9223-4143-992b-ef9d7b907030'",
+		"validation failed for node[uuid=a58be63b-907d-4a1a-856b-0bb5579d7507]: validation failed for action[uuid=3248a064-bc42-4dff-aa0f-93d85de2f600, type=set_contact_channel]: no such channel with UUID '038276e5-9223-4143-992b-ef9d7b907030'",
 	},
 	{
 		"flow_with_invalid_field_asset_ref.json",

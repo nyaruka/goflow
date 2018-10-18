@@ -69,7 +69,7 @@ func (s *StaticSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
 			return flow, nil
 		}
 	}
-	return nil, fmt.Errorf("no such flow with UUID: %s", uuid)
+	return nil, fmt.Errorf("no such flow with UUID '%s'", uuid)
 }
 
 // Groups returns all group assets

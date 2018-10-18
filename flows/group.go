@@ -226,7 +226,7 @@ func (s *GroupAssets) All() []*Group {
 func (s *GroupAssets) Get(uuid assets.GroupUUID) (*Group, error) {
 	c, found := s.byUUID[uuid]
 	if !found {
-		return nil, fmt.Errorf("no such group with uuid '%s'", uuid)
+		return nil, fmt.Errorf("no such group with UUID '%s'", uuid)
 	}
 	return c, nil
 }
