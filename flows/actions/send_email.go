@@ -60,13 +60,15 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if err != nil {
 		a.logError(run, step, err)
 	}
+
+	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
+	subject = regexp.MustCompile(`\s+`).ReplaceAllString(subject, " ")
+	subject = strings.TrimSpace(subject)
+
 	if subject == "" {
 		a.logError(run, step, fmt.Errorf("email subject evaluated to empty string, skipping"))
 		return nil
 	}
-
-	// make sure the subject is single line - replace '\t\n\r\f\v' to ' '
-	subject = regexp.MustCompile(`\s+`).ReplaceAllString(subject, " ")
 
 	body, err := run.EvaluateTemplateAsString(a.Body, false)
 	if err != nil {

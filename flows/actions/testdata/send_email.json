@@ -1,1 +1,158 @@
-[]
+[
+    {
+        "description": "Error events if body, subject or addresses contain expression errors",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "bob@example.com@(1 / 0)"
+            ],
+            "subject": "Hi there@(1 / 0)",
+            "body": "So I was thinking...@(1 / 0)"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "addresses": [
+                    "bob@example.com"
+                ],
+                "body": "So I was thinking...",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "subject": "Hi there",
+                "type": "email_created"
+            }
+        ]
+    },
+    {
+        "description": "Error event and action skipped if subject evaluates to empty",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "bob@example.com"
+            ],
+            "subject": "@(\"\")",
+            "body": "So I was thinking..."
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "email subject evaluated to empty string, skipping",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "New lines and tabs in subject removed",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "bob@example.com"
+            ],
+            "subject": "\nHi\tthere  \n   Bob",
+            "body": "So I was thinking..."
+        },
+        "events": [
+            {
+                "addresses": [
+                    "bob@example.com"
+                ],
+                "body": "So I was thinking...",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "subject": "Hi there Bob",
+                "type": "email_created"
+            }
+        ]
+    },
+    {
+        "description": "Error event and action skipped if body evaluates to empty",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "bob@example.com"
+            ],
+            "subject": "Hi there",
+            "body": "@(\"\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "email body evaluated to empty string, skipping",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event and address ignored if it evaluates to empty",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "@(\"\")"
+            ],
+            "subject": "Hi there",
+            "body": "So I was thinking..."
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "email address evaluated to empty string, skipping",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Mailto prefixes stripped from addresses",
+        "action": {
+            "type": "send_email",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "addresses": [
+                "mailto:bob@example.com"
+            ],
+            "subject": "Hi there",
+            "body": "So I was thinking..."
+        },
+        "events": [
+            {
+                "type": "email_created",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "addresses": [
+                    "bob@example.com"
+                ],
+                "subject": "Hi there",
+                "body": "So I was thinking..."
+            }
+        ]
+    }
+]

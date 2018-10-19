@@ -77,5 +77,32 @@
                 "type": "error"
             }
         ]
+    },
+    {
+        "description": "Labels added event if no other errors",
+        "action": {
+            "type": "add_input_labels",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "labels": [
+                {
+                    "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea",
+                    "name": "Spam"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "input_uuid": "aa90ce99-3b4d-44ba-b0ca-79e63d9ed842",
+                "labels": [
+                    {
+                        "name": "Spam",
+                        "uuid": "3f65d88a-95dc-4140-9451-943e94e06fea"
+                    }
+                ],
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "input_labels_added"
+            }
+        ]
     }
 ]

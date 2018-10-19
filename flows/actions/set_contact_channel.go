@@ -15,7 +15,7 @@ func init() {
 // TypeSetContactChannel is the type for the set contact channel action
 const TypeSetContactChannel string = "set_contact_channel"
 
-// SetContactChannelAction can be used to update the preferred channel of the current contact.
+// SetContactChannelAction can be used to update or cledar the preferred channel of the current contact.
 //
 // A [event:contact_channel_changed] event will be created with the set channel.
 //
@@ -43,8 +43,11 @@ func NewSetContactChannelAction(uuid flows.ActionUUID, channel *assets.ChannelRe
 
 // Validate validates our action is valid and has all the assets it needs
 func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
-	_, err := assets.Channels().Get(a.Channel.UUID)
-	return err
+	if a.Channel != nil {
+		_, err := assets.Channels().Get(a.Channel.UUID)
+		return err
+	}
+	return nil
 }
 
 func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) error {
@@ -53,14 +56,18 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) er
 		return nil
 	}
 
-	channel, err := run.Session().Assets().Channels().Get(a.Channel.UUID)
-	if err != nil {
-		return err
+	var channel *flows.Channel
+	var err error
+	if a.Channel != nil {
+		channel, err = run.Session().Assets().Channels().Get(a.Channel.UUID)
+		if err != nil {
+			return err
+		}
 	}
 
 	if run.Contact().PreferredChannel() != channel {
 		run.Contact().UpdatePreferredChannel(channel)
-		a.log(run, step, events.NewContactChannelChangedEvent(a.Channel))
+		a.log(run, step, events.NewContactChannelChangedEvent(channel))
 	}
 	return nil
 }

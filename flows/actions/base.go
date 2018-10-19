@@ -248,9 +248,10 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 			// if that fails, assume this is a phone number, and let the caller worry about validation
 			urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
 			if err != nil {
-				return nil, nil, nil, err
+				a.logError(run, step, err)
+			} else {
+				urnList = append(urnList, urn)
 			}
-			urnList = append(urnList, urn)
 		}
 	}
 

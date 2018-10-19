@@ -31,5 +31,55 @@
                 "type": "error"
             }
         ]
+    },
+    {
+        "description": "NOOP if channel doesn't change",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "My Android Phone"
+            }
+        },
+        "events": []
+    },
+    {
+        "description": "Channel changed event if channel changes",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": {
+                "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
+                "name": "Twitter Channel"
+            }
+        },
+        "events": [
+            {
+                "channel": {
+                    "name": "Twitter Channel",
+                    "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
+                },
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_channel_changed"
+            }
+        ]
+    },
+    {
+        "description": "Channel changed event if channel is cleared",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": null
+        },
+        "events": [
+            {
+                "channel": null,
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_channel_changed"
+            }
+        ]
     }
 ]

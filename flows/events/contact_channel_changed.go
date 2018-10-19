@@ -28,9 +28,14 @@ type ContactChannelChangedEvent struct {
 }
 
 // NewContactChannelChangedEvent returns a new preferred channel event
-func NewContactChannelChangedEvent(channel *assets.ChannelReference) *ContactChannelChangedEvent {
+func NewContactChannelChangedEvent(channel *flows.Channel) *ContactChannelChangedEvent {
+	var reference *assets.ChannelReference
+	if channel != nil {
+		reference = channel.Reference()
+	}
+
 	return &ContactChannelChangedEvent{
 		BaseEvent: NewBaseEvent(TypeContactChannelChanged),
-		Channel:   channel,
+		Channel:   reference,
 	}
 }

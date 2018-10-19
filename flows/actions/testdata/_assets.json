@@ -121,7 +121,8 @@
         {
             "slug": "new-registration",
             "subscribers": [
-                "http://localhost/?cmd=success"
+                "http://localhost/?cmd=success",
+                "http://localhost/?cmd=unavailable"
             ]
         }
     ]

@@ -64,13 +64,8 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step) error
 		return err
 	}
 
-	labelRefs := make([]*assets.LabelReference, 0, len(labels))
-	for _, label := range labels {
-		labelRefs = append(labelRefs, label.Reference())
-	}
-
-	if len(labelRefs) > 0 {
-		a.log(run, step, events.NewInputLabelsAddedEvent(input.UUID(), labelRefs))
+	if len(labels) > 0 {
+		a.log(run, step, events.NewInputLabelsAddedEvent(input.UUID(), labels))
 	}
 
 	return nil

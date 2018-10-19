@@ -312,24 +312,31 @@ func (c *Contact) PreferredChannel() *Channel {
 
 // UpdatePreferredChannel updates the preferred channel
 func (c *Contact) UpdatePreferredChannel(channel *Channel) {
-	priorityURNs := make([]*ContactURN, 0)
-	otherURNs := make([]*ContactURN, 0)
+	// setting preferred channel to nil means clearing affinity on all URNs
+	if channel == nil {
+		for _, urn := range c.urns {
+			urn.SetChannel(nil)
+		}
+	} else {
+		priorityURNs := make([]*ContactURN, 0)
+		otherURNs := make([]*ContactURN, 0)
 
-	for _, urn := range c.urns {
-		// tel URNs can be re-assigned, other URN schemes are considered channel specific
-		if urn.URN.Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
-			urn.SetChannel(channel)
+		for _, urn := range c.urns {
+			// tel URNs can be re-assigned, other URN schemes are considered channel specific
+			if urn.URN.Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+				urn.SetChannel(channel)
+			}
+
+			// move any URNs with this channel to the front of the list
+			if urn.Channel() == channel {
+				priorityURNs = append(priorityURNs, urn)
+			} else {
+				otherURNs = append(otherURNs, urn)
+			}
 		}
 
-		// move any URNs with this channel to the front of the list
-		if urn.Channel() == channel {
-			priorityURNs = append(priorityURNs, urn)
-		} else {
-			otherURNs = append(otherURNs, urn)
-		}
+		c.urns = append(priorityURNs, otherURNs...)
 	}
-
-	c.urns = append(priorityURNs, otherURNs...)
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact

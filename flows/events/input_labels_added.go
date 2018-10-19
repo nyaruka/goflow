@@ -29,11 +29,20 @@ type InputLabelsAddedEvent struct {
 	Labels    []*assets.LabelReference `json:"labels" validate:"required,min=1,dive"`
 }
 
-// NewInputLabelsAddedEvent returns a new add to group event
-func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*assets.LabelReference) *InputLabelsAddedEvent {
+// NewInputLabelsAddedEvent returns a new labels added event
+func NewInputLabelsAddedEvent(inputUUID flows.InputUUID, labels []*flows.Label) *InputLabelsAddedEvent {
 	return &InputLabelsAddedEvent{
 		BaseEvent: NewBaseEvent(TypeInputLabelsAdded),
 		InputUUID: inputUUID,
-		Labels:    labels,
+		Labels:    labelsToReferences(labels),
 	}
+}
+
+// converts a slice of labels to a slice of references
+func labelsToReferences(labels []*flows.Label) []*assets.LabelReference {
+	refs := make([]*assets.LabelReference, len(labels))
+	for l := range labels {
+		refs[l] = labels[l].Reference()
+	}
+	return refs
 }

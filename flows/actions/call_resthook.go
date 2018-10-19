@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 )
@@ -54,10 +53,10 @@ func (a *CallResthookAction) Validate(assets flows.SessionAssets, context *flows
 
 // Execute runs this action
 func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step) error {
-	// if resthook doesn't exist, treat it like an existing one with no subscribers
+	// NOOP if resthook doesn't exist
 	resthook := run.Session().Assets().Resthooks().FindBySlug(a.Resthook)
 	if resthook == nil {
-		resthook = flows.NewResthook(types.NewResthook(a.Resthook, nil))
+		return nil
 	}
 
 	// build our payload

@@ -471,7 +471,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 
 ## set_contact_channel
 
-Can be used to update the preferred channel of the current contact.
+Can be used to update or cledar the preferred channel of the current contact.
 
 A [contact_channel_changed](sessions.html#event:contact_channel_changed) event will be created with the set channel.
 
@@ -492,7 +492,7 @@ A [contact_channel_changed](sessions.html#event:contact_channel_changed) event w
     "step_uuid": "7dcc445a-83cf-432b-8188-76dd971a6205",
     "channel": {
         "uuid": "4bb288a0-7fca-4da1-abe8-59a593aff648",
-        "name": "FAcebook Channel"
+        "name": "Facebook Channel"
     }
 }
 ```

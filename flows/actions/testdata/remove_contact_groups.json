@@ -112,5 +112,26 @@
                 ]
             }
         ]
+    },
+    {
+        "description": "Groups changed event when contact removed from all groups",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "all_groups": true
+        },
+        "events": [
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "groups_removed": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            }
+        ]
     }
 ]
