@@ -1,1 +1,126 @@
-[]
+[
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there",
+            "attachments": [
+                "http://example.com/red.jpg"
+            ],
+            "quick_replies": [
+                "Red",
+                "Blue"
+            ],
+            "all_urns": true
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error events if msg text, attachments and quick replies have expression errors",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there @(1 / 0)",
+            "attachments": [
+                "http://example.com/red.jpg@(1 / 0)"
+            ],
+            "quick_replies": [
+                "Red@(1 / 0)",
+                "Blue"
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:38.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:40.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:42.000123456Z",
+                "msg": {
+                    "attachments": [
+                        "http://example.com/red.jpg"
+                    ],
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "quick_replies": [
+                        "Red",
+                        "Blue"
+                    ],
+                    "text": "Hi there ",
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "msg_created"
+            }
+        ]
+    },
+    {
+        "description": "Msg created events for each URN if all_urns is set",
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there",
+            "all_urns": true
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "msg": {
+                    "channel": {
+                        "name": "My Android Phone",
+                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                    },
+                    "text": "Hi there",
+                    "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "msg_created"
+            },
+            {
+                "created_on": "2018-10-18T14:20:38.000123456Z",
+                "msg": {
+                    "channel": {
+                        "name": "Twitter Channel",
+                        "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
+                    },
+                    "text": "Hi there",
+                    "urn": "twitterid:54784326227#nyaruka",
+                    "uuid": "9688d21d-95aa-4bed-afc7-f31b35731a3d"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "msg_created"
+            }
+        ]
+    }
+]
