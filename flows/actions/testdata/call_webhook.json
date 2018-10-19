@@ -5,9 +5,108 @@
             "type": "call_webhook",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
             "method": "GET",
-            "url": "http://localhost:49998/?cmd=success",
+            "url": "http://localhost:49996/?cmd=success",
             "body": "Hi there!"
         },
         "validation_error": "can't specify body if method is GET"
+    },
+    {
+        "description": "Error event created if URL, header or body contain expression errors",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://localhost:49996/?cmd=success@(1 / 0)",
+            "headers": {
+                "Authentication": "Token @contact.fields.token"
+            },
+            "body": "@(1 / 0)"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @contact.fields.token: no such contact field 'token'",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAuthentication: Token\r\nAccept-Encoding: gzip\r\n\r\n",
+                "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+                "status": "success",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "webhook_called",
+                "url": "http://localhost:49996/?cmd=success"
+            }
+        ]
+    },
+    {
+        "description": "Error event created and action skiipped if URL evaluates to empty",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "GET",
+            "url": "@(\"\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "call_webhook URL evaluated to empty string, skipping",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Result changed event created if result name set",
+        "action": {
+            "type": "call_webhook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "method": "POST",
+            "url": "http://localhost:49996/?cmd=success",
+            "body": "Hi there!",
+            "result_name": "My Webhook"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
+                "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
+                "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+                "status": "success",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "webhook_called",
+                "url": "http://localhost:49996/?cmd=success"
+            },
+            {
+                "category": "Success",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "extra": {
+                    "ok": "true"
+                },
+                "input": "POST http://localhost:49996/?cmd=success",
+                "name": "My Webhook",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "200"
+            }
+        ]
     }
 ]

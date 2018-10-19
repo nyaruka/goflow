@@ -15,6 +15,7 @@
     },
     {
         "description": "Error event if session has no input",
+        "no_input": true,
         "action": {
             "type": "add_input_labels",
             "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
@@ -27,10 +28,52 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "can't execute action in session without input",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if a label is name with expression error",
+        "action": {
+            "type": "add_input_labels",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "labels": [
+                {
+                    "name_match": "Spam@(1 / 0)"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if a label is name that doesn't match any label",
+        "action": {
+            "type": "add_input_labels",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "labels": [
+                {
+                    "name_match": "Crazy Deals"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "no such label with name 'Crazy Deals'",
                 "type": "error"
             }
         ]

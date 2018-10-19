@@ -367,7 +367,8 @@ var contactJSON = `{
 	"timezone": "America/Guayaquil",
 	"urns": [],
 	"groups": [
-		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
+		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+		{"uuid": "0ec97956-c451-48a0-a180-1ce766623e31", "name": "Males"}
 	],
 	"fields": {
 		"gender": {
@@ -381,12 +382,15 @@ func TestActionTypes(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
+	server, err := test.NewTestHTTPServer(49996)
+	require.NoError(t, err)
+
 	for typeName := range actions.RegisteredTypes() {
-		testActionType(t, assetsJSON, typeName)
+		testActionType(t, assetsJSON, typeName, server.URL)
 	}
 }
 
-func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
@@ -394,6 +398,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		Description     string            `json:"description"`
 		NoContact       bool              `json:"no_contact"`
 		NoURNs          bool              `json:"no_urns"`
+		NoInput         bool              `json:"no_input"`
 		ActionJSON      json.RawMessage   `json:"action"`
 		ValidationError string            `json:"validation_error"`
 		Events          []json.RawMessage `json:"events"`
@@ -406,13 +411,13 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
 	for _, tc := range tests {
-		utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
 
 		testName := fmt.Sprintf("test '%s' for event type '%s'", tc.Description, typeName)
 
 		// create unstarted session from our assets
-		session, err := test.CreateSession(assetsJSON, "")
+		session, err := test.CreateSession(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
 		// get the main flow
@@ -421,6 +426,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 
 		action, err := actions.ReadAction(tc.ActionJSON)
 		require.NoError(t, err)
+		assert.Equal(t, typeName, action.Type())
 
 		// if this action is expected to fail validation, check that
 		err = action.Validate(session.Assets(), flows.NewValidationContext())
@@ -447,14 +453,34 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 			}
 		}
 
-		trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, utils.Now())
+		var trigger flows.Trigger
+		ignoreEventCount := 0
+		if tc.NoInput {
+			trigger = triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, utils.Now())
+		} else {
+			msg := flows.NewMsgIn(flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"), 0, urns.URN("tel:+12065551212"), nil, "Hi everybody", nil)
+			trigger = triggers.NewMsgTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), msg, nil, utils.Now())
+			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
+		}
+
 		err = session.Start(trigger)
 		require.NoError(t, err)
 
 		run := session.Runs()[0]
-		actualEventsJSON, _ := json.Marshal(run.Events())
+		runEvents := run.Events()
+		actualEventsJSON, _ := json.Marshal(runEvents[ignoreEventCount:])
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 	}
+}
+
+func TestReadAction(t *testing.T) {
+	// error if no type field
+	_, err := actions.ReadAction([]byte(`{"foo": "bar"}`))
+	assert.EqualError(t, err, "field 'type' is required")
+
+	// error if we don't recognize action type
+	_, err = actions.ReadAction([]byte(`{"type": "do_the_foo", "foo": "bar"}`))
+	assert.EqualError(t, err, "unknown type: 'do_the_foo'")
 }

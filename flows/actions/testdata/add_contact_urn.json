@@ -10,7 +10,7 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "can't execute action in session without a contact",
@@ -28,11 +28,35 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "unable to add URN 'mailto:': scheme or path cannot be empty",
                 "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if path has expression error",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "mailto",
+            "path": "bob@nyaruka.com@(1 / 0)"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_urn_added",
+                "urn": "mailto:bob@nyaruka.com"
             }
         ]
     },
@@ -56,7 +80,7 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "contact_urn_added",
                 "urn": "mailto:bob@nyaruka.com"
