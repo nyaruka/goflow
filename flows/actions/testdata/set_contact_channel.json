@@ -1,0 +1,14 @@
+[
+    {
+        "description": "Validation fails for invalid channel reference",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": {
+                "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                "name": "My Phone"
+            }
+        },
+        "validation_error": "no such channel with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    }
+]

@@ -22,9 +22,14 @@ var webhookStatusCategories = map[flows.WebhookStatus]string{
 
 var registeredTypes = map[string](func() flows.Action){}
 
-// RegisterType registers a new type of router
+// RegisterType registers a new type of action
 func RegisterType(name string, initFunc func() flows.Action) {
 	registeredTypes[name] = initFunc
+}
+
+// RegisteredTypes gets the registered types of action
+func RegisteredTypes() map[string](func() flows.Action) {
+	return registeredTypes
 }
 
 var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)

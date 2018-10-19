@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -50,9 +52,10 @@ func (a *AddInputLabelsAction) Validate(assets flows.SessionAssets, context *flo
 
 // Execute runs the labeling action
 func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step) error {
-	// only generate event if run has input
+	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
+		a.logError(run, step, fmt.Errorf("can't execute action in session without input"))
 		return nil
 	}
 

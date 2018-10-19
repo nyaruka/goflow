@@ -2,14 +2,18 @@ package actions_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
+	"time"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/actions"
+	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -339,7 +343,7 @@ var actionTests = []struct {
 	},
 }
 
-func TestActions(t *testing.T) {
+func TestMarshaling(t *testing.T) {
 	session, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
@@ -356,26 +360,97 @@ func TestActions(t *testing.T) {
 	}
 }
 
-func TestValidationErrors(t *testing.T) {
-	session, err := test.CreateTestSession("", nil)
+var contactJSON = `{
+	"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+	"name": "Ryan Lewis",
+	"language": "eng",
+	"timezone": "America/Guayaquil",
+	"urns": [
+		"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
+		"twitterid:54784326227#nyaruka"
+	],
+	"groups": [
+		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
+	],
+	"fields": {
+		"gender": {
+			"text": "Male"
+		}
+	},
+	"created_on": "2018-06-20T11:40:30.123456789-00:00"
+}`
+
+func TestActionTypes(t *testing.T) {
+	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	errorFile, err := ioutil.ReadFile("testdata/validation_errors.json")
+	for typeName := range actions.RegisteredTypes() {
+		testActionType(t, assetsJSON, typeName)
+	}
+}
+
+func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
 	tests := []struct {
-		ActionJSON json.RawMessage `json:"action"`
-		ErrMsg     string          `json:"error"`
+		Description     string            `json:"description"`
+		NoContact       bool              `json:"no_contact"`
+		ActionJSON      json.RawMessage   `json:"action"`
+		ValidationError string            `json:"validation_error"`
+		Events          []json.RawMessage `json:"events"`
 	}{}
 
-	err = json.Unmarshal(errorFile, &tests)
+	err = json.Unmarshal(testFile, &tests)
 	require.NoError(t, err)
 
-	for _, tc := range tests {
-		action, err := actions.ReadAction(tc.ActionJSON)
-		assert.NoError(t, err)
+	defer utils.SetTimeSource(utils.DefaultTimeSource)
+	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 
+	for _, tc := range tests {
+		utils.SetTimeSource(utils.NewSequentialTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
+		utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(12345))
+
+		testName := fmt.Sprintf("test '%s' for event type '%s'", tc.Description, typeName)
+
+		// create unstarted session from our assets
+		session, err := test.CreateSession(assetsJSON, "")
+		require.NoError(t, err)
+
+		// get the main flow
+		flow, err := session.Assets().Flows().Get(assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a"))
+		require.NoError(t, err)
+
+		action, err := actions.ReadAction(tc.ActionJSON)
+		require.NoError(t, err)
+
+		// if this action is expected to fail validation, check that
 		err = action.Validate(session.Assets(), flows.NewValidationContext())
-		assert.EqualError(t, err, tc.ErrMsg)
+		if tc.ValidationError != "" {
+			assert.EqualError(t, err, tc.ValidationError, "validation error mismatch in %s", testName)
+			continue
+		} else {
+			assert.NoError(t, err, "unexpected validation error in %s", testName)
+		}
+
+		// if not, add it to our flow
+		flow.Nodes()[0].AddAction(action)
+
+		// optionally load our contact
+		var contact *flows.Contact
+		if !tc.NoContact {
+			contact, err = flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
+			require.NoError(t, err)
+		}
+
+		trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, utils.Now())
+		err = session.Start(trigger)
+		require.NoError(t, err)
+
+		run := session.Runs()[0]
+		actualEventsJSON, _ := json.Marshal(run.Events())
+		expectedEventsJSON, _ := json.Marshal(tc.Events)
+
+		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
 	}
 }
