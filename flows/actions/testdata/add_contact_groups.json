@@ -1,0 +1,101 @@
+[
+    {
+        "description": "Validation fails for invalid group reference",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "33382939-babf-4982-9395-8793feb4e7c6",
+                    "name": "Climbers"
+                }
+            ]
+        },
+        "validation_error": "no such group with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    },
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if a group is dynamic",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
+                    "name": "Females"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't manually add contact to dynamic group 'Females'",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if contact is already in group",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
+        },
+        "events": []
+    },
+    {
+        "description": "Groups changed event if contact added to group",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "groups_added": [
+                    {
+                        "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                        "name": "Customers"
+                    }
+                ]
+            }
+        ]
+    }
+]

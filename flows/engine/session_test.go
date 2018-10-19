@@ -157,7 +157,7 @@ func TestWaitTimeout(t *testing.T) {
 	require.NoError(t, err)
 
 	// create our engine session
-	session, err := test.CreateSession(json.RawMessage(sessionAssets))
+	session, err := test.CreateSession(json.RawMessage(sessionAssets), "")
 	require.NoError(t, err)
 
 	flow, err := session.Assets().Flows().Get(assets.FlowUUID("76f0a02f-3b75-4b86-9064-e9195e1b3a02"))

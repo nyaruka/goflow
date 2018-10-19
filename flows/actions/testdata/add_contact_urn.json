@@ -1,0 +1,66 @@
+[
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "tel",
+            "path": "+1234567890"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if path evaluates to empty",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "mailto",
+            "path": "@(\"\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "unable to add URN 'mailto:': scheme or path cannot be empty",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if URN already exists on contact",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "tel",
+            "path": "+12065551212"
+        },
+        "events": []
+    },
+    {
+        "description": "URN added event if URN added",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "mailto",
+            "path": "bob@nyaruka.com"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_urn_added",
+                "urn": "mailto:bob@nyaruka.com"
+            }
+        ]
+    }
+]

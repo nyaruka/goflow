@@ -46,6 +46,7 @@ func NewRun(session flows.Session, flow flows.Flow, parent flows.FlowRun) flows.
 		parent:     parent,
 		results:    flows.NewResults(),
 		status:     flows.RunStatusActive,
+		events:     make([]flows.Event, 0),
 		createdOn:  now,
 		modifiedOn: now,
 	}

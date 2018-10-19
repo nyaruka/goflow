@@ -1,0 +1,15 @@
+[
+    {
+        "description": "Validation fails for invalid field reference",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_field",
+            "field": {
+                "key": "score",
+                "name": "Score"
+            },
+            "value": "123"
+        },
+        "validation_error": "no such field with key 'score'"
+    }
+]
