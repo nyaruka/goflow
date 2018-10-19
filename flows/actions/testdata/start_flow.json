@@ -10,5 +10,25 @@
             }
         },
         "validation_error": "no such flow with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    },
+    {
+        "description": "Fatal error event if flow loop detected",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "start_flow",
+            "flow": {
+                "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "name": "Action Tester"
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": true,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "flow loop detected, stopping execution before starting flow: bead76f5-dac4-4c9d-996c-c62b326e8c0a",
+                "type": "error"
+            }
+        ]
     }
 ]

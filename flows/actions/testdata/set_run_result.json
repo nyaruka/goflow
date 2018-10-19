@@ -1,1 +1,41 @@
-[]
+[
+    {
+        "description": "Error event and action skipped if value contains expression error",
+        "action": {
+            "type": "set_run_result",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "Response 1",
+            "value": "@(1 / 0)",
+            "category": "Yes"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Run result change event if result can be set",
+        "action": {
+            "type": "set_run_result",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "name": "Response 1",
+            "value": "yes",
+            "category": "Yes"
+        },
+        "events": [
+            {
+                "category": "Yes",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Response 1",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "yes"
+            }
+        ]
+    }
+]

@@ -61,6 +61,7 @@ func (a *SetRunResultAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// log any error received
 	if err != nil {
 		a.logError(run, step, err)
+		return nil
 	}
 
 	categoryLocalized := run.GetText(utils.UUID(a.UUID()), "category", a.Category)

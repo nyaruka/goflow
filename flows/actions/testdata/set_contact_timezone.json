@@ -16,5 +16,80 @@
                 "type": "error"
             }
         ]
+    },
+    {
+        "description": "Error event and action skipped if timezone contains expression error",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_timezone",
+            "timezone": "@(1 / 0)"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event and action skipped if timezone isn't valid",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_timezone",
+            "timezone": "xxxxxxxxxx"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "unrecognized timezone: 'xxxxxxxxxx'",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if timezone doesn't change",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_timezone",
+            "timezone": "America/Guayaquil"
+        },
+        "events": []
+    },
+    {
+        "description": "Timezone changed event if timezone cleared",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_timezone",
+            "timezone": ""
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "timezone": "",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_timezone_changed"
+            }
+        ]
+    },
+    {
+        "description": "Timezone changed event if timezone changes",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_timezone",
+            "timezone": "Africa/Kigali"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "timezone": "Africa/Kigali",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_timezone_changed"
+            }
+        ]
     }
 ]

@@ -16,5 +16,63 @@
                 "type": "error"
             }
         ]
+    },
+    {
+        "description": "Error event and action skipped if name contains expression error",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_name",
+            "name": "@(1 / 0)"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if name doesn't change",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_name",
+            "name": "Ryan Lewis"
+        },
+        "events": []
+    },
+    {
+        "description": "Name changed event if name cleared",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_name",
+            "name": ""
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_name_changed"
+            }
+        ]
+    },
+    {
+        "description": "Name changed event if name changes",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_name",
+            "name": "Bryan"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "name": "Bryan",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_name_changed"
+            }
+        ]
     }
 ]
