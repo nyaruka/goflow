@@ -10,5 +10,26 @@
             }
         },
         "validation_error": "no such channel with UUID '33382939-babf-4982-9395-8793feb4e7c6'"
+    },
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "My Android Phone"
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            }
+        ]
     }
 ]

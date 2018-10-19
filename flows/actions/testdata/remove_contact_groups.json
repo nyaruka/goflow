@@ -27,5 +27,90 @@
             "all_groups": true
         },
         "validation_error": "can't specify specific groups when all_groups=true"
+    },
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if a group is dynamic",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31",
+                    "name": "Males"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't manually remove contact from dynamic group 'Males'",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if contact isn't already in group",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a",
+                    "name": "Customers"
+                }
+            ]
+        },
+        "events": []
+    },
+    {
+        "description": "Groups changed event if contact removed from group",
+        "action": {
+            "type": "remove_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                    "name": "Testers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "type": "contact_groups_changed",
+                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "groups_removed": [
+                    {
+                        "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
+                        "name": "Testers"
+                    }
+                ]
+            }
+        ]
     }
 ]

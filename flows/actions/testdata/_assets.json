@@ -82,12 +82,12 @@
     "fields": [
         {
             "key": "gender",
-            "label": "Gender",
+            "name": "Gender",
             "value_type": "text"
         },
         {
             "key": "age",
-            "label": "Age",
+            "name": "Age",
             "value_type": "number"
         }
     ],

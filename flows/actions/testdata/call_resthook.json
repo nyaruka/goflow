@@ -1,1 +1,57 @@
-[]
+[
+    {
+        "description": "Webhook called event created for each subscriber",
+        "action": {
+            "type": "call_resthook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "resthook": "new-registration"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:37.000123456Z",
+                "elapsed_ms": 1000,
+                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 576\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\"},\n\t\"flow\": {\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\n\t\"path\": [{\"arrived_on\":\"2018-10-18T14:20:34.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"1ae96956-4b34-433e-8d1a-f05fe6923d6d\", \"created_on\": \"2018-10-18T14:20:31.000123Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
+                "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+                "resthook": "new-registration",
+                "status": "success",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "webhook_called",
+                "url": "http://127.0.0.1:49996/?cmd=success"
+            }
+        ]
+    },
+    {
+        "description": "Result changed event created if result name set",
+        "action": {
+            "type": "call_resthook",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "resthook": "new-registration",
+            "result_name": "My Result"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:37.000123456Z",
+                "elapsed_ms": 1000,
+                "request": "POST /?cmd=success HTTP/1.1\r\nHost: 127.0.0.1:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 576\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\n\t\"contact\": {\"uuid\": \"5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f\", \"name\": \"Ryan Lewis\", \"urn\": \"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d\"},\n\t\"flow\": {\"name\":\"Action Tester\",\"revision\":123,\"uuid\":\"bead76f5-dac4-4c9d-996c-c62b326e8c0a\"},\n\t\"path\": [{\"arrived_on\":\"2018-10-18T14:20:34.000123Z\",\"exit_uuid\":\"\",\"node_uuid\":\"72a1f5df-49f9-45df-94c9-d86f7ea064e5\",\"uuid\":\"e7187099-7d38-4f60-955c-325957214c42\"}],\n\t\"results\": {},\n\t\"run\": {\"uuid\": \"1ae96956-4b34-433e-8d1a-f05fe6923d6d\", \"created_on\": \"2018-10-18T14:20:31.000123Z\"},\n\t\"input\": null,\n\t\"channel\": null\n}",
+                "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
+                "resthook": "new-registration",
+                "status": "success",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "webhook_called",
+                "url": "http://127.0.0.1:49996/?cmd=success"
+            },
+            {
+                "category": "Success",
+                "created_on": "2018-10-18T14:20:41.000123456Z",
+                "extra": {
+                    "ok": "true"
+                },
+                "input": "POST http://127.0.0.1:49996/?cmd=success",
+                "name": "My Result",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "run_result_changed",
+                "value": "200"
+            }
+        ]
+    }
+]

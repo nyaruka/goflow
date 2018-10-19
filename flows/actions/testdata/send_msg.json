@@ -41,28 +41,28 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "created_on": "2018-10-18T14:20:35.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
-                "created_on": "2018-10-18T14:20:38.000123456Z",
+                "created_on": "2018-10-18T14:20:37.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
-                "created_on": "2018-10-18T14:20:40.000123456Z",
+                "created_on": "2018-10-18T14:20:39.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
-                "created_on": "2018-10-18T14:20:42.000123456Z",
+                "created_on": "2018-10-18T14:20:41.000123456Z",
                 "msg": {
                     "attachments": [
                         "http://example.com/red.jpg"
@@ -94,7 +94,7 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "created_on": "2018-10-18T14:20:35.000123456Z",
                 "msg": {
                     "channel": {
                         "name": "My Android Phone",
@@ -108,7 +108,7 @@
                 "type": "msg_created"
             },
             {
-                "created_on": "2018-10-18T14:20:38.000123456Z",
+                "created_on": "2018-10-18T14:20:37.000123456Z",
                 "msg": {
                     "channel": {
                         "name": "Twitter Channel",

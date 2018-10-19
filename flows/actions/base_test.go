@@ -370,7 +370,8 @@ var contactJSON = `{
 		"twitterid:54784326227#nyaruka"
 	],
 	"groups": [
-		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"}
+		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+		{"uuid": "0ec97956-c451-48a0-a180-1ce766623e31", "name": "Males"}
 	],
 	"fields": {
 		"gender": {
@@ -384,12 +385,15 @@ func TestActionTypes(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
+	server, err := test.NewTestHTTPServer(49996)
+	require.NoError(t, err)
+
 	for typeName := range actions.RegisteredTypes() {
-		testActionType(t, assetsJSON, typeName)
+		testActionType(t, assetsJSON, typeName, server.URL)
 	}
 }
 
-func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
+func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, testServerURL string) {
 	testFile, err := ioutil.ReadFile(fmt.Sprintf("testdata/%s.json", typeName))
 	require.NoError(t, err)
 
@@ -414,7 +418,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string) {
 		testName := fmt.Sprintf("test '%s' for event type '%s'", tc.Description, typeName)
 
 		// create unstarted session from our assets
-		session, err := test.CreateSession(assetsJSON, "")
+		session, err := test.CreateSession(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
 		// get the main flow

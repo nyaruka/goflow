@@ -27,7 +27,7 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "created_on": "2018-10-18T14:20:35.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "can't execute action in session without input",
