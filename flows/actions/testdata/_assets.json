@@ -71,7 +71,7 @@
             "name": "Twitter Channel",
             "address": "nyaruka",
             "schemes": [
-                "twitter"
+                "twitterid"
             ],
             "roles": [
                 "send",
