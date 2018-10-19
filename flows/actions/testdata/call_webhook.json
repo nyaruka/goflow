@@ -24,29 +24,29 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
-                "created_on": "2018-10-18T14:20:37.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "error evaluating @(1 / 0): division by zero",
                 "type": "error"
             },
             {
-                "created_on": "2018-10-18T14:20:39.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "error evaluating @contact.fields.token: no such contact field 'token'",
                 "type": "error"
             },
             {
-                "created_on": "2018-10-18T14:20:43.000123456Z",
-                "elapsed_ms": 1000,
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 0\r\nAuthentication: Token\r\nAccept-Encoding: gzip\r\n\r\n",
                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                 "status": "success",
@@ -66,7 +66,7 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "call_webhook URL evaluated to empty string, skipping",
@@ -86,8 +86,8 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:37.000123456Z",
-                "elapsed_ms": 1000,
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "elapsed_ms": 0,
                 "request": "POST /?cmd=success HTTP/1.1\r\nHost: localhost:49996\r\nUser-Agent: goflow-testing\r\nContent-Length: 9\r\nAccept-Encoding: gzip\r\n\r\nHi there!",
                 "response": "HTTP/1.1 200 OK\r\nContent-Length: 16\r\nContent-Type: text/plain; charset=utf-8\r\nDate: Wed, 11 Apr 2018 18:24:30 GMT\r\n\r\n{ \"ok\": \"true\" }",
                 "status": "success",
@@ -97,7 +97,7 @@
             },
             {
                 "category": "Success",
-                "created_on": "2018-10-18T14:20:41.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "extra": {
                     "ok": "true"
                 },

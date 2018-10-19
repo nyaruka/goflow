@@ -28,7 +28,7 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "can't execute action in session without a contact",
@@ -50,10 +50,52 @@
         },
         "events": [
             {
-                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "fatal": false,
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "text": "can't manually add contact to dynamic group 'Females'",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if a group is name with expression error",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "name_match": "Customers@(1 / 0)"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if a group is name that doesn't match any group",
+        "action": {
+            "type": "add_contact_groups",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "groups": [
+                {
+                    "name_match": "Climbers"
+                }
+            ]
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "no such group with name 'Climbers'",
                 "type": "error"
             }
         ]
@@ -87,7 +129,7 @@
         "events": [
             {
                 "type": "contact_groups_changed",
-                "created_on": "2018-10-18T14:20:35.000123456Z",
+                "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "groups_added": [
                     {

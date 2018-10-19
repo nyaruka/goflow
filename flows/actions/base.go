@@ -345,7 +345,7 @@ func ReadAction(data json.RawMessage) (flows.Action, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	action := f()

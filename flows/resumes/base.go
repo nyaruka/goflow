@@ -80,7 +80,7 @@ func ReadResume(session flows.Session, data json.RawMessage) (flows.Resume, erro
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(session, data)
 }

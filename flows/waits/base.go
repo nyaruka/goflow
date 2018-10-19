@@ -77,7 +77,7 @@ func ReadWait(data json.RawMessage) (flows.Wait, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	wait := f()
