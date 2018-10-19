@@ -122,5 +122,25 @@
                 "type": "msg_created"
             }
         ]
+    },
+    {
+        "description": "Msg created event even if contact has no sendable URNs",
+        "no_urns": true,
+        "action": {
+            "type": "send_msg",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "text": "Hi there"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:36.000123456Z",
+                "msg": {
+                    "text": "Hi there",
+                    "uuid": "59d74b86-3e2f-4a93-aece-b05d2fdcde0c"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "msg_created"
+            }
+        ]
     }
 ]
