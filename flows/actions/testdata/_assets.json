@@ -109,6 +109,16 @@
             "uuid": "a5c50365-11d6-412b-b48f-53783b2a7803",
             "name": "Females",
             "query": "gender = female"
+        },
+        {
+            "uuid": "aa704054-95ea-49e4-b9d7-12090afb5403",
+            "name": "Francophones",
+            "query": "language = fra"
+        },
+        {
+            "uuid": "5389414a-66b8-408b-afec-07c5d68f6784",
+            "name": "Nameless",
+            "query": "name = \"\""
         }
     ],
     "labels": [

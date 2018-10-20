@@ -369,12 +369,18 @@ func (c *Contact) ReevaluateDynamicGroups(env utils.Environment, allGroups *Grou
 
 // ResolveQueryKey resolves a contact query search key for this contact
 func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface{} {
-	if key == "language" {
+	switch key {
+	case "name":
+		if c.name != "" {
+			return []interface{}{c.name}
+		}
+		return nil
+	case "language":
 		if c.language != utils.NilLanguage {
 			return []interface{}{string(c.language)}
 		}
 		return nil
-	} else if key == "created_on" {
+	case "created_on":
 		return []interface{}{c.createdOn}
 	}
 

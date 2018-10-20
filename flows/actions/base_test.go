@@ -404,6 +404,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		ActionJSON      json.RawMessage   `json:"action"`
 		ValidationError string            `json:"validation_error"`
 		Events          []json.RawMessage `json:"events"`
+		ContactAfter    json.RawMessage   `json:"contact_after"`
 	}{}
 
 	err = json.Unmarshal(testFile, &tests)
@@ -468,6 +469,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		expectedEventsJSON, _ := json.Marshal(tc.Events)
 
 		test.AssertEqualJSON(t, expectedEventsJSON, actualEventsJSON, "events mismatch in %s", testName)
+
+		if tc.ContactAfter != nil {
+			contactJSON, _ := json.Marshal(session.Contact())
+
+			test.AssertEqualJSON(t, tc.ContactAfter, contactJSON, "contact mismatch in %s", testName)
+		}
 	}
 }
 

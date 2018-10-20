@@ -8,6 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestEventMarshaling(t *testing.T) {
+
+}
+
 func TestReadEvent(t *testing.T) {
 	// error if no type field
 	_, err := events.ReadEvent([]byte(`{"foo": "bar"}`))
