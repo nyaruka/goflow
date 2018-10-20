@@ -2,6 +2,7 @@ package events
 
 import (
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
@@ -27,9 +28,9 @@ type ContactLanguageChangedEvent struct {
 }
 
 // NewContactLanguageChangedEvent returns a new contact language changed event
-func NewContactLanguageChangedEvent(language string) *ContactLanguageChangedEvent {
+func NewContactLanguageChangedEvent(language utils.Language) *ContactLanguageChangedEvent {
 	return &ContactLanguageChangedEvent{
 		BaseEvent: NewBaseEvent(TypeContactLanguageChanged),
-		Language:  language,
+		Language:  string(language),
 	}
 }

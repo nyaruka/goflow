@@ -75,7 +75,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 
 	if !timezonesEqual(run.Contact().Timezone(), tz) {
 		run.Contact().SetTimezone(tz)
-		a.log(run, step, events.NewContactTimezoneChangedEvent(timezone))
+		a.log(run, step, events.NewContactTimezoneChangedEvent(tz))
 	}
 
 	return nil
