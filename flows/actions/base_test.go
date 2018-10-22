@@ -365,10 +365,7 @@ var contactJSON = `{
 	"name": "Ryan Lewis",
 	"language": "eng",
 	"timezone": "America/Guayaquil",
-	"urns": [
-		"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d", 
-		"twitterid:54784326227#nyaruka"
-	],
+	"urns": [],
 	"groups": [
 		{"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
 		{"uuid": "0ec97956-c451-48a0-a180-1ce766623e31", "name": "Males"}
@@ -400,6 +397,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 	tests := []struct {
 		Description     string            `json:"description"`
 		NoContact       bool              `json:"no_contact"`
+		NoURNs          bool              `json:"no_urns"`
 		NoInput         bool              `json:"no_input"`
 		ActionJSON      json.RawMessage   `json:"action"`
 		ValidationError string            `json:"validation_error"`
@@ -448,6 +446,12 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		if !tc.NoContact {
 			contact, err = flows.ReadContact(session.Assets(), json.RawMessage(contactJSON), true)
 			require.NoError(t, err)
+
+			// optionally give our contact some URNs
+			if !tc.NoURNs {
+				contact.AddURN(urns.URN("tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"))
+				contact.AddURN(urns.URN("twitterid:54784326227#nyaruka"))
+			}
 		}
 
 		var trigger flows.Trigger
