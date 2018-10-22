@@ -110,6 +110,15 @@ func (u *ContactURN) SetChannel(channel *Channel) {
 	u.urn = urn
 }
 
+func (u *ContactURN) String() string {
+	return string(u.urn)
+}
+
+// Equal determines if this URN is equal to another
+func (u *ContactURN) Equal(other *ContactURN) bool {
+	return other != nil && u.String() == other.String()
+}
+
 // returns this URN as a raw URN without the query portion (i.e. only scheme, path, display)
 func (u *ContactURN) withoutQuery() urns.URN {
 	scheme, path, _, display := u.urn.ToParts()
@@ -184,10 +193,26 @@ func (l URNList) RawURNs() []urns.URN {
 	return raw
 }
 
+// Equal returns whether this list of URNs is equal to another
+func (l URNList) Equal(other URNList) bool {
+	if len(l) != len(other) {
+		return false
+	}
+
+	for u := range l {
+		if !l[u].Equal(other[u]) {
+			return false
+		}
+	}
+	return true
+}
+
 // Clone returns a clone of this URN list
 func (l URNList) clone() URNList {
 	urns := make(URNList, len(l))
-	copy(urns, l)
+	for u := range l {
+		urns[u] = NewContactURN(l[u].urn, l[u].channel)
+	}
 	return urns
 }
 

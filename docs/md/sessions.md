@@ -349,23 +349,6 @@ Events are sent by the caller to tell the engine to update the session contact.
 }
 ```
 </div>
-<a name="event:contact_channel_changed"></a>
-
-## contact_channel_changed
-
-Events are created when the preferred channel of the contact has been changed.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_channel_changed",
-    "created_on": "2006-01-02T15:04:05Z",
-    "channel": {
-        "uuid": "67a3ac69-e5e0-4ef0-8423-eddf71a71472",
-        "name": "Twilio"
-    }
-}
-```
-</div>
 <a name="event:contact_field_changed"></a>
 
 ## contact_field_changed

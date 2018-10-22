@@ -15,9 +15,10 @@ func init() {
 // TypeSetContactChannel is the type for the set contact channel action
 const TypeSetContactChannel string = "set_contact_channel"
 
-// SetContactChannelAction can be used to update or cledar the preferred channel of the current contact.
+// SetContactChannelAction can be used to change or clear the preferred channel of the current contact.
 //
-// A [event:contact_channel_changed] event will be created with the set channel.
+// Because channel affinity is a property of a contact's URNs, a [event:contact_urns_changed] event will be created if any
+// changes are made to the contact's URNs.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
@@ -51,7 +52,8 @@ func (a *SetContactChannelAction) Validate(assets flows.SessionAssets, context *
 }
 
 func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) error {
-	if run.Contact() == nil {
+	contact := run.Contact()
+	if contact == nil {
 		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
@@ -65,9 +67,10 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) er
 		}
 	}
 
-	if run.Contact().PreferredChannel() != channel {
-		run.Contact().UpdatePreferredChannel(channel)
-		a.log(run, step, events.NewContactChannelChangedEvent(channel))
+	// if URNs have changed in anyway, generate a URNs changed event
+	if run.Contact().UpdatePreferredChannel(channel) {
+		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
 	}
+
 	return nil
 }

@@ -311,8 +311,10 @@ func (c *Contact) PreferredChannel() *Channel {
 	return nil
 }
 
-// UpdatePreferredChannel updates the preferred channel
-func (c *Contact) UpdatePreferredChannel(channel *Channel) {
+// UpdatePreferredChannel updates the preferred channel and returns whether any change was made
+func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
+	oldURNs := c.urns.clone()
+
 	// setting preferred channel to nil means clearing affinity on all URNs
 	if channel == nil {
 		for _, urn := range c.urns {
@@ -338,6 +340,8 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 
 		c.urns = append(priorityURNs, otherURNs...)
 	}
+
+	return !oldURNs.Equal(c.urns)
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
