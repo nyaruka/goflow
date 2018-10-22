@@ -71,12 +71,9 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 		return nil
 	}
 
-	parsed, err := flows.ParseRawURN(run.Session().Assets(), urn)
-	if err != nil {
-		return err
-	}
+	contactURN := flows.NewContactURN(urn, nil)
 
-	if contact.AddURN(parsed) {
+	if contact.AddURN(contactURN) {
 		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
 
 		a.reevaluateDynamicGroups(run, step)
