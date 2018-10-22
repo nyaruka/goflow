@@ -133,11 +133,15 @@ func (f *flow) Reference() *assets.FlowReference {
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------
 
+func init() {
+	utils.Validator.RegisterAlias("flow_type", "eq=messaging|eq=messaging_offline|eq=voice")
+}
+
 type flowEnvelope struct {
 	UUID               assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name               string          `json:"name" validate:"required"`
 	Language           utils.Language  `json:"language" validate:"required"`
-	Type               flows.FlowType  `json:"type" validate:"required"`
+	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
 	Revision           int             `json:"revision"`
 	ExpireAfterMinutes int             `json:"expire_after_minutes"`
 	Localization       localization    `json:"localization"`

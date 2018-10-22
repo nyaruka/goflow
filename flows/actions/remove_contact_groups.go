@@ -88,7 +88,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) 
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			a.logError(run, step, fmt.Errorf("can't manually remove contact from dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			a.logError(run, step, fmt.Errorf("can't manually remove contact from dynamic group '%s'", group.Name()))
 			continue
 		}
 

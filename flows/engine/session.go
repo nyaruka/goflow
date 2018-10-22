@@ -83,7 +83,7 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 	if exists {
 		return run, nil
 	}
-	return nil, fmt.Errorf("unable to find run with UUID: %s", uuid)
+	return nil, fmt.Errorf("unable to find run with UUID '%s'", uuid)
 }
 
 func (s *session) addRun(run flows.FlowRun) {
@@ -401,7 +401,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 	var exitUUID flows.ExitUUID
 	if router != nil {
 		if operand, route, err = router.PickRoute(run, node.Exits(), step); err != nil {
-			return nil, noDestination, err
+			return nil, noDestination, fmt.Errorf("error routing from node[uuid=%s]: %s", node.UUID(), err)
 		}
 		exitUUID = route.Exit()
 	} else if len(node.Exits()) > 0 {
@@ -428,7 +428,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 			}
 		}
 		if exit == nil {
-			return nil, noDestination, fmt.Errorf("unable to find exit with uuid '%s'", exitUUID)
+			return nil, noDestination, fmt.Errorf("unable to find exit with UUID '%s'", exitUUID)
 		}
 	}
 

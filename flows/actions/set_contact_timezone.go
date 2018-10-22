@@ -68,15 +68,19 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			a.logError(run, step, err)
+			a.logError(run, step, fmt.Errorf("unrecognized timezone: '%s'", timezone))
 			return nil
 		}
 	}
 
-	if run.Contact().Timezone() != tz {
+	if !timezonesEqual(run.Contact().Timezone(), tz) {
 		run.Contact().SetTimezone(tz)
-		a.log(run, step, events.NewContactTimezoneChangedEvent(timezone))
+		a.log(run, step, events.NewContactTimezoneChangedEvent(tz))
 	}
 
 	return nil
+}
+
+func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {
+	return (tz1 == nil && tz2 == nil) || (tz1 != nil && tz2 != nil && tz1.String() == tz2.String())
 }

@@ -1,0 +1,118 @@
+[
+    {
+        "description": "Error event if session has no contact",
+        "no_contact": true,
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "tel",
+            "path": "+1234567890"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "can't execute action in session without a contact",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if path evaluates to empty",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "mailto",
+            "path": "@(\"\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "unable to add URN 'mailto:': scheme or path cannot be empty",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event if path has expression error",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "mailto",
+            "path": "bob@nyaruka.com@(1 / 0)"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_urn_added",
+                "urn": "mailto:bob@nyaruka.com"
+            }
+        ]
+    },
+    {
+        "description": "NOOP if URN already exists on contact",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "tel",
+            "path": "+12065551212"
+        },
+        "events": []
+    },
+    {
+        "description": "URN added event if URN added",
+        "action": {
+            "type": "add_contact_urn",
+            "uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+            "scheme": "mailto",
+            "path": "bob@nyaruka.com"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_urn_added",
+                "urn": "mailto:bob@nyaruka.com"
+            }
+        ],
+        "contact_after": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "fields": {
+                "gender": {
+                    "text": "Male"
+                }
+            },
+            "groups": [
+                {
+                    "name": "Testers",
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                },
+                {
+                    "name": "Males",
+                    "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                }
+            ],
+            "id": 0,
+            "language": "eng",
+            "name": "Ryan Lewis",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "twitterid:54784326227#nyaruka",
+                "mailto:bob@nyaruka.com"
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        }
+    }
+]

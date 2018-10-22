@@ -1,6 +1,8 @@
 package events
 
 import (
+	"time"
+
 	"github.com/nyaruka/goflow/flows"
 )
 
@@ -27,9 +29,14 @@ type ContactTimezoneChangedEvent struct {
 }
 
 // NewContactTimezoneChangedEvent returns a new contact timezone changed event
-func NewContactTimezoneChangedEvent(timezone string) *ContactTimezoneChangedEvent {
+func NewContactTimezoneChangedEvent(timezone *time.Location) *ContactTimezoneChangedEvent {
+	var tzname string
+	if timezone != nil {
+		tzname = timezone.String()
+	}
+
 	return &ContactTimezoneChangedEvent{
 		BaseEvent: NewBaseEvent(TypeContactTimezoneChanged),
-		Timezone:  timezone,
+		Timezone:  tzname,
 	}
 }

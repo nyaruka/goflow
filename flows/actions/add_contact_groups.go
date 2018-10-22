@@ -43,9 +43,6 @@ func NewAddContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupRefe
 	}
 }
 
-// Type returns the type of this action
-func (a *AddContactGroupsAction) Type() string { return TypeAddContactGroups }
-
 // Validate validates our action is valid and has all the assets it needs
 func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	// check we have all groups
@@ -74,7 +71,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) err
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			a.logError(run, step, fmt.Errorf("can't manually add contact to dynamic group '%s' (%s)", group.Name(), group.UUID()))
+			a.logError(run, step, fmt.Errorf("can't manually add contact to dynamic group '%s'", group.Name()))
 			continue
 		}
 

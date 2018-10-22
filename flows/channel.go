@@ -124,7 +124,7 @@ func NewChannelAssets(channels []assets.Channel) *ChannelAssets {
 func (s *ChannelAssets) Get(uuid assets.ChannelUUID) (*Channel, error) {
 	c, found := s.byUUID[uuid]
 	if !found {
-		return nil, fmt.Errorf("no such channel with uuid '%s'", uuid)
+		return nil, fmt.Errorf("no such channel with UUID '%s'", uuid)
 	}
 	return c, nil
 }

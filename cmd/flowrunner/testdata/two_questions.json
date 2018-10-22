@@ -156,8 +156,8 @@
     ],
     "fields": [
         {
-            "key": "first_name",
-            "label": "First Name",
+            "key": "gender",
+            "label": "Gender",
             "value_type": "text"
         }
     ]

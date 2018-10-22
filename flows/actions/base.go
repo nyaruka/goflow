@@ -17,13 +17,19 @@ var webhookStatusCategories = map[flows.WebhookStatus]string{
 	flows.WebhookStatusSuccess:         "Success",
 	flows.WebhookStatusResponseError:   "Failure",
 	flows.WebhookStatusConnectionError: "Failure",
+	flows.WebhookStatusSubscriberGone:  "Failure",
 }
 
 var registeredTypes = map[string](func() flows.Action){}
 
-// RegisterType registers a new type of router
+// RegisterType registers a new type of action
 func RegisterType(name string, initFunc func() flows.Action) {
 	registeredTypes[name] = initFunc
+}
+
+// RegisteredTypes gets the registered types of action
+func RegisteredTypes() map[string](func() flows.Action) {
+	return registeredTypes
 }
 
 var uuidRegex = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
@@ -242,9 +248,10 @@ func (a *BaseAction) resolveContactsAndGroups(run flows.FlowRun, step flows.Step
 			// if that fails, assume this is a phone number, and let the caller worry about validation
 			urn, err := urns.NewURNFromParts(urns.TelScheme, evaluatedLegacyVar, "", "")
 			if err != nil {
-				return nil, nil, nil, err
+				a.logError(run, step, err)
+			} else {
+				urnList = append(urnList, urn)
 			}
-			urnList = append(urnList, urn)
 		}
 	}
 
@@ -339,7 +346,7 @@ func ReadAction(data json.RawMessage) (flows.Action, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	action := f()

@@ -93,8 +93,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// build our request
 	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {
-		a.logError(run, step, err)
-		return nil
+		return err
 	}
 
 	// add the custom headers, substituting any template vars

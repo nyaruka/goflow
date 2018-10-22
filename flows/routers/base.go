@@ -46,7 +46,7 @@ func ReadRouter(data json.RawMessage) (flows.Router, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: %s", typeName)
+		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
 
 	router := f()
