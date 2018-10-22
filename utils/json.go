@@ -67,12 +67,12 @@ func UnmarshalAndValidateWithLimit(reader io.ReadCloser, s interface{}, limit in
 	return Validate(s)
 }
 
-// JSONDecodeToMap decodes the given JSON as a generic map
-func JSONDecodeToMap(data []byte) (map[string]interface{}, error) {
-	var m map[string]interface{}
+// JSONDecodeGeneric decodes the given JSON as a generic map or slice
+func JSONDecodeGeneric(data []byte) (interface{}, error) {
+	var asGeneric interface{}
 	decoder := json.NewDecoder(bytes.NewBuffer(data))
 	decoder.UseNumber()
-	return m, decoder.Decode(&m)
+	return asGeneric, decoder.Decode(&asGeneric)
 }
 
 // IsValidJSON determines whether the given bytes contain valid JSON, by trying to parse it

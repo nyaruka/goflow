@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -48,12 +49,8 @@ func (e legacyExtraMap) convertToXValue(val interface{}) types.XValue {
 		}
 		return legacyExtraMap(normalized)
 	case []interface{}:
-		xvals := make([]types.XValue, len(typed))
-		for v := range typed {
-			xvals[v] = e.convertToXValue(typed[v])
-		}
-		arr := types.NewXArray(xvals...)
-		return arr
+		normalized := sliceToMap(typed)
+		return legacyExtraMap(normalized)
 	case json.Number:
 		return types.RequireXNumberFromString(string(typed))
 	case string:
@@ -86,11 +83,9 @@ func (e *legacyExtra) initialize() {
 	triggerParams := e.run.Session().Trigger().Params()
 	asJSON, isJSON := triggerParams.(types.XJSONObject)
 	if isJSON {
-		asMap, err := utils.JSONDecodeToMap(json.RawMessage(asJSON.XJSON))
+		values, err := utils.JSONDecodeGeneric(json.RawMessage(asJSON.XJSON))
 		if err == nil {
-			for k, v := range asMap {
-				e.legacyExtraMap[legacyExtraKey(k)] = v
-			}
+			e.addValues(values)
 		}
 	}
 
@@ -129,13 +124,34 @@ func (e *legacyExtra) addResults(results flows.Results, after time.Time) {
 	// add each extra blob to our master extra
 	for _, result := range newExtras {
 		e.legacyExtraMap[utils.Snakify(result.Name)] = string(result.Extra)
-		values, err := utils.JSONDecodeToMap(result.Extra)
-		if err == nil {
-			for k, v := range values {
-				e.legacyExtraMap[legacyExtraKey(k)] = v
-			}
+		values, err := utils.JSONDecodeGeneric(result.Extra)
+
+		// ignore unparseable extra
+		if err != nil {
+			return
 		}
+
+		e.addValues(values)
 	}
+}
+
+func (e *legacyExtra) addValues(values interface{}) {
+	switch typed := values.(type) {
+	case map[string]interface{}:
+		for k, v := range typed {
+			e.legacyExtraMap[legacyExtraKey(k)] = v
+		}
+	case []interface{}:
+		e.addValues(sliceToMap(typed))
+	}
+}
+
+func sliceToMap(s []interface{}) map[string]interface{} {
+	m := make(map[string]interface{}, len(s))
+	for i, v := range s {
+		m[strconv.Itoa(i)] = v
+	}
+	return m
 }
 
 var _ types.XValue = (*legacyExtra)(nil)
