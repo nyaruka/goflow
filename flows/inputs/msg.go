@@ -102,7 +102,6 @@ func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, err
 		return nil, err
 	}
 
-	// TODO parse channel
 	i := &MsgInput{
 		urn:         flows.NewContactURN(e.URN, nil),
 		text:        e.Text,

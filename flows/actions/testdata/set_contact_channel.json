@@ -60,7 +60,7 @@
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "contact_urns_changed",
                 "urns": [
-                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
                     "twitterid:54784326227#nyaruka"
                 ]
             }
@@ -91,7 +91,7 @@
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
                 "type": "contact_urns_changed",
                 "urns": [
-                    "tel:+12065551212",
+                    "tel:+12065551212?id=123",
                     "twitterid:54784326227#nyaruka"
                 ]
             }
