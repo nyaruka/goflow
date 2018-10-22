@@ -15,7 +15,7 @@ func init() {
 // TypeAddContactURN is our type for the add URN action
 const TypeAddContactURN string = "add_contact_urn"
 
-// AddContactURNAction can be used to add a URN to the current contact. A [event:contact_urn_added] event
+// AddContactURNAction can be used to add a URN to the current contact. A [event:contact_urns_changed] event
 // will be created when this action is encountered.
 //
 //   {
@@ -71,9 +71,13 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 		return nil
 	}
 
-	if !run.Contact().HasURN(urn) {
-		run.Contact().AddURN(urn)
-		a.log(run, step, events.NewURNAddedEvent(urn))
+	parsed, err := flows.ParseRawURN(run.Session().Assets(), urn)
+	if err != nil {
+		return err
+	}
+
+	if contact.AddURN(parsed) {
+		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
 
 		a.reevaluateDynamicGroups(run, step)
 	}

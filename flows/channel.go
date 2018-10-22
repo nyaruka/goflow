@@ -137,8 +137,8 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 	}
 
 	// tel is a special case because we do number based matching
-	if urn.Scheme() == urns.TelScheme {
-		countryCode := utils.DeriveCountryFromTel(urn.Path())
+	if urn.URN().Scheme() == urns.TelScheme {
+		countryCode := utils.DeriveCountryFromTel(urn.URN().Path())
 		candidates := make([]*Channel, 0)
 
 		for _, ch := range s.all {
@@ -151,7 +151,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		if len(candidates) > 1 {
 			// we don't have a channel for this contact yet, let's try to pick one from the same carrier
 			// we need at least one digit to overlap to infer a channel
-			contactNumber := strings.TrimPrefix(urn.URN.Path(), "+")
+			contactNumber := strings.TrimPrefix(urn.URN().Path(), "+")
 			maxOverlap := 0
 			for _, candidate := range candidates {
 				candidatePrefixes := candidate.MatchPrefixes()
@@ -177,7 +177,7 @@ func (s *ChannelAssets) GetForURN(urn *ContactURN, role assets.ChannelRole) *Cha
 		}
 	}
 
-	return s.getForSchemeAndRole(urn.Scheme(), role)
+	return s.getForSchemeAndRole(urn.URN().Scheme(), role)
 }
 
 func (s *ChannelAssets) getForSchemeAndRole(scheme string, role assets.ChannelRole) *Channel {

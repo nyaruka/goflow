@@ -453,17 +453,20 @@ Events are created when the timezone of the contact has been changed.
 }
 ```
 </div>
-<a name="event:contact_urn_added"></a>
+<a name="event:contact_urns_changed"></a>
 
-## contact_urn_added
+## contact_urns_changed
 
-Events are created when a URN has been added to the contact.
+Events are created when a contact's URNs have changed.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_urn_added",
+    "type": "contact_urns_changed",
     "created_on": "2006-01-02T15:04:05Z",
-    "urn": "tel:+12345678900"
+    "urns": [
+        "tel:+12345678900",
+        "twitter:bob"
+    ]
 }
 ```
 </div>

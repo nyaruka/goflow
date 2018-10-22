@@ -102,6 +102,7 @@ func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, err
 		return nil, err
 	}
 
+	// TODO parse channel
 	i := &MsgInput{
 		urn:         flows.NewContactURN(e.URN, nil),
 		text:        e.Text,
@@ -118,7 +119,7 @@ func ReadMsgInput(session flows.Session, data json.RawMessage) (flows.Input, err
 // MarshalJSON marshals this msg input into JSON
 func (i *MsgInput) MarshalJSON() ([]byte, error) {
 	e := &msgInputEnvelope{
-		URN:         i.urn.URN,
+		URN:         i.urn.URN(),
 		Text:        i.text,
 		Attachments: i.attachments,
 	}

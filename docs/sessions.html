@@ -394,18 +394,21 @@ Event
 <a class="sourceLine" id="cb16-4" data-line-number="4">    <span class="dt">&quot;timezone&quot;</span><span class="fu">:</span> <span class="st">&quot;Africa/Kigali&quot;</span></a>
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="fu">}</span></a></code></pre></div>
 </div>
-<p><a name="event:contact_urn_added"></a></p>
-<h2 id="contact_urn_added">contact_urn_added</h2>
-<p>Events are created when a URN has been added to the contact.</p>
+<p><a name="event:contact_urns_changed"></a></p>
+<h2 id="contact_urns_changed">contact_urns_changed</h2>
+<p>Events are created when a contact’s URNs have changed.</p>
 <div class="output_event">
 <h3>
 Event
 </h3>
 <div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urn_added&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urns_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2006-01-02T15:04:05Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">    <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12345678900&quot;</span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-4" data-line-number="4">    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">        <span class="st">&quot;tel:+12345678900&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">        <span class="st">&quot;twitter:bob&quot;</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="event:email_created"></a></p>
 <h2 id="email_created">email_created</h2>

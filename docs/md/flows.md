@@ -193,7 +193,7 @@ for the groups which the contact has been added to.
 
 ## add_contact_urn
 
-Can be used to add a URN to the current contact. A [contact_urn_added](sessions.html#event:contact_urn_added) event
+Can be used to add a URN to the current contact. A [contact_urns_changed](sessions.html#event:contact_urns_changed) event
 will be created when this action is encountered.
 
 <div class="input_action"><h3>Action</h3>```json
@@ -206,10 +206,15 @@ will be created when this action is encountered.
 ```
 </div><div class="output_event"><h3>Event</h3>```json
 {
-    "type": "contact_urn_added",
+    "type": "contact_urns_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
     "step_uuid": "b6c40a98-ecfa-4266-9853-0310d032b497",
-    "urn": "tel:+12344563452"
+    "urns": [
+        "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "twitterid:54784326227#nyaruka",
+        "mailto:foo@bar.com",
+        "tel:+12344563452"
+    ]
 }
 ```
 </div>
@@ -459,7 +464,7 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
     "step_uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa",
     "msg": {
         "uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6",
-        "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+        "urn": "tel:+12065551212",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
             "name": "My Android Phone"
