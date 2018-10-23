@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
@@ -64,6 +65,12 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 		a.logError(run, step, err)
 	}
 
+	evaluatedPath = strings.TrimSpace(evaluatedPath)
+	if evaluatedPath == "" {
+		a.logError(run, step, fmt.Errorf("can't add URN with empty path"))
+		return nil
+	}
+
 	// if we don't have a valid URN, log error
 	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
 	if err != nil {
@@ -71,7 +78,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 		return nil
 	}
 
-	contactURN := flows.NewContactURN(urn, nil)
+	contactURN := flows.NewContactURN(urn.Normalize(""), nil)
 
 	if contact.AddURN(contactURN) {
 		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
