@@ -344,7 +344,7 @@ var actionTests = []struct {
 }
 
 func TestMarshaling(t *testing.T) {
-	session, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
 	for _, tc := range actionTests {
@@ -465,7 +465,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 
-		err = session.Start(trigger)
+		_, err = session.Start(trigger)
 		require.NoError(t, err)
 
 		run := session.Runs()[0]

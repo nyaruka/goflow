@@ -89,7 +89,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@twitter_handle", "@twitter_handle", ""},
 	}
 
-	session, err := test.CreateTestSession("http://localhost", nil)
+	session, _, err := test.CreateTestSession("http://localhost", nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -136,7 +136,7 @@ func TestContextToJSON(t *testing.T) {
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(123456))
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 
-	session, err := test.CreateTestSession(server.URL, nil)
+	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
 	run := session.Runs()[0]
@@ -171,7 +171,7 @@ func TestWaitTimeout(t *testing.T) {
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 	trigger := triggers.NewManualTrigger(nil, contact, flow.Reference(), nil, time.Now())
 
-	err = session.Start(trigger)
+	_, err = session.Start(trigger)
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
@@ -193,7 +193,7 @@ func TestWaitTimeout(t *testing.T) {
 	resume, err := resumes.ReadResume(session, []byte(resumeJSON))
 	require.NoError(t, err)
 
-	err = session.Resume(resume)
+	_, err = session.Resume(resume)
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())

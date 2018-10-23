@@ -116,11 +116,12 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
 	// start our session
-	if err := session.Start(repro.Trigger); err != nil {
+	newEvents, err := session.Start(repro.Trigger)
+	if err != nil {
 		return nil, err
 	}
 
-	printEvents(session, out)
+	printEvents(newEvents, out)
 	scanner := bufio.NewScanner(in)
 
 	for session.Wait() != nil {
@@ -134,11 +135,12 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 		resume := resumes.NewMsgResume(nil, nil, msg)
 		repro.Resumes = append(repro.Resumes, resume)
 
-		if err := session.Resume(resume); err != nil {
+		newEvents, err := session.Resume(resume)
+		if err != nil {
 			return nil, err
 		}
 
-		printEvents(session, out)
+		printEvents(newEvents, out)
 	}
 
 	return repro, nil
@@ -148,8 +150,8 @@ func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
 	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN(), nil, text, []flows.Attachment{})
 }
 
-func printEvents(session flows.Session, out io.Writer) {
-	for _, event := range session.Events() {
+func printEvents(log []flows.Event, out io.Writer) {
+	for _, event := range log {
 		var msg string
 		switch typed := event.(type) {
 		case *events.ContactNameChangedEvent:
@@ -176,6 +178,7 @@ func printEvents(session flows.Session, out io.Writer) {
 	}
 }
 
+// Repro describes the trigger and resumes needed to reproduce this session
 type Repro struct {
 	Trigger flows.Trigger  `json:"trigger"`
 	Resumes []flows.Resume `json:"resumes"`

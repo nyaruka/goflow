@@ -19,7 +19,7 @@ func TestEventMarshaling(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	session, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
 	tz, _ := time.LoadLocation("Africa/Kigali")

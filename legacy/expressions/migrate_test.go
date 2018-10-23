@@ -262,7 +262,7 @@ func TestMigrateTemplate(t *testing.T) {
 
 	defer server.Close()
 
-	session, err := test.CreateTestSession(server.URL, nil)
+	session, _, err := test.CreateTestSession(server.URL, nil)
 	require.NoError(t, err)
 
 	for _, tc := range tests {
