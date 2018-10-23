@@ -80,6 +80,10 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@trigger.params.source", "website", ""},
 		{"@(length(trigger.params.address))", "1", ""},
 
+		// migrated split by expressions
+		{`@(if(is_error(results.favorite_color), "@flow.favorite_color", results.favorite_color))`, `red`, ""},
+		{`@(if(is_error(legacy_extra.0.default_city), "@extra.0.default_city", legacy_extra.0.default_city))`, `@extra.0.default_city`, ""},
+
 		// non-expressions
 		{"bob@nyaruka.com", "bob@nyaruka.com", ""},
 		{"@twitter_handle", "@twitter_handle", ""},
