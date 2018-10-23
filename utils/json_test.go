@@ -57,15 +57,27 @@ func TestUnmarshalAndValidateWithLimit(t *testing.T) {
 	assert.EqualError(t, err, "unexpected end of JSON input")
 }
 
-func TestJSONDecodeToMap(t *testing.T) {
+func TestJSONDecodeGeneric(t *testing.T) {
+	// parse a JSON object into a map
 	data := []byte(`{"bool": true, "number": 123.34, "text": "hello", "dict": {"foo": "bar"}, "list": [1, "x"]}`)
-	asMap, err := utils.JSONDecodeToMap(data)
+	vals, err := utils.JSONDecodeGeneric(data)
 	assert.NoError(t, err)
+
+	asMap := vals.(map[string]interface{})
 	assert.Equal(t, true, asMap["bool"])
 	assert.Equal(t, json.Number("123.34"), asMap["number"])
 	assert.Equal(t, "hello", asMap["text"])
 	assert.Equal(t, map[string]interface{}{"foo": "bar"}, asMap["dict"])
 	assert.Equal(t, []interface{}{json.Number("1"), "x"}, asMap["list"])
+
+	// parse a JSON array into a slice
+	data = []byte(`[{"foo": 123}, {"foo": 456}]`)
+	vals, err = utils.JSONDecodeGeneric(data)
+	assert.NoError(t, err)
+
+	asSlice := vals.([]interface{})
+	assert.Equal(t, map[string]interface{}{"foo": json.Number("123")}, asSlice[0])
+	assert.Equal(t, map[string]interface{}{"foo": json.Number("456")}, asSlice[1])
 }
 
 func TestIsValidJSON(t *testing.T) {

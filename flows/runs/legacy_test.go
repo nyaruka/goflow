@@ -5,7 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
+	"github.com/nyaruka/goflow/utils"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -34,7 +36,7 @@ func TestLegacyExtra(t *testing.T) {
 		{"@legacy_extra.bool", `true`},
 		{"@legacy_extra.number", `123.34`},
 		{"@legacy_extra.text", `hello`},
-		{"@legacy_extra.list", `[1,"x"]`},
+		{"@legacy_extra.list", `{"0":1,"1":"x"}`},
 		{"@legacy_extra.list.0", `1`},
 		{"@legacy_extra.list.1", `x`},
 		{"@legacy_extra.dict.FOO", `bar`},
@@ -45,4 +47,12 @@ func TestLegacyExtra(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, tc.output, output, "evaluate failed for %s", tc.template)
 	}
+
+	// can also add something which is an array
+	result := flows.NewResult("webhook", "200", "Success", "", flows.NodeUUID(""), nil, []byte(`[{"foo": 123}, {"foo": 345}]`), utils.Now())
+	run.SaveResult(result)
+
+	output, err := run.EvaluateTemplateAsString(`@legacy_extra.0`, false)
+	assert.NoError(t, err)
+	assert.Equal(t, `{"foo":123}`, output)
 }
