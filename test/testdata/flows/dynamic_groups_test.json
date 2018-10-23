@@ -94,8 +94,13 @@
                 {
                     "created_on": "2018-07-06T12:30:17.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "type": "contact_urn_added",
-                    "urn": "tel:+250781234567"
+                    "type": "contact_urns_changed",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore",
+                        "tel:+250781234567"
+                    ]
                 },
                 {
                     "created_on": "2018-07-06T12:30:19.123456789Z",
@@ -316,8 +321,13 @@
                             {
                                 "created_on": "2018-07-06T12:30:17.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "contact_urn_added",
-                                "urn": "tel:+250781234567"
+                                "type": "contact_urns_changed",
+                                "urns": [
+                                    "tel:+12065551212",
+                                    "facebook:1122334455667788",
+                                    "mailto:ben@macklemore",
+                                    "tel:+250781234567"
+                                ]
                             },
                             {
                                 "created_on": "2018-07-06T12:30:19.123456789Z",

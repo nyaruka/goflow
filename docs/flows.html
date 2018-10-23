@@ -165,7 +165,7 @@ Event
 </div>
 <p><a name="action:add_contact_urn"></a></p>
 <h2 id="add_contact_urn">add_contact_urn</h2>
-<p>Can be used to add a URN to the current contact. A <a href="sessions.html#event:contact_urn_added">contact_urn_added</a> event will be created when this action is encountered.</p>
+<p>Can be used to add a URN to the current contact. A <a href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created when this action is encountered.</p>
 <div class="input_action">
 <h3>
 Action
@@ -182,11 +182,16 @@ Action
 Event
 </h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urn_added&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_urns_changed&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;b6c40a98-ecfa-4266-9853-0310d032b497&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">&quot;urn&quot;</span><span class="fu">:</span> <span class="st">&quot;tel:+12344563452&quot;</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="fu">}</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">&quot;urns&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">        <span class="st">&quot;tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">        <span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">        <span class="st">&quot;mailto:foo@bar.com&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">        <span class="st">&quot;tel:+12344563452&quot;</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="fu">}</span></a></code></pre></div>
 </div>
 <p><a name="action:add_input_labels"></a></p>
 <h2 id="add_input_labels">add_input_labels</h2>
@@ -440,8 +445,8 @@ Event
 </div>
 <p><a name="action:set_contact_channel"></a></p>
 <h2 id="set_contact_channel">set_contact_channel</h2>
-<p>Can be used to update or cledar the preferred channel of the current contact.</p>
-<p>A <a href="sessions.html#event:contact_channel_changed">contact_channel_changed</a> event will be created with the set channel.</p>
+<p>Can be used to change or clear the preferred channel of the current contact.</p>
+<p>Because channel affinity is a property of a contact’s URNs, a <a href="sessions.html#event:contact_urns_changed">contact_urns_changed</a> event will be created if any changes are made to the contact’s URNs.</p>
 <div class="input_action">
 <h3>
 Action
@@ -459,15 +464,7 @@ Action
 <h3>
 Event
 </h3>
-<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="fu">{</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;contact_channel_changed&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">    <span class="dt">&quot;created_on&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-04-11T18:24:30.123456Z&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">    <span class="dt">&quot;step_uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;7dcc445a-83cf-432b-8188-76dd971a6205&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">    <span class="dt">&quot;channel&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">        <span class="dt">&quot;uuid&quot;</span><span class="fu">:</span> <span class="st">&quot;4bb288a0-7fca-4da1-abe8-59a593aff648&quot;</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">        <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Facebook Channel&quot;</span></a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb26-9" data-line-number="9"><span class="fu">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="ot">[]</span></a></code></pre></div>
 </div>
 <p><a name="action:set_contact_field"></a></p>
 <h2 id="set_contact_field">set_contact_field</h2>

@@ -33,7 +33,41 @@
         ]
     },
     {
-        "description": "Channel changed event if channel changes",
+        "description": "NOOP if channel doesn't change",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": {
+                "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+                "name": "My Android Phone"
+            }
+        },
+        "events": []
+    },
+    {
+        "description": "URNs changed event if channel is changed",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": {
+                "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+                "name": "Nexmo"
+            }
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_urns_changed",
+                "urns": [
+                    "tel:+12065551212?channel=3a05eaf5-cb1b-4246-bef1-f277419c83a7&id=123",
+                    "twitterid:54784326227#nyaruka"
+                ]
+            }
+        ]
+    },
+    {
+        "description": "NOOP if channel isn't a tel channel because only tel URNs change affinity",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
             "type": "set_contact_channel",
@@ -42,15 +76,24 @@
                 "name": "Twitter Channel"
             }
         },
+        "events": []
+    },
+    {
+        "description": "URNs changed event if channel is cleared",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_channel",
+            "channel": null
+        },
         "events": [
             {
-                "channel": {
-                    "name": "Twitter Channel",
-                    "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb"
-                },
                 "created_on": "2018-10-18T14:20:30.000123456Z",
                 "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
-                "type": "contact_channel_changed"
+                "type": "contact_urns_changed",
+                "urns": [
+                    "tel:+12065551212?id=123",
+                    "twitterid:54784326227#nyaruka"
+                ]
             }
         ]
     }

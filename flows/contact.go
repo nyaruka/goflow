@@ -38,9 +38,9 @@ import (
 //   @contact.language -> eng
 //   @contact.timezone -> America/Guayaquil
 //   @contact.created_on -> 2018-06-20T11:40:30.123456Z
-//   @contact.urns -> ["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
-//   @contact.urns.0 -> tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d
-//   @contact.urns.tel -> ["tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d"]
+//   @contact.urns -> ["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]
+//   @contact.urns.0 -> tel:+12065551212
+//   @contact.urns.tel -> ["tel:+12065551212"]
 //   @contact.urns.mailto.0 -> mailto:foo@bar.com
 //   @contact.urn -> (206) 555-1212
 //   @contact.groups -> ["Testers","Males"]
@@ -197,11 +197,12 @@ func (c *Contact) Name() string { return c.name }
 func (c *Contact) URNs() URNList { return c.urns }
 
 // AddURN adds a new URN to this contact
-func (c *Contact) AddURN(urn urns.URN) bool {
-	if c.HasURN(urn) {
+func (c *Contact) AddURN(urn *ContactURN) bool {
+	if c.HasURN(urn.URN()) {
 		return false
 	}
-	c.urns = append(c.urns, &ContactURN{URN: urn.Normalize("")})
+
+	c.urns = append(c.urns, urn)
 	return true
 }
 
@@ -210,7 +211,7 @@ func (c *Contact) HasURN(urn urns.URN) bool {
 	urn = urn.Normalize("")
 
 	for _, u := range c.urns {
-		if u.URN.Identity() == urn.Identity() {
+		if u.URN().Identity() == urn.Identity() {
 			return true
 		}
 	}
@@ -238,7 +239,7 @@ func (c *Contact) Format(env utils.Environment) string {
 		return strconv.Itoa(int(c.id))
 	}
 	if len(c.urns) > 0 {
-		return c.urns[0].Format()
+		return c.urns[0].URN().Format()
 	}
 
 	return ""
@@ -272,7 +273,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 		return c.urns
 	case "urn":
 		if len(c.urns) > 0 {
-			return types.NewXText(c.urns[0].Format())
+			return types.NewXText(c.urns[0].URN().Format())
 		}
 		return nil
 	case "groups":
@@ -310,8 +311,10 @@ func (c *Contact) PreferredChannel() *Channel {
 	return nil
 }
 
-// UpdatePreferredChannel updates the preferred channel
-func (c *Contact) UpdatePreferredChannel(channel *Channel) {
+// UpdatePreferredChannel updates the preferred channel and returns whether any change was made
+func (c *Contact) UpdatePreferredChannel(channel *Channel) bool {
+	oldURNs := c.urns.clone()
+
 	// setting preferred channel to nil means clearing affinity on all URNs
 	if channel == nil {
 		for _, urn := range c.urns {
@@ -323,7 +326,7 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 
 		for _, urn := range c.urns {
 			// tel URNs can be re-assigned, other URN schemes are considered channel specific
-			if urn.URN.Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
+			if urn.URN().Scheme() == urns.TelScheme && channel.SupportsScheme(urns.TelScheme) {
 				urn.SetChannel(channel)
 			}
 
@@ -337,6 +340,8 @@ func (c *Contact) UpdatePreferredChannel(channel *Channel) {
 
 		c.urns = append(priorityURNs, otherURNs...)
 	}
+
+	return !oldURNs.Equal(c.urns)
 }
 
 // ReevaluateDynamicGroups reevaluates membership of all dynamic groups for this contact
@@ -390,7 +395,7 @@ func (c *Contact) ResolveQueryKey(env utils.Environment, key string) []interface
 			urnsWithScheme := c.urns.WithScheme(key)
 			vals := make([]interface{}, len(urnsWithScheme))
 			for u := range urnsWithScheme {
-				vals[u] = string(urnsWithScheme[u].URN)
+				vals[u] = string(urnsWithScheme[u].URN())
 			}
 			return vals
 		}
@@ -507,7 +512,7 @@ func (c *Contact) MarshalJSON() ([]byte, error) {
 		CreatedOn: c.createdOn,
 	}
 
-	ce.URNs = c.urns.RawURNs(true)
+	ce.URNs = c.urns.RawURNs()
 	if c.timezone != nil {
 		ce.Timezone = c.timezone.String()
 	}

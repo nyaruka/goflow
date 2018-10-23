@@ -77,7 +77,7 @@ func (a *SendMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	for _, u := range run.Contact().URNs() {
 		channel := channels.GetForURN(u, assets.ChannelRoleSend)
 		if channel != nil {
-			destinations = append(destinations, msgDestination{urn: u.URN, channel: channel})
+			destinations = append(destinations, msgDestination{urn: u.URN(), channel: channel})
 
 			// if we're not sending to all URNs we just need the first sendable URN
 			if !a.AllURNs {

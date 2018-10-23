@@ -32,8 +32,8 @@ func TestContact(t *testing.T) {
 
 	contact.SetTimezone(env.Timezone())
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
-	contact.AddURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"))
-	contact.AddURN(urns.URN("twitter:joey"))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+16364646466?channel=294a14d4-c998-41e5-a314-5941b97b89d7"), nil))
+	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 
 	assert.Equal(t, "Joe Bloggs", contact.Name())
 	assert.Equal(t, flows.ContactID(12345), contact.ID())
@@ -75,7 +75,7 @@ func TestContactFormat(t *testing.T) {
 
 	// name takes precedence if set
 	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
-	contact.AddURN(urns.URN("twitter:joey"))
+	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "Joe", contact.Format(env))
 
 	// if not we fallback to URN
@@ -83,7 +83,7 @@ func TestContactFormat(t *testing.T) {
 		flows.ContactUUID(utils.NewUUID()), flows.ContactID(1234), "", utils.NilLanguage, nil, time.Now(),
 		flows.URNList{}, flows.NewGroupList([]*flows.Group{}), make(flows.FieldValues),
 	)
-	contact.AddURN(urns.URN("twitter:joey"))
+	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
 	assert.Equal(t, "joey", contact.Format(env))
 
 	anonEnv := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyURNs)
@@ -103,31 +103,31 @@ func TestContactSetPreferredChannel(t *testing.T) {
 	twitter := test.NewChannel("Twitter", "nyaruka", []string{"twitter", "twitterid"}, roles, nil)
 
 	contact := flows.NewEmptyContact("Joe", utils.NilLanguage, nil)
-	contact.AddURN(urns.URN("twitter:joey"))
-	contact.AddURN(urns.URN("tel:+12345678999"))
-	contact.AddURN(urns.URN("tel:+18005555777"))
+	contact.AddURN(flows.NewContactURN(urns.URN("twitter:joey"), nil))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 
 	contact.UpdatePreferredChannel(android)
 
 	// tel channels should be re-assigned to that channel, and moved to front of list
-	assert.Equal(t, urns.URN("tel:+12345678999"), contact.URNs()[0].URN)
+	assert.Equal(t, urns.URN("tel:+12345678999?channel="+string(android.UUID())), contact.URNs()[0].URN())
 	assert.Equal(t, android, contact.URNs()[0].Channel())
-	assert.Equal(t, urns.URN("tel:+18005555777"), contact.URNs()[1].URN)
+	assert.Equal(t, urns.URN("tel:+18005555777?channel="+string(android.UUID())), contact.URNs()[1].URN())
 	assert.Equal(t, android, contact.URNs()[1].Channel())
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN)
+	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN())
 	assert.Nil(t, contact.URNs()[2].Channel())
 
 	contact.UpdatePreferredChannel(twitter)
 
 	// same doesn't apply to URNs of other schemes
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN)
+	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[2].URN())
 	assert.Nil(t, contact.URNs()[2].Channel())
 
 	// unless they are already associated with that channel
 	contact.URNs()[2].SetChannel(twitter)
 	contact.UpdatePreferredChannel(twitter)
 
-	assert.Equal(t, urns.URN("twitter:joey"), contact.URNs()[0].URN)
+	assert.Equal(t, urns.URN("twitter:joey?channel="+string(twitter.UUID())), contact.URNs()[0].URN())
 	assert.Equal(t, twitter, contact.URNs()[0].Channel())
 }
 
@@ -152,13 +152,13 @@ func TestReevaluateDynamicGroups(t *testing.T) {
 	groups := []*flows.Group{males, old, english, spanish, lastYear, tel1800, twitterCrazies}
 
 	contact := flows.NewEmptyContact("Joe", "eng", nil)
-	contact.AddURN(urns.URN("tel:+12345678999"))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+12345678999"), nil))
 
 	assert.Equal(t, []*flows.Group{english}, evaluateGroups(t, env, contact, groups))
 
 	contact.SetLanguage(utils.Language("spa"))
-	contact.AddURN(urns.URN("twitter:crazy_joe"))
-	contact.AddURN(urns.URN("tel:+18005555777"))
+	contact.AddURN(flows.NewContactURN(urns.URN("twitter:crazy_joe"), nil))
+	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 	contact.Fields().Set(env, gender, "M", fieldSet)
 	contact.Fields().Set(env, age, "37", fieldSet)
 	contact.SetCreatedOn(time.Date(2017, 12, 15, 10, 0, 0, 0, time.UTC))
