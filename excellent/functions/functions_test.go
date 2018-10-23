@@ -472,7 +472,7 @@ var funcTests = []struct {
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	defer utils.SetRand(utils.DefaultRand)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)

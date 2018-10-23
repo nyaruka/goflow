@@ -101,6 +101,10 @@ func Validate(obj interface{}) error {
 			problem = "is not a valid date format"
 		case "time_format":
 			problem = "is not a valid time format"
+		case "language":
+			problem = "is not a valid language code"
+		case "country":
+			problem = "is not a valid country code"
 		default:
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}

@@ -103,7 +103,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	languages := []utils.Language{flow.Language(), contact.Language()}
-	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, languages, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, languages, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	repro := &Repro{}
 

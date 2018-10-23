@@ -36,18 +36,19 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	assert.Error(t, err)
 
 	// can create with valid values
-	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "default_language": "eng", "allowed_languages": ["eng", "fra"], "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
+	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tt:mm:ss", "default_language": "eng", "allowed_languages": ["eng", "fra"], "default_country": "RW", "timezone": "Africa/Kigali", "extensions": {"foo":{"bar":1234}}}`))
 	assert.NoError(t, err)
 	assert.Equal(t, utils.DateFormatDayMonthYear, env.DateFormat())
 	assert.Equal(t, utils.TimeFormatHourMinuteSecond, env.TimeFormat())
 	assert.Equal(t, kgl, env.Timezone())
 	assert.Equal(t, utils.Language("eng"), env.DefaultLanguage())
 	assert.Equal(t, []utils.Language{utils.Language("eng"), utils.Language("fra")}, env.AllowedLanguages())
+	assert.Equal(t, utils.Country("RW"), env.DefaultCountry())
 	assert.Equal(t, json.RawMessage(`{"bar":1234}`), env.Extension("foo"))
 
 	data, err := json.Marshal(env)
 	require.NoError(t, err)
-	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"redaction_policy":"none","extensions":{"foo":{"bar":1234}}}`)
+	assert.Equal(t, string(data), `{"date_format":"DD-MM-YYYY","time_format":"tt:mm:ss","timezone":"Africa/Kigali","default_language":"eng","allowed_languages":["eng","fra"],"default_country":"RW","redaction_policy":"none","extensions":{"foo":{"bar":1234}}}`)
 }
 
 func TestEnvironmentEqual(t *testing.T) {

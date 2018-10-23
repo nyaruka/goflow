@@ -85,7 +85,7 @@ func TestDateFromString(t *testing.T) {
 		timezone, err := time.LoadLocation(test.Timezone)
 		require.NoError(t, err)
 
-		env := utils.NewEnvironment(test.DateFormat, test.TimeFormat, timezone, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+		env := utils.NewEnvironment(test.DateFormat, test.TimeFormat, timezone, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 		if err != nil {
 			t.Errorf("Error parsing expected timezone: %s", err)
