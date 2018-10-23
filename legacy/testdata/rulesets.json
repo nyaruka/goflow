@@ -611,6 +611,63 @@
     },
     {
         "legacy_ruleset": {
+            "uuid": "bf8bcadf-7a26-4c4b-a5ab-577987ac3c20",
+            "x": 374,
+            "y": 668,
+            "label": "Selfie",
+            "rules": [
+                {
+                    "uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
+                    "category": {
+                        "eng": "All Responses"
+                    },
+                    "destination": "5b977652-91e3-48be-8e86-7c8094b4aa8f",
+                    "destination_type": "A",
+                    "test": {
+                        "type": "true"
+                    },
+                    "label": null
+                }
+            ],
+            "finished_key": null,
+            "ruleset_type": "wait_photo",
+            "response_type": "",
+            "operand": "@step.value",
+            "config": {}
+        },
+        "collapse_exits": true,
+        "expected_node": {
+            "uuid": "bf8bcadf-7a26-4c4b-a5ab-577987ac3c20",
+            "router": {
+                "type": "switch",
+                "result_name": "Selfie",
+                "default_exit_uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
+                "operand": "@input",
+                "cases": []
+            },
+            "wait": {
+                "type": "msg",
+                "media_hint": "image"
+            },
+            "exits": [
+                {
+                    "uuid": "b26f9640-93b4-409e-b65e-7d0ee1e886dd",
+                    "name": "All Responses",
+                    "destination_node_uuid": "5b977652-91e3-48be-8e86-7c8094b4aa8f"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 374,
+                "top": 668
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
             "uuid": "10e483a8-5ffb-4c4f-917b-d43ce86c1d65",
             "rules": [
                 {

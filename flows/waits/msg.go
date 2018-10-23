@@ -14,14 +14,32 @@ func init() {
 // TypeMsg is the type of our message wait
 const TypeMsg string = "msg"
 
+// MediaType describes a type of media we're waiting for. Ideally the caller will send
+// us a message with an attachment of this type, but there's no contract that they have
+// to and this may serve as just a type hint if a channel supports that.
+type MediaType string
+
+// the different media types
+const (
+	MediaTypeImage    MediaType = "image"
+	MediaTypeAudio    MediaType = "audio"
+	MediaTypeVideo    MediaType = "video"
+	MediaTypeLocation MediaType = "gps"
+)
+
 // MsgWait is a wait which waits for an incoming message (i.e. a msg_received event)
 type MsgWait struct {
 	baseWait
+
+	MediaHint_ MediaType `json:"media_hint,omitempty"`
 }
 
 // NewMsgWait creates a new message wait
-func NewMsgWait(timeout *int) *MsgWait {
-	return &MsgWait{newBaseWait(TypeMsg, timeout)}
+func NewMsgWait(timeout *int, mediaHint MediaType) *MsgWait {
+	return &MsgWait{
+		baseWait:   newBaseWait(TypeMsg, timeout),
+		MediaHint_: mediaHint,
+	}
 }
 
 // Begin beings waiting at this wait
