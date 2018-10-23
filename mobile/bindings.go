@@ -125,9 +125,39 @@ func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resum
 	}
 }
 
+type Event struct {
+	type_   string
+	payload []byte
+}
+
+func (e *Event) Type() string {
+	return e.type_
+}
+
+func (e *Event) Payload() []byte {
+	return e.payload
+}
+
+func convertEvents(raw []flows.Event) ([]*Event, error) {
+	new := make([]*Event, len(raw))
+	for e := range raw {
+		marshaled, err := json.Marshal(raw[e])
+		if err != nil {
+			return nil, err
+		}
+		new[e] = &Event{type_: raw[e].Type(), payload: marshaled}
+	}
+	return new, nil
+}
+
 // Session represents a session with the flow engine
 type Session struct {
 	target flows.Session
+}
+
+// Status returns the status of this session
+func (s *Session) Status() string {
+	return string(s.Status())
 }
 
 // NewSession creates a new session
@@ -138,11 +168,19 @@ func NewSession(a *SessionAssets, httpUserAgent string) *Session {
 }
 
 // Start starts this session using the given trigger
-func (s *Session) Start(trigger *Trigger) error {
-	return s.target.Start(trigger.target)
+func (s *Session) Start(trigger *Trigger) ([]*Event, error) {
+	newEvents, err := s.target.Start(trigger.target)
+	if err != nil {
+		return nil, err
+	}
+	return convertEvents(newEvents)
 }
 
 // Resume resumes this session
-func (s *Session) Resume(resume *Resume) error {
-	return s.target.Resume(resume.target)
+func (s *Session) Resume(resume *Resume) ([]*Event, error) {
+	newEvents, err := s.target.Resume(resume.target)
+	if err != nil {
+		return nil, err
+	}
+	return convertEvents(newEvents)
 }

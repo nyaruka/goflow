@@ -35,6 +35,10 @@ func TestMobileBindings(t *testing.T) {
 
 	session := mobile.NewSession(sessionAssets, "mobile-test")
 
-	err = session.Start(trigger)
+	events, err := session.Start(trigger)
 	require.NoError(t, err)
+
+	assert.Equal(t, 2, len(events))
+	assert.Equal(t, "msg_created", events[0].Type())
+	assert.Equal(t, "msg_wait", events[1].Type())
 }
