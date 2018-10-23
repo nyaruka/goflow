@@ -1,7 +1,6 @@
 package flows
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -13,7 +12,7 @@ import (
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
-var REDACTED_URN = types.NewXText("********")
+var redactedURN = types.NewXText("********")
 
 func init() {
 	utils.Validator.RegisterValidation("urn", ValidateURN)
@@ -49,7 +48,7 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //
 // Examples:
 //
-//   @contact.urns.0 -> tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d
+//   @contact.urns.0 -> tel:+12065551212
 //   @contact.urns.0.scheme -> tel
 //   @contact.urns.0.path -> +12065551212
 //   @contact.urns.1.display -> nyaruka
@@ -58,36 +57,90 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //
 // @context urn
 type ContactURN struct {
-	urns.URN
+	urn     urns.URN
 	channel *Channel
 }
 
 // NewContactURN creates a new contact URN with associated channel
 func NewContactURN(urn urns.URN, channel *Channel) *ContactURN {
-	return &ContactURN{URN: urn, channel: channel}
+	return &ContactURN{urn: urn, channel: channel}
 }
+
+// ParseRawURN converts a raw URN to a ContactURN by extracting it's channel reference
+func ParseRawURN(a SessionAssets, rawURN urns.URN) (*ContactURN, error) {
+	_, _, query, _ := rawURN.ToParts()
+
+	parsedQuery, err := url.ParseQuery(query)
+	if err != nil {
+		return nil, err
+	}
+
+	var channel *Channel
+	channelUUID := parsedQuery.Get("channel")
+	if channelUUID != "" {
+		if channel, err = a.Channels().Get(assets.ChannelUUID(channelUUID)); err != nil {
+			return nil, err
+		}
+	}
+
+	return NewContactURN(rawURN, channel), nil
+}
+
+// URN gets the underlying URN
+func (u *ContactURN) URN() urns.URN { return u.urn }
 
 // Channel gets the channel associated with this URN
 func (u *ContactURN) Channel() *Channel { return u.channel }
 
 // SetChannel sets the channel associated with this URN
-func (u *ContactURN) SetChannel(channel *Channel) { u.channel = channel }
+func (u *ContactURN) SetChannel(channel *Channel) {
+	u.channel = channel
+
+	scheme, path, query, display := u.urn.ToParts()
+
+	parsedQuery, _ := url.ParseQuery(query)
+
+	if channel != nil {
+		parsedQuery.Set("channel", string(channel.UUID()))
+	} else {
+		parsedQuery.Del("channel")
+	}
+
+	urn, _ := urns.NewURNFromParts(scheme, path, parsedQuery.Encode(), display)
+	u.urn = urn
+}
+
+func (u *ContactURN) String() string {
+	return string(u.urn)
+}
+
+// Equal determines if this URN is equal to another
+func (u *ContactURN) Equal(other *ContactURN) bool {
+	return other != nil && u.String() == other.String()
+}
+
+// returns this URN as a raw URN without the query portion (i.e. only scheme, path, display)
+func (u *ContactURN) withoutQuery() urns.URN {
+	scheme, path, _, display := u.urn.ToParts()
+	urn, _ := urns.NewURNFromParts(scheme, path, "", display)
+	return urn
+}
 
 // Resolve resolves the given key when this URN is referenced in an expression
 func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
 	switch key {
 	case "scheme":
-		return types.NewXText(u.URN.Scheme())
+		return types.NewXText(u.urn.Scheme())
 	case "path":
 		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-			return REDACTED_URN
+			return redactedURN
 		}
-		return types.NewXText(u.URN.Path())
+		return types.NewXText(u.urn.Path())
 	case "display":
 		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-			return REDACTED_URN
+			return redactedURN
 		}
-		return types.NewXText(u.URN.Display())
+		return types.NewXText(u.urn.Display())
 	case "channel":
 		return u.Channel()
 	}
@@ -100,9 +153,9 @@ func (u *ContactURN) Describe() string { return "URN" }
 // Reduce is called when this object needs to be reduced to a primitive
 func (u *ContactURN) Reduce(env utils.Environment) types.XPrimitive {
 	if env.RedactionPolicy() == utils.RedactionPolicyURNs {
-		return REDACTED_URN
+		return redactedURN
 	}
-	return types.NewXText(string(u.URN))
+	return types.NewXText(string(u.withoutQuery()))
 }
 
 // ToXJSON is called when this type is passed to @(json(...))
@@ -121,45 +174,45 @@ func ReadURNList(a SessionAssets, rawURNs []urns.URN) (URNList, error) {
 	l := make(URNList, len(rawURNs))
 
 	for u := range rawURNs {
-		_, _, query, _ := rawURNs[u].ToParts()
-
-		parsedQuery, err := url.ParseQuery(query)
+		parsed, err := ParseRawURN(a, rawURNs[u])
 		if err != nil {
 			return nil, err
 		}
-
-		var channel *Channel
-		channelUUID := parsedQuery.Get("channel")
-		if channelUUID != "" {
-			if channel, err = a.Channels().Get(assets.ChannelUUID(channelUUID)); err != nil {
-				return nil, err
-			}
-		}
-
-		l[u] = &ContactURN{URN: rawURNs[u], channel: channel}
+		l[u] = parsed
 	}
+
 	return l, nil
 }
 
-// RawURNs returns the raw URNs with or without channel information
-func (l URNList) RawURNs(includeChannels bool) []urns.URN {
+// RawURNs returns the raw URNs
+func (l URNList) RawURNs() []urns.URN {
 	raw := make([]urns.URN, len(l))
 	for u := range l {
-		scheme, path, query, display := l[u].URN.ToParts()
-
-		if includeChannels && l[u].channel != nil {
-			query = fmt.Sprintf("channel=%s", l[u].channel.UUID())
-		}
-
-		raw[u], _ = urns.NewURNFromParts(scheme, path, query, display)
+		raw[u] = l[u].urn
 	}
 	return raw
+}
+
+// Equal returns whether this list of URNs is equal to another
+func (l URNList) Equal(other URNList) bool {
+	if len(l) != len(other) {
+		return false
+	}
+
+	for u := range l {
+		if !l[u].Equal(other[u]) {
+			return false
+		}
+	}
+	return true
 }
 
 // Clone returns a clone of this URN list
 func (l URNList) clone() URNList {
 	urns := make(URNList, len(l))
-	copy(urns, l)
+	for u := range l {
+		urns[u] = NewContactURN(l[u].urn, l[u].channel)
+	}
 	return urns
 }
 
@@ -167,7 +220,7 @@ func (l URNList) clone() URNList {
 func (l URNList) WithScheme(scheme string) URNList {
 	var matching URNList
 	for _, u := range l {
-		if u.URN.Scheme() == scheme {
+		if u.urn.Scheme() == scheme {
 			matching = append(matching, u)
 		}
 	}

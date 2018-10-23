@@ -94,9 +94,9 @@
 <a class="sourceLine" id="cb3-4" data-line-number="4">@contact.language → eng</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">@contact.timezone → America/Guayaquil</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">@contact.created_on → <span class="dv">2018-06</span>-20T11:<span class="dv">40</span>:<span class="fl">30.123456</span>Z</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">@contact.urns → [<span class="st">&quot;tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>,<span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span>,<span class="st">&quot;mailto:foo@bar.com&quot;</span>]</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span>?channel=57f1078f-88aa-46f4-a59a-948a5739c03d</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">@contact.urns.tel → [<span class="st">&quot;tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&quot;</span>]</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">@contact.urns → [<span class="st">&quot;tel:+12065551212&quot;</span>,<span class="st">&quot;twitterid:54784326227#nyaruka&quot;</span>,<span class="st">&quot;mailto:foo@bar.com&quot;</span>]</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">@contact.urns.tel → [<span class="st">&quot;tel:+12065551212&quot;</span>]</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">@contact.urns.mailto<span class="fl">.0</span> → mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11">@contact.urn → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
@@ -205,7 +205,7 @@
 </ul>
 <p>To render a URN in a human friendly format, use the <a href="expressions.html#function:format_urn">format_urn</a> function.</p>
 <p>Examples:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span>?channel=57f1078f-88aa-46f4-a59a-948a5739c03d</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb10-1" data-line-number="1">@contact.urns<span class="fl">.0</span> → tel:+<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">@contact.urns.<span class="fl">0.</span>scheme → tel</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">@contact.urns.<span class="fl">0.</span>path → +<span class="dv">12065551212</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">@contact.urns.<span class="fl">1.</span>display → nyaruka</a>

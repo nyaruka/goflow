@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
@@ -65,6 +66,20 @@ func TestEventMarshaling(t *testing.T) {
 				"created_on": "2018-10-18T14:20:30.000123456Z",
 				"timezone": "Africa/Kigali",
 				"type": "contact_timezone_changed"
+			}`,
+		},
+		{
+			events.NewContactURNsChangedEvent([]urns.URN{
+				urns.URN("tel:+12345678900"),
+				urns.URN("twitterid:8764843252522#bob"),
+			}),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_urns_changed",
+				"urns": [
+					"tel:+12345678900",
+					"twitterid:8764843252522#bob"
+				]
 			}`,
 		},
 	}

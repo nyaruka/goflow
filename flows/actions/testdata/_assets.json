@@ -67,6 +67,18 @@
             ]
         },
         {
+            "uuid": "3a05eaf5-cb1b-4246-bef1-f277419c83a7",
+            "name": "Nexmo",
+            "address": "+12345672222",
+            "schemes": [
+                "tel"
+            ],
+            "roles": [
+                "send",
+                "receive"
+            ]
+        },
+        {
             "uuid": "8e21f093-99aa-413b-b55b-758b54308fcb",
             "name": "Twitter Channel",
             "address": "nyaruka",

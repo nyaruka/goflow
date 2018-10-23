@@ -69,7 +69,7 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step) erro
 		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("can't transfer airtime to contact without a tel URN")))
 		return nil
 	}
-	recipient := telURNs[0].Path()
+	recipient := telURNs[0].URN().Path()
 
 	// log error and return if we don't have a configuration
 	rawConfig := run.Session().Environment().Extension("transferto")

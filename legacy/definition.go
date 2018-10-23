@@ -530,6 +530,13 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 	}
 }
 
+var waitToMediaType = map[string]waits.MediaType{
+	"wait_audio": waits.MediaTypeAudio,
+	"wait_video": waits.MediaTypeVideo,
+	"wait_photo": waits.MediaTypeImage,
+	"wait_gps":   waits.MediaTypeLocation,
+}
+
 // migrates the given legacy rulset to a node with a router
 func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
 	var newActions []flows.Action
@@ -621,7 +628,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
 		uiType = UINodeTypeSplitByGroups
 
-	case "wait_message":
+	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps":
 		// look for timeout test on the legacy ruleset
 		var timeout *int
 		for _, rule := range r.Rules {
@@ -636,7 +643,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			}
 		}
 
-		wait = waits.NewMsgWait(timeout)
+		wait = waits.NewMsgWait(timeout, waitToMediaType[r.Type])
 		uiType = UINodeTypeWaitForResponse
 
 		fallthrough

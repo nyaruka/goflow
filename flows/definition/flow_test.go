@@ -157,7 +157,7 @@ func TestNewFlow(t *testing.T) {
 						false,
 					),
 				},
-				waits.NewMsgWait(nil),
+				waits.NewMsgWait(nil, ""),
 				routers.NewSwitchRouter(
 					flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 					"@input",
