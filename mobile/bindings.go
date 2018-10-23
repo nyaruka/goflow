@@ -94,9 +94,14 @@ type MsgIn struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid string, text string) *MsgIn {
+func NewMsgIn(uuid string, text string, attachments []string) *MsgIn {
+	convertedAttachments := make([]flows.Attachment, len(attachments))
+	for a := range attachments {
+		convertedAttachments[a] = flows.Attachment(attachments[a])
+	}
+
 	return &MsgIn{
-		target: flows.NewMsgIn(flows.MsgUUID(uuid), 0, urns.NilURN, nil, text, nil),
+		target: flows.NewMsgIn(flows.MsgUUID(uuid), 0, urns.NilURN, nil, text, convertedAttachments),
 	}
 }
 
@@ -120,8 +125,17 @@ type Resume struct {
 
 // NewMsgResume creates a new message resume
 func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resume {
+	var e utils.Environment
+	if environment != nil {
+		e = environment.target
+	}
+	var c *flows.Contact
+	if contact != nil {
+		c = contact.target
+	}
+
 	return &Resume{
-		target: resumes.NewMsgResume(environment.target, contact.target, msg.target),
+		target: resumes.NewMsgResume(e, c, msg.target),
 	}
 }
 
