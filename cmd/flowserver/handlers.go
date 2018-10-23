@@ -93,11 +93,12 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	}
 
 	// start our flow
-	if err := session.Start(trigger); err != nil {
+	newEvents, err := session.Start(trigger)
+	if err != nil {
 		return nil, err
 	}
 
-	return &sessionResponse{Session: session, Events: session.Events()}, nil
+	return &sessionResponse{Session: session, Events: newEvents}, nil
 }
 
 // Resumes an existing engine session
@@ -151,12 +152,12 @@ func (s *FlowServer) handleResume(w http.ResponseWriter, r *http.Request) (inter
 	}
 
 	// resume our session
-	err = session.Resume(resume)
+	newEvents, err := session.Resume(resume)
 	if err != nil {
 		return nil, err
 	}
 
-	return &sessionResponse{Session: session, Events: session.Events()}, nil
+	return &sessionResponse{Session: session, Events: newEvents}, nil
 }
 
 // Migrates a legacy flow to the new flow definition specification

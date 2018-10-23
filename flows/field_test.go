@@ -12,7 +12,7 @@ import (
 )
 
 func TestFieldValues(t *testing.T) {
-	session, err := test.CreateTestSession("http://localhost", nil)
+	session, _, err := test.CreateTestSession("http://localhost", nil)
 	require.NoError(t, err)
 
 	env := session.Environment()

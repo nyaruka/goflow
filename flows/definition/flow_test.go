@@ -41,7 +41,7 @@ var invalidFlows = []struct {
 }
 
 func TestFlowValidation(t *testing.T) {
-	session, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
 	for _, tc := range invalidFlows {
@@ -134,7 +134,7 @@ var flowDef = `{
 }`
 
 func TestNewFlow(t *testing.T) {
-	session, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
 	flow := definition.NewFlow(

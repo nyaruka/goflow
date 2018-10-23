@@ -126,7 +126,6 @@ func (s *session) waitingRun() flows.FlowRun {
 func (s *session) LogEvent(event flows.Event) {
 	s.newEvents = append(s.newEvents, event)
 }
-func (s *session) Events() []flows.Event { return s.newEvents }
 
 func (s *session) EngineConfig() flows.EngineConfig { return s.engineConfig }
 func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
@@ -136,34 +135,34 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 //------------------------------------------------------------------------------------------
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
-func (s *session) Start(trigger flows.Trigger) error {
+func (s *session) Start(trigger flows.Trigger) ([]flows.Event, error) {
 	if err := trigger.Initialize(s); err != nil {
-		return err
+		return s.newEvents, err
 	}
 
 	s.trigger = trigger
 
 	// off to the races...
-	return s.continueUntilWait(nil, noDestination, nil, trigger)
+	return s.newEvents, s.continueUntilWait(nil, noDestination, nil, trigger)
 }
 
 // Resume tries to resume a waiting session
-func (s *session) Resume(resume flows.Resume) error {
-	// clear the event log
+func (s *session) Resume(resume flows.Resume) ([]flows.Event, error) {
+	// clear the new events log
 	s.newEvents = nil
 
 	if s.status != flows.SessionStatusWaiting {
-		return fmt.Errorf("only waiting sessions can be resumed")
+		return s.newEvents, fmt.Errorf("only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
 	if waitingRun == nil {
-		return fmt.Errorf("session doesn't contain any runs which are waiting")
+		return s.newEvents, fmt.Errorf("session doesn't contain any runs which are waiting")
 	}
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets(), flows.NewValidationContext()); err != nil {
-		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", waitingRun.Flow().UUID(), err)
+		return s.newEvents, fmt.Errorf("validation failed for flow[uuid=%s]: %s", waitingRun.Flow().UUID(), err)
 	}
 
 	if err := s.tryToResume(waitingRun, resume); err != nil {
@@ -175,7 +174,7 @@ func (s *session) Resume(resume flows.Resume) error {
 		s.LogEvent(events.NewErrorEvent(err))
 	}
 
-	return nil
+	return s.newEvents, nil
 }
 
 // Resume resumes a waiting session
