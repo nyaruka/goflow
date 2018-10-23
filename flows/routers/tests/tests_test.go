@@ -202,7 +202,7 @@ var testTests = []struct {
 	{"has_phone", []types.XValue{xs("my number is 12065551212"), xs("US")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is 206 555 1212"), xs("US")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is none of your business"), xs("US")}, false, nil, false},
-	{"has_phone", []types.XValue{nil}, false, nil, true},
+	{"has_phone", []types.XValue{}, false, nil, true},
 	{"has_phone", []types.XValue{xs("number"), nil}, false, nil, false},
 	{"has_phone", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 }

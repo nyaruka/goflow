@@ -1550,7 +1550,8 @@ Both text values are trimmed of surrounding whitespace and matching is case-inse
 
 ## has_phone(text, country_code)
 
-Tests whether a phone number (in the passed in `country_code`) is contained in the `text`
+Tests whether `text` contains a phone number. The optional `country_code` argument specifies
+the country to use for parsing.
 
 
 ```objectivec
