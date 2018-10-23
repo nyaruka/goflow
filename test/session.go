@@ -316,11 +316,11 @@ var sessionResume = `{
 }`
 
 // CreateTestSession creates a standard example session for testing
-func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, error) {
+func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
 
 	session, err := CreateSession(json.RawMessage(sessionAssets), testServerURL)
 	if err != nil {
-		return nil, fmt.Errorf("error creating test session: %s", err)
+		return nil, nil, fmt.Errorf("error creating test session: %s", err)
 	}
 
 	// optional modify the main flow by adding the provided action to the final empty node
@@ -332,21 +332,22 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session, json.RawMessage(sessionTrigger))
 	if err != nil {
-		return nil, fmt.Errorf("error reading trigger: %s", err)
+		return nil, nil, fmt.Errorf("error reading trigger: %s", err)
 	}
 
-	if err := session.Start(trigger); err != nil {
-		return nil, err
+	_, err = session.Start(trigger)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	// read our resume
 	resume, err := resumes.ReadResume(session, json.RawMessage(sessionResume))
 	if err != nil {
-		return nil, fmt.Errorf("error reading resume: %s", err)
+		return nil, nil, fmt.Errorf("error reading resume: %s", err)
 	}
 
-	err = session.Resume(resume)
-	return session, err
+	newEvents, err := session.Resume(resume)
+	return session, newEvents, err
 }
 
 // CreateSession creates a session with the given assets

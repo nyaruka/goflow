@@ -17,7 +17,7 @@ import (
 )
 
 func TestMsgInput(t *testing.T) {
-	session, err := test.CreateTestSession("", nil)
+	session, _, err := test.CreateTestSession("", nil)
 	require.NoError(t, err)
 
 	env := session.Environment()

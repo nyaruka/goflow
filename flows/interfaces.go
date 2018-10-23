@@ -361,16 +361,14 @@ type Session interface {
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
 	FlowOnStack(assets.FlowUUID) bool
+	LogEvent(Event)
 
-	Start(Trigger) error
-	Resume(Resume) error
+	Start(Trigger) ([]Event, error)
+	Resume(Resume) ([]Event, error)
 	Runs() []FlowRun
 	GetRun(RunUUID) (FlowRun, error)
 	GetCurrentChild(FlowRun) FlowRun
 	ParentRun() RunSummary
-
-	Events() []Event
-	LogEvent(Event)
 
 	EngineConfig() EngineConfig
 	HTTPClient() *utils.HTTPClient

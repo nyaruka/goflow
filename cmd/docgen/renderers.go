@@ -233,7 +233,7 @@ func checkExample(session flows.Session, line string) error {
 }
 
 func eventsForAction(action flows.Action) (json.RawMessage, error) {
-	session, err := test.CreateTestSession("http://localhost:49998", action)
+	session, newEvents, err := test.CreateTestSession("http://localhost:49998", action)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func eventsForAction(action flows.Action) (json.RawMessage, error) {
 
 	// only interested in events created on the last step
 	eventLog := make([]flows.Event, 0)
-	for _, event := range session.Events() {
+	for _, event := range newEvents {
 		if event.StepUUID() == lastStep.UUID() {
 			eventLog = append(eventLog, event)
 		}
