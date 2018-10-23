@@ -14,9 +14,7 @@ func init() {
 // TypeMsg is the type of our message wait
 const TypeMsg string = "msg"
 
-// MediaType describes a type of media we're waiting for. Ideally the caller will send
-// us a message with an attachment of this type, but there's no contract that they have
-// to and this may serve as just a type hint if a channel supports that.
+// MediaType describes a type of media we're waiting for. See note on `media_hint` field below.
 type MediaType string
 
 // the different media types
@@ -31,6 +29,10 @@ const (
 type MsgWait struct {
 	baseWait
 
+	// Waits can indicate to the caller what type of media the flow is expecting. In the case of flows of type
+	// messaging_offline, this should be considered a requirement and the client should only reply with a message
+	// containing an attachment of that type. In the case of other flow types this should be considered only a
+	// hint to the channel, which may or may not support prompting the contact for media of that type.
 	MediaHint_ MediaType `json:"media_hint,omitempty"`
 }
 
