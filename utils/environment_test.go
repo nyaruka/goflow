@@ -27,6 +27,14 @@ func TestEnvironmentMarshaling(t *testing.T) {
 	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Africa/Kigali"}`))
 	assert.Error(t, err)
 
+	// can't create with invalid language
+	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "default_language": "elvish"}`))
+	assert.Error(t, err)
+
+	// can't create with invalid country
+	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "default_country": "Narnia"}`))
+	assert.Error(t, err)
+
 	// can't create with invalid timzeone
 	env, err = utils.ReadEnvironment(json.RawMessage(`{"date_format": "DD-MM-YYYY", "time_format": "tttttt", "timezone": "Cuenca"}`))
 	assert.Error(t, err)
