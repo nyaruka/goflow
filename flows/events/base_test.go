@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
+	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/test"
@@ -28,6 +30,38 @@ func TestEventMarshaling(t *testing.T) {
 		event     flows.Event
 		marshaled string
 	}{
+		{
+			events.NewContactFieldChangedEvent(
+				assets.NewFieldReference("gender", "Gender"),
+				flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
+			),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"field": {
+					"key": "gender",
+					"name": "Gender"
+				},
+				"type": "contact_field_changed",
+				"value": {
+					"text": "male"
+				}
+			}`,
+		},
+		{
+			events.NewContactFieldChangedEvent(
+				assets.NewFieldReference("gender", "Gender"),
+				nil, // value being cleared
+			),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"field": {
+					"key": "gender",
+					"name": "Gender"
+				},
+				"type": "contact_field_changed",
+				"value": null
+			}`,
+		},
 		{
 			events.NewContactGroupsChangedEvent(
 				[]*flows.Group{session.Assets().Groups().FindByName("Customers")},
@@ -89,6 +123,10 @@ func TestEventMarshaling(t *testing.T) {
 		require.NoError(t, err)
 
 		test.AssertEqualJSON(t, []byte(tc.marshaled), eventJSON, "event JSON mismatch")
+
+		// also try to unmarshal and validate the JSON
+		err = utils.UnmarshalAndValidate(eventJSON, tc.event)
+		require.NoError(t, err)
 	}
 }
 
