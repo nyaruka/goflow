@@ -354,6 +354,7 @@ Events are sent by the caller to tell the engine to update the session contact.
 ## contact_field_changed
 
 Events are created when a custom field value of the contact has been changed.
+A null values indicates that the field value has been cleared.
 
 <div class="output_event"><h3>Event</h3>```json
 {
