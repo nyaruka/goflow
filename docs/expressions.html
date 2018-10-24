@@ -851,10 +851,11 @@
 <a class="sourceLine" id="cb89-3" data-line-number="3">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</a></code></pre></div>
 <p><a name="test:has_phone"></a></p>
 <h2 id="has_phonetext-country_code">has_phone(text, country_code)</h2>
-<p>Tests whether a phone number (in the passed in <code>country_code</code>) is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" data-line-number="1">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb90-2" data-line-number="2">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></a>
-<a class="sourceLine" id="cb90-3" data-line-number="3">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</a></code></pre></div>
+<p>Tests whether <code>text</code> contains a phone number. The optional <code>country_code</code> argument specifies the country to use for parsing.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" data-line-number="1">@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb90-3" data-line-number="3">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></a>
+<a class="sourceLine" id="cb90-4" data-line-number="4">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_phrase"></a></p>
 <h2 id="has_phrasetext-phrase">has_phrase(text, phrase)</h2>
 <p>Tests whether <code>phrase</code> is contained in <code>text</code></p>

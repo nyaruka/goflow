@@ -426,7 +426,7 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		require.NoError(t, err)
 
 		action, err := actions.ReadAction(tc.ActionJSON)
-		require.NoError(t, err)
+		require.NoError(t, err, "error loading action in %s", testName)
 		assert.Equal(t, typeName, action.Type())
 
 		// if this action is expected to fail validation, check that

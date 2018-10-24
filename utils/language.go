@@ -6,6 +6,10 @@ import (
 	"golang.org/x/text/language"
 )
 
+func init() {
+	Validator.RegisterAlias("language", "eq=base|len=3")
+}
+
 // Language is our internal representation of a language
 type Language string
 

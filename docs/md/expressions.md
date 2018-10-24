@@ -1550,10 +1550,12 @@ Both text values are trimmed of surrounding whitespace and matching is case-inse
 
 ## has_phone(text, country_code)
 
-Tests whether a phone number (in the passed in `country_code`) is contained in the `text`
+Tests whether `text` contains a phone number. The optional `country_code` argument specifies
+the country to use for parsing.
 
 
 ```objectivec
+@(has_phone("my number is +12067799294")) → true
 @(has_phone("my number is 2067799294", "US")) → true
 @(has_phone("my number is 206 779 9294", "US").match) → +12067799294
 @(has_phone("my number is none of your business", "US")) → false
