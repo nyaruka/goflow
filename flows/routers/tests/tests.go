@@ -515,6 +515,7 @@ func HasEmail(env utils.Environment, text types.XText) types.XValue {
 // HasPhone tests whether `text` contains a phone number. The optional `country_code` argument specifies
 // the country to use for parsing.
 //
+//   @(has_phone("my number is +12067799294")) -> true
 //   @(has_phone("my number is 2067799294", "US")) -> true
 //   @(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
 //   @(has_phone("my number is none of your business", "US")) -> false
