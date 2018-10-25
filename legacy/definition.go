@@ -89,7 +89,7 @@ func (l *LabelReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = expressions.MigrateTemplate(nameExpression, false)
+			nameExpression, _ = expressions.MigrateTemplate(nameExpression, nil)
 		}
 
 		l.Name = nameExpression
@@ -139,7 +139,7 @@ func (g *GroupReference) UnmarshalJSON(data []byte) error {
 
 		// if it starts with @ then it's an expression
 		if strings.HasPrefix(nameExpression, "@") {
-			nameExpression, _ = expressions.MigrateTemplate(nameExpression, false)
+			nameExpression, _ = expressions.MigrateTemplate(nameExpression, nil)
 		}
 
 		g.Name = nameExpression
@@ -281,7 +281,7 @@ var flowTypeMapping = map[string]flows.FlowType{
 func addTranslationMap(baseLanguage utils.Language, localization flows.Localization, mapped Translations, uuid utils.UUID, property string) string {
 	var inBaseLanguage string
 	for language, item := range mapped {
-		expression, _ := expressions.MigrateTemplate(item, false)
+		expression, _ := expressions.MigrateTemplate(item, nil)
 		if language != baseLanguage && language != "base" {
 			localization.AddItemTranslation(language, uuid, property, []string{expression})
 		} else {
@@ -297,7 +297,7 @@ func addTranslationMultiMap(baseLanguage utils.Language, localization flows.Loca
 	for language, items := range mapped {
 		templates := make([]string, len(items))
 		for i := range items {
-			expression, _ := expressions.MigrateTemplate(items[i], false)
+			expression, _ := expressions.MigrateTemplate(items[i], nil)
 			templates[i] = expression
 		}
 		if language != baseLanguage {
@@ -376,11 +376,11 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			return nil, err
 		}
 
-		migratedSubject, _ := expressions.MigrateTemplate(a.Subject, false)
-		migratedBody, _ := expressions.MigrateTemplate(msg, false)
+		migratedSubject, _ := expressions.MigrateTemplate(a.Subject, nil)
+		migratedBody, _ := expressions.MigrateTemplate(msg, nil)
 		migratedEmails := make([]string, len(a.Emails))
 		for e, email := range a.Emails {
-			migratedEmails[e], _ = expressions.MigrateTemplate(email, false)
+			migratedEmails[e], _ = expressions.MigrateTemplate(email, nil)
 		}
 
 		return actions.NewSendEmailAction(a.UUID, migratedEmails, migratedSubject, migratedBody), nil
@@ -406,7 +406,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 			if variable.ID == "@new_contact" {
 				createContact = true
 			} else {
-				migratedVar, _ := expressions.MigrateTemplate(variable.ID, false)
+				migratedVar, _ := expressions.MigrateTemplate(variable.ID, nil)
 				variables = append(variables, migratedVar)
 			}
 		}
@@ -462,7 +462,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 		variables := make([]string, 0, len(a.Variables))
 		for _, variable := range a.Variables {
-			migratedVar, _ := expressions.MigrateTemplate(variable.ID, false)
+			migratedVar, _ := expressions.MigrateTemplate(variable.ID, nil)
 			variables = append(variables, migratedVar)
 		}
 
@@ -484,7 +484,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		allGroups := len(groups) == 0
 		return actions.NewRemoveContactGroupsAction(a.UUID, groups, allGroups), nil
 	case "save":
-		migratedValue, _ := expressions.MigrateTemplate(a.Value, false)
+		migratedValue, _ := expressions.MigrateTemplate(a.Value, nil)
 
 		// flows now have different action for name changing
 		if a.Field == "name" || a.Field == "first_name" {
@@ -506,7 +506,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return actions.NewSetContactFieldAction(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
 	case "api":
-		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, false)
+		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, nil)
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		body := ""
@@ -572,7 +572,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":
-		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, false)
+		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, nil)
 		headers := make(map[string]string, len(config.WebhookHeaders))
 		body := ""
 		method := strings.ToUpper(config.WebhookAction)
@@ -586,7 +586,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		}
 
 		for _, header := range config.WebhookHeaders {
-			headers[header.Name], _ = expressions.MigrateTemplate(header.Value, false)
+			headers[header.Name], _ = expressions.MigrateTemplate(header.Value, nil)
 		}
 
 		newActions = []flows.Action{
@@ -607,7 +607,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		uiType = UINodeTypeSplitByResthook
 
 	case "form_field":
-		operand, _ := expressions.MigrateTemplate(r.Operand, false)
+		operand, _ := expressions.MigrateTemplate(r.Operand, nil)
 		operand = fmt.Sprintf("@(field(%s, %d, \"%s\"))", operand[1:], config.FieldIndex, config.FieldDelimiter)
 		router = routers.NewSwitchRouter(defaultExit, operand, cases, resultName)
 
@@ -697,7 +697,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			uiType = UINodeTypeSplitByExpression
 		}
 
-		operand, _ := expressions.MigrateTemplate(r.Operand, defaultToSelf)
+		operand, _ := expressions.MigrateTemplate(r.Operand, &expressions.MigrateOptions{DefaultToSelf: defaultToSelf})
 		if operand == "" {
 			operand = "@input"
 		}
@@ -813,7 +813,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 	case "eq", "gt", "gte", "lt", "lte":
 		test := numericTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedTest, err := expressions.MigrateTemplate(string(test.Test), false)
+		migratedTest, err := expressions.MigrateTemplate(string(test.Test), nil)
 		if err != nil {
 			return nil, err
 		}
@@ -822,11 +822,11 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 	case "between":
 		test := betweenTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedMin, err := expressions.MigrateTemplate(test.Min, false)
+		migratedMin, err := expressions.MigrateTemplate(test.Min, nil)
 		if err != nil {
 			return nil, err
 		}
-		migratedMax, err := expressions.MigrateTemplate(test.Max, false)
+		migratedMax, err := expressions.MigrateTemplate(test.Max, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -841,7 +841,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 
 		// all the tests are evaluated as templates.. except regex
 		if r.Test.Type != "regex" {
-			baseTest, err = expressions.MigrateTemplate(baseTest, false)
+			baseTest, err = expressions.MigrateTemplate(baseTest, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -857,7 +857,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		if err != nil {
 			return nil, err
 		}
-		migratedTest, err := expressions.MigrateTemplate(test.Test, false)
+		migratedTest, err := expressions.MigrateTemplate(test.Test, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -902,7 +902,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 	case "district":
 		test := stringTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedState, err := expressions.MigrateTemplate(test.Test, false)
+		migratedState, err := expressions.MigrateTemplate(test.Test, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -911,11 +911,11 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 	case "ward":
 		test := wardTest{}
 		err = json.Unmarshal(r.Test.Data, &test)
-		migratedDistrict, err := expressions.MigrateTemplate(test.District, false)
+		migratedDistrict, err := expressions.MigrateTemplate(test.District, nil)
 		if err != nil {
 			return nil, err
 		}
-		migratedState, err := expressions.MigrateTemplate(test.State, false)
+		migratedState, err := expressions.MigrateTemplate(test.State, nil)
 		if err != nil {
 			return nil, err
 		}

@@ -95,7 +95,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	run := session.Runs()[0]
 
 	for _, test := range tests {
-		eval, err := run.EvaluateTemplateAsString(test.template, false)
+		eval, err := run.EvaluateTemplateAsString(test.template)
 
 		var actualErrorMsg string
 		if err != nil {
@@ -143,7 +143,7 @@ func TestContextToJSON(t *testing.T) {
 
 	for _, test := range tests {
 		template := fmt.Sprintf("@(json(%s))", test.path)
-		eval, err := run.EvaluateTemplateAsString(template, false)
+		eval, err := run.EvaluateTemplateAsString(template)
 
 		assert.NoError(t, err, "unexpected error evaluating template '%s'", template)
 		assert.Equal(t, test.expected, eval, "json() returned unexpected value for template '%s'", template)

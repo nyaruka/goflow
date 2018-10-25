@@ -31,5 +31,5 @@ func expTester(template string) (string, error) {
 
 	run := session.Runs()[0]
 
-	return run.EvaluateTemplateAsString(template, false)
+	return run.EvaluateTemplateAsString(template)
 }

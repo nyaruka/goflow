@@ -60,7 +60,7 @@ func (a *CallResthookAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	// build our payload
-	payload, err := run.EvaluateTemplateAsString(flows.DefaultWebhookPayload, false)
+	payload, err := run.EvaluateTemplateAsString(flows.DefaultWebhookPayload)
 	if err != nil {
 		a.logError(run, step, err)
 	}

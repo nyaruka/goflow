@@ -219,7 +219,7 @@ func checkExample(session flows.Session, line string) error {
 	expected := strings.Replace(strings.TrimSpace(pieces[1]), "\\n", "\n", -1)
 
 	// evaluate our expression
-	val, err := session.Runs()[0].EvaluateTemplateAsString(test, false)
+	val, err := session.Runs()[0].EvaluateTemplateAsString(test)
 
 	if expected == "ERROR" {
 		if err == nil {

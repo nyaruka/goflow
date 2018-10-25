@@ -58,12 +58,12 @@ func EvaluateTemplate(env utils.Environment, context types.XValue, template stri
 	}
 
 	// otherwise fallback to full template evaluation
-	asStr, err := EvaluateTemplateAsString(env, context, template, false, allowedTopLevels)
+	asStr, err := EvaluateTemplateAsString(env, context, template, allowedTopLevels)
 	return types.NewXText(asStr), err
 }
 
 // EvaluateTemplateAsString evaluates the passed in template returning the string value of its execution
-func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, urlEncode bool, allowedTopLevels []string) (string, error) {
+func EvaluateTemplateAsString(env utils.Environment, context types.XValue, template string, allowedTopLevels []string) (string, error) {
 	var buf bytes.Buffer
 	scanner := NewXScanner(strings.NewReader(template), allowedTopLevels)
 	errors := NewTemplateErrors()
@@ -79,9 +79,6 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 				errors.Add(fmt.Sprintf("@%s", token), value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(env, value)
-				if urlEncode {
-					strValue = types.NewXText(utils.URLEscape(strValue.Native()))
-				}
 
 				buf.WriteString(strValue.Native())
 			}
@@ -92,9 +89,6 @@ func EvaluateTemplateAsString(env utils.Environment, context types.XValue, templ
 				errors.Add(fmt.Sprintf("@(%s)", token), value.(error).Error())
 			} else {
 				strValue, _ := types.ToXText(env, value)
-				if urlEncode {
-					strValue = types.NewXText(utils.URLEscape(strValue.Native()))
-				}
 
 				buf.WriteString(strValue.Native())
 			}

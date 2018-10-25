@@ -268,7 +268,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
+		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
