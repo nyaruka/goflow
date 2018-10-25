@@ -17,11 +17,6 @@ func Snakify(text string) string {
 	return strings.Trim(strings.ToLower(snakedChars.ReplaceAllString(text, "_")), "_")
 }
 
-// URLEscape escapes spaces as %20 matching urllib.quote(s, safe="") in Python
-func URLEscape(s string) string {
-	return strings.Replace(url.QueryEscape(s), "+", "%20", -1)
-}
-
 // TokenizeString returns the words in the passed in string, split by non word characters including emojis
 func TokenizeString(str string) []string {
 	return wordTokenRegex.FindAllString(str, -1)
