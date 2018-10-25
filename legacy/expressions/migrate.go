@@ -23,12 +23,24 @@ var datePrefixes = []string{
 	"timevalue",
 }
 
-// MigrateTemplate will take a legacy expression and translate it to the new syntax
-func MigrateTemplate(template string, defaultToSelf bool) (string, error) {
-	return migrateLegacyTemplateAsString(migrationContext, template, defaultToSelf)
+// MigrateOptions are options for how expressions are migrated
+type MigrateOptions struct {
+	DefaultToSelf bool
+	URLEncode     bool
 }
 
-func migrateLegacyTemplateAsString(resolver Resolvable, template string, defaultToSelf bool) (string, error) {
+var defaultOptions = &MigrateOptions{DefaultToSelf: false, URLEncode: false}
+
+// MigrateTemplate will take a legacy expression and translate it to the new syntax
+func MigrateTemplate(template string, options *MigrateOptions) (string, error) {
+	if options == nil {
+		options = defaultOptions
+	}
+
+	return migrateLegacyTemplateAsString(migrationContext, template, options)
+}
+
+func migrateLegacyTemplateAsString(resolver Resolvable, template string, options *MigrateOptions) (string, error) {
 	var buf bytes.Buffer
 	scanner := excellent.NewXScanner(strings.NewReader(template), ContextTopLevels)
 	scanner.SetUnescapeBody(false)
@@ -48,12 +60,12 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, default
 				strValue, _ := toString(value)
 
 				var errorAs string
-				if defaultToSelf {
+				if options.DefaultToSelf {
 					errorAs = "@" + token
 				}
 
-				// expression might need to be wrapped in @(...) or call to @(default(...))
-				buf.WriteString(wrapRawExpression(strValue, errorAs))
+				// optionally wrap expression so that it is URL encoded or defaults to itself on error
+				buf.WriteString(wrapRawExpression(strValue, errorAs, options.URLEncode))
 			}
 
 		case excellent.EXPRESSION:
@@ -67,12 +79,12 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, default
 				strValue, _ := toString(value)
 
 				var errorAs string
-				if defaultToSelf {
+				if options.DefaultToSelf {
 					errorAs = "@(" + token + ")"
 				}
 
-				// expression might need to be wrapped in @(...) or call to @(default(...))
-				buf.WriteString(wrapRawExpression(strValue, errorAs))
+				// optionally wrap expression so that it is URL encoded or defaults to itself on error
+				buf.WriteString(wrapRawExpression(strValue, errorAs, options.URLEncode))
 			}
 		}
 	}
@@ -234,9 +246,13 @@ func isValidIdentifier(expression string) bool {
 }
 
 // takes a raw expression and wraps it for inclusion in a template, e.g. now() -> @(now())
-func wrapRawExpression(expression string, errorAs string) string {
+func wrapRawExpression(expression string, errorAs string, urlEncode bool) string {
 	if errorAs != "" {
 		expression = fmt.Sprintf(`if(is_error(%s), %s, %s)`, expression, strconv.Quote(errorAs), expression)
+	}
+
+	if urlEncode {
+		expression = fmt.Sprintf(`url_encode(%s)`, expression)
 	}
 
 	if !isValidIdentifier(expression) {

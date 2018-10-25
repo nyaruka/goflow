@@ -240,7 +240,7 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 	context := types.JSONToXValue(expression.Context)
 
 	// evaluate it
-	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, false, nil)
+	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, nil)
 	if err != nil {
 		return expressionResponse{Result: result, Errors: []string{err.Error()}}, nil
 	}

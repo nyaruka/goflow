@@ -56,7 +56,7 @@ func (a *SendEmailAction) Validate(assets flows.SessionAssets, context *flows.Va
 
 // Execute creates the email events
 func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
-	subject, err := run.EvaluateTemplateAsString(a.Subject, false)
+	subject, err := run.EvaluateTemplateAsString(a.Subject)
 	if err != nil {
 		a.logError(run, step, err)
 	}
@@ -70,7 +70,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 		return nil
 	}
 
-	body, err := run.EvaluateTemplateAsString(a.Body, false)
+	body, err := run.EvaluateTemplateAsString(a.Body)
 	if err != nil {
 		a.logError(run, step, err)
 	}
@@ -82,7 +82,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	evaluatedAddresses := make([]string, 0)
 
 	for _, address := range a.Addresses {
-		evaluatedAddress, err := run.EvaluateTemplateAsString(address, false)
+		evaluatedAddress, err := run.EvaluateTemplateAsString(address)
 		if err != nil {
 			a.logError(run, step, err)
 		}

@@ -110,7 +110,7 @@
                             ],
                             "text": "Hi @contact.name, are you ready for these attachments?",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(format_location(contact.fields.state))"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))"
                             ]
                         },
                         {
@@ -154,7 +154,7 @@
                             "type": "send_msg",
                             "text": "This is a reply with attachments and quick replies",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(format_location(contact.fields.state))"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))"
                             ],
                             "quick_replies": [
                                 "Yes",
@@ -200,7 +200,7 @@
                             "uuid": "06153fbd-3e2c-413a-b0df-ed15d631835a",
                             "type": "call_webhook",
                             "method": "GET",
-                            "url": "http://localhost/?cmd=success&name=@contact.name"
+                            "url": "http://localhost/?cmd=success&name=@(url_encode(contact.name))"
                         }
                     ],
                     "exits": [

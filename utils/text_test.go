@@ -26,21 +26,6 @@ func TestSnakify(t *testing.T) {
 	}
 }
 
-func TestURLEscape(t *testing.T) {
-	var urlTests = []struct {
-		input    string
-		expected string
-	}{
-		{"", ""},
-		{"hello_world-there", "hello_world-there"},
-		{"foo: bar ? & some/thing", "foo%3A%20bar%20%3F%20%26%20some%2Fthing"},
-	}
-
-	for _, test := range urlTests {
-		assert.Equal(t, test.expected, utils.URLEscape(test.input), "unexpected result URL escaping '%s'", test.input)
-	}
-}
-
 func TestTokenizeString(t *testing.T) {
 	tokenizerTests := []struct {
 		text   string

@@ -429,7 +429,7 @@ type FlowRun interface {
 	Events() []Event
 
 	EvaluateTemplate(template string) (types.XValue, error)
-	EvaluateTemplateAsString(template string, urlEncode bool) (string, error)
+	EvaluateTemplateAsString(template string) (string, error)
 
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string

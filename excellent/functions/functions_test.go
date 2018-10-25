@@ -466,7 +466,7 @@ var funcTests = []struct {
 	{"weekday", []types.XValue{xs("xxx")}, ERROR},
 	{"weekday", []types.XValue{}, ERROR},
 
-	{"url_encode", []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25+%3F%2F`)},
+	{"url_encode", []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25%20%3F%2F`)},
 	{"url_encode", []types.XValue{ERROR}, ERROR},
 	{"url_encode", []types.XValue{}, ERROR},
 }

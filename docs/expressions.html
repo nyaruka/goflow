@@ -660,7 +660,7 @@
 <p><a name="function:url_encode"></a></p>
 <h2 id="url_encodetext">url_encode(text)</h2>
 <p>Encodes <code>text</code> for use as a URL parameter.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(url_encode(<span class="st">&quot;two words&quot;</span>)) → two+words</a>
+<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(url_encode(<span class="st">&quot;two &amp; words&quot;</span>)) → two%<span class="dv">20</span>%<span class="dv">26</span>%20words</a>
 <a class="sourceLine" id="cb66-2" data-line-number="2">@(url_encode(<span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
 <p><a name="function:weekday"></a></p>
 <h2 id="weekdaydate">weekday(date)</h2>
