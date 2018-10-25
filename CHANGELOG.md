@@ -1,3 +1,21 @@
+v0.23.0
+----------
+ * Migrate api actions so that URL expressions are wrapped in url_encode()
+ * Don't url encode msg attachment expressions automatically
+ * Fix not being to read contact_field_changed events where value is null
+ * Add default country to environment and use for has_phone tests
+ * Fix add_contact_urn so that URN is normalized and trimmed before being added
+ * Fix legacy_extra so it can handle root-level arrays
+ * Replace contact_urn_added event with contact_urns_changed and fix tracking of channel affinity on URNs
+ * Fix not supporting dymnamic groups based on name
+ * Change send_msg to always send a message even if it can't resolve channel/URN
+ * Fix 410 resthook response becoming result with no category
+ * Switch to codecov
+ * Validate all flows which are referenced in the current flow
+ * Use new status of subscriber_gone when resthook call returns 410
+ * Require exit UUIds to be unique across the entire flow
+ * Improve number parsing
+
 v0.22.0
 ----------
  * Move input from run to session
