@@ -166,10 +166,10 @@ var sessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "label": "Gender", "value_type": "text"},
-        {"key": "age", "label": "Age", "value_type": "number"},
-        {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
-        {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
+        {"key": "gender", "label": "Gender", "type": "text"},
+        {"key": "age", "label": "Age", "type": "number"},
+        {"key": "join_date", "label": "Join Date", "type": "datetime"},
+        {"key": "activation_token", "label": "Activation Token", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},

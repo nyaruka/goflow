@@ -51,12 +51,12 @@ func TestReadFields(t *testing.T) {
 		{
             "key": "gender",
             "name": "Gender",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "age",
             "name": "Age",
-            "value_type": "number"
+            "type": "number"
         }
 	]`))
 	assert.NoError(t, err)

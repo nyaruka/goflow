@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/assets/static"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/functions"
@@ -14,6 +15,43 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 )
+
+func renderAssetDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	if len(item.examples) == 0 {
+		return fmt.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
+	}
+
+	marshaled, err := utils.JSONMarshalPretty(json.RawMessage(strings.Join(item.examples, "\n")))
+	if err != nil {
+		return fmt.Errorf("unable to marshal example: %s", err)
+	}
+
+	// try to load example as part of a static asset source
+	var assetSet string
+	if item.typeName == "flow" {
+		assetSet = fmt.Sprintf(`{"flow": %s}`, string(marshaled))
+	} else {
+		assetSet = fmt.Sprintf(`{"%ss": [%s]}`, item.tagValue, string(marshaled))
+	}
+
+	fmt.Println(assetSet)
+
+	_, err = static.NewStaticSource([]byte(assetSet))
+	if err != nil {
+		return fmt.Errorf("unable to load example into asset source: %s", err)
+	}
+
+	output.WriteString(fmt.Sprintf("<a name=\"asset:%s\"></a>\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(strings.Join(item.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```objectivec\n")
+	output.WriteString(string(marshaled))
+	output.WriteString("\n")
+	output.WriteString("```\n")
+	output.WriteString("\n")
+	return nil
+}
 
 func renderContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	if len(item.examples) == 0 {

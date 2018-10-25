@@ -223,37 +223,37 @@
         {
             "key": "first_name",
             "label": "First Name",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "activation_token",
             "label": "Activation Token",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "gender",
             "label": "Gender",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "raw_district",
             "label": "Raw District",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "district",
             "label": "District",
-            "value_type": "district"
+            "type": "district"
         },
         {
             "key": "state",
             "label": "State",
-            "value_type": "state"
+            "type": "state"
         },
         {
             "key": "birth_date",
             "label": "birth Date",
-            "value_type": "text"
+            "type": "text"
         }
     ],
     "groups": [
