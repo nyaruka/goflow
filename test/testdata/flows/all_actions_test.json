@@ -185,13 +185,13 @@
                     "translations": {
                         "eng": {
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali+City"
                             ],
                             "text": "Hi Ben Haggerty, are you ready for these attachments?"
                         },
                         "spa": {
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali+City"
                             ],
                             "text": "Hi Ben Haggerty, are you ready for these attachments?"
                         }
@@ -295,7 +295,7 @@
                     "created_on": "2018-07-06T12:30:39.123456789Z",
                     "msg": {
                         "attachments": [
-                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
+                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali+City"
                         ],
                         "channel": {
                             "name": "Android Channel",
@@ -631,13 +631,13 @@
                                 "translations": {
                                     "eng": {
                                         "attachments": [
-                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
+                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali+City"
                                         ],
                                         "text": "Hi Ben Haggerty, are you ready for these attachments?"
                                     },
                                     "spa": {
                                         "attachments": [
-                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
+                                            "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali+City"
                                         ],
                                         "text": "Hi Ben Haggerty, are you ready for these attachments?"
                                     }
@@ -741,7 +741,7 @@
                                 "created_on": "2018-07-06T12:30:39.123456789Z",
                                 "msg": {
                                     "attachments": [
-                                        "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali%20City"
+                                        "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=Kigali+City"
                                     ],
                                     "channel": {
                                         "name": "Android Channel",
