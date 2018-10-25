@@ -64,8 +64,8 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, options
 					errorAs = "@" + token
 				}
 
-				// expression might need to be wrapped in @(...) or call to @(default(...))
-				buf.WriteString(wrapRawExpression(strValue, errorAs))
+				// optionally wrap expression so that it is URL encoded or defaults to itself on error
+				buf.WriteString(wrapRawExpression(strValue, errorAs, options.URLEncode))
 			}
 
 		case excellent.EXPRESSION:
@@ -83,8 +83,8 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, options
 					errorAs = "@(" + token + ")"
 				}
 
-				// expression might need to be wrapped in @(...) or call to @(default(...))
-				buf.WriteString(wrapRawExpression(strValue, errorAs))
+				// optionally wrap expression so that it is URL encoded or defaults to itself on error
+				buf.WriteString(wrapRawExpression(strValue, errorAs, options.URLEncode))
 			}
 		}
 	}
@@ -246,9 +246,13 @@ func isValidIdentifier(expression string) bool {
 }
 
 // takes a raw expression and wraps it for inclusion in a template, e.g. now() -> @(now())
-func wrapRawExpression(expression string, errorAs string) string {
+func wrapRawExpression(expression string, errorAs string, urlEncode bool) string {
 	if errorAs != "" {
 		expression = fmt.Sprintf(`if(is_error(%s), %s, %s)`, expression, strconv.Quote(errorAs), expression)
+	}
+
+	if urlEncode {
+		expression = fmt.Sprintf(`url_encode(%s)`, expression)
 	}
 
 	if !isValidIdentifier(expression) {

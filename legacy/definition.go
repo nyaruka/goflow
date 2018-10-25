@@ -506,7 +506,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return actions.NewSetContactFieldAction(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
 	case "api":
-		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, nil)
+		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, &expressions.MigrateOptions{URLEncode: true})
 
 		headers := make(map[string]string, len(a.WebhookHeaders))
 		body := ""
