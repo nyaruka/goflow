@@ -178,7 +178,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, languag
 	translatedAttachments := run.GetTranslatedTextArray(utils.UUID(a.UUID()), "attachments", actionAttachments, languages)
 	evaluatedAttachments := make([]flows.Attachment, 0, len(translatedAttachments))
 	for n := range translatedAttachments {
-		evaluatedAttachment, err := run.EvaluateTemplateAsString(translatedAttachments[n], true)
+		evaluatedAttachment, err := run.EvaluateTemplateAsString(translatedAttachments[n], false)
 		if err != nil {
 			a.logError(run, step, err)
 		} else if evaluatedAttachment == "" {

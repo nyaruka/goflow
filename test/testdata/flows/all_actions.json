@@ -110,7 +110,7 @@
                             ],
                             "text": "Hi @contact.name, are you ready for these attachments?",
                             "attachments": [
-                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(format_location(contact.fields.state))"
+                                "image/jpeg:http://s3.amazon.com/bucket/test_en.jpg?a=@(url_encode(format_location(contact.fields.state)))"
                             ]
                         },
                         {
