@@ -749,12 +749,14 @@ func Percent(env utils.Environment, num types.XNumber) types.XValue {
 
 // URLEncode encodes `text` for use as a URL parameter.
 //
-//   @(url_encode("two words")) -> two+words
+//   @(url_encode("two & words")) -> two%20%26%20words
 //   @(url_encode(10)) -> 10
 //
 // @function url_encode(text)
 func URLEncode(env utils.Environment, text types.XText) types.XValue {
-	return types.NewXText(url.QueryEscape(text.Native()))
+	// escapes spaces as %20 matching urllib.quote(s, safe="") in Python
+	encoded := strings.Replace(url.QueryEscape(text.Native()), "+", "%20", -1)
+	return types.NewXText(encoded)
 }
 
 //------------------------------------------------------------------------------------------

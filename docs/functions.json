@@ -1166,8 +1166,8 @@
         "detail": "",
         "examples": [
             {
-                "template": "@(url_encode(\"two words\"))",
-                "output": "two+words"
+                "template": "@(url_encode(\"two & words\"))",
+                "output": "two%20%26%20words"
             },
             {
                 "template": "@(url_encode(10))",

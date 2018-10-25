@@ -1172,7 +1172,7 @@ Encodes `text` for use as a URL parameter.
 
 
 ```objectivec
-@(url_encode("two words")) → two+words
+@(url_encode("two & words")) → two%20%26%20words
 @(url_encode(10)) → 10
 ```
 

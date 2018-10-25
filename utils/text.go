@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"net/url"
 	"regexp"
 	"strings"
 )
