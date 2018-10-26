@@ -3,6 +3,7 @@ package inputs
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -45,7 +46,7 @@ func (i *baseInput) CreatedOn() time.Time    { return i.createdOn }
 
 // Resolve resolves the given key when this input is referenced in an expression
 func (i *baseInput) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "type":
 		return types.NewXText(i.type_)
 	case "uuid":

@@ -68,7 +68,7 @@ func (c *Channel) HasParent() bool {
 
 // Resolve resolves the given key when this channel is referenced in an expression
 func (c *Channel) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(c.UUID()))
 	case "name":

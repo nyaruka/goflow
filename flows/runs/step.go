@@ -2,6 +2,7 @@ package runs
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -26,7 +27,7 @@ func (s *step) Leave(exit flows.ExitUUID) {
 }
 
 func (s *step) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(s.UUID()))
 	case "node_uuid":

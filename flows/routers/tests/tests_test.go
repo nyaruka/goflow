@@ -2,6 +2,7 @@ package tests_test
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -22,7 +23,7 @@ var xt = types.NewXDateTime
 type testResolvable struct{}
 
 func (r *testResolvable) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "foo":
 		return types.NewXText("bar")
 	case "zed":

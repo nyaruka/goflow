@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -247,7 +248,7 @@ func (c *Contact) Format(env utils.Environment) string {
 
 // Resolve resolves the given key when this contact is referenced in an expression
 func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
 	case "id":

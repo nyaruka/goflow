@@ -3,6 +3,7 @@ package triggers
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -76,7 +77,7 @@ func (t *baseTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
 
 // Resolve resolves the given key when this trigger is referenced in an expression
 func (t *baseTrigger) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "type":
 		return types.NewXText(t.type_)
 	case "params":
