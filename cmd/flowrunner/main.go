@@ -147,7 +147,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 }
 
 func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN(), nil, text, []flows.Attachment{})
+	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN(), nil, text, []flows.Attachment{}, "")
 }
 
 func printEvents(log []flows.Event, out io.Writer) {

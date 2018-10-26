@@ -31,7 +31,7 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment) *MsgIn {
+func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, externalID string) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
 			UUID_:        uuid,
@@ -41,6 +41,7 @@ func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *assets.ChannelRefer
 			Text_:        text,
 			Attachments_: attachments,
 		},
+		ExternalID_: externalID,
 	}
 }
 

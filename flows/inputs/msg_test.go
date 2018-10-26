@@ -35,6 +35,7 @@ func TestMsgInput(t *testing.T) {
 			"image/jpg:http://example.com/test.jpg",
 			"video/mp4:http://example.com/test.mp4",
 		},
+		"",
 	)
 	input, err := inputs.NewMsgInput(session.Assets(), msg, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC))
 	require.NoError(t, err)
