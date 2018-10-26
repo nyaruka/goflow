@@ -55,9 +55,10 @@ func (s *flowStack) hasVisited(nodeUUID flows.NodeUUID) bool {
 	return s.currentFrame().visitedNodes[nodeUUID]
 }
 
-func (s *flowStack) hasFlow(flowUUID assets.FlowUUID) bool {
+// checks whether we've visited the given flow since the last resume
+func (s *flowStack) hasVisitedFlowSinceResume(flowUUID assets.FlowUUID) bool {
 	for _, f := range s.stack {
-		if f.flow.UUID() == flowUUID {
+		if f.flow.UUID() == flowUUID && len(f.visitedNodes) > 0 {
 			return true
 		}
 	}

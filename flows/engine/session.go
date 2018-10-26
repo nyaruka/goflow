@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/inputs"
@@ -71,7 +70,9 @@ func (s *session) SetContact(contact *flows.Contact) { s.contact = contact }
 func (s *session) Input() flows.Input         { return s.input }
 func (s *session) SetInput(input flows.Input) { s.input = input }
 
-func (s *session) FlowOnStack(uuid assets.FlowUUID) bool { return s.flowStack.hasFlow(uuid) }
+func (s *session) CanEnterFlow(flow flows.Flow) bool {
+	return !s.flowStack.hasVisitedFlowSinceResume(flow.UUID())
+}
 
 func (s *session) PushFlow(flow flows.Flow, parentRun flows.FlowRun, terminal bool) {
 	s.pushedFlow = &pushedFlow{flow: flow, parentRun: parentRun, terminal: terminal}
