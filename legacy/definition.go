@@ -572,7 +572,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		uiType = UINodeTypeSplitBySubflow
 
 	case "webhook":
-		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, nil)
+		migratedURL, _ := expressions.MigrateTemplate(config.Webhook, &expressions.MigrateOptions{URLEncode: true})
 		headers := make(map[string]string, len(config.WebhookHeaders))
 		body := ""
 		method := strings.ToUpper(config.WebhookAction)

@@ -703,7 +703,7 @@
             "y": 100,
             "x": 1,
             "config": {
-                "webhook": "http://example.com",
+                "webhook": "http://example.com?name=@contact.name",
                 "webhook_action": "GET"
             }
         },
@@ -715,7 +715,7 @@
                     "type": "call_webhook",
                     "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094",
                     "method": "GET",
-                    "url": "http://example.com",
+                    "url": "http://example.com?name=@(url_encode(contact.name))",
                     "result_name": "Response 1"
                 }
             ],
