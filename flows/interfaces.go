@@ -360,7 +360,7 @@ type Session interface {
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
-	FlowOnStack(assets.FlowUUID) bool
+	CanEnterFlow(Flow) bool
 	LogEvent(Event)
 
 	Start(Trigger) ([]Event, error)

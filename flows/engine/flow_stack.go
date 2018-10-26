@@ -7,7 +7,16 @@ import (
 
 type flowFrame struct {
 	flow         flows.Flow
+	new          bool // new since last trigger/resume
 	visitedNodes map[flows.NodeUUID]bool
+}
+
+func newFlowFrame(flow flows.Flow, new bool) *flowFrame {
+	return &flowFrame{
+		flow:         flow,
+		new:          new,
+		visitedNodes: make(map[flows.NodeUUID]bool),
+	}
 }
 
 type flowStack struct {
@@ -24,7 +33,7 @@ func flowStackFromRun(run flows.FlowRun) *flowStack {
 	s := newFlowStack()
 	ancestors := run.Ancestors()
 	for a := len(ancestors) - 1; a >= 0; a-- {
-		s.push(ancestors[a].Flow())
+		s.stack = append(s.stack, newFlowFrame(ancestors[a].Flow(), false))
 	}
 	s.push(run.Flow())
 	return s
@@ -32,7 +41,7 @@ func flowStackFromRun(run flows.FlowRun) *flowStack {
 
 // creates a new frame for the given flow and pushes it onto the stack
 func (s *flowStack) push(flow flows.Flow) {
-	s.stack = append(s.stack, &flowFrame{flow: flow, visitedNodes: make(map[flows.NodeUUID]bool)})
+	s.stack = append(s.stack, newFlowFrame(flow, true))
 }
 
 // pops the current frame off the stack
@@ -55,9 +64,10 @@ func (s *flowStack) hasVisited(nodeUUID flows.NodeUUID) bool {
 	return s.currentFrame().visitedNodes[nodeUUID]
 }
 
-func (s *flowStack) hasFlow(flowUUID assets.FlowUUID) bool {
+// checks whether we've visited the given flow since the last resume
+func (s *flowStack) hasVisitedFlowSinceResume(flowUUID assets.FlowUUID) bool {
 	for _, f := range s.stack {
-		if f.flow.UUID() == flowUUID {
+		if f.flow.UUID() == flowUUID && f.new {
 			return true
 		}
 	}
