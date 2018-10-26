@@ -28,6 +28,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 	}{
 		{"@contact.uuid", "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f", ""},
 		{"@contact.id", "1234567", ""},
+		{"@CONTACT.NAME", "Ryan Lewis", ""},
 		{"@contact.name", "Ryan Lewis", ""},
 		{"@contact.first_name", "Ryan", ""},
 		{"@contact.language", "eng", ""},

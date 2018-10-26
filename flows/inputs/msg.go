@@ -48,7 +48,7 @@ func NewMsgInput(assets flows.SessionAssets, msg *flows.MsgIn, createdOn time.Ti
 
 // Resolve resolves the given key when this input is referenced in an expression
 func (i *MsgInput) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "urn":
 		return i.urn
 	case "text":

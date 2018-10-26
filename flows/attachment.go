@@ -41,7 +41,7 @@ func (a Attachment) URL() string {
 
 // Resolve resolves the given key when this attachment is referenced in an expression
 func (a Attachment) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "content_type":
 		return types.NewXText(a.ContentType())
 	case "url":

@@ -3,6 +3,7 @@ package runs
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -145,7 +146,7 @@ func (r *flowRun) LogFatalError(step flows.Step, err error) {
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := utils.Now()
-	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
+	step := NewStep(node, now)
 	r.path = append(r.path, step)
 	r.modifiedOn = now
 	return step
@@ -271,7 +272,7 @@ func (r *flowRun) GetTranslatedTextArray(uuid utils.UUID, key string, native []s
 
 // Resolve resolves the given key when this run is referenced in an expression
 func (r *flowRun) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(r.UUID()))
 	case "contact":

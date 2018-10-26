@@ -73,7 +73,7 @@ func (g *Group) Reference() *assets.GroupReference {
 
 // Resolve resolves the given key when this group is referenced in an expression
 func (g *Group) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(g.UUID()))
 	case "name":

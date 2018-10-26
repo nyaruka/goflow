@@ -1,6 +1,8 @@
 package tests
 
 import (
+	"strings"
+
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 )
@@ -33,7 +35,7 @@ func (t XTestResult) Extra() map[string]string { return t.extra }
 
 // Resolve resolves the given key when this result is referenced in an expression
 func (t XTestResult) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "matched":
 		return types.NewXBoolean(t.matched)
 	case "match":

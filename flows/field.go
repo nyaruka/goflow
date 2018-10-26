@@ -2,6 +2,7 @@ package flows
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
@@ -105,7 +106,7 @@ func (v *FieldValue) TypedValue() types.XValue {
 
 // Resolve resolves the given key when this field value is referenced in an expression
 func (v *FieldValue) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "text":
 		return v.Text
 	}
@@ -297,7 +298,7 @@ func (f FieldValues) Length() int {
 
 // Resolve resolves the given key when this set of field values is referenced in an expression
 func (f FieldValues) Resolve(env utils.Environment, key string) types.XValue {
-	val, exists := f[key]
+	val, exists := f[strings.ToLower(key)]
 	if !exists {
 		return types.NewXErrorf("no such contact field '%s'", key)
 	}

@@ -1,6 +1,8 @@
 package runs
 
 import (
+	"strings"
+
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
@@ -31,7 +33,7 @@ func newRunContext(run flows.FlowRun) types.XValue {
 
 // Resolve resolves the given top-level key in an expression
 func (c *runContext) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	// the different runs accessible
 	case "run":
 		return c.run
@@ -89,7 +91,7 @@ func newRelatedRunContext(run flows.RunSummary) *relatedRunContext {
 
 // Resolve resolves the given key when this related run is referenced in an expression
 func (c *relatedRunContext) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(c.run.UUID()))
 	case "contact":
