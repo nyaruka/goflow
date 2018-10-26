@@ -544,7 +544,7 @@ func (ts *ServerTestSuite) TestFlowStartAndResume() {
 
 	// try to resume this completed session
 	tgURN, _ := urns.NewTelegramURN(1234567, "bob")
-	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, tgURN, nil, "hello", []flows.Attachment{})
+	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, tgURN, nil, "hello", []flows.Attachment{}, "")
 	status, body = ts.testHTTPRequest("POST", "http://localhost:8800/flow/resume", ts.buildResumeRequest(`[]`, session, msg))
 	ts.Equal(400, status)
 	ts.assertErrorResponse(body, []string{"only waiting sessions can be resumed"})
