@@ -123,7 +123,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(1 >= 4)`, new: `@(1 >= 4)`},
 
 		// strings
-		{old: `@("")`, new: `@("")`},
+		{old: `@("")`, new: ``},
+		{old: `@(" ")`, new: `@(" ")`},
 		{old: `@(" "" ")`, new: `@(" \" ")`},
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 

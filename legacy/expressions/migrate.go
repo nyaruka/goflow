@@ -69,6 +69,12 @@ func migrateLegacyTemplateAsString(resolver Resolvable, template string, options
 			}
 
 		case excellent.EXPRESSION:
+			// special case of @("") which was a common workaround for the editor requiring a
+			// non-empty string, but is no longer needed and can be replaced by an empty string
+			if token == `""` {
+				continue
+			}
+
 			value, err := migrateExpression(nil, resolver, token)
 			if err != nil {
 				errors.Add(fmt.Sprintf("@(%s)", token), err.Error())
