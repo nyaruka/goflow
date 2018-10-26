@@ -100,7 +100,7 @@
 <a class="sourceLine" id="cb3-10" data-line-number="10">@contact.urns.mailto<span class="fl">.0</span> → mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11">@contact.urn → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="dv">23</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span>}</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="dv">23</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span>,<span class="st">&quot;not_set&quot;</span>:null}</a>
 <a class="sourceLine" id="cb3-14" data-line-number="14">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb3-15" data-line-number="15">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
@@ -879,7 +879,8 @@
 <a class="sourceLine" id="cb93-2" data-line-number="2">@(has_text(<span class="st">&quot;quick brown&quot;</span>).match) → quick brown</a>
 <a class="sourceLine" id="cb93-3" data-line-number="3">@(has_text(<span class="st">&quot;&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb93-4" data-line-number="4">@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb93-5" data-line-number="5">@(has_text(<span class="dv">123</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb93-5" data-line-number="5">@(has_text(<span class="dv">123</span>)) → true</a>
+<a class="sourceLine" id="cb93-6" data-line-number="6">@(has_text(contact.fields.not_set)) → false</a></code></pre></div>
 <p><a name="test:has_value"></a></p>
 <h2 id="has_valuevalue">has_value(value)</h2>
 <p>Returns whether <code>value</code> is non-nil and not an error</p>

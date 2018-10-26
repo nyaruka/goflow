@@ -34,8 +34,6 @@ func renderAssetDoc(output *strings.Builder, item *documentedItem, session flows
 		assetSet = fmt.Sprintf(`{"%ss": [%s]}`, item.tagValue, string(marshaled))
 	}
 
-	fmt.Println(assetSet)
-
 	_, err = static.NewStaticSource([]byte(assetSet))
 	if err != nil {
 		return fmt.Errorf("unable to load example into asset source: %s", err)

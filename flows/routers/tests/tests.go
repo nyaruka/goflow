@@ -266,6 +266,7 @@ func HasOnlyPhrase(env utils.Environment, text types.XText, test types.XText) ty
 //   @(has_text("")) -> false
 //   @(has_text(" \n")) -> false
 //   @(has_text(123)) -> true
+//   @(has_text(contact.fields.not_set)) -> false
 //
 // @test has_text(text)
 func HasText(env utils.Environment, text types.XText) types.XValue {

@@ -111,7 +111,7 @@ Examples:
 @contact.urns.mailto.0 → mailto:foo@bar.com
 @contact.urn → (206) 555-1212
 @contact.groups → ["Testers","Males"]
-@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00"}
+@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
@@ -1606,6 +1606,7 @@ Tests whether there the text has any characters in it
 @(has_text("")) → false
 @(has_text(" \n")) → false
 @(has_text(123)) → true
+@(has_text(contact.fields.not_set)) → false
 ```
 
 <a name="test:has_value"></a>
