@@ -64,11 +64,18 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@flow.contact.name`, new: `@contact.name`},
 
 		{old: `@child.age`, new: `@child.results.age`},
+		{old: `@child.age.category`, new: `@child.results.age.category_localized`},
+		{old: `@child.age.text`, new: `@child.results.age.input`},
+		{old: `@child.age.time`, new: `@child.results.age.created_on`},
+		{old: `@child.age.value`, new: `@child.results.age.value`},
 		{old: `@child.contact`, new: `@child.contact`},
 		{old: `@child.contact.age`, new: `@child.contact.fields.age`},
 
 		{old: `@parent.role`, new: `@parent.results.role`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
+		{old: `@parent.role.text`, new: `@parent.results.role.input`},
+		{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
+		{old: `@parent.role.value`, new: `@parent.results.role.value`},
 		{old: `@parent.contact`, new: `@parent.contact`},
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
 		{old: `@parent.contact.gender`, new: `@parent.contact.fields.gender`},
