@@ -19,11 +19,14 @@ type BaseMsg struct {
 // MsgIn represents a incoming message from the session contact
 type MsgIn struct {
 	BaseMsg
+
+	ExternalID_ string `json:"external_id,omitempty"`
 }
 
 // MsgOut represents a outgoing message to the session contact
 type MsgOut struct {
 	BaseMsg
+
 	QuickReplies_ []string `json:"quick_replies,omitempty"`
 }
 
@@ -72,6 +75,9 @@ func (m *BaseMsg) Text() string { return m.Text_ }
 
 // Attachments returns the attachments of this message
 func (m *BaseMsg) Attachments() []Attachment { return m.Attachments_ }
+
+// ExternalID returns the optional external ID of this incoming message
+func (m *MsgIn) ExternalID() string { return m.ExternalID_ }
 
 // QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }
