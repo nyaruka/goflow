@@ -146,7 +146,7 @@ func (r *flowRun) LogFatalError(step flows.Step, err error) {
 func (r *flowRun) Path() []flows.Step { return r.path }
 func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 	now := utils.Now()
-	step := &step{stepUUID: flows.StepUUID(utils.NewUUID()), nodeUUID: node.UUID(), arrivedOn: now}
+	step := NewStep(node, now)
 	r.path = append(r.path, step)
 	r.modifiedOn = now
 	return step

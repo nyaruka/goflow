@@ -17,6 +17,15 @@ type step struct {
 	arrivedOn time.Time
 }
 
+// NewStep creates a new step
+func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
+	return &step{
+		stepUUID:  flows.StepUUID(utils.NewUUID()),
+		nodeUUID:  node.UUID(),
+		arrivedOn: arrivedOn,
+	}
+}
+
 func (s *step) UUID() flows.StepUUID     { return s.stepUUID }
 func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
 func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
