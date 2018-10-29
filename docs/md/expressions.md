@@ -435,9 +435,11 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(datetime_diff("2017-01-17", "2017-01-15", "D")) → 2
-@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
-@(datetime_diff("2017-01-17", "2015-12-17", "Y")) → 2
+@(datetime_diff("2017-01-15", "2017-01-17", "D")) → 2
+@(datetime_diff("2017-01-15", "2017-05-15", "W")) → 17
+@(datetime_diff("2017-01-15", "2017-05-15", "M")) → 4
+@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → 1
+@(datetime_diff("2017-01-17", "2015-12-17", "Y")) → -2
 ```
 
 <a name="function:datetime_from_parts"></a>
