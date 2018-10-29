@@ -42,14 +42,14 @@ func (r *baseResume) ResumedOn() time.Time           { return r.resumedOn }
 func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
 	if r.environment != nil {
 		if !run.Session().Environment().Equal(r.environment) {
-			run.LogEvent(step, events.NewEnvironmentChangedEvent(r.environment))
+			run.LogEvent(step, events.NewEnvironmentRefreshedEvent(r.environment))
 		}
 
 		run.Session().SetEnvironment(r.environment)
 	}
 	if r.contact != nil {
 		if !run.Session().Contact().Equal(r.contact) {
-			run.LogEvent(step, events.NewContactChangedEvent(r.contact))
+			run.LogEvent(step, events.NewContactRefreshedEvent(r.contact))
 		}
 
 		run.Session().SetContact(r.contact)

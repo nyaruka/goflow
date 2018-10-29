@@ -327,26 +327,6 @@ Events are created when an action wants to send a message to other contacts.
 }
 ```
 </div>
-<a name="event:contact_changed"></a>
-
-## contact_changed
-
-Events are sent by the caller to tell the engine to update the session contact.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_changed",
-    "created_on": "2006-01-02T15:04:05Z",
-    "contact": {
-        "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
-        "name": "Bob",
-        "urns": [
-            "tel:+11231234567"
-        ]
-    }
-}
-```
-</div>
 <a name="event:contact_field_changed"></a>
 
 ## contact_field_changed
@@ -421,6 +401,26 @@ Events are created when the name of the contact has been changed.
 }
 ```
 </div>
+<a name="event:contact_refreshed"></a>
+
+## contact_refreshed
+
+Events are generated when the resume has a contact with differences to the current session contact.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "contact_refreshed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "contact": {
+        "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+        "name": "Bob",
+        "urns": [
+            "tel:+11231234567"
+        ]
+    }
+}
+```
+</div>
 <a name="event:contact_timezone_changed"></a>
 
 ## contact_timezone_changed
@@ -470,15 +470,15 @@ Events are created when an action wants to send an email.
 }
 ```
 </div>
-<a name="event:environment_changed"></a>
+<a name="event:environment_refreshed"></a>
 
-## environment_changed
+## environment_refreshed
 
 Events are sent by the caller to tell the engine to update the session environment.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "environment_changed",
+    "type": "environment_refreshed",
     "created_on": "2006-01-02T15:04:05Z",
     "environment": {
         "date_format": "YYYY-MM-DD",
