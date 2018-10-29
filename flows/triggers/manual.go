@@ -36,7 +36,7 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, triggeredOn time.Time) flows.Trigger {
+func NewManualTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, params types.XValue, triggeredOn time.Time) flows.Trigger {
 	return &ManualTrigger{
 		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, params, triggeredOn),
 	}
