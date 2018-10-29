@@ -681,7 +681,7 @@ Events are created when an action wants to start other people in a flow.
             "name": "New contacts"
         }
     ],
-    "run": {
+    "run_summary": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "flow": {
             "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",

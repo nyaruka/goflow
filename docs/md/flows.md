@@ -700,7 +700,7 @@ will be created and it's the responsibility of the caller to act on that by init
             "name": "Customers"
         }
     ],
-    "run": {
+    "run_summary": {
         "uuid": "77edcde6-5d7c-4ae9-b660-52c755c4d15c",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
