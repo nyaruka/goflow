@@ -27,7 +27,6 @@ func TestMsgInput(t *testing.T) {
 
 	msg := flows.NewMsgIn(
 		flows.MsgUUID("f51d7220-10b3-4faa-a91c-1ae70beaae3e"),
-		flows.NilMsgID,
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference("57f1078f-88aa-46f4-a59a-948a5739c03d", "Nexmo"),
 		"Hi there!",
@@ -35,7 +34,6 @@ func TestMsgInput(t *testing.T) {
 			"image/jpg:http://example.com/test.jpg",
 			"video/mp4:http://example.com/test.mp4",
 		},
-		"",
 	)
 	input, err := inputs.NewMsgInput(session.Assets(), msg, time.Date(2018, 10, 22, 16, 12, 30, 123456, time.UTC))
 	require.NoError(t, err)

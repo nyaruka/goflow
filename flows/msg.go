@@ -31,17 +31,15 @@ type MsgOut struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid MsgUUID, id MsgID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment, externalID string) *MsgIn {
+func NewMsgIn(uuid MsgUUID, urn urns.URN, channel *assets.ChannelReference, text string, attachments []Attachment) *MsgIn {
 	return &MsgIn{
 		BaseMsg: BaseMsg{
 			UUID_:        uuid,
-			ID_:          id,
 			URN_:         urn,
 			Channel_:     channel,
 			Text_:        text,
 			Attachments_: attachments,
 		},
-		ExternalID_: externalID,
 	}
 }
 
@@ -62,8 +60,11 @@ func NewMsgOut(urn urns.URN, channel *assets.ChannelReference, text string, atta
 // UUID returns the UUID of this message
 func (m *BaseMsg) UUID() MsgUUID { return m.UUID_ }
 
-// ID returns the ID of this message
+// ID returns the internal ID of this message
 func (m *BaseMsg) ID() MsgID { return m.ID_ }
+
+// SetID sets the internal ID of this message
+func (m *BaseMsg) SetID(id MsgID) { m.ID_ = id }
 
 // URN returns the URN of this message
 func (m *BaseMsg) URN() urns.URN { return m.URN_ }
@@ -79,6 +80,9 @@ func (m *BaseMsg) Attachments() []Attachment { return m.Attachments_ }
 
 // ExternalID returns the optional external ID of this incoming message
 func (m *MsgIn) ExternalID() string { return m.ExternalID_ }
+
+// SetExternalID sets the external ID of this message
+func (m *MsgIn) SetExternalID(id string) { m.ExternalID_ = id }
 
 // QuickReplies returns the quick replies of this outgoing message
 func (m *MsgOut) QuickReplies() []string { return m.QuickReplies_ }
