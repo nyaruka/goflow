@@ -131,6 +131,52 @@ func TestEventMarshaling(t *testing.T) {
 			}`,
 		},
 		{
+			events.NewContactRefreshedEvent(session.Contact()),
+			`{
+				"contact": {
+					"created_on": "2018-06-20T11:40:30.123456789Z",
+					"fields": {
+						"activation_token": {
+							"text": "AACC55"
+						},
+						"age": {
+							"number": 23,
+							"text": "23"
+						},
+						"gender": {
+							"text": "Male"
+						},
+						"join_date": {
+							"datetime": "2017-12-02T00:00:00-02:00",
+							"text": "2017-12-02"
+						}
+					},
+					"groups": [
+						{
+							"name": "Testers",
+							"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+						},
+						{
+							"name": "Males",
+							"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9"
+						}
+					],
+					"id": 1234567,
+					"language": "eng",
+					"name": "Ryan Lewis",
+					"timezone": "America/Guayaquil",
+					"urns": [
+						"tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
+						"twitterid:54784326227#nyaruka",
+						"mailto:foo@bar.com"
+					],
+					"uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+				},
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"type": "contact_refreshed"
+			}`,
+		},
+		{
 			events.NewContactNameChangedEvent("Bryan"),
 			`{
 				"created_on": "2018-10-18T14:20:30.000123456Z",
@@ -158,6 +204,24 @@ func TestEventMarshaling(t *testing.T) {
 					"tel:+12345678900",
 					"twitterid:8764843252522#bob"
 				]
+			}`,
+		},
+		{
+			events.NewEnvironmentRefreshedEvent(session.Environment()),
+			`{
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"environment": {
+					"allowed_languages": [
+						"eng",
+						"spa"
+					],
+					"date_format": "YYYY-MM-DD",
+					"default_language": "eng",
+					"redaction_policy": "none",
+					"time_format": "hh:mm",
+					"timezone": "America/Guayaquil"
+				},
+				"type": "environment_refreshed"
 			}`,
 		},
 		{
