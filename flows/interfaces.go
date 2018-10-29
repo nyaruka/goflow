@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -271,6 +272,13 @@ type Trigger interface {
 	Contact() *Contact
 	Params() types.XValue
 	TriggeredOn() time.Time
+}
+
+// TriggerWithRun is special case of trigger that provides a parent run to the session
+type TriggerWithRun interface {
+	Trigger
+
+	RunSummary() json.RawMessage
 }
 
 // Resume represents something which can resume a session with the flow engine

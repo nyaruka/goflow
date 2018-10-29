@@ -185,15 +185,16 @@ func (s *session) prepareForSprint() error {
 	// clear the new events log
 	s.newEvents = make([]flows.Event, 0)
 
-	// if we have a trigger with a parent run, load that
-	if s.parentRun == nil && s.trigger != nil && s.trigger.Type() == triggers.TypeFlowAction {
-		trigger := s.trigger.(*triggers.FlowActionTrigger)
-
-		run, err := runs.ReadRunSummary(s.Assets(), trigger.RunSummary())
-		if err != nil {
-			return fmt.Errorf("error reading parent run from trigger: %s", err)
+	if s.parentRun == nil {
+		// if we have a trigger with a parent run, load that
+		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
+		if hasRun {
+			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary())
+			if err != nil {
+				return fmt.Errorf("error reading parent run from trigger: %s", err)
+			}
+			s.parentRun = run
 		}
-		s.parentRun = run
 	}
 	return nil
 }

@@ -61,7 +61,7 @@ func NewFlowActionTrigger(env utils.Environment, flow *assets.FlowReference, con
 // RunSummary returns the summary of the run that triggered this session
 func (t *FlowActionTrigger) RunSummary() json.RawMessage { return t.runSummary }
 
-var _ flows.Trigger = (*FlowActionTrigger)(nil)
+var _ flows.TriggerWithRun = (*FlowActionTrigger)(nil)
 
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
