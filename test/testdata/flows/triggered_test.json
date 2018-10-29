@@ -145,8 +145,8 @@
                         "results": {
                             "age": {
                                 "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                                "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
-                                "result_name": "Age",
+                                "name": "Age",
+                                "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
                                 "value": "33"
                             }
                         },
@@ -215,8 +215,8 @@
             "results": {
                 "age": {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
-                    "result_name": "Age",
+                    "name": "Age",
+                    "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
                     "value": "33"
                 }
             },

@@ -34,9 +34,9 @@ const TypeSessionTriggered string = "session_triggered"
 //       },
 //       "results": {
 //         "age": {
-//           "result_name": "Age",
+//           "name": "Age",
 //           "value": "33",
-//           "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+//           "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
 //           "created_on": "2000-01-01T00:00:00.000000000-00:00"
 //         }
 //       }
