@@ -83,7 +83,7 @@ Is used when another session triggered this run using a trigger_flow action.
         "name": "Collect Age"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
-    "run": {
+    "run_summary": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
@@ -91,23 +91,21 @@ Is used when another session triggered this run using a trigger_flow action.
         },
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
-            "id": 0,
             "name": "Bob",
-            "created_on": "2018-01-01T12:00:00Z",
-            "urns": [],
             "fields": {
                 "gender": {
                     "text": "Male"
                 }
-            }
+            },
+            "created_on": "2018-01-01T12:00:00.000000000-00:00"
         },
         "status": "active",
         "results": {
             "age": {
-                "name": "",
+                "result_name": "Age",
                 "value": "33",
-                "node_uuid": "",
-                "created_on": "2018-01-01T12:00:00Z"
+                "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+                "created_on": "2018-01-01T12:00:00.000000000-00:00"
             }
         }
     }

@@ -83,7 +83,8 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
 
 	run.Session().SetInput(input)
 	run.LogEvent(step, events.NewMsgReceivedEvent(t.msg))
-	return nil
+
+	return t.baseTrigger.InitializeRun(run, step)
 }
 
 var _ flows.Trigger = (*MsgTrigger)(nil)

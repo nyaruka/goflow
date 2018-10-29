@@ -251,7 +251,7 @@ var sessionTrigger = `{
             }
         }
     },
-    "run": {
+    "run_summary": {
         "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
@@ -338,7 +338,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 
 	_, err = session.Start(trigger)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("error starting test session: %s", err)
 	}
 
 	// read our resume
