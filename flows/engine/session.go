@@ -39,6 +39,7 @@ type session struct {
 	pushedFlow *pushedFlow
 	flowStack  *flowStack
 	newEvents  []flows.Event
+	parentRun  flows.RunSummary
 
 	engineConfig flows.EngineConfig
 	httpClient   *utils.HTTPClient
@@ -104,11 +105,7 @@ func (s *session) GetCurrentChild(run flows.FlowRun) flows.FlowRun {
 
 // ParentRun gets the parent run of this session if it was started by a flow action
 func (s *session) ParentRun() flows.RunSummary {
-	if s.trigger != nil && s.trigger.Type() == triggers.TypeFlowAction {
-		trigger := s.trigger.(*triggers.FlowActionTrigger)
-		return trigger.Run()
-	}
-	return nil
+	return s.parentRun
 }
 
 func (s *session) Status() flows.SessionStatus { return s.status }
@@ -137,11 +134,15 @@ func (s *session) HTTPClient() *utils.HTTPClient    { return s.httpClient }
 
 // Start initializes this session with the given trigger and runs the flow to the first wait
 func (s *session) Start(trigger flows.Trigger) ([]flows.Event, error) {
-	if err := trigger.Initialize(s); err != nil {
+	s.trigger = trigger
+
+	if err := s.prepareForSprint(); err != nil {
 		return s.newEvents, err
 	}
 
-	s.trigger = trigger
+	if err := s.trigger.Initialize(s); err != nil {
+		return s.newEvents, err
+	}
 
 	// off to the races...
 	return s.newEvents, s.continueUntilWait(nil, noDestination, nil, trigger)
@@ -149,8 +150,9 @@ func (s *session) Start(trigger flows.Trigger) ([]flows.Event, error) {
 
 // Resume tries to resume a waiting session
 func (s *session) Resume(resume flows.Resume) ([]flows.Event, error) {
-	// clear the new events log
-	s.newEvents = nil
+	if err := s.prepareForSprint(); err != nil {
+		return s.newEvents, err
+	}
 
 	if s.status != flows.SessionStatusWaiting {
 		return s.newEvents, fmt.Errorf("only waiting sessions can be resumed")
@@ -176,6 +178,25 @@ func (s *session) Resume(resume flows.Resume) ([]flows.Event, error) {
 	}
 
 	return s.newEvents, nil
+}
+
+// prepares the session for starting/resuming
+func (s *session) prepareForSprint() error {
+	// clear the new events log
+	s.newEvents = make([]flows.Event, 0)
+
+	if s.parentRun == nil {
+		// if we have a trigger with a parent run, load that
+		triggerWithRun, hasRun := s.trigger.(flows.TriggerWithRun)
+		if hasRun {
+			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary())
+			if err != nil {
+				return fmt.Errorf("error reading parent run from trigger: %s", err)
+			}
+			s.parentRun = run
+		}
+	}
+	return nil
 }
 
 // Resume resumes a waiting session

@@ -16,16 +16,26 @@ func init() {
 // TypeCampaign is the type for sessions triggered by campaign events
 const TypeCampaign string = "campaign"
 
-// Campaign describes the campaign that triggered the session
-type Campaign struct {
+// CampaignReference is a reference to the campaign that triggered the session
+type CampaignReference struct {
 	UUID string `json:"uuid" validate:"required,uuid4"`
 	Name string `json:"name" validate:"required"`
 }
 
+// NewCampaignReference creates a new campaign reference
+func NewCampaignReference(uuid, name string) *CampaignReference {
+	return &CampaignReference{UUID: uuid, Name: name}
+}
+
 // CampaignEvent describes the specific event in the campaign that triggered the session
 type CampaignEvent struct {
-	UUID     string   `json:"uuid" validate:"required,uuid4"`
-	Campaign Campaign `json:"campaign" validate:"required,dive"`
+	UUID     string             `json:"uuid" validate:"required,uuid4"`
+	Campaign *CampaignReference `json:"campaign" validate:"required,dive"`
+}
+
+// NewCampaignEvent creates a new campaign event
+func NewCampaignEvent(uuid string, campaign *CampaignReference) *CampaignEvent {
+	return &CampaignEvent{UUID: uuid, Campaign: campaign}
 }
 
 // CampaignTrigger is used when a session was triggered by a campaign event

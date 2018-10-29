@@ -458,10 +458,10 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		var trigger flows.Trigger
 		ignoreEventCount := 0
 		if tc.NoInput {
-			trigger = triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), nil, utils.Now())
+			trigger = triggers.NewManualTrigger(utils.NewDefaultEnvironment(), flow.Reference(), contact, nil, utils.Now())
 		} else {
 			msg := flows.NewMsgIn(flows.MsgUUID("aa90ce99-3b4d-44ba-b0ca-79e63d9ed842"), urns.URN("tel:+12065551212"), nil, "Hi everybody", nil)
-			trigger = triggers.NewMsgTrigger(utils.NewDefaultEnvironment(), contact, flow.Reference(), msg, nil, utils.Now())
+			trigger = triggers.NewMsgTrigger(utils.NewDefaultEnvironment(), flow.Reference(), contact, msg, nil, utils.Now())
 			ignoreEventCount = 1 // need to ignore the msg_received event this trigger creates
 		}
 

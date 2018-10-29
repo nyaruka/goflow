@@ -19,8 +19,13 @@ const TypeChannel string = "channel"
 
 // ChannelEvent describes the specific event on the channel that triggered the session
 type ChannelEvent struct {
-	Type    string                  `json:"type" validate:"required"`
-	Channel assets.ChannelReference `json:"channel" validate:"required,dive"`
+	Type    string                   `json:"type" validate:"required"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
+}
+
+// NewChannelEvent creates a new channel event
+func NewChannelEvent(typeName string, channel *assets.ChannelReference) *ChannelEvent {
+	return &ChannelEvent{Type: typeName, Channel: channel}
 }
 
 // ChannelTrigger is used when a session was triggered by a channel event

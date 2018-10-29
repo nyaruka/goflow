@@ -64,8 +64,13 @@ type KeywordMatch struct {
 	Keyword string           `json:"keyword" validate:"required"`
 }
 
+// NewKeywordMatch creates a new keyword match
+func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
+	return &KeywordMatch{Type: typeName, Keyword: keyword}
+}
+
 // NewMsgTrigger creates a new message trigger
-func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
+func NewMsgTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, triggeredOn),
 		msg:         msg,
@@ -83,7 +88,8 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
 
 	run.Session().SetInput(input)
 	run.LogEvent(step, events.NewMsgReceivedEvent(t.msg))
-	return nil
+
+	return t.baseTrigger.InitializeRun(run, step)
 }
 
 var _ flows.Trigger = (*MsgTrigger)(nil)

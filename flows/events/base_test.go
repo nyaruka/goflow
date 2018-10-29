@@ -116,6 +116,46 @@ func TestEventMarshaling(t *testing.T) {
 				]
 			}`,
 		},
+		{
+			events.NewSessionTriggeredEvent(
+				assets.NewFlowReference(assets.FlowUUID("e4d441f0-24e3-4627-85fb-1e99e733baf0"), "Collect Age"),
+				[]urns.URN{urns.URN("tel:+12345678900")},
+				[]*flows.ContactReference{
+					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+				},
+				[]*assets.GroupReference{
+					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
+				},
+				false,
+				json.RawMessage(`{"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"}`),
+			),
+			`{
+				"contacts": [
+					{
+						"name": "Jim",
+						"uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"
+					}
+				],
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"flow": {
+					"name": "Collect Age",
+					"uuid": "e4d441f0-24e3-4627-85fb-1e99e733baf0"
+				},
+				"groups": [
+					{
+						"name": "Supervisors",
+						"uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412"
+					}
+				],
+				"run_summary": {
+					"uuid": "779eaf3f-1c59-4374-a7cb-0eae9c5e8800"
+				},
+				"type": "session_triggered",
+				"urns": [
+					"tel:+12345678900"
+				]
+			}`,
+		},
 	}
 
 	for _, tc := range eventTests {

@@ -24,7 +24,7 @@ const TypeSessionTriggered string = "session_triggered"
 //     "groups": [
 //       {"uuid": "8f8e2cae-3c8d-4dce-9c4b-19514437e427", "name": "New contacts"}
 //     ],
-//     "run": {
+//     "run_summary": {
 //       "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
 //       "flow": {"uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87", "name": "Other Flow"},
 //       "contact": {
@@ -34,9 +34,9 @@ const TypeSessionTriggered string = "session_triggered"
 //       },
 //       "results": {
 //         "age": {
-//           "result_name": "Age",
+//           "name": "Age",
 //           "value": "33",
-//           "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+//           "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
 //           "created_on": "2000-01-01T00:00:00.000000000-00:00"
 //         }
 //       }
@@ -52,11 +52,11 @@ type SessionTriggeredEvent struct {
 	Contacts      []*flows.ContactReference `json:"contacts,omitempty" validate:"dive"`
 	Groups        []*assets.GroupReference  `json:"groups,omitempty" validate:"dive"`
 	CreateContact bool                      `json:"create_contact,omitempty"`
-	Run           json.RawMessage           `json:"run"`
+	RunSummary    json.RawMessage           `json:"run_summary"`
 }
 
 // NewSessionTriggeredEvent returns a new session triggered event
-func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, createContact bool, runSnapshot json.RawMessage) *SessionTriggeredEvent {
+func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, contacts []*flows.ContactReference, groups []*assets.GroupReference, createContact bool, runSummary json.RawMessage) *SessionTriggeredEvent {
 	return &SessionTriggeredEvent{
 		BaseEvent:     NewBaseEvent(TypeSessionTriggered),
 		Flow:          flow,
@@ -64,6 +64,6 @@ func NewSessionTriggeredEvent(flow *assets.FlowReference, urns []urns.URN, conta
 		Contacts:      contacts,
 		Groups:        groups,
 		CreateContact: createContact,
-		Run:           runSnapshot,
+		RunSummary:    runSummary,
 	}
 }

@@ -82,7 +82,7 @@
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     }
                 ],
-                "run": {
+                "run_summary": {
                     "contact": {
                         "created_on": "2018-06-20T11:40:30.123456789Z",
                         "fields": {
