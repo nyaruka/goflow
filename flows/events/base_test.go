@@ -31,6 +31,50 @@ func TestEventMarshaling(t *testing.T) {
 		marshaled string
 	}{
 		{
+			events.NewBroadcastCreatedEvent(
+				map[utils.Language]*events.BroadcastTranslation{
+					"eng": {Text: "Hello", Attachments: nil, QuickReplies: nil},
+					"spa": {Text: "Hola", Attachments: nil, QuickReplies: nil},
+				},
+				utils.Language("eng"),
+				[]urns.URN{urns.URN("tel:+12345678900")},
+				[]*flows.ContactReference{
+					flows.NewContactReference(flows.ContactUUID("b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"), "Jim"),
+				},
+				[]*assets.GroupReference{
+					assets.NewGroupReference(assets.GroupUUID("5f9fd4f7-4b0f-462a-a598-18bfc7810412"), "Supervisors"),
+				},
+			),
+			`{
+				"base_language": "eng",
+				"contacts": [
+					{
+						"name": "Jim",
+						"uuid": "b2aaf598-1bb3-4c7d-b6bb-1f8dbe2ac16f"
+					}
+				],
+				"created_on": "2018-10-18T14:20:30.000123456Z",
+				"groups": [
+					{
+						"name": "Supervisors",
+						"uuid": "5f9fd4f7-4b0f-462a-a598-18bfc7810412"
+					}
+				],
+				"translations": {
+					"eng": {
+						"text": "Hello"
+					},
+					"spa": {
+						"text": "Hola"
+					}
+				},
+				"type": "broadcast_created",
+				"urns": [
+					"tel:+12345678900"
+				]
+			}`,
+		},
+		{
 			events.NewContactFieldChangedEvent(
 				assets.NewFieldReference("gender", "Gender"),
 				flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
@@ -160,13 +204,13 @@ func TestEventMarshaling(t *testing.T) {
 
 	for _, tc := range eventTests {
 		eventJSON, err := json.Marshal(tc.event)
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		test.AssertEqualJSON(t, []byte(tc.marshaled), eventJSON, "event JSON mismatch")
 
-		// also try to unmarshal and validate the JSON
-		err = utils.UnmarshalAndValidate(eventJSON, tc.event)
-		require.NoError(t, err)
+		// try to read event back
+		_, err = events.ReadEvent(eventJSON)
+		assert.NoError(t, err)
 	}
 }
 
