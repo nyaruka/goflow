@@ -17,7 +17,6 @@ import (
 func TestMsgIn(t *testing.T) {
 	msg := flows.NewMsgIn(
 		flows.MsgUUID("48c32bd4-ed68-4a21-b540-9da96217b022"),
-		flows.MsgID(123),
 		urns.URN("tel:+1234567890"),
 		assets.NewChannelReference(assets.ChannelUUID("61f38f46-a856-4f90-899e-905691784159"), "My Android"),
 		"Hi there",
@@ -25,8 +24,9 @@ func TestMsgIn(t *testing.T) {
 			flows.Attachment("image/jpeg:https://example.com/test.jpg"),
 			flows.Attachment("audio/mp3:https://example.com/test.mp3"),
 		},
-		"EX346436734",
 	)
+	msg.SetID(123)
+	msg.SetExternalID("EX346436734")
 
 	// test marshaling our msg
 	marshaled, err := json.Marshal(msg)

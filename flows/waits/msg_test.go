@@ -71,7 +71,7 @@ func TestMsgWaitSkipIfInitial(t *testing.T) {
 	session, flow = initializeSession(t)
 
 	// whereas a msg trigger will skip over it
-	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, urns.NilURN, nil, "Hi there", nil, "")
+	msg := flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), urns.NilURN, nil, "Hi there", nil)
 	trigger = triggers.NewMsgTrigger(env, contact, flow.Reference(), msg, nil, utils.Now())
 
 	newEvents, err = session.Start(trigger)
