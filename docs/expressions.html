@@ -280,9 +280,11 @@
 <h2 id="datetime_diffdate1-date2-unit">datetime_diff(date1, date2, unit)</h2>
 <p>Returns the duration between <code>date1</code> and <code>date2</code> in the <code>unit</code> specified.</p>
 <p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">@(datetime_diff(<span class="st">&quot;2017-01-17 10:50&quot;</span>, <span class="st">&quot;2017-01-17 12:30&quot;</span>, <span class="st">&quot;h&quot;</span>)) → <span class="dv">-1</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(datetime_diff(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">@(datetime_diff(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;2017-05-15&quot;</span>, <span class="st">&quot;W&quot;</span>)) → <span class="dv">17</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">@(datetime_diff(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;2017-05-15&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">4</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">@(datetime_diff(<span class="st">&quot;2017-01-17 10:50&quot;</span>, <span class="st">&quot;2017-01-17 12:30&quot;</span>, <span class="st">&quot;h&quot;</span>)) → <span class="dv">1</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">-2</span></a></code></pre></div>
 <p><a name="function:datetime_from_parts"></a></p>
 <h2 id="datetime_from_partsyear-month-day">datetime_from_parts(year, month, day)</h2>
 <p>Creates a date from <code>year</code>, <code>month</code> and <code>day</code>.</p>
