@@ -13,7 +13,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
-type readFunc func(session flows.Session, data json.RawMessage) (flows.Trigger, error)
+type readFunc func(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error)
 
 var registeredTypes = map[string]readFunc{}
 
@@ -131,7 +131,7 @@ type baseTriggerEnvelope struct {
 }
 
 // ReadTrigger reads a trigger from the given JSON
-func ReadTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	typeName, err := utils.ReadTypeFromJSON(data)
 	if err != nil {
 		return nil, err
@@ -141,10 +141,10 @@ func ReadTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, er
 	if f == nil {
 		return nil, fmt.Errorf("unknown type: '%s'", typeName)
 	}
-	return f(session, data)
+	return f(sessionAssets, data)
 }
 
-func (t *baseTrigger) unmarshal(session flows.Session, e *baseTriggerEnvelope) error {
+func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTriggerEnvelope) error {
 	var err error
 
 	t.type_ = e.Type
@@ -157,7 +157,7 @@ func (t *baseTrigger) unmarshal(session flows.Session, e *baseTriggerEnvelope) e
 		}
 	}
 	if e.Contact != nil {
-		if t.contact, err = flows.ReadContact(session.Assets(), e.Contact, true); err != nil {
+		if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, true); err != nil {
 			return fmt.Errorf("unable to read contact: %s", err)
 		}
 	}

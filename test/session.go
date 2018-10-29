@@ -331,7 +331,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session, json.RawMessage(sessionTrigger))
+	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(sessionTrigger))
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading trigger: %s", err)
 	}

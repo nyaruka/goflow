@@ -2,13 +2,15 @@ package triggers_test
 
 import (
 	"encoding/json"
-	"github.com/nyaruka/gocommon/urns"
-	"github.com/nyaruka/goflow/excellent/types"
 	"testing"
 	"time"
 
+	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/assets"
+	"github.com/nyaruka/goflow/assets/static"
+	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
+	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
@@ -17,12 +19,37 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var assetsJSON = `{
+	"flows": [
+		{
+			"uuid": "7c37d7e5-6468-4b31-8109-ced2ef8b5ddc",
+			"name": "Registration",
+			"nodes": []
+		}
+	],
+	"channels": [
+		{
+			"uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e",
+			"name": "Facebook",
+			"address": "23532562626",
+			"schemes": ["facebook"],
+			"roles": ["send", "receive"]
+		}
+	]
+}`
+
 func TestTriggerMarshaling(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 10, 18, 14, 20, 30, 123456, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
 	utils.SetUUIDGenerator(utils.NewSeededUUID4Generator(1234))
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
+
+	source, err := static.NewStaticSource([]byte(assetsJSON))
+	require.NoError(t, err)
+
+	sessionAssets, err := engine.NewSessionAssets(source)
+	require.NoError(t, err)
 
 	env := utils.NewDefaultEnvironment()
 	contact := flows.NewEmptyContact("Bob", utils.Language("eng"), nil)
@@ -143,7 +170,7 @@ func TestTriggerMarshaling(t *testing.T) {
 					"uuid": "084e4bed-667c-425e-82f7-bdb625e6ec9e"
 				},
 				"triggered_on": "2018-10-20T09:49:31.23456789Z",
-				"type": "campaign"
+				"type": "flow_action"
 			}`,
 		},
 		{
@@ -228,14 +255,14 @@ func TestTriggerMarshaling(t *testing.T) {
 	}
 
 	for _, tc := range triggerTests {
-		eventJSON, err := json.Marshal(tc.trigger)
-		require.NoError(t, err)
+		triggerJSON, err := json.Marshal(tc.trigger)
+		assert.NoError(t, err)
 
-		test.AssertEqualJSON(t, []byte(tc.marshaled), eventJSON, "trigger JSON mismatch")
+		test.AssertEqualJSON(t, []byte(tc.marshaled), triggerJSON, "trigger JSON mismatch")
 
-		// also try to unmarshal and validate the JSON
-		err = utils.UnmarshalAndValidate(eventJSON, tc.trigger)
-		require.NoError(t, err)
+		// then try to read from the JSON
+		_, err = triggers.ReadTrigger(sessionAssets, triggerJSON)
+		assert.NoError(t, err, "error reading trigger: %s", string(triggerJSON))
 	}
 }
 

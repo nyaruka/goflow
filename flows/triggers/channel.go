@@ -76,7 +76,7 @@ type channelTriggerEnvelope struct {
 }
 
 // ReadChannelTrigger reads a channel trigger
-func ReadChannelTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &channelTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ func ReadChannelTrigger(session flows.Session, data json.RawMessage) (flows.Trig
 		event: e.Event,
 	}
 
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

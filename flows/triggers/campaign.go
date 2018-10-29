@@ -81,7 +81,7 @@ type campaignTriggerEnvelope struct {
 }
 
 // ReadCampaignTrigger reads a campaign trigger
-func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &campaignTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Tri
 	t := &CampaignTrigger{
 		event: e.Event,
 	}
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

@@ -105,7 +105,7 @@ type msgTriggerEnvelope struct {
 }
 
 // ReadMsgTrigger reads a message trigger
-func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &msgTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger,
 		match: e.Match,
 	}
 
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

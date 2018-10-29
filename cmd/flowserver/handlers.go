@@ -87,7 +87,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	session := engine.NewSession(assets, config, s.httpClient)
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session, request.Trigger)
+	trigger, err := triggers.ReadTrigger(session.Assets(), request.Trigger)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read trigger: %s", err)
 	}

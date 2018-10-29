@@ -509,7 +509,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 
 	// read our trigger
 	if e.Trigger != nil {
-		if s.trigger, err = triggers.ReadTrigger(s, e.Trigger); err != nil {
+		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger); err != nil {
 			return nil, fmt.Errorf("unable to read trigger: %s", err)
 		}
 	}

@@ -187,7 +187,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
-	trigger, err := triggers.ReadTrigger(session, exampleJSON)
+	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to read trigger: %s", err)
 	}

@@ -53,7 +53,7 @@ type FlowActionTrigger struct {
 // NewFlowActionTrigger creates a new flow action trigger with the passed in values
 func NewFlowActionTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, runSummary json.RawMessage, triggeredOn time.Time) *FlowActionTrigger {
 	return &FlowActionTrigger{
-		baseTrigger: newBaseTrigger(TypeCampaign, env, flow, contact, nil, triggeredOn),
+		baseTrigger: newBaseTrigger(TypeFlowAction, env, flow, contact, nil, triggeredOn),
 		runSummary:  runSummary,
 	}
 }
@@ -73,7 +73,7 @@ type flowActionTriggerEnvelope struct {
 }
 
 // ReadFlowActionTrigger reads a flow action trigger
-func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadFlowActionTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &flowActionTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func ReadFlowActionTrigger(session flows.Session, data json.RawMessage) (flows.T
 		runSummary: e.RunSummary,
 	}
 
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 
