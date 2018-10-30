@@ -20,7 +20,18 @@ const (
 	ChannelRoleUSSD    ChannelRole = "ussd"
 )
 
-// Channel is something that can send/receive messages
+// Channel is something that can send/receive messages.
+//
+//   {
+//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//     "name": "My Android",
+//     "address": "+593979011111",
+//     "schemes": ["tel"],
+//     "roles": ["send", "receive"],
+//     "country": "EC"
+//   }
+//
+// @asset channel
 type Channel interface {
 	UUID() ChannelUUID
 	Name() string
@@ -45,7 +56,15 @@ const (
 	FieldTypeState    FieldType = "state"
 )
 
-// Field is a custom contact property
+// Field is a custom contact property.
+//
+//   {
+//     "key": "gender",
+//     "name": "Gender",
+//     "type": "text"
+//   }
+//
+// @asset field
 type Field interface {
 	Key() string
 	Name() string
@@ -55,7 +74,17 @@ type Field interface {
 // FlowUUID is the UUID of a flow
 type FlowUUID utils.UUID
 
-// Flow is graph of nodes with actions and routers
+// Flow is graph of nodes with actions and routers.
+//
+//   {
+//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//     "name": "Registration",
+//     "definition": {
+//       "nodes": []
+//     }
+//   }
+//
+// @asset flow
 type Flow interface {
 	UUID() FlowUUID
 	Name() string
@@ -65,7 +94,15 @@ type Flow interface {
 // GroupUUID is the UUID of a group
 type GroupUUID utils.UUID
 
-// Group is a set of contacts
+// Group is a set of contacts which can be static or dynamic (i.e. based on a query).
+//
+//   {
+//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//     "name": "Youth",
+//     "query": "age <= 18"
+//   }
+//
+// @asset group
 type Group interface {
 	UUID() GroupUUID
 	Name() string
@@ -75,19 +112,70 @@ type Group interface {
 // LabelUUID is the UUID of a label
 type LabelUUID utils.UUID
 
-// Label is something that can be applied a message
+// Label is an organizational tag that can be applied to a message.
+//
+//   {
+//     "uuid": "14782905-81a6-4910-bc9f-93ad287b23c3",
+//     "name": "Spam"
+//   }
+//
+// @asset label
 type Label interface {
 	UUID() LabelUUID
 	Name() string
 }
 
-// LocationHierarchy is a searchable hierachy of locations
+// LocationHierarchy is a searchable hierachy of locations.
+//
+//   {
+//     "name": "Rwanda",
+//     "aliases": ["Ruanda"],
+//     "children": [
+//       {
+//         "name": "Kigali City",
+//         "aliases": ["Kigali", "Kigari"],
+//         "children": [
+//           {
+//             "name": "Gasabo",
+//             "children": [
+//               {
+//                 "id": "575743222",
+//                 "name": "Gisozi"
+//               },
+//               {
+//                 "id": "457378732",
+//                 "name": "Ndera"
+//               }
+//             ]
+//           },
+//           {
+//             "name": "Nyarugenge",
+//             "children": []
+//           }
+//         ]
+//       },
+//       {
+//         "name": "Eastern Province"
+//       }
+//     ]
+//   }
+//
+// @asset location
 type LocationHierarchy interface {
 	FindByPath(path string) *utils.Location
 	FindByName(name string, level utils.LocationLevel, parent *utils.Location) []*utils.Location
 }
 
-// Resthook is a set of URLs which are subscribed to the named event
+// Resthook is a set of URLs which are subscribed to the named event.
+//
+//   {
+//     "slug": "new-registration",
+//     "subscribers": [
+//       "http://example.com/record.php?@contact.uuid"
+//     ]
+//   }
+//
+// @asset resthook
 type Resthook interface {
 	Slug() string
 	Subscribers() []string

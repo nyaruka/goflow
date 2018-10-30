@@ -128,7 +128,7 @@ func (u *ContactURN) withoutQuery() urns.URN {
 
 // Resolve resolves the given key when this URN is referenced in an expression
 func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "scheme":
 		return types.NewXText(u.urn.Scheme())
 	case "path":

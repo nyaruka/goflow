@@ -100,7 +100,7 @@
 <a class="sourceLine" id="cb3-10" data-line-number="10">@contact.urns.mailto<span class="fl">.0</span> → mailto:foo@bar.com</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11">@contact.urn → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12">@contact.groups → [<span class="st">&quot;Testers&quot;</span>,<span class="st">&quot;Males&quot;</span>]</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="dv">23</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span>}</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">@contact.fields → {<span class="st">&quot;activation_token&quot;</span>:<span class="st">&quot;AACC55&quot;</span>,<span class="st">&quot;age&quot;</span>:<span class="dv">23</span>,<span class="st">&quot;gender&quot;</span>:<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;join_date&quot;</span>:<span class="st">&quot;2017-12-02T00:00:00-02:00&quot;</span>,<span class="st">&quot;not_set&quot;</span>:null}</a>
 <a class="sourceLine" id="cb3-14" data-line-number="14">@contact.fields.activation_token → AACC55</a>
 <a class="sourceLine" id="cb3-15" data-line-number="15">@contact.fields.gender → Male</a></code></pre></div>
 <p><a name="context:flow"></a></p>
@@ -280,9 +280,11 @@
 <h2 id="datetime_diffdate1-date2-unit">datetime_diff(date1, date2, unit)</h2>
 <p>Returns the duration between <code>date1</code> and <code>date2</code> in the <code>unit</code> specified.</p>
 <p>Valid durations are “Y” for years, “M” for months, “W” for weeks, “D” for days, “h” for hour, “m” for minutes, “s” for seconds.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">@(datetime_diff(<span class="st">&quot;2017-01-17 10:50&quot;</span>, <span class="st">&quot;2017-01-17 12:30&quot;</span>, <span class="st">&quot;h&quot;</span>)) → <span class="dv">-1</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">2</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" data-line-number="1">@(datetime_diff(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;D&quot;</span>)) → <span class="dv">2</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">@(datetime_diff(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;2017-05-15&quot;</span>, <span class="st">&quot;W&quot;</span>)) → <span class="dv">17</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">@(datetime_diff(<span class="st">&quot;2017-01-15&quot;</span>, <span class="st">&quot;2017-05-15&quot;</span>, <span class="st">&quot;M&quot;</span>)) → <span class="dv">4</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">@(datetime_diff(<span class="st">&quot;2017-01-17 10:50&quot;</span>, <span class="st">&quot;2017-01-17 12:30&quot;</span>, <span class="st">&quot;h&quot;</span>)) → <span class="dv">1</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">@(datetime_diff(<span class="st">&quot;2017-01-17&quot;</span>, <span class="st">&quot;2015-12-17&quot;</span>, <span class="st">&quot;Y&quot;</span>)) → <span class="dv">-2</span></a></code></pre></div>
 <p><a name="function:datetime_from_parts"></a></p>
 <h2 id="datetime_from_partsyear-month-day">datetime_from_parts(year, month, day)</h2>
 <p>Creates a date from <code>year</code>, <code>month</code> and <code>day</code>.</p>
@@ -660,7 +662,7 @@
 <p><a name="function:url_encode"></a></p>
 <h2 id="url_encodetext">url_encode(text)</h2>
 <p>Encodes <code>text</code> for use as a URL parameter.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(url_encode(<span class="st">&quot;two words&quot;</span>)) → two+words</a>
+<div class="sourceCode" id="cb66"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb66-1" data-line-number="1">@(url_encode(<span class="st">&quot;two &amp; words&quot;</span>)) → two%<span class="dv">20</span>%<span class="dv">26</span>%20words</a>
 <a class="sourceLine" id="cb66-2" data-line-number="2">@(url_encode(<span class="dv">10</span>)) → <span class="dv">10</span></a></code></pre></div>
 <p><a name="function:weekday"></a></p>
 <h2 id="weekdaydate">weekday(date)</h2>
@@ -851,10 +853,11 @@
 <a class="sourceLine" id="cb89-3" data-line-number="3">@(has_pattern(<span class="st">&quot;Buy cheese please&quot;</span>, <span class="st">&quot;buy (\w+)&quot;</span>).match) → Buy cheese</a></code></pre></div>
 <p><a name="test:has_phone"></a></p>
 <h2 id="has_phonetext-country_code">has_phone(text, country_code)</h2>
-<p>Tests whether a phone number (in the passed in <code>country_code</code>) is contained in the <code>text</code></p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" data-line-number="1">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
-<a class="sourceLine" id="cb90-2" data-line-number="2">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></a>
-<a class="sourceLine" id="cb90-3" data-line-number="3">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</a></code></pre></div>
+<p>Tests whether <code>text</code> contains a phone number. The optional <code>country_code</code> argument specifies the country to use for parsing.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb90-1" data-line-number="1">@(has_phone(<span class="st">&quot;my number is +12067799294&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2">@(has_phone(<span class="st">&quot;my number is 2067799294&quot;</span>, <span class="st">&quot;US&quot;</span>)) → true</a>
+<a class="sourceLine" id="cb90-3" data-line-number="3">@(has_phone(<span class="st">&quot;my number is 206 779 9294&quot;</span>, <span class="st">&quot;US&quot;</span>).match) → +<span class="dv">12067799294</span></a>
+<a class="sourceLine" id="cb90-4" data-line-number="4">@(has_phone(<span class="st">&quot;my number is none of your business&quot;</span>, <span class="st">&quot;US&quot;</span>)) → false</a></code></pre></div>
 <p><a name="test:has_phrase"></a></p>
 <h2 id="has_phrasetext-phrase">has_phrase(text, phrase)</h2>
 <p>Tests whether <code>phrase</code> is contained in <code>text</code></p>
@@ -878,7 +881,8 @@
 <a class="sourceLine" id="cb93-2" data-line-number="2">@(has_text(<span class="st">&quot;quick brown&quot;</span>).match) → quick brown</a>
 <a class="sourceLine" id="cb93-3" data-line-number="3">@(has_text(<span class="st">&quot;&quot;</span>)) → false</a>
 <a class="sourceLine" id="cb93-4" data-line-number="4">@(has_text(<span class="st">&quot; </span><span class="sc">\n</span><span class="st">&quot;</span>)) → false</a>
-<a class="sourceLine" id="cb93-5" data-line-number="5">@(has_text(<span class="dv">123</span>)) → true</a></code></pre></div>
+<a class="sourceLine" id="cb93-5" data-line-number="5">@(has_text(<span class="dv">123</span>)) → true</a>
+<a class="sourceLine" id="cb93-6" data-line-number="6">@(has_text(contact.fields.not_set)) → false</a></code></pre></div>
 <p><a name="test:has_value"></a></p>
 <h2 id="has_valuevalue">has_value(value)</h2>
 <p>Returns whether <code>value</code> is non-nil and not an error</p>

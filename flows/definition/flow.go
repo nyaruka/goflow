@@ -3,6 +3,7 @@ package definition
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"sync"
 
 	"github.com/nyaruka/goflow/assets"
@@ -97,7 +98,7 @@ func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 
 // Resolve resolves the given key when this flow is referenced in an expression
 func (f *flow) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(f.UUID()))
 	case "name":

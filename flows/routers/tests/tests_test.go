@@ -2,6 +2,7 @@ package tests_test
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -22,7 +23,7 @@ var xt = types.NewXDateTime
 type testResolvable struct{}
 
 func (r *testResolvable) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "foo":
 		return types.NewXText("bar")
 	case "zed":
@@ -196,13 +197,18 @@ var testTests = []struct {
 	{"has_email", []types.XValue{nil}, false, nil, false},
 	{"has_email", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 
+	{"has_phone", []types.XValue{xs("my number is +250788123123")}, true, xs("+250788123123"), false},
+	{"has_phone", []types.XValue{xs("my number is +593979111111")}, true, xs("+593979111111"), false},
+	{"has_phone", []types.XValue{xs("my number is 0788123123")}, true, xs("+250788123123"), false}, // uses environment default
 	{"has_phone", []types.XValue{xs("my number is 0788123123"), xs("RW")}, true, xs("+250788123123"), false},
 	{"has_phone", []types.XValue{xs("my number is +250788123123"), xs("RW")}, true, xs("+250788123123"), false},
 	{"has_phone", []types.XValue{xs("my number is +12065551212"), xs("RW")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is 12065551212"), xs("US")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is 206 555 1212"), xs("US")}, true, xs("+12065551212"), false},
 	{"has_phone", []types.XValue{xs("my number is none of your business"), xs("US")}, false, nil, false},
-	{"has_phone", []types.XValue{nil}, false, nil, true},
+	{"has_phone", []types.XValue{}, false, nil, true},
+	{"has_phone", []types.XValue{types.NewXErrorf("error")}, false, nil, true},
+	{"has_phone", []types.XValue{xs("3245"), types.NewXErrorf("error")}, false, nil, true},
 	{"has_phone", []types.XValue{xs("number"), nil}, false, nil, false},
 	{"has_phone", []types.XValue{xs("too"), xs("many"), xs("args")}, false, nil, true},
 }
@@ -211,7 +217,7 @@ func TestTests(t *testing.T) {
 	utils.SetTimeSource(utils.NewFixedTimeSource(time.Date(2018, 4, 11, 13, 24, 30, 123456000, time.UTC)))
 	defer utils.SetTimeSource(utils.DefaultTimeSource)
 
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinuteSecond, time.UTC, utils.NilLanguage, nil, utils.Country("RW"), utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	for _, test := range testTests {
 		testFunc := tests.XTESTS[test.name]
@@ -263,7 +269,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 
 	env := utils.NewDefaultEnvironment()
 	for _, test := range evalTests {
-		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
+		eval, err := excellent.EvaluateTemplateAsString(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)

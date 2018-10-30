@@ -19,8 +19,13 @@ const TypeChannel string = "channel"
 
 // ChannelEvent describes the specific event on the channel that triggered the session
 type ChannelEvent struct {
-	Type    string                  `json:"type" validate:"required"`
-	Channel assets.ChannelReference `json:"channel" validate:"required,dive"`
+	Type    string                   `json:"type" validate:"required"`
+	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
+}
+
+// NewChannelEvent creates a new channel event
+func NewChannelEvent(typeName string, channel *assets.ChannelReference) *ChannelEvent {
+	return &ChannelEvent{Type: typeName, Channel: channel}
 }
 
 // ChannelTrigger is used when a session was triggered by a channel event
@@ -71,7 +76,7 @@ type channelTriggerEnvelope struct {
 }
 
 // ReadChannelTrigger reads a channel trigger
-func ReadChannelTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadChannelTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &channelTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -81,7 +86,7 @@ func ReadChannelTrigger(session flows.Session, data json.RawMessage) (flows.Trig
 		event: e.Event,
 	}
 
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

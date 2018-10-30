@@ -166,10 +166,11 @@ var sessionAssets = `{
         }
     ],
     "fields": [
-        {"key": "gender", "label": "Gender", "value_type": "text"},
-        {"key": "age", "label": "Age", "value_type": "number"},
-        {"key": "join_date", "label": "Join Date", "value_type": "datetime"},
-        {"key": "activation_token", "label": "Activation Token", "value_type": "text"}
+        {"key": "gender", "label": "Gender", "type": "text"},
+        {"key": "age", "label": "Age", "type": "number"},
+        {"key": "join_date", "label": "Join Date", "type": "datetime"},
+        {"key": "activation_token", "label": "Activation Token", "type": "text"},
+        {"key": "not_set", "label": "Not set", "type": "text"}
     ],
     "groups": [
         {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
@@ -250,7 +251,7 @@ var sessionTrigger = `{
             }
         }
     },
-    "run": {
+    "run_summary": {
         "uuid": "4213ac47-93fd-48c4-af12-7da8218ef09d",
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
@@ -330,14 +331,14 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session, json.RawMessage(sessionTrigger))
+	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(sessionTrigger))
 	if err != nil {
 		return nil, nil, fmt.Errorf("error reading trigger: %s", err)
 	}
 
 	_, err = session.Start(trigger)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("error starting test session: %s", err)
 	}
 
 	// read our resume

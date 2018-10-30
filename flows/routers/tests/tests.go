@@ -70,7 +70,7 @@ var XTESTS = map[string]functions.XFunction{
 	"has_date_eq": functions.TextAndDateFunction(HasDateEQ),
 	"has_date_gt": functions.TextAndDateFunction(HasDateGT),
 
-	"has_phone": functions.TwoTextFunction(HasPhone),
+	"has_phone": functions.InitialTextFunction(0, 1, HasPhone),
 	"has_email": functions.OneTextFunction(HasEmail),
 
 	"has_state":    functions.OneTextFunction(HasState),
@@ -266,6 +266,7 @@ func HasOnlyPhrase(env utils.Environment, text types.XText, test types.XText) ty
 //   @(has_text("")) -> false
 //   @(has_text(" \n")) -> false
 //   @(has_text(123)) -> true
+//   @(has_text(contact.fields.not_set)) -> false
 //
 // @test has_text(text)
 func HasText(env utils.Environment, text types.XText) types.XValue {
@@ -512,14 +513,27 @@ func HasEmail(env utils.Environment, text types.XText) types.XValue {
 	return XFalseResult
 }
 
-// HasPhone tests whether a phone number (in the passed in `country_code`) is contained in the `text`
+// HasPhone tests whether `text` contains a phone number. The optional `country_code` argument specifies
+// the country to use for parsing.
 //
+//   @(has_phone("my number is +12067799294")) -> true
 //   @(has_phone("my number is 2067799294", "US")) -> true
 //   @(has_phone("my number is 206 779 9294", "US").match) -> +12067799294
 //   @(has_phone("my number is none of your business", "US")) -> false
 //
 // @test has_phone(text, country_code)
-func HasPhone(env utils.Environment, text types.XText, country types.XText) types.XValue {
+func HasPhone(env utils.Environment, text types.XText, args ...types.XValue) types.XValue {
+	var country types.XText
+	var xerr types.XError
+	if len(args) == 1 {
+		country, xerr = types.ToXText(env, args[0])
+		if xerr != nil {
+			return xerr
+		}
+	} else {
+		country = types.NewXText(string(env.DefaultCountry()))
+	}
+
 	// try to find a phone number
 	phone, err := phonenumbers.Parse(text.Native(), country.Native())
 	if err != nil {

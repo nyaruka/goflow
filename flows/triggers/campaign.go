@@ -16,16 +16,26 @@ func init() {
 // TypeCampaign is the type for sessions triggered by campaign events
 const TypeCampaign string = "campaign"
 
-// Campaign describes the campaign that triggered the session
-type Campaign struct {
+// CampaignReference is a reference to the campaign that triggered the session
+type CampaignReference struct {
 	UUID string `json:"uuid" validate:"required,uuid4"`
 	Name string `json:"name" validate:"required"`
 }
 
+// NewCampaignReference creates a new campaign reference
+func NewCampaignReference(uuid, name string) *CampaignReference {
+	return &CampaignReference{UUID: uuid, Name: name}
+}
+
 // CampaignEvent describes the specific event in the campaign that triggered the session
 type CampaignEvent struct {
-	UUID     string   `json:"uuid" validate:"required,uuid4"`
-	Campaign Campaign `json:"campaign" validate:"required,dive"`
+	UUID     string             `json:"uuid" validate:"required,uuid4"`
+	Campaign *CampaignReference `json:"campaign" validate:"required,dive"`
+}
+
+// NewCampaignEvent creates a new campaign event
+func NewCampaignEvent(uuid string, campaign *CampaignReference) *CampaignEvent {
+	return &CampaignEvent{UUID: uuid, Campaign: campaign}
 }
 
 // CampaignTrigger is used when a session was triggered by a campaign event
@@ -71,7 +81,7 @@ type campaignTriggerEnvelope struct {
 }
 
 // ReadCampaignTrigger reads a campaign trigger
-func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadCampaignTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &campaignTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -80,7 +90,7 @@ func ReadCampaignTrigger(session flows.Session, data json.RawMessage) (flows.Tri
 	t := &CampaignTrigger{
 		event: e.Event,
 	}
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

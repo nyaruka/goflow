@@ -8,7 +8,7 @@ import (
 type Field struct {
 	Key_  string           `json:"key" validate:"required"`
 	Name_ string           `json:"name"`
-	Type_ assets.FieldType `json:"value_type" validate:"required"`
+	Type_ assets.FieldType `json:"type" validate:"required"`
 }
 
 // NewField creates a new field from the passed in key, name and type

@@ -126,18 +126,16 @@
                         "name": "Registration",
                         "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
                     },
-                    "run": {
+                    "run_summary": {
                         "contact": {
-                            "created_on": "2018-01-01T12:00:00Z",
+                            "created_on": "2018-01-01T12:00:00.000000Z",
                             "fields": {
                                 "state": {
                                     "state": "Ecuador > Esmeraldas",
                                     "text": "Ecuador > Esmeraldas"
                                 }
                             },
-                            "id": 0,
                             "name": "Bob",
-                            "urns": [],
                             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151"
                         },
                         "flow": {
@@ -146,9 +144,9 @@
                         },
                         "results": {
                             "age": {
-                                "created_on": "2000-01-01T00:00:00Z",
-                                "name": "",
-                                "node_uuid": "",
+                                "created_on": "2000-01-01T00:00:00.000000000-00:00",
+                                "name": "Age",
+                                "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
                                 "value": "33"
                             }
                         },
@@ -198,7 +196,7 @@
             "name": "Registration",
             "uuid": "ce902e6f-bc0a-40cf-a58c-1e300d15ec85"
         },
-        "run": {
+        "run_summary": {
             "contact": {
                 "created_on": "2018-01-01T12:00:00.000000Z",
                 "fields": {
@@ -217,8 +215,8 @@
             "results": {
                 "age": {
                     "created_on": "2000-01-01T00:00:00.000000000-00:00",
-                    "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
-                    "result_name": "Age",
+                    "name": "Age",
+                    "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
                     "value": "33"
                 }
             },

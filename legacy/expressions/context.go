@@ -191,6 +191,8 @@ func newMigrationVars() map[string]interface{} {
 		arbitraryNesting: "results",
 		arbitraryVars: map[string]interface{}{
 			"category": "category_localized",
+			"text":     "input",
+			"time":     "created_on",
 		},
 	}
 
@@ -216,6 +218,8 @@ func newMigrationVars() map[string]interface{} {
 			arbitraryNesting: "results",
 			arbitraryVars: map[string]interface{}{
 				"category": "category_localized",
+				"text":     "input",
+				"time":     "created_on",
 			},
 		},
 		"step": &varMapper{

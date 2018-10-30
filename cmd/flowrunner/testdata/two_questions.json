@@ -158,7 +158,7 @@
         {
             "key": "gender",
             "label": "Gender",
-            "value_type": "text"
+            "type": "text"
         }
     ]
 }

@@ -36,7 +36,7 @@ type ManualTrigger struct {
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, params types.XValue, triggeredOn time.Time) flows.Trigger {
+func NewManualTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, params types.XValue, triggeredOn time.Time) flows.Trigger {
 	return &ManualTrigger{
 		baseTrigger: newBaseTrigger(TypeManual, env, flow, contact, params, triggeredOn),
 	}
@@ -49,7 +49,7 @@ var _ flows.Trigger = (*ManualTrigger)(nil)
 //------------------------------------------------------------------------------------------
 
 // ReadManualTrigger reads a manual trigger
-func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadManualTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &baseTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func ReadManualTrigger(session flows.Session, data json.RawMessage) (flows.Trigg
 
 	t := &ManualTrigger{}
 
-	if err := t.unmarshal(session, e); err != nil {
+	if err := t.unmarshal(sessionAssets, e); err != nil {
 		return nil, err
 	}
 

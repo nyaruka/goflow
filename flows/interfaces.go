@@ -1,6 +1,7 @@
 package flows
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/assets"
@@ -273,6 +274,13 @@ type Trigger interface {
 	TriggeredOn() time.Time
 }
 
+// TriggerWithRun is special case of trigger that provides a parent run to the session
+type TriggerWithRun interface {
+	Trigger
+
+	RunSummary() json.RawMessage
+}
+
 // Resume represents something which can resume a session with the flow engine
 type Resume interface {
 	utils.Typed
@@ -360,7 +368,7 @@ type Session interface {
 	Trigger() Trigger
 	PushFlow(Flow, FlowRun, bool)
 	Wait() Wait
-	FlowOnStack(assets.FlowUUID) bool
+	CanEnterFlow(Flow) bool
 	LogEvent(Event)
 
 	Start(Trigger) ([]Event, error)
@@ -429,7 +437,7 @@ type FlowRun interface {
 	Events() []Event
 
 	EvaluateTemplate(template string) (types.XValue, error)
-	EvaluateTemplateAsString(template string, urlEncode bool) (string, error)
+	EvaluateTemplateAsString(template string) (string, error)
 
 	GetText(utils.UUID, string, string) string
 	GetTextArray(utils.UUID, string, []string) []string

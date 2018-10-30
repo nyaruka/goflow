@@ -103,15 +103,15 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 	// create our environment
 	la, _ := time.LoadLocation("America/Los_Angeles")
 	languages := []utils.Language{flow.Language(), contact.Language()}
-	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, languages, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatYearMonthDay, utils.TimeFormatHourMinute, la, utils.NilLanguage, languages, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	repro := &Repro{}
 
 	if initialMsg != "" {
 		msg := createMessage(contact, initialMsg)
-		repro.Trigger = triggers.NewMsgTrigger(env, contact, flow.Reference(), msg, nil, time.Now())
+		repro.Trigger = triggers.NewMsgTrigger(env, flow.Reference(), contact, msg, nil, time.Now())
 	} else {
-		repro.Trigger = triggers.NewManualTrigger(env, contact, flow.Reference(), nil, time.Now())
+		repro.Trigger = triggers.NewManualTrigger(env, flow.Reference(), contact, nil, time.Now())
 	}
 	fmt.Fprintf(out, "Starting flow '%s'....\n---------------------------------------\n", flow.Name())
 
@@ -147,7 +147,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 }
 
 func createMessage(contact *flows.Contact, text string) *flows.MsgIn {
-	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), flows.NilMsgID, contact.URNs()[0].URN(), nil, text, []flows.Attachment{})
+	return flows.NewMsgIn(flows.MsgUUID(utils.NewUUID()), contact.URNs()[0].URN(), nil, text, []flows.Attachment{})
 }
 
 func printEvents(log []flows.Event, out io.Writer) {

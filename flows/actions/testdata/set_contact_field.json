@@ -137,5 +137,58 @@
             ],
             "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
         }
+    },
+    {
+        "description": "Field changed event and dynamic group changed events if field cleared",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "set_contact_field",
+            "field": {
+                "key": "gender",
+                "name": "Gender"
+            },
+            "value": "@(\"\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "field": {
+                    "key": "gender",
+                    "name": "Gender"
+                },
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_field_changed",
+                "value": null
+            },
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "groups_removed": [
+                    {
+                        "name": "Males",
+                        "uuid": "0ec97956-c451-48a0-a180-1ce766623e31"
+                    }
+                ],
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "contact_groups_changed"
+            }
+        ],
+        "contact_after": {
+            "created_on": "2018-06-20T11:40:30.123456789Z",
+            "groups": [
+                {
+                    "name": "Testers",
+                    "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
+                }
+            ],
+            "id": 0,
+            "language": "eng",
+            "name": "Ryan Lewis",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d&id=123",
+                "twitterid:54784326227#nyaruka"
+            ],
+            "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f"
+        }
     }
 ]

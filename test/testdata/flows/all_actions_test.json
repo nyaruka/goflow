@@ -104,7 +104,7 @@
                         "name": "Collect Language",
                         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                     },
-                    "run": {
+                    "run_summary": {
                         "contact": {
                             "created_on": "2000-01-01T00:00:00Z",
                             "fields": {
@@ -550,7 +550,7 @@
                                     "name": "Collect Language",
                                     "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d"
                                 },
-                                "run": {
+                                "run_summary": {
                                     "contact": {
                                         "created_on": "2000-01-01T00:00:00Z",
                                         "fields": {

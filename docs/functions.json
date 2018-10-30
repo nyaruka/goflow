@@ -184,16 +184,24 @@
         "detail": "Valid durations are \"Y\" for years, \"M\" for months, \"W\" for weeks, \"D\" for days, \"h\" for hour,\n\"m\" for minutes, \"s\" for seconds.",
         "examples": [
             {
-                "template": "@(datetime_diff(\"2017-01-17\", \"2017-01-15\", \"D\"))",
+                "template": "@(datetime_diff(\"2017-01-15\", \"2017-01-17\", \"D\"))",
                 "output": "2"
+            },
+            {
+                "template": "@(datetime_diff(\"2017-01-15\", \"2017-05-15\", \"W\"))",
+                "output": "17"
+            },
+            {
+                "template": "@(datetime_diff(\"2017-01-15\", \"2017-05-15\", \"M\"))",
+                "output": "4"
             },
             {
                 "template": "@(datetime_diff(\"2017-01-17 10:50\", \"2017-01-17 12:30\", \"h\"))",
-                "output": "-1"
+                "output": "1"
             },
             {
                 "template": "@(datetime_diff(\"2017-01-17\", \"2015-12-17\", \"Y\"))",
-                "output": "2"
+                "output": "-2"
             }
         ]
     },
@@ -1166,8 +1174,8 @@
         "detail": "",
         "examples": [
             {
-                "template": "@(url_encode(\"two words\"))",
-                "output": "two+words"
+                "template": "@(url_encode(\"two & words\"))",
+                "output": "two%20%26%20words"
             },
             {
                 "template": "@(url_encode(10))",

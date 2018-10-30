@@ -81,7 +81,7 @@ var XFUNCTIONS = map[string]XFunction{
 	// datetime functions
 	"parse_datetime":      ArgCountCheck(2, 3, ParseDateTime),
 	"datetime_from_parts": ArgCountCheck(3, 3, DateTimeFromParts),
-	"datetime_diff":       DateTimeDiff,
+	"datetime_diff":       ThreeArgFunction(DateTimeDiff),
 	"datetime_add":        DateTimeAdd,
 	"weekday":             OneDateTimeFunction(Weekday),
 	"tz":                  OneDateTimeFunction(TZ),
@@ -749,12 +749,14 @@ func Percent(env utils.Environment, num types.XNumber) types.XValue {
 
 // URLEncode encodes `text` for use as a URL parameter.
 //
-//   @(url_encode("two words")) -> two+words
+//   @(url_encode("two & words")) -> two%20%26%20words
 //   @(url_encode(10)) -> 10
 //
 // @function url_encode(text)
 func URLEncode(env utils.Environment, text types.XText) types.XValue {
-	return types.NewXText(url.QueryEscape(text.Native()))
+	// escapes spaces as %20 matching urllib.quote(s, safe="") in Python
+	encoded := strings.Replace(url.QueryEscape(text.Native()), "+", "%20", -1)
+	return types.NewXText(encoded)
 }
 
 //------------------------------------------------------------------------------------------
@@ -1065,33 +1067,31 @@ func DateTimeFromParts(env utils.Environment, args ...types.XValue) types.XValue
 // Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, "h" for hour,
 // "m" for minutes, "s" for seconds.
 //
-//   @(datetime_diff("2017-01-17", "2017-01-15", "D")) -> 2
-//   @(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) -> -1
-//   @(datetime_diff("2017-01-17", "2015-12-17", "Y")) -> 2
+//   @(datetime_diff("2017-01-15", "2017-01-17", "D")) -> 2
+//   @(datetime_diff("2017-01-15", "2017-05-15", "W")) -> 17
+//   @(datetime_diff("2017-01-15", "2017-05-15", "M")) -> 4
+//   @(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) -> 1
+//   @(datetime_diff("2017-01-17", "2015-12-17", "Y")) -> -2
 //
 // @function datetime_diff(date1, date2, unit)
-func DateTimeDiff(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 3 {
-		return types.NewXErrorf("takes exactly three arguments, received %d", len(args))
-	}
-
-	date1, xerr := types.ToXDateTime(env, args[0])
+func DateTimeDiff(env utils.Environment, arg1 types.XValue, arg2 types.XValue, arg3 types.XValue) types.XValue {
+	date1, xerr := types.ToXDateTime(env, arg1)
 	if xerr != nil {
 		return xerr
 	}
 
-	date2, xerr := types.ToXDateTime(env, args[1])
+	date2, xerr := types.ToXDateTime(env, arg2)
 	if xerr != nil {
 		return xerr
 	}
 
-	unit, xerr := types.ToXText(env, args[2])
+	unit, xerr := types.ToXText(env, arg3)
 	if xerr != nil {
 		return xerr
 	}
 
 	// find the duration between our dates
-	duration := date1.Native().Sub(date2.Native())
+	duration := date2.Native().Sub(date1.Native())
 
 	// then convert based on our unit
 	switch unit.Native() {
@@ -1102,13 +1102,13 @@ func DateTimeDiff(env utils.Environment, args ...types.XValue) types.XValue {
 	case "h":
 		return types.NewXNumberFromInt(int(duration / time.Hour))
 	case "D":
-		return types.NewXNumberFromInt(utils.DaysBetween(date1.Native(), date2.Native()))
+		return types.NewXNumberFromInt(utils.DaysBetween(date2.Native(), date1.Native()))
 	case "W":
-		return types.NewXNumberFromInt(int(utils.DaysBetween(date1.Native(), date2.Native()) / 7))
+		return types.NewXNumberFromInt(int(utils.DaysBetween(date2.Native(), date1.Native()) / 7))
 	case "M":
-		return types.NewXNumberFromInt(utils.MonthsBetween(date1.Native(), date2.Native()))
+		return types.NewXNumberFromInt(utils.MonthsBetween(date2.Native(), date1.Native()))
 	case "Y":
-		return types.NewXNumberFromInt(date1.Native().Year() - date2.Native().Year())
+		return types.NewXNumberFromInt(date2.Native().Year() - date1.Native().Year())
 	}
 
 	return types.NewXErrorf("unknown unit: %s, must be one of s, m, h, D, W, M, Y", unit)

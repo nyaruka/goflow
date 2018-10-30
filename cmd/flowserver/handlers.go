@@ -87,7 +87,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	session := engine.NewSession(assets, config, s.httpClient)
 
 	// read our trigger
-	trigger, err := triggers.ReadTrigger(session, request.Trigger)
+	trigger, err := triggers.ReadTrigger(session.Assets(), request.Trigger)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read trigger: %s", err)
 	}
@@ -240,7 +240,7 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 	context := types.JSONToXValue(expression.Context)
 
 	// evaluate it
-	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, false, nil)
+	result, err := excellent.EvaluateTemplateAsString(utils.NewDefaultEnvironment(), context, expression.Expression, nil)
 	if err != nil {
 		return expressionResponse{Result: result, Errors: []string{err.Error()}}, nil
 	}

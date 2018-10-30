@@ -3,4 +3,6 @@ the [action:set_contact_field] action references a field asset.
 
 # Types
 
-TODO
+<div class="assets">
+{{ .assetDocs }}
+</div>

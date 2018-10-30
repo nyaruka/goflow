@@ -2,6 +2,7 @@ package runs
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -16,6 +17,15 @@ type step struct {
 	arrivedOn time.Time
 }
 
+// NewStep creates a new step
+func NewStep(node flows.Node, arrivedOn time.Time) flows.Step {
+	return &step{
+		stepUUID:  flows.StepUUID(utils.NewUUID()),
+		nodeUUID:  node.UUID(),
+		arrivedOn: arrivedOn,
+	}
+}
+
 func (s *step) UUID() flows.StepUUID     { return s.stepUUID }
 func (s *step) NodeUUID() flows.NodeUUID { return s.nodeUUID }
 func (s *step) ExitUUID() flows.ExitUUID { return s.exitUUID }
@@ -26,7 +36,7 @@ func (s *step) Leave(exit flows.ExitUUID) {
 }
 
 func (s *step) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(s.UUID()))
 	case "node_uuid":

@@ -64,11 +64,18 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@flow.contact.name`, new: `@contact.name`},
 
 		{old: `@child.age`, new: `@child.results.age`},
+		{old: `@child.age.category`, new: `@child.results.age.category_localized`},
+		{old: `@child.age.text`, new: `@child.results.age.input`},
+		{old: `@child.age.time`, new: `@child.results.age.created_on`},
+		{old: `@child.age.value`, new: `@child.results.age.value`},
 		{old: `@child.contact`, new: `@child.contact`},
 		{old: `@child.contact.age`, new: `@child.contact.fields.age`},
 
 		{old: `@parent.role`, new: `@parent.results.role`},
 		{old: `@parent.role.category`, new: `@parent.results.role.category_localized`},
+		{old: `@parent.role.text`, new: `@parent.results.role.input`},
+		{old: `@parent.role.time`, new: `@parent.results.role.created_on`},
+		{old: `@parent.role.value`, new: `@parent.results.role.value`},
 		{old: `@parent.contact`, new: `@parent.contact`},
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
 		{old: `@parent.contact.gender`, new: `@parent.contact.fields.gender`},
@@ -123,7 +130,8 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(1 >= 4)`, new: `@(1 >= 4)`},
 
 		// strings
-		{old: `@("")`, new: `@("")`},
+		{old: `@("")`, new: ``},
+		{old: `@(" ")`, new: `@(" ")`},
 		{old: `@(" "" ")`, new: `@(" \" ")`},
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 
@@ -268,7 +276,8 @@ func TestMigrateTemplate(t *testing.T) {
 	for _, tc := range tests {
 
 		for i := 0; i < 1; i++ {
-			migratedTemplate, err := expressions.MigrateTemplate(tc.old, tc.defaultToSelf)
+			options := &expressions.MigrateOptions{DefaultToSelf: tc.defaultToSelf}
+			migratedTemplate, err := expressions.MigrateTemplate(tc.old, options)
 
 			defer func() {
 				if r := recover(); r != nil {
@@ -389,7 +398,7 @@ func TestLegacyTests(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range tests {
-		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, false)
+		migratedTemplate, err := expressions.MigrateTemplate(tc.Template, nil)
 
 		defer func() {
 			if r := recover(); r != nil {
@@ -404,7 +413,7 @@ func TestLegacyTests(t *testing.T) {
 			tz, err := time.LoadLocation(tc.Context.Timezone)
 			require.NoError(t, err)
 
-			env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, tz, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+			env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, tz, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 			if tc.Context.Now != nil {
 				utils.SetTimeSource(utils.NewFixedTimeSource(*tc.Context.Now))
 				defer utils.SetTimeSource(utils.DefaultTimeSource)
@@ -413,7 +422,7 @@ func TestLegacyTests(t *testing.T) {
 			migratedVars := tc.Context.Variables.Migrate()
 			migratedVarsJSON, _ := json.Marshal(migratedVars)
 
-			_, err = excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, tc.URLEncode, runs.RunContextTopLevels)
+			_, err = excellent.EvaluateTemplateAsString(env, migratedVars, migratedTemplate, runs.RunContextTopLevels)
 
 			if len(tc.Errors) > 0 {
 				assert.Error(t, err, "expecting error evaluating template '%s' (migrated from '%s') with context %s", migratedTemplate, tc.Template, migratedVarsJSON)

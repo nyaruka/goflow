@@ -70,7 +70,7 @@ func (a *CallWebhookAction) Validate(assets flows.SessionAssets, context *flows.
 func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// substitute any variables in our url
-	url, err := run.EvaluateTemplateAsString(a.URL, true)
+	url, err := run.EvaluateTemplateAsString(a.URL)
 	if err != nil {
 		a.logError(run, step, err)
 	}
@@ -84,7 +84,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// substitute any body variables
 	if body != "" {
-		body, err = run.EvaluateTemplateAsString(body, false)
+		body, err = run.EvaluateTemplateAsString(body)
 		if err != nil {
 			a.logError(run, step, err)
 		}
@@ -98,7 +98,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	// add the custom headers, substituting any template vars
 	for key, value := range a.Headers {
-		headerValue, err := run.EvaluateTemplateAsString(value, false)
+		headerValue, err := run.EvaluateTemplateAsString(value)
 		if err != nil {
 			a.logError(run, step, err)
 		}

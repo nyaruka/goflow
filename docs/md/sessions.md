@@ -83,7 +83,7 @@ Is used when another session triggered this run using a trigger_flow action.
         "name": "Collect Age"
     },
     "triggered_on": "2000-01-01T00:00:00Z",
-    "run": {
+    "run_summary": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
@@ -91,23 +91,21 @@ Is used when another session triggered this run using a trigger_flow action.
         },
         "contact": {
             "uuid": "c59b0033-e748-4240-9d4c-e85eb6800151",
-            "id": 0,
             "name": "Bob",
-            "created_on": "2018-01-01T12:00:00Z",
-            "urns": [],
             "fields": {
                 "gender": {
                     "text": "Male"
                 }
-            }
+            },
+            "created_on": "2018-01-01T12:00:00.000000000-00:00"
         },
         "status": "active",
         "results": {
             "age": {
-                "name": "",
+                "result_name": "Age",
                 "value": "33",
-                "node_uuid": "",
-                "created_on": "2018-01-01T12:00:00Z"
+                "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+                "created_on": "2018-01-01T12:00:00.000000000-00:00"
             }
         }
     }
@@ -329,31 +327,12 @@ Events are created when an action wants to send a message to other contacts.
 }
 ```
 </div>
-<a name="event:contact_changed"></a>
-
-## contact_changed
-
-Events are sent by the caller to tell the engine to update the session contact.
-
-<div class="output_event"><h3>Event</h3>```json
-{
-    "type": "contact_changed",
-    "created_on": "2006-01-02T15:04:05Z",
-    "contact": {
-        "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
-        "name": "Bob",
-        "urns": [
-            "tel:+11231234567"
-        ]
-    }
-}
-```
-</div>
 <a name="event:contact_field_changed"></a>
 
 ## contact_field_changed
 
 Events are created when a custom field value of the contact has been changed.
+A null values indicates that the field value has been cleared.
 
 <div class="output_event"><h3>Event</h3>```json
 {
@@ -422,6 +401,26 @@ Events are created when the name of the contact has been changed.
 }
 ```
 </div>
+<a name="event:contact_refreshed"></a>
+
+## contact_refreshed
+
+Events are generated when the resume has a contact with differences to the current session contact.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "contact_refreshed",
+    "created_on": "2006-01-02T15:04:05Z",
+    "contact": {
+        "uuid": "0e06f977-cbb7-475f-9d0b-a0c4aaec7f6a",
+        "name": "Bob",
+        "urns": [
+            "tel:+11231234567"
+        ]
+    }
+}
+```
+</div>
 <a name="event:contact_timezone_changed"></a>
 
 ## contact_timezone_changed
@@ -471,15 +470,15 @@ Events are created when an action wants to send an email.
 }
 ```
 </div>
-<a name="event:environment_changed"></a>
+<a name="event:environment_refreshed"></a>
 
-## environment_changed
+## environment_refreshed
 
 Events are sent by the caller to tell the engine to update the session environment.
 
 <div class="output_event"><h3>Event</h3>```json
 {
-    "type": "environment_changed",
+    "type": "environment_refreshed",
     "created_on": "2006-01-02T15:04:05Z",
     "environment": {
         "date_format": "YYYY-MM-DD",
@@ -682,7 +681,7 @@ Events are created when an action wants to start other people in a flow.
             "name": "New contacts"
         }
     ],
-    "run": {
+    "run_summary": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "flow": {
             "uuid": "93c554a1-b90d-4892-b029-a2a87dec9b87",
@@ -700,9 +699,9 @@ Events are created when an action wants to start other people in a flow.
         },
         "results": {
             "age": {
-                "result_name": "Age",
+                "name": "Age",
                 "value": "33",
-                "node": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
+                "node_uuid": "cd2be8c4-59bc-453c-8777-dec9a80043b8",
                 "created_on": "2000-01-01T00:00:00.000000000-00:00"
             }
         }

@@ -107,21 +107,21 @@ var funcTests = []struct {
 	{"datetime_add", []types.XValue{xs("03-12-2017"), xs("2"), ERROR}, ERROR},
 	{"datetime_add", []types.XValue{xs("22-12-2017")}, ERROR},
 
-	{"datetime_diff", []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("D")}, xi(2)},
+	{"datetime_diff", []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("D")}, xi(-2)},
 	{"datetime_diff", []types.XValue{xs("03-12-2017 10:15"), xs("03-12-2017 18:15"), xs("D")}, xi(0)},
 	{"datetime_diff", []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("W")}, xi(0)},
-	{"datetime_diff", []types.XValue{xs("22-12-2017"), xs("01-12-2017"), xs("W")}, xi(3)},
+	{"datetime_diff", []types.XValue{xs("22-12-2017"), xs("01-12-2017"), xs("W")}, xi(-3)},
 	{"datetime_diff", []types.XValue{xs("03-12-2017"), xs("03-12-2017"), xs("M")}, xi(0)},
-	{"datetime_diff", []types.XValue{xs("01-05-2018"), xs("03-12-2017"), xs("M")}, xi(5)},
-	{"datetime_diff", []types.XValue{xs("01-12-2018"), xs("03-12-2017"), xs("Y")}, xi(1)},
+	{"datetime_diff", []types.XValue{xs("01-05-2018"), xs("03-12-2017"), xs("M")}, xi(-5)},
+	{"datetime_diff", []types.XValue{xs("01-12-2018"), xs("03-12-2017"), xs("Y")}, xi(-1)},
 	{"datetime_diff", []types.XValue{xs("01-01-2017"), xs("03-12-2017"), xs("Y")}, xi(0)},
-	{"datetime_diff", []types.XValue{xs("04-12-2018 10:15"), xs("03-12-2018 14:00"), xs("h")}, xi(20)},
-	{"datetime_diff", []types.XValue{xs("04-12-2018 10:15"), xs("04-12-2018 14:00"), xs("h")}, xi(-3)},
-	{"datetime_diff", []types.XValue{xs("04-12-2018 10:15"), xs("04-12-2018 14:00"), xs("m")}, xi(-225)},
+	{"datetime_diff", []types.XValue{xs("04-12-2018 10:15"), xs("03-12-2018 14:00"), xs("h")}, xi(-20)},
+	{"datetime_diff", []types.XValue{xs("04-12-2018 10:15"), xs("04-12-2018 14:00"), xs("h")}, xi(3)},
+	{"datetime_diff", []types.XValue{xs("04-12-2018 10:15"), xs("04-12-2018 14:00"), xs("m")}, xi(225)},
 	{"datetime_diff", []types.XValue{xs("05-12-2018 10:15:15"), xs("05-12-2018 10:15:35"), xs("m")}, xi(0)},
 	{"datetime_diff", []types.XValue{xs("05-12-2018 10:15:15"), xs("05-12-2018 10:16:10"), xs("m")}, xi(0)},
-	{"datetime_diff", []types.XValue{xs("05-12-2018 10:15:15"), xs("05-12-2018 10:15:35"), xs("s")}, xi(-20)},
-	{"datetime_diff", []types.XValue{xs("05-12-2018 10:15:15"), xs("05-12-2018 10:16:10"), xs("s")}, xi(-55)},
+	{"datetime_diff", []types.XValue{xs("05-12-2018 10:15:15"), xs("05-12-2018 10:15:35"), xs("s")}, xi(20)},
+	{"datetime_diff", []types.XValue{xs("05-12-2018 10:15:15"), xs("05-12-2018 10:16:10"), xs("s")}, xi(55)},
 	{"datetime_diff", []types.XValue{xs("03-12-2017"), xs("01-12-2017"), xs("Z")}, ERROR},
 	{"datetime_diff", []types.XValue{xs("xxx"), xs("01-12-2017"), xs("Y")}, ERROR},
 	{"datetime_diff", []types.XValue{xs("01-12-2017"), xs("xxx"), xs("Y")}, ERROR},
@@ -466,13 +466,13 @@ var funcTests = []struct {
 	{"weekday", []types.XValue{xs("xxx")}, ERROR},
 	{"weekday", []types.XValue{}, ERROR},
 
-	{"url_encode", []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25+%3F%2F`)},
+	{"url_encode", []types.XValue{xs(`hi-% ?/`)}, xs(`hi-%25%20%3F%2F`)},
 	{"url_encode", []types.XValue{ERROR}, ERROR},
 	{"url_encode", []types.XValue{}, ERROR},
 }
 
 func TestFunctions(t *testing.T) {
-	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
+	env := utils.NewEnvironment(utils.DateFormatDayMonthYear, utils.TimeFormatHourMinute, time.UTC, utils.NilLanguage, nil, utils.NilCountry, utils.DefaultNumberFormat, utils.RedactionPolicyNone)
 
 	defer utils.SetRand(utils.DefaultRand)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)

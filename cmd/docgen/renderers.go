@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nyaruka/goflow/assets/static"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/functions"
@@ -14,6 +15,41 @@ import (
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 )
+
+func renderAssetDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
+	if len(item.examples) == 0 {
+		return fmt.Errorf("no examples found for asset item %s/%s", item.tagValue, item.typeName)
+	}
+
+	marshaled, err := utils.JSONMarshalPretty(json.RawMessage(strings.Join(item.examples, "\n")))
+	if err != nil {
+		return fmt.Errorf("unable to marshal example: %s", err)
+	}
+
+	// try to load example as part of a static asset source
+	var assetSet string
+	if item.typeName == "flow" {
+		assetSet = fmt.Sprintf(`{"flow": %s}`, string(marshaled))
+	} else {
+		assetSet = fmt.Sprintf(`{"%ss": [%s]}`, item.tagValue, string(marshaled))
+	}
+
+	_, err = static.NewStaticSource([]byte(assetSet))
+	if err != nil {
+		return fmt.Errorf("unable to load example into asset source: %s", err)
+	}
+
+	output.WriteString(fmt.Sprintf("<a name=\"asset:%s\"></a>\n\n", item.tagValue))
+	output.WriteString(fmt.Sprintf("## %s\n\n", strings.Title(item.tagValue)))
+	output.WriteString(strings.Join(item.description, "\n"))
+	output.WriteString("\n")
+	output.WriteString("```objectivec\n")
+	output.WriteString(string(marshaled))
+	output.WriteString("\n")
+	output.WriteString("```\n")
+	output.WriteString("\n")
+	return nil
+}
 
 func renderContextDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	if len(item.examples) == 0 {
@@ -151,7 +187,7 @@ func renderActionDoc(output *strings.Builder, item *documentedItem, session flow
 func renderTriggerDoc(output *strings.Builder, item *documentedItem, session flows.Session) error {
 	// try to parse our example
 	exampleJSON := json.RawMessage(strings.Join(item.examples, "\n"))
-	trigger, err := triggers.ReadTrigger(session, exampleJSON)
+	trigger, err := triggers.ReadTrigger(session.Assets(), exampleJSON)
 	if err != nil {
 		return fmt.Errorf("unable to read trigger: %s", err)
 	}
@@ -219,7 +255,7 @@ func checkExample(session flows.Session, line string) error {
 	expected := strings.Replace(strings.TrimSpace(pieces[1]), "\\n", "\n", -1)
 
 	// evaluate our expression
-	val, err := session.Runs()[0].EvaluateTemplateAsString(test, false)
+	val, err := session.Runs()[0].EvaluateTemplateAsString(test)
 
 	if expected == "ERROR" {
 		if err == nil {

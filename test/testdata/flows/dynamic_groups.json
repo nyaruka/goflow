@@ -71,22 +71,22 @@
         {
             "key": "first_name",
             "label": "First Name",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "gender",
             "label": "Gender",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "age",
             "label": "Age",
-            "value_type": "number"
+            "type": "number"
         },
         {
             "key": "state",
             "label": "State",
-            "value_type": "text"
+            "type": "text"
         }
     ],
     "groups": [

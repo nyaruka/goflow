@@ -12,22 +12,22 @@
         {
             "key": "first_name",
             "label": "First Name",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "activation_token",
             "label": "Activation Token",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "gender",
             "label": "Gender",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "state",
             "label": "State",
-            "value_type": "state"
+            "type": "state"
         }
     ],
     "groups": [

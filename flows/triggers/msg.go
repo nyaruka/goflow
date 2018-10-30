@@ -64,8 +64,13 @@ type KeywordMatch struct {
 	Keyword string           `json:"keyword" validate:"required"`
 }
 
+// NewKeywordMatch creates a new keyword match
+func NewKeywordMatch(typeName KeywordMatchType, keyword string) *KeywordMatch {
+	return &KeywordMatch{Type: typeName, Keyword: keyword}
+}
+
 // NewMsgTrigger creates a new message trigger
-func NewMsgTrigger(env utils.Environment, contact *flows.Contact, flow *assets.FlowReference, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
+func NewMsgTrigger(env utils.Environment, flow *assets.FlowReference, contact *flows.Contact, msg *flows.MsgIn, match *KeywordMatch, triggeredOn time.Time) flows.Trigger {
 	return &MsgTrigger{
 		baseTrigger: newBaseTrigger(TypeMsg, env, flow, contact, nil, triggeredOn),
 		msg:         msg,
@@ -83,7 +88,8 @@ func (t *MsgTrigger) InitializeRun(run flows.FlowRun, step flows.Step) error {
 
 	run.Session().SetInput(input)
 	run.LogEvent(step, events.NewMsgReceivedEvent(t.msg))
-	return nil
+
+	return t.baseTrigger.InitializeRun(run, step)
 }
 
 var _ flows.Trigger = (*MsgTrigger)(nil)
@@ -99,7 +105,7 @@ type msgTriggerEnvelope struct {
 }
 
 // ReadMsgTrigger reads a message trigger
-func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger, error) {
+func ReadMsgTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error) {
 	e := &msgTriggerEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
 		return nil, err
@@ -110,7 +116,7 @@ func ReadMsgTrigger(session flows.Session, data json.RawMessage) (flows.Trigger,
 		match: e.Match,
 	}
 
-	if err := t.unmarshal(session, &e.baseTriggerEnvelope); err != nil {
+	if err := t.unmarshal(sessionAssets, &e.baseTriggerEnvelope); err != nil {
 		return nil, err
 	}
 

@@ -2,6 +2,7 @@ package flows
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
@@ -53,7 +54,7 @@ func NewResult(name string, value string, category string, categoryLocalized str
 
 // Resolve resolves the passed in key to a value. Result values have a name, value, category, node and created_on
 func (r *Result) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "name":
 		return types.NewXText(r.Name)
 	case "value":
@@ -119,6 +120,7 @@ func (r Results) Save(result *Result) {
 	r[utils.Snakify(result.Name)] = result
 }
 
+// Get returns the result with the given key
 func (r Results) Get(key string) *Result {
 	return r[key]
 }

@@ -76,17 +76,17 @@
         {
             "key": "first_name",
             "label": "First Name",
-            "value_type": "text"
+            "type": "text"
         },
         {
             "key": "state",
             "label": "State",
-            "value_type": "state"
+            "type": "state"
         },
         {
             "key": "birth_date",
             "label": "birth Date",
-            "value_type": "text"
+            "type": "text"
         }
     ],
     "channels": [

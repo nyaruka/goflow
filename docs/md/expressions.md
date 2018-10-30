@@ -111,7 +111,7 @@ Examples:
 @contact.urns.mailto.0 → mailto:foo@bar.com
 @contact.urn → (206) 555-1212
 @contact.groups → ["Testers","Males"]
-@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00"}
+@contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
 @contact.fields.activation_token → AACC55
 @contact.fields.gender → Male
 ```
@@ -435,9 +435,11 @@ Valid durations are "Y" for years, "M" for months, "W" for weeks, "D" for days, 
 
 
 ```objectivec
-@(datetime_diff("2017-01-17", "2017-01-15", "D")) → 2
-@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → -1
-@(datetime_diff("2017-01-17", "2015-12-17", "Y")) → 2
+@(datetime_diff("2017-01-15", "2017-01-17", "D")) → 2
+@(datetime_diff("2017-01-15", "2017-05-15", "W")) → 17
+@(datetime_diff("2017-01-15", "2017-05-15", "M")) → 4
+@(datetime_diff("2017-01-17 10:50", "2017-01-17 12:30", "h")) → 1
+@(datetime_diff("2017-01-17", "2015-12-17", "Y")) → -2
 ```
 
 <a name="function:datetime_from_parts"></a>
@@ -1172,7 +1174,7 @@ Encodes `text` for use as a URL parameter.
 
 
 ```objectivec
-@(url_encode("two words")) → two+words
+@(url_encode("two & words")) → two%20%26%20words
 @(url_encode(10)) → 10
 ```
 
@@ -1550,10 +1552,12 @@ Both text values are trimmed of surrounding whitespace and matching is case-inse
 
 ## has_phone(text, country_code)
 
-Tests whether a phone number (in the passed in `country_code`) is contained in the `text`
+Tests whether `text` contains a phone number. The optional `country_code` argument specifies
+the country to use for parsing.
 
 
 ```objectivec
+@(has_phone("my number is +12067799294")) → true
 @(has_phone("my number is 2067799294", "US")) → true
 @(has_phone("my number is 206 779 9294", "US").match) → +12067799294
 @(has_phone("my number is none of your business", "US")) → false
@@ -1604,6 +1608,7 @@ Tests whether there the text has any characters in it
 @(has_text("")) → false
 @(has_text(" \n")) → false
 @(has_text(123)) → true
+@(has_text(contact.fields.not_set)) → false
 ```
 
 <a name="test:has_value"></a>

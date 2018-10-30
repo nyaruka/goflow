@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -44,7 +45,7 @@ import (
 //   @contact.urns.mailto.0 -> mailto:foo@bar.com
 //   @contact.urn -> (206) 555-1212
 //   @contact.groups -> ["Testers","Males"]
-//   @contact.fields -> {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00"}
+//   @contact.fields -> {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
 //   @contact.fields.activation_token -> AACC55
 //   @contact.fields.gender -> Male
 //
@@ -247,7 +248,7 @@ func (c *Contact) Format(env utils.Environment) string {
 
 // Resolve resolves the given key when this contact is referenced in an expression
 func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
-	switch key {
+	switch strings.ToLower(key) {
 	case "uuid":
 		return types.NewXText(string(c.uuid))
 	case "id":

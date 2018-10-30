@@ -306,7 +306,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 			}
 		}()
 
-		eval, err := EvaluateTemplateAsString(env, vars, test.template, false, vars.Keys())
+		eval, err := EvaluateTemplateAsString(env, vars, test.template, vars.Keys())
 
 		if test.hasError {
 			assert.Error(t, err, "expected error evaluating template '%s'", test.template)
@@ -318,21 +318,6 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 			}
 		}
 	}
-}
-
-func TestURLEncoding(t *testing.T) {
-	vars := types.NewXMap(map[string]types.XValue{
-		"foo": types.NewXText("hello & world?"),
-	})
-	env := utils.NewDefaultEnvironment()
-
-	eval, err := EvaluateTemplateAsString(env, vars, `@foo`, true, vars.Keys())
-	assert.NoError(t, err)
-	assert.Equal(t, "hello%20%26%20world%3F", eval)
-
-	eval, err = EvaluateTemplateAsString(env, vars, `@(foo)`, true, vars.Keys())
-	assert.NoError(t, err)
-	assert.Equal(t, "hello%20%26%20world%3F", eval)
 }
 
 var errorTests = []struct {
@@ -375,7 +360,7 @@ func TestEvaluationErrors(t *testing.T) {
 	env := utils.NewDefaultEnvironment()
 
 	for _, tc := range errorTests {
-		result, err := EvaluateTemplateAsString(env, vars, tc.template, false, vars.Keys())
+		result, err := EvaluateTemplateAsString(env, vars, tc.template, vars.Keys())
 		assert.Equal(t, "", result)
 		assert.NotNil(t, err)
 
@@ -393,7 +378,7 @@ func BenchmarkEvaluationErrors(b *testing.B) {
 		env := utils.NewDefaultEnvironment()
 
 		for _, tc := range errorTests {
-			EvaluateTemplateAsString(env, vars, tc.template, false, vars.Keys())
+			EvaluateTemplateAsString(env, vars, tc.template, vars.Keys())
 		}
 	}
 }

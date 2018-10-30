@@ -40,7 +40,8 @@ var flowTests = []struct {
 	{"redact_urns.json", "redact_urns_test.json"},
 	{"resthook.json", "resthook_test.json"},
 	{"router_tests.json", "router_tests_test.json"},
-	{"subflow_loop.json", "subflow_loop_test.json"},
+	{"subflow_loop_with_wait.json", "subflow_loop_with_wait_test.json"},
+	{"subflow_loop_without_wait.json", "subflow_loop_without_wait_test.json"},
 	{"start_flow_terminal.json", "start_flow_terminal_test.json"},
 	{"subflow_other.json", "subflow_other_test.json"},
 	{"subflow.json", "subflow_test.json"},
@@ -105,7 +106,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	assets, _ := engine.NewSessionAssets(source)
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)
 
-	trigger, err := triggers.ReadTrigger(session, rawTrigger)
+	trigger, err := triggers.ReadTrigger(session.Assets(), rawTrigger)
 	if err != nil {
 		return runResult{}, fmt.Errorf("error unmarshalling trigger: %s", err)
 	}
