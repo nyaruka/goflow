@@ -171,7 +171,7 @@
                         "timezone": "America/New_York"
                     },
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "type": "environment_changed"
+                    "type": "environment_refreshed"
                 },
                 {
                     "contact": {
@@ -198,7 +198,7 @@
                     },
                     "created_on": "2018-07-06T12:30:16.123456789Z",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                    "type": "contact_changed"
+                    "type": "contact_refreshed"
                 },
                 {
                     "category": "Blue",
@@ -333,7 +333,7 @@
                                     "timezone": "America/New_York"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "environment_changed"
+                                "type": "environment_refreshed"
                             },
                             {
                                 "contact": {
@@ -360,7 +360,7 @@
                                 },
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "contact_changed"
+                                "type": "contact_refreshed"
                             },
                             {
                                 "category": "Blue",
@@ -624,7 +624,7 @@
                                     "timezone": "America/New_York"
                                 },
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "environment_changed"
+                                "type": "environment_refreshed"
                             },
                             {
                                 "contact": {
@@ -651,7 +651,7 @@
                                 },
                                 "created_on": "2018-07-06T12:30:16.123456789Z",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
-                                "type": "contact_changed"
+                                "type": "contact_refreshed"
                             },
                             {
                                 "category": "Blue",
