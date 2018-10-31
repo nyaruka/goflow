@@ -67,6 +67,10 @@ This utility provides a quick way to test evaluation of expressions which can be
 % $GOPATH/bin/exptester '@(TITLE("foo"))'
 ```
 
+## Sessions
+
+Sessions can easily be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
+
 ## Development
 
 You can run the flow server with detailed output of actions being executed and events being applied with:
