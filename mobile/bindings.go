@@ -42,6 +42,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 			tz,
 			utils.Language(defaultLanguage),
 			langs,
+			utils.NilCountry,
 			utils.DefaultNumberFormat,
 			utils.RedactionPolicyNone,
 		),
@@ -101,7 +102,7 @@ func NewMsgIn(uuid string, text string, attachments []string) *MsgIn {
 	}
 
 	return &MsgIn{
-		target: flows.NewMsgIn(flows.MsgUUID(uuid), 0, urns.NilURN, nil, text, convertedAttachments),
+		target: flows.NewMsgIn(flows.MsgUUID(uuid), urns.NilURN, nil, text, convertedAttachments),
 	}
 }
 
@@ -114,7 +115,7 @@ type Trigger struct {
 func NewManualTrigger(environment *Environment, contact *Contact, flowUUID string, flowName string) *Trigger {
 	flow := assets.NewFlowReference(assets.FlowUUID(flowUUID), flowName)
 	return &Trigger{
-		target: triggers.NewManualTrigger(environment.target, contact.target, flow, nil, utils.Now()),
+		target: triggers.NewManualTrigger(environment.target, flow, contact.target, nil, utils.Now()),
 	}
 }
 
