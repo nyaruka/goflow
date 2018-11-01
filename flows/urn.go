@@ -53,7 +53,7 @@ func ValidateURNScheme(fl validator.FieldLevel) bool {
 //   @contact.urns.0.path -> +12065551212
 //   @contact.urns.1.display -> nyaruka
 //   @(format_urn(contact.urns.0)) -> (206) 555-1212
-//   @(json(contact.urns.0)) -> {"display":"","path":"+12065551212","scheme":"tel"}
+//   @(json(contact.urns.0)) -> {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
 //
 // @context urn
 type ContactURN struct {
@@ -140,7 +140,7 @@ func (u *ContactURN) Resolve(env utils.Environment, key string) types.XValue {
 		if env.RedactionPolicy() == utils.RedactionPolicyURNs {
 			return redactedURN
 		}
-		return types.NewXText(u.urn.Display())
+		return types.NewXText(u.urn.Format())
 	case "channel":
 		return u.Channel()
 	}
