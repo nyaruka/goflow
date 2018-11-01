@@ -258,7 +258,9 @@ var sessionTrigger = `{
             "name": "Jasmine",
             "created_on": "2018-01-01T12:00:00.000000000-00:00",
             "language": "spa",
-            "urns": [],
+            "urns": [
+                "tel:+593979111222"
+            ],
             "fields": {
                 "age": {
                     "text": "33 years", "number": 33
