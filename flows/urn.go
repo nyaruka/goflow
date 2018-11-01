@@ -312,7 +312,10 @@ func (s *URNShortcuts) Reduce(env utils.Environment) types.XPrimitive {
 
 // ToXJSON is called when this type is passed to @(json(...))
 func (s *URNShortcuts) ToXJSON(env utils.Environment) types.XText {
-	return s.Reduce(env).ToXJSON(env)
+	if len(s.urns) > 0 {
+		return s.urns[0].ToXJSON(env)
+	}
+	return types.XTextEmpty
 }
 
 var _ types.XValue = (*URNShortcuts)(nil)
