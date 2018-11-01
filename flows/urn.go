@@ -296,7 +296,7 @@ func (s *URNShortcuts) Resolve(env utils.Environment, key string) types.XValue {
 		return s.urns[0].Resolve(env, key)
 	}
 
-	return nil
+	return types.NewXResolveError(s, key)
 }
 
 // Describe returns a representation of this type for error messages
