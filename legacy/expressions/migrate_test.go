@@ -78,7 +78,14 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@parent.role.value`, new: `@parent.results.role.value`},
 		{old: `@parent.contact`, new: `@parent.contact`},
 		{old: `@parent.contact.name`, new: `@parent.contact.name`},
+		{old: `@parent.contact.groups`, new: `@(join(parent.contact.groups, ","))`},
 		{old: `@parent.contact.gender`, new: `@parent.contact.fields.gender`},
+		{old: `@parent.contact.tel`, new: `@parent.contact.urn.tel.display`},
+		{old: `@parent.contact.tel.display`, new: `@parent.contact.urn.tel.display`},
+		{old: `@parent.contact.tel.scheme`, new: `@parent.contact.urn.tel.scheme`},
+		{old: `@parent.contact.tel.path`, new: `@parent.contact.urn.tel.path`},
+		{old: `@parent.contact.tel.urn`, new: `@parent.contact.urn.tel`},
+		{old: `@parent.contact.tel_e164`, new: `@parent.contact.urn.tel.path`},
 
 		// input
 		{old: `@step`, new: `@input`},
