@@ -154,5 +154,6 @@ func TestURNShortcuts(t *testing.T) {
 	assert.Equal(t, types.NewXText("+250781234567"), urnCuts.Resolve(env, "path"))
 	assert.Equal(t, urn1, urnCuts.Resolve(env, "tel"))
 	assert.Equal(t, urn2, urnCuts.Resolve(env, "twitter"))
+	assert.Equal(t, types.XTextEmpty, urnCuts.Resolve(env, "telegram"))
 	assert.Equal(t, types.NewXText(`{"display":"","path":"+250781234567","scheme":"tel"}`), urnCuts.ToXJSON(env))
 }

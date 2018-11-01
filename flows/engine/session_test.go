@@ -42,6 +42,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urn.twitterid", `twitterid:54784326227#nyaruka`, ""},
 		{"@contact.urn.twitterid.scheme", `twitterid`, ""},
 		{"@contact.urn.twitterid.path", `54784326227`, ""},
+		{"@contact.urn.telegram", ``, ""},
 
 		// contact URN list access
 		{"@contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},

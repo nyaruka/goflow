@@ -65,7 +65,7 @@
             "type": "call_webhook",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "method": "GET",
-            "url": "http://example.com?contact=@(url_encode(format_urn(contact.urns.tel)))"
+            "url": "http://example.com?contact=@(url_encode(format_urn(contact.urn.tel)))"
         },
         "expected_localization": {}
     },
@@ -86,7 +86,7 @@
             "type": "call_webhook",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "method": "POST",
-            "url": "http://example.com?contact=@(url_encode(format_urn(contact.urns.tel)))",
+            "url": "http://example.com?contact=@(url_encode(format_urn(contact.urn.tel)))",
             "headers": {
                 "Content-Type": "application/json",
                 "User-Agent": "rapidpro"
@@ -111,7 +111,7 @@
             "type": "call_webhook",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "method": "POST",
-            "url": "http://example.com?contact=@(url_encode(format_urn(contact.urns.tel)))",
+            "url": "http://example.com?contact=@(url_encode(format_urn(contact.urn.tel)))",
             "headers": {
                 "Content-Type": "application/json",
                 "User-Agent": "rapidpro"

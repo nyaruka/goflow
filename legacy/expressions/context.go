@@ -162,7 +162,7 @@ func newMigrationVars() map[string]interface{} {
 			"first_name": "first_name",
 			"language":   "language",
 			"created_on": "created_on",
-			"tel_e164":   "urns.tel.0.path",
+			"tel_e164":   "urn.tel.path",
 		},
 		substitutions: map[string]interface{}{
 			"groups": "join(contact.groups, \",\")",
@@ -173,13 +173,13 @@ func newMigrationVars() map[string]interface{} {
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
 			substitutions: map[string]interface{}{
-				"__default__": fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
-				"display":     fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
-				"scheme":      fmt.Sprintf("contact.urns.%s.0.scheme", scheme),
-				"path":        fmt.Sprintf("contact.urns.%s.0.path", scheme),
-				"urn":         fmt.Sprintf("contact.urns.%s.0", scheme),
+				"__default__": fmt.Sprintf("format_urn(contact.urn.%s)", scheme),
+				"display":     fmt.Sprintf("format_urn(contact.urn.%s)", scheme),
+				"scheme":      fmt.Sprintf("contact.urn.%s.scheme", scheme),
+				"path":        fmt.Sprintf("contact.urn.%s.path", scheme),
+				"urn":         fmt.Sprintf("contact.urn.%s", scheme),
 			},
-			base: fmt.Sprintf("urns.%s", scheme),
+			base: fmt.Sprintf("urn.%s", scheme),
 		}
 	}
 

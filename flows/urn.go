@@ -290,6 +290,7 @@ func (s *URNShortcuts) Resolve(env utils.Environment, key string) types.XValue {
 		if len(filtered) > 0 {
 			return filtered[0]
 		}
+		return types.XTextEmpty
 	}
 
 	if len(s.urns) > 0 {
