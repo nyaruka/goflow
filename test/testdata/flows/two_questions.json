@@ -81,7 +81,7 @@
                         {
                             "uuid": "e97cd6d5-3354-4dbd-85bc-6c1f87849eec",
                             "type": "send_msg",
-                            "text": "Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urns.0))"
+                            "text": "Hi @contact.name! What is your favorite color? (red/blue) Your number is @(format_urn(contact.urn))"
                         }
                     ],
                     "wait": {

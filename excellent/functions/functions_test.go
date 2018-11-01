@@ -189,9 +189,7 @@ var funcTests = []struct {
 	{"format_number", []types.XValue{}, ERROR},
 
 	{"format_urn", []types.XValue{xs("tel:+250781234567")}, xs("0781 234 567")},
-	{"format_urn", []types.XValue{types.NewXArray(xs("tel:+250781112222"), xs("tel:+250781234567"))}, xs("0781 112 222")},
 	{"format_urn", []types.XValue{xs("twitter:134252511151#billy_bob")}, xs("billy_bob")},
-	{"format_urn", []types.XValue{types.NewXArray()}, xs("")},
 	{"format_urn", []types.XValue{xs("NOT URN")}, ERROR},
 	{"format_urn", []types.XValue{ERROR}, ERROR},
 	{"format_urn", []types.XValue{}, ERROR},

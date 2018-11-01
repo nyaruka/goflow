@@ -137,3 +137,23 @@ func TestURNList(t *testing.T) {
 		}
 	}
 }
+
+func TestURNShortcuts(t *testing.T) {
+	urn1 := flows.NewContactURN("tel:+250781234567", nil)
+	urn2 := flows.NewContactURN("twitter:134252511151#billy_bob", nil)
+	urn3 := flows.NewContactURN("tel:+250781111222", nil)
+	urnList := flows.URNList{urn1, urn2, urn3}
+	urnCuts := flows.NewURNShortcuts(urnList)
+
+	env := utils.NewDefaultEnvironment()
+
+	// check use in expressions
+	assert.Equal(t, "URN", urnCuts.Describe())
+	assert.Equal(t, types.NewXText("tel:+250781234567"), urnCuts.Reduce(env))
+	assert.Equal(t, types.NewXText("tel"), urnCuts.Resolve(env, "scheme"))
+	assert.Equal(t, types.NewXText("+250781234567"), urnCuts.Resolve(env, "path"))
+	assert.Equal(t, urn1, urnCuts.Resolve(env, "tel"))
+	assert.Equal(t, urn2, urnCuts.Resolve(env, "twitter"))
+	assert.Equal(t, types.XTextEmpty, urnCuts.Resolve(env, "telegram"))
+	assert.Equal(t, types.NewXText(`{"display":"","path":"+250781234567","scheme":"tel"}`), urnCuts.ToXJSON(env))
+}

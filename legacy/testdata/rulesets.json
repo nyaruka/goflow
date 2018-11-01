@@ -1137,7 +1137,7 @@
                 "type": "switch",
                 "result_name": "Response 14",
                 "default_exit_uuid": "85038c16-0060-486c-97be-898c65587658",
-                "operand": "@(format_urn(contact.urns.telegram))",
+                "operand": "@(format_urn(contact.urn.telegram))",
                 "cases": [
                     {
                         "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
