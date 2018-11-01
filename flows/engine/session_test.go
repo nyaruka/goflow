@@ -26,6 +26,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		expected string
 		errorMsg string
 	}{
+		// contact basic properties
 		{"@contact.uuid", "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f", ""},
 		{"@contact.id", "1234567", ""},
 		{"@CONTACT.NAME", "Ryan Lewis", ""},
@@ -33,6 +34,16 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.first_name", "Ryan", ""},
 		{"@contact.language", "eng", ""},
 		{"@contact.timezone", "America/Guayaquil", ""},
+
+		// contact single URN access
+		{"@contact.urn", `tel:+12065551212`, ""},
+		{"@contact.urn.scheme", `tel`, ""},
+		{"@contact.urn.path", `+12065551212`, ""},
+		{"@contact.urn.twitterid", `twitterid:54784326227#nyaruka`, ""},
+		{"@contact.urn.twitterid.scheme", `twitterid`, ""},
+		{"@contact.urn.twitterid.path", `54784326227`, ""},
+
+		// contact URN list access
 		{"@contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},
 		{"@contact.urns.tel", `["tel:+12065551212"]`, ""},
 		{"@contact.urns.xxx", "", "error evaluating @contact.urns.xxx: no such URN scheme 'xxx'"},
@@ -49,9 +60,13 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1", "twitterid:54784326227#nyaruka", ""},
 		{"@contact.urns.1.channel", "", ""},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", ""},
+
+		// contact groups
 		{"@contact.groups", `["Testers","Males"]`, ""},
 		{"@(join(contact.groups, \",\"))", `Testers,Males`, ""},
 		{"@(length(contact.groups))", "2", ""},
+
+		// contact fields
 		{"@contact.fields", `{"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}`, ""},
 		{"@contact.fields.activation_token", "AACC55", ""},
 		{"@contact.fields.age", "23", ""},
