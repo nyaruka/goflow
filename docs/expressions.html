@@ -390,8 +390,8 @@
 <div class="sourceCode" id="cb29"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" data-line-number="1">@(format_urn(<span class="st">&quot;tel:+250781234567&quot;</span>)) → <span class="dv">0781</span> <span class="dv">234</span> <span class="dv">567</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">@(format_urn(<span class="st">&quot;twitter:134252511151#billy_bob&quot;</span>)) → billy_bob</a>
 <a class="sourceLine" id="cb29-3" data-line-number="3">@(format_urn(contact.urn)) → (<span class="dv">206</span>) <span class="dv">555-1212</span></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">@(format_urn(contact.urn.mailto)) → foo@bar.com</a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">@(format_urn(contact.urn.telegram)) →</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">@(format_urn(contact.urns.mailto<span class="fl">.0</span>)) → foo@bar.com</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">@(format_urn(contact.urns.telegram<span class="fl">.0</span>)) →</a>
 <a class="sourceLine" id="cb29-6" data-line-number="6">@(format_urn(contact.urns<span class="fl">.2</span>)) → foo@bar.com</a>
 <a class="sourceLine" id="cb29-7" data-line-number="7">@(format_urn(<span class="st">&quot;NOT URN&quot;</span>)) → ERROR</a></code></pre></div>
 <p><a name="function:from_epoch"></a></p>

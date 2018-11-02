@@ -435,11 +435,11 @@
                 "output": "(206) 555-1212"
             },
             {
-                "template": "@(format_urn(contact.urn.mailto))",
+                "template": "@(format_urn(contact.urns.mailto.0))",
                 "output": "foo@bar.com"
             },
             {
-                "template": "@(format_urn(contact.urn.telegram))",
+                "template": "@(format_urn(contact.urns.telegram.0))",
                 "output": ""
             },
             {

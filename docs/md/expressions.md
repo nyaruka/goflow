@@ -616,8 +616,8 @@ Formats `urn` into human friendly text.
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
 @(format_urn(contact.urn)) → (206) 555-1212
-@(format_urn(contact.urn.mailto)) → foo@bar.com
-@(format_urn(contact.urn.telegram)) →
+@(format_urn(contact.urns.mailto.0)) → foo@bar.com
+@(format_urn(contact.urns.telegram.0)) →
 @(format_urn(contact.urns.2)) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
 ```

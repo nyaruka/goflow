@@ -5,11 +5,11 @@
                 {
                     "category": "Other",
                     "created_on": "2018-07-06T12:30:06.123456789Z",
-                    "input": "",
+                    "input": "0",
                     "name": "URN Check",
                     "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                     "type": "run_result_changed",
-                    "value": ""
+                    "value": "0"
                 },
                 {
                     "category": "Other",
@@ -36,7 +36,7 @@
                             "name": "Android Channel",
                             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                         },
-                        "text": "URN Check: \nGroup Check: Ben Haggerty",
+                        "text": "URN Check: 0\nGroup Check: Ben Haggerty",
                         "urn": "tel:+12065551212",
                         "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                     },
@@ -106,11 +106,11 @@
                             {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:06.123456789Z",
-                                "input": "",
+                                "input": "0",
                                 "name": "URN Check",
                                 "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
                                 "type": "run_result_changed",
-                                "value": ""
+                                "value": "0"
                             },
                             {
                                 "category": "Other",
@@ -137,7 +137,7 @@
                                         "name": "Android Channel",
                                         "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
                                     },
-                                    "text": "URN Check: \nGroup Check: Ben Haggerty",
+                                    "text": "URN Check: 0\nGroup Check: Ben Haggerty",
                                     "urn": "tel:+12065551212",
                                     "uuid": "970b8069-50f5-4f6f-8f41-6b2d9f33d623"
                                 },
@@ -212,10 +212,10 @@
                             "urn_check": {
                                 "category": "Other",
                                 "created_on": "2018-07-06T12:30:04.123456789Z",
-                                "input": "",
+                                "input": "0",
                                 "name": "URN Check",
                                 "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
-                                "value": ""
+                                "value": "0"
                             }
                         },
                         "status": "completed",

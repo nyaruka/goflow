@@ -273,7 +273,10 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 	case "urns":
 		return c.urns
 	case "urn":
-		return NewURNShortcuts(c.urns)
+		if len(c.urns) > 0 {
+			return c.urns[0]
+		}
+		return nil
 	case "groups":
 		return c.groups
 	case "fields":

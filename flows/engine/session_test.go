@@ -39,10 +39,6 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urn", `tel:+12065551212`, ""},
 		{"@contact.urn.scheme", `tel`, ""},
 		{"@contact.urn.path", `+12065551212`, ""},
-		{"@contact.urn.twitterid", `twitterid:54784326227#nyaruka`, ""},
-		{"@contact.urn.twitterid.scheme", `twitterid`, ""},
-		{"@contact.urn.twitterid.path", `54784326227`, ""},
-		{"@contact.urn.telegram", ``, ""},
 
 		// contact URN list access
 		{"@contact.urns", `["tel:+12065551212","twitterid:54784326227#nyaruka","mailto:foo@bar.com"]`, ""},
@@ -61,6 +57,10 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		{"@contact.urns.1", "twitterid:54784326227#nyaruka", ""},
 		{"@contact.urns.1.channel", "", ""},
 		{"@(format_urn(contact.urns.0))", "(206) 555-1212", ""},
+		{"@contact.urns.twitterid.0", `twitterid:54784326227#nyaruka`, ""},
+		{"@contact.urns.twitterid.0.scheme", `twitterid`, ""},
+		{"@contact.urns.twitterid.0.path", `54784326227`, ""},
+		{"@contact.urns.telegram", `[]`, ""},
 
 		// contact groups
 		{"@contact.groups", `["Testers","Males"]`, ""},
