@@ -62,12 +62,13 @@ func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) bool {
 }
 
 // End ends this wait or returns an error
-func (w *MsgWait) End(resume flows.Resume) error {
+func (w *MsgWait) End(resume flows.Resume, node flows.Node) error {
+	// if we have a message we can definitely resume
 	if resume.Type() == resumes.TypeMsg {
 		return nil
 	}
 
-	return w.baseWait.End(resume)
+	return w.baseWait.End(resume, node)
 }
 
 var _ flows.Wait = (*MsgWait)(nil)

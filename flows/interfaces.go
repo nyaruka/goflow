@@ -215,7 +215,7 @@ type Wait interface {
 	TimeoutOn() *time.Time
 
 	Begin(FlowRun, Step) bool
-	End(Resume) error
+	End(Resume, Node) error
 }
 
 // Localization provide a way to get the translations for a specific language
