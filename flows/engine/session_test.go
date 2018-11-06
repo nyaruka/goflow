@@ -188,29 +188,30 @@ func TestWaitTimeout(t *testing.T) {
 	contact.AddURN(flows.NewContactURN(urns.URN("tel:+18005555777"), nil))
 	trigger := triggers.NewManualTrigger(nil, flow.Reference(), contact, nil, time.Now())
 
-	_, err = session.Start(trigger)
+	newEvents, err := session.Start(trigger)
 	require.NoError(t, err)
 
 	require.Equal(t, 1, len(session.Runs()[0].Path()))
 	run := session.Runs()[0]
 
-	require.Equal(t, 2, len(run.Events()))
-	require.Equal(t, "msg_created", run.Events()[0].Type())
-	require.Equal(t, "msg_wait", run.Events()[1].Type())
+	require.Equal(t, 2, len(newEvents))
+	require.Equal(t, "msg_created", newEvents[0].Type())
+	require.Equal(t, "msg_wait", newEvents[1].Type())
 
+	// check that our timeout is 10 minutes in the future
 	waitEvent := run.Events()[1].(*events.MsgWaitEvent)
 	require.Equal(t, &t2, waitEvent.TimeoutOn)
-	timeoutOn := *waitEvent.TimeoutOn
+
+	// should fail with error event if we try to timeout immediately
+	newEvents, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
+	require.NoError(t, err)
+	require.Equal(t, 1, len(newEvents))
+	require.Equal(t, "error", newEvents[0].Type())
 
 	// mock our current time to be 10 seconds after the wait times out
 	utils.SetTimeSource(utils.NewFixedTimeSource(t2.Add(time.Second * 10)))
 
-	// should be able to resume with a timed out event in the future
-	resumeJSON := fmt.Sprintf(`{"type": "wait_timeout", "resumed_on": "%s"}`, timeoutOn.Add(time.Second*60).Format(time.RFC3339))
-	resume, err := resumes.ReadResume(session, []byte(resumeJSON))
-	require.NoError(t, err)
-
-	_, err = session.Resume(resume)
+	_, err = session.Resume(resumes.NewWaitTimeoutResume(nil, nil))
 	require.NoError(t, err)
 
 	require.Equal(t, flows.SessionStatusCompleted, session.Status())
