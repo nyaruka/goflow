@@ -27,6 +27,7 @@ func TestParseQuery(t *testing.T) {
 		{`name=will or Name ~ "felix"`, "OR(name=will, name~felix)"},
 		{`Name is will or Name has felix`, "OR(name=will, name~felix)"}, // comparator aliases
 		{`will or Name ~ "felix"`, "OR(*=will, name~felix)"},
+		{`email ~ user@example.com`, "email~user@example.com"},
 
 		// boolean operator precedence is AND before OR, even when AND is implicit
 		{`will and felix or matt amber`, "OR(AND(*=will, *=felix), AND(*=matt, *=amber))"},
