@@ -2,10 +2,11 @@ package mobile
 
 // To build an Android Archive:
 //
-// gomobile bind -target android -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
+// gomobile bind -target android -javapkg=com.nyaruka.goflow -o mobile/goflow.aar github.com/nyaruka/goflow/mobile
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -15,6 +16,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -198,4 +200,24 @@ func (s *Session) Resume(resume *Resume) ([]*Event, error) {
 		return nil, err
 	}
 	return convertEvents(newEvents)
+}
+
+// MigrateLegacyFlow migrates a legacy flow definitin
+func MigrateLegacyFlow(definition string) (string, error) {
+	legacyFlow, err := legacy.ReadLegacyFlow([]byte(definition))
+	if err != nil {
+		return "", fmt.Errorf("unable to read legacy flow: %s", err)
+	}
+
+	flow, err := legacyFlow.Migrate(false, false)
+	if err != nil {
+		return "", fmt.Errorf("unable to migrate legacy flow: %s", err)
+	}
+
+	marshaled, err := utils.JSONMarshal(flow)
+	if err != nil {
+		return "", fmt.Errorf("unable to marshal migrated flow: %s", err)
+	}
+
+	return string(marshaled), nil
 }

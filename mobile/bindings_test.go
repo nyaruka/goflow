@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/nyaruka/goflow/mobile"
+	"github.com/nyaruka/goflow/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -52,4 +53,31 @@ func TestMobileBindings(t *testing.T) {
 	assert.Equal(t, "run_result_changed", events[1].Type())
 	assert.Equal(t, "msg_created", events[2].Type())
 	assert.Equal(t, "msg_wait", events[3].Type())
+}
+
+func TestMigrateLegacyFlow(t *testing.T) {
+	// error if legacy definition isn't valid
+	_, err := mobile.MigrateLegacyFlow(`{"metadata": {}}`)
+	assert.EqualError(t, err, `unable to read legacy flow: field 'metadata.uuid' is required`)
+
+	migrated, err := mobile.MigrateLegacyFlow(`{
+		"action_sets": [],
+		"rule_sets": [],
+		"base_language": "eng",
+		"metadata": {
+			"uuid": "061be894-4507-470c-a20b-34273bf915be",
+			"name": "Survey"
+		}
+	}`)
+	assert.NoError(t, err)
+	test.AssertEqualJSON(t, []byte(`{
+		"expire_after_minutes": 0,
+		"language": "eng",
+		"localization": {},
+		"name": "Survey",
+		"nodes": [],
+		"revision": 0,
+		"type": "",
+		"uuid": "061be894-4507-470c-a20b-34273bf915be"
+	}`), []byte(migrated), "migrated flow mismatch")
 }
