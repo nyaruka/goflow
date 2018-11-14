@@ -109,7 +109,7 @@ Examples:
 @contact.urns.0 → tel:+12065551212
 @contact.urns.tel → ["tel:+12065551212"]
 @contact.urns.mailto.0 → mailto:foo@bar.com
-@contact.urn → (206) 555-1212
+@contact.urn → tel:+12065551212
 @contact.groups → ["Testers","Males"]
 @contact.fields → {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
 @contact.fields.activation_token → AACC55
@@ -184,7 +184,7 @@ Examples:
 @input.type → msg
 @input.text → Hi there
 @input.attachments → ["http://s3.amazon.com/bucket/test.jpg","http://s3.amazon.com/bucket/test.mp3"]
-@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
+@(json(input)) → {"attachments":[{"content_type":"image/jpeg","url":"http://s3.amazon.com/bucket/test.jpg"},{"content_type":"audio/mp3","url":"http://s3.amazon.com/bucket/test.mp3"}],"channel":{"address":"+12345671111","name":"My Android Phone","uuid":"57f1078f-88aa-46f4-a59a-948a5739c03d"},"created_on":"2017-12-31T11:35:10.035757-02:00","text":"Hi there","type":"msg","urn":{"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"},"uuid":"9bf91c2b-ce58-4cef-aacc-281e03f69ab5"}
 ```
 
 <a name="context:result"></a>
@@ -280,7 +280,7 @@ Examples:
 @contact.urns.0.path → +12065551212
 @contact.urns.1.display → nyaruka
 @(format_urn(contact.urns.0)) → (206) 555-1212
-@(json(contact.urns.0)) → {"display":"","path":"+12065551212","scheme":"tel"}
+@(json(contact.urns.0)) → {"display":"(206) 555-1212","path":"+12065551212","scheme":"tel"}
 ```
 
 
@@ -615,11 +615,10 @@ Formats `urn` into human friendly text.
 ```objectivec
 @(format_urn("tel:+250781234567")) → 0781 234 567
 @(format_urn("twitter:134252511151#billy_bob")) → billy_bob
-@(format_urn(contact.urns)) → (206) 555-1212
-@(format_urn(contact.urns.2)) → foo@bar.com
-@(format_urn(contact.urns.mailto)) → foo@bar.com
+@(format_urn(contact.urn)) → (206) 555-1212
 @(format_urn(contact.urns.mailto.0)) → foo@bar.com
-@(format_urn(contact.urns.telegram)) →
+@(format_urn(contact.urns.telegram.0)) →
+@(format_urn(contact.urns.2)) → foo@bar.com
 @(format_urn("NOT URN")) → ERROR
 ```
 

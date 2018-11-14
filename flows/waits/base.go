@@ -48,17 +48,20 @@ func (w *baseWait) Begin(run flows.FlowRun) bool {
 }
 
 // End ends this wait or returns an error
-func (w *baseWait) End(resume flows.Resume) error {
+func (w *baseWait) End(resume flows.Resume, node flows.Node) error {
 	switch resume.Type() {
 	case resumes.TypeRunExpiration:
 		// expired runs always end a wait
 		return nil
 	case resumes.TypeWaitTimeout:
+		if node.Wait().Timeout() == nil {
+			return fmt.Errorf("can't end with timeout as node no longer has a wait timeout")
+		}
 		if w.Timeout() == nil || w.TimeoutOn() == nil {
-			return fmt.Errorf("can only be applied when session wait has timeout")
+			return fmt.Errorf("can't end with timeout as session wait has no timeout")
 		}
 		if utils.Now().Before(*w.TimeoutOn()) {
-			return fmt.Errorf("can't apply before wait has timed out")
+			return fmt.Errorf("can't end with timeout before wait has timed out")
 		}
 	}
 	return nil

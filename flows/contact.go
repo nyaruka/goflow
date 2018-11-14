@@ -43,7 +43,7 @@ import (
 //   @contact.urns.0 -> tel:+12065551212
 //   @contact.urns.tel -> ["tel:+12065551212"]
 //   @contact.urns.mailto.0 -> mailto:foo@bar.com
-//   @contact.urn -> (206) 555-1212
+//   @contact.urn -> tel:+12065551212
 //   @contact.groups -> ["Testers","Males"]
 //   @contact.fields -> {"activation_token":"AACC55","age":23,"gender":"Male","join_date":"2017-12-02T00:00:00-02:00","not_set":null}
 //   @contact.fields.activation_token -> AACC55
@@ -274,7 +274,7 @@ func (c *Contact) Resolve(env utils.Environment, key string) types.XValue {
 		return c.urns
 	case "urn":
 		if len(c.urns) > 0 {
-			return types.NewXText(c.urns[0].URN().Format())
+			return c.urns[0]
 		}
 		return nil
 	case "groups":

@@ -13,11 +13,14 @@
                         "type": "switch",
                         "result_name": "URN Check",
                         "default_exit_uuid": "85038c16-0060-486c-97be-898c65587658",
-                        "operand": "@(format_urn(contact.urns.telegram))",
+                        "operand": "@(length(contact.urns.telegram))",
                         "cases": [
                             {
                                 "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
-                                "type": "has_text",
+                                "type": "has_number_gt",
+                                "arguments": [
+                                    "0"
+                                ],
                                 "exit_uuid": "9b30398f-c6e8-47e2-9c0c-99493f83cbef"
                             }
                         ]

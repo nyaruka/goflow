@@ -152,7 +152,9 @@ func (m *extraMapper) String() string {
 	return "legacy_extra"
 }
 
-func newMigrationVars() map[string]interface{} {
+func newContactMapper(prefix string) *varMapper {
+	subsitutionBase := prefix + "contact"
+
 	contact := &varMapper{
 		base: "contact",
 		baseVars: map[string]interface{}{
@@ -165,7 +167,7 @@ func newMigrationVars() map[string]interface{} {
 			"tel_e164":   "urns.tel.0.path",
 		},
 		substitutions: map[string]interface{}{
-			"groups": "join(contact.groups, \",\")",
+			"groups": fmt.Sprintf("join(%s.groups, \",\")", subsitutionBase),
 		},
 		arbitraryNesting: "fields",
 	}
@@ -173,20 +175,25 @@ func newMigrationVars() map[string]interface{} {
 	for scheme := range urns.ValidSchemes {
 		contact.baseVars[scheme] = &varMapper{
 			substitutions: map[string]interface{}{
-				"__default__": fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
-				"display":     fmt.Sprintf("format_urn(contact.urns.%s)", scheme),
-				"scheme":      fmt.Sprintf("contact.urns.%s.0.scheme", scheme),
-				"path":        fmt.Sprintf("contact.urns.%s.0.path", scheme),
-				"urn":         fmt.Sprintf("contact.urns.%s.0", scheme),
+				"__default__": fmt.Sprintf("%s.urns.%s.0.display", subsitutionBase, scheme),
+				"display":     fmt.Sprintf("%s.urns.%s.0.display", subsitutionBase, scheme),
+				"scheme":      fmt.Sprintf("%s.urns.%s.0.scheme", subsitutionBase, scheme),
+				"path":        fmt.Sprintf("%s.urns.%s.0.path", subsitutionBase, scheme),
+				"urn":         fmt.Sprintf("%s.urns.%s.0", subsitutionBase, scheme),
 			},
 			base: fmt.Sprintf("urns.%s", scheme),
 		}
 	}
+	return contact
+}
+
+func newMigrationVars() map[string]interface{} {
+	contact := newContactMapper("")
 
 	parent := &varMapper{
 		base: "parent",
 		baseVars: map[string]interface{}{
-			"contact": contact,
+			"contact": newContactMapper("parent."),
 		},
 		arbitraryNesting: "results",
 		arbitraryVars: map[string]interface{}{

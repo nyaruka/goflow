@@ -100,7 +100,7 @@ var XFUNCTIONS = map[string]XFunction{
 	"format_datetime": ArgCountCheck(1, 3, FormatDateTime),
 	"format_location": OneTextFunction(FormatLocation),
 	"format_number":   FormatNumber,
-	"format_urn":      FormatURN,
+	"format_urn":      OneTextFunction(FormatURN),
 
 	// utility functions
 	"length":     OneArgFunction(Length),
@@ -1498,40 +1498,18 @@ func FormatLocation(env utils.Environment, path types.XText) types.XValue {
 //
 //   @(format_urn("tel:+250781234567")) -> 0781 234 567
 //   @(format_urn("twitter:134252511151#billy_bob")) -> billy_bob
-//   @(format_urn(contact.urns)) -> (206) 555-1212
-//   @(format_urn(contact.urns.2)) -> foo@bar.com
-//   @(format_urn(contact.urns.mailto)) -> foo@bar.com
+//   @(format_urn(contact.urn)) -> (206) 555-1212
 //   @(format_urn(contact.urns.mailto.0)) -> foo@bar.com
-//   @(format_urn(contact.urns.telegram)) ->
+//   @(format_urn(contact.urns.telegram.0)) ->
+//   @(format_urn(contact.urns.2)) -> foo@bar.com
 //   @(format_urn("NOT URN")) -> ERROR
 //
 // @function format_urn(urn)
-func FormatURN(env utils.Environment, args ...types.XValue) types.XValue {
-	if len(args) != 1 {
-		return types.NewXErrorf("takes one argument, got %d", len(args))
-	}
-
-	// if we've been passed an indexable like a URNList, use first item
-	urnArg := args[0]
-
-	indexable, isIndexable := urnArg.(types.XIndexable)
-	if isIndexable {
-		if indexable.Length() >= 1 {
-			urnArg = indexable.Index(0)
-		} else {
-			return types.XTextEmpty
-		}
-	}
-
-	urnString, xerr := types.ToXText(env, urnArg)
-	if xerr != nil {
-		return xerr
-	}
-
-	urn := urns.URN(urnString.Native())
+func FormatURN(env utils.Environment, arg types.XText) types.XValue {
+	urn := urns.URN(arg.Native())
 	err := urn.Validate()
 	if err != nil {
-		return types.NewXErrorf("%s is not a valid URN: %s", urnString, err)
+		return types.NewXErrorf("%s is not a valid URN: %s", arg.Native(), err)
 	}
 
 	return types.NewXText(urn.Format())
