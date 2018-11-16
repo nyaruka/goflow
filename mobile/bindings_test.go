@@ -64,6 +64,7 @@ func TestMigrateLegacyFlow(t *testing.T) {
 	assert.EqualError(t, err, `unable to read legacy flow: field 'metadata.uuid' is required`)
 
 	migrated, err := mobile.MigrateLegacyFlow(`{
+		"flow_type": "S", 
 		"action_sets": [],
 		"rule_sets": [],
 		"base_language": "eng",
@@ -74,13 +75,14 @@ func TestMigrateLegacyFlow(t *testing.T) {
 	}`)
 	assert.NoError(t, err)
 	test.AssertEqualJSON(t, []byte(`{
+		"uuid": "061be894-4507-470c-a20b-34273bf915be",
+		"name": "Survey",
+		"spec_version": "12.0",
+		"type": "messaging_offline",
 		"expire_after_minutes": 0,
 		"language": "eng",
 		"localization": {},
-		"name": "Survey",
 		"nodes": [],
-		"revision": 0,
-		"type": "",
-		"uuid": "061be894-4507-470c-a20b-34273bf915be"
+		"revision": 0
 	}`), []byte(migrated), "migrated flow mismatch")
 }
