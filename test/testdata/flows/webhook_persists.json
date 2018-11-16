@@ -1,8 +1,9 @@
 {
     "flows": [
         {
-            "name": "Webhook Test",
             "uuid": "08d8a831-ca01-4a33-a26d-40f83aa4b625",
+            "name": "Webhook Test",
+            "spec_version": "12.0",
             "type": "messaging",
             "nodes": [
                 {

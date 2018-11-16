@@ -6,6 +6,7 @@
             "content": {
                 "uuid": "ba32aba5-661d-4680-b5f7-d80444e4728c",
                 "name": "Echo Flow",
+                "spec_version": "12.0",
                 "language": "eng",
                 "type": "messaging",
                 "nodes": [

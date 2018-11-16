@@ -3,6 +3,7 @@
         {
             "uuid": "bead76f5-dac4-4c9d-996c-c62b326e8c0a",
             "name": "Action Tester",
+            "spec_version": "12.0",
             "language": "eng",
             "type": "messaging",
             "revision": 123,
@@ -21,6 +22,7 @@
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Age",
+            "spec_version": "12.0",
             "language": "eng",
             "type": "messaging",
             "nodes": [
