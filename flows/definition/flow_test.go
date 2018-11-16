@@ -57,8 +57,9 @@ func TestFlowValidation(t *testing.T) {
 }
 
 var flowDef = `{
-    "uuid": "8ca44c09-791d-453a-9799-a70dd3303306",
-    "name": "Test Flow",
+    "uuid": "8ca44c09-791d-453a-9799-a70dd3303306", 
+	"name": "Test Flow",
+	"spec_version": "12.0",
     "language": "eng",
     "type": "messaging",
     "revision": 123,
@@ -140,6 +141,7 @@ func TestNewFlow(t *testing.T) {
 	flow := definition.NewFlow(
 		assets.FlowUUID("8ca44c09-791d-453a-9799-a70dd3303306"),
 		"Test Flow",           // name
+		"12.0",                // spec version
 		utils.Language("eng"), // base language
 		flows.FlowTypeMessaging,
 		123, // revision

@@ -104,3 +104,7 @@
 [[constraint]]
   name = "github.com/go-chi/cors"
   version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/hashicorp/go-version"
+  version = "1.0.0"

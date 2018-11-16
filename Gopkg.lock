@@ -2,215 +2,308 @@
 
 
 [[projects]]
+  digest = "1:5e79f7a65816b2ba311439df21c9b24af91868cbb5d67489be6d94be2cccb286"
   name = "github.com/antlr/antlr4"
   packages = ["runtime/Go/antlr"]
+  pruneopts = "UT"
   revision = "bdc05c87be2ad981744223df0fd745e8345baba9"
   version = "4.7.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:3d3ce78f18db6fd13dff85a574ccbf51c5ccef6bf353146e27cbbbe6ac71e4d4"
   name = "github.com/buger/jsonparser"
   packages = ["."]
+  pruneopts = "UT"
   revision = "4be68c93a24430ddf9c33d1380b7042fd3a13424"
 
 [[projects]]
+  digest = "1:fed1f537c2f1269fe475a8556c393fe466641682d73ef8fd0491cd3aa1e47bad"
   name = "github.com/certifi/gocertifi"
   packages = ["."]
+  pruneopts = "UT"
   revision = "deb3ae2ef2610fde3330947281941c562861188b"
   version = "2018.01.18"
 
 [[projects]]
+  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:ee7fe6a68ba9f21bc748293d4e1e66ad327f64a89b0f5ba2d021430babd4b8c9"
   name = "github.com/dustin/go-humanize"
   packages = ["."]
+  pruneopts = "UT"
   revision = "bb3d318650d48840a39aa21a027c6630e198e626"
 
 [[projects]]
+  digest = "1:25889b062fa78bfd05d9c9eb3a4d0fc23cc11d2ba7cf40b5e96eb3498dd1d891"
   name = "github.com/evalphobia/logrus_sentry"
   packages = ["."]
+  pruneopts = "UT"
   revision = "b78b27461c8163c45abf4ab3a8330d2b1ee9456a"
   version = "v0.4.6"
 
 [[projects]]
+  digest = "1:ca82a3b99694824c627573c2a76d0e49719b4a9c02d1d85a2ac91f1c1f52ab9b"
   name = "github.com/fatih/structs"
   packages = ["."]
+  pruneopts = "UT"
   revision = "a720dfa8df582c51dee1b36feabb906bde1588bd"
   version = "v1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:d4623fc7bf7e281d9107367cc4a9e76ed3e86b1eec1a4e30630c870bef1fedd0"
   name = "github.com/getsentry/raven-go"
   packages = ["."]
+  pruneopts = "UT"
   revision = "ed7bcb39ff10f39ab08e317ce16df282845852fa"
 
 [[projects]]
+  digest = "1:4eda9f7bf70f5145b3b9ed3f18ac93e9b1a0e38906eb69e526380c34861e2b07"
   name = "github.com/go-chi/chi"
   packages = [
     ".",
-    "middleware"
+    "middleware",
   ]
+  pruneopts = "UT"
   revision = ""
   version = "v3.3.2"
 
 [[projects]]
+  digest = "1:dfa416a1bb8139f30832543340f972f65c0db9932034cb6a1b42c5ac615a3fb8"
   name = "github.com/go-chi/cors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "dba6525398619dead495962a916728e7ee2ca322"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:c42f32253560d1527291221734a9b0d9f20ace8ad076398c86b4e8cb59a72307"
   name = "github.com/go-playground/locales"
   packages = [
     ".",
-    "currency"
+    "currency",
   ]
+  pruneopts = "UT"
   revision = "e4cbcb5d0652150d40ad0646651076b6bd2be4f6"
   version = "v0.11.2"
 
 [[projects]]
+  digest = "1:e022cf244bcac1b6ef933f1a2e0adcf6a6dfd7b872d8d41e4d4179bb09a87cbc"
   name = "github.com/go-playground/universal-translator"
   packages = ["."]
+  pruneopts = "UT"
   revision = "b32fa301c9fe55953584134cb6853a13c87ec0a1"
   version = "v0.16.0"
 
 [[projects]]
+  digest = "1:ffc060c551980d37ee9e428ef528ee2813137249ccebb0bfc412ef83071cac91"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
+  pruneopts = "UT"
   revision = "925541529c1fa6821df4e44ce2723319eb2be768"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:77395dd3847dac9c45118c668f5dab85aedf0163dc3b38aea6578c5cf0d502f9"
+  name = "github.com/hashicorp/go-version"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b5a281d3160aa11950a6182bd9a9dc2cb1e02d50"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:0a4e87d658551ece5cc450a2f4a7c60f1f7656f128189e302c743ebf471797a6"
   name = "github.com/karlseguin/ccache"
   packages = ["."]
+  pruneopts = "UT"
   revision = "a2d62155777b39595c825ed3824279e642a5db3c"
   version = "v2.0.2"
 
 [[projects]]
+  digest = "1:b56c589214f01a5601e0821387db484617392d0042f26234bf2da853a2f498a1"
   name = "github.com/naoina/go-stringutil"
   packages = ["."]
+  pruneopts = "UT"
   revision = "6b638e95a32d0c1131db0e7fe83775cbea4a0d0b"
   version = "v0.1.0"
 
 [[projects]]
+  digest = "1:f58c3d0e46b64878d00652fedba24ee879725191ab919dca7b62586859281c04"
   name = "github.com/naoina/toml"
   packages = [
     ".",
-    "ast"
+    "ast",
   ]
+  pruneopts = "UT"
   revision = "e6f5723bf2a66af014955e0888881314cf294129"
   version = "v0.1.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:996d2f6a05fc9f563b9b323c058c1be1a4581f45e7ae52b4216f6e1e10ec6f12"
   name = "github.com/nyaruka/ezconf"
   packages = ["."]
+  pruneopts = "UT"
   revision = "b12749342a72c772a96134ba3204d2c7ee2cee53"
 
 [[projects]]
   branch = "master"
+  digest = "1:3802f28c6c030e512343266d0b06cfc4aab53413179520a4264d6308ea631d60"
   name = "github.com/nyaruka/gocommon"
   packages = ["urns"]
+  pruneopts = "UT"
   revision = "bc2f2eb770fbf625b50efe550c9652b9291d8992"
 
 [[projects]]
   branch = "master"
+  digest = "1:5261eef671c581dd8a3799ca18ec84d9dedd2c646c1421fe3d7559dcd5125105"
   name = "github.com/nyaruka/phonenumbers"
   packages = ["."]
+  pruneopts = "UT"
   revision = "15aafd6b263c911e93b4422194eac7d03b2675cd"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:bc91590d3e20673d5e33267fc140e7dadddde0b84f2e9030547ba86859d2d13e"
   name = "github.com/rakyll/statik"
   packages = ["fs"]
+  pruneopts = "UT"
   revision = "fd36b3595eb2ec8da4b8153b107f7ea08504899d"
   version = "v0.1.1"
 
 [[projects]]
+  digest = "1:274f67cb6fed9588ea2521ecdac05a6d62a8c51c074c1fccc6a49a40ba80e925"
   name = "github.com/satori/go.uuid"
   packages = ["."]
+  pruneopts = "UT"
   revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:d917313f309bda80d27274d53985bc65651f81a5b66b820749ac7f8ef061fd04"
   name = "github.com/sergi/go-diff"
   packages = ["diffmatchpatch"]
+  pruneopts = "UT"
   revision = "1744e2970ca51c86172c8190fadad617561ed6e7"
   version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:621ad78c52461044f9d866702fd5ceb9277b2cb1c05c3742b719dbd1dd809e66"
   name = "github.com/shopspring/decimal"
   packages = ["."]
+  pruneopts = "UT"
   revision = "2df3e6ddaf6e9531dd02d7b6337f2d310f5e4f22"
 
 [[projects]]
+  digest = "1:5622116f2c79239f2d25d47b881e14f96a8b8c17b63b8a8326a38ee1a332b007"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
   version = "v1.0.4"
 
 [[projects]]
+  digest = "1:c52d48fe752736ae45b72959e1e4fc1a5b60d5b56f8fad42c58414daab5f309d"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
     "require",
-    "suite"
+    "suite",
   ]
+  pruneopts = "UT"
   revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
   version = "v1.2.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:38cb27d3525635c34e84e2dbc2207c37d10832776997665bf0ddaeae2c861f1f"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
+  pruneopts = "UT"
   revision = "91a49db82a88618983a78a06c1cbd4e00ab749ab"
 
 [[projects]]
   branch = "master"
+  digest = "1:9bb501ffdf18a0cc48f2e7f45eeeb27428198bccadb320e4a39fdc2126527efd"
   name = "golang.org/x/sys"
   packages = [
     "unix",
-    "windows"
+    "windows",
   ]
+  pruneopts = "UT"
   revision = "dd2ff4accc098aceecb86b36eaa7829b2a17b1c9"
 
 [[projects]]
+  digest = "1:17ad89bd57485e11f306d41b703f53089fb0803682707b21fe9b3b29467d37a0"
   name = "golang.org/x/text"
   packages = [
     "internal/gen",
     "internal/tag",
     "language",
-    "unicode/cldr"
+    "unicode/cldr",
   ]
+  pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
+  digest = "1:d63e77421cf53fe99e326beb48cb43d437d3bd752fff92ff3c5e7127b3f68702"
   name = "gopkg.in/go-playground/validator.v9"
   packages = ["."]
+  pruneopts = "UT"
   revision = "1b8c8e19cd250435025214492d9a08411d760fdd"
   version = "v9.12.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "36c1328d89d7abafa0540067115d8fdf4e360c45ed70b8e5857923dcbcd10a27"
+  input-imports = [
+    "github.com/antlr/antlr4/runtime/Go/antlr",
+    "github.com/buger/jsonparser",
+    "github.com/dustin/go-humanize",
+    "github.com/evalphobia/logrus_sentry",
+    "github.com/go-chi/chi",
+    "github.com/go-chi/chi/middleware",
+    "github.com/go-chi/cors",
+    "github.com/hashicorp/go-version",
+    "github.com/karlseguin/ccache",
+    "github.com/nyaruka/ezconf",
+    "github.com/nyaruka/gocommon/urns",
+    "github.com/nyaruka/phonenumbers",
+    "github.com/rakyll/statik/fs",
+    "github.com/satori/go.uuid",
+    "github.com/sergi/go-diff/diffmatchpatch",
+    "github.com/shopspring/decimal",
+    "github.com/sirupsen/logrus",
+    "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/require",
+    "github.com/stretchr/testify/suite",
+    "golang.org/x/text/language",
+    "gopkg.in/go-playground/validator.v9",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
