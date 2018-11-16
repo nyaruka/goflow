@@ -15,6 +15,7 @@ import (
 type flow struct {
 	uuid               assets.FlowUUID
 	name               string
+	specVersion        string
 	language           utils.Language
 	flowType           flows.FlowType
 	revision           int
@@ -31,10 +32,11 @@ type flow struct {
 }
 
 // NewFlow creates a new flow
-func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) flows.Flow {
+func NewFlow(uuid assets.FlowUUID, name string, specVersion string, language utils.Language, flowType flows.FlowType, revision int, expireAfterMinutes int, localization flows.Localization, nodes []flows.Node, ui flows.UI) flows.Flow {
 	f := &flow{
 		uuid:               uuid,
 		name:               name,
+		specVersion:        specVersion,
 		language:           language,
 		flowType:           flowType,
 		revision:           revision,
@@ -54,6 +56,7 @@ func NewFlow(uuid assets.FlowUUID, name string, language utils.Language, flowTyp
 
 func (f *flow) UUID() assets.FlowUUID                  { return f.uuid }
 func (f *flow) Name() string                           { return f.name }
+func (f *flow) SpecVersion() string                    { return f.specVersion }
 func (f *flow) Revision() int                          { return f.revision }
 func (f *flow) Language() utils.Language               { return f.language }
 func (f *flow) Type() flows.FlowType                   { return f.flowType }
@@ -141,6 +144,7 @@ func init() {
 type flowEnvelope struct {
 	UUID               assets.FlowUUID `json:"uuid" validate:"required,uuid4"`
 	Name               string          `json:"name" validate:"required"`
+	SpecVersion        string          `json:"spec_version" validate:"required"`
 	Language           utils.Language  `json:"language" validate:"required"`
 	Type               flows.FlowType  `json:"type" validate:"required,flow_type"`
 	Revision           int             `json:"revision"`
@@ -165,7 +169,7 @@ func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 		nodes[n] = e.Nodes[n]
 	}
 
-	return NewFlow(e.UUID, e.Name, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
+	return NewFlow(e.UUID, e.Name, e.SpecVersion, e.Language, e.Type, e.Revision, e.ExpireAfterMinutes, e.Localization, nodes, nil), nil
 }
 
 // MarshalJSON marshals this flow into JSON
@@ -174,6 +178,7 @@ func (f *flow) MarshalJSON() ([]byte, error) {
 		flowEnvelope: flowEnvelope{
 			UUID:               f.uuid,
 			Name:               f.name,
+			SpecVersion:        f.specVersion,
 			Language:           f.language,
 			Type:               f.flowType,
 			Revision:           f.revision,
