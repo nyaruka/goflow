@@ -20,6 +20,11 @@ import (
 	"github.com/nyaruka/goflow/utils"
 )
 
+// IsSpecVersionSupported returns whether the given flow spec version is supported
+func IsSpecVersionSupported(ver string) bool {
+	return flows.IsVersionSupported(ver)
+}
+
 // Environment defines the environment for expression evaluation etc
 type Environment struct {
 	target utils.Environment
