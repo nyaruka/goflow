@@ -30,7 +30,10 @@ func TestMobileBindings(t *testing.T) {
 	sessionAssets, err := mobile.NewSessionAssets(source)
 	require.NoError(t, err)
 
-	environment, err := mobile.NewEnvironment("DD-MM-YYYY", "tt:mm", "Africa/Kigali", "eng", []string{"eng", "fra"})
+	langs := mobile.NewStringSlice(2)
+	langs.Add("eng")
+	langs.Add("fra")
+	environment, err := mobile.NewEnvironment("DD-MM-YYYY", "tt:mm", "Africa/Kigali", "eng", langs, "none")
 	require.NoError(t, err)
 
 	contact := mobile.NewEmptyContact()
@@ -42,20 +45,20 @@ func TestMobileBindings(t *testing.T) {
 	events, err := session.Start(trigger)
 	require.NoError(t, err)
 
-	assert.Equal(t, 2, len(events))
-	assert.Equal(t, "msg_created", events[0].Type())
-	assert.Equal(t, "msg_wait", events[1].Type())
+	assert.Equal(t, 2, events.Length())
+	assert.Equal(t, "msg_created", events.Get(0).Type())
+	assert.Equal(t, "msg_wait", events.Get(1).Type())
 
 	resume := mobile.NewMsgResume(nil, nil, mobile.NewMsgIn("8e6f0213-a122-4c50-a430-442085754c16", "Hi there", nil))
 
 	events, err = session.Resume(resume)
 	require.NoError(t, err)
 
-	assert.Equal(t, 4, len(events))
-	assert.Equal(t, "msg_received", events[0].Type())
-	assert.Equal(t, "run_result_changed", events[1].Type())
-	assert.Equal(t, "msg_created", events[2].Type())
-	assert.Equal(t, "msg_wait", events[3].Type())
+	assert.Equal(t, 4, events.Length())
+	assert.Equal(t, "msg_received", events.Get(0).Type())
+	assert.Equal(t, "run_result_changed", events.Get(1).Type())
+	assert.Equal(t, "msg_created", events.Get(2).Type())
+	assert.Equal(t, "msg_wait", events.Get(3).Type())
 }
 
 func TestMigrateLegacyFlow(t *testing.T) {

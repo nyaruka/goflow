@@ -30,16 +30,16 @@ type Environment struct {
 	target utils.Environment
 }
 
-// NewEnvironment creates a new environment
-func NewEnvironment(dateFormat string, timeFormat string, timezone string, defaultLanguage string, allowedLanguages []string) (*Environment, error) {
+// NewEnvironment creates a new environment.
+func NewEnvironment(dateFormat string, timeFormat string, timezone string, defaultLanguage string, allowedLanguages *StringSlice, redactionPolicy string) (*Environment, error) {
 	tz, err := time.LoadLocation(timezone)
 	if err != nil {
 		return nil, err
 	}
 
-	langs := make([]utils.Language, len(allowedLanguages))
-	for l := range allowedLanguages {
-		langs[l] = utils.Language(allowedLanguages[l])
+	langs := make([]utils.Language, allowedLanguages.Length())
+	for l := 0; l < allowedLanguages.Length(); l++ {
+		langs[l] = utils.Language(allowedLanguages.Get(l))
 	}
 
 	return &Environment{
@@ -51,7 +51,7 @@ func NewEnvironment(dateFormat string, timeFormat string, timezone string, defau
 			langs,
 			utils.NilCountry,
 			utils.DefaultNumberFormat,
-			utils.RedactionPolicyNone,
+			utils.RedactionPolicy(redactionPolicy),
 		),
 	}, nil
 }
@@ -102,10 +102,13 @@ type MsgIn struct {
 }
 
 // NewMsgIn creates a new incoming message
-func NewMsgIn(uuid string, text string, attachments []string) *MsgIn {
-	convertedAttachments := make([]flows.Attachment, len(attachments))
-	for a := range attachments {
-		convertedAttachments[a] = flows.Attachment(attachments[a])
+func NewMsgIn(uuid string, text string, attachments *StringSlice) *MsgIn {
+	var convertedAttachments []flows.Attachment
+	if attachments != nil {
+		convertedAttachments := make([]flows.Attachment, attachments.Length())
+		for a := 0; a < attachments.Length(); a++ {
+			convertedAttachments[a] = flows.Attachment(attachments.Get(a))
+		}
 	}
 
 	return &MsgIn{
@@ -160,16 +163,16 @@ func (e *Event) Payload() []byte {
 	return e.payload
 }
 
-func convertEvents(raw []flows.Event) ([]*Event, error) {
-	new := make([]*Event, len(raw))
+func convertEvents(raw []flows.Event) (*EventSlice, error) {
+	events := NewEventSlice(len(raw))
 	for e := range raw {
 		marshaled, err := json.Marshal(raw[e])
 		if err != nil {
 			return nil, err
 		}
-		new[e] = &Event{type_: raw[e].Type(), payload: marshaled}
+		events.Add(&Event{type_: raw[e].Type(), payload: marshaled})
 	}
-	return new, nil
+	return events, nil
 }
 
 // Session represents a session with the flow engine
@@ -190,7 +193,7 @@ func NewSession(a *SessionAssets, httpUserAgent string) *Session {
 }
 
 // Start starts this session using the given trigger
-func (s *Session) Start(trigger *Trigger) ([]*Event, error) {
+func (s *Session) Start(trigger *Trigger) (*EventSlice, error) {
 	newEvents, err := s.target.Start(trigger.target)
 	if err != nil {
 		return nil, err
@@ -199,7 +202,7 @@ func (s *Session) Start(trigger *Trigger) ([]*Event, error) {
 }
 
 // Resume resumes this session
-func (s *Session) Resume(resume *Resume) ([]*Event, error) {
+func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
 	newEvents, err := s.target.Resume(resume.target)
 	if err != nil {
 		return nil, err
