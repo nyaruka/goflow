@@ -6,7 +6,6 @@ package mobile
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/gocommon/urns"
@@ -16,7 +15,6 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
-	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -116,16 +114,27 @@ func NewMsgIn(uuid string, text string, attachments *StringSlice) *MsgIn {
 	}
 }
 
+// FlowReference is a reference to a flow
+type FlowReference struct {
+	uuid string
+	name string
+}
+
+// NewFlowReference creates a new flow reference
+func NewFlowReference(uuid string, name string) *FlowReference {
+	return &FlowReference{uuid: uuid, name: name}
+}
+
 // Trigger represents something which can initiate a session
 type Trigger struct {
 	target flows.Trigger
 }
 
 // NewManualTrigger creates a new manual trigger
-func NewManualTrigger(environment *Environment, contact *Contact, flowUUID string, flowName string) *Trigger {
-	flow := assets.NewFlowReference(assets.FlowUUID(flowUUID), flowName)
+func NewManualTrigger(environment *Environment, contact *Contact, flow *FlowReference) *Trigger {
+	flowRef := assets.NewFlowReference(assets.FlowUUID(flow.uuid), flow.name)
 	return &Trigger{
-		target: triggers.NewManualTrigger(environment.target, flow, contact.target, nil, utils.Now()),
+		target: triggers.NewManualTrigger(environment.target, flowRef, contact.target, nil, utils.Now()),
 	}
 }
 
@@ -182,7 +191,7 @@ type Session struct {
 
 // Status returns the status of this session
 func (s *Session) Status() string {
-	return string(s.Status())
+	return string(s.target.Status())
 }
 
 // NewSession creates a new session
@@ -208,24 +217,4 @@ func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
 		return nil, err
 	}
 	return convertEvents(newEvents)
-}
-
-// MigrateLegacyFlow migrates a legacy flow definitin
-func MigrateLegacyFlow(definition string) (string, error) {
-	legacyFlow, err := legacy.ReadLegacyFlow([]byte(definition))
-	if err != nil {
-		return "", fmt.Errorf("unable to read legacy flow: %s", err)
-	}
-
-	flow, err := legacyFlow.Migrate(false, false)
-	if err != nil {
-		return "", fmt.Errorf("unable to migrate legacy flow: %s", err)
-	}
-
-	marshaled, err := utils.JSONMarshal(flow)
-	if err != nil {
-		return "", fmt.Errorf("unable to marshal migrated flow: %s", err)
-	}
-
-	return string(marshaled), nil
 }
