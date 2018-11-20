@@ -56,7 +56,13 @@ func TestMobileBindings(t *testing.T) {
 
 	assert.Equal(t, 4, events.Length())
 	assert.Equal(t, "msg_received", events.Get(0).Type())
+	assert.Equal(t, `{"type":"msg_received","created_on":"2018-11-20T15`, events.Get(0).Payload()[:50])
 	assert.Equal(t, "run_result_changed", events.Get(1).Type())
 	assert.Equal(t, "msg_created", events.Get(2).Type())
 	assert.Equal(t, "msg_wait", events.Get(3).Type())
+
+	marshaled, err := session.ToJSON()
+	require.NoError(t, err)
+
+	assert.Equal(t, `{"environment":{"date_format":"DD-MM-YYYY","time_f`, marshaled[:50])
 }

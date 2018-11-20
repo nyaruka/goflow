@@ -161,14 +161,14 @@ func NewMsgResume(environment *Environment, contact *Contact, msg *MsgIn) *Resum
 
 type Event struct {
 	type_   string
-	payload []byte
+	payload string
 }
 
 func (e *Event) Type() string {
 	return e.type_
 }
 
-func (e *Event) Payload() []byte {
+func (e *Event) Payload() string {
 	return e.payload
 }
 
@@ -179,7 +179,7 @@ func convertEvents(raw []flows.Event) (*EventSlice, error) {
 		if err != nil {
 			return nil, err
 		}
-		events.Add(&Event{type_: raw[e].Type(), payload: marshaled})
+		events.Add(&Event{type_: raw[e].Type(), payload: string(marshaled)})
 	}
 	return events, nil
 }
@@ -217,4 +217,13 @@ func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
 		return nil, err
 	}
 	return convertEvents(newEvents)
+}
+
+// ToJSON serializes this session as JSON
+func (s *Session) ToJSON() (string, error) {
+	data, err := json.Marshal(s.target)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
 }
