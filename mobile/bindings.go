@@ -201,6 +201,16 @@ func NewSession(a *SessionAssets, httpUserAgent string) *Session {
 	return &Session{target: s}
 }
 
+// ReadSession reads an existing session from JSON
+func ReadSession(a *SessionAssets, httpUserAgent string, data string) (*Session, error) {
+	httpClient := utils.NewHTTPClient(httpUserAgent)
+	s, err := engine.ReadSession(a.target, engine.NewDefaultConfig(), httpClient, []byte(data))
+	if err != nil {
+		return nil, err
+	}
+	return &Session{target: s}, nil
+}
+
 // Start starts this session using the given trigger
 func (s *Session) Start(trigger *Trigger) (*EventSlice, error) {
 	newEvents, err := s.target.Start(trigger.target)
