@@ -15,6 +15,7 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 )
 
@@ -164,11 +165,11 @@ type Event struct {
 	payload string
 }
 
-func (e *Event) Type() string {
+func (e *Event) GetType() string {
 	return e.type_
 }
 
-func (e *Event) Payload() string {
+func (e *Event) GetPayload() string {
 	return e.payload
 }
 
@@ -189,8 +190,8 @@ type Session struct {
 	target flows.Session
 }
 
-// Status returns the status of this session
-func (s *Session) Status() string {
+// GetStatus returns the status of this session
+func (s *Session) GetStatus() string {
 	return string(s.target.Status())
 }
 
@@ -229,6 +230,14 @@ func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
 	return convertEvents(newEvents)
 }
 
+// GetWait gets the current wait of this session
+func (s *Session) GetWait() *Wait {
+	if s.target.Wait() != nil {
+		return &Wait{target: s.target.Wait()}
+	}
+	return nil
+}
+
 // ToJSON serializes this session as JSON
 func (s *Session) ToJSON() (string, error) {
 	data, err := json.Marshal(s.target)
@@ -236,4 +245,20 @@ func (s *Session) ToJSON() (string, error) {
 		return "", err
 	}
 	return string(data), nil
+}
+
+type Wait struct {
+	target flows.Wait
+}
+
+func (w *Wait) GetType() string {
+	return string(w.target.Type())
+}
+
+func (w *Wait) GetMediaHint() string {
+	asMsgWait, isMsgWait := w.target.(*waits.MsgWait)
+	if isMsgWait {
+		return string(asMsgWait.MediaHint_)
+	}
+	return ""
 }

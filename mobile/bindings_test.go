@@ -44,10 +44,14 @@ func TestMobileBindings(t *testing.T) {
 	events, err := session.Start(trigger)
 	require.NoError(t, err)
 
-	assert.Equal(t, "waiting", session.Status())
+	assert.Equal(t, "waiting", session.GetStatus())
 	assert.Equal(t, 2, events.Length())
-	assert.Equal(t, "msg_created", events.Get(0).Type())
-	assert.Equal(t, "msg_wait", events.Get(1).Type())
+	assert.Equal(t, "msg_created", events.Get(0).GetType())
+	assert.Equal(t, "msg_wait", events.Get(1).GetType())
+
+	wait := session.GetWait()
+	assert.Equal(t, "msg", wait.GetType())
+	assert.Equal(t, "", wait.GetMediaHint())
 
 	resume := mobile.NewMsgResume(nil, nil, mobile.NewMsgIn("8e6f0213-a122-4c50-a430-442085754c16", "Hi there", nil))
 
@@ -55,11 +59,11 @@ func TestMobileBindings(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, 4, events.Length())
-	assert.Equal(t, "msg_received", events.Get(0).Type())
-	assert.Equal(t, `{"type":"msg_received","created_`, events.Get(0).Payload()[:32])
-	assert.Equal(t, "run_result_changed", events.Get(1).Type())
-	assert.Equal(t, "msg_created", events.Get(2).Type())
-	assert.Equal(t, "msg_wait", events.Get(3).Type())
+	assert.Equal(t, "msg_received", events.Get(0).GetType())
+	assert.Equal(t, `{"type":"msg_received","created_`, events.Get(0).GetPayload()[:32])
+	assert.Equal(t, "run_result_changed", events.Get(1).GetType())
+	assert.Equal(t, "msg_created", events.Get(2).GetType())
+	assert.Equal(t, "msg_wait", events.Get(3).GetType())
 
 	// convert session to JSON
 	marshaled, err := session.ToJSON()
@@ -71,5 +75,5 @@ func TestMobileBindings(t *testing.T) {
 	session2, err := mobile.ReadSession(sessionAssets, "mobile-test", marshaled)
 	require.NoError(t, err)
 
-	assert.Equal(t, "waiting", session2.Status())
+	assert.Equal(t, "waiting", session2.GetStatus())
 }
