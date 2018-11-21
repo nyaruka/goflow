@@ -22,7 +22,13 @@ trigger := triggers.NewManualTrigger(utils.NewDefaultEnvironment(), contact, flo
 session.Start(trigger)
 ```
 
-## Runner 
+## Sessions
+
+Sessions can easily be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
+
+## Programs
+
+### Flow Runner 
 
 This program provides a command line interface for stepping through a given flow.
 
@@ -48,16 +54,17 @@ If the `-repro` flag is set, it will dump the triggers and resumes it used which
 % $GOPATH/bin/flowrunner -repro cmd/flowrunner/testdata/two_questions.json 615b8a0f-588c-4d20-a05f-363b0b4ce6f4
 ```
 
-## Server
+### Flow Migrator
 
-This server provides an HTTP endpoint for stepping through a given flow:
+This utility takes a legacy flow definition as piped input and outputs the migrated definition:
 
 ```
-% go install github.com/nyaruka/goflow/cmd/flowserver
-% $GOPATH/bin/flowserver
+% go install github.com/nyaruka/goflow/cmd/flowmigrate
+% cat legacy_flow.json | $GOPATH/bin/flowmigrate
+% cat legacy_export.json | jq '.flows[0]' | $GOPATH/bin/flowmigrate
 ```
 
-## Expression Tester
+### Expression Tester
 
 This utility provides a quick way to test evaluation of expressions which can be used in flows:
 
@@ -67,9 +74,14 @@ This utility provides a quick way to test evaluation of expressions which can be
 % $GOPATH/bin/exptester '@(TITLE("foo"))'
 ```
 
-## Sessions
+### Flow Server
 
-Sessions can easily be persisted between waits by calling `json.Marshal` on the `Session` instance to marshal it as JSON. You can inspect this JSON at https://sessions.temba.io/.
+This server provides an HTTP endpoint for stepping through a given flow:
+
+```
+% go install github.com/nyaruka/goflow/cmd/flowserver
+% $GOPATH/bin/flowserver
+```
 
 ## Development
 
