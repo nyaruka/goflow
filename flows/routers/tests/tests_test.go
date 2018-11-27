@@ -119,6 +119,7 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("1,000,000")}, true, xn("1000000"), false},
 	{"has_number", []types.XValue{xs("the number 1O")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("the number l0")}, true, xn("10"), false},
+	{"has_number", []types.XValue{xs("O número é 500")}, true, xn("500"), false},
 	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
 	{"has_number", []types.XValue{xs("hi.51")}, true, xn("51"), false},
 	{"has_number", []types.XValue{xs("nothing here")}, false, nil, false},
