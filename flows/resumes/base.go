@@ -57,6 +57,10 @@ func (r *baseResume) Apply(run flows.FlowRun, step flows.Step) error {
 		triggers.EnsureDynamicGroups(run.Session())
 	}
 
+	if run.Status() == flows.RunStatusWaiting {
+		run.SetStatus(flows.RunStatusActive)
+	}
+
 	return nil
 }
 

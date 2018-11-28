@@ -1,0 +1,315 @@
+{
+    "outputs": [
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:04.123456789Z",
+                    "msg": {
+                        "channel": {
+                            "name": "Android Channel",
+                            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                        },
+                        "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                        "urn": "tel:+12065551212",
+                        "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                    },
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "msg_created"
+                },
+                {
+                    "created_on": "2018-07-06T12:30:07.123456789Z",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                    "type": "msg_wait"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "fields": {
+                        "first_name": {
+                            "text": "Ben"
+                        }
+                    },
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "fra"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
+                    "redaction_policy": "none",
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                                "type": "msg_wait"
+                            }
+                        ],
+                        "exited_on": null,
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
+                        "flow": {
+                            "name": "U-Report Registration Flow",
+                            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                        },
+                        "modified_on": "2018-07-06T12:30:09.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            }
+                        ],
+                        "status": "waiting",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "status": "waiting",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2000-01-01T00:00:00Z",
+                        "fields": {
+                            "first_name": {
+                                "text": "Ben"
+                            }
+                        },
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "fra"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
+                        "redaction_policy": "none",
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Registration",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                },
+                "wait": {
+                    "timeout": 600,
+                    "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                    "type": "msg"
+                }
+            }
+        },
+        {
+            "events": [
+                {
+                    "created_on": "2018-07-06T12:30:11.123456789Z",
+                    "run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                    "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                    "type": "run_expired"
+                }
+            ],
+            "session": {
+                "contact": {
+                    "created_on": "2000-01-01T00:00:00Z",
+                    "fields": {
+                        "first_name": {
+                            "text": "Ben"
+                        }
+                    },
+                    "id": 1234567,
+                    "language": "eng",
+                    "name": "Ben Haggerty",
+                    "timezone": "America/Guayaquil",
+                    "urns": [
+                        "tel:+12065551212",
+                        "facebook:1122334455667788",
+                        "mailto:ben@macklemore"
+                    ],
+                    "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                },
+                "environment": {
+                    "allowed_languages": [
+                        "eng",
+                        "fra"
+                    ],
+                    "date_format": "YYYY-MM-DD",
+                    "default_language": "eng",
+                    "redaction_policy": "none",
+                    "time_format": "hh:mm",
+                    "timezone": "America/Los_Angeles"
+                },
+                "runs": [
+                    {
+                        "created_on": "2018-07-06T12:30:00.123456789Z",
+                        "events": [
+                            {
+                                "created_on": "2018-07-06T12:30:04.123456789Z",
+                                "msg": {
+                                    "channel": {
+                                        "name": "Android Channel",
+                                        "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d"
+                                    },
+                                    "text": "Hi Ben Haggerty! What is your favorite color? (red/blue) Your number is (206) 555-1212",
+                                    "urn": "tel:+12065551212",
+                                    "uuid": "8720f157-ca1c-432f-9c0b-2014ddc77094"
+                                },
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "msg_created"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:07.123456789Z",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "timeout_on": "2018-07-06T12:40:06.123456789Z",
+                                "type": "msg_wait"
+                            },
+                            {
+                                "created_on": "2018-07-06T12:30:11.123456789Z",
+                                "run_uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5",
+                                "step_uuid": "692926ea-09d6-4942-bd38-d266ec8d3716",
+                                "type": "run_expired"
+                            }
+                        ],
+                        "exited_on": "2018-07-06T12:30:10.123456789Z",
+                        "expires_on": "2018-07-06T12:30:01.123456789Z",
+                        "flow": {
+                            "name": "U-Report Registration Flow",
+                            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                        },
+                        "modified_on": "2018-07-06T12:30:12.123456789Z",
+                        "path": [
+                            {
+                                "arrived_on": "2018-07-06T12:30:03.123456789Z",
+                                "node_uuid": "46d51f50-58de-49da-8d13-dadbf322685d",
+                                "uuid": "692926ea-09d6-4942-bd38-d266ec8d3716"
+                            }
+                        ],
+                        "status": "expired",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "status": "completed",
+                "trigger": {
+                    "contact": {
+                        "created_on": "2000-01-01T00:00:00Z",
+                        "fields": {
+                            "first_name": {
+                                "text": "Ben"
+                            }
+                        },
+                        "id": 1234567,
+                        "language": "eng",
+                        "name": "Ben Haggerty",
+                        "timezone": "America/Guayaquil",
+                        "urns": [
+                            "tel:+12065551212",
+                            "facebook:1122334455667788",
+                            "mailto:ben@macklemore"
+                        ],
+                        "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+                    },
+                    "environment": {
+                        "allowed_languages": [
+                            "eng",
+                            "fra"
+                        ],
+                        "date_format": "YYYY-MM-DD",
+                        "default_language": "eng",
+                        "redaction_policy": "none",
+                        "time_format": "hh:mm",
+                        "timezone": "America/Los_Angeles"
+                    },
+                    "flow": {
+                        "name": "Registration",
+                        "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+                    },
+                    "triggered_on": "2000-01-01T00:00:00Z",
+                    "type": "manual"
+                }
+            }
+        }
+    ],
+    "resumes": [
+        {
+            "resumed_on": "2000-01-01T00:00:00.000000000-00:00",
+            "type": "run_expiration"
+        }
+    ],
+    "trigger": {
+        "contact": {
+            "created_on": "2000-01-01T00:00:00.000000000-00:00",
+            "fields": {
+                "first_name": {
+                    "text": "Ben"
+                }
+            },
+            "id": 1234567,
+            "language": "eng",
+            "name": "Ben Haggerty",
+            "timezone": "America/Guayaquil",
+            "urns": [
+                "tel:+12065551212",
+                "facebook:1122334455667788",
+                "mailto:ben@macklemore"
+            ],
+            "uuid": "ba96bf7f-bc2a-4873-a7c7-254d1927c4e3"
+        },
+        "environment": {
+            "allowed_languages": [
+                "eng",
+                "fra"
+            ],
+            "date_format": "YYYY-MM-DD",
+            "default_language": "eng",
+            "time_format": "hh:mm",
+            "timezone": "America/Los_Angeles"
+        },
+        "flow": {
+            "name": "Registration",
+            "uuid": "615b8a0f-588c-4d20-a05f-363b0b4ce6f4"
+        },
+        "triggered_on": "2000-01-01T00:00:00.000000000-00:00",
+        "type": "manual"
+    }
+}

@@ -223,8 +223,6 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) err
 		return err
 	}
 
-	waitingRun.SetStatus(flows.RunStatusActive)
-
 	destination, err := s.findResumeDestination(waitingRun)
 	if err != nil {
 		return err
@@ -236,6 +234,11 @@ func (s *session) tryToResume(waitingRun flows.FlowRun, resume flows.Resume) err
 
 // finds the next destination in a run that may have been waiting or a parent paused for a child subflow
 func (s *session) findResumeDestination(run flows.FlowRun) (flows.NodeUUID, error) {
+	// we might have no immediate destination in this run, but continueUntilWait can resume a parent run
+	if run.Status() != flows.RunStatusActive {
+		return noDestination, nil
+	}
+
 	step, node, err := run.PathLocation()
 	if err != nil {
 		return noDestination, err
