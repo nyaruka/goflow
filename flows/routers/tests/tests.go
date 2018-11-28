@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/functions"
@@ -818,25 +817,8 @@ func hasOnlyPhraseTest(origHays []string, hays []string, pins []string) XTestRes
 
 // ParseDecimalFuzzy parses a decimal from a string
 func ParseDecimalFuzzy(val string, format *utils.NumberFormat) (decimal.Decimal, error) {
-	// must contain at least one real digit - prevents things like ll becoming 11
-	containsDigit := false
-	for _, c := range val {
-		if unicode.IsDigit(c) {
-			containsDigit = true
-			break
-		}
-	}
-	if !containsDigit {
-		return decimal.Zero, fmt.Errorf("must contain at least one digit")
-	}
-
-	// common SMS foibles
-	cleaned := strings.Replace(val, "l", "1", -1)
-	cleaned = strings.Replace(cleaned, "O", "0", -1)
-	cleaned = strings.Replace(cleaned, "o", "0", -1)
-
 	// remove digit grouping symbol
-	cleaned = strings.Replace(cleaned, format.DigitGroupingSymbol, "", -1)
+	cleaned := strings.Replace(val, format.DigitGroupingSymbol, "", -1)
 
 	// replace non-period decimal symbols
 	cleaned = strings.Replace(cleaned, format.DecimalSymbol, ".", -1)
