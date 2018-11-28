@@ -122,6 +122,7 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
 	{"has_number", []types.XValue{xs("hi.51")}, true, xn("51"), false},
 	{"has_number", []types.XValue{xs("nothing here")}, false, nil, false},
+	{"has_number", []types.XValue{xs("1OO l00")}, false, nil, false}, // no longer do substitutions
 	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
 	{"has_number_lt", []types.XValue{xs("the number 10"), xs("11")}, true, xn("10"), false},
