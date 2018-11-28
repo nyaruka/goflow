@@ -117,12 +117,12 @@ var testTests = []struct {
 	{"has_number", []types.XValue{xs("24ans")}, true, xn("24"), false},
 	{"has_number", []types.XValue{xs("J'AI 20ANS")}, true, xn("20"), false},
 	{"has_number", []types.XValue{xs("1,000,000")}, true, xn("1000000"), false},
-	{"has_number", []types.XValue{xs("the number 1O")}, true, xn("10"), false},
-	{"has_number", []types.XValue{xs("the number l0")}, true, xn("10"), false},
+	{"has_number", []types.XValue{xs("the number 10")}, true, xn("10"), false},
 	{"has_number", []types.XValue{xs("O número é 500")}, true, xn("500"), false},
 	{"has_number", []types.XValue{xs("another is -12.51")}, true, xn("-12.51"), false},
 	{"has_number", []types.XValue{xs("hi.51")}, true, xn("51"), false},
 	{"has_number", []types.XValue{xs("nothing here")}, false, nil, false},
+	{"has_number", []types.XValue{xs("1OO l00")}, false, nil, false}, // no longer do substitutions
 	{"has_number", []types.XValue{xs("one"), xs("two"), xs("three")}, false, nil, true},
 
 	{"has_number_lt", []types.XValue{xs("the number 10"), xs("11")}, true, xn("10"), false},
@@ -291,7 +291,6 @@ func TestParseDecimalFuzzy(t *testing.T) {
 		{"1234", decimal.RequireFromString("1234"), utils.DefaultNumberFormat},
 		{"1,234.567", decimal.RequireFromString("1234.567"), utils.DefaultNumberFormat},
 		{"1.234,567", decimal.RequireFromString("1234.567"), &utils.NumberFormat{DecimalSymbol: ",", DigitGroupingSymbol: "."}},
-		{"l00", decimal.RequireFromString("100"), utils.DefaultNumberFormat},
 		{"100.00", decimal.RequireFromString("100.00"), utils.DefaultNumberFormat},
 	}
 
@@ -301,8 +300,4 @@ func TestParseDecimalFuzzy(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, test.expected, val, "parse decimal failed for input '%s'", test.input)
 	}
-
-	// don't allow both prefixes/suffixes and substitutions
-	_, err := tests.ParseDecimalFuzzy("l00ans", utils.DefaultNumberFormat)
-	assert.Error(t, err)
 }
