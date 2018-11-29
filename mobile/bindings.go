@@ -104,7 +104,7 @@ type MsgIn struct {
 func NewMsgIn(uuid string, text string, attachments *StringSlice) *MsgIn {
 	var convertedAttachments []flows.Attachment
 	if attachments != nil {
-		convertedAttachments := make([]flows.Attachment, attachments.Length())
+		convertedAttachments = make([]flows.Attachment, attachments.Length())
 		for a := 0; a < attachments.Length(); a++ {
 			convertedAttachments[a] = flows.Attachment(attachments.Get(a))
 		}
@@ -113,6 +113,18 @@ func NewMsgIn(uuid string, text string, attachments *StringSlice) *MsgIn {
 	return &MsgIn{
 		target: flows.NewMsgIn(flows.MsgUUID(uuid), urns.NilURN, nil, text, convertedAttachments),
 	}
+}
+
+func (m *MsgIn) Text() string {
+	return m.target.Text()
+}
+
+func (m *MsgIn) Attachments() *StringSlice {
+	attachments := NewStringSlice(len(m.target.Attachments()))
+	for attachment := range m.target.Attachments() {
+		attachments.Add(string(attachment))
+	}
+	return attachments
 }
 
 // FlowReference is a reference to a flow
@@ -165,11 +177,11 @@ type Event struct {
 	payload string
 }
 
-func (e *Event) GetType() string {
+func (e *Event) Type() string {
 	return e.type_
 }
 
-func (e *Event) GetPayload() string {
+func (e *Event) Payload() string {
 	return e.payload
 }
 
@@ -190,8 +202,8 @@ type Session struct {
 	target flows.Session
 }
 
-// GetStatus returns the status of this session
-func (s *Session) GetStatus() string {
+// Status returns the status of this session
+func (s *Session) Status() string {
 	return string(s.target.Status())
 }
 
@@ -230,7 +242,7 @@ func (s *Session) Resume(resume *Resume) (*EventSlice, error) {
 	return convertEvents(newEvents)
 }
 
-// GetWait gets the current wait of this session
+// GetWait gets the current wait of this session.. can't call this Wait() because Object in Java already has a wait() method
 func (s *Session) GetWait() *Wait {
 	if s.target.Wait() != nil {
 		return &Wait{target: s.target.Wait()}
@@ -251,11 +263,11 @@ type Wait struct {
 	target flows.Wait
 }
 
-func (w *Wait) GetType() string {
+func (w *Wait) Type() string {
 	return string(w.target.Type())
 }
 
-func (w *Wait) GetMediaHint() string {
+func (w *Wait) MediaHint() string {
 	asMsgWait, isMsgWait := w.target.(*waits.MsgWait)
 	if isMsgWait {
 		return string(asMsgWait.MediaHint_)
