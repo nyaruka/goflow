@@ -119,6 +119,30 @@ var actionTests = []struct {
 		}`,
 	},
 	{
+		actions.NewPlayAudioAction(
+			actionUUID,
+			"http://uploads.temba.io/2353262.m4a",
+		),
+		`{
+			"type": "play_audio",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"audio_url": "http://uploads.temba.io/2353262.m4a"
+		}`,
+	},
+	{
+		actions.NewPlayMsgAction(
+			actionUUID,
+			"http://uploads.temba.io/2353262.m4a",
+			"Hi @contact.name, are you ready to complete today's survey?",
+		),
+		`{
+			"type": "play_msg",
+			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
+			"audio_url": "http://uploads.temba.io/2353262.m4a",
+			"text": "Hi @contact.name, are you ready to complete today's survey?"
+		}`,
+	},
+	{
 		actions.NewRemoveContactGroupsAction(
 			actionUUID,
 			[]*assets.GroupReference{
@@ -421,13 +445,21 @@ func testActionType(t *testing.T, assetsJSON json.RawMessage, typeName string, t
 		session, err := test.CreateSession(assetsJSON, testServerURL)
 		require.NoError(t, err)
 
-		// get the main flow
-		flow, err := session.Assets().Flows().Get(assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a"))
-		require.NoError(t, err)
-
+		// read the action to be tested
 		action, err := actions.ReadAction(tc.ActionJSON)
 		require.NoError(t, err, "error loading action in %s", testName)
 		assert.Equal(t, typeName, action.Type())
+
+		// get a suitable "holder" flow
+		var flowUUID assets.FlowUUID
+		if len(action.AllowedFlowTypes()) == 1 && action.AllowedFlowTypes()[0] == flows.FlowTypeVoice {
+			flowUUID = assets.FlowUUID("7a84463d-d209-4d3e-a0ff-79f977cd7bd0")
+		} else {
+			flowUUID = assets.FlowUUID("bead76f5-dac4-4c9d-996c-c62b326e8c0a")
+		}
+
+		flow, err := session.Assets().Flows().Get(flowUUID)
+		require.NoError(t, err)
 
 		// if this action is expected to fail validation, check that
 		err = action.Validate(session.Assets(), flows.NewValidationContext())

@@ -20,6 +20,25 @@
             ]
         },
         {
+            "uuid": "7a84463d-d209-4d3e-a0ff-79f977cd7bd0",
+            "name": "Voice Action Tester",
+            "spec_version": "12.0",
+            "language": "eng",
+            "type": "voice",
+            "revision": 123,
+            "nodes": [
+                {
+                    "uuid": "6cc35e54-fd49-4ae7-af6e-47facd95f3da",
+                    "actions": [],
+                    "exits": [
+                        {
+                            "uuid": "d7a36118-0a38-4b35-a7e4-ae89042f0d3c"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Collect Age",
             "spec_version": "12.0",
