@@ -150,6 +150,19 @@
     },
     {
         "legacy_action": {
+            "type": "play",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "url": "@flow.response_1"
+        },
+        "expected_action": {
+            "type": "play_audio",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "audio_url": "@results.response_1"
+        },
+        "expected_localization": {}
+    },
+    {
+        "legacy_action": {
             "type": "reply",
             "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
             "msg": {
@@ -272,6 +285,38 @@
             "value": "@input"
         },
         "expected_localization": {}
+    },
+    {
+        "legacy_action": {
+            "type": "say",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "msg": {
+                "eng": "Do you still live in @contact.city?",
+                "fra": "Vous habitez toujours à @contact.city"
+            },
+            "recording": {
+                "eng": "http://s3.amazon.com/bucket/question1_en.m4a",
+                "fra": "http://s3.amazon.com/bucket/question1_fr.m4a"
+            }
+        },
+        "expected_action": {
+            "type": "say_msg",
+            "uuid": "5a4d00aa-807e-44af-9693-64b9fdedd352",
+            "text": "Do you still live in @contact.fields.city?",
+            "audio_url": "http://s3.amazon.com/bucket/question1_en.m4a"
+        },
+        "expected_localization": {
+            "fra": {
+                "5a4d00aa-807e-44af-9693-64b9fdedd352": {
+                    "audio_url": [
+                        "http://s3.amazon.com/bucket/question1_fr.m4a"
+                    ],
+                    "text": [
+                        "Vous habitez toujours à @contact.fields.city"
+                    ]
+                }
+            }
+        }
     },
     {
         "legacy_action": {

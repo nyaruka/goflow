@@ -132,8 +132,8 @@ var actionTests = []struct {
 	{
 		actions.NewSayMsgAction(
 			actionUUID,
-			"http://uploads.temba.io/2353262.m4a",
 			"Hi @contact.name, are you ready to complete today's survey?",
+			"http://uploads.temba.io/2353262.m4a",
 		),
 		`{
 			"type": "say_msg",

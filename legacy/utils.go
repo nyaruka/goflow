@@ -10,6 +10,11 @@ import (
 // Translations is an inline translation map used for localization
 type Translations map[utils.Language]string
 
+func ReadTranslations(data json.RawMessage) (Translations, error) {
+	t := make(Translations)
+	return t, json.Unmarshal(data, &t)
+}
+
 // Base looks up the translation in the given base language, or "base"
 func (t Translations) Base(baseLanguage utils.Language) string {
 	val, exists := t[baseLanguage]

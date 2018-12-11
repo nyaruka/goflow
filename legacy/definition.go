@@ -210,18 +210,22 @@ type Action struct {
 	// set language
 	Language utils.Language `json:"lang"`
 
-	// add lable action
+	// add label action
 	Labels []LabelReference `json:"labels"`
 
-	// Start/Trigger flow
+	// start/trigger flow
 	Flow FlowReference `json:"flow"`
 
 	// channel
 	Channel assets.ChannelUUID `json:"channel"`
 
-	//email
+	// email
 	Emails  []string `json:"emails"`
 	Subject string   `json:"subject"`
+
+	// IVR
+	Recording json.RawMessage `json:"recording"`
+	URL       string          `json:"url"`
 }
 
 type subflowTest struct {
@@ -408,11 +412,10 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return actions.NewStartSessionAction(a.UUID, a.Flow.Migrate(), []urns.URN{}, contacts, groups, variables, createContact), nil
 	case "reply", "send":
-		msg := make(Translations)
 		media := make(Translations)
 		var quickReplies map[utils.Language][]string
 
-		err := json.Unmarshal(a.Msg, &msg)
+		msg, err := ReadTranslations(a.Msg)
 		if err != nil {
 			return nil, err
 		}
@@ -500,6 +503,24 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 
 		return actions.NewSetContactFieldAction(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
+	case "say":
+		msg, err := ReadTranslations(a.Msg)
+		if err != nil {
+			return nil, err
+		}
+		recording, err := ReadTranslations(a.Recording)
+		if err != nil {
+			return nil, err
+		}
+
+		migratedText := addTranslationMap(baseLanguage, localization, msg, utils.UUID(a.UUID), "text")
+		migratedAudioURL := addTranslationMap(baseLanguage, localization, recording, utils.UUID(a.UUID), "audio_url")
+
+		return actions.NewSayMsgAction(a.UUID, migratedText, migratedAudioURL), nil
+	case "play":
+		migratedAudioURL, _ := expressions.MigrateTemplate(a.URL, nil)
+
+		return actions.NewPlayAudioAction(a.UUID, migratedAudioURL), nil
 	default:
 		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}

@@ -38,7 +38,7 @@ type SayMsgAction struct {
 }
 
 // NewSayMsgAction creates a new say message action
-func NewSayMsgAction(uuid flows.ActionUUID, audioURL string, text string) *SayMsgAction {
+func NewSayMsgAction(uuid flows.ActionUUID, text string, audioURL string) *SayMsgAction {
 	return &SayMsgAction{
 		BaseAction: NewBaseAction(TypeSayMsg, uuid),
 		Text:       text,
