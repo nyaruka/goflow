@@ -333,6 +333,14 @@ func (a *onlineAction) AllowedFlowTypes() []flows.FlowType {
 	return []flows.FlowType{flows.FlowTypeMessaging, flows.FlowTypeVoice}
 }
 
+// utility struct which sets the allowed flow types to just voice
+type voiceAction struct{}
+
+// AllowedFlowTypes returns the flow types which this action is allowed to occur in
+func (a *voiceAction) AllowedFlowTypes() []flows.FlowType {
+	return []flows.FlowType{flows.FlowTypeVoice}
+}
+
 //------------------------------------------------------------------------------------------
 // JSON Encoding / Decoding
 //------------------------------------------------------------------------------------------

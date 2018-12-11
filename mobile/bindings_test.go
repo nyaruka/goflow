@@ -51,7 +51,7 @@ func TestMobileBindings(t *testing.T) {
 
 	wait := session.GetWait()
 	assert.Equal(t, "msg", wait.Type())
-	assert.Equal(t, "", wait.MediaHint())
+	assert.Nil(t, wait.Hint())
 
 	attachments := mobile.NewStringSlice(1)
 	attachments.Add("content://io.rapidpro.surveyor/files/selfie.jpg")

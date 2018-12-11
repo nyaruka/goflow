@@ -647,7 +647,9 @@
             },
             "wait": {
                 "type": "msg",
-                "media_hint": "image"
+                "hint": {
+                    "type": "image"
+                }
             },
             "exits": [
                 {
@@ -1752,6 +1754,88 @@
             "position": {
                 "left": 100,
                 "top": 0
+            }
+        }
+    },
+    {
+        "legacy_ruleset": {
+            "uuid": "c4c3b4d0-4372-4065-8d10-187736098bab",
+            "rules": [
+                {
+                    "test": {
+                        "type": "number"
+                    },
+                    "category": {
+                        "eng": "numeric"
+                    },
+                    "destination": "e00f3e91-4849-46ff-9c4a-131534e4156d",
+                    "uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e",
+                    "destination_type": "A"
+                },
+                {
+                    "test": {
+                        "test": "true",
+                        "type": "true"
+                    },
+                    "category": {
+                        "base": "All Responses",
+                        "eng": "Other"
+                    },
+                    "destination": "4ea947fa-3d40-400d-9881-a5f7accae04a",
+                    "uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3",
+                    "destination_type": "A"
+                }
+            ],
+            "ruleset_type": "wait_digits",
+            "label": "Phone",
+            "operand": "@step.value",
+            "finished_key": "#",
+            "response_type": "",
+            "y": 145,
+            "x": 85,
+            "config": {}
+        },
+        "expected_node": {
+            "uuid": "c4c3b4d0-4372-4065-8d10-187736098bab",
+            "wait": {
+                "hint": {
+                    "terminated_by": "#",
+                    "type": "digits"
+                },
+                "type": "msg"
+            },
+            "router": {
+                "cases": [
+                    {
+                        "exit_uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e",
+                        "type": "has_number",
+                        "uuid": "d2f852ec-7b4e-457f-ae7f-f8b243c49ff5"
+                    }
+                ],
+                "default_exit_uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3",
+                "operand": "@input",
+                "result_name": "Phone",
+                "type": "switch"
+            },
+            "exits": [
+                {
+                    "destination_node_uuid": "e00f3e91-4849-46ff-9c4a-131534e4156d",
+                    "name": "numeric",
+                    "uuid": "e7e42463-8ee3-41e6-a2ff-aa165fbd981e"
+                },
+                {
+                    "destination_node_uuid": "4ea947fa-3d40-400d-9881-a5f7accae04a",
+                    "name": "Other",
+                    "uuid": "22aa4d15-c096-42b2-abcb-d13fac81dfa3"
+                }
+            ]
+        },
+        "expected_localization": {},
+        "expected_ui": {
+            "type": "wait_for_response",
+            "position": {
+                "left": 85,
+                "top": 145
             }
         }
     }

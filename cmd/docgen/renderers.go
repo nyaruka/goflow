@@ -269,7 +269,16 @@ func checkExample(session flows.Session, line string) error {
 }
 
 func eventsForAction(action flows.Action) (json.RawMessage, error) {
-	session, newEvents, err := test.CreateTestSession("http://localhost:49998", action)
+	voiceAction := len(action.AllowedFlowTypes()) == 1 && action.AllowedFlowTypes()[0] == flows.FlowTypeVoice
+	var session flows.Session
+	var newEvents []flows.Event
+	var err error
+
+	if voiceAction {
+		session, newEvents, err = test.CreateTestVoiceSession("http://localhost:49998", action)
+	} else {
+		session, newEvents, err = test.CreateTestSession("http://localhost:49998", action)
+	}
 	if err != nil {
 		return nil, err
 	}

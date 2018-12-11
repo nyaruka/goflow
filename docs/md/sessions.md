@@ -547,6 +547,36 @@ Events are created when an action wants to add labels to the current input.
 }
 ```
 </div>
+<a name="event:ivr_play"></a>
+
+## ivr_play
+
+Events are created when an action wants to play an audio recording to the current contact.
+Text is optionally and only used for logging purposes.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "ivr_play",
+    "created_on": "2006-01-02T15:04:05Z",
+    "audio_url": "http://uploads.temba.io/2353262.m4a",
+    "text": "Hi John. May we ask you some questions?"
+}
+```
+</div>
+<a name="event:ivr_say"></a>
+
+## ivr_say
+
+Events are created when an action wants to say a message to the current contact using TTS.
+
+<div class="output_event"><h3>Event</h3>```json
+{
+    "type": "ivr_say",
+    "created_on": "2006-01-02T15:04:05Z",
+    "text": "Hi John. May we ask you some questions?"
+}
+```
+</div>
 <a name="event:msg_created"></a>
 
 ## msg_created

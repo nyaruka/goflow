@@ -8,6 +8,7 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/flows/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -43,15 +44,15 @@ var initialWaitJSON = `{
 
 func TestMsgWait(t *testing.T) {
 	// no timeout or media
-	wait := waits.NewMsgWait(nil, "")
+	wait := waits.NewMsgWait(nil, nil)
 	marshaled, _ := json.Marshal(wait)
 	assert.Equal(t, `{"type":"msg"}`, string(marshaled))
 
-	// timeout and image media hint
+	// timeout and image hint
 	timeout := 5
-	wait = waits.NewMsgWait(&timeout, waits.MediaTypeImage)
+	wait = waits.NewMsgWait(&timeout, hints.NewImageHint())
 	marshaled, _ = json.Marshal(wait)
-	assert.Equal(t, `{"type":"msg","timeout":5,"media_hint":"image"}`, string(marshaled))
+	assert.Equal(t, `{"type":"msg","timeout":5,"hint":{"type":"image"}}`, string(marshaled))
 }
 
 func TestMsgWaitSkipIfInitial(t *testing.T) {

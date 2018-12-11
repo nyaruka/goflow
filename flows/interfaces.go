@@ -218,6 +218,10 @@ type Wait interface {
 	End(Resume, Node) error
 }
 
+type Hint interface {
+	utils.Typed
+}
+
 // Localization provide a way to get the translations for a specific language
 type Localization interface {
 	AddItemTranslation(utils.Language, utils.UUID, string, []string)

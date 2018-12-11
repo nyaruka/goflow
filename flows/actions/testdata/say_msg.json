@@ -1,0 +1,37 @@
+[
+    {
+        "description": "IVR play event if we have an audio URL",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "say_msg",
+            "audio_url": "http://uploads.temba.io/welcome.m4a",
+            "text": "Hi there @contact.name"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "audio_url": "http://uploads.temba.io/welcome.m4a",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "Hi there Ryan Lewis",
+                "type": "ivr_play"
+            }
+        ]
+    },
+    {
+        "description": "IVR say event if we don't have an audio URL",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "say_msg",
+            "audio_url": "",
+            "text": "Hi there @contact.name"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "Hi there Ryan Lewis",
+                "type": "ivr_say"
+            }
+        ]
+    }
+]

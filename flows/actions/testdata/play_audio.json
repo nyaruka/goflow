@@ -1,0 +1,52 @@
+[
+    {
+        "description": "Error event and action skipped if audio URL contains expression error",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "play_audio",
+            "audio_url": "@(1 / 0).mp3"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "error evaluating @(1 / 0): division by zero",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "Error event and action skipped if audio URL evaluates to empty",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "play_audio",
+            "audio_url": "@(\"\")"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "fatal": false,
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "text": "audio URL evaluated to empty, skipping",
+                "type": "error"
+            }
+        ]
+    },
+    {
+        "description": "IVR play event if we have an audio URL",
+        "action": {
+            "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+            "type": "play_audio",
+            "audio_url": "http://uploads.temba.io/welcome/@(contact.uuid).m4a"
+        },
+        "events": [
+            {
+                "created_on": "2018-10-18T14:20:30.000123456Z",
+                "audio_url": "http://uploads.temba.io/welcome/5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f.m4a",
+                "step_uuid": "e7187099-7d38-4f60-955c-325957214c42",
+                "type": "ivr_play"
+            }
+        ]
+    }
+]

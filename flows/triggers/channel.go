@@ -17,14 +17,23 @@ func init() {
 // TypeChannel is the type for sessions triggered by channel events
 const TypeChannel string = "channel"
 
+// ChannelEventType is the type of event that occured on the channel
+type ChannelEventType string
+
+// different channel event types
+const (
+	ChannelEventTypeNewConversation ChannelEventType = "new_conversation"
+	ChannelEventTypeIncomingCall    ChannelEventType = "incoming_call"
+)
+
 // ChannelEvent describes the specific event on the channel that triggered the session
 type ChannelEvent struct {
-	Type    string                   `json:"type" validate:"required"`
+	Type    ChannelEventType         `json:"type" validate:"required"`
 	Channel *assets.ChannelReference `json:"channel" validate:"required,dive"`
 }
 
 // NewChannelEvent creates a new channel event
-func NewChannelEvent(typeName string, channel *assets.ChannelReference) *ChannelEvent {
+func NewChannelEvent(typeName ChannelEventType, channel *assets.ChannelReference) *ChannelEvent {
 	return &ChannelEvent{Type: typeName, Channel: channel}
 }
 

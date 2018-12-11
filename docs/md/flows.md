@@ -334,6 +334,29 @@ through `extra` on the result.
 ]
 ```
 </div>
+<a name="action:play_audio"></a>
+
+## play_audio
+
+Can be used to play an audio recording in a voice flow. It will generate
+an [ivr_play](sessions.html#event:ivr_play) event.
+
+<div class="input_action"><h3>Action</h3>```json
+{
+    "type": "play_audio",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "audio_url": "http://uploads.temba.io/2353262.m4a"
+}
+```
+</div><div class="output_event"><h3>Event</h3>```json
+{
+    "type": "ivr_play",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "3388ae87-f128-45fe-8631-f6b52b12c734",
+    "audio_url": "http://uploads.temba.io/2353262.m4a"
+}
+```
+</div>
 <a name="action:remove_contact_groups"></a>
 
 ## remove_contact_groups
@@ -359,13 +382,40 @@ the contact from all non-dynamic groups.
 {
     "type": "contact_groups_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "530379ca-3fa7-4959-8ceb-17799a976525",
+    "step_uuid": "edbc66c0-53a8-4b2a-998e-ae5bd773804a",
     "groups_removed": [
         {
             "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
             "name": "Testers"
         }
     ]
+}
+```
+</div>
+<a name="action:say_msg"></a>
+
+## say_msg
+
+Can be used to communicate with the contact in a voice flow by either reading
+a message with TTS or playing a pre-recorded audio file. If there is an audio file, it takes
+priority and an [ivr_play](sessions.html#event:ivr_play) event is generated. Otherwise the text is used
+and a [ivr_say](sessions.html#event:ivr_say) event is generated.
+
+<div class="input_action"><h3>Action</h3>```json
+{
+    "type": "say_msg",
+    "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
+    "text": "Hi @contact.name, are you ready to complete today's survey?",
+    "audio_url": "http://uploads.temba.io/2353262.m4a"
+}
+```
+</div><div class="output_event"><h3>Event</h3>```json
+{
+    "type": "ivr_play",
+    "created_on": "2018-04-11T18:24:30.123456Z",
+    "step_uuid": "7dcaa995-4ad0-444b-8a34-b008aed3f772",
+    "audio_url": "http://uploads.temba.io/2353262.m4a",
+    "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
 }
 ```
 </div>
@@ -394,7 +444,7 @@ with the evaluated text.
 {
     "type": "broadcast_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "5861c68a-8201-4d77-9e14-020037f6ddea",
+    "step_uuid": "c1f115c7-bcf3-44ef-88b2-5d345629f07f",
     "translations": {
         "eng": {
             "text": "Hi Ryan Lewis, are you ready to complete today's survey?"
@@ -431,7 +481,7 @@ An [email_created](sessions.html#event:email_created) event will be created for 
 {
     "type": "email_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "06b98e9d-825f-4be0-92f0-b4a6fcc7080c",
+    "step_uuid": "c174a241-6057-41a3-874b-f17fb8365c22",
     "addresses": [
         "foo@bar.com"
     ],
@@ -461,9 +511,9 @@ A [msg_created](sessions.html#event:msg_created) event will be created with the 
 {
     "type": "msg_created",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "aa863fa2-cb90-435f-802a-9fffea2a27fa",
+    "step_uuid": "75a7bcfc-86f1-43aa-b4c4-260cfebfde0b",
     "msg": {
-        "uuid": "9a7e02cb-5b84-4117-b890-8b948fb200a6",
+        "uuid": "7bdffc44-d323-42bf-8fb7-9f7a1d1cb701",
         "urn": "tel:+12065551212?channel=57f1078f-88aa-46f4-a59a-948a5739c03d",
         "channel": {
             "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
@@ -520,7 +570,7 @@ A [contact_field_changed](sessions.html#event:contact_field_changed) event will 
 {
     "type": "contact_field_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "fbce9f1c-ddff-45f4-8d46-86b76f70a6a6",
+    "step_uuid": "e891b787-12cf-4c38-8a45-573a4a7a0d0f",
     "field": {
         "key": "gender",
         "name": "Gender"
@@ -569,7 +619,7 @@ A [contact_name_changed](sessions.html#event:contact_name_changed) event will be
 {
     "type": "contact_name_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e0e8ce1b-5368-4e92-ba1b-6cc3bea197e4",
+    "step_uuid": "dda50da0-8fc0-4f22-9c96-61ebc05df996",
     "name": "Bob Smith"
 }
 ```
@@ -593,7 +643,7 @@ A [contact_timezone_changed](sessions.html#event:contact_timezone_changed) event
 {
     "type": "contact_timezone_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "e6e30b78-f9c1-462b-9418-6d3e4ae5a100",
+    "step_uuid": "2ff14e28-184d-45df-962a-76fbcac8bf7f",
     "timezone": "Africa/Kigali"
 }
 ```
@@ -622,7 +672,7 @@ final values.
 {
     "type": "run_result_changed",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "17de0954-e818-46a3-89c9-308c16612438",
+    "step_uuid": "e485ab25-c3c6-45ee-9ad9-7b76948880e3",
     "name": "Gender",
     "value": "m",
     "category": "Male"
@@ -652,12 +702,12 @@ A [flow_triggered](sessions.html#event:flow_triggered) event will be created to 
 {
     "type": "flow_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "2e69f97c-4e50-408f-93ca-b93dc25ffd65",
+    "step_uuid": "b41974b9-a0ef-40d2-8c6f-7b85c24bcbca",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Collect Language"
     },
-    "parent_run_uuid": "936fea74-7589-4322-aac5-484f64970a84",
+    "parent_run_uuid": "03530137-9309-4b09-b1f8-3d29c913263a",
     "terminal": false
 }
 ```
@@ -689,7 +739,7 @@ will be created and it's the responsibility of the caller to act on that by init
 {
     "type": "session_triggered",
     "created_on": "2018-04-11T18:24:30.123456Z",
-    "step_uuid": "77405d28-851d-4051-a8e1-fc82b887c3ff",
+    "step_uuid": "5bc28e77-810a-4720-b1ab-eaf1963053e5",
     "flow": {
         "uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d",
         "name": "Registration"
@@ -701,7 +751,7 @@ will be created and it's the responsibility of the caller to act on that by init
         }
     ],
     "run_summary": {
-        "uuid": "77edcde6-5d7c-4ae9-b660-52c755c4d15c",
+        "uuid": "3566819d-81f2-432f-86f5-36e944bfe3ab",
         "flow": {
             "uuid": "50c3706e-fedb-42c0-8eab-dda3335714b7",
             "name": "Registration"
