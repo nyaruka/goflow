@@ -210,11 +210,6 @@ type Action struct {
 	// set language
 	Language utils.Language `json:"lang"`
 
-	// webhook
-	Action         string          `json:"action"`
-	Webhook        string          `json:"webhook"`
-	WebhookHeaders []WebhookHeader `json:"webhook_headers"`
-
 	// add lable action
 	Labels []LabelReference `json:"labels"`
 
@@ -505,26 +500,6 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 		}
 
 		return actions.NewSetContactFieldAction(a.UUID, assets.NewFieldReference(a.Field, a.Label), migratedValue), nil
-	case "api":
-		migratedURL, _ := expressions.MigrateTemplate(a.Webhook, &expressions.MigrateOptions{URLEncode: true})
-
-		headers := make(map[string]string, len(a.WebhookHeaders))
-		body := ""
-		method := strings.ToUpper(a.Action)
-		if method == "" {
-			method = "POST"
-		}
-
-		if method == "POST" {
-			headers["Content-Type"] = "application/json"
-			body = flows.DefaultWebhookPayload
-		}
-
-		for _, header := range a.WebhookHeaders {
-			headers[header.Name] = header.Value
-		}
-
-		return actions.NewCallWebhookAction(a.UUID, method, migratedURL, headers, body, ""), nil
 	default:
 		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}
