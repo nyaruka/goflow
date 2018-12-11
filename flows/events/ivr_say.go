@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeIVRPlay, func() flows.Event { return &IVRPlayEvent{} })
+	RegisterType(TypeIVRSay, func() flows.Event { return &IVRSayEvent{} })
 }
 
 // TypeIVRSay is a constant for IVR say events

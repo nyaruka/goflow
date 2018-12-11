@@ -166,6 +166,14 @@ var sessionAssets = `{
             "language": "eng",
             "type": "messaging",
             "nodes": []
+        },
+        {
+            "uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf",
+            "name": "Voice Test",
+            "spec_version": "12.0",
+            "language": "eng",
+            "type": "voice",
+            "nodes": []
         }
     ],
     "fields": [
@@ -321,6 +329,88 @@ var sessionResume = `{
     "resumed_on": "2017-12-31T11:35:10.035757258-02:00"
 }`
 
+var voiceSessionAssets = `{
+    "channels": [
+        {
+            "uuid": "57f1078f-88aa-46f4-a59a-948a5739c03d",
+            "name": "My Android Phone",
+            "address": "+12345671111",
+            "schemes": ["tel"],
+            "roles": ["send", "receive"]
+        },
+        {
+            "uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0",
+            "name": "Nexmo",
+            "address": "345642627",
+            "schemes": ["tel"],
+            "roles": ["send", "receive", "call", "answer"]
+        }
+    ],
+    "flows": [
+        {
+            "uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf",
+            "name": "Voice Test",
+            "spec_version": "12.0",
+            "language": "eng",
+            "type": "voice",
+            "nodes": [
+                {
+                    "uuid": "6da04a32-6c84-40d9-b614-3782fde7af80",
+                    "type": "set_run_result",
+                    "name": "Age",
+                    "value": "23",
+                    "category": "Youth"
+                }
+            ]
+        }
+    ],
+    "fields": [
+        {"key": "gender", "label": "Gender", "type": "text"}
+    ],
+    "groups": [
+        {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+        {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"},
+        {"uuid": "1e1ce1e1-9288-4504-869e-022d1003c72a", "name": "Customers"}
+    ]
+}`
+
+var voiceSessionTrigger = `{
+    "type": "manual",
+    "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
+    "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"},
+    "contact": {
+        "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
+        "id": 1234567,
+        "name": "Ryan Lewis",
+        "language": "eng",
+        "timezone": "America/Guayaquil",
+        "created_on": "2018-06-20T11:40:30.123456789-00:00",
+        "urns": [
+            "tel:+12065551212"
+        ],
+        "groups": [
+            {"uuid": "b7cf0d83-f1c9-411c-96fd-c511a4cfa86d", "name": "Testers"},
+            {"uuid": "4f1f98fc-27a7-4a69-bbdb-24744ba739a9", "name": "Males"}
+        ],
+        "fields": {
+            "gender": {
+                "text": "Male"
+            }
+        }
+    },
+    "environment": {
+        "date_format": "DD-MM-YYYY",
+        "default_language": "eng",
+        "allowed_languages": [
+            "eng", 
+            "spa"
+        ],
+        "redaction_policy": "none",
+        "time_format": "hh:mm",
+        "timezone": "America/Guayaquil"
+    }
+}`
+
 // CreateTestSession creates a standard example session for testing
 func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
 
@@ -329,10 +419,10 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 		return nil, nil, fmt.Errorf("error creating test session: %s", err)
 	}
 
-	// optional modify the main flow by adding the provided action to the final empty node
+	// optional modify the main flow by adding the provided action to the last node
 	if actionToAdd != nil {
 		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("50c3706e-fedb-42c0-8eab-dda3335714b7"))
-		flow.Nodes()[3].AddAction(actionToAdd)
+		flow.Nodes()[len(flow.Nodes())-1].AddAction(actionToAdd)
 	}
 
 	// read our trigger
@@ -353,6 +443,35 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	}
 
 	newEvents, err := session.Resume(resume)
+	return session, newEvents, err
+}
+
+// CreateTestVoiceSession creates a standard example session for testing voice flows and actions
+func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flows.Session, []flows.Event, error) {
+
+	session, err := CreateSession(json.RawMessage(voiceSessionAssets), testServerURL)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error creating test voice session: %s", err)
+	}
+
+	// optional modify the main flow by adding the provided action to the last node
+	if actionToAdd != nil {
+		flow, _ := session.Assets().Flows().Get(assets.FlowUUID("aa71426e-13bd-4607-a4f5-77666ff9c4bf"))
+		nodes := flow.Nodes()
+		nodes[len(nodes)-1].AddAction(actionToAdd)
+	}
+
+	// read our trigger
+	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(voiceSessionTrigger))
+	if err != nil {
+		return nil, nil, fmt.Errorf("error reading trigger: %s", err)
+	}
+
+	newEvents, err := session.Start(trigger)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error starting test voice session: %s", err)
+	}
+
 	return session, newEvents, err
 }
 

@@ -3,7 +3,7 @@
         "description": "IVR play event if we have an audio URL",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "play_msg",
+            "type": "say_msg",
             "audio_url": "http://uploads.temba.io/welcome.m4a",
             "text": "Hi there @contact.name"
         },
@@ -21,7 +21,7 @@
         "description": "IVR say event if we don't have an audio URL",
         "action": {
             "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-            "type": "play_msg",
+            "type": "say_msg",
             "audio_url": "",
             "text": "Hi there @contact.name"
         },

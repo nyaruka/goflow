@@ -10,26 +10,26 @@ import (
 )
 
 func init() {
-	RegisterType(TypePlayMsg, func() flows.Action { return &PlayMsgAction{} })
+	RegisterType(TypeSayMsg, func() flows.Action { return &SayMsgAction{} })
 }
 
-// TypePlayMsg is the type for the play recording action
-const TypePlayMsg string = "play_msg"
+// TypeSayMsg is the type for the say message action
+const TypeSayMsg string = "say_msg"
 
-// PlayMsgAction can be used to communicate with the contact in a voice flow by either reading
+// SayMsgAction can be used to communicate with the contact in a voice flow by either reading
 // a message with TTS or playing a pre-recorded audio file. If there is an audio file, it takes
 // priority and an [event:ivr_play] event is generated. Otherwise the text is used
 // and a [event:ivr_say] event is generated.
 //
 //   {
 //     "uuid": "8eebd020-1af5-431c-b943-aa670fc74da9",
-//     "type": "play_msg",
+//     "type": "say_msg",
 //     "audio_url": "http://uploads.temba.io/2353262.m4a",
 //     "text": "Hi @contact.name, are you ready to complete today's survey?"
 //   }
 //
-// @action play_msg
-type PlayMsgAction struct {
+// @action say_msg
+type SayMsgAction struct {
 	BaseAction
 	voiceAction
 
@@ -37,22 +37,22 @@ type PlayMsgAction struct {
 	AudioURL string `json:"audio_url"`
 }
 
-// NewPlayMsgAction creates a new play message action
-func NewPlayMsgAction(uuid flows.ActionUUID, audioURL string, text string) *PlayMsgAction {
-	return &PlayMsgAction{
-		BaseAction: NewBaseAction(TypePlayMsg, uuid),
+// NewSayMsgAction creates a new say message action
+func NewSayMsgAction(uuid flows.ActionUUID, audioURL string, text string) *SayMsgAction {
+	return &SayMsgAction{
+		BaseAction: NewBaseAction(TypeSayMsg, uuid),
 		Text:       text,
 		AudioURL:   audioURL,
 	}
 }
 
 // Validate validates our action is valid and has all the assets it needs
-func (a *PlayMsgAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
+func (a *SayMsgAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	return nil
 }
 
 // Execute runs this action
-func (a *PlayMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
+func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	// localize and evaluate the message text
 	localizedText := run.GetText(utils.UUID(a.UUID()), "text", a.Text)
 	evaluatedText, err := run.EvaluateTemplateAsString(localizedText)

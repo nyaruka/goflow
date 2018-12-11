@@ -124,7 +124,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	for r, rawResume := range rawResumes {
 		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
-			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
+			return runResult{}, fmt.Errorf("error marshalling output: %s", err)
 		}
 		marshalledEvents, err := marshalEventLog(newEvents)
 		if err != nil {
@@ -135,12 +135,12 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON)
 		if err != nil {
-			return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
+			return runResult{}, fmt.Errorf("error marshalling output: %s", err)
 		}
 
 		// if we aren't at a wait, that's an error
 		if session.Wait() == nil {
-			return runResult{}, fmt.Errorf("Did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
+			return runResult{}, fmt.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
 		}
 
 		resume, err := resumes.ReadResume(session, rawResume)
@@ -156,7 +156,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	sessionJSON, err := utils.JSONMarshalPretty(session)
 	if err != nil {
-		return runResult{}, fmt.Errorf("Error marshalling output: %s", err)
+		return runResult{}, fmt.Errorf("error marshalling output: %s", err)
 	}
 
 	marshalledEvents, err := marshalEventLog(newEvents)

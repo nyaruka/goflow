@@ -130,13 +130,13 @@ var actionTests = []struct {
 		}`,
 	},
 	{
-		actions.NewPlayMsgAction(
+		actions.NewSayMsgAction(
 			actionUUID,
 			"http://uploads.temba.io/2353262.m4a",
 			"Hi @contact.name, are you ready to complete today's survey?",
 		),
 		`{
-			"type": "play_msg",
+			"type": "say_msg",
 			"uuid": "ad154980-7bf7-4ab8-8728-545fd6378912",
 			"audio_url": "http://uploads.temba.io/2353262.m4a",
 			"text": "Hi @contact.name, are you ready to complete today's survey?"
