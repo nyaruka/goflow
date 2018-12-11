@@ -39,8 +39,6 @@ var _ assetFetcher = (*ServerSource)(nil)
 
 // NewServerSource creates a new server asset source
 func NewServerSource(authToken string, typeURLs map[AssetType]string, httpClient *utils.HTTPClient, cache *AssetCache) *ServerSource {
-	// TODO validate typeURLs are for registered types?
-
 	s := &ServerSource{authToken: authToken, typeURLs: typeURLs, httpClient: httpClient, cache: cache}
 	s.fetcher = s
 	return s
