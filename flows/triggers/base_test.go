@@ -104,7 +104,7 @@ func TestTriggerMarshaling(t *testing.T) {
 				env,
 				flow,
 				contact,
-				triggers.NewChannelEvent("new-conversation", channel),
+				triggers.NewChannelEvent(triggers.ChannelEventTypeNewConversation, channel),
 				types.NewEmptyXMap(),
 				triggeredOn,
 			),
@@ -128,7 +128,7 @@ func TestTriggerMarshaling(t *testing.T) {
 						"name": "Facebook",
 						"uuid": "8cd472c4-bb85-459a-8c9a-c04708af799e"
 					},
-					"type": "new-conversation"
+					"type": "new_conversation"
 				},
 				"flow": {
 					"name": "Registration",
