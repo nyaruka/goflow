@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/flows/waits/hints"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
 
@@ -76,7 +77,10 @@ var flowDef = `{
 				}
 			],
 			"wait": {
-				"type": "msg"
+				"type": "msg",
+				"hint": {
+					"type": "image"
+				}
 			},
 			"router": {
 				"cases": [
@@ -159,7 +163,7 @@ func TestNewFlow(t *testing.T) {
 						false,
 					),
 				},
-				waits.NewMsgWait(nil, ""),
+				waits.NewMsgWait(nil, hints.NewImageHint()),
 				routers.NewSwitchRouter(
 					flows.ExitUUID("8fd08f1c-8f4e-42c1-af6c-df2db2e0eda6"),
 					"@input",

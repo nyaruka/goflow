@@ -13,6 +13,7 @@ import (
 	"github.com/nyaruka/goflow/flows/definition"
 	"github.com/nyaruka/goflow/flows/routers"
 	"github.com/nyaruka/goflow/flows/waits"
+	"github.com/nyaruka/goflow/flows/waits/hints"
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
 
@@ -47,14 +48,15 @@ type Rule struct {
 }
 
 type RuleSet struct {
-	Y       int             `json:"y"`
-	X       int             `json:"x"`
-	UUID    flows.NodeUUID  `json:"uuid" validate:"required,uuid4"`
-	Type    string          `json:"ruleset_type"`
-	Label   string          `json:"label"`
-	Operand string          `json:"operand"`
-	Rules   []Rule          `json:"rules"`
-	Config  json.RawMessage `json:"config"`
+	Y           int             `json:"y"`
+	X           int             `json:"x"`
+	UUID        flows.NodeUUID  `json:"uuid" validate:"required,uuid4"`
+	Type        string          `json:"ruleset_type"`
+	Label       string          `json:"label"`
+	Operand     string          `json:"operand"`
+	Rules       []Rule          `json:"rules"`
+	Config      json.RawMessage `json:"config"`
+	FinishedKey string          `json:"finished_key"`
 }
 
 type ActionSet struct {
@@ -526,13 +528,6 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 	}
 }
 
-var waitToMediaType = map[string]waits.MediaType{
-	"wait_audio": waits.MediaTypeAudio,
-	"wait_video": waits.MediaTypeVideo,
-	"wait_photo": waits.MediaTypeImage,
-	"wait_gps":   waits.MediaTypeLocation,
-}
-
 // migrates the given legacy rulset to a node with a router
 func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localization, collapseExits bool) (flows.Node, flows.UINodeType, flows.UINodeConfig, error) {
 	var newActions []flows.Action
@@ -624,7 +619,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		router = routers.NewSwitchRouter(defaultExit, "@contact", cases, resultName)
 		uiType = UINodeTypeSplitByGroups
 
-	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps":
+	case "wait_message", "wait_audio", "wait_video", "wait_photo", "wait_gps", "wait_recording", "wait_digit", "wait_digits":
 		// look for timeout test on the legacy ruleset
 		var timeout *int
 		for _, rule := range r.Rules {
@@ -639,7 +634,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			}
 		}
 
-		wait = waits.NewMsgWait(timeout, waitToMediaType[r.Type])
+		wait = waits.NewMsgWait(timeout, migrateRuleSetToHint(r))
 		uiType = UINodeTypeWaitForResponse
 
 		fallthrough
@@ -735,6 +730,26 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 	}
 
 	return definition.NewNode(r.UUID, newActions, wait, router, exits), uiType, uiNodeConfig, nil
+}
+
+func migrateRuleSetToHint(r RuleSet) flows.Hint {
+	switch r.Type {
+	case "wait_audio":
+		return hints.NewAudioHint()
+	case "wait_video":
+		return hints.NewVideoHint()
+	case "wait_photo":
+		return hints.NewImageHint()
+	case "wait_gps":
+		return hints.NewGeoHint()
+	case "wait_recording":
+		return hints.NewAudioHint()
+	case "wait_digit":
+		return hints.NewFixedDigitsHint(1)
+	case "wait_digits":
+		return hints.NewTerminatedDigitsHint(r.FinishedKey)
+	}
+	return nil
 }
 
 // migrates a set of legacy rules to sets of cases and exits

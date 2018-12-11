@@ -259,6 +259,14 @@ func (s *Session) ToJSON() (string, error) {
 	return string(data), nil
 }
 
+type Hint struct {
+	target flows.Hint
+}
+
+func (h *Hint) Type() string {
+	return string(h.target.Type())
+}
+
 type Wait struct {
 	target flows.Wait
 }
@@ -267,10 +275,10 @@ func (w *Wait) Type() string {
 	return string(w.target.Type())
 }
 
-func (w *Wait) MediaHint() string {
+func (w *Wait) Hint() *Hint {
 	asMsgWait, isMsgWait := w.target.(*waits.MsgWait)
-	if isMsgWait {
-		return string(asMsgWait.MediaHint_)
+	if isMsgWait && asMsgWait.Hint_ != nil {
+		return &Hint{target: asMsgWait.Hint_}
 	}
-	return ""
+	return nil
 }
