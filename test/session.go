@@ -375,8 +375,12 @@ var voiceSessionAssets = `{
 }`
 
 var voiceSessionTrigger = `{
-    "type": "manual",
+    "type": "channel",
     "triggered_on": "2017-12-31T11:31:15.035757258-02:00",
+    "event": {
+        "type": "incoming_call",
+        "channel": {"uuid": "fd47a886-451b-46fb-bcb6-242a4046c0c0", "name": "Nexmo"}
+    },
     "flow": {"uuid": "aa71426e-13bd-4607-a4f5-77666ff9c4bf", "name": "Voice Test"},
     "contact": {
         "uuid": "5d76d86b-3bb9-4d5a-b822-c9d86f5d8e4f",
