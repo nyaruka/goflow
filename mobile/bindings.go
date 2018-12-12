@@ -277,8 +277,8 @@ func (w *Wait) Type() string {
 
 func (w *Wait) Hint() *Hint {
 	asMsgWait, isMsgWait := w.target.(*waits.MsgWait)
-	if isMsgWait && asMsgWait.Hint_ != nil {
-		return &Hint{target: asMsgWait.Hint_}
+	if isMsgWait && asMsgWait.Hint() != nil {
+		return &Hint{target: asMsgWait.Hint()}
 	}
 	return nil
 }

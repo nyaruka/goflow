@@ -1,14 +1,19 @@
 package waits
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+	"github.com/nyaruka/goflow/flows/waits/hints"
+	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	RegisterType(TypeMsg, func() flows.Wait { return &MsgWait{} })
+	RegisterType(TypeMsg, ReadMsgWait)
 }
 
 // TypeMsg is the type of our message wait
@@ -18,20 +23,23 @@ const TypeMsg string = "msg"
 type MsgWait struct {
 	baseWait
 
-	// Waits can indicate to the caller what type of message the flow is expecting. In the case of flows of type
-	// messaging_offline, this should be considered a requirement and the client should only reply with a message
-	// containing an attachment of that type. In the case of other flow types this should be considered only a
-	// hint to the channel, which may or may not support prompting the contact for media of that type.
-	Hint_ flows.Hint `json:"hint,omitempty"`
+	// Message waits can indicate to the caller what kind of message the flow is expecting. In the case of flows of type
+	// messaging_offline, this should be considered a requirement and the client should only reply with a message containing
+	// an attachment of that type. In the case of other flow types this should be considered only a hint to the channel,
+	// which may or may not support prompting the contact for media of that type.
+	hint flows.Hint
 }
 
 // NewMsgWait creates a new message wait
 func NewMsgWait(timeout *int, hint flows.Hint) *MsgWait {
 	return &MsgWait{
 		baseWait: newBaseWait(TypeMsg, timeout),
-		Hint_:    hint,
+		hint:     hint,
 	}
 }
+
+// Hint returns the hint (optional)
+func (w *MsgWait) Hint() flows.Hint { return w.hint }
 
 // Begin beings waiting at this wait
 func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) bool {
@@ -46,7 +54,7 @@ func (w *MsgWait) Begin(run flows.FlowRun, step flows.Step) bool {
 		return false
 	}
 
-	run.LogEvent(step, events.NewMsgWait(w.TimeoutOn_))
+	run.LogEvent(step, events.NewMsgWait(w.timeoutOn))
 	return true
 }
 
@@ -61,3 +69,50 @@ func (w *MsgWait) End(resume flows.Resume, node flows.Node) error {
 }
 
 var _ flows.Wait = (*MsgWait)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+type msgWaitEnvelope struct {
+	baseWaitEnvelope
+
+	Hint json.RawMessage `json:"hint,omitempty"`
+}
+
+// ReadMsgWait reads a message wait
+func ReadMsgWait(data json.RawMessage) (flows.Wait, error) {
+	e := &msgWaitEnvelope{}
+	if err := utils.UnmarshalAndValidate(data, e); err != nil {
+		return nil, err
+	}
+
+	w := &MsgWait{}
+
+	var err error
+	if e.Hint != nil {
+		if w.hint, err = hints.ReadHint(e.Hint); err != nil {
+			return nil, fmt.Errorf("unable to read hint: %s", err)
+		}
+	}
+
+	return w, w.unmarshal(&e.baseWaitEnvelope)
+}
+
+// MarshalJSON marshals this wait into JSON
+func (w *MsgWait) MarshalJSON() ([]byte, error) {
+	e := &msgWaitEnvelope{}
+
+	if err := w.marshal(&e.baseWaitEnvelope); err != nil {
+		return nil, err
+	}
+
+	var err error
+	if w.hint != nil {
+		if e.Hint, err = json.Marshal(w.hint); err != nil {
+			return nil, err
+		}
+	}
+
+	return json.Marshal(e)
+}
