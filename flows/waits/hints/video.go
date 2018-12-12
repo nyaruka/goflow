@@ -9,7 +9,7 @@ func init() {
 }
 
 // TypeVideo is the type of our video hint
-const TypeVideo string = "Video"
+const TypeVideo string = "video"
 
 // VideoHint requests a message with an video attachment
 type VideoHint struct {

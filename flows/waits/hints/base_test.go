@@ -28,7 +28,37 @@ func TestReadHint(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, `{"type":"image"}`, string(data))
 
-	// read image hint
+	// read video hint
+	hint, err = hints.ReadHint([]byte(`{"type": "video"}`))
+	assert.NoError(t, err)
+	assert.Equal(t, "video", hint.Type())
+
+	// marshal back to JSON
+	data, err = json.Marshal(hint)
+	assert.NoError(t, err)
+	assert.Equal(t, `{"type":"video"}`, string(data))
+
+	// read audio hint
+	hint, err = hints.ReadHint([]byte(`{"type": "audio"}`))
+	assert.NoError(t, err)
+	assert.Equal(t, "audio", hint.Type())
+
+	// marshal back to JSON
+	data, err = json.Marshal(hint)
+	assert.NoError(t, err)
+	assert.Equal(t, `{"type":"audio"}`, string(data))
+
+	// read location hint
+	hint, err = hints.ReadHint([]byte(`{"type": "location"}`))
+	assert.NoError(t, err)
+	assert.Equal(t, "location", hint.Type())
+
+	// marshal back to JSON
+	data, err = json.Marshal(hint)
+	assert.NoError(t, err)
+	assert.Equal(t, `{"type":"location"}`, string(data))
+
+	// read digits hint
 	hint, err = hints.ReadHint([]byte(`{"type": "digits", "count": 1}`))
 	assert.NoError(t, err)
 	assert.Equal(t, "digits", hint.Type())
