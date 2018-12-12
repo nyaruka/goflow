@@ -741,7 +741,7 @@ func migrateRuleSetToHint(r RuleSet) flows.Hint {
 	case "wait_photo":
 		return hints.NewImageHint()
 	case "wait_gps":
-		return hints.NewGeoHint()
+		return hints.NewLocationHint()
 	case "wait_recording":
 		return hints.NewAudioHint()
 	case "wait_digit":
