@@ -14,17 +14,17 @@ import (
 var TestHTTPClient = utils.NewHTTPClient("goflow-testing")
 
 // NewTestHTTPServer sets up a mock server for webhook actions
-func NewTestHTTPServer(port int) (*httptest.Server, error) {
+func NewTestHTTPServer(port int) *httptest.Server {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(testHTTPHandler))
 
 	// manually create a listener for our test server so that our output is predictable
 	l, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
-		return nil, err
+		panic(err.Error())
 	}
 	server.Listener = l
 	server.Start()
-	return server, nil
+	return server
 }
 
 func testHTTPHandler(w http.ResponseWriter, r *http.Request) {

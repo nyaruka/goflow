@@ -46,10 +46,7 @@ type renderFunc func(output *strings.Builder, item *documentedItem, session flow
 
 // builds the documentation generation context from the given documented items
 func buildDocsContext(items map[string][]*documentedItem) (map[string]string, error) {
-	server, err := test.NewTestHTTPServer(49998)
-	if err != nil {
-		return nil, fmt.Errorf("error starting mock HTTP server: %s", err)
-	}
+	server := test.NewTestHTTPServer(49998)
 	defer server.Close()
 
 	defer utils.SetRand(utils.DefaultRand)

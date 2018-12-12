@@ -386,7 +386,7 @@ func (ts *ServerTestSuite) SetupSuite() {
 	// wait for server to come up
 	time.Sleep(100 * time.Millisecond)
 
-	ts.httpServer, _ = test.NewTestHTTPServer(49993)
+	ts.httpServer = test.NewTestHTTPServer(49993)
 }
 
 func (ts *ServerTestSuite) TearDownSuite() {

@@ -170,9 +170,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 }
 
 func TestFlows(t *testing.T) {
-	server, err := NewTestHTTPServer(49999)
-	require.NoError(t, err)
-
+	server := NewTestHTTPServer(49999)
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)

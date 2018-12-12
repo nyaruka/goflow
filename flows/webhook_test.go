@@ -27,8 +27,7 @@ type webhook struct {
 }
 
 func TestWebhookParsing(t *testing.T) {
-	server, err := test.NewTestHTTPServer(49994)
-	require.NoError(t, err)
+	server := test.NewTestHTTPServer(49994)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, nil)
