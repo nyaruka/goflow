@@ -2,7 +2,6 @@ package transferto
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/extensions/transferto/client"
@@ -11,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -59,14 +59,14 @@ func (a *TransferAirtimeAction) AllowedFlowTypes() []flows.FlowType {
 func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step) error {
 	contact := run.Contact()
 	if contact == nil {
-		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("can't execute action in session without a contact")))
+		run.LogEvent(step, events.NewErrorEvent(errors.Errorf("can't execute action in session without a contact")))
 		return nil
 	}
 
 	// check that our contact has a tel URN
 	telURNs := contact.URNs().WithScheme(urns.TelScheme)
 	if len(telURNs) == 0 {
-		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("can't transfer airtime to contact without a tel URN")))
+		run.LogEvent(step, events.NewErrorEvent(errors.Errorf("can't transfer airtime to contact without a tel URN")))
 		return nil
 	}
 	recipient := telURNs[0].URN().Path()
@@ -74,13 +74,13 @@ func (a *TransferAirtimeAction) Execute(run flows.FlowRun, step flows.Step) erro
 	// log error and return if we don't have a configuration
 	rawConfig := run.Session().Environment().Extension("transferto")
 	if rawConfig == nil {
-		run.LogEvent(step, events.NewErrorEvent(fmt.Errorf("missing transferto configuration")))
+		run.LogEvent(step, events.NewErrorEvent(errors.Errorf("missing transferto configuration")))
 		return nil
 	}
 
 	config := &transferToConfig{}
 	if err := json.Unmarshal(rawConfig, config); err != nil {
-		return fmt.Errorf("unable to read config: %s", err)
+		return errors.Wrap(err, "unable to read config")
 	}
 
 	transfer, err := attemptTransfer(contact.PreferredChannel(), config, a.Amounts, recipient, run.Session().HTTPClient())
@@ -143,14 +143,14 @@ func attemptTransfer(channel *flows.Channel, config *transferToConfig, amounts m
 	// look up the amount to send in this currency
 	amount, hasAmount := amounts[t.currency]
 	if !hasAmount {
-		return t, fmt.Errorf("no amount configured for transfers in %s", t.currency)
+		return t, errors.Errorf("no amount configured for transfers in %s", t.currency)
 	}
 	t.desiredAmount = amount
 
 	if info.OpenRange {
 		// TODO add support for open-range topups once we can find numbers to test this with
 		// see https://shop.transferto.com/shop/v3/doc/TransferTo_API_OR.pdf
-		return t, fmt.Errorf("transferto account is configured for open-range which is not yet supported")
+		return t, errors.Errorf("transferto account is configured for open-range which is not yet supported")
 	}
 
 	// find the product closest to our desired amount

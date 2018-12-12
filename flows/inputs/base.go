@@ -2,7 +2,6 @@ package inputs
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
@@ -10,6 +9,8 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type readFunc func(session flows.Session, data json.RawMessage) (flows.Input, error)
@@ -80,7 +81,7 @@ func ReadInput(session flows.Session, data json.RawMessage) (flows.Input, error)
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: '%s'", typeName)
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(session, data)
 }

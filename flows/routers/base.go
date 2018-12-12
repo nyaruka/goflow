@@ -2,10 +2,11 @@ package routers
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 var registeredTypes = map[string](func() flows.Router){}
@@ -46,7 +47,7 @@ func ReadRouter(data json.RawMessage) (flows.Router, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: '%s'", typeName)
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 
 	router := f()

@@ -1,7 +1,6 @@
 package runs
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -9,6 +8,8 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type runEnvironment struct {
@@ -51,7 +52,7 @@ func (e *runEnvironment) FindLocations(name string, level utils.LocationLevel, p
 		return nil, err
 	}
 	if locations == nil {
-		return nil, fmt.Errorf("can't find locations in environment which is not location enabled")
+		return nil, errors.Errorf("can't find locations in environment which is not location enabled")
 	}
 
 	return locations.FindByName(name, level, parent), nil
@@ -100,7 +101,7 @@ func (e *runEnvironment) LookupLocation(path flows.LocationPath) (*utils.Locatio
 		return nil, err
 	}
 	if locations == nil {
-		return nil, fmt.Errorf("can't lookup locations in environment which is not location enabled")
+		return nil, errors.Errorf("can't lookup locations in environment which is not location enabled")
 	}
 
 	return locations.FindByPath(path.String()), nil

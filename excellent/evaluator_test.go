@@ -1,12 +1,12 @@
 package excellent
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -224,7 +224,7 @@ func TestEvaluateTemplateAsString(t *testing.T) {
 		"words":   types.NewXText("one two three"),
 		"array":   types.NewXArray(types.NewXText("one"), types.NewXText("two"), types.NewXText("three")),
 		"thing":   NewTestXObject("hello", 123),
-		"err":     types.NewXError(fmt.Errorf("an error")),
+		"err":     types.NewXError(errors.Errorf("an error")),
 	})
 
 	evaluateAsStringTests := []struct {

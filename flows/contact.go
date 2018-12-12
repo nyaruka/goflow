@@ -2,7 +2,6 @@ package flows
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +11,8 @@ import (
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 // Contact represents a person who is interacting with the flow. It renders as the person's name
@@ -457,7 +458,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 	var err error
 
 	if err := utils.UnmarshalAndValidate(data, &envelope); err != nil {
-		return nil, fmt.Errorf("unable to read contact: %s", err)
+		return nil, errors.Wrap(err, "unable to read contact")
 	}
 
 	c := &Contact{
@@ -478,7 +479,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 		c.urns = make(URNList, 0)
 	} else {
 		if c.urns, err = ReadURNList(assets, envelope.URNs); err != nil {
-			return nil, fmt.Errorf("error reading urns: %s", err)
+			return nil, errors.Wrap(err, "error reading urns")
 		}
 	}
 
@@ -489,7 +490,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 		for g := range envelope.Groups {
 			group, err := assets.Groups().Get(envelope.Groups[g].UUID)
 			if err != nil && strict {
-				return nil, fmt.Errorf("error reading groups: %s", err)
+				return nil, errors.Wrap(err, "error reading groups")
 			}
 			groups = append(groups, group)
 		}
@@ -497,7 +498,7 @@ func ReadContact(assets SessionAssets, data json.RawMessage, strict bool) (*Cont
 	}
 
 	if c.fields, err = NewFieldValues(assets, envelope.Fields, strict); err != nil {
-		return nil, fmt.Errorf("error reading fields: %s", err)
+		return nil, errors.Wrap(err, "error reading fields")
 	}
 
 	return c, nil

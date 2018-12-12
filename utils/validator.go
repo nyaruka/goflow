@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
@@ -109,7 +110,7 @@ func Validate(obj interface{}) error {
 			problem = fmt.Sprintf("failed tag '%s'", fieldErr.Tag())
 		}
 
-		newErrors[v] = fmt.Errorf("field '%s' %s", location, problem)
+		newErrors[v] = errors.Errorf("field '%s' %s", location, problem)
 	}
 	return ValidationErrors(newErrors)
 }

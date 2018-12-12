@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -58,7 +59,7 @@ func (a *PlayAudioAction) Execute(run flows.FlowRun, step flows.Step) error {
 
 	evaluatedAudioURL = strings.TrimSpace(evaluatedAudioURL)
 	if evaluatedAudioURL == "" {
-		a.logError(run, step, fmt.Errorf("audio URL evaluated to empty, skipping"))
+		a.logError(run, step, errors.Errorf("audio URL evaluated to empty, skipping"))
 		return nil
 	}
 

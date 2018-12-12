@@ -18,6 +18,8 @@ import (
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 var contactJSON = `{
@@ -83,7 +85,7 @@ func RunFlow(assetsPath string, flowUUID assets.FlowUUID, initialMsg string, con
 
 	assets, err := engine.NewSessionAssets(source)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing assets: %s", err)
+		return nil, errors.Wrap(err, "error parsing assets")
 	}
 
 	httpClient := utils.NewHTTPClient("goflow-flowrunner")

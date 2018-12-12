@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -54,7 +55,7 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 	// only generate event if run has a contact
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
+		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -67,14 +68,14 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 
 	evaluatedPath = strings.TrimSpace(evaluatedPath)
 	if evaluatedPath == "" {
-		a.logError(run, step, fmt.Errorf("can't add URN with empty path"))
+		a.logError(run, step, errors.Errorf("can't add URN with empty path"))
 		return nil
 	}
 
 	// if we don't have a valid URN, log error
 	urn, err := urns.NewURNFromParts(a.Scheme, evaluatedPath, "", "")
 	if err != nil {
-		a.logError(run, step, fmt.Errorf("unable to add URN '%s:%s': %s", a.Scheme, evaluatedPath, err.Error()))
+		a.logError(run, step, errors.Wrapf(err, "unable to add URN '%s:%s'", a.Scheme, evaluatedPath))
 		return nil
 	}
 

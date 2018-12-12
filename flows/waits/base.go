@@ -2,12 +2,13 @@ package waits
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type readFunc func(data json.RawMessage) (flows.Wait, error)
@@ -58,13 +59,13 @@ func (w *baseWait) End(resume flows.Resume, node flows.Node) error {
 		return nil
 	case resumes.TypeWaitTimeout:
 		if node.Wait().Timeout() == nil {
-			return fmt.Errorf("can't end with timeout as node no longer has a wait timeout")
+			return errors.Errorf("can't end with timeout as node no longer has a wait timeout")
 		}
 		if w.Timeout() == nil || w.TimeoutOn() == nil {
-			return fmt.Errorf("can't end with timeout as session wait has no timeout")
+			return errors.Errorf("can't end with timeout as session wait has no timeout")
 		}
 		if utils.Now().Before(*w.TimeoutOn()) {
-			return fmt.Errorf("can't end with timeout before wait has timed out")
+			return errors.Errorf("can't end with timeout before wait has timed out")
 		}
 	}
 	return nil
@@ -89,7 +90,7 @@ func ReadWait(data json.RawMessage) (flows.Wait, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: '%s'", typeName)
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(data)
 }

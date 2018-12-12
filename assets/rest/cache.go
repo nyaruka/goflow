@@ -2,7 +2,6 @@ package rest
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -10,6 +9,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/karlseguin/ccache"
+	"github.com/pkg/errors"
 )
 
 // AssetType is the unique slug for an asset type
@@ -90,12 +90,12 @@ func (c *AssetCache) getAsset(url string, fetcher assetFetcher, itemType AssetTy
 	// actually fetch the asset from it's URL
 	data, err := fetcher.fetchAsset(url, itemType)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching asset %s: %s", url, err)
+		return nil, errors.Wrapf(err, "error fetching asset %s", url)
 	}
 
 	cfg := typeConfigs[itemType]
 	if cfg == nil {
-		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
+		return nil, errors.Errorf("unsupported asset type: %s", itemType)
 	}
 
 	a, err := c.readAsset(data, itemType, true)
@@ -127,14 +127,14 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 	envelopes := make([]assetEnvelope, len(raw))
 	for e := range raw {
 		if err := utils.UnmarshalAndValidate(raw[e], &envelopes[e]); err != nil {
-			return fmt.Errorf("unable to read asset: %s", err)
+			return errors.Wrap(err, "unable to read asset")
 		}
 	}
 
 	for _, envelope := range envelopes {
 		asset, err := c.readAsset(envelope.Content, envelope.ItemType, false)
 		if err != nil {
-			return fmt.Errorf("unable to read asset[url=%s]: %s", envelope.URL, err)
+			return errors.Wrapf(err, "unable to read asset[url=%s]", envelope.URL)
 		}
 		c.addAsset(envelope.URL, asset)
 	}
@@ -146,7 +146,7 @@ func (c *AssetCache) Include(data json.RawMessage) error {
 func (c *AssetCache) readAsset(data json.RawMessage, itemType AssetType, fromRequest bool) (interface{}, error) {
 	cfg := typeConfigs[itemType]
 	if cfg == nil {
-		return nil, fmt.Errorf("unsupported asset type: %s", itemType)
+		return nil, errors.Errorf("unsupported asset type: %s", itemType)
 	}
 
 	if cfg.manageAsSet && fromRequest {
@@ -154,7 +154,7 @@ func (c *AssetCache) readAsset(data json.RawMessage, itemType AssetType, fromReq
 			Results json.RawMessage `json:"results"`
 		}{}
 		if err := json.Unmarshal(data, listResponse); err != nil {
-			return nil, fmt.Errorf("expected result set")
+			return nil, errors.Errorf("expected result set")
 		}
 		data = listResponse.Results
 	}

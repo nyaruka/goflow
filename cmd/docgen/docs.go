@@ -14,6 +14,8 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/test"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 var tagLineRegex = regexp.MustCompile(`@\w+\s+(?P<value>\w+)(?P<extra>.+)?`)
@@ -59,7 +61,7 @@ func buildDocsContext(items map[string][]*documentedItem) (map[string]string, er
 
 	session, _, err := test.CreateTestSession(server.URL, nil)
 	if err != nil {
-		return nil, fmt.Errorf("error creating example session: %s", err)
+		return nil, errors.Wrap(err, "error creating example session")
 	}
 
 	context := make(map[string]string, len(docSets))
@@ -84,7 +86,7 @@ func buildDocSet(tag string, tagItems []*documentedItem, renderer renderFunc, se
 
 	for _, item := range tagItems {
 		if err := renderer(buffer, item, session); err != nil {
-			return "", fmt.Errorf("error rendering %s:%s: %s", item.tagName, item.tagValue, err)
+			return "", errors.Wrapf(err, "error rendering %s:%s", item.tagName, item.tagValue)
 		}
 	}
 

@@ -1,11 +1,11 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -55,7 +55,7 @@ func (a *AddInputLabelsAction) Execute(run flows.FlowRun, step flows.Step) error
 	// log error if we don't have any input that could be labeled
 	input := run.Session().Input()
 	if input == nil {
-		a.logError(run, step, fmt.Errorf("can't execute action in session without input"))
+		a.logError(run, step, errors.Errorf("can't execute action in session without input"))
 		return nil
 	}
 

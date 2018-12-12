@@ -2,13 +2,14 @@ package resumes
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type readFunc func(session flows.Session, data json.RawMessage) (flows.Resume, error)
@@ -84,7 +85,7 @@ func ReadResume(session flows.Session, data json.RawMessage) (flows.Resume, erro
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: '%s'", typeName)
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(session, data)
 }
@@ -97,12 +98,12 @@ func (r *baseResume) unmarshal(session flows.Session, e *baseResumeEnvelope) err
 
 	if e.Environment != nil {
 		if r.environment, err = utils.ReadEnvironment(e.Environment); err != nil {
-			return fmt.Errorf("unable to read environment: %s", err)
+			return errors.Wrap(err, "unable to read environment")
 		}
 	}
 	if e.Contact != nil {
 		if r.contact, err = flows.ReadContact(session.Assets(), e.Contact, true); err != nil {
-			return fmt.Errorf("unable to read contact: %s", err)
+			return errors.Wrap(err, "unable to read contact")
 		}
 	}
 	return nil

@@ -2,12 +2,12 @@ package utils
 
 import (
 	"bytes"
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
@@ -82,7 +82,7 @@ func dateFromFormats(env Environment, currentYear int, pattern *regexp.Regexp, d
 		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, env.Timezone()), nil
 	}
 
-	return ZeroTime, fmt.Errorf("No date found in string: %s", str)
+	return ZeroTime, errors.Errorf("No date found in string: %s", str)
 }
 
 // DaysBetween returns the number of calendar days (an int) between the two dates. Note
@@ -157,7 +157,7 @@ func DateFromString(env Environment, str string, fillTime bool) (time.Time, erro
 		parsed, err = dateFromFormats(env, currentYear, patternMonthDayYear, 2, 1, 3, str)
 
 	default:
-		err = fmt.Errorf("unknown date format: %s", env.DateFormat())
+		err = errors.Errorf("unknown date format: %s", env.DateFormat())
 	}
 
 	// couldn't find a date? bail
@@ -302,7 +302,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("2006")
 					i += 3
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'Y' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'Y' format: %d", count)
 				}
 				continue
 
@@ -313,7 +313,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("01")
 					i++
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'M' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'M' format: %d", count)
 				}
 				continue
 
@@ -341,7 +341,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("000")
 					i += 2
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'f' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'f' format: %d", count)
 				}
 				continue
 
@@ -359,7 +359,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("15")
 					i++
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 't' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 't' format: %d", count)
 				}
 				continue
 
@@ -370,7 +370,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("04")
 					i++
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'm' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'm' format: %d", count)
 				}
 				continue
 
@@ -381,7 +381,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("05")
 					i++
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 's' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 's' format: %d", count)
 				}
 				continue
 
@@ -390,7 +390,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("pm")
 					i++
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'a' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'a' format: %d", count)
 				}
 				continue
 
@@ -399,7 +399,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("PM")
 					i++
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'A' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'A' format: %d", count)
 				}
 				continue
 
@@ -410,7 +410,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 					goFormat.WriteString("-07:00")
 					i += 2
 				} else {
-					return "", fmt.Errorf("invalid date format, invalid count of 'Z' format: %d", count)
+					return "", errors.Errorf("invalid date format, invalid count of 'Z' format: %d", count)
 				}
 				continue
 			}
@@ -419,7 +419,7 @@ func ToGoDateFormat(format string, mode FormattingMode) (string, error) {
 		if ignoredFormattingRunes[r] {
 			goFormat.WriteRune(r)
 		} else {
-			return "", fmt.Errorf("invalid date format, unknown format char: %c", r)
+			return "", errors.Errorf("invalid date format, unknown format char: %c", r)
 		}
 	}
 

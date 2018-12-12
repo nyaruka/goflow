@@ -2,7 +2,6 @@ package triggers
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
@@ -11,6 +10,8 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type readFunc func(sessionAssets flows.SessionAssets, data json.RawMessage) (flows.Trigger, error)
@@ -49,12 +50,12 @@ func (t *baseTrigger) Initialize(session flows.Session) error {
 	// try to load the flow
 	flow, err := session.Assets().Flows().Get(t.Flow().UUID)
 	if err != nil {
-		return fmt.Errorf("unable to load flow[uuid=%s]: %s", t.Flow().UUID, err)
+		return errors.Wrapf(err, "unable to load flow[uuid=%s]", t.Flow().UUID)
 	}
 
 	// check flow is valid and has everything it needs to run
 	if err := flow.Validate(session.Assets(), flows.NewValidationContext()); err != nil {
-		return fmt.Errorf("validation failed for flow[uuid=%s]: %s", flow.UUID(), err)
+		return errors.Wrapf(err, "validation failed for flow[uuid=%s]", flow.UUID())
 	}
 
 	session.PushFlow(flow, nil, false)
@@ -139,7 +140,7 @@ func ReadTrigger(sessionAssets flows.SessionAssets, data json.RawMessage) (flows
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: '%s'", typeName)
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 	return f(sessionAssets, data)
 }
@@ -153,12 +154,12 @@ func (t *baseTrigger) unmarshal(sessionAssets flows.SessionAssets, e *baseTrigge
 
 	if e.Environment != nil {
 		if t.environment, err = utils.ReadEnvironment(e.Environment); err != nil {
-			return fmt.Errorf("unable to read environment: %s", err)
+			return errors.Wrap(err, "unable to read environment")
 		}
 	}
 	if e.Contact != nil {
 		if t.contact, err = flows.ReadContact(sessionAssets, e.Contact, true); err != nil {
-			return fmt.Errorf("unable to read contact: %s", err)
+			return errors.Wrap(err, "unable to read contact")
 		}
 	}
 	if e.Params != nil {

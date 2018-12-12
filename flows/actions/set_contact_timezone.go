@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -50,7 +51,7 @@ func (a *SetContactTimezoneAction) Validate(assets flows.SessionAssets, context 
 // Execute runs this action
 func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if run.Contact() == nil {
-		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
+		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -68,7 +69,7 @@ func (a *SetContactTimezoneAction) Execute(run flows.FlowRun, step flows.Step) e
 	if timezone != "" {
 		tz, err = time.LoadLocation(timezone)
 		if err != nil {
-			a.logError(run, step, fmt.Errorf("unrecognized timezone: '%s'", timezone))
+			a.logError(run, step, errors.Errorf("unrecognized timezone: '%s'", timezone))
 			return nil
 		}
 	}

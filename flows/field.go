@@ -1,12 +1,13 @@
 package flows
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 // Field represents a contact field
@@ -141,7 +142,7 @@ func NewFieldValues(a SessionAssets, values map[string]*Value, strict bool) (Fie
 		value := values[field.Key()]
 		if value != nil {
 			if value.Text.Empty() {
-				return nil, fmt.Errorf("field values can't be empty")
+				return nil, errors.Errorf("field values can't be empty")
 			}
 			fieldValues[field.Key()] = NewFieldValue(field, value)
 		} else {
@@ -153,7 +154,7 @@ func NewFieldValues(a SessionAssets, values map[string]*Value, strict bool) (Fie
 		for key := range values {
 			_, valid := fieldValues[key]
 			if !valid {
-				return nil, fmt.Errorf("invalid field key: %s", key)
+				return nil, errors.Errorf("invalid field key: %s", key)
 			}
 		}
 	}
@@ -350,7 +351,7 @@ func NewFieldAssets(fields []assets.Field) *FieldAssets {
 func (s *FieldAssets) Get(key string) (*Field, error) {
 	field, found := s.byKey[key]
 	if !found {
-		return nil, fmt.Errorf("no such field with key '%s'", key)
+		return nil, errors.Errorf("no such field with key '%s'", key)
 	}
 	return field, nil
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/buger/jsonparser"
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -124,7 +125,7 @@ func jsonTypeToXValue(data []byte, valType jsonparser.ValueType) XValue {
 		return NewXJSONObject(data)
 	}
 
-	return NewXError(fmt.Errorf("unknown JSON parsing error"))
+	return NewXError(errors.Errorf("unknown JSON parsing error"))
 }
 
 // ToXJSON converts the given value to a JSON string

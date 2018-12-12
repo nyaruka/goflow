@@ -1,11 +1,11 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -53,7 +53,7 @@ func (a *AddContactGroupsAction) Validate(assets flows.SessionAssets, context *f
 func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
+		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -71,7 +71,7 @@ func (a *AddContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) err
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			a.logError(run, step, fmt.Errorf("can't manually add contact to dynamic group '%s'", group.Name()))
+			a.logError(run, step, errors.Errorf("can't manually add contact to dynamic group '%s'", group.Name()))
 			continue
 		}
 

@@ -1,11 +1,11 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -49,7 +49,7 @@ func NewRemoveContactGroupsAction(uuid flows.ActionUUID, groups []*assets.GroupR
 // Validate validates our action is valid and has all the assets it needs
 func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	if a.AllGroups && len(a.Groups) > 0 {
-		return fmt.Errorf("can't specify specific groups when all_groups=true")
+		return errors.Errorf("can't specify specific groups when all_groups=true")
 	}
 
 	// check we have all specified groups
@@ -60,7 +60,7 @@ func (a *RemoveContactGroupsAction) Validate(assets flows.SessionAssets, context
 func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) error {
 	contact := run.Contact()
 	if contact == nil {
-		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
+		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
 
@@ -88,7 +88,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) 
 
 		// error if group is dynamic
 		if group.IsDynamic() {
-			a.logError(run, step, fmt.Errorf("can't manually remove contact from dynamic group '%s'", group.Name()))
+			a.logError(run, step, errors.Errorf("can't manually remove contact from dynamic group '%s'", group.Name()))
 			continue
 		}
 

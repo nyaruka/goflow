@@ -2,9 +2,9 @@ package legacy
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/utils"
+	"github.com/pkg/errors"
 )
 
 // Translations is an inline translation map used for localization
@@ -58,7 +58,7 @@ func (s *StringOrNumber) UnmarshalJSON(data []byte) error {
 		// data is JSON number
 		*s = StringOrNumber(data)
 	} else {
-		return fmt.Errorf("expected string or number, not %s", string(c))
+		return errors.Errorf("expected string or number, not %s", string(c))
 	}
 	return nil
 }
