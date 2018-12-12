@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -37,7 +38,7 @@ type Condition struct {
 // Evaluate evaluates this condition against the queryable contact
 func (c *Condition) Evaluate(env utils.Environment, queryable Queryable) (bool, error) {
 	if c.key == ImplicitKey {
-		return false, fmt.Errorf("dynamic group queries can't contain implicit conditions")
+		return false, errors.Errorf("dynamic group queries can't contain implicit conditions")
 	}
 
 	// contacts can return multiple values per key, e.g. multiple phone numbers in a "tel = x" condition
@@ -91,7 +92,7 @@ func (c *Condition) evaluateValue(env utils.Environment, val interface{}) (bool,
 		return dateComparison(val.(time.Time), c.comparator, asDate)
 
 	default:
-		return false, fmt.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
+		return false, errors.Errorf("unsupported query data type %+v", reflect.TypeOf(val))
 	}
 }
 
@@ -202,7 +203,7 @@ func (l *errorListener) HasErrors() bool {
 }
 
 func (l *errorListener) Error() error {
-	return fmt.Errorf(strings.Join(l.messages, "\n"))
+	return errors.Errorf(strings.Join(l.messages, "\n"))
 }
 
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {

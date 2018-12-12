@@ -2,10 +2,11 @@ package definition
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type exit struct {
@@ -34,7 +35,7 @@ func (e *exit) UnmarshalJSON(data []byte) error {
 	envelope := &exitEnvelope{}
 	err := utils.UnmarshalAndValidate(data, envelope)
 	if err != nil {
-		return fmt.Errorf("unable to read exit: %s", err)
+		return errors.Wrap(err, "unable to read exit")
 	}
 
 	e.uuid = envelope.UUID

@@ -1,13 +1,13 @@
 package types_test
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -243,7 +243,7 @@ func TestXValueRequiredConversions(t *testing.T) {
 			asBool:         true,
 			isEmpty:        false,
 		}, {
-			value:          types.NewXError(fmt.Errorf("it failed")), // once an error, always an error
+			value:          types.NewXError(errors.Errorf("it failed")), // once an error, always an error
 			asInternalJSON: "",
 			asJSON:         "",
 			asText:         "",
@@ -274,8 +274,8 @@ func TestEquals(t *testing.T) {
 	}{
 		{nil, nil, true},
 		{nil, types.NewXText(""), false},
-		{types.NewXError(fmt.Errorf("Error")), types.NewXError(fmt.Errorf("Error")), true},
-		{types.NewXError(fmt.Errorf("Error")), types.XDateTimeZero, false},
+		{types.NewXError(errors.Errorf("Error")), types.NewXError(errors.Errorf("Error")), true},
+		{types.NewXError(errors.Errorf("Error")), types.XDateTimeZero, false},
 		{types.NewXText("bob"), types.NewXText("bob"), true},
 		{types.NewXText("bob"), types.NewXText("abc"), false},
 		{types.XBooleanFalse, types.XBooleanFalse, true},

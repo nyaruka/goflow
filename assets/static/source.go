@@ -3,12 +3,13 @@ package static
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/assets/static/types"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 // StaticSource is an asset source which loads assets from a static JSON file
@@ -28,7 +29,7 @@ type StaticSource struct {
 func NewStaticSource(data json.RawMessage) (*StaticSource, error) {
 	s := &StaticSource{}
 	if err := utils.UnmarshalAndValidate(data, &s.s); err != nil {
-		return nil, fmt.Errorf("unable to read assets: %s", err)
+		return nil, errors.Wrap(err, "unable to read assets")
 	}
 	return s, nil
 }
@@ -37,7 +38,7 @@ func NewStaticSource(data json.RawMessage) (*StaticSource, error) {
 func LoadStaticSource(path string) (*StaticSource, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file '%s': %s", path, err)
+		return nil, errors.Wrapf(err, "error reading file '%s'", path)
 	}
 	return NewStaticSource(data)
 }
@@ -69,7 +70,7 @@ func (s *StaticSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
 			return flow, nil
 		}
 	}
-	return nil, fmt.Errorf("no such flow with UUID '%s'", uuid)
+	return nil, errors.Errorf("no such flow with UUID '%s'", uuid)
 }
 
 // Groups returns all group assets

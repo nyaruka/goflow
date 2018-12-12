@@ -15,6 +15,8 @@ import (
 	"text/template"
 
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -51,13 +53,13 @@ func GenerateDocs(baseDir string, outputDir string) error {
 	// extract all documented items from the source
 	items, err := findAllDocumentedItems(baseDir)
 	if err != nil {
-		return fmt.Errorf("error extracting documented items: %s", err)
+		return errors.Wrap(err, "error extracting documented items")
 	}
 
 	fmt.Println("Rendering templates...")
 
 	if err := renderDocs(baseDir, outputDir, items); err != nil {
-		return fmt.Errorf("error rendering templates: %s", err)
+		return errors.Wrap(err, "error rendering templates")
 	}
 
 	fmt.Println("Copying static resources...")
@@ -67,7 +69,7 @@ func GenerateDocs(baseDir string, outputDir string) error {
 		src := path.Join(baseDir, templateDir, res)
 		dst := path.Join(outputDir, res)
 		if err := copyFile(src, dst); err != nil {
-			return fmt.Errorf("error copying resource: %s", err)
+			return errors.Wrap(err, "error copying resource")
 		}
 		fmt.Printf(" > Copied %s > %s\n", src, dst)
 	}
@@ -81,7 +83,7 @@ func renderDocs(baseDir string, outputDir string, items map[string][]*documented
 	// render items as context for the main doc templates
 	context, err := buildDocsContext(items)
 	if err != nil {
-		return fmt.Errorf("error building docs context: %s", err)
+		return errors.Wrap(err, "error building docs context")
 	}
 
 	// to post-process templates to resolve links between templates
@@ -101,14 +103,14 @@ func renderDocs(baseDir string, outputDir string, items map[string][]*documented
 		htmlPath := path.Join(outputDir, template.path[0:len(template.path)-3]+".html")
 
 		if err := renderTemplate(templatePath, renderedPath, context, linkResolver, linkTargets); err != nil {
-			return fmt.Errorf("error rendering template %s: %s", templatePath, err)
+			return errors.Wrapf(err, "error rendering template %s", templatePath)
 		}
 
 		htmlTemplate := path.Join(baseDir, "cmd/docgen/templates/template.html")
 		htmlContext := map[string]string{"title": template.title}
 
 		if err := renderHTML(renderedPath, htmlPath, htmlTemplate, htmlContext); err != nil {
-			return fmt.Errorf("error rendering HTML from %s to %s: %s", renderedPath, htmlPath, err)
+			return errors.Wrapf(err, "error rendering HTML from %s to %s", renderedPath, htmlPath)
 		}
 
 		fmt.Printf(" > Rendered %s > %s > %s\n", templatePath, renderedPath, htmlPath)
@@ -122,12 +124,12 @@ func renderTemplate(src, dst string, context map[string]string, resolver urlReso
 	// generate our complete docs
 	docTpl, err := template.ParseFiles(src)
 	if err != nil {
-		return fmt.Errorf("error reading template file: %s", err)
+		return errors.Wrap(err, "error reading template file")
 	}
 
 	output := &strings.Builder{}
 	if err := docTpl.Execute(output, context); err != nil {
-		return fmt.Errorf("error executing template: %s", err)
+		return errors.Wrap(err, "error executing template")
 	}
 
 	processed := resolveLinks(output.String(), resolver, linkTargets)
@@ -174,7 +176,7 @@ func createLinkResolver(items map[string][]*documentedItem) (urlResolver, map[st
 	return func(tag string, val string) (string, error) {
 		linkTpl := typeTemplates[tag]
 		if linkTpl == "" {
-			return "", fmt.Errorf("no link template for type %s", tag)
+			return "", errors.Errorf("no link template for type %s", tag)
 		}
 		return fmt.Sprintf(linkTpl, val), nil
 	}, linkTargets

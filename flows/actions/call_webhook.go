@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -60,7 +61,7 @@ func NewCallWebhookAction(uuid flows.ActionUUID, method string, url string, head
 // Validate validates our action is valid and has all the assets it needs
 func (a *CallWebhookAction) Validate(assets flows.SessionAssets, context *flows.ValidationContext) error {
 	if a.Body != "" && a.Method == "GET" {
-		return fmt.Errorf("can't specify body if method is GET")
+		return errors.Errorf("can't specify body if method is GET")
 	}
 
 	return nil
@@ -75,7 +76,7 @@ func (a *CallWebhookAction) Execute(run flows.FlowRun, step flows.Step) error {
 		a.logError(run, step, err)
 	}
 	if url == "" {
-		a.logError(run, step, fmt.Errorf("call_webhook URL evaluated to empty string, skipping"))
+		a.logError(run, step, errors.Errorf("call_webhook URL evaluated to empty string, skipping"))
 		return nil
 	}
 

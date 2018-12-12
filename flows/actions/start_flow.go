@@ -1,11 +1,11 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -59,7 +59,7 @@ func (a *StartFlowAction) Execute(run flows.FlowRun, step flows.Step) error {
 	}
 
 	if !run.Session().CanEnterFlow(flow) {
-		a.fatalError(run, step, fmt.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
+		a.fatalError(run, step, errors.Errorf("flow loop detected, stopping execution before starting flow: %s", a.Flow.UUID))
 		return nil
 	}
 

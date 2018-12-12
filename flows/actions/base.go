@@ -11,6 +11,8 @@ import (
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 var webhookStatusCategories = map[flows.WebhookStatus]string{
@@ -115,7 +117,7 @@ func (a *BaseAction) resolveGroups(run flows.FlowRun, step flows.Step, reference
 				// look up the set of all groups to see if such a group exists
 				group = groupSet.FindByName(evaluatedGroupName)
 				if group == nil {
-					a.logError(run, step, fmt.Errorf("no such group with name '%s'", evaluatedGroupName))
+					a.logError(run, step, errors.Errorf("no such group with name '%s'", evaluatedGroupName))
 				}
 			}
 		}
@@ -152,7 +154,7 @@ func (a *BaseAction) resolveLabels(run flows.FlowRun, step flows.Step, reference
 				// look up the set of all labels to see if such a label exists
 				label = labelSet.FindByName(evaluatedLabelName)
 				if label == nil {
-					a.logError(run, step, fmt.Errorf("no such label with name '%s'", evaluatedLabelName))
+					a.logError(run, step, errors.Errorf("no such label with name '%s'", evaluatedLabelName))
 				}
 			}
 		}
@@ -182,7 +184,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, languag
 		if err != nil {
 			a.logError(run, step, err)
 		} else if evaluatedAttachment == "" {
-			a.logError(run, step, fmt.Errorf("attachment text evaluated to empty string, skipping"))
+			a.logError(run, step, errors.Errorf("attachment text evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedAttachments = append(evaluatedAttachments, flows.Attachment(evaluatedAttachment))
@@ -196,7 +198,7 @@ func (a *BaseAction) evaluateMessage(run flows.FlowRun, step flows.Step, languag
 		if err != nil {
 			a.logError(run, step, err)
 		} else if evaluatedQuickReply == "" {
-			a.logError(run, step, fmt.Errorf("quick reply text evaluated to empty string, skipping"))
+			a.logError(run, step, errors.Errorf("quick reply text evaluated to empty string, skipping"))
 			continue
 		}
 		evaluatedQuickReplies = append(evaluatedQuickReplies, evaluatedQuickReply)
@@ -354,7 +356,7 @@ func ReadAction(data json.RawMessage) (flows.Action, error) {
 
 	f := registeredTypes[typeName]
 	if f == nil {
-		return nil, fmt.Errorf("unknown type: '%s'", typeName)
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
 	}
 
 	action := f()

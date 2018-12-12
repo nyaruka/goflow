@@ -1,12 +1,12 @@
 package contactql
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -33,7 +33,7 @@ func stringComparison(objectVal string, comparator string, queryVal string) (boo
 	case "~":
 		return icontains(objectVal, queryVal), nil
 	}
-	return false, fmt.Errorf("can't query text fields with %s", comparator)
+	return false, errors.Errorf("can't query text fields with %s", comparator)
 }
 
 func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal decimal.Decimal) (bool, error) {
@@ -49,7 +49,7 @@ func decimalComparison(objectVal decimal.Decimal, comparator string, queryVal de
 	case "<=":
 		return objectVal.LessThanOrEqual(queryVal), nil
 	}
-	return false, fmt.Errorf("can't query text fields with %s", comparator)
+	return false, errors.Errorf("can't query text fields with %s", comparator)
 }
 
 func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) (bool, error) {
@@ -67,5 +67,5 @@ func dateComparison(objectVal time.Time, comparator string, queryVal time.Time) 
 	case "<=":
 		return objectVal.Before(utcDayEnd), nil
 	}
-	return false, fmt.Errorf("can't query location fields with %s", comparator)
+	return false, errors.Errorf("can't query location fields with %s", comparator)
 }

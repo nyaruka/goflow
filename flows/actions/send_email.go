@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -66,7 +67,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 	subject = strings.TrimSpace(subject)
 
 	if subject == "" {
-		a.logError(run, step, fmt.Errorf("email subject evaluated to empty string, skipping"))
+		a.logError(run, step, errors.Errorf("email subject evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -75,7 +76,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 		a.logError(run, step, err)
 	}
 	if body == "" {
-		a.logError(run, step, fmt.Errorf("email body evaluated to empty string, skipping"))
+		a.logError(run, step, errors.Errorf("email body evaluated to empty string, skipping"))
 		return nil
 	}
 
@@ -87,7 +88,7 @@ func (a *SendEmailAction) Execute(run flows.FlowRun, step flows.Step) error {
 			a.logError(run, step, err)
 		}
 		if evaluatedAddress == "" {
-			a.logError(run, step, fmt.Errorf("email address evaluated to empty string, skipping"))
+			a.logError(run, step, errors.Errorf("email address evaluated to empty string, skipping"))
 			continue
 		}
 

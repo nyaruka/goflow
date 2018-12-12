@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -54,7 +55,7 @@ func (a *SetContactFieldAction) Validate(assets flows.SessionAssets, context *fl
 // Execute runs this action
 func (a *SetContactFieldAction) Execute(run flows.FlowRun, step flows.Step) error {
 	if run.Contact() == nil {
-		a.logError(run, step, fmt.Errorf("can't execute action in session without a contact"))
+		a.logError(run, step, errors.Errorf("can't execute action in session without a contact"))
 		return nil
 	}
 

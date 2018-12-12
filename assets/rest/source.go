@@ -11,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -52,7 +53,7 @@ type serverSourceEnvelope struct {
 func ReadServerSource(authToken string, httpClient *utils.HTTPClient, cache *AssetCache, data json.RawMessage) (*ServerSource, error) {
 	envelope := &serverSourceEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, envelope); err != nil {
-		return nil, fmt.Errorf("unable to read asset server: %s", err)
+		return nil, errors.Wrap(err, "unable to read asset server")
 	}
 
 	return NewServerSource(authToken, envelope.TypeURLs, httpClient, cache), nil
@@ -69,7 +70,7 @@ func (s *ServerSource) Channels() ([]assets.Channel, error) {
 	}
 	set, isType := asset.([]assets.Channel)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+		return nil, errors.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
@@ -85,7 +86,7 @@ func (s *ServerSource) Fields() ([]assets.Field, error) {
 	}
 	set, isType := asset.([]assets.Field)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+		return nil, errors.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
@@ -101,7 +102,7 @@ func (s *ServerSource) Flow(uuid assets.FlowUUID) (assets.Flow, error) {
 	}
 	flow, isType := asset.(assets.Flow)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
+		return nil, errors.Errorf("asset cache contains asset with wrong type for UUID '%s'", uuid)
 	}
 	return flow, nil
 }
@@ -117,7 +118,7 @@ func (s *ServerSource) Groups() ([]assets.Group, error) {
 	}
 	set, isType := asset.([]assets.Group)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+		return nil, errors.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
@@ -133,7 +134,7 @@ func (s *ServerSource) Labels() ([]assets.Label, error) {
 	}
 	set, isType := asset.([]assets.Label)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+		return nil, errors.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
@@ -149,7 +150,7 @@ func (s *ServerSource) Locations() ([]assets.LocationHierarchy, error) {
 	}
 	set, isType := asset.([]assets.LocationHierarchy)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+		return nil, errors.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
@@ -165,7 +166,7 @@ func (s *ServerSource) Resthooks() ([]assets.Resthook, error) {
 	}
 	set, isType := asset.([]assets.Resthook)
 	if !isType {
-		return nil, fmt.Errorf("asset cache contains asset with wrong type")
+		return nil, errors.Errorf("asset cache contains asset with wrong type")
 	}
 	return set, nil
 }
@@ -183,7 +184,7 @@ func (s *ServerSource) getAsset(itemType AssetType, itemUUID string) (interface{
 func (s *ServerSource) getAssetURL(itemType AssetType, itemUUID string) (string, error) {
 	url, found := s.typeURLs[itemType]
 	if !found {
-		return "", fmt.Errorf("asset type '%s' not supported by asset server", itemType)
+		return "", errors.Errorf("asset type '%s' not supported by asset server", itemType)
 	}
 
 	if itemUUID != "" {
@@ -214,11 +215,11 @@ func (s *ServerSource) fetchAsset(url string, itemType AssetType) ([]byte, error
 	log.WithField("asset_type", string(itemType)).WithField("url", url).Debugf("asset requested")
 
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("request returned non-200 response (%d)", response.StatusCode)
+		return nil, errors.Errorf("request returned non-200 response (%d)", response.StatusCode)
 	}
 
 	if response.Header.Get("Content-Type") != "application/json" {
-		return nil, fmt.Errorf("request returned non-JSON response")
+		return nil, errors.Errorf("request returned non-JSON response")
 	}
 
 	return ioutil.ReadAll(response.Body)

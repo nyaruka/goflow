@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -15,6 +14,7 @@ import (
 
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -180,12 +180,12 @@ func (c *Client) request(data url.Values, dest interface{}) error {
 
 	defer response.Body.Close()
 	if err := c.parseResponse(response.Body, dest); err != nil {
-		return fmt.Errorf("transferto API call returned an unparseable response: %s", err)
+		return errors.Wrap(err, "transferto API call returned an unparseable response")
 	}
 
 	baseResp := dest.(Response)
 	if baseResp.ErrorCode() != 0 {
-		return fmt.Errorf("transferto API call returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
+		return errors.Errorf("transferto API call returned an error: %s (%d)", baseResp.ErrorTxt(), baseResp.ErrorCode())
 	}
 	return nil
 }

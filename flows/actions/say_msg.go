@@ -1,12 +1,13 @@
 package actions
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -70,7 +71,7 @@ func (a *SayMsgAction) Execute(run flows.FlowRun, step flows.Step) error {
 	} else if evaluatedText != "" {
 		a.log(run, step, events.NewIVRSayEvent(evaluatedText))
 	} else {
-		a.logError(run, step, fmt.Errorf("need either audio URL or backdown text, skipping"))
+		a.logError(run, step, errors.Errorf("need either audio URL or backdown text, skipping"))
 	}
 
 	return nil

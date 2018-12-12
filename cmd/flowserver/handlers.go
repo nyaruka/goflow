@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -16,6 +15,8 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/legacy"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -89,7 +90,7 @@ func (s *FlowServer) handleStart(w http.ResponseWriter, r *http.Request) (interf
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session.Assets(), request.Trigger)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read trigger: %s", err)
+		return nil, errors.Wrap(err, "unable to read trigger")
 	}
 
 	// start our flow
@@ -189,7 +190,7 @@ func (s *FlowServer) handleMigrate(w http.ResponseWriter, r *http.Request) (inte
 	}
 
 	if migrate.Flow == nil {
-		return nil, fmt.Errorf("missing flow element")
+		return nil, errors.Errorf("missing flow element")
 	}
 
 	legacyFlow, err := legacy.ReadLegacyFlow(migrate.Flow)
@@ -234,7 +235,7 @@ func (s *FlowServer) handleExpression(w http.ResponseWriter, r *http.Request) (i
 	}
 
 	if expression.Context == nil || expression.Expression == "" {
-		return nil, fmt.Errorf("missing context or expression element")
+		return nil, errors.Errorf("missing context or expression element")
 	}
 
 	context := types.JSONToXValue(expression.Context)

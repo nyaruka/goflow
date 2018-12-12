@@ -66,7 +66,7 @@
   revision = "ed7bcb39ff10f39ab08e317ce16df282845852fa"
 
 [[projects]]
-  digest = "1:4eda9f7bf70f5145b3b9ed3f18ac93e9b1a0e38906eb69e526380c34861e2b07"
+  digest = "0:"
   name = "github.com/go-chi/chi"
   packages = [
     ".",
@@ -294,6 +294,7 @@
     "github.com/nyaruka/ezconf",
     "github.com/nyaruka/gocommon/urns",
     "github.com/nyaruka/phonenumbers",
+    "github.com/pkg/errors",
     "github.com/rakyll/statik/fs",
     "github.com/satori/go.uuid",
     "github.com/sergi/go-diff/diffmatchpatch",
