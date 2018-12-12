@@ -2,7 +2,6 @@ package engine
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -12,6 +11,7 @@ import (
 	"github.com/nyaruka/goflow/flows/waits"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -85,7 +85,7 @@ func (s *session) GetRun(uuid flows.RunUUID) (flows.FlowRun, error) {
 	if exists {
 		return run, nil
 	}
-	return nil, fmt.Errorf("unable to find run with UUID '%s'", uuid)
+	return nil, errors.Errorf("unable to find run with UUID '%s'", uuid)
 }
 
 func (s *session) addRun(run flows.FlowRun) {
@@ -155,17 +155,17 @@ func (s *session) Resume(resume flows.Resume) ([]flows.Event, error) {
 	}
 
 	if s.status != flows.SessionStatusWaiting {
-		return s.newEvents, fmt.Errorf("only waiting sessions can be resumed")
+		return s.newEvents, errors.Errorf("only waiting sessions can be resumed")
 	}
 
 	waitingRun := s.waitingRun()
 	if waitingRun == nil {
-		return s.newEvents, fmt.Errorf("session doesn't contain any runs which are waiting")
+		return s.newEvents, errors.Errorf("session doesn't contain any runs which are waiting")
 	}
 
 	// check flow is valid and has everything it needs to run
 	if err := waitingRun.Flow().Validate(s.Assets(), flows.NewValidationContext()); err != nil {
-		return s.newEvents, fmt.Errorf("validation failed for flow[uuid=%s]: %s", waitingRun.Flow().UUID(), err)
+		return s.newEvents, errors.Wrapf(err, "validation failed for flow[uuid=%s]", waitingRun.Flow().UUID())
 	}
 
 	if err := s.tryToResume(waitingRun, resume); err != nil {
@@ -191,7 +191,7 @@ func (s *session) prepareForSprint() error {
 		if hasRun {
 			run, err := runs.ReadRunSummary(s.Assets(), triggerWithRun.RunSummary())
 			if err != nil {
-				return fmt.Errorf("error reading parent run from trigger: %s", err)
+				return errors.Wrap(err, "error reading parent run from trigger")
 			}
 			s.parentRun = run
 		}
@@ -299,12 +299,12 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 				// as long as we didn't error, we can try to resume it
 				if childRun.Status() != flows.RunStatusErrored {
 					if destination, err = s.findResumeDestination(currentRun); err != nil {
-						currentRun.LogFatalError(step, fmt.Errorf("can't resume run as node no longer exists"))
+						currentRun.LogFatalError(step, errors.Errorf("can't resume run as node no longer exists"))
 					}
 				} else {
 					// if we did error then that needs to bubble back up through the run hierarchy
 					step, _, _ := currentRun.PathLocation()
-					currentRun.LogFatalError(step, fmt.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
+					currentRun.LogFatalError(step, errors.Errorf("child run for flow '%s' ended in error, ending execution", childRun.Flow().UUID()))
 				}
 
 			} else {
@@ -324,12 +324,12 @@ func (s *session) continueUntilWait(currentRun flows.FlowRun, destination flows.
 		if destination != noDestination {
 			if s.flowStack.hasVisited(destination) {
 				// this is a loop, we log it and stop execution
-				currentRun.LogFatalError(step, fmt.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
+				currentRun.LogFatalError(step, errors.Errorf("flow loop detected, stopping execution before entering '%s'", destination))
 				destination = noDestination
 			} else {
 				node := currentRun.Flow().GetNode(destination)
 				if node == nil {
-					return fmt.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
+					return errors.Errorf("unable to find destination node %s in flow %s", destination, currentRun.Flow().UUID())
 				}
 
 				step, destination, err = s.visitNode(currentRun, node, trigger)
@@ -372,7 +372,7 @@ func (s *session) visitNode(run flows.FlowRun, node flows.Node, trigger flows.Tr
 			}
 
 			if err := action.Execute(run, step); err != nil {
-				return step, noDestination, fmt.Errorf("error executing action[type=%s,uuid=%s]: %s", action.Type(), action.UUID(), err)
+				return step, noDestination, errors.Wrapf(err, "error executing action[type=%s,uuid=%s]", action.Type(), action.UUID())
 			}
 
 			// check if this action has errored the run
@@ -422,7 +422,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 	var exitUUID flows.ExitUUID
 	if router != nil {
 		if operand, route, err = router.PickRoute(run, node.Exits(), step); err != nil {
-			return nil, noDestination, fmt.Errorf("error routing from node[uuid=%s]: %s", node.UUID(), err)
+			return nil, noDestination, errors.Wrapf(err, "error routing from node[uuid=%s]", node.UUID())
 		}
 		exitUUID = route.Exit()
 	} else if len(node.Exits()) > 0 {
@@ -449,7 +449,7 @@ func (s *session) pickNodeExit(run flows.FlowRun, node flows.Node, step flows.St
 			}
 		}
 		if exit == nil {
-			return nil, noDestination, fmt.Errorf("unable to find exit with UUID '%s'", exitUUID)
+			return nil, noDestination, errors.Errorf("unable to find exit with UUID '%s'", exitUUID)
 		}
 	}
 
@@ -495,7 +495,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	var err error
 
 	if err = utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, fmt.Errorf("unable to read session: %s", err)
+		return nil, errors.Wrap(err, "unable to read session")
 	}
 
 	s := NewSession(assets, engineConfig, httpClient).(*session)
@@ -504,20 +504,20 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	// read our environment
 	s.env, err = utils.ReadEnvironment(e.Environment)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read environment: %s", err)
+		return nil, errors.Wrap(err, "unable to read environment")
 	}
 
 	// read our trigger
 	if e.Trigger != nil {
 		if s.trigger, err = triggers.ReadTrigger(s.Assets(), e.Trigger); err != nil {
-			return nil, fmt.Errorf("unable to read trigger: %s", err)
+			return nil, errors.Wrap(err, "unable to read trigger")
 		}
 	}
 
 	// read our contact
 	if e.Contact != nil {
 		if s.contact, err = flows.ReadContact(s.Assets(), *e.Contact, false); err != nil {
-			return nil, fmt.Errorf("unable to read contact: %s", err)
+			return nil, errors.Wrap(err, "unable to read contact")
 		}
 	}
 
@@ -525,7 +525,7 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	for i := range e.Runs {
 		run, err := runs.ReadRun(s, e.Runs[i])
 		if err != nil {
-			return nil, fmt.Errorf("unable to read run %d: %s", i, err)
+			return nil, errors.Wrapf(err, "unable to read run %d", i)
 		}
 		s.addRun(run)
 	}
@@ -534,19 +534,19 @@ func ReadSession(assets flows.SessionAssets, engineConfig flows.EngineConfig, ht
 	if e.Wait != nil {
 		s.wait, err = waits.ReadWait(e.Wait)
 		if err != nil {
-			return nil, fmt.Errorf("unable to read wait: %s", err)
+			return nil, errors.Wrap(err, "unable to read wait")
 		}
 	}
 	if e.Input != nil {
 		if s.input, err = inputs.ReadInput(s, e.Input); err != nil {
-			return nil, fmt.Errorf("unable to read input: %s", err)
+			return nil, errors.Wrap(err, "unable to read input")
 		}
 	}
 
 	// TODO more and don't limit to sessions being read
 	// perform some structural validation
 	if s.status == flows.SessionStatusWaiting && s.wait == nil {
-		return nil, fmt.Errorf("session has status of \"waiting\" but no wait object")
+		return nil, errors.Errorf("session has status of \"waiting\" but no wait object")
 	}
 
 	return s, nil

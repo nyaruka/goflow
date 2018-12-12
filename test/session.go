@@ -2,7 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
@@ -11,6 +10,8 @@ import (
 	"github.com/nyaruka/goflow/flows/engine"
 	"github.com/nyaruka/goflow/flows/resumes"
 	"github.com/nyaruka/goflow/flows/triggers"
+
+	"github.com/pkg/errors"
 )
 
 var sessionAssets = `{
@@ -420,7 +421,7 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 
 	session, err := CreateSession(json.RawMessage(sessionAssets), testServerURL)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating test session: %s", err)
+		return nil, nil, errors.Wrap(err, "error creating test session")
 	}
 
 	// optional modify the main flow by adding the provided action to the last node
@@ -432,18 +433,18 @@ func CreateTestSession(testServerURL string, actionToAdd flows.Action) (flows.Se
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(sessionTrigger))
 	if err != nil {
-		return nil, nil, fmt.Errorf("error reading trigger: %s", err)
+		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
 	_, err = session.Start(trigger)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error starting test session: %s", err)
+		return nil, nil, errors.Wrap(err, "error starting test session")
 	}
 
 	// read our resume
 	resume, err := resumes.ReadResume(session, json.RawMessage(sessionResume))
 	if err != nil {
-		return nil, nil, fmt.Errorf("error reading resume: %s", err)
+		return nil, nil, errors.Wrap(err, "error reading resume")
 	}
 
 	newEvents, err := session.Resume(resume)
@@ -455,7 +456,7 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 
 	session, err := CreateSession(json.RawMessage(voiceSessionAssets), testServerURL)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating test voice session: %s", err)
+		return nil, nil, errors.Wrap(err, "error creating test voice session")
 	}
 
 	// optional modify the main flow by adding the provided action to the last node
@@ -468,12 +469,12 @@ func CreateTestVoiceSession(testServerURL string, actionToAdd flows.Action) (flo
 	// read our trigger
 	trigger, err := triggers.ReadTrigger(session.Assets(), json.RawMessage(voiceSessionTrigger))
 	if err != nil {
-		return nil, nil, fmt.Errorf("error reading trigger: %s", err)
+		return nil, nil, errors.Wrap(err, "error reading trigger")
 	}
 
 	newEvents, err := session.Start(trigger)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error starting test voice session: %s", err)
+		return nil, nil, errors.Wrap(err, "error starting test voice session")
 	}
 
 	return session, newEvents, err
@@ -489,13 +490,13 @@ func CreateSession(assetsJSON json.RawMessage, testServerURL string) (flows.Sess
 	// read our assets into a source
 	source, err := static.NewStaticSource(assetsJSON)
 	if err != nil {
-		return nil, fmt.Errorf("error loading test assets: %s", err)
+		return nil, errors.Wrap(err, "error loading test assets")
 	}
 
 	// create our engine session
 	assets, err := engine.NewSessionAssets(source)
 	if err != nil {
-		return nil, fmt.Errorf("error creating test session assets: %s", err)
+		return nil, errors.Wrap(err, "error creating test session assets")
 	}
 
 	session := engine.NewSession(assets, engine.NewDefaultConfig(), TestHTTPClient)

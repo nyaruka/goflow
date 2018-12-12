@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/flows/triggers"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -68,7 +69,7 @@ func marshalEventLog(eventLog []flows.Event) ([]json.RawMessage, error) {
 	for i := range eventLog {
 		marshaled[i], err = utils.JSONMarshal(eventLog[i])
 		if err != nil {
-			return nil, fmt.Errorf("error marshaling event: %s", err)
+			return nil, errors.Wrap(err, "error marshaling event")
 		}
 	}
 	return marshaled, nil
@@ -102,7 +103,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	source, err := static.NewStaticSource(json.RawMessage(testAssetsJSONStr))
 	if err != nil {
-		return runResult{}, fmt.Errorf("error reading test assets '%s': %s", assetsPath, err)
+		return runResult{}, errors.Wrapf(err, "error reading test assets '%s'", assetsPath)
 	}
 
 	assets, _ := engine.NewSessionAssets(source)
@@ -110,7 +111,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	trigger, err := triggers.ReadTrigger(session.Assets(), rawTrigger)
 	if err != nil {
-		return runResult{}, fmt.Errorf("error unmarshalling trigger: %s", err)
+		return runResult{}, errors.Wrapf(err, "error unmarshalling trigger")
 	}
 
 	newEvents, err := session.Start(trigger)
@@ -124,7 +125,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 	for r, rawResume := range rawResumes {
 		sessionJSON, err := utils.JSONMarshalPretty(session)
 		if err != nil {
-			return runResult{}, fmt.Errorf("error marshalling output: %s", err)
+			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
 		marshalledEvents, err := marshalEventLog(newEvents)
 		if err != nil {
@@ -135,12 +136,12 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 		session, err = engine.ReadSession(assets, engine.NewDefaultConfig(), TestHTTPClient, sessionJSON)
 		if err != nil {
-			return runResult{}, fmt.Errorf("error marshalling output: %s", err)
+			return runResult{}, errors.Wrap(err, "error marshalling output")
 		}
 
 		// if we aren't at a wait, that's an error
 		if session.Wait() == nil {
-			return runResult{}, fmt.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
+			return runResult{}, errors.Errorf("did not stop at expected wait, have unused resumes: %#v", rawResumes[r:])
 		}
 
 		resume, err := resumes.ReadResume(session, rawResume)
@@ -156,7 +157,7 @@ func runFlow(assetsPath string, rawTrigger json.RawMessage, rawResumes []json.Ra
 
 	sessionJSON, err := utils.JSONMarshalPretty(session)
 	if err != nil {
-		return runResult{}, fmt.Errorf("error marshalling output: %s", err)
+		return runResult{}, errors.Wrap(err, "error marshalling output")
 	}
 
 	marshalledEvents, err := marshalEventLog(newEvents)

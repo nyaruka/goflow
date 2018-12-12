@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"fmt"
-
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -41,7 +41,7 @@ func (r *RandomOnceRouter) Validate(exits []flows.Exit) error {
 		}
 
 		if !found {
-			err = fmt.Errorf("Invalid exit uuid: '%s'", r.Exit)
+			err = errors.Errorf("Invalid exit uuid: '%s'", r.Exit)
 		}
 	}
 	return err

@@ -1,13 +1,14 @@
 package flows
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/contactql"
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 // Group represents a grouping of contacts. It can be static (contacts are added and removed manually through
@@ -56,7 +57,7 @@ func (g *Group) IsDynamic() bool { return g.Query() != "" }
 // CheckDynamicMembership returns whether the given contact belongs in this dynamic group
 func (g *Group) CheckDynamicMembership(env utils.Environment, contact *Contact) (bool, error) {
 	if !g.IsDynamic() {
-		return false, fmt.Errorf("can't check membership on a non-dynamic group")
+		return false, errors.Errorf("can't check membership on a non-dynamic group")
 	}
 	parsedQuery, err := g.ParsedQuery()
 	if err != nil {
@@ -226,7 +227,7 @@ func (s *GroupAssets) All() []*Group {
 func (s *GroupAssets) Get(uuid assets.GroupUUID) (*Group, error) {
 	c, found := s.byUUID[uuid]
 	if !found {
-		return nil, fmt.Errorf("no such group with UUID '%s'", uuid)
+		return nil, errors.Errorf("no such group with UUID '%s'", uuid)
 	}
 	return c, nil
 }

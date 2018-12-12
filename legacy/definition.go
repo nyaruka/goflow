@@ -17,6 +17,7 @@ import (
 	"github.com/nyaruka/goflow/legacy/expressions"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
 )
 
@@ -524,7 +525,7 @@ func migrateAction(baseLanguage utils.Language, a Action, localization flows.Loc
 
 		return actions.NewPlayAudioAction(a.UUID, migratedAudioURL), nil
 	default:
-		return nil, fmt.Errorf("unable to migrate legacy action type: %s", a.Type)
+		return nil, errors.Errorf("unable to migrate legacy action type: %s", a.Type)
 	}
 }
 
@@ -711,7 +712,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 			// check if we already have a configuration for this currency
 			existingAmount, alreadyDefined := currencyAmounts[countryCfg.CurrencyCode]
 			if alreadyDefined && existingAmount != countryCfg.Amount {
-				return nil, "", nil, fmt.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
+				return nil, "", nil, errors.Errorf("unable to migrate airtime ruleset with different amounts in same currency")
 			}
 
 			currencyAmounts[countryCfg.CurrencyCode] = countryCfg.Amount
@@ -726,7 +727,7 @@ func migrateRuleSet(lang utils.Language, r RuleSet, localization flows.Localizat
 		router = routers.NewSwitchRouter(defaultExit, fmt.Sprintf("@results.%s.category", utils.Snakify(resultName)), cases, "")
 
 	default:
-		return nil, "", nil, fmt.Errorf("unrecognized ruleset type: %s", r.Type)
+		return nil, "", nil, errors.Errorf("unrecognized ruleset type: %s", r.Type)
 	}
 
 	return definition.NewNode(r.UUID, newActions, wait, router, exits), uiType, uiNodeConfig, nil
@@ -933,7 +934,7 @@ func migrateRule(baseLanguage utils.Language, r Rule, exit flows.Exit, localizat
 		arguments = []string{migratedDistrict, migratedState}
 
 	default:
-		return nil, fmt.Errorf("migration of '%s' tests no supported", r.Test.Type)
+		return nil, errors.Errorf("migration of '%s' tests no supported", r.Test.Type)
 	}
 
 	return routers.NewCase(caseUUID, newType, arguments, omitOperand, exit.UUID()), err
@@ -947,7 +948,7 @@ func migateActionSet(lang utils.Language, a ActionSet, localization flows.Locali
 	for i := range a.Actions {
 		action, err := migrateAction(lang, a.Actions[i], localization)
 		if err != nil {
-			return nil, fmt.Errorf("error migrating action[type=%s]: %s", a.Actions[i].Type, err)
+			return nil, errors.Wrapf(err, "error migrating action[type=%s]", a.Actions[i].Type)
 		}
 		actions[i] = action
 	}
@@ -974,7 +975,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	for i, actionSet := range f.ActionSets {
 		node, err := migateActionSet(f.BaseLanguage, actionSet, localization)
 		if err != nil {
-			return nil, fmt.Errorf("error migrating action_set[uuid=%s]: %s", actionSet.UUID, err)
+			return nil, errors.Wrapf(err, "error migrating action_set[uuid=%s]", actionSet.UUID)
 		}
 		nodes[i] = node
 		nodeUI[node.UUID()] = definition.NewUINodeDetails(actionSet.X, actionSet.Y, UINodeTypeActionSet, nil)
@@ -983,7 +984,7 @@ func (f *Flow) Migrate(collapseExits bool, includeUI bool) (flows.Flow, error) {
 	for i, ruleSet := range f.RuleSets {
 		node, uiType, uiNodeConfig, err := migrateRuleSet(f.BaseLanguage, ruleSet, localization, collapseExits)
 		if err != nil {
-			return nil, fmt.Errorf("error migrating rule_set[uuid=%s]: %s", ruleSet.UUID, err)
+			return nil, errors.Wrapf(err, "error migrating rule_set[uuid=%s]", ruleSet.UUID)
 		}
 		nodes[len(f.ActionSets)+i] = node
 		nodeUI[node.UUID()] = definition.NewUINodeDetails(ruleSet.X, ruleSet.Y, uiType, uiNodeConfig)

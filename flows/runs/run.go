@@ -2,7 +2,6 @@ package runs
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
@@ -13,6 +12,7 @@ import (
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -154,7 +154,7 @@ func (r *flowRun) CreateStep(node flows.Node) flows.Step {
 
 func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 	if r.Path() == nil {
-		return nil, nil, fmt.Errorf("run has no location as path is empty")
+		return nil, nil, errors.Errorf("run has no location as path is empty")
 	}
 
 	step := r.Path()[len(r.Path())-1]
@@ -162,7 +162,7 @@ func (r *flowRun) PathLocation() (flows.Step, flows.Node, error) {
 	// check that we still have a node for this step
 	node := r.Flow().GetNode(step.NodeUUID())
 	if node == nil {
-		return nil, nil, fmt.Errorf("run is located at a flow node that no longer exists")
+		return nil, nil, errors.Errorf("run is located at a flow node that no longer exists")
 	}
 
 	return step, node, nil
@@ -342,7 +342,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	var err error
 
 	if err = utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, fmt.Errorf("unable to read run: %s", err)
+		return nil, errors.Wrap(err, "unable to read run")
 	}
 
 	r := &flowRun{
@@ -357,7 +357,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 
 	// lookup flow
 	if r.flow, err = session.Assets().Flows().Get(e.Flow.UUID); err != nil {
-		return nil, fmt.Errorf("unable to load flow[uuid=%s]: %s", e.Flow.UUID, err)
+		return nil, errors.Wrapf(err, "unable to load flow[uuid=%s]", e.Flow.UUID)
 	}
 
 	// lookup parent run
@@ -383,7 +383,7 @@ func ReadRun(session flows.Session, data json.RawMessage) (flows.FlowRun, error)
 	r.events = make([]flows.Event, len(e.Events))
 	for i := range r.events {
 		if r.events[i], err = events.ReadEvent(e.Events[i]); err != nil {
-			return nil, fmt.Errorf("unable to read event: %s", err)
+			return nil, errors.Wrap(err, "unable to read event")
 		}
 	}
 

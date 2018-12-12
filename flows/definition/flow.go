@@ -2,7 +2,6 @@ package definition
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"sync"
 
@@ -10,6 +9,8 @@ import (
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 type flow struct {
@@ -86,12 +87,12 @@ func (f *flow) Validate(assets flows.SessionAssets, context *flows.ValidationCon
 	for _, node := range f.nodes {
 		uuidAlreadySeen := seenUUIDs[utils.UUID(node.UUID())]
 		if uuidAlreadySeen {
-			return fmt.Errorf("node UUID %s isn't unique", node.UUID())
+			return errors.Errorf("node UUID %s isn't unique", node.UUID())
 		}
 		seenUUIDs[utils.UUID(node.UUID())] = true
 
 		if err := node.Validate(assets, context, f, seenUUIDs); err != nil {
-			return fmt.Errorf("validation failed for node[uuid=%s]: %s", node.UUID(), err)
+			return errors.Wrapf(err, "validation failed for node[uuid=%s]", node.UUID())
 		}
 	}
 
@@ -162,7 +163,7 @@ type flowEnvelopeWithUI struct {
 func ReadFlow(data json.RawMessage) (flows.Flow, error) {
 	e := &flowEnvelope{}
 	if err := utils.UnmarshalAndValidate(data, e); err != nil {
-		return nil, fmt.Errorf("unable to read flow: %s", err)
+		return nil, errors.Wrap(err, "unable to read flow")
 	}
 	nodes := make([]flows.Node, len(e.Nodes))
 	for n := range e.Nodes {

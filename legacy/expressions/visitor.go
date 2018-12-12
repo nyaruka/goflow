@@ -10,6 +10,7 @@ import (
 	"github.com/nyaruka/goflow/utils"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/pkg/errors"
 )
 
 type legacyVisitor struct {
@@ -102,7 +103,7 @@ func (v *legacyVisitor) VisitContextReference(ctx *gen.ContextReferenceContext) 
 	key := strings.ToLower(ctx.GetText())
 	val := resolveLookup(v.env, v.resolver, key)
 	if val == nil {
-		return fmt.Errorf("Invalid key: '%s'", key)
+		return errors.Errorf("invalid key: '%s'", key)
 	}
 
 	err, isErr := val.(error)

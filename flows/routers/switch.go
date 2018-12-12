@@ -1,13 +1,14 @@
 package routers
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/excellent/types"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/routers/tests"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
 func init() {
@@ -71,12 +72,12 @@ func (r *SwitchRouter) Validate(exits []flows.Exit) error {
 	}
 
 	if r.Default != "" && !hasExit(r.Default) {
-		return fmt.Errorf("default exit %s is not a valid exit", r.Default)
+		return errors.Errorf("default exit %s is not a valid exit", r.Default)
 	}
 
 	for _, c := range r.Cases {
 		if !hasExit(c.ExitUUID) {
-			return fmt.Errorf("case exit %s is not a valid exit", c.ExitUUID)
+			return errors.Errorf("case exit %s is not a valid exit", c.ExitUUID)
 		}
 	}
 
@@ -108,7 +109,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		// try to look up our function
 		xtest := tests.XTESTS[test]
 		if xtest == nil {
-			return nil, flows.NoRoute, fmt.Errorf("unknown test '%s', taking no exit", c.Type)
+			return nil, flows.NoRoute, errors.Errorf("unknown test '%s', taking no exit", c.Type)
 		}
 
 		// build our argument list
@@ -134,7 +135,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 		switch typedResult := result.(type) {
 		case types.XError:
 			// test functions can return an error
-			run.LogError(step, fmt.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
+			run.LogError(step, errors.Errorf("error calling test %s: %s", strings.ToUpper(test), typedResult.Error()))
 			continue
 		case tests.XTestResult:
 			// looks truthy, lets return this exit
@@ -147,7 +148,7 @@ func (r *SwitchRouter) PickRoute(run flows.FlowRun, exits []flows.Exit, step flo
 				return operandAsStr, flows.NewRoute(c.ExitUUID, resultAsStr.Native(), typedResult.Extra()), nil
 			}
 		default:
-			return nil, flows.NoRoute, fmt.Errorf("unexpected result type from test %v: %#v", xtest, result)
+			return nil, flows.NoRoute, errors.Errorf("unexpected result type from test %v: %#v", xtest, result)
 		}
 	}
 

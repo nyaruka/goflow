@@ -1,10 +1,11 @@
 package flows
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/nyaruka/goflow/assets"
+
+	"github.com/pkg/errors"
 )
 
 // Label represents a message label
@@ -56,7 +57,7 @@ func (s *LabelAssets) All() []*Label {
 func (s *LabelAssets) Get(uuid assets.LabelUUID) (*Label, error) {
 	c, found := s.byUUID[uuid]
 	if !found {
-		return nil, fmt.Errorf("no such label with UUID '%s'", uuid)
+		return nil, errors.Errorf("no such label with UUID '%s'", uuid)
 	}
 	return c, nil
 }
