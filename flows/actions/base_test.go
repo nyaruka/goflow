@@ -406,8 +406,7 @@ func TestActionTypes(t *testing.T) {
 	assetsJSON, err := ioutil.ReadFile("testdata/_assets.json")
 	require.NoError(t, err)
 
-	server, err := test.NewTestHTTPServer(49996)
-	require.NoError(t, err)
+	server := test.NewTestHTTPServer(49996)
 
 	for typeName := range actions.RegisteredTypes() {
 		testActionType(t, assetsJSON, typeName, server.URL)

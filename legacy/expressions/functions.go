@@ -104,7 +104,7 @@ var callMigrators = map[string]callMigrator{
 	"clean":             asIs(),
 	"code":              asIs(),
 	"concatenate":       asJoin(` & `),
-	"date":              asTemplate(`datetime("%s-%s-%s")`),
+	"date":              asRename(`datetime_from_parts`),
 	"datedif":           asRename(`datetime_diff`),
 	"datevalue":         asRename(`datetime`),
 	"day":               asTemplate(`format_date(%s, "D")`),

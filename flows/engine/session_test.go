@@ -143,9 +143,7 @@ func TestContextToJSON(t *testing.T) {
 		{"trigger", `{"params":{"source":"website","address":{"state":"WA"}},"type":"flow_action"}`},
 	}
 
-	server, err := test.NewTestHTTPServer(49992)
-	require.NoError(t, err)
-
+	server := test.NewTestHTTPServer(49992)
 	defer server.Close()
 	defer utils.SetUUIDGenerator(utils.DefaultUUIDGenerator)
 	defer utils.SetTimeSource(utils.DefaultTimeSource)

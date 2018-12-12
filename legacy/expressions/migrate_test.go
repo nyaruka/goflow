@@ -142,45 +142,6 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(" "" ")`, new: `@(" \" ")`},
 		{old: `@("you" & " are " & contact.gender)`, new: `@("you" & " are " & contact.fields.gender)`},
 
-		// functions
-		{old: `@(REMOVE_FIRST_WORD(flow.favorite_color))`, new: `@(remove_first_word(results.favorite_color))`},
-		{old: `@(REGEX_GROUP(flow.favorite_color, "\w\w+"))`, new: `@(regex_match(results.favorite_color, "\w\w+"))`},
-		{old: `@(REGEX_GROUP(flow.favorite_color, "\w(\w+)", 1))`, new: `@(regex_match(results.favorite_color, "\w(\w+)", 1))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2))`, new: `@(word_slice(results.favorite_color, 1))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4))`, new: `@(word_slice(results.favorite_color, 1, 3))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, TRUE))`, new: `@(word_slice(results.favorite_color, 1, 3, " \t"))`},
-		{old: `@(WORD_SLICE(flow.favorite_color, 2, 4, FALSE))`, new: `@(word_slice(results.favorite_color, 1, 3, NULL))`},
-		{old: `@(FIELD(flow.favorite_color, 2, ","))`, new: `@(field(results.favorite_color, 1, ","))`},
-		{old: `@(FIELD(flow.favorite_color, child.age, ","))`, new: `@(field(results.favorite_color, child.results.age - 1, ","))`},
-		{old: `@(FIRST_WORD(WORD_SLICE("bee cat dog elf", 2, 4)))`, new: `@(word(word_slice("bee cat dog elf", 1, 3), 0))`},
-		{old: `@(FIRST_WORD(flow.favorite_color))`, new: `@(word(results.favorite_color, 0))`},
-		{old: `@(WORD(flow.favorite_color, child.age - 22))`, new: `@(word(results.favorite_color, legacy_add(child.results.age, -22) - 1))`},
-		{old: `@(WORD(flow.favorite_color, 1))`, new: `@(word(results.favorite_color, 0))`},
-		{old: `@(WORD(flow.favorite_color, 1, TRUE))`, new: `@(word(results.favorite_color, 0, " \t"))`},
-		{old: `@(WORD(flow.favorite_color, 1, FALSE))`, new: `@(word(results.favorite_color, 0, NULL))`},
-		{old: `@(WORD_COUNT(flow.favorite_color))`, new: `@(word_count(results.favorite_color))`},
-		{old: `@(WORD_COUNT(flow.favorite_color, TRUE))`, new: `@(word_count(results.favorite_color, " \t"))`},
-		{old: `@(WORD_COUNT(flow.favorite_color, FALSE))`, new: `@(word_count(results.favorite_color, NULL))`},
-
-		// math and logic functions
-		{old: `@(ABS(-5))`, new: `@(abs(-5))`},
-		{old: `@(AVERAGE(1, 2, 3, 4, 5))`, new: `@(mean(1, 2, 3, 4, 5))`},
-		{old: `@(AND(contact.age > 30, flow.amount < 5))`, new: `@(and(contact.fields.age > 30, results.amount < 5))`},
-
-		// date functions
-		{old: `@(DATEVALUE("2012-02-03"))`, new: `@(datetime("2012-02-03"))`},
-		{old: `@(EDATE("2012-02-03", 1))`, new: `@(datetime_add("2012-02-03", 1, "M"))`},
-		{old: `@(EPOCH(NOW()))`, new: `@(epoch(now()))`},
-		{old: `@(DATEDIF(contact.join_date, date.now, "M"))`, new: `@(datetime_diff(contact.fields.join_date, now(), "M"))`},
-		{old: `@(DAYS("2016-02-28", "2015-02-28"))`, new: `@(datetime_diff("2016-02-28", "2015-02-28", "D"))`},
-		{old: `@(DAY(contact.join_date))`, new: `@(format_date(contact.fields.join_date, "D"))`},
-		{old: `@(HOUR(NOW()))`, new: `@(format_datetime(now(), "tt"))`},
-		{old: `@(MINUTE(NOW()))`, new: `@(format_datetime(now(), "m"))`},
-		{old: `@(MONTH(NOW()))`, new: `@(format_date(now(), "M"))`},
-		{old: `@(YEAR(NOW()))`, new: `@(format_date(now(), "YYYY"))`},
-		{old: `@(NOW())`, new: `@(now())`},
-		{old: `@(SECOND(NOW()))`, new: `@(format_datetime(now(), "s"))`},
-
 		// date addition should get converted to datetime_add
 		{old: `@(date.now + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
 		{old: `@(now() + 5)`, new: `@(datetime_add(now(), 5, "D"))`},
@@ -198,51 +159,7 @@ func TestMigrateTemplate(t *testing.T) {
 		{old: `@(date.now + TIME(2, 30, 0))`, new: `@(datetime_add(now(), 9000, "s"))`},
 		{old: `@(TIME(0, 1, 5) + contact.join_date)`, new: `@(datetime_add(contact.fields.join_date, 65, "s"))`},
 		{old: `@(contact.join_date - TIME(0,0,12))`, new: `@(datetime_add(contact.fields.join_date, -12, "s"))`},
-
-		// TODO: beware different org format, need a like function
-		{old: `@(DATE(2012, 12, 25))`, new: `@(datetime("2012-12-25"))`},
-		{old: `@(5 * contact.age)`, new: `@(5 * contact.fields.age)`},
-
 		{old: `@((5 + contact.age) / 2)`, new: `@((legacy_add(5, contact.fields.age)) / 2)`},
-		{old: `@(WEEKDAY(TODAY()))`, new: `@(weekday(today()))`},
-		{old: `@(YEAR(date.now))`, new: `@(format_date(now(), "YYYY"))`},
-
-		// booleans and conditionals
-		{old: `@(AND(contact.gender = "F", contact.age >= 18))`, new: `@(and(contact.fields.gender = "F", contact.fields.age >= 18))`},
-		{old: `@(IF(contact.gender = "M", "Sir", "Madam"))`, new: `@(if(contact.fields.gender = "M", "Sir", "Madam"))`},
-		{old: `@(OR(contact.gender = "M", contact.gender = "F", contact.gender = "NB"))`, new: `@(or(contact.fields.gender = "M", contact.fields.gender = "F", contact.fields.gender = "NB"))`},
-
-		// math functions
-		{old: `@(ABS(-1))`, new: `@(abs(-1))`},
-		{old: `@(MAX(child.age, 10))`, new: `@(max(child.results.age, 10))`},
-		{old: `@(MIN(child.age, 10))`, new: `@(min(child.results.age, 10))`},
-		{old: `@(POWER(2, 3))`, new: `@(2 ^ 3)`},
-		{old: `@(RAND())`, new: `@(rand())`},
-		{old: `@(RANDBETWEEN(1, 10))`, new: `@(rand_between(1, 10))`},
-		{old: `@(ROUND(9.4378))`, new: `@(round(9.4378))`},
-		{old: `@(ROUND(9.4378, 3))`, new: `@(round(9.4378, 3))`},
-		{old: `@(ROUNDUP(9.4378))`, new: `@(round_up(9.4378))`},
-		{old: `@(ROUNDUP(9.4378, 3))`, new: `@(round_up(9.4378, 3))`},
-		{old: `@(ROUNDDOWN(9.4378))`, new: `@(round_down(9.4378))`},
-		{old: `@(ROUNDDOWN(9.4378, 3))`, new: `@(round_down(9.4378, 3))`},
-		{old: `@(SUM(contact.age, child.age))`, new: `@(contact.fields.age + child.results.age)`},
-		{old: `@(CHAR(10))`, new: `@(char(10))`},
-		{old: `@(CLEAN(contact.gender))`, new: `@(clean(contact.fields.gender))`},
-		{old: `@(CODE("A"))`, new: `@(code("A"))`},
-		{old: `@(CONCATENATE(contact.first_name, " ", contact.language))`, new: `@(contact.first_name & " " & contact.language)`},
-
-		{old: `@(FIXED(contact.age))`, new: `@(format_number(contact.fields.age))`},
-		{old: `@(FIXED(contact.age, 2))`, new: `@(format_number(contact.fields.age, 2))`},
-		{old: `@(FIXED(contact.age, 2, false))`, new: `@(format_number(contact.fields.age, 2, false))`},
-		{old: `@(INT(contact.age))`, new: `@(round_down(contact.fields.age))`},
-		{old: `@(LEFT(contact.name, 4))`, new: `@(left(contact.name, 4))`},
-		{old: `@(RIGHT(contact.name, 4))`, new: `@(right(contact.name, 4))`},
-		{old: `@(LEN(contact.first_name))`, new: `@(length(contact.first_name))`},
-		{old: `@(LOWER(contact.first_name))`, new: `@(lower(contact.first_name))`},
-		{old: `@(mod(103, 4))`, new: `@(mod(103, 4))`},
-
-		{old: `@(PROPER(contact))`, new: `@(title(contact))`},
-		{old: `@(REPT("*", 10))`, new: `@(repeat("*", 10))`},
 		{old: `@((DATEDIF(DATEVALUE("1970-01-01"), date.now, "D") * 24 * 60 * 60) + ((((HOUR(date.now)+7) * 60) + MINUTE(date.now)) * 60))`, new: `@(legacy_add((datetime_diff(datetime("1970-01-01"), now(), "D") * 24 * 60 * 60), ((legacy_add(((legacy_add(format_datetime(now(), "tt"), 7)) * 60), format_datetime(now(), "m"))) * 60)))`},
 
 		// expressions that should default to themselves on error
@@ -272,9 +189,7 @@ func TestMigrateTemplate(t *testing.T) {
 		})
 	}
 
-	server, err := test.NewTestHTTPServer(49997)
-	require.NoError(t, err)
-
+	server := test.NewTestHTTPServer(49997)
 	defer server.Close()
 
 	session, _, err := test.CreateTestSession(server.URL, nil)
