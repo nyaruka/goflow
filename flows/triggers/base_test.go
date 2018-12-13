@@ -72,10 +72,8 @@ func TestTriggerMarshaling(t *testing.T) {
 			`{
 				"contact": {
 					"created_on": "2018-10-18T14:20:30.000123456Z",
-					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -111,10 +109,8 @@ func TestTriggerMarshaling(t *testing.T) {
 			`{
 				"contact": {
 					"created_on": "2018-10-18T14:20:30.000123456Z",
-					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -150,10 +146,8 @@ func TestTriggerMarshaling(t *testing.T) {
 			`{
 				"contact": {
 					"created_on": "2018-10-18T14:20:30.000123456Z",
-					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -184,10 +178,8 @@ func TestTriggerMarshaling(t *testing.T) {
 			`{
 				"contact": {
 					"created_on": "2018-10-18T14:20:30.000123456Z",
-					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {
@@ -219,10 +211,8 @@ func TestTriggerMarshaling(t *testing.T) {
 			`{
 				"contact": {
 					"created_on": "2018-10-18T14:20:30.000123456Z",
-					"id": 0,
 					"language": "eng",
 					"name": "Bob",
-					"urns": [],
 					"uuid": "c00e5d67-c275-4389-aded-7d8b151cbd5b"
 				},
 				"environment": {

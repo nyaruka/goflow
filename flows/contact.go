@@ -442,12 +442,12 @@ func NewContactReference(uuid ContactUUID, name string) *ContactReference {
 
 type contactEnvelope struct {
 	UUID      ContactUUID              `json:"uuid" validate:"required,uuid4"`
-	ID        ContactID                `json:"id"`
+	ID        ContactID                `json:"id,omitempty"`
 	Name      string                   `json:"name,omitempty"`
 	Language  utils.Language           `json:"language,omitempty"`
 	Timezone  string                   `json:"timezone,omitempty"`
 	CreatedOn time.Time                `json:"created_on" validate:"required"`
-	URNs      []urns.URN               `json:"urns" validate:"dive,urn"`
+	URNs      []urns.URN               `json:"urns,omitempty" validate:"dive,urn"`
 	Groups    []*assets.GroupReference `json:"groups,omitempty" validate:"dive"`
 	Fields    map[string]*Value        `json:"fields,omitempty"`
 }
