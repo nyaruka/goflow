@@ -1,13 +1,15 @@
 package modifiers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	RegisterType(TypeField, func() Modifier { return &FieldModifier{} })
+	RegisterType(TypeField, readFieldModifier)
 }
 
 // TypeField is the type of our field modifier
@@ -42,3 +44,12 @@ func (m *FieldModifier) Apply(env utils.Environment, assets flows.SessionAssets,
 }
 
 var _ Modifier = (*FieldModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readFieldModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	// TODO
+	return nil, nil
+}

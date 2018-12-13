@@ -1,13 +1,14 @@
 package modifiers
 
 import (
+	"encoding/json"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	RegisterType(TypeName, func() Modifier { return &NameModifier{} })
+	RegisterType(TypeName, readNameModifier)
 }
 
 // TypeName is the type of our name modifier
@@ -38,3 +39,12 @@ func (m *NameModifier) Apply(env utils.Environment, assets flows.SessionAssets, 
 }
 
 var _ Modifier = (*NameModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readNameModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	m := &NameModifier{}
+	return m, utils.UnmarshalAndValidate(data, m)
+}

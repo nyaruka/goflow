@@ -1,13 +1,15 @@
 package modifiers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	RegisterType(TypeLanguage, func() Modifier { return &LanguageModifier{} })
+	RegisterType(TypeLanguage, readLanguageModifier)
 }
 
 // TypeLanguage is the type of our language modifier
@@ -38,3 +40,12 @@ func (m *LanguageModifier) Apply(env utils.Environment, assets flows.SessionAsse
 }
 
 var _ Modifier = (*LanguageModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readLanguageModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	m := &LanguageModifier{}
+	return m, utils.UnmarshalAndValidate(data, m)
+}

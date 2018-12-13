@@ -1,13 +1,15 @@
 package modifiers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	RegisterType(TypeGroups, func() Modifier { return &GroupsModifier{} })
+	RegisterType(TypeGroups, readGroupsModifier)
 }
 
 // TypeGroups is the type of our groups modifier
@@ -77,3 +79,12 @@ func (m *GroupsModifier) Apply(env utils.Environment, assets flows.SessionAssets
 }
 
 var _ Modifier = (*GroupsModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readGroupsModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	// TODO
+	return nil, nil
+}

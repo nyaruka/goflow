@@ -1,6 +1,7 @@
 package modifiers
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/nyaruka/goflow/flows"
@@ -9,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeTimezone, func() Modifier { return &TimezoneModifier{} })
+	RegisterType(TypeTimezone, readTimezoneModifier)
 }
 
 // TypeTimezone is the type of our timezone modifier
@@ -44,3 +45,12 @@ func timezonesEqual(tz1 *time.Location, tz2 *time.Location) bool {
 }
 
 var _ Modifier = (*TimezoneModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readTimezoneModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	m := &TimezoneModifier{}
+	return m, utils.UnmarshalAndValidate(data, m)
+}

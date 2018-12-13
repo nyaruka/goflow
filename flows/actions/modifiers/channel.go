@@ -1,13 +1,15 @@
 package modifiers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
 )
 
 func init() {
-	RegisterType(TypeChannel, func() Modifier { return &ChannelModifier{} })
+	RegisterType(TypeChannel, readChannelModifier)
 }
 
 // TypeChannel is the type of our channel modifier
@@ -37,3 +39,12 @@ func (m *ChannelModifier) Apply(env utils.Environment, assets flows.SessionAsset
 }
 
 var _ Modifier = (*ChannelModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readChannelModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	// TODO
+	return nil, nil
+}

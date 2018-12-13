@@ -1,21 +1,28 @@
 package modifiers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
 	"github.com/nyaruka/goflow/utils"
+
+	"github.com/pkg/errors"
 )
 
-var registeredTypes = map[string](func() Modifier){}
+type readFunc func(flows.SessionAssets, json.RawMessage) (Modifier, error)
+
+var registeredTypes = map[string]readFunc{}
 
 // RegisterType registers a new type of modifier
-func RegisterType(name string, initFunc func() Modifier) {
-	registeredTypes[name] = initFunc
+func RegisterType(name string, f readFunc) {
+	registeredTypes[name] = f
 }
 
 // Modifier is something which can modify a contact
 type Modifier interface {
-	// Apply applies this modification to the given contact
+	utils.Typed
+
 	Apply(utils.Environment, flows.SessionAssets, *flows.Contact, func(flows.Event))
 }
 
@@ -44,4 +51,22 @@ func (m *baseModifier) reevaluateDynamicGroups(env utils.Environment, assets flo
 	if len(added) > 0 || len(removed) > 0 {
 		log(events.NewContactGroupsChangedEvent(added, removed))
 	}
+}
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+// ReadModifier reads a modifier from the given JSON
+func ReadModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	typeName, err := utils.ReadTypeFromJSON(data)
+	if err != nil {
+		return nil, err
+	}
+
+	f := registeredTypes[typeName]
+	if f == nil {
+		return nil, errors.Errorf("unknown type: '%s'", typeName)
+	}
+	return f(assets, data)
 }

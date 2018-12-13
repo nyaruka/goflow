@@ -1,6 +1,8 @@
 package modifiers
 
 import (
+	"encoding/json"
+
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
 	"github.com/nyaruka/goflow/flows/events"
@@ -8,7 +10,7 @@ import (
 )
 
 func init() {
-	RegisterType(TypeURN, func() Modifier { return &URNModifier{} })
+	RegisterType(TypeURN, readURNModifier)
 }
 
 // TypeURN is the type of our URN modifier
@@ -48,3 +50,12 @@ func (m *URNModifier) Apply(env utils.Environment, assets flows.SessionAssets, c
 }
 
 var _ Modifier = (*URNModifier)(nil)
+
+//------------------------------------------------------------------------------------------
+// JSON Encoding / Decoding
+//------------------------------------------------------------------------------------------
+
+func readURNModifier(assets flows.SessionAssets, data json.RawMessage) (Modifier, error) {
+	m := &URNModifier{}
+	return m, utils.UnmarshalAndValidate(data, m)
+}
