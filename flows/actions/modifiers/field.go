@@ -29,6 +29,7 @@ func NewFieldModifier(field *flows.Field, value *flows.Value) *FieldModifier {
 	}
 }
 
+// Apply applies this modification to the given contact
 func (m *FieldModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
 	oldValue := contact.Fields().Get(m.Field)
 

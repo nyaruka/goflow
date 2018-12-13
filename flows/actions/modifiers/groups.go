@@ -12,26 +12,36 @@ func init() {
 // TypeGroups is the type of our groups modifier
 const TypeGroups string = "groups"
 
+// GroupsModification is the type of modification to make
+type GroupsModification string
+
+// the supported types of modification
+const (
+	GroupsAdd    GroupsModification = "add"
+	GroupsRemove GroupsModification = "remove"
+)
+
 // GroupsModifier modifies the group membership of the contact
 type GroupsModifier struct {
 	baseModifier
 
-	Groups []*flows.Group
-	Add    bool
+	Groups       []*flows.Group
+	Modification GroupsModification
 }
 
 // NewGroupsModifier creates a new groups modifier
-func NewGroupsModifier(groups []*flows.Group, add bool) *GroupsModifier {
+func NewGroupsModifier(groups []*flows.Group, modification GroupsModification) *GroupsModifier {
 	return &GroupsModifier{
 		baseModifier: newBaseModifier(TypeGroups),
 		Groups:       groups,
-		Add:          add,
+		Modification: modification,
 	}
 }
 
+// Apply applies this modification to the given contact
 func (m *GroupsModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
 	diff := make([]*flows.Group, 0, len(m.Groups))
-	if m.Add {
+	if m.Modification == GroupsAdd {
 		for _, group := range m.Groups {
 
 			// ignore group if contact is already in it
@@ -47,7 +57,7 @@ func (m *GroupsModifier) Apply(assets flows.SessionAssets, contact *flows.Contac
 		if len(diff) > 0 {
 			return events.NewContactGroupsChangedEvent(diff, nil)
 		}
-	} else {
+	} else if m.Modification == GroupsRemove {
 		for _, group := range m.Groups {
 			// ignore group if contact isn't actually in it
 			if contact.Groups().FindByUUID(group.UUID()) == nil {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/nyaruka/gocommon/urns"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -79,11 +79,10 @@ func (a *AddContactURNAction) Execute(run flows.FlowRun, step flows.Step) error 
 		return nil
 	}
 
-	contactURN := flows.NewContactURN(urn.Normalize(""), nil)
-
-	if contact.AddURN(contactURN) {
-		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
-
+	mod := modifiers.NewURNModifier(urn, modifiers.URNAppend)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
 		a.reevaluateDynamicGroups(run, step)
 	}
 

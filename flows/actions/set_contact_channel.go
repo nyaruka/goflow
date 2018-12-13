@@ -3,7 +3,7 @@ package actions
 import (
 	"github.com/nyaruka/goflow/assets"
 	"github.com/nyaruka/goflow/flows"
-	"github.com/nyaruka/goflow/flows/events"
+	"github.com/nyaruka/goflow/flows/actions/modifiers"
 
 	"github.com/pkg/errors"
 )
@@ -67,9 +67,10 @@ func (a *SetContactChannelAction) Execute(run flows.FlowRun, step flows.Step) er
 		}
 	}
 
-	// if URNs have changed in anyway, generate a URNs changed event
-	if run.Contact().UpdatePreferredChannel(channel) {
-		a.log(run, step, events.NewContactURNsChangedEvent(contact.URNs().RawURNs()))
+	mod := modifiers.NewChannelModifier(channel)
+	event := mod.Apply(run.Session().Assets(), run.Contact())
+	if event != nil {
+		a.log(run, step, event)
 	}
 
 	return nil

@@ -29,6 +29,7 @@ func NewTimezoneModifier(timezone *time.Location) *TimezoneModifier {
 	}
 }
 
+// Apply applies this modification to the given contact
 func (m *TimezoneModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
 	if !timezonesEqual(contact.Timezone(), m.Timezone) {
 		contact.SetTimezone(m.Timezone)

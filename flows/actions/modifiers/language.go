@@ -28,6 +28,7 @@ func NewLanguageModifier(language utils.Language) *LanguageModifier {
 	}
 }
 
+// Apply applies this modification to the given contact
 func (m *LanguageModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
 	if contact.Language() != m.Language {
 		contact.SetLanguage(m.Language)

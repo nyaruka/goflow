@@ -26,6 +26,9 @@ func TestEventMarshaling(t *testing.T) {
 
 	tz, _ := time.LoadLocation("Africa/Kigali")
 
+	gender, err := session.Assets().Fields().Get("gender")
+	require.NoError(t, err)
+
 	eventTests := []struct {
 		event     flows.Event
 		marshaled string
@@ -76,7 +79,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			events.NewContactFieldChangedEvent(
-				assets.NewFieldReference("gender", "Gender"),
+				gender,
 				flows.NewValue(types.NewXText("male"), nil, nil, "", "", ""),
 			),
 			`{
@@ -93,7 +96,7 @@ func TestEventMarshaling(t *testing.T) {
 		},
 		{
 			events.NewContactFieldChangedEvent(
-				assets.NewFieldReference("gender", "Gender"),
+				gender,
 				nil, // value being cleared
 			),
 			`{

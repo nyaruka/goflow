@@ -27,6 +27,7 @@ func NewNameModifier(name string) *NameModifier {
 	}
 }
 
+// Apply applies this modification to the given contact
 func (m *NameModifier) Apply(assets flows.SessionAssets, contact *flows.Contact) flows.Event {
 	if contact.Name() != m.Name {
 		contact.SetName(m.Name)

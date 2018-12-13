@@ -79,7 +79,7 @@ func (a *RemoveContactGroupsAction) Execute(run flows.FlowRun, step flows.Step) 
 		}
 	}
 
-	mod := modifiers.NewGroupsModifier(groups, false)
+	mod := modifiers.NewGroupsModifier(groups, modifiers.GroupsRemove)
 	event := mod.Apply(run.Session().Assets(), run.Contact())
 	if event != nil {
 		a.log(run, step, event)
